@@ -1,0 +1,21 @@
+# Personal data: never commit
+legacy/data/legacy-export.json
+*backup*.json
+prime-pocket-week-*.json
+
+# Secrets and signing
+.env
+.env.*
+*.keystore
+*.jks
+keystore.properties
+
+# Build output and tooling
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+android/app/build/
+android/.gradle/
+.DS_Store
