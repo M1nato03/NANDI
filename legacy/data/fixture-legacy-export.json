@@ -1,0 +1,132 @@
+{
+ "exportedAt": "2026-10-03",
+ "source": "SYNTHETIC FIXTURE (fake data, same shape as the real legacy export)",
+ "formatVersion": 1,
+ "cards": [
+  {
+   "id": "l4-1",
+   "law": 4,
+   "lawName": "Always say less than necessary",
+   "order": 1,
+   "front": "Fixture front 1",
+   "back": "Fixture back 1",
+   "box": 1,
+   "due": "2026-10-04",
+   "reviews": 1,
+   "last": "2026-10-03"
+  },
+  {
+   "id": "l4-2",
+   "law": 4,
+   "lawName": "Always say less than necessary",
+   "order": 2,
+   "front": "Fixture front 2",
+   "back": "Fixture back 2",
+   "box": 0,
+   "due": "2026-10-03",
+   "reviews": 0
+  },
+  {
+   "id": "l12-1",
+   "law": 12,
+   "lawName": "Selective honesty and generosity",
+   "order": 1,
+   "front": "Fixture front 3",
+   "back": "Fixture back 3",
+   "box": 2,
+   "due": "2026-10-06",
+   "reviews": 2,
+   "last": "2026-10-03"
+  }
+ ],
+ "progress": {
+  "v": 2,
+  "ratings": {
+   "people": 1050,
+   "detective": 990
+  },
+  "nAns": {
+   "people": 4,
+   "detective": 3
+  },
+  "items": {
+   "sc-4-1": {
+    "b": 1,
+    "c": 1,
+    "due": "2026-10-24",
+    "last": "2026-10-03",
+    "n": 1
+   },
+   "mm-1": {
+    "b": 99,
+    "c": 0,
+    "due": "9999-12-31",
+    "last": "2026-10-02",
+    "n": 1
+   },
+   "tz-1": {
+    "b": 0,
+    "c": 0,
+    "due": "2026-10-06",
+    "last": "2026-10-03",
+    "n": 1
+   }
+  },
+  "cases": {
+   "daily:2026-10-03": {
+    "diff": "easy",
+    "result": "solved",
+    "secs": 120,
+    "hints": 1,
+    "tries": 0,
+    "at": "2026-10-03T06:00:00.000Z"
+   },
+   "x:12345:easy": {
+    "diff": "easy",
+    "result": "revealed",
+    "secs": 300,
+    "hints": 2,
+    "tries": 2,
+    "at": "2026-10-03T07:00:00.000Z"
+   }
+  },
+  "casesDone": 1,
+  "days": {
+   "2026-10-02": {
+    "legacy": true,
+    "answered": 3,
+    "cards": 7,
+    "cases": 0,
+    "correct": 1,
+    "decks": 0
+   },
+   "2026-10-03": {
+    "answered": 6,
+    "cards": 5,
+    "cases": 2,
+    "correct": 6,
+    "decks": 1
+   }
+  },
+  "decks": 1,
+  "freezes": 1,
+  "frozen": [],
+  "hidden": {
+   "sp-12-1": true
+  },
+  "flags": [
+   {
+    "id": "sp-12-1",
+    "t": "spot",
+    "at": "2026-10-03T08:00:00.000Z"
+   }
+  ],
+  "rhist": {
+   "2026-10-03": {
+    "p": 1050,
+    "d": 990
+   }
+  },
+  "errors": []
+ }
+}
