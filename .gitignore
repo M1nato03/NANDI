@@ -23,3 +23,4 @@ android/.gradle/
 # Codex delegate transcripts
 .codex-runs/
 nandi-week-*.json
+*.tsbuildinfo
