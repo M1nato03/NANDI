@@ -24,3 +24,4 @@ android/.gradle/
 .codex-runs/
 nandi-week-*.json
 *.tsbuildinfo
+dist-e2e/

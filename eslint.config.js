@@ -7,6 +7,7 @@ export default [
   {
     ignores: [
       'dist/**',
+      'dist-e2e/**',
       'coverage/**',
       'legacy/**',
       'reference/**',

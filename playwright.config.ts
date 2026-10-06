@@ -5,6 +5,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
     browserName: 'chromium',
+    channel: process.env.PLAYWRIGHT_CHANNEL as 'msedge' | undefined,
   },
   projects: [
     {
@@ -17,7 +18,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview -- --port 4173 --strictPort',
+    // Separate e2e build: only it compiles in the ?e2e test hook (VITE_E2E), never the deployed dist/.
+    command: 'npx vite build --outDir dist-e2e && npx vite preview --outDir dist-e2e --port 4173 --strictPort',
+    env: { VITE_E2E: '1' },
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
   },

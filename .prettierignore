@@ -7,3 +7,4 @@ test-results
 .codex-runs
 docs
 *.md
+dist-e2e

@@ -13,3 +13,4 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-04 | **One agent at a time**: build in-session, one review before closing the phase (not parallel subagents). | Jenil's standing rule; token budget. |
 | 2026-10-07 | **Codex writes the code**, Claude plans and checks PASS/FAIL; the harness runs `npm.cmd install`/build/test (Codex has no network). | Token budget; an independent check judges each step. |
 | 2026-10-07 | jsdom + @testing-library/react + workbox-window/-build added | Component tests and the PWA plugin's required peers. |
+| 2026-10-07 | Backup format v1 uses the local 4 am `dayKey` for filenames; preview includes `dayKey`, `*DayKey`, `due`, and `last` date fields. Full restore requires the current table set. | Keep the file name consistent with app days and reject incomplete restores before clearing data. |
