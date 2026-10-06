@@ -27,4 +27,5 @@ nandi-week-*.json
 dist-e2e/
 .pack-test-*/
 .npm-cache/
+.wrangler/
 .playwright-browsers/

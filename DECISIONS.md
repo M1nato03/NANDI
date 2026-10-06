@@ -19,3 +19,4 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-07 | Add `@fontsource/inter` 5.3.0. | Bundle the OFL body font for offline reading. |
 | 2026-10-07 | Add `@fontsource/jetbrains-mono` 5.3.0. | Bundle the OFL mono font for offline data labels. |
 | 2026-10-07 | Use a single-process Vite preview wrapper for Playwright and an ENOMEM fallback for tsx's Windows username lookup. | The restricted Windows runner otherwise hangs on Playwright server shutdown and fails before pack validation starts. |
+| 2026-10-07 | Add `wrangler` 4 as a development dependency. | Pin the Cloudflare Workers deploy CLI in the project so CI and local deploys use the same major version. |

@@ -46,6 +46,8 @@ build: `npm.cmd run build`
 test: `npm.cmd run test`
 e2e: `npx.cmd playwright install chromium` once, then `npm.cmd run build` and `npm.cmd run e2e`
 lint: `npm.cmd run lint`
+banned-words: `npm.cmd run banned-words`
 typecheck: `npm.cmd run typecheck`
 validate-packs: `npm.cmd run validate-packs`
+deploy: `npx wrangler deploy` (normally run by CI after a push to `main`)
 android build: Phase 2
