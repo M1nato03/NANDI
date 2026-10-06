@@ -1,0 +1,9 @@
+dist
+coverage
+legacy
+reference
+playwright-report
+test-results
+.codex-runs
+docs
+*.md

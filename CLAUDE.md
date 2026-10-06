@@ -41,4 +41,11 @@ legacy/        original prototype code, kept for reference until fully ported
 - Ask Jenil only about product trade-offs, anything that could lose data, or paid services. Otherwise decide, log it in `DECISIONS.md`, and keep going.
 
 ## Commands
-(fill in at scaffold time: dev, build, test, e2e, lint, typecheck, validate-packs, android build)
+dev: `npm.cmd run dev` (Windows)
+build: `npm.cmd run build`
+test: `npm.cmd run test`
+e2e: `npx.cmd playwright install chromium` once, then `npm.cmd run build` and `npm.cmd run e2e`
+lint: `npm.cmd run lint`
+typecheck: `npm.cmd run typecheck`
+validate-packs: step 8
+android build: Phase 2
