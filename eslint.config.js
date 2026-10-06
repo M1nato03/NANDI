@@ -14,6 +14,8 @@ export default [
       'playwright-report/**',
       'test-results/**',
       '.codex-runs/**',
+      'src/core/puzzles/puzzles.js',
+      'src/core/mysteries/cases.js',
     ],
   },
   js.configs.recommended,

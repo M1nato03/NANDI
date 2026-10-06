@@ -25,3 +25,4 @@ android/.gradle/
 nandi-week-*.json
 *.tsbuildinfo
 dist-e2e/
+.pack-test-*/

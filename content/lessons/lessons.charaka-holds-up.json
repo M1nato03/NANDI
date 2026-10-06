@@ -1,0 +1,1427 @@
+{
+  "id": "lessons.charaka-holds-up",
+  "kind": "lessons",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Charaka: What Still Holds Up",
+  "author": "legacy",
+  "createdAt": "2026-10-07T00:00:00.000Z",
+  "body": {
+    "course": {
+      "id": "charaka",
+      "name": "Charaka: What Still Holds Up",
+      "short": "Charaka",
+      "tint": "charaka",
+      "blurb": "16 lessons from an Indian medical text written down roughly 2,000 years ago. Every lesson grades the advice against modern research: what holds up, what doesn’t.",
+      "note": "Educational, not medical advice. References follow the Charak Samhita New Edition numbering, which can differ in other editions."
+    },
+    "lessons": [
+      {
+        "id": "c1",
+        "t": "Three pillars",
+        "scene": "Your friend Harsh asks, “What actually matters for health? Gym? Protein? Supplements?” He sleeps at 3 am and lives on canteen samosas.",
+        "q": "Which list did the Charaka Samhita call the three pillars of life?",
+        "o": [
+          "Exercise, medicine, massage",
+          "Food, sleep and self-control",
+          "Herbs, prayer, fasting",
+          "Gym, protein, supplements"
+        ],
+        "a": 1,
+        "rv": "The text says life stands on three supports: food (āhāra), sleep (svapna) and brahmacharya. Keep these regulated, it says, and you get strength and growth for life. No supplement made the list.",
+        "pic": {
+          "k": "three",
+          "top": "A healthy life",
+          "items": [
+            "Food",
+            "Sleep",
+            "Self-control"
+          ]
+        },
+        "term": {
+          "w": "Trayopastambha",
+          "g": "“the three supporting pillars” of life."
+        },
+        "src": {
+          "ref": "Sutrasthana 11.35",
+          "line": "Food, sleep and brahmacharya are the three supports of life. Regulated well, they bring strength, complexion and growth throughout life.",
+          "n": "Brahmacharya is literally translated “celibacy”. We read it as self-control over indulgence, not as a health prescription."
+        },
+        "grade": {
+          "g": "Strong",
+          "n": "for food and sleep; no evidence for the celibacy reading"
+        },
+        "sci": "Sleep and diet are two of the biggest health levers modern medicine knows. Adults need 7+ hours of sleep a night (American Academy of Sleep Medicine).",
+        "st": [
+          "The Charaka Samhita began as a student’s notes (Agnivesha’s), was revised by Charaka roughly 2,000 years ago, and was completed later by Dridhabala. It’s a medical textbook: diagnosis, diet, daily routine.",
+          "It also names the main root of disease: prajñāparādha, the “error of judgement”. Knowing better and doing it anyway. Like knowing you should sleep, and scrolling anyway."
+        ],
+        "rule": "Before any supplement or hack, fix the pillars: what you eat, when you sleep, how you handle indulgence.",
+        "tr": {
+          "s": "Harsh buys a ₹3,000 protein tub but still sleeps at 3 am.",
+          "q": "Pillar check?",
+          "o": [
+            "Good; protein fixes recovery",
+            "He’s skipping a pillar, sleep. Fix that before any supplement",
+            "He needs a second supplement",
+            "Protein can replace sleep"
+          ],
+          "a": 1,
+          "w": "No supplement makes up for a missing pillar. Sleep is where recovery actually happens."
+        },
+        "wy": {
+          "q": "Why is prajñāparādha such a useful idea?",
+          "o": [
+            "It names the gap between knowing and doing, where most health problems start",
+            "It means some foods are cursed",
+            "It’s the name of a herb"
+          ],
+          "a": 0,
+          "f": "The gap between knowing and doing is the real target."
+        },
+        "pl": {
+          "i": [
+            "I’m tempted by a health hack or supplement",
+            "I plan my day",
+            "I notice I’m neglecting a pillar"
+          ],
+          "t": [
+            "ask “which pillar am I skipping?”",
+            "fix one pillar first: my sleep time",
+            "eat one proper meal at a fixed time"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 11.35 · The three pillars of life?",
+            "Food (ahara), sleep (svapna) and brahmacharya (self-control)."
+          ],
+          [
+            "What is prajñāparādha?",
+            "“Error of judgement”: knowing better and doing it anyway. The text’s main root of disease."
+          ]
+        ],
+        "sl": "Sleep is one of the three pillars. You build it by stopping now."
+      },
+      {
+        "id": "c2",
+        "t": "Sleep runs your life",
+        "scene": "You’ve averaged 5 hours of sleep for two weeks. “I’ll catch up on Sunday. Sleep is just downtime.”",
+        "q": "What did the Charaka Samhita say depends on sleep?",
+        "o": [
+          "Just energy levels",
+          "Happiness and misery, strength and weakness, knowledge and ignorance, even life and death",
+          "Only digestion",
+          "Nothing important; sleep is rest"
+        ],
+        "a": 1,
+        "rv": "Su 21.36 lists pairs: happiness and misery, nourishment and wasting, strength and weakness, knowledge and ignorance, life and death all depend on proper or improper sleep. Knowledge is on the list: sleep is when the day’s learning gets stored.",
+        "pic": {
+          "k": "split",
+          "l": "Proper sleep",
+          "ls": "happiness, strength, knowledge",
+          "r": "Poor sleep",
+          "rs": "misery, weakness, ignorance",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Nidrā",
+          "g": "sleep."
+        },
+        "src": {
+          "ref": "Sutrasthana 21.36",
+          "line": "Happiness and misery, nourishment and wasting, strength and weakness, fertility and infertility, knowledge and ignorance, life and death all depend on proper or improper sleep."
+        },
+        "grade": {
+          "g": "Strong"
+        },
+        "sci": "Adults need 7 or more hours a night; 6 or less counts as inadequate (AASM). Sleep also consolidates memory, which is the “knowledge” line.",
+        "st": [
+          "Notice the pairs: every good thing has an opposite tied to bad sleep. The text treats sleep as a switch, not a luxury.",
+          "Catching up on Sunday helps a little, but a regular schedule is what the evidence backs. Next lesson: what the text says about night owls."
+        ],
+        "rule": "Treat sleep as a pillar, not leftover time: 7+ hours on most nights.",
+        "tr": {
+          "s": "Exam week. Your plan: study till 3 am every night to “cover more”.",
+          "q": "What do Su 21.36 and modern science suggest?",
+          "o": [
+            "Study till 3, sleep after exams",
+            "Stop by midnight and sleep 7 hours, so the studying sticks",
+            "Sleep 4 hours and drink coffee",
+            "Skip sleep only the night before"
+          ],
+          "a": 1,
+          "w": "Knowledge depends on sleep. Hours studied at 2 am that never get stored are wasted hours."
+        },
+        "wy": {
+          "q": "Why does “knowledge and ignorance” in the sleep verse matter so much for you?",
+          "o": [
+            "Sleep is when learning gets stored, so cutting it undoes study",
+            "Sleeping makes you smart instantly",
+            "Dreams teach you things"
+          ],
+          "a": 0,
+          "f": "Your cards and lessons consolidate while you sleep."
+        },
+        "pl": {
+          "i": [
+            "it’s 12:30 am and I’m still studying",
+            "I plan to cut sleep for work",
+            "I’m on my phone in bed"
+          ],
+          "t": [
+            "stop and sleep: memory needs it",
+            "schedule the study earlier instead",
+            "put the phone on charge across the room"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 21.36 · What depends on proper sleep?",
+            "Happiness, nourishment, strength, knowledge, even life (and their opposites with poor sleep)."
+          ],
+          [
+            "How much sleep do adults need (AASM)?",
+            "7 or more hours; 6 or less counts as inadequate."
+          ]
+        ],
+        "sl": "Tonight’s sleep is when today’s learning gets saved."
+      },
+      {
+        "id": "c3",
+        "t": "The night-owl warning",
+        "scene": "You’ve been sleeping between 1 and 2 am for months. “I’m used to it now. My body has adjusted.”",
+        "q": "What does the text say about people who are used to staying up?",
+        "o": [
+          "Once you’re used to it, it’s fine",
+          "Even people used to it shouldn’t overdo staying awake at night",
+          "Night is the best time to study",
+          "Only old people need early sleep"
+        ],
+        "a": 1,
+        "rv": "Su 7.34 lists things not to overdo even if you’re used to them: exercise, laughing, talking, walking, sex, and staying awake at night. “I’m used to it” doesn’t earn a pass.",
+        "pic": {
+          "k": "stairs",
+          "steps": [
+            [
+              "Now",
+              "1:45"
+            ],
+            [
+              "+3 days",
+              "1:30"
+            ],
+            [
+              "+6",
+              "1:15"
+            ],
+            [
+              "+9",
+              "1:00"
+            ],
+            [
+              "+12",
+              "12:45"
+            ],
+            [
+              "+15",
+              "12:30"
+            ]
+          ],
+          "desc": true,
+          "label": "Bedtime, 15 minutes earlier every few days"
+        },
+        "term": {
+          "w": "Night waking",
+          "g": "the text’s name for habitually staying up. Su 8.19 lists it, with oversleeping, as something to avoid."
+        },
+        "src": {
+          "ref": "Sutrasthana 7.34 (also 8.19, 21.50)",
+          "line": "Exercise, laughing, talking, walking, sex and staying awake at night shouldn’t be overdone, even by those used to them. Staying up at night makes the body dry and rough (21.50)."
+        },
+        "grade": {
+          "g": "Strong",
+          "n": "for regular sleep; the “dryness” explanation isn’t supported"
+        },
+        "sci": "In about 61,000 UK adults, the most regular sleepers had roughly 30% lower risk of death over the study period than the least regular (observational). Regular timing matters, not just hours.",
+        "st": [
+          "The text’s reason is that night waking makes the body “dry and rough”, while day sleep makes it oily and heavy. That’s ancient physiology, not science.",
+          "But the conclusion matches modern data: irregular, late sleep is linked to worse outcomes. Right answer, old reasoning. You’ll see that pattern again and again in this course."
+        ],
+        "rule": "Don’t trust “I’m used to it”. Move your bedtime earlier in small steps.",
+        "tr": {
+          "s": "You want to shift from 2 am to midnight.",
+          "q": "Best approach?",
+          "o": [
+            "Sleep at 10 pm tonight",
+            "Move 15 minutes earlier every few days, same wake time every day",
+            "Stay up all night once to reset",
+            "Sleep whenever you feel tired"
+          ],
+          "a": 1,
+          "w": "Small steps with a fixed wake time shift your body clock without a fight. Big jumps usually mean lying awake."
+        },
+        "wy": {
+          "q": "The text’s reason (“dryness”) is wrong. Why does the advice survive?",
+          "o": [
+            "An observation (late sleep harms you) can be right even when the old explanation is wrong",
+            "Because ancient texts are always right",
+            "It doesn’t; the advice is wrong too"
+          ],
+          "a": 0,
+          "f": "Separate the observation from the explanation, and grade each one."
+        },
+        "pl": {
+          "i": [
+            "my wind-down alarm goes off",
+            "it’s 15 minutes before my target bedtime",
+            "I’m tempted to stay up “just tonight”"
+          ],
+          "t": [
+            "plug the phone in across the room",
+            "go to bed 15 minutes earlier than usual",
+            "keep the same wake-up time all 7 days"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 7.34 · What does “I’m used to it” not excuse?",
+            "Overdoing night waking (and exercise, talking, laughing, walking, sex), even for those used to it."
+          ],
+          [
+            "How do you shift a late bedtime?",
+            "15 minutes earlier every few days, with the same wake time all 7 days."
+          ]
+        ],
+        "sl": "Fifteen minutes earlier tonight is a real win."
+      },
+      {
+        "id": "c4",
+        "t": "Phone out of bed",
+        "scene": "You get into bed at 12:30 to sleep. Phone, “for 5 minutes”. At 1:45 you’re wide awake and annoyed.",
+        "q": "The text says the senses can be misused three ways: too much, too little, or wrongly. Which is phone-in-bed?",
+        "o": [
+          "Too little use of the senses",
+          "Too much and the wrong use: bright, exciting input at the time meant for sleep",
+          "Perfect use",
+          "It has nothing to do with health"
+        ],
+        "a": 1,
+        "rv": "Su 11 says each sense can be overused (atiyoga), unused (ayoga) or wrongly used (mithyāyoga). Bright, exciting input at bedtime is overuse and wrong use at once.",
+        "pic": {
+          "k": "three",
+          "top": "Three ways to misuse the senses",
+          "items": [
+            "Too much (atiyoga)",
+            "Too little (ayoga)",
+            "Wrongly (mithyāyoga)"
+          ]
+        },
+        "term": {
+          "w": "Asātmyendriyārtha-saṃyoga",
+          "g": "unwholesome contact of the senses with their objects: one of three root causes of disease."
+        },
+        "src": {
+          "ref": "Sutrasthana 11.37–43",
+          "line": "Three root causes of disease: unwholesome contact of the senses with their objects, error of judgement, and time. Each sense can be overused, unused or wrongly used.",
+          "n": "The text didn’t know about screens; applying it to phones is our extension."
+        },
+        "grade": {
+          "g": "Partial"
+        },
+        "sci": "Reading on a light-emitting e-reader before bed suppressed melatonin by about 55% and delayed it by over 1.5 hours compared with a printed book (Chang et al., 2014). In 45,202 Norwegian students, each hour of screen use in bed was linked to 59% higher odds of insomnia.",
+        "st": [
+          "The second root cause in the same list is prajñāparādha, error of judgement. You know the phone keeps you up; you pick it up anyway. Two root causes in one habit.",
+          "The fix the text points to is changing the contact. If the phone isn’t reachable, there’s nothing to misuse."
+        ],
+        "rule": "Charge the phone out of arm’s reach before you get into bed.",
+        "tr": {
+          "s": "Your phone is your alarm, so it “has to” be by the bed.",
+          "q": "Best fix?",
+          "o": [
+            "Keep it by the bed and promise not to use it",
+            "Put it across the room as the alarm; you’ll have to get up to stop it",
+            "Sleep with it under the pillow",
+            "Turn the brightness down and keep scrolling"
+          ],
+          "a": 1,
+          "w": "Out of reach removes the temptation and gets you up in the morning. Promises made at 12:30 am don’t hold."
+        },
+        "wy": {
+          "q": "Why does distance beat willpower here?",
+          "o": [
+            "At bedtime your judgement is weakest, so remove the contact instead of resisting it",
+            "Because phones emit radiation",
+            "Because willpower is strongest at night"
+          ],
+          "a": 0,
+          "f": "Same as the Gita’s tortoise: pull the limb in before the pull starts."
+        },
+        "pl": {
+          "i": [
+            "I get into bed",
+            "it’s 30 minutes before bedtime",
+            "I wake up in the night"
+          ],
+          "t": [
+            "the phone charges across the room",
+            "switch the phone to grayscale and leave it",
+            "don’t check the phone; turn over and breathe slowly"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 11 · Three ways to misuse the senses?",
+            "Overuse (atiyoga), non-use (ayoga), wrong use (mithyayoga)."
+          ],
+          [
+            "What did screen light before bed do (Chang 2014)?",
+            "Suppressed melatonin about 55% and delayed it by 1.5+ hours."
+          ]
+        ],
+        "sl": "Where is your phone charging tonight? Across the room is the answer."
+      },
+      {
+        "id": "c5",
+        "t": "Short naps",
+        "scene": "After lunch you crash for two and a half hours. You wake up groggy at 5, can’t sleep till 3 am, and the cycle repeats.",
+        "q": "What does the text say about sleeping in the day?",
+        "o": [
+          "Sleep as much as you like in the day",
+          "It’s fine when exhausted, for the weak, children and the elderly, and in summer; otherwise avoid it",
+          "Never, under any condition",
+          "Day sleep is better than night sleep"
+        ],
+        "a": 1,
+        "rv": "Su 21.39–45 allows day sleep in specific cases: the exhausted, children, the old, the weak, and everyone in summer. Otherwise it advises against it. A two-and-a-half-hour nap that wrecks your night is exactly what it warns about.",
+        "pic": {
+          "k": "meter",
+          "zones": [
+            "No nap",
+            "Short nap (under 1 h)",
+            "Long nap"
+          ],
+          "hi": 1,
+          "label": "Daytime sleep"
+        },
+        "term": {
+          "w": "Divāsvapna",
+          "g": "day sleep."
+        },
+        "src": {
+          "ref": "Sutrasthana 21.39–45",
+          "line": "Day sleep suits those worn out by work or travel, the weak, children and the elderly, and everyone in summer. Otherwise it isn’t advised."
+        },
+        "grade": {
+          "g": "Mixed"
+        },
+        "sci": "Across studies, naps under an hour showed no link with higher mortality; naps of an hour or more did (about 22% higher), possibly because people who are already ill nap more.",
+        "st": [
+          "The summer exception makes sense in Ahmedabad: the text allows day sleep when nights are short and hot.",
+          "Your real problem with long naps is the night after. They push bedtime late, which makes the next nap long. Short naps break the loop."
+        ],
+        "rule": "If you nap, keep it under an hour, and before 4 pm.",
+        "tr": {
+          "s": "You’re wiped out after a six-hour lab.",
+          "q": "Nap plan?",
+          "o": [
+            "Sleep till dinner",
+            "A 25–40 minute nap with an alarm, then up",
+            "Never nap; push through",
+            "Nap at 9 pm"
+          ],
+          "a": 1,
+          "w": "Exhaustion is one of the text’s allowed cases. A short alarmed nap restores you without wrecking the night."
+        },
+        "wy": {
+          "q": "Why is “Mixed” the honest grade here?",
+          "o": [
+            "The link between long naps and risk may be caused by illness, not the nap itself",
+            "Because naps are always dangerous",
+            "Because the text was right about everything"
+          ],
+          "a": 0,
+          "f": "In observational data the arrow can point backwards: sick people nap more."
+        },
+        "pl": {
+          "i": [
+            "I want to nap",
+            "I wake from a nap groggy",
+            "it’s after 4 pm and I’m sleepy"
+          ],
+          "t": [
+            "set a 30-minute alarm across the room",
+            "get up, wash my face, walk for 5 minutes",
+            "push through to an earlier bedtime instead"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 21 · When was day sleep allowed?",
+            "For the exhausted, the weak, children, the elderly, and everyone in summer; otherwise not advised."
+          ],
+          [
+            "Safe nap rule?",
+            "Under an hour, before 4 pm, with an alarm."
+          ]
+        ],
+        "sl": "If you napped long today, tonight’s only goal is the same wake time tomorrow."
+      },
+      {
+        "id": "c6",
+        "t": "Leave a third empty",
+        "scene": "Biryani day at the mess. You go back for a third plate. Afterwards you’re lying flat, too full to study.",
+        "q": "What’s the Charaka Samhita’s rule for how full to get?",
+        "o": [
+          "Eat until completely full",
+          "One-third food, one-third liquid, one-third left empty",
+          "Half food, half water",
+          "Only liquids after 6 pm"
+        ],
+        "a": 1,
+        "rv": "Vi 2.3 divides the stomach into thirds: one for solid food, one for liquid, one left empty. And Su 5.7 says heavy foods should only go to a third or half of fullness.",
+        "pic": {
+          "k": "thirds",
+          "items": [
+            "Food",
+            "Liquid",
+            "Empty"
+          ]
+        },
+        "term": {
+          "w": "Mātrā",
+          "g": "the right quantity of food, which the text says depends on your digestion."
+        },
+        "src": {
+          "ref": "Vimanasthana 2.3 (also Sutrasthana 5.7)",
+          "line": "Fill a third of the stomach with solids, a third with liquids, and leave a third empty. Eat heavy foods only to a third or half of satisfaction."
+        },
+        "grade": {
+          "g": "Partial",
+          "n": "the direction holds; the exact ratio is untested"
+        },
+        "sci": "In the CALERIE trial, healthy adults who ate about 11–12% less for two years improved heart and metabolic markers. No study has tested “a third empty” itself.",
+        "st": [
+          "Vi 2.6 gives signs you ate the right amount: no pressure in the belly, no heaviness in the chest, you can sit, walk, breathe and talk easily, and hunger and thirst are gone.",
+          "Vi 2.9 adds something surprisingly modern: even good food in the right amount isn’t digested well when you’re anxious, angry, grieving or short on sleep."
+        ],
+        "rule": "Stop at “comfortably satisfied”: you could go for a walk right now.",
+        "tr": {
+          "s": "Wedding buffet in Rajkot, 20 dishes.",
+          "q": "The third-empty move?",
+          "o": [
+            "Try everything in full portions",
+            "Small tastes of what you want most; stop while you could still walk comfortably",
+            "Skip eating",
+            "Eat fast before it runs out"
+          ],
+          "a": 1,
+          "w": "You get the experience without the crash. Variety in small amounts fits the rule."
+        },
+        "wy": {
+          "q": "Why is “Partial” the right grade?",
+          "o": [
+            "Eating a bit less is backed by trials, but the exact one-third ratio hasn’t been tested",
+            "Because the rule is fully proven",
+            "Because eating less is always harmful"
+          ],
+          "a": 0,
+          "f": "Trust the direction, not the precise number."
+        },
+        "pl": {
+          "i": [
+            "I go for a second plate",
+            "I sit down at the mess",
+            "I feel heavy after eating"
+          ],
+          "t": [
+            "pause 5 minutes and ask: could I walk easily?",
+            "start with a smaller plate",
+            "walk for 10 minutes instead of lying down"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Vi 2.3 · How to fill the stomach?",
+            "A third food, a third liquid, a third empty."
+          ],
+          [
+            "Signs you ate the right amount (Vi 2.6)?",
+            "No pressure in the belly; easy to sit, walk, breathe and talk; hunger and thirst gone."
+          ]
+        ],
+        "sl": "A light dinner tonight means a better night’s sleep."
+      },
+      {
+        "id": "c7",
+        "t": "Don’t wolf it down",
+        "scene": "You eat lunch in six minutes while watching a video, then take a second helping because you “don’t feel full”.",
+        "q": "Why does the text say eating too fast is a problem?",
+        "o": [
+          "It’s rude",
+          "Food can go down the wrong way, and you can’t judge taste or how much you’ve had",
+          "It burns more calories",
+          "It isn’t a problem"
+        ],
+        "a": 1,
+        "rv": "Vi 1.25 gives a reason for each eating rule. Too fast: food may go the wrong way, and you can’t judge taste or spot problems with it. Modern research adds that fast eaters eat more.",
+        "pic": {
+          "k": "meter",
+          "zones": [
+            "Too fast",
+            "Calm pace",
+            "Very slow"
+          ],
+          "hi": 1,
+          "label": "Eating speed"
+        },
+        "term": {
+          "w": "Nātidrutam",
+          "g": "“not too fast”."
+        },
+        "src": {
+          "ref": "Vimanasthana 1.24–25",
+          "line": "Eat warm food in the right amount, once the last meal is digested, in a pleasant place, not too fast and not too slow, without talking or laughing, with attention. Each rule comes with a reason."
+        },
+        "grade": {
+          "g": "Partial to good"
+        },
+        "sci": "Across trials, eating more slowly reduced how much people ate (Robinson et al., meta-analysis). In pooled studies, fast eaters had about twice the odds of obesity.",
+        "st": [
+          "The text gives a reason for every rule, which is unusual and very engineer-friendly: warm food digests faster, eating after the last meal is digested means real appetite, attention means you notice what suits you.",
+          "One rule in this same verse is contradicted by modern research. You’ll meet it in the last lesson, on what Charaka got wrong."
+        ],
+        "rule": "Put the spoon down between bites.",
+        "tr": {
+          "s": "You have 15 minutes for lunch before a lab.",
+          "q": "Best approach?",
+          "o": [
+            "Inhale it in 4 minutes and scroll",
+            "A slightly smaller portion at a calm pace, phone away",
+            "Skip lunch",
+            "Eat while walking to the lab"
+          ],
+          "a": 1,
+          "w": "A calm pace fits in 15 minutes. A smaller portion plus attention means you’re satisfied without the crash."
+        },
+        "wy": {
+          "q": "Why does eating fast lead to eating more?",
+          "o": [
+            "Fullness signals take time to arrive; eating fast outruns them",
+            "Fast food has more calories",
+            "It doesn’t"
+          ],
+          "a": 0,
+          "f": "Your stomach’s “enough” message arrives late. Slowing down lets it catch up."
+        },
+        "pl": {
+          "i": [
+            "I start a meal",
+            "I finish my plate and want more",
+            "I’m eating alone"
+          ],
+          "t": [
+            "put the spoon down between bites",
+            "wait 5 minutes before a second helping",
+            "chew each bite a few extra times"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Vi 1.25 · Two reasons not to eat too fast?",
+            "Food may go down the wrong way, and you can’t judge taste or quantity."
+          ],
+          [
+            "Simple trick for eating slower?",
+            "Put the spoon down between bites."
+          ]
+        ],
+        "sl": "Tomorrow’s first meal: spoon down between bites."
+      },
+      {
+        "id": "c8",
+        "t": "Phone-free plate",
+        "scene": "Dinner in your room with a show on the laptop. Afterwards you can’t remember what you ate, and an hour later you’re snacking.",
+        "q": "What does the text say about attention while eating?",
+        "o": [
+          "Watch something to relax",
+          "Eat with full attention, not while talking or laughing",
+          "Eat as fast as possible",
+          "Attention doesn’t matter"
+        ],
+        "a": 1,
+        "rv": "Vi 1.24 says eat “with full attention” and not while talking or laughing. Its reason (1.25): distracted eating has the same faults as eating too fast.",
+        "pic": {
+          "k": "split",
+          "l": "Attention on the food",
+          "ls": "you notice taste and “enough”",
+          "r": "Attention on a screen",
+          "rs": "you miss “enough”, snack later",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Tanmanā bhuñjīta",
+          "g": "“eat with the mind on it”."
+        },
+        "src": {
+          "ref": "Vimanasthana 1.24",
+          "line": "Eat without talking or laughing, with your full attention on the meal.",
+          "n": "The text even rules out talking. That’s stricter than the evidence needs; screens are the bigger problem."
+        },
+        "grade": {
+          "g": "Partial"
+        },
+        "sci": "In a recent meta-analysis, passive distraction like TV increased how much people ate during the meal, and also later in the day.",
+        "st": [
+          "Talking and laughing were the “screens” of 2,000 years ago. The text didn’t ban company; it warned about attention leaving the plate.",
+          "The “later” part matters: a distracted meal doesn’t register in memory, so you feel hungry again sooner."
+        ],
+        "rule": "One screen-free meal a day.",
+        "tr": {
+          "s": "Mess dinner with friends. Everyone is on their phones.",
+          "q": "Practical move?",
+          "o": [
+            "Join in and scroll too",
+            "Suggest phones face-down for dinner, or at least keep yours away",
+            "Eat alone in your room with Netflix",
+            "Skip dinner"
+          ],
+          "a": 1,
+          "w": "Eating with friends and chatting normally is fine. The problem is attention leaving the food entirely; phones down fixes that."
+        },
+        "wy": {
+          "q": "Why do distracted meals lead to snacking later?",
+          "o": [
+            "The meal doesn’t register as eaten, so you feel hungry sooner",
+            "Screens burn calories",
+            "It doesn’t happen"
+          ],
+          "a": 0,
+          "f": "Remembering the meal is part of feeling full."
+        },
+        "pl": {
+          "i": [
+            "I sit down to eat",
+            "I reach for my phone at the table",
+            "I eat dinner alone"
+          ],
+          "t": [
+            "phone face-down for the whole meal",
+            "notice the taste of the first three bites",
+            "eat first, then watch the show"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Vi 1.24 · The rule for attention while eating?",
+            "Eat with full attention, not while talking or laughing (tanmana bhunjita)."
+          ],
+          [
+            "What did TV while eating do in studies?",
+            "Increased how much people ate during the meal and later."
+          ]
+        ],
+        "sl": "Tomorrow: one meal with the phone in your pocket."
+      },
+      {
+        "id": "c9",
+        "t": "The late-night Maggi problem",
+        "scene": "Dinner at 8, study till 12, Maggi at 1 am. You wake up heavy, skip breakfast, eat a huge lunch, and do it all again.",
+        "q": "Which rule from the text does the 1 am Maggi break?",
+        "o": [
+          "None; a snack is a snack",
+          "Eating at the proper time",
+          "Never eat spicy food",
+          "Never eat alone"
+        ],
+        "a": 1,
+        "rv": "Su 25.40 ranks eating at proper times as the best thing for wholesome eating, and overeating as the top cause of indigestion. One late meal shifts your whole next day: heavy morning, skipped breakfast, huge lunch, late night again.",
+        "pic": {
+          "k": "cycle",
+          "nodes": [
+            "1 am meal",
+            "Heavy morning",
+            "Skip breakfast",
+            "Late, big meals"
+          ],
+          "hi": 0
+        },
+        "term": {
+          "w": "Kāla bhojana",
+          "g": "“eating at the right time”."
+        },
+        "src": {
+          "ref": "Sutrasthana 25.40 (also Vi 1.24)",
+          "line": "From the text’s list of “foremosts”: eating at proper times is foremost for wholesome eating; overeating is the foremost cause of indigestion; eating before the last meal is digested harms digestion."
+        },
+        "grade": {
+          "g": "Partial"
+        },
+        "sci": "In a lab study of 16 adults, the same meals eaten about 4 hours later raised hunger and slowed calorie burning. A small study, but it points the same way.",
+        "st": [
+          "Su 25.40 is a list of “foremosts”, the single best and worst thing in many categories. A 2,000-year-old top-tips list.",
+          "The same list says despondency (viṣāda) is foremost in making illness worse, and contentment is foremost for wellbeing. Mood was part of medicine."
+        ],
+        "rule": "Eat dinner before the late study block, not at 1 am.",
+        "tr": {
+          "s": "You get hungry at midnight while studying.",
+          "q": "Better option?",
+          "o": [
+            "Maggi, every night",
+            "Move dinner later (around 9:30) so you’re not starving; if hungry, a fruit or milk",
+            "Ignore the hunger and stay up till 3",
+            "Order biryani"
+          ],
+          "a": 1,
+          "w": "Shift dinner to fit your study schedule and keep anything late small. The real fix is ending the day earlier."
+        },
+        "wy": {
+          "q": "Why does one late meal mess up the whole next day?",
+          "o": [
+            "It pushes hunger and sleep later, which pushes breakfast out and lunch bigger",
+            "Because Maggi is poison",
+            "It doesn’t"
+          ],
+          "a": 0,
+          "f": "It’s a loop: late meals and late sleep feed each other."
+        },
+        "pl": {
+          "i": [
+            "I’m hungry after 11 pm",
+            "I plan a late study session",
+            "I skip breakfast"
+          ],
+          "t": [
+            "have a fruit or milk, not a full meal",
+            "eat dinner right before the study block",
+            "eat something small before 10 am"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 25.40 · What’s foremost for wholesome eating?",
+            "Eating at proper times (kala bhojana). Overeating is the foremost cause of indigestion."
+          ],
+          [
+            "Late-meal study finding?",
+            "The same meals eaten ~4 h later raised hunger and slowed calorie burning (small study)."
+          ]
+        ],
+        "sl": "Hungry right now? A glass of milk or a fruit, then sleep."
+      },
+      {
+        "id": "c10",
+        "t": "Sweat, breathe, stop",
+        "scene": "First gym visit in months, and you do everything: two hours, max weights. For the next three days you can barely walk, so you quit.",
+        "q": "What does the text say about how much to exercise?",
+        "o": [
+          "As hard as possible every time",
+          "In moderation, stopping at sweat, faster breathing and a feeling of strain",
+          "Only in summer",
+          "Never; rest is better"
+        ],
+        "a": 1,
+        "rv": "Su 7.31 says exercise should be done in moderation. The stop signs: sweating, faster breathing, lightness of body and a sense of strain in the chest. Overdoing it brings exhaustion, thirst and breathlessness (7.33).",
+        "pic": {
+          "k": "meter",
+          "zones": [
+            "Nothing",
+            "Light sweat, faster breath",
+            "Wrecked"
+          ],
+          "hi": 1,
+          "label": "Exercise effort"
+        },
+        "term": {
+          "w": "Vyāyāma",
+          "g": "exercise: body movement for stability and strength."
+        },
+        "src": {
+          "ref": "Sutrasthana 7.31–33",
+          "line": "Exercise brings lightness, capacity for work, stability, tolerance of hardship and better digestion. Do it in moderation; overdoing it causes exhaustion, thirst and breathlessness."
+        },
+        "grade": {
+          "g": "Strong",
+          "n": "for regular moderate exercise"
+        },
+        "sci": "WHO advises 150–300 minutes a week of moderate activity plus strength work on 2 or more days. Myth check: “exercise at half your capacity” is often quoted as Charaka, but that line is from the Sushruta Samhita (Chikitsa 24.47). Charaka says “in moderation”.",
+        "st": [
+          "The benefits listed in 7.32 (lightness, capacity for work, steadiness, tolerance of hardship, better digestion) are close to what a sports scientist would list.",
+          "For summer the text advises avoiding heavy exercise (Su 6.29), which fits Ahmedabad heat: exercise early or late."
+        ],
+        "rule": "Exercise most days to a light sweat and faster breathing, and stop before you’re wrecked.",
+        "tr": {
+          "s": "You want to start running.",
+          "q": "The Su 7 approach?",
+          "o": [
+            "5 km on day one",
+            "10–20 minutes of brisk walk-jog to a light sweat, most days",
+            "Wait for winter",
+            "Run until you can’t breathe"
+          ],
+          "a": 1,
+          "w": "Moderate and regular beats heroic and once. The stop signs keep you able to come back tomorrow."
+        },
+        "wy": {
+          "q": "Why does “moderate” beat “max” for a beginner?",
+          "o": [
+            "Overdoing it causes soreness and exhaustion that make you quit; consistency is what pays",
+            "Max effort is dangerous for everyone, always",
+            "Exercise doesn’t help anyway"
+          ],
+          "a": 0,
+          "f": "The best workout is the one you’re able to repeat tomorrow."
+        },
+        "pl": {
+          "i": [
+            "classes end for the day",
+            "I feel restless at night",
+            "I’m about to skip exercise"
+          ],
+          "t": [
+            "take a 20-minute brisk walk to a light sweat",
+            "do 10 squats and 10 pushups, then stop",
+            "walk to the far canteen instead"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 7 · Signs to stop exercising?",
+            "Sweating, faster breathing, lightness, a sense of strain in the chest."
+          ],
+          [
+            "Who said “exercise at half your capacity”?",
+            "The Sushruta Samhita (Chikitsa 24.47), not Charaka. Charaka says “in moderation”."
+          ]
+        ],
+        "sl": "Tomorrow: 20 minutes to a light sweat. That’s the whole plan."
+      },
+      {
+        "id": "c11",
+        "t": "Don’t hold it in (body)",
+        "scene": "Long, quiet lecture. You hold in a sneeze by pinching your nose and shutting your mouth. You’ve also been putting off a bathroom break for an hour.",
+        "q": "What does the text say about natural urges?",
+        "o": [
+          "Hold them in for good manners",
+          "Don’t suppress natural urges like sneezing, urinating, yawning, hunger, thirst and sleep",
+          "Only hold in hunger",
+          "Urges don’t matter"
+        ],
+        "a": 1,
+        "rv": "Su 7.3–4 lists 13 urges not to suppress: urine, stool, semen, gas, vomiting, sneezing, belching, yawning, hunger, thirst, tears, sleep, and heavy breathing after exertion.",
+        "pic": {
+          "k": "split",
+          "l": "Body urges: let them out",
+          "ls": "sneeze, yawn, bathroom, sleep",
+          "r": "Mind urges: next lesson",
+          "rs": "anger, greed, harsh words",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Vega",
+          "g": "a natural urge."
+        },
+        "src": {
+          "ref": "Sutrasthana 7.3–4",
+          "line": "Don’t suppress the natural urges: urine, stool, semen, gas, vomiting, sneezing, belching, yawning, hunger, thirst, tears, sleep, and heavy breathing after exertion."
+        },
+        "grade": {
+          "g": "Mostly untested"
+        },
+        "sci": "There’s little research on most of the list. One documented case: a man tore his throat by pinching his nose and mouth shut during a sneeze (BMJ Case Reports, 2018).",
+        "st": [
+          "The chapter’s name, Navegandhāraṇīya, means roughly “on not holding back urges”. It opens the text’s section on daily health.",
+          "Ignoring sleepiness is on the list too. When your body says sleep at 11:30 and you push through to 2, that’s suppressing an urge."
+        ],
+        "rule": "Don’t fight your body’s basic signals: sneeze with your mouth open, take the bathroom break, sleep when sleepy.",
+        "tr": {
+          "s": "You feel sleepy at 11:30 pm but want to finish an episode.",
+          "q": "The Su 7 view?",
+          "o": [
+            "Push through; the sleepiness passes",
+            "Sleep is one of the 13 urges: go to bed while the wave is there",
+            "Drink coffee",
+            "Nap at midnight"
+          ],
+          "a": 1,
+          "w": "The sleepy wave at 11:30 is your window. Push past it and a second wind often keeps you up till 2."
+        },
+        "wy": {
+          "q": "Why is “Mostly untested” the honest grade?",
+          "o": [
+            "There’s little research on most urges; only some, like forced sneeze-holding, have documented harm",
+            "Because all of them are proven deadly",
+            "Because the text is always wrong"
+          ],
+          "a": 0,
+          "f": "Low risk, common sense, weak evidence: worth doing, not worth overclaiming."
+        },
+        "pl": {
+          "i": [
+            "I feel a sneeze coming in class",
+            "I feel sleepy before midnight",
+            "I need the bathroom while studying"
+          ],
+          "t": [
+            "sneeze into my elbow with my mouth open",
+            "go to bed during the sleepy wave",
+            "take the break; it’s two minutes"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 7.3–4 · Name 5 of the 13 urges not to suppress.",
+            "Urine, stool, gas, sneezing, yawning, hunger, thirst, tears, sleep… (any 5)."
+          ],
+          [
+            "Safe way to sneeze?",
+            "Into your elbow, mouth open. Never pinch nose and mouth shut."
+          ]
+        ],
+        "sl": "If you feel sleepy right now, that’s an urge worth following."
+      },
+      {
+        "id": "c12",
+        "t": "Do hold it in (mind)",
+        "scene": "A batchmate presents your idea to the professor as his own. You feel the urge to call him a liar right there.",
+        "q": "Which urges does the text say you should hold back?",
+        "o": [
+          "None; let everything out",
+          "Rash acts, anger, greed, jealousy, harsh or lying words",
+          "Only physical urges",
+          "Only hunger"
+        ],
+        "a": 1,
+        "rv": "Su 7.26–29 flips the last lesson: some urges should be held. Rash acts of mind, speech and body; greed, fear, anger, ego, jealousy; harsh words, backbiting and lies. You can still set the record straight later, calmly: “Sir, I’d proposed this last week; happy to share my notes.”",
+        "pic": {
+          "k": "split",
+          "l": "Body urges",
+          "ls": "let them out",
+          "r": "Mind urges",
+          "rs": "hold the action, then reframe",
+          "hi": "r"
+        },
+        "term": {
+          "w": "Urges worth holding",
+          "g": "anger, greed, jealousy, harsh speech (Su 7.26–29)."
+        },
+        "src": {
+          "ref": "Sutrasthana 7.26–29",
+          "line": "Hold back rash acts of mind, speech and body; greed, grief, fear, anger, ego, shamelessness, jealousy; harsh words, backbiting, lies; actions that hurt others."
+        },
+        "grade": {
+          "g": "Partial"
+        },
+        "sci": "Holding back the action is good; bottling up the feeling isn’t. People who habitually reappraise (“what else could explain this?”) do better than people who habitually suppress (Gross & John).",
+        "st": [
+          "The text puts both lists in one chapter on purpose: some urges belong to the body (let them out), some to the ego (hold them back).",
+          "The modern refinement: “hold” should mean don’t act on it right away, not stuff it down. Name it, reframe it, then decide."
+        ],
+        "rule": "Hold the action, not the feeling: name it, reframe once, then respond.",
+        "tr": {
+          "s": "A friend cancels plans at the last minute for the third time. You start typing a harsh message.",
+          "q": "Best move?",
+          "o": [
+            "Send it; he deserves it",
+            "Name it (“I’m annoyed”), reframe (“maybe something’s up”), then send a calm, clear message",
+            "Ghost him forever",
+            "Pretend you don’t care"
+          ],
+          "a": 1,
+          "w": "You still address it, clearly, without words you’d regret. That’s holding the urge without bottling the feeling."
+        },
+        "wy": {
+          "q": "Why isn’t pure suppression the goal?",
+          "o": [
+            "Suppressing feelings tends to backfire; reappraising them works better",
+            "Because anger is always right",
+            "Because you should always say everything"
+          ],
+          "a": 0,
+          "f": "Hold the reaction, process the feeling."
+        },
+        "pl": {
+          "i": [
+            "I feel anger rising",
+            "I want to gossip about someone",
+            "I’m jealous of someone’s result"
+          ],
+          "t": [
+            "name it silently: “this is anger”",
+            "ask “what else could explain this?” once",
+            "wait 10 minutes before replying"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 7.26–29 · Urges you should hold back?",
+            "Rash acts, greed, fear, anger, ego, jealousy, harsh or lying words."
+          ],
+          [
+            "Hold the action, not the ___.",
+            "Feeling. Name it, reframe once, then respond."
+          ]
+        ],
+        "sl": "Anything you held back today, you can address calmly tomorrow."
+      },
+      {
+        "id": "c13",
+        "t": "The seven-day swap",
+        "scene": "You decide to quit night scrolling completely, cold turkey, starting tonight. Last time you lasted two days.",
+        "q": "What method does the text give for changing a habit?",
+        "o": [
+          "Quit everything at once",
+          "Drop a quarter of the bad habit and add a quarter of the good one, step by step",
+          "Wait for motivation",
+          "Change only on weekends"
+        ],
+        "a": 1,
+        "rv": "Su 7.36–38: on day 1, drop a quarter of the bad habit and take up a quarter of the good one. Days 2–3, half. Days 4–6, three-quarters. Day 7, all the way. Done gradually, it says, the old habit doesn’t come back.",
+        "pic": {
+          "k": "stairs",
+          "steps": [
+            [
+              "Day 1",
+              "¼"
+            ],
+            [
+              "Days 2–3",
+              "½"
+            ],
+            [
+              "Days 4–6",
+              "¾"
+            ],
+            [
+              "Day 7",
+              "Full"
+            ]
+          ],
+          "label": "Swap a quarter at a time"
+        },
+        "term": {
+          "w": "Quarter steps",
+          "g": "the text’s method: swap habits a quarter at a time."
+        },
+        "src": {
+          "ref": "Sutrasthana 7.36–38",
+          "line": "Give up unwholesome habits and take up wholesome ones gradually, a quarter at a time. Done this way, the old habits don’t return."
+        },
+        "grade": {
+          "g": "Principle yes, timeline no"
+        },
+        "sci": "In a study of people forming new habits, it took about 66 days on average for a habit to feel automatic, ranging from 18 to 254 days. Missing a single day didn’t derail it (Lally et al.).",
+        "st": [
+          "Stepping down gradually is the same idea behind tapering a medicine or gradual exposure: big sudden changes trigger a rebound.",
+          "Where the text is too optimistic is the 7 days. Real habits take about two months. So use Charaka’s quarter steps on a longer clock."
+        ],
+        "rule": "Swap a quarter at a time, and expect it to take weeks, not days.",
+        "tr": {
+          "s": "You scroll about 6 hours a night and want to replace it with Prime Pocket and sleep.",
+          "q": "A quarter-step plan?",
+          "o": [
+            "Delete Instagram tonight, forever",
+            "Week 1: swap 1.5 hours for puzzles and lessons; week 2: 3 hours; keep stepping",
+            "Scroll more on weekends to make up",
+            "Wait for the new year"
+          ],
+          "a": 1,
+          "w": "A quarter at a time, over weeks, is sustainable. Cold turkey usually rebounds."
+        },
+        "wy": {
+          "q": "How did the text get the principle right but the timeline wrong?",
+          "o": [
+            "Gradual change does reduce rebound, but automaticity takes about 66 days, not 7",
+            "Habits form in exactly 7 days",
+            "Gradual change never works"
+          ],
+          "a": 0,
+          "f": "Keep the method, stretch the clock."
+        },
+        "pl": {
+          "i": [
+            "I want to quit a habit all at once",
+            "I slip up one day",
+            "I start a new habit"
+          ],
+          "t": [
+            "cut just a quarter this week",
+            "carry on the next day; one miss doesn’t reset it",
+            "do a quarter-size version today"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 7.36–38 · The method for swapping habits?",
+            "Drop a quarter of the bad, add a quarter of the good; step up gradually."
+          ],
+          [
+            "How long do habits really take (Lally)?",
+            "About 66 days on average (18–254). One missed day doesn’t ruin it."
+          ]
+        ],
+        "sl": "One quarter less scrolling tonight is the whole job."
+      },
+      {
+        "id": "c14",
+        "t": "Brush, scrape, swish",
+        "scene": "Your aunt swears by oil pulling every morning and a copper tongue scraper. She says it “fixes everything in the mouth”.",
+        "q": "Which part of the text’s mouth routine has strong modern evidence?",
+        "o": [
+          "Oil pulling",
+          "Tongue scraping",
+          "Cleaning the teeth twice a day",
+          "All of them equally"
+        ],
+        "a": 2,
+        "rv": "Su 5.71–80 lists cleaning the teeth twice a day (with twigs), scraping the tongue with a curved scraper, and gargling with oil. Twice-daily brushing is strongly supported. The other two have weak or no good evidence.",
+        "pic": {
+          "k": "three",
+          "top": "The morning mouth routine",
+          "items": [
+            "Brush twice: strong",
+            "Tongue scrape: weak",
+            "Oil swish: no good evidence"
+          ]
+        },
+        "term": {
+          "w": "Dantadhāvana",
+          "g": "cleaning the teeth."
+        },
+        "src": {
+          "ref": "Sutrasthana 5.71–80",
+          "line": "Clean the teeth twice a day without hurting the gums; scrape the tongue with a curved, blunt scraper; gargle with oil, which the text says strengthens jaws, voice and teeth."
+        },
+        "grade": {
+          "g": "Weak",
+          "n": "except twice-daily brushing, which is strong"
+        },
+        "sci": "Twice-daily brushing is standard dental advice. The American Dental Association finds no reliable studies supporting oil pulling, and evidence for tongue scraping is thin.",
+        "st": [
+          "The text’s promises for oil gargling (stronger jaws, a better voice, healthy teeth) are claims, not evidence. Worth remembering if you ever sell Ayurvedic products: those lines can’t become product copy.",
+          "Gentle tongue scraping is harmless, so if you like it, fine. Just don’t let it replace brushing."
+        ],
+        "rule": "Brush twice a day. Everything else in the routine is optional.",
+        "tr": {
+          "s": "An ad says a herbal oil “prevents cavities and cures gum disease”.",
+          "q": "Best reaction?",
+          "o": [
+            "Buy it; Ayurveda says so",
+            "Be sceptical: disease claims need evidence, and Indian law restricts them",
+            "Stop brushing and use the oil",
+            "Forward it to the family group"
+          ],
+          "a": 1,
+          "w": "Claims to cure named diseases need real evidence, and India’s Drugs and Magic Remedies Act bans advertising cures for listed diseases."
+        },
+        "wy": {
+          "q": "Why grade the routine item by item?",
+          "o": [
+            "Some parts are strongly supported and some aren’t; lumping them together misleads",
+            "All old routines are useless",
+            "All old routines are perfect"
+          ],
+          "a": 0,
+          "f": "Grade each claim on its own."
+        },
+        "pl": {
+          "i": [
+            "I wake up",
+            "I’m about to sleep",
+            "I see a “cures X” health ad"
+          ],
+          "t": [
+            "brush for 2 minutes",
+            "brush before bed, even when tired",
+            "ask “what’s the evidence?” before buying"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 5 · Which mouth habit is strongly supported?",
+            "Cleaning the teeth twice daily. Oil pulling and tongue scraping: weak or no good evidence."
+          ],
+          [
+            "What does India’s Drugs and Magic Remedies Act ban?",
+            "Advertising remedies as cures for listed diseases."
+          ]
+        ],
+        "sl": "Brushed? Then the mouth routine is done."
+      },
+      {
+        "id": "c15",
+        "t": "Good conduct is good health",
+        "scene": "Two seniors with the same marks. One is calm, honest, generous with notes, and has close friends. The other cuts corners, gossips, and is always in some fight.",
+        "q": "Which one does the Charaka Samhita say tends to stay free of disease?",
+        "o": [
+          "The corner-cutter who wins",
+          "The calm, honest, generous one with good friends",
+          "Neither; conduct has nothing to do with health",
+          "Whoever has better genes"
+        ],
+        "a": 1,
+        "rv": "Sh 2.46 sums up the healthy person in one verse: eats and lives wholesomely, acts after thinking, isn’t hooked on pleasures, gives, is fair, truthful, forgiving, and stays close to good people.",
+        "pic": {
+          "k": "ring",
+          "center": "Health",
+          "outer": [
+            "Think before acting",
+            "Truthful",
+            "Generous",
+            "Forgiving",
+            "Good company"
+          ]
+        },
+        "term": {
+          "w": "Samīkṣyakārī",
+          "g": "“one who acts after examining”: thinking before acting."
+        },
+        "src": {
+          "ref": "Sharirasthana 2.46",
+          "s": "naro hitaharaviharasevi samikshyakari vishayeshvasaktah / data samah satyaparah kshamavan aptopasevi cha bhavatyarogah",
+          "line": "A person who eats and lives wholesomely, acts after thinking, isn’t attached to pleasures, gives, is fair, truthful and forgiving, and keeps good company, becomes free of disease."
+        },
+        "grade": {
+          "g": "Partial",
+          "n": "the “live a hundred years” promise (Su 8.31) isn’t supported"
+        },
+        "sci": "Across 148 studies, people with stronger social relationships had about 50% higher odds of survival over the study periods (Holt-Lunstad et al., 2010).",
+        "st": [
+          "Su 8.27 has a line written for students: don’t make a habit of postponing things, don’t be a slave to the senses, don’t overload the intellect, don’t lose spirit.",
+          "Su 8 also contains rules about caste, worship and religious duties, which we skip. The useful core is honesty, friendship and acting after thinking."
+        ],
+        "rule": "Act after thinking, stay truthful, invest in good friends: it’s health, not just ethics.",
+        "tr": {
+          "s": "Busy week. You haven’t called your family in Rajkot for 10 days.",
+          "q": "The Sh 2.46 nudge?",
+          "o": [
+            "Skip it; you’re busy",
+            "Call for 10 minutes tonight; relationships are part of health",
+            "Send a forward instead",
+            "Wait till Diwali"
+          ],
+          "a": 1,
+          "w": "Close relationships show up in the health data. A 10-minute call is cheap and real."
+        },
+        "wy": {
+          "q": "Why is “acts after thinking” in a medical text?",
+          "o": [
+            "Many self-harming choices are impulsive, so pausing is preventive medicine",
+            "Thinking burns calories",
+            "It isn’t relevant"
+          ],
+          "a": 0,
+          "f": "It’s prajñāparādha again: the gap between knowing and doing."
+        },
+        "pl": {
+          "i": [
+            "I’m about to postpone something",
+            "I haven’t called family in a week",
+            "I’m about to act on impulse"
+          ],
+          "t": [
+            "do 5 minutes of it right now",
+            "call home for 10 minutes",
+            "pause and ask what happens next"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Sh 2.46 · What is samikshyakari?",
+            "One who acts after thinking. Part of the one-verse portrait of a healthy person."
+          ],
+          [
+            "Charaka Su 8.27 · Advice for students?",
+            "Don’t habitually postpone, don’t be a slave to the senses, don’t overload the mind, don’t lose spirit."
+          ]
+        ],
+        "sl": "One good conversation today counts as health."
+      },
+      {
+        "id": "c16",
+        "t": "Where Charaka got it wrong",
+        "scene": "Your grandmother says never to drink milk after eating fish: “It causes white patches on the skin.” The same book that gave you the sleep and habit rules says so too.",
+        "q": "What does modern evidence say about fish with milk causing skin disease?",
+        "o": [
+          "It’s proven",
+          "There’s no scientific evidence for it",
+          "It’s true only for children",
+          "It’s true only at night"
+        ],
+        "a": 1,
+        "rv": "Su 26 lists “incompatible foods” such as fish with milk, and warns of skin disease and worse. A dermatologist who checked the claim found no scientific evidence that it causes vitiligo. Interestingly, the text itself softens the rule: strong digestion, youth, exercise or small amounts reduce the harm (Su 26.104).",
+        "pic": {
+          "k": "split",
+          "l": "Holds up",
+          "ls": "sleep, habit steps, eating less, exercise",
+          "r": "Doesn’t",
+          "rs": "fish + milk, “slow eating = overeating”, doshas as fact",
+          "hi": "r"
+        },
+        "term": {
+          "w": "Viruddha āhāra",
+          "g": "“incompatible food”: combinations the text calls harmful."
+        },
+        "src": {
+          "ref": "Sutrasthana 26.85–104; Vimanasthana 1.25",
+          "line": "Fish with milk, equal parts honey and ghee, heated honey: listed as harmful combinations. And Vi 1.25 says eating too slowly makes you overeat."
+        },
+        "grade": {
+          "g": "No evidence / Contradicted"
+        },
+        "sci": "Fish with milk and vitiligo: no scientific evidence. “Eating slowly makes you overeat”: trials show the opposite, slower eating means eating less. Doshas (vata, pitta, kapha) are how ancient physiology explained the body, not something science has measured.",
+        "st": [
+          "Three misses: food combinations (no evidence), “too slow means overeating” (contradicted), and doshas (an ancient model, not a measured thing).",
+          "Why a whole lesson on misses? Because grading a text honestly is what makes its good parts believable. It’s the same rule you’d apply to any source, including stock tips and YouTube gurus."
+        ],
+        "rule": "Trust old wisdom claim by claim: keep what evidence backs, drop what it doesn’t.",
+        "tr": {
+          "s": "A relative forwards: “Ayurveda says never drink water after fruit, it causes cancer.”",
+          "q": "Best response?",
+          "o": [
+            "Forward it to everyone",
+            "Check for evidence; a cancer claim needs strong proof. Politely share what you find",
+            "Stop eating fruit",
+            "Argue angrily in the group"
+          ],
+          "a": 1,
+          "w": "A dramatic disease claim without evidence is a red flag, whoever it’s attributed to."
+        },
+        "wy": {
+          "q": "Why does admitting misses make the course more trustworthy?",
+          "o": [
+            "It shows the good claims were graded, not just accepted",
+            "Because old texts are always wrong",
+            "Because nobody should read old texts"
+          ],
+          "a": 0,
+          "f": "A source that’s graded honestly is worth more than one that’s worshipped."
+        },
+        "pl": {
+          "i": [
+            "I hear “the ancients said” used as proof",
+            "a health forward lands in the family group",
+            "I’m about to share a health claim"
+          ],
+          "t": [
+            "ask “what’s the evidence?”",
+            "check one reliable source before believing it",
+            "share only what I’ve checked"
+          ]
+        },
+        "cards": [
+          [
+            "Charaka Su 26 · Does fish with milk cause skin disease?",
+            "No scientific evidence. The text itself says youth and strong digestion reduce the “harm” (26.104)."
+          ],
+          [
+            "Where is Charaka contradicted on eating speed?",
+            "It says eating too slowly makes you overeat; trials show slower eating means eating less."
+          ]
+        ],
+        "sl": "Old wisdom is a toolbox, not a rulebook. Keep the tools that work."
+      }
+    ]
+  }
+}

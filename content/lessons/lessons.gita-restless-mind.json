@@ -1,0 +1,1791 @@
+{
+  "id": "lessons.gita-restless-mind",
+  "kind": "lessons",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Gita for a Restless Mind",
+  "author": "legacy",
+  "createdAt": "2026-10-07T00:00:00.000Z",
+  "body": {
+    "course": {
+      "id": "gita",
+      "name": "Gita for a Restless Mind",
+      "short": "Gita",
+      "tint": "gita",
+      "blurb": "A gifted archer freezes before the biggest moment of his life, and his mentor talks him through it. 18 short lessons and a bonus from that 2,000-year-old dialogue. Test each idea on yourself.",
+      "note": "Verses checked against two open Sanskrit datasets. Meanings are our own plain-English glosses. Ancient insight, modern parallel: not the same thing, but pointing the same way."
+    },
+    "lessons": [
+      {
+        "id": "g1",
+        "t": "Frozen at the big moment",
+        "scene": "8:40 am, outside the exam hall. Aarav topped every mock this semester. Ten minutes before the end-sem, his hands are cold and his head feels empty. “I can’t remember anything. Maybe I should skip and take the re-exam.”",
+        "q": "What would help Aarav most in the next ten minutes?",
+        "o": [
+          "Tell him he’ll definitely top, like always",
+          "Name what’s happening, then give one tiny step: walk in and read Q1 only",
+          "Let him skip; a re-exam is less pressure",
+          "Quickly revise the hardest chapter together"
+        ],
+        "a": 1,
+        "rv": "Panic shrinks your world to the worst outcome. Reassurance (“you’ll top”) argues with the fear and usually loses. Naming it (“this is a freeze”) and shrinking the job to one step gets the body moving, and once he’s moving, memory comes back.",
+        "pic": {
+          "k": "chain",
+          "steps": [
+            "Big moment arrives",
+            "Mind jumps to the worst outcome",
+            "Body freezes",
+            "Name it + one small step",
+            "Moving again"
+          ],
+          "hi": 3
+        },
+        "term": {
+          "w": "Hṛdaya-daurbalya",
+          "g": "“weakness of the heart”: the freeze that hits even strong people right before the moment that matters."
+        },
+        "v": [
+          {
+            "ref": "2.3",
+            "who": "Krishna",
+            "s": "klaibyam ma sma gamah partha naitat tvayyupapadyate / kshudram hridaya daurbalyam tyaktvottishtha parantapa",
+            "i": "klaibyaṃ mā sma gamaḥ pārtha naitat tvayyupapadyate / kṣudraṃ hṛdaya daurbalyaṃ tyaktvottiṣṭha parantapa",
+            "m": "Don’t give in to this cowardly weakness, Arjuna; it doesn’t suit you. Shake off this small weakness of the heart and stand up.",
+            "n": "Klaibya is often translated “unmanliness”. We use “cowardly weakness”, which is what it means here."
+          },
+          {
+            "ref": "2.7",
+            "who": "Arjuna",
+            "s": "karpanya doshopahata svabhavah / pricchami tvam dharma sammudha chetah / yac chreyah syannishchitam bruhi tanme / shishyaste 'ham shadhi mam tvam prapannam",
+            "i": "kārpaṇya doṣopahata svabhāvaḥ / pṛcchāmi tvāṃ dharma sammūḍha cetāḥ / yac chreyaḥ syānniścitaṃ brūhi tanme / śiṣyaste 'haṃ śādhi māṃ tvāṃ prapannam",
+            "m": "My mind is confused about what’s right. Tell me clearly what is better. I am your student; teach me."
+          }
+        ],
+        "st": [
+          "The Gita opens on a battlefield. Arjuna is the best archer alive. Seconds before the war he looks across, sees teachers and cousins on the other side, and collapses. His bow slips; he sits down in his chariot and says he won’t fight.",
+          "He asks Krishna, “I am your student; teach me.” Krishna’s first reply isn’t comfort. It’s: “This weakness doesn’t suit you. Stand up.” Then come hundreds of verses of reasons. The first step was only: stand up. (The setting is a war in the epic; many read it as an inner battle. Either way, this lesson is about freezing, not fighting.)"
+        ],
+        "rule": "When you freeze, don’t argue with the fear. Name it, then shrink the job to one first step.",
+        "tr": {
+          "s": "Hackathon finals. Your team’s demo crashes two minutes before you present. Your teammate Kavya says, “Let’s just withdraw.”",
+          "q": "Best first move?",
+          "o": [
+            "Withdraw; a broken demo looks worse than no demo",
+            "“We’re panicking. One step: open the backup screenshots and present the idea.”",
+            "Spend the two minutes trying to fix the bug",
+            "Tell her the judges won’t notice"
+          ],
+          "a": 1,
+          "w": "Naming the panic and picking one doable step gets you on stage. Fixing a bug in two minutes under panic usually fails, and withdrawing locks in the loss."
+        },
+        "wy": {
+          "q": "Why does “one small step” beat “you’ll be fine”?",
+          "o": [
+            "A small step restarts action; reassurance just argues with the fear",
+            "Fear always disappears if you wait long enough",
+            "Because the outcome doesn’t matter at all"
+          ],
+          "a": 0,
+          "f": "“You’ll be fine” asks the mind to believe something. “Read Q1” asks the body to do something small, and action is what breaks a freeze."
+        },
+        "pl": {
+          "i": [
+            "I freeze before an exam or viva",
+            "I open a task and feel stuck",
+            "my mind says “I can’t do this”"
+          ],
+          "t": [
+            "say “this is a freeze” and do only the first line",
+            "set a 5-minute timer and start the easiest part",
+            "breathe out slowly, then read just the first question"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.3 · When Arjuna froze, what was Krishna’s first instruction?",
+            "Stand up. “Shake off this small weakness of the heart and stand up.” Not comfort, not a lecture: one first action."
+          ],
+          [
+            "How do you break a freeze before a big moment?",
+            "Name it (“this is a freeze”), then shrink the job to one first step, like reading Q1 only."
+          ]
+        ],
+        "sl": "Tomorrow, when something feels too big, you only owe it the first step."
+      },
+      {
+        "id": "g2",
+        "t": "Your job is the effort",
+        "scene": "1:40 am. Internship results come out “sometime this week”. Neel has refreshed the portal 30 times since dinner. He hasn’t opened the assignment due tomorrow.",
+        "q": "What actually helps Neel tonight?",
+        "o": [
+          "Keep refreshing, so he knows the second it’s out",
+          "Stop guessing the result and finish the thing he controls tonight: the assignment",
+          "Decide not to care about the internship at all",
+          "Message HR to ask for the result"
+        ],
+        "a": 1,
+        "rv": "Refreshing feels like doing something, but it changes nothing about the result. The result now depends on things outside his hands. The assignment is fully in his hands, and it’s the only thing tonight he can still make better.",
+        "pic": {
+          "k": "split",
+          "l": "Effort: yours",
+          "ls": "assignment, prep, sleep",
+          "r": "Outcome: not fully yours",
+          "rs": "results, other candidates, luck",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Karma vs karma-phala",
+          "g": "the action (karma) vs the fruit of the action (karma-phala)."
+        },
+        "v": [
+          {
+            "ref": "2.47",
+            "who": "Krishna",
+            "s": "karmany evadhikaras te ma phaleshu kadachana / ma karma phala hetur bhur ma te sango 'stvakarmani",
+            "i": "karmaṇy evādhikāras te mā phaleṣu kadācana / mā karma phala hetur bhūr mā te saṅgo 'stvakarmaṇi",
+            "m": "Your claim is to the action alone, never to its fruits. Don’t make the fruit your motive, and don’t get attached to doing nothing either."
+          },
+          {
+            "ref": "18.14",
+            "who": "Krishna",
+            "s": "adhishthanam tatha karta karanam cha prithag vidham / vividhash cha prithak cheshta daivam chaivatra panchamam",
+            "i": "adhiṣṭhānaṃ tathā kartā karaṇaṃ ca pṛthag vidham / vividhāś ca pṛthak ceṣṭā daivaṃ caivātra pañcamam",
+            "m": "The body, the doer, the various tools, the various efforts, and chance (daiva) as the fifth."
+          }
+        ],
+        "par": "Students who pictured the process of studying studied more and scored higher than students who pictured getting the good grade (Pham & Taylor, 1999).",
+        "st": [
+          "Arjuna’s worry was all outcomes: “If I fight, who will I lose? What will people say?” Krishna splits the problem in two. Your part is the action. The fruit isn’t yours to command.",
+          "Much later, in 18.14, he explains why: every action depends on five things, with daiva (chance) as the fifth. You control some inputs, never all. And the end of 2.47 matters: “don’t be attached to inaction.” This isn’t permission to stop caring. It tells you what to care about."
+        ],
+        "rule": "Put your full care into the effort. Hold the result loosely, because it has inputs you don’t control.",
+        "tr": {
+          "s": "Your trading algo had a losing week even though it followed every rule. A friend in the trading club says, “Your system is broken. Change it.”",
+          "q": "What does 2.47 suggest?",
+          "o": [
+            "Rewrite the strategy tonight",
+            "Judge the system by whether you followed it over many trades, not one week’s result",
+            "Stop trading forever",
+            "Copy your friend’s strategy, since he made money this week"
+          ],
+          "a": 1,
+          "w": "One week has a big luck input (daiva). Judge the process across many trades. Changing a sound system after one bad week is reacting to the fruit."
+        },
+        "wy": {
+          "q": "Why doesn’t 2.47 mean “don’t care about results”?",
+          "o": [
+            "The same verse warns against attachment to inaction: act fully, just don’t let the result be your boss",
+            "Because results are all that matter in the end",
+            "Because Krishna promises good results to hard workers"
+          ],
+          "a": 0,
+          "f": "The verse closes both exits: obsessing over the fruit, and giving up on the action."
+        },
+        "pl": {
+          "i": [
+            "I catch myself refreshing results or prices",
+            "I start worrying about an outcome I can’t change tonight",
+            "I check marks before finishing the work"
+          ],
+          "t": [
+            "close the tab and do 10 minutes of the task I control",
+            "write down the one action that’s mine and do it",
+            "ask “what’s my part here?” and do only that"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.47 · Your claim is to the ___ alone, never to its ___.",
+            "Action; fruits. And don’t get attached to inaction either: care fully about the effort, hold the result loosely."
+          ],
+          [
+            "Gita 18.14 · Why are outcomes never fully yours?",
+            "Every action has five inputs: body, doer, tools, effort, and daiva (chance). You control some, never all."
+          ]
+        ],
+        "sl": "Whatever happens with the result, tonight’s effort is already yours."
+      },
+      {
+        "id": "g3",
+        "t": "Steady in win and loss",
+        "scene": "Hackathon results. Your team spent six weeks on a smart-irrigation build. You don’t place. Ishaan says, “We’re useless. I’m done with hackathons.” The next one is in two weeks.",
+        "q": "What’s the most useful way to handle a loss like this?",
+        "o": [
+          "Agree it was a waste and skip the next one",
+          "Blame the judges; they didn’t get it",
+          "Feel it tonight, then review calmly: what worked, what to change, sign up again",
+          "Pretend you don’t care at all"
+        ],
+        "a": 2,
+        "rv": "Big swings, euphoria after a win and collapse after a loss, make your next decision worse. The steady move isn’t feeling nothing. It’s letting the feeling pass, then judging the work, not your worth.",
+        "pic": {
+          "k": "balance",
+          "l": "Win",
+          "r": "Loss",
+          "mid": "Same you: same effort, same judgement"
+        },
+        "term": {
+          "w": "Samatva",
+          "g": "evenness: staying the same person in success and failure."
+        },
+        "v": [
+          {
+            "ref": "2.48",
+            "who": "Krishna",
+            "s": "yoga sthah kuru karmani sangam tyaktva dhananjaya / siddhy asiddhyoh samo bhutva samatvam yoga uchyate",
+            "i": "yoga sthaḥ kuru karmāṇi saṅgaṃ tyaktvā dhanañjaya / siddhy asiddhyoḥ samo bhūtvā samatvaṃ yoga ucyate",
+            "m": "Steady in yoga, do your work without clinging. Be even in success and failure. This evenness is called yoga."
+          },
+          {
+            "ref": "2.50",
+            "who": "Krishna",
+            "s": "buddhi yukto jahatiha ubhe sukrita dushkrite / tasmad yogaya yujyasva yogah karmasu kaushalam",
+            "i": "buddhi yukto jahātīha ubhe sukṛta duṣkṛte / tasmād yogāya yujyasva yogaḥ karmasu kauśalam",
+            "m": "One whose understanding is steady lets go of both good and bad results here. So commit to yoga: yoga is skill in action."
+          }
+        ],
+        "par": "People who habitually reappraise feelings (“what else could this mean?”) report better wellbeing than people who habitually suppress them (Gross & John). Evenness means not being pushed around by a feeling, not bottling it up.",
+        "st": [
+          "Notice the order in 2.48: first “do your work”, then “be even”. Evenness isn’t a mood you wait for. It’s how you work.",
+          "Two verses later comes the Gita’s most engineer-friendly line: yogah karmasu kaushalam, “yoga is skill in action.” Steadiness is a skill, like debugging. You get better at it every time you practise under pressure."
+        ],
+        "rule": "Let the feeling come and pass. Then judge the work, not your worth.",
+        "tr": {
+          "s": "You scored 29/30 in a quiz and the class is congratulating you. The next quiz is in five days.",
+          "q": "What does “steady in a win” look like?",
+          "o": [
+            "Skip revision; you’re clearly ahead",
+            "Enjoy it, then keep the same routine that got you there",
+            "Downplay it so no one gets jealous",
+            "Raise your target to 30/30, or it counts as failure"
+          ],
+          "a": 1,
+          "w": "Wins knock people off balance too: you relax, drop the routine and slide. Samatva works in both directions."
+        },
+        "wy": {
+          "q": "Why is “feel nothing” the wrong reading of samatva?",
+          "o": [
+            "Suppressing feelings tends to backfire; evenness means the feeling doesn’t make your decisions",
+            "Because feelings are always right",
+            "Because the Gita says to celebrate wins loudly"
+          ],
+          "a": 0,
+          "f": "You can be gutted tonight and still sign up for the next hackathon tomorrow. That’s evenness."
+        },
+        "pl": {
+          "i": [
+            "I lose or fail at something",
+            "I win something and feel on top",
+            "a result shakes my mood"
+          ],
+          "t": [
+            "wait one night, then write 3 lines: worked / change / next step",
+            "keep exactly the same routine for 7 days",
+            "say “skill in action” and judge only the work"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.48 · What is samatva?",
+            "Evenness in success and failure. Not feeling nothing, but not letting a win or loss make your decisions."
+          ],
+          [
+            "Gita 2.50 · “Yogah karmasu kaushalam” means…",
+            "Yoga is skill in action."
+          ]
+        ],
+        "sl": "A result is a data point about the work, not a verdict on you."
+      },
+      {
+        "id": "g4",
+        "t": "Feelings are weather",
+        "scene": "Sunday, 11 pm. A bad week: a low mid-sem score, a fight with your roommate, a cracked phone screen. Lying in bed you think, “My life is going nowhere. It’ll always be like this.”",
+        "q": "Which thought is the most accurate?",
+        "o": [
+          "“My life is going nowhere.”",
+          "“This is a bad week. It feels permanent, but weeks pass.”",
+          "“Nothing bad should ever bother me.”",
+          "“I need to fix all three problems tonight.”"
+        ],
+        "a": 1,
+        "rv": "Inside a bad feeling, your brain stamps “forever” on it. But feelings behave like weather: they arrive, stay a while and leave. You don’t have to like the storm. You just don’t have to believe its forecast.",
+        "pic": {
+          "k": "wave",
+          "top": "Good days",
+          "bot": "Bad days",
+          "line": "You",
+          "cap": "They come and go. You stay."
+        },
+        "term": {
+          "w": "Āgamāpāyin",
+          "g": "“coming and going”: the nature of every pleasure and pain."
+        },
+        "v": [
+          {
+            "ref": "2.14",
+            "who": "Krishna",
+            "s": "matra sparshas tu kaunteya shitoshna sukha duhkha dah / agamapayino 'nityas tams titikshasva bharata",
+            "i": "mātrā sparśās tu kaunteya śītoṣṇa sukha duḥkha dāḥ / āgamāpāyino 'nityās tāṃs titikṣasva bhārata",
+            "m": "The touch of the senses brings cold and heat, pleasure and pain. They come and go; they don’t last. Bear them patiently."
+          },
+          {
+            "ref": "2.15",
+            "who": "Krishna",
+            "s": "yam hi na vyathayantyete purusham purusharshabha / sama duhkha sukham dhiram so 'mritatvaya kalpate",
+            "i": "yaṃ hi na vyathayantyete puruṣaṃ puruṣarṣabha / sama duḥkha sukhaṃ dhīraṃ so 'mṛtatvāya kalpate",
+            "m": "The steady person whom these don’t shake, the same in pain and pleasure, is fit for the highest."
+          }
+        ],
+        "st": [
+          "Krishna picks the plainest example there is: cold and heat. In January winter feels endless; by April you’ve forgotten it.",
+          "Then 2.15: the steady person is the one these don’t shake. Titiksha (patient endurance) isn’t gritting your teeth forever. It’s knowing the weather will change, and not making permanent decisions in a storm."
+        ],
+        "rule": "Don’t make permanent decisions in temporary weather.",
+        "tr": {
+          "s": "A month into second year a friend says, “I’m dropping out of mechanical. I hate it.” He said the same about JEE prep and later loved his rank.",
+          "q": "What would 2.14 suggest?",
+          "o": [
+            "Drop out tomorrow while he’s sure",
+            "Note the feeling, wait a few weeks, then decide with a calm head",
+            "Never think about changing branch",
+            "Ignore the feeling completely"
+          ],
+          "a": 1,
+          "w": "The feeling may carry real information, but a decision this big should be made when the weather is calm, not at the peak of a storm."
+        },
+        "wy": {
+          "q": "Why is “it’ll always be like this” usually wrong?",
+          "o": [
+            "Strong feelings stamp “forever” on things that are actually temporary",
+            "Because life is always good",
+            "Because bad weeks don’t happen to good students"
+          ],
+          "a": 0,
+          "f": "The feeling is real. The forecast is the unreliable part."
+        },
+        "pl": {
+          "i": [
+            "I think “it’ll always be like this”",
+            "I want to make a big decision while upset",
+            "a bad day hits"
+          ],
+          "t": [
+            "say “this is weather” and wait one sleep before deciding",
+            "write the decision down and revisit it in 3 days",
+            "name one thing that was bad last month and is fine now"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.14 · Krishna’s examples of things that come and go?",
+            "Cold and heat, pleasure and pain. They come and go; bear them patiently (titiksha)."
+          ],
+          [
+            "Rule from Gita 2.14 for big decisions?",
+            "Don’t make permanent decisions in temporary weather. Wait one sleep."
+          ]
+        ],
+        "sl": "Tonight’s mood is weather. You’ll wake up under a different sky."
+      },
+      {
+        "id": "g5",
+        "t": "The scroll-to-rage slope",
+        "scene": "10:45 pm. You open Instagram “for 2 minutes”. A reel about a rival college’s fest. You read the comments; someone insults your college. You type a long reply. Now it’s 1:15 am, you’re furious, and you forgot tomorrow’s quiz.",
+        "q": "Where was the easiest place to stop this?",
+        "o": [
+          "At the angry reply",
+          "Right at the start, when you began dwelling on the reel and comments",
+          "After you’d won the argument",
+          "In the morning, by apologising"
+        ],
+        "a": 1,
+        "rv": "The chain is easiest to break at the first link. By the time you’re angry, your judgement is already going offline. Two minutes of dwelling is the cheap exit; the angry reply is the expensive one.",
+        "pic": {
+          "k": "chain",
+          "steps": [
+            "Dwelling on it",
+            "Attachment",
+            "Craving",
+            "Anger",
+            "Confusion",
+            "Memory slips",
+            "Judgement lost"
+          ],
+          "hi": 0
+        },
+        "term": {
+          "w": "Dhyāyato viṣayān",
+          "g": "“dwelling on the objects of the senses”: the first link of the chain."
+        },
+        "v": [
+          {
+            "ref": "2.62",
+            "who": "Krishna",
+            "s": "dhyayato vishayan pumsah sangas teshupajayate / sangat sanjayate kamah kamat krodho 'bhijayate",
+            "i": "dhyāyato viṣayān puṃsaḥ saṅgas teṣūpajāyate / saṅgāt sañjāyate kāmaḥ kāmāt krodho 'bhijāyate",
+            "m": "When you dwell on things of the senses, attachment grows. From attachment comes craving; from craving, anger."
+          },
+          {
+            "ref": "2.63",
+            "who": "Krishna",
+            "s": "krodhad bhavati sammohah sammohat smriti vibhramah / smriti bhramshad buddhi nasho buddhi nashat pranashyati",
+            "i": "krodhād bhavati sammohaḥ sammohāt smṛti vibhramaḥ / smṛti bhraṃśād buddhi nāśo buddhi nāśāt praṇaśyati",
+            "m": "From anger comes confusion; from confusion, memory slips; when memory goes, judgement is destroyed; when judgement goes, you are lost."
+          }
+        ],
+        "par": "In experiments, people who kept ruminating on an insult got angrier than people who were distracted (Bushman, 2002).",
+        "st": [
+          "Engineers will spot this: a positive-feedback loop. Each stage amplifies the next until the system runs away. Krishna lists seven stages in two verses.",
+          "Notice where “memory slips” sits: just before “judgement lost”. That’s the moment you forget the quiz, forget who you’re talking to, forget what you wanted from the evening. The next verse, 2.64, gives the exit: move among things without being yanked by attraction and aversion, and you reach prasāda, a calm, clear mind."
+        ],
+        "rule": "Break the chain at the first link: notice when you start dwelling, and leave before it heats up.",
+        "tr": {
+          "s": "Your cousin posts a political forward in the family WhatsApp group. You notice your chest tightening as you read it a second time.",
+          "q": "Which link are you at, and what’s the cheap exit?",
+          "o": [
+            "Anger: type a reply now",
+            "Dwelling: mute the group for an hour and do something else",
+            "Judgement lost: leave the group forever",
+            "None: it’s fine to read it ten times"
+          ],
+          "a": 1,
+          "w": "Reading it again is dwelling, the first link. Muting for an hour costs nothing; a 1 am family argument costs a lot."
+        },
+        "wy": {
+          "q": "Why is the first link the best place to stop?",
+          "o": [
+            "Each stage amplifies the next, and by the anger stage judgement is already slipping",
+            "Because the first link is the most fun",
+            "Because anger is never useful"
+          ],
+          "a": 0,
+          "f": "Stopping early is cheap. Stopping late needs judgement you no longer have."
+        },
+        "pl": {
+          "i": [
+            "I read a comment thread twice",
+            "I feel my chest tighten while scrolling",
+            "I start typing a long angry reply"
+          ],
+          "t": [
+            "close the app and stand up",
+            "put the phone face down for 10 minutes",
+            "write the reply in Notes, not the app, and decide tomorrow"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.62–63 · The seven links from dwelling to ruin?",
+            "Dwelling → attachment → craving → anger → confusion → memory slips → judgement lost."
+          ],
+          [
+            "Where’s the cheapest place to break the scroll-to-rage chain?",
+            "The first link: notice when you start dwelling, and leave before it heats up."
+          ]
+        ],
+        "sl": "Whatever you didn’t reply to tonight is a fight you won by not fighting."
+      },
+      {
+        "id": "g6",
+        "t": "Be a tortoise with your phone",
+        "scene": "9 pm, thermodynamics. In 25 minutes: 14 notifications. Each check is “5 seconds”. At 9:25 you’ve read one page, and you can’t remember it.",
+        "q": "What helps focus most?",
+        "o": [
+          "Check the notifications faster",
+          "Use more willpower to ignore the buzzes",
+          "Pull your senses in before you start: phone in another room, notifications off for the block",
+          "Study only when you feel motivated"
+        ],
+        "a": 2,
+        "rv": "Willpower against a buzzing phone is a losing fight: every buzz restarts the struggle. A tortoise doesn’t fight danger; it pulls its limbs in. Remove the input and there’s nothing to resist.",
+        "pic": {
+          "k": "ring",
+          "center": "Your focus",
+          "outer": [
+            "Notifications",
+            "Reels",
+            "Chats",
+            "Open tabs"
+          ],
+          "shell": "Senses pulled in"
+        },
+        "term": {
+          "w": "Indriya and indriyārtha",
+          "g": "the senses and the things that pull them. Here: your eyes, and the notification."
+        },
+        "v": [
+          {
+            "ref": "2.58",
+            "who": "Krishna",
+            "s": "yada samharate chayam kurmo 'nganiva sarvashah / indriyanindriyarthebhyas tasya prajna pratishthita",
+            "i": "yadā saṃharate cāyaṃ kūrmo 'ṅgānīva sarvaśaḥ / indriyāṇīndriyārthebhyas tasya prajñā pratiṣṭhitā",
+            "m": "When, like a tortoise drawing in its limbs, you pull your senses back from the things that pull them, your wisdom becomes steady."
+          },
+          {
+            "ref": "2.67",
+            "who": "Krishna",
+            "s": "indriyanam hi charatam yan mano 'nuvidhiyate / tadasya harati prajnam vayur navam ivambhasi",
+            "i": "indriyāṇāṃ hi caratāṃ yan mano 'nuvidhīyate / tadasya harati prajñāṃ vāyur nāvam ivāmbhasi",
+            "m": "When the mind follows the roaming senses, it carries away your judgement, as the wind carries a boat on the water."
+          }
+        ],
+        "st": [
+          "Krishna doesn’t pretend this is easy. In 2.60 he admits the senses “forcibly carry away the mind” even of a wise person who is trying.",
+          "And in 2.67: the mind that follows the senses loses its judgement “as the wind carries a boat on the water.” So the tortoise strategy isn’t about being stronger than the wind. It’s pulling the sail in before the wind comes."
+        ],
+        "rule": "Don’t out-muscle distractions. Pull your senses in before you start.",
+        "tr": {
+          "s": "You want to finish a CAD model tonight, but the laptop has 12 tabs open, including YouTube and the trading terminal.",
+          "q": "Tortoise move?",
+          "o": [
+            "Leave the tabs; you’ll ignore them",
+            "Close everything except CAD for 45 minutes",
+            "Watch one video first to relax",
+            "Keep the terminal open in case the market moves"
+          ],
+          "a": 1,
+          "w": "Open tabs are limbs sticking out. Closing them before you start removes the fight instead of winning it."
+        },
+        "wy": {
+          "q": "Why does removing the phone beat resisting it?",
+          "o": [
+            "Each buzz restarts the fight, and the senses “forcibly carry away the mind” (2.60)",
+            "Because phones are evil",
+            "Because willpower is unlimited"
+          ],
+          "a": 0,
+          "f": "Even the Gita says the wise lose that fight. So don’t fight it; avoid it."
+        },
+        "pl": {
+          "i": [
+            "I sit down to study",
+            "I start a focus block",
+            "I get into bed"
+          ],
+          "t": [
+            "put the phone in another room first",
+            "turn on Do Not Disturb for 45 minutes",
+            "close every tab except the one I need"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.58 · What animal is the image for controlling the senses?",
+            "A tortoise drawing in its limbs. Pull the senses in before the pull starts."
+          ],
+          [
+            "Gita 2.67 · What does following the senses do to judgement?",
+            "Carries it away, as the wind carries a boat on the water."
+          ]
+        ],
+        "sl": "Tonight the tortoise move is simple: phone out of reach, limbs in."
+      },
+      {
+        "id": "g7",
+        "t": "Portrait of a steady mind",
+        "scene": "Arjuna asks what every student asks about a role model: “What does a steady person actually look like? How do they speak, sit, walk?” Think of the calmest senior you know during placement week.",
+        "q": "Which is the real sign of a steady mind?",
+        "o": [
+          "Never feels anything",
+          "Not shaken by trouble, not craving in good times, not run by fear or anger",
+          "Always wins",
+          "Avoids every hard situation"
+        ],
+        "a": 1,
+        "rv": "Krishna’s portrait isn’t a robot. It’s someone whose mind is “not shaken in sorrows” and who has “no craving amid pleasures”. The test runs both ways: bad news doesn’t sink them, good news doesn’t inflate them.",
+        "pic": {
+          "k": "three",
+          "top": "A steady mind (sthita-dhī)",
+          "items": [
+            "Not shaken by trouble",
+            "No craving in good times",
+            "Fear and anger don’t drive"
+          ]
+        },
+        "term": {
+          "w": "Sthita-prajña",
+          "g": "“one of steady wisdom”: the Gita’s role model."
+        },
+        "v": [
+          {
+            "ref": "2.56",
+            "who": "Krishna",
+            "s": "duhkheshv anudvigna manah sukheshu vigata sprihah / vita raga bhaya krodhah sthita dhir munir uchyate",
+            "i": "duḥkheṣv anudvigna manāḥ sukheṣu vigata spṛhaḥ / vīta rāga bhaya krodhaḥ sthita dhīr munir ucyate",
+            "m": "One whose mind isn’t shaken by sorrows, who doesn’t crave in pleasures, from whom attachment, fear and anger have gone: that person is called steady of mind."
+          },
+          {
+            "ref": "2.70",
+            "who": "Krishna",
+            "s": "apuryamanam achala pratishtham / samudram apah pravishanti yadvat / tadvat kama yam pravishanti sarve / sa shantim apnoti na kama kami",
+            "i": "āpūryamāṇam acala pratiṣṭhaṃ / samudram āpaḥ praviśanti yadvat / tadvat kāmā yaṃ praviśanti sarve / sa śāntim āpnoti na kāma kāmī",
+            "m": "As rivers pour into the ocean, which keeps filling yet stays in its bed, so the one into whom desires flow finds peace, not the one who chases them."
+          }
+        ],
+        "st": [
+          "In 2.70 Krishna paints it: the ocean. Rivers pour in all the time, yet it stays in its bed. Desires keep flowing into everyone. The steady person isn’t empty of them; they just don’t flood.",
+          "Then 2.71: whoever drops the constant “I want, mine, me” finds peace. Not by owning less, but by gripping less."
+        ],
+        "rule": "Shaken by neither good news nor bad: desires can flow in without flooding you.",
+        "tr": {
+          "s": "One senior just got a ₹40 LPA offer; another was rejected by the same company. A week later, who is acting more like a sthita-prajña?",
+          "q": "Pick the steady behaviour:",
+          "o": [
+            "The one bragging in every group",
+            "The one mocking the rejected guy",
+            "Either one, if they keep working and treat people the same as before",
+            "The one who stopped coming to class"
+          ],
+          "a": 2,
+          "w": "Steadiness isn’t about which result you got. It’s whether the result changed how you behave."
+        },
+        "wy": {
+          "q": "Why is the ocean a good image for a steady mind?",
+          "o": [
+            "Rivers keep flowing in but it stays in its bed: desires come without flooding you",
+            "Because oceans are big and powerful",
+            "Because the ocean never changes"
+          ],
+          "a": 0,
+          "f": "The steady person still feels the pull. It just doesn’t move them out of their bed."
+        },
+        "pl": {
+          "i": [
+            "I hear big news, good or bad",
+            "I’m about to brag or sulk",
+            "someone else’s result triggers me"
+          ],
+          "t": [
+            "ask “how would a steady senior react?” and do that",
+            "wait 10 minutes before posting or replying",
+            "keep my next hour exactly as planned"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 2.56 · Three things that have “gone” from a steady mind?",
+            "Attachment, fear and anger (raga, bhaya, krodha). Not shaken by sorrow, no craving in pleasure."
+          ],
+          [
+            "Gita 2.70 · The image for a steady mind?",
+            "The ocean: rivers keep pouring in, yet it stays in its bed."
+          ]
+        ],
+        "sl": "Be the ocean tonight: thoughts can pour in; you don’t have to rise with them."
+      },
+      {
+        "id": "g8",
+        "t": "Be your own best friend",
+        "scene": "You fail a quiz you studied for. The voice in your head starts: “You’re so dumb. Your JEE rank was luck.” Your friend failed the same quiz, and you told him, “One quiz, bro. Let’s see what went wrong.”",
+        "q": "Which voice will actually help you do better next time?",
+        "o": [
+          "The harsh one; fear keeps you sharp",
+          "The one you used for your friend: honest about the mistake, kind to the person",
+          "No voice; just forget it happened",
+          "Blame the professor"
+        ],
+        "a": 1,
+        "rv": "You’d never talk to a friend the way you talk to yourself. Harsh self-talk feels like discipline but mostly makes you avoid the subject. The friend-voice keeps you looking at the mistake without running from it.",
+        "pic": {
+          "k": "split",
+          "l": "Self as friend",
+          "ls": "“What went wrong? Let’s fix it.”",
+          "r": "Self as enemy",
+          "rs": "“You’re useless.”",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Bandhu and ripu",
+          "g": "friend and enemy. The verse says your own self can be either."
+        },
+        "v": [
+          {
+            "ref": "6.5",
+            "who": "Krishna",
+            "s": "uddhared atmanatmanam natmanam avasadayet / atmaiva hyatmano bandhur atmaiva ripur atmanah",
+            "i": "uddhared ātmanātmānaṃ nātmānam avasādayet / ātmaiva hyātmano bandhur ātmaiva ripur ātmanaḥ",
+            "m": "Lift yourself up by yourself; don’t let yourself sink. You alone are your own friend, and you alone are your own enemy."
+          },
+          {
+            "ref": "6.6",
+            "who": "Krishna",
+            "s": "bandhur atmatmanas tasya yenatmaivatmana jitah / anatmanas tu shatrutve vartetatmaiva shatru vat",
+            "i": "bandhur ātmātmanas tasya yenātmaivātmanā jitaḥ / anātmanas tu śatrutve vartetātmaiva śatru vat",
+            "m": "The self is a friend to whoever has mastered it; to whoever hasn’t, it acts like an enemy."
+          }
+        ],
+        "par": "This lines up with self-efficacy: believing you can act on your situation predicts effort and persistence. It’s also where Psycho-Cybernetics picks up later.",
+        "st": [
+          "This comes in chapter 6, which is about training the mind. Krishna doesn’t say others will lift you. He says lifting is your job, and the same self that drags you down is the one that can pull you up.",
+          "6.6 adds a condition: the self is a friend to someone who has some mastery over it, and acts like an enemy to someone who hasn’t. So this is a skill you build, not a mood you wait for."
+        ],
+        "rule": "Talk to yourself the way you’d talk to a friend who failed: honest about the mistake, kind to the person.",
+        "tr": {
+          "s": "You overslept and missed the 8 am lab. Your first thought: “I’m the laziest person alive. Why even try.”",
+          "q": "Friend-voice rewrite?",
+          "o": [
+            "“Yeah, you’re hopeless.”",
+            "“You slept at 2. Alarm across the room, bed by 12 tonight.”",
+            "“Labs don’t matter anyway.”",
+            "“Never mind, skip the next one too.”"
+          ],
+          "a": 1,
+          "w": "The friend-voice names a cause and one fix. The enemy-voice only hands down a verdict."
+        },
+        "wy": {
+          "q": "Why does harsh self-talk often backfire?",
+          "o": [
+            "It makes you avoid the subject instead of fixing it",
+            "It makes you too confident",
+            "It’s actually the most effective approach"
+          ],
+          "a": 0,
+          "f": "If looking at a mistake hurts, you stop looking. The friend-voice keeps you looking."
+        },
+        "pl": {
+          "i": [
+            "I call myself dumb or useless",
+            "I mess something up",
+            "I compare myself to someone and sink"
+          ],
+          "t": [
+            "ask “what would I say to a friend here?” and say that",
+            "write one cause and one fix",
+            "say “lift, don’t sink” and do one small thing"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 6.5 · You alone are your own ___ and your own ___.",
+            "Friend and enemy. Lift yourself; don’t let yourself sink."
+          ],
+          [
+            "Friend-voice formula after a mistake?",
+            "Honest about the mistake, kind to the person: one cause, one fix."
+          ]
+        ],
+        "sl": "Before you sleep, say one thing to yourself that you’d say to a friend."
+      },
+      {
+        "id": "g9",
+        "t": "The mind is like wind",
+        "scene": "You try to read one chapter. Two minutes in, you’re thinking about the trading club, then the fest, then a reel. You drag yourself back. Two minutes later: gone again. “My focus is broken. This mind-training stuff isn’t for me.”",
+        "q": "What does your mind wandering actually mean?",
+        "o": [
+          "Reels have damaged your brain beyond repair",
+          "Nothing unusual: minds wander, and each time you bring it back is one rep of training",
+          "You should study only when your mind is perfectly still",
+          "You need stronger coffee"
+        ],
+        "a": 1,
+        "rv": "Wandering isn’t failure; it’s the default. The training isn’t “never wander”. It’s noticing and returning. Each return is one rep, like a curl for attention.",
+        "pic": {
+          "k": "cycle",
+          "nodes": [
+            "Focus",
+            "Wander",
+            "Notice",
+            "Return"
+          ],
+          "hi": 3
+        },
+        "term": {
+          "w": "Abhyāsa + vairāgya",
+          "g": "practice + letting go: the two-part method for training the mind."
+        },
+        "v": [
+          {
+            "ref": "6.34",
+            "who": "Arjuna",
+            "s": "chanchalam hi manah krishna pramathi balavad dridham / tasyaham nigraham manye vayor iva su dushkaram",
+            "i": "cañcalaṃ hi manaḥ kṛṣṇa pramāthi balavad dṛḍham / tasyāhaṃ nigrahaṃ manye vāyor iva su duṣkaram",
+            "m": "The mind is restless, Krishna: turbulent, strong, stubborn. Holding it seems as hard as holding the wind."
+          },
+          {
+            "ref": "6.35",
+            "who": "Krishna",
+            "s": "asamshayam maha baho mano durnigraham chalam / abhyasena tu kaunteya vairagyena cha grihyate",
+            "i": "asaṃśayaṃ mahā bāho mano durnigrahaṃ calam / abhyāsena tu kaunteya vairāgyeṇa ca gṛhyate",
+            "m": "No doubt, the mind is restless and hard to hold. But with practice and letting go, it can be held."
+          }
+        ],
+        "par": "New habits took about 66 days on average to become automatic, with a wide range, and missing one day didn’t ruin the process (Lally et al.). Practice really is the method.",
+        "st": [
+          "This is the Gita’s most relatable moment. Arjuna, a warrior, says the mind is as hard to hold as the wind. Krishna doesn’t argue. His first words are: “No doubt.” A teacher who agrees the problem is hard is one whose method you can trust.",
+          "Then the method, from 6.26: wherever the restless mind wanders off, bring it back from there. Not once; every time. And 6.19 gives the goal image: a lamp in a windless place, its flame not flickering."
+        ],
+        "rule": "Wandering is normal. Training is noticing and returning, again and again.",
+        "tr": {
+          "s": "You do a 25-minute study block and catch your mind wandering 12 times.",
+          "q": "How should you score that session?",
+          "o": [
+            "Failure: 12 distractions",
+            "12 reps: you noticed and came back 12 times",
+            "Give up focused study",
+            "Only count it if there were zero wanders"
+          ],
+          "a": 1,
+          "w": "Each catch is the training. A session with 12 returns trained your attention 12 times."
+        },
+        "wy": {
+          "q": "Why does it matter that Krishna agrees (“no doubt”)?",
+          "o": [
+            "The method doesn’t depend on pretending focus is easy",
+            "It means the mind can’t be trained",
+            "It means Arjuna was lazy"
+          ],
+          "a": 0,
+          "f": "A method that starts by admitting the problem is hard is one you can trust."
+        },
+        "pl": {
+          "i": [
+            "I notice my mind wandered while studying",
+            "I start a study block",
+            "I feel “my focus is broken”"
+          ],
+          "t": [
+            "say “back” and make a tally mark",
+            "count my returns, not my wanders",
+            "do one 10-minute block and count the reps"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 6.35 · What two things hold the restless mind?",
+            "Abhyasa (practice) and vairagya (letting go). Krishna first agrees: “No doubt, it’s hard.”"
+          ],
+          [
+            "Gita 6.26 · What do you do when the mind wanders?",
+            "Bring it back from wherever it went. Each return is one rep."
+          ]
+        ],
+        "sl": "If your mind wanders in bed tonight, notice and come back to the breath. One rep."
+      },
+      {
+        "id": "g10",
+        "t": "Eat, sleep, play: just enough",
+        "scene": "Your week: Monday, sleep at 3 am. Tuesday, crash for 11 hours and miss class. Wednesday, skip dinner. Thursday, two plates of biryani at midnight. Friday, study 9 hours straight, then nothing for two days.",
+        "q": "What’s the real problem with this week?",
+        "o": [
+          "Not enough sleep",
+          "Too much food",
+          "Swinging between too much and too little in everything",
+          "Too much studying"
+        ],
+        "a": 2,
+        "rv": "Every single day has an extreme. The fix isn’t simply more or less; it’s “just enough”, done regularly. Steady inputs give steady output.",
+        "pic": {
+          "k": "meter",
+          "zones": [
+            "Too little",
+            "Just enough",
+            "Too much"
+          ],
+          "hi": 1,
+          "label": "Food · sleep · effort · fun"
+        },
+        "term": {
+          "w": "Yukta",
+          "g": "“fitting, balanced”: moderate in food, play, effort and sleep."
+        },
+        "v": [
+          {
+            "ref": "6.17",
+            "who": "Krishna",
+            "s": "yuktahara viharasya yukta cheshtasya karmasu / yukta svapnavabodhasya yogo bhavati duhkha ha",
+            "i": "yuktāhāra vihārasya yukta ceṣṭasya karmasu / yukta svapnāvabodhasya yogo bhavati duḥkha hā",
+            "m": "For one who is balanced in eating and recreation, balanced in effort at work, balanced in sleeping and waking, yoga destroys sorrow."
+          },
+          {
+            "ref": "6.16",
+            "who": "Krishna",
+            "s": "natyashnatastu yogo 'sti na chaikantam anashnatah / na chati svapna shilasya jagrato naiva charjuna",
+            "i": "nātyaśnatastu yogo 'sti na caikāntam anaśnataḥ / na cāti svapna śīlasya jāgrato naiva cārjuna",
+            "m": "Yoga isn’t for one who eats too much or not at all, nor for one who sleeps too much or stays awake too much."
+          }
+        ],
+        "par": "Adults are advised to get 7 or more hours of sleep a night (American Academy of Sleep Medicine), and regular timing matters too. The Charaka course covers this.",
+        "st": [
+          "The verse right before, 6.16, is surprisingly practical: yoga isn’t for someone who eats too much or not at all, sleeps too much or stays up too much.",
+          "So a 2,000-year-old spiritual text says the path starts with a sleep schedule. The Charaka course says the same thing in medical terms. Two very different old books agree on something modern sleep science also backs."
+        ],
+        "rule": "Aim for “just enough” in food, sleep, work and fun, at roughly the same times each day.",
+        "tr": {
+          "s": "Exams in 10 days. Your plan: all-nighters for the last three.",
+          "q": "The yukta plan?",
+          "o": [
+            "All-nighters now, sleep after exams",
+            "Similar study hours every day for 10 days, 7 hours’ sleep each night",
+            "Sleep 12 hours a night to rest the brain",
+            "Study only the night before each paper"
+          ],
+          "a": 1,
+          "w": "Ten balanced days beat three extreme ones. Sleep is also when memory gets stored."
+        },
+        "wy": {
+          "q": "Why does “just enough” beat extremes?",
+          "o": [
+            "Extremes cause crashes that undo the gains; steady inputs give steady output",
+            "Because extremes are always fun",
+            "Because sleep doesn’t affect studying"
+          ],
+          "a": 0,
+          "f": "Swinging between extremes keeps you recovering instead of building."
+        },
+        "pl": {
+          "i": [
+            "it’s past midnight and I’m still up",
+            "I’m about to skip a meal or binge",
+            "I plan an all-nighter"
+          ],
+          "t": [
+            "start winding down: phone on charge across the room",
+            "eat a normal plate at a normal time",
+            "split the work across more days instead"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 6.17 · Four things to keep yukta (balanced)?",
+            "Food, recreation, effort at work, sleep and waking."
+          ],
+          [
+            "Gita 6.16 · Yoga isn’t for someone who…",
+            "eats too much or not at all, sleeps too much or stays up too much."
+          ]
+        ],
+        "sl": "“Just enough” for tonight means: this is a good time to stop."
+      },
+      {
+        "id": "g11",
+        "t": "Doing beats avoiding",
+        "scene": "Machine design assignment due Friday. It’s Wednesday. You’ve “planned” it four times: a to-do list, colour-coded, plus a productivity video. Pages done: zero.",
+        "q": "What’s actually going on?",
+        "o": [
+          "Good planning; the work will go faster later",
+          "Planning has become a way of avoiding the work",
+          "You need a better productivity app",
+          "You work best under pressure, so it’s fine"
+        ],
+        "a": 1,
+        "rv": "Planning feels like progress because it’s work-shaped. But it’s safe: it can’t be wrong. The task is where you might struggle, so the brain keeps “preparing”. The way out is starting badly.",
+        "pic": {
+          "k": "split",
+          "l": "Doing (even badly)",
+          "ls": "progress, feedback",
+          "r": "Avoiding (even “planning”)",
+          "rs": "feels safe, zero progress",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Karma jyāyo hy akarmaṇaḥ",
+          "g": "“action is better than inaction.”"
+        },
+        "v": [
+          {
+            "ref": "3.8",
+            "who": "Krishna",
+            "s": "niyatam kuru karma tvam karma jyayo hyakarmanah / sharira yatrapi cha te na prasiddhyed akarmanah",
+            "i": "niyataṃ kuru karma tvaṃ karma jyāyo hyakarmaṇaḥ / śarīra yātrāpi ca te na prasiddhyed akarmaṇaḥ",
+            "m": "Do the work that’s yours to do; action is better than inaction. Without action you couldn’t even keep your body going."
+          },
+          {
+            "ref": "3.6",
+            "who": "Krishna",
+            "s": "karmendriyani samyamya ya aste manasa smaran / indriyarthan vimudhatma mithyacharah sa uchyate",
+            "i": "karmendriyāṇi saṃyamya ya āste manasā smaran / indriyārthān vimūḍhātmā mithyācāraḥ sa ucyate",
+            "m": "Whoever holds the body still but keeps the mind on the objects it wants is fooling himself: that’s called false conduct."
+          }
+        ],
+        "st": [
+          "In 3.5 Krishna points out that you can’t actually do nothing: no one stays even a moment without acting. The only choice is which action.",
+          "3.6 calls out a trick: sitting still outside while the mind keeps chasing the thing. Fake work is the student version: looking busy while the real task waits. 3.19 closes it: do the work that needs doing, without clinging to the outcome."
+        ],
+        "rule": "Start badly rather than plan perfectly. An ugly first page beats a perfect plan.",
+        "tr": {
+          "s": "You want to start going to the gym. You’ve spent two weeks comparing workout plans and protein brands.",
+          "q": "The 3.8 move?",
+          "o": [
+            "Research one more week to find the best plan",
+            "Go today and do 20 minutes of anything",
+            "Wait for the new semester",
+            "Buy better shoes first"
+          ],
+          "a": 1,
+          "w": "The research has become the avoidance. Twenty imperfect minutes today beat a perfect plan next month."
+        },
+        "wy": {
+          "q": "Why does planning sometimes turn into avoidance?",
+          "o": [
+            "It feels productive but can’t fail, so it protects you from the hard part",
+            "Because planning is useless",
+            "Because good students never plan"
+          ],
+          "a": 0,
+          "f": "Planning is useful right up until it becomes a hiding place."
+        },
+        "pl": {
+          "i": [
+            "I catch myself re-planning a task",
+            "I open my to-do list for the third time",
+            "a task feels too big to start"
+          ],
+          "t": [
+            "write the ugliest possible first paragraph",
+            "do 10 minutes of the real task before any planning",
+            "start with the part I understand best"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 3.8 · Action is better than ___.",
+            "Inaction. Do the work that’s yours; even keeping the body alive needs action."
+          ],
+          [
+            "Gita 3.6 · What is “false conduct” (mithyacara)?",
+            "Holding still outside while the mind chases the thing. Student version: fake work that dodges the real task."
+          ]
+        ],
+        "sl": "Tomorrow’s first step can be ugly. It just has to happen."
+      },
+      {
+        "id": "g12",
+        "t": "People copy what you do",
+        "scene": "You’re the new coordinator of the trading club. You tell members, “Always paper-trade a strategy for a month before real money.” Last week two of them watched you jump into an options trade on a tip.",
+        "q": "What will the members actually do?",
+        "o": [
+          "Follow your rule, because you said it clearly",
+          "Copy what they saw you do",
+          "Ignore both",
+          "Ask for a written policy"
+        ],
+        "a": 1,
+        "rv": "People learn rules from behaviour, not speeches. When your words and actions differ, they copy the action every time.",
+        "pic": {
+          "k": "chain",
+          "steps": [
+            "What you do",
+            "What they see",
+            "What they copy",
+            "The club’s culture"
+          ],
+          "hi": 0
+        },
+        "term": {
+          "w": "Pramāṇa",
+          "g": "“standard, measure”: the standard you set by acting."
+        },
+        "v": [
+          {
+            "ref": "3.21",
+            "who": "Krishna",
+            "s": "yad yad acharati shreshthas tat tad evetaro janah / sa yat pramanam kurute lokas tad anuvartate",
+            "i": "yad yad ācarati śreṣṭhas tat tad evetaro janaḥ / sa yat pramāṇaṃ kurute lokas tad anuvartate",
+            "m": "Whatever a leading person does, others do too. Whatever standard they set by their actions, the world follows."
+          }
+        ],
+        "st": [
+          "Krishna applies this to himself in the next verses (3.22–24): there’s nothing he needs to do, yet he keeps acting, because if he stopped, people would copy that too.",
+          "You don’t need a title for this to apply. Your cousin in Rajkot, your juniors, your project team: someone is watching how you handle a deadline, a loss, a phone at dinner."
+        ],
+        "rule": "You set the standard by what you do, not by what you say.",
+        "tr": {
+          "s": "You want your project team to stop missing meetings. You’ve been 10 minutes late to the last three.",
+          "q": "Most effective move?",
+          "o": [
+            "Send a strict message about punctuality",
+            "Be 5 minutes early to the next three meetings, then mention it",
+            "Start fining people",
+            "Cancel meetings"
+          ],
+          "a": 1,
+          "w": "Your arrival time is the real standard. Fix it first, and the message has weight."
+        },
+        "wy": {
+          "q": "Why does behaviour beat instructions?",
+          "o": [
+            "People watch what leaders actually do and treat that as the real rule",
+            "Because people don’t read messages",
+            "Because rules are always bad"
+          ],
+          "a": 0,
+          "f": "Your actions are the rulebook people actually read."
+        },
+        "pl": {
+          "i": [
+            "I ask others to do something",
+            "I’m leading a team task",
+            "I’m around juniors or younger cousins"
+          ],
+          "t": [
+            "check that I’m doing it myself first",
+            "do the behaviour visibly before asking",
+            "act the way I’d want them to copy"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 3.21 · Whatever a leading person does…",
+            "…others do too. The standard you set by action is the one people follow."
+          ],
+          [
+            "How do you fix a team habit you’re guilty of yourself?",
+            "Fix your own behaviour first, visibly; then ask."
+          ]
+        ],
+        "sl": "Someone copied something you did today. Was it worth copying?"
+      },
+      {
+        "id": "g13",
+        "t": "Your own path, even imperfect",
+        "scene": "Half your batch is grinding DSA for coding interviews because “that’s where the money is”. You actually enjoy CAD, machines and building things; your hackathon builds are hardware. You’re thinking of dropping it all to copy the CS route.",
+        "q": "What does the Gita suggest?",
+        "o": [
+          "Copy whatever pays most right now",
+          "Build on your own strengths and interests, even if you’re imperfect at them",
+          "Do both at 100% and sleep 4 hours",
+          "Wait until you feel completely sure"
+        ],
+        "a": 1,
+        "rv": "Doing someone else’s path well still means competing where they’re stronger and you’re less driven. Your own path, done imperfectly, compounds, because you keep going when it gets hard.",
+        "pic": {
+          "k": "split",
+          "l": "Your path, imperfect",
+          "ls": "your strengths, your drive",
+          "r": "Their path, done well",
+          "rs": "their strengths, borrowed drive",
+          "hi": "l"
+        },
+        "term": {
+          "w": "Svadharma",
+          "g": "your own path: your responsibilities and strengths."
+        },
+        "v": [
+          {
+            "ref": "3.35",
+            "who": "Krishna",
+            "s": "shreyan sva dharmo vigunah para dharmat sv anushthitat / sva dharme nidhanam shreyah para dharmo bhayavahah",
+            "i": "śreyān sva dharmo viguṇaḥ para dharmāt sv anuṣṭhitāt / sva dharme nidhanaṃ śreyaḥ para dharmo bhayāvahaḥ",
+            "m": "Better your own path, though imperfect, than someone else’s done well. Better to fall on your own path; another’s path is full of danger."
+          },
+          {
+            "ref": "18.48",
+            "who": "Krishna",
+            "s": "saha jam karma kaunteya sa dosham api na tyajet / sarvarambha hi doshena dhumenagnir ivavritah",
+            "i": "saha jaṃ karma kaunteya sa doṣam api na tyajet / sarvārambhā hi doṣeṇa dhūmenāgnir ivāvṛtāḥ",
+            "m": "Don’t give up your own work even if it has faults; every undertaking has some fault, as fire has smoke."
+          }
+        ],
+        "st": [
+          "Krishna says it twice: here and again near the end (18.47). And 18.48 adds the comforting part: every undertaking has flaws, “as fire is covered by smoke.” Your path won’t be clean either.",
+          "An honest note: some traditions read svadharma as duties fixed by birth (caste). Gandhi re-read it as your qualities and work; Ambedkar criticised the text for supporting caste. In this course, svadharma means your own responsibilities and strengths, never your birth."
+        ],
+        "rule": "Better your own path done imperfectly than someone else’s done well.",
+        "tr": {
+          "s": "A friend got into a quant firm. Your parents ask why you don’t “do what he did”. You’d rather work on EV drivetrains.",
+          "q": "The 3.35 view?",
+          "o": [
+            "Switch to quant; it worked for him",
+            "Keep building toward EV drivetrains, borrowing useful skills from his path",
+            "Ignore your parents completely",
+            "Do nothing until you’re sure"
+          ],
+          "a": 1,
+          "w": "You can borrow skills from his path without swapping your direction. Your drive is part of your edge."
+        },
+        "wy": {
+          "q": "Why is your own path, imperfect, the better bet?",
+          "o": [
+            "You keep going when it’s hard, because the drive is yours",
+            "Because your path is guaranteed to succeed",
+            "Because copying is morally wrong"
+          ],
+          "a": 0,
+          "f": "Motivation you own outlasts motivation you borrow."
+        },
+        "pl": {
+          "i": [
+            "I feel pressure to copy someone’s path",
+            "I compare my progress to a friend’s",
+            "I doubt my own interests"
+          ],
+          "t": [
+            "write 3 things I’m good at and enjoy",
+            "spend 30 minutes on my own project today",
+            "ask what I can borrow from their path, not swap"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 3.35 · Better your own path ___ than another’s ___.",
+            "…though imperfect… done well. Svadharma = your own responsibilities and strengths."
+          ],
+          [
+            "Gita 18.48 · The image that says every path has flaws?",
+            "Fire is covered by smoke: every undertaking has some fault."
+          ]
+        ],
+        "sl": "Your path doesn’t need to look like anyone else’s to be the right one."
+      },
+      {
+        "id": "g14",
+        "t": "Clarity, drive, inertia",
+        "scene": "Three moods from your week. Sunday morning: calm and clear, you planned the week in 10 minutes. Tuesday: restless, you opened six things, finished none, and bought shoes you didn’t need. Thursday night: heavy, three hours of scrolling in bed.",
+        "q": "Which mood is worst for getting real work done?",
+        "o": [
+          "Sunday’s calm clarity",
+          "Tuesday’s restless drive",
+          "Thursday’s heavy inertia",
+          "They’re all equally good"
+        ],
+        "a": 2,
+        "rv": "The Gita calls these the three guṇas: sattva (clarity), rajas (restless drive) and tamas (heaviness). Rajas at least moves; tamas stalls everything, including the will to change. Knowing which one you’re in tells you the fix.",
+        "pic": {
+          "k": "three",
+          "top": "The three guṇas",
+          "items": [
+            "Sattva: clarity",
+            "Rajas: drive",
+            "Tamas: inertia"
+          ]
+        },
+        "term": {
+          "w": "Guṇa",
+          "g": "“strand, quality”: the three modes everyone moves between."
+        },
+        "v": [
+          {
+            "ref": "14.8",
+            "who": "Krishna",
+            "s": "tamas tv ajnana jam viddhi mohanam sarva dehinam / pramadalasya nidrabhis tan nibadhnati bharata",
+            "i": "tamas tv ajñāna jaṃ viddhi mohanaṃ sarva dehinām / pramādālasya nidrābhis tan nibadhnāti bhārata",
+            "m": "Know tamas as born of ignorance, clouding everyone. It binds through carelessness, laziness and sleep."
+          },
+          {
+            "ref": "18.28",
+            "who": "Krishna",
+            "s": "ayuktah prakritah stabdhah shatho naishkritiko 'lasah / vishadi dirgha sutri cha karta tamasa uchyate",
+            "i": "ayuktaḥ prākṛtaḥ stabdhaḥ śaṭho naiṣkṛtiko 'lasaḥ / viṣādī dīrgha sūtrī ca kartā tāmasa ucyate",
+            "m": "The worker who is undisciplined, crude, stubborn, deceitful, malicious, lazy, gloomy and procrastinating is called tamasic."
+          }
+        ],
+        "st": [
+          "14.6–7 describe the other two. Sattva is clear and light, but even it can bind you, to comfort. Rajas comes from craving and binds you to endless doing. Every mode has a trap.",
+          "18.28 describes the tamasic worker, ending with dīrgha-sūtrī, literally “long-threaded”: the procrastinator who stretches a one-hour job into a week. 18.26 describes the opposite: steady, enthusiastic, unchanged by success or failure."
+        ],
+        "rule": "Name your mode, then pick the fix: tamas needs movement, rajas needs focus, sattva needs action.",
+        "tr": {
+          "s": "11 pm. You feel heavy and foggy and have been lying on your bed for an hour.",
+          "q": "The tamas fix?",
+          "o": [
+            "Keep scrolling until motivation shows up",
+            "Get up, splash water on your face, then do one tiny task or go to sleep properly",
+            "Start a big new project",
+            "Energy drink and an all-nighter"
+          ],
+          "a": 1,
+          "w": "Tamas breaks with movement, not thinking. Do one small thing or commit to real sleep. Lying in between is the worst of both."
+        },
+        "wy": {
+          "q": "Why does naming your mode help?",
+          "o": [
+            "Each mode needs a different fix: movement for tamas, focus for rajas",
+            "Naming something makes it disappear",
+            "Sattva is the only mode that matters"
+          ],
+          "a": 0,
+          "f": "You wouldn’t fix a jammed gear and a slipping belt the same way."
+        },
+        "pl": {
+          "i": [
+            "I’ve been lying around scrolling for 20 minutes",
+            "I’m restless and opening many things",
+            "I feel clear and calm"
+          ],
+          "t": [
+            "stand up and do one 5-minute task",
+            "close everything but one task",
+            "start the hardest task right now"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 14.6–8 · The three guṇas in plain words?",
+            "Sattva = clarity, rajas = restless drive, tamas = heaviness or inertia."
+          ],
+          [
+            "Gita 18.28 · What does dīrgha-sūtrī describe?",
+            "The procrastinator: “long-threaded”, stretching a short job out forever."
+          ]
+        ],
+        "sl": "If you feel tamas right now, the right move is real sleep, not more scrolling."
+      },
+      {
+        "id": "g15",
+        "t": "Poison first, nectar later",
+        "scene": "9 pm, two options. A: an hour of fluid mechanics, which feels awful for the first 15 minutes. B: reels, which feel great for the first 15 minutes. Now picture how each one feels at 1 am.",
+        "q": "Which pattern describes reels?",
+        "o": [
+          "Bad at first, good at the end",
+          "Good at first, bad at the end",
+          "Good throughout",
+          "Bad throughout"
+        ],
+        "a": 1,
+        "rv": "Krishna sorts pleasures by their shape over time. The best kind feels like poison at first and nectar at the end. The passion kind is nectar at first and poison at the end. Reels at 1 am are the second shape.",
+        "pic": {
+          "k": "curves",
+          "a": "Study, exercise",
+          "b": "Reels at 1 am"
+        },
+        "term": {
+          "w": "Viṣam iva · amṛtopamam",
+          "g": "“like poison” · “like nectar”."
+        },
+        "v": [
+          {
+            "ref": "18.37",
+            "who": "Krishna",
+            "s": "yat tad agre visham iva pariname 'mritopamam / tat sukham sattvikam proktam atma buddhi prasada jam",
+            "i": "yat tad agre viṣam iva pariṇāme 'mṛtopamam / tat sukhaṃ sāttvikaṃ proktam ātma buddhi prasāda jam",
+            "m": "What is like poison at first but like nectar in the end, born of a clear mind: that happiness is called sattvic."
+          },
+          {
+            "ref": "18.38",
+            "who": "Krishna",
+            "s": "vishayendriya samyogad yat tad agre 'mritopamam / pariname visham iva tat sukham rajasam smritam",
+            "i": "viṣayendriya saṃyogād yat tad agre 'mṛtopamam / pariṇāme viṣam iva tat sukhaṃ rājasaṃ smṛtam",
+            "m": "What comes from the senses meeting their objects, like nectar at first but like poison in the end: that happiness is called rajasic."
+          }
+        ],
+        "st": [
+          "This is the Gita’s version of delayed gratification, long before any psychology lab. The trick is to judge a pleasure by the end of its curve, not the start.",
+          "Reels are engineered by large teams to make the first 15 seconds feel like nectar. 18.37 is an old field guide to looking past those 15 seconds."
+        ],
+        "rule": "Judge an activity by how you’ll feel at the end, not at the start.",
+        "tr": {
+          "s": "Friends want a midnight Maggi run before your 9 am exam. It sounds amazing.",
+          "q": "The 18.37 check?",
+          "o": [
+            "Go; it feels great right now",
+            "Picture 9 am, tired and foggy. Take a short walk with them now and sleep by 12",
+            "Go and stay out till 3",
+            "Say yes, then feel guilty"
+          ],
+          "a": 1,
+          "w": "Playing the clip to the end (9 am, foggy exam) reveals the poison in the nectar. A shorter fun option keeps both."
+        },
+        "wy": {
+          "q": "How do you spot a “nectar first, poison later” pleasure?",
+          "o": [
+            "Fast-forward to how you’ll feel after: if it’s worse than now, it’s that shape",
+            "If it’s fun, it’s always bad",
+            "If it’s hard, it’s always good"
+          ],
+          "a": 0,
+          "f": "Not all fun is poison. Just check the end of the curve."
+        },
+        "pl": {
+          "i": [
+            "I reach for reels at night",
+            "I’m tempted to skip something hard",
+            "I’m choosing what to do after dinner"
+          ],
+          "t": [
+            "picture how I’ll feel at 1 am, then choose",
+            "do 15 minutes of the hard thing first",
+            "pick the option that feels better at the end"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 18.37 · The best happiness feels like ___ at first and ___ at the end.",
+            "Poison… nectar. (18.38: the passion kind is nectar first, poison later.)"
+          ],
+          [
+            "Quick test for any pleasure, from Gita 18.37–38?",
+            "Fast-forward: judge it by how you’ll feel at the end, not at the start."
+          ]
+        ],
+        "sl": "You’re choosing the nectar-later shape right now by putting the phone down."
+      },
+      {
+        "id": "g16",
+        "t": "Speak to help",
+        "scene": "Class group chat. Someone posts a wrong answer to the assignment, totally confident. You know it’s wrong. Your draft reply: “LOL bro did you even attend class 💀”.",
+        "q": "Best reply?",
+        "o": [
+          "Send it; it’s funny and true",
+          "“I think Q3 is different: the flow is turbulent, so use the Moody chart. Happy to share my steps.”",
+          "Say nothing and let everyone copy the wrong answer",
+          "DM everyone else that he’s dumb"
+        ],
+        "a": 1,
+        "rv": "The Gita’s test for speech: true, pleasant and helpful, and not stirring up needless agitation. Your draft was true but neither kind nor helpful. The rewrite is all three.",
+        "pic": {
+          "k": "three",
+          "top": "Words worth saying",
+          "items": [
+            "True",
+            "Kind",
+            "Helpful"
+          ]
+        },
+        "term": {
+          "w": "Vāṅmaya tapas",
+          "g": "“discipline of speech”."
+        },
+        "v": [
+          {
+            "ref": "17.15",
+            "who": "Krishna",
+            "s": "anudvega karam vakyam satyam priya hitam cha yat / svadhyayabhyasanam chaiva van mayam tapa uchyate",
+            "i": "anudvega karaṃ vākyaṃ satyaṃ priya hitaṃ ca yat / svādhyāyābhyasanaṃ caiva vāṅ mayaṃ tapa ucyate",
+            "m": "Words that don’t stir up agitation, that are true, pleasant and helpful, along with regular study: this is called discipline of speech."
+          },
+          {
+            "ref": "17.16",
+            "who": "Krishna",
+            "s": "manah prasadah saumyatvam maunam atma vinigrahah / bhava samshuddhir ity etat tapo manasam uchyate",
+            "i": "manaḥ prasādaḥ saumyatvaṃ maunam ātma vinigrahaḥ / bhāva saṃśuddhir ity etat tapo mānasam ucyate",
+            "m": "A calm mind, gentleness, silence, self-control, clean intentions: this is called discipline of the mind."
+          }
+        ],
+        "st": [
+          "Notice the Gita calls this tapas, usually “austerity”: fasting, hard practice. Choosing your words is filed under the same heading as physical discipline.",
+          "17.16 adds the inner version: calm, gentleness, silence, self-control. Sometimes the best speech is a pause, which echoes Greene’s Law 4, “say less”. Different books, same move."
+        ],
+        "rule": "Before you speak or send: is it true, kind and helpful? If not, edit it or skip it.",
+        "tr": {
+          "s": "Your roommate’s code broke the night before a deadline. He asks, “Is my code that bad?”",
+          "q": "The 17.15 answer?",
+          "o": [
+            "“Honestly, yes, it’s a mess.”",
+            "“The logic is fine; the loop bound is off by one. Let’s fix it together.”",
+            "“It’s perfect; the compiler is wrong.”",
+            "Say nothing"
+          ],
+          "a": 1,
+          "w": "True (there’s a bug), kind (the logic is fine), helpful (here’s the fix). Flattery isn’t true, and bluntness isn’t helpful."
+        },
+        "wy": {
+          "q": "Why isn’t “true” enough on its own?",
+          "o": [
+            "True words that hurt or don’t help usually close people off, so the truth doesn’t land",
+            "Because lying is sometimes better",
+            "Because kindness matters more than truth"
+          ],
+          "a": 0,
+          "f": "True is the floor, not the ceiling. Kind and helpful are how it actually gets heard."
+        },
+        "pl": {
+          "i": [
+            "I’m about to send a sarcastic reply",
+            "I need to point out someone’s mistake",
+            "I’m typing while angry"
+          ],
+          "t": [
+            "check true / kind / helpful before sending",
+            "start with what’s right, then give the fix",
+            "wait 10 minutes and reread it"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 17.15 · The tests for speech?",
+            "True, pleasant and helpful, and not stirring up needless agitation."
+          ],
+          [
+            "Gita 17.16 · Discipline of the mind includes…",
+            "calm, gentleness, silence, self-control, clean intentions."
+          ]
+        ],
+        "sl": "Tomorrow, one message can pass the true-kind-helpful test."
+      },
+      {
+        "id": "g17",
+        "t": "Three gates",
+        "scene": "One evening: you buy a ₹2,500 hoodie on impulse. A senior’s comment makes you snap at your roommate. A tip in the trading group pulls you into an options trade bigger than your own rule allows. Each felt reasonable at the time.",
+        "q": "What do all three have in common?",
+        "o": [
+          "Bad luck",
+          "A strong pull that skipped your judgement",
+          "Other people’s fault",
+          "Nothing; they’re unrelated"
+        ],
+        "a": 1,
+        "rv": "The Gita names these three exactly: kāma (craving), krodha (anger) and lobha (greed). It calls them gates because each opens fast, lets you through before you think, and leads somewhere you didn’t plan to go.",
+        "pic": {
+          "k": "three",
+          "top": "Three gates",
+          "items": [
+            "Craving (kāma)",
+            "Anger (krodha)",
+            "Greed (lobha)"
+          ]
+        },
+        "term": {
+          "w": "Kāma · krodha · lobha",
+          "g": "craving · anger · greed."
+        },
+        "v": [
+          {
+            "ref": "16.21",
+            "who": "Krishna",
+            "s": "tri vidham narakasyedam dvaram nashanam atmanah / kamah krodhas tatha lobhas tasmad etat trayam tyajet",
+            "i": "tri vidhaṃ narakasyedaṃ dvāraṃ nāśanam ātmanaḥ / kāmaḥ krodhas tathā lobhas tasmād etat trayaṃ tyajet",
+            "m": "Desire, anger and greed: these three are the gate to hell that ruins the self. So give up these three."
+          },
+          {
+            "ref": "3.37",
+            "who": "Krishna",
+            "s": "kama esha krodha esha rajo guna samudbhavah / mahashano maha papma viddhyenam iha vairinam",
+            "i": "kāma eṣa krodha eṣa rajo guṇa samudbhavaḥ / mahāśano mahā pāpmā viddhyenam iha vairiṇam",
+            "m": "It is desire, it is anger, born of rajas: all-devouring and very harmful. Know this as the enemy here."
+          }
+        ],
+        "st": [
+          "In 3.36 Arjuna asks why people do wrong even when they don’t want to. Krishna answers in 3.37: “It is desire, it is anger,” all-devouring. The enemy isn’t other people; it’s these pulls inside.",
+          "“Hell” can be read as any self-made mess: debt, a broken friendship, a blown trading account. The practical move: learn to feel the gate opening and put a delay in front of it."
+        ],
+        "rule": "When craving, anger or greed spikes, put a delay between the pull and the action.",
+        "tr": {
+          "s": "Your stock fell 8% and you feel the urge to “average down” with money you set aside for fees.",
+          "q": "Which gate, and what’s the delay?",
+          "o": [
+            "None; buy more now",
+            "Greed and fear pulling: sleep on it and reread your written rules first",
+            "Anger: message the analyst",
+            "Craving: buy something to feel better"
+          ],
+          "a": 1,
+          "w": "Breaking your own rule under a strong pull is the gate opening. A 24-hour delay plus your written rules let judgement back in."
+        },
+        "wy": {
+          "q": "Why call them gates?",
+          "o": [
+            "They open fast and take you somewhere before you’ve thought about it",
+            "Because they’re physical doors",
+            "Because they’re always locked"
+          ],
+          "a": 0,
+          "f": "A gate is a fast way through. The fix is a turnstile in front of it: a delay."
+        },
+        "pl": {
+          "i": [
+            "I want to buy something over ₹1,000 on impulse",
+            "I feel anger rising mid-conversation",
+            "I want to break one of my trading rules"
+          ],
+          "t": [
+            "add it to cart and wait 24 hours",
+            "say “give me a minute” and step away",
+            "reread my rules and sleep on it"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 16.21 · The three gates?",
+            "Kama (craving), krodha (anger), lobha (greed). They open fast; add a delay."
+          ],
+          [
+            "Gita 3.37 · What does Krishna name as the real enemy?",
+            "Desire and anger, born of rajas: the pulls inside, not people outside."
+          ]
+        ],
+        "sl": "No gate needs opening tonight. Everything can wait till morning."
+      },
+      {
+        "id": "g18",
+        "t": "Lotus leaf",
+        "scene": "Your hostel wing: some bunk every class, the group chat runs on gossip, the hangouts go till 3 am. You like these people. Some friends warn you’ll “become like them”; others say you think you’re “too good” when you skip the 3 am sessions.",
+        "q": "Best way to handle it?",
+        "o": [
+          "Cut them all off",
+          "Join in fully so you fit in",
+          "Stay friendly and present, but keep your own habits",
+          "Lecture them about their habits"
+        ],
+        "a": 2,
+        "rv": "The Gita’s image is a lotus leaf: it lives in water, but the water doesn’t stick to it. You can be fully part of the group and still not absorb what you don’t want.",
+        "pic": {
+          "k": "ring",
+          "center": "You",
+          "outer": [
+            "Gossip",
+            "3 am hangouts",
+            "Bunking",
+            "Peer pressure"
+          ],
+          "shell": "In it, not stained"
+        },
+        "term": {
+          "w": "Padma-patram ivāmbhasā",
+          "g": "“like a lotus leaf in water”."
+        },
+        "v": [
+          {
+            "ref": "5.10",
+            "who": "Krishna",
+            "s": "brahmanyadhaya karmani sangam tyaktva karoti yah / lipyate na sa papena padma patram ivambhasa",
+            "i": "brahmaṇyādhāya karmāṇi saṅgaṃ tyaktvā karoti yaḥ / lipyate na sa pāpena padma patram ivāmbhasā",
+            "m": "Whoever acts without clinging, offering the work to the highest, isn’t stained by wrong, just as a lotus leaf isn’t wetted by water."
+          },
+          {
+            "ref": "12.15",
+            "who": "Krishna",
+            "s": "yasman nodvijate loko lokan nodvijate cha yah / harshamarsha bhayodvegair mukto yah sa cha me priyah",
+            "i": "yasmān nodvijate loko lokān nodvijate ca yaḥ / harṣāmarṣa bhayodvegair mukto yaḥ sa ca me priyaḥ",
+            "m": "One the world doesn’t shrink from, and who doesn’t shrink from the world, free of elation, envy, fear and anxiety, is dear to me."
+          }
+        ],
+        "st": [
+          "These two verses are devotional: 5.10 talks about offering your work to Brahman, the highest reality. A secular reading still works: act without clinging, and the mess around you doesn’t stick.",
+          "12.15 describes the same person socially: someone people don’t shrink from, and who doesn’t shrink from people. Not a hermit, not a sponge."
+        ],
+        "rule": "Be fully present with people without absorbing what you don’t want.",
+        "tr": {
+          "s": "At a family wedding in Rajkot, relatives start gossiping about a cousin and ask your opinion.",
+          "q": "Lotus-leaf move?",
+          "o": [
+            "Join the gossip to fit in",
+            "Leave the wedding",
+            "Stay warm, say “I don’t really know their side,” and change the topic",
+            "Lecture everyone about gossip"
+          ],
+          "a": 2,
+          "w": "You stay part of the gathering without the gossip sticking to you. Lecturing would make you the next topic."
+        },
+        "wy": {
+          "q": "Why is the lotus leaf better than cutting people off?",
+          "o": [
+            "You keep the relationships and your habits; neither has to go",
+            "People never influence you anyway",
+            "Cutting people off is always wrong"
+          ],
+          "a": 0,
+          "f": "The leaf doesn’t leave the pond. It just stays dry."
+        },
+        "pl": {
+          "i": [
+            "friends pull me into something I don’t want",
+            "gossip starts around me",
+            "I feel pressure to fit in"
+          ],
+          "t": [
+            "stay warm and say “I’ll pass on this one”",
+            "change the topic to something real",
+            "join the fun part and leave before the part I don’t want"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 5.10 · The image for acting without being stained?",
+            "A lotus leaf in water: in it, but the water doesn’t stick."
+          ],
+          [
+            "Gita 12.15 · Who is dear to Krishna, socially?",
+            "One the world doesn’t shrink from, and who doesn’t shrink from the world."
+          ]
+        ],
+        "sl": "You can love your people and still keep your own shape."
+      },
+      {
+        "id": "g19",
+        "t": "Think it through, then decide",
+        "bonus": true,
+        "scene": "Final year is a year away: job, master’s abroad, or your own startup. Your parents want one thing, your mentor another, your friends a third. Everyone is sure.",
+        "q": "How does the Gita end its own advice?",
+        "o": [
+          "“Do exactly what I told you.”",
+          "“Reflect on all of this fully, then do as you wish.”",
+          "“Follow your parents.”",
+          "“Wait for a sign.”"
+        ],
+        "a": 1,
+        "rv": "After hundreds of verses, Krishna hands the decision back: “Reflect on it fully, then do as you wish.” The teacher’s last move is trusting the student.",
+        "pic": {
+          "k": "chain",
+          "steps": [
+            "Ask good questions",
+            "Hear people out",
+            "Reflect fully",
+            "Decide, and own it"
+          ],
+          "hi": 3
+        },
+        "term": {
+          "w": "Vimṛśya",
+          "g": "“having reflected thoroughly”."
+        },
+        "v": [
+          {
+            "ref": "18.63",
+            "who": "Krishna",
+            "s": "iti te jnanam akhyatam guhyad guhyataram maya / vimrishyaitad asheshena yathecchasi tatha kuru",
+            "i": "iti te jñānam ākhyātaṃ guhyād guhyataraṃ mayā / vimṛśyaitad aśeṣeṇa yathecchasi tathā kuru",
+            "m": "So I’ve told you this wisdom, the deepest of secrets. Reflect on it fully, then do as you wish."
+          },
+          {
+            "ref": "4.34",
+            "who": "Krishna",
+            "s": "tad viddhi pranipatena pariprashnena sevaya / upadekshyanti te jnanam jnaninas tattva darshinah",
+            "i": "tad viddhi praṇipātena paripraśnena sevayā / upadekṣyanti te jñānaṃ jñāninas tattva darśinaḥ",
+            "m": "Learn it by approaching humbly, by asking thorough questions, and by serving. Those who have seen the truth will teach you."
+          }
+        ],
+        "st": [
+          "In 4.34 Krishna describes how to learn: approach humbly, ask thorough questions (paripraśna), serve. Questioning isn’t disrespect in the Gita; it’s the method.",
+          "There is a verse, 4.40, that says “the doubter perishes”. Read next to 4.34 and 18.63, it means paralysing doubt that never decides, not questioning. Question fully, then commit."
+        ],
+        "rule": "Ask, listen, reflect fully, then decide and own it.",
+        "tr": {
+          "s": "Your parents want you to take a PSU job; you want to try a startup for two years.",
+          "q": "The 18.63 approach?",
+          "o": [
+            "Do what they say to avoid conflict",
+            "Ignore them; it’s your life",
+            "Hear their reasons fully, test your plan, then decide and own the choice",
+            "Postpone forever"
+          ],
+          "a": 2,
+          "w": "Reflecting fully includes their concerns. Deciding yourself means owning the result either way."
+        },
+        "wy": {
+          "q": "Why does 18.63 matter for this whole course?",
+          "o": [
+            "These lessons are tools to test on yourself, not rules to obey",
+            "It says the Gita is optional",
+            "It tells you to ignore all advice"
+          ],
+          "a": 0,
+          "f": "That’s the spirit of the course: try each idea on yourself and keep what works."
+        },
+        "pl": {
+          "i": [
+            "I face a big decision",
+            "everyone is telling me what to do",
+            "I’m stuck between options"
+          ],
+          "t": [
+            "write each option’s best and worst case",
+            "ask the person I disagree with for their best reason",
+            "set a date to decide, and stick to it"
+          ]
+        },
+        "cards": [
+          [
+            "Gita 18.63 · How does Krishna end his teaching?",
+            "“Reflect on it fully, then do as you wish.” The decision goes back to Arjuna."
+          ],
+          [
+            "Gita 4.34 · Three ways to learn from the wise?",
+            "Humble approach, thorough questioning (pariprashna), and service."
+          ]
+        ],
+        "sl": "Big decisions don’t need to be made tonight. Reflection works better rested."
+      }
+    ]
+  }
+}

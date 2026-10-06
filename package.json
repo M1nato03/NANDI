@@ -7,13 +7,16 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run build-packs",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.sw.json --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "convert-legacy": "tsx scripts/convert-legacy.ts",
+    "validate-packs": "tsx scripts/validate-packs.ts",
+    "build-packs": "tsx scripts/build-packs.ts"
   },
   "dependencies": {
     "dexie": "^4.4.6",

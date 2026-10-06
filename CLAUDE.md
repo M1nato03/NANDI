@@ -47,5 +47,5 @@ test: `npm.cmd run test`
 e2e: `npx.cmd playwright install chromium` once, then `npm.cmd run build` and `npm.cmd run e2e`
 lint: `npm.cmd run lint`
 typecheck: `npm.cmd run typecheck`
-validate-packs: step 8
+validate-packs: `npm.cmd run validate-packs`
 android build: Phase 2
