@@ -6,3 +6,5 @@
 - Added ESLint, Prettier, Vitest, and mobile Chromium Playwright configuration.
 - Created the Phase 0 source, content, scripts, and test folders.
 - Added backup export, validation, preview, full restore, browser file and storage adapters, and unit and browser round-trip tests.
+- Added the five-tab offline shell, Proving Ground themes and bundled fonts, recovery and error ring, Ground backup flow, and main/worker generator check.
+- Added an original PWA icon in SVG and PNG, plus browser checks for tab reloads, restore confirmation, and offline use.

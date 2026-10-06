@@ -1,4 +1,4 @@
-import { createDb } from '../db';
+import { createDb, db } from '../db';
 import { exportBackup, importBackup } from './index';
 
 export interface BackupRoundTripResult {
@@ -41,8 +41,16 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts };
   }
 }
 
-window.__nandiTest = { backupRoundTrip: roundTrip };
+async function seedShell(): Promise<void> {
+  await db.tasks.put({ id: 'e2e-shell-task', title: 'Shell check', status: 'done', dayKey: '2026-10-07', updatedAt: 1, deleted: 0, deviceId: 'e2e-shell' });
+}
+async function removeShellTask(): Promise<void> { await db.tasks.delete('e2e-shell-task'); }
+async function shellCounts(): Promise<Record<string, number>> {
+  return Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()])));
+}
+
+window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, removeShellTask, shellCounts };

@@ -15,3 +15,7 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-07 | jsdom + @testing-library/react + workbox-window/-build added | Component tests and the PWA plugin's required peers. |
 | 2026-10-07 | Backup format v1 uses the local 4 am `dayKey` for filenames; preview includes `dayKey`, `*DayKey`, `due`, and `last` date fields. Full restore requires the current table set. | Keep the file name consistent with app days and reject incomplete restores before clearing data. |
 | 2026-10-07 | Legacy `pzs` bests become marked synthetic `puzzleRuns` (without a day when none was stored); course-keyed `learn.last` and other legacy-only state go to settings, and imports report unknown `progress.*` keys in `skipped`. | Preserve mastery data for run-derived stats and expose unmapped data in restore previews. |
+| 2026-10-07 | Add `@fontsource/big-shoulders-display` 5.3.0. | Bundle the OFL display font for offline headers. |
+| 2026-10-07 | Add `@fontsource/inter` 5.3.0. | Bundle the OFL body font for offline reading. |
+| 2026-10-07 | Add `@fontsource/jetbrains-mono` 5.3.0. | Bundle the OFL mono font for offline data labels. |
+| 2026-10-07 | Use a single-process Vite preview wrapper for Playwright and an ENOMEM fallback for tsx's Windows username lookup. | The restricted Windows runner otherwise hangs on Playwright server shutdown and fails before pack validation starts. |

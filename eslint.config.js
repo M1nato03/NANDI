@@ -14,6 +14,8 @@ export default [
       'playwright-report/**',
       'test-results/**',
       '.codex-runs/**',
+      '.npm-cache/**',
+      '.playwright-browsers/**',
       'src/core/puzzles/puzzles.js',
       'src/core/mysteries/cases.js',
     ],
@@ -21,7 +23,7 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.{js,ts,tsx}'],
+    files: ['**/*.{js,ts,tsx,mjs,cjs}'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -30,5 +32,6 @@ export default [
       },
     },
   },
+  { files: ['**/*.cjs'], rules: { '@typescript-eslint/no-require-imports': 'off' } },
   reactHooks.configs.flat.recommended,
 ];

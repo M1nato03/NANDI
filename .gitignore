@@ -26,3 +26,5 @@ nandi-week-*.json
 *.tsbuildinfo
 dist-e2e/
 .pack-test-*/
+.npm-cache/
+.playwright-browsers/
