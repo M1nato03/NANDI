@@ -41,7 +41,7 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData };
   }
 }
 
@@ -52,5 +52,6 @@ async function removeShellTask(): Promise<void> { await db.tasks.delete('e2e-she
 async function shellCounts(): Promise<Record<string, number>> {
   return Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()])));
 }
+async function wipeData(): Promise<void> { await Promise.all(db.tables.map(table => table.clear())); }
 
-window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, removeShellTask, shellCounts };
+window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, removeShellTask, shellCounts, wipeData };
