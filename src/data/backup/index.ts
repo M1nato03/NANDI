@@ -4,6 +4,16 @@ import { dayKey } from '../../core/time';
 import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
+import { isLegacyExport } from '../legacy-import';
+
+/** Classify parsed file-picker JSON before invoking the corresponding validator. */
+export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown' {
+  if (typeof json !== 'object' || json === null || Array.isArray(json)) return 'unknown';
+  const value = json as Record<string, unknown>;
+  if (value.app === 'nandi') return 'backup';
+  if (isLegacyExport(json)) return 'legacy';
+  return 'unknown';
+}
 
 export const PP_FORMAT_VERSION = 1;
 export const APP_VERSION = '0.1.0';

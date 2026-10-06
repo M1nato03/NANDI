@@ -115,24 +115,28 @@ export interface PrRow extends EntityRow {
 }
 export interface PuzzleRunRow extends EntityRow {
   type: 'sudoku' | 'crowns' | 'sunmoon' | 'path' | 'calc' | 'mystery';
-  dayKey: DayKey;
-  seed: string;
+  dayKey?: DayKey;
+  seed?: string;
   diff?: string;
   daily?: boolean;
   intro?: boolean;
   solveMs?: number;
+  score?: number;
   hintsUsed?: number;
   hintRungs?: number[];
   techniquesSeen?: string[];
   result?: 'solved' | 'revealed' | 'abandoned';
   tries?: number;
   source?: 'app' | 'legacy';
+  legacyBest?: boolean;
+  legacyRaw?: unknown;
 }
 export interface CardRow extends StateRow {
   deckId: string;
   due: DayKey;
   packId?: string;
   itemId?: string;
+  topic?: string;
   box?: number;
   reviews?: number;
   last?: DayKey;
@@ -159,6 +163,7 @@ export interface RatingRow extends StateRow {
 export interface FlagRow extends EntityRow {
   refId: string;
   kind?: string;
+  hidden?: boolean;
   note?: string;
   at?: number;
 }
