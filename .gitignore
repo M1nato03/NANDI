@@ -19,3 +19,7 @@ test-results/
 android/app/build/
 android/.gradle/
 .DS_Store
+
+# Codex delegate transcripts
+.codex-runs/
+nandi-week-*.json
