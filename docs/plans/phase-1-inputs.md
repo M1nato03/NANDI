@@ -19,5 +19,8 @@ He wants breadth, plus some random topics outside his interests:
 - Marketing and storytelling
 - Logic and reasoning
 
-## Still open
-- The Clutch bonus decision (recommendation: a 0-XP "cleared a stubborn one" stamp).
+## Clutch (decided 2026-10-08)
+- Option A plus a little XP: finishing a postponed task earns a "Clutch" stamp and a small FLAT XP bonus.
+- The bonus never grows with the number of postpones.
+- Guard rule, with a test: a postponed finish can never total more XP than finishing the same task with zero postpones.
+- The exact amount lives in rules.config.ts; set it in the Phase 1 plan.
