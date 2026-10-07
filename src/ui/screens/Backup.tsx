@@ -51,9 +51,12 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     try {
       const now = Date.now();
       const envelope = await exportBackup(db, now);
-      await shareOrDownload(new File([JSON.stringify(envelope)], backupFileName(now), { type: 'application/json' }));
-      await refresh(); setMessage('Backup ready. Keep this file somewhere safe.');
-    } catch (error) { recordError('promise', error); setMessage(`Backup could not finish: ${errorMessage(error)}`); }
+      const name = backupFileName(now);
+      const result = await shareOrDownload(new File([JSON.stringify(envelope)], name, { type: 'application/json' }));
+      if (result === 'cancelled') { setMessage('Export cancelled.'); return; }
+      await db.settings.put({ key: 'lastBackupAt', value: now, updatedAt: now, deleted: 0, deviceId: envelope.deviceId });
+      await refresh(); setMessage(result === 'shared' ? 'Shared.' : `Saved to Downloads as ${name}.`);
+    } catch (error) { recordError('promise', error); setMessage(errorMessage(error)); }
     finally { setBusy(false); }
   }
 

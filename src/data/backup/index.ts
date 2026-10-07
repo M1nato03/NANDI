@@ -134,8 +134,6 @@ export async function exportBackup(db: NandiDb, now: Date | number): Promise<Bac
   const result = validateBackup({ app: 'nandi', ppFormatVersion: PP_FORMAT_VERSION,
     appVersion: APP_VERSION, exportedAt, deviceId, dexie });
   if (!result.success || !result.envelope) throw new Error(result.errors.join('; '));
-  await db.settings.put({ key: 'lastBackupAt', value: exportedAt, updatedAt: exportedAt,
-    deleted: 0, deviceId });
   return result.envelope;
 }
 

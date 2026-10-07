@@ -1,10 +1,15 @@
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
-export async function shareOrDownload(file: File): Promise<void> {
+export async function shareOrDownload(file: File): Promise<'shared' | 'downloaded' | 'cancelled'> {
   // Capacitor branch: Phase 2
   if (typeof navigator !== 'undefined' && typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [file] }) && typeof navigator.share === 'function') {
-    await navigator.share({ files: [file] });
-    return;
+    try {
+      await navigator.share({ files: [file] });
+      return 'shared';
+    } catch (error) {
+      if (error !== null && typeof error === 'object' && 'name' in error && error.name === 'AbortError') return 'cancelled';
+      // Some browsers accept the file in canShare but reject the share request.
+    }
   }
   const url = URL.createObjectURL(file);
   try {
@@ -16,8 +21,9 @@ export async function shareOrDownload(file: File): Promise<void> {
     link.click();
     link.remove();
   } finally {
-    setTimeout(() => URL.revokeObjectURL(url), 0);
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
   }
+  return 'downloaded';
 }
 
 /** Returns null when the user closes the picker without selecting a file. */

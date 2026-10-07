@@ -40,7 +40,7 @@ describe('backup and restore', () => {
     const before = await snapshot(db);
     expect(backupFileName(new Date(2026, 9, 9, 12))).toBe('nandi-backup-2026-10-09.json');
     expect(envelope).toMatchObject({ app: 'nandi', ppFormatVersion: 1, deviceId: 'device-a' });
-    expect((await db.settings.get('lastBackupAt'))?.value).toBe(envelope.exportedAt);
+    expect(await db.settings.get('lastBackupAt')).toBeUndefined();
     const preview = previewBackup(envelope);
     expect(preview.counts).toMatchObject({ tasks: 2, ledger: 1, cards: 1, dailyLog: 1 });
     expect(preview.earliestDayKey).toBe('2026-10-06');
