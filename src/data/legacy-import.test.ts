@@ -116,6 +116,7 @@ describe('legacy import', () => {
       crowns: { solved: 1, best: { medium: { score: 7 } } },
     };
     newer.progress.learn = { last: { gita: '2026-10-03' } };
+    newer.progress.migratedFrom = { source: 'fixture-copy', version: 2 };
     newer.progress.zzz = { future: true };
     const rows = mapLegacy(newer, options);
     expect(rows.skipped).toEqual(['progress.zzz']);
@@ -129,10 +130,12 @@ describe('legacy import', () => {
     });
     expect(rows.puzzleRuns.find(run => run.id === 'legacy-best-crowns-medium')).toMatchObject({ score: 7, legacyRaw: { score: 7 } });
     expect(rows.settings.find(row => row.key === 'legacy.learn.last')?.value).toEqual({ gita: '2026-10-03' });
+    expect(rows.settings.find(row => row.key === 'legacy.migratedFrom')?.value).toEqual({ source: 'fixture-copy', version: 2 });
     const db = freshDb();
     const counts = await importLegacy(db, newer, options);
     expect(counts.skipped).toEqual(['progress.zzz']);
     expect(counts.puzzleRuns).toBe(5);
+    expect(await db.settings.get('legacy.migratedFrom')).toMatchObject({ value: { source: 'fixture-copy', version: 2 } });
     const firstRuns = await db.puzzleRuns.toArray();
     const firstSettings = await db.settings.toArray();
     expect(await importLegacy(db, newer, options)).toEqual(counts);

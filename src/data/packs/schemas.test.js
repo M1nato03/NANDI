@@ -10,8 +10,8 @@ describe('pack schemas', () => {
     expect(v.safeParse(packSchema, gita).success).toBe(true);
     expect(v.safeParse(packSchema, charaka).success).toBe(true);
   });
-  it('exposes both lessons as offline seeds', () => {
-    expect(bundledPacks.map((pack) => pack.id).sort()).toEqual(['lessons.charaka-holds-up', 'lessons.gita-restless-mind']);
+  it('exposes the lessons and the Greene deck as offline seeds', () => {
+    expect(bundledPacks.map((pack) => pack.id).sort()).toEqual(['deck.greene', 'lessons.charaka-holds-up', 'lessons.gita-restless-mind']);
   });
   it('rejects an incomplete envelope', () => {
     const pack = structuredClone(gita);

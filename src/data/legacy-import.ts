@@ -29,6 +29,7 @@ export const legacyExportSchema = v.object({
   exportedAt: v.optional(timestamp),
   cards: v.array(cardSchema),
   progress: v.looseObject({
+    migratedFrom: v.optional(v.unknown()),
     ratings: v.optional(v.record(v.string(), v.number())),
     nAns: v.optional(v.record(v.string(), count)),
     items: v.optional(v.record(v.string(), itemSchema)),
@@ -113,7 +114,7 @@ const auxiliaryProgressKeys = new Set([
   'lastEarn', 'freezeNote', 'rhist', 'errors', 'updatedAt',
 ]);
 const mappedProgressKeys = new Set([
-  'ratings', 'nAns', 'items', 'cases', 'hidden', 'flags', 'learn', 'pzd', 'pzs',
+  'migratedFrom', 'ratings', 'nAns', 'items', 'cases', 'hidden', 'flags', 'learn', 'pzd', 'pzs',
   ...auxiliaryProgressKeys,
 ]);
 
@@ -151,6 +152,7 @@ export function mapLegacy(json: unknown, options: LegacyOptions): LegacyMapped {
     skipped: Object.keys(legacy.progress).filter(key => !mappedProgressKeys.has(key)).map(key => `progress.${key}`),
   };
   const setting = (key: string, value: unknown) => rows.settings.push({ ...meta, key, value });
+  if ('migratedFrom' in legacy.progress) setting('legacy.migratedFrom', legacy.progress.migratedFrom);
   for (const key of auxiliaryProgressKeys) {
     if (key in legacy.progress) setting(`legacy.progress.${key}`, legacy.progress[key]);
   }

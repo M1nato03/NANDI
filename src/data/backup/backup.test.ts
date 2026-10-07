@@ -74,6 +74,14 @@ describe('backup and restore', () => {
     expect(validateBackup({ ...envelope, dexie: { formatName: 'dexie' } }).errors.join(' ')).toMatch(/dexie/i);
   });
 
+  it('leaves retired sentinel dates out of the preview range', async () => {
+    const db = freshDb();
+    await db.tasks.add({ id: 'dated', title: 'Dated', status: 'open', dayKey: '2026-10-02', ...stamp });
+    await db.deckProg.add({ id: 'retired-item', b: 99, due: '9999-12-31', ...stamp });
+    const preview = previewBackup(await exportBackup(db, 1000));
+    expect(preview).toMatchObject({ earliestDayKey: '2026-10-02', latestDayKey: '2026-10-02', retired: 1 });
+  });
+
   it('runs pure envelope migrators in order', () => {
     const old = { ppFormatVersion: 0, oldApp: 'nandi', value: 1 };
     const original = structuredClone(old);

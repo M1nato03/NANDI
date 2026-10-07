@@ -143,26 +143,32 @@ export interface BackupPreview {
   counts: Record<string, number>;
   earliestDayKey: string | null;
   latestDayKey: string | null;
+  retired: number;
 }
 
 const dayPattern = /^\d{4}-\d{2}-\d{2}$/;
+export function isPreviewDay(value: unknown): value is string {
+  return typeof value === 'string' && dayPattern.test(value) && Number(value.slice(0, 4)) < 9000;
+}
 export function previewBackup(envelope: BackupEnvelope): BackupPreview {
   const counts: Record<string, number> = {};
   let earliestDayKey: string | null = null;
   let latestDayKey: string | null = null;
+  let retired = 0;
   for (const table of envelope.dexie.data.data) {
     counts[table.tableName] = table.rows.length;
     for (const row of table.rows) {
+      if (table.tableName === 'deckProg' && row.b === 99) retired++;
       for (const [key, value] of Object.entries(row)) {
         if ((key === 'dayKey' || key.endsWith('DayKey') || key === 'due' || key === 'last')
-          && typeof value === 'string' && dayPattern.test(value)) {
+          && isPreviewDay(value)) {
           if (earliestDayKey === null || value < earliestDayKey) earliestDayKey = value;
           if (latestDayKey === null || value > latestDayKey) latestDayKey = value;
         }
       }
     }
   }
-  return { counts, earliestDayKey, latestDayKey };
+  return { counts, earliestDayKey, latestDayKey, retired };
 }
 
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired']);

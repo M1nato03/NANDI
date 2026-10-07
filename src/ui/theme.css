@@ -62,6 +62,7 @@ p { line-height: 1.5; }
 .count-list li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
 .count-list strong { font-family: 'JetBrains Mono', monospace; }
 .preview { border-color: var(--accent); }
+.preview .count-list { max-height: none; overflow: visible; }
 .generator-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 pre { font: 12px/1.5 'JetBrains Mono', monospace; overflow-x: auto; margin: 0; }
 label { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }

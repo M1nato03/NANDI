@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { db } from '../../data/db';
-import { backupFileName, detectRestoreKind, exportBackup, importBackup, previewBackup, validateBackup, type BackupEnvelope } from '../../data/backup';
+import { backupFileName, detectRestoreKind, exportBackup, importBackup, isPreviewDay, previewBackup, validateBackup, type BackupEnvelope } from '../../data/backup';
 import { getOrCreateDeviceId } from '../../data/device';
 import { importLegacy, mapLegacy, validateLegacy, type LegacyExport } from '../../data/legacy-import';
 import { pickFile, shareOrDownload } from '../../platform/files';
@@ -9,8 +9,8 @@ import { recordError } from '../errorRing';
 import { go } from '../shell/router';
 import { errorMessage } from '../shell/errorMessage';
 
-type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; skipped: string[] }
-  | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; skipped: string[] };
+type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] }
+  | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] };
 
 function legacyPreview(data: LegacyExport): RestoreChoice {
   const rows = mapLegacy(data, { deviceId: 'preview', now: Date.now() });
@@ -18,11 +18,12 @@ function legacyPreview(data: LegacyExport): RestoreChoice {
   const days: string[] = [];
   for (const row of [...rows.cards, ...rows.deckProg, ...rows.puzzleRuns, ...rows.lessonProg, ...rows.plans]) {
     for (const [key, value] of Object.entries(row)) {
-      if ((key === 'dayKey' || key.endsWith('DayKey') || key === 'due' || key === 'last') && typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) days.push(value);
+      if ((key === 'dayKey' || key.endsWith('DayKey') || key === 'due' || key === 'last') && isPreviewDay(value)) days.push(value);
     }
   }
   days.sort();
-  return { kind: 'legacy', data, counts, first: days[0] ?? null, last: days.at(-1) ?? null, skipped: rows.skipped };
+  return { kind: 'legacy', data, counts, first: days[0] ?? null, last: days.at(-1) ?? null,
+    retired: rows.deckProg.filter(row => row.b === 99).length, skipped: rows.skipped };
 }
 
 export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
@@ -66,7 +67,8 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
         const checked = validateBackup(parsed);
         if (!checked.success || !checked.envelope) throw new Error(checked.errors.join('; '));
         const preview = previewBackup(checked.envelope);
-        setChoice({ kind, data: checked.envelope, counts: preview.counts, first: preview.earliestDayKey, last: preview.latestDayKey, skipped: [] });
+        setChoice({ kind, data: checked.envelope, counts: preview.counts, first: preview.earliestDayKey, last: preview.latestDayKey,
+          retired: preview.retired, skipped: [] });
       } else if (kind === 'legacy') {
         const checked = validateLegacy(parsed); if (!checked.success) throw new Error(checked.errors.join('; '));
         setChoice(legacyPreview(checked.data));
@@ -93,6 +95,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button></div>
     {choice && <div className="card preview" aria-label="Restore preview">
       <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${choice.first} to ${choice.last}` : 'No dated rows'}</p>
+      {choice.retired > 0 && <p>{choice.retired} retired</p>}
       <ul className="count-list">{Object.entries(choice.counts).map(([name, count]) => <li key={name}><span>{name}</span><strong>{count}</strong></li>)}</ul>
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}
       <p>{choice.kind === 'backup' ? 'This replaces current app data.' : 'This adds legacy data to this device.'}</p>

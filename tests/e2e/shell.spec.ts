@@ -22,6 +22,11 @@ test('generator check displays five boards and the case from both threads', asyn
   await page.goto('/#mind');
   await page.getByRole('button', { name: 'Generator check' }).click();
   await expect(page.getByRole('status')).toHaveText('Match', { timeout: 60000 });
+  const speed = page.getByRole('heading', { name: 'Number Path (hard) speed' }).locator('..');
+  await expect(speed).toContainText('20 boards', { timeout: 60000 });
+  await expect(speed).toContainText(/p50: .* ms/);
+  await expect(speed).toContainText(/p95: .* ms · 300 ms budget · (within budget|over budget)/);
+  await expect(speed).toContainText(/max: .* ms/);
   for (const source of ['Main thread results', 'Worker results']) {
     const region = page.getByLabel(source);
     await expect(region.locator('article')).toHaveCount(6);

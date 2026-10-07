@@ -1,0 +1,1263 @@
+{
+  "id": "deck.greene",
+  "kind": "deck",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Read People",
+  "author": "legacy",
+  "createdAt": "2026-10-07T00:00:00.000Z",
+  "body": {
+    "topics": {
+      "4": {
+        "name": "Always say less than necessary",
+        "short": "Say less"
+      },
+      "12": {
+        "name": "Selective honesty and generosity",
+        "short": "Gift, then ask"
+      },
+      "14": {
+        "name": "Pose as a friend, work as a spy",
+        "short": "Friendly spy"
+      },
+      "19": {
+        "name": "Know who you're dealing with",
+        "short": "Know the type"
+      },
+      "40": {
+        "name": "Despise the free lunch",
+        "short": "No free lunch"
+      }
+    },
+    "tactics": {
+      "4": "Silence made you talk (Law 4)",
+      "12": "Gift first, then the ask (Law 12)",
+      "14": "Friendly questions to pull out information (Law 14)",
+      "40": "Free offer with a hidden price (Law 40)"
+    },
+    "types": [
+      "Proud",
+      "Insecure",
+      "Suspicious",
+      "Long memory",
+      "Unbothered"
+    ],
+    "cards": [
+      {
+        "id": "l4-1",
+        "topic": "4",
+        "order": 1,
+        "front": "Law 4 in one line?",
+        "back": "The more you say, the more common you seem and the more likely you say something foolish. Say less."
+      },
+      {
+        "id": "l4-2",
+        "topic": "4",
+        "order": 2,
+        "front": "Picture: a legend shrinking as he talks (Coriolanus). Which point?",
+        "back": "Mystery. People fill the gaps about you generously; every extra sentence swaps that legend for the real, smaller you."
+      },
+      {
+        "id": "l4-3",
+        "topic": "4",
+        "order": 3,
+        "front": "Picture: a king saying \"I shall see.\" Why does silence work?",
+        "back": "People need to know what you think. A short answer plus a pause makes them rush to fill it, and they reveal their aims and weak spots."
+      },
+      {
+        "id": "l4-4",
+        "topic": "4",
+        "order": 4,
+        "front": "Picture: a broken rope (Ryleyev). Which point?",
+        "back": "Words can't be taken back. Be most careful with sarcasm."
+      },
+      {
+        "id": "l4-5",
+        "topic": "4",
+        "order": 5,
+        "front": "Picture: handles sewn onto your back. Which point?",
+        "back": "Information is leverage. Every plan, weakness or want you share is a handle someone else can hold."
+      },
+      {
+        "id": "l4-6",
+        "topic": "4",
+        "order": 6,
+        "front": "Picture: a court jester. What's the reversal of Law 4?",
+        "back": "Silence can backfire. With seniors it can look suspicious or insecure, and vague answers invite wrong guesses. It's a dial, not a vow of silence."
+      },
+      {
+        "id": "l4-7",
+        "topic": "4",
+        "order": 7,
+        "front": "Law 4 holds back ___, not ___.",
+        "back": "Information, not warmth. You can be fully friendly and still not hand over plans, marks or feelings on day one."
+      },
+      {
+        "id": "l4-8",
+        "topic": "4",
+        "order": 8,
+        "front": "Someone goes quiet after your answer and you feel the itch to add more. Your move?",
+        "back": "Notice the itch: it's the trap. Answer briefly, ask one question back, and sit through the pause."
+      },
+      {
+        "id": "l12-1",
+        "topic": "12",
+        "order": 1,
+        "front": "Law 12 in one line?",
+        "back": "One honest-looking move and a few gifts can buy trust that covers many dishonest ones."
+      },
+      {
+        "id": "l12-2",
+        "topic": "12",
+        "order": 2,
+        "front": "What did Victor Lustig do to Al Capone?",
+        "back": "Borrowed $50,000, locked it away, then returned it untouched: \"the deal fell through.\" Capone, stunned by the honesty, gave him $5,000, which was the con all along."
+      },
+      {
+        "id": "l12-3",
+        "topic": "12",
+        "order": 3,
+        "front": "Law 12 · Reciprocity: what does a gift do?",
+        "back": "It makes you feel you owe, even when you never asked for it. A free Coke got people buying about twice as many raffle tickets."
+      },
+      {
+        "id": "l12-4",
+        "topic": "12",
+        "order": 4,
+        "front": "Law 12 · Someone you met yesterday shares a big secret. What's the pull, and your move?",
+        "back": "Disclosure pulls disclosure: you feel close and want to share back. Listen kindly, keep it private, and don't match it with a big secret of your own yet."
+      },
+      {
+        "id": "l12-5",
+        "topic": "12",
+        "order": 5,
+        "front": "Law 12 · What is the halo?",
+        "back": "Once you label someone \"honest\", you read everything they do after that through the label. One honest act colours the next ten."
+      },
+      {
+        "id": "l12-6",
+        "topic": "12",
+        "order": 6,
+        "front": "Law 12 · What's the real test of someone's generosity?",
+        "back": "How they handle your no. Same warmth: probably genuine. Sulking or \"after everything I did\": the gifts were a down payment."
+      },
+      {
+        "id": "l12-7",
+        "topic": "12",
+        "order": 7,
+        "front": "Law 12 · The balance?",
+        "back": "Most generous people are simply generous. Generosity is a nice thing, not a password. Suspecting everyone makes you the suspicious type."
+      },
+      {
+        "id": "l12-8",
+        "topic": "12",
+        "order": 8,
+        "front": "You say no, and they guilt-trip you about past favours. Your exact line?",
+        "back": "\"I'm grateful for the help, and my answer is still no.\" Keep the gift and the ask separate."
+      },
+      {
+        "id": "l14-1",
+        "topic": "14",
+        "order": 1,
+        "front": "Law 14 in one line?",
+        "back": "People guard their words in meetings, not over chai. The easiest information to collect is handed over in friendly chats."
+      },
+      {
+        "id": "l14-2",
+        "topic": "14",
+        "order": 2,
+        "front": "What did Kevin Mitnick show about security?",
+        "back": "Much of his access came from friendly, confident phone calls, not clever code. The weakest link is the person, not the system."
+      },
+      {
+        "id": "l14-3",
+        "topic": "14",
+        "order": 3,
+        "front": "Law 14 · Why do relaxed settings matter?",
+        "back": "In formal settings people filter what they say. In a canteen or hostel room, with someone laughing at their jokes, they don't."
+      },
+      {
+        "id": "l14-4",
+        "topic": "14",
+        "order": 4,
+        "front": "\"Your leader looks stressed, is he okay?\" from a rival. What's really happening?",
+        "back": "A question dressed as concern. You answer the feeling and forget it's a question about your team's weak spot."
+      },
+      {
+        "id": "l14-5",
+        "topic": "14",
+        "order": 5,
+        "front": "Law 14 · Why do people overshare to a good listener?",
+        "back": "Talking about yourself activates the brain's reward system; people even gave up money to do it. A good listener gets more than a good talker."
+      },
+      {
+        "id": "l14-6",
+        "topic": "14",
+        "order": 6,
+        "front": "Law 14 · What's the tell after a conversation?",
+        "back": "One-way flow. If they now know your plans, stack and marks, and you know nothing about them, you were the source."
+      },
+      {
+        "id": "l14-7",
+        "topic": "14",
+        "order": 7,
+        "front": "Law 14 · Where's the ethical line?",
+        "back": "Asking good questions and listening is fine; it's how you read people. Faking friendship to extract things is the line. Curious and real."
+      },
+      {
+        "id": "l14-8",
+        "topic": "14",
+        "order": 8,
+        "front": "What is the bounce?",
+        "back": "Answer warmly but generally, then return the question: \"Still deciding. What's your team picking?\" If they dodge yours while pushing theirs, it's a probe."
+      },
+      {
+        "id": "l19-1",
+        "topic": "19",
+        "order": 1,
+        "front": "Law 19 in one line?",
+        "back": "Before you joke about, criticise, compete with or trust someone, read who they are. Most people forget a slight; a few never do."
+      },
+      {
+        "id": "l19-2",
+        "topic": "19",
+        "order": 2,
+        "front": "The proud one: how do you spot them, and how do you handle them?",
+        "back": "Can't laugh at himself, must win every argument, mentions rank or status. Never correct him in public; present your idea as building on his so he keeps face."
+      },
+      {
+        "id": "l19-3",
+        "topic": "19",
+        "order": 3,
+        "front": "The insecure one: how do you spot them, and how do you handle them?",
+        "back": "Fishes for reassurance, reads rejection into small things (\"you didn't reply?\"), compares a lot. Never tease them; be clear and kind."
+      },
+      {
+        "id": "l19-4",
+        "topic": "19",
+        "order": 4,
+        "front": "The suspicious one: how do you spot them, and how do you handle them?",
+        "back": "\"What did you mean by that?\" Explains everyone's hidden motives. Don't join his complaints and don't argue; stay neutral and predictable."
+      },
+      {
+        "id": "l19-5",
+        "topic": "19",
+        "order": 5,
+        "front": "Picture: P quoting your first-sem joke word for word. Which type, and what do you never do?",
+        "back": "The long-memory one: calm in the moment, keeps a full record. Never humiliate him or go behind his back; repair mistakes early and privately."
+      },
+      {
+        "id": "l19-6",
+        "topic": "19",
+        "order": 6,
+        "front": "The unbothered one: how do you spot them, and how do you handle them?",
+        "back": "Doesn't care about status, ignores hints. Subtle moves bounce off; be direct: what you need, and by when."
+      },
+      {
+        "id": "l19-7",
+        "topic": "19",
+        "order": 7,
+        "front": "Your default rule until you've read someone?",
+        "back": "Praise in public, correct in private, no jokes at their expense, nothing said behind their back."
+      },
+      {
+        "id": "l19-8",
+        "topic": "19",
+        "order": 8,
+        "front": "How do you read someone's type without testing them yourself?",
+        "back": "Watch how they react when other people joke about them, correct them or ignore them. Watch, don't poke."
+      },
+      {
+        "id": "l40-1",
+        "topic": "40",
+        "order": 1,
+        "front": "Law 40 in one line?",
+        "back": "When something is free, find out who's paying. If you can't find anyone, it's you."
+      },
+      {
+        "id": "l40-2",
+        "topic": "40",
+        "order": 2,
+        "front": "How is a \"perfect\" free tip channel made?",
+        "back": "Tell half the members \"up\" and half \"down\", keep the half that saw the right call, repeat. After 5 calls, 320 of 10,240 have seen 5 for 5 by pure chance. They get the VIP pitch."
+      },
+      {
+        "id": "l40-3",
+        "topic": "40",
+        "order": 3,
+        "front": "Law 40 · What kinds of hidden price does \"free\" carry?",
+        "back": "An obligation, your attention, your data, or your money later."
+      },
+      {
+        "id": "l40-4",
+        "topic": "40",
+        "order": 4,
+        "front": "Law 40 · Why does Instagram cost you nothing?",
+        "back": "You're the product: advertisers buy your attention, so it's built to keep you scrolling. You pay in hours."
+      },
+      {
+        "id": "l40-5",
+        "topic": "40",
+        "order": 5,
+        "front": "Law 40 · A channel shows 15 winning trades in a row. What do you ask?",
+        "back": "What losing calls and other channels am I not being shown? Never trust a track record when you can't see the losers."
+      },
+      {
+        "id": "l40-6",
+        "topic": "40",
+        "order": 6,
+        "front": "Law 40 · Why pay your own way?",
+        "back": "Paying means owing nobody: no gratitude debt, no strings. It's the money version of Law 12."
+      },
+      {
+        "id": "l40-7",
+        "topic": "40",
+        "order": 7,
+        "front": "Law 40 · Why pay for quality?",
+        "back": "Free and cheap often cost more later. The free masterclass exists to sell you the ₹30,000 course."
+      },
+      {
+        "id": "l40-8",
+        "topic": "40",
+        "order": 8,
+        "front": "A senior keeps buying you dinner before club elections. Your line?",
+        "back": "\"I've got this one.\" Pay your share and owe nothing, without insulting him. Decide your vote on merit."
+      }
+    ],
+    "items": [
+      {
+        "id": "sc-4-1",
+        "t": "scenario",
+        "d": 950,
+        "scene": "Family wedding · Rajkot",
+        "text": "At a cousin's wedding, an uncle asks loudly, in front of six relatives: “So what's your CGPA? And what package will mechanical get you? My son got 32 LPA.” Everyone turns to look at you.",
+        "q": "Best move?",
+        "opts": [
+          "Give your exact CGPA and explain why mechanical packages are lower",
+          "“Doing well, and enjoying it. How's he finding the new job?”",
+          "“Your son should lend you some of that package, uncle.”",
+          "Walk away without answering"
+        ],
+        "a": 1,
+        "why": "Short, warm, then the question goes back to him. Exact numbers invite comparison in front of everyone, and the sarcastic line would be repeated at family functions for years: words can't be taken back. Walking away turns it into a scene.",
+        "topic": "4"
+      },
+      {
+        "id": "sc-4-2",
+        "t": "scenario",
+        "d": 1100,
+        "scene": "Trading club meeting",
+        "text": "The club president presents a plan for a ₹5,000 live-money trading contest. He turns to you: “Jenil, thoughts?” You see one real risk: nobody has checked the college's rules on money contests.",
+        "q": "Best move?",
+        "opts": [
+          "Stay quiet. Law 4 says say less.",
+          "Give a five-minute critique of every flaw you can think of",
+          "“One risk: we should check the college's rules on money contests first. I can look into it this week.”",
+          "“Whatever you think is best.”"
+        ],
+        "a": 2,
+        "why": "Law 4 is a dial, not a vow of silence. When a senior asks you directly, silence or “whatever you think” looks insecure (that's the reversal). One clear point plus an offer to help is short and strong. A long critique buries your best point and puts him on the defensive.",
+        "topic": "4"
+      },
+      {
+        "id": "sc-4-3",
+        "t": "scenario",
+        "d": 1000,
+        "scene": "Internship interview",
+        "text": "You finish explaining your project. The interviewer says nothing and just looks at you. Five seconds pass. You feel a strong urge to keep talking.",
+        "q": "Best move?",
+        "opts": [
+          "Keep talking and add every detail you can think of",
+          "Stay calm. If the pause goes on, add one line: “Happy to go deeper on any part.”",
+          "Ask, “Was that wrong?”",
+          "Switch to a safer answer"
+        ],
+        "a": 1,
+        "why": "Silence pulls people into over-talking and revealing weak spots (Law 4). But total silence with a senior can look unsure, so one calm line hands the turn back without filling the gap with nerves.",
+        "topic": "4"
+      },
+      {
+        "id": "sc-19-1",
+        "t": "scenario",
+        "d": 950,
+        "scene": "WhatsApp · midnight",
+        "text": "K, a batchmate who often asks “are you upset with me?”, messages: “saw your story at the café. didn't know you guys were going 🙂”. It was a last-minute plan. You didn't leave him out on purpose.",
+        "q": "Best reply?",
+        "opts": [
+          "“lol relax, it's not that deep”",
+          "“Last-minute plan, nothing personal. Coming next time? I'll add you to the group.”",
+          "Leave him on seen",
+          "Joke in the group chat about him being clingy"
+        ],
+        "a": 1,
+        "why": "K is the insecure type: he reads rejection into small things. Clear and kind settles it in one message. “Relax” dismisses the feeling, silence confirms his fear, and a public joke turns a small hurt into a grudge.",
+        "topic": "19"
+      },
+      {
+        "id": "sc-19-2",
+        "t": "scenario",
+        "d": 1050,
+        "scene": "Hackathon · group call",
+        "text": "M, a senior who mentions his JEE rank a lot and hates being corrected, wrote the login code. It has a bug that breaks your backend. He's on a group call with three juniors.",
+        "q": "Best move?",
+        "opts": [
+          "Point out the bug on the call so it gets fixed fast",
+          "After the call, message him: “Found the spot in login that needs one extra check. Want me to push it, or will you?”",
+          "Quietly rewrite his login code yourself",
+          "Tell the juniors the bug is his"
+        ],
+        "a": 1,
+        "why": "Proud type: never correct him in public. A private message that frames it as a small addition lets him keep face, and the bug still gets fixed today. Rewriting his code behind his back, or blaming him to juniors, is what he'd remember.",
+        "topic": "19"
+      },
+      {
+        "id": "sc-19-3",
+        "t": "scenario",
+        "d": 1100,
+        "scene": "Group project",
+        "text": "Anaya never argues in meetings and always says “it's fine.” Last week she calmly repeated, word for word, a comment you'd made about her slides two months ago. Today you find real errors in her section. It's due in two days.",
+        "q": "Best move?",
+        "opts": [
+          "Point out the errors in the group chat with screenshots",
+          "Message her privately, be specific and kind, and offer to fix it together",
+          "Quietly fix her section yourself and say nothing",
+          "Make a light joke about it in the next meeting"
+        ],
+        "a": 1,
+        "why": "Calm in the moment plus exact recall of old words: the long-memory type. A public correction or a joke becomes a stored grudge. A silent fix looks like going behind her back once she notices, and she will. Private, specific and kind fixes the errors without handing her ammunition.",
+        "topic": "19"
+      },
+      {
+        "id": "sc-12-1",
+        "t": "scenario",
+        "d": 1000,
+        "scene": "Trading club",
+        "text": "Vikram, a final-year senior you met at the trading club, has bought you lunch three times this week and sent you his notes for two tough courses without being asked. Today over chai he mentions the club's treasurer election next month: “juniors' votes basically decide it.”",
+        "q": "What's most likely going on?",
+        "opts": [
+          "He's simply a generous senior who likes you",
+          "He's building goodwill to collect your vote",
+          "He wants you as his trading partner",
+          "He's testing whether you can be trusted with money"
+        ],
+        "a": 1,
+        "why": "Sudden generosity aimed at people who have what he needs (votes), then he raises the election himself: favours first, then the ask. He may like you too; it can be both. Your move: thank him, pay for the next chai, and decide your vote on merit.",
+        "topic": "12"
+      },
+      {
+        "id": "sc-12-2",
+        "t": "scenario",
+        "d": 1000,
+        "scene": "Hostel · day 3",
+        "text": "Rahul, new on your floor, tells you on day 3: “Telling only you this: I failed a semester last year.” Ten minutes later he asks how your algo picks its trades and what returns it makes.",
+        "q": "Best move?",
+        "opts": [
+          "Share your strategy. He trusted you with a secret, so it's only fair.",
+          "Keep his secret, stay warm, and keep your strategy general: “Still testing it, honestly. What got you into trading?”",
+          "Tell him you don't trust him",
+          "Tell someone else his secret to see if he notices"
+        ],
+        "a": 1,
+        "why": "Disclosure pulls disclosure: his secret makes you feel you owe him one of yours. That pull is the trap. Be kind and keep his secret, but let your openness follow his track record, not his first move.",
+        "topic": "12"
+      },
+      {
+        "id": "sc-12-3",
+        "t": "scenario",
+        "d": 1100,
+        "scene": "Hostel room",
+        "text": "Your roommate has bought you food four times this week. He asks to borrow your bike for a weekend trip to Udaipur, and you say no because you need it for your internship commute. He says: “Wow. After all the times I paid for you?”",
+        "q": "Best reply?",
+        "opts": [
+          "Give him the bike. He has a point.",
+          "“I really appreciate the food, and I'll treat you this weekend. The bike's still a no, I need it for work.”",
+          "Transfer him the exact food money and stop talking to him",
+          "Apologise until he's okay with it"
+        ],
+        "a": 1,
+        "why": "Linking past favours to this ask shows they were a down payment, not gifts. That's the no-test. Keep the two separate: grateful for the food, still no on the bike. Paying it back coldly or cutting him off turns a small test into a war.",
+        "topic": "12"
+      },
+      {
+        "id": "sc-14-1",
+        "t": "scenario",
+        "d": 1050,
+        "scene": "Startup meetup · Ahmedabad",
+        "text": "Raghav, a friendly founder, spends twenty minutes with you. He laughs at your jokes and asks your algo's win rate, which broker API you use, and how you size positions. When you ask what his startup does, he says “fintech, still in stealth” and asks about your backtests.",
+        "q": "What's most likely going on?",
+        "opts": [
+          "He's shy about an early idea",
+          "He's collecting information for something of his own",
+          "He's about to offer you a job",
+          "He's just curious about trading"
+        ],
+        "a": 1,
+        "why": "One-way flow: every question pulls out how your system works, and he dodges every question back. That's a probe, whatever his reason. Bounce it (“Still early. What problem are you solving?”) and don't send backtests to someone who won't say what he's building.",
+        "topic": "14"
+      },
+      {
+        "id": "sc-14-2",
+        "t": "scenario",
+        "d": 1000,
+        "scene": "Hostel · 1 am",
+        "text": "A guy from another branch you met tonight asks which internships you applied to, what stipend you were offered, and who else from your class got shortlisted. Later he mentions he's applying to the same firm.",
+        "q": "He asks your stipend. Best reply?",
+        "opts": [
+          "Tell him; he's just making conversation",
+          "“Still waiting on the final offer, honestly. Where have you applied?”",
+          "“Why do you want to know?”",
+          "Say a higher number to look good"
+        ],
+        "a": 1,
+        "why": "Three questions about your position, from someone competing for the same seat: a probe. The bounce is warm, gives nothing useful, and turns the question around. “Why do you want to know?” is cold and starts a fight; a fake number is a lie that can come back.",
+        "topic": "14"
+      },
+      {
+        "id": "sc-14-3",
+        "t": "scenario",
+        "d": 1100,
+        "scene": "Family function",
+        "text": "An uncle who runs a rival consultancy is unusually friendly at a function. Over tea he asks which big clients your father is handling these days and what he charges them.",
+        "q": "Best reply?",
+        "opts": [
+          "Tell him; he's family",
+          "“Papa handles all that, honestly I don't follow it. How's your business going?”",
+          "“I can't tell you, that's confidential.”",
+          "Guess, so you don't look clueless"
+        ],
+        "a": 1,
+        "why": "Relaxed setting, friendly tone, questions that help him: Law 14. Pointing to your father is true, polite and gives nothing, and the question back keeps it warm. “That's confidential” is correct but announces that you see him as a threat, which a relative will remember.",
+        "topic": "14"
+      },
+      {
+        "id": "sc-40-1",
+        "t": "scenario",
+        "d": 950,
+        "scene": "Instagram DM",
+        "text": "A trading influencer with a Lamborghini in every reel invites you to a FREE 3-day masterclass: “Learn my 90% win-rate strategy.” Day 3 includes a “special offer for attendees only.”",
+        "q": "What's the real product?",
+        "opts": [
+          "The strategy taught in the three days",
+          "Your phone number, plus a big course sold to you on day 3",
+          "Charity for students",
+          "Networking with other traders"
+        ],
+        "a": 1,
+        "why": "When it's free, find who's paying. Events like this collect leads and sell the expensive course at the end. Also: anyone selling stock advice in India must be SEBI-registered. Check that before believing a single number.",
+        "topic": "40"
+      },
+      {
+        "id": "sc-40-2",
+        "t": "scenario",
+        "d": 1100,
+        "scene": "Senior's room",
+        "text": "A senior is upgrading his laptop and offers you his old one for free. Then he adds: “Just help me with my startup's backend when you get time. Nothing big.”",
+        "q": "Best move?",
+        "opts": [
+          "Take it. Free laptop.",
+          "“That's generous. Let me pay you a fair price for it, and I'm happy to help with the backend when I can.”",
+          "Refuse and tell him you see what he's doing",
+          "Take it and avoid him later"
+        ],
+        "a": 1,
+        "why": "“Nothing big” is an open-ended debt with no price on it. Paying a fair amount keeps you free to say no later, and you can still choose to help. Taking it and dodging him is the worst of both.",
+        "topic": "40"
+      },
+      {
+        "id": "sp-12-1",
+        "t": "spot",
+        "kind": "move",
+        "d": 950,
+        "who": "Aarav",
+        "sub": "Batchmate",
+        "msgs": [
+          [
+            "d",
+            "Monday"
+          ],
+          [
+            "t",
+            "brought you the notes from the class you missed 📒"
+          ],
+          [
+            "m",
+            "thanks bro, lifesaver"
+          ],
+          [
+            "d",
+            "Tuesday"
+          ],
+          [
+            "t",
+            "got you a chai too ☕"
+          ],
+          [
+            "d",
+            "Wednesday"
+          ],
+          [
+            "t",
+            "btw can you add my name to your mini-project? I'll help next time pakka"
+          ]
+        ],
+        "tell": 6,
+        "why": "Two favours you didn't ask for, then an ask much bigger than the favours: gift first, then the ask. Your line: “Thanks for the notes, really. The project's already submitted with our names though.”",
+        "topic": "12"
+      },
+      {
+        "id": "sp-12-2",
+        "t": "spot",
+        "kind": "move",
+        "d": 1050,
+        "who": "Mama",
+        "sub": "Uncle",
+        "msgs": [
+          [
+            "t",
+            "Beta, sent you ₹1,100 on UPI for Diwali 🪔"
+          ],
+          [
+            "m",
+            "Thank you mama! 🙏"
+          ],
+          [
+            "t",
+            "You are good with computers na"
+          ],
+          [
+            "t",
+            "Can you do my shop's GST filing this month? The CA is charging too much"
+          ]
+        ],
+        "tell": 3,
+        "why": "A gift, a compliment, then a job a professional charges for. It may be innocent family stuff, but notice the order: gift first, then the ask. Decide on the task itself, not on the ₹1,100.",
+        "topic": "12"
+      },
+      {
+        "id": "sp-14-1",
+        "t": "spot",
+        "kind": "move",
+        "d": 950,
+        "who": "Kunal",
+        "sub": "Rival team · hackathon",
+        "msgs": [
+          [
+            "t",
+            "yo great demo today 🔥"
+          ],
+          [
+            "t",
+            "what model are you guys using for the backend?"
+          ],
+          [
+            "t",
+            "and the dataset, scraped or API?"
+          ],
+          [
+            "m",
+            "thanks! still tweaking stuff"
+          ],
+          [
+            "t",
+            "haha cool, how many rows did you get?"
+          ]
+        ],
+        "tell": 4,
+        "why": "Praise, then three questions about your build, and he keeps pushing after your vague answer. Bounce it: “Depends on the day, haha. What are you guys building?”",
+        "topic": "14"
+      },
+      {
+        "id": "sp-14-2",
+        "t": "spot",
+        "kind": "move",
+        "d": 1050,
+        "who": "Neha",
+        "sub": "Internship batch",
+        "msgs": [
+          [
+            "t",
+            "heyy how was your HR round?"
+          ],
+          [
+            "t",
+            "did they say the stipend?"
+          ],
+          [
+            "m",
+            "went okay! how was yours?"
+          ],
+          [
+            "t",
+            "haha mine is next week. did they ask DSA or projects?"
+          ],
+          [
+            "t",
+            "and who else from your college got shortlisted?"
+          ]
+        ],
+        "tell": 3,
+        "why": "You asked one question back. She dodged it and asked two more. One-way flow is the tell. Match what she shares: if she shares nothing, you share little.",
+        "topic": "14"
+      },
+      {
+        "id": "sp-40-1",
+        "t": "spot",
+        "kind": "move",
+        "d": 900,
+        "who": "Stock Guru Official",
+        "sub": "Telegram channel",
+        "msgs": [
+          [
+            "t",
+            "FREE for members: tomorrow's jackpot stock 🚀"
+          ],
+          [
+            "t",
+            "Buy XYZ at 9:15 sharp. Target 40%"
+          ],
+          [
+            "t",
+            "VIP group ₹1,999 today only (₹4,999 tomorrow)"
+          ]
+        ],
+        "tell": 2,
+        "why": "Free tips, then a VIP upsell with a fake deadline. The free tip is the second trap: they buy XYZ before telling thousands of members, then sell to all of you at 9:15. You're the product.",
+        "topic": "40"
+      },
+      {
+        "id": "sp-40-2",
+        "t": "spot",
+        "kind": "move",
+        "d": 1000,
+        "who": "Siddharth",
+        "sub": "College senior",
+        "msgs": [
+          [
+            "t",
+            "Bro free pass for the Ahmedabad startup summit, normally ₹2,000 🎟️"
+          ],
+          [
+            "t",
+            "you just sign up with 5 friends using my code"
+          ],
+          [
+            "t",
+            "and post a story tagging them"
+          ]
+        ],
+        "tell": 1,
+        "why": "The pass is free because you pay with your friends' sign-ups and your followers' attention. Fine if you want to go, but know the price.",
+        "topic": "40"
+      },
+      {
+        "id": "sp-4-1",
+        "t": "spot",
+        "kind": "move",
+        "d": 1000,
+        "who": "Landlord uncle",
+        "sub": "PG room rent",
+        "msgs": [
+          [
+            "m",
+            "Uncle, can we do ₹6,500 a month for the room?"
+          ],
+          [
+            "t",
+            "Hmm."
+          ],
+          [
+            "m",
+            "I mean, I could do ₹7,000 if needed"
+          ],
+          [
+            "t",
+            "..."
+          ],
+          [
+            "m",
+            "okay ₹7,500 is fine, final"
+          ]
+        ],
+        "tell": 3,
+        "why": "He said almost nothing, and you raised your own offer twice. Silence makes people fill the gap. Counter: say your number, then wait. Whoever speaks next usually gives something up.",
+        "topic": "4"
+      },
+      {
+        "id": "sp-4-2",
+        "t": "spot",
+        "kind": "move",
+        "d": 1050,
+        "who": "Riya",
+        "sub": "Team lead",
+        "msgs": [
+          [
+            "m",
+            "so that's the plan, I think it can work"
+          ],
+          [
+            "t",
+            "ok"
+          ],
+          [
+            "m",
+            "I mean the auth part is still weak tbh"
+          ],
+          [
+            "m",
+            "and I haven't tested it at scale"
+          ],
+          [
+            "m",
+            "and honestly not sure about the timeline either"
+          ]
+        ],
+        "tell": 1,
+        "why": "One “ok” and you listed three weak spots nobody asked about. Her short reply wasn't a verdict; you treated the silence as one. Next time, after “ok”, ask “Anything you'd change?” and let her talk.",
+        "topic": "4"
+      },
+      {
+        "id": "sp-19-1",
+        "t": "spot",
+        "kind": "type",
+        "type": "Long memory",
+        "avoid": [
+          "Unbothered"
+        ],
+        "d": 1000,
+        "who": "Arjun",
+        "sub": "Batchmate",
+        "msgs": [
+          [
+            "d",
+            "In class · September"
+          ],
+          [
+            "m",
+            "bro your slides looked like a 2010 PowerPoint 😂"
+          ],
+          [
+            "t",
+            "haha it's fine"
+          ],
+          [
+            "d",
+            "Group chat · two months later"
+          ],
+          [
+            "t",
+            "remember when Jenil said my slides looked like a 2010 PowerPoint? 🙂"
+          ]
+        ],
+        "tell": 4,
+        "why": "Calm in the moment, then your exact words two months later: the long-memory type. Never humiliate him, and repair slips early and privately: “Hey, that joke was dumb, your slides were fine.”",
+        "topic": "19"
+      },
+      {
+        "id": "sp-19-2",
+        "t": "spot",
+        "kind": "type",
+        "type": "Insecure",
+        "avoid": [
+          "Suspicious"
+        ],
+        "d": 950,
+        "who": "Karan",
+        "sub": "Friend",
+        "msgs": [
+          [
+            "t",
+            "you replied to everyone in the group but me"
+          ],
+          [
+            "t",
+            "are you upset with me?"
+          ],
+          [
+            "t",
+            "it's fine if you are, just tell me"
+          ]
+        ],
+        "tell": 1,
+        "why": "He reads rejection into a missed reply and asks for reassurance: insecure. Be clear and kind (“Not upset at all, just missed it. What's up?”), and never tease this type.",
+        "topic": "19"
+      },
+      {
+        "id": "sp-19-3",
+        "t": "spot",
+        "kind": "type",
+        "type": "Proud",
+        "avoid": [
+          "Insecure"
+        ],
+        "d": 1050,
+        "who": "Mihir",
+        "sub": "Project partner",
+        "msgs": [
+          [
+            "m",
+            "pushed a fix for the sorting bug, works now"
+          ],
+          [
+            "t",
+            "It works but I would never write it like that"
+          ],
+          [
+            "t",
+            "I had AIR 2,400, I know how to structure code"
+          ],
+          [
+            "t",
+            "We'll use my approach"
+          ]
+        ],
+        "tell": 2,
+        "why": "Drops his rank, has to win, can't accept your fix: proud. Don't fight him in public. Build on his idea: “Your structure plus my fix for the edge case?” He keeps face and the bug stays fixed.",
+        "topic": "19"
+      },
+      {
+        "id": "sp-19-4",
+        "t": "spot",
+        "kind": "type",
+        "type": "Suspicious",
+        "avoid": [
+          "Insecure"
+        ],
+        "d": 1050,
+        "who": "Sahil",
+        "sub": "Classmate",
+        "msgs": [
+          [
+            "m",
+            "nice presentation today!"
+          ],
+          [
+            "t",
+            "what do you mean by “nice”?"
+          ],
+          [
+            "t",
+            "everyone says things to me with some hidden meaning"
+          ],
+          [
+            "t",
+            "the prof is clearly against me too"
+          ]
+        ],
+        "tell": 1,
+        "why": "Reads a hidden motive into a compliment and thinks people are against him: suspicious. Stay neutral and predictable. Don't join his theories about the prof, and don't argue with them either.",
+        "topic": "19"
+      },
+      {
+        "id": "mm-1",
+        "t": "mystery",
+        "d": 1100,
+        "title": "The missing pen drive",
+        "text": "Your team's pen drive, holding the final code, sat on Desk 3 in the CAD lab. Meera says it was there when she sat down at 2:00. At 2:30 it was gone. The lab has one door, and a camera covers it. Between 2:00 and 2:30 the camera shows only Kabir from a rival team coming in (2:10) and going out (2:20). Meera stayed inside the whole time with headphones on.",
+        "clues": [
+          "The lab PC log shows the pen drive was plugged into PC-7 at 2:24 and its files were copied.",
+          "PC-7 is the computer at Meera's seat.",
+          "Aarav was at the canteen from 1:55 to 2:40.",
+          "Rohan says he was in the library; the register shows him signing in at 2:35."
+        ],
+        "q": "Who took the pen drive?",
+        "opts": [
+          "Aarav",
+          "Meera",
+          "Kabir",
+          "Rohan"
+        ],
+        "a": 1,
+        "hint": "One door, on camera. Who was inside the lab at 2:24?",
+        "why": "Only Kabir and Meera were in the lab, and Kabir left at 2:20. At 2:24 the drive was copied on Meera's own PC. Rohan's gap is the red herring: he never came through the only door."
+      },
+      {
+        "id": "mm-2",
+        "t": "mystery",
+        "d": 1050,
+        "title": "The wedding envelope",
+        "text": "At a cousin's wedding, a gift envelope with ₹21,000 vanished from the gift table between 8:00 and 8:15 pm. The table stands a few steps from the stage, where the photographer was taking family group photos.",
+        "clues": [
+          "Photos taken at 8:05, 8:10 and 8:14 all show cousin Nikhil on stage.",
+          "Paresh uncle is in the 8:05 and 8:14 photos, but missing from the 8:10 one.",
+          "Ten guests saw Mahesh the caterer in the kitchen tent, far from the stage, the whole time.",
+          "Sunny the DJ was taking requests by hand, and the music never stopped."
+        ],
+        "q": "Who took the envelope?",
+        "opts": [
+          "Nikhil",
+          "Paresh uncle",
+          "Mahesh",
+          "Sunny"
+        ],
+        "a": 1,
+        "hint": "Who is missing from one of the photos?",
+        "why": "Nikhil is in every photo, Mahesh has ten witnesses, and Sunny couldn't leave the booth without the music stopping. Paresh uncle is the only one who disappears, in the 8:10 photo, and the table is a few steps from the stage."
+      },
+      {
+        "id": "mm-3",
+        "t": "mystery",
+        "d": 1150,
+        "title": "The leaked paper",
+        "text": "At 9:47 pm, a photo of the Thermodynamics mid-sem paper appeared in a WhatsApp group. In the photo, the paper lies on a desk next to a blue coffee mug, and behind it a wall calendar shows OCTOBER. Four people had access to the paper that evening.",
+        "clues": [
+          "Professor Desai never flips her office calendar. It still shows September.",
+          "TA Sneha printed the papers at 6 pm. Her desk has a red mug she never lets anyone use.",
+          "TA Arjun's desk has a blue mug, and his calendar is up to date.",
+          "Ramesh bhai, the peon, uses a basic keypad phone with no camera."
+        ],
+        "q": "Whose desk was the photo taken at?",
+        "opts": [
+          "Ramesh bhai",
+          "Sneha",
+          "Arjun",
+          "Professor Desai"
+        ],
+        "a": 2,
+        "hint": "Match the mug colour and the calendar month.",
+        "why": "The photo needs a blue mug and a calendar on October. Desai's calendar shows September, Sneha's mug is red, and Ramesh bhai's phone has no camera. Only Arjun's desk matches. Sneha printing the papers is the red herring: opportunity isn't proof."
+      },
+      {
+        "id": "mm-4",
+        "t": "mystery",
+        "d": 1200,
+        "title": "The midnight Maggi",
+        "text": "Someone finished the floor's shared Maggi stash at 1 am. Four roommates were awake, and each says one thing. Exactly one of them is lying, and the liar is the one who ate it.",
+        "clues": [
+          "Dev: “Ishaan ate it.”",
+          "Ishaan: “Dev is lying.”",
+          "Karan: “I didn't eat it.”",
+          "Yash: “It wasn't Ishaan.”"
+        ],
+        "q": "Who ate the Maggi?",
+        "opts": [
+          "Dev",
+          "Ishaan",
+          "Karan",
+          "Yash"
+        ],
+        "a": 0,
+        "hint": "Dev and Ishaan can't both be telling the truth. Try each as the liar.",
+        "why": "Dev and Ishaan contradict each other, so one of them is the liar. If Ishaan were lying, Dev's claim would be true, which makes Yash a liar too: two liars. So Dev is the liar, everyone else is truthful, and the liar ate it."
+      },
+      {
+        "id": "mm-5",
+        "t": "mystery",
+        "d": 1100,
+        "title": "The leaked screenshot",
+        "text": "At 11:42 pm someone screenshotted the friends' group chat and posted it on a public story. The screenshot's status bar shows three things: dark mode, a Jio signal, and 23% battery.",
+        "clues": [
+          "Dev uses an iPhone in light mode.",
+          "Priya's phone is in dark mode, on Airtel.",
+          "Sameer's phone (dark mode, Jio) sat on charge at 100% all night.",
+          "At 11:30 Tanvi (dark mode, Jio) said she was on 25% and asked for a charger. Nobody had one."
+        ],
+        "q": "Who took the screenshot?",
+        "opts": [
+          "Dev",
+          "Priya",
+          "Sameer",
+          "Tanvi"
+        ],
+        "a": 3,
+        "hint": "Check each person against the three things in the status bar.",
+        "why": "Dark mode rules out Dev, Jio rules out Priya, and 23% rules out Sameer, who was at 100%. Tanvi was on 25% at 11:30 with no charger, so 23% at 11:42 fits."
+      },
+      {
+        "id": "tz-1",
+        "t": "teaser",
+        "d": 900,
+        "text": "A stock rises 10% on Monday and falls 10% on Tuesday. Overall it is…",
+        "opts": [
+          "Back where it started",
+          "Down 1%",
+          "Up 1%",
+          "Down 10%"
+        ],
+        "a": 1,
+        "hint": "Start with ₹100.",
+        "why": "₹100 → ₹110 → ₹99. The 10% fall is taken from a bigger number than the 10% rise was, so it's down 1%."
+      },
+      {
+        "id": "tz-2",
+        "t": "teaser",
+        "d": 950,
+        "text": "A portfolio falls 50%. What gain does it need to get back to where it started?",
+        "opts": [
+          "50%",
+          "75%",
+          "100%",
+          "150%"
+        ],
+        "a": 2,
+        "hint": "Start with ₹100.",
+        "why": "₹100 → ₹50. Getting from ₹50 back to ₹100 means doubling: a 100% gain. That's why traders obsess over cutting losses."
+      },
+      {
+        "id": "tz-3",
+        "t": "teaser",
+        "d": 1000,
+        "text": "A strategy wins 60% of its trades. Each win makes ₹100; each loss costs ₹200. On average, per trade, it…",
+        "opts": [
+          "Makes ₹20",
+          "Loses ₹20",
+          "Makes ₹40",
+          "Breaks even"
+        ],
+        "a": 1,
+        "hint": "Add up chance × payoff for wins and losses.",
+        "why": "0.6 × ₹100 − 0.4 × ₹200 = ₹60 − ₹80 = −₹20. A high win rate means nothing without the size of the wins and losses."
+      },
+      {
+        "id": "tz-4",
+        "t": "teaser",
+        "d": 950,
+        "text": "A bat and a ball cost ₹110 together. The bat costs ₹100 more than the ball. How much is the ball?",
+        "opts": [
+          "₹10",
+          "₹5",
+          "₹1",
+          "₹55"
+        ],
+        "a": 1,
+        "hint": "Try ₹10. What would the bat cost?",
+        "why": "If the ball is x, the bat is x + 100, so 2x + 100 = 110 and x = ₹5. The fast answer, ₹10, makes the bat only ₹90 more."
+      },
+      {
+        "id": "tz-5",
+        "t": "teaser",
+        "d": 1000,
+        "text": "A patch of lily pads doubles in size every day. It covers the whole lake on day 48. On which day did it cover half the lake?",
+        "opts": [
+          "Day 24",
+          "Day 47",
+          "Day 36",
+          "Day 46"
+        ],
+        "a": 1,
+        "hint": "Go back one day.",
+        "why": "It doubles every day, so one day before it covered the lake, it covered half: day 47."
+      },
+      {
+        "id": "tz-6",
+        "t": "teaser",
+        "d": 1000,
+        "text": "5 machines take 5 minutes to make 5 widgets. How long do 100 machines take to make 100 widgets?",
+        "opts": [
+          "100 min",
+          "20 min",
+          "5 min",
+          "1 min"
+        ],
+        "a": 2,
+        "hint": "How long does one machine take to make one widget?",
+        "why": "Each machine makes one widget in 5 minutes. 100 machines working at once make 100 widgets in the same 5 minutes."
+      },
+      {
+        "id": "tz-7",
+        "t": "teaser",
+        "d": 1050,
+        "text": "You flip a fair coin until you get heads. On average, how many flips does it take?",
+        "opts": [
+          "1",
+          "1.5",
+          "2",
+          "3"
+        ],
+        "a": 2,
+        "hint": "If something has a 1-in-n chance each try, it takes n tries on average.",
+        "why": "Each flip has a ½ chance, so on average it takes 1 ÷ ½ = 2 flips."
+      },
+      {
+        "id": "tz-8",
+        "t": "teaser",
+        "d": 1150,
+        "text": "Game show: three doors, a car behind one. You pick door 1. The host, who knows where the car is, always opens a door with a goat, here door 3, and offers you door 2 instead. If you switch, your chance of the car is…",
+        "opts": [
+          "1/2",
+          "1/3",
+          "2/3",
+          "No difference"
+        ],
+        "a": 2,
+        "hint": "How often was your first pick wrong?",
+        "why": "Your first pick is right 1/3 of the time. The other 2/3 of the time the car is behind one of the other doors, and the host has just shown you which one. Switching wins 2/3."
+      },
+      {
+        "id": "tz-9",
+        "t": "teaser",
+        "d": 1100,
+        "text": "How many people do you need in a room for about a 50% chance that two of them share a birthday?",
+        "opts": [
+          "23",
+          "60",
+          "183",
+          "365"
+        ],
+        "a": 0,
+        "hint": "Count pairs of people, not people.",
+        "why": "23 people make 253 pairs, and each pair has a small chance of matching. Together that's about a 50.7% chance of at least one shared birthday."
+      },
+      {
+        "id": "tz-10",
+        "t": "teaser",
+        "d": 1200,
+        "text": "A disease affects 1 in 100 people. A test is 99% accurate for sick and healthy people alike. You test positive. Roughly what's the chance you have it?",
+        "opts": [
+          "99%",
+          "90%",
+          "50%",
+          "1%"
+        ],
+        "a": 2,
+        "hint": "Imagine 10,000 people and count the positive tests.",
+        "why": "Of 10,000 people, 100 are sick and 99 of them test positive. Of the 9,900 healthy, 1% (99) also test positive. So 99 of 198 positives are sick: 50%. One signal is weak evidence when the thing is rare. Same with reading people."
+      },
+      {
+        "id": "tz-11",
+        "t": "teaser",
+        "d": 1100,
+        "text": "32 fund managers pick stocks by flipping coins. After 5 years, how many would you expect to have beaten the market every single year?",
+        "opts": [
+          "0",
+          "1",
+          "5",
+          "16"
+        ],
+        "a": 1,
+        "hint": "Halve it five times.",
+        "why": "Each year half get lucky: 32 → 16 → 8 → 4 → 2 → 1. One “genius” with a perfect record, from pure chance. That's survivorship bias, and it's how tip channels are made (Law 40)."
+      },
+      {
+        "id": "tz-12",
+        "t": "teaser",
+        "d": 1150,
+        "text": "You roll a die and win that many rupees. You may reroll once, but then you must keep the second roll. Playing smart, what's your average win?",
+        "opts": [
+          "₹3.50",
+          "₹4.00",
+          "₹4.25",
+          "₹4.50"
+        ],
+        "a": 2,
+        "hint": "Keep a roll only if it beats the average of a fresh roll (3.5).",
+        "why": "Reroll on 1, 2 or 3. Half the time you keep 4, 5 or 6 (average 5); half the time you reroll (average 3.5). (5 + 3.5) ÷ 2 = ₹4.25."
+      },
+      {
+        "id": "tz-13",
+        "t": "teaser",
+        "d": 1050,
+        "text": "What's the angle between the hour and minute hands at 3:15?",
+        "opts": [
+          "0°",
+          "7.5°",
+          "15°",
+          "22.5°"
+        ],
+        "a": 1,
+        "hint": "The hour hand moves too.",
+        "why": "The minute hand points at 3. The hour hand has moved a quarter of the way from 3 to 4, and a quarter of 30° is 7.5°. So they're 7.5° apart."
+      }
+    ]
+  }
+}
