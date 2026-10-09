@@ -16,7 +16,7 @@ export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown
 }
 
 export const PP_FORMAT_VERSION = 1;
-export const APP_VERSION = '0.1.0';
+export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
 
 const dexieSchema = v.object({
   formatName: v.literal('dexie'),

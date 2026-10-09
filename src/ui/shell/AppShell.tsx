@@ -11,6 +11,7 @@ import { Ground } from '../screens/Ground';
 import { route, tabOf } from './router';
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
+import { UpdateBar } from './UpdateBar';
 
 export function AppShell() {
   const [path, setPath] = useState(route);
@@ -18,7 +19,9 @@ export function AppShell() {
   const appearance = useAppearance();
   useEffect(() => { const update = () => setPath(route()); window.addEventListener('hashchange', update); void requestPersist(); return () => window.removeEventListener('hashchange', update); }, []);
   const tab = tabOf(path);
-  return <div className="app-shell"><header className="topbar"><h1 className="brand"><span aria-hidden="true" className="slash">/</span> NANDI</h1><span className="top-date">{today}</span></header>
+  return <div className="app-shell">
+    <UpdateBar />
+    <header className="topbar"><h1 className="brand"><span aria-hidden="true" className="slash">/</span> NANDI</h1><span className="top-date">{today}</span></header>
     <main id="main" className="content">{path === 'ground/backup' ? <Backup onRestored={appearance.reload} /> : path === 'mind/generator' ? <GeneratorCheck /> :
       tab === 'Today' ? <Today /> : tab === 'Tasks' ? <Tasks /> : tab === 'Train' ? <Train /> : tab === 'Mind' ? <Mind /> :
       <section className="screen"><p className="eyebrow">The Proving Ground</p><h1>Ground</h1><Ground {...appearance} /></section>}</main>

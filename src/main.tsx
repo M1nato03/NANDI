@@ -21,7 +21,4 @@ if (import.meta.env.VITE_E2E === '1' && new URLSearchParams(location.search).has
   void import('./data/backup/e2e-hook');
 }
 
-// The APK must skip service worker registration when Capacitor is added.
-if (import.meta.env.PROD) {
-  void import('virtual:pwa-register').then(({ registerSW }) => registerSW());
-}
+// Registration is now handled by UpdateBar.tsx so it can show the UI.
