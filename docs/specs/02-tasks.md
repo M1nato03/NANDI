@@ -69,7 +69,7 @@ The day boundary is **4:00 am** (`dayKey`). There is **no silent rollover and no
 - **Auto-raise** (keeps it "not too strict" automatically): if the budget was exceeded in **3 or more of the last 4 weeks**, raise it by 2, up to the automatic maximum of 12. **The lookback restarts after a raise.** Tell him neutrally: "Budget raised to 9. Plans should fit real life."
 - **Stepping down:** at a season start, if he was under budget in ≥3 of the last 4 weeks, offer (don't force) "Lower the budget by 1?".
 - **Bounds:** a `rules` pack can set the budget between 3 and 15. Automatic logic stays within 5–12.
-- **Economic effect of postponing:** the task loses its ×1.5 first-day bonus. A task done after ≥2 postpones may earn the unannounced Clutch bonus, which is always smaller than the ×1.5 it lost (see `05-economy.md`). So postponing never pays.
+- **Economic effect of postponing:** the task loses its ×1.5 first-day bonus. A task done after ≥2 postpones may earn the unannounced Clutch flat bonus (changed 2026-10-08 by the owner). So postponing never pays.
 - **Checkpoints:** postponing one moves only that checkpoint, then offers "Re-space the remaining checkpoints?".
 
 ## 4. Splitting
@@ -79,7 +79,7 @@ The day boundary is **4:00 am** (`dayKey`). There is **no silent rollover and no
   - The subtasks **share the parent's XP pro-rata by estimate**, so their total equals the parent's size XP.
   - They **inherit `firstScheduledDayKey`**, so splitting can't regain a lost ×1.5.
   - **Ladder position:** subtasks of a split made at the #3 sheet start with `postponeCount = 2`, so their next postpone shows the choice sheet again and the one after goes to Someday. Subtasks of a split made earlier inherit the parent's count.
-  - Clutch on a subtask is 25% of its `xpShare`.
+  - Clutch on a subtask is the flat clutch bonus (changed 2026-10-08 by the owner).
   - The parent becomes a container: it's done when all its subtasks are done or dropped.
 
 ## 5. Screens

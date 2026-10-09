@@ -135,7 +135,7 @@ export const RULES = {
 |---|---|---|---|
 | Tasks | Done (S/M/L) | 10/20/35 | Uses `plannedSize`. ×1.5 if done on `firstScheduledDayKey`. Tasks beyond the 8th done that day earn ×0.5. **Subtasks from a split share the parent's XP pro-rata by estimate (`xpShare`)** and inherit `firstScheduledDayKey`. Creation-time splits share a pool of `round(35 × estimateMin / 90)` (see 02-tasks §4) |
 | Tasks | Quick win | 5 | Created and done within 30 min; replaces size XP; max 5/day |
-| Tasks | Clutch | +25% of size XP (S 3, M 5, L 9), or of `xpShare` for subtasks | Done after ≥2 postpones; max 1/day; never announced in advance. Always less than the ×1.5 bonus it lost, so postponing never pays |
+| Tasks | Clutch | Flat 5 XP (changed 2026-10-08 by the owner) | Done after ≥2 postpones; max 1/day; never announced in advance. Always less than the ×1.5 bonus it lost, so postponing never pays |
 | Tasks | Cap | 200/day | |
 | Train | Session | best of the day counts | If he logs two sessions on one dayKey, XP for the day is the **higher** of the two (a morning minimum never blocks a later full session) |
 | Train | Full planned session | 60 | All planned working sets done (extra sets earn 0) |
@@ -286,7 +286,7 @@ Medium-to-high juice beat both none and extreme (Kao 2020, n = 3,018).
    - two lessons in a day → 15;
    - two Train sessions in a day → max(XP of each), not the sum.
 3. **Splitting:** an L (35) split into 3 subtasks earns 35 in total (×1.5 only if the parent was still on its first scheduled day). Split after postpone #3 → no ×1.5. Creation-time pool = round(35 × estimate / 90).
-4. **Clutch:** for each size, a task postponed twice then done earns less than the same task done on its first day.
+4. **Clutch:** for each size, a task postponed twice then done earns less than the same task done on its first day (changed 2026-10-08 by the owner).
 5. Re-running awards over the same facts gives identical totals. Importing a backup twice creates no duplicate ledger rows.
 6. After bedtime: Mind facts give 0 XP and don't satisfy the Hat-trick Mind slot. A task done after bedtime still earns its XP.
 7. **Forward-only rules:** applying a rules version with a lower cap from dayKey D leaves totals before D unchanged. Level and Shards never decrease.
