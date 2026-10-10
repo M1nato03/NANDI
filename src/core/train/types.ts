@@ -17,6 +17,7 @@ export type Exercise = {
   licence: string;
   attribution: string;
   isHold?: boolean;
+  cues?: string[];
 };
 
 export type Track = 'gym' | 'bodyweight';

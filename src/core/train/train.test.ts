@@ -118,15 +118,9 @@ describe('03-train §9 Acceptance Tests', () => {
       targetRepMax: 60
     };
     
-    // We don't have a multi-step hold ladder defined in library yet, but let's test if it handles the step up logic
     let state: import('./progression').BodyweightProgressionState = { pattern: 'core-anti-ext', stepRank: 1 };
-    
-    // Since 'core-anti-ext' only has 1 rank in our mock library, we will mock a second one
-    
-    // Actually the engine limits to ladder.length, so if there's only 1 step it will stay at 1.
-    // Let's test with a fake pattern if possible, but the code is pure. We'll verify it doesn't crash on max length.
     state = evaluateBodyweightLadder(exercise, state);
-    expect(state.stepRank).toBe(1); // Cap at max
+    expect(state.stepRank).toBe(2);
   });
 
   it('§9 test 7: A second increase in the same week in weeks 1–6 is blocked.', () => {

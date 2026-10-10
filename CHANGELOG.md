@@ -15,3 +15,4 @@
 - Tasks core (all 16 spec acceptance tests, flat capped Clutch) and first Tasks screens: quick add, Today Now card with focus timer, Today/Upcoming/Unplaced/Someday lists, postpone ladder sheet, split. Focus blocks app updates.
 - Mind: playable daily boards (Crowns, Sun & Moon, Number Path, Calcudoku, Mini Sudoku) with rule-based checks, hints, active-time timer, saved progress and a calm stopping point; distinct region colours.
 - Planner: morning plan (Unplaced triage, day-horizon line), shutdown check-in, weekly review with export, baseline-week postpone budget; shutdown and bedtime settings.
+- Train: rank assessment, Hostel Bodyweight and Gym Foundations plans, transactional set logging, pain stops, rest timer, progression, history, metrics, and backup coverage. Active workouts defer app updates.

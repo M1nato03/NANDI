@@ -1,5 +1,5 @@
 import { RULES } from '../rules.config';
-import { LADDERS } from './library';
+import { EXERCISE_LIBRARY, LADDERS } from './library';
 import { LadderPattern, LadderStep } from './types';
 
 export function getBodyweightPlacementStartStep(pattern: LadderPattern): LadderStep {
@@ -22,6 +22,9 @@ export function evaluateBodyweightPlacement(
 ): { finalStepRank: number; complete: boolean } {
   const ladder = LADDERS[pattern];
   if (!ladder) throw new Error(`Ladder not found for pattern ${pattern}`);
+  const hold = !!EXERCISE_LIBRARY[ladder[0]!.exerciseId]?.isHold;
+  const minimum = hold ? RULES.train.ladder.holdMinS : RULES.train.placement.stopMinReps;
+  const moveUp = hold ? RULES.train.ladder.holdMaxS : RULES.train.placement.moveUpAtReps;
   
   if (results.length === 0) return { finalStepRank: getBodyweightPlacementStartStep(pattern).rank, complete: false };
 
@@ -32,7 +35,7 @@ export function evaluateBodyweightPlacement(
     // Start on the last step with >=5
     let bestRank = ladder[0]!.rank;
     for (let i = results.length - 1; i >= 0; i--) {
-      if (results[i]!.reps >= RULES.train.placement.stopMinReps) {
+      if (results[i]!.reps >= minimum) {
         bestRank = results[i]!.stepRank;
         break;
       }
@@ -41,7 +44,7 @@ export function evaluateBodyweightPlacement(
   }
 
   // If >= 12, move up
-  if (lastResult.reps >= RULES.train.placement.moveUpAtReps) {
+  if (lastResult.reps >= moveUp) {
     if (lastResult.stepRank < ladder.length) {
       return { finalStepRank: lastResult.stepRank + 1, complete: false };
     } else {
@@ -50,11 +53,11 @@ export function evaluateBodyweightPlacement(
   }
   
   // If < 5, move down
-  if (lastResult.reps < RULES.train.placement.stopMinReps) {
+  if (lastResult.reps < minimum) {
     // Check if we previously got >= 12 on a lower step. If moving up dropped below 5, start on lower step.
     if (results.length > 1) {
       const prevResult = results[results.length - 2]!;
-      if (prevResult.reps >= RULES.train.placement.moveUpAtReps) {
+      if (prevResult.reps >= moveUp) {
         return { finalStepRank: prevResult.stepRank, complete: true };
       }
     }

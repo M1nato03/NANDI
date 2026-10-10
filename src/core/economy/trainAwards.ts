@@ -1,12 +1,16 @@
 import { RULES } from '../rules.config';
 import { Routine, TrainSession } from '../train/types';
-import { calculateSessionXp, calculateWeeklyBonus } from '../train';
+import { calculateSessionXp, calculateWeeklyBonus, calculateTrainDailyXp } from '../train';
 
 // Economy hooks for Train module.
 // In the ledger, facts only are logged. These functions calculate the XP that these facts represent.
 
 export function awardTrainSession(session: TrainSession, routine: Routine): number {
   return calculateSessionXp(session, routine);
+}
+
+export function awardTrainDay(sessionXps: number[], prCount: number, restCheck: boolean): number {
+  return calculateTrainDailyXp(sessionXps, prCount, restCheck);
 }
 
 export function awardRestDayCheck(): number {

@@ -67,3 +67,11 @@ export function calculateBestSessionXpForDay(sessionsWithXp: number[]): number {
   if (sessionsWithXp.length === 0) return 0;
   return Math.max(...sessionsWithXp);
 }
+
+/** Derive the day award from immutable facts; the weekly bonus is added separately. */
+export function calculateTrainDailyXp(sessionXps: number[], prCount: number, restCheck: boolean): number {
+  const session = calculateBestSessionXpForDay(sessionXps);
+  const prs = Math.min(RULES.train.prMaxPerDay, Math.max(0, prCount)) * RULES.train.prXp;
+  const rest = restCheck && session === 0 ? RULES.train.restDayCheckXp : 0;
+  return capDailyXp(session + prs + rest);
+}
