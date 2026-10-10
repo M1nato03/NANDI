@@ -26,6 +26,8 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.ts',
+      // Precache fonts and icons too, or the installed app loses its typefaces offline.
+      injectManifest: { globPatterns: ['**/*.{js,css,html,woff2,svg,png,webmanifest}'] },
       registerType: 'prompt',
       manifest: {
         name: 'NANDI',

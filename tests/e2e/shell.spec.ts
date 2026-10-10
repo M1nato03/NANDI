@@ -90,4 +90,11 @@ test('offline reload still opens every tab', async ({ page, context }) => {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
     await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
   }
+  // The self-hosted display font must come from the precache, not fall back offline.
+  const fontLoaded = await page.evaluate(async () => {
+    const doc = (globalThis as unknown as { document: { fonts: { load: (f: string) => Promise<unknown[]>; check: (f: string) => boolean } } }).document;
+    await doc.fonts.load('700 32px "Big Shoulders Display"');
+    return doc.fonts.check('700 32px "Big Shoulders Display"');
+  });
+  expect(fontLoaded).toBe(true);
 });
