@@ -36,3 +36,33 @@
 .mind-cell.path-head { outline: 3px solid var(--mind); outline-offset: -4px; }
 .mind-result { border-color: var(--mind); }
 @media (max-width: 380px) { .mind-cell { font-size: 18px; } }
+.mind-lesson,.mind-review { max-width: 620px; overflow-wrap: anywhere; }
+.mind-lesson .card,.mind-review .card { display: grid; gap: 12px; }
+.mind-lesson .card > button,.mind-review .card > button { min-height: 44px; }
+.mind-save { color: var(--muted); font-size: .85rem; }
+.mind-scene,.mind-source,.mind-feedback { padding: 14px; border-radius: 12px; background: var(--raised); }
+.mind-lesson-question,.mind-review-front { font-size: 1.15rem; font-weight: 700; }
+.mind-lesson-options { display: grid; gap: 9px; }
+.mind-lesson-options button { width: 100%; min-height: 48px; text-align: left; white-space: normal; }
+.mind-lesson-options button.selected { outline: 2px solid var(--mind); }
+.mind-review-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mind-review-actions button { flex: 1; min-width: 90px; min-height: 44px; }
+.mind-chat { margin: 0; padding: 9px 12px; border-radius: 12px; background: var(--raised); }
+.mind-lesson label { display: grid; gap: 6px; }
+.mind-lesson select,.mind-lesson input { width: 100%; min-height: 44px; }
+.mind-diagram { width: 100%; margin: 6px 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); text-align: center; }
+.mind-diagram-row,.mind-diagram-cycle { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.mind-diagram-row > *, .mind-diagram-cycle > * { flex: 1 1 70px; }
+.mind-diagram-node { display: inline-grid; place-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--raised); }
+.mind-diagram-node.selected { border-color: var(--mind); background: color-mix(in srgb, var(--mind) 20%, var(--raised)); }
+.mind-diagram-chain > div { display: grid; justify-items: center; gap: 4px; }
+.mind-diagram-center { margin: 12px auto; }
+.mind-diagram-stairs { display: flex; align-items: end; gap: 8px; height: 150px; }
+.mind-diagram-stairs > div { flex: 1; display: grid; grid-template-rows: 1fr auto auto; align-items: end; height: 100%; min-width: 0; }
+.mind-diagram-bar { display: block; width: 100%; min-height: 10px; background: var(--mind); }
+.mind-diagram svg { width: 100%; max-width: 320px; }
+.mind-diagram svg path { fill: none; stroke-width: 4; }
+.mind-diagram svg .good { stroke: var(--mind); }
+.mind-diagram svg .bad { stroke: var(--danger); stroke-dasharray: 9 6; }
+.mind-hub details.card summary { min-height: 44px; cursor: pointer; }
+.mind-hub details.card button { min-height: 44px; margin: 4px 0; }
