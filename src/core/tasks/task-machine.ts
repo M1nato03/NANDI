@@ -1,17 +1,19 @@
-import { dayKey as getDayKey } from '../time/dayKey';
-import { RULES, Rules } from '../rules.config';
+import { dayKey } from '../time/dayKey';
+import { RULES, type Rules } from '../rules.config';
 
-export type TaskStatus = 'planned' | 'unplaced' | 'done' | 'someday' | 'dropped';
+export type TaskStatus =
+  'planned' | 'unplaced' | 'done' | 'someday' | 'dropped';
+export type TaskSize = 'S' | 'M' | 'L';
 
 export interface CoreTask {
   id: string;
   status: TaskStatus;
   dayKey: string;
-  size: 'S' | 'M' | 'L';
+  size: TaskSize;
   estimateMin: number;
-  plannedSize?: 'S' | 'M' | 'L';
-  category?: string;
+  plannedSize: TaskSize;
   mustOrCould?: 'must' | 'could';
+  category?: string;
   scheduledStart?: number | null;
   scheduledEnd?: number | null;
   firstStep?: string;
@@ -24,106 +26,140 @@ export interface CoreTask {
 export function createTask(
   id: string,
   now: number,
-  size: 'S' | 'M' | 'L',
+  size: TaskSize,
   estimateMin: number,
-  options: Partial<CoreTask> = {}
+  options: Partial<CoreTask> = {},
 ): CoreTask {
-  const dayKey = options.scheduledStart ? getDayKey(options.scheduledStart) : getDayKey(now);
-  
+  if (!canSaveUnsplit(estimateMin))
+    throw new RangeError('Estimate requires a split');
+  const scheduled = options.scheduledStart != null;
+  const key = dayKey(scheduled ? (options.scheduledStart as number) : now);
   return {
     id,
-    status: options.scheduledStart ? 'planned' : 'unplaced',
-    dayKey,
+    status: scheduled ? 'planned' : 'unplaced',
+    dayKey: key,
     size,
     estimateMin,
     plannedSize: size,
     postponeCount: 0,
-    ...options
+    ...options,
+    firstScheduledDayKey:
+      options.firstScheduledDayKey ?? (scheduled ? key : undefined),
   };
 }
 
-export function postponeTask(task: CoreTask, newStart: number | null, now: number, rules: Rules = RULES): CoreTask {
-  const isPostpone = isActualPostpone(task, newStart, now);
-  const updatedTask = { ...task };
+export function isActualPostpone(
+  task: CoreTask,
+  newStart: number | null,
+  now: number,
+): boolean {
+  if (task.status === 'unplaced')
+    return !!task.firstScheduledDayKey && newStart != null;
+  if (task.status !== 'planned' || task.scheduledStart == null) return false;
+  if (newStart == null) return true;
+  const oldDay = dayKey(task.scheduledStart);
+  const nextDay = dayKey(newStart);
+  return (
+    nextDay > oldDay ||
+    (nextDay === oldDay &&
+      now >= task.scheduledStart &&
+      newStart > task.scheduledStart)
+  );
+}
 
-  if (isPostpone) {
-    updatedTask.postponeCount += 1;
-  }
-
-  if (newStart === null) {
-    updatedTask.status = 'unplaced';
-    updatedTask.scheduledStart = null;
-    updatedTask.scheduledEnd = null;
-    updatedTask.dayKey = getDayKey(now); 
-  } else {
-    updatedTask.status = 'planned';
-    updatedTask.scheduledStart = newStart;
-    updatedTask.dayKey = getDayKey(newStart);
-    if (!updatedTask.firstScheduledDayKey) {
-      updatedTask.firstScheduledDayKey = updatedTask.dayKey;
-    }
-  }
-
-  return updatedTask;
+export function postponeTask(
+  task: CoreTask,
+  newStart: number | null,
+  now: number,
+): CoreTask {
+  const count =
+    task.postponeCount + (isActualPostpone(task, newStart, now) ? 1 : 0);
+  if (count >= RULES.tasks.postpone.autoSomedayAt)
+    return {
+      ...task,
+      status: 'someday',
+      postponeCount: count,
+      scheduledStart: null,
+      scheduledEnd: null,
+    };
+  if (newStart == null)
+    return {
+      ...task,
+      status: 'unplaced',
+      scheduledStart: null,
+      scheduledEnd: null,
+      dayKey: dayKey(now),
+      postponeCount: count,
+    };
+  const nextDay = dayKey(newStart);
+  return {
+    ...task,
+    status: 'planned',
+    scheduledStart: newStart,
+    dayKey: nextDay,
+    postponeCount: count,
+    firstScheduledDayKey: task.firstScheduledDayKey ?? nextDay,
+  };
 }
 
 export function checkDayBoundary(task: CoreTask, now: number): CoreTask {
-    if (task.status === 'planned' && task.scheduledStart) {
-       const taskDayKey = getDayKey(task.scheduledStart);
-       const nowDayKey = getDayKey(now);
-       if (nowDayKey > taskDayKey) {
-           return {
-               ...task,
-               status: 'unplaced',
-               scheduledStart: null,
-               scheduledEnd: null,
-               dayKey: nowDayKey
-           };
-       }
-    }
-    return task;
+  if (
+    task.status === 'planned' &&
+    task.scheduledStart != null &&
+    dayKey(now) > dayKey(task.scheduledStart)
+  ) {
+    return {
+      ...task,
+      status: 'unplaced',
+      scheduledStart: null,
+      scheduledEnd: null,
+      dayKey: dayKey(now),
+    };
+  }
+  return task;
 }
 
-export function isActualPostpone(task: CoreTask, newStart: number | null, now: number): boolean {
-   if (task.status === 'unplaced') {
-      if (task.firstScheduledDayKey && newStart) return true; // Re-placing
-      return false; // First placement
-   }
-
-   if (task.status === 'planned' && task.scheduledStart) {
-       if (newStart === null) return true; // moving to unplaced counts
-       const oldDayKey = getDayKey(task.scheduledStart);
-       const newDayKey = getDayKey(newStart);
-       if (newDayKey > oldDayKey) return true; // later day
-       
-       if (newDayKey === oldDayKey) {
-          if (now >= task.scheduledStart && newStart > task.scheduledStart) return true; // started and moved later
-       }
-   }
-   return false;
+export function check14DayRule(
+  task: CoreTask,
+  now: number,
+  lastTouched: number,
+  rules: Rules = RULES,
+): CoreTask {
+  if (
+    task.status === 'unplaced' &&
+    now - lastTouched >=
+      rules.tasks.postpone.untouchedDaysToSomeday * 86_400_000
+  ) {
+    return { ...task, status: 'someday' };
+  }
+  return task;
 }
 
-export function check14DayRule(task: CoreTask, now: number, lastTouched: number, rules: Rules = RULES): CoreTask {
-   if (task.status === 'unplaced') {
-       const days = (now - lastTouched) / (1000 * 60 * 60 * 24);
-       if (days >= rules.tasks.postpone.untouchedDaysToSomeday) {
-           return { ...task, status: 'someday' };
-       }
-   }
-   return task;
+export function canSaveUnsplit(
+  estimateMin: number,
+  rules: Rules = RULES,
+): boolean {
+  return (
+    Number.isFinite(estimateMin) &&
+    estimateMin > 0 &&
+    estimateMin <= rules.tasks.maxEstimateMin
+  );
 }
 
-export function canSaveUnsplit(estimateMin: number, rules: Rules = RULES): boolean {
-   return estimateMin <= rules.tasks.maxEstimateMin;
+export function canAddMust(
+  existingMusts: number,
+  rules: Rules = RULES,
+): boolean {
+  return existingMusts < rules.tasks.maxMustsPerDay;
 }
 
 export function doRealReasonMove(task: CoreTask, newStart: number): CoreTask {
-    const newDayKey = getDayKey(newStart);
-    return {
-        ...task,
-        status: 'planned',
-        scheduledStart: newStart,
-        dayKey: newDayKey,
-        firstScheduledDayKey: newDayKey, // keep multiplier eligibility
-    };
+  const nextDay = dayKey(newStart);
+  return {
+    ...task,
+    status: 'planned',
+    scheduledStart: newStart,
+    dayKey: nextDay,
+    firstScheduledDayKey: nextDay,
+  };
 }

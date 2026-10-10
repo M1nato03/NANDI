@@ -12,7 +12,7 @@ export const RULES = {
     fullRateTasksPerDay: 8,
     overflowMultiplier: 0.5,
     quickWin: { xp: 5, withinMin: 30, maxPerDay: 5 },
-    // pending Jenil's decision (Clutch), see docs/plans/phase-0.md
+    // Clutch is a flat bonus, capped by the first-day bonus forfeited.
     clutch: { clutchBonusXp: 5, minPostpones: 2, maxPerDay: 1 },
     dailyCap: 200,
     maxEstimateMin: 90,

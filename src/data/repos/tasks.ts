@@ -1,11 +1,55 @@
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
 import { entityRepo } from './base';
-import { TaskRow, FocusRow, TaskEventRow, LedgerRow } from '../types';
-import { dayKey as getDayKey } from '../../core/time/dayKey';
-import { postponeGate, PostponeAttempt } from '../../core/tasks/postponeGate';
-import { postponeTask, isActualPostpone, checkDayBoundary } from '../../core/tasks/task-machine';
-import { startFocus as coreStartFocus, pauseFocus as corePauseFocus, resumeFocus as coreResumeFocus, finishFocus as coreFinishFocus } from '../../core/tasks/focus';
+import type { TaskRow, FocusRow, TaskEventRow } from '../types';
+import { dayKey } from '../../core/time/dayKey';
+import { RULES } from '../../core/rules.config';
+import { postponeWeekKey } from '../../core/tasks/budget';
+import {
+  postponeGate,
+  type PostponeAttempt,
+} from '../../core/tasks/postponeGate';
+import {
+  checkDayBoundary,
+  check14DayRule,
+  doRealReasonMove,
+  postponeTask,
+  canAddMust,
+  type CoreTask,
+  type TaskSize,
+  type TaskStatus,
+} from '../../core/tasks/task-machine';
+import { splitTask } from '../../core/tasks/split';
+import {
+  isFocusRunning,
+  startFocus as coreStartFocus,
+  pauseFocus as corePauseFocus,
+  resumeFocus as coreResumeFocus,
+  finishFocus as coreFinishFocus,
+} from '../../core/tasks/focus';
+
+function coreTask(row: TaskRow): CoreTask {
+  if (
+    (row.size !== 'S' && row.size !== 'M' && row.size !== 'L') ||
+    row.estimateMin == null ||
+    row.plannedSize == null ||
+    (row.plannedSize !== 'S' &&
+      row.plannedSize !== 'M' &&
+      row.plannedSize !== 'L') ||
+    row.postponeCount == null ||
+    !['planned', 'unplaced', 'done', 'someday', 'dropped'].includes(row.status)
+  ) {
+    throw new Error('Incomplete task row');
+  }
+  return {
+    ...row,
+    size: row.size as TaskSize,
+    plannedSize: row.plannedSize as TaskSize,
+    estimateMin: row.estimateMin,
+    postponeCount: row.postponeCount,
+    status: row.status as TaskStatus,
+  };
+}
 
 export function createTaskRepos(db: NandiDb, deviceId: string) {
   const repos = {
@@ -15,214 +59,434 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     reminders: entityRepo(db.reminders, deviceId),
     plans: entityRepo(db.plans, deviceId),
   };
+  const mutation = <T>(fn: () => Promise<T>): Promise<T> =>
+    db.transaction('rw', db.tasks, db.taskEvents, db.focus, db.ledger, fn);
+  const event = (
+    taskId: string,
+    kind: TaskEventRow['kind'],
+    at: number,
+    extra: Partial<TaskEventRow> = {},
+  ) => repos.taskEvents.put({ taskId, kind, at, ...extra }, at);
 
   return {
     ...repos,
-
     async createTask(
-      input: Omit<TaskRow, 'id' | 'updatedAt' | 'deleted' | 'deviceId' | 'postponeCount' | 'status'> & { id?: string },
-      now: number
+      input: Omit<
+        TaskRow,
+        | 'id'
+        | 'updatedAt'
+        | 'deleted'
+        | 'deviceId'
+        | 'postponeCount'
+        | 'status'
+        | 'size'
+        | 'estimateMin'
+      > & { id?: string; size: TaskSize; estimateMin: number },
+      now: number,
     ): Promise<TaskRow> {
-      return db.transaction('rw', db.tasks, db.taskEvents, async () => {
-         const id = input.id || ulid(now);
-         const status = input.scheduledStart ? 'planned' : 'unplaced';
-         
-         const task = await repos.tasks.put({
+      return mutation(async () => {
+        if (
+          input.estimateMin == null ||
+          input.estimateMin <= 0 ||
+          input.estimateMin > RULES.tasks.maxEstimateMin
+        )
+          throw new RangeError('Estimate requires a split');
+        if (input.mustOrCould === 'must') {
+          const key = dayKey(input.scheduledStart ?? now);
+          const existing = await db.tasks
+            .where('dayKey')
+            .equals(key)
+            .filter(
+              (t) =>
+                t.deleted === 0 &&
+                t.mustOrCould === 'must' &&
+                t.status !== 'dropped',
+            )
+            .count();
+          if (!canAddMust(existing))
+            throw new RangeError('Maximum Musts for this day; make it a Could');
+        }
+        const id = input.id ?? ulid(now);
+        if (await db.tasks.get(id)) throw new Error('Task already exists');
+        const key = dayKey(input.scheduledStart ?? now);
+        const task = await repos.tasks.put(
+          {
             ...input,
             id,
-            status,
+            dayKey: key,
+            plannedSize: input.size,
+            firstScheduledDayKey:
+              input.scheduledStart != null ? key : undefined,
+            status: input.scheduledStart != null ? 'planned' : 'unplaced',
             postponeCount: 0,
-             } as TaskRow, now);
-
-         await repos.taskEvents.put({
-            taskId: id,
-            kind: 'created',
-            at: now
-         }, now);
-
-         return task;
+          },
+          now,
+        );
+        await event(id, 'created', now);
+        return task;
       });
     },
-
-    async startFocus(taskId: string, now: number): Promise<FocusRow> {
-       return db.transaction('rw', db.tasks, db.taskEvents, db.focus, async () => {
-           // We only support 1 live timer at a time according to specs
-           const openFocuses = await db.focus.filter(f => f.deleted === 0 && !f.endedAt).toArray();
-           const activeFocus = openFocuses.find(f => {
-               const pauses = f.pauses || [];
-               return pauses.length === 0 || pauses[pauses.length - 1].resumeAt !== undefined;
-           });
-
-           const { newFocus, pausedFocus } = coreStartFocus(taskId, now, activeFocus);
-
-           if (pausedFocus) {
-               await repos.focus.put(pausedFocus, now);
-               await repos.taskEvents.put({ taskId: pausedFocus.taskId, kind: 'switched', at: now }, now);
-           }
-
-           const task = await repos.tasks.get(taskId);
-           if (task && task.status === 'unplaced') {
-              // start unplaced task implies placing it now
-              await repos.tasks.put({ ...task, status: 'planned', scheduledStart: now, dayKey: getDayKey(now) }, now);
-           }
-
-           const focusRow = await repos.focus.put(newFocus, now);
-           await repos.taskEvents.put({ taskId, kind: 'started', at: now }, now);
-
-           return focusRow;
-       });
+    async createSplitTask(
+      title: string,
+      estimates: number[],
+      now: number,
+      scheduledStart?: number,
+    ): Promise<TaskRow[]> {
+      return mutation(async () => {
+        const total = estimates.reduce((sum, value) => sum + value, 0);
+        if (total <= RULES.tasks.maxEstimateMin)
+          throw new RangeError(
+            'Creation split is for estimates over 90 minutes',
+          );
+        const id = ulid(now);
+        const key = dayKey(scheduledStart ?? now);
+        const parentCore: CoreTask = {
+          id,
+          status: scheduledStart == null ? 'unplaced' : 'planned',
+          dayKey: key,
+          size: 'L',
+          plannedSize: 'L',
+          estimateMin: total,
+          postponeCount: 0,
+          scheduledStart,
+          firstScheduledDayKey: scheduledStart == null ? undefined : key,
+        };
+        const children = splitTask(
+          parentCore,
+          estimates.length,
+          estimates,
+          RULES,
+          now,
+        );
+        await repos.tasks.put(
+          {
+            id,
+            title,
+            status: 'unplaced',
+            dayKey: key,
+            size: 'L',
+            plannedSize: 'L',
+            estimateMin: total,
+            postponeCount: 0,
+            firstScheduledDayKey: parentCore.firstScheduledDayKey,
+          },
+          now,
+        );
+        await event(id, 'created', now);
+        await event(id, 'split', now);
+        const rows: TaskRow[] = [];
+        for (const child of children) {
+          rows.push(
+            await repos.tasks.put(
+              { ...child, title: `${title} (${rows.length + 1})` },
+              now,
+            ),
+          );
+          await event(child.id, 'created', now);
+        }
+        return rows;
+      });
     },
-
-    async pauseFocus(focusId: string, now: number): Promise<FocusRow> {
-       return db.transaction('rw', db.focus, async () => {
-           const focus = await repos.focus.get(focusId);
-           if (!focus) throw new Error('Focus not found');
-           const updated = corePauseFocus(focus, now);
-           return repos.focus.put(updated, now);
-       });
-    },
-
-    async resumeFocus(focusId: string, now: number): Promise<FocusRow> {
-        return db.transaction('rw', db.focus, async () => {
-           const focus = await repos.focus.get(focusId);
-           if (!focus) throw new Error('Focus not found');
-           const updated = coreResumeFocus(focus, now);
-           return repos.focus.put(updated, now);
-        });
-    },
-
-    async finishFocus(focusId: string, now: number): Promise<FocusRow> {
-        return db.transaction('rw', db.focus, async () => {
-           const focus = await repos.focus.get(focusId);
-           if (!focus) throw new Error('Focus not found');
-           const updated = coreFinishFocus(focus, now);
-           return repos.focus.put(updated, now);
-        });
-    },
-
     async completeTask(taskId: string, now: number): Promise<TaskRow> {
-        return db.transaction('rw', db.tasks, db.taskEvents, db.ledger, async () => {
-            const task = await repos.tasks.get(taskId);
-            if (!task) throw new Error('Task not found');
-
-            const updated = await repos.tasks.put({
-                ...task,
-                status: 'done',
-                doneAt: now
-            }, now);
-
-            await repos.taskEvents.put({ taskId, kind: 'done', at: now }, now);
-
-            // Emit ledger fact
-            const isFirstDay = task.firstScheduledDayKey === updated.dayKey;
-            
-            // To figure out if it is a quick win, we need creation time.
-            const createdEvent = await db.taskEvents.where({ taskId }).filter(e => e.kind === 'created').first();
-            const createdToDoneMin = createdEvent ? (now - createdEvent.at) / 60000 : undefined;
-
-            await db.ledger.add({
-                id: `tasks:done:${taskId}`,
-                dayKey: getDayKey(now),
-                mode: 'tasks',
-                kind: 'done',
-                refId: taskId,
-                inputs: {
-                    plannedSize: task.plannedSize,
-                    isFirstDay,
-                    postpones: task.postponeCount,
-                    createdToDoneMin,
-                    xpShare: task.xpShare
-                },
-                updatedAt: now,
-                deleted: 0,
-                deviceId
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task) throw new Error('Task not found');
+        if (task.status === 'done') return task;
+        if (
+          task.status === 'dropped' ||
+          (await db.tasks.where('parentId').equals(taskId).count()) > 0
+        )
+          throw new Error('Container or dropped task cannot earn XP');
+        const updated = await repos.tasks.put(
+          { ...task, status: 'done', doneAt: now },
+          now,
+        );
+        await event(taskId, 'done', now);
+        const created = await db.taskEvents
+          .where('taskId')
+          .equals(taskId)
+          .filter((e) => e.kind === 'created')
+          .first();
+        const key = dayKey(now);
+        const inputs = {
+          plannedSize: task.plannedSize ?? task.size,
+          isFirstDay:
+            task.postponeCount === 0 && task.firstScheduledDayKey === key,
+          postpones: task.postponeCount ?? 0,
+          clutchStamp:
+            (task.postponeCount ?? 0) >= RULES.tasks.clutch.minPostpones,
+          createdToDoneMin: created ? (now - created.at) / 60_000 : undefined,
+          xpShare: task.xpShare,
+        };
+        const id = `done:${taskId}`;
+        if (!(await db.ledger.get(id)))
+          await db.ledger.add({
+            id,
+            mode: 'tasks',
+            kind: 'done',
+            refId: taskId,
+            dayKey: key,
+            inputs,
+            updatedAt: now,
+            deleted: 0,
+            deviceId,
+          });
+        if (task.parentId) {
+          const siblings = await db.tasks
+            .where('parentId')
+            .equals(task.parentId)
+            .toArray();
+          if (
+            siblings.every(
+              (s) =>
+                s.id === taskId ||
+                s.status === 'done' ||
+                s.status === 'dropped',
+            )
+          ) {
+            const parent = await db.tasks.get(task.parentId);
+            if (parent)
+              await repos.tasks.put(
+                { ...parent, status: 'done', doneAt: now },
+                now,
+              );
+          }
+        }
+        return updated;
+      });
+    },
+    async postpone(
+      taskId: string,
+      now: number,
+      attempt: Omit<PostponeAttempt, 'task' | 'now'>,
+    ): Promise<TaskRow> {
+      return mutation(async () => {
+        const row = await repos.tasks.get(taskId);
+        if (!row) throw new Error('Task not found');
+        if (row.status === 'done' || row.status === 'dropped')
+          throw new Error('Task is closed');
+        const task = checkDayBoundary(coreTask(row), now);
+        const weekStart = postponeWeekKey(now);
+        const counted = await db.taskEvents
+          .filter(
+            (e) =>
+              e.kind === 'postponed' &&
+              e.budgetCounted === true &&
+              postponeWeekKey(e.at) === weekStart,
+          )
+          .count();
+        const realMoves = await db.taskEvents
+          .filter(
+            (e) =>
+              e.kind === 'realReasonMove' &&
+              postponeWeekKey(e.at) === weekStart,
+          )
+          .count();
+        const gate = postponeGate(
+          { ...attempt, task, now, realReasonMovesThisWeek: realMoves },
+          counted,
+        );
+        if (!gate.ok) throw new Error(gate.error);
+        if (gate.action === 'split')
+          throw new Error('Use split with the choice sheet');
+        if (gate.action === 'do10') {
+          const open = await db.focus
+            .filter((f) => f.deleted === 0 && isFocusRunning(f))
+            .toArray();
+          for (const focus of open) {
+            await repos.focus.put(
+              {
+                ...corePauseFocus(focus, now),
+                switches: (focus.switches ?? 0) + 1,
+              },
+              now,
+            );
+            await event(focus.taskId, 'switched', now);
+          }
+          const { newFocus } = coreStartFocus(taskId, now);
+          await repos.focus.put({ ...newFocus, id: ulid(now) }, now);
+          await event(taskId, 'started', now);
+          return row;
+        }
+        let next: CoreTask;
+        if (gate.action === 'real_reason_move') {
+          if (attempt.newStart == null) throw new Error('Missing slot');
+          next = doRealReasonMove(task, attempt.newStart);
+          await event(taskId, 'realReasonMove', now, {
+            reason: attempt.realReason,
+          });
+        } else if (gate.action === 'someday' && task.postponeCount < 3) {
+          next = {
+            ...task,
+            status: 'someday',
+            scheduledStart: null,
+            scheduledEnd: null,
+          };
+          await event(taskId, 'someday', now);
+        } else {
+          next = postponeTask(task, attempt.newStart, now);
+          if (
+            gate.action === 'postpone' ||
+            (gate.action === 'someday' &&
+              next.postponeCount > task.postponeCount)
+          ) {
+            await event(taskId, 'postponed', now, {
+              reason: attempt.reason,
+              budgetCounted: true,
             });
-
-            return updated;
-        });
+          }
+          if (next.status === 'someday') await event(taskId, 'someday', now);
+        }
+        if (attempt.firstStep) {
+          next.firstStep = attempt.firstStep;
+          await event(taskId, 'shrunk', now);
+        }
+        return repos.tasks.put({ ...row, ...next }, now);
+      });
     },
-
-    async postpone(taskId: string, now: number, attempt: Omit<PostponeAttempt, 'task'>): Promise<TaskRow> {
-        return db.transaction('rw', db.tasks, db.taskEvents, async () => {
-            const taskRow = await repos.tasks.get(taskId);
-            if (!taskRow) throw new Error('Task not found');
-            
-            const task = { ...taskRow, size: taskRow.size as 'S'|'M'|'L', status: taskRow.status as any };
-            
-            // Re-apply boundary rules first if needed? For pure layer we check that before.
-            const taskBoundary = checkDayBoundary(task, now);
-
-            // Assuming gate check happens in UI/caller before this, but we apply mutations here.
-            // Using core task-machine postponeTask:
-            const updated = postponeTask(taskBoundary, attempt.newStart, now);
-            
-            if (attempt.firstStep) {
-                updated.firstStep = attempt.firstStep;
-                await repos.taskEvents.put({ taskId, kind: 'shrunk', at: now }, now);
-            }
-
-            const isPostpone = isActualPostpone(taskBoundary, attempt.newStart, now);
-            const saved = await repos.tasks.put({
-                ...taskRow,
-                ...updated
-            }, now);
-
-            if (isPostpone) {
-               await repos.taskEvents.put({ taskId, kind: 'postponed', at: now, reason: attempt.reason }, now);
-            }
-
-            return saved;
-        });
+    async startFocus(taskId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task) throw new Error('Task not found');
+        const open = await db.focus
+          .filter((f) => f.deleted === 0 && f.endedAt == null)
+          .toArray();
+        const existing = open.find(
+          (f) => f.taskId === taskId && isFocusRunning(f),
+        );
+        if (existing) return existing;
+        for (const focus of open.filter(isFocusRunning)) {
+          const paused = corePauseFocus(focus, now);
+          await repos.focus.put(
+            { ...paused, switches: (focus.switches ?? 0) + 1 },
+            now,
+          );
+          await event(focus.taskId, 'switched', now);
+        }
+        const { newFocus } = coreStartFocus(taskId, now);
+        const saved = await repos.focus.put(
+          { ...newFocus, id: ulid(now) },
+          now,
+        );
+        await event(taskId, 'started', now);
+        return saved;
+      });
     },
-
-    async listForDay(dayKey: string): Promise<TaskRow[]> {
-        return db.tasks.where('dayKey').equals(dayKey).filter(t => t.deleted === 0).toArray();
+    async pauseFocus(focusId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        return repos.focus.put(corePauseFocus(focus, now), now);
+      });
     },
-
-    async split(taskId: string, now: number, numSubtasks: number, estimates: number[]): Promise<TaskRow[]> {
-        return db.transaction('rw', db.tasks, db.taskEvents, async () => {
-             const parentRow = await repos.tasks.get(taskId);
-             if (!parentRow) throw new Error('Task not found');
-
-             // Generate subtasks logically
-             // Assuming splitTask from core is used, we duplicate minimal logic or import it.
-             // Given pure splitTask handles parent updates via return, let's inline pure logic for rows:
-             const totalEstimate = estimates.reduce((sum, est) => sum + est, 0);
-             const parentXp = parentRow.plannedSize === 'S' ? 10 : 
-                              parentRow.plannedSize === 'M' ? 20 : 35; // from Rules
-
-             const subtaskRows: TaskRow[] = [];
-             for (let i = 0; i < estimates.length; i++) {
-                 const est = estimates[i];
-                 const xpShare = Math.round(parentXp * (est / totalEstimate));
-                 
-                 let childPostponeCount = parentRow.postponeCount;
-                 if (parentRow.postponeCount === 3) {
-                     childPostponeCount = 2; // rule for postpone #3 choice sheet
-                 }
-
-                 const subtask = await repos.tasks.put({
-                     ...parentRow,
-                     id: `${parentRow.id}-sub-${i}-${now}`,
-                     size: parentRow.size,
-                     estimateMin: est,
-                     parentId: parentRow.id,
-                     firstScheduledDayKey: parentRow.firstScheduledDayKey,
-                     postponeCount: childPostponeCount,
-                     xpShare,
-                     doneAt: undefined,
-                     status: parentRow.status === 'done' ? 'planned' : parentRow.status
-                 } as TaskRow, now);
-                 subtaskRows.push(subtask);
-                 
-                 await repos.taskEvents.put({ taskId: subtask.id, kind: 'created', at: now }, now);
-             }
-
-             // Record split event on parent
-             await repos.taskEvents.put({ taskId: parentRow.id, kind: 'split', at: now }, now);
-
-             return subtaskRows;
-        });
-    }
+    async resumeFocus(focusId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        const open = await db.focus
+          .filter(
+            (f) => f.id !== focusId && f.deleted === 0 && isFocusRunning(f),
+          )
+          .toArray();
+        for (const other of open) {
+          await repos.focus.put(
+            {
+              ...corePauseFocus(other, now),
+              switches: (other.switches ?? 0) + 1,
+            },
+            now,
+          );
+          await event(other.taskId, 'switched', now);
+        }
+        return repos.focus.put(coreResumeFocus(focus, now), now);
+      });
+    },
+    async finishFocus(focusId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        return repos.focus.put(coreFinishFocus(focus, now), now);
+      });
+    },
+    async listForDay(key: string): Promise<TaskRow[]> {
+      return db.tasks
+        .where('dayKey')
+        .equals(key)
+        .filter((t) => t.deleted === 0)
+        .toArray();
+    },
+    async reconcile(now: number): Promise<void> {
+      await mutation(async () => {
+        const open = await db.tasks
+          .filter(
+            (task) =>
+              task.deleted === 0 &&
+              (task.status === 'planned' || task.status === 'unplaced'),
+          )
+          .toArray();
+        for (const row of open) {
+          const atBoundary = checkDayBoundary(coreTask(row), now);
+          const lastEvent = await db.taskEvents
+            .where('taskId')
+            .equals(row.id)
+            .sortBy('at');
+          const lastTouched = lastEvent.at(-1)?.at ?? row.updatedAt;
+          const next = check14DayRule(atBoundary, now, lastTouched);
+          if (next.status === 'someday') await event(row.id, 'someday', now);
+          if (next.status !== row.status || next.dayKey !== row.dayKey)
+            await repos.tasks.put({ ...row, ...next }, now);
+        }
+      });
+    },
+    async split(
+      taskId: string,
+      now: number,
+      numSubtasks: number,
+      estimates: number[],
+    ): Promise<TaskRow[]> {
+      return mutation(async () => {
+        const parent = await repos.tasks.get(taskId);
+        if (!parent) throw new Error('Task not found');
+        if (parent.status === 'done' || parent.status === 'dropped')
+          throw new Error('Task is closed');
+        if ((await db.tasks.where('parentId').equals(taskId).count()) > 0)
+          throw new Error('Task already split');
+        const atChoiceSheet = parent.postponeCount === 2;
+        const forSplit = atChoiceSheet
+          ? { ...coreTask(parent), postponeCount: 3 }
+          : coreTask(parent);
+        const children = splitTask(
+          forSplit,
+          numSubtasks,
+          estimates,
+          RULES,
+          now,
+        );
+        const rows: TaskRow[] = [];
+        for (const child of children) {
+          rows.push(
+            await repos.tasks.put(
+              { ...parent, ...child, doneAt: undefined },
+              now,
+            ),
+          );
+          await event(child.id, 'created', now);
+        }
+        await event(taskId, 'split', now);
+        if (atChoiceSheet)
+          await event(taskId, 'postponed', now, { budgetCounted: true });
+        await repos.tasks.put(
+          {
+            ...parent,
+            status: 'unplaced',
+            scheduledStart: null,
+            scheduledEnd: null,
+            postponeCount: forSplit.postponeCount,
+          },
+          now,
+        );
+        return rows;
+      });
+    },
   };
 }
