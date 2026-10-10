@@ -1,67 +1,139 @@
-import { test, expect } from '@playwright/test';
-import { execSync } from 'child_process';
+import { expect, test } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
+import { readFile, stat } from 'node:fs/promises';
+import { createServer } from 'node:http';
+import type { AddressInfo } from 'node:net';
+import { extname, isAbsolute, relative, resolve } from 'node:path';
 
-test.describe('PWA Upgrade', () => {
-  // We need determinism, so we use a single worker for this test or isolate it.
-  test.describe.configure({ mode: 'serial' });
+const buildADir = resolve('dist-e2e');
+const buildBDir = resolve('dist-e2e-b');
+const contentTypes: Record<string, string> = {
+  '.css': 'text/css',
+  '.html': 'text/html',
+  '.ico': 'image/x-icon',
+  '.js': 'text/javascript',
+  '.json': 'application/json',
+  '.mjs': 'text/javascript',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.txt': 'text/plain',
+  '.webmanifest': 'application/manifest+json',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+};
 
-  test('Upgrade flow keeps data and works offline', async ({ page, context }) => {
-    // 1. Load build A
-    await page.goto('/#ground?e2e=1');
-    await expect(page.locator('h1', { hasText: 'Ground' })).toBeVisible();
+test('upgrade keeps data and works offline', async ({
+  page,
+  context,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-390x844',
+    'Build B is shared across projects',
+  );
+  test.setTimeout(120_000);
 
-    // Verify it's NANDI 0.1.0
-    const versionTextLocator = page.locator('p', { hasText: /NANDI 0\.1\.0/ });
-    await expect(versionTextLocator).toBeVisible();
+  execFileSync(
+    process.execPath,
+    [
+      resolve('node_modules/vite/bin/vite.js'),
+      'build',
+      '--outDir',
+      'dist-e2e-b',
+    ],
+    {
+      env: { ...process.env, VITE_E2E: '1', NANDI_VERSION: '0.1.0-b' },
+      stdio: 'inherit',
+    },
+  );
 
-    // Write some data (via window.__nandiTest.seedShell)
+  // Chromium fetches service worker updates outside Playwright's route interception.
+  // Serve both builds from the same real origin so /sw.js can change with the page.
+  let servedDir = buildADir;
+  const server = createServer(async (request, response) => {
+    try {
+      const pathname = decodeURIComponent(
+        new URL(request.url ?? '/', 'http://localhost').pathname,
+      );
+      const file = resolve(
+        servedDir,
+        `.${pathname === '/' ? '/index.html' : pathname}`,
+      );
+      const inside = relative(servedDir, file);
+      if (
+        inside.startsWith('..') ||
+        isAbsolute(inside) ||
+        !(await stat(file).catch(() => null))?.isFile()
+      ) {
+        response.writeHead(404).end();
+        return;
+      }
+      response
+        .writeHead(200, {
+          'Content-Type':
+            contentTypes[extname(file)] ?? 'application/octet-stream',
+          'Cache-Control': 'no-store',
+        })
+        .end(await readFile(file));
+    } catch {
+      response.writeHead(500).end();
+    }
+  });
+  await new Promise<void>((resolveListen, rejectListen) => {
+    server.once('error', rejectListen);
+    server.listen(0, '127.0.0.1', resolveListen);
+  });
+  const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+
+  try {
+    await page.goto(`${origin}/?e2e#ground`);
+    await expect(
+      page.getByRole('main').getByRole('heading', { name: 'Ground' }),
+    ).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
+    await page.waitForFunction(() => window.__nandiTest !== undefined);
     await page.evaluate(async () => {
-      // @ts-ignore
-      if (!window.__nandiTest) throw new Error('No e2e hook found');
-      // @ts-ignore
-      await window.__nandiTest.seedShell();
+      await window.__nandiTest!.seedShell();
     });
-
-    let count = await page.evaluate(async () => {
-      // @ts-ignore
-      return (await window.__nandiTest.shellCounts()).tasks;
-    });
+    const count = await page.evaluate(
+      async () => (await window.__nandiTest!.shellCounts()).tasks,
+    );
     expect(count).toBeGreaterThan(0);
 
-    // 2. Switch served files to build B (different build id)
-    execSync('npx tsx scripts/build-e2e-b.ts', { stdio: 'inherit' });
-
-    // 3. Reload
-    await page.reload();
-
-    // 4. "Update available" appears
-    const updateBar = page.locator('div', { hasText: 'Update available' }).locator('visible=true').first();
-    await expect(updateBar).toBeVisible({ timeout: 15000 });
-
-    // 5. Click Update
-    await page.locator('button', { hasText: 'Update' }).first().click();
-
-    // Wait for the app to reload (the Update button calls updateSW(true) which reloads the page)
-    await page.waitForNavigation({ waitUntil: 'networkidle' });
-
-    // 6. The new build id shows
-    const newVersionTextLocator = page.locator('p', { hasText: /NANDI 0\.2\.0/ });
-    await expect(newVersionTextLocator).toBeVisible();
-
-    // 7. The data is still there
-    let countAfter = await page.evaluate(async () => {
-      // @ts-ignore
-      return (await window.__nandiTest.shellCounts()).tasks;
+    await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
     });
-    expect(countAfter).toBe(count);
+    await page.reload(); // Build A now controls this page.
+    await page.waitForFunction(
+      () => navigator.serviceWorker.controller !== null,
+    );
 
-    // 8. context.setOffline(true) + reload still renders
+    servedDir = buildBDir;
+    await page.reload(); // Registration checks the service worker script served from build B.
+    const update = page.getByRole('region', { name: 'App update' });
+    await expect(update).toContainText('Update available', {
+      timeout: 20_000,
+    });
+    const reloaded = page.waitForEvent('load');
+    await update.getByRole('button', { name: 'Update', exact: true }).click();
+    await reloaded;
+
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+    await page.waitForFunction(() => window.__nandiTest !== undefined);
+    expect(
+      await page.evaluate(
+        async () => (await window.__nandiTest!.shellCounts()).tasks,
+      ),
+    ).toBe(count);
+
     await context.setOffline(true);
     await page.reload();
-    await expect(page.locator('h1', { hasText: 'Ground' })).toBeVisible();
-    await expect(newVersionTextLocator).toBeVisible();
-
-    // Restore dist-e2e to build A for other tests
-    execSync('npx vite build --outDir dist-e2e', { env: { ...process.env, VITE_E2E: '1' }, stdio: 'ignore' });
-  });
+    await expect(
+      page.getByRole('main').getByRole('heading', { name: 'Ground' }),
+    ).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+  } finally {
+    await new Promise<void>((resolveClose, rejectClose) =>
+      server.close((error) => (error ? rejectClose(error) : resolveClose())),
+    );
+  }
 });

@@ -16,7 +16,7 @@ const commit = process.env.GITHUB_SHA
 
 export default defineConfig({
   define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_VERSION__: JSON.stringify(process.env.NANDI_VERSION ?? pkg.version),
     __BUILD_COMMIT__: JSON.stringify(commit),
     __BUILD_DATE__: JSON.stringify(new Date().toISOString().split('T')[0]),
   },

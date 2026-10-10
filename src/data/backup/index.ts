@@ -1,6 +1,7 @@
 import { exportDB, importInto } from 'dexie-export-import';
 import * as v from 'valibot';
 import { dayKey } from '../../core/time';
+import { trackWrite } from '../../core/pendingWrites';
 import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
@@ -169,25 +170,28 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
   return { counts, earliestDayKey, latestDayKey, retired };
 }
 
-const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired']);
+const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown']);
 
-/** Full restore only. The current device's three local settings survive the clear. */
+/** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {
   const validated = validateBackup(envelope);
   if (!validated.success || !validated.envelope) throw new Error(validated.errors.join('; '));
-  const fileTables = new Set(validated.envelope.dexie.data.tables.map(table => table.name));
+  const restored = validated.envelope;
+  const fileTables = new Set(restored.dexie.data.tables.map(table => table.name));
   const dbTables = new Set(db.tables.map(table => table.name));
   if (fileTables.size !== dbTables.size || [...dbTables].some(name => !fileTables.has(name))) {
     throw new Error('Backup tables do not match this app database');
   }
-  await getOrCreateDeviceId(db, Date.now());
-  const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
-    .filter((row): row is SettingRow => row !== undefined);
-  // dexie-export-import expects its own JSON, without the NANDI envelope.
-  const dexieBlob = new Blob([JSON.stringify(validated.envelope.dexie)], { type: 'application/json' });
-  await importInto(db, dexieBlob, { acceptVersionDiff: true, acceptNameDiff: true,
-    clearTablesBeforeImport: true,
-    filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
+  await trackWrite(async () => {
+    await getOrCreateDeviceId(db, Date.now());
+    const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
+      .filter((row): row is SettingRow => row !== undefined);
+    // dexie-export-import expects its own JSON, without the NANDI envelope.
+    const dexieBlob = new Blob([JSON.stringify(restored.dexie)], { type: 'application/json' });
+    await importInto(db, dexieBlob, { acceptVersionDiff: true, acceptNameDiff: true,
+      clearTablesBeforeImport: true,
+      filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
+    });
+    await db.settings.bulkPut(localSettings);
   });
-  await db.settings.bulkPut(localSettings);
 }

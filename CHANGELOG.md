@@ -9,3 +9,6 @@
 - Added the five-tab offline shell, Proving Ground themes and bundled fonts, recovery and error ring, Ground backup flow, and main/worker generator check.
 - Added an original PWA icon in SVG and PNG, plus browser checks for tab reloads, restore confirmation, and offline use.
 - Added a banned-words gate, Workers static-assets hosting headers, and CI checks, deploy, and path-filtered browser tests.
+
+## Phase 1 (in progress)
+- Build line on Ground, Update available / Later flow, pending-write guard, offline navigation route, upgrade e2e test, deploy waits for e2e.

@@ -1,69 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { canReloadNow } from '../../core/canReloadNow';
 import { pendingWrites } from '../../core/pendingWrites';
-
-let updateSWFn: ((reloadPage?: boolean) => Promise<void>) | undefined;
+import {
+  applyServiceWorkerUpdate, dismissOfflineReady, getServiceWorkerState, subscribeToServiceWorker,
+} from '../../platform/sw-register';
 
 export function UpdateBar() {
-  const [needRefresh, setNeedRefresh] = useState(false);
-  const [offlineReady, setOfflineReady] = useState(false);
+  const { needRefresh, offlineReady } = useSyncExternalStore(subscribeToServiceWorker, getServiceWorkerState);
   const [dismissed, setDismissed] = useState(false);
+  const [queued, setQueued] = useState(false);
   const [writes, setWrites] = useState(pendingWrites.count);
+  const updating = useRef(false);
+
+  useEffect(() => pendingWrites.subscribe(setWrites), []);
 
   useEffect(() => {
-    const unsubscribe = pendingWrites.subscribe(setWrites);
-    return () => { unsubscribe(); };
-  }, []);
-
-  useEffect(() => {
-    if (import.meta.env.PROD || import.meta.env.VITE_E2E === '1') {
-      import('virtual:pwa-register').then(({ registerSW }) => {
-        updateSWFn = registerSW({
-          immediate: true,
-          onNeedRefresh() {
-            setNeedRefresh(true);
-          },
-          onOfflineReady() {
-            setOfflineReady(true);
-          },
-        });
-      });
+    if (queued && writes === 0 && canReloadNow() && !updating.current) {
+      updating.current = true;
+      void applyServiceWorkerUpdate();
     }
-  }, []);
+  }, [queued, writes]);
 
   useEffect(() => {
-    if (offlineReady) {
-      const timer = setTimeout(() => setOfflineReady(false), 3000);
-      return () => clearTimeout(timer);
-    }
+    if (!offlineReady) return;
+    const timer = setTimeout(dismissOfflineReady, 3000);
+    return () => clearTimeout(timer);
   }, [offlineReady]);
 
-  async function handleUpdate() {
-    if (updateSWFn && canReloadNow() && writes === 0) {
-      await updateSWFn(true);
+  function handleUpdate() {
+    if (pendingWrites.count > 0 || !canReloadNow()) {
+      setQueued(true);
+    } else if (!updating.current) {
+      updating.current = true;
+      void applyServiceWorkerUpdate();
     }
   }
 
   if (needRefresh && !dismissed) {
-    const disabled = !canReloadNow() || writes > 0;
     return (
-      <div className="update-bar" style={{ background: 'var(--brand)', color: '#fff', padding: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Update available</span>
-        <div>
-          <button onClick={handleUpdate} disabled={disabled} style={{ marginRight: '10px', background: '#fff', color: '#000' }}>Update</button>
-          <button onClick={() => setDismissed(true)} style={{ background: 'transparent', border: '1px solid #fff', color: '#fff' }}>Later</button>
+      <div className="update-bar" role="region" aria-label="App update">
+        <span>{queued ? 'Saving… updating in a moment' : 'Update available'}</span>
+        <div className="update-bar-actions">
+          <button onClick={handleUpdate} disabled={queued}>Update</button>
+          <button className="secondary" onClick={() => { setQueued(false); setDismissed(true); }}>Later</button>
         </div>
       </div>
     );
   }
 
-  if (offlineReady) {
-    return (
-      <div className="offline-ready-toast" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: '#333', color: '#fff', padding: '10px 20px', borderRadius: '20px', zIndex: 1000 }}>
-        Ready to work offline
-      </div>
-    );
-  }
-
+  if (offlineReady) return <div className="offline-ready-toast" role="status" aria-label="Offline ready">Ready to work offline</div>;
   return null;
 }

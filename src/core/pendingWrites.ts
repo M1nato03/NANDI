@@ -13,6 +13,15 @@ export const pendingWrites = {
   },
   subscribe(listener: (count: number) => void) {
     listeners.add(listener);
-    return () => listeners.delete(listener);
+    return () => { listeners.delete(listener); };
   }
 };
+
+export async function trackWrite<T>(fn: () => Promise<T>): Promise<T> {
+  pendingWrites.increment();
+  try {
+    return await fn();
+  } finally {
+    pendingWrites.decrement();
+  }
+}

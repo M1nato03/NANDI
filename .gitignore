@@ -25,6 +25,7 @@ android/.gradle/
 nandi-week-*.json
 *.tsbuildinfo
 dist-e2e/
+dist-e2e-b/
 .pack-test-*/
 .npm-cache/
 .wrangler/
