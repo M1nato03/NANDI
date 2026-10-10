@@ -29,6 +29,14 @@ export function validatePack(input: unknown): string[] {
         if (!lesson.sci) errors.push(`${where}: needs sci`);
       }
     }
+  } else if (pack.kind === 'quests') {
+    const ids = new Set<string>();
+    for (const quest of pack.body.quests) {
+      if (ids.has(quest.id)) errors.push(`${quest.id}: duplicate id`);
+      ids.add(quest.id);
+      if (quest.kind === 'once' && (quest.target !== 1 || quest.unit !== '' || quest.step !== 1)) errors.push(`${quest.id}: once must have target and step 1, empty unit`);
+      if (quest.kind === 'total' && (!quest.unit || quest.step > quest.target)) errors.push(`${quest.id}: invalid total unit or step`);
+    }
   } else {
     const ids = new Set<string>();
     for (const card of pack.body.cards) {

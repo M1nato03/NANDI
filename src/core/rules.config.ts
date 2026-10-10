@@ -91,6 +91,7 @@ export const RULES = {
 
   // 05-economy §2, cross-mode bonuses.
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
+  quests: { sideQuestXp: 20 },
 
   // 05-economy §§2, 4, cumulative level curve.
   level: { stepBase: 100, softCap: 50 },
@@ -162,6 +163,7 @@ export type Rules = Widen<typeof RULES>;
  * Cross-field constraints, such as tier adjacency, need separate pack validation.
  */
 export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
+  'quests.sideQuestXp': [0, 50],
   // Identity and day boundary: version is a positive schema number; hours use a local 24-hour clock.
   version: [1, 999], dayBoundaryHour: [0, 23],
   // Tasks: size bands cover practical estimates; XP and caps remain nonnegative.

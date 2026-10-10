@@ -7,6 +7,7 @@ import { PostponeSheet } from '../tasks/PostponeSheet';
 import { visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import '../tasks/tasks.css';
+import { SideQuests } from '../quests/SideQuests';
 
 export function Tasks() {
   const board = useTaskBoard();
@@ -24,6 +25,7 @@ export function Tasks() {
   return <section className="screen"><p className="eyebrow">Your plan</p><h1>Tasks</h1>
     <TaskQuickAdd run={board.act} />
     {board.message && <p role="status">{board.message}</p>}
+    <SideQuests />
     <TaskList title="Today" rows={planned} onComplete={complete} onMove={setMoving} busy={board.busy} />
     <TaskList title="Upcoming" rows={upcoming} onComplete={complete} onMove={setMoving} busy={board.busy} />
     <TaskList title="Unplaced" rows={unplaced} onComplete={complete} onMove={setMoving} busy={board.busy} />

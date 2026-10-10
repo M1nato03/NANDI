@@ -194,6 +194,19 @@ export interface LedgerRow extends EntityRow {
   refId: string;
   inputs: Record<string, unknown>;
 }
+export interface QuestRow extends EntityRow {
+  sourceId: string;
+  week: string;
+  title: string;
+  kind: 'once' | 'total';
+  target: number;
+  unit: string;
+  step: number;
+  progress: number;
+  tapIds: string[];
+  status: 'active' | 'done' | 'archived' | 'swapped';
+  custom: boolean;
+}
 export interface InventoryRow extends EntityRow {
   kind: string;
   price?: number;

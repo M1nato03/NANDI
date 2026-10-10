@@ -6,6 +6,7 @@ import { PostponeSheet } from '../tasks/PostponeSheet';
 import { currentFocus, elapsed, minutes, todayTasks, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import '../tasks/tasks.css';
+import { QuestSummaryCard } from '../quests/SideQuests';
 
 export function Today() {
   const board = useTaskBoard();
@@ -33,6 +34,7 @@ export function Today() {
   return <section className="screen"><p className="eyebrow">Your space</p><h1>Today</h1>
     <TaskQuickAdd run={board.act} />
     {board.message && <p role="status">{board.message}</p>}
+    <QuestSummaryCard />
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Now"><p className="eyebrow">Now</p>
       {nowTask ? <><h2>{nowTask.title}</h2>{nowTask.firstStep && <p>First: {nowTask.firstStep}</p>}

@@ -12,7 +12,7 @@ test('backup survives a browser export, wipe, and import', async ({ page }) => {
   const result = await page.evaluate(() =>
     (globalThis as unknown as { __nandiTest: { backupRoundTrip: () => Promise<BackupRoundTripResult> } })
       .__nandiTest.backupRoundTrip());
-  expect(JSON.parse(result.exportedJson)).toMatchObject({ app: 'nandi', ppFormatVersion: 1 });
+  expect(JSON.parse(result.exportedJson)).toMatchObject({ app: 'nandi', ppFormatVersion: 2 });
   expect(result.beforeCounts).toEqual(result.afterCounts);
   expect(result.afterCounts).toMatchObject({ tasks: 1, ledger: 1, settings: 3 });
 });

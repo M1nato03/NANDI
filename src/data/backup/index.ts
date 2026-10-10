@@ -16,7 +16,7 @@ export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown
   return 'unknown';
 }
 
-export const PP_FORMAT_VERSION = 1;
+export const PP_FORMAT_VERSION = 2;
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.1.0';
 
 const dexieSchema = v.object({
@@ -47,7 +47,19 @@ export const backupEnvelopeSchema = v.object({
 
 export type BackupEnvelope = v.InferOutput<typeof backupEnvelopeSchema>;
 export type EnvelopeMigrator = (envelope: Record<string, unknown>) => Record<string, unknown>;
-export const envelopeMigrators: Readonly<Record<number, EnvelopeMigrator>> = {};
+export const envelopeMigrators: Readonly<Record<number, EnvelopeMigrator>> = {
+  1: envelope => {
+    const next = structuredClone(envelope);
+    const dexie = next.dexie as { data: { databaseVersion: number; tables: { name: string; schema: string; rowCount: number }[]; data: { tableName: string; inbound: boolean; rows: Record<string, unknown>[] }[] } };
+    if (dexie?.data?.databaseVersion === 1 && !dexie.data.tables.some(table => table.name === 'quests')) {
+      dexie.data.databaseVersion = 2;
+      dexie.data.tables.push({ name: 'quests', schema: 'id, week, status, sourceId, updatedAt', rowCount: 0 });
+      dexie.data.data.push({ tableName: 'quests', inbound: true, rows: [] });
+    }
+    next.ppFormatVersion = 2;
+    return next;
+  },
+};
 
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

@@ -1,0 +1,16 @@
+.side-quests { margin: 18px 0; min-width: 0; }
+.quest-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.quest-heading h2 { margin: 0; }
+.quest-heading .eyebrow { margin: 0; }
+.quest-row { border-top: 1px solid var(--line); padding: 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
+.quest-row > div:first-child { min-width: 0; overflow-wrap: anywhere; }
+.quest-row p { margin: 4px 0 0; color: var(--muted); }
+.quest-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.quest-actions button { min-width: 44px; min-height: 44px; }
+.quest-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.quest-footer button, .quest-form button { min-height: 44px; }
+.quest-form { display: grid; gap: 12px; margin-top: 16px; }
+.quest-form label { display: grid; gap: 5px; }
+.quest-form input, .quest-form select { min-height: 44px; width: 100%; }
+.quest-summary { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 380px) { .quest-row { align-items: stretch; flex-direction: column; } .quest-actions button { flex: 1; } .quest-footer { grid-template-columns: 1fr; } }
