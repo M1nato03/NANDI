@@ -21,6 +21,7 @@ import {
   type TaskStatus,
 } from '../../core/tasks/task-machine';
 import { splitTask } from '../../core/tasks/split';
+import { trackWrite } from '../../core/pendingWrites';
 import {
   isFocusRunning,
   startFocus as coreStartFocus,
@@ -66,7 +67,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     plans: entityRepo(db.plans, deviceId),
   };
   const mutation = <T>(fn: () => Promise<T>): Promise<T> =>
-    db.transaction('rw', db.tasks, db.taskEvents, db.focus, db.ledger, fn);
+    trackWrite(() => db.transaction('rw', db.tasks, db.taskEvents, db.focus, db.ledger, fn));
   const event = (
     taskId: string,
     kind: TaskEventRow['kind'],

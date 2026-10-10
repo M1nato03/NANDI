@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -22,16 +22,7 @@ const contentTypes: Record<string, string> = {
   '.woff2': 'font/woff2',
 };
 
-test('upgrade keeps data and works offline', async ({
-  page,
-  context,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.name !== 'mobile-390x844',
-    'Build B is shared across projects',
-  );
-  test.setTimeout(120_000);
-
+async function startUpgradeServer() {
   execFileSync(
     process.execPath,
     [
@@ -54,6 +45,10 @@ test('upgrade keeps data and works offline', async ({
       const pathname = decodeURIComponent(
         new URL(request.url ?? '/', 'http://localhost').pathname,
       );
+      if (pathname === '/_e2e_reset') {
+        response.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-store' }).end('<!doctype html><title>Reset</title>');
+        return;
+      }
       const file = resolve(
         servedDir,
         `.${pathname === '/' ? '/index.html' : pathname}`,
@@ -84,30 +79,70 @@ test('upgrade keeps data and works offline', async ({
   });
   const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 
+  return {
+    origin,
+    serveBuildB() { servedDir = buildBDir; },
+    close: () => new Promise<void>((resolveClose, rejectClose) =>
+      server.close((error) => (error ? rejectClose(error) : resolveClose())),
+    ),
+  };
+}
+
+async function prepareUpgrade(page: Page, context: BrowserContext, origin: string) {
+  // Each test has its own browser context. Clear the origin before the app runs.
+  await context.clearCookies();
+  await page.goto(`${origin}/_e2e_reset`);
+  await page.evaluate(async () => {
+    for (const registration of await navigator.serviceWorker.getRegistrations()) {
+      await registration.unregister();
+    }
+    for (const key of await caches.keys()) await caches.delete(key);
+    localStorage.clear();
+    sessionStorage.clear();
+    for (const database of await indexedDB.databases()) {
+      if (!database.name) continue;
+      await new Promise<void>((resolveDelete, rejectDelete) => {
+        const request = indexedDB.deleteDatabase(database.name!);
+        request.onsuccess = () => resolveDelete();
+        request.onerror = () => rejectDelete(request.error);
+        request.onblocked = () => rejectDelete(new Error('Database cleanup blocked'));
+      });
+    }
+  });
+
+  await page.goto(`${origin}/?e2e#ground`);
+  await expect(
+    page.getByRole('main').getByRole('heading', { name: 'Ground' }),
+  ).toBeVisible();
+  await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
+  await page.waitForFunction(() => window.__nandiTest !== undefined);
+  await page.evaluate(async () => {
+    await window.__nandiTest!.seedShell();
+  });
+
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).tasks).toBe(1);
+  await page.reload(); // Build A now controls this page.
+  await page.waitForFunction(
+    () => navigator.serviceWorker.controller !== null,
+  );
+}
+
+test('upgrade keeps data and works offline', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
+  test.setTimeout(120_000);
+  const server = await startUpgradeServer();
+
   try {
-    await page.goto(`${origin}/?e2e#ground`);
-    await expect(
-      page.getByRole('main').getByRole('heading', { name: 'Ground' }),
-    ).toBeVisible();
-    await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
-    await page.waitForFunction(() => window.__nandiTest !== undefined);
-    await page.evaluate(async () => {
-      await window.__nandiTest!.seedShell();
-    });
+    await prepareUpgrade(page, context, server.origin);
     const count = await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     );
     expect(count).toBeGreaterThan(0);
 
-    await page.evaluate(async () => {
-      await navigator.serviceWorker.ready;
-    });
-    await page.reload(); // Build A now controls this page.
-    await page.waitForFunction(
-      () => navigator.serviceWorker.controller !== null,
-    );
-
-    servedDir = buildBDir;
+    server.serveBuildB();
     await page.reload(); // Registration checks the service worker script served from build B.
     const update = page.getByRole('region', { name: 'App update' });
     await expect(update).toContainText('Update available', {
@@ -117,6 +152,8 @@ test('upgrade keeps data and works offline', async ({
     await update.getByRole('button', { name: 'Update', exact: true }).click();
     await reloaded;
 
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'Ground' })).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(
@@ -132,8 +169,54 @@ test('upgrade keeps data and works offline', async ({
     ).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
   } finally {
-    await new Promise<void>((resolveClose, rejectClose) =>
-      server.close((error) => (error ? rejectClose(error) : resolveClose())),
+    await server.close();
+  }
+});
+
+test('active focus waits until paused before updating', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
+  test.setTimeout(120_000);
+  const server = await startUpgradeServer();
+
+  try {
+    await prepareUpgrade(page, context, server.origin);
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
+    await page.getByRole('button', { name: '+ Add task' }).click();
+    await page.getByPlaceholder('What needs doing?').fill('Focus through update');
+    await page.getByRole('button', { name: 'Add task', exact: true }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
+    await expect(page.getByRole('region', { name: 'Now' })).toContainText('Focus through update');
+    await page.getByRole('button', { name: 'Start focus' }).click();
+    await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
+    await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).focus).toBe(1);
+    const count = await page.evaluate(
+      async () => (await window.__nandiTest!.shellCounts()).tasks,
     );
+    expect(count).toBeGreaterThan(1);
+
+    server.serveBuildB();
+    await page.reload();
+    const update = page.getByRole('region', { name: 'App update' });
+    await expect(update).toContainText('Update available', { timeout: 20_000 });
+    let loads = 0;
+    page.on('load', () => { loads++; });
+    await update.getByRole('button', { name: 'Update', exact: true }).click();
+    await expect(update).toContainText('Finish or pause your focus first');
+    expect(loads).toBe(0);
+    const reloaded = page.waitForEvent('load');
+    await page.getByRole('button', { name: 'Pause' }).click();
+    await reloaded;
+
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'Ground' })).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+    await page.waitForFunction(() => window.__nandiTest !== undefined);
+    expect(await page.evaluate(
+      async () => (await window.__nandiTest!.shellCounts()).tasks,
+    )).toBe(count);
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
+    await page.getByRole('button', { name: 'Finish' }).click();
+  } finally {
+    await server.close();
   }
 });

@@ -34,6 +34,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByPlaceholder('What needs doing?').fill('Keep this task');
     await page.getByLabel('Unplaced', { exact: true }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
+    await expect(page.getByRole('button', { name: '+ Add task' })).toBeVisible();
+    await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).tasks).toBe(2);
     await page.reload();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
     await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');

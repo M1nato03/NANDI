@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { canReloadNow } from '../../core/canReloadNow';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { canReloadNow } from '../../data/canReloadNow';
+import { isFocusActive } from '../../data/repos/tasks';
 import { pendingWrites } from '../../core/pendingWrites';
 import {
   applyServiceWorkerUpdate, dismissOfflineReady, getServiceWorkerState, subscribeToServiceWorker,
@@ -10,16 +12,21 @@ export function UpdateBar() {
   const [dismissed, setDismissed] = useState(false);
   const [queued, setQueued] = useState(false);
   const [writes, setWrites] = useState(pendingWrites.count);
+  const focusActive = useLiveQuery(isFocusActive, []);
   const updating = useRef(false);
 
   useEffect(() => pendingWrites.subscribe(setWrites), []);
 
   useEffect(() => {
-    if (queued && writes === 0 && canReloadNow() && !updating.current) {
+    if (!queued || writes !== 0 || focusActive !== false || updating.current) return;
+    let cancelled = false;
+    void canReloadNow().then((ready) => {
+      if (cancelled || !ready || pendingWrites.count !== 0 || updating.current) return;
       updating.current = true;
       void applyServiceWorkerUpdate();
-    }
-  }, [queued, writes]);
+    });
+    return () => { cancelled = true; };
+  }, [queued, writes, focusActive]);
 
   useEffect(() => {
     if (!offlineReady) return;
@@ -27,8 +34,9 @@ export function UpdateBar() {
     return () => clearTimeout(timer);
   }, [offlineReady]);
 
-  function handleUpdate() {
-    if (pendingWrites.count > 0 || !canReloadNow()) {
+  async function handleUpdate() {
+    const ready = await canReloadNow();
+    if (pendingWrites.count > 0 || !ready) {
       setQueued(true);
     } else if (!updating.current) {
       updating.current = true;
@@ -39,9 +47,9 @@ export function UpdateBar() {
   if (needRefresh && !dismissed) {
     return (
       <div className="update-bar" role="region" aria-label="App update">
-        <span>{queued ? 'Saving… updating in a moment' : 'Update available'}</span>
+        <span>{queued ? focusActive ? 'Finish or pause your focus first' : 'Saving… updating in a moment' : 'Update available'}</span>
         <div className="update-bar-actions">
-          <button onClick={handleUpdate} disabled={queued}>Update</button>
+          <button onClick={() => void handleUpdate()} disabled={queued}>Update</button>
           <button className="secondary" onClick={() => { setQueued(false); setDismissed(true); }}>Later</button>
         </div>
       </div>
