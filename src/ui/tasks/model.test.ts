@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { FocusRow, TaskRow } from '../../data/types';
-import { currentFocus, elapsed, isBaselineWeek, minutes, splitEstimates, todayTasks, visibleTasks } from './model';
+import { currentFocus, elapsed, minutes, splitEstimates, todayTasks, visibleTasks } from './model';
 
 const now = new Date(2026, 9, 11, 12).getTime();
 const task = (id: string, fields: Partial<TaskRow> = {}): TaskRow => ({
@@ -28,9 +28,5 @@ describe('task view model', () => {
     expect(splitEstimates(100)).toEqual([50, 50]);
     expect(splitEstimates(180)).toEqual([60, 60, 60]);
     expect(splitEstimates(20)).toBeNull();
-  });
-  it('uses ladder baseline rules only in the first seven days', () => {
-    expect(isBaselineWeek(new Date('2026-10-11T12:00:00').getTime())).toBe(true);
-    expect(isBaselineWeek(new Date('2026-10-12T04:00:00').getTime())).toBe(false);
   });
 });

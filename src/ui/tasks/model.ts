@@ -1,12 +1,6 @@
 import type { FocusRow, TaskRow } from '../../data/types';
 import { dayKey } from '../../core/time/dayKey';
 import { focusElapsedMs, isFocusRunning } from '../../core/tasks/focus';
-import { RULES } from '../../core/rules.config';
-
-export function isBaselineWeek(now: number): boolean {
-  const start = new Date(`${RULES.effectiveFrom}T04:00:00`).getTime();
-  return now >= start && now < start + 7 * 86_400_000;
-}
 
 export function visibleTasks(rows: TaskRow[]): TaskRow[] {
   const parents = new Set(rows.filter((row) => row.parentId).map((row) => row.parentId));

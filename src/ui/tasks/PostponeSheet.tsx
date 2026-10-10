@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { TaskRow } from '../../data/types';
 import type { PostponeReason, RealReason } from '../../core/tasks/postponeGate';
-import { defaultSlot, isBaselineWeek, splitEstimates } from './model';
+import { defaultSlot, splitEstimates } from './model';
 import type { TaskRepos } from './useTaskBoard';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
@@ -30,7 +30,6 @@ export function PostponeSheet({ task, run, close }: { task: TaskRow; run: Run; c
       firstStep: firstStep.trim() || undefined,
       reason: reason || undefined,
       realReason: action === 'real' ? realReason || undefined : undefined,
-      baselineWeek: isBaselineWeek(now),
     }), action === 'do10' ? 'Focus started.' : 'Plan updated.');
     if (ok) close();
   }
