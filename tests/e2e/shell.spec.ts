@@ -2,6 +2,24 @@ import { expect, test } from '@playwright/test';
 
 const names = ['Today', 'Tasks', 'Train', 'Mind', 'Ground'];
 
+test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {
+  await page.goto('/');
+  const toast = page.getByRole('status', { name: 'Offline ready' });
+  await expect(toast).toBeVisible({ timeout: 30_000 });
+  const overlappingButtons = await toast.evaluate(element => {
+    const notice = element.getBoundingClientRect();
+    return [...document.querySelectorAll('button')].filter(button => {
+      const style = getComputedStyle(button);
+      const rect = button.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0
+        && notice.left < rect.right && notice.right > rect.left && notice.top < rect.bottom && notice.bottom > rect.top;
+    }).map(button => button.getAttribute('aria-label') ?? button.textContent?.trim());
+  });
+  expect(overlappingButtons).toEqual([]);
+  await expect(toast).toHaveCSS('pointer-events', 'none');
+  await expect(toast).toBeHidden({ timeout: 5_000 });
+});
+
 test('five tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
   await page.goto('/');
   for (const scheme of ['dark', 'light'] as const) {
