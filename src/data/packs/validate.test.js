@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import gita from '../../../content/lessons/lessons.gita-restless-mind.json';
 import charaka from '../../../content/lessons/lessons.charaka-holds-up.json';
+import quests from '../../../content/quests/quests.core.json';
 import { validatePack } from './validate';
 
 const bad = (pack, change, message) => {
@@ -38,5 +39,18 @@ describe('lesson rules from the legacy harness and content spec', () => {
   it('enforces scene and option limits', () => {
     bad(gita, (_, l) => { l.scene = 'x'.repeat(301); }, 'scene exceeds 300');
     bad(gita, (_, l) => { l.o[0] = 'x'.repeat(161); }, 'option exceeds 160');
+  });
+});
+
+describe('quest pack', () => {
+  it('validates 40 varied definitions and rejects duplicates and malformed totals', () => {
+    expect(quests.body.quests).toHaveLength(40);
+    expect(validatePack(quests)).toEqual([]);
+    const duplicate = structuredClone(quests);
+    duplicate.body.quests[1].id = duplicate.body.quests[0].id;
+    expect(validatePack(duplicate).join(' ')).toContain('duplicate id');
+    const malformed = structuredClone(quests);
+    malformed.body.quests[0].unit = '';
+    expect(validatePack(malformed).join(' ')).toContain('invalid total unit');
   });
 });

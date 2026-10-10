@@ -2,7 +2,7 @@ import Dexie, { type Table } from 'dexie';
 import type {
   CardRow, DailyLogRow, DeckProgRow, ExerciseRow, ExStateRow, FlagRow,
   FocusRow, InventoryRow, LadderRow, LedgerRow, LessonProgRow, PackRow,
-  PlanRow, PrRow, ProgramRow, PuzzleRunRow, RatingRow, ReminderRow,
+  PlanRow, PrRow, ProgramRow, PuzzleRunRow, QuestRow, RatingRow, ReminderRow,
   SessionRow, SetRow, SettingRow, TaskEventRow, TaskRow, UnlockRow,
 } from './types';
 
@@ -28,6 +28,7 @@ export class NandiDb extends Dexie {
   unlocks!: Table<UnlockRow, string>;
   packs!: Table<PackRow, string>;
   ledger!: Table<LedgerRow, string>;
+  quests!: Table<QuestRow, string>;
   inventory!: Table<InventoryRow, string>;
   dailyLog!: Table<DailyLogRow, string>;
   settings!: Table<SettingRow, string>;
@@ -61,6 +62,19 @@ export class NandiDb extends Dexie {
       dailyLog: 'dayKey',
       settings: 'key',
     });
+    this.version(2).stores({
+      tasks: 'id, status, dayKey, scheduledStart, category, parentId, updatedAt',
+      taskEvents: 'id, taskId, kind, at', focus: 'id, taskId, startedAt',
+      reminders: 'id, refType, refId, at', plans: 'id, lessonId, madeDayKey',
+      exercises: 'id, pattern, source', ladders: 'id, pattern', programs: 'id, track',
+      exState: 'id', sessions: 'id, dayKey, status', sets: 'id, sessionId, exerciseId',
+      prs: 'id, exerciseId, kind', puzzleRuns: 'id, type, dayKey, seed',
+      cards: 'id, deckId, due', deckProg: 'id, due', lessonProg: 'id, packId',
+      ratings: 'id', flags: 'id, refId', unlocks: 'id, kind',
+      packs: 'id, kind, version', ledger: 'id, dayKey, mode, kind',
+      inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
+      quests: 'id, week, status, sourceId, updatedAt',
+    }).upgrade(async tx => { await tx.table('quests').clear(); });
   }
 }
 

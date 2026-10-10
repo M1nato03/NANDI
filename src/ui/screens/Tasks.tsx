@@ -8,6 +8,7 @@ import { visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import '../tasks/tasks.css';
+import { SideQuests } from '../quests/SideQuests';
 
 export function Tasks() {
   const board = useTaskBoard();
@@ -26,6 +27,7 @@ export function Tasks() {
     <div className="planner-nav"><button type="button" className="secondary" onClick={() => go('tasks/plan')}>Morning plan</button><button type="button" className="secondary" onClick={() => go('tasks/shutdown')}>Shutdown</button><button type="button" className="secondary" onClick={() => go('tasks/review')}>Weekly review</button></div>
     <TaskQuickAdd run={board.act} />
     {board.message && <p role="status">{board.message}</p>}
+    <SideQuests />
     <TaskList title="Today" rows={planned} onComplete={complete} onMove={setMoving} busy={board.busy} />
     <TaskList title="Upcoming" rows={upcoming} onComplete={complete} onMove={setMoving} busy={board.busy} />
     <TaskList title="Unplaced" rows={unplaced} onComplete={complete} onMove={setMoving} busy={board.busy} />

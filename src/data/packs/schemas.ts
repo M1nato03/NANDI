@@ -55,6 +55,17 @@ export const deckBodySchema = v.strictObject({
   items: v.array(deckItemSchema),
 });
 
+export const questDefinitionSchema = v.strictObject({
+  id: v.pipe(v.string(), v.regex(/^[a-z0-9-]+$/)),
+  category: v.picklist(['movement', 'social', 'learning', 'reading', 'creativity', 'money', 'mind', 'literature']),
+  title: v.pipe(v.string(), v.minLength(3), v.maxLength(120)),
+  kind: v.picklist(['once', 'total']),
+  target: v.pipe(v.number(), v.integer(), v.minValue(1), v.maxValue(10000)),
+  unit: v.pipe(v.string(), v.maxLength(24)),
+  step: v.pipe(v.number(), v.integer(), v.minValue(1), v.maxValue(1000)),
+});
+export const questsBodySchema = v.strictObject({ quests: v.pipe(v.array(questDefinitionSchema), v.minLength(35)) });
+
 const envelope = {
   id: v.pipe(v.string(), v.regex(/^[a-z0-9-]+\.[a-z0-9-]+$/)),
   version: semver, schema: v.pipe(integer, v.minValue(1)), minAppVersion: semver,
@@ -63,11 +74,12 @@ const envelope = {
 };
 export const packEnvelopeSchema = v.strictObject({
   ...envelope,
-  kind: v.picklist(['lessons', 'deck', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop']),
+  kind: v.picklist(['lessons', 'deck', 'quests', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop']),
   body: v.unknown(),
 });
 export const lessonsPackSchema = v.strictObject({ ...envelope, kind: v.literal('lessons'), body: lessonsBodySchema });
 export const deckPackSchema = v.strictObject({ ...envelope, kind: v.literal('deck'), body: deckBodySchema });
-export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema]);
+export const questsPackSchema = v.strictObject({ ...envelope, kind: v.literal('quests'), body: questsBodySchema });
+export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema]);
 export type Pack = v.InferOutput<typeof packSchema>;
 export type Lesson = v.InferOutput<typeof lessonSchema>;

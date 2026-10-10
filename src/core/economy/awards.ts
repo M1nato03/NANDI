@@ -74,3 +74,14 @@ export function calculateTasksDayXp(
   }
   return Math.min(total, rules.tasks.dailyCap);
 }
+
+/** Quest facts are paid once per quest-week; the ledger never stores XP. */
+export function calculateQuestXp(facts: LedgerRow[], rules: Rules = RULES): number {
+  const seen = new Set<string>();
+  for (const fact of facts) {
+    if (fact.deleted || fact.mode !== 'quests' || fact.kind !== 'quest') continue;
+    if (!fact.id.startsWith(`quest:${fact.refId}:`) || !/\d{4}-W\d{2}$/.test(fact.id)) continue;
+    seen.add(fact.id);
+  }
+  return seen.size * rules.quests.sideQuestXp;
+}

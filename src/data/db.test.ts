@@ -27,6 +27,7 @@ const indexes: Record<string, string[]> = {
   unlocks: ['kind'],
   packs: ['kind', 'version'],
   ledger: ['dayKey', 'mode', 'kind'],
+  quests: ['week', 'status', 'sourceId', 'updatedAt'],
   inventory: ['kind'],
   dailyLog: [],
   settings: [],
@@ -44,7 +45,7 @@ afterEach(async () => {
   for (const db of openDbs.splice(0)) await db.delete();
 });
 
-describe('Dexie v1', () => {
+describe('Dexie v2', () => {
   it('opens with exactly the specified tables and indexes', async () => {
     const db = freshDb();
     await db.open();

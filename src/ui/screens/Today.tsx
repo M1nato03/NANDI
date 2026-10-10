@@ -12,6 +12,7 @@ import { currentFocus, elapsed, minutes, todayTasks, visibleTasks } from '../tas
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import '../tasks/tasks.css';
+import { QuestSummaryCard } from '../quests/SideQuests';
 
 export function Today() {
   const board = useTaskBoard();
@@ -51,6 +52,7 @@ export function Today() {
     {night !== 'day' && !log?.lightsOutAt && <button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.recordLightsOut(now), 'Lights-out check-in saved.')}>Lights-out check-in</button>}
     <div className="planner-nav"><button type="button" className="secondary" onClick={() => go('tasks/plan')}>Morning plan</button><button type="button" className="secondary" onClick={() => go('tasks/shutdown')}>Shutdown</button><button type="button" className="secondary" onClick={() => go('tasks/review')}>Weekly review</button></div>
     {board.message && <p role="status">{board.message}</p>}
+    <QuestSummaryCard />
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Now"><p className="eyebrow">Now</p>
       {nowTask ? <><h2>{nowTask.title}</h2>{nowTask.firstStep && <p>First: {nowTask.firstStep}</p>}

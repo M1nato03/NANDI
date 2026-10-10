@@ -39,7 +39,7 @@ describe('backup and restore', () => {
     const envelope = await exportBackup(db, new Date(2026, 9, 9, 12));
     const before = await snapshot(db);
     expect(backupFileName(new Date(2026, 9, 9, 12))).toBe('nandi-backup-2026-10-09.json');
-    expect(envelope).toMatchObject({ app: 'nandi', ppFormatVersion: 1, deviceId: 'device-a' });
+    expect(envelope).toMatchObject({ app: 'nandi', ppFormatVersion: 2, deviceId: 'device-a' });
     expect(await db.settings.get('lastBackupAt')).toBeUndefined();
     const preview = previewBackup(envelope);
     expect(preview.counts).toMatchObject({ tasks: 2, ledger: 1, cards: 1, dailyLog: 1 });
@@ -69,7 +69,7 @@ describe('backup and restore', () => {
     expect(validateBackup(JSON.stringify(envelope))).toEqual({ success: true, envelope, errors: [] });
     expect(validateBackup('{').errors).toContain('Invalid JSON');
     expect(validateBackup({ ...envelope, app: 'other' }).errors.join(' ')).toMatch(/app/i);
-    expect(validateBackup({ ...envelope, ppFormatVersion: 2 }).errors.join(' ')).toMatch(/future/i);
+    expect(validateBackup({ ...envelope, ppFormatVersion: 3 }).errors.join(' ')).toMatch(/future/i);
     expect(validateBackup({ ...envelope, exportedAt: undefined }).errors.join(' ')).toMatch(/exportedAt/i);
     expect(validateBackup({ ...envelope, dexie: { formatName: 'dexie' } }).errors.join(' ')).toMatch(/dexie/i);
   });
@@ -85,8 +85,8 @@ describe('backup and restore', () => {
   it('runs pure envelope migrators in order', () => {
     const old = { ppFormatVersion: 0, oldApp: 'nandi', value: 1 };
     const original = structuredClone(old);
-    const migrated = migrateEnvelope(old, { 0: value => ({ ...value, app: value.oldApp, ppFormatVersion: 1 }) });
-    expect(migrated).toMatchObject({ app: 'nandi', ppFormatVersion: 1 });
+    const migrated = migrateEnvelope(old, { 0: value => ({ ...value, app: value.oldApp, ppFormatVersion: 1 }), 1: value => ({ ...value, ppFormatVersion: 2 }) });
+    expect(migrated).toMatchObject({ app: 'nandi', ppFormatVersion: 2 });
     expect(old).toEqual(original);
   });
 
@@ -99,5 +99,28 @@ describe('backup and restore', () => {
     incomplete.dexie.data.data.pop();
     await expect(importBackup(db, incomplete)).rejects.toThrow('tables do not match');
     expect(await db.tasks.get('keep')).toBeDefined();
+  });
+
+  it('restores a v1 backup into v2, then round trips quests and ledger facts', async () => {
+    const db = freshDb();
+    await db.tasks.add({ id: 'old-task', title: 'Old task', status: 'open', dayKey: '2026-10-05', ...stamp });
+    const old = structuredClone(await exportBackup(db, 1000));
+    old.ppFormatVersion = 1 as 2;
+    old.dexie.data.databaseVersion = 1;
+    old.dexie.data.tables = old.dexie.data.tables.filter(table => table.name !== 'quests');
+    old.dexie.data.data = old.dexie.data.data.filter(table => table.tableName !== 'quests');
+    const migrated = validateBackup(old);
+    expect(migrated.success).toBe(true);
+    await db.tasks.clear();
+    await importBackup(db, migrated.envelope!);
+    expect((await db.tasks.get('old-task'))?.title).toBe('Old task');
+    expect(await db.quests.count()).toBe(0);
+    await db.quests.add({ id: 'q:2026-W41', sourceId: 'q', week: '2026-W41', title: 'Quest', kind: 'once', target: 1, unit: '', step: 1, progress: 1, tapIds: [], status: 'done', custom: false, ...stamp });
+    await db.ledger.add({ id: 'quest:q:2026-W41:2026-W41', mode: 'quests', kind: 'quest', refId: 'q:2026-W41', dayKey: '2026-10-08', inputs: {}, ...stamp });
+    const exported = await exportBackup(db, 2000);
+    await db.quests.clear(); await db.ledger.clear();
+    await importBackup(db, exported);
+    expect((await db.quests.get('q:2026-W41'))?.progress).toBe(1);
+    expect(await db.ledger.count()).toBe(1);
   });
 });
