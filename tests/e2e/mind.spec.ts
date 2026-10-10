@@ -58,8 +58,15 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.getByLabel('Puzzle result')).toContainText('Board complete');
     await expect(page.getByLabel('Puzzle result')).toContainText('Best');
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
-    await expect(page.getByRole('heading', { name: "Today's drop complete." })).toBeVisible();
+    await page.getByRole('button', { name: 'Open daily board' }).click();
+    await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
+    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
+    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
+    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
 
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();

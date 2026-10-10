@@ -1,6 +1,11 @@
 import { RULES } from '../rules.config';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from './index';
 
+/** Intro is extra; it never changes the shared date seed or the daily slot. */
+export function needsIntro(type: PuzzleType, runs: readonly { type: string; result?: string; deleted?: number }[]): boolean {
+  return !runs.some(run => run.type === type && run.result === 'solved' && !run.deleted);
+}
+
 export function featuredSpec(day: string): { type: PuzzleType; diff: PuzzleDifficulty } {
   const weekday = new Date(`${day}T12:00:00`).getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
   const [featured, diff] = RULES.mind.featuredByWeekday[weekday];
