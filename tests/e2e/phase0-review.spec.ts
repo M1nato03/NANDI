@@ -48,7 +48,7 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
     await expect(preview.locator('.count-list li').filter({ has: page.locator('span', { hasText: new RegExp(`^${name}$`) }) }).locator('strong')).toHaveText(String(count));
   }
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
-  await expect(page.getByRole('status')).toHaveText('Restore complete. Your data is ready.');
+  await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
   const counts = await page.evaluate(() => (globalThis as unknown as { __nandiTest: TestHook }).__nandiTest.shellCounts());
   expect(counts).toMatchObject({ cards: 3, ratings: 2, deckProg: 3, puzzleRuns: 2, flags: 1 });
   expect(counts.settings).toBeGreaterThanOrEqual(8);
@@ -73,7 +73,7 @@ test('theme survives backup, wipe, and picker restore', async ({ page }) => {
   await (await chooserPromise).setFiles(file!);
   await expect(page.getByLabel('Restore preview')).toContainText('NANDI backup');
   await page.getByLabel('Restore preview').getByRole('button', { name: 'Confirm restore' }).click();
-  await expect(page.getByRole('status')).toHaveText('Restore complete. Your data is ready.');
+  await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
   await expect(page.getByLabel('Theme')).toHaveValue('dark');

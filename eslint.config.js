@@ -8,6 +8,7 @@ export default [
     ignores: [
       'dist/**',
       'dist-e2e/**',
+      'dist-e2e-b/**',
       'coverage/**',
       'legacy/**',
       'reference/**',

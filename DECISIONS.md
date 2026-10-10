@@ -20,3 +20,5 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-07 | Add `@fontsource/jetbrains-mono` 5.3.0. | Bundle the OFL mono font for offline data labels. |
 | 2026-10-07 | Use a single-process Vite preview wrapper for Playwright and an ENOMEM fallback for tsx's Windows username lookup. | The restricted Windows runner otherwise hangs on Playwright server shutdown and fails before pack validation starts. |
 | 2026-10-07 | Add `wrangler` 4 as a development dependency. | Pin the Cloudflare Workers deploy CLI in the project so CI and local deploys use the same major version. |
+| 2026-10-11 | **Update flow**: the app checks for a new version on launch, shows "Update available" with Update / Later, and only reloads when no saves are pending and no focus session runs. The service worker serves the cached app shell for every offline navigation. | Predictable updates on the phone without losing data; offline deep links and query URLs work. |
+| 2026-10-11 | workbox-routing added as a direct dependency. | NavigationRoute for offline navigations (was only a transitive dependency). |

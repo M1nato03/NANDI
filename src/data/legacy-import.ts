@@ -1,4 +1,5 @@
 import * as v from 'valibot';
+import { trackWrite } from '../core/pendingWrites';
 import type { NandiDb } from './db';
 import type { CardRow, DeckProgRow, FlagRow, LessonProgRow, PlanRow, PuzzleRunRow, RatingRow, RowMeta, SettingRow } from './types';
 
@@ -245,7 +246,7 @@ export function mapLegacy(json: unknown, options: LegacyOptions): LegacyMapped {
 /** Bulk writes all mapped tables atomically. */
 export async function importLegacy(db: NandiDb, json: unknown, options: LegacyOptions): Promise<LegacyCounts> {
   const rows = mapLegacy(json, options);
-  await db.transaction('rw', [db.cards, db.ratings, db.deckProg, db.puzzleRuns, db.flags, db.lessonProg, db.plans, db.settings], async () => {
+  await trackWrite(() => db.transaction('rw', [db.cards, db.ratings, db.deckProg, db.puzzleRuns, db.flags, db.lessonProg, db.plans, db.settings], async () => {
     await db.cards.bulkPut(rows.cards);
     await db.ratings.bulkPut(rows.ratings);
     await db.deckProg.bulkPut(rows.deckProg);
@@ -254,7 +255,7 @@ export async function importLegacy(db: NandiDb, json: unknown, options: LegacyOp
     await db.lessonProg.bulkPut(rows.lessonProg);
     await db.plans.bulkPut(rows.plans);
     await db.settings.bulkPut(rows.settings);
-  });
+  }));
   return { cards: rows.cards.length, ratings: rows.ratings.length, deckProg: rows.deckProg.length,
     puzzleRuns: rows.puzzleRuns.length, flags: rows.flags.length, lessonProg: rows.lessonProg.length,
     plans: rows.plans.length, settings: rows.settings.length, skipped: rows.skipped };
