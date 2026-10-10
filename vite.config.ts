@@ -1,8 +1,25 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'child_process';
+import pkg from './package.json';
+
+const commit = process.env.GITHUB_SHA 
+  ? process.env.GITHUB_SHA.slice(0, 7)
+  : (() => {
+      try {
+        return execSync('git rev-parse --short HEAD').toString().trim();
+      } catch {
+        return 'dev';
+      }
+    })();
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.NANDI_VERSION ?? pkg.version),
+    __BUILD_COMMIT__: JSON.stringify(commit),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString().split('T')[0]),
+  },
   plugins: [
     react(),
     VitePWA({

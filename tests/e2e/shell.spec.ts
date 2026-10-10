@@ -21,7 +21,7 @@ test('generator check displays five boards and the case from both threads', asyn
   test.setTimeout(90000);
   await page.goto('/#mind');
   await page.getByRole('button', { name: 'Generator check' }).click();
-  await expect(page.getByRole('status')).toHaveText('Match', { timeout: 60000 });
+  await expect(page.getByRole('main').getByRole('status')).toHaveText('Match', { timeout: 60000 });
   const speed = page.getByRole('heading', { name: 'Number Path (hard) speed' }).locator('..');
   await expect(speed).toContainText('20 boards', { timeout: 60000 });
   await expect(speed).toContainText(/p50: .* ms/);
@@ -58,7 +58,7 @@ test('backup downloads, previews, and restores only after confirmation', async (
   await expect(preview.getByText('2026-10-07')).toBeVisible();
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
-  await expect(page.getByRole('status')).toHaveText('Restore complete. Your data is ready.');
+  await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
   expect(await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).toEqual(before);
 });
 
