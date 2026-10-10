@@ -11,14 +11,15 @@
 .mind-cell.same { background: color-mix(in srgb, var(--gold) 25%, var(--surface)); }
 .mind-cell.selected { background: var(--mind); color: var(--bg); }
 .mind-cell.conflict { outline: 3px solid var(--danger); outline-offset: -4px; z-index: 1; }
-.mind-cell.region-0 { background: color-mix(in srgb, var(--mind) 13%, var(--surface)); }
-.mind-cell.region-1 { background: color-mix(in srgb, var(--gold) 14%, var(--surface)); }
-.mind-cell.region-2 { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); }
-.mind-cell.region-3 { background: color-mix(in srgb, var(--ember) 13%, var(--surface)); }
-.mind-cell.region-4 { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
-.mind-cell.region-5 { background: color-mix(in srgb, var(--mind) 25%, var(--surface)); }
-.mind-cell.region-6 { background: color-mix(in srgb, var(--gold) 26%, var(--surface)); }
-.mind-cell.region-7 { background: color-mix(in srgb, var(--ok) 26%, var(--surface)); }
+.mind-cell[class*='region-'] { color: var(--region-ink); border-color: var(--region-boundary); }
+.mind-cell.region-0 { background: var(--region-0); }
+.mind-cell.region-1 { background: var(--region-1); }
+.mind-cell.region-2 { background: var(--region-2); }
+.mind-cell.region-3 { background: var(--region-3); }
+.mind-cell.region-4 { background: var(--region-4); }
+.mind-cell.region-5 { background: var(--region-5); }
+.mind-cell.region-6 { background: var(--region-6); }
+.mind-cell.region-7 { background: var(--region-7); }
 .cage-label { position: absolute; top: 1px; left: 3px; font: 10px 'JetBrains Mono', monospace; }
 .notes { font: 11px 'JetBrains Mono', monospace; overflow-wrap: anywhere; }
 .edge { position: absolute; z-index: 2; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: var(--raised); color: var(--ink); border: 1px solid var(--line); font: 12px Inter, sans-serif; }

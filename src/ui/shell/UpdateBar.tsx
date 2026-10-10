@@ -23,7 +23,7 @@ export function UpdateBar() {
 
   useEffect(() => {
     if (!offlineReady) return;
-    const timer = setTimeout(dismissOfflineReady, 3000);
+    const timer = setTimeout(dismissOfflineReady, 4000);
     return () => clearTimeout(timer);
   }, [offlineReady]);
 

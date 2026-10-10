@@ -2,6 +2,35 @@
 import { expect, test } from '@playwright/test';
 
 for (const scheme of ['light', 'dark'] as const) {
+  test(`practice board screenshots in ${scheme}`, async ({ page }, testInfo) => {
+    test.setTimeout(120_000);
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto('/#mind');
+    await page.getByRole('button', { name: 'Practice', exact: true }).click();
+    const boards = [
+      { name: 'Mini Sudoku', grid: 'Mini Sudoku board', slug: 'sudoku', difficulty: 'easy' },
+      { name: 'Crowns', grid: 'Crowns board', slug: 'crowns', difficulty: 'hard' },
+      { name: 'Sun & Moon', grid: 'Sun and Moon board', slug: 'sunmoon', difficulty: 'easy' },
+      { name: 'Number Path', grid: 'Number Path board', slug: 'path', difficulty: 'easy' },
+      { name: 'Calcudoku', grid: 'Calcudoku board', slug: 'calc', difficulty: 'easy' },
+    ];
+    for (const board of boards) {
+      await page.getByRole('heading', { name: board.name }).locator('..').getByRole('button', { name: board.difficulty }).click();
+      const grid = page.getByRole('grid', { name: board.grid });
+      await expect(grid).toBeVisible({ timeout: 30_000 });
+      if (board.slug === 'crowns') {
+        const first = grid.locator('.mind-cell').first();
+        await first.click();
+        await first.click();
+        await expect(first).toHaveAttribute('aria-label', /crown$/);
+        const colors = await grid.locator('.mind-cell').evaluateAll(cells => new Set(cells.map(cell => getComputedStyle(cell).backgroundColor)).size);
+        expect(colors).toBe(8);
+      }
+      await page.screenshot({ path: testInfo.outputPath(`mind-${board.slug}-${scheme}.png`), fullPage: true });
+      await page.getByRole('button', { name: '← Mind' }).click();
+    }
+  });
+
   test(`Mind daily board, saved progress, and offline reload in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(90_000);
     await page.emulateMedia({ colorScheme: scheme });

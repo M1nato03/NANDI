@@ -15,11 +15,11 @@ type Props = {
 };
 
 const position = (i: number, width: number) => `Row ${Math.floor(i / width) + 1}, column ${i % width + 1}`;
-const border = (same: (a: number, b: number) => boolean, i: number, n: number) => ({
-  borderTopWidth: i < n || !same(i, i - n) ? 2 : 1,
-  borderLeftWidth: i % n === 0 || !same(i, i - 1) ? 2 : 1,
-  borderRightWidth: i % n === n - 1 || !same(i, i + 1) ? 2 : 1,
-  borderBottomWidth: i >= n * (n - 1) || !same(i, i + n) ? 2 : 1,
+const border = (same: (a: number, b: number) => boolean, i: number, n: number, boundary = 2) => ({
+  borderTopWidth: i < n || !same(i, i - n) ? boundary : 1,
+  borderLeftWidth: i % n === 0 || !same(i, i - 1) ? boundary : 1,
+  borderRightWidth: i % n === n - 1 || !same(i, i + 1) ? boundary : 1,
+  borderBottomWidth: i >= n * (n - 1) || !same(i, i + n) ? boundary : 1,
 });
 
 function NumberBoard({ board, state, conflicts, notes, notesMode, onGrid, onNotesMode, done }: Props & { board: Extract<PuzzleBoard, { type: 'sudoku' | 'calc' }> }) {
@@ -70,7 +70,7 @@ export function CalcudokuBoard(props: Props & { board: Extract<PuzzleBoard, { ty
 
 export function CrownsBoard({ board, state, conflicts, onGrid, done }: Props & { board: Extract<PuzzleBoard, { type: 'crowns' }> }) {
   return <div className="mind-grid" role="grid" aria-label="Crowns board" style={{ gridTemplateColumns: `repeat(${board.N}, 1fr)` }}>
-    {state.grid.map((value, i) => <button type="button" key={i} className={`mind-cell region-${(board.region[i] ?? 0) % 8} ${conflicts.includes(i) ? 'conflict' : ''}`} style={border((a, b) => board.region[a] === board.region[b], i, board.N)} aria-label={`${position(i, board.N)}, region ${(board.region[i] ?? 0) + 1}: ${value === 2 ? 'crown' : value === 1 ? 'cross' : 'empty'}`} onClick={() => { const next = state.grid.slice(); next[i] = (value + 1) % 3; onGrid(next); }} disabled={done}>{value === 1 ? '×' : value === 2 ? '♛' : ''}</button>)}
+    {state.grid.map((value, i) => <button type="button" key={i} className={`mind-cell region-${(board.region[i] ?? 0) % 8} ${conflicts.includes(i) ? 'conflict' : ''}`} style={border((a, b) => board.region[a] === board.region[b], i, board.N, 3)} aria-label={`${position(i, board.N)}, region ${(board.region[i] ?? 0) + 1}: ${value === 2 ? 'crown' : value === 1 ? 'cross' : 'empty'}`} onClick={() => { const next = state.grid.slice(); next[i] = (value + 1) % 3; onGrid(next); }} disabled={done}>{value === 1 ? '×' : value === 2 ? '♛' : ''}</button>)}
   </div>;
 }
 
