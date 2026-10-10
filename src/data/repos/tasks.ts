@@ -1,5 +1,6 @@
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
+import { db as appDb } from '../db';
 import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey } from '../../core/time/dayKey';
@@ -49,6 +50,11 @@ function coreTask(row: TaskRow): CoreTask {
     postponeCount: row.postponeCount,
     status: row.status as TaskStatus,
   };
+}
+
+/** Used by reload guards; a paused or finished focus is safe to reload. */
+export async function isFocusActive(): Promise<boolean> {
+  return (await appDb.focus.filter((row) => row.deleted === 0 && isFocusRunning(row)).count()) > 0;
 }
 
 export function createTaskRepos(db: NandiDb, deviceId: string) {
@@ -466,7 +472,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         for (const child of children) {
           rows.push(
             await repos.tasks.put(
-              { ...parent, ...child, doneAt: undefined },
+              { ...parent, ...child, title: `${parent.title} (${rows.length + 1})`, doneAt: undefined },
               now,
             ),
           );
