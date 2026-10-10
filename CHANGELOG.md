@@ -12,3 +12,4 @@
 
 ## Phase 1 (in progress)
 - Build line on Ground, Update available / Later flow, pending-write guard, offline navigation route, upgrade e2e test, deploy waits for e2e (CI).
+- Tasks core (all 16 spec acceptance tests, flat capped Clutch) and first Tasks screens: quick add, Today Now card with focus timer, Today/Upcoming/Unplaced/Someday lists, postpone ladder sheet, split. Focus blocks app updates.
