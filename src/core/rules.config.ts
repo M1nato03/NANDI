@@ -54,8 +54,14 @@ export const RULES = {
     ladder: { repMin: 5, repMax: 8, sets: 3, holdMinS: 20, holdMaxS: 60 },
     placement: { stopMinReps: 5, stopMaxReps: 11, moveUpAtReps: 12, maxTestsPerPattern: 3 },
     weeklyHardSetIncreaseMaxPct: 20,
+      prLoadJumpConfirmPct: 50,
+      compoundRestS: 90,
+      coreRestS: 60,
+      heatIndoorCelsius: 27,
+      heatIndoorHumidityPct: 75,
     heatMode: { volumeCutPct: 25, acclimatiseDays: 12 },
     retestEveryWeeks: 8,
+      retestVolumeCutPct: 30,
   },
 
   // 05-economy §2, Mind.
@@ -203,7 +209,11 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'train.placement.stopMinReps': [1, 30], 'train.placement.stopMaxReps': [1, 30],
   'train.placement.moveUpAtReps': [2, 30], 'train.placement.maxTestsPerPattern': [1, 10],
   'train.weeklyHardSetIncreaseMaxPct': [0, 100], 'train.heatMode.volumeCutPct': [0, 50],
+    'train.prLoadJumpConfirmPct': [0, 200], 'train.compoundRestS': [0, 300],
+    'train.coreRestS': [0, 300], 'train.heatIndoorCelsius': [0, 50],
+    'train.heatIndoorHumidityPct': [0, 100],
   'train.heatMode.acclimatiseDays': [1, 30], 'train.retestEveryWeeks': [1, 52],
+    'train.retestVolumeCutPct': [0, 80],
   // Mind: nonnegative XP, bounded daily volume and valid rating/interval domains.
   'mind.mysteryXp': [0, 100], 'mind.dropBoardXp': [0, 100], 'mind.lessonXp': [0, 100],
   'mind.lessonsPaidPerDay': [0, 10], 'mind.lessonsPerCoursePerDay': [0, 10],

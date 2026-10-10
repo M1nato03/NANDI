@@ -78,6 +78,16 @@ export interface LadderRow extends EntityRow {
 export interface ProgramRow extends EntityRow {
   track: 'gym' | 'bodyweight';
   templates?: { key: string; slots: unknown[] }[];
+  equipment?: import('../core/train').EquipmentSetting;
+  days?: number[];
+  weeklyTarget?: 2 | 3;
+  restDay?: number;
+  heatModeEnabled?: boolean;
+  heatStartedAt?: number;
+  startedAt?: number;
+  placement?: Record<string, number>;
+  sessionsStarted?: number;
+  lastRetestWeek?: number;
 }
 export interface ExStateRow extends StateRow {
   loadKg?: number;
@@ -85,15 +95,24 @@ export interface ExStateRow extends StateRow {
   successStreak?: number;
   failStreak?: number;
   lastIncreaseAt?: number;
+  increasesThisWeek?: number;
+  increaseWeek?: string;
+  lastReps?: number;
+  lastLoadKg?: number;
 }
 export interface SessionRow extends EntityRow {
   dayKey: DayKey;
-  status: 'completed' | 'minimum' | 'partial' | 'safety' | 'skipped';
+  status: 'active' | 'completed' | 'minimum' | 'partial' | 'safety' | 'skipped';
   templateKey?: string;
   heatMode?: string;
   readiness?: string;
   startedAt?: number;
   endedAt?: number;
+  planned?: import('../core/train').RoutineExercise[];
+  painExerciseIds?: string[];
+  effortByExercise?: Record<string, 'easy' | 'solid' | 'near'>;
+  restEndsAt?: number;
+  xp?: number;
 }
 export interface SetRow extends EntityRow {
   sessionId: string;
@@ -105,6 +124,8 @@ export interface SetRow extends EntityRow {
   effort?: 'easy' | 'solid' | 'near';
   painFlag?: boolean;
   completedAt?: number;
+  slot?: number;
+  confirmedJump?: boolean;
 }
 export interface PrRow extends EntityRow {
   exerciseId: string;
@@ -112,6 +133,7 @@ export interface PrRow extends EntityRow {
   value?: number;
   setId?: string;
   at?: number;
+  loadKg?: number;
 }
 export interface PuzzleRunRow extends EntityRow {
   type: 'sudoku' | 'crowns' | 'sunmoon' | 'path' | 'calc' | 'mystery';

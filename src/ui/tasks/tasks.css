@@ -18,6 +18,8 @@
 .now-card { margin-top: 0; text-align: center; }
 .now-card h2 { font-size: 38px; overflow-wrap: anywhere; }
 .now-card .eyebrow { margin: 0 0 12px; }
+.now-workout { display: grid; gap: 10px; padding: 12px; margin-bottom: 16px; border: 1px solid var(--line); border-radius: 8px; }
+.now-workout button { min-height: 44px; }
 .timer-ring { width: min(220px, 65vw); height: min(220px, 65vw); margin: 20px auto; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) var(--progress), var(--raised) var(--progress)); position: relative; }
 .timer-ring::before { content: ''; position: absolute; inset: 14px; border-radius: 50%; background: var(--surface); }
 .timer-ring span { z-index: 1; font: 700 56px 'Big Shoulders Display', sans-serif; color: var(--ink); }

@@ -38,7 +38,7 @@ export function localDateTime(value: number): string {
 export function defaultSlot(now: number): string {
   const date = new Date(now + 3_600_000);
   date.setMinutes(0, 0, 0);
-  return localDateTime(date.getTime());
+  return localDateTime(dayKey(date.getTime()) === dayKey(now) ? date.getTime() : now);
 }
 
 export function splitEstimates(total: number): number[] | null {

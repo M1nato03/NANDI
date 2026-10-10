@@ -17,3 +17,5 @@
 - Planner: morning plan (Unplaced triage, day-horizon line), shutdown check-in, weekly review with export, baseline-week postpone budget; shutdown and bedtime settings.
 - Side quests: 3 weekly suggestions + custom quests, totals (km, reps), Monday reset without penalty. Database schema v2 (adds quests) with a tested backup migration.
 - Mind Daily Drop: eight-screen Gita and Charaka lessons with saved resume, diagrams, plan check-ins, Greene and lesson-card reviews with SRS and Elo, a first-time intro board, finite daily stop, and night limits.
+- Train: rank assessment, Hostel Bodyweight and Gym Foundations plans, transactional set logging, pain stops, rest timer, progression, history, metrics, and backup coverage. Active workouts defer app updates.
+- Train: rank assessment, Hostel Bodyweight program by default, one-tap sets, rest timer, pain stop, history and metrics.
