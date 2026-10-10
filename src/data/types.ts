@@ -203,6 +203,8 @@ export interface DailyLogRow extends RowMeta {
   planDone?: boolean;
   shutdownDone?: boolean;
   reviewDone?: boolean;
+  shutdownIfThen?: string;
+  windDownAt?: number;
   nightOverrides?: number;
 }
 export interface SettingRow extends RowMeta {

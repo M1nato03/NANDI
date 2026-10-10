@@ -1,18 +1,31 @@
 import { useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 import type { TaskRow } from '../../data/types';
+import { db } from '../../data/db';
+import { RULES } from '../../core/rules.config';
+import { dayKey } from '../../core/time/dayKey';
+import { dayHorizon, effectiveShutdown, nightWindow } from '../../core/tasks/planner';
 import { isFocusRunning } from '../../core/tasks/focus';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { PostponeSheet } from '../tasks/PostponeSheet';
 import { currentFocus, elapsed, minutes, todayTasks, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
+import { go } from '../shell/router';
 import '../tasks/tasks.css';
 
 export function Today() {
   const board = useTaskBoard();
+  const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
+  const log = useLiveQuery(() => db.dailyLog.get(dayKey(board.now)), [dayKey(board.now)]);
+  const savedTime = (key: string, fallback: string) => { const value = settings.find((row) => row.key === key && row.deleted === 0)?.value; return typeof value === 'string' ? value : fallback; };
+  const shutdown = effectiveShutdown(savedTime('planner.shutdown', RULES.night.defaultShutdown), savedTime('planner.bedtime', RULES.night.defaultBedtime));
+  const bedtime = savedTime('planner.bedtime', RULES.night.defaultBedtime);
+  const night = nightWindow(board.now, shutdown, bedtime, log?.windDownAt);
   const [moving, setMoving] = useState<TaskRow | null>(null);
   const [justFinished, setJustFinished] = useState<{ planned: number; actual: number } | null>(null);
   const focus = currentFocus(board.focus);
   const scheduled = todayTasks(board.tasks, board.now);
+  const plannedMinutes = scheduled.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0);
   const nowTask = (focus && visibleTasks(board.tasks).find((task) => task.id === focus.taskId && task.status !== 'done')) ?? scheduled[0];
   const taskFocus = nowTask ? board.focus.filter((row) => row.taskId === nowTask.id && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0] : undefined;
   const next = scheduled.filter((task) => task.id !== nowTask?.id).slice(0, 2);
@@ -32,6 +45,11 @@ export function Today() {
   }
   return <section className="screen"><p className="eyebrow">Your space</p><h1>Today</h1>
     <TaskQuickAdd run={board.act} />
+    <p className="day-horizon">{dayHorizon(plannedMinutes, board.now, shutdown)}</p>
+    {night === 'windDown' && <p role="status">Wind-down has started. Shutdown is here when you are ready.</p>}
+    {night === 'lightsOut' && <p role="status">Lights-out time. A quiet check-in is here when you are ready.</p>}
+    {night !== 'day' && !log?.lightsOutAt && <button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.recordLightsOut(now), 'Lights-out check-in saved.')}>Lights-out check-in</button>}
+    <div className="planner-nav"><button type="button" className="secondary" onClick={() => go('tasks/plan')}>Morning plan</button><button type="button" className="secondary" onClick={() => go('tasks/shutdown')}>Shutdown</button><button type="button" className="secondary" onClick={() => go('tasks/review')}>Weekly review</button></div>
     {board.message && <p role="status">{board.message}</p>}
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Now"><p className="eyebrow">Now</p>
