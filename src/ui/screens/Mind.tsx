@@ -4,6 +4,7 @@ import { featuredSpec } from '../../core/puzzles/daily';
 import { nextHint } from '../../core/puzzles/hint';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
+import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { accrueActive, bestPuzzleMs, initialGrid, openPuzzleRun, savePuzzleRun } from '../../data/repos/puzzleRuns';
 import type { PuzzleRunRow } from '../../data/types';
@@ -33,14 +34,24 @@ export function Mind() {
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saving');
   const current = useRef<PuzzleRunRow | null>(null);
   const writes = useRef<Promise<unknown>>(Promise.resolve());
+  const saveVersion = useRef(0);
 
   const persist = useCallback((row: PuzzleRunRow) => {
     current.current = row;
     setRun(row);
     setElapsed(row.activeMs ?? 0);
-    writes.current = writes.current.then(() => savePuzzleRun(db, row)).catch(error => recordError('window', error));
+    setSaveState('saving');
+    const version = ++saveVersion.current;
+    const write = trackWrite(() => writes.current.then(() => savePuzzleRun(db, row)));
+    writes.current = write.then(() => {
+      if (saveVersion.current === version) setSaveState('saved');
+    }).catch(error => {
+      if (saveVersion.current === version) setSaveState('error');
+      recordError('window', error);
+    });
   }, []);
 
   useEffect(() => {
@@ -63,6 +74,7 @@ export function Mind() {
         await writes.current;
         current.current = row;
         setBoard(generated); setRun(row); setElapsed(row.activeMs ?? 0);
+        setSaveState('saved');
         setBest(await bestPuzzleMs(db, generated.type, generated.diff));
         setBusy(false);
       }).catch(error => { setBusy(false); recordError('window', error); setMessage('Could not open the saved board.'); });
@@ -88,9 +100,10 @@ export function Mind() {
       if (document.visibilityState === 'hidden') save();
       else if (current.current && !current.current.result) current.current = { ...current.current, lastActiveAt: Date.now() };
     };
-    window.addEventListener('visibilitychange', visibility);
+    document.addEventListener('visibilitychange', visibility);
+    window.addEventListener('pagehide', save);
     window.addEventListener('pageshow', visibility);
-    return () => { window.clearInterval(interval); window.removeEventListener('visibilitychange', visibility); window.removeEventListener('pageshow', visibility); save(); };
+    return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', visibility); window.removeEventListener('pagehide', save); window.removeEventListener('pageshow', visibility); save(); };
   }, [run?.id, run?.result, persist]);
 
   const commit = useCallback((state: PuzzleState, extra: Partial<PuzzleRunRow> = {}) => {
@@ -122,7 +135,7 @@ export function Mind() {
   }, [board, run?.id, commit]);
 
   const open = (item: Selection) => {
-    setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage('');
+    setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
     if (item.daily) { setSelection(item); return; }
     void db.puzzleRuns.where('type').equals(item.type).toArray().then(rows => {
       const matching = rows.filter(row => !row.deleted && !row.daily && row.dayKey === today && row.diff === item.diff);
@@ -136,7 +149,7 @@ export function Mind() {
   const checked = board ? checkRules(board, state) : null;
   const name = board ? PZ.TYPES[board.type].name : '';
 
-  if (selection) return <section className="screen mind-board">
+  if (selection) return <section className="screen mind-board" data-save-state={saveState}>
     <button type="button" className="text-button" onClick={close}>← Mind</button>
     {busy || !board || !run ? <><h1>{PZ.TYPES[selection.type].name}</h1><p role="status">{message || 'Building board…'}</p></> : <>
       <p className="eyebrow">{selection.daily ? `Daily drop · ${today}` : `Practice · ${board.diff}`}</p>

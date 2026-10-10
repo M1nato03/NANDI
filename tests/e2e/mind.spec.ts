@@ -4,6 +4,7 @@ import { expect, test } from '@playwright/test';
 for (const scheme of ['light', 'dark'] as const) {
   test(`practice board screenshots in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(120_000);
+    await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#mind');
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
@@ -33,6 +34,7 @@ for (const scheme of ['light', 'dark'] as const) {
 
   test(`Mind daily board, saved progress, and offline reload in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(90_000);
+    await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/?e2e#mind');
     await page.getByRole('button', { name: 'Open daily board' }).click();
@@ -67,12 +69,14 @@ for (const scheme of ['light', 'dark'] as const) {
     await empty.click();
     await page.getByLabel('Number pad').getByRole('button', { name: '1', exact: true }).click();
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: `${label!.replace(': empty', ': 1')}` })).toBeVisible();
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.reload();
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
 
     await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 30_000 });
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.context().setOffline(true);
     await page.reload();
     await page.getByRole('button', { name: 'Practice', exact: true }).click();

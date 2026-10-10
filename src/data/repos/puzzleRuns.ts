@@ -38,13 +38,13 @@ export function accrueActive(row: PuzzleRunRow, now: number): PuzzleRunRow {
 }
 
 export async function savePuzzleRun(store: NandiDb, row: PuzzleRunRow, now = Date.now()): Promise<PuzzleRunRow> {
-  return store.transaction('rw', store.puzzleRuns, async () => {
+  return trackWrite(() => store.transaction('rw', store.puzzleRuns, async () => {
     const prior = await store.puzzleRuns.get(row.id);
     if (prior?.result === 'solved') return prior;
     const saved = { ...row, updatedAt: now };
-    await trackWrite(() => store.puzzleRuns.put(saved));
+    await store.puzzleRuns.put(saved);
     return saved;
-  });
+  }));
 }
 
 export async function bestPuzzleMs(store: NandiDb, type: PuzzleBoard['type'], diff: string): Promise<number | undefined> {

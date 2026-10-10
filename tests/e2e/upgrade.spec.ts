@@ -1,5 +1,4 @@
 import { expect, test, type BrowserContext, type Page } from '@playwright/test';
-import { execFileSync } from 'node:child_process';
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -23,19 +22,7 @@ const contentTypes: Record<string, string> = {
 };
 
 async function startUpgradeServer() {
-  execFileSync(
-    process.execPath,
-    [
-      resolve('node_modules/vite/bin/vite.js'),
-      'build',
-      '--outDir',
-      'dist-e2e-b',
-    ],
-    {
-      env: { ...process.env, VITE_E2E: '1', NANDI_VERSION: '0.1.0-b' },
-      stdio: 'inherit',
-    },
-  );
+  // Build B is produced once per run by tests/e2e/global-setup.ts (parallel tests must not rebuild it).
 
   // Chromium fetches service worker updates outside Playwright's route interception.
   // Serve both builds from the same real origin so /sw.js can change with the page.
