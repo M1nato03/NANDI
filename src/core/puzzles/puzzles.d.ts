@@ -15,6 +15,13 @@ declare const PZ: {
   generate: (type: PuzzleType, options: PuzzleOptions) => PuzzleBoard | null;
   hash: (text: string) => number;
   rng: (seed: number) => () => number;
-  _test: Record<string, (...args: never[]) => unknown>;
+  _test: {
+    latinUnits: () => unknown;
+    latinLogic: (grid: number[], n: number, units: unknown, level: number) => { solved: boolean; grid: number[] };
+    crownLogic: (n: number, region: number[], level: number) => { solved: boolean; st: ArrayLike<number> };
+    binLogic: (clues: { given: number[]; hs: number[]; vs: number[] }, level: number) => { solved: boolean; grid: number[] };
+    calcLogic: (n: number, cages: Array<{ cells: number[]; op: string; target: number; tuples: number[][] }>, level: number) => { solved: boolean; grid: number[] };
+    cageTuples: (cage: { cells: number[]; op: string; target: number }, n: number) => number[][];
+  };
 };
 export default PZ;

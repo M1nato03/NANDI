@@ -1,11 +1,20 @@
 import PZ from '../core/puzzles';
 import { generateCheck } from './generator';
+import { dailyBoard } from '../core/puzzles/daily';
+import type { PuzzleDifficulty, PuzzleType } from '../core/puzzles';
 
 const pathRuns = 20;
 const pathBudgetMs = 300;
 
-self.onmessage = (event: MessageEvent<string>) => {
+self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice'; day: string; type?: PuzzleType; diff?: PuzzleDifficulty; seed?: number }>) => {
   try {
+    if (typeof event.data !== 'string') {
+      const request = event.data;
+      const board = request.kind === 'daily' ? dailyBoard(request.day)
+        : PZ.generate(request.type!, { seed: request.seed!, diff: request.diff! });
+      self.postMessage({ kind: request.kind, board });
+      return;
+    }
     const start = performance.now();
     const result = generateCheck(event.data);
     self.postMessage({ result, ms: performance.now() - start });
