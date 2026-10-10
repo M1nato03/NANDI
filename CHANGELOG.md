@@ -11,4 +11,4 @@
 - Added a banned-words gate, Workers static-assets hosting headers, and CI checks, deploy, and path-filtered browser tests.
 
 ## Phase 1 (in progress)
-- Build line on Ground, Update available / Later flow, pending-write guard, offline navigation route, upgrade e2e test, deploy waits for e2e.
+- Build line on Ground, Update available / Later flow, pending-write guard, offline navigation route, upgrade e2e test, deploy waits for e2e (CI).

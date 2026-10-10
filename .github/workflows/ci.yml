@@ -42,8 +42,9 @@ jobs:
           fi
 
   deploy:
-    needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.deploy_enabled == 'true'
+    needs: [check, e2e]
+    # Deploy only when checks passed and e2e passed or was skipped (docs-only change); a failing e2e blocks it.
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.result == 'success' && needs.check.outputs.deploy_enabled == 'true' && (needs.e2e.result == 'success' || needs.e2e.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
