@@ -8,6 +8,9 @@
   --bg: #0A0C10; --surface: #12161E; --raised: #1A202B; --line: #263042;
   --ink: #EEF2F7; --muted: #8A96A8; --accent: #C8FF2E; --ember: #FF5B2E;
   --gold: #FFC531; --mind: #A78BFA; --danger: #FF6B6B; --ok: #3DDC97;
+  --region-ink: #10141A; --region-boundary: #17202D;
+  --region-0: #AE91F0; --region-1: #F4A26A; --region-2: #5BD3C8; --region-3: #EF85B6;
+  --region-4: #B9D967; --region-5: #7DABFA; --region-6: #F3D46E; --region-7: #F18B7B;
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
@@ -15,6 +18,9 @@
     --bg: #F3F4EF; --surface: #FFFFFF; --raised: #E9EBE4; --line: #D3D7CC;
     --ink: #10141A; --muted: #5A6473; --accent: #3F6600; --ember: #A8320E;
     --gold: #7A5400; --mind: #5B3FD1; --danger: #B3261E; --ok: #17784A;
+    --region-ink: #10141A; --region-boundary: #344155;
+    --region-0: #DFD0FF; --region-1: #FFD8B8; --region-2: #B7EBE5; --region-3: #FFD1E4;
+    --region-4: #DCEEA5; --region-5: #C9DFFF; --region-6: #FFF0AD; --region-7: #FFCFC3;
   }
 }
 :root[data-theme='light'] {
@@ -22,6 +28,9 @@
   --bg: #F3F4EF; --surface: #FFFFFF; --raised: #E9EBE4; --line: #D3D7CC;
   --ink: #10141A; --muted: #5A6473; --accent: #3F6600; --ember: #A8320E;
   --gold: #7A5400; --mind: #5B3FD1; --danger: #B3261E; --ok: #17784A;
+  --region-ink: #10141A; --region-boundary: #344155;
+  --region-0: #DFD0FF; --region-1: #FFD8B8; --region-2: #B7EBE5; --region-3: #FFD1E4;
+  --region-4: #DCEEA5; --region-5: #C9DFFF; --region-6: #FFF0AD; --region-7: #FFCFC3;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); color: var(--ink); font-family: Inter, sans-serif; font-size: 16px; }
@@ -38,7 +47,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .update-bar-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .update-bar button { background: var(--bg); color: var(--accent); border-color: var(--bg); }
 .update-bar button.secondary { background: transparent; color: var(--bg); border-color: var(--bg); }
-.offline-ready-toast { position: fixed; z-index: 1000; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--raised); color: var(--ink); border: 1px solid var(--line); padding: 10px 20px; border-radius: 20px; }
+.offline-ready-toast { margin: 0; padding: 10px 20px; background: var(--raised); color: var(--ink); border-bottom: 1px solid var(--line); pointer-events: none; }
 .topbar { min-height: 64px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }
 .brand { margin: 0; font: 700 28px 'Big Shoulders Display', sans-serif; letter-spacing: .08em; }
 .slash { color: var(--accent); font-size: 34px; padding-right: 4px; }

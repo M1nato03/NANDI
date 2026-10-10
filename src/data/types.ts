@@ -130,6 +130,14 @@ export interface PuzzleRunRow extends EntityRow {
   source?: 'app' | 'legacy';
   legacyBest?: boolean;
   legacyRaw?: unknown;
+  grid?: number[];
+  path?: number[];
+  notes?: number[];
+  notesMode?: boolean;
+  activeMs?: number;
+  lastActiveAt?: number;
+  finishedAt?: number;
+  practiceAttempt?: number;
 }
 export interface CardRow extends StateRow {
   deckId: string;

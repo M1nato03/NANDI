@@ -1,0 +1,94 @@
+/// <reference lib="dom" />
+import { expect, test } from '@playwright/test';
+
+for (const scheme of ['light', 'dark'] as const) {
+  test(`practice board screenshots in ${scheme}`, async ({ page }, testInfo) => {
+    test.setTimeout(120_000);
+    await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto('/#mind');
+    await page.getByRole('button', { name: 'Practice', exact: true }).click();
+    const boards = [
+      { name: 'Mini Sudoku', grid: 'Mini Sudoku board', slug: 'sudoku', difficulty: 'easy' },
+      { name: 'Crowns', grid: 'Crowns board', slug: 'crowns', difficulty: 'hard' },
+      { name: 'Sun & Moon', grid: 'Sun and Moon board', slug: 'sunmoon', difficulty: 'easy' },
+      { name: 'Number Path', grid: 'Number Path board', slug: 'path', difficulty: 'easy' },
+      { name: 'Calcudoku', grid: 'Calcudoku board', slug: 'calc', difficulty: 'easy' },
+    ];
+    for (const board of boards) {
+      await page.getByRole('heading', { name: board.name }).locator('..').getByRole('button', { name: board.difficulty }).click();
+      const grid = page.getByRole('grid', { name: board.grid });
+      await expect(grid).toBeVisible({ timeout: 30_000 });
+      if (board.slug === 'crowns') {
+        const first = grid.locator('.mind-cell').first();
+        await first.click();
+        await first.click();
+        await expect(first).toHaveAttribute('aria-label', /crown$/);
+        const colors = await grid.locator('.mind-cell').evaluateAll(cells => new Set(cells.map(cell => getComputedStyle(cell).backgroundColor)).size);
+        expect(colors).toBe(8);
+      }
+      await page.screenshot({ path: testInfo.outputPath(`mind-${board.slug}-${scheme}.png`), fullPage: true });
+      await page.getByRole('button', { name: '← Mind' }).click();
+    }
+  });
+
+  test(`Mind daily board, saved progress, and offline reload in ${scheme}`, async ({ page }, testInfo) => {
+    test.setTimeout(90_000);
+    await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto('/?e2e#mind');
+    await page.getByRole('button', { name: 'Open daily board' }).click();
+    await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
+    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
+    await expect(page.locator('html')).toHaveCSS('color-scheme', scheme);
+    await page.screenshot({ path: testInfo.outputPath(`mind-board-${scheme}.png`), fullPage: true });
+    const sizing = await page.evaluate(() => {
+      const grid = document.querySelector('.mind-grid')!;
+      const cells = [...grid.querySelectorAll<HTMLButtonElement>('.mind-cell')];
+      const n = Number((grid as HTMLElement).style.gridTemplateColumns.match(/repeat\((\d+)/)?.[1] ?? 6);
+      const available = grid.getBoundingClientRect().width / n;
+      const controls = [...document.querySelectorAll<HTMLButtonElement>('.mind-board button:not(.mind-cell)')];
+      return {
+        cells: cells.every(cell => cell.getBoundingClientRect().width + 1 >= Math.min(44, available)),
+        controls: controls.every(control => control.getBoundingClientRect().height >= 44 && control.getBoundingClientRect().width >= 44),
+        noScroll: document.documentElement.scrollWidth <= innerWidth,
+      };
+    });
+    expect(sizing).toEqual({ cells: true, controls: true, noScroll: true });
+    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
+    await expect(page.getByLabel('Puzzle result')).toContainText('Board complete');
+    await expect(page.getByLabel('Puzzle result')).toContainText('Best');
+    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await expect(page.getByRole('heading', { name: "Today's drop complete." })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Practice', exact: true }).click();
+    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
+    const empty = page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first();
+    await expect(empty).toBeVisible({ timeout: 30_000 });
+    const label = await empty.getAttribute('aria-label');
+    await empty.click();
+    await page.getByLabel('Number pad').getByRole('button', { name: '1', exact: true }).click();
+    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: `${label!.replace(': empty', ': 1')}` })).toBeVisible();
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
+    await page.reload();
+    await page.getByRole('button', { name: 'Practice', exact: true }).click();
+    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
+    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
+
+    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 30_000 });
+    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
+    await page.context().setOffline(true);
+    await page.reload();
+    await page.getByRole('button', { name: 'Practice', exact: true }).click();
+    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
+    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.context().setOffline(false);
+    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
+    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
+    await expect(page.getByLabel('Puzzle result')).toBeVisible();
+    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
+    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first()).toBeVisible({ timeout: 30_000 });
+  });
+}
