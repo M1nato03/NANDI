@@ -60,3 +60,12 @@ export function baselineBudget(
     ),
   );
 }
+
+/** Counts are chronological completed weeks since the last automatic raise. */
+export function nextBudget(current: number, countsSinceRaise: number[], rules: Rules = RULES) {
+  if (countsSinceRaise.length < rules.tasks.postpone.autoRaise.lookbackWeeks)
+    return { budget: current, countsSinceRaise, raised: false };
+  const recent = countsSinceRaise.slice(-rules.tasks.postpone.autoRaise.lookbackWeeks);
+  const result = calculateNewBudget(current, recent.map((count) => count > current), rules);
+  return { budget: result.newBudget, countsSinceRaise: result.didRaise ? [] : recent, raised: result.didRaise };
+}

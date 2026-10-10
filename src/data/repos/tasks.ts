@@ -5,7 +5,8 @@ import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
-import { postponeWeekKey } from '../../core/tasks/budget';
+import { baselineBudget, nextBudget, postponeWeekKey } from '../../core/tasks/budget';
+import { nextBedtimeTarget, shutdownAt, stepDownOffer } from '../../core/tasks/planner';
 import {
   postponeGate,
   type PostponeAttempt,
@@ -22,6 +23,9 @@ import {
 } from '../../core/tasks/task-machine';
 import { splitTask } from '../../core/tasks/split';
 import { trackWrite } from '../../core/pendingWrites';
+import type { DailyLogRow } from '../types';
+
+type BudgetState = { baselineStart: string; baselineComplete: boolean; enforcementFromWeek?: string; budget: number; lastWeek: string; countsSinceRaise: number[]; raisedAtWeek?: string; steppedDownAtWeek?: string };
 import {
   isFocusRunning,
   startFocus as coreStartFocus,
@@ -67,7 +71,37 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     plans: entityRepo(db.plans, deviceId),
   };
   const mutation = <T>(fn: () => Promise<T>): Promise<T> =>
-    trackWrite(() => db.transaction('rw', db.tasks, db.taskEvents, db.focus, db.ledger, fn));
+    trackWrite(() => db.transaction('rw', [db.tasks, db.taskEvents, db.focus, db.ledger, db.settings, db.dailyLog], fn));
+  const saveBudget = (value: BudgetState, now: number) => db.settings.put({ key: 'planner.budget', value, updatedAt: now, deleted: 0, deviceId });
+  async function budgetState(now: number): Promise<BudgetState> {
+    const week = postponeWeekKey(now);
+    const stored = (await db.settings.get('planner.budget'))?.value as BudgetState | undefined;
+    const state: BudgetState = stored?.baselineStart ? { ...stored, countsSinceRaise: [...stored.countsSinceRaise] } : { baselineStart: dayKey(now), baselineComplete: false, budget: RULES.tasks.postpone.weeklyBudget, lastWeek: week, countsSinceRaise: [] };
+    const shift = (key: string, days: number) => { const date = new Date(`${key}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
+    const nextWeek = (key: string) => shift(key, 7);
+    const baselineEnd = shift(state.baselineStart, 7);
+    if (!state.baselineComplete && dayKey(now) >= baselineEnd) {
+      const from = new Date(`${state.baselineStart}T04:00:00`).getTime();
+      const to = new Date(`${baselineEnd}T04:00:00`).getTime();
+      const count = await db.taskEvents.filter((row) => row.deleted === 0 && row.kind === 'postponed' && row.budgetCounted === true && row.at >= from && row.at < to).count();
+      state.budget = baselineBudget(count);
+      state.baselineComplete = true;
+      state.lastWeek = baselineEnd === week ? week : nextWeek(week);
+      state.enforcementFromWeek = state.lastWeek;
+    }
+    while (state.baselineComplete && state.lastWeek < week) {
+      const from = new Date(`${state.lastWeek}T04:00:00`).getTime();
+      const to = new Date(`${nextWeek(state.lastWeek)}T04:00:00`).getTime();
+      const count = await db.taskEvents.filter((row) => row.deleted === 0 && row.kind === 'postponed' && row.budgetCounted === true && row.at >= from && row.at < to).count();
+      const adjusted = nextBudget(state.budget, [...state.countsSinceRaise, count]);
+      state.budget = adjusted.budget;
+      state.countsSinceRaise = adjusted.countsSinceRaise;
+      if (adjusted.raised) state.raisedAtWeek = nextWeek(state.lastWeek);
+      state.lastWeek = nextWeek(state.lastWeek);
+    }
+    if (!stored || JSON.stringify(state) !== JSON.stringify(stored)) await saveBudget(state, now);
+    return state;
+  }
   const event = (
     taskId: string,
     kind: TaskEventRow['kind'],
@@ -77,6 +111,94 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
 
   return {
     ...repos,
+    async plannerBudget(now: number): Promise<BudgetState> { return mutation(() => budgetState(now)); },
+    async lowerBudget(now: number): Promise<BudgetState> {
+      return mutation(async () => {
+        const state = await budgetState(now);
+        const week = postponeWeekKey(now);
+        const firstMonday = new Date(`${week}T12:00:00`).getDate() <= 7;
+        const starts = Array.from({ length: 4 }, (_, index) => { const date = new Date(`${week}T12:00:00`); date.setDate(date.getDate() - (4 - index) * 7); return dayKey(date); });
+        const counts = await Promise.all(starts.map((start) => db.taskEvents.filter((row) => row.deleted === 0 && row.kind === 'postponed' && row.budgetCounted === true && postponeWeekKey(row.at) === start).count()));
+        const lowered = stepDownOffer(state.budget, counts);
+        if (!firstMonday || state.steppedDownAtWeek === week || lowered == null) throw new Error('No budget adjustment available now');
+        state.budget = lowered;
+        state.steppedDownAtWeek = week;
+        state.countsSinceRaise = [];
+        await saveBudget(state, now);
+        return state;
+      });
+    },
+    async markRitual(kind: 'planDone' | 'shutdownDone' | 'reviewDone', now: number, ifThen?: string): Promise<DailyLogRow> {
+      return mutation(async () => {
+        const key = dayKey(now);
+        const previous = await db.dailyLog.get(key);
+        const row: DailyLogRow = { ...previous, dayKey: key, [kind]: true, ...(kind === 'shutdownDone' ? { windDownAt: now, shutdownIfThen: ifThen?.trim() || undefined } : {}), updatedAt: now, deleted: 0, deviceId };
+        await db.dailyLog.put(row);
+        return row;
+      });
+    },
+    async recordLightsOut(now: number): Promise<DailyLogRow> {
+      return mutation(async () => {
+        const key = dayKey(now);
+        const previous = await db.dailyLog.get(key);
+        if (previous?.lightsOutAt != null) return previous;
+        const targetRow = await db.settings.get('planner.bedtime');
+        const goalRow = await db.settings.get('planner.goalBedtime');
+        let target = typeof targetRow?.value === 'string' ? targetRow.value : RULES.night.defaultBedtime;
+        const goal = typeof goalRow?.value === 'string' ? goalRow.value : RULES.night.goalBedtime;
+        const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(now, target), updatedAt: now, deleted: 0, deviceId };
+        await db.dailyLog.put(row);
+        const shift = (from: string, days: number) => { const date = new Date(`${from}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
+        const windowRow = await db.settings.get('planner.bedtimeWindowStart');
+        let windowStart = typeof windowRow?.value === 'string' ? windowRow.value : key;
+        while (shift(windowStart, 2) <= key) {
+          const nights = await Promise.all([0, 1, 2].map((offset) => db.dailyLog.get(shift(windowStart, offset))));
+          const outcomes = nights.map((log) => log?.lightsOutAt != null && log.bedtimeTarget != null && log.lightsOutAt <= log.bedtimeTarget);
+          target = nextBedtimeTarget(target, goal, outcomes, 3);
+          windowStart = shift(windowStart, 3);
+        }
+        await db.settings.put({ key: 'planner.bedtimeWindowStart', value: windowStart, updatedAt: now, deleted: 0, deviceId });
+        await db.settings.put({ key: 'planner.bedtimeDays', value: key < windowStart ? 0 : [0, 1, 2].find((offset) => shift(windowStart, offset) === key)! + 1, updatedAt: now, deleted: 0, deviceId });
+        if (target !== (typeof targetRow?.value === 'string' ? targetRow.value : RULES.night.defaultBedtime)) await db.settings.put({ key: 'planner.bedtime', value: target, updatedAt: now, deleted: 0, deviceId });
+        return row;
+      });
+    },
+    async setPriority(taskId: string, priority: 'must' | 'could', now: number): Promise<TaskRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task) throw new Error('Task not found');
+        if (priority === 'must') {
+          if (task.status !== 'planned' || task.scheduledStart == null) throw new Error('Give this Must a start time first');
+          const count = await db.tasks.where('dayKey').equals(task.dayKey).filter((row) => row.deleted === 0 && row.id !== taskId && row.status === 'planned' && row.mustOrCould === 'must').count();
+          if (!canAddMust(count)) throw new Error('Maximum Musts for this day; make it a Could');
+        }
+        return repos.tasks.put({ ...task, mustOrCould: priority }, now);
+      });
+    },
+    async setPlace(taskId: string, place: string, now: number): Promise<TaskRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task) throw new Error('Task not found');
+        return repos.tasks.put({ ...task, place: place.trim() }, now);
+      });
+    },
+    async setFirstStep(taskId: string, firstStep: string, now: number): Promise<TaskRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        const trimmed = firstStep.trim();
+        if (!task || !trimmed || trimmed.length > RULES.tasks.firstStepMaxChars) throw new Error('Add a short first step');
+        return repos.tasks.put({ ...task, firstStep: trimmed }, now);
+      });
+    },
+    async dropTask(taskId: string, now: number): Promise<TaskRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task || task.status === 'done') throw new Error('Task cannot be dropped');
+        const row = await repos.tasks.put({ ...task, status: 'dropped', scheduledStart: null, scheduledEnd: null }, now);
+        await event(taskId, 'dropped', now);
+        return row;
+      });
+    },
     async createTask(
       input: Omit<
         TaskRow,
@@ -273,6 +395,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         if (row.status === 'done' || row.status === 'dropped')
           throw new Error('Task is closed');
         const task = checkDayBoundary(coreTask(row), now);
+        const policy = await budgetState(now);
         const weekStart = postponeWeekKey(now);
         const counted = await db.taskEvents
           .filter(
@@ -290,8 +413,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           )
           .count();
         const gate = postponeGate(
-          { ...attempt, task, now, realReasonMovesThisWeek: realMoves },
+          { ...attempt, task, now, baselineWeek: !policy.baselineComplete || weekStart < (policy.enforcementFromWeek ?? weekStart), realReasonMovesThisWeek: realMoves },
           counted,
+          { ...RULES, tasks: { ...RULES.tasks, postpone: { ...RULES.tasks.postpone, weeklyBudget: policy.budget } } },
         );
         if (!gate.ok) throw new Error(gate.error);
         if (gate.action === 'split')
