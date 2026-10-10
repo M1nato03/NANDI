@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { FocusRow, TaskRow } from '../../data/types';
-import { currentFocus, elapsed, minutes, splitEstimates, todayTasks, visibleTasks } from './model';
+import { currentFocus, defaultSlot, elapsed, minutes, splitEstimates, todayTasks, visibleTasks } from './model';
+import { dayKey } from '../../core/time/dayKey';
 
 const now = new Date(2026, 9, 11, 12).getTime();
 const task = (id: string, fields: Partial<TaskRow> = {}): TaskRow => ({
@@ -28,5 +29,11 @@ describe('task view model', () => {
     expect(splitEstimates(100)).toEqual([50, 50]);
     expect(splitEstimates(180)).toEqual([60, 60, 60]);
     expect(splitEstimates(20)).toBeNull();
+  });
+  it('keeps the default Today slot in the current planning day near 04:00', () => {
+    const beforeBoundary = new Date(2026, 9, 11, 3, 15).getTime();
+    const slot = new Date(defaultSlot(beforeBoundary)).getTime();
+    expect(dayKey(slot)).toBe(dayKey(beforeBoundary));
+    expect(slot).toBe(beforeBoundary);
   });
 });

@@ -1,0 +1,37 @@
+.train-onboarding .card, .train-screen .card, .train-workout .card { margin-top: 14px; }
+.train-checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; }
+.train-checks label, .train-confirm { justify-content: flex-start; }
+.train-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin: 15px 0; }
+.train-days button { padding: 8px 0; min-width: 0; }
+.train-step { font-weight: 600; color: var(--ink) !important; }
+.train-onboarding input[type=number], .train-screen input[type=number] { max-width: 100px; }
+.train-screen input[type=text] { width: 140px; min-width: 44px; max-width: 55%; }
+.train-screen .actions { margin: 12px 0; }
+.train-readiness { margin: 14px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.train-readiness p { flex-basis: 100%; margin: 0; }
+.train-readiness button { font-size: 13px; padding: 8px; }
+.train-heatmap { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; max-width: 300px; }
+.train-heatmap span { height: 22px; border-radius: 4px; background: var(--raised); border: 1px solid var(--line); }
+.train-heatmap span.trained { background: var(--accent); border-color: var(--accent); }
+.train-metrics, .train-history { list-style: none; padding: 0; margin: 12px 0; }
+.train-metrics li, .train-history li { padding: 9px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.train-history li { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.train-chart { height: 90px; background: var(--raised); border-radius: 8px; padding: 5px; }
+.train-chart svg { width: 100%; height: 100%; }
+.train-chart polyline { fill: none; stroke: var(--accent); stroke-width: 3; }
+.train-rest { position: sticky; top: 0; z-index: 2; background: var(--accent); color: var(--bg); padding: 12px; border-radius: 8px; font-weight: 600; text-align: center; }
+.train-set { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding: 10px 0; }
+.train-cues { padding-left: 20px; color: var(--muted); line-height: 1.5; }
+.train-set > span:first-child { flex-basis: 100%; font-weight: 600; }
+.train-set label { margin: 0; gap: 3px; }
+.train-set input[type=number] { width: 54px; min-width: 44px; padding: 6px; color: var(--ink); background: var(--raised); border: 1px solid var(--line); border-radius: 6px; }
+.train-set button { padding: 8px; }
+.train-set .train-confirm { flex-basis: 100%; }
+.train-pain { color: var(--danger) !important; }
+.train-safety { color: var(--danger) !important; font-weight: 600; }
+.train-pr-badge { display: inline-block; background: var(--gold); color: var(--bg); border-radius: 4px; font-size: 12px; font-weight: 700; padding: 3px 6px; }
+.train-effort { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.train-effort legend { margin-bottom: 6px; }
+.train-finish button { margin-right: 8px; margin-bottom: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 430px) { .train-checks { grid-template-columns: 1fr; } .train-days { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; } .train-days button { min-width: 44px; font-size: 12px; } }
