@@ -64,6 +64,8 @@ test('backup downloads, previews, and restores only after confirmation', async (
   expect(download.suggestedFilename()).toMatch(/^nandi-backup-\d{4}-\d{2}-\d{2}\.json$/);
   const path = await download.path();
   expect(path).not.toBeNull();
+  // lastBackupAt is written after the download starts; wait for the confirmation before counting rows.
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Saved to Downloads');
   const before = await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts());
   await page.evaluate(() => (globalThis as unknown as { __nandiTest: { removeShellTask: () => Promise<void> } }).__nandiTest.removeShellTask());
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);
