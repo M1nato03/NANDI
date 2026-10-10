@@ -19,3 +19,5 @@
 - Mind Daily Drop: eight-screen Gita and Charaka lessons with saved resume, diagrams, plan check-ins, Greene and lesson-card reviews with SRS and Elo, a first-time intro board, finite daily stop, and night limits.
 - Train: rank assessment, Hostel Bodyweight and Gym Foundations plans, transactional set logging, pain stops, rest timer, progression, history, metrics, and backup coverage. Active workouts defer app updates.
 - Train: rank assessment, Hostel Bodyweight program by default, one-tap sets, rest timer, pain stop, history and metrics.
+- Mind: lessons with diagrams, card reviews with kept legacy schedules, finite Daily Drop with a stopping screen, night 0 XP.
+- Offline: fonts and icons now precached.
