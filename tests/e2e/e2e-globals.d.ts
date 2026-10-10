@@ -1,7 +1,24 @@
 declare global {
   const window: Window;
+  const caches: {
+    keys(): Promise<string[]>;
+    delete(key: string): Promise<boolean>;
+  };
+  const indexedDB: {
+    databases(): Promise<Array<{ name?: string }>>;
+    deleteDatabase(name: string): {
+      onsuccess: (() => void) | null;
+      onerror: (() => void) | null;
+      onblocked: (() => void) | null;
+      error: Error | null;
+    };
+  };
   interface Navigator {
-    serviceWorker: { ready: Promise<unknown>; controller: unknown };
+    serviceWorker: {
+      ready: Promise<unknown>;
+      controller: unknown;
+      getRegistrations(): Promise<Array<{ unregister(): Promise<boolean> }>>;
+    };
   }
   interface Window {
     __nandiTest?: {

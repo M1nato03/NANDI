@@ -12,8 +12,8 @@ export const RULES = {
     fullRateTasksPerDay: 8,
     overflowMultiplier: 0.5,
     quickWin: { xp: 5, withinMin: 30, maxPerDay: 5 },
-    // pending Jenil's decision (Clutch), see docs/plans/phase-0.md
-    clutch: { shareOfSizeXp: 0.25, minPostpones: 2, maxPerDay: 1 },
+    // Clutch is a flat bonus, capped by the first-day bonus forfeited.
+    clutch: { clutchBonusXp: 5, minPostpones: 2, maxPerDay: 1 },
     dailyCap: 200,
     maxEstimateMin: 90,
     subtaskMin: 25,
@@ -171,7 +171,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'tasks.xpBySize.S': [1, 100], 'tasks.xpBySize.M': [1, 150], 'tasks.xpBySize.L': [1, 200],
   'tasks.firstDayMultiplier': [1, 2], 'tasks.fullRateTasksPerDay': [1, 20], 'tasks.overflowMultiplier': [0, 1],
   'tasks.quickWin.xp': [0, 50], 'tasks.quickWin.withinMin': [1, 120], 'tasks.quickWin.maxPerDay': [0, 20],
-  'tasks.clutch.shareOfSizeXp': [0, 0.5], 'tasks.clutch.minPostpones': [1, 10], 'tasks.clutch.maxPerDay': [0, 10],
+  'tasks.clutch.clutchBonusXp': [0, 50], 'tasks.clutch.minPostpones': [1, 10], 'tasks.clutch.maxPerDay': [0, 10],
   'tasks.dailyCap': [100, 300], 'tasks.maxEstimateMin': [30, 240],
   'tasks.subtaskMin': [5, 120], 'tasks.subtaskMax': [15, 180], 'tasks.firstStepMaxChars': [20, 500],
   'tasks.maxMustsPerDay': [1, 10],

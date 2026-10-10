@@ -20,7 +20,7 @@ describe('RULES', () => {
     expect(RULES.tasks.preReminderMin).toBe(5);
     expect(RULES.train.weeklyTarget).toBe(3);
     expect(RULES.train.placement).toEqual({ stopMinReps: 5, stopMaxReps: 11, moveUpAtReps: 12, maxTestsPerPattern: 3 });
-    expect(RULES.tasks.clutch.shareOfSizeXp).toBe(0.25);
+    expect(RULES.tasks.clutch.clutchBonusXp).toBe(5);
     expect(RULES.mind.dailyCap).toBe(80);
     expect(RULES.season.seats).toBe(500);
     expect(RULES.season.tiers.at(-1)).toEqual(['Apex', 1, 1]);
