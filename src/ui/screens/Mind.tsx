@@ -22,6 +22,7 @@ import { go } from '../shell/router';
 import { PuzzleBoardView } from '../mind/Boards';
 import { LessonPlayer } from '../mind/LessonPlayer';
 import { Reviews } from '../mind/Reviews';
+import { Tracks, trackCardContent } from '../mind/Tracks';
 import '../mind/mind.css';
 
 type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; attempt?: number };
@@ -79,6 +80,7 @@ export function Mind() {
   const activeLesson = lessonDraft && lessonPacks.flatMap(pack => pack.body.lessons.map((lesson, i) => ({ pack, lesson, index: i }))).find(row => row.lesson.id === lessonDraft.lessonId);
   const lessonCards: Record<string, [string, string]> = {};
   for (const pack of lessonPacks) for (const lesson of pack.body.lessons) lesson.cards.forEach((pair, index) => { lessonCards[`${pack.body.course.id}-${lesson.id}-${index + 1}`] = pair; });
+  Object.assign(lessonCards, trackCardContent());
   const current = useRef<PuzzleRunRow | null>(null);
   const writes = useRef<Promise<unknown>>(Promise.resolve());
   const saveVersion = useRef(0);
@@ -285,6 +287,7 @@ export function Mind() {
       <div className="card"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>
       <div className="card"><h2>Due reviews</h2>{reviewDone ? <p>Complete for today.</p> : <button type="button" onClick={startReviews}>Review due cards</button>}</div>
     </>}
+    <Tracks day={today} afterBedtime={night === 'lightsOut'} />
     {plans.filter(plan => duePlan(plan.madeDayKey, today, plan.fired)).slice(0, 1).map(plan => <div className="card" key={plan.id}><h2>Did your plan fire yesterday?</h2><p>If {plan.ifText}, then I will {plan.thenText}.</p><div className="mind-review-actions">{(['yes', 'partly', 'no', 'na'] as const).map(value => <button type="button" className="secondary" key={value} onClick={() => void answerPlan(db, plan, value)}>{value === 'na' ? 'Didn’t come up' : value}</button>)}</div></div>)}
     <details className="card"><summary>Courses and past lessons</summary>{lessonPacks.map(pack => <div key={pack.id}><h3>{pack.body.course.name}</h3><p>{pack.body.course.blurb}</p>{pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).map(lesson => <button type="button" className="secondary" key={lesson.id} onClick={() => void startLesson(pack.id, lesson, true)}>Review: {lesson.t}</button>)}{!dayLessons.some(row => row.packId === pack.id) && pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) && night === 'day' && <button type="button" className="secondary" onClick={() => { const lesson = pack.body.lessons.find(value => !lessonProgress.some(row => row.id === value.id && row.doneDayKey)); if (lesson) void startLesson(pack.id, lesson); }}>Start {pack.body.course.short} lesson</button>}</div>)}</details>
     {night !== 'windDown' && <div className="card"><h2>Practice</h2><p>Choose a board and level.</p><button type="button" className="secondary" onClick={() => setPractice(value => !value)} aria-expanded={practice}>Practice</button>

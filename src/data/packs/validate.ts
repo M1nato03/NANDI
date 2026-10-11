@@ -37,6 +37,19 @@ export function validatePack(input: unknown): string[] {
       if (quest.kind === 'once' && (quest.target !== 1 || quest.unit !== '' || quest.step !== 1)) errors.push(`${quest.id}: once must have target and step 1, empty unit`);
       if (quest.kind === 'total' && (!quest.unit || quest.step > quest.target)) errors.push(`${quest.id}: invalid total unit or step`);
     }
+  } else if (pack.kind === 'track') {
+    const ids = new Set<string>();
+    for (const module of pack.body.modules) {
+      if (ids.has(module.id)) errors.push(`${module.id}: duplicate id`);
+      ids.add(module.id);
+      for (const unit of module.units) {
+        if (ids.has(unit.id)) errors.push(`${unit.id}: duplicate id`);
+        ids.add(unit.id);
+        if (unit.video && !/^https:\/\//.test(unit.video.url)) errors.push(`${unit.id}: video must use HTTPS`);
+        if (!unit.video && !unit.videoTodo) errors.push(`${unit.id}: video or videoTodo required`);
+        for (const question of unit.check) if (new Set(question.options).size !== 3) errors.push(`${unit.id}: duplicate options`);
+      }
+    }
   } else {
     const ids = new Set<string>();
     for (const card of pack.body.cards) {

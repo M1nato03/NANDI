@@ -6,7 +6,7 @@ export type DeckPack = Extract<Pack, { kind: 'deck' }>;
 export type ReviewEntry = { kind: 'card' | 'item'; id: string; type: string };
 export function buildReviewSession(day: string, cards: CardRow[], progress: DeckProgRow[], ratings: RatingRow[], hidden: Set<string>, deck: DeckPack, maxCards = 20): ReviewEntry[] {
   const state = new Map(progress.map(row => [row.id, row]));
-  const due = cards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= day).sort((a, b) => a.due.localeCompare(b.due) || a.id.localeCompare(b.id));
+  const due = cards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= day).sort((a, b) => a.due.localeCompare(b.due) || Number(b.id.startsWith('track:')) - Number(a.id.startsWith('track:')) || a.id.localeCompare(b.id));
   const recallCount = Math.min(due.length > 12 ? 4 : 3, due.length);
   const entries: ReviewEntry[] = due.slice(0, recallCount).map(row => ({ kind: 'card', id: row.id, type: 'recall' }));
   const wanted: Record<string, number> = { scenario: 2, spot: 2, mystery: 1, teaser: recallCount > 3 ? 1 : 2 };

@@ -66,6 +66,17 @@ export const questDefinitionSchema = v.strictObject({
 });
 export const questsBodySchema = v.strictObject({ quests: v.pipe(v.array(questDefinitionSchema), v.minLength(35)) });
 
+const trackQuestionSchema = v.strictObject({ q: text, options: v.tuple([text, text, text]), answer: v.pipe(integer, v.minValue(0), v.maxValue(2)), why: text });
+export const trackUnitSchema = v.strictObject({
+  id: text, title: text, minutes: v.pipe(integer, v.minValue(1), v.maxValue(15)),
+  lookFor: v.tuple([text, text, text]), explanation: text,
+  video: v.optional(v.strictObject({ url: v.pipe(v.string(), v.url()), startSeconds: v.pipe(integer, v.minValue(0)), title: text })),
+  videoTodo: v.optional(text), check: v.tuple([trackQuestionSchema, trackQuestionSchema, trackQuestionSchema]),
+  cards: v.tuple([v.tuple([text, text]), v.tuple([text, text]), v.tuple([text, text])]),
+});
+export const trackModuleSchema = v.strictObject({ id: text, title: text, units: v.pipe(v.array(trackUnitSchema), v.minLength(1)), apply: v.strictObject({ title: text, detail: text }) });
+export const trackBodySchema = v.strictObject({ track: v.strictObject({ id: text, name: text, blurb: text }), modules: v.pipe(v.array(trackModuleSchema), v.minLength(1)), todoUnits: v.optional(v.array(v.strictObject({ title: text, note: text }))) });
+
 const envelope = {
   id: v.pipe(v.string(), v.regex(/^[a-z0-9-]+\.[a-z0-9-]+$/)),
   version: semver, schema: v.pipe(integer, v.minValue(1)), minAppVersion: semver,
@@ -74,12 +85,15 @@ const envelope = {
 };
 export const packEnvelopeSchema = v.strictObject({
   ...envelope,
-  kind: v.picklist(['lessons', 'deck', 'quests', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop']),
+  kind: v.picklist(['lessons', 'deck', 'quests', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop']),
   body: v.unknown(),
 });
 export const lessonsPackSchema = v.strictObject({ ...envelope, kind: v.literal('lessons'), body: lessonsBodySchema });
 export const deckPackSchema = v.strictObject({ ...envelope, kind: v.literal('deck'), body: deckBodySchema });
 export const questsPackSchema = v.strictObject({ ...envelope, kind: v.literal('quests'), body: questsBodySchema });
-export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema]);
+export const trackPackSchema = v.strictObject({ ...envelope, kind: v.literal('track'), body: trackBodySchema });
+export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, trackPackSchema]);
 export type Pack = v.InferOutput<typeof packSchema>;
 export type Lesson = v.InferOutput<typeof lessonSchema>;
+export type TrackPack = v.InferOutput<typeof trackPackSchema>;
+export type TrackUnit = v.InferOutput<typeof trackUnitSchema>;

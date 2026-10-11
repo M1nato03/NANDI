@@ -66,3 +66,15 @@
 .mind-diagram svg .bad { stroke: var(--danger); stroke-dasharray: 9 6; }
 .mind-hub details.card summary { min-height: 44px; cursor: pointer; }
 .mind-hub details.card button { min-height: 44px; margin: 4px 0; }
+.track-hub, .track-player { display: grid; gap: 12px; }
+.track-choice { padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
+.track-choice p { margin: 6px 0; }
+.track-hub button, .track-player button, .track-video { min-width: 44px; min-height: 44px; }
+.track-video { display: flex; align-items: center; padding: 12px; }
+.track-budget { display: grid; gap: 6px; }
+.track-budget progress { width: 100%; }
+.track-question, .track-test fieldset { display: grid; gap: 10px; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.track-question label, .track-test label, .track-watch { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.track-question input, .track-test input, .track-watch input { width: 24px; height: 24px; flex: 0 0 24px; }
+.track-question select, .track-player textarea { min-height: 44px; width: 100%; }
+.track-stop { padding: 12px; border-radius: 12px; background: var(--raised); }
