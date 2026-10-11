@@ -2,14 +2,16 @@ import PZ from '../core/puzzles';
 import { generateCheck } from './generator';
 import { dailyBoard } from '../core/puzzles/daily';
 import type { PuzzleDifficulty, PuzzleType } from '../core/puzzles';
+import CaseGen from '../core/mysteries';
 
 const pathRuns = 20;
 const pathBudgetMs = 300;
 
-self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice'; day: string; type?: PuzzleType; diff?: PuzzleDifficulty; seed?: number }>) => {
+self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice' | 'case'; day: string; type?: PuzzleType; diff?: PuzzleDifficulty; seed?: number; caseDiff?: 'easy' | 'medium' | 'hard' }>) => {
   try {
     if (typeof event.data !== 'string') {
       const request = event.data;
+      if (request.kind === 'case') { self.postMessage({ kind: 'case', mystery: CaseGen.daily(request.day, request.caseDiff) }); return; }
       const board = request.kind === 'daily' ? dailyBoard(request.day)
         : PZ.generate(request.type!, { seed: request.seed!, diff: request.diff! });
       self.postMessage({ kind: request.kind, board });

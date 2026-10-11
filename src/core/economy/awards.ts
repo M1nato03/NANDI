@@ -130,6 +130,7 @@ export function replayFactXp(fact: LedgerRow, history: readonly RulesHistoryEntr
     }
   }
   if (fact.mode === 'mind' && input.afterBedtime !== true) {
+    if (fact.kind === 'mystery') return input.result === 'revealed' ? 0 : rules.mind.mysteryXp;
     if (fact.kind === 'board') return input.daily === false ? rules.mind.sideBoardXp : rules.mind.dropBoardXp;
     if (fact.kind === 'lesson') return rules.mind.lessonXp;
     if (fact.kind === 'card') return rules.mind.cardXp;

@@ -432,6 +432,6 @@ const PZ = (function(){
   return {TYPES,generate,hash,rng,
     _test:{sdkCount,latinLogic,latinUnits:()=>SDKU||(SDKU=latinUnits(6,2,3)),crownCount,crownLogic,binCount,binLogic,pathCount,calcCount,calcLogic,cageTuples,LINES}};
 })();
-if (typeof module !== "undefined") module.exports = PZ;
+if (typeof module !== "undefined" && !Object.getOwnPropertyDescriptor(module.exports, "default")) module.exports = PZ;
 
 export default PZ;

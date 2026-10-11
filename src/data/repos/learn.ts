@@ -71,7 +71,7 @@ export async function reviewCard(db: NandiDb, card: CardRow, correct: boolean, a
     if (!current || current.deleted) return;
     await db.cards.put({ ...cardAfterAnswer(current, correct, day), updatedAt: now });
     const id = `card:${day}:${card.id}`;
-    if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${card.id}`, inputs: { afterBedtime }, updatedAt: now, deleted: 0, deviceId: current.deviceId });
+    if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${card.id}`, inputs: { afterBedtime, correct }, updatedAt: now, deleted: 0, deviceId: current.deviceId });
   }));
 }
 export async function reviewItem(db: NandiDb, item: DeckProgRow | null, id: string, type: string, difficulty: number, correct: boolean, hinted: boolean, afterBedtime = false, now = Date.now()): Promise<void> {
@@ -84,7 +84,7 @@ export async function reviewItem(db: NandiDb, item: DeckProgRow | null, id: stri
     const rating = await db.ratings.get(skill);
     await db.ratings.put({ id: skill, value: nextRating(rating?.value ?? 1000, rating?.n ?? 0, difficulty, correct ? (hinted ? 0.6 : 1) : 0), n: (rating?.n ?? 0) + 1, updatedAt: now, deleted: 0, deviceId });
     const factId = `card:${day}:${id}`;
-    if (!(await db.ledger.get(factId))) await db.ledger.add({ id: factId, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${id}`, inputs: { afterBedtime }, updatedAt: now, deleted: 0, deviceId });
+    if (!(await db.ledger.get(factId))) await db.ledger.add({ id: factId, dayKey: day, mode: 'mind', kind: 'card', refId: `${day}:${id}`, inputs: { afterBedtime, correct }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
 export async function hideReview(db: NandiDb, refId: string, now = Date.now()): Promise<void> {

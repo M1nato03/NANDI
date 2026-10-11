@@ -21,6 +21,10 @@ declare global {
     };
   }
   interface Window {
+    __nandiCaseTest?: {
+      solveKnownSolution(): void;
+      solveTodaysCase(): void;
+    };
     __nandiTest?: {
       seedShell(): Promise<void>;
       removeShellTask(): Promise<void>;

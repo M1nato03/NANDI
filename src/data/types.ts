@@ -44,6 +44,8 @@ export interface FocusRow extends EntityRow {
   endedAt?: number;
   overtimeMs?: number;
   switches?: number;
+  cyclePreset?: '25/5' | '50/10';
+  cycleExtensions?: Record<string, number>;
 }
 export interface ReminderRow extends EntityRow {
   refType: string;
@@ -161,6 +163,8 @@ export interface PuzzleRunRow extends EntityRow {
   finishedAt?: number;
   afterBedtime?: boolean;
   practiceAttempt?: number;
+  caseGrid?: { A: number[]; B: number[]; C: number[]; struck: number[] };
+  accusation?: { s: number; i: number; p: number };
 }
 export interface CardRow extends StateRow {
   deckId: string;

@@ -1,4 +1,52 @@
 import type { FocusRow } from '../../data/types';
+import { RULES } from '../rules.config';
+
+export function focusPhase(
+  focus: FocusRow,
+  now: number,
+): {
+  phase: 'work' | 'break' | 'longBreak';
+  remainingMs: number;
+  cycle: number;
+  paused: boolean;
+} {
+  const long = focus.cyclePreset === '50/10';
+  const baseWorkMs =
+    (long ? RULES.tasks.focus.presetLong[0] : RULES.tasks.focus.workMin) *
+    60_000;
+  const breakMs =
+    (long ? RULES.tasks.focus.presetLong[1] : RULES.tasks.focus.breakMin) *
+    60_000;
+  const longBreakMs = RULES.tasks.focus.longBreakMin * 60_000;
+  let elapsed = focusElapsedMs(focus, now);
+  for (let cycle = 1; cycle < 100_000; cycle++) {
+    const workMs = baseWorkMs + (focus.cycleExtensions?.[String(cycle)] ?? 0);
+    if (elapsed < workMs)
+      return {
+        phase: 'work',
+        remainingMs: workMs - elapsed,
+        cycle,
+        paused: !isFocusRunning(focus),
+      };
+    elapsed -= workMs;
+    const last = cycle % RULES.tasks.focus.longBreakEvery === 0;
+    const rest = last ? longBreakMs : breakMs;
+    if (elapsed < rest)
+      return {
+        phase: last ? 'longBreak' : 'break',
+        remainingMs: rest - elapsed,
+        cycle,
+        paused: !isFocusRunning(focus),
+      };
+    elapsed -= rest;
+  }
+  return {
+    phase: 'work',
+    remainingMs: baseWorkMs,
+    cycle: 100_000,
+    paused: !isFocusRunning(focus),
+  };
+}
 
 export function isFocusRunning(focus: FocusRow): boolean {
   if (focus.endedAt != null) return false;

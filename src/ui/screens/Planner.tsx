@@ -7,6 +7,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { capacity, effectiveShutdown, stepDownOffer, suggestSlots, weeklySummary } from '../../core/tasks/planner';
 import { postponeWeekKey } from '../../core/tasks/budget';
 import { shareOrDownload } from '../../platform/files';
+import { buildWeeklySummary, isoFileWeek } from '../../core/weeklySummary';
 import { PostponeSheet } from '../tasks/PostponeSheet';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { defaultSlot, localDateTime, visibleTasks } from '../tasks/model';
@@ -24,16 +25,6 @@ function setting(rows: { key: string; value: unknown; deleted: number }[], key: 
   const value = rows.find((row) => row.key === key && row.deleted === 0)?.value;
   return typeof value === 'string' ? value : fallback;
 }
-function isoFileWeek(key: string) {
-  const date = new Date(`${key}T12:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + 3 - (date.getUTCDay() + 6) % 7);
-  const year = date.getUTCFullYear();
-  const first = new Date(Date.UTC(year, 0, 4));
-  first.setUTCDate(first.getUTCDate() + 3 - (first.getUTCDay() + 6) % 7);
-  const week = 1 + Math.round((date.getTime() - first.getTime()) / (7 * 86_400_000));
-  return `${year}-W${String(week).padStart(2, '0')}`;
-}
-
 function TriageRow({ task, board, onMove }: { task: TaskRow; board: ReturnType<typeof useTaskBoard>; onMove: (task: TaskRow) => void }) {
   const occupied = visibleTasks(board.tasks).filter((row) => row.status === 'planned' && row.scheduledStart != null).map((row) => ({ start: row.scheduledStart!, end: row.scheduledEnd ?? row.scheduledStart! + (row.estimateMin ?? 30) * 60_000 }));
   const slots = suggestSlots(board.now, task.estimateMin ?? 30, occupied);
@@ -113,7 +104,12 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
   async function exportWeek() {
     const name = `nandi-week-${isoFileWeek(weekKey)}.json`;
     try {
-      const result = await shareOrDownload(new File([JSON.stringify({ ...summary, someday: someday.map((task) => ({ id: task.id, title: task.title })), exportedAt: board.now }, null, 2)], name, { type: 'application/json' }));
+      const source = await db.transaction('r', [db.tasks, db.taskEvents, db.focus, db.dailyLog, db.sessions, db.prs, db.programs, db.puzzleRuns, db.lessonProg, db.plans, db.flags, db.ledger, db.quests, db.settings, db.exState], async () => {
+        const [tasks, events, focus, logs, sessions, prs, programs, puzzleRuns, lessonProg, plans, flags, ledger, quests, settings, exState] = await Promise.all([db.tasks.toArray(), db.taskEvents.toArray(), db.focus.toArray(), db.dailyLog.toArray(), db.sessions.toArray(), db.prs.toArray(), db.programs.toArray(), db.puzzleRuns.toArray(), db.lessonProg.toArray(), db.plans.toArray(), db.flags.toArray(), db.ledger.toArray(), db.quests.toArray(), db.settings.toArray(), db.exState.toArray()]);
+        return { tasks, events, focus, logs, sessions, prs, programs, puzzleRuns, lessonProg, plans, flags, ledger, quests, settings, exState };
+      });
+      const complete = buildWeeklySummary(weekKey, source, policy?.budget ?? RULES.tasks.postpone.weeklyBudget);
+      const result = await shareOrDownload(new File([JSON.stringify(complete, null, 2)], name, { type: 'application/json' }));
       setExportMessage(result === 'cancelled' ? 'Export cancelled.' : result === 'shared' ? 'Shared weekly summary.' : `Saved ${name}.`);
     } catch { setExportMessage('Could not export the weekly summary.'); }
   }
