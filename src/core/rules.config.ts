@@ -101,6 +101,17 @@ export const RULES = {
     checkMinQuestions: 3, modulePassPercent: 70,
   },
 
+  teachingEngine: {
+    // [slip, guess] for each tap format. Both stay within [0.01, 0.49].
+    bkt: {
+      predict: [0.12, 0.25], choose: [0.10, 0.20], why: [0.12, 0.20],
+      order: [0.16, 0.10], match: [0.16, 0.12], estimate: [0.20, 0.15],
+      scenario: [0.12, 0.20], 'fill-the-step': [0.14, 0.20],
+      'true-not-quite': [0.14, 0.49], 'explain-it-back': [0.12, 0.33],
+    },
+    learn: 0.02, eloK: 24, targetSuccess: [0.75, 0.85],
+  },
+
   // 05-economy §2, cross-mode bonuses.
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
   quests: { sideQuestXp: 20 },
@@ -175,6 +186,12 @@ export type Rules = Widen<typeof RULES>;
  * Cross-field constraints, such as tier adjacency, need separate pack validation.
  */
 export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
+  ...Object.fromEntries(Object.keys(RULES.teachingEngine.bkt).flatMap(type => [
+    [`teachingEngine.bkt.${type}.0`, [0.01, 0.49]],
+    [`teachingEngine.bkt.${type}.1`, [0.01, 0.49]],
+  ])),
+  'teachingEngine.learn': [0, 0.1], 'teachingEngine.eloK': [1, 80],
+  'teachingEngine.targetSuccess.0': [0.5, 0.9], 'teachingEngine.targetSuccess.1': [0.5, 0.95],
   'learningTracks.activeTracks': [1, 1], 'learningTracks.newUnitsPerWeek': [1, 4],
   'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5],
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
