@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { FocusRow, TaskRow } from '../../data/types';
-import { currentFocus, defaultSlot, elapsed, minutes, splitEstimates, todayTasks, visibleTasks } from './model';
+import { currentFocus, defaultSlot, elapsed, minutes, splitEstimates, splitPreview, taskGroups, todayTasks, visibleTasks } from './model';
 import { dayKey } from '../../core/time/dayKey';
 
 const now = new Date(2026, 9, 11, 12).getTime();
@@ -29,6 +29,22 @@ describe('task view model', () => {
     expect(splitEstimates(100)).toEqual([50, 50]);
     expect(splitEstimates(180)).toEqual([60, 60, 60]);
     expect(splitEstimates(20)).toBeNull();
+  });
+  it('previews 500 minutes as nine named steps and keeps priority and placement', () => {
+    const preview = splitPreview('Big work', 500, 'must', 'today', now);
+    expect(preview?.steps).toHaveLength(9);
+    expect(preview?.steps.map((step) => step.estimateMin).reduce((a, b) => a + b, 0)).toBe(500);
+    expect(preview?.steps.every((step) => step.estimateMin >= 25 && step.estimateMin <= 60 && step.mustOrCould === 'must')).toBe(true);
+    expect(preview?.steps[0]).toMatchObject({ title: 'Big work — step 1 of 9', scheduledStart: now, status: 'planned' });
+    expect(preview?.steps.slice(1).every((step) => step.status === 'unplaced' && step.scheduledStart == null)).toBe(true);
+    expect(splitPreview('Big work', 500, 'could', 'someday')?.steps.every((step) => step.status === 'someday' && step.mustOrCould === 'could')).toBe(true);
+    expect(splitPreview('Big work', 500, 'could', 'unplaced')?.steps.every((step) => step.status === 'unplaced')).toBe(true);
+    expect(splitEstimates(500, 8)).toBeNull();
+    expect(splitEstimates(500, 20)?.every((part) => part === 25)).toBe(true);
+  });
+  it('groups a split under one parent and counts completed steps', () => {
+    const rows = [task('parent', { title: 'Big work' }), task('a', { parentId: 'parent', status: 'done' }), task('b', { parentId: 'parent', status: 'unplaced' })];
+    expect(taskGroups(rows)).toMatchObject([{ parent: { id: 'parent' }, done: 1, total: 2 }]);
   });
   it('keeps the default Today slot in the current planning day near 04:00', () => {
     const beforeBoundary = new Date(2026, 9, 11, 3, 15).getTime();

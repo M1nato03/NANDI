@@ -73,6 +73,10 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
   };
   const mutation = <T>(fn: () => Promise<T>): Promise<T> =>
     trackWrite(() => db.transaction('rw', [db.tasks, db.taskEvents, db.focus, db.ledger, db.settings, db.dailyLog], fn));
+  async function mustCount(key: string): Promise<number> {
+    const rows = await db.tasks.where('dayKey').equals(key).filter((row) => row.deleted === 0 && row.mustOrCould === 'must' && row.status !== 'dropped').toArray();
+    return new Set(rows.map((row) => row.parentId ?? row.id)).size;
+  }
   const saveBudget = (value: BudgetState, now: number) => db.settings.put({ key: 'planner.budget', value, updatedAt: now, deleted: 0, deviceId });
   async function budgetState(now: number): Promise<BudgetState> {
     const week = postponeWeekKey(now);
@@ -200,8 +204,20 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const task = await repos.tasks.get(taskId);
         if (!task || task.status === 'done') throw new Error('Task cannot be dropped');
+        const children = await db.tasks.where('parentId').equals(taskId).filter((row) => row.deleted === 0).toArray();
+        for (const child of children.filter((row) => row.status !== 'done' && row.status !== 'dropped')) {
+          await repos.tasks.put({ ...child, status: 'dropped', scheduledStart: null, scheduledEnd: null }, now);
+          await event(child.id, 'dropped', now);
+        }
         const row = await repos.tasks.put({ ...task, status: 'dropped', scheduledStart: null, scheduledEnd: null }, now);
         await event(taskId, 'dropped', now);
+        if (task.parentId) {
+          const siblings = await db.tasks.where('parentId').equals(task.parentId).toArray();
+          if (siblings.every((step) => step.status === 'done' || step.status === 'dropped')) {
+            const parent = await repos.tasks.get(task.parentId);
+            if (parent && parent.status !== 'dropped') await repos.tasks.put({ ...parent, status: 'done', doneAt: now }, now);
+          }
+        }
         return row;
       });
     },
@@ -228,16 +244,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           throw new RangeError('Estimate requires a split');
         if (input.mustOrCould === 'must') {
           const key = dayKey(input.scheduledStart ?? now);
-          const existing = await db.tasks
-            .where('dayKey')
-            .equals(key)
-            .filter(
-              (t) =>
-                t.deleted === 0 &&
-                t.mustOrCould === 'must' &&
-                t.status !== 'dropped',
-            )
-            .count();
+          const existing = await mustCount(key);
           if (!canAddMust(existing))
             throw new RangeError('Maximum Musts for this day; make it a Could');
         }
@@ -266,6 +273,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       estimates: number[],
       now: number,
       scheduledStart?: number,
+      options: { titles?: string[]; priority?: 'must' | 'could'; placement?: 'today' | 'unplaced' | 'someday' } = {},
     ): Promise<TaskRow[]> {
       return mutation(async () => {
         const total = estimates.reduce((sum, value) => sum + value, 0);
@@ -275,6 +283,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           );
         const id = ulid(now);
         const key = dayKey(scheduledStart ?? now);
+        if (options.priority === 'must' && !canAddMust(await mustCount(key))) throw new RangeError('Maximum Musts for this day; make it a Could');
         const parentCore: CoreTask = {
           id,
           status: scheduledStart == null ? 'unplaced' : 'planned',
@@ -293,6 +302,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           RULES,
           now,
         );
+        if (options.titles && (options.titles.length !== estimates.length || options.titles.some((name) => !name.trim() || name.trim().length > 200))) throw new Error('Name every step');
         await repos.tasks.put(
           {
             id,
@@ -303,6 +313,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
             plannedSize: 'L',
             estimateMin: total,
             postponeCount: 0,
+            mustOrCould: options.priority,
             firstScheduledDayKey: parentCore.firstScheduledDayKey,
           },
           now,
@@ -311,9 +322,11 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         await event(id, 'split', now);
         const rows: TaskRow[] = [];
         for (const child of children) {
+          const index = rows.length;
+          const firstTimed = index === 0 && scheduledStart != null && options.placement !== 'someday' && options.placement !== 'unplaced';
           rows.push(
             await repos.tasks.put(
-              { ...child, title: `${title} (${rows.length + 1})` },
+              { ...child, title: options.titles?.[index]?.trim() ?? `${title} — step ${index + 1} of ${children.length}`, mustOrCould: options.priority ?? 'could', status: options.placement === 'someday' ? 'someday' : firstTimed ? 'planned' : 'unplaced', dayKey: firstTimed ? key : dayKey(now), scheduledStart: firstTimed ? scheduledStart : null, scheduledEnd: null, firstScheduledDayKey: firstTimed ? key : undefined },
               now,
             ),
           );
@@ -571,7 +584,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
               (task.status === 'planned' || task.status === 'unplaced'),
           )
           .toArray();
+        const parents = new Set((await db.tasks.filter((task) => task.deleted === 0 && !!task.parentId).toArray()).map((task) => task.parentId));
         for (const row of open) {
+          if (parents.has(row.id)) continue;
           const atBoundary = checkDayBoundary(coreTask(row), now);
           const lastEvent = await db.taskEvents
             .where('taskId')
