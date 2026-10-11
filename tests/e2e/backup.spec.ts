@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 interface BackupRoundTripResult {
   exportedJson: string;
@@ -22,7 +22,7 @@ test('restore preview keeps its first row clear on phone widths', async ({ page 
     cards: Array.from({ length: 40 }, (_, index) => ({ id: `card-${index}`, law: 1, due: '2026-10-02' })),
     progress: { items: { retired: { b: 99, due: '9999-12-31' } } },
   };
-  await page.goto('/#ground');
+  await page.goto('/#you');
   await page.getByRole('button', { name: /Backup and restore/ }).click();
   for (const width of [360, 412]) {
     await page.setViewportSize({ width, height: 800 });

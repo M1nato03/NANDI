@@ -1,10 +1,10 @@
-/// <reference lib="dom" />
+﻿/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
 test('daily case progress and completion survive reload', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
-  await page.goto('/?e2e#mind');
+  await page.goto('/?e2e#you/mind');
   await page.getByRole('button', { name: 'Open daily case' }).click();
   await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
   const cell = page.getByRole('region', { name: 'Who was where?' }).getByRole('button').first();
@@ -27,11 +27,12 @@ test('daily case progress and completion survive reload', async ({ page }) => {
 
 test('focus phase follows timestamps and keeps the chosen cycle', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  await page.goto('/#tasks');
-  await page.getByRole('button', { name: '+ Add task' }).click();
-  await page.getByPlaceholder('What needs doing?').fill('Focus cycle task');
+  await page.goto('/#plan');
+  await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+  await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus cycle task');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
+  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
+  await page.getByRole('button', { name: 'Start 25 minutes' }).click();
   await page.getByLabel('Focus cycle').selectOption('50/10');
   await page.getByRole('button', { name: 'Start focus' }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Focus · cycle 1' })).toBeVisible();
