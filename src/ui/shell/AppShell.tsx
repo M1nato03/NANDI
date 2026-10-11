@@ -13,12 +13,16 @@ import { route, tabOf } from './router';
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
+import { db } from '../../data/db';
+import { reconcileSolvedBoards } from '../../data/repos/puzzleRuns';
+import { recordError } from '../errorRing';
 
 export function AppShell() {
   const [path, setPath] = useState(route);
   const [today] = useState(() => dayKey(Date.now()));
   const appearance = useAppearance();
   useEffect(() => { const update = () => setPath(route()); window.addEventListener('hashchange', update); void requestPersist(); return () => window.removeEventListener('hashchange', update); }, []);
+  useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   const tab = tabOf(path);
   return <div className="app-shell">
     <UpdateBar />

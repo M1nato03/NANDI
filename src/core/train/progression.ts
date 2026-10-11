@@ -2,18 +2,11 @@ import { RULES } from '../rules.config';
 import { LADDERS } from './library';
 import { EquipmentSetting, LadderPattern, SessionExercise } from './types';
 
-export function getSmallestIncrement(equipment: EquipmentSetting): number {
-  if (equipment.dumbbells) {
-    // Usually fixed DB increments are 2.5kg per hand -> 5kg total for bilateral, or 2.5kg for unilateral
-    // To simplify and not over-engineer, we'll return 2.5 as baseline if dumbbells are true. 
-    return 2.5; 
-  }
-  if (equipment.barbell) {
-    if (equipment.smallestPlate) {
-      return equipment.smallestPlate * 2; // plates go on both sides
-    }
-    return 0; // wait for a known available plate
-  }
+export function getSmallestIncrement(equipment: EquipmentSetting, exerciseId: string): number {
+  if (/^(barbell-|bb-)/.test(exerciseId))
+    return equipment.barbell && equipment.smallestPlate ? equipment.smallestPlate * 2 : 0;
+  if (/(^db-|-db-|dumbbell)/.test(exerciseId) || exerciseId === 'goblet-squat')
+    return equipment.dumbbells ? 2.5 : 0;
   return 0;
 }
 

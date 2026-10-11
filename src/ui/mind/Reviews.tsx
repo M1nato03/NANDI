@@ -4,9 +4,10 @@ import { db } from '../../data/db';
 import { hideReview, reviewCard, reviewItem } from '../../data/repos/learn';
 import type { CardRow, DeckProgRow } from '../../data/types';
 import { recordError } from '../errorRing';
+import { nightMindNote } from './economyVisibility';
 
-type Props = { entries: ReviewEntry[]; cards: CardRow[]; progress: DeckProgRow[]; deck: DeckPack; lessonCards: Record<string, [string, string]>; afterBedtime: boolean; onDone: () => void };
-export function Reviews({ entries: initial, cards, progress, deck, lessonCards, afterBedtime, onDone }: Props) {
+type Props = { entries: ReviewEntry[]; cards: CardRow[]; progress: DeckProgRow[]; deck: DeckPack; lessonCards: Record<string, [string, string]>; afterBedtime: boolean; economyVisible: boolean; onDone: () => void };
+export function Reviews({ entries: initial, cards, progress, deck, lessonCards, afterBedtime, economyVisible, onDone }: Props) {
   const [entries, setEntries] = useState(initial);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -43,7 +44,7 @@ export function Reviews({ entries: initial, cards, progress, deck, lessonCards, 
     catch (cause) { recordError('window', cause); setError('Could not hide this review.'); }
     finally { setBusy(false); }
   };
-  return <section className="screen mind-review"><p className="eyebrow">Daily reviews · {index + 1} of {entries.length}</p>{afterBedtime && <p role="status">After bedtime, Mind earns 0 XP.</p>}<h1>{entry.kind === 'card' ? 'Recall card' : item?.t === 'spot' ? 'Spot the tell' : item?.t === 'mystery' ? 'Mini mystery' : item?.t === 'teaser' ? 'Teaser' : 'Scenario'}</h1><article className="card" aria-label="Review card">
+  return <section className="screen mind-review"><p className="eyebrow">Daily reviews · {index + 1} of {entries.length}</p>{afterBedtime && <p role="status">{nightMindNote(economyVisible)}</p>}<h1>{entry.kind === 'card' ? 'Recall card' : item?.t === 'spot' ? 'Spot the tell' : item?.t === 'mystery' ? 'Mini mystery' : item?.t === 'teaser' ? 'Teaser' : 'Scenario'}</h1><article className="card" aria-label="Review card">
     {entry.kind === 'card' ? <><p className="mind-review-front">{front}</p>{revealed ? <><div className="mind-feedback"><p>{back}</p></div><p>Did you remember it?</p><div className="mind-review-actions"><button type="button" className="secondary" disabled={busy} onClick={() => void gradeCard(false)}>Again</button><button type="button" disabled={busy} onClick={() => void gradeCard(true)}>Got it</button></div></> : <button type="button" onClick={() => setRevealed(true)}>Reveal answer</button>}</> : item ? <>
       {item.t === 'scenario' && <p className="mind-scene">{item.scene} {item.text}</p>}
       {item.t === 'spot' && <><p>{item.who} {item.sub}</p>{item.msgs.map(([who, text], i) => <p className="mind-chat" key={i}>{who}: {text}</p>)}</>}

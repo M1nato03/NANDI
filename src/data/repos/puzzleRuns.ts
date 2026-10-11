@@ -3,6 +3,7 @@ import type { PuzzleRunRow } from '../types';
 import type { PuzzleBoard } from '../../core/puzzles';
 import { getOrCreateDeviceId } from '../device';
 import { trackWrite } from '../../core/pendingWrites';
+import { putDailyBoardFact } from './learn';
 
 export function runId(day: string, board: Pick<PuzzleBoard, 'type' | 'diff'>, daily: boolean, attempt = 0): string {
   return `${daily ? 'daily' : 'practice'}:${day}:${board.type}:${board.diff}${daily ? '' : `:${attempt}`}`;
@@ -37,13 +38,25 @@ export function accrueActive(row: PuzzleRunRow, now: number): PuzzleRunRow {
   return { ...row, activeMs: (row.activeMs ?? 0) + Math.min(gap, 60_000), lastActiveAt: now };
 }
 
-export async function savePuzzleRun(store: NandiDb, row: PuzzleRunRow, now = Date.now()): Promise<PuzzleRunRow> {
-  return trackWrite(() => store.transaction('rw', store.puzzleRuns, async () => {
+export async function savePuzzleRun(store: NandiDb, row: PuzzleRunRow, now = Date.now(), afterBedtime = row.afterBedtime ?? false): Promise<PuzzleRunRow> {
+  return trackWrite(() => store.transaction('rw', [store.puzzleRuns, store.ledger], async () => {
     const prior = await store.puzzleRuns.get(row.id);
-    if (prior?.result === 'solved') return prior;
-    const saved = { ...row, updatedAt: now };
+    if (prior?.result === 'solved') {
+      await putDailyBoardFact(store, prior, prior.afterBedtime ?? afterBedtime, now);
+      return prior;
+    }
+    const saved = row.result === 'solved' ? { ...row, afterBedtime: row.afterBedtime ?? afterBedtime, updatedAt: now } : { ...row, updatedAt: now };
     await store.puzzleRuns.put(saved);
+    await putDailyBoardFact(store, saved, afterBedtime, now);
     return saved;
+  }));
+}
+
+/** Repairs solved daily runs saved by older versions before the fact was atomic. */
+export async function reconcileSolvedBoards(store: NandiDb): Promise<void> {
+  await trackWrite(() => store.transaction('rw', [store.puzzleRuns, store.ledger], async () => {
+    const solved = await store.puzzleRuns.filter(row => !row.deleted && row.daily === true && row.result === 'solved' && !!row.dayKey).toArray();
+    for (const row of solved) await putDailyBoardFact(store, row, row.afterBedtime ?? false, row.finishedAt ?? row.updatedAt);
   }));
 }
 

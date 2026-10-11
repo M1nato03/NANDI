@@ -141,13 +141,18 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const key = dayKey(now);
         const previous = await db.dailyLog.get(key);
-        if (previous?.lightsOutAt != null) return previous;
+        const factId = `lightsout:${key}`;
+        if (previous?.lightsOutAt != null) {
+          if (!(await db.ledger.get(factId))) await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: previous.lightsOutAt, bedtimeTarget: previous.bedtimeTarget, metTarget: previous.bedtimeTarget != null && previous.lightsOutAt <= previous.bedtimeTarget }, updatedAt: now, deleted: 0, deviceId });
+          return previous;
+        }
         const targetRow = await db.settings.get('planner.bedtime');
         const goalRow = await db.settings.get('planner.goalBedtime');
         let target = typeof targetRow?.value === 'string' ? targetRow.value : RULES.night.defaultBedtime;
         const goal = typeof goalRow?.value === 'string' ? goalRow.value : RULES.night.goalBedtime;
         const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(now, target), updatedAt: now, deleted: 0, deviceId };
         await db.dailyLog.put(row);
+        await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= row.bedtimeTarget! }, updatedAt: now, deleted: 0, deviceId });
         const shift = (from: string, days: number) => { const date = new Date(`${from}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
         const windowRow = await db.settings.get('planner.bedtimeWindowStart');
         let windowStart = typeof windowRow?.value === 'string' ? windowRow.value : key;
