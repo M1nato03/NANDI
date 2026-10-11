@@ -52,7 +52,7 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
       const last = state.find(row => row.id === ex.exerciseId);
       const load = last?.loadKg ?? last?.lastLoadKg ?? 0;
       const target = last?.lastReps ?? ex.repMin;
-      const warmups = session.templateKey?.startsWith('gym') && index < 2 && !ex.isHold && load > 0 ? calculateWarmupRamp(load, getSmallestIncrement(equipment)) : [];
+      const warmups = session.templateKey?.startsWith('gym') && index < 2 && !ex.isHold && load > 0 ? calculateWarmupRamp(load, getSmallestIncrement(equipment, ex.exerciseId)) : [];
       const ladder = ex.isBodyweightLadder ? LADDERS[ex.isBodyweightLadder] : undefined;
       return <article className="card train-exercise" key={ex.exerciseId} aria-label={name}><p className="eyebrow">{index + 1} / {session.planned?.length}</p><h2>{name}</h2><p>{ex.sets} × {ex.repMin}–{ex.repMax}{ex.isHold ? ' seconds' : ' reps'}{ex.isPerSide ? ' per side' : ''}</p>
         {EXERCISE_LIBRARY[ex.exerciseId]?.cues && <ul className="train-cues">{EXERCISE_LIBRARY[ex.exerciseId]!.cues!.map(cue => <li key={cue}>{cue}</li>)}</ul>}

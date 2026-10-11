@@ -159,6 +159,7 @@ export interface PuzzleRunRow extends EntityRow {
   activeMs?: number;
   lastActiveAt?: number;
   finishedAt?: number;
+  afterBedtime?: boolean;
   practiceAttempt?: number;
 }
 export interface CardRow extends StateRow {

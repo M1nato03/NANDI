@@ -1,4 +1,4 @@
-import { RULES, type Rules } from '../rules.config';
+import type { Rules } from '../rules.config';
 import { creationSplitPool } from '../economy/creationSplit';
 import type { CoreTask, TaskSize } from './task-machine';
 
@@ -7,9 +7,10 @@ export function splitTask(
   parent: CoreTask,
   numSubtasks: number,
   estimates: number[],
-  rules: Rules = RULES,
-  at = Date.now(),
+  rules: Rules,
+  at: number,
 ): CoreTask[] {
+  if (!Number.isFinite(at)) throw new RangeError('Split requires a timestamp');
   if (
     numSubtasks < 2 ||
     numSubtasks !== estimates.length ||

@@ -2,18 +2,9 @@ import { RULES, type Rules } from '../rules.config';
 import { dayKey } from '../time/dayKey';
 
 export function postponeWeekKey(at: number, rules: Rules = RULES): string {
-  const local = new Date(at);
-  if (local.getHours() < rules.dayBoundaryHour)
-    local.setDate(local.getDate() - 1);
+  const local = new Date(`${dayKey(at)}T12:00:00`);
   local.setDate(local.getDate() - ((local.getDay() + 6) % 7));
-  return dayKey(
-    new Date(
-      local.getFullYear(),
-      local.getMonth(),
-      local.getDate(),
-      rules.dayBoundaryHour,
-    ),
-  );
+  return dayKey(new Date(local.getFullYear(), local.getMonth(), local.getDate(), rules.dayBoundaryHour));
 }
 
 export function calculateNewBudget(

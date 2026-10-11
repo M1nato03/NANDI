@@ -2,6 +2,15 @@ import { expect, test } from '@playwright/test';
 
 const names = ['Today', 'Tasks', 'Train', 'Mind', 'Ground'];
 
+test('baseline hides economy copy in Ground and the bedtime Mind note', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
+  await page.goto('/#ground');
+  await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
+  await page.goto('/#mind');
+  await expect(page.getByText('Mind is resting for the night.')).toBeVisible();
+  await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
+});
+
 test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {
   await page.goto('/');
   const toast = page.getByRole('status', { name: 'Offline ready' });

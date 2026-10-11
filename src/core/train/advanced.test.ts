@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { calculatePlates, calculateWarmupRamp, detectSetPrs, needsWeeklyVolumeConfirmation, heatAdvice, remainingRestMs, evaluateBodyweightPlacement, isRetestWeek, applyRetestVolume, applyHeatMode, PROGRAMS, calculateTrainDailyXp } from './index';
+import { getSmallestIncrement } from './progression';
 
 describe('Train safety and logging rules', () => {
+  it('uses each exercise equipment rather than dumbbells for barbell progression', () => {
+    const equipment = { gymAccess: true, dumbbells: true, barbell: 20 as const, smallestPlate: 2.5, resistanceBand: false, pullUpBar: false, sturdyAnchor: false };
+    expect(getSmallestIncrement(equipment, 'barbell-squat')).toBe(5);
+    expect(getSmallestIncrement(equipment, 'db-bench')).toBe(2.5);
+    expect(getSmallestIncrement(equipment, 'goblet-squat')).toBe(2.5);
+  });
   it('ignores warm-ups and pain, and asks before a large load jump', () => {
     const best = { load: 40, repsAtLoad: 8, e1rm: 51 };
     expect(detectSetPrs({ load: 45, reps: 9, type: 'warmup' }, best)).toEqual([]);

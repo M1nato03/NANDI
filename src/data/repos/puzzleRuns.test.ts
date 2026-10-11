@@ -2,7 +2,7 @@ import '../test-setup';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
 import { loadPortedGenerator } from '../../core/ported-test-loader.js';
-import { accrueActive, openPuzzleRun, savePuzzleRun } from './puzzleRuns';
+import { accrueActive, openPuzzleRun, reconcileSolvedBoards, savePuzzleRun } from './puzzleRuns';
 
 const stores: NandiDb[] = [];
 const PZ = loadPortedGenerator(new URL('../../core/puzzles/puzzles.js', import.meta.url), 'PZ') as typeof import('../../core/puzzles/puzzles.js').default;
@@ -33,4 +33,25 @@ describe('puzzle runs', () => {
     expect(again).toMatchObject({ id: solved.id, solveMs: 5000, finishedAt: 6000 });
     expect(await store.puzzleRuns.count()).toBe(1);
   });
+});
+
+const opened: NandiDb[] = [];
+function fresh() { const db = createDb(`puzzle-atomic-${opened.length}-${Date.now()}`); opened.push(db); return db; }
+afterEach(async () => { for (const db of opened.splice(0)) await db.delete(); });
+const solved = { id: 'daily:2026-10-11:sudoku:easy', type: 'sudoku' as const, dayKey: '2026-10-11', daily: true, result: 'solved' as const, diff: 'easy', updatedAt: 1, deleted: 0 as const, deviceId: 'test' };
+
+it('rolls back a solved board if its ledger fact cannot be saved', async () => {
+  const db = fresh();
+  db.ledger.hook('creating', () => { throw new Error('ledger failed'); });
+  await expect(savePuzzleRun(db, solved, 2, false)).rejects.toThrow('ledger failed');
+  expect(await db.puzzleRuns.get(solved.id)).toBeUndefined();
+});
+
+it('reconciles old solved boards once at startup', async () => {
+  const db = fresh();
+  await db.puzzleRuns.add(solved);
+  await reconcileSolvedBoards(db);
+  await reconcileSolvedBoards(db);
+  expect(await db.ledger.where('id').equals(`board:${solved.id}`).count()).toBe(1);
+  expect((await db.ledger.get(`board:${solved.id}`))?.inputs).toMatchObject({ type: 'sudoku', diff: 'easy' });
 });

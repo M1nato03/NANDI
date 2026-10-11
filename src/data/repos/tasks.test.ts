@@ -37,6 +37,19 @@ async function task(start?: number) {
 }
 
 describe('Tasks repository transactions', () => {
+  it('records one lights-out fact with its daily log', async () => {
+    await repos.recordLightsOut(at(5, 1));
+    await repos.recordLightsOut(at(5, 1));
+    const key = dayKey(at(5, 1));
+    expect(await db.dailyLog.get(key)).toMatchObject({ lightsOutAt: at(5, 1) });
+    expect(await db.ledger.get(`lightsout:${key}`)).toMatchObject({ dayKey: key, mode: 'bonuses', kind: 'lightsout', inputs: { metTarget: true } });
+    expect(await db.ledger.count()).toBe(1);
+  });
+  it('rolls back the lights-out log if its award fact fails', async () => {
+    db.ledger.hook('creating', () => { throw new Error('ledger failed'); });
+    await expect(repos.recordLightsOut(at(5, 1))).rejects.toThrow('ledger failed');
+    expect(await db.dailyLog.get(dayKey(at(5, 1)))).toBeUndefined();
+  });
   it('creates task and event, and refuses an unsplit estimate over 90 minutes', async () => {
     const created = await task();
     expect(created).toMatchObject({ status: 'unplaced', postponeCount: 0 });

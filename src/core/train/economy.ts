@@ -1,8 +1,8 @@
-import { RULES } from '../rules.config';
+import { RULES, type Rules } from '../rules.config';
 import { Routine, TrainSession } from './types';
 import { hasPainFlag } from './safety';
 
-export function calculateSessionXp(session: TrainSession, routine: Routine): number {
+export function calculateSessionXp(session: TrainSession, routine: Routine, rules: Rules = RULES): number {
   if (session.exercises.length === 0) return 0; // Unplanned extra sets earn 0 (if an empty session is somehow logged)
 
   const plannedExercises = routine.exercises.length;
@@ -10,7 +10,7 @@ export function calculateSessionXp(session: TrainSession, routine: Routine): num
 
   // If safety stop (pain flag)
   if (hasPainFlag(session)) {
-    return RULES.train.minimumOrSafetyXp;
+    return rules.train.minimumOrSafetyXp;
   }
 
   // We should check if they did 1 set of each, but not the full amount.
@@ -34,18 +34,18 @@ export function calculateSessionXp(session: TrainSession, routine: Routine): num
 
   // Minimum session check according to the rules: "1 set of each"
   if (exercisesTouched === plannedExercises && doneSets === plannedExercises && plannedSets > plannedExercises) {
-    return RULES.train.minimumOrSafetyXp;
+    return rules.train.minimumOrSafetyXp;
   }
 
   const shareOfSets = doneSets / plannedSets;
 
   if (exercisesTouched === plannedExercises) {
     if (shareOfSets >= 1) {
-      return RULES.train.sessionFullXp;
+      return rules.train.sessionFullXp;
     }
-    return Math.max(RULES.train.sessionPartialFloorXp, Math.round(RULES.train.sessionFullXp * shareOfSets));
+    return Math.max(rules.train.sessionPartialFloorXp, Math.round(rules.train.sessionFullXp * shareOfSets));
   } else {
-    return Math.round(RULES.train.sessionFullXp * shareOfSets);
+    return Math.round(rules.train.sessionFullXp * shareOfSets);
   }
 }
 

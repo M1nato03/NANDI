@@ -3,11 +3,17 @@ import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb } from '../db';
 import { createTrainRepos } from './train';
+import { trainingWeek } from './train';
 import { exportBackup, importBackup } from '../backup';
 
 const opened: ReturnType<typeof createDb>[] = [];
 function fresh() { const db = createDb(`train-${opened.length}-${Date.now()}`); opened.push(db); return db; }
 afterEach(async () => { for (const db of opened.splice(0)) await db.delete(); });
+
+it('keeps Monday before 04:00 in the previous training week', () => {
+  expect(trainingWeek(new Date(2026, 9, 12, 2).getTime())).toBe('2026-10-05');
+  expect(trainingWeek(new Date(2026, 9, 12, 4).getTime())).toBe('2026-10-12');
+});
 
 it('persists onboarding, a safety session and its facts across backup', async () => {
   const db = fresh();
