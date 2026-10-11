@@ -78,3 +78,11 @@
 .track-question input, .track-test input, .track-watch input { width: 24px; height: 24px; flex: 0 0 24px; }
 .track-question select, .track-player textarea { min-height: 44px; width: 100%; }
 .track-stop { padding: 12px; border-radius: 12px; background: var(--raised); }
+.mind-case .case-grids { display: grid; gap: 1rem; overflow-x: auto; }
+.mind-case .case-grid { display: grid; gap: 3px; align-items: stretch; min-width: 0; }
+.mind-case .case-grid > span, .mind-case .case-grid strong { font-size: .75rem; overflow-wrap: anywhere; align-self: center; }
+.mind-case .case-grid button { min-width: 38px; min-height: 44px; padding: 0; }
+.mind-case .case-grid button.case-error { outline: 2px solid #b43a3a; outline-offset: -2px; }
+.mind-case .case-grid-wrap { min-width: 0; }
+.mind-case .card label { display: block; margin: .5rem 0; }
+.mind-case .card select { display: block; width: 100%; min-height: 44px; }

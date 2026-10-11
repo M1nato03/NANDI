@@ -83,6 +83,16 @@ for (const scheme of ['light', 'dark'] as const) {
       await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
       await page.getByRole('button', { name: 'Back to Mind' }).click();
     }
+    await expect(page.getByText("1 left: today's case", { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Open daily case' }).click();
+    await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
+    await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
+    await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
+    await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
+    await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
+    await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
+    await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
+    await page.getByRole('button', { name: 'Back to Mind' }).click();
     await expect(page.getByRole('heading', { name: "Today's drop complete." })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`drop-complete-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

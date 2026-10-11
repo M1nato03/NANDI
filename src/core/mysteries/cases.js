@@ -230,6 +230,6 @@ const CaseGen = (function(){
   }
   return {THEMES, DIFF, generate, daily, dailyDiff, propagate, countSolutions, hash, holds};
 })();
-if (typeof module !== "undefined") module.exports = CaseGen;
+if (typeof module !== "undefined" && !Object.getOwnPropertyDescriptor(module.exports, "default")) module.exports = CaseGen;
 
 export default CaseGen;

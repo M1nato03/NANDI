@@ -27,6 +27,7 @@ import type { DailyLogRow } from '../types';
 
 type BudgetState = { baselineStart: string; baselineComplete: boolean; enforcementFromWeek?: string; budget: number; lastWeek: string; countsSinceRaise: number[]; raisedAtWeek?: string; steppedDownAtWeek?: string };
 import {
+  focusPhase,
   isFocusRunning,
   startFocus as coreStartFocus,
   pauseFocus as corePauseFocus,
@@ -480,7 +481,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         return repos.tasks.put({ ...row, ...next }, now);
       });
     },
-    async startFocus(taskId: string, now: number): Promise<FocusRow> {
+    async startFocus(taskId: string, now: number, cyclePreset: '25/5' | '50/10' = '25/5'): Promise<FocusRow> {
       return mutation(async () => {
         const task = await repos.tasks.get(taskId);
         if (!task) throw new Error('Task not found');
@@ -501,7 +502,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         }
         const { newFocus } = coreStartFocus(taskId, now);
         const saved = await repos.focus.put(
-          { ...newFocus, id: ulid(now) },
+          { ...newFocus, id: ulid(now), cyclePreset, plannedMs: (cyclePreset === '50/10' ? 50 : 25) * 60_000 },
           now,
         );
         await event(taskId, 'started', now);
@@ -513,6 +514,16 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const focus = await repos.focus.get(focusId);
         if (!focus) throw new Error('Focus not found');
         return repos.focus.put(corePauseFocus(focus, now), now);
+      });
+    },
+    async extendFocus(focusId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        const cycle = focusPhase(focus, now);
+        if (cycle.phase !== 'work') throw new Error('Extend is available during focus.');
+        const key = String(cycle.cycle);
+        return repos.focus.put({ ...focus, cycleExtensions: { ...focus.cycleExtensions, [key]: (focus.cycleExtensions?.[key] ?? 0) + RULES.tasks.focus.extendMin * 60_000 } }, now);
       });
     },
     async resumeFocus(focusId: string, now: number): Promise<FocusRow> {
