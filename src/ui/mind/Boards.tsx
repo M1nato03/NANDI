@@ -81,7 +81,9 @@ export function SunMoonBoard({ board, state, conflicts, onGrid, done }: Props & 
       const r = Math.floor(i / 6), c = i % 6;
       const right = c < 5 ? (board.hs[r * 5 + c] ?? 0) : 0;
       const below = r < 5 ? (board.vs[r * 6 + c] ?? 0) : 0;
-      return <button type="button" key={i} className={`mind-cell ${given ? 'given' : ''} ${conflicts.includes(i) ? 'conflict' : ''}`} aria-label={`${position(i, 6)}: ${value < 0 ? 'empty' : value ? 'sun' : 'moon'}${given ? ', given' : ''}`} disabled={done || given} onClick={() => { const next = state.grid.slice(); next[i] = value < 0 ? 1 : value === 1 ? 0 : -1; onGrid(next); }}>{value < 0 ? '' : value ? '☀' : '☾'}{right > 0 && <span aria-hidden="true" className="edge right">{right === 1 ? '=' : '×'}</span>}{below > 0 && <span aria-hidden="true" className="edge below">{below === 1 ? '=' : '×'}</span>}</button>;
+      const rightClue = right === 1 ? '; equal to the cell on the right' : right === 2 ? '; opposite to the cell on the right' : '';
+      const belowClue = below === 1 ? '; equal to the cell below' : below === 2 ? '; opposite to the cell below' : '';
+      return <button type="button" key={i} className={`mind-cell ${given ? 'given' : ''} ${conflicts.includes(i) ? 'conflict' : ''}`} aria-label={`${position(i, 6)}: ${value < 0 ? 'empty' : value ? 'sun' : 'moon'}${given ? ', given' : ''}${rightClue}${belowClue}`} disabled={done || given} onClick={() => { const next = state.grid.slice(); next[i] = value < 0 ? 1 : value === 1 ? 0 : -1; onGrid(next); }}>{value < 0 ? '' : value ? '☀' : '☾'}{right > 0 && <span aria-hidden="true" className="edge right">{right === 1 ? '=' : '×'}</span>}{below > 0 && <span aria-hidden="true" className="edge below">{below === 1 ? '=' : '×'}</span>}</button>;
     })}
   </div>;
 }

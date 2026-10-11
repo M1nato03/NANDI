@@ -62,7 +62,12 @@ export function Dashboard({ data, page, setPage, busy, message, act }: { data: D
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
-    <div className="card"><h2>Consistency</h2><p>{thisWeek.length} of {target} sessions this week · {consecutiveWeeks} consecutive weeks with 2 or more sessions</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => <span key={key} className={completed.some(row => row.dayKey === key) ? 'trained' : ''} title={key} />)}</div></div>
+    <div className="card"><h2>Consistency</h2><p>{thisWeek.length} of {target} sessions this week · {consecutiveWeeks} consecutive weeks with 2 or more sessions</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
+      const isTrained = completed.some(row => row.dayKey === key);
+      const isRest = ledger.some(row => row.id === `train-rest:${key}`);
+      const statusText = isTrained ? 'trained' : isRest ? 'rest' : 'no data';
+      return <span key={key} className={isTrained ? 'trained' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
+    })}</div></div>
     <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}>{pattern} · step {actual}/{ladder?.length} {EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name}</li>; })}</ul>}
       <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {pr.kind} {pr.value}</li>)}</ul> : <p>Best sets will appear after a session.</p>}
       {best.length > 1 && <div className="train-chart" role="img" aria-label={`Best-set trend for ${EXERCISE_LIBRARY[best[0]!.exerciseId]?.name ?? best[0]!.exerciseId}`}><svg viewBox="0 0 240 80" preserveAspectRatio="none"><polyline points={best.map((pr, i) => `${i * 240 / (best.length - 1)},${78 - (pr.value ?? 0) / max * 70}`).join(' ')} /></svg></div>}
