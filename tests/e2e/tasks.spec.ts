@@ -1,10 +1,10 @@
-import { expect, test, type Page } from '@playwright/test';
+﻿import { expect, test, type Page } from '@playwright/test';
 
 test('large task preview, grouped progress, and whole-task drop', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  await page.goto('/#tasks');
-  await page.getByRole('button', { name: '+ Add task' }).click();
-  await page.getByPlaceholder('What needs doing?').fill('Complete the app work');
+  await page.goto('/#plan');
+  await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+  await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Complete the app work');
   await page.getByLabel('Minutes').fill('500');
   await page.getByLabel('Must', { exact: true }).check();
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
@@ -45,15 +45,16 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`task focus and backup round trip in ${scheme}`, async ({ page, context }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#tasks');
+    await page.goto('/?e2e#plan');
     await page.waitForFunction(() => '__nandiTest' in globalThis);
-    await page.getByRole('button', { name: '+ Add task' }).click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await expectLargeControls(page);
-    await page.getByPlaceholder('What needs doing?').fill('Write outline');
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Write outline');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Today' })).toContainText('Write outline');
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
-    await expect(page.getByRole('region', { name: 'Now' })).toContainText('Write outline');
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
+    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Write outline');
+    await page.getByRole('button', { name: 'Start 25 minutes' }).click();
     await page.getByRole('button', { name: 'Start focus' }).click();
     await page.clock.fastForward(65_000);
     await page.evaluate("document.dispatchEvent(new Event('visibilitychange')); window.dispatchEvent(new Event('pageshow'));");
@@ -66,17 +67,19 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.timer-ring')).toHaveAttribute('aria-label', 'Focus time 2:05');
     await page.getByRole('button', { name: 'Finish' }).click();
     await expect(page.getByRole('status').filter({ hasText: 'Planned 30 min' })).toContainText('Took 2 min');
-    await page.getByRole('button', { name: '+ Add task' }).click();
-    await page.getByPlaceholder('What needs doing?').fill('Keep this task');
-    await page.getByLabel('Unplaced', { exact: true }).check();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Keep this task');
+    await page.getByRole('radio', { name: 'Unplaced' }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await expect(page.getByRole('button', { name: '+ Add task' })).toBeVisible();
+    await expect(page.getByPlaceholder('Add a task, e.g. call bank 15m')).toBeVisible();
     await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).tasks).toBe(2);
     await page.reload();
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
     await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
     await page.screenshot({ path: testInfo.outputPath(`tasks-${scheme}.png`), fullPage: true });
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Backup and restore/ }).click();
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Export backup' }).click();
@@ -88,21 +91,23 @@ for (const scheme of ['light', 'dark'] as const) {
     await (await chooser).setFiles(saved!);
     await page.getByRole('button', { name: 'Confirm restore' }).click();
     await expect(page.getByRole('main').getByRole('status')).toContainText('Restore complete');
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
     await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
     expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
     await page.evaluate(() => (globalThis as unknown as { navigator: { serviceWorker: { ready: Promise<unknown> } } }).navigator.serviceWorker.ready);
     await context.setOffline(true);
     await page.reload();
+    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
     await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
   });
 
   test(`postpone ladder and large controls in ${scheme}`, async ({ page }) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/#tasks');
-    await page.getByRole('button', { name: '+ Add task' }).click();
-    await page.getByPlaceholder('What needs doing?').fill('Review notes');
+    await page.goto('/#plan');
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Review notes');
     await page.getByLabel('Size').selectOption('L');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     const row = page.locator('.task-row').filter({ hasText: 'Review notes' });
@@ -111,6 +116,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expectLargeControls(page);
     await page.getByLabel('New date and time').fill('2026-10-12T12:00');
     await page.getByRole('button', { name: 'Save new time' }).click();
+    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
     await row.getByRole('button', { name: 'Move' }).click();
     await expect(page.getByRole('dialog')).toContainText('First 10 minutes?');
     await page.getByLabel('First step').fill('Open the notes');
@@ -128,8 +134,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByLabel('New date and time').fill('2026-10-15T12:00');
     await page.getByRole('button', { name: 'Save new time' }).click();
     await expect(page.getByRole('region', { name: 'Someday' })).toContainText('Review notes');
-    await page.getByRole('button', { name: '+ Add task' }).click();
-    await page.getByPlaceholder('What needs doing?').fill('Class reading');
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Class reading');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await page.locator('.task-row').filter({ hasText: 'Class reading' }).getByRole('button', { name: 'Move' }).click();
     await page.getByText('Schedule changed for a real reason?').click();

@@ -1,12 +1,12 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
-const names = ['Today', 'Tasks', 'Train', 'Mind', 'Ground'];
+const names = ['Now', 'Plan', 'You'];
 
-test('baseline hides economy copy in Ground and the bedtime Mind note', async ({ page }) => {
+test('baseline hides economy copy in You and the bedtime Mind note', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
-  await page.goto('/#ground');
+  await page.goto('/#you');
   await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
-  await page.goto('/#mind');
+  await page.goto('/#you/mind');
   await expect(page.getByText('Mind is resting for the night.')).toBeVisible();
   await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
 });
@@ -29,7 +29,7 @@ test('offline ready notice clears visible buttons and dismisses', async ({ page 
   await expect(toast).toBeHidden({ timeout: 5_000 });
 });
 
-test('five tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
+test('three tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
   await page.goto('/');
   for (const scheme of ['dark', 'light'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
@@ -40,20 +40,20 @@ test('five tabs remain reachable after reload in both themes', async ({ page }, 
       await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
       expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
     }
-    await page.screenshot({ path: testInfo.outputPath(`ground-${scheme}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`you-${scheme}.png`), fullPage: true });
   }
 });
 
 test('generator check displays five boards and the case from both threads', async ({ page }) => {
   test.setTimeout(90000);
-  await page.goto('/#mind');
+  await page.goto('/#you/mind');
   await page.getByRole('button', { name: 'Generator check' }).click();
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Match', { timeout: 60000 });
   const speed = page.getByRole('heading', { name: 'Number Path (hard) speed' }).locator('..');
   await expect(speed).toContainText('20 boards', { timeout: 60000 });
-  await expect(speed).toContainText(/p50: .* ms/);
-  await expect(speed).toContainText(/p95: .* ms · 300 ms budget · (within budget|over budget)/);
-  await expect(speed).toContainText(/max: .* ms/);
+  await expect(speed).toContainText(/p50: .* ms/, { timeout: 60_000 });
+  await expect(speed).toContainText(/p95: .* ms · 300 ms budget · (within budget|over budget)/, { timeout: 60_000 });
+  await expect(speed).toContainText(/max: .* ms/, { timeout: 60_000 });
   for (const source of ['Main thread results', 'Worker results']) {
     const region = page.getByLabel(source);
     await expect(region.locator('article')).toHaveCount(6);
@@ -63,7 +63,7 @@ test('generator check displays five boards and the case from both threads', asyn
 });
 
 test('backup downloads, previews, and restores only after confirmation', async ({ page }) => {
-  await page.goto('/?e2e#ground');
+  await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   await page.evaluate(() => (globalThis as unknown as { __nandiTest: { seedShell: () => Promise<void> } }).__nandiTest.seedShell());
   await page.getByRole('button', { name: /Backup and restore/ }).click();
@@ -110,8 +110,8 @@ test('offline reload still opens every tab', async ({ page, context }) => {
   // The self-hosted display font must come from the precache, not fall back offline.
   const fontLoaded = await page.evaluate(async () => {
     const doc = (globalThis as unknown as { document: { fonts: { load: (f: string) => Promise<unknown[]>; check: (f: string) => boolean } } }).document;
-    await doc.fonts.load('700 32px "Big Shoulders Display"');
-    return doc.fonts.check('700 32px "Big Shoulders Display"');
+    await doc.fonts.load('800 32px "Bricolage Grotesque"');
+    return doc.fonts.check('800 32px "Bricolage Grotesque"');
   });
   expect(fontLoaded).toBe(true);
 });

@@ -1,4 +1,4 @@
-/// <reference lib="dom" />
+﻿/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -6,7 +6,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(180_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#mind');
+    await page.goto('/?e2e#you/mind');
     await page.getByRole('button', { name: 'Start lesson', exact: true }).click();
     const lesson = page.locator('.mind-lesson');
     await expect(lesson.getByLabel('guess screen')).toBeVisible();

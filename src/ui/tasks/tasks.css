@@ -1,4 +1,4 @@
-.quick-add { margin: 0 0 22px; }
+﻿.quick-add { margin: 0 0 22px; }
 .quick-add-toggle { width: 100%; min-height: 52px; text-align: left; }
 .task-form { margin: 10px 0; }
 .task-form label, .task-sheet label { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin: 12px 0; font-weight: 600; }
@@ -10,7 +10,7 @@
 .task-form input[type='radio'], .task-sheet input[type='radio'] { width: 44px; height: 44px; margin: 0; accent-color: var(--accent); }
 .task-list { margin: 28px 0; }
 .task-list h2 { display: flex; align-items: center; gap: 10px; }
-.task-count { font: 12px 'JetBrains Mono', monospace; color: var(--muted); }
+.task-count { font: 12px 'DM Sans', monospace; color: var(--muted); }
 .task-list ul { margin: 0; padding: 0; list-style: none; }
 .task-row { border-top: 1px solid var(--line); padding: 14px 0; display: flex; flex-direction: column; gap: 12px; }
 .task-row-main { display: flex; flex-direction: column; gap: 5px; overflow-wrap: anywhere; }
@@ -28,7 +28,7 @@
 .now-workout button { min-height: 44px; }
 .timer-ring { width: min(220px, 65vw); height: min(220px, 65vw); margin: 20px auto; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) var(--progress), var(--raised) var(--progress)); position: relative; }
 .timer-ring::before { content: ''; position: absolute; inset: 14px; border-radius: 50%; background: var(--surface); }
-.timer-ring span { z-index: 1; font: 700 56px 'Big Shoulders Display', sans-serif; color: var(--ink); }
+.timer-ring span { z-index: 1; font: 700 56px 'Bricolage Grotesque', sans-serif; color: var(--ink); }
 .timer-ring.overtime { background: var(--ember); }
 .timer-ring.overtime span { color: var(--ember); }
 .timer-caption { color: var(--muted); }

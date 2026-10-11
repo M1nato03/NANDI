@@ -17,11 +17,14 @@ export function TaskQuickAdd({ run }: { run: Run }) {
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [preview, setPreview] = useState<{ title: string; total: number; priority: 'must' | 'could'; placement: SplitPlacement; scheduledStart?: number; count: number; names: string[] } | null>(null);
+  const parsed = title.trim().match(/^(.*?)\s+(\d+)(m|h)$/i);
+  const taskTitle = parsed ? (parsed[1] ?? '').trim() : title.trim();
+  const taskMinutes = parsed ? Number(parsed[2]) * (parsed[3]?.toLowerCase() === 'h' ? 60 : 1) : Number(estimate);
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (submitting) return;
-    const trimmed = title.trim();
-    const count = Number(estimate);
+    const trimmed = taskTitle;
+    const count = taskMinutes;
     if (!trimmed || !Number.isInteger(count) || count <= 0) { setFeedback('Add a title and a whole-minute estimate.'); return; }
     const scheduledStart = schedule === 'today' ? new Date(slot).getTime() : undefined;
     if (schedule === 'today' && (!Number.isFinite(scheduledStart) || Number.isNaN(scheduledStart))) { setFeedback('Pick a date and time.'); return; }
@@ -56,10 +59,10 @@ export function TaskQuickAdd({ run }: { run: Run }) {
   const counts = preview ? Array.from({ length: Math.floor(preview.total / 25) - 1 }, (_, index) => index + 2).filter((count) => splitEstimates(preview.total, count)) : [];
   const previewParts = preview ? splitEstimates(preview.total, preview.count) : null;
   return <div className="quick-add">
-    <button type="button" className="quick-add-toggle" onClick={() => setOpen(!open)} aria-expanded={open} disabled={submitting || !!preview}>{open ? 'Close quick add' : '+ Add task'}</button>
-    {open && <form className="card task-form" onSubmit={(event) => void submit(event)}>
-      <h2>Quick add</h2>
-      <label>Task <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} placeholder="What needs doing?" /></label>
+    <label className="quick-add-field">Add a task<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => setTitle(event.target.value)} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" aria-expanded={open} /></label>
+    {open && <form id="plan-add-form" className="card task-form" onSubmit={(event) => void submit(event)}>
+      <h2>Task details</h2>
+      {parsed && <p className="small">{taskMinutes} minutes picked up from your task.</p>}
       <div className="task-form-grid"><label>Size <select value={size} onChange={(event) => { const value = event.target.value as typeof size; setSize(value); setEstimate(value === 'S' ? '15' : value === 'M' ? '30' : '60'); }}><option value="S">Small</option><option value="M">Medium</option><option value="L">Large</option></select></label>
       <label>Minutes <input type="number" min="1" max="600" inputMode="numeric" value={estimate} onChange={(event) => setEstimate(event.target.value)} /></label></div>
       <fieldset><legend>Priority</legend><label><input type="radio" name="priority" checked={priority === 'could'} onChange={() => setPriority('could')} /> Could</label><label><input type="radio" name="priority" checked={priority === 'must'} onChange={() => setPriority('must')} /> Must</label></fieldset>
