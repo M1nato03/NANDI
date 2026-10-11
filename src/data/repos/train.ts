@@ -5,16 +5,17 @@ import type { ProgramRow, SessionRow, SetRow, ExStateRow, PrRow, LedgerRow } fro
 import { entityRepo, naturalRepo } from './base';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
-import { RULES } from '../../core/rules.config';
+import { RULES, rulesFor } from '../../core/rules.config';
 import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
 
 export type Onboarding = { track: Track; equipment: EquipmentSetting; days: number[]; weeklyTarget: 2 | 3; restDay: number; heatModeEnabled: boolean; placement: Record<string, number> };
 const PROGRAM_ID = 'train-program';
 const live = <T extends { deleted: 0 | 1 }>(row: T) => row.deleted === 0;
-const weekOf = (at: number) => {
-  const date = new Date(at);
-  const monday = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - ((date.getDay() + 6) % 7) * 86_400_000;
-  return new Date(monday).toISOString().slice(0, 10);
+export const trainingWeek = (at: number | string): string => {
+  const key = typeof at === 'string' ? at : dayKey(at);
+  const date = new Date(`${key}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7));
+  return date.toISOString().slice(0, 10);
 };
 
 function routineFor(program: ProgramRow, now: number): Routine {
@@ -44,7 +45,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
     if (await db.prs.get(id)) return;
     await db.prs.add({ id, exerciseId, kind, value, setId, loadKg, at: now, ...meta(now) });
     const paid = await db.ledger.where('dayKey').equals(key).filter(row => row.mode === 'train' && row.kind === 'pr').count();
-    if (paid < RULES.train.prMaxPerDay) await db.ledger.add({ id: `train-pr:${id}`, mode: 'train', kind: 'pr', refId: id, dayKey: key, inputs: { kind }, ...meta(now) });
+    if (paid < (rulesFor(key)?.rules ?? RULES).train.prMaxPerDay) await db.ledger.add({ id: `train-pr:${id}`, mode: 'train', kind: 'pr', refId: id, dayKey: key, inputs: { prKind: kind, value }, ...meta(now) });
   }
 
   return {
@@ -88,8 +89,8 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const program = await getProgram();
         if (!program) throw new Error('Complete rank assessment first');
         const routine = routineFor(program, now);
-        const lastWeek = weekOf(now - 7 * 86_400_000);
-        const completed = await db.sessions.filter(row => live(row) && row.status !== 'active' && row.startedAt != null && weekOf(row.startedAt) === lastWeek).toArray();
+        const lastWeek = trainingWeek(now - 7 * 86_400_000);
+        const completed = await db.sessions.filter(row => live(row) && row.status !== 'active' && trainingWeek(row.dayKey) === lastWeek).toArray();
         const previousSets = (await Promise.all(completed.map(row => sessionSets(row.id)))).flat().filter(set => set.type === 'working').length;
         const plannedWeek = routine.exercises.reduce((sum, ex) => sum + ex.sets, 0) * (program.weeklyTarget ?? 3);
         if (needsWeeklyVolumeConfirmation(plannedWeek, previousSets) && !options.confirmVolume) throw new Error('This plan adds over 20% hard sets. Confirm to continue.');
@@ -165,14 +166,14 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const planned = session.planned ?? [];
         const exercises: SessionExercise[] = planned.map(ex => ({ exerciseId: ex.exerciseId, sets: sets.filter(set => set.exerciseId === ex.exerciseId).map(set => ({ load: set.loadKg ?? 0, reps: set.durationS ?? set.reps ?? 0, isHold: ex.isHold })), painFlag: !!session.painExerciseIds?.includes(ex.exerciseId), effort: session.effortByExercise?.[ex.exerciseId], targetRepMin: ex.repMin, targetRepMax: ex.repMax }));
         const routine: Routine = { id: session.templateKey ?? 'session', name: 'Session', track: session.templateKey?.startsWith('gym') ? 'gym' : 'bodyweight', exercises: planned };
-        const xp = calculateSessionXp({ id: session.id, dayKey: session.dayKey, routineId: routine.id, exercises }, routine);
+        const xp = calculateSessionXp({ id: session.id, dayKey: session.dayKey, routineId: routine.id, exercises }, routine, rulesFor(session.dayKey)?.rules ?? RULES);
         const pain = (session.painExerciseIds?.length ?? 0) > 0;
         const done = sets.length;
         const total = planned.reduce((sum, ex) => sum + ex.sets, 0);
         const status: SessionRow['status'] = pain ? 'safety' : done >= total ? 'completed' : exercises.every(ex => ex.sets.length > 0) ? 'minimum' : 'partial';
         const row: SessionRow = { ...session, status, endedAt: now, restEndsAt: undefined, xp, ...meta(now) };
         await db.sessions.put(row);
-        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, plannedSets: total, workingSets: done, safety: pain }, ...meta(now) };
+        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, plannedExercises: planned.length, touchedExercises: exercises.filter(ex => ex.sets.length > 0).length, plannedSets: total, workingSets: done, safety: pain }, ...meta(now) };
         if (!(await db.ledger.get(fact.id))) await db.ledger.add(fact);
         const program = await getProgram();
         const placement = { ...program?.placement };
@@ -190,9 +191,9 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
             placement[pattern] = next;
             if (next > rank) await addPr(ex.exerciseId, 'ladderStep', next, logged.at(-1)!.id, now, session.dayKey);
           } else if (logged.length >= ex.sets && !pain && routine.track === 'gym' && !ex.isHold && program?.equipment) {
-            const week = weekOf(now);
+            const week = trainingWeek(session.dayKey);
             const oldLoad = state.loadKg ?? logged[0]!.loadKg ?? 0;
-            const next = evaluateGymLift(exercise, { load: oldLoad, successStreak: state.successStreak ?? 0, failStreak: state.failStreak ?? 0, increasesThisWeek: state.increaseWeek === week ? state.increasesThisWeek ?? 0 : 0, weeksSinceStart: Math.floor((now - (program.startedAt ?? now)) / (7 * 86_400_000)) + 1 }, getSmallestIncrement(program.equipment));
+            const next = evaluateGymLift(exercise, { load: oldLoad, successStreak: state.successStreak ?? 0, failStreak: state.failStreak ?? 0, increasesThisWeek: state.increaseWeek === week ? state.increasesThisWeek ?? 0 : 0, weeksSinceStart: Math.floor((now - (program.startedAt ?? now)) / (7 * 86_400_000)) + 1 }, getSmallestIncrement(program.equipment, ex.exerciseId));
             update = { ...update, loadKg: next.load, lastReps: next.load > oldLoad ? ex.repMin : update.lastReps, successStreak: next.successStreak, failStreak: next.failStreak, increasesThisWeek: next.increasesThisWeek, increaseWeek: week, lastIncreaseAt: next.load > oldLoad ? now : state.lastIncreaseAt };
           }
           await db.exState.put(update);
@@ -205,18 +206,19 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         }
         if (program && !pain) await db.programs.put({ ...program, placement, ...meta(now) });
         if (program && xp > 0) {
-          const week = weekOf(now);
-          const sameWeek = await db.sessions.filter(item => live(item) && item.status !== 'active' && item.status !== 'skipped' && item.startedAt != null && weekOf(item.startedAt) === week && (item.xp ?? 0) > 0).toArray();
+          const week = trainingWeek(session.dayKey);
+          const sameWeek = await db.sessions.filter(item => live(item) && item.status !== 'active' && item.status !== 'skipped' && trainingWeek(item.dayKey) === week && (item.xp ?? 0) > 0).toArray();
           const count = new Set(sameWeek.map(item => item.dayKey)).size;
           const target = program.weeklyTarget ?? 3;
           if (count >= 2) {
             const id = `train-week:${week}:two`;
-            if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'weekly', refId: week, dayKey: session.dayKey, inputs: { milestone: 2, xp: target === 2 ? RULES.train.weeklyBonus.targetMet : RULES.train.weeklyBonus.oneShort }, ...meta(now) });
+            const rules = rulesFor(session.dayKey)?.rules ?? RULES;
+            if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'weekly', refId: week, dayKey: session.dayKey, inputs: { milestone: 2, target, xp: target === 2 ? rules.train.weeklyBonus.targetMet : rules.train.weeklyBonus.oneShort }, ...meta(now) });
           }
           if (target === 3 && count >= 3) {
             const id = `train-week:${week}:three`;
             const two = await db.ledger.get(`train-week:${week}:two`);
-            if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'weekly', refId: week, dayKey: session.dayKey, inputs: { milestone: 3, xp: Math.max(0, RULES.train.weeklyBonus.targetMet - Number(two?.inputs.xp ?? 0)) }, ...meta(now) });
+            if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'weekly', refId: week, dayKey: session.dayKey, inputs: { milestone: 3, target, priorDayKey: two?.dayKey, xp: Math.max(0, (rulesFor(session.dayKey)?.rules ?? RULES).train.weeklyBonus.targetMet - Number(two?.inputs.xp ?? 0)) }, ...meta(now) });
           }
         }
         return row;
@@ -224,7 +226,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
     },
     async restDayCheck(now: number, minutes: number): Promise<void> {
       await mutation(async () => {
-        if (minutes < RULES.train.restDayCheckMinMinutes) throw new Error('Walk or move for 10 minutes first');
+        if (minutes < (rulesFor(dayKey(now))?.rules ?? RULES).train.restDayCheckMinMinutes) throw new Error('Walk or move for 10 minutes first');
         const key = dayKey(now);
         if ((await db.sessions.where('dayKey').equals(key).filter(live).count()) > 0) throw new Error('Rest check is for a non-session day');
         const id = `train-rest:${key}`;

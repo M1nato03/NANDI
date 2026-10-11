@@ -5,11 +5,12 @@ import type { Lesson } from '../../data/packs/schemas';
 import { completeLesson, saveLessonDraft, type LessonDraft } from '../../data/repos/learn';
 import { recordError } from '../errorRing';
 import { Diagram } from './Diagram';
+import { nightMindNote } from './economyVisibility';
 
-type Props = { lesson: Lesson; packId: string; courseName: string; total: number; completed: number; draft: LessonDraft; afterBedtime: boolean; onLeave: () => void; onDone: () => void; teaser?: string };
+type Props = { lesson: Lesson; packId: string; courseName: string; total: number; completed: number; draft: LessonDraft; afterBedtime: boolean; economyVisible: boolean; onLeave: () => void; onDone: () => void; teaser?: string };
 type QuizKey = 'guess' | 'transfer' | 'why';
 
-export function LessonPlayer({ lesson, packId, courseName, total, completed, draft: initial, afterBedtime, onLeave, onDone, teaser }: Props) {
+export function LessonPlayer({ lesson, packId, courseName, total, completed, draft: initial, afterBedtime, economyVisible, onLeave, onDone, teaser }: Props) {
   const [draft, setDraft] = useState(initial);
   const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saved');
   const [iast, setIast] = useState(false);
@@ -43,7 +44,7 @@ export function LessonPlayer({ lesson, packId, courseName, total, completed, dra
     <button type="button" className="text-button" onClick={onLeave}>← Mind</button>
     <p className="eyebrow">{courseName} · {draft.review ? 'Review' : 'Today’s lesson'} · {draft.step + 1} of 8</p>
     <h1>{lesson.t}</h1>
-    {afterBedtime && <p role="status">After bedtime, Mind earns 0 XP.</p>}
+    {afterBedtime && <p role="status">{nightMindNote(economyVisible)}</p>}
     <p className="mind-save" role="status">{saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Save failed. Try again.'}</p>
     <article className="card" aria-label={`${step} screen`}>
       {step === 'guess' && <><p className="mind-scene">{lesson.scene}</p>{quiz('guess', lesson, false)}{draft.picked.guess !== undefined && <><p>How confident are you?</p><div className="mind-lesson-options">{(['sure', 'think', 'guess'] as Confidence[]).map(value => <button key={value} type="button" onClick={() => { save({ ...draft, confidence: value, step: 1 }); window.scrollTo(0, 0); }}>{value === 'sure' ? 'Sure' : value === 'think' ? 'Think so' : 'Guessing'} · {confidencePercent(value)}%</button>)}</div></>}</>}

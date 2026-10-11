@@ -9,10 +9,13 @@ import { go } from '../shell/router';
 import { phaseLine } from '../shell/tabs';
 import { ErrorRing } from './ErrorRing';
 import type { Appearance } from '../shell/useAppearance';
+import { dayKey } from '../../core/time/dayKey';
+import { economyVisible } from '../mind/economyVisibility';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
   const [message, setMessage] = useState('');
+  const [today] = useState(() => dayKey(Date.now()));
   const value = (key: string, fallback: string) => {
     const saved = settings?.find((row) => row.key === key && row.deleted === 0)?.value;
     return typeof saved === 'string' && /^\d{2}:\d{2}$/.test(saved) ? saved : fallback;
@@ -28,8 +31,9 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       setMessage('Planner settings saved.');
     } catch { setMessage('Could not save that setting.'); }
   }
-  return <><div className="hero"><p className="eyebrow">The Proving Ground</p><strong className="rank">#500</strong><p>Bench · start where you are</p></div>
-    <p>{phaseLine.Ground}</p><button onClick={() => go('ground/backup')}>Backup and restore <span aria-hidden="true">↗</span></button>
+  const showEconomy = economyVisible(settings ?? [], today);
+  return <><div className="hero"><p className="eyebrow">The Proving Ground</p>{showEconomy && <><strong className="rank">#500</strong><p>Bench · start where you are</p></>}</div>
+    <p>{showEconomy ? phaseLine.Ground : 'More features arrive in Phase 1.'}</p><button onClick={() => go('ground/backup')}>Backup and restore <span aria-hidden="true">↗</span></button>
     <p className="small" style={{ fontFamily: 'var(--font-mono)' }}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p>
     <div className="card"><h2>Settings</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>

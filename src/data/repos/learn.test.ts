@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { completeLesson, recordDailyBoard, reviewCard, reviewItem, saveLessonDraft, type LessonDraft } from './learn';
+import { completeLesson, reviewCard, reviewItem, saveLessonDraft, type LessonDraft } from './learn';
+import { savePuzzleRun } from './puzzleRuns';
 
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -44,9 +45,10 @@ it('card and item reviews update schedules and ledger facts once per day', async
 it('daily board completion records one fact and intro practice records none', async () => {
   const db = fresh();
   const run = { id: 'daily:2026-10-11:sudoku:easy', type: 'sudoku' as const, dayKey: '2026-10-11', daily: true, result: 'solved' as const, updatedAt: now, deleted: 0 as const, deviceId: 'test' };
-  await recordDailyBoard(db, run, true, now);
-  await recordDailyBoard(db, run, false, now);
-  await recordDailyBoard(db, { ...run, id: 'intro:2026-10-11:sudoku', daily: false, intro: true }, false, now);
+  await savePuzzleRun(db, run, now, true);
+  await savePuzzleRun(db, run, now, false);
+  await savePuzzleRun(db, { ...run, id: 'intro:2026-10-11:sudoku', daily: false, intro: true }, now, false);
   expect(await db.ledger.count()).toBe(1);
+  expect((await db.puzzleRuns.get(run.id))?.afterBedtime).toBe(true);
   expect((await db.ledger.get(`board:${run.id}`))?.inputs.afterBedtime).toBe(true);
 });

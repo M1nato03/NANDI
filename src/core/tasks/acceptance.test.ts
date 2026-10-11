@@ -202,6 +202,7 @@ describe('02-tasks §9', () => {
 
   it('§9 test 14: splits conserve XP and ladder state; choice alternatives do not count', () => {
     const parent = { ...scheduled(), postponeCount: 3 };
+    expect(() => splitTask(parent, 3, [30, 30, 30], RULES, undefined as unknown as number)).toThrow('timestamp');
     const children = splitTask(parent, 3, [30, 30, 30], RULES, at(4, 11));
     expect(children.map((c) => c.xpShare)).toEqual([12, 12, 11]);
     expect(
@@ -221,13 +222,13 @@ describe('02-tasks §9', () => {
     const creation100 = { ...parent, estimateMin: 100, postponeCount: 0 };
     const creation180 = { ...parent, estimateMin: 180, postponeCount: 0 };
     expect(
-      splitTask(creation100, 2, [50, 50]).reduce(
+      splitTask(creation100, 2, [50, 50], RULES, at(4, 11)).reduce(
         (sum, c) => sum + (c.xpShare ?? 0),
         0,
       ),
     ).toBe(39);
     expect(
-      splitTask(creation180, 3, [60, 60, 60]).reduce(
+      splitTask(creation180, 3, [60, 60, 60], RULES, at(4, 11)).reduce(
         (sum, c) => sum + (c.xpShare ?? 0),
         0,
       ),

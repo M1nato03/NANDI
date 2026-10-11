@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { baselineBudget, nextBudget } from './budget';
+import { baselineBudget, nextBudget, postponeWeekKey } from './budget';
 
 describe('baseline and ongoing postpone budget', () => {
+  it('keeps Monday before 04:00 in the previous budget week', () => {
+    expect(postponeWeekKey(new Date(2026, 9, 12, 2).getTime())).toBe('2026-10-05');
+    expect(postponeWeekKey(new Date(2026, 9, 12, 4).getTime())).toBe('2026-10-12');
+  });
   it('rounds and clamps the measured baseline', () => {
     expect(baselineBudget(0)).toBe(5);
     expect(baselineBudget(9)).toBe(6);
