@@ -21,3 +21,4 @@
 - Train: rank assessment, Hostel Bodyweight program by default, one-tap sets, rest timer, pain stop, history and metrics.
 - Mind: lessons with diagrams, card reviews with kept legacy schedules, finite Daily Drop with a stopping screen, night 0 XP.
 - Offline: fonts and icons now precached.
+- Review fixes: atomic puzzle awards, 04:00 week boundaries, replayable ledger facts, economy copy hidden until enabled, lights-out fact, accessibility labels, kinder lesson copy.
