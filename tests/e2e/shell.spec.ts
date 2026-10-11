@@ -88,7 +88,13 @@ test('backup downloads, previews, and restores only after confirmation', async (
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
-  expect(await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).toEqual(before);
+  const after = await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts());
+  // Device-local settings (offline-ready flag, lastBackupAt, reconcile markers) may be written in the
+  // background at any time, so settings may only grow; every other table must match exactly.
+  const { settings: settingsAfter = 0, ...restAfter } = after;
+  const { settings: settingsBefore = 0, ...restBefore } = before;
+  expect(restAfter).toEqual(restBefore);
+  expect(settingsAfter).toBeGreaterThanOrEqual(settingsBefore);
 });
 
 test('offline reload still opens every tab', async ({ page, context }) => {
