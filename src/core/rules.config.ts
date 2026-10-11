@@ -95,6 +95,12 @@ export const RULES = {
     miniMysteryRetiresAfterAnswer: true,
   },
 
+  learningTracks: {
+    activeTracks: 1, newUnitsPerWeek: 4, dailyBudgetMin: 25,
+    newCardsPerDay: 5, backlogBrakeDue: 30, busyDayCards: 1,
+    checkMinQuestions: 3, modulePassPercent: 70,
+  },
+
   // 05-economy §2, cross-mode bonuses.
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
   quests: { sideQuestXp: 20 },
@@ -169,6 +175,10 @@ export type Rules = Widen<typeof RULES>;
  * Cross-field constraints, such as tier adjacency, need separate pack validation.
  */
 export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
+  'learningTracks.activeTracks': [1, 1], 'learningTracks.newUnitsPerWeek': [1, 4],
+  'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5],
+  'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
+  'learningTracks.checkMinQuestions': [3, 3], 'learningTracks.modulePassPercent': [50, 90],
   'quests.sideQuestXp': [0, 50],
   // Identity and day boundary: version is a positive schema number; hours use a local 24-hour clock.
   version: [1, 999], dayBoundaryHour: [0, 23],

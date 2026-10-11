@@ -13,6 +13,7 @@ import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import '../tasks/tasks.css';
 import { QuestSummaryCard } from '../quests/SideQuests';
+import { LearningTask } from '../mind/LearningTask';
 
 export function Today() {
   const board = useTaskBoard();
@@ -54,6 +55,7 @@ export function Today() {
     <div className="planner-nav"><button type="button" className="secondary" onClick={() => go('tasks/plan')}>Morning plan</button><button type="button" className="secondary" onClick={() => go('tasks/shutdown')}>Shutdown</button><button type="button" className="secondary" onClick={() => go('tasks/review')}>Weekly review</button></div>
     {board.message && <p role="status">{board.message}</p>}
     <QuestSummaryCard />
+    <LearningTask day={dayKey(board.now)} />
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Now"><p className="eyebrow">Now</p>
       {activeWorkout && <div className="now-workout"><strong>Workout in progress</strong><button type="button" className="secondary" onClick={() => go('train')}>Continue workout</button></div>}

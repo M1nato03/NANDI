@@ -12,6 +12,7 @@ import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { defaultSlot, localDateTime, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
+import { LearningTask } from '../mind/LearningTask';
 import '../tasks/tasks.css';
 
 function tomorrowSlot(now: number) {
@@ -122,6 +123,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
     {mode === 'plan' && <>
       <p>A few minutes to give the day a shape. You can skip this.</p>
       <TaskQuickAdd run={board.act} />
+      <LearningTask day={today} />
       <section className="card" aria-label="Capacity"><h2>Capacity</h2><progress max={room.available} value={Math.min(room.planned, room.available)} /><p>{room.planned} min planned with your {overrunRatio.toFixed(1)}× estimate ratio · {room.available} min available</p>{room.over && <p role="note">This is more than your usual capacity. Adjust if useful; the plan stays yours.</p>}</section>
       {!skipped ? <><section aria-label="Unplaced tray"><h2>Unplaced tray</h2>{unplaced.length ? <ul className="planner-list">{unplaced.map((task) => <TriageRow key={task.id} task={task} board={board} onMove={setMoving} />)}</ul> : <p>Tray clear.</p>}</section>
         <section aria-label="Today priorities"><h2>Musts {musts.length}/3</h2><p>Choose up to three. Each Must has a start time.</p>{planned.map((task) => <div className="planner-priority" key={task.id}><span>{task.title} · {task.scheduledStart ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : ''}</span><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.setPriority(task.id, task.mustOrCould === 'must' ? 'could' : 'must', now), 'Priority saved.')}>{task.mustOrCould === 'must' ? 'Make Could' : 'Make Must'}</button></div>)}</section>
