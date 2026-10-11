@@ -22,3 +22,4 @@
 - Mind: lessons with diagrams, card reviews with kept legacy schedules, finite Daily Drop with a stopping screen, night 0 XP.
 - Offline: fonts and icons now precached.
 - Review fixes: atomic puzzle awards, 04:00 week boundaries, replayable ledger facts, economy copy hidden until enabled, lights-out fact, accessibility labels, kinder lesson copy.
+- Learning tracks: one active track at a time, daily unit with a 25-minute budget bar, cards into reviews; pilot Drone technology module (4 units).
