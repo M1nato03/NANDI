@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time/dayKey';
-import { defaultSlot, splitEstimates } from './model';
+import { defaultSlot, splitEstimates, splitPreview, type SplitPlacement } from './model';
 import type { TaskRepos } from './useTaskBoard';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
@@ -16,6 +16,7 @@ export function TaskQuickAdd({ run }: { run: Run }) {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [preview, setPreview] = useState<{ title: string; total: number; priority: 'must' | 'could'; placement: SplitPlacement; scheduledStart?: number; count: number; names: string[] } | null>(null);
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (submitting) return;
@@ -26,11 +27,14 @@ export function TaskQuickAdd({ run }: { run: Run }) {
     if (schedule === 'today' && (!Number.isFinite(scheduledStart) || Number.isNaN(scheduledStart))) { setFeedback('Pick a date and time.'); return; }
     const parts = count > RULES.tasks.maxEstimateMin ? splitEstimates(count) : null;
     if (count > RULES.tasks.maxEstimateMin && !parts) { setFeedback('Try an estimate that can split into 25 to 60 minute steps.'); return; }
+    if (parts) {
+      const draft = splitPreview(trimmed, count, priority, schedule, scheduledStart, parts.length);
+      if (draft) setPreview({ title: trimmed, total: count, priority, placement: schedule, scheduledStart, count: parts.length, names: draft.steps.map((step) => step.title) });
+      return;
+    }
     setSubmitting(true);
     try {
-      const ok = parts
-        ? await run((repos, now) => repos.createSplitTask(trimmed, parts, now, scheduledStart), 'Added as smaller steps.')
-        : await run(async (repos, now) => {
+      const ok = await run(async (repos, now) => {
           const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, scheduledStart, dayKey: dayKey(scheduledStart ?? now) }, now);
           if (schedule === 'someday') await repos.postpone(task.id, now + 1, { newStart: null, choice: 'someday', baselineWeek: true });
         }, 'Task added.');
@@ -39,8 +43,20 @@ export function TaskQuickAdd({ run }: { run: Run }) {
       setSubmitting(false);
     }
   }
+  async function savePreview() {
+    if (!preview || submitting) return;
+    const parts = splitEstimates(preview.total, preview.count);
+    if (!parts || preview.names.some((name) => !name.trim())) { setFeedback('Name every step.'); return; }
+    setSubmitting(true);
+    try {
+      const ok = await run((repos, now) => repos.createSplitTask(preview.title, parts, now, preview.scheduledStart, { titles: preview.names, priority: preview.priority, placement: preview.placement }), 'Split task saved.');
+      if (ok) { setPreview(null); setTitle(''); setOpen(false); setFeedback(''); }
+    } finally { setSubmitting(false); }
+  }
+  const counts = preview ? Array.from({ length: Math.floor(preview.total / 25) - 1 }, (_, index) => index + 2).filter((count) => splitEstimates(preview.total, count)) : [];
+  const previewParts = preview ? splitEstimates(preview.total, preview.count) : null;
   return <div className="quick-add">
-    <button type="button" className="quick-add-toggle" onClick={() => setOpen(!open)} aria-expanded={open} disabled={submitting}>{open ? 'Close quick add' : '+ Add task'}</button>
+    <button type="button" className="quick-add-toggle" onClick={() => setOpen(!open)} aria-expanded={open} disabled={submitting || !!preview}>{open ? 'Close quick add' : '+ Add task'}</button>
     {open && <form className="card task-form" onSubmit={(event) => void submit(event)}>
       <h2>Quick add</h2>
       <label>Task <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} placeholder="What needs doing?" /></label>
@@ -51,5 +67,17 @@ export function TaskQuickAdd({ run }: { run: Run }) {
       {schedule === 'today' && <label>Start time <input type="datetime-local" required value={slot} onChange={(event) => setSlot(event.target.value)} /></label>}
       <button type="submit" disabled={submitting}>{submitting ? 'Adding task…' : 'Add task'}</button>{feedback && <p role="alert">{feedback}</p>}
     </form>}
+    {preview && previewParts && <div className="sheet-backdrop"><section className="task-sheet" role="dialog" aria-modal="true" aria-label="Split preview">
+      <h2>Split preview</h2><p>This is big. It will be saved as {preview.count} steps of about {Math.round(preview.total / preview.count)} min.</p>
+      <label>Number of steps <select value={preview.count} onChange={(event) => {
+        const count = Number(event.target.value);
+        const draft = splitPreview(preview.title, preview.total, preview.priority, preview.placement, preview.scheduledStart, count);
+        const previous = splitPreview(preview.title, preview.total, preview.priority, preview.placement, preview.scheduledStart, preview.count);
+        if (draft) setPreview({ ...preview, count, names: draft.steps.map((step, index) => !preview.names[index] || preview.names[index] === previous?.steps[index]?.title ? step.title : preview.names[index]) });
+      }}>{counts.map((count) => <option key={count} value={count}>{count} steps</option>)}</select></label>
+      {previewParts.map((minutes, index) => <label key={index}>Step {index + 1} name <input required maxLength={200} value={preview.names[index] ?? ''} onChange={(event) => setPreview({ ...preview, names: preview.names.map((name, at) => at === index ? event.target.value : name) })} /><span className="small">{minutes} min · {preview.priority === 'must' ? 'Must' : 'Could'} · {preview.placement === 'someday' ? 'Someday' : preview.placement === 'today' && index === 0 ? 'Today at a time' : 'Unplaced'}</span></label>)}
+      {feedback && <p role="alert">{feedback}</p>}
+      <div className="sheet-actions"><button type="button" disabled={submitting} onClick={() => void savePreview()}>Save</button><button type="button" className="secondary" disabled={submitting} onClick={() => { setPreview(null); setFeedback(''); }}>Back</button></div>
+    </section></div>}
   </div>;
 }

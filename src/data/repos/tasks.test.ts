@@ -230,6 +230,22 @@ describe('Tasks repository transactions', () => {
     ).toHaveLength(1);
   });
 
+  it('saves split choices and drops remaining steps without removing completed XP', async () => {
+    const estimates = [56, 56, 56, 56, 56, 55, 55, 55, 55];
+    const names = estimates.map((_, index) => `Work — step ${index + 1} of 9`);
+    const steps = await repos.createSplitTask('Work', estimates, at(4), at(4, 10), { titles: names, priority: 'must', placement: 'today' });
+    expect(steps).toHaveLength(9);
+    expect(steps[0]).toMatchObject({ title: names[0], status: 'planned', mustOrCould: 'must', scheduledStart: at(4, 10) });
+    expect(steps.slice(1).every((step) => step.status === 'unplaced' && step.mustOrCould === 'must' && step.scheduledStart == null)).toBe(true);
+    await expect(repos.createTask({ title: 'Another Must', size: 'S', estimateMin: 15, dayKey: dayKey(at(4)), scheduledStart: at(4, 13), mustOrCould: 'must' }, at(4))).resolves.toMatchObject({ title: 'Another Must' });
+    await repos.completeTask(steps[0]!.id, at(4, 11));
+    const ledgerCount = await db.ledger.count();
+    await repos.dropTask(steps[0]!.parentId!, at(4, 12));
+    expect((await db.tasks.where('parentId').equals(steps[0]!.parentId!).toArray()).map((step) => step.status)).toEqual(['done', ...Array(8).fill('dropped')]);
+    expect(await db.ledger.count()).toBe(ledgerCount);
+    expect((await db.taskEvents.where('taskId').equals(steps[0]!.id).toArray()).some((event) => event.kind === 'done')).toBe(true);
+  });
+
   it('backup export, wipe and import preserves task, event, focus and ledger rows', async () => {
     const created = await task(at(4, 10));
     await repos.startFocus(created.id, at(4, 10));

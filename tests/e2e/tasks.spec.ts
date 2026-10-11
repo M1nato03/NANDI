@@ -1,5 +1,41 @@
 import { expect, test, type Page } from '@playwright/test';
 
+test('large task preview, grouped progress, and whole-task drop', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
+  await page.goto('/#tasks');
+  await page.getByRole('button', { name: '+ Add task' }).click();
+  await page.getByPlaceholder('What needs doing?').fill('Complete the app work');
+  await page.getByLabel('Minutes').fill('500');
+  await page.getByLabel('Must', { exact: true }).check();
+  await page.getByRole('button', { name: 'Add task', exact: true }).click();
+  const preview = page.getByRole('dialog', { name: 'Split preview' });
+  await expect(preview).toContainText('9 steps of about 56 min');
+  await expect(page.getByRole('region', { name: 'Today' })).not.toContainText('Complete the app work');
+  await preview.getByLabel('Number of steps').selectOption('10');
+  await expect(preview).toContainText('10 steps of about 50 min');
+  await preview.getByLabel('Number of steps').selectOption('9');
+  await preview.getByLabel('Step 2 name').fill('Prepare the app release');
+  await preview.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Split task saved.');
+  const parent = page.getByRole('region', { name: 'Today' }).locator('.task-group');
+  await expect(parent).toHaveCount(1);
+  await expect(parent.locator('summary')).toContainText('0 of 9 steps done');
+  await parent.locator('summary').click();
+  await expect(parent.locator('.task-row')).toHaveCount(9);
+  await expect(parent).toContainText('Prepare the app release');
+  await expect(parent.locator('.task-row').first()).toContainText('Must');
+  await parent.locator('.task-row').first().getByRole('button', { name: 'Done' }).click();
+  const remainingParent = page.locator('.task-group');
+  await expect(remainingParent.locator('summary')).toContainText('1 of 9 steps done');
+  await remainingParent.getByRole('button', { name: 'Drop whole task' }).click();
+  await expect(remainingParent).toContainText('Drop this task and its remaining steps?');
+  await remainingParent.getByRole('button', { name: 'Confirm drop' }).click();
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Split task dropped.');
+  await expect(remainingParent).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('region', { name: 'Today' })).not.toContainText('Complete the app work');
+});
+
 async function expectLargeControls(page: Page) {
   const sizes = await page.locator('button, input, select, summary, .tabbar a').evaluateAll((nodes) => nodes.filter((node) => { const rect = node.getBoundingClientRect(); return rect.width > 0 && rect.height > 0; }).map((node) => { const rect = node.getBoundingClientRect(); return { name: node.textContent?.trim() || node.getAttribute('aria-label') || node.tagName, width: rect.width, height: rect.height }; }));
   expect(sizes.filter((item) => item.width < 44 || item.height < 44)).toEqual([]);
@@ -51,7 +87,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Choose restore file' }).click();
     await (await chooser).setFiles(saved!);
     await page.getByRole('button', { name: 'Confirm restore' }).click();
-    await expect(page.getByRole('status')).toContainText('Restore complete');
+    await expect(page.getByRole('main').getByRole('status')).toContainText('Restore complete');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
     await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
     expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);

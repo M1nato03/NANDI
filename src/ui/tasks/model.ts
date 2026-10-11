@@ -41,11 +41,39 @@ export function defaultSlot(now: number): string {
   return localDateTime(dayKey(date.getTime()) === dayKey(now) ? date.getTime() : now);
 }
 
-export function splitEstimates(total: number): number[] | null {
-  for (let count = 2; count <= Math.ceil(total / 25); count++) {
+export function splitEstimates(total: number, chosenCount?: number): number[] | null {
+  if (!Number.isInteger(total) || total <= 0) return null;
+  const counts = chosenCount == null ? Array.from({ length: Math.floor(total / 25) - 1 }, (_, i) => i + 2) : [chosenCount];
+  for (const count of counts) {
+    if (!Number.isInteger(count) || count < 2) continue;
     const base = Math.floor(total / count);
     const parts = Array.from({ length: count }, (_, index) => base + (index < total % count ? 1 : 0));
     if (parts.every((part) => part >= 25 && part <= 60)) return parts;
   }
   return null;
+}
+
+export type SplitPlacement = 'today' | 'unplaced' | 'someday';
+export type PreviewStep = { title: string; estimateMin: number; mustOrCould: 'must' | 'could'; status: 'planned' | 'unplaced' | 'someday'; scheduledStart?: number };
+export function splitPreview(title: string, total: number, priority: 'must' | 'could', placement: SplitPlacement, scheduledStart?: number, count?: number): { title: string; steps: PreviewStep[] } | null {
+  const estimates = splitEstimates(total, count);
+  if (!estimates || !title.trim() || (placement === 'today' && !Number.isFinite(scheduledStart))) return null;
+  return { title: title.trim(), steps: estimates.map((estimateMin, index) => ({
+    title: `${title.trim()} — step ${index + 1} of ${estimates.length}`,
+    estimateMin, mustOrCould: priority,
+    status: placement === 'someday' ? 'someday' : placement === 'today' && index === 0 ? 'planned' : 'unplaced',
+    scheduledStart: placement === 'today' && index === 0 ? scheduledStart : undefined,
+  })) };
+}
+
+export type TaskGroup = { parent: TaskRow; steps: TaskRow[]; done: number; total: number; placement: string; dayKey: string; scheduledStart?: number | null };
+export function taskGroups(rows: TaskRow[]): TaskGroup[] {
+  const live = rows.filter((row) => row.deleted === 0);
+  const children = new Map<string, TaskRow[]>();
+  for (const row of live) if (row.parentId) children.set(row.parentId, [...(children.get(row.parentId) ?? []), row]);
+  return live.filter((row) => !row.parentId).map((parent) => {
+    const steps = children.get(parent.id) ?? [];
+    const active = steps.find((step) => step.status === 'planned') ?? steps.find((step) => step.status === 'unplaced') ?? steps.find((step) => step.status === 'someday');
+    return { parent, steps, done: steps.filter((step) => step.status === 'done').length, total: steps.length, placement: active?.status ?? parent.status, dayKey: active?.dayKey ?? parent.dayKey, scheduledStart: active?.scheduledStart ?? parent.scheduledStart };
+  });
 }

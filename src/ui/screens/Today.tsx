@@ -8,7 +8,7 @@ import { dayHorizon, effectiveShutdown, nightWindow } from '../../core/tasks/pla
 import { focusPhase, isFocusRunning } from '../../core/tasks/focus';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { PostponeSheet } from '../tasks/PostponeSheet';
-import { currentFocus, elapsed, minutes, todayTasks, visibleTasks } from '../tasks/model';
+import { currentFocus, elapsed, minutes, taskGroups, todayTasks, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import '../tasks/tasks.css';
@@ -31,8 +31,12 @@ export function Today() {
   const scheduled = todayTasks(board.tasks, board.now);
   const plannedMinutes = scheduled.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0);
   const nowTask = (focus && visibleTasks(board.tasks).find((task) => task.id === focus.taskId && task.status !== 'done')) ?? scheduled[0];
+  const groups = taskGroups(board.tasks);
+  const nowGroup = nowTask?.parentId ? groups.find((group) => group.parent.id === nowTask.parentId) : undefined;
+  const nowStep = nowGroup && nowTask ? nowGroup.steps.findIndex((step) => step.id === nowTask.id) + 1 : 0;
   const taskFocus = nowTask ? board.focus.filter((row) => row.taskId === nowTask.id && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0] : undefined;
   const next = scheduled.filter((task) => task.id !== nowTask?.id).slice(0, 2);
+  const nextGroups = groups.filter((group) => next.some((task) => task.id === group.parent.id || task.parentId === group.parent.id));
   const plannedMs = (nowTask?.estimateMin ?? 25) * 60_000;
   const elapsedMs = taskFocus ? elapsed(taskFocus, board.now) : 0;
   const phase = taskFocus ? focusPhase(taskFocus, board.now) : null;
@@ -61,7 +65,7 @@ export function Today() {
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Now"><p className="eyebrow">Now</p>
       {activeWorkout && <div className="now-workout"><strong>Workout in progress</strong><button type="button" className="secondary" onClick={() => go('train')}>Continue workout</button></div>}
-      {nowTask ? <><h2>{nowTask.title}</h2>{nowTask.firstStep && <p>First: {nowTask.firstStep}</p>}
+      {nowTask ? <><h2>{nowTask.title}</h2>{nowGroup && <p>{nowGroup.parent.title} · step {nowStep} of {nowGroup.total}</p>}{nowTask.firstStep && <p>First: {nowTask.firstStep}</p>}
         <div className={`timer-ring${taskFocus && elapsedMs > plannedMs ? ' overtime' : ''}`} style={{ '--progress': `${percent}%` } as React.CSSProperties} aria-label={taskFocus ? `Focus time ${minutes(elapsedMs)}` : `Planned ${nowTask.estimateMin} minutes`}><span>{phase ? minutes(phase.remainingMs) : `${nowTask.estimateMin}m`}</span></div>
         {phase && <p role="status">{phase.paused ? 'Paused · ' : ''}{phase.phase === 'work' ? 'Focus' : phase.phase === 'longBreak' ? 'Long break' : 'Break'} · cycle {phase.cycle} · {minutes(phase.remainingMs)} left</p>}
         {phase && phase.phase !== 'work' && <p className="timer-caption">A quiet break is here. Stretch, drink water, or step away.</p>}
@@ -72,7 +76,7 @@ export function Today() {
           <button type="button" className="secondary" disabled={board.busy} onClick={() => void finish()}>Finish</button><button type="button" className="text-button" onClick={() => setMoving(nowTask)}>Postpone</button></div>
       </> : !activeWorkout && <p>Nothing planned yet. Add one task to begin.</p>}
     </section>
-    <section className="next-strip" aria-label="Next"><h2>Next</h2>{next.length ? next.map((task) => <p key={task.id}><strong>{task.title}</strong><span>{task.scheduledStart ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : ''} · {task.estimateMin} min</span></p>) : <p>No more blocks planned.</p>}</section>
+    <section className="next-strip" aria-label="Next"><h2>Next</h2>{nextGroups.length ? nextGroups.map((group) => group.total ? <details key={group.parent.id}><summary><strong>{group.parent.title}</strong> · {group.done} of {group.total} steps done</summary>{group.steps.map((step, index) => <p key={step.id}>{step.title} · step {index + 1} of {group.total} · {step.status}</p>)}</details> : <p key={group.parent.id}><strong>{group.parent.title}</strong><span>{group.parent.scheduledStart ? new Date(group.parent.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : ''} · {group.parent.estimateMin} min</span></p>) : <p>No more blocks planned.</p>}</section>
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} />}
   </section>;
 }
