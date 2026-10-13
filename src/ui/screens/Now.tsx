@@ -101,8 +101,7 @@ export function Now() {
     if (card.id === 'plan') go('plan/shutdown');
   };
   return <section className="screen deck-screen" aria-label="Now deck" onTouchStart={event => { touchY.current = event.touches[0]?.clientY ?? null; }} onTouchEnd={event => { if (touchY.current != null && touchY.current - (event.changedTouches[0]?.clientY ?? touchY.current) > 55) next(); touchY.current = null; }}>
-    <div className="deck-heading"><div><p className="eyebrow">Your day, at your pace</p><h1>Now</h1></div><span className="deck-count">{at + 1} of {deck.length}</span></div>
-    <p className="small">A suggested order. Skip anything; open any pillar from You.</p>
+    <div className="deck-heading"><div><p className="eyebrow">Suggested order · skip freely</p><h1>Now</h1></div><span className="deck-count">{at + 1} of {deck.length}</span></div>
     <div className="deck-dashes" aria-label={`Card ${at + 1} of ${deck.length}`}>{deck.map((item, i) => <span key={item.id} className={i <= at ? 'active' : ''} />)}</div>
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}><div><span className="pill">{card.tag}</span><h2>{card.title}</h2><p>{card.detail}</p></div>
       <div className="deck-actions"><button type="button" onClick={action} disabled={card.id === 'lights' && !!log?.lightsOutAt}>{card.action}</button>{card.secondary && <button type="button" className="secondary" onClick={secondary}>{card.secondary}</button>}{card.id === 'task' && task && <button type="button" className="text-button" onClick={next}>Not now</button>}</div>

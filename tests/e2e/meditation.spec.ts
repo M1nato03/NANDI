@@ -20,6 +20,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('timer')).toHaveText('1:20');
     await expect(page.getByRole('button', { name: 'Resume meditation' })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`meditation-paused-${scheme}.png`), fullPage: true });
+    const finishBox = await page.getByRole('button', { name: 'Finish now' }).boundingBox();
+    const navBox = await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox();
+    expect(finishBox!.y + finishBox!.height).toBeLessThanOrEqual(navBox!.y);
     const targets = await page.locator('button, .meditation-durations label').evaluateAll(elements => elements.every(element => { const box = element.getBoundingClientRect(); return box.width >= 44 && box.height >= 44; }));
     expect(targets).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

@@ -45,7 +45,7 @@ export function Meditation() {
   return <section className="screen meditation-screen">
     <button type="button" className="text-button" onClick={() => go('you/mind')}>← Mind</button>
     <p className="eyebrow">Room to breathe</p><h1>Meditate</h1>
-    <p>Get comfortable. Breathe normally. When your mind wanders, gently return to your breath.</p>
+    {!active && <p>Get comfortable. Breathe normally. When your mind wanders, gently return to your breath.</p>}
     <div className="card meditation-card">
       <div className="meditation-clock" role="timer" aria-label="Meditation time remaining" aria-live="off">{minutes(Math.ceil(remaining / 1000) * 1000)}</div>
       {active ? <><p role="status">{paused ? 'Paused. Take your time.' : 'Quiet time. You can put your phone down.'}</p><div className="meditation-actions"><button type="button" disabled={busy} onClick={() => void act(paused ? 'resume' : 'pause')}>{paused ? 'Resume meditation' : 'Pause meditation'}</button><button type="button" className="secondary" disabled={busy} onClick={() => void act('finish')}>Finish now</button></div></> : <>

@@ -20,6 +20,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await tabs.filter({ hasText: 'Now' }).click();
     await expect(page.getByRole('article', { name: 'Plan your day card' })).toContainText('1 task planned');
     await expect(page.getByText('1 of 9')).toBeVisible();
+    const nextBox = await page.getByRole('button', { name: 'Next', exact: true }).boundingBox();
+    const navBox = await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox();
+    expect(nextBox!.y + nextBox!.height).toBeLessThanOrEqual(navBox!.y);
     await page.screenshot({ path: testInfo.outputPath(`now-plan-${scheme}.png`), fullPage: true });
     await page.evaluate(() => {
       const deck = document.querySelector('.deck-screen')!;
