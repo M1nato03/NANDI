@@ -32,7 +32,8 @@ test('focus phase follows timestamps and keeps the chosen cycle', async ({ page 
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus cycle task');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-  await page.getByRole('button', { name: 'Start 25 minutes' }).click();
+  for (let step = 0; step < 3; step++) await page.getByRole('button', { name: 'Next', exact: true }).click();
+    await page.getByRole('button', { name: 'Start 25 minutes' }).click();
   await page.getByLabel('Focus cycle').selectOption('50/10');
   await page.getByRole('button', { name: 'Start focus' }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Focus · cycle 1' })).toBeVisible();

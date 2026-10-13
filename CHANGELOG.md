@@ -1,5 +1,14 @@
 # Changelog
 
+
+## 2026-10-13 — basic daily routine
+- Four permanent pillar entry points in You: Plan, Train, Mind and Learn.
+- Now follows morning planning, movement or recovery, meditation, tasks and free-time learning; night offers tomorrow's plan, quiet time and lights-out. Active timers can be resumed first. The deck has a clear ending.
+- Short offline meditation with pause/resume, reload recovery, early finish and backed-up history. Updates wait until practice finishes.
+- Mind contains meditation, boards and mysteries. Learn contains the existing lessons, reviews and learning tracks. Legacy links still work.
+- Factual daily progress replaces the placeholder mastery/rank display. Completing a task from Now also ends its unfinished focus timers; focus timer totals exclude pauses.
+- No new app dependencies or database migration. See `docs/basic-app-flow.md` for agreed scope and phone delivery.
+
 ## Phase 0 (in progress)
 
 - Added the Vite, React, and TypeScript scaffold with PWA registration and a placeholder icon.
