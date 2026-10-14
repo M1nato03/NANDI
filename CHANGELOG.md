@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-14 — task completion recovery
+- Completing a task from shutdown, Plan, Now or Focus closes its running and paused focus timers in the same database transaction. A failed completion keeps both the task and timers open for retry.
+- Regression coverage checks timer closure, unchanged unrelated sessions, idempotent completion, rollback and offline shutdown recovery on both phone sizes.
+
 
 ## 2026-10-13 — basic daily routine
 - Four permanent pillar entry points in You: Plan, Train, Mind and Learn.

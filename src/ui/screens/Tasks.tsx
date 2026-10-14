@@ -19,10 +19,7 @@ export function Tasks() {
   const upcoming = groups.filter((group) => group.placement === 'planned' && group.dayKey > today).sort((a, b) => (a.scheduledStart ?? 0) - (b.scheduledStart ?? 0));
   const unplaced = groups.filter((group) => group.placement === 'unplaced');
   const someday = groups.filter((group) => group.placement === 'someday');
-  const complete = (id: string) => { void board.act(async (repos, now) => {
-    for (const focus of board.focus.filter((row) => row.taskId === id && row.endedAt == null)) await repos.finishFocus(focus.id, now);
-    await repos.completeTask(id, now);
-  }, 'Task done.'); };
+  const complete = (id: string) => { void board.act((repos, now) => repos.completeTask(id, now), 'Task done.'); };
   const dropGroup = (id: string) => { void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.'); };
   return <section className="screen"><p className="eyebrow">Your plan</p><h1>Tasks</h1>
     <div className="planner-nav"><button type="button" className="secondary" onClick={() => go('tasks/plan')}>Morning plan</button><button type="button" className="secondary" onClick={() => go('tasks/shutdown')}>Shutdown</button><button type="button" className="secondary" onClick={() => go('tasks/review')}>Weekly review</button></div>

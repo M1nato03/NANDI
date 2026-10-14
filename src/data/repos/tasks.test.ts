@@ -37,6 +37,31 @@ async function task(start?: number) {
 }
 
 describe('Tasks repository transactions', () => {
+  it('completes a task and all its live focus sessions together', async () => {
+    const created = await task(at(4));
+    const other = await task(at(4));
+    const running = await repos.startFocus(created.id, at(4, 10));
+    const unrelated = await repos.startFocus(other.id, at(4, 11));
+    await db.focus.add({ ...running, id: 'second-focus', startedAt: at(4, 11), pauses: [] });
+    await repos.completeTask(created.id, at(4, 12));
+    expect((await db.focus.get(running.id))?.endedAt).toBe(at(4, 12));
+    expect((await db.focus.get('second-focus'))?.endedAt).toBe(at(4, 12));
+    expect((await db.focus.get(unrelated.id))?.endedAt).toBeUndefined();
+    await repos.completeTask(created.id, at(4, 13));
+    expect((await db.focus.get(running.id))?.endedAt).toBe(at(4, 12));
+    expect(await db.ledger.filter(row => row.refId === created.id).count()).toBe(1);
+  });
+
+  it('keeps the task and focus open if saving completion fails', async () => {
+    const created = await task(at(4));
+    const focus = await repos.startFocus(created.id, at(4, 10));
+    db.ledger.hook('creating', () => { throw new Error('Completion write failed'); });
+    await expect(repos.completeTask(created.id, at(4, 11))).rejects.toThrow('Completion write failed');
+    expect((await db.tasks.get(created.id))?.status).toBe('planned');
+    expect(await db.focus.get(focus.id)).toEqual(focus);
+    expect(await db.taskEvents.filter(row => row.kind === 'done').count()).toBe(0);
+  });
+
   it('records one lights-out fact with its daily log', async () => {
     await repos.recordLightsOut(at(5, 1));
     await repos.recordLightsOut(at(5, 1));

@@ -97,7 +97,7 @@ export function Now() {
     else if (card.id === 'lights' && !log?.lightsOutAt) void board.act((repos, now) => repos.recordLightsOut(now), 'Lights-out check-in saved.');
   };
   const secondary = () => {
-    if (card.id === 'task' && task) { void board.act(async (repos, now) => { for (const row of board.focus.filter(row => row.taskId === task.id && !row.endedAt && !row.deleted)) await repos.finishFocus(row.id, now); await repos.completeTask(task.id, now); }, 'Task done.').then(ok => { if (ok) next(); }); }
+    if (card.id === 'task' && task) { void board.act((repos, now) => repos.completeTask(task.id, now), 'Task done.').then(ok => { if (ok) next(); }); }
     if (card.id === 'plan') go('plan/shutdown');
   };
   return <section className="screen deck-screen" aria-label="Now deck" onTouchStart={event => { touchY.current = event.touches[0]?.clientY ?? null; }} onTouchEnd={event => { if (touchY.current != null && touchY.current - (event.changedTouches[0]?.clientY ?? touchY.current) > 55) next(); touchY.current = null; }}>
