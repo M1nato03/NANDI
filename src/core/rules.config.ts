@@ -95,6 +95,8 @@ export const RULES = {
     miniMysteryRetiresAfterAnswer: true,
   },
 
+  meditation: { durationPresetsMin: [2, 5, 10], defaultDurationMin: 5, maxDurationMin: 60 },
+
   learningTracks: {
     activeTracks: 1, newUnitsPerWeek: 4, dailyBudgetMin: 25,
     newCardsPerDay: 5, backlogBrakeDue: 30, busyDayCards: 1,
@@ -175,6 +177,9 @@ export type Rules = Widen<typeof RULES>;
  * Cross-field constraints, such as tier adjacency, need separate pack validation.
  */
 export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
+  'meditation.durationPresetsMin.0': [1, 60], 'meditation.durationPresetsMin.1': [1, 60],
+  'meditation.durationPresetsMin.2': [1, 60], 'meditation.defaultDurationMin': [1, 60],
+  'meditation.maxDurationMin': [10, 60],
   'learningTracks.activeTracks': [1, 1], 'learningTracks.newUnitsPerWeek': [1, 4],
   'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5],
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],

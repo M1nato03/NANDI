@@ -66,7 +66,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
-    await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
+    await expect(page.getByRole('heading', { name: "Today's lesson" })).toHaveCount(0);
 
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();

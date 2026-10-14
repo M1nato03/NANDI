@@ -345,6 +345,12 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           (await db.tasks.where('parentId').equals(taskId).count()) > 0
         )
           throw new Error('Container or dropped task cannot earn XP');
+        // Every completion entry point closes persisted timers in this transaction.
+        const openFocus = await db.focus.where('taskId').equals(taskId)
+          .filter(row => row.deleted === 0 && row.endedAt == null).toArray();
+        for (const focus of openFocus) {
+          await repos.focus.put(coreFinishFocus(focus, now), now);
+        }
         const updated = await repos.tasks.put(
           { ...task, status: 'done', doneAt: now },
           now,

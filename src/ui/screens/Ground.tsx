@@ -8,13 +8,10 @@ import { createSettingsRepos } from '../../data/repos/settings';
 import { go } from '../shell/router';
 import { ErrorRing } from './ErrorRing';
 import type { Appearance } from '../shell/useAppearance';
-import { dayKey } from '../../core/time/dayKey';
-import { economyVisible } from '../mind/economyVisibility';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
   const [message, setMessage] = useState('');
-  const [today] = useState(() => dayKey(Date.now()));
   const value = (key: string, fallback: string) => {
     const saved = settings?.find(row => row.key === key && row.deleted === 0)?.value;
     return typeof saved === 'string' && /^\d{2}:\d{2}$/.test(saved) ? saved : fallback;
@@ -30,8 +27,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       setMessage('Planner settings saved.');
     } catch { setMessage('Could not save that setting.'); }
   }
-  const showEconomy = economyVisible(settings ?? [], today);
-  return <div className="you-settings"><section className="card"><h2>Progress</h2>{showEconomy ? <><strong className="rank">#500</strong><p>Bench · start where you are</p></> : <p>Your progress appears here when it is ready.</p>}</section>
+  return <div className="you-settings">
     <button type="button" className="secondary" onClick={() => go('you/backup')}>Backup and restore</button>
     <section className="card"><h2>Settings</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>

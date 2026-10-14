@@ -27,10 +27,7 @@ export function Today() {
     if (!task) return;
     const current = task;
     const actual = board.focus.filter(row => row.taskId === current.id).reduce((sum, row) => sum + elapsed(row, Date.now()), 0);
-    const ok = await board.act(async (repos, now) => {
-      for (const row of board.focus.filter(item => item.taskId === current.id && item.endedAt == null)) await repos.finishFocus(row.id, now);
-      await repos.completeTask(current.id, now);
-    }, 'Task done.');
+    const ok = await board.act((repos, now) => repos.completeTask(current.id, now), 'Task done.');
     if (ok) setJustFinished({ planned: current.estimateMin ?? 0, actual: Math.round(actual / 60_000) });
   }
   return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('now')}>← Now</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>

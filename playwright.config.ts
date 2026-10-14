@@ -9,6 +9,7 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     browserName: 'chromium',
     channel: process.env.PLAYWRIGHT_CHANNEL as 'msedge' | undefined,
+    launchOptions: process.env.PLAYWRIGHT_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH, args: ['--disable-gpu', '--no-zygote'] } : undefined,
   },
   projects: [
     {

@@ -53,7 +53,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Today' })).toContainText('Write outline');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Write outline');
+    for (let step = 0; step < 3; step++) await page.getByRole('button', { name: 'Next', exact: true }).click();
     await page.getByRole('button', { name: 'Start 25 minutes' }).click();
     await page.getByRole('button', { name: 'Start focus' }).click();
     await page.clock.fastForward(65_000);

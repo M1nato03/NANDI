@@ -6,7 +6,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(180_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#you/mind');
+    await page.goto('/?e2e#you/learn');
     await page.getByRole('button', { name: 'Start lesson', exact: true }).click();
     const lesson = page.locator('.mind-lesson');
     await expect(lesson.getByLabel('guess screen')).toBeVisible();
@@ -66,35 +66,10 @@ for (const scheme of ['light', 'dark'] as const) {
       }
     }
     await expect(page.getByRole('heading', { name: 'Reviews complete.' })).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
-    await page.getByRole('button', { name: 'Open daily board' }).click();
-    await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
-    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
-    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-    await expect(page.getByLabel('Puzzle result')).toBeVisible();
-    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
-    if (await page.getByRole('button', { name: 'Open daily board' }).isVisible()) {
-      await page.getByRole('button', { name: 'Open daily board' }).click();
-      await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
-      await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
-      await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-      await expect(page.getByLabel('Puzzle result')).toBeVisible();
-      await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-      await page.getByRole('button', { name: 'Back to Mind' }).click();
-    }
-    await expect(page.getByText("1 left: today's case", { exact: true })).toBeVisible();
-    await page.getByRole('button', { name: 'Open daily case' }).click();
-    await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
-    await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
-    await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
-    await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
-    await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
-    await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
-    await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
-    await expect(page.getByRole('heading', { name: "Today's drop complete." })).toBeVisible();
-    await page.screenshot({ path: testInfo.outputPath(`drop-complete-${scheme}.png`), fullPage: true });
+    await page.getByRole('button', { name: 'Back to Learn' }).click();
+    await expect(page.getByRole('heading', { name: "Today's learning complete." })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Open daily board' })).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath(`learning-complete-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

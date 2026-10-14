@@ -22,10 +22,7 @@ export function Plan() {
   const unplaced = remaining.filter(group => group.placement === 'unplaced');
   const someday = remaining.filter(group => group.placement === 'someday');
   const nextId = todayTasks(board.tasks, board.now)[0]?.id;
-  const complete = (id: string) => { void board.act(async (repos, now) => {
-    for (const focus of board.focus.filter(row => row.taskId === id && row.endedAt == null)) await repos.finishFocus(focus.id, now);
-    await repos.completeTask(id, now);
-  }, 'Task done.'); };
+  const complete = (id: string) => { void board.act((repos, now) => repos.completeTask(id, now), 'Task done.'); };
   const dropGroup = (id: string) => { void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.'); };
   const listProps = { onComplete: complete, onMove: setMoving, onDropGroup: dropGroup, busy: board.busy };
   return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>

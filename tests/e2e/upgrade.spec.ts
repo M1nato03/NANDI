@@ -172,7 +172,7 @@ test('active focus waits until paused before updating', async ({ page, context }
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Focus through update');
+    for (let step = 0; step < 3; step++) await page.getByRole('button', { name: 'Next', exact: true }).click();
     await page.getByRole('button', { name: 'Start 25 minutes' }).click();
     await page.getByRole('button', { name: 'Start focus' }).click();
     await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
@@ -203,9 +203,39 @@ test('active focus waits until paused before updating', async ({ page, context }
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await page.getByRole('button', { name: 'Start 25 minutes' }).click();
+    await page.getByRole('button', { name: 'Continue focus' }).click();
     await page.getByRole('button', { name: 'Finish' }).click();
   } finally {
     await server.close();
   }
+});
+
+test('meditation defers a real app update until its completion is saved', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
+  test.setTimeout(120_000);
+  const server = await startUpgradeServer();
+  try {
+    await prepareUpgrade(page, context, server.origin);
+    await page.goto(`${server.origin}/#you/mind/meditate`);
+    await page.getByRole('button', { name: 'Start meditation' }).click();
+    await expect(page.getByRole('button', { name: 'Pause meditation' })).toBeVisible();
+    server.serveBuildB();
+    await page.reload();
+    const update = page.getByRole('region', { name: 'App update' });
+    await expect(update).toContainText('Update available', { timeout: 20_000 });
+    let loads = 0;
+    page.on('load', () => { loads++; });
+    await update.getByRole('button', { name: 'Update', exact: true }).click();
+    await expect(update).toContainText('Finish your meditation first');
+    await page.getByRole('button', { name: 'Pause meditation' }).click();
+    await expect(page.getByRole('button', { name: 'Resume meditation' })).toBeVisible();
+    await expect(update).toContainText('Finish your meditation first');
+    expect(loads).toBe(0);
+    const reloaded = page.waitForEvent('load');
+    await page.getByRole('button', { name: 'Finish now' }).click();
+    await reloaded;
+    await expect(page.getByText(/Practice saved/)).toBeVisible();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+  } finally { await server.close(); }
 });
