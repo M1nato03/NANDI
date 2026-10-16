@@ -8,17 +8,18 @@ import { getOrCreateDeviceId } from '../../data/device';
 import { loadEngineFacts, saveDrop, saveEngineAnswer } from '../../data/repos/learn-engine';
 import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
-import { catalogFor, chosenTopics, dailyDropId, findItem, makeDrop, selectedTopicKey, topics } from './flow';
+import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, selectedTopicKey, topics } from './flow';
 import './learn.css';
 
 const currentTime = () => Date.now();
 
-export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: () => void }) {
+export function LearnDrop({ daily = true, night = false, itemCount, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; onDone?: () => void }) {
   const [now] = useState(currentTime);
   const [busy, setBusy] = useState(false);
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
     dailyDrop: await db.learnDrops.get(dailyDropId(now)),
+    nightDrop: night ? await db.learnDrops.get(nightDropId(now)) : undefined,
     drops: await db.learnDrops.toArray(),
     concepts: await db.learnConcepts.toArray(),
     items: await db.learnItems.toArray(),
@@ -35,7 +36,7 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
   const starting = useRef(false);
   const ids = chosenTopics(data?.setting?.value);
   const concepts = catalogFor(topics.map(pack => pack.body.topic.id));
-  const row = daily ? data?.dailyDrop : data?.drops.find(candidate => candidate.id === practiceId);
+  const row = night ? data?.nightDrop : daily ? data?.dailyDrop : data?.drops.find(candidate => candidate.id === practiceId);
   const drop = row?.drop;
   const step = drop?.items[feedback?.cursor ?? drop.pendingFeedback?.cursor ?? drop.cursor];
   const found = step ? findItem(concepts, step.itemId) : undefined;
@@ -66,10 +67,10 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
       const today = dayKey(at);
       const answered = data.ledger.filter(fact => !fact.deleted && fact.dayKey === today);
       const { facts } = await loadEngineFacts(db);
-      const created = makeDrop({ ids: selected, concepts: data.concepts, items: data.items, now: at, daily: isDaily,
+      const created = makeDrop({ ids: selected, concepts: data.concepts, items: data.items, now: at, daily: isDaily, night, itemCount,
         answeredToday: answered.length, newToday: isDaily ? answered.filter(fact => data.drops.some(row => row.id === fact.inputs.dropId && row.drop.items.some(step => step.itemId === fact.inputs.itemId && step.mode === 'new'))).length : 0,
         spentMinutes: answered.length * 0.7, facts });
-      if (isDaily) {
+      if (isDaily || night) {
         if (!await db.learnDrops.get(created.id)) await saveDrop(db, created, deviceId, at);
       } else {
         await saveDrop(db, created, deviceId, at);
@@ -82,10 +83,10 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
   };
 
   useEffect(() => {
-    if (data && ids.length && (daily ? !data.dailyDrop : !practiceId)) queueMicrotask(() => void start(ids));
+    if (data && ids.length && (night ? !data.nightDrop : daily ? !data.dailyDrop : !practiceId)) queueMicrotask(() => void start(ids));
     // The database query updates after the drop is stored.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.dailyDrop, data?.setting, practiceId]);
+  }, [data?.dailyDrop, data?.nightDrop, data?.setting, practiceId]);
 
   const answer = async (value: ItemAnswer, feedbackId?: string) => {
     if (!drop || !found || !step || writing.current || visibleFeedback) return;
@@ -94,7 +95,7 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
     const grade = gradeItem(found.item, value);
     const option = found.item.options.find(candidate => candidate.id === feedbackId);
     setFeedback({ cursor: drop.cursor, correct: grade.correct, text: option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule });
-    if (grade.correct && !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') void tapHaptic(true);
+    if (!night && grade.correct && !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') void tapHaptic(true);
     try {
       const at = currentTime();
       await saveEngineAnswer(db, { answerId: `${drop.id}:${drop.cursor}`, dropId: drop.id, item: found.item,
@@ -144,13 +145,13 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);
     const improved = touched.filter(concept => masteryMapState(data.concepts.find(row => row.id === concept.id)) !== 'Not started');
     const due = touched.map(concept => data.concepts.find(row => row.id === concept.id)?.memory?.dueAt).filter((value): value is number => typeof value === 'number').sort((a, b) => a - b)[0];
-    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">That's today's drop</h2><p>{drop.items.length} questions explored. Come back when the ideas have had time to settle.</p><h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p><button type="button" onClick={onDone ?? (() => go('you/learn'))}>Continue</button></div>;
+    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : "That's today's drop"}</h2><p>{drop.items.length} questions explored. Come back when the ideas have had time to settle.</p><h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p><button type="button" onClick={onDone ?? (() => go('you/learn'))}>Continue</button></div>;
   }
   if (!found) return <div className="learn-drop"><h2>Learn</h2><p>This item is unavailable. Open Learn to choose a topic.</p><button type="button" onClick={() => go('you/learn')}>Open Learn</button></div>;
   const { item, concept } = found;
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
-  return <div className={`learn-drop ${visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head"><button type="button" className="learn-header-link" onClick={() => go('you/learn')}>Learn ↗</button><span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
+  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{night ? <span>Night drop</span> : <button type="button" className="learn-header-link" onClick={() => go('you/learn')}>Learn ↗</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
     <p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p><h2>{item.stem}</h2>
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}

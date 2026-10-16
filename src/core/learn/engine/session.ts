@@ -74,7 +74,7 @@ function orderOptions(item: TopicItem, seed: number): string[] {
 export function composeDrop(context: ComposeContext): Drop {
   const minutesPerItem = context.minutesPerItem ?? 0.7;
   const budgetItems = Math.max(0, Math.floor((RULES.learningTracks.dailyBudgetMin - context.spentMinutes) / minutesPerItem));
-  const wanted = context.busyDay ? 3 : Math.min(10, Math.max(5, context.requestedItems ?? 8));
+  const wanted = context.busyDay ? 3 : Math.min(10, Math.max(1, context.requestedItems ?? 8));
   const limit = Math.max(0, Math.min(wanted, budgetItems));
   const hasStarted = context.catalog.concepts.some(concept => (context.concepts[concept.id]?.attempts ?? 0) > 0 || (context.concepts[concept.id]?.mastery ?? 0) > 0);
   const newCap = context.afterBedtime ? 0 : Math.max(0, RULES.learningTracks.newCardsPerDay - context.newToday);

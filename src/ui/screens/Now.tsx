@@ -11,9 +11,9 @@ import { ulid } from 'ulidx';
 import { tapHaptic } from '../../platform/haptics';
 import { focusPhase, isFocusRunning } from '../../core/tasks/focus';
 import { elapsed } from '../tasks/model';
-import { NightPlanSetting } from './NightPlanSetting';
 import { RULES } from '../../core/rules.config';
-import { effectiveShutdown, nightWindow, shutdownAt } from '../../core/tasks/planner';
+import { effectiveShutdown } from '../../core/tasks/planner';
+import { deckMode } from '../../core/deckMode';
 import { dayKey } from '../../core/time/dayKey';
 import { weekKey } from '../../core/quests';
 import { db } from '../../data/db';
@@ -24,8 +24,8 @@ import { todayTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { deckNavigation, type DeckAction } from '../../core/deckNavigation';
 import { deckIndex, go, goToCard, navigationEventName } from '../shell/router';
-import { planLeadsNow, readNightPlan } from '../../core/nightPlan';
 import { WeeklyRecap } from './WeeklyRecap';
+import { NightDeck } from '../night/NightDeck';
 
 type DeckCard = { id: string; tag: string; title: string; detail: string; action: string; href?: string; secondary?: string };
 const questRepo = createQuestRepo(db);
@@ -48,7 +48,6 @@ export function Now() {
   const learnDone = !!dailyDrop && dailyDrop.drop.cursor >= dailyDrop.drop.items.length;
   const quests = useLiveQuery(() => db.quests.where('week').equals(weekKey(board.now)).toArray(), [weekKey(board.now)]) ?? [];
   const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
-  const cards = useLiveQuery(() => db.cards.toArray(), []) ?? [];
   const trainProgram = useLiveQuery(() => db.programs.get('train-program'), []);
   const sessions = useLiveQuery(() => db.sessions.filter(row => !row.deleted).toArray(), []) ?? [];
   const activeWorkout = useLiveQuery(() => db.sessions.where('status').equals('active').filter(row => !row.deleted).first(), []);
@@ -58,9 +57,8 @@ export function Now() {
     return typeof value === 'string' ? value : fallback;
   };
   const bedtime = setting('planner.bedtime', RULES.night.defaultBedtime);
-  const nightPlan = readNightPlan(settings);
   const shutdown = effectiveShutdown(setting('planner.shutdown', RULES.night.defaultShutdown), bedtime);
-  const night = nightWindow(board.now, shutdown, bedtime, log?.windDownAt);
+  const night = deckMode(board.now, shutdown, bedtime, log?.windDownAt);
   const task = todayTasks(board.tasks, board.now)[0];
   const taskFocus = task ? board.focus.find(row => row.taskId === task.id && !row.endedAt) : undefined;
   const phase = taskFocus ? focusPhase(taskFocus, board.now) : null;
@@ -69,7 +67,6 @@ export function Now() {
   const mystery = useMemo(() => CaseGen.daily(today), [today]);
   const boardDone = runs.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved' && !row.deleted);
   const caseDone = runs.some(row => row.id === caseRunId(today) && (row.result === 'solved' || row.result === 'revealed') && !row.deleted);
-  const dueCount = cards.filter(row => !row.deleted && row.due <= today).length;
   const questRows = quests.filter(row => row.status !== 'swapped' && !row.deleted);
   const questDone = questRows.filter(row => row.status === 'done').length;
   const quest = questRows.find(row => row.status === 'active' && !row.custom && row.progress === 0) ?? questRows.find(row => row.status === 'active') ?? questRows.find(row => row.status === 'done');
@@ -102,13 +99,8 @@ export function Now() {
     { id: 'quest', tag: 'A little extra', title: quest?.title ?? 'A side quest for today', detail: quest ? `${questWhy} · ${questTime}` : 'A small detour will appear here.', action: 'I did it', secondary: 'Swap' },
     { id: 'end', tag: 'The day is yours', title: "That's today.", detail: summary.length ? summary.join(' · ') : 'The day is still open. One small step is enough.', action: "Plan tomorrow's first step", href: 'plan/shutdown', secondary: 'One more puzzle, just for fun' },
   ];
-  const nightCards: DeckCard[] = [
-    { id: 'lights', tag: 'Lights-out', title: 'Let today close.', detail: log?.lightsOutAt ? 'Check-in saved. Rest when you are ready.' : `Your lights-out time is ${bedtime}.`, action: log?.lightsOutAt ? 'Check-in saved' : 'Lights-out check-in' },
-    { id: 'reviews', tag: 'Gentle review', title: 'Reviews can wait or be done now.', detail: dueCount ? `${dueCount} cards are due.` : 'No cards are due right now.', action: 'Open reviews', href: 'you/mind/reviews' },
-  ];
-  const planCard: DeckCard | null = !nightPlan && night !== 'day' ? { id: 'night-plan', tag: 'First night', title: 'Make a tiny night plan', detail: 'One cue and one easy next move.', action: 'Save night plan' } : null;
-  const deck = night === 'lightsOut' || planLeadsNow(board.now, bedtime) ? (planCard ? [planCard, ...nightCards] : nightCards) : planCard ? [...dayCards.slice(0, -1), planCard, dayCards.at(-1)!] : dayCards;
-  const complete: Record<string, boolean> = { task: doneTasks.length > 0, train: trainDone, board: boardDone, case: caseDone, quest: questDone > 0, learn: learnDone, lights: !!log?.lightsOutAt, 'night-plan': !!nightPlan };
+  const deck = dayCards;
+  const complete: Record<string, boolean> = { task: doneTasks.length > 0, train: trainDone, board: boardDone, case: caseDone, quest: questDone > 0, learn: learnDone };
   const deckFinished = ['task', 'train', 'board', 'case', 'quest', 'learn'].every(id => complete[id]);
   const learnReady = learnDone;
   const at = Math.min(index, deck.length - 1);
@@ -125,6 +117,11 @@ export function Now() {
     window.addEventListener(navigationEventName(), update);
     return () => { window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); };
   }, []);
+  useEffect(() => {
+    if (night !== 'day') return;
+    if (sessionStorage.getItem('nandi.deck.mode') === 'night') goToCard(0);
+    sessionStorage.setItem('nandi.deck.mode', 'day');
+  }, [night]);
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
       if (!['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp'].includes(event.key)) return;
@@ -144,13 +141,13 @@ export function Now() {
   useEffect(() => {
     const pending = sessionStorage.getItem('nandi.deck.awaiting');
     const ready = pending === 'board' && boardDone || pending === 'case' && caseDone || pending === 'train' && trainDone || pending === 'learn' && learnReady;
-    if (pending && ready) {
+    if (night === 'day' && pending && ready) {
       sessionStorage.removeItem('nandi.deck.awaiting');
       const timer = window.setTimeout(() => { setAnimating(pending); void tapHaptic(true).catch(() => undefined); }, 0);
       const clear = window.setTimeout(() => setAnimating(''), 800);
       return () => { window.clearTimeout(timer); window.clearTimeout(clear); };
     }
-  }, [boardDone, caseDone, trainDone, learnReady]);
+  }, [boardDone, caseDone, trainDone, learnReady, night]);
   const markTask = async () => {
     if (!task) return;
     const actual = Math.round(board.focus.filter(row => row.taskId === task.id).reduce((sum, row) => sum + elapsed(row, board.now), 0) / 60_000);
@@ -200,7 +197,6 @@ export function Now() {
     else if (card.id === 'train') void startWorkout(false);
     else if (card.id === 'quest') void checkQuest();
     else if (card.href) { if (['board', 'case', 'learn'].includes(card.id) && !complete[card.id]) sessionStorage.setItem('nandi.deck.awaiting', card.id); go(card.href); }
-    else if (card.id === 'lights' && !log?.lightsOutAt) void board.act((repos, now) => repos.recordLightsOut(now), board.now <= shutdownAt(board.now, bedtime) ? 'Night back on plan.' : 'Back tonight.').then(ok => { if (ok) celebrate('lights'); });
   };
   const secondary = () => {
     if (card.id === 'task') void markTask();
@@ -210,11 +206,12 @@ export function Now() {
   };
   const previewSize = puzzle ? 'N' in puzzle ? puzzle.N : puzzle.type === 'sunmoon' ? 6 : puzzle.C : 0;
   const previewValues = puzzle ? puzzle.type === 'sudoku' ? puzzle.givens : puzzle.type === 'sunmoon' ? puzzle.given.map(value => value < 0 ? '' : value ? '☀' : '☾') : puzzle.type === 'path' ? Array.from({ length: puzzle.R * puzzle.C }, (_, i) => puzzle.waypoints.includes(i) ? String(puzzle.waypoints.indexOf(i) + 1) : '') : puzzle.type === 'crowns' ? puzzle.region.map(() => '') : Array.from({ length: puzzle.N * puzzle.N }, (_, i) => puzzle.cages.find(cage => cage.cells[0] === i)?.target ?? '') : [];
+  if (night !== 'day') return <NightDeck now={board.now} bedtime={bedtime} board={board} />;
   return <section className="screen deck-screen" aria-label="Now deck" onTouchStart={event => { if (card.id !== 'learn') touchY.current = event.touches[0]?.clientY ?? null; }} onTouchEnd={event => { if (touchY.current != null) { const distance = touchY.current - (event.changedTouches[0]?.clientY ?? touchY.current); if (distance > 55) next(); else if (distance < -55) previous(); } touchY.current = null; }}>
     <div className="deck-heading"><div><p className="eyebrow">One thing at a time</p><h1>Now</h1></div><span className="deck-count">{at + 1} of {deck.length}</span></div>
     <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${deck.length}`}>{deck.map((item, i) => <button type="button" key={item.id} className={complete[item.id] ? 'complete' : i === at ? 'active' : ''} aria-label={`Go to card ${i + 1}: ${item.tag}${complete[item.id] ? ', complete' : ''}`} aria-current={i === at ? 'step' : undefined} onClick={() => navigate({ type: 'jump', index: i })} />)}</div>
     {at > 0 && at < deck.length - 1 && <button type="button" className="deck-back" onClick={previous} aria-label="Back to previous card">‹ Back</button>}
-    <article className={`deck-card card${complete[card.id] ? ' is-complete' : ''}${animating === card.id ? ' just-completed' : ''}`} aria-label={`${card.tag} card`} key={card.id}>{card.id === 'learn' ? <LearnDrop onDone={next} /> : card.id === 'recap' ? <WeeklyRecap now={board.now} /> : card.id === 'night-plan' ? <NightPlanSetting firstRun /> : <><div><span className="pill">{card.tag}</span>{complete[card.id] && <span className="deck-check" aria-label="Complete">✓</span>}<h2>{card.title}</h2><p>{card.detail}</p>
+    <article className={`deck-card card${complete[card.id] ? ' is-complete' : ''}${animating === card.id ? ' just-completed' : ''}`} aria-label={`${card.tag} card`} key={card.id}>{card.id === 'learn' ? <LearnDrop onDone={next} /> : card.id === 'recap' ? <WeeklyRecap now={board.now} /> : <><div><span className="pill">{card.tag}</span>{complete[card.id] && <span className="deck-check" aria-label="Complete">✓</span>}<h2>{card.title}</h2><p>{card.detail}</p>
       {card.id === 'task' && task && <><p className="deck-meta">{task.estimateMin ?? 25} min planned{task.firstStep ? ` · First: ${task.firstStep}` : ''}</p>{!taskFocus && <label className="deck-cycle">Focus cycle <select aria-label="Focus cycle" value={cyclePreset} onChange={event => setCyclePreset(event.target.value as '25/5' | '50/10')}><option value="25/5">25 min work / 5 min break</option><option value="50/10">50 min work / 10 min break</option></select></label>}{taskFocus && phase && <><div className="inline-timer" role="timer" aria-label="Focus countdown"><strong>{shortTime(phase.remainingMs)}</strong><span>{phase.paused ? 'Paused' : phase.phase === 'work' ? 'Focus in progress' : 'Break time'}</span></div><p role="status">{phase.paused ? 'Paused · ' : ''}{phase.phase === 'work' ? 'Focus' : phase.phase === 'longBreak' ? 'Long break' : 'Break'} · cycle {phase.cycle} · {shortTime(phase.remainingMs)} left</p>{phase.phase !== 'work' && <p>A quiet break is here. Stretch, drink water, or step away.</p>}</>}</>}
       {card.id === 'task' && !task && <form className="deck-add" onSubmit={event => void addTask(event)}><label htmlFor="deck-task-title">Your first step</label><input id="deck-task-title" value={quickTitle} maxLength={160} onChange={event => setQuickTitle(event.target.value)} placeholder="Name one small task" required /><button type="submit" disabled={board.busy}>Add</button></form>}
       {card.id === 'task' && taskResult && <p className="task-result" role="status">{taskResult}</p>}
@@ -223,7 +220,7 @@ export function Now() {
       {card.id === 'case' && mystery && <p className="deck-meta">{mystery.clues.length} clues to follow</p>}
       {card.id === 'quest' && quest && <p className="deck-meta">{quest.kind === 'total' ? `${quest.progress} of ${quest.target} ${quest.unit} · each tap adds ${quest.step}` : 'A one-time quest'} · {questTime}</p>}
       {card.id === 'end' && <div className="deck-end"><p><strong>Tomorrow's first step</strong><br />{tomorrowTask?.title ?? 'Pick one small step tonight.'}</p><p><strong>Lights-out</strong><br />{bedtime}</p>{deckFinished && <p className="deck-celebration" role="status">You made room for the whole day. Rest well. ✦</p>}</div>}</div>
-      <div className="deck-actions">{!(card.id === 'task' && !task) && <button type="button" onClick={action} disabled={card.id === 'lights' && !!log?.lightsOutAt || card.id === 'quest' && (!quest || quest.status !== 'active')}>{card.id === 'task' && taskFocus ? isFocusRunning(taskFocus) ? 'Pause' : 'Resume' : card.action}</button>}{card.secondary && <button type="button" className="secondary" onClick={secondary} disabled={card.id === 'quest' && questRows.some(row => row.status === 'swapped')}>{card.secondary}</button>}{card.id === 'task' && task && <button type="button" className="text-button" onClick={next}>Not now</button>}{card.id === 'train' && message.includes('20%') && <label className="deck-confirm"><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}</div></>}
+      <div className="deck-actions">{!(card.id === 'task' && !task) && <button type="button" onClick={action} disabled={card.id === 'quest' && (!quest || quest.status !== 'active')}>{card.id === 'task' && taskFocus ? isFocusRunning(taskFocus) ? 'Pause' : 'Resume' : card.action}</button>}{card.secondary && <button type="button" className="secondary" onClick={secondary} disabled={card.id === 'quest' && questRows.some(row => row.status === 'swapped')}>{card.secondary}</button>}{card.id === 'task' && task && <button type="button" className="text-button" onClick={next}>Not now</button>}{card.id === 'train' && message.includes('20%') && <label className="deck-confirm"><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}</div></>}
     </article>
     {card.id !== 'learn' && (at < deck.length - 1 ? <button type="button" className="secondary deck-next" onClick={next}>Next</button> : <button type="button" className="secondary deck-next" onClick={previous}>Back to cards</button>)}
     {(board.message || message) && <p role="status">{board.message || message}</p>}

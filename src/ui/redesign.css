@@ -189,3 +189,32 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 @media (max-width: 600px) { .deck-card { min-height: 0; } .deck-actions { flex-direction: row; } .deck-actions button { width: auto; flex: 1 1 140px; } }
 @media (prefers-reduced-motion: reduce) { .deck-dashes button.complete::after, .just-completed .deck-check, .just-completed, .deck-celebration { animation: none; } }
 :root[data-motion='reduce'] .deck-dashes button.complete::after, :root[data-motion='reduce'] .just-completed .deck-check, :root[data-motion='reduce'] .just-completed, :root[data-motion='reduce'] .deck-celebration { animation: none; }
+
+:root:has(.deck-night) {
+  color-scheme: dark;
+  --bg: #11151b; --surface: #1a2027; --raised: #252d35; --line: #34404a;
+  --ink: #dddcd5; --secondary-ink: #b6b9b6; --muted: #a4aaa9;
+  --accent: #a9b9b4; --teal: #93aca3; --button: #3d4d55; --button-ink: #eeeae2;
+}
+.deck-night {
+  --bg: #11151b; --surface: #1a2027; --raised: #252d35; --line: #34404a;
+  --ink: #dddcd5; --secondary-ink: #b6b9b6; --muted: #a4aaa9;
+  --accent: #a9b9b4; --teal: #93aca3; --button: #3d4d55; --button-ink: #eeeae2;
+  background: var(--bg); color: var(--ink); border-radius: 20px; padding: 18px;
+  min-height: min(680px, calc(100dvh - 180px));
+}
+.deck-night .deck-card { background: var(--surface); border-color: var(--line); min-height: 360px; }
+.deck-night .deck-card h2 { font-size: clamp(30px, 8vw, 44px); }
+.deck-night button:not(.learn-option) { box-shadow: none; }
+.deck-night .deck-actions button, .deck-night .deck-next, .deck-night .deck-add button, .deck-night .learn-drop button:not(.learn-topic-tile), .deck-night .night-plan-setting button {
+  background: var(--button); color: var(--button-ink); border: 1px solid var(--line);
+}
+.deck-night .deck-actions button.secondary, .deck-night .deck-next { background: var(--raised); color: var(--ink); }
+.deck-night .night-plan-setting { border: 0; border-radius: 0; background: transparent; padding: 0; }
+.deck-night .night-plan-setting input, .deck-night .night-plan-setting select { background: var(--raised); }
+.deck-night .night-plan-words { font-size: clamp(22px, 6vw, 30px); line-height: 1.35; color: var(--ink); }
+.deck-night .night-summary { padding-left: 20px; color: var(--secondary-ink); line-height: 1.7; }
+.deck-night .learn-correct, .deck-night .just-completed, .deck-night .deck-celebration, .deck-night .deck-check,
+.deck-night .deck-dashes button.complete::after { animation: none; }
+.deck-night .learn-progress span { transition: none; }
+@media (prefers-reduced-motion: reduce) { .deck-night *, .deck-night *::before, .deck-night *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

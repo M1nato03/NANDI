@@ -67,12 +67,12 @@ for (const scheme of ['light', 'dark'] as const) {
 test('after bedtime a missing night plan sits in the deck', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
   await page.goto('/#now');
-  await expect(page.getByText('1 of 3')).toBeVisible();
-  await expect(page.getByRole('article', { name: 'First night card' })).toBeVisible();
+  await expect(page.getByText('1 of 6')).toBeVisible();
+  await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();
   await page.getByRole('button', { name: 'Next' }).click();
-  await expect(page.getByRole('article', { name: 'Lights-out card' })).toBeVisible();
-  await page.getByRole('button', { name: 'Next' }).click();
-  await expect(page.getByRole('article', { name: 'Gentle review card' })).toBeVisible();
+  await expect(page.getByRole('article', { name: 'Night drop card' })).toBeVisible();
+  await page.getByRole('button', { name: 'Go to card 6: That’s tonight' }).click();
+  await expect(page.getByRole('article', { name: 'That’s tonight card' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Next' })).toHaveCount(0);
 });
 

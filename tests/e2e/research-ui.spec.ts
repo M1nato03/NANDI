@@ -28,7 +28,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('article', { name: 'First night card' })).toHaveCount(0);
     await page.clock.setFixedTime(new Date('2026-10-13T01:31:00'));
     await page.goto('/#now');
-    await expect(page.getByRole('article', { name: 'Lights-out card' })).toBeVisible();
+    await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();
 
     const controls = page.getByRole('button');
     for (const control of await controls.all()) {
