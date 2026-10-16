@@ -39,7 +39,7 @@ export function Plan({ questId }: { questId?: string }) {
       <TaskList title="Unplaced" groups={unplaced} {...listProps} />
       <TaskList title="Someday" groups={someday} {...listProps} />
     </details>
-    <div className="plan-rituals" aria-label="Planning routines"><button type="button" className="text-button" onClick={() => go('plan/morning')}>Morning plan</button><button type="button" className="text-button" onClick={() => go('plan/shutdown')}>Shutdown</button><button type="button" className="text-button" onClick={() => go('plan/review')}>Weekly review</button></div>
+    <section className="plan-rituals" aria-label="Planning routines"><h2>Rituals</h2><div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}>Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}>Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}>Weekly review<small>Sundays</small></button></div></section>
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} />}
   </section>;
 }

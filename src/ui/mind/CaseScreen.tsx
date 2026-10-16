@@ -248,7 +248,7 @@ export function CaseScreen({
       <div
         className="case-grid"
         style={{
-          gridTemplateColumns: `minmax(88px, 1.3fr) repeat(${cols.length}, minmax(38px, 1fr))`,
+          gridTemplateColumns: `minmax(80px, 1.3fr) repeat(${cols.length}, minmax(44px, 1fr))`,
         }}
       >
         <span />
@@ -276,11 +276,7 @@ export function CaseScreen({
                   key={c}
                   type="button"
                   disabled={!!run?.result}
-                  className={
-                    wrongCells.includes(`${name}:${r}:${c}`)
-                      ? 'case-error'
-                      : undefined
-                  }
+                  className={`case-cell ${value === 1 ? 'case-yes' : value === -1 || auto ? 'case-no' : 'case-blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ' case-error' : ''}`}
                   aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}`}
                   onClick={() => mark(name, r * cols.length + c)}
                 >
@@ -340,7 +336,7 @@ export function CaseScreen({
               culprit.
             </p>
           </details>
-          <div className="card">
+          <div className="card case-clues">
             <h2>Clues</h2>
             <ol>
               {mystery.clues.map((clue, index) => (
@@ -446,7 +442,7 @@ export function CaseScreen({
               >
                 Clear grid
               </button>
-              <h2>Name the culprit</h2>
+              <h2 className="case-accusation-heading">Name the culprit</h2>
               {(
                 [
                   ['s', 'Who', mystery.S.map((item) => item.n)],
