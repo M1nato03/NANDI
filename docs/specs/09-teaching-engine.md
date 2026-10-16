@@ -8,9 +8,11 @@ time and must pass an accuracy gate. First topics: **Money and markets**, **Huma
 
 Teach real understanding in 3–8 minute bursts with less friction than Duolingo and more accuracy than an AI chat.
 Success is measured, not felt:
-- **Retention:** recall of a concept 7 and 30 days after learning (scheduled checks), target ≥ 80%.
+- **Retention:** recall of a concept 7 and 30 days after its first answer (scheduled checks independent of FSRS),
+  target ≥ 80%. The You screen can show checked and recalled counts for each interval.
 - **Transfer:** correct answers on *new* scenario questions the learner has never seen, target ≥ 70%.
-- **Calibration:** confidence vs accuracy gap, shrinking over time.
+- **Calibration:** confidence vs accuracy gap, shrinking over time. The You screen can show the number of certain
+  answers and correct rates for certain and guess answers.
 - **Friction:** median time from opening the app to the first answer < 5 s; zero typing in the default path.
 
 ## 2. What the learning science says we must do (and Duolingo mostly doesn't)
@@ -20,7 +22,7 @@ Success is measured, not felt:
 | Retrieval practice beats re-reading | Every unit starts with a question, not text. Explanations come after an attempt. |
 | Generation / prediction effect | "Guess first" items: predict the outcome before seeing it, even when the learner can't know yet. |
 | Spaced repetition | FSRS-style scheduler per *concept* (not per card), so one concept can be tested by many different items. |
-| Interleaving | Reviews mix topics and item types; never 10 of the same kind in a row. |
+| Interleaving | Mix items across concepts only after each has been attempted or has mastery above zero. Keep new items in a drop within one newly unlocked concept; reviews may come from other started concepts. |
 | Desirable difficulty | Adaptive target: the next item is chosen so predicted success is ~75–85%. |
 | Concrete → abstract | Each concept is introduced through one vivid real example, then the general rule, then a second example from a different domain. |
 | Elaboration | "Why?" items: pick the reason, or spot the flaw in a wrong explanation. |
@@ -70,7 +72,16 @@ id, a difficulty seed, misconception tags and a source reference.
   calibrates itself with use.
 - **Next-item choice:** among concepts that are due or newly unlocked (all prerequisites ≥ 0.8 mastery), pick the
   item whose predicted success is closest to the target band (75–85%), excluding the last 3 item types used and
-  any item seen in the last 2 days, preferring items that target the learner's active misconceptions.
+  any item seen in the last 2 days, preferring items that target the learner's active misconceptions. A concept is
+  started after an answer or when its stored mastery is above zero. In a drop, new items stay within the first new
+  concept selected; only started concepts are interleaved as reviews.
+- **Retention checks:** record the first answer time per concept, then offer one check item at +7 days and one at
+  +30 days, even when FSRS says the concept is not due. Put at most two checks in a drop and record each result as
+  a retention fact. `retentionSummary(state, now)` returns `checked7`, `recalled7`, `checked30`, and `recalled30`
+  from completed check facts. Checks count toward the drop size and daily budget.
+- **Calibration:** confident misses are due sooner. `calibration(state)` returns `confidentAnswers`,
+  `confidentCorrectRate`, and `unsureCorrectRate` from answer facts; certain means confident, guess means unsure,
+  and a rate with no answers is zero.
 - **Session composer:** a "drop" is 6–10 items, ~5 minutes: about 60% reviews and 40% new. It never exceeds the daily
   budget from the learning-tracks rules, and it ends on a stopping screen. A busy day shrinks it to 3 items.
 - **Mastery map:** each concept shows Not started / Learning / Strong / Mastered (mastery ≥ 0.95 and FSRS
@@ -123,3 +134,8 @@ One deep module per chosen topic, 6 concepts each, ~12 items per concept:
 8. FSRS intervals grow after successful reviews and shrink after lapses (worked numbers).
 9. A pack with a claim lacking a source, two correct options or an unsupported fact-check verdict fails validation.
 10. Resuming mid-drop after closing the app returns to the same item with the same options.
+11. A drop interleaves reviews from started concepts, while all new items in that drop belong to one new concept;
+    a concept with positive mastery counts as started even if its attempt count is zero.
+12. Worked dates show a check at 7 days and another at 30 days regardless of FSRS due dates, no more than two
+    checks per drop, stored retention facts, and correct checked/recalled counts.
+13. Certain and guess answers yield separate correct rates and a count of certain answers, including confident misses.

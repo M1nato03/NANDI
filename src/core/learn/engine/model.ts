@@ -1,9 +1,11 @@
 import type { TopicItem } from '../../../data/packs/schemas';
 import { RULES } from '../../rules.config';
+import type { RetentionDay } from './analytics';
 
 export type Confidence = 'guess' | 'fairly-sure' | 'certain';
 export interface MemoryState { stability: number; difficulty: number; interval: number; lastReview: number; dueAt: number }
-export interface ConceptState { conceptId: string; mastery: number; memory?: MemoryState; attempts: number; activeMisconceptions: string[] }
+export interface ConceptState { conceptId: string; mastery: number; memory?: MemoryState; attempts: number; firstLearnedAt?: number;
+  retentionChecks?: Partial<Record<RetentionDay, { answeredAt: number; correct: boolean }>>; activeMisconceptions: string[] }
 export interface ItemState { itemId: string; rating: number; attempts: number; lastSeen?: number }
 export const INITIAL_MASTERY = 0.2;
 export const DAY_MS = 86_400_000;
@@ -105,6 +107,7 @@ export function answerConcept(state: ConceptState | undefined, item: TopicItem, 
   }
   return { conceptId: item.conceptId, mastery: updateMastery(state?.mastery ?? INITIAL_MASTERY, item.type, correct),
     memory: updateMemory(state?.memory, correct, confidence, now), attempts: (state?.attempts ?? 0) + 1,
+    firstLearnedAt: state?.firstLearnedAt ?? now, retentionChecks: state?.retentionChecks,
     activeMisconceptions: [...misconceptions].sort() };
 }
 export type MasteryMapState = 'Not started' | 'Learning' | 'Strong' | 'Mastered';

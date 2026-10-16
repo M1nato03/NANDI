@@ -263,6 +263,8 @@ export interface LearnConceptRow extends StateRow {
   mastery: number;
   memory?: import('../core/learn/engine').MemoryState;
   attempts: number;
+  firstLearnedAt?: number;
+  retentionChecks?: import('../core/learn/engine').ConceptState['retentionChecks'];
   activeMisconceptions: string[];
 }
 export interface LearnItemRow extends StateRow {
