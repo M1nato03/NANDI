@@ -1815,7 +1815,7 @@
                   {
                     "id": "a",
                     "text": "Its only sale line bears the whole stall shock.",
-                    "feedback": "With one product, there is no other product line to offset that lost demand.",
+                    "feedback": "With one product, there is no other product line to offset that missing demand.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1882,7 +1882,7 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A portfolio holds four firms that all need the same crop. That crop fails. About how many holdings are shielded just because the company names differ?",
+                "stem": "A portfolio holds four firms that all need the same crop. That crop's harvest collapses. About how many holdings are shielded just because the company names differ?",
                 "options": [
                   {
                     "id": "a",
@@ -1960,11 +1960,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "One holding fails while the others keep value. Why does spreading money help here but not promise safety from every shock?",
+                "stem": "One holding collapses while the others keep value. Why does spreading money help here but not promise safety from every shock?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The failure reaches only part of the mix.",
+                    "text": "The damage reaches only part of the mix.",
                     "feedback": "Other holdings can cushion one firm’s loss, while a shared shock may still reach several.",
                     "correct": true,
                     "sourceRefs": [

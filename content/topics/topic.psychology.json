@@ -1519,7 +1519,7 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A cricket fan says a batter always fails in chases. Which scorecard matters most for checking “always”?",
+                "stem": "A cricket fan says a batter always flops in chases. Which scorecard matters most for checking “always”?",
                 "options": [
                   {
                     "id": "a",
@@ -1533,7 +1533,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Another failed chase innings.",
+                    "text": "Another poor chase innings.",
                     "feedback": "More matches in line with the belief cannot by themselves rule out successful chases.",
                     "correct": false,
                     "misconceptionIds": [

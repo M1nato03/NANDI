@@ -1688,7 +1688,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "All sensors fail at the same time.",
+                    "text": "All sensors stop working at the same time.",
                     "feedback": "The roof may hurt one clue while the on-board tilt sensor still works.",
                     "correct": false,
                     "misconceptionIds": [
