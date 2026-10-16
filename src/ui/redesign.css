@@ -121,6 +121,11 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .you-settings label { flex-wrap: wrap; }
 .app-shell:has(.mind-case) .screen-back { display: none; }
 .timer-ring span { font: 800 52px 'Bricolage Grotesque', sans-serif; }
+.night-pause-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(8, 10, 16, .9); }
+.night-pause-card { width: min(100%, 520px); display: grid; gap: 20px; padding: 28px; }
+.night-pause-card h1 { margin: 0; }
+.night-pause-card [role="timer"] { font-size: 1.4rem; }
+.night-pause-card .actions { display: grid; gap: 12px; }
 @media (max-width: 600px) {
   .content { padding: 22px 18px calc(104px + env(safe-area-inset-bottom)); }
   .topbar { padding-inline: 18px; }

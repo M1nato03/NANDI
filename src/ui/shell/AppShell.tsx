@@ -18,16 +18,31 @@ import { back, backDestination, initializeHistory, navigationEventName, route, t
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
+import { startReminderSync } from '../../platform/reminderSync';
+import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause';
+import { NightPauseCard } from '../screens/NightPauseCard';
+import { Night } from '../screens/Night';
+import { startNightPauseSync } from '../../platform/nightPauseSync';
 
 export function AppShell() {
   const [path, setPath] = useState(route);
   const [today] = useState(() => dayKey(Date.now()));
+  const [pausePackage, setPausePackage] = useState('');
   const appearance = useAppearance();
   useEffect(() => { initializeHistory(); const update = () => setPath(route()); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
+  useEffect(() => startReminderSync(error => recordError('promise', error)), []);
+  useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
+  useEffect(() => {
+    if (!nightPauseAvailable()) return;
+    const check = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPausePackage(status.pendingPackage); }).catch(error => recordError('promise', error)); };
+    check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
+    return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
+  }, []);
   const tab = tabOf(path);
   let screen;
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={appearance.reload} />;
+  else if (path === 'you/night') screen = <Night />;
   else if (path === 'mind/generator' || path === 'you/mind/generator') screen = <GeneratorCheck />;
   else if (path === 'tasks/plan' || path === 'plan/morning') screen = <Planner mode="plan" />;
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
@@ -39,5 +54,5 @@ export function AppShell() {
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You {...appearance} />;
   else screen = <Now />;
-  return <div className="app-shell"><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} /></div>;
+  return <div className="app-shell"><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} />{pausePackage && <NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} />}</div>;
 }
