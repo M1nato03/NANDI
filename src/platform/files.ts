@@ -40,6 +40,13 @@ export async function shareOrDownload(file: File): Promise<'shared' | 'downloade
   return 'downloaded';
 }
 
+/** Saves a backup before an Android update without opening a share sheet. */
+export async function saveBackupToDocuments(file: File): Promise<string> {
+  if (!Capacitor.isNativePlatform()) throw new Error('Device storage is unavailable.');
+  await Filesystem.writeFile({ path: file.name, data: await file.text(), directory: Directory.Documents, encoding: Encoding.UTF8 });
+  return `Documents/${file.name}`;
+}
+
 /** Returns null when the user closes the picker without selecting a file. */
 export function pickFile(): Promise<File | null> {
   // The Android WebView file chooser uses Android's system document picker.

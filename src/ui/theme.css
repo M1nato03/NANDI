@@ -43,6 +43,10 @@ button.text-button { background: transparent; color: var(--accent); border: 0; p
 button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .app-shell { min-height: 100dvh; max-width: 960px; margin: auto; }
 .update-bar { background: var(--accent); color: var(--bg); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.native-update-bar { background: var(--surface); color: var(--ink); border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.native-update-content { display: grid; gap: 6px; }
+.native-update-content progress { width: min(240px, 70vw); accent-color: var(--teal); }
+.native-update-bar button { min-height: 44px; padding: 8px 14px; }
 .update-bar-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .update-bar button { background: var(--bg); color: var(--accent); border-color: var(--bg); }
 .update-bar button.secondary { background: transparent; color: var(--bg); border-color: var(--bg); }

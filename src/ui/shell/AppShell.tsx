@@ -23,12 +23,15 @@ import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause
 import { NightPauseCard } from '../screens/NightPauseCard';
 import { Night } from '../screens/Night';
 import { startNightPauseSync } from '../../platform/nightPauseSync';
+import { useNativeUpdater } from './useNativeUpdater';
+import { NativeUpdateBar } from './NativeUpdateBar';
 
 export function AppShell() {
   const [path, setPath] = useState(route);
   const [today] = useState(() => dayKey(Date.now()));
   const [pausePackage, setPausePackage] = useState('');
   const appearance = useAppearance();
+  const nativeUpdater = useNativeUpdater();
   useEffect(() => { initializeHistory(); const update = () => setPath(route()); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   useEffect(() => startReminderSync(error => recordError('promise', error)), []);
@@ -52,7 +55,7 @@ export function AppShell() {
   else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
-  else if (tab === 'You') screen = <You {...appearance} />;
+  else if (tab === 'You') screen = <You {...appearance} updater={nativeUpdater} />;
   else screen = <Now />;
-  return <div className="app-shell"><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} />{pausePackage && <NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} />}</div>;
+  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} />{pausePackage && <NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} />}</div>;
 }
