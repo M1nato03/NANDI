@@ -44,6 +44,14 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
   const savedFeedback = drop?.pendingFeedback && found ? { cursor: drop.pendingFeedback.cursor, correct: drop.pendingFeedback.correct,
     text: found.item.options.find(option => option.id === savedOptionId)?.feedback ?? (drop.pendingFeedback.correct ? 'That fits.' : 'Look at the idea again next time.'), rule: found.concept.rule } : undefined;
   const visibleFeedback = feedback ?? savedFeedback;
+  const feedbackRef = useRef<HTMLDivElement>(null);
+  const feedbackKey = visibleFeedback ? visibleFeedback.cursor : -1;
+  useEffect(() => {
+    // The explanation lands below the options; bring it on screen so nobody has to hunt for it.
+    if (feedbackKey < 0) return;
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
+    feedbackRef.current?.scrollIntoView?.({ block: 'nearest', behavior: smooth ? 'smooth' : 'auto' });
+  }, [feedbackKey]);
 
   const start = async (selected: string[], isDaily = daily) => {
     if (starting.current || !data || !selected.length) return;
@@ -147,6 +155,6 @@ export function LearnDrop({ daily = true, onDone }: { daily?: boolean; onDone?: 
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || used.has(option.id)} className={`${matchLeft === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''}`} onClick={() => choose(option.id)}>{option.text}</button>)}</div>
-    {visibleFeedback && <div className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
+    {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}</div>;
 }

@@ -1,7 +1,7 @@
 .deck-card:has(.learn-drop) { padding: 22px; justify-content: flex-start; }
 .learn-drop { width: 100%; display: grid; align-content: start; gap: 14px; }
-.learn-drop h2 { font-size: clamp(20px, 5.4vw, 24px); line-height: 1.3; margin: 5px 0; }
-.learn-drop h2.learn-stop-title { font-size: clamp(28px, 7vw, 40px); line-height: 1.13; }
+.deck-card .learn-drop h2, .learn-drop h2 { font-size: clamp(20px, 5.4vw, 24px); line-height: 1.3; margin: 5px 0; }
+.deck-card .learn-drop h2.learn-stop-title { font-size: clamp(28px, 7vw, 40px); line-height: 1.13; }
 .learn-drop h3 { margin: 0; }
 .learn-drop p { margin: 0; font-size: 15px; }
 .learn-drop-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 13px; }
