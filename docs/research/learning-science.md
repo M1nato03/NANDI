@@ -1,0 +1,34 @@
+## Research findings
+
+- **Retrieval practice has the strongest broad support.** Roediger and Karpicke found that recalling prose improved retention after two days or one week more than additional reading, even without feedback; rereading did better on an immediate test. A meta-analysis found practice testing outperformed restudying by Hedges’ *g* = 0.51. Dunlosky and colleagues rated practice testing “high utility.” [Roediger & Karpicke, 2006](https://www.psychologicalscience.org/journals/psychological-science/j.1467-9280.2006.01693.x/); [Adesope et al., 2017](https://gwern.net/doc/psychology/spaced-repetition/2017-adesope.pdf); [Dunlosky et al., 2013](https://journals.sagepub.com/stoken/rbtfl/Z10jaVH/60XQM/full)
+
+- **Spacing supports durable recall.** A synthesis examined 839 assessments from 317 experiments; Dunlosky and colleagues rated distributed practice “high utility.” The best gap depends partly on how long knowledge must be retained. SM-2 and FSRS are *scheduling methods* that implement spaced review: FSRS uses review history to fit parameters and a chosen retention target. The evidence for spacing does not establish a universal superiority of one scheduler for every learner. [Cepeda et al., 2006](https://pubmed.ncbi.nlm.nih.gov/16719566/); [Cepeda et al., 2008](https://pubmed.ncbi.nlm.nih.gov/19076480/); [Dunlosky et al., 2013](https://journals.sagepub.com/stoken/rbtfl/Z10jaVH/60XQM/full); [Anki manual, accessed 2026](https://docs.ankiweb.net/manual/deck-options)
+
+- **Interleaving helps learners choose between related ideas or problem types.** A meta-analysis estimated an overall advantage over blocked practice of *g* = 0.42, with results varying by material. It is best treated as a targeted strategy, not a rule to mix everything. [Brunmair & Richter, 2019](https://pubmed.ncbi.nlm.nih.gov/31556629/); [Dunlosky et al., 2013](https://journals.sagepub.com/stoken/rbtfl/Z10jaVH/60XQM/full)
+
+- **Generation and pretesting can make subsequent instruction stick.** In experiments, attempting an answer before seeing it improved later learning even when the attempt failed. The learner still needs the correct answer afterward. [Kornell, Hays & Bjork, 2009](https://pubmed.ncbi.nlm.nih.gov/19586265/)
+
+- **“Why is this true?” prompts can deepen factual learning.** Dunlosky and colleagues rated elaborative interrogation “moderate utility”; evidence is thinner for complex texts, long delays, and learners with little relevant knowledge. [Dunlosky et al., 2013](https://journals.sagepub.com/stoken/rbtfl/Z10jaVH/60XQM/full)
+
+- **Worked examples help novices; gradually remove the steps.** Fading worked solutions improved near transfer, while fading alone was less reliable for far transfer; adding prompts to explain the underlying principle improved both in two experiments. Instructional benefits can change as expertise grows. [Atkinson, Renkl & Merrill, 2003](https://experts.azregents.edu/en/publications/transitioning-from-studying-examples-to-solving-problems-effects-/); [Kalyuga et al., 2003](https://www.tandfonline.com/doi/abs/10.1207/S15326985EP3801_4)
+
+- **Desirable difficulty means productive effort, not arbitrary friction.** Bjork’s account explains why spacing, retrieval, and varied practice can depress performance during practice yet improve later performance. A challenge ceases to be useful when the learner lacks the knowledge or cues to respond successfully. [Bjork & Bjork, 2014](https://bjorklab.psych.ucla.edu/wp-content/uploads/sites/13/2016/04/DDAndErrorsEnhanceLearning.pdf)
+
+- **Feedback timing depends on the task.** A 53-study review found immediate feedback usually favored real classroom quizzes and materials, while some laboratory studies favored delay. Practice testing itself showed benefits with or without feedback in Adesope’s meta-analysis; corrective feedback remains especially useful after an error. [Kulik & Kulik, 1988](https://openurl.ebsco.com/contentitem/doi:10.3102/00346543058001079); [Adesope et al., 2017](https://gwern.net/doc/psychology/spaced-repetition/2017-adesope.pdf)
+
+- **Confidence reveals valuable errors.** The *hypercorrection effect* is that errors made with high confidence are especially likely to be corrected after feedback. Asking for confidence alongside an answer can expose misconceptions that a correctness score alone misses. [Butterfield & Metcalfe, 2001](https://pubmed.ncbi.nlm.nih.gov/11713883/)
+
+- **Microlearning is a format, not a memory mechanism.** A review of 40 studies found promising knowledge, engagement, and retention outcomes, but definitions and results varied. Short modules alone do not establish durable learning of complex topics; the review calls for evidence beyond outcomes of individual micro lessons. [Monib et al., 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC11774797/)
+
+- **Motivation affects whether learners persist.** Self-determination theory emphasizes autonomy, competence, and relatedness. A 2024 education meta-analysis found an intervention effect of *g* = 0.58 on intrinsic motivation, while effects on relatedness were nonsignificant; this is a motivation result, not a measured retention gain. [Wang et al., 2024](https://selfdeterminationtheory.org/wp-content/uploads/2024/06/2024_WangWangEtAl_MetaEdu.pdf)
+
+## Eight app design rules
+
+- **1.** Ask learners to recall or solve before revealing an answer. [Roediger & Karpicke, 2006](https://www.psychologicalscience.org/journals/psychological-science/j.1467-9280.2006.01693.x/)
+- **2.** Bring material back across days; adapt review dates to performance and the retention goal. [Cepeda et al., 2008](https://pubmed.ncbi.nlm.nih.gov/19076480/); [Anki manual, accessed 2026](https://docs.ankiweb.net/manual/deck-options)
+- **3.** Mix related problem types once learners can attempt each type. [Brunmair & Richter, 2019](https://pubmed.ncbi.nlm.nih.gov/31556629/)
+- **4.** Use a brief prequestion, then teach and show the correct answer. [Kornell, Hays & Bjork, 2009](https://pubmed.ncbi.nlm.nih.gov/19586265/)
+- **5.** Start novices with a worked solution, then remove steps and ask them to explain the principle. [Atkinson, Renkl & Merrill, 2003](https://experts.azregents.edu/en/publications/transitioning-from-studying-examples-to-solving-problems-effects-/)
+- **6.** Give clear corrective feedback after errors; prioritize confidently wrong answers for review. [Kulik & Kulik, 1988](https://openurl.ebsco.com/contentitem/doi:10.3102/00346543058001079); [Butterfield & Metcalfe, 2001](https://pubmed.ncbi.nlm.nih.gov/11713883/)
+- **7.** Keep modules focused and short when useful, but measure later recall and application. [Monib et al., 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC11774797/)
+- **8.** Offer meaningful choices, visible progress, and supportive feedback to sustain motivation. [Wang et al., 2024](https://selfdeterminationtheory.org/wp-content/uploads/2024/06/2024_WangWangEtAl_MetaEdu.pdf)

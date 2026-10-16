@@ -31,6 +31,9 @@ const indexes: Record<string, string[]> = {
   inventory: ['kind'],
   dailyLog: [],
   settings: [],
+  learnConcepts: [],
+  learnItems: ['lastSeen'],
+  learnDrops: [],
 };
 
 let sequence = 0;
@@ -45,7 +48,7 @@ afterEach(async () => {
   for (const db of openDbs.splice(0)) await db.delete();
 });
 
-describe('Dexie v2', () => {
+describe('Dexie v3', () => {
   it('opens with exactly the specified tables and indexes', async () => {
     const db = freshDb();
     await db.open();

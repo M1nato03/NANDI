@@ -259,3 +259,19 @@ export interface SettingRow extends RowMeta {
   key: string;
   value: unknown;
 }
+export interface LearnConceptRow extends StateRow {
+  mastery: number;
+  memory?: import('../core/learn/engine').MemoryState;
+  attempts: number;
+  firstLearnedAt?: number;
+  retentionChecks?: import('../core/learn/engine').ConceptState['retentionChecks'];
+  activeMisconceptions: string[];
+}
+export interface LearnItemRow extends StateRow {
+  rating: number;
+  attempts: number;
+  lastSeen?: number;
+}
+export interface LearnDropRow extends StateRow {
+  drop: import('../core/learn/engine').Drop;
+}

@@ -86,7 +86,20 @@ export function migrateEnvelope(
     }
     current = output;
   }
-  return current;
+  // Dexie v3 adds adaptive learning tables. Older complete backups gain empty
+  // tables here before the strict table-set check; v3 backups remain untouched.
+  const migrated = structuredClone(current);
+  const dexie = migrated.dexie as { data?: { databaseVersion: number; tables: { name: string; schema: string; rowCount: number }[]; data: { tableName: string; inbound: boolean; rows: Record<string, unknown>[] }[] } } | undefined;
+  if (dexie?.data && dexie.data.databaseVersion < 3) {
+    for (const [name, schema] of [['learnConcepts', 'id'], ['learnItems', 'id, lastSeen'], ['learnDrops', 'id']] as const) {
+      if (!dexie.data.tables.some(table => table.name === name)) {
+        dexie.data.tables.push({ name, schema, rowCount: 0 });
+        dexie.data.data.push({ tableName: name, inbound: true, rows: [] });
+      }
+    }
+    dexie.data.databaseVersion = 3;
+  }
+  return migrated;
 }
 
 export interface BackupValidation {

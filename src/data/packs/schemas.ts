@@ -7,6 +7,31 @@ const triple = v.tuple([text, text, text]);
 const integer = v.pipe(v.number(), v.integer());
 const semver = v.pipe(v.string(), v.regex(/^\d+\.\d+\.\d+$/));
 
+const sourceRef = v.strictObject({ id: text, title: text, publisher: text, year: integer, url: v.pipe(v.string(), v.url()), asOf: v.optional(v.pipe(v.string(), v.isoDate())) });
+const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)) });
+const option = v.strictObject({ id: text, text, feedback: text, correct: v.boolean(), misconceptionIds: v.optional(strings), sourceRefs: v.pipe(strings, v.minLength(1)) });
+const itemBase = { id: text, conceptId: text, stem: text, difficultySeed: v.pipe(v.number(), v.minValue(400), v.maxValue(2400)), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
+const choice = (type: 'predict' | 'choose' | 'scenario' | 'fill-the-step' | 'true-not-quite' | 'explain-it-back') => v.strictObject({ ...itemBase, type: v.literal(type) });
+export const topicItemSchema = v.variant('type', [
+  choice('predict'), choice('choose'), v.strictObject({ ...itemBase, type: v.literal('why'), task: v.optional(v.picklist(['reason', 'spot-the-flaw'])) }),
+  choice('scenario'), choice('fill-the-step'), choice('true-not-quite'), choice('explain-it-back'),
+  v.strictObject({ ...itemBase, type: v.literal('order'), answer: v.pipe(strings, v.minLength(2)) }),
+  v.strictObject({ ...itemBase, type: v.literal('match'), answer: v.pipe(v.array(v.strictObject({ left: text, right: text })), v.minLength(2)) }),
+  v.strictObject({ ...itemBase, type: v.literal('estimate'), answer: v.strictObject({ value: v.number(), min: v.number(), max: v.number(), unit: text }) }),
+]);
+export const topicConceptSchema = v.strictObject({
+  id: text, title: text, prerequisites: strings,
+  hook: v.pipe(text, v.maxLength(280)), hookSourceRefs: v.pipe(strings, v.minLength(1)),
+  rule: v.pipe(text, v.maxLength(280)), ruleSourceRefs: v.pipe(strings, v.minLength(1)),
+  claims: v.pipe(v.array(claim), v.minLength(1)),
+  items: v.pipe(v.array(topicItemSchema), v.minLength(1)),
+  misconceptions: v.array(v.strictObject({ id: text, name: text, correction: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
+  sources: v.pipe(v.array(sourceRef), v.minLength(1)),
+  quest: v.optional(v.strictObject({ title: text, detail: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
+  factCheck: v.optional(v.strictObject({ verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
+});
+export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), modules: v.pipe(v.array(v.strictObject({ id: text, title: text, concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)) })), v.minLength(1)) });
+
 export const diagramSchema = v.variant('k', [
   v.strictObject({ k: v.literal('split'), l: text, ls: v.optional(text), r: text, rs: v.optional(text), hi: v.picklist(['l', 'r']) }),
   v.strictObject({ k: v.literal('chain'), steps: strings, hi: v.optional(integer) }),
@@ -85,15 +110,19 @@ const envelope = {
 };
 export const packEnvelopeSchema = v.strictObject({
   ...envelope,
-  kind: v.picklist(['lessons', 'deck', 'quests', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop']),
+  kind: v.picklist(['lessons', 'deck', 'quests', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop', 'topic']),
   body: v.unknown(),
 });
 export const lessonsPackSchema = v.strictObject({ ...envelope, kind: v.literal('lessons'), body: lessonsBodySchema });
 export const deckPackSchema = v.strictObject({ ...envelope, kind: v.literal('deck'), body: deckBodySchema });
 export const questsPackSchema = v.strictObject({ ...envelope, kind: v.literal('quests'), body: questsBodySchema });
 export const trackPackSchema = v.strictObject({ ...envelope, kind: v.literal('track'), body: trackBodySchema });
-export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, trackPackSchema]);
+export const topicPackSchema = v.strictObject({ ...envelope, kind: v.literal('topic'), body: topicBodySchema });
+export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, trackPackSchema, topicPackSchema]);
 export type Pack = v.InferOutput<typeof packSchema>;
 export type Lesson = v.InferOutput<typeof lessonSchema>;
 export type TrackPack = v.InferOutput<typeof trackPackSchema>;
 export type TrackUnit = v.InferOutput<typeof trackUnitSchema>;
+export type TopicPack = v.InferOutput<typeof topicPackSchema>;
+export type TopicConcept = v.InferOutput<typeof topicConceptSchema>;
+export type TopicItem = v.InferOutput<typeof topicItemSchema>;

@@ -1,6 +1,6 @@
 import Dexie, { type Table } from 'dexie';
 import type {
-  CardRow, DailyLogRow, DeckProgRow, ExerciseRow, ExStateRow, FlagRow,
+  CardRow, DailyLogRow, DeckProgRow, ExerciseRow, ExStateRow, FlagRow, LearnConceptRow, LearnDropRow, LearnItemRow,
   FocusRow, InventoryRow, LadderRow, LedgerRow, LessonProgRow, PackRow,
   PlanRow, PrRow, ProgramRow, PuzzleRunRow, QuestRow, RatingRow, ReminderRow,
   SessionRow, SetRow, SettingRow, TaskEventRow, TaskRow, UnlockRow,
@@ -32,6 +32,9 @@ export class NandiDb extends Dexie {
   inventory!: Table<InventoryRow, string>;
   dailyLog!: Table<DailyLogRow, string>;
   settings!: Table<SettingRow, string>;
+  learnConcepts!: Table<LearnConceptRow, string>;
+  learnItems!: Table<LearnItemRow, string>;
+  learnDrops!: Table<LearnDropRow, string>;
 
   constructor(name = 'nandi') {
     super(name);
@@ -75,6 +78,20 @@ export class NandiDb extends Dexie {
       inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
       quests: 'id, week, status, sourceId, updatedAt',
     }).upgrade(async tx => { await tx.table('quests').clear(); });
+    this.version(3).stores({
+      tasks: 'id, status, dayKey, scheduledStart, category, parentId, updatedAt',
+      taskEvents: 'id, taskId, kind, at', focus: 'id, taskId, startedAt',
+      reminders: 'id, refType, refId, at', plans: 'id, lessonId, madeDayKey',
+      exercises: 'id, pattern, source', ladders: 'id, pattern', programs: 'id, track',
+      exState: 'id', sessions: 'id, dayKey, status', sets: 'id, sessionId, exerciseId',
+      prs: 'id, exerciseId, kind', puzzleRuns: 'id, type, dayKey, seed',
+      cards: 'id, deckId, due', deckProg: 'id, due', lessonProg: 'id, packId',
+      ratings: 'id', flags: 'id, refId', unlocks: 'id, kind',
+      packs: 'id, kind, version', ledger: 'id, dayKey, mode, kind',
+      inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
+      quests: 'id, week, status, sourceId, updatedAt',
+      learnConcepts: 'id', learnItems: 'id, lastSeen', learnDrops: 'id',
+    });
   }
 }
 
