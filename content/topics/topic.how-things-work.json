@@ -1,0 +1,2403 @@
+{
+  "id": "topic.how-things-work",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "How things work",
+  "description": "Use everyday motion to see how air and machines work.",
+  "author": "claude",
+  "createdAt": "2026-10-16T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "how-things-work",
+      "title": "How things work",
+      "description": "Use everyday motion to see how air and machines work."
+    },
+    "modules": [
+      {
+        "id": "how-things-work-module",
+        "title": "Things that fly and spin",
+        "concepts": [
+          {
+            "id": "lift",
+            "title": "Lift",
+            "prerequisites": [],
+            "hook": "A paper glider has no engine, yet its wing can hold it up while air moves past. When it slows, that upward force fades.",
+            "hookSourceRefs": [
+              "lift"
+            ],
+            "rule": "A wing makes lift when air flows past it and is turned down. The air pushes the wing up. Lift must match weight for steady level flight.",
+            "ruleSourceRefs": [
+              "lift"
+            ],
+            "claims": [
+              {
+                "id": "lift-c1",
+                "text": "Lift needs motion between a wing and air.",
+                "sourceRefs": [
+                  "lift"
+                ]
+              },
+              {
+                "id": "lift-c2",
+                "text": "A wing turns air and gets an upward force; in steady level flight lift balances weight.",
+                "sourceRefs": [
+                  "lift"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "lift-1",
+                "type": "predict",
+                "conceptId": "lift",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "A student throws a paper plane across a classroom. As it slows, what may happen to lift?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It can weaken.",
+                    "feedback": "Less relative airflow can reduce the wing's upward force, so the glider may sink.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It must grow with no air flow.",
+                    "feedback": "The wing needs air moving past it to make the force that holds it up.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "lift-2",
+                "type": "scenario",
+                "conceptId": "lift",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "On a train, a student holds a small paper wing outside a moving air stream, then in it. When can it feel a push?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "When air flows past it.",
+                    "feedback": "The force comes from the wing changing the path of moving air, which pushes back.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only when all nearby air is still.",
+                    "feedback": "Still air relative to the wing offers no steady stream to turn downward.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "lift-3",
+                "type": "estimate",
+                "conceptId": "lift",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "A toy glider weighs 2 newtons. For steady level flight, about how much upward lift must balance that weight?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "2 newtons.",
+                    "feedback": "In level flight at steady height, upward and downward forces match rather than add.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "4 newtons.",
+                    "feedback": "Twice the weight would leave an upward imbalance instead of steady level flight.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 2,
+                  "min": 1.5,
+                  "max": 2.5,
+                  "unit": "newtons"
+                }
+              },
+              {
+                "id": "lift-4",
+                "type": "choose",
+                "conceptId": "lift",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "A wing sends air downward. Which other force fits Newton's third law?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Air pushes the wing upward.",
+                    "feedback": "Turning air down and receiving an upward push are two sides of the interaction.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Air pushes the wing only backward.",
+                    "feedback": "Drag can act backward, but the downward turn also has an upward force pair.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "lift-5",
+                "type": "why",
+                "conceptId": "lift",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "Why does a glider need speed after launch?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Motion supplies air flow over its wing.",
+                    "feedback": "Relative flow lets the wing deflect air and make lift even without an engine.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Speed makes the wing weigh nothing.",
+                    "feedback": "Gravity still acts; lift must balance that weight for level flight.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "lift-6",
+                "type": "fill-the-step",
+                "conceptId": "lift",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "For a paper plane cruising level, lift points up while weight points ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Down.",
+                    "feedback": "Those opposite forces balance if its height and speed are steady in this simple picture.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Forward.",
+                    "feedback": "The plane flies forward. Its weight still pulls down toward the ground.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "lift-7",
+                "type": "true-not-quite",
+                "conceptId": "lift",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "“A curved wing lifts even in a vacuum,” says a classmate. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Air to interact with the wing.",
+                    "feedback": "A wing cannot turn absent air, so its usual lift mechanism has nothing to act on.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A more colourful paint coat.",
+                    "feedback": "Paint adds no air flow. The wing needs air moving past it to lift.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "lift-m1"
+                    ],
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "lift-8",
+                "type": "order",
+                "conceptId": "lift",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
+                "sourceRefs": [
+                  "lift"
+                ],
+                "stem": "Put the two links of wing lift in order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "First: the wing turns moving air down.",
+                    "feedback": "The altered air flow is the action that leads to the force on the wing.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Next: the air pushes the wing up.",
+                    "feedback": "That reaction helps support the craft and must match weight in level flight.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lift"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "lift-m1",
+                "name": "Shape alone lifts",
+                "correction": "A still wing needs moving air to make lift.",
+                "sourceRefs": [
+                  "lift"
+                ]
+              },
+              {
+                "id": "lift-m2",
+                "name": "Air is not pushed",
+                "correction": "Wings turn air; the air pushes back on them.",
+                "sourceRefs": [
+                  "lift"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "lift",
+                "title": "Lift",
+                "publisher": "NASA Glenn Research Center",
+                "year": 2024,
+                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/lift-3/"
+              }
+            ],
+            "quest": {
+              "title": "Try a paper wing",
+              "detail": "Fold a paper glider. Watch what happens as it slows. Mark the air flow and the lift path on a sketch.",
+              "sourceRefs": [
+                "lift"
+              ]
+            }
+          },
+          {
+            "id": "multirotor-turns",
+            "title": "How a multirotor turns",
+            "prerequisites": [
+              "lift"
+            ],
+            "hook": "A quadcopter can yaw in place while its four rotors stay horizontal; it changes the balance of their turning forces.",
+            "hookSourceRefs": [
+              "quad",
+              "mit"
+            ],
+            "rule": "A multirotor changes motor speeds to shift thrust. Uneven thrust tilts it in pitch or roll; a change in the spin force balance turns it in yaw.",
+            "ruleSourceRefs": [
+              "quad",
+              "mit"
+            ],
+            "claims": [
+              {
+                "id": "multirotor-turns-c1",
+                "text": "A gap in motor speeds can make a drone pitch or roll.",
+                "sourceRefs": [
+                  "quad"
+                ]
+              },
+              {
+                "id": "multirotor-turns-c2",
+                "text": "Yaw comes from a change in the balance of rotor turning force.",
+                "sourceRefs": [
+                  "quad",
+                  "mit"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "multirotor-turns-1",
+                "type": "predict",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad"
+                ],
+                "stem": "At a school drone demo, one side's rotors push harder. Which motion may begin?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A tilt toward the weaker side.",
+                    "feedback": "Unequal upward push makes a turning effect on the craft before it moves sideways.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Perfectly level flight with no change.",
+                    "feedback": "A left-right thrust gap cannot leave the force balance exactly as it was.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "multirotor-turns-2",
+                "type": "scenario",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad",
+                  "mit"
+                ],
+                "stem": "In a college lab, a four-rotor craft turns its nose while hovering. What changed?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The balance of rotor spin effects.",
+                    "feedback": "Yaw comes from uneven turning moments, even while total upward thrust can still hold height.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Its GPS invented a steering wheel.",
+                    "feedback": "Position data can guide control, but the physical turn comes from rotor forces.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "multirotor-turns-3",
+                "type": "estimate",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad"
+                ],
+                "stem": "Four toy rotors each give 2 newtons of upward thrust. What is their total before any change?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "8 newtons.",
+                    "feedback": "Adding four equal pushes gives the lift total; their placement also matters for turns.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "2 newtons.",
+                    "feedback": "That counts one rotor and leaves out the other three upward contributions.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 8,
+                  "min": 7.5,
+                  "max": 8.5,
+                  "unit": "newtons"
+                }
+              },
+              {
+                "id": "multirotor-turns-4",
+                "type": "choose",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad"
+                ],
+                "stem": "A drone pitches nose down. Which simple cause fits?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Rear thrust exceeds front thrust.",
+                    "feedback": "The rear side lifts more, rotating the body toward a lower nose.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "All rotors push equally at all times.",
+                    "feedback": "Equal front and rear forces do not create the needed pitch moment in this setup.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "multirotor-turns-5",
+                "type": "why",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad",
+                  "mit"
+                ],
+                "stem": "Why do two drone rotors spin one way and two spin the other way?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They can balance turning effects in hover.",
+                    "feedback": "If all spin effects added the same way, the craft would tend to rotate around its vertical axis.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "They make gravity switch off.",
+                    "feedback": "The spin can change the craft's turn. Its weight still pulls it down.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "multirotor-turns-6",
+                "type": "fill-the-step",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad"
+                ],
+                "stem": "Rolling changes the craft's tilt from side to side; yaw turns it around the ___ axis.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Vertical.",
+                    "feedback": "A nose turn in place is yaw, which differs from a side tilt or forward pitch.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Front-to-back.",
+                    "feedback": "Rotation around that axis describes roll, not the nose turning left or right.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "multirotor-turns-7",
+                "type": "true-not-quite",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad"
+                ],
+                "stem": "“GPS directly pushes a drone left,” says a student. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Motors supply the physical push.",
+                    "feedback": "A location signal can inform a controller, but only changed rotor forces move the craft.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "GPS can never report position.",
+                    "feedback": "GPS can tell where the craft is. It cannot push the craft on its own.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
+                    ],
+                    "sourceRefs": [
+                      "quad"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "multirotor-turns-8",
+                "type": "match",
+                "conceptId": "multirotor-turns",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
+                "sourceRefs": [
+                  "quad",
+                  "mit"
+                ],
+                "stem": "Match the two drone motions with their force patterns.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Roll",
+                    "feedback": "A lateral imbalance tips the craft around its front-to-back axis.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Unequal side-to-side thrust",
+                    "feedback": "A stronger push on one side can tip the craft about its front-to-back axis.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Yaw",
+                    "feedback": "The nose turns left or right while the body spins about its upright axis.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Unequal rotor spin moments",
+                    "feedback": "The spin forces no longer cancel, so they can twist the craft in place.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "quad",
+                      "mit"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "multirotor-turns-m1",
+                "name": "GPS steers motors",
+                "correction": "GPS can aid position, but speed changes at motors make the turn.",
+                "sourceRefs": [
+                  "quad"
+                ]
+              },
+              {
+                "id": "multirotor-turns-m2",
+                "name": "All speeds same for turn",
+                "correction": "A turn needs a change in the balance of motor forces.",
+                "sourceRefs": [
+                  "quad"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "quad",
+                "title": "Mathematical Modeling of Quadcopter Dynamics",
+                "publisher": "Qikai Huang, Rose-Hulman Institute of Technology",
+                "year": 2016,
+                "url": "https://scholar.rose-hulman.edu/undergrad_research_pubs/11/"
+              },
+              {
+                "id": "mit",
+                "title": "VNAV Lab 3: Modelling and control of UAVs",
+                "publisher": "MIT VNAV",
+                "year": 2023,
+                "url": "https://vnav.mit.edu/labs_2023/lab3/exercises.html"
+              }
+            ],
+            "quest": {
+              "title": "Sketch four motors",
+              "detail": "Draw a top view of a four-motor craft. Mark which side needs more thrust for a roll. Label yaw, pitch, and roll.",
+              "sourceRefs": [
+                "quad"
+              ]
+            }
+          },
+          {
+            "id": "battery-flight-time",
+            "title": "Batteries and flight time",
+            "prerequisites": [
+              "multirotor-turns"
+            ],
+            "hook": "Doubling a drone battery's energy need not double flight time: its extra mass also makes the motors work harder.",
+            "hookSourceRefs": [
+              "battery"
+            ],
+            "rule": "Flight time rests on usable battery energy and how fast the motors spend it. A larger battery adds energy and weight, so time need not rise in step with size.",
+            "ruleSourceRefs": [
+              "battery"
+            ],
+            "claims": [
+              {
+                "id": "battery-flight-time-c1",
+                "text": "Flight time rests on how much power is stored and how fast it is used.",
+                "sourceRefs": [
+                  "battery"
+                ]
+              },
+              {
+                "id": "battery-flight-time-c2",
+                "text": "A heavy battery adds weight, so the craft needs more lift.",
+                "sourceRefs": [
+                  "battery"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "battery-flight-time-1",
+                "type": "predict",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "A school drone carries a heavier battery with more energy. What happens to flight time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It may rise by less than energy did.",
+                    "feedback": "The extra mass raises the force and power needed to stay aloft.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It must double exactly.",
+                    "feedback": "That assumes the motors use energy at the old rate despite the added weight.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "battery-flight-time-2",
+                "type": "scenario",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "At a hostel robotics meet, a craft carries a heavy camera. What likely changes in hover?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The motors need more lift.",
+                    "feedback": "The extra load adds weight, so the rotors must supply more upward force.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The battery stops using energy.",
+                    "feedback": "Higher load does not remove the power cost of spinning the rotors.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "battery-flight-time-3",
+                "type": "estimate",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "A toy battery stores 120 watt-hours and a drone uses 60 watts at a fixed rate. What is the ideal time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "2 hours.",
+                    "feedback": "At this fixed rate, the stored power lasts two hours. Real flights use some spare energy.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "60 hours.",
+                    "feedback": "Watts tell how fast energy is used. They are not a count of hours.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 2,
+                  "min": 1.5,
+                  "max": 2.5,
+                  "unit": "hours"
+                }
+              },
+              {
+                "id": "battery-flight-time-4",
+                "type": "choose",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "Two batteries store equal energy but one is heavier. In the same craft, which may give shorter flight?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The heavier battery.",
+                    "feedback": "It asks the motors to support more mass while providing no extra stored energy.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The lighter battery must always use more power.",
+                    "feedback": "With all else equal, extra mass tends to raise rather than lower hover demand.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "battery-flight-time-5",
+                "type": "why",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "Why does battery size create a trade in a flying craft?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "More energy comes with more carried mass.",
+                    "feedback": "More stored energy helps. More weight makes the motors work harder at the same time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Bigger cells cancel gravity.",
+                    "feedback": "A large cell still has weight. The rotors must lift that extra load.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "battery-flight-time-6",
+                "type": "fill-the-step",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "To guess flight time, divide stored energy by how fast the drone uses it. What is that rate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Power use.",
+                    "feedback": "A craft that spends energy faster drains the same store in less time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Rotor count alone.",
+                    "feedback": "The number of rotors does not state how fast all of them use energy.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "battery-flight-time-7",
+                "type": "true-not-quite",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "“A battery twice as heavy gives twice the minutes,” says a classmate. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The added weight changes power demand.",
+                    "feedback": "More stored energy can be partly offset by the extra lift the craft must make.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Battery energy never affects time.",
+                    "feedback": "Energy matters, but the claim ignores the cost of carrying the larger store.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "battery-flight-time-8",
+                "type": "explain-it-back",
+                "conceptId": "battery-flight-time",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "battery-flight-time-m1"
+                ],
+                "sourceRefs": [
+                  "battery"
+                ],
+                "stem": "Which line best explains why flight-time charts are estimates?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Useable energy and power draw can both change.",
+                    "feedback": "Wind, payload, and battery mass affect how fast the stored energy is spent.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Minutes depend only on battery colour.",
+                    "feedback": "Paint tells us no useful fact about how much charge the cell holds or uses.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "battery-flight-time-m1"
+                    ],
+                    "sourceRefs": [
+                      "battery"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "battery-flight-time-m1",
+                "name": "Double size, double time",
+                "correction": "More battery adds weight, so time need not scale with size.",
+                "sourceRefs": [
+                  "battery"
+                ]
+              },
+              {
+                "id": "battery-flight-time-m2",
+                "name": "Weight costs nothing",
+                "correction": "More weight needs more lift and motor work.",
+                "sourceRefs": [
+                  "battery"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "battery",
+                "title": "Flight Time Calculations, Drone Design Report",
+                "publisher": "University of Central Florida Engineering",
+                "year": 2021,
+                "url": "https://www.ece.ucf.edu/seniordesign/su2020fa2020/g13/assets/SD1Report.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Draw an energy trade",
+              "detail": "Sketch two made-up batteries. Add arrows for more stored energy and more mass. Say how each may change flight time.",
+              "sourceRefs": [
+                "battery"
+              ]
+            }
+          },
+          {
+            "id": "flight-sensors",
+            "title": "Flight sensors",
+            "prerequisites": [
+              "battery-flight-time"
+            ],
+            "hook": "A roof can block a drone's map signal. Yet the drone still feels a quick tilt.",
+            "hookSourceRefs": [
+              "px4",
+              "gps",
+              "gpsaccuracy",
+              "barometer"
+            ],
+            "rule": "An IMU senses quick motion and turning. GPS helps locate the craft when signals are clear. A barometer reads air pressure to help track height. Each clue can be imperfect.",
+            "ruleSourceRefs": [
+              "px4",
+              "gps",
+              "gpsaccuracy",
+              "barometer"
+            ],
+            "claims": [
+              {
+                "id": "flight-sensors-c1",
+                "text": "An IMU can sense a fast turn and a change in speed.",
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ]
+              },
+              {
+                "id": "flight-sensors-c2",
+                "text": "GPS can help find a place. A barometer reads air pressure to help track height.",
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "flight-sensors-1",
+                "type": "predict",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "At a school lab, a drone tilts quickly under an awning. Which sensor can notice that motion?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The inertial sensor.",
+                    "feedback": "The IMU feels a quick spin or push. It needs no clear view of the sky.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only the satellite receiver.",
+                    "feedback": "Satellites help place the drone on a map. A local sensor feels its fast tilt.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "flight-sensors-2",
+                "type": "scenario",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "On a train platform under a roof, a drone's map dot wanders. What may have weakened?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The satellite position clue.",
+                    "feedback": "A roof can block or bounce the signal. The map dot may drift, though tilt sensing works.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The idea that air has pressure.",
+                    "feedback": "A shaky map dot is about position signals, not proof that air pressure vanished.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "flight-sensors-3",
+                "type": "estimate",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "A toy pressure sensor reads 1000 units, then 995. What is the size of the change?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "5 units.",
+                    "feedback": "The gap is five. A change in air pressure can also hint at a height change.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "995 units.",
+                    "feedback": "That is the later reading itself, not how much it changed from the first.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 5,
+                  "min": 4.5,
+                  "max": 5.5,
+                  "unit": "units"
+                }
+              },
+              {
+                "id": "flight-sensors-4",
+                "type": "choose",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "Which sensor mainly gives a pressure clue used for height?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A barometer.",
+                    "feedback": "Air pressure changes with height, though weather and other effects make it an imperfect clue.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A GPS antenna alone.",
+                    "feedback": "GPS times signals from space. It does not feel the air around the craft.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "flight-sensors-5",
+                "type": "why",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "Why might a drone use both satellite and inertial data?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They give different, imperfect clues.",
+                    "feedback": "One tracks location from signals; the other senses quick motion, so each covers a different need.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Each always gives the exact same reading.",
+                    "feedback": "Sensors measure different things and have distinct sources of error.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "flight-sensors-6",
+                "type": "fill-the-step",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "A quick spin is sensed by an IMU; a map location can be aided by ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Satellite signals.",
+                    "feedback": "GPS uses several space signals to find a place. The tilt sensor works on board.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A fan blade.",
+                    "feedback": "A blade moves air but cannot supply the remote timing data used for position.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "flight-sensors-7",
+                "type": "true-not-quite",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "“The GPS dot is exact, so other sensors are useless.” What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Location estimates can err.",
+                    "feedback": "A roof can spoil the map clue. Tilt and air pressure still tell other parts.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "GPS never gives any place clue.",
+                    "feedback": "It often helps locate a craft; the flaw is treating one estimate as perfect.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "flight-sensors-8",
+                "type": "explain-it-back",
+                "conceptId": "flight-sensors",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "flight-sensors-m1"
+                ],
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ],
+                "stem": "Which explanation fits a drone under a school roof?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Tilt sensing may work while GPS gets worse.",
+                    "feedback": "The IMU feels movement on board. A roof may block the space signals.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "All sensors fail at the same time.",
+                    "feedback": "The roof may hurt one clue while the on-board tilt sensor still works.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
+                    ],
+                    "sourceRefs": [
+                      "px4",
+                      "gps",
+                      "gpsaccuracy",
+                      "barometer"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "flight-sensors-m1",
+                "name": "GPS senses all turns",
+                "correction": "The IMU gives quick turn and motion clues.",
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ]
+              },
+              {
+                "id": "flight-sensors-m2",
+                "name": "One sensor is perfect",
+                "correction": "Signals and readings can have limits, so each clue can err.",
+                "sourceRefs": [
+                  "px4",
+                  "gps",
+                  "gpsaccuracy",
+                  "barometer"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "gps",
+                "title": "Trilateration",
+                "publisher": "GPS.gov",
+                "year": 2025,
+                "url": "https://www.gps.gov/trilateration"
+              },
+              {
+                "id": "gpsaccuracy",
+                "title": "GPS Accuracy",
+                "publisher": "GPS.gov",
+                "year": 2026,
+                "url": "https://www.gps.gov/gps-accuracy"
+              },
+              {
+                "id": "barometer",
+                "title": "Barometric Pressure Sensor",
+                "publisher": "National Weather Service",
+                "year": 2025,
+                "url": "https://www.weather.gov/asos/BarometricPressureSensor.html"
+              },
+              {
+                "id": "px4",
+                "title": "Multicopter Configuration",
+                "publisher": "PX4",
+                "year": 2026,
+                "url": "https://docs.px4.io/main/en/config_mc/index"
+              }
+            ],
+            "quest": {
+              "title": "Make a sensor map",
+              "detail": "On paper, draw a drone and link tilt, place, and height to IMU, GPS, and barometer. Add one limit for each.",
+              "sourceRefs": [
+                "px4",
+                "gps",
+                "gpsaccuracy",
+                "barometer"
+              ]
+            }
+          },
+          {
+            "id": "birds-and-planes",
+            "title": "Why birds flap but planes do not",
+            "prerequisites": [
+              "flight-sensors"
+            ],
+            "hook": "A bird can flap for both lift and forward push; a jet keeps fixed wings while its engine supplies the forward push.",
+            "hookSourceRefs": [
+              "bird"
+            ],
+            "rule": "Bird flaps can help give lift and forward push. A plane’s fixed wings make lift as air moves past them, while an engine or propeller gives forward push.",
+            "ruleSourceRefs": [
+              "bird"
+            ],
+            "claims": [
+              {
+                "id": "birds-and-planes-c1",
+                "text": "Bird wing flaps can provide lift and thrust.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c2",
+                "text": "A plane can use fixed wings for lift and engines or propellers for thrust.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "birds-and-planes-1",
+                "type": "predict",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "A student sees a bird flap beside a train. What can the wing stroke help provide?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Lift and forward push.",
+                    "feedback": "The changing wing motion can push air in ways that support and propel the bird.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only a way to make noise.",
+                    "feedback": "The moving wing interacts with air to create forces that matter for flight.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-2",
+                "type": "scenario",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "During a school trip, a jet passes overhead with wings that do not flap. Why can it stay up?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Air flows past its fixed wings.",
+                    "feedback": "The engine gives forward motion, and the moving air lets the wings make lift.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Its wings are secretly flapping.",
+                    "feedback": "Fixed wings can support flight without the wingbeats used by many birds.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-3",
+                "type": "estimate",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "A toy plane weighs 500 newtons in level flight. What lift must balance it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "500 newtons.",
+                    "feedback": "At steady height, the upward wing force balances the downward weight.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "250 newtons.",
+                    "feedback": "Half the weight would leave a downward net force in this simple level-flight picture.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 500,
+                  "min": 499.5,
+                  "max": 500.5,
+                  "unit": "newtons"
+                }
+              },
+              {
+                "id": "birds-and-planes-4",
+                "type": "choose",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "On a plane, which part mainly gives forward thrust?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The engine or propeller.",
+                    "feedback": "It pushes the craft forward so air can flow over the fixed wings.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The painted wing stripe.",
+                    "feedback": "Paint can mark a wing but does not supply the forward force for flight.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-5",
+                "type": "why",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "Why do both a bird and a plane need air for wing lift?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Wings must push on moving air.",
+                    "feedback": "Their shapes and motions differ, yet the upward force depends on interaction with air.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Air removes the need for weight.",
+                    "feedback": "Both still face gravity, so lift is needed to oppose it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "birds-and-planes-6",
+                "type": "fill-the-step",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "A jet engine mainly gives thrust; the fixed wings mainly give ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Lift.",
+                    "feedback": "Keeping these roles apart helps explain flight without making the wing flap.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Fuel storage.",
+                    "feedback": "Fuel sits in tanks; the wing's aerodynamic role is to support the plane.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-7",
+                "type": "true-not-quite",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "“A plane must flap because birds flap,” says a child. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Fixed wings can lift in moving air.",
+                    "feedback": "The plane gets forward motion from thrust, so its wings need not beat like a bird's.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Bird wings never move.",
+                    "feedback": "Birds do flap; the mistake is assuming all flying wings use that motion.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-8",
+                "type": "explain-it-back",
+                "conceptId": "birds-and-planes",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "birds-and-planes-m1"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "Which comparison captures the shared rule?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Both use air to make lift, by different motions.",
+                    "feedback": "Bird wingbeats can add thrust, while a plane engine drives air past its fixed wings.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both use engines to flap wings.",
+                    "feedback": "Birds use muscles, and most planes do not flap their fixed wings.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "birds-and-planes-m1"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "birds-and-planes-m1",
+                "name": "All wings must flap",
+                "correction": "A fixed wing can lift when air moves past it.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-m2",
+                "name": "Engine makes all lift",
+                "correction": "The engine gives forward thrust; the wing makes most lift.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bird",
+                "title": "How Do Birds Fly?",
+                "publisher": "Arizona State University, Ask A Biologist",
+                "year": 2009,
+                "url": "https://askabiologist.asu.edu/how-do-birds-fly"
+              }
+            ],
+            "quest": {
+              "title": "Spot two pushes",
+              "detail": "Watch a bird and a plane clip. Draw an arrow for forward push and one for lift on each.",
+              "sourceRefs": [
+                "bird"
+              ]
+            }
+          },
+          {
+            "id": "ceiling-fans",
+            "title": "How a ceiling fan moves air",
+            "prerequisites": [
+              "birds-and-planes"
+            ],
+            "hook": "A fan can cool sweaty skin in a warm classroom, yet the air stays warm. Where did the cooling happen?",
+            "hookSourceRefs": [
+              "fan",
+              "cooling"
+            ],
+            "rule": "Angled fan blades push air and make it flow through the room. The breeze can help people feel cooler, but the fan does not make cold air.",
+            "ruleSourceRefs": [
+              "fan",
+              "cooling"
+            ],
+            "claims": [
+              {
+                "id": "ceiling-fans-c1",
+                "text": "A ceiling fan moves room air with rotating blades.",
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ]
+              },
+              {
+                "id": "ceiling-fans-c2",
+                "text": "A breeze can aid cooling at the skin, but a fan does not make cold air.",
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "ceiling-fans-1",
+                "type": "predict",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "A classroom fan starts while the window stays shut. What reaches a student's face?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Faster moving room air.",
+                    "feedback": "The blades push air through the room, giving a breeze without making new cold air.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Air made cold inside the motor.",
+                    "feedback": "A ceiling fan has no cooling coil; the sensation comes from moving air.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ceiling-fans-2",
+                "type": "scenario",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "During monsoon heat, a hostel fan runs in an empty room. Who feels its breeze?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No person in that room.",
+                    "feedback": "The motor still moves air, but the main cooling effect needs a person beneath it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The walls feel the same chill as skin.",
+                    "feedback": "A breeze helps a person lose heat; walls do not sweat or sense a breeze.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ceiling-fans-3",
+                "type": "estimate",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "A toy fan spins 3 times each second. About how many turns occur in 10 seconds?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "30 turns.",
+                    "feedback": "Multiplying the rate by the time counts turns, though it does not measure room cooling.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "3 turns.",
+                    "feedback": "That is the count for only one second, not the full ten-second span.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 30,
+                  "min": 29.5,
+                  "max": 30.5,
+                  "unit": "turns"
+                }
+              },
+              {
+                "id": "ceiling-fans-4",
+                "type": "choose",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "Why can the same air feel cooler when it moves over skin?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It helps sweat evaporate.",
+                    "feedback": "Moving air helps sweat dry. That can cool skin while the room air stays warm.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The fan makes ice in the air.",
+                    "feedback": "The blades move air; they do not use a cooling cycle to freeze moisture.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ceiling-fans-5",
+                "type": "why",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "Why do angled blades make a breeze?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Their spin pushes air along.",
+                    "feedback": "A blade's tilt changes the direction of nearby air as it rotates.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The blades turn air into water.",
+                    "feedback": "The material stays air; only its motion is changed by the fan.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "ceiling-fans-6",
+                "type": "fill-the-step",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "A fan moves room air; an air conditioner can lower the air's ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Temperature.",
+                    "feedback": "The devices can feel similar to a person, but only one removes heat from the room air.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Number of blades.",
+                    "feedback": "Blade count describes a fan, not the heat content of room air.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ceiling-fans-7",
+                "type": "true-not-quite",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "“A ceiling fan creates cold air,” says a student. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It mainly moves the air already present.",
+                    "feedback": "Air motion can cool skin without the fan lowering the whole room's temperature.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A fan cannot move any air.",
+                    "feedback": "The felt breeze is evidence of airflow; the claim overstates what it does.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ceiling-fans-8",
+                "type": "explain-it-back",
+                "conceptId": "ceiling-fans",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ],
+                "stem": "Which line best explains a fan during a hot exam?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Moving air can cool people without chilling the room.",
+                    "feedback": "The breeze raises evaporation and heat loss at skin while air temperature may stay near the same.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The motor removes all room heat.",
+                    "feedback": "A spinning motor uses energy and is not a device that carries heat outdoors.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
+                    ],
+                    "sourceRefs": [
+                      "fan",
+                      "cooling"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "ceiling-fans-m1",
+                "name": "Fan makes cold air",
+                "correction": "A fan moves the air already in the room.",
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ]
+              },
+              {
+                "id": "ceiling-fans-m2",
+                "name": "Spin has no push",
+                "correction": "Angled spinning blades move air.",
+                "sourceRefs": [
+                  "fan",
+                  "cooling"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "fan",
+                "title": "Ceiling Fans",
+                "publisher": "U.S. Department of Energy",
+                "year": 2024,
+                "url": "https://www.energy.gov/cmei/buildings/ceiling-fans"
+              },
+              {
+                "id": "cooling",
+                "title": "Energy-Saving Hacks To Beat the Summer Heat",
+                "publisher": "U.S. Department of Energy",
+                "year": 2021,
+                "url": "https://www.energy.gov/indianenergy/articles/energy-saving-hacks-beat-summer-heat"
+              }
+            ],
+            "quest": {
+              "title": "Map a breeze",
+              "detail": "With the fan on, hold a light ribbon safely away from the blades. Sketch which way the air flows.",
+              "sourceRefs": [
+                "fan",
+                "cooling"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

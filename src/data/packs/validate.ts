@@ -17,8 +17,12 @@ export function fleschReadingEase(value: string): number {
 const banned = ['Blue' + ' Lock', 'E' + 'go', 'Eg' + 'oist', 'Que' + 'ens', 'Tan' + 'go', 'Z' + 'ip', 'Ken' + 'Ken'];
 const bannedPattern = new RegExp(`\\b(?:${banned.join('|')})\\b`, 'i');
 const advicePattern = /\b(?:you should|we recommend|must)\s+(?:buy|sell|invest|take|stop taking|consult|sue)\b|(?:^|[.!?]\s+)(?:buy|sell|invest)\s+(?:stocks?|shares?|funds?|medicine)\b/i;
+const datePattern = /\b(?:19|20)\d{2}(?:-\d{1,2}(?:-\d{1,2})?)?\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:,?\s+\d{4})?\b/i;
+const indianSettingPattern = /\b(?:hostel|exam|canteen|cricket|monsoon|UPI|train|family (?:shop|business)|college|classroom|school|rupee|Delhi|Mumbai|Chennai|Bengaluru)\b|\u20b9/i;
+const words = (value: string) => value.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+const allTypes = ['predict', 'choose', 'why', 'scenario', 'fill-the-step', 'true-not-quite', 'explain-it-back', 'order', 'match', 'estimate'];
 
-export function validatePack(input: unknown, options: { allowUnchecked?: boolean } = {}): string[] {
+export function validatePack(input: unknown, options: { allowUnchecked?: boolean; editorial?: boolean } = {}): string[] {
   const parsed = v.safeParse(packSchema, input);
   if (!parsed.success) return parsed.issues.map((issue) => `${v.getDotPath(issue) ?? 'pack'}: ${issue.message}`);
   const pack: Pack = parsed.output;
@@ -29,6 +33,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
     if (advicePattern.test(JSON.stringify(pack.body))) errors.push('topic: advice is prohibited');
     const conceptIds = new Set(pack.body.modules.flatMap(module => module.concepts.map(concept => concept.id)));
     const ids = new Set<string>();
+    const optionSets = new Set<string>();
     const checkText = (where: string, value: string) => {
       if (fleschReadingEase(value) < 59.5) errors.push(`${where}: Flesch reading ease below 60`);
       if (bannedPattern.test(value)) errors.push(`${where}: banned words`);
@@ -39,13 +44,29 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       if (moduleIds.has(module.id)) errors.push(`${module.id}: duplicate module id`);
       moduleIds.add(module.id);
     }
+    if (options.editorial) for (const module of pack.body.modules) {
+      const moduleTypes = new Set<string>(module.concepts.flatMap(concept => concept.items.map(item => item.type)));
+      for (const type of allTypes) if (!moduleTypes.has(type)) errors.push(`${module.id}: missing item type ${type}`);
+    }
     for (const module of pack.body.modules) for (const concept of module.concepts) {
       const where = concept.id;
+      if (options.editorial && concept.items.length !== 8) errors.push(`${where}: needs exactly 8 items`);
+      const typeCounts = new Map<string, number>();
+      for (const item of concept.items) typeCounts.set(item.type, (typeCounts.get(item.type) ?? 0) + 1);
+      if (options.editorial) {
+        for (const [type, count] of typeCounts) if (count > 2) errors.push(`${where}: more than 2 ${type} items`);
+        if (!typeCounts.has('estimate')) errors.push(`${where}: needs an estimate item`);
+        if (concept.items.filter(item => (item.type === 'scenario' || item.type === 'predict') && indianSettingPattern.test(item.stem)).length < 2) errors.push(`${where}: needs 2 Indian student scenarios or predictions`);
+      }
+      const stemPrefixes = new Set<string>();
       if (ids.has(where)) errors.push(`${where}: duplicate concept id`);
       ids.add(where);
       for (const prereq of concept.prerequisites) if (!conceptIds.has(prereq) || prereq === where) errors.push(`${where}: invalid prerequisite ${prereq}`);
       const sourceIds = new Set(concept.sources.map(source => source.id));
       if (sourceIds.size !== concept.sources.length) errors.push(`${where}: duplicate source id`);
+      if (options.editorial && pack.body.topic.id === 'money-markets') for (const source of concept.sources) {
+        if (!source.asOf) errors.push(`${where}.${source.id}: money source needs asOf metadata`);
+      }
       const refs = (location: string, values: string[]) => {
         if (!values.length || values.some(ref => !sourceIds.has(ref))) errors.push(`${location}: unlisted source`);
       };
@@ -79,13 +100,25 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         if (item.conceptId !== where) errors.push(`${item.id}: wrong concept id`);
         refs(`${item.id}.sourceRefs`, item.sourceRefs);
         checkText(`${item.id}.stem`, item.stem);
+        if (options.editorial && datePattern.test(item.stem)) errors.push(`${item.id}: date in stem`);
+        const prefix = words(item.stem).slice(0, 7).join(' ');
+        if (options.editorial && words(item.stem).length >= 7 && stemPrefixes.has(prefix)) errors.push(`${item.id}: repeated stem prefix`);
+        stemPrefixes.add(prefix);
         if (item.misconceptionTags.some(tag => !misconceptionIds.has(tag))) errors.push(`${item.id}: unknown misconception`);
         const optionIds = new Set(item.options.map(option => option.id));
         const optionTexts = new Set(item.options.map(option => option.text.trim().toLowerCase()));
         if (optionIds.size !== item.options.length || optionTexts.size !== item.options.length) errors.push(`${item.id}: duplicate options`);
+        const optionSet = [...optionTexts].sort().join('\u0000');
+        if (options.editorial && optionSets.has(optionSet)) errors.push(`${item.id}: repeated option set`);
+        optionSets.add(optionSet);
         for (const option of item.options) {
           refs(`${item.id}.${option.id}`, option.sourceRefs);
           checkText(`${item.id}.${option.id}.feedback`, option.feedback);
+          const feedbackWords = words(option.feedback).length;
+          if (options.editorial && (feedbackWords < 8 || feedbackWords > 30)) errors.push(`${item.id}.${option.id}: feedback needs 8-30 words`);
+          const normalizedOption = words(option.text).join(' ');
+          const normalizedFeedback = words(option.feedback).join(' ');
+          if (options.editorial && (normalizedFeedback === normalizedOption || normalizedFeedback.startsWith(`${normalizedOption} `))) errors.push(`${item.id}.${option.id}: feedback repeats option`);
           if (advicePattern.test(option.text)) errors.push(`${item.id}.${option.id}: advice is prohibited`);
           if (option.misconceptionIds?.some(tag => !misconceptionIds.has(tag))) errors.push(`${item.id}: unknown option misconception`);
         }

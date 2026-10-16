@@ -7,7 +7,7 @@ export async function validateAll(contentDir?: string, options: { allowUnchecked
   const errors: string[] = [];
   const seen = new Set<string>();
   for (const { path, value } of await loadPackFiles(contentDir)) {
-    for (const error of validatePack(value, options)) errors.push(`${path}: ${error}`);
+    for (const error of validatePack(value, { ...options, editorial: true })) errors.push(`${path}: ${error}`);
     if (value && typeof value === 'object' && 'id' in value && typeof value.id === 'string') {
       if (seen.has(value.id)) errors.push(`${path}: duplicate pack id ${value.id}`);
       seen.add(value.id);

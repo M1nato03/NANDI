@@ -1,0 +1,2341 @@
+{
+  "id": "topic.psychology",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Human psychology",
+  "description": "Guess first, then see why a choice can feel right.",
+  "author": "claude",
+  "createdAt": "2026-10-16T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "psychology",
+      "title": "Human psychology",
+      "description": "Guess first, then see why a choice can feel right."
+    },
+    "modules": [
+      {
+        "id": "psychology-module",
+        "title": "Why we do what we do",
+        "concepts": [
+          {
+            "id": "habits",
+            "title": "Habits",
+            "prerequisites": [],
+            "hook": "One missed day did not reset habit growth in Lally's study; the fitted time to near full habit strength ran from 18 to 254 days.",
+            "hookSourceRefs": [
+              "lally",
+              "wood"
+            ],
+            "rule": "A cue can start a learned act. A good result can help the act stick. In Lally and team’s study, time to reach near full habit strength varied a lot; one missed day did not wipe it out.",
+            "ruleSourceRefs": [
+              "lally",
+              "wood"
+            ],
+            "claims": [
+              {
+                "id": "habits-c1",
+                "text": "Cues in a stable setting can bring back a learned action.",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ]
+              },
+              {
+                "id": "habits-c2",
+                "text": "In Lally and team’s study, modeled times ranged from 18 to 254 days; one missed chance did not undo habit growth.",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "habits-1",
+                "type": "predict",
+                "conceptId": "habits",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "Each day after hostel dinner, Nikhil reaches for a notebook on the same desk. What might start the action?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The familiar dinner-and-desk cue.",
+                    "feedback": "The repeated setting can bring back the learned act before he thinks much about a goal.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A magic fixed day count.",
+                    "feedback": "Repetition can build a cue link, but the study found no single deadline for everyone.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "habits-2",
+                "type": "scenario",
+                "conceptId": "habits",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "During exam week, Tara misses one usual evening sketch. What does habit research suggest about that single gap?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One miss need not erase the learned link.",
+                    "feedback": "In the study, an occasional missed chance did not make earlier habit growth vanish.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The whole habit must return to zero.",
+                    "feedback": "A learned cue association builds over time and is not normally wiped by one missed act.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "habits-3",
+                "type": "estimate",
+                "conceptId": "habits",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "In one habit study, fitted times to near full strength ran from 18 to 254 days. About how wide is that range?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "236 days.",
+                    "feedback": "Subtracting the lower fitted time from the upper shows how much the observed paths varied.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "18 days.",
+                    "feedback": "That is only the lower end, not the distance between the two fitted endpoints.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 236,
+                  "min": 235.5,
+                  "max": 236.5,
+                  "unit": "days"
+                }
+              },
+              {
+                "id": "habits-4",
+                "type": "choose",
+                "conceptId": "habits",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "A student opens a music app after placing a bag on one hook. What is the likely cue in this example?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Seeing the bag on that hook.",
+                    "feedback": "The repeated place can become linked to the act even when the student's goal changes.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The total number of songs stored.",
+                    "feedback": "The library size says little about the repeated setting that precedes the action.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "habits-5",
+                "type": "why",
+                "conceptId": "habits",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "Why can an act feel easier to start in one room than another?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "That room may carry a learned cue.",
+                    "feedback": "Context features can call up a practiced response without a fresh choice each time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The room forces the same goal on everyone.",
+                    "feedback": "A cue changes what comes to mind; it does not give all people one shared aim.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "habits-6",
+                "type": "fill-the-step",
+                "conceptId": "habits",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "A cue appears, an act follows, and the link grows with repeats. The cue is part of the ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Setting that comes before the act.",
+                    "feedback": "Habits join a response to features of its usual context, such as place or prior action.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Reward promised after every attempt.",
+                    "feedback": "A cue can trigger the response even without a fresh reward at that moment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "habits-7",
+                "type": "true-not-quite",
+                "conceptId": "habits",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "“All habits lock in after 21 days,” says a cricket coach. What is too certain?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "People and acts can take different times.",
+                    "feedback": "The fitted paths in the study ranged widely, so one fixed count hides real variation.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "No habit can form in less than a year.",
+                    "feedback": "Some measured paths reached near full strength sooner; the error is one universal deadline.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "habits-8",
+                "type": "order",
+                "conceptId": "habits",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "habits-m1"
+                ],
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "stem": "Put this familiar habit loop in a plausible order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "First: the usual cue appears.",
+                    "feedback": "The setting comes before the practiced response in this simple account of a habit.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Next: the learned response follows.",
+                    "feedback": "Repeated pairing can make the action follow the cue with less thought over time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "habits-m1",
+                "name": "One fixed day count",
+                "correction": "Habit time varies by person and act; there is no fixed day count.",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ]
+              },
+              {
+                "id": "habits-m2",
+                "name": "One miss resets all",
+                "correction": "One missed chance did not wipe out habit growth in the study.",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "lally",
+                "title": "How are habits formed: Modelling habit formation in the real world",
+                "publisher": "Lally et al., European Journal of Social Psychology",
+                "year": 2010,
+                "url": "https://repositorio.ispa.pt/server/api/core/bitstreams/370f1dca-cc04-4d3d-a0f0-36d16109ec37/content"
+              },
+              {
+                "id": "wood",
+                "title": "A new look at habits and the habit-goal interface",
+                "publisher": "Wood and Neal, Psychological Review",
+                "year": 2007,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/17907866/"
+              }
+            ],
+            "quest": {
+              "title": "Spot a cue",
+              "detail": "Watch one harmless daily act. Name the cue, the act, and the good result that may help it recur.",
+              "sourceRefs": [
+                "lally",
+                "wood"
+              ]
+            }
+          },
+          {
+            "id": "loss-aversion",
+            "title": "Loss aversion",
+            "prerequisites": [
+              "habits"
+            ],
+            "hook": "In classic choice experiments, the value curve is steeper for losses than for equal gains around a starting point.",
+            "hookSourceRefs": [
+              "prospect"
+            ],
+            "rule": "Loss aversion is a pattern where a loss can feel stronger than a same-size gain. It is a tendency in choices, not a law for every person or every case.",
+            "ruleSourceRefs": [
+              "prospect"
+            ],
+            "claims": [
+              {
+                "id": "loss-aversion-c1",
+                "text": "Prospect theory treats gains and losses relative to a reference point.",
+                "sourceRefs": [
+                  "prospect"
+                ]
+              },
+              {
+                "id": "loss-aversion-c2",
+                "text": "Losses can weigh more than equal gains in choice.",
+                "sourceRefs": [
+                  "prospect"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "loss-aversion-1",
+                "type": "predict",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "At a hostel game, Dev has ten tokens and loses one. How might that feel beside gaining one from ten?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The loss may feel stronger.",
+                    "feedback": "Prospect theory models changes from a starting point, with losses often carrying extra weight.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both must feel exactly equal.",
+                    "feedback": "Equal token counts need not produce equal feelings when one change is framed as a loss.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loss-aversion-2",
+                "type": "scenario",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "In a cricket pool, a student is handed ₹50, then asked to risk losing it for a chance at ₹50 more. Which pull may matter?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The possible loss of the held ₹50.",
+                    "feedback": "Once the amount feels owned, giving it up can weigh more than a same-size gain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only the possible gain can matter.",
+                    "feedback": "The starting point shapes the choice, so losing what is held can be a strong part.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loss-aversion-3",
+                "type": "estimate",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "A toy game offers a gain of 10 points or a loss of 10. What is the difference in point size?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "0 points.",
+                    "feedback": "The amounts match on paper; loss aversion concerns their felt weight, not unequal point sizes.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "20 points.",
+                    "feedback": "That adds the two swings instead of comparing their equal sizes from the same start.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 0,
+                  "min": -0.5,
+                  "max": 0.5,
+                  "unit": "points"
+                }
+              },
+              {
+                "id": "loss-aversion-4",
+                "type": "choose",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "A student describes the same score change as “keep five” or “lose five.” What changed?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The frame around the starting point.",
+                    "feedback": "A reference point can shift how a result is felt even if the arithmetic stays the same.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The number of points at stake.",
+                    "feedback": "Both lines mention five points; only their gain-or-loss wording changed.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loss-aversion-5",
+                "type": "why",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "Why might a missed train ticket refund sting more than an equal surprise refund delights?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Losses can weigh more near a reference point.",
+                    "feedback": "The sum is the same. The feel can change when it is lost instead of gained.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The two refunds use different currencies.",
+                    "feedback": "Both sums are in rupees. Loss and gain can still feel quite different.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "loss-aversion-6",
+                "type": "fill-the-step",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "Prospect theory compares changes with a starting point. A move below it is framed as a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Loss.",
+                    "feedback": "The reference point is key: the same final amount can be viewed through different frames.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Guaranteed gain.",
+                    "feedback": "Moving below a chosen start is the loss side of the comparison.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loss-aversion-7",
+                "type": "true-not-quite",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "“Everyone always hates any loss twice as much,” says a friend. What is too broad?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The pattern is not a law for each person.",
+                    "feedback": "The theory describes a common shape in choices, not a fixed reaction in every case.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "People never notice gains.",
+                    "feedback": "Gains still have value; the error is claiming one exact rule for all people.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loss-aversion-8",
+                "type": "match",
+                "conceptId": "loss-aversion",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "loss-aversion-m1"
+                ],
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "stem": "Match the change to its label from a ten-token start.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ten to eleven",
+                    "feedback": "Moving above the start adds one token, so it belongs on the gain side.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A gain of one token",
+                    "feedback": "One extra token sits above the start, so its sign is positive in this example.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ten to nine",
+                    "feedback": "The end count sits below the same start, making this a loss of one token.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "A loss of one token",
+                    "feedback": "The number fell by one; its felt weight may still differ from an equal gain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "loss-aversion-m1",
+                "name": "Equal feel",
+                "correction": "Equal gain and loss can have a different felt weight.",
+                "sourceRefs": [
+                  "prospect"
+                ]
+              },
+              {
+                "id": "loss-aversion-m2",
+                "name": "Always true",
+                "correction": "The pattern does not fix how every person will feel.",
+                "sourceRefs": [
+                  "prospect"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "prospect",
+                "title": "Prospect Theory: An Analysis of Decision under Risk",
+                "publisher": "Kahneman and Tversky, Econometrica",
+                "year": 1979,
+                "url": "https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Behavioral_Decision_Theory/Kahneman_Tversky_1979_Prospect_theory.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Frame a token",
+              "detail": "Write a made-up choice as a gain and then as a loss from a starting point. Ask how the frame may shift its feel.",
+              "sourceRefs": [
+                "prospect"
+              ]
+            }
+          },
+          {
+            "id": "anchoring",
+            "title": "Anchoring",
+            "prerequisites": [
+              "loss-aversion"
+            ],
+            "hook": "A random number can pull a later estimate: the first figure matters even when it has no link to the answer.",
+            "hookSourceRefs": [
+              "bias",
+              "philosophy"
+            ],
+            "rule": "An early number can pull a later guess toward it. That first number may be useful or random, so the guess needs a check beyond the anchor.",
+            "ruleSourceRefs": [
+              "bias",
+              "philosophy"
+            ],
+            "claims": [
+              {
+                "id": "anchoring-c1",
+                "text": "A first number can pull a later guess toward it.",
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ]
+              },
+              {
+                "id": "anchoring-c2",
+                "text": "An anchor can pull a guess even when the first number is arbitrary.",
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "anchoring-1",
+                "type": "predict",
+                "conceptId": "anchoring",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "At a family shop, a tag first says ₹900 and then ₹600. What may shape a student's first price guess?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The ₹900 first number.",
+                    "feedback": "An early figure can pull a later judgment before any outside price is checked.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only the ink colour.",
+                    "feedback": "The printed number gives a numeric starting point; colour does not explain the price estimate.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "anchoring-2",
+                "type": "scenario",
+                "conceptId": "anchoring",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "On a train, two classmates guess the cost of a school trip. One first hears ₹2,000; the other hears ₹8,000. What might differ?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Their first guesses may be pulled apart.",
+                    "feedback": "Each guess can start near the first number heard. The numbers may have been made up.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Their guesses must match exactly.",
+                    "feedback": "Each first number can pull a guess its way. The two guesses need not match.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "anchoring-3",
+                "type": "estimate",
+                "conceptId": "anchoring",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "A canteen sign crosses out ₹500 and shows ₹300. What is the displayed cut in rupees?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹200.",
+                    "feedback": "The subtraction checks the actual shown gap, though it cannot prove the sale price is fair.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹500.",
+                    "feedback": "That is the old tag, which may anchor a guess but is not the amount cut.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 200,
+                  "min": 199.5,
+                  "max": 200.5,
+                  "unit": "rupees"
+                }
+              },
+              {
+                "id": "anchoring-4",
+                "type": "choose",
+                "conceptId": "anchoring",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "Which clue would test whether a marked-down pen is cheap?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A price for the same pen elsewhere.",
+                    "feedback": "A second shop's price gives a fresh clue that the first tag cannot give.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The crossed-out number alone.",
+                    "feedback": "That first number may be chosen by the seller and need not reflect a normal price.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "anchoring-5",
+                "type": "why",
+                "conceptId": "anchoring",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "Why can even a random first number sway a school quiz guess?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It becomes a starting point for adjustment.",
+                    "feedback": "People may shift from the number they saw rather than build a fresh estimate from scratch.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Random numbers secretly know the answer.",
+                    "feedback": "The cue can affect a guess without carrying any true fact about the target.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "anchoring-6",
+                "type": "fill-the-step",
+                "conceptId": "anchoring",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "A student guesses near a figure printed on a poster, then adjusts a little. That first figure is an ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Anchor.",
+                    "feedback": "The first number can tug a guess, even if the poster gives no real clue.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Independent check.",
+                    "feedback": "A number from the same prompt is the starting cue, not outside evidence.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "anchoring-7",
+                "type": "true-not-quite",
+                "conceptId": "anchoring",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "“The first price I see must be the fair one,” says a buyer. What is the flaw?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "First does not mean well supported.",
+                    "feedback": "Seeing a price first can sway a guess. It does not prove the price is fair.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every first price is false.",
+                    "feedback": "The first number might help. Yet being first does not make it true.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "anchoring-8",
+                "type": "explain-it-back",
+                "conceptId": "anchoring",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "anchoring-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "stem": "Which line best sums up anchoring in a quiz?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "An early number can tug a later guess.",
+                    "feedback": "Even a made-up first number can pull a later guess toward it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The latest number always wins.",
+                    "feedback": "A later cue may matter too, but the bias concerns the pull of an initial figure.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "anchoring-m1",
+                "name": "First means fair",
+                "correction": "The first number is not proof of the fair value.",
+                "sourceRefs": [
+                  "bias"
+                ]
+              },
+              {
+                "id": "anchoring-m2",
+                "name": "Random has no pull",
+                "correction": "Even an arbitrary first number can sway a later guess.",
+                "sourceRefs": [
+                  "bias"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bias",
+                "title": "Problem Solving, Psychology 2e",
+                "publisher": "OpenStax",
+                "year": 2020,
+                "url": "https://openstax.org/books/psychology-2e/pages/7-3-problem-solving"
+              },
+              {
+                "id": "philosophy",
+                "title": "Overcoming Cognitive Biases and Engaging in Critical Reflection",
+                "publisher": "OpenStax",
+                "year": 2022,
+                "url": "https://openstax.org/books/introduction-philosophy/pages/2-2-overcoming-cognitive-biases-and-engaging-in-critical-reflection"
+              }
+            ],
+            "quest": {
+              "title": "Compare tags",
+              "detail": "Pick two made-up price tags. Start a guess from each, then see how the first number may pull the guess.",
+              "sourceRefs": [
+                "bias"
+              ]
+            }
+          },
+          {
+            "id": "confirmation-bias",
+            "title": "Confirmation bias",
+            "prerequisites": [
+              "anchoring"
+            ],
+            "hook": "In Wason's rule task, many people picked a card that could confirm the rule and skipped one that could break it.",
+            "hookSourceRefs": [
+              "bias",
+              "wason"
+            ],
+            "rule": "Confirmation bias is a pull to seek or notice clues that fit a belief. A fair test also looks for clues that could show the belief is wrong.",
+            "ruleSourceRefs": [
+              "bias",
+              "wason"
+            ],
+            "claims": [
+              {
+                "id": "confirmation-bias-c1",
+                "text": "People can focus on clues that fit a prior belief while missing other clues.",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ]
+              },
+              {
+                "id": "confirmation-bias-c2",
+                "text": "A test of an idea is stronger when it can find a case that goes against it.",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "confirmation-bias-1",
+                "type": "predict",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "During exam week, Aditi believes every hard paper has a trick question. Which paper might she recall first?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The one with a trick question.",
+                    "feedback": "A matching case fits her belief and may stand out more than a plain paper.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A paper with no trick question.",
+                    "feedback": "That counterexample could test her claim, but it does not match what she expects.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "confirmation-bias-2",
+                "type": "scenario",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "A family shop owner thinks rain always cuts sales. What record would test the claim best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Days with rain and steady sales too.",
+                    "feedback": "A possible exception can show whether the word “always” holds up across the records.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only the wettest low-sales day.",
+                    "feedback": "One fitting day supports many stories and cannot rule out rain days with normal sales.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "confirmation-bias-3",
+                "type": "estimate",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "A bus log has 20 rides; 5 were late. What share were on time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "75%.",
+                    "feedback": "Fifteen of twenty rides arrived on time, a fact a late-bus belief might overlook.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "25%.",
+                    "feedback": "That is the late share; using it as the on-time share reverses the record.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 75,
+                  "min": 74.5,
+                  "max": 75.5,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "confirmation-bias-4",
+                "type": "choose",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "A cricket fan says a batter always fails in chases. Which scorecard matters most for checking “always”?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A successful chase innings.",
+                    "feedback": "One clear counterexample is enough to break a claim with the word “always.”",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Another failed chase innings.",
+                    "feedback": "More matches in line with the belief cannot by themselves rule out successful chases.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "confirmation-bias-5",
+                "type": "why",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "Why is a case that could break a rule useful in a classroom puzzle?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It tests what the rule forbids.",
+                    "feedback": "One case may fit many rules. A case that breaks this rule tells us more.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It has to make the rule true.",
+                    "feedback": "Evidence against a claim matters because it can show the claim is too broad.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "confirmation-bias-6",
+                "type": "fill-the-step",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "A student saves only screenshots that support her guess. She is filtering evidence toward ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her existing belief.",
+                    "feedback": "The pattern can make a weak idea seem stronger by hiding cases that point away.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A random mix of all cases.",
+                    "feedback": "Selective saving changes the sample, so the folder no longer shows the full record.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "confirmation-bias-7",
+                "type": "true-not-quite",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "“Three matching examples prove every case,” says a classmate. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "An unchecked case might break the rule.",
+                    "feedback": "A few fits do not settle a universal claim when contrary cases have not been sought.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The examples cannot be real.",
+                    "feedback": "They may be real yet still too narrow to establish what happens in every case.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "confirmation-bias-8",
+                "type": "explain-it-back",
+                "conceptId": "confirmation-bias",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "confirmation-bias-m1"
+                ],
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "stem": "How can a student miss clues against a belief?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "We may notice support and miss possible exceptions.",
+                    "feedback": "The bias lies in uneven search or recall, regardless of whether the starting idea is true.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It means all facts we like are lies.",
+                    "feedback": "The facts in favour may be real. Yet left-out cases can change the picture.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "confirmation-bias-m1",
+                "name": "One match proves it",
+                "correction": "One fitting case may fit more than one idea.",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ]
+              },
+              {
+                "id": "confirmation-bias-m2",
+                "name": "Disproof is useless",
+                "correction": "A case against an idea can test it well.",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bias",
+                "title": "Problem Solving, Psychology 2e",
+                "publisher": "OpenStax",
+                "year": 2020,
+                "url": "https://openstax.org/books/psychology-2e/pages/7-3-problem-solving"
+              },
+              {
+                "id": "wason",
+                "title": "On the Failure to Eliminate Hypotheses in a Conceptual Task",
+                "publisher": "P. C. Wason, Quarterly Journal of Experimental Psychology",
+                "year": 1960,
+                "url": "https://journals.sagepub.com/doi/10.1080/17470216008416717"
+              }
+            ],
+            "quest": {
+              "title": "Try to disprove",
+              "detail": "Pick a low-stakes belief about a game or bus. Write one clue that could show it is wrong.",
+              "sourceRefs": [
+                "bias",
+                "wason"
+              ]
+            }
+          },
+          {
+            "id": "social-proof",
+            "title": "Social proof",
+            "prerequisites": [
+              "confirmation-bias"
+            ],
+            "hook": "In Asch's line task, a plainly wrong group answer still pulled some participants away from what they saw.",
+            "hookSourceRefs": [
+              "asch"
+            ],
+            "rule": "A crowd choice can act as a clue and pull a person’s choice. But a crowd can be wrong; group agreement is not proof.",
+            "ruleSourceRefs": [
+              "asch"
+            ],
+            "claims": [
+              {
+                "id": "social-proof-c1",
+                "text": "In Asch’s line task, group answers sometimes pulled a person toward a wrong answer.",
+                "sourceRefs": [
+                  "asch"
+                ]
+              },
+              {
+                "id": "social-proof-c2",
+                "text": "Group agreement is social input, not proof that a claim is true.",
+                "sourceRefs": [
+                  "asch"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "social-proof-1",
+                "type": "predict",
+                "conceptId": "social-proof",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "At a hostel quiz, most students pick the wrong line length aloud. What may happen to the last student's answer?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It may move toward the group choice.",
+                    "feedback": "A public majority can change some answers even when the visual task seems clear.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It must stay fully independent.",
+                    "feedback": "Some people in the study did follow a group answer, even when it was wrong.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "social-proof-2",
+                "type": "scenario",
+                "conceptId": "social-proof",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "During a cricket watch party, everyone cheers a disputed call before the replay. What might the crowd signal do?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Make the call seem more certain.",
+                    "feedback": "The cheers come first. They can sway a guess before the replay gives a clear view.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Prove the call was right.",
+                    "feedback": "Shared confidence does not replace the replay or make the first judgment accurate.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "social-proof-3",
+                "type": "estimate",
+                "conceptId": "social-proof",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "In a toy vote, 8 of 10 classmates choose A. What percent chose A?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "80%.",
+                    "feedback": "The fraction describes the crowd's choice, but it tells nothing by itself about truth.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "20%.",
+                    "feedback": "That is the share who chose something else, not the majority described here.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 80,
+                  "min": 79.5,
+                  "max": 80.5,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "social-proof-4",
+                "type": "choose",
+                "conceptId": "social-proof",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "A whole class picks the same answer to an easy line puzzle. What does that show by itself?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Agreement, not proof of accuracy.",
+                    "feedback": "The group may share a mistake, so a headcount alone cannot settle the visual fact.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The answer is certainly right.",
+                    "feedback": "Many votes can point the same way even when the compared lines say otherwise.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "social-proof-5",
+                "type": "why",
+                "conceptId": "social-proof",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "Why might a student copy a group answer they privately doubt?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The group acts as a strong social cue.",
+                    "feedback": "A visible consensus can pull a public response apart from the person's own first view.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The printed question changed size.",
+                    "feedback": "A social effect concerns the other answers, not a hidden change to the page.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "social-proof-6",
+                "type": "fill-the-step",
+                "conceptId": "social-proof",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "If a crowd's visible choice nudges a person's own choice, the crowd is serving as a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Social cue.",
+                    "feedback": "The signal comes from what others did, though its size does not make it reliable.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Private measurement.",
+                    "feedback": "A group vote is shared behaviour, not an independent check of the object.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "social-proof-7",
+                "type": "true-not-quite",
+                "conceptId": "social-proof",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "“If all my friends picked B, B must be true.” What is the leap?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Popularity is being treated as proof.",
+                    "feedback": "A shared choice can arise from influence or a shared error, not just correct evidence.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Friends can never know the answer.",
+                    "feedback": "The group could be right; its size alone does not establish that fact.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "social-proof-8",
+                "type": "explain-it-back",
+                "conceptId": "social-proof",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "social-proof-m1"
+                ],
+                "sourceRefs": [
+                  "asch"
+                ],
+                "stem": "Which explanation fits the line-length result in Asch's task?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A wrong majority sometimes shifted individual answers.",
+                    "feedback": "The finding shows influence in that setting, while people did not all copy every time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every participant copied on every trial.",
+                    "feedback": "The effect was real but varied across people and trials rather than being universal.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "social-proof-m1",
+                "name": "Crowd proves truth",
+                "correction": "A group can agree on a wrong answer.",
+                "sourceRefs": [
+                  "asch"
+                ]
+              },
+              {
+                "id": "social-proof-m2",
+                "name": "No one is swayed",
+                "correction": "Group answers can pull some people in some settings.",
+                "sourceRefs": [
+                  "asch"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "asch",
+                "title": "Conformity, Compliance, and Obedience, Psychology 2e",
+                "publisher": "OpenStax",
+                "year": 2020,
+                "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience"
+              }
+            ],
+            "quest": {
+              "title": "Watch a group cue",
+              "detail": "In a harmless choice, note whether a visible group choice changes a guess. Keep the check kind.",
+              "sourceRefs": [
+                "asch"
+              ]
+            }
+          },
+          {
+            "id": "planning-fallacy",
+            "title": "The planning fallacy",
+            "prerequisites": [
+              "social-proof"
+            ],
+            "hook": "In a study, students thought their papers would take less time than they did. Even their best guesses ran short.",
+            "hookSourceRefs": [
+              "planning"
+            ],
+            "rule": "The planning fallacy is a tilt toward a short time guess for our own task. Looking at past tasks and missed steps can give a better time guess.",
+            "ruleSourceRefs": [
+              "planning"
+            ],
+            "claims": [
+              {
+                "id": "planning-fallacy-c1",
+                "text": "People can underguess how long their own tasks will take.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              },
+              {
+                "id": "planning-fallacy-c2",
+                "text": "Plans can miss delays that happened in similar past work.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "planning-fallacy-1",
+                "type": "predict",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "A hostel team says its chart will take one hour but has not counted printing. What might happen?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It may take longer than guessed.",
+                    "feedback": "Missing a step from the imagined path can make the finish time estimate too short.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It must finish in one hour.",
+                    "feedback": "A stated estimate does not print the pages or remove other uncounted work.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "planning-fallacy-2",
+                "type": "scenario",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "During exam week, Isha plans a revision sheet and forgets to gather past papers. Which estimate is at risk?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her own finish-time guess.",
+                    "feedback": "The missing collection step adds work outside the smooth path she pictured.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The length of every past paper.",
+                    "feedback": "Forgetting a step affects her plan duration, not the printed size of old papers.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "planning-fallacy-3",
+                "type": "estimate",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "A club predicts 2 hours for posters; the last three took 3, 4, and 5 hours. What is their average?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "4 hours.",
+                    "feedback": "Those past tasks provide a four-hour comparison point that includes real delays and extra steps.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "2 hours.",
+                    "feedback": "That repeats the new guess rather than averaging the three completed poster jobs.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 4,
+                  "min": 3.5,
+                  "max": 4.5,
+                  "unit": "hours"
+                }
+              },
+              {
+                "id": "planning-fallacy-4",
+                "type": "choose",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "A student lists only drawing time for a project. What overlooked step could add time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Finding and printing source images.",
+                    "feedback": "The work also needs images and print time. A drawing-only count leaves those out.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The colour of a finished poster.",
+                    "feedback": "A finished colour is a feature of output, not a missing step in the schedule.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "planning-fallacy-5",
+                "type": "why",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "Why can a best-case plan give a short estimate for a train project?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It leaves out likely snags and extra steps.",
+                    "feedback": "The imagined smooth run is just one path, while actual work often includes delays.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A clock runs faster during projects.",
+                    "feedback": "The gap comes from the plan's omitted work, not from time changing speed.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "planning-fallacy-6",
+                "type": "fill-the-step",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "To compare a new task with old ones, the useful number is the time those old tasks ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Actually took.",
+                    "feedback": "Old jobs show the time used, with snags and steps the new plan may miss.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Were first hoped to take.",
+                    "feedback": "An earlier wish may repeat the same optimism instead of showing the work's duration.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "planning-fallacy-7",
+                "type": "true-not-quite",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "“Our last poster took five hours, but this one will surely take one.” What is too certain?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The earlier job gives relevant evidence.",
+                    "feedback": "A new task can differ, yet dismissing a similar past duration leaves the guess weak.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every poster takes exactly five hours.",
+                    "feedback": "The old job is a comparison point, not a fixed rule for all future posters.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "planning-fallacy-8",
+                "type": "explain-it-back",
+                "conceptId": "planning-fallacy",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "planning-fallacy-m1"
+                ],
+                "sourceRefs": [
+                  "planning"
+                ],
+                "stem": "Which sentence sums up the planning fallacy in a school project?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A smooth imagined path can understate real time.",
+                    "feedback": "Past completed jobs can reveal delays that a new plan has not pictured.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every late job was planned badly.",
+                    "feedback": "The pattern concerns biased time guesses, not a verdict on every team or task.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "planning-fallacy-m1",
+                "name": "Best case is normal",
+                "correction": "A smooth plan is only one path; delays can add time.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              },
+              {
+                "id": "planning-fallacy-m2",
+                "name": "Past tasks do not help",
+                "correction": "Past task times can show steps a new plan has missed.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "planning",
+                "title": "Exploring the Planning Fallacy: Why People Underestimate Their Task Completion Times",
+                "publisher": "Buehler, Griffin and Ross, Journal of Personality and Social Psychology",
+                "year": 1994,
+                "url": "https://www.researchgate.net/profile/Dale-Griffin-4/publication/232558487_Exploring_the_Planning_Fallacy_Why_People_Underestimate_Their_Task_Completion_Times/links/00b4951e69bd280c66000000/Exploring-the-Planning-Fallacy-Why-People-Underestimate-Their-Task-Completion-Times.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Time a small task",
+              "detail": "Before a small school task, note a time guess. Afterward, note the time and one step the guess missed.",
+              "sourceRefs": [
+                "planning"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

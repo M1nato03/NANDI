@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import gita from '../../../content/lessons/lessons.gita-restless-mind.json';
 import charaka from '../../../content/lessons/lessons.charaka-holds-up.json';
 import quests from '../../../content/quests/quests.core.json';
+import money from '../../../content/topics/topic.money-markets.json';
 import { validatePack } from './validate';
 
 const bad = (pack, change, message) => {
@@ -52,5 +53,36 @@ describe('quest pack', () => {
     const malformed = structuredClone(quests);
     malformed.body.quests[0].unit = '';
     expect(validatePack(malformed).join(' ')).toContain('invalid total unit');
+  });
+});
+
+describe('topic editorial rules', () => {
+  const badTopic = (change, message) => {
+    const copy = structuredClone(money);
+    change(copy.body.modules[0].concepts, copy.body.modules[0]);
+    expect(validatePack(copy, { allowUnchecked: true, editorial: true }).join(' ')).toContain(message);
+  };
+  it('accepts the hand-authored money pack', () => {
+    expect(validatePack(money, { allowUnchecked: true, editorial: true })).toEqual([]);
+  });
+  it('requires eight items, one estimate and two Indian scenes', () => {
+    badTopic((concepts) => { concepts[0].items.pop(); }, 'needs exactly 8 items');
+    badTopic((concepts) => { const item = concepts[0].items[2]; item.type = 'choose'; delete item.answer; }, 'needs an estimate item');
+    badTopic((concepts) => { concepts[0].items[0].stem = 'A plain case with no place. What follows?'; concepts[0].items[1].stem = 'Another plain case with no place. What follows?'; }, 'needs 2 Indian student scenarios or predictions');
+  });
+  it('limits type repetition and requires all ten types in a module', () => {
+    badTopic((concepts) => { concepts[0].items[3].type = 'predict'; concepts[0].items[4].type = 'predict'; delete concepts[0].items[4].task; }, 'more than 2 predict items');
+    badTopic((concepts) => { const item = concepts[0].items[7]; item.type = 'choose'; delete item.answer; }, 'missing item type order');
+  });
+  it('rejects cloned openings, option sets and dates in stems', () => {
+    badTopic((concepts) => { concepts[0].items[1].stem = concepts[0].items[0].stem + ' Again?'; }, 'repeated stem prefix');
+    badTopic((concepts) => { concepts[0].items[1].options = structuredClone(concepts[0].items[0].options); }, 'repeated option set');
+    badTopic((concepts) => { concepts[0].items[0].stem = 'On 2026-10-16, the canteen price rises. What follows?'; }, 'date in stem');
+    badTopic((concepts) => { delete concepts[0].sources[0].asOf; }, 'money source needs asOf metadata');
+  });
+  it('requires explanatory feedback in fresh words', () => {
+    badTopic((concepts) => { concepts[0].items[0].options[1].feedback = 'Same.'; }, 'feedback needs 8-30 words');
+    badTopic((concepts) => { const option = concepts[0].items[0].options[1]; option.feedback = option.text + ' That is the answer written again with some padding.'; }, 'feedback repeats option');
+    badTopic((concepts) => { concepts[0].items[0].options[0].feedback = 'This has far too many filler words to make a useful explanation. It adds more filler words again and again, so the whole comment runs past the set limit for this small item and makes the feedback hard to read.'; }, 'feedback needs 8-30 words');
   });
 });

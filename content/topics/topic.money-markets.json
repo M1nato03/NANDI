@@ -1,0 +1,2307 @@
+{
+  "id": "topic.money-markets",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Money and markets",
+  "description": "Use short cases to see how money and markets work.",
+  "author": "claude",
+  "createdAt": "2026-10-16T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "money-markets",
+      "title": "Money and markets",
+      "description": "Use short cases to see how money and markets work."
+    },
+    "modules": [
+      {
+        "id": "money-markets-module",
+        "title": "How money grows",
+        "concepts": [
+          {
+            "id": "inflation",
+            "title": "Inflation",
+            "prerequisites": [],
+            "hook": "Five ₹20 idlis fit a ₹100 note; after each idli becomes ₹25, only four fit. The note has not changed. What did?",
+            "hookSourceRefs": [
+              "inflation",
+              "cpi"
+            ],
+            "rule": "Inflation is a rise in the broad price level. If cash stays the same while prices rise, that cash buys less. A price jump for one snack alone is not the whole index.",
+            "ruleSourceRefs": [
+              "inflation",
+              "cpi"
+            ],
+            "claims": [
+              {
+                "id": "inflation-c1",
+                "text": "India uses a consumer price index to track change in a basket of retail prices.",
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ]
+              },
+              {
+                "id": "inflation-c2",
+                "text": "A rise in broad prices cuts the buying power of cash if its amount stays fixed.",
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "inflation-1",
+                "type": "predict",
+                "conceptId": "inflation",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "At the hostel canteen, a ₹100 note once covered five ₹20 idlis. Each now costs ₹25. How many fit?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Four idlis.",
+                    "feedback": "The note is fixed while each serving costs more; one serving drops out of the budget.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Five idlis.",
+                    "feedback": "That count assumes the old price still applies, even though the canteen now asks for more per plate.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-2",
+                "type": "scenario",
+                "conceptId": "inflation",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "During exam week, Meera's tea price doubles but most other prices stay flat. Does that prove broad inflation doubled?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No; one price is not the basket.",
+                    "feedback": "The index follows many items, so a sharp tea price jump need not match the broad change.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Yes; tea sets the whole index.",
+                    "feedback": "A single canteen item cannot stand in for the full mix of goods that households buy.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-3",
+                "type": "estimate",
+                "conceptId": "inflation",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "A train snack costs ₹20, then ₹25. With ₹100, how many whole snacks fit at the new price?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "4 snacks.",
+                    "feedback": "Dividing the cash by the new price gives four; the old price would have allowed five.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "5 snacks.",
+                    "feedback": "That count uses the earlier price and misses the extra ₹5 now charged for each snack.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 4,
+                  "min": 3.5,
+                  "max": 4.5,
+                  "unit": "snacks"
+                }
+              },
+              {
+                "id": "inflation-4",
+                "type": "choose",
+                "conceptId": "inflation",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "A family shop raises only mango prices after a poor crop. Which claim fits the price index?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The mango change alone cannot show broad inflation.",
+                    "feedback": "An index combines many prices, which can move in different directions from one crop.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every item in the index rose equally.",
+                    "feedback": "A crop shock tells us about mangoes; it does not say what happened to all other goods.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-5",
+                "type": "why",
+                "conceptId": "inflation",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "Why can a fixed scholarship buy fewer bus rides when fares rise?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Each ride uses more of the same cash.",
+                    "feedback": "The fare changes the number of rides affordable even though the note's printed value stays fixed.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The cash has physically shrunk.",
+                    "feedback": "Purchasing power can fall without any change to the size or face value of the notes.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "inflation-6",
+                "type": "fill-the-step",
+                "conceptId": "inflation",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "Fill the gap: compare ₹100 with a basket costing ₹100, then with the same basket costing ₹110. The cash now covers ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Less than one full basket.",
+                    "feedback": "A higher basket price lowers what unchanged cash covers; this is the purchasing power link.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "More than one full basket.",
+                    "feedback": "That would require the basket to cost less than the cash, while its new price is higher.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-7",
+                "type": "true-not-quite",
+                "conceptId": "inflation",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "A classmate says, “My samosa costs more, so every price in India rose.” What is the flaw?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One item cannot tell the whole basket story.",
+                    "feedback": "The claim jumps from one observed price to many prices that were never checked.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The samosa price cannot ever change.",
+                    "feedback": "Individual prices do change; the mistake is using just one of them to describe all prices.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "inflation-m1"
+                    ],
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-8",
+                "type": "order",
+                "conceptId": "inflation",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "inflation-m1"
+                ],
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "stem": "Put the two events in order for fixed cash to lose buying power.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "First: the basket price rises.",
+                    "feedback": "The price change comes before the fixed amount covers a smaller share of that basket.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Second: fixed cash buys less of that basket.",
+                    "feedback": "This follows the higher price; putting it first would hide the cause of the loss.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "inflation",
+                      "cpi"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "inflation-m1",
+                "name": "One price is the index",
+                "correction": "One snack can rise while the broad basket moves in a different way.",
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ]
+              },
+              {
+                "id": "inflation-m2",
+                "name": "Same cash, same goods",
+                "correction": "When broad prices rise, the same cash can buy fewer goods.",
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "cpi",
+                "title": "Consumer Price Index and inflation rate for students",
+                "publisher": "Sankhyiki, Ministry of Statistics and Programme Implementation",
+                "year": 2025,
+                "url": "https://mospi.gov.in/sites/default/files/CPI_for_sankhyiki.pdf",
+                "asOf": "2026-10-16"
+              },
+              {
+                "id": "inflation",
+                "title": "Inflation: Prices on the Rise",
+                "publisher": "Ceyda Oner, International Monetary Fund",
+                "year": 2019,
+                "url": "https://www.imf.org/en/publications/fandd/issues/series/back-to-basics/inflation",
+                "asOf": "2026-10-16"
+              }
+            ]
+          },
+          {
+            "id": "compounding",
+            "title": "Compounding",
+            "prerequisites": [
+              "inflation"
+            ],
+            "hook": "₹1 lakh growing at a made-up 7% for 30 years becomes about ₹7.6 lakh. The last ten years add more than the first twenty.",
+            "hookSourceRefs": [
+              "compound",
+              "sip"
+            ],
+            "rule": "Compounding means a gain can earn a later gain when it stays in the pot. A SIP adds money at set times, but that does not promise a set return.",
+            "ruleSourceRefs": [
+              "compound",
+              "sip",
+              "investing"
+            ],
+            "claims": [
+              {
+                "id": "compounding-c1",
+                "text": "Compound growth includes growth on past gains as well as the starting amount.",
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ]
+              },
+              {
+                "id": "compounding-c2",
+                "text": "A SIP is a way to add money at set times; market returns are not fixed.",
+                "sourceRefs": [
+                  "compound",
+                  "sip",
+                  "investing"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "compounding-1",
+                "type": "predict",
+                "conceptId": "compounding",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "In a family shop ledger, Riya leaves ₹100 interest beside ₹1,000. At the same rate, what earns interest next?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Both the start amount and the saved interest.",
+                    "feedback": "Once a gain stays in the account, later growth can apply to that larger total.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only the original ₹1,000.",
+                    "feedback": "That leaves out the gain still sitting in the balance, which can itself earn a later gain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-2",
+                "type": "scenario",
+                "conceptId": "compounding",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "A hostel club keeps each year's fund gain in its account. A second club removes every gain. Which balance can grow faster at one fixed rate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The club that keeps its gains.",
+                    "feedback": "Its later percentage acts on earlier gains as well as the starting amount.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The club that removes every gain.",
+                    "feedback": "Taking gains out leaves the base unchanged, so later gains lack that added layer.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-3",
+                "type": "estimate",
+                "conceptId": "compounding",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "At a made-up 10% yearly rate, ₹100 becomes ₹110 after one year. With the gain left in, about how much is there after two?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹121.",
+                    "feedback": "The second ₹11 gain includes ₹1 earned on last year's ₹10 gain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹120.",
+                    "feedback": "That is simple growth on the first ₹100 only and leaves out interest on the first gain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 121,
+                  "min": 120.5,
+                  "max": 121.5,
+                  "unit": "rupees"
+                }
+              },
+              {
+                "id": "compounding-4",
+                "type": "choose",
+                "conceptId": "compounding",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip",
+                  "investing"
+                ],
+                "stem": "An exam club adds ₹100 each month to a fund. Which part is a payment pattern, rather than a return promise?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The repeated monthly addition.",
+                    "feedback": "The schedule says when money enters; it cannot set what markets later pay.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A guaranteed monthly profit.",
+                    "feedback": "Money added at set times can still face changing market prices and uncertain returns.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip",
+                      "investing"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-5",
+                "type": "why",
+                "conceptId": "compounding",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "Why does a later year add more rupees than an early year under one positive compound rate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The percentage acts on a larger balance.",
+                    "feedback": "Earlier gains enlarge the base, so the same rate produces a larger rupee gain later.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The percentage rate rises by itself.",
+                    "feedback": "The rate stays the same. Yet it makes more rupees when the saved sum grows.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "compounding-6",
+                "type": "fill-the-step",
+                "conceptId": "compounding",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "A toy account grows from ₹200 to ₹220. If the ₹20 stays, the next year's 10% is taken from ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹220.",
+                    "feedback": "The saved gain has joined the base, which is the key step in compounding.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹200.",
+                    "feedback": "That would ignore the money left in the account after the first gain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-7",
+                "type": "true-not-quite",
+                "conceptId": "compounding",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip",
+                  "investing"
+                ],
+                "stem": "A cousin says, “Compounding means every real investment grows every year.” What part is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The process does not guarantee positive returns.",
+                    "feedback": "Compounding describes how retained gains build, while actual market values can fall or vary.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The arithmetic needs no starting balance.",
+                    "feedback": "A percentage must apply to some amount; the real flaw is treating uncertain gains as certain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip",
+                      "investing"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-8",
+                "type": "match",
+                "conceptId": "compounding",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "compounding-m1"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ],
+                "stem": "Match each label to its role in a toy account.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Starting ₹100",
+                    "feedback": "This sum came first. It is the base on which the first gain is worked out.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Base for the first gain",
+                    "feedback": "The first base is present before any gain has been added to the account.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Saved ₹10 gain",
+                    "feedback": "This gain stays in the account, so it can join the amount used for the next gain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Part of the next base",
+                    "feedback": "The later rate can act on this saved gain as well as the first sum.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "compounding-m1",
+                "name": "Gain only on start",
+                "correction": "When gains stay in the pot, later gains can build on them too.",
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ]
+              },
+              {
+                "id": "compounding-m2",
+                "name": "SIP means sure gain",
+                "correction": "A SIP sets a payment pattern; it does not set market returns.",
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "compound",
+                "title": "Small Savings Add Up to Big Money",
+                "publisher": "Investor.gov, U.S. Securities and Exchange Commission",
+                "year": 2026,
+                "url": "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/small-savings-add-big-money",
+                "asOf": "2026-10-16"
+              },
+              {
+                "id": "sip",
+                "title": "Understanding Mutual Funds",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/hindi/understanding_mf.html",
+                "asOf": "2026-10-16"
+              },
+              {
+                "id": "investing",
+                "title": "Introduction to Investing",
+                "publisher": "Investor.gov, U.S. Securities and Exchange Commission",
+                "year": 2026,
+                "url": "https://www.investor.gov/introduction-investing",
+                "asOf": "2026-10-16"
+              }
+            ]
+          },
+          {
+            "id": "rule-of-72",
+            "title": "The rule of 72",
+            "prerequisites": [
+              "compounding"
+            ],
+            "hook": "At a made-up 9% rate, 72 ÷ 9 says eight years to double. The exact compound calculation lands close, but not on eight.",
+            "hookSourceRefs": [
+              "rule72"
+            ],
+            "rule": "For a steady percent gain, divide 72 by the rate to guess the years to double. It is a rough math shortcut, not a promise of market growth.",
+            "ruleSourceRefs": [
+              "rule72",
+              "investing"
+            ],
+            "claims": [
+              {
+                "id": "rule-of-72-c1",
+                "text": "The rule of 72 is a rough way to guess when a sum may double. Divide 72 by a set rate.",
+                "sourceRefs": [
+                  "rule72"
+                ]
+              },
+              {
+                "id": "rule-of-72-c2",
+                "text": "Market returns do not have a fixed rate, so the shortcut is only a what-if tool there.",
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "rule-of-72-1",
+                "type": "predict",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "A hostel quiz shows a steady 8% toy growth rate. What doubling time does the rule of 72 suggest?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About nine years.",
+                    "feedback": "The shortcut divides 72 by eight, then treats the answer as a rough time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Exactly eight years.",
+                    "feedback": "Eight is the rate in this case; the estimate comes from dividing 72 by it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-2",
+                "type": "scenario",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "On a train, Arjun compares two made-up constant rates: 6% and 9%. Which has the shorter rough doubling time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The 9% case.",
+                    "feedback": "A larger assumed rate makes 72 divided by that rate smaller.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The 6% case.",
+                    "feedback": "A smaller rate takes more periods to build the same doubling under the shortcut.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-3",
+                "type": "estimate",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "For a toy balance rising at a steady 6% each year, roughly how many years does 72 ÷ 6 suggest?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "12 years.",
+                    "feedback": "The sum is twelve. A real yearly count may be close, but it need not match.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "6 years.",
+                    "feedback": "That copies the rate into the answer and skips the division that gives the shortcut its name.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 12,
+                  "min": 11.5,
+                  "max": 12.5,
+                  "unit": "years"
+                }
+              },
+              {
+                "id": "rule-of-72-4",
+                "type": "choose",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ],
+                "stem": "A class chart shows a market rate that changes each year. How should its rule-of-72 answer be read?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "As a rough what-if under a steady rate.",
+                    "feedback": "The shortcut assumes one rate, so a changing path may reach double at another time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "As a guaranteed doubling date.",
+                    "feedback": "Market changes can shift the path, so a single assumed percentage cannot fix a date.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-5",
+                "type": "why",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "Why does 72 ÷ 12 yield a shorter doubling guess than 72 ÷ 4?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Faster growth needs fewer periods to double.",
+                    "feedback": "A bigger rate goes below 72. When you divide, the year count gets smaller.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The starting rupee amount is larger.",
+                    "feedback": "The shortcut's time estimate uses the rate, not the size of the starting balance.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "rule-of-72-6",
+                "type": "fill-the-step",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "At a fixed 3% toy rate, the rule gives 72 ÷ 3 = ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 24 years.",
+                    "feedback": "A low rate makes the doubling estimate long; the rule still gives only an approximation.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 3 years.",
+                    "feedback": "That repeats the rate as years and misses the much larger quotient from the division.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-7",
+                "type": "true-not-quite",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ],
+                "stem": "A friend says, “The rule of 72 says my UPI wallet must double in nine years.” Spot the flaw.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A wallet has no stated steady growth rate.",
+                    "feedback": "First pick a growth rate. Without one, there is no time to work out.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The number 72 works only for coins.",
+                    "feedback": "The sum can use any kind of money. It still needs a rate to work.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-8",
+                "type": "explain-it-back",
+                "conceptId": "rule-of-72",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "rule-of-72-m1"
+                ],
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ],
+                "stem": "Which line best explains why this shortcut is useful in a classroom?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It turns a rate into a quick doubling guess.",
+                    "feedback": "You can do this sum in your head. A full growth sum may give a different time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It proves a market return will stay fixed.",
+                    "feedback": "A fast guess does not make a real rate stay the same each year.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "rule-of-72-m1",
+                "name": "Exact clock",
+                "correction": "The rule gives a rough guess, not an exact date.",
+                "sourceRefs": [
+                  "rule72"
+                ]
+              },
+              {
+                "id": "rule-of-72-m2",
+                "name": "Any market rate is fixed",
+                "correction": "Market gains can vary; the shortcut needs a steady assumed rate.",
+                "sourceRefs": [
+                  "rule72"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "rule72",
+                "title": "Financial Education for Kids: Creating a Path to Financial Fluency",
+                "publisher": "FINRA",
+                "year": 2025,
+                "url": "https://syndication.finra.org/content/financial-education-kids-creating-path-financial-fluency",
+                "asOf": "2026-10-16"
+              },
+              {
+                "id": "investing",
+                "title": "Introduction to Investing",
+                "publisher": "Investor.gov, U.S. Securities and Exchange Commission",
+                "year": 2026,
+                "url": "https://www.investor.gov/introduction-investing",
+                "asOf": "2026-10-16"
+              }
+            ]
+          },
+          {
+            "id": "risk-return",
+            "title": "Risk and return",
+            "prerequisites": [
+              "rule-of-72"
+            ],
+            "hook": "A fair coin pays ₹30 on heads and nothing on tails; a sure ₹12 ticket pays less at best but never zero. The range matters.",
+            "hookSourceRefs": [
+              "risk"
+            ],
+            "rule": "A bigger possible gain often comes with more chance of loss or a wider range of results. A high possible return is not a sure return.",
+            "ruleSourceRefs": [
+              "risk"
+            ],
+            "claims": [
+              {
+                "id": "risk-return-c1",
+                "text": "Investment risk includes the chance of loss and uncertain results.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "risk-return-c2",
+                "text": "A high possible gain may mean more risk. The gain is not sure.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "risk-return-1",
+                "type": "predict",
+                "conceptId": "risk-return",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "At a school fair, a game pays ₹30 or ₹0. A second game pays ₹12 for sure. Which result range is wider?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The first game's range.",
+                    "feedback": "Its two possible payoffs are far apart, so its outcome is less certain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The sure game's range.",
+                    "feedback": "A fixed payoff has no spread between best and worst outcomes in this simple setup.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-2",
+                "type": "scenario",
+                "conceptId": "risk-return",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "During exam week, a family shop tries a new snack that may sell out or go unsold. Which outcome is possible?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A loss as well as a gain.",
+                    "feedback": "Some snacks may not sell. A big best case does not tell us how many buyers will come.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only a gain, since the best case is large.",
+                    "feedback": "A strong best case does not remove the weaker outcome if buyers do not appear.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-3",
+                "type": "estimate",
+                "conceptId": "risk-return",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A toy raffle pays ₹100 on one of four equal tickets and ₹0 otherwise. What is the average payout per ticket?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹25.",
+                    "feedback": "One ticket pays ₹100 and three pay none. Share that ₹100 across four tickets for the mean.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹100.",
+                    "feedback": "That is the best single outcome, not the average across all four possible tickets.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 25,
+                  "min": 24.5,
+                  "max": 25.5,
+                  "unit": "rupees"
+                }
+              },
+              {
+                "id": "risk-return-4",
+                "type": "choose",
+                "conceptId": "risk-return",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A poster shows only its best possible payout. What key part of risk is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The chance and size of poor outcomes.",
+                    "feedback": "A maximum alone leaves out how often that amount occurs and what losses remain possible.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The colour of the poster.",
+                    "feedback": "Design does not reveal the range of payoffs or the chance of losing money.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-5",
+                "type": "why",
+                "conceptId": "risk-return",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Why can a high possible return fail to arrive for a share?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The price can move in either direction.",
+                    "feedback": "Possible upside is one outcome in a wider set that includes weaker prices.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The quoted upside is a fixed payment.",
+                    "feedback": "A quote about possible gain is not a contract to pay that gain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "risk-return-6",
+                "type": "fill-the-step",
+                "conceptId": "risk-return",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Complete the comparison: ₹10 for sure has a narrow range; ₹0 or ₹30 has a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Wider range of outcomes.",
+                    "feedback": "The second payoff can land at either extreme, making its result less predictable.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Guaranteed larger payoff.",
+                    "feedback": "One branch gives nothing, so the larger headline amount is not assured.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-7",
+                "type": "true-not-quite",
+                "conceptId": "risk-return",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "“More risk always pays more,” says a cricket teammate. What is too strong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Risk can bring loss without extra return.",
+                    "feedback": "A big prize can come with a chance of loss. The prize may never arrive.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Risk means prices never fall.",
+                    "feedback": "A price may fall. That is why a sure gain is too strong a claim.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-8",
+                "type": "explain-it-back",
+                "conceptId": "risk-return",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Which sentence captures the trade in this fair-game example?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The larger possible prize comes with more spread.",
+                    "feedback": "Comparing both good and bad outcomes shows what the attractive headline hides.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The largest prize is the only outcome that counts.",
+                    "feedback": "The zero prize can happen too. Leave it out and the game's range looks false.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "risk-return-m1",
+                "name": "High means sure",
+                "correction": "A high possible return can come with a loss too.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "risk-return-m2",
+                "name": "No loss is possible",
+                "correction": "An uncertain asset can lose value as well as gain it.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "risk",
+                "title": "Beginners Guide to Asset Allocation, Diversification, and Rebalancing",
+                "publisher": "Investor.gov, U.S. Securities and Exchange Commission",
+                "year": 2026,
+                "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset",
+                "asOf": "2026-10-16"
+              }
+            ]
+          },
+          {
+            "id": "diversification",
+            "title": "Diversification",
+            "prerequisites": [
+              "risk-return"
+            ],
+            "hook": "A monsoon cancels cricket practice and hurts both a bat seller and a ball seller. Two products can still share one shock.",
+            "hookSourceRefs": [
+              "risk"
+            ],
+            "rule": "Spreading money across different holdings can cut the harm from one weak part. It cannot make all loss go away, since many parts can fall together.",
+            "ruleSourceRefs": [
+              "risk"
+            ],
+            "claims": [
+              {
+                "id": "diversification-c1",
+                "text": "A mix of holdings can spread the risk from one firm.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "diversification-c2",
+                "text": "A broad mix can cut some risk from one firm. It cannot wipe out all risk.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "diversification-1",
+                "type": "predict",
+                "conceptId": "diversification",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A family shop sells only mango juice. Monsoon rain cuts foot traffic. What happens to its sales mix?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Every sale line feels the same stall shock.",
+                    "feedback": "With one product, there is no other product line to offset that lost demand.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The shop is shielded by selling one item.",
+                    "feedback": "Concentration ties the whole stall to demand for that one drink and its customers.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "diversification-2",
+                "type": "scenario",
+                "conceptId": "diversification",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "At a college fest, one stall sells juice and snacks, while another sells only juice. If fruit prices jump, which stall has another line?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The juice-and-snacks stall.",
+                    "feedback": "A separate product gives it one source of sales that does not use the costly fruit.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The juice-only stall.",
+                    "feedback": "All its sales still depend on juice, so a fruit cost shock reaches its sole line.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "diversification-3",
+                "type": "estimate",
+                "conceptId": "diversification",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A toy portfolio has ₹100 in each of four firms. One holding falls to zero; the rest stay flat. How much remains?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹300.",
+                    "feedback": "Only one quarter was tied to that single firm, though the portfolio still lost ₹100.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹0.",
+                    "feedback": "Only one firm failed here. The other three still keep their stated value.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 300,
+                  "min": 299.5,
+                  "max": 300.5,
+                  "unit": "rupees"
+                }
+              },
+              {
+                "id": "diversification-4",
+                "type": "choose",
+                "conceptId": "diversification",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A student holds shares in four firms that all rely on the same crop. What risk remains?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A crop shock can hurt all four.",
+                    "feedback": "All four firms need the crop. One bad harvest could hurt each of them.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "There is no shared risk at all.",
+                    "feedback": "The firms may be separate, yet one poor harvest can affect all of them.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "diversification-5",
+                "type": "why",
+                "conceptId": "diversification",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Why can spreading holdings reduce the harm from one firm's failure?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Other holdings can keep some value.",
+                    "feedback": "A loss in one part then reaches only that part of the total, if others hold up.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every holding is guaranteed to rise.",
+                    "feedback": "Spreading exposure changes the share at risk from one firm; it does not promise gains.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "diversification-6",
+                "type": "fill-the-step",
+                "conceptId": "diversification",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A mix of holdings can limit one firm's harm. What kind of loss can still hit the whole mix?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Losses that hit many holdings together.",
+                    "feedback": "A broad shock can move several assets at once even when no single firm dominates.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "All links between holdings.",
+                    "feedback": "Shared markets and sectors can still connect prices across a mixed set.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "diversification-7",
+                "type": "true-not-quite",
+                "conceptId": "diversification",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "“Ten company names mean ten separate risks,” says a classmate. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Some companies share the same drivers.",
+                    "feedback": "Ten names may still share buyers or costs. A shared shock can reach them all.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Each name is legally the same company.",
+                    "feedback": "They can be distinct firms while still reacting to one common event.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "diversification-8",
+                "type": "explain-it-back",
+                "conceptId": "diversification",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "diversification-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "How can a mixed set still lose value?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It limits some single-part risk, not every loss.",
+                    "feedback": "The mix matters because weak parts may differ, while a common shock can still hurt all.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It removes all chance of a fall.",
+                    "feedback": "Broad market moves can reach many parts of a mix at the same time.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "diversification-m1",
+                "name": "One basket is enough",
+                "correction": "One firm or sector leaves a lot tied to one outcome.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "diversification-m2",
+                "name": "Many means no loss",
+                "correction": "Many holdings can still fall at the same time.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "risk",
+                "title": "Beginners Guide to Asset Allocation, Diversification, and Rebalancing",
+                "publisher": "Investor.gov, U.S. Securities and Exchange Commission",
+                "year": 2026,
+                "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset",
+                "asOf": "2026-10-16"
+              }
+            ]
+          },
+          {
+            "id": "shares",
+            "title": "What a stock is",
+            "prerequisites": [
+              "diversification"
+            ],
+            "hook": "One share can make a student a tiny owner of a company, yet it does not give a fixed coupon or a promised dividend.",
+            "hookSourceRefs": [
+              "shares"
+            ],
+            "rule": "A share is a small ownership claim in a company. Its price can change; a dividend may be paid, but neither a gain nor a dividend is assured.",
+            "ruleSourceRefs": [
+              "shares"
+            ],
+            "claims": [
+              {
+                "id": "shares-c1",
+                "text": "A share gives part ownership of a company.",
+                "sourceRefs": [
+                  "shares"
+                ]
+              },
+              {
+                "id": "shares-c2",
+                "text": "A firm may pay a share of its gains. The payout is not sure.",
+                "sourceRefs": [
+                  "shares"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "shares-1",
+                "type": "predict",
+                "conceptId": "shares",
+                "difficultySeed": 800,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "At a family shop lesson, Asha gets one share in a firm. What does that piece stand for?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A small ownership claim.",
+                    "feedback": "Ownership can link its value to the firm, while future price and payouts remain uncertain.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A fixed loan to the firm.",
+                    "feedback": "A share is an equity claim; a loan is a different kind of promise.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "shares-2",
+                "type": "scenario",
+                "conceptId": "shares",
+                "difficultySeed": 845,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "During a hostel quiz, a firm reports no dividend this year. Does a shareholder stop being an owner?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No; ownership remains.",
+                    "feedback": "A dividend is a possible payout, not the test for whether a share represents ownership.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Yes; no dividend cancels the share.",
+                    "feedback": "A firm may retain profit or pay none without turning its shares into nonownership.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "shares-3",
+                "type": "estimate",
+                "conceptId": "shares",
+                "difficultySeed": 890,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "A toy company has 100 equal shares. A student owns 5. Roughly what fraction of shares is that?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "5%.",
+                    "feedback": "Five out of a hundred is five percent, before any special share classes or rights.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "50%.",
+                    "feedback": "That would require half the shares, far more than the five stated here.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 5,
+                  "min": 4.5,
+                  "max": 5.5,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "shares-4",
+                "type": "choose",
+                "conceptId": "shares",
+                "difficultySeed": 935,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "A cricket club sells a ticket and issues an ownership share. Which gives a claim on the club itself?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The ownership share.",
+                    "feedback": "The share links the holder to the enterprise; a ticket grants a service instead.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The one-match ticket.",
+                    "feedback": "Entry to one event is not the same as holding a slice of the organisation.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "shares-5",
+                "type": "why",
+                "conceptId": "shares",
+                "difficultySeed": 980,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "Why can a share price fall even when its owner paid more earlier?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Later buyers may value it differently.",
+                    "feedback": "Trading prices reflect current bids and offers, not a guarantee tied to the earlier purchase price.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The original purchase price is legally erased.",
+                    "feedback": "The old price remains a record; it simply does not force new buyers to match it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ],
+                "task": "reason"
+              },
+              {
+                "id": "shares-6",
+                "type": "fill-the-step",
+                "conceptId": "shares",
+                "difficultySeed": 1025,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "A company may pay owners some profit. That possible payment is called a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Dividend.",
+                    "feedback": "It can transfer part of profit to owners, but a firm need not declare one.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Guaranteed interest coupon.",
+                    "feedback": "Fixed loan interest belongs to debt terms; shares do not promise that coupon.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "shares-7",
+                "type": "true-not-quite",
+                "conceptId": "shares",
+                "difficultySeed": 1070,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "“One share means a set monthly payout,” says a train passenger. What is inaccurate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Share payouts are not fixed by ownership alone.",
+                    "feedback": "The firm may pay cash to owners. It need not do so each month.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A share can never receive cash.",
+                    "feedback": "Some firms do pay dividends; the false step is treating them as automatic.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "shares-8",
+                "type": "explain-it-back",
+                "conceptId": "shares",
+                "difficultySeed": 1115,
+                "misconceptionTags": [
+                  "shares-m1"
+                ],
+                "sourceRefs": [
+                  "shares"
+                ],
+                "stem": "Which line could a student use to explain a share?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It is ownership with an uncertain price and possible dividends.",
+                    "feedback": "The two ways to get a return can vary, and neither is built in as a guarantee.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It is a loan repaid at a fixed date.",
+                    "feedback": "A share does not have the fixed repayment promise that defines a loan.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "shares-m1",
+                "name": "Share is a loan",
+                "correction": "A share is ownership, not a fixed loan payment.",
+                "sourceRefs": [
+                  "shares"
+                ]
+              },
+              {
+                "id": "shares-m2",
+                "name": "Dividend is owed",
+                "correction": "A firm may pay a dividend; it is not automatic.",
+                "sourceRefs": [
+                  "shares"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "shares",
+                "title": "Understanding Shares",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/understandings_shares.html",
+                "asOf": "2026-10-16"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
