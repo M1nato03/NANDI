@@ -6,7 +6,7 @@ describe('Android update decisions', () => {
     expect(shouldCheckForUpdate(false, null, 100)).toBe(false);
     expect(visibleUpdate(false, 2, 1, null, null, 100)).toBe(false);
   });
-  it('checks at launch and waits six hours between automatic checks', () => {
+  it('checks at launch and waits 30 minutes between automatic checks', () => {
     expect(shouldCheckForUpdate(true, null, 100)).toBe(true);
     expect(shouldCheckForUpdate(true, 100, 100 + CHECK_INTERVAL_MS - 1)).toBe(false);
     expect(shouldCheckForUpdate(true, 100, 100 + CHECK_INTERVAL_MS)).toBe(true);

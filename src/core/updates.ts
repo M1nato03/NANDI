@@ -1,4 +1,5 @@
-export const CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000;
+// version.json is tiny; check on open/resume at most every 30 minutes so a fresh release shows up the same evening.
+export const CHECK_INTERVAL_MS = 30 * 60 * 1000;
 export const SNOOZE_MS = 24 * 60 * 60 * 1000;
 
 export type UpdateVersion = {
