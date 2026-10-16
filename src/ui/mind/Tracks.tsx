@@ -9,6 +9,7 @@ import type { TrackPack, TrackUnit } from '../../data/packs/schemas';
 import { createQuestRepo } from '../../data/repos/quests';
 import { completeTrackUnit, introduceTrackCards, recordModuleTest, saveTrackDraft, selectTrack, trackUnitId, type TrackDraft } from '../../data/repos/tracks';
 import { recordError } from '../errorRing';
+import { back, go } from '../shell/router';
 
 export const trackPacks = bundledPacks.filter((pack): pack is TrackPack => pack.kind === 'track');
 export function trackCardContent(): Record<string, [string, string]> {
@@ -45,7 +46,6 @@ function TrackPlayer({ pack, unit, draft, afterBedtime, leave }: { pack: TrackPa
     finally { setSaving(false); }
   };
   return <section className="card track-player" data-save-state={saving ? 'saving' : error ? 'error' : 'saved'} aria-label="Track unit">
-    <button type="button" className="text-button" onClick={leave}>Back to Mind</button>
     <p className="eyebrow">{pack.body.track.name} · Today’s unit</p><h2>{unit.title}</h2>
     <p className="mind-save" role="status">{saving ? 'Saving…' : error || 'Saved'}</p>
     {currentDraft.step === 'points' && <>
@@ -67,7 +67,7 @@ function TrackPlayer({ pack, unit, draft, afterBedtime, leave }: { pack: TrackPa
   </section>;
 }
 
-export function Tracks({ day, afterBedtime }: { day: string; afterBedtime: boolean }) {
+export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; afterBedtime: boolean; showUnit?: boolean }) {
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const progress = useLiveQuery(() => db.lessonProg.toArray(), []) ?? [];
   const cards = useLiveQuery(() => db.cards.toArray(), []) ?? [];
@@ -76,7 +76,6 @@ export function Tracks({ day, afterBedtime }: { day: string; afterBedtime: boole
   const [testAnswers, setTestAnswers] = useState<number[]>([]);
   const [testResult, setTestResult] = useState('');
   const [testing, setTesting] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
   const activeId = settings.find(row => row.key === 'mind.activeTrack' && !row.deleted)?.value;
   const active = trackPacks.find(pack => pack.id === activeId);
   const draft = settings.find(row => row.key === 'mind.trackDraft' && !row.deleted)?.value as TrackDraft | null | undefined;
@@ -98,7 +97,7 @@ export function Tracks({ day, afterBedtime }: { day: string; afterBedtime: boole
   useEffect(() => { if (trackPacks.length) void introduceTrackCards(db, trackPacks).catch(cause => recordError('window', cause)); }, [day]);
   const start = async () => {
     if (!active || !nextUnit) return;
-    try { await saveTrackDraft(db, { packId: active.id, unitId: nextUnit.id, day, step: 'points', watched: false, answers: [], confidence: [] }); }
+    try { await saveTrackDraft(db, { packId: active.id, unitId: nextUnit.id, day, step: 'points', watched: false, answers: [], confidence: [] }); go('you/mind/unit'); }
     catch (cause) { recordError('window', cause); setError('Could not start this unit.'); }
   };
   const addQuest = async () => {
@@ -112,8 +111,8 @@ export function Tracks({ day, afterBedtime }: { day: string; afterBedtime: boole
     catch (cause) { recordError('window', cause); setError('Could not save the module test.'); }
   };
   return <section className="card track-hub" aria-label="Learning tracks"><h2>Learning tracks</h2>
-    {playUnit && active && !dismissed ? <TrackPlayer key={`${active.id}:${playUnit.id}:${day}`} pack={active} unit={playUnit} draft={activeDraft!} afterBedtime={afterBedtime} leave={() => setDismissed(true)} /> : <>
-      {playUnit && <button type="button" onClick={() => setDismissed(false)}>Continue today’s unit</button>}
+      {playUnit && active && showUnit ? <TrackPlayer key={`${active.id}:${playUnit.id}:${day}`} pack={active} unit={playUnit} draft={activeDraft!} afterBedtime={afterBedtime} leave={() => back('you/mind')} /> : <>
+      {playUnit && <button type="button" onClick={() => go('you/mind/unit')}>Continue today’s unit</button>}
       {trackPacks.map(pack => <div className="track-choice" key={pack.id}><strong>{pack.body.track.name}</strong><p>{pack.body.track.blurb}</p><p>{activeId === pack.id ? 'Active' : 'Parked'}</p><button type="button" className="secondary" disabled={activeId === pack.id} onClick={() => void selectTrack(db, pack.id).catch(cause => { recordError('window', cause); setError('Could not select track.'); })}>{activeId === pack.id ? 'Selected' : 'Pick this track'}</button></div>)}
       {active && <><button type="button" className="text-button" onClick={() => void selectTrack(db, null).catch(cause => { recordError('window', cause); setError('Could not park track.'); })}>Park track</button>
         <div className="track-budget" role="group" aria-label="Learning budget">

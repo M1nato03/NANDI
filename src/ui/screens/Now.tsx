@@ -12,13 +12,14 @@ import { caseRunId } from '../../data/repos/mysteries';
 import { trackPacks } from '../mind/Tracks';
 import { todayTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
-import { go } from '../shell/router';
+import { deckNavigation, type DeckAction } from '../../core/deckNavigation';
+import { deckIndex, go, goToCard, navigationEventName } from '../shell/router';
 
 type DeckCard = { id: string; tag: string; title: string; detail: string; action: string; href?: string; secondary?: string };
 
 export function Now() {
   const board = useTaskBoard();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(deckIndex);
   const touchY = useRef<number | null>(null);
   const today = dayKey(board.now);
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
@@ -65,13 +66,25 @@ export function Now() {
   const deck = night === 'lightsOut' ? nightCards : dayCards;
   const at = Math.min(index, deck.length - 1);
   const card = deck[at]!;
-  const next = () => setIndex(value => Math.min(deck.length - 1, value + 1));
+  const navigate = (action: DeckAction) => {
+    const destination = deckNavigation({ index: at, length: deck.length }, action).index;
+    if (destination !== at) goToCard(destination);
+  };
+  const next = () => navigate({ type: 'next' });
+  const previous = () => navigate({ type: 'previous' });
+  useEffect(() => {
+    const update = () => setIndex(deckIndex());
+    window.addEventListener('popstate', update);
+    window.addEventListener(navigationEventName(), update);
+    return () => { window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); };
+  }, []);
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
-      if (event.key !== 'ArrowDown' && event.key !== 'PageDown') return;
+      if (!['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp'].includes(event.key)) return;
       if (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes((event.target as HTMLElement).tagName)) return;
       event.preventDefault();
-      setIndex(value => Math.min(deck.length - 1, value + 1));
+      const requested = deckNavigation({ index: deckIndex(), length: deck.length }, { type: event.key === 'ArrowUp' || event.key === 'PageUp' ? 'previous' : 'next' }).index;
+      goToCard(requested);
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
@@ -84,13 +97,14 @@ export function Now() {
     if (card.id === 'task' && task) { void board.act((repos, now) => repos.completeTask(task.id, now), 'Task done.').then(ok => { if (ok) next(); }); }
     if (card.id === 'end') go('you/mind/practice');
   };
-  return <section className="screen deck-screen" aria-label="Now deck" onTouchStart={event => { touchY.current = event.touches[0]?.clientY ?? null; }} onTouchEnd={event => { if (touchY.current != null && touchY.current - (event.changedTouches[0]?.clientY ?? touchY.current) > 55) next(); touchY.current = null; }}>
+  return <section className="screen deck-screen" aria-label="Now deck" onTouchStart={event => { touchY.current = event.touches[0]?.clientY ?? null; }} onTouchEnd={event => { if (touchY.current != null) { const distance = touchY.current - (event.changedTouches[0]?.clientY ?? touchY.current); if (distance > 55) next(); else if (distance < -55) previous(); } touchY.current = null; }}>
     <div className="deck-heading"><div><p className="eyebrow">One thing at a time</p><h1>Now</h1></div><span className="deck-count">{at + 1} of {deck.length}</span></div>
-    <div className="deck-dashes" aria-label={`Card ${at + 1} of ${deck.length}`}>{deck.map((item, i) => <span key={item.id} className={i <= at ? 'active' : ''} />)}</div>
+    <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${deck.length}`}>{deck.map((item, i) => <button type="button" key={item.id} className={i <= at ? 'active' : ''} aria-label={`Go to card ${i + 1}: ${item.tag}`} aria-current={i === at ? 'step' : undefined} onClick={() => navigate({ type: 'jump', index: i })} />)}</div>
+    {at > 0 && at < deck.length - 1 && <button type="button" className="deck-back" onClick={previous} aria-label="Back to previous card">‹ Back</button>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}><div><span className="pill">{card.tag}</span><h2>{card.title}</h2><p>{card.detail}</p></div>
       <div className="deck-actions"><button type="button" onClick={action} disabled={card.id === 'lights' && !!log?.lightsOutAt}>{card.action}</button>{card.secondary && <button type="button" className="secondary" onClick={secondary}>{card.secondary}</button>}{card.id === 'task' && task && <button type="button" className="text-button" onClick={next}>Not now</button>}</div>
     </article>
-    {at < deck.length - 1 && <button type="button" className="secondary deck-next" onClick={next}>Next</button>}
+    {at < deck.length - 1 ? <button type="button" className="secondary deck-next" onClick={next}>Next</button> : <button type="button" className="secondary deck-next" onClick={previous}>Back to cards</button>}
     {board.message && <p role="status">{board.message}</p>}
   </section>;
 }

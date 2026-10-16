@@ -5,6 +5,7 @@ import { weekKey } from '../../core/quests';
 import { db } from '../../data/db';
 import { createQuestRepo } from '../../data/repos/quests';
 import { errorMessage } from '../shell/errorMessage';
+import { go } from '../shell/router';
 import './quests.css';
 
 const repo = createQuestRepo(db);
@@ -34,12 +35,13 @@ export function QuestSummaryCard() {
   return <section className="card quest-summary" aria-label="Side quests"><strong>Side quests</strong><span>{visible.filter(row => row.status === 'done').length} of {visible.length || 3} side quests this week</span></section>;
 }
 
-export function SideQuests() {
+export function SideQuests({ selectedId }: { selectedId?: string }) {
   const { rows, message, setMessage } = useQuestWeek();
   const [busy, setBusy] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [kind, setKind] = useState<'once' | 'total'>('once');
   const visible = rows.filter(row => row.status !== 'swapped' && !row.deleted);
+  const shown = selectedId ? visible.filter(row => row.id.toLowerCase() === selectedId) : visible;
   async function run(action: () => Promise<void>) {
     setBusy(true); setMessage('');
     try { await action(); setMessage('Quest saved.'); }
@@ -55,11 +57,12 @@ export function SideQuests() {
       setShowForm(false);
     });
   }
-  return <section className="card side-quests" aria-label="Side quests"><div className="quest-heading"><div><p className="eyebrow">This week</p><h2>Side quests</h2></div><span>{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
-    {visible.map(row => <article className="quest-row" key={row.id}><div><strong>{row.title}</strong><p>{row.status === 'done' ? 'Done' : row.kind === 'total' ? `${row.progress} / ${row.target} ${row.unit}` : 'Ready when you are'}{row.custom ? ' · Custom' : ''}</p><progress aria-label={`${row.title} progress`} max={row.target} value={row.status === 'done' ? row.target : row.progress} /></div>
+  return <section className="card side-quests" aria-label="Side quests"><div className="quest-heading"><div><p className="eyebrow">This week</p><h2>{selectedId ? 'Side quest' : 'Side quests'}</h2></div><span>{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
+    {shown.map(row => <article className="quest-row" key={row.id}><div><strong>{row.title}</strong><p>{row.status === 'done' ? 'Done' : row.kind === 'total' ? `${row.progress} / ${row.target} ${row.unit}` : 'Ready when you are'}{row.custom ? ' · Custom' : ''}</p><progress aria-label={`${row.title} progress`} max={row.target} value={row.status === 'done' ? row.target : row.progress} /></div>
+      {!selectedId && <button type="button" className="text-button" onClick={() => go(`plan/quest/${row.id.toLowerCase()}`)} aria-label={`Details for ${row.title}`}>Details</button>}
       {row.status === 'active' && <div className="quest-actions">{row.kind === 'once' ? <button type="button" disabled={busy} onClick={() => void run(() => repo.done(row.id, Date.now()))}>Done</button> : <><button type="button" aria-label={`Subtract ${row.step} from ${row.title}`} disabled={busy || row.progress === 0} onClick={() => void run(() => repo.tap(row.id, ulid(), -row.step, Date.now()))}>−{row.step}</button><button type="button" aria-label={`Add ${row.step} to ${row.title}`} disabled={busy} onClick={() => void run(() => repo.tap(row.id, ulid(), row.step, Date.now()))}>+{row.step}</button></>}</div>}
     </article>)}
-    <div className="quest-footer"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} onClick={() => void run(() => repo.swap(Date.now()))}>Swap one suggestion</button><button type="button" onClick={() => setShowForm(value => !value)}>Add custom quest</button></div>
+    {!selectedId && <div className="quest-footer"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} onClick={() => void run(() => repo.swap(Date.now()))}>Swap one suggestion</button><button type="button" onClick={() => setShowForm(value => !value)}>Add custom quest</button></div>}
     {showForm && <form className="quest-form" onSubmit={add}><label>Quest title<input name="title" maxLength={120} required placeholder="What will you do?" /></label><label>Kind<select value={kind} onChange={event => setKind(event.target.value as 'once' | 'total')}><option value="once">Once</option><option value="total">Total</option></select></label>
       {kind === 'total' && <><label>Target<input name="target" type="number" min="1" max="10000" defaultValue="10" required /></label><label>Unit<input name="unit" maxLength={24} placeholder="pages" required /></label><label>Step<input name="step" type="number" min="1" max="1000" defaultValue="1" required /></label></>}
       <button type="submit" disabled={busy}>Save custom quest</button></form>}

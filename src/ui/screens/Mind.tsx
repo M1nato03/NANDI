@@ -18,7 +18,7 @@ import type { Lesson } from '../../data/packs/schemas';
 import { accrueActive, bestPuzzleMs, initialGrid, openPuzzleRun, savePuzzleRun } from '../../data/repos/puzzleRuns';
 import type { PuzzleRunRow } from '../../data/types';
 import { recordError } from '../errorRing';
-import { go } from '../shell/router';
+import { back, go } from '../shell/router';
 import { PuzzleBoardView } from '../mind/Boards';
 import { LessonPlayer } from '../mind/LessonPlayer';
 import { Reviews } from '../mind/Reviews';
@@ -45,9 +45,15 @@ export function Mind({ entry }: { entry?: string }) {
   const today = dayKey(now);
   const featured = featuredSpec(today);
   const [selection, setSelection] = useState<Selection | null>(null);
-  const [practice, setPractice] = useState(false);
+  const practice = entry === 'practice';
   const entryHandled = useRef(false);
   const [caseOpen, setCaseOpen] = useState(false);
+  useEffect(() => {
+    if (!caseOpen) return;
+    const closeOnBack = () => setCaseOpen(false);
+    window.addEventListener('popstate', closeOnBack);
+    return () => window.removeEventListener('popstate', closeOnBack);
+  }, [caseOpen]);
   const [board, setBoard] = useState<PuzzleBoard | null>(null);
   const [run, setRun] = useState<PuzzleRunRow | null>(null);
   const [dailyDoneKey, setDailyDoneKey] = useState<string | null>(null);
@@ -62,8 +68,6 @@ export function Mind({ entry }: { entry?: string }) {
   const lessonProgress = useLiveQuery(() => db.lessonProg.toArray(), []) ?? [];
   const cards = useLiveQuery(() => db.cards.toArray(), []) ?? [];
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
-  const ratings = useLiveQuery(() => db.ratings.toArray(), []) ?? [];
-  const flags = useLiveQuery(() => db.flags.toArray(), []) ?? [];
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const settings = settingRows ?? [];
@@ -127,30 +131,33 @@ export function Mind({ entry }: { entry?: string }) {
 
   useEffect(() => {
     let live = true;
-    void loadLessonDraft(db).then(draft => { if (live && draft?.day === today && draft.step < 7) setLessonDraft(current => current ?? draft); }).catch(error => recordError('window', error));
+    void loadLessonDraft(db).then(draft => { if (live && entry === 'lesson' && draft?.day === today && draft.step < 7) setLessonDraft(current => current ?? draft); }).catch(error => recordError('window', error));
     if (deck) void seedDeckCards(db, deck).catch(error => recordError('window', error));
     return () => { live = false; };
-  }, [today]);
+  }, [today, entry]);
 
   const startLesson = async (packId: string, lesson: Lesson, review = false) => {
     const pack = lessonPacks.find(value => value.id === packId);
     if (!pack) return;
     const saved = await loadLessonDraft(db);
-    if (saved?.day === today && saved.lessonId === lesson.id && saved.review === review && saved.step < 7) { setLessonDraft(saved); return; }
+    if (saved?.day === today && saved.lessonId === lesson.id && saved.review === review && saved.step < 7) { go('you/mind/lesson'); return; }
     if (!review && (night !== 'day' || dayLessons.some(row => row.packId === packId))) return;
     const draft: LessonDraft = { courseId: pack.body.course.id, lessonId: lesson.id, review, day: today, step: 0, order: { guess: shuffleOptions(lesson.o.length), transfer: shuffleOptions(lesson.tr.o.length), why: shuffleOptions(lesson.wy.o.length) }, picked: {} };
     await saveLessonDraft(db, draft);
-    setLessonDraft(draft);
+    go('you/mind/lesson');
   };
   const startReviews = () => {
     if (!deck) return;
-    const hidden = new Set(flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
-    setReviews(buildReviewSession(today, cards, itemProgress, ratings, hidden, deck));
+    go('you/mind/reviews');
+  };
+  const openCase = () => {
+    history.pushState({ ...history.state, nandi: true, transientCase: true }, '', location.href);
+    setCaseOpen(true);
   };
   const finishReviews = async () => {
     const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
     await trackWrite(() => db.settings.put({ key: `mind.reviewsDone:${today}`, value: true, updatedAt: now, deleted: 0, deviceId }));
-    setReviews(null);
+    back('you/mind');
   };
 
   const persist = useCallback((row: PuzzleRunRow) => {
@@ -253,31 +260,25 @@ export function Mind({ entry }: { entry?: string }) {
     return () => { delete (window as Window & { __nandiMindTest?: typeof hook }).__nandiMindTest; };
   }, [board, run?.id]);
 
-  const open = (item: Selection) => {
-    setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
-    if (item.daily) {
-      void db.puzzleRuns.where('type').equals(item.type).toArray().then(rows => {
-        setSelection(needsIntro(item.type, rows) ? { ...item, daily: false, intro: true, diff: 'easy', attempt: -1 } : item);
-      }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
-      return;
-    }
-    void db.puzzleRuns.where('type').equals(item.type).toArray().then(rows => {
-      const matching = rows.filter(row => !row.deleted && !row.daily && row.dayKey === today && row.diff === item.diff);
-      const unfinished = matching.find(row => !row.result);
-      const attempt = unfinished?.practiceAttempt ?? (matching.length ? Math.max(...matching.map(row => row.practiceAttempt ?? 0)) + 1 : 0);
-      setSelection({ ...item, attempt });
-    }).catch(error => { recordError('window', error); setMessage('Could not open practice.'); setBusy(false); });
-  };
+  const open = (item: Selection) => go(item.daily ? 'you/mind/board' : `you/mind/board/${item.type}/${item.diff}`);
   useEffect(() => {
     if (entryHandled.current || !entry) return;
-    if (entry === 'case' && !caseReady || entry === 'reviews' && cards.length === 0) return;
+    if (entry === 'case' && !caseReady) return;
     const timer = window.setTimeout(() => {
       if (entryHandled.current) return;
       entryHandled.current = true;
-      if (entry === 'board') {
+      if (entry === 'board' || entry.startsWith('board/')) {
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
-        void db.puzzleRuns.where('type').equals(featured.type).toArray().then(rows => {
-          setSelection(needsIntro(featured.type, rows) ? { type: featured.type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type: featured.type, diff: featured.diff, daily: true });
+        const [, practiceType, practiceDiff] = entry.split('/');
+        const type = types.find(value => value === practiceType);
+        const diff = diffs.find(value => value === practiceDiff);
+        void db.puzzleRuns.where('type').equals(type ?? featured.type).toArray().then(rows => {
+          if (type && diff) {
+            const matching = rows.filter(row => !row.deleted && !row.daily && row.dayKey === today && row.diff === diff);
+            const unfinished = matching.find(row => !row.result);
+            const attempt = unfinished?.practiceAttempt ?? (matching.length ? Math.max(...matching.map(row => row.practiceAttempt ?? 0)) + 1 : 0);
+            setSelection({ type, diff, daily: false, attempt });
+          } else setSelection(needsIntro(featured.type, rows) ? { type: featured.type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type: featured.type, diff: featured.diff, daily: true });
         }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
       }
       else if (entry === 'case') setCaseOpen(true);
@@ -285,27 +286,24 @@ export function Mind({ entry }: { entry?: string }) {
         const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
         setReviews(buildReviewSession(today, allCards, progress, allRatings, hidden, deck));
       }).catch(error => recordError('window', error));
-      else if (entry === 'practice') setPractice(true);
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [entry, caseReady, cards.length, featured.type, featured.diff, today]);
-  const close = () => { if (current.current && !current.current.result) persist(current.current); setSelection(null); setBoard(null); setRun(null); current.current = null; setMessage(''); };
+  }, [entry, caseReady, featured.type, featured.diff, today]);
   const state: PuzzleState = { grid: run?.grid ?? (board ? initialGrid(board) : []), path: run?.path ?? [] };
   const checked = board ? checkRules(board, state) : null;
   const name = board ? PZ.TYPES[board.type].name : '';
 
-  if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" onClick={() => go('now')}>Back to Now</button><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
-  if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => setLessonDraft(null)} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
+  if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
+  if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('you/mind')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
   if (reviews && deck) return <Reviews entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onDone={() => void finishReviews()} />;
-  if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => setCaseOpen(false)} />;
+  if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => entry === 'case' ? go('you/mind') : history.back()} />;
   if (selection) return <section className="screen mind-board" data-save-state={saveState}>
-    <button type="button" className="text-button" onClick={close}>← Mind</button>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     {busy || !board || !run ? <><h1>{PZ.TYPES[selection.type].name}</h1><p role="status">{message || 'Building board…'}</p></> : <>
       <p className="eyebrow">{selection.intro ? `Intro board · ${board.diff}` : selection.daily ? `Daily drop · ${today}` : `Practice · ${board.diff}`}</p>
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>Board complete</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} hints · Best {timeText(best ?? run.solveMs ?? 0)}</p><button type="button" onClick={close}>Back to Mind</button></div> : <>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>Board complete</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} hints · Best {timeText(best ?? run.solveMs ?? 0)}</p></div> : <>
         <p className="small" aria-label="Active time">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => commit({ ...state, grid }, notes ? { notes } : {})} onPath={path => commit({ ...state, path })} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" onClick={() => { const hint = nextHint(board, state); if (hint.changed) commit(hint.state, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), 3] }); setMessage(hint.message); }}>Hint</button></div>
@@ -317,17 +315,17 @@ export function Mind({ entry }: { entry?: string }) {
   return <section className="screen mind-hub">
     <p className="eyebrow">Daily drop · {today}</p><h1>Mind</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
-    {!unlocked ? <div className="card"><h2>Today’s drop opens at {unlockTime}</h2><button type="button" onClick={() => go('now')}>Back to Now</button></div> : dropComplete ? <div className="card"><h2>Today's drop complete.</h2><p>Next drop: {unlockTime}</p><button type="button" onClick={() => go('now')}>Back to Now</button></div> : <>
+    {!unlocked ? <div className="card"><h2>Today’s drop opens at {unlockTime}</h2></div> : dropComplete ? <div className="card"><h2>Today's drop complete.</h2><p>Next drop: {unlockTime}</p></div> : <>
       <p role="status">{dropRemaining.length} left: {dropRemaining.join(', ')}</p>
-      <div className="card"><h2>Case of the day</h2><p>Logic-grid mystery · {caseDiff}</p>{caseDone ? <p>Complete</p> : <button type="button" disabled={!caseReady} onClick={() => setCaseOpen(true)}>{caseRun ? 'Continue daily case' : 'Open daily case'}</button>}</div>
+      <div className="card"><h2>Case of the day</h2><p>Logic-grid mystery · {caseDiff}</p>{caseDone ? <p>Complete</p> : <button type="button" disabled={!caseReady} onClick={openCase}>{caseRun ? 'Continue daily case' : 'Open daily case'}</button>}</div>
       <div className="card"><h2>Today's board</h2><p>{PZ.TYPES[featured.type].name} · {featured.diff}</p>{dailyDone ? <p>Complete</p> : <button type="button" onClick={() => open({ ...featured, daily: true })}>Open daily board</button>}</div>
       <div className="card"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>
       <div className="card"><h2>Due reviews</h2>{reviewDone ? <p>Complete for today.</p> : <button type="button" onClick={startReviews}>Review due cards</button>}</div>
     </>}
-    <Tracks day={today} afterBedtime={night === 'lightsOut'} />
+    <Tracks day={today} afterBedtime={night === 'lightsOut'} showUnit={entry === 'unit'} />
     {plans.filter(plan => duePlan(plan.madeDayKey, today, plan.fired)).slice(0, 1).map(plan => <div className="card" key={plan.id}><h2>Did your plan fire yesterday?</h2><p>If {plan.ifText}, then I will {plan.thenText}.</p><div className="mind-review-actions">{(['yes', 'partly', 'no', 'na'] as const).map(value => <button type="button" className="secondary" key={value} onClick={() => void answerPlan(db, plan, value)}>{value === 'na' ? 'Didn’t come up' : value}</button>)}</div></div>)}
     <details className="card"><summary>Courses and past lessons</summary>{lessonPacks.map(pack => <div key={pack.id}><h3>{pack.body.course.name}</h3><p>{pack.body.course.blurb}</p>{pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).map(lesson => <button type="button" className="secondary" key={lesson.id} onClick={() => void startLesson(pack.id, lesson, true)}>Review: {lesson.t}</button>)}{!dayLessons.some(row => row.packId === pack.id) && pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) && night === 'day' && <button type="button" className="secondary" onClick={() => { const lesson = pack.body.lessons.find(value => !lessonProgress.some(row => row.id === value.id && row.doneDayKey)); if (lesson) void startLesson(pack.id, lesson); }}>Start {pack.body.course.short} lesson</button>}</div>)}</details>
-    {night !== 'windDown' && <div className="card"><h2>Practice</h2><p>Choose a board and difficulty.</p><button type="button" className="secondary" onClick={() => setPractice(value => !value)} aria-expanded={practice}>Practice</button>
+    {night !== 'windDown' && <div className="card"><h2>Practice</h2><p>Choose a board and difficulty.</p><button type="button" className="secondary" onClick={() => practice ? back('you/mind') : go('you/mind/practice')} aria-expanded={practice}>Practice</button>
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
     </div>}
     <button type="button" className="text-button mind-debug" onClick={() => go('you/mind/generator')}>Generator check ↗</button>

@@ -41,7 +41,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('region', { name: 'Today priorities' })).toContainText('Musts 1/3');
     await page.getByRole('button', { name: 'Finish morning plan' }).click();
     await expect(page.getByText('Plan complete for today.')).toBeVisible();
-    await page.getByRole('button', { name: '← Plan' }).click();
+    await page.getByRole('button', { name: 'Back to Plan' }).click();
     await expect(page.getByRole('region', { name: 'Today' })).toContainText('Plan project outline');
     await page.getByRole('button', { name: 'Shutdown' }).click();
     await expectLayout(page);
@@ -55,7 +55,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByText('Tomorrow’s first task is set.')).toBeVisible();
     await page.getByRole('button', { name: 'Complete shutdown' }).click();
     await expect(page.getByText('Shutdown complete. Wind-down has started.')).toBeVisible();
-    await page.getByRole('button', { name: '← Plan' }).click();
+    await page.getByRole('button', { name: 'Back to Plan' }).click();
     await page.getByRole('button', { name: 'Weekly review' }).click();
     await expect(page.getByRole('region', { name: 'Weekly numbers' })).toContainText('Done on first scheduled day: 1/1');
     await expect(page.getByRole('region', { name: 'Weekly numbers' })).toContainText('Rituals: plan 1 · shutdown 1');
