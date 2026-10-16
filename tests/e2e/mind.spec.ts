@@ -28,7 +28,7 @@ for (const scheme of ['light', 'dark'] as const) {
         expect(colors).toBe(8);
       }
       await page.screenshot({ path: testInfo.outputPath(`mind-${board.slug}-${scheme}.png`), fullPage: true });
-      await page.getByRole('button', { name: '← Mind' }).click();
+      await page.getByRole('button', { name: 'Back to Mind' }).click();
     }
   });
 
@@ -78,16 +78,13 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: `${label!.replace(': empty', ': 1')}` })).toBeVisible();
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.reload();
-    await page.getByRole('button', { name: 'Practice', exact: true }).click();
-    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
+    // The bookmarked board route now resumes directly after reload.
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
 
     await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 30_000 });
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.context().setOffline(true);
     await page.reload();
-    await page.getByRole('button', { name: 'Practice', exact: true }).click();
-    await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.context().setOffline(false);

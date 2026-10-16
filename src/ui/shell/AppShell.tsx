@@ -14,7 +14,7 @@ import { Train } from '../screens/Train';
 import { Mind } from '../screens/Mind';
 import { Ground } from '../screens/Ground';
 import { You } from '../screens/You';
-import { route, tabOf } from './router';
+import { back, backDestination, initializeHistory, navigationEventName, route, tabOf } from './router';
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
@@ -23,7 +23,7 @@ export function AppShell() {
   const [path, setPath] = useState(route);
   const [today] = useState(() => dayKey(Date.now()));
   const appearance = useAppearance();
-  useEffect(() => { const update = () => setPath(route()); window.addEventListener('hashchange', update); void requestPersist(); return () => window.removeEventListener('hashchange', update); }, []);
+  useEffect(() => { initializeHistory(); const update = () => setPath(route()); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   const tab = tabOf(path);
   let screen;
@@ -33,11 +33,11 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'now/focus') screen = <Today />;
-  else if (path === 'train' || path.startsWith('you/train')) screen = <Train />;
-  else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/')[2]} />;
+  else if (path === 'train' || path.startsWith('you/train')) screen = <Train entry={path.split('/')[2]} />;
+  else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
-  else if (tab === 'Plan') screen = <Plan />;
+  else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You {...appearance} />;
   else screen = <Now />;
-  return <div className="app-shell"><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{screen}</main><TabBar current={tab} /></div>;
+  return <div className="app-shell"><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} /></div>;
 }

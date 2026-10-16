@@ -66,7 +66,7 @@ for (const scheme of ['light', 'dark'] as const) {
       }
     }
     await expect(page.getByRole('heading', { name: 'Reviews complete.' })).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await page.getByRole('button', { name: 'Finish reviews' }).click();
     await page.getByRole('button', { name: 'Open daily board' }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));

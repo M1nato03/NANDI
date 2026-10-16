@@ -10,7 +10,7 @@ import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import '../tasks/tasks.css';
 
-export function Plan() {
+export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
   const [moving, setMoving] = useState<TaskRow | null>(null);
   const groups = taskGroups(board.tasks).filter(group => group.placement !== 'dropped');
@@ -28,6 +28,7 @@ export function Plan() {
   }, 'Task done.'); };
   const dropGroup = (id: string) => { void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.'); };
   const listProps = { onComplete: complete, onMove: setMoving, onDropGroup: dropGroup, busy: board.busy };
+  if (questId) return <section className="screen plan-screen"><SideQuests selectedId={questId} /></section>;
   return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>
     <TaskQuickAdd run={board.act} />
     {board.message && <p role="status">{board.message}</p>}

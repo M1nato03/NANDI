@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { dayKey } from '../../core/time';
 import { boardText, generateCheck, type GeneratorResult } from '../../workers/generator';
 import { recordError } from '../errorRing';
-import { go } from '../shell/router';
 import { errorMessage } from '../shell/errorMessage';
 
 interface PathSpeed { count: number; p50: number; p95: number; max: number; budgetMs: number }
@@ -29,7 +28,7 @@ export function GeneratorCheck() {
     return () => { window.clearTimeout(timer); instance.terminate(); };
   }, [today]);
   const match = main && worker ? JSON.stringify(main.result) === JSON.stringify(worker.result) : null;
-  return <section className="screen"><button className="text-button" onClick={() => go('you/mind')}>← Mind</button>
+  return <section className="screen">
     <p className="eyebrow">Browser check · {today}</p><h1>Generator check</h1><p>Same daily seeds, two places.</p>
     <div className="card"><h2>Main thread</h2><p>{main ? `${main.ms.toFixed(1)} ms` : 'Generating…'}</p></div>
     <div className="card"><h2>Worker</h2><p>{worker ? `${worker.ms.toFixed(1)} ms` : 'Generating…'}</p></div>

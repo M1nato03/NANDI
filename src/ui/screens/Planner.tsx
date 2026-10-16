@@ -13,7 +13,6 @@ import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { GroupedSteps } from '../tasks/TaskList';
 import { defaultSlot, localDateTime, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
-import { go } from '../shell/router';
 import { LearningTask } from '../mind/LearningTask';
 import '../tasks/tasks.css';
 
@@ -116,7 +115,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       setExportMessage(result === 'cancelled' ? 'Export cancelled.' : result === 'shared' ? 'Shared weekly summary.' : `Saved ${name}.`);
     } catch { setExportMessage('Could not export the weekly summary.'); }
   }
-  return <section className="screen planner-screen"><button type="button" className="text-button" onClick={() => go('plan')}>← Plan</button><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : mode === 'shutdown' ? 'Shutdown' : 'Weekly review'}</h1>
+  return <section className="screen planner-screen"><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : mode === 'shutdown' ? 'Shutdown' : 'Weekly review'}</h1>
     {board.message && <p role="status">{board.message}</p>}{exportMessage && <p role="status">{exportMessage}</p>}
     {mode === 'plan' && <>
       <p>A few minutes to give the day a shape. You can skip this.</p>
@@ -126,7 +125,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       {!skipped ? <><section aria-label="Unplaced tray"><h2>Unplaced tray</h2>{unplaced.length ? <GroupedSteps all={board.tasks} selected={unplaced} render={(task) => <TriageRow task={task} board={board} onMove={setMoving} />} onDropGroup={dropGroup} busy={board.busy} /> : <p>Tray clear.</p>}</section>
         <section aria-label="Today priorities"><h2>Musts {musts.length}/3</h2><p>Choose up to three. Each Must has a start time.</p>{planned.length > 0 && <GroupedSteps all={board.tasks} selected={planned} render={(task) => <div className="planner-priority"><span>{task.title} · {task.scheduledStart ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : ''}</span><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.setPriority(task.id, task.mustOrCould === 'must' ? 'could' : 'must', now), 'Priority saved.')}>{task.mustOrCould === 'must' ? 'Make Could' : 'Make Must'}</button></div>} onDropGroup={dropGroup} busy={board.busy} />}</section>
         <div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.markRitual('planDone', now), 'Morning plan complete.')}>Finish morning plan</button><button type="button" className="secondary" onClick={() => setSkipped(true)}>Skip for now</button></div>
-      </> : <section className="card"><h2>Pick your one Must</h2><p>One time and one task is enough to start.</p>{planned.length > 0 && <GroupedSteps all={board.tasks} selected={planned} render={(task) => <button type="button" className="secondary" onClick={() => void board.act(async (repos, now) => { await repos.setPriority(task.id, 'must', now); await repos.markRitual('planDone', now); }, 'One Must picked.')}>{task.title}</button>} onDropGroup={dropGroup} busy={board.busy} />}<button type="button" className="text-button" onClick={() => setSkipped(false)}>Back to full plan</button></section>}
+      </> : <section className="card"><h2>Pick your one Must</h2><p>One time and one task is enough to start.</p>{planned.length > 0 && <GroupedSteps all={board.tasks} selected={planned} render={(task) => <button type="button" className="secondary" onClick={() => void board.act(async (repos, now) => { await repos.setPriority(task.id, 'must', now); await repos.markRitual('planDone', now); }, 'One Must picked.')}>{task.title}</button>} onDropGroup={dropGroup} busy={board.busy} />}<button type="button" className="text-button" onClick={() => setSkipped(false)}>Show full plan</button></section>}
       {completed?.planDone && <p role="status">Plan complete for today.</p>}
     </>}
     {mode === 'shutdown' && <>
