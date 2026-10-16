@@ -66,6 +66,7 @@ test('backup downloads, previews, and restores only after confirmation', async (
   await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   await page.evaluate(() => (globalThis as unknown as { __nandiTest: { seedShell: () => Promise<void> } }).__nandiTest.seedShell());
+  await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByRole('button', { name: /Backup and restore/ }).click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export backup' }).click();

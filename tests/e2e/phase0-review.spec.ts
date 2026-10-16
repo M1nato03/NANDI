@@ -25,6 +25,7 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
 
 test('theme and reduced motion survive reload', async ({ page }) => {
   await page.goto('/#you');
+  await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByLabel('Motion').selectOption('reduce');
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
   await page.getByLabel('Theme').selectOption('light');
@@ -57,6 +58,7 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
 test('theme survives backup, wipe, and picker restore', async ({ page }) => {
   await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
+  await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByLabel('Theme').selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('button', { name: /Backup and restore/ }).click();
@@ -76,5 +78,6 @@ test('theme survives backup, wipe, and picker restore', async ({ page }) => {
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
+  await page.getByRole('button', { name: /Settings/ }).click();
   await expect(page.getByLabel('Theme')).toHaveValue('dark');
 });

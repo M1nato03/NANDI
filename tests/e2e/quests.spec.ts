@@ -46,7 +46,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(restored.getByRole('button', { name: 'Swap one suggestion' })).toBeDisabled();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
     for (let index = 0; index < 5; index++) await page.getByRole('button', { name: 'Next' }).click();
-    await expect(page.getByRole('article', { name: 'A little extra card' })).toContainText('1 of 4 side quests done this week');
+    await expect(page.getByRole('article', { name: 'A little extra card' })).toContainText('I did it');
     await checkLayout(page);
   });
 }

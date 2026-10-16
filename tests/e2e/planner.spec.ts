@@ -69,6 +69,7 @@ for (const scheme of ['light', 'dark'] as const) {
     expect((await download).suggestedFilename()).toBe('nandi-week-2026-W41.json');
     await expect(page.getByText('Saved nandi-week-2026-W41.json.')).toBeVisible();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
+    await page.getByRole('button', { name: /Settings/ }).click();
     await page.getByLabel('Shutdown time').fill('22:45');
     await expect(page.getByText('Planner settings saved.')).toBeVisible();
     await page.getByLabel('Bedtime target').fill('23:30');

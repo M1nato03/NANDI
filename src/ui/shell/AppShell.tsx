@@ -47,6 +47,11 @@ export function AppShell() {
   let screen;
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={appearance.reload} />;
   else if (path === 'you/night') screen = <Night />;
+  else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
+    <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
+    <button type="button" className="secondary" onClick={() => void nativeUpdater.check(true)}>Check for updates</button>
+    {nativeUpdater.message && <p role="status">{nativeUpdater.message}</p>}
+  </section>}<Ground {...appearance} /></section>;
   else if (path === 'mind/generator' || path === 'you/mind/generator') screen = <GeneratorCheck />;
   else if (path === 'tasks/plan' || path === 'plan/morning') screen = <Planner mode="plan" />;
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
@@ -57,7 +62,7 @@ export function AppShell() {
   else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
-  else if (tab === 'You') screen = <You {...appearance} updater={nativeUpdater} />;
+  else if (tab === 'You') screen = <You />;
   else screen = <Now />;
   return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{today}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} />{pausePackage && <NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} />}</div>;
 }

@@ -135,3 +135,57 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
   .you-links { grid-template-columns: 1fr; }
   .task-row-actions { flex-wrap: wrap; justify-content: flex-end; }
 }
+
+/* A card carries the work itself, so its height follows its content. */
+.deck-card { min-height: 0; display: block; padding: clamp(22px, 5vw, 36px); position: relative; overflow: hidden; }
+.deck-card h2 { font-size: clamp(30px, 8vw, 50px); margin: 18px 0 10px; }
+.deck-card p { font-size: 16px; margin: 10px 0; }
+.deck-card .deck-meta { font-size: 13px; color: var(--muted); }
+.deck-actions { margin-top: 22px; }
+.deck-dashes { overflow: visible; gap: 0; flex-wrap: wrap; }
+.deck-dashes button { flex: 1 1 44px; min-width: 44px; }
+.deck-dashes button::after { inset-inline: 2px; }
+.deck-dashes button.active::after { background: var(--muted); }
+.deck-dashes button.complete::after { background: var(--accent); animation: segment-fill .45s ease-out both; }
+.deck-check { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-left: 9px; border-radius: 50%; background: var(--accent); color: var(--bg); font-weight: 800; vertical-align: middle; }
+.just-completed .deck-check { animation: check-pop .5s ease-out both; }
+.just-completed { animation: card-fill .6s ease-out both; }
+.deck-exercises, .you-week ul { list-style: none; padding: 0; margin: 18px 0; }
+.deck-exercises li, .you-week li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.deck-exercises strong { color: var(--accent); white-space: nowrap; }
+.deck-puzzle { width: min(100%, 165px); aspect-ratio: 1; display: grid; gap: 2px; padding: 3px; background: var(--line); border-radius: 8px; margin: 14px 0; }
+.deck-puzzle span { display: grid; place-items: center; min-width: 0; background: var(--raised); color: var(--ink); font-size: 12px; font-weight: 700; }
+.deck-puzzle .region-0 { background: var(--region-0); color: var(--region-ink); }
+.deck-puzzle .region-1 { background: var(--region-1); color: var(--region-ink); }
+.deck-puzzle .region-2 { background: var(--region-2); color: var(--region-ink); }
+.deck-puzzle .region-3 { background: var(--region-3); color: var(--region-ink); }
+.deck-puzzle .region-4 { background: var(--region-4); color: var(--region-ink); }
+.deck-puzzle .region-5 { background: var(--region-5); color: var(--region-ink); }
+.deck-puzzle .region-6 { background: var(--region-6); color: var(--region-ink); }
+.deck-puzzle .region-7 { background: var(--region-7); color: var(--region-ink); }
+.deck-add { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin: 20px 0; }
+.deck-add label { grid-column: 1 / -1; margin: 0; }
+.deck-add input { width: 100%; min-width: 0; }
+.deck-add button { min-height: 48px; }
+.inline-timer { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin: 20px 0; color: var(--accent); }
+.inline-timer strong { font: 800 48px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; }
+.deck-cycle { display: flex; flex-wrap: wrap; margin: 16px 0 0; font-size: 13px; }
+.deck-cycle select { flex: 1 1 180px; }
+.deck-end { margin: 18px 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.deck-end strong { color: var(--ink); }
+.deck-celebration { color: var(--accent) !important; font-weight: 700; animation: check-pop .6s ease-out both; }
+.deck-confirm { width: 100%; justify-content: flex-start; font-size: 13px; }
+.you-week { margin-top: 0; padding: 18px; }
+.you-week h2 { margin: 12px 0 6px; font-size: clamp(25px, 6vw, 34px); }
+.you-week p { margin: 8px 0 0; }
+.you-week li { display: block; }
+.you-links { gap: 10px; }
+.you-link { min-height: 128px; padding: 18px; }
+.you-link strong { font-size: 27px; }
+.settings-link { margin-top: 14px; min-height: 120px; }
+@keyframes check-pop { 0% { transform: scale(.7); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes card-fill { 0% { box-shadow: inset 0 0 0 0 var(--accent); } 50% { box-shadow: inset 0 0 0 4px var(--accent); } 100% { box-shadow: inset 0 0 0 1px var(--line); } }
+@keyframes segment-fill { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+@media (max-width: 600px) { .deck-card { min-height: 0; } .deck-actions { flex-direction: row; } .deck-actions button { width: auto; flex: 1 1 140px; } }
+@media (prefers-reduced-motion: reduce) { .deck-dashes button.complete::after, .just-completed .deck-check, .just-completed, .deck-celebration { animation: none; } }
+:root[data-motion='reduce'] .deck-dashes button.complete::after, :root[data-motion='reduce'] .just-completed .deck-check, :root[data-motion='reduce'] .just-completed, :root[data-motion='reduce'] .deck-celebration { animation: none; }

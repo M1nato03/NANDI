@@ -24,6 +24,8 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
   const [stopAdvice, setStopAdvice] = useState(false);
   const [temperature, setTemperature] = useState('');
   const [humidity, setHumidity] = useState('');
+  const [fullSession, setFullSession] = useState(false);
+  const minimumMode = session.readiness === 'minimum:10-minutes' && !fullSession;
   useEffect(() => {
     const update = () => setNow(Date.now());
     const timer = window.setInterval(update, 1000);
@@ -35,6 +37,7 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
   const rest = session.restEndsAt ? remainingRestMs(session.restEndsAt, now) : 0;
   const painNames = (session.painExerciseIds ?? []).map(id => EXERCISE_LIBRARY[id]?.name ?? id);
   return <section className="train-workout"><p className="eyebrow">Session in progress</p><h1>Train</h1><p>One clean set at a time. Solid effort means a few reps left.</p>
+    {minimumMode && <div className="card" aria-label="Minimum session"><h2>Just the minimum</h2><p>One set of each movement. Ten minutes is enough to show up.</p><p role="timer">{Math.max(0, Math.ceil((600_000 - (now - (session.startedAt ?? now))) / 60_000))} min left</p><button type="button" className="secondary" onClick={() => setFullSession(true)}>Continue full session</button></div>}
     {message && <p role="status">{message} {message.includes('New best') && <span className="train-pr-badge">PR</span>}</p>}
     {session.templateKey?.startsWith('gym') && <p>Pick a load you can lift for 12 clean reps. Start light and use your smallest available step.</p>}
     {rest > 0 && <div className="train-rest" role="timer" aria-label={`Rest ${Math.ceil(rest / 1000)} seconds`}>Rest · {Math.floor(rest / 60000)}:{String(Math.ceil(rest / 1000) % 60).padStart(2, '0')} <button type="button" className="secondary" disabled={busy} onClick={() => adjustRest(now)}>Skip rest</button><button type="button" className="secondary" disabled={busy} onClick={() => adjustRest((session.restEndsAt ?? now) + 30_000)}>+30 s</button></div>}
@@ -54,7 +57,7 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
         {ladder && <p>Step {last?.ladderStep ?? ladder.find(step => step.exerciseId === ex.exerciseId)?.rank ?? 1}/{ladder.length}</p>}
         {ex.exerciseId === 'backpack-row' || ex.exerciseId === 'band-row' ? <p>Limited pulling. A sturdy anchor or bar widens your options.</p> : null}
         {!stopped && warmups.map((set, slot) => <SetLine key={`warm-${slot}`} exerciseId={ex.exerciseId} slot={slot - 2} target={set.reps} load={set.load} done={logged.some(row => row.type === 'warmup' && row.slot === slot - 2)} log={log} pain={() => pain(ex.exerciseId)} busy={busy} warmup />)}
-        {!stopped && Array.from({ length: ex.sets }, (_, slot) => <SetLine key={slot} exerciseId={ex.exerciseId} slot={slot} target={target} load={load} isHold={ex.isHold} done={working.some(row => row.slot === slot)} log={log} pain={() => pain(ex.exerciseId)} busy={busy} />)}
+        {!stopped && Array.from({ length: minimumMode ? 1 : ex.sets }, (_, slot) => <SetLine key={slot} exerciseId={ex.exerciseId} slot={slot} target={target} load={load} isHold={ex.isHold} done={working.some(row => row.slot === slot)} log={log} pain={() => pain(ex.exerciseId)} busy={busy} />)}
         {stopped && <p className="train-safety">Exercise stopped. {ex.isBodyweightLadder ? 'Try the easier ladder step next time, or rest today.' : 'Rest today or choose an easier load next time.'} If pain persists, consult a qualified professional.</p>}
         {working.length >= ex.sets && !stopped && <fieldset className="train-effort"><legend>How did it feel?</legend>{(['easy', 'solid', 'near'] as const).map(value => <button type="button" key={value} className={session.effortByExercise?.[ex.exerciseId] === value ? '' : 'secondary'} aria-pressed={session.effortByExercise?.[ex.exerciseId] === value} onClick={() => effort(ex.exerciseId, value)}>{value === 'near' ? 'Near max' : value}</button>)}</fieldset>}
       </article>;
