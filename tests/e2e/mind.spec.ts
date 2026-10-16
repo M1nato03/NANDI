@@ -1,4 +1,4 @@
-/// <reference lib="dom" />
+﻿/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -6,7 +6,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(120_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/#mind');
+    await page.goto('/#you/mind');
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     const boards = [
       { name: 'Mini Sudoku', grid: 'Mini Sudoku board', slug: 'sudoku', difficulty: 'easy' },
@@ -36,7 +36,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(90_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#mind');
+    await page.goto('/?e2e#you/mind');
     await page.getByRole('button', { name: 'Open daily board' }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));

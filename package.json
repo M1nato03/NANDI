@@ -21,9 +21,8 @@
     "build-packs": "tsx scripts/build-packs.ts"
   },
   "dependencies": {
-    "@fontsource/big-shoulders-display": "5.3.0",
-    "@fontsource/inter": "5.3.0",
-    "@fontsource/jetbrains-mono": "5.3.0",
+    "@fontsource/bricolage-grotesque": "5.3.0",
+    "@fontsource/dm-sans": "5.3.0",
     "dexie": "^4.4.6",
     "dexie-export-import": "^4.4.1",
     "dexie-react-hooks": "^4.4.0",

@@ -116,7 +116,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       setExportMessage(result === 'cancelled' ? 'Export cancelled.' : result === 'shared' ? 'Shared weekly summary.' : `Saved ${name}.`);
     } catch { setExportMessage('Could not export the weekly summary.'); }
   }
-  return <section className="screen planner-screen"><button type="button" className="text-button" onClick={() => go('today')}>← Today</button><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : mode === 'shutdown' ? 'Shutdown' : 'Weekly review'}</h1>
+  return <section className="screen planner-screen"><button type="button" className="text-button" onClick={() => go('plan')}>← Plan</button><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : mode === 'shutdown' ? 'Shutdown' : 'Weekly review'}</h1>
     {board.message && <p role="status">{board.message}</p>}{exportMessage && <p role="status">{exportMessage}</p>}
     {mode === 'plan' && <>
       <p>A few minutes to give the day a shape. You can skip this.</p>

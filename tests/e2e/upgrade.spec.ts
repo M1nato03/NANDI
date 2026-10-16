@@ -1,4 +1,4 @@
-import { expect, test, type BrowserContext, type Page } from '@playwright/test';
+﻿import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -97,9 +97,9 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
     }
   });
 
-  await page.goto(`${origin}/?e2e#ground`);
+  await page.goto(`${origin}/?e2e#you`);
   await expect(
-    page.getByRole('main').getByRole('heading', { name: 'Ground' }),
+    page.getByRole('main').getByRole('heading', { name: 'You' }),
   ).toBeVisible();
   await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
   await page.waitForFunction(() => window.__nandiTest !== undefined);
@@ -139,8 +139,8 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await update.getByRole('button', { name: 'Update', exact: true }).click();
     await reloaded;
 
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
-    await expect(page.getByRole('main').getByRole('heading', { name: 'Ground' })).toBeVisible();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'You' })).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(
@@ -152,7 +152,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await context.setOffline(true);
     await page.reload();
     await expect(
-      page.getByRole('main').getByRole('heading', { name: 'Ground' }),
+      page.getByRole('main').getByRole('heading', { name: 'You' }),
     ).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
   } finally {
@@ -167,12 +167,13 @@ test('active focus waits until paused before updating', async ({ page, context }
 
   try {
     await prepareUpgrade(page, context, server.origin);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Tasks' }).click();
-    await page.getByRole('button', { name: '+ Add task' }).click();
-    await page.getByPlaceholder('What needs doing?').fill('Focus through update');
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
+    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
-    await expect(page.getByRole('region', { name: 'Now' })).toContainText('Focus through update');
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
+    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Focus through update');
+    await page.getByRole('button', { name: 'Start 25 minutes' }).click();
     await page.getByRole('button', { name: 'Start focus' }).click();
     await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
     await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).focus).toBe(1);
@@ -194,14 +195,15 @@ test('active focus waits until paused before updating', async ({ page, context }
     await page.getByRole('button', { name: 'Pause' }).click();
     await reloaded;
 
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
-    await expect(page.getByRole('main').getByRole('heading', { name: 'Ground' })).toBeVisible();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'You' })).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Today' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
+    await page.getByRole('button', { name: 'Start 25 minutes' }).click();
     await page.getByRole('button', { name: 'Finish' }).click();
   } finally {
     await server.close();

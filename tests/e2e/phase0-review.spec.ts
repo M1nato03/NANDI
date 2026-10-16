@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
-const tabs = ['Today', 'Tasks', 'Train', 'Mind', 'Ground'];
+const tabs = ['Now', 'Plan', 'You'];
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {
@@ -24,7 +24,7 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
 });
 
 test('theme and reduced motion survive reload', async ({ page }) => {
-  await page.goto('/#ground');
+  await page.goto('/#you');
   await page.getByLabel('Motion').selectOption('reduce');
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
   await page.getByLabel('Theme').selectOption('light');
@@ -37,7 +37,7 @@ test('theme and reduced motion survive reload', async ({ page }) => {
 });
 
 test('legacy fixture previews and imports through the restore picker', async ({ page }) => {
-  await page.goto('/?e2e#ground/backup');
+  await page.goto('/?e2e#you/backup');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   const chooserPromise = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Choose restore file' }).click();
@@ -55,7 +55,7 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
 });
 
 test('theme survives backup, wipe, and picker restore', async ({ page }) => {
-  await page.goto('/?e2e#ground');
+  await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   await page.getByLabel('Theme').selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
@@ -75,6 +75,6 @@ test('theme survives backup, wipe, and picker restore', async ({ page }) => {
   await page.getByLabel('Restore preview').getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Ground' }).click();
+  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
   await expect(page.getByLabel('Theme')).toHaveValue('dark');
 });

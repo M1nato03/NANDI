@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+﻿import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { effectiveShutdown, nightWindow } from '../../core/tasks/planner';
 import { RULES } from '../../core/rules.config';
@@ -40,12 +40,13 @@ function timeText(ms: number): string {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
-export function Mind() {
+export function Mind({ entry }: { entry?: string }) {
   const [now, setNow] = useState(() => Date.now());
   const today = dayKey(now);
   const featured = featuredSpec(today);
   const [selection, setSelection] = useState<Selection | null>(null);
   const [practice, setPractice] = useState(false);
+  const entryHandled = useRef(false);
   const [caseOpen, setCaseOpen] = useState(false);
   const [board, setBoard] = useState<PuzzleBoard | null>(null);
   const [run, setRun] = useState<PuzzleRunRow | null>(null);
@@ -267,12 +268,33 @@ export function Mind() {
       setSelection({ ...item, attempt });
     }).catch(error => { recordError('window', error); setMessage('Could not open practice.'); setBusy(false); });
   };
+  useEffect(() => {
+    if (entryHandled.current || !entry) return;
+    if (entry === 'case' && !caseReady || entry === 'reviews' && cards.length === 0) return;
+    const timer = window.setTimeout(() => {
+      if (entryHandled.current) return;
+      entryHandled.current = true;
+      if (entry === 'board') {
+        setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
+        void db.puzzleRuns.where('type').equals(featured.type).toArray().then(rows => {
+          setSelection(needsIntro(featured.type, rows) ? { type: featured.type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type: featured.type, diff: featured.diff, daily: true });
+        }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
+      }
+      else if (entry === 'case') setCaseOpen(true);
+      else if (entry === 'reviews' && deck) void Promise.all([db.cards.toArray(), db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray()]).then(([allCards, progress, allRatings, allFlags]) => {
+        const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
+        setReviews(buildReviewSession(today, allCards, progress, allRatings, hidden, deck));
+      }).catch(error => recordError('window', error));
+      else if (entry === 'practice') setPractice(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [entry, caseReady, cards.length, featured.type, featured.diff, today]);
   const close = () => { if (current.current && !current.current.result) persist(current.current); setSelection(null); setBoard(null); setRun(null); current.current = null; setMessage(''); };
   const state: PuzzleState = { grid: run?.grid ?? (board ? initialGrid(board) : []), path: run?.path ?? [] };
   const checked = board ? checkRules(board, state) : null;
   const name = board ? PZ.TYPES[board.type].name : '';
 
-  if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" onClick={() => go('today')}>Back to planner</button><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
+  if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" onClick={() => go('now')}>Back to Now</button><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => setLessonDraft(null)} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
   if (reviews && deck) return <Reviews entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onDone={() => void finishReviews()} />;
   if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => setCaseOpen(false)} />;
@@ -295,7 +317,7 @@ export function Mind() {
   return <section className="screen mind-hub">
     <p className="eyebrow">Daily drop · {today}</p><h1>Mind</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
-    {!unlocked ? <div className="card"><h2>Today’s drop opens at {unlockTime}</h2><button type="button" onClick={() => go('today')}>Back to planner</button></div> : dropComplete ? <div className="card"><h2>Today's drop complete.</h2><p>Next drop: {unlockTime}</p><button type="button" onClick={() => go('today')}>Back to planner</button></div> : <>
+    {!unlocked ? <div className="card"><h2>Today’s drop opens at {unlockTime}</h2><button type="button" onClick={() => go('now')}>Back to Now</button></div> : dropComplete ? <div className="card"><h2>Today's drop complete.</h2><p>Next drop: {unlockTime}</p><button type="button" onClick={() => go('now')}>Back to Now</button></div> : <>
       <p role="status">{dropRemaining.length} left: {dropRemaining.join(', ')}</p>
       <div className="card"><h2>Case of the day</h2><p>Logic-grid mystery · {caseDiff}</p>{caseDone ? <p>Complete</p> : <button type="button" disabled={!caseReady} onClick={() => setCaseOpen(true)}>{caseRun ? 'Continue daily case' : 'Open daily case'}</button>}</div>
       <div className="card"><h2>Today's board</h2><p>{PZ.TYPES[featured.type].name} · {featured.diff}</p>{dailyDone ? <p>Complete</p> : <button type="button" onClick={() => open({ ...featured, daily: true })}>Open daily board</button>}</div>
@@ -308,6 +330,6 @@ export function Mind() {
     {night !== 'windDown' && <div className="card"><h2>Practice</h2><p>Choose a board and difficulty.</p><button type="button" className="secondary" onClick={() => setPractice(value => !value)} aria-expanded={practice}>Practice</button>
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
     </div>}
-    <button type="button" className="text-button mind-debug" onClick={() => go('mind/generator')}>Generator check ↗</button>
+    <button type="button" className="text-button mind-debug" onClick={() => go('you/mind/generator')}>Generator check ↗</button>
   </section>;
 }

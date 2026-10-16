@@ -24,3 +24,4 @@
 - Review fixes: atomic puzzle awards, 04:00 week boundaries, replayable ledger facts, economy copy hidden until enabled, lights-out fact, accessibility labels, kinder lesson copy.
 - Learning tracks: one active track at a time, daily unit with a 25-minute budget bar, cards into reviews; pilot Drone technology module (4 units).
 - Daily mystery case is part of the Daily Drop; focus sessions run 25/5 or 50/10 cycles; full weekly summary export.
+- Redesign: Now deck / Plan (one list) / You, new warm dark look.
