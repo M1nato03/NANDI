@@ -76,4 +76,10 @@ jobs:
             exit 1
           fi
           export CLOUDFLARE_API_TOKEN
-          npx wrangler deploy --config updates/wrangler.jsonc
+          # Cloudflare sometimes answers 504 on the asset upload; try up to three times.
+          for attempt in 1 2 3; do
+            npx wrangler deploy --config updates/wrangler.jsonc && exit 0
+            echo "Deploy attempt $attempt did not finish; retrying in 20 s."
+            sleep 20
+          done
+          exit 1
