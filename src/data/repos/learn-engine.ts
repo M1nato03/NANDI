@@ -41,7 +41,7 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
     const item: LearnItemRow = { id: input.item.id, rating: rating.rating, attempts: rating.attempts, lastSeen: rating.lastSeen, updatedAt: input.now, deleted: 0, deviceId: input.deviceId };
     await db.learnConcepts.put(concept);
     await db.learnItems.put(item);
-    await db.learnDrops.put({ ...current, drop: advanceDrop(current.drop), updatedAt: input.now });
+    await db.learnDrops.put({ ...current, drop: { ...advanceDrop(current.drop), pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
     await db.ledger.add({ id: factId, dayKey: dayKey(input.now), mode: 'mind', kind: step.mode === 'retention' ? 'learn-retention' : 'learn-answer', refId: input.answerId,
       inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay },
       updatedAt: input.now, deleted: 0, deviceId: input.deviceId });

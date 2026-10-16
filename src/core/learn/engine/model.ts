@@ -114,7 +114,7 @@ export function answerConcept(state: ConceptState | undefined, item: TopicItem, 
     activeMisconceptions: [...misconceptions].sort() };
 }
 export type MasteryMapState = 'Not started' | 'Learning' | 'Strong' | 'Mastered';
-export function masteryMapState(state?: ConceptState): MasteryMapState {
+export function masteryMapState(state?: Pick<ConceptState, 'attempts' | 'mastery' | 'memory'>): MasteryMapState {
   if (!state?.attempts) return 'Not started';
   if (state.mastery >= 0.95 && (state.memory?.stability ?? 0) >= 21) return 'Mastered';
   return state.mastery >= 0.8 ? 'Strong' : 'Learning';

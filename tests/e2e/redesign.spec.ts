@@ -40,11 +40,12 @@ for (const scheme of ['light', 'dark'] as const) {
     for (const [name, title] of [
       ['Think card', "Today's puzzle board"],
       ['Notice card', "Today's mystery case"],
-      ['Learn card', 'learning'],
+      ['Learn card', 'What do you want to get sharp at?'],
       ['A little extra card', 'Side quest'],
       ['The day is yours card', "That's today."],
     ] as const) {
-      await page.getByRole('button', { name: 'Next' }).click();
+      if (name === 'A little extra card') await page.getByRole('button', { name: 'Go to card 6: A little extra' }).click();
+      else await page.getByRole('button', { name: 'Next' }).click();
       await expect(page.getByRole('article', { name })).toContainText(title);
     }
     await expect(page.getByRole('button', { name: 'Next' })).toHaveCount(0);

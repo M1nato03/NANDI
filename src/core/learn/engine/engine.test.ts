@@ -88,11 +88,13 @@ it('09 §9 test 10: a saved mid-drop resumes at the same item and option order',
   expect(await db.ledger.count()).toBe(1);
   const resumed = await loadDrop(db, drop.id);
   expect(currentDropStep(resumed!)).toEqual(drop.items[1] ?? drop.ending);
+  expect(resumed?.pendingFeedback).toEqual({ cursor: 0, answer: 'a', correct: gradeItem(picked, 'a').correct });
   const backup = await exportBackup(db, now);
   expect(validateBackup(backup).success).toBe(true);
   await db.learnDrops.clear();
   await importBackup(db, backup);
   expect(currentDropStep((await loadDrop(db, drop.id))!)).toEqual(drop.items[1] ?? drop.ending);
+  expect((await loadDrop(db, drop.id))?.pendingFeedback?.cursor).toBe(0);
   await db.delete();
 });
 it('09 section 9 test 11: a drop interleaves started concepts and stays with one new concept', () => {

@@ -8,6 +8,7 @@ import { Backup } from '../screens/Backup';
 import { GeneratorCheck } from '../screens/GeneratorCheck';
 import { Today } from '../screens/Today';
 import { Now } from '../screens/Now';
+import { Learn } from '../screens/Learn';
 import { Plan } from '../screens/Plan';
 import { Planner } from '../screens/Planner';
 import { Train } from '../screens/Train';
@@ -48,6 +49,7 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'now/focus') screen = <Today />;
+  else if (path === 'you/learn') screen = <Learn />;
   else if (path === 'train' || path.startsWith('you/train')) screen = <Train entry={path.split('/')[2]} />;
   else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;

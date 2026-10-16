@@ -1,6 +1,6 @@
 import { RULES } from '../../rules.config';
 import type { TopicConcept, TopicItem } from '../../../data/packs/schemas';
-import { DAY_MS, ENGINE_RULES, INITIAL_MASTERY, itemSeedRating, predictedSuccess, type ConceptState, type ItemState } from './model';
+import { DAY_MS, ENGINE_RULES, INITIAL_MASTERY, itemSeedRating, predictedSuccess, type ConceptState, type ItemAnswer, type ItemState } from './model';
 import type { AnswerFact, RetentionDay } from './analytics';
 
 export interface EngineCatalog { concepts: readonly TopicConcept[] }
@@ -63,7 +63,7 @@ export function selectNextItem(context: SelectionContext): Selection | null {
 }
 
 export interface DropItem { itemId: string; conceptId: string; optionOrder: string[]; mode: 'review' | 'new' | 'retention'; retentionDay?: RetentionDay }
-export interface Drop { id: string; items: DropItem[]; cursor: number; ending: { kind: 'stopping-screen' } }
+export interface Drop { id: string; items: DropItem[]; cursor: number; ending: { kind: 'stopping-screen' }; pendingFeedback?: { cursor: number; answer: ItemAnswer; correct: boolean } }
 export interface ComposeContext extends Omit<SelectionContext, 'recentTypes' | 'excludedItemIds' | 'mode'> {
   spentMinutes: number; answeredToday: number; newToday: number; busyDay?: boolean; afterBedtime?: boolean;
   minutesPerItem?: number; requestedItems?: number;
@@ -74,9 +74,11 @@ function orderOptions(item: TopicItem, seed: number): string[] {
 export function composeDrop(context: ComposeContext): Drop {
   const minutesPerItem = context.minutesPerItem ?? 0.7;
   const budgetItems = Math.max(0, Math.floor((RULES.learningTracks.dailyBudgetMin - context.spentMinutes) / minutesPerItem));
-  const wanted = context.busyDay ? 3 : Math.min(10, Math.max(6, context.requestedItems ?? 8));
+  const wanted = context.busyDay ? 3 : Math.min(10, Math.max(5, context.requestedItems ?? 8));
   const limit = Math.max(0, Math.min(wanted, budgetItems));
-  const newLimit = context.afterBedtime ? 0 : Math.max(0, Math.min(RULES.learningTracks.newCardsPerDay - context.newToday, Math.round(limit * 0.4)));
+  const hasStarted = context.catalog.concepts.some(concept => (context.concepts[concept.id]?.attempts ?? 0) > 0 || (context.concepts[concept.id]?.mastery ?? 0) > 0);
+  const newCap = context.afterBedtime ? 0 : Math.max(0, RULES.learningTracks.newCardsPerDay - context.newToday);
+  const newLimit = Math.min(newCap, hasStarted ? Math.round(limit * 0.4) : limit);
   const items: DropItem[] = [];
   const recentTypes: TopicItem['type'][] = [];
   let newConceptId: string | undefined;
@@ -89,7 +91,7 @@ export function composeDrop(context: ComposeContext): Drop {
       scheduledRetention: items.filter(item => item.mode === 'retention').map(item => ({ conceptId: item.conceptId, day: item.retentionDay! })) };
     const selected = (retentionCount < 2 ? selectNextItem({ ...base, mode: 'retention' }) : null)
       ?? selectNextItem({ ...base, mode })
-      ?? selectNextItem({ ...base, mode: context.afterBedtime || newCount >= newLimit ? 'review' : 'either' });
+      ?? selectNextItem({ ...base, mode: context.afterBedtime || newCount >= newCap ? 'review' : 'either' });
     if (!selected || (context.afterBedtime && selected.mode === 'new')) break;
     if (selected.mode === 'new') newConceptId = selected.concept.id;
     items.push({ itemId: selected.item.id, conceptId: selected.concept.id, optionOrder: orderOptions(selected.item, context.seed + i), mode: selected.mode, retentionDay: selected.retentionDay });
