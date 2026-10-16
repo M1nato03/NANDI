@@ -1,6 +1,33 @@
 ﻿/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
+test('daily case grid contrast and layout', async ({ page }, testInfo) => {
+  await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/#you/mind');
+  await page.getByRole('button', { name: 'Open daily case' }).click();
+  const grid = page.locator('.case-grid').first();
+  await expect(grid).toBeVisible({ timeout: 30_000 });
+  const blank = grid.locator('.case-blank').first();
+  await expect(blank).toHaveCSS('background-color', 'rgb(28, 29, 34)');
+  await blank.click();
+  await expect(grid.locator('.case-no').first()).toBeVisible();
+  await grid.locator('.case-no').first().click();
+  await expect(grid.locator('.case-yes').first()).toBeVisible();
+  const sizes = await page.locator('.case-cell').evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect()).every(rect => rect.width >= 44 && rect.height >= 44));
+  expect(sizes).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const gap = await page.evaluate(() => {
+    const heading = document.querySelector('.case-accusation-heading')!.getBoundingClientRect();
+    const clear = [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === 'Clear grid')!.getBoundingClientRect();
+    return heading.top - clear.bottom;
+  });
+  expect(gap).toBeGreaterThan(16);
+  if (testInfo.project.name === 'mobile-390x844') {
+    await page.screenshot({ path: 'screenshots/case-grid-390x844.png', fullPage: true });
+  }
+});
+
 for (const scheme of ['light', 'dark'] as const) {
   test(`practice board screenshots in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(120_000);

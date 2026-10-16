@@ -14,6 +14,12 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#plan');
+    const rituals = page.getByRole('region', { name: 'Planning routines' });
+    await expect(rituals.getByRole('heading', { name: 'Rituals' })).toBeVisible();
+    await expect(rituals.locator('.ritual-buttons button')).toHaveCount(3);
+    await expect(rituals).toContainText('2 min');
+    await expect(rituals).toContainText('5 min');
+    await expect(rituals).toContainText('Sundays');
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Plan project outline');
     await page.getByRole('radio', { name: 'Unplaced' }).check();

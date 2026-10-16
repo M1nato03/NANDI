@@ -81,8 +81,16 @@
 .mind-case .case-grids { display: grid; gap: 1rem; overflow-x: auto; }
 .mind-case .case-grid { display: grid; gap: 3px; align-items: stretch; min-width: 0; }
 .mind-case .case-grid > span, .mind-case .case-grid strong { font-size: .75rem; overflow-wrap: anywhere; align-self: center; }
-.mind-case .case-grid button { min-width: 38px; min-height: 44px; padding: 0; }
+.mind-case .case-grid button { min-width: 44px; min-height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-size: 20px; }
+.mind-case .case-grid button.case-blank { background: var(--raised); }
+.mind-case .case-grid button.case-no { background: var(--surface); color: var(--secondary-ink); }
+.mind-case .case-grid button.case-yes { background: color-mix(in srgb, var(--teal) 25%, var(--raised)); border-color: var(--teal); color: var(--ink); }
+.mind-case .case-accusation-heading { margin-top: 28px; }
 .mind-case .case-grid button.case-error { outline: 2px solid #b43a3a; outline-offset: -2px; }
 .mind-case .case-grid-wrap { min-width: 0; }
 .mind-case .card label { display: block; margin: .5rem 0; }
 .mind-case .card select { display: block; width: 100%; min-height: 44px; }
+
+/* Clues read as a left-aligned numbered list, not centred buttons. */
+.case-clues ol { padding-left: 22px; }
+.case-clues li > .text-button { display: block; width: 100%; text-align: left; padding: 6px 0; min-height: 44px; }
