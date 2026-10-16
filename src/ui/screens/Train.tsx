@@ -3,21 +3,21 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { createTrainRepos, type Onboarding as OnboardingResult } from '../../data/repos/train';
-import type { SessionRow } from '../../data/types';
 import { Onboarding } from '../train/Onboarding';
 import { Workout } from '../train/Workout';
 import { Dashboard } from '../train/Dashboard';
 import { errorMessage } from '../shell/errorMessage';
+import { go } from '../shell/router';
 import '../train/train.css';
 
 const reposPromise = getOrCreateDeviceId(db, Date.now()).then(id => createTrainRepos(db, id));
 
-export function Train() {
+export function Train({ entry }: { entry?: string }) {
   const data = useLiveQuery(async () => ({ program: await db.programs.get('train-program'), sessions: await db.sessions.filter(row => row.deleted === 0).toArray(), sets: await db.sets.filter(row => row.deleted === 0).toArray(), prs: await db.prs.filter(row => row.deleted === 0).toArray(), state: await db.exState.filter(row => row.deleted === 0).toArray(), ledger: await db.ledger.filter(row => row.deleted === 0 && row.mode === 'train').toArray() }), []);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
-  const [page, setPage] = useState<'today' | 'history' | 'settings' | 'finish' | 'retest'>('today');
-  const [finished, setFinished] = useState<SessionRow | null>(null);
+  const page = entry === 'history' || entry === 'settings' || entry === 'finish' || entry === 'retest' ? entry : 'today';
+  const setPage = (next: typeof page) => go(next === 'today' ? 'you/train' : `you/train/${next}`);
   async function act(action: (repos: Awaited<typeof reposPromise>, now: number) => Promise<unknown>, success: string): Promise<boolean> {
     setBusy(true); setMessage('');
     try { await action(await reposPromise, Date.now()); setMessage(success); return true; }
@@ -37,15 +37,17 @@ export function Train() {
   const { program, sessions, sets, prs, state, ledger } = data;
   if (!program) return <section className="screen"><Onboarding busy={busy} save={(result: OnboardingResult) => { void act((repos, now) => repos.completeOnboarding(result, now), 'Assessment saved. Your first session is ready.'); }} />{message && <p role="status">{message}</p>}</section>;
   const active = sessions.find(row => row.status === 'active');
-  if (active) return <section className="screen"><Workout session={active} sets={sets.filter(set => set.sessionId === active.id)} state={state} equipment={program.equipment!} busy={busy} message={message}
+  if (active && entry === 'workout') return <section className="screen"><Workout session={active} sets={sets.filter(set => set.sessionId === active.id)} state={state} equipment={program.equipment!} busy={busy} message={message}
     log={(exerciseId, slot, reps, loadKg, type, confirmedJump) => logSet(active.id, exerciseId, slot, reps, loadKg, type, confirmedJump)}
     pain={exerciseId => { void act((repos, now) => repos.flagPain(active.id, exerciseId, now), 'Exercise stopped. Choose an easier step or rest.'); }}
     effort={(exerciseId, value) => { void act((repos, now) => repos.setEffort(active.id, exerciseId, value, now), 'Effort saved.'); }}
     adjustRest={endAt => { void act((repos, now) => repos.setRestEnd(active.id, endAt, now), 'Rest updated.'); }}
-    finish={() => { void (async () => { let row: SessionRow | null = null; const ok = await act(async (repos, now) => { row = await repos.finishSession(active.id, now); }, 'Session saved.'); if (ok) { setFinished(row); setPage('finish'); } })(); }} /></section>;
+    finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) go('you/train/finish'); }); }} /></section>;
+  const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
   return <section className="screen train-screen"><p className="eyebrow">The Proving Ground</p><h1>Train</h1>
     {message && <p role="status">{message}</p>}
-    {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Matchday</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{finished.dayKey} · {finished.status}</p><button type="button" onClick={() => setPage('today')}>Back to Train</button><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
-    <Dashboard data={{ program, sessions, sets, prs, state, ledger }} page={page} setPage={setPage} busy={busy} message={message} act={act} />
+    {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Matchday</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{finished.dayKey} · {finished.status}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
+    {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('you/train/workout')}>Continue session</button></div>}
+    <Dashboard data={{ program, sessions, sets, prs, state, ledger }} page={page} setPage={setPage} startWorkout={() => go('you/train/workout')} busy={busy} message={message} act={act} />
   </section>;
 }

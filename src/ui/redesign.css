@@ -54,9 +54,11 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .deck-heading h1 { margin-bottom: 14px; }
 .deck-heading .eyebrow { margin: 0; }
 .deck-count { color: var(--muted); white-space: nowrap; margin-bottom: 19px; }
-.deck-dashes { display: flex; gap: 7px; margin: 4px 0 18px; }
-.deck-dashes span { height: 5px; flex: 1; background: var(--line); border-radius: 8px; }
-.deck-dashes span.active { background: var(--accent); }
+.deck-dashes { display: flex; gap: 2px; margin: 4px 0 8px; }
+.deck-dashes button { min-height: 44px; height: 44px; flex: 1; border: 0; padding: 0; background: transparent; border-radius: 8px; position: relative; }
+.deck-dashes button::after { content: ''; position: absolute; inset: 19px 0 20px; background: var(--line); border-radius: 8px; }
+.deck-dashes button.active::after { background: var(--accent); }
+.deck-back, .screen-back { display: block; min-height: 44px; min-width: 44px; padding: 8px 12px; margin: 0 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--accent); text-align: left; }
 .deck-card { min-height: min(570px, calc(100dvh - 260px)); display: flex; flex-direction: column; justify-content: space-between; padding: clamp(28px, 7vw, 48px); margin: 0; }
 .deck-card h2 { font-size: clamp(39px, 9vw, 66px); margin: 25px 0 18px; max-width: 650px; }
 .deck-card p { font-size: clamp(17px, 3vw, 21px); max-width: 540px; color: var(--secondary-ink); }
@@ -104,6 +106,7 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .mastery-slot h2 { margin-top: 16px; }
 .you-settings > .secondary { width: 100%; }
 .you-settings label { flex-wrap: wrap; }
+.app-shell:has(.mind-case) .screen-back { display: none; }
 .timer-ring span { font: 800 52px 'Bricolage Grotesque', sans-serif; }
 @media (max-width: 600px) {
   .content { padding: 22px 18px calc(104px + env(safe-area-inset-bottom)); }

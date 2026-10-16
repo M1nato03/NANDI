@@ -296,7 +296,7 @@ export function CaseScreen({
   return (
     <section className="screen mind-case" data-save-state={saveState}>
       <button type="button" className="text-button" onClick={onExit}>
-        ← Mind
+        Back to Mind
       </button>
       <p className="eyebrow">Case of the day · {day}</p>
       {!mystery || !run || !grid ? (
@@ -411,9 +411,6 @@ export function CaseScreen({
                   ))}
                 </ol>
               </details>
-              <button type="button" onClick={onExit}>
-                Back to Mind
-              </button>
             </div>
           ) : (
             <div className="card">

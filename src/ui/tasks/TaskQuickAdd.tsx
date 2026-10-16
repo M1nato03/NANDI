@@ -80,7 +80,7 @@ export function TaskQuickAdd({ run }: { run: Run }) {
       }}>{counts.map((count) => <option key={count} value={count}>{count} steps</option>)}</select></label>
       {previewParts.map((minutes, index) => <label key={index}>Step {index + 1} name <input required maxLength={200} value={preview.names[index] ?? ''} onChange={(event) => setPreview({ ...preview, names: preview.names.map((name, at) => at === index ? event.target.value : name) })} /><span className="small">{minutes} min · {preview.priority === 'must' ? 'Must' : 'Could'} · {preview.placement === 'someday' ? 'Someday' : preview.placement === 'today' && index === 0 ? 'Today at a time' : 'Unplaced'}</span></label>)}
       {feedback && <p role="alert">{feedback}</p>}
-      <div className="sheet-actions"><button type="button" disabled={submitting} onClick={() => void savePreview()}>Save</button><button type="button" className="secondary" disabled={submitting} onClick={() => { setPreview(null); setFeedback(''); }}>Back</button></div>
+        <div className="sheet-actions"><button type="button" disabled={submitting} onClick={() => void savePreview()}>Save</button><button type="button" className="secondary" disabled={submitting} onClick={() => { setPreview(null); setFeedback(''); }}>Edit task</button></div>
     </section></div>}
   </div>;
 }

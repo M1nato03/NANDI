@@ -41,7 +41,6 @@ export function LessonPlayer({ lesson, packId, courseName, total, completed, dra
     finally { setBusy(false); }
   };
   return <section className="screen mind-lesson" data-save-state={saveState}>
-    <button type="button" className="text-button" onClick={onLeave}>← Mind</button>
     <p className="eyebrow">{courseName} · {draft.review ? 'Review' : 'Today’s lesson'} · {draft.step + 1} of 8</p>
     <h1>{lesson.t}</h1>
     {afterBedtime && <p role="status">{nightMindNote(economyVisible)}</p>}

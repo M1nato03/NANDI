@@ -126,7 +126,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('dialog')).toContainText('Split it, do 10 minutes now, or park it in Someday. All fine.');
     await page.getByRole('button', { name: 'Split into steps' }).click();
     await expect(page.getByRole('dialog').getByLabel('Step 1 minutes')).toHaveValue('30');
-    await page.getByRole('button', { name: 'Back' }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Previous step' }).click();
     await page.getByLabel('New date and time').fill('2026-10-14T12:00');
     await page.getByLabel('blocked', { exact: true }).check();
     await page.getByRole('button', { name: 'Postpone anyway' }).click();
