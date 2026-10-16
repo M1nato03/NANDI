@@ -31,3 +31,14 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-11 | **Teaching engine** (spec 09): offline-first adaptive engine (BKT-style mastery + FSRS scheduling per concept, Elo item difficulty, 75-85% success target, interleaving) replacing the lesson-reader model; content must pass an accuracy gate (sources per claim, independent web fact check, owner spot check). First topics: Money and markets, Human psychology, How things work. | Jenil: better than Duolingo, more accurate, less friction; no AI at runtime. |
 | 2026-10-11 | Replace Big Shoulders, Inter, and JetBrains Mono with pinned `@fontsource/bricolage-grotesque` 5.3.0 and `@fontsource/dm-sans` 5.3.0. | The approved three-tab redesign uses upright Bricolage Grotesque 800 for display and DM Sans for body text, both self-hosted for offline use. |
 | 2026-10-11 | **Redesign** to Now / Plan / You (approved concept https://claude.ai/artifact/3P35tchJRYGBGZbNv3HvtX); fonts Bricolage Grotesque + DM Sans replace Big Shoulders/Inter/JetBrains. | Jenil: old UI too complex (a task in 3 places) and ugly. |
+| 2026-10-16 | Add `@capacitor/core` 8.5.3. | Stable native platform detection and plugin bridge with Node 24. |
+| 2026-10-16 | Add `@capacitor/android` 8.5.3. | Generate and commit the Android shell. |
+| 2026-10-16 | Add `@capacitor/local-notifications` 8.3.1. | Schedule task and rest alarms with Android channels and exact-alarm status. |
+| 2026-10-16 | Add `@capacitor/share` 8.0.3. | Share an APK backup through Android's share sheet. |
+| 2026-10-16 | Add `@capacitor/filesystem` 8.1.5. | Write the backup JSON into Android Documents before sharing. |
+| 2026-10-16 | Add `@capacitor/haptics` 8.0.2. | Native fallback when vibration patterns are unavailable in WebView. |
+| 2026-10-16 | Add maintained `@capacitor-community/keep-awake` 8.0.1. | Keep the workout screen on in the APK; the web adapter uses Screen Wake Lock. |
+| 2026-10-16 | Add `@capacitor/cli` 8.5.3 as a development dependency. | Pin `cap add` and `cap sync` to the same Capacitor version as Android/core. |
+| 2026-10-16 | Android app ID is `app.nandi.personal` and must never change. | Android update identity and the app's local data depend on it. |
+| 2026-10-16 | Android scheme and hostname are pinned to `https://nandi.local` and must never change. | Changing the WebView origin would strand IndexedDB data. |
+| 2026-10-16 | Night pause is opt-in with Usage access, an on-device foreground service, and a full-screen-intent notification with heads-up fallback. | Android restricts background activity launches; the owner can always bypass the pause, and usage events never leave the phone. Device behavior still needs checking. |

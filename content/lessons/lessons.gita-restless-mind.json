@@ -77,7 +77,7 @@
             "Tell her the judges won’t notice"
           ],
           "a": 1,
-          "w": "Naming the panic and picking one doable step gets you on stage. Fixing a bug in two minutes under panic usually fails, and withdrawing locks in the loss."
+          "w": "Naming the panic and picking one doable step gets you on stage. Fixing a bug in two minutes under panic rarely works, and withdrawing closes off the chance to try."
         },
         "wy": {
           "q": "Why does “one small step” beat “you’ll be fine”?",
@@ -227,7 +227,7 @@
         },
         "term": {
           "w": "Samatva",
-          "g": "evenness: staying the same person in success and failure."
+          "g": "evenness: staying the same person through wins and setbacks."
         },
         "v": [
           {
@@ -235,7 +235,7 @@
             "who": "Krishna",
             "s": "yoga sthah kuru karmani sangam tyaktva dhananjaya / siddhy asiddhyoh samo bhutva samatvam yoga uchyate",
             "i": "yoga sthaḥ kuru karmāṇi saṅgaṃ tyaktvā dhanañjaya / siddhy asiddhyoḥ samo bhūtvā samatvaṃ yoga ucyate",
-            "m": "Steady in yoga, do your work without clinging. Be even in success and failure. This evenness is called yoga."
+            "m": "Steady in yoga, do your work without clinging. Be even in wins and setbacks. This evenness is called yoga."
           },
           {
             "ref": "2.50",
@@ -258,7 +258,7 @@
             "Skip revision; you’re clearly ahead",
             "Enjoy it, then keep the same routine that got you there",
             "Downplay it so no one gets jealous",
-            "Raise your target to 30/30, or it counts as failure"
+            "Raise your target to 30/30, or the effort doesn't count"
           ],
           "a": 1,
           "w": "Wins knock people off balance too: you relax, drop the routine and slide. Samatva works in both directions."
@@ -275,7 +275,7 @@
         },
         "pl": {
           "i": [
-            "I lose or fail at something",
+            "Something doesn't go my way",
             "I win something and feel on top",
             "a result shakes my mood"
           ],
@@ -288,7 +288,7 @@
         "cards": [
           [
             "Gita 2.48 · What is samatva?",
-            "Evenness in success and failure. Not feeling nothing, but not letting a win or loss make your decisions."
+            "Evenness through wins and setbacks. Feel it, then choose your next move with a clear head."
           ],
           [
             "Gita 2.50 · “Yogah karmasu kaushalam” means…",
@@ -410,7 +410,7 @@
             "Anger",
             "Confusion",
             "Memory slips",
-            "Judgement lost"
+            "Judgement fades"
           ],
           "hi": 0
         },
@@ -431,13 +431,13 @@
             "who": "Krishna",
             "s": "krodhad bhavati sammohah sammohat smriti vibhramah / smriti bhramshad buddhi nasho buddhi nashat pranashyati",
             "i": "krodhād bhavati sammohaḥ sammohāt smṛti vibhramaḥ / smṛti bhraṃśād buddhi nāśo buddhi nāśāt praṇaśyati",
-            "m": "From anger comes confusion; from confusion, memory slips; when memory goes, judgement is destroyed; when judgement goes, you are lost."
+            "m": "From anger comes confusion; from confusion, memory slips; when memory goes, judgement is clouded; then the path grows unclear."
           }
         ],
         "par": "In experiments, people who kept ruminating on an insult got angrier than people who were distracted (Bushman, 2002).",
         "st": [
           "Engineers will spot this: a positive-feedback loop. Each stage amplifies the next until the system runs away. Krishna lists seven stages in two verses.",
-          "Notice where “memory slips” sits: just before “judgement lost”. That’s the moment you forget the quiz, forget who you’re talking to, forget what you wanted from the evening. The next verse, 2.64, gives the exit: move among things without being yanked by attraction and aversion, and you reach prasāda, a calm, clear mind."
+          "Notice where “memory slips” sits: just before “judgement fades”. That’s the moment you forget the quiz, forget who you’re talking to, forget what you wanted from the evening. The next verse, 2.64, gives the exit: move among things without being yanked by attraction and aversion, and you reach prasāda, a calm, clear mind."
         ],
         "rule": "Break the chain at the first link: notice when you start dwelling, and leave before it heats up.",
         "tr": {
@@ -446,7 +446,7 @@
           "o": [
             "Anger: type a reply now",
             "Dwelling: mute the group for an hour and do something else",
-            "Judgement lost: leave the group forever",
+            "Judgement fades: leave the group forever",
             "None: it’s fine to read it ten times"
           ],
           "a": 1,
@@ -477,7 +477,7 @@
         "cards": [
           [
             "Gita 2.62–63 · The seven links from dwelling to ruin?",
-            "Dwelling → attachment → craving → anger → confusion → memory slips → judgement lost."
+            "Dwelling → attachment → craving → anger → confusion → memory slips → judgement fades."
           ],
           [
             "Where’s the cheapest place to break the scroll-to-rage chain?",
@@ -677,7 +677,7 @@
       {
         "id": "g8",
         "t": "Be your own best friend",
-        "scene": "You fail a quiz you studied for. The voice in your head starts: “You’re so dumb. Your JEE rank was luck.” Your friend failed the same quiz, and you told him, “One quiz, bro. Let’s see what went wrong.”",
+        "scene": "A quiz you studied for goes badly. The voice in your head starts: “You’re so dumb. Your JEE rank was luck.” Your friend had the same rough quiz, and you told him, “One quiz, bro. Let’s see what went wrong.”",
         "q": "Which voice will actually help you do better next time?",
         "o": [
           "The harsh one; fear keeps you sharp",
@@ -720,7 +720,7 @@
           "This comes in chapter 6, which is about training the mind. Krishna doesn’t say others will lift you. He says lifting is your job, and the same self that drags you down is the one that can pull you up.",
           "6.6 adds a condition: the self is a friend to someone who has some mastery over it, and acts like an enemy to someone who hasn’t. So this is a skill you build, not a mood you wait for."
         ],
-        "rule": "Talk to yourself the way you’d talk to a friend who failed: honest about the mistake, kind to the person.",
+        "rule": "Talk to yourself the way you’d talk to a friend after a rough quiz: honest about the mistake, kind to the person.",
         "tr": {
           "s": "You overslept and missed the 8 am lab. Your first thought: “I’m the laziest person alive. Why even try.”",
           "q": "Friend-voice rewrite?",
@@ -775,11 +775,11 @@
         "o": [
           "Reels have damaged your brain beyond repair",
           "Nothing unusual: minds wander, and each time you bring it back is one rep of training",
-          "You should study only when your mind is perfectly still",
+          "Wait to study until your mind is perfectly still",
           "You need stronger coffee"
         ],
         "a": 1,
-        "rv": "Wandering isn’t failure; it’s the default. The training isn’t “never wander”. It’s noticing and returning. Each return is one rep, like a curl for attention.",
+        "rv": "Wandering is normal. The training isn’t “never wander”. It’s noticing and returning. Each return is one rep, like a curl for attention.",
         "pic": {
           "k": "cycle",
           "nodes": [
@@ -820,7 +820,7 @@
           "s": "You do a 25-minute study block and catch your mind wandering 12 times.",
           "q": "How should you score that session?",
           "o": [
-            "Failure: 12 distractions",
+            "Twelve distractions: game over",
             "12 reps: you noticed and came back 12 times",
             "Give up focused study",
             "Only count it if there were zero wanders"
@@ -1018,7 +1018,7 @@
         "wy": {
           "q": "Why does planning sometimes turn into avoidance?",
           "o": [
-            "It feels productive but can’t fail, so it protects you from the hard part",
+            "It feels productive without testing the hard part",
             "Because planning is useless",
             "Because good students never plan"
           ],
@@ -1272,7 +1272,7 @@
         ],
         "st": [
           "14.6–7 describe the other two. Sattva is clear and light, but even it can bind you, to comfort. Rajas comes from craving and binds you to endless doing. Every mode has a trap.",
-          "18.28 describes the tamasic worker, ending with dīrgha-sūtrī, literally “long-threaded”: the procrastinator who stretches a one-hour job into a week. 18.26 describes the opposite: steady, enthusiastic, unchanged by success or failure."
+          "18.28 describes the tamasic worker, ending with dīrgha-sūtrī, literally “long-threaded”: the procrastinator who stretches a one-hour job into a week. 18.26 describes the opposite: steady, enthusiastic, unchanged by wins or setbacks."
         ],
         "rule": "Name your mode, then pick the fix: tamas needs movement, rajas needs focus, sattva needs action.",
         "tr": {

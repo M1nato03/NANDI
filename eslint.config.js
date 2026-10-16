@@ -17,6 +17,7 @@ export default [
       '.codex-runs/**',
       '.npm-cache/**',
       '.playwright-browsers/**',
+      'android/**',
       'src/core/puzzles/puzzles.js',
       'src/core/mysteries/cases.js',
     ],

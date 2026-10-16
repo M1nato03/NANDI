@@ -24,6 +24,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run banned-words
+      - run: npx tsx scripts/copy-lint.ts
       - run: npm run test
       - run: npm run validate-packs
       - run: npm run build

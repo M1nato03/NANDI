@@ -1,6 +1,20 @@
+import { Capacitor } from '@capacitor/core';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
 export async function shareOrDownload(file: File): Promise<'shared' | 'downloaded' | 'cancelled'> {
-  // Capacitor branch: Phase 2
+  if (Capacitor.isNativePlatform()) {
+    const data = await file.text();
+    const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, encoding: Encoding.UTF8 });
+    try {
+      await Share.share({ title: 'NANDI backup', files: [saved.uri], dialogTitle: 'Save a copy of your NANDI backup' });
+      return 'shared';
+    } catch (error) {
+      if (error !== null && typeof error === 'object' && 'message' in error && String(error.message).toLowerCase().includes('cancel')) return 'downloaded';
+      throw error;
+    }
+  }
   if (typeof navigator !== 'undefined' && typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [file] }) && typeof navigator.share === 'function') {
     try {
@@ -28,7 +42,7 @@ export async function shareOrDownload(file: File): Promise<'shared' | 'downloade
 
 /** Returns null when the user closes the picker without selecting a file. */
 export function pickFile(): Promise<File | null> {
-  // Capacitor branch: Phase 2
+  // The Android WebView file chooser uses Android's system document picker.
   return new Promise(resolve => {
     const input = document.createElement('input');
     input.type = 'file';

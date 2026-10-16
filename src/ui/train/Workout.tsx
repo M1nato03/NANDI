@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { ExStateRow, SessionRow, SetRow } from '../../data/types';
 import { EXERCISE_LIBRARY, LADDERS, calculateWarmupRamp, getSmallestIncrement, remainingRestMs, heatAdvice, type EquipmentSetting } from '../../core/train';
+import { keepScreenAwake } from '../../platform/awake';
 
 type Log = (exerciseId: string, slot: number, reps: number, loadKg: number, type?: 'warmup' | 'working', confirmedJump?: boolean) => Promise<boolean>;
 
@@ -30,13 +31,7 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
     window.addEventListener('pageshow', update);
     return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', update); window.removeEventListener('pageshow', update); };
   }, []);
-  useEffect(() => {
-    let lock: WakeLockSentinel | undefined;
-    const acquire = async () => { if (document.visibilityState === 'visible' && 'wakeLock' in navigator) { try { lock = await navigator.wakeLock.request('screen'); } catch { /* unsupported or denied */ } } };
-    void acquire();
-    document.addEventListener('visibilitychange', acquire);
-    return () => { document.removeEventListener('visibilitychange', acquire); void lock?.release(); };
-  }, []);
+  useEffect(() => keepScreenAwake(), []);
   const rest = session.restEndsAt ? remainingRestMs(session.restEndsAt, now) : 0;
   const painNames = (session.painExerciseIds ?? []).map(id => EXERCISE_LIBRARY[id]?.name ?? id);
   return <section className="train-workout"><p className="eyebrow">Session in progress</p><h1>Train</h1><p>One clean set at a time. Solid effort means a few reps left.</p>
