@@ -29,4 +29,6 @@ dist-e2e-b/
 .pack-test-*/
 .npm-cache/
 .wrangler/
+updates-site/*.apk
+updates-site/version.json
 .playwright-browsers/

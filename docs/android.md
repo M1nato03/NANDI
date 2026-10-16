@@ -4,11 +4,13 @@
 
 1. Open this repository on GitHub, choose **Actions**, then **Android APK**. Open the latest successful run on `main` (or a run started with **Run workflow**).
 2. Under **Artifacts**, download **nandi-apk** and unzip it. The file inside is `app-release.apk` when the signing secrets are configured, otherwise `app-debug.apk`.
-3. Copy the APK to your Android phone and open it. Allow installs from the app you used to open the file when Android asks, then install NANDI.
+3. Copy the signed release APK to your Android phone and open it. Allow installs from the app you used to open the file when Android asks, then install NANDI. This hand install is needed once.
 4. In Android Settings > Apps > NANDI > Notifications, allow notifications. NANDI asks for notification permission when it sets up your first task or rest reminder. Check that **Task blocks**, **Rest timer**, and **Planning** channels are present.
 5. For exact task and rest alarms, check Android Settings > Apps > Special app access > Alarms & reminders and allow NANDI if Android offers the switch. Set NANDI's battery use to **Unrestricted** for the device test.
 
-**Export a backup before every APK update.** In NANDI, open You > Backup, export the JSON file, and save it somewhere outside the app. Install the new APK over the old one. Do not uninstall the old APK: uninstalling removes its local data.
+After that first signed install, NANDI quietly checks for a newer signed APK when it opens and when you return to it, at most once every six hours. A small **New version ready** strip appears at the top. Tap **Update**. NANDI writes a backup JSON file to the device's Documents folder, checks the APK's SHA-256 checksum, then opens Android's own install confirmation. The strip shows the backup file name and download progress. You can choose **Later** for 24 hours or check manually in **You > App updates**.
+
+The first in-app update may open Android's **Allow from this source** screen. NANDI explains this before opening the setting. Allow NANDI to install its own updates, then return to NANDI; it will continue to Android's install confirmation. This permission does not skip Android's confirmation. Do not uninstall the old APK: uninstalling removes its local data.
 
 A debug APK from one Actions run may use a different debug key from the next run, so it may refuse to update the old APK. The workflow warns when it makes a debug build. Keep the signed release keystore safe in your password manager and configure all four GitHub secrets (`ANDROID_KEYSTORE_B64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) before relying on APK updates. The keystore itself must never be committed. A signed release APK can update only an APK signed with that same key and app ID.
 
@@ -16,7 +18,7 @@ A debug APK from one Actions run may use a different debug key from the next run
 
 After the baseline week ends around **26 October 2026**, open the PWA in Chrome and use You > Backup > Export backup. Save the JSON file. Open the APK and use You > Backup > Choose restore file, select the PWA file, review the table counts, and confirm restore. Check the same counts on the APK before using it as your daily app. The PWA will become a read-only **retired** copy after this migration; do not keep entering new data in both places. Until that date, keep using the PWA normally for the baseline.
 
-The APK has its own local IndexedDB. Its app ID (`app.nandi.personal`) and web origin (`https://nandi.local`) are pinned so future APKs use the same local storage. A backup is still required before each update.
+The APK has its own local IndexedDB. Its app ID (`app.nandi.personal`) and web origin (`https://nandi.local`) are pinned so future APKs use the same local storage. NANDI saves a backup before each in-app update; keep a separate copy of important backups too.
 
 ## Optional Night pause
 

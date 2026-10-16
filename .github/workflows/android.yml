@@ -44,6 +44,7 @@ jobs:
             printf '%s' "$ANDROID_KEYSTORE_B64" | base64 --decode > "$ANDROID_KEYSTORE_PATH"
             ./gradlew assembleRelease
             echo "APK_PATH=android/app/build/outputs/apk/release/app-release.apk" >> "$GITHUB_ENV"
+            echo "RELEASE_SIGNED=true" >> "$GITHUB_ENV"
           else
             echo '::warning::Signing secrets are missing. Building a debug APK. Debug APKs from separate runs use different keys and cannot update each other; export a backup before installing another build.'
             ./gradlew assembleDebug
@@ -55,3 +56,24 @@ jobs:
           path: ${{ env.APK_PATH }}
           if-no-files-found: error
           retention-days: 30
+      - name: Prepare signed update
+        if: env.RELEASE_SIGNED == 'true'
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p updates-site
+          cp "$APK_PATH" "updates-site/nandi-${VERSION_CODE}.apk"
+          node updates/prepare.mjs
+      - name: Deploy signed update
+        if: env.RELEASE_SIGNED == 'true'
+        env:
+          RAW_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          CLOUDFLARE_API_TOKEN=$(printf '%s' "$RAW_TOKEN" | tr -d '[:space:]')
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo 'Cloudflare token is needed to publish the signed update.' >&2
+            exit 1
+          fi
+          export CLOUDFLARE_API_TOKEN
+          npx wrangler deploy --config updates/wrangler.jsonc
