@@ -27,6 +27,8 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
   await expect(feedback).toBeVisible();
   await expect(feedback).toContainText(concept.rule);
   if (item.type !== 'order' && item.type !== 'match') await expect(feedback).toContainText(item.options.find(option => option.correct !== wrong)!.feedback);
+  // The answer is saved after the feedback appears; Next turns on once the save finished.
+  await expect(feedback.getByRole('button', { name: 'Next' })).toBeEnabled();
   if (advance) {
     const number = Number((await page.locator('.learn-drop-head').innerText()).match(/(\d+) \/ 5/)?.[1]);
     await feedback.getByRole('button', { name: 'Next' }).click();
