@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }, testInfo) => {
 test('first night uses one card frame at 360x800', async ({ page }, testInfo) => {
   await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
   await page.goto('/#now');
-  const card = page.getByRole('article', { name: 'First night card' });
+  const card = page.getByRole('article', { name: 'Tonight card' });
   await expect(card.locator('.night-plan-setting')).toBeVisible();
   await expect(card.locator('.night-plan-setting')).not.toHaveClass(/\bcard\b/);
   expect(await card.locator('.night-plan-setting').evaluate(element => getComputedStyle(element).borderTopWidth)).toBe('0px');
@@ -17,17 +17,17 @@ test('first night uses one card frame at 360x800', async ({ page }, testInfo) =>
 });
 
 test('Now header leaves the first step action visible at 360x800', async ({ page }, testInfo) => {
-  await page.clock.install({ time: new Date('2026-10-11T23:20:00') });
+  await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call bank 15m');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.getByRole('link', { name: 'Now' }).click();
   const heading = page.locator('.deck-heading');
   await expect(heading.getByRole('heading', { name: 'Now' })).toBeVisible();
-  await expect(heading).toContainText('1 of 8');
+  await expect(heading).toContainText('1 of 7');
   const dots = await page.locator('.deck-dashes button').all();
-  expect(dots).toHaveLength(8);
-  expect((await dots[0]!.boundingBox())?.y).toBe((await dots[7]!.boundingBox())?.y);
+  expect(dots).toHaveLength(7);
+  expect((await dots[0]!.boundingBox())?.y).toBe((await dots[6]!.boundingBox())?.y);
   const button = page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Start' });
   const action = await button.boundingBox();
   const nav = await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox();

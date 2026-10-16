@@ -165,6 +165,8 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
 test('active focus waits until paused before updating', async ({ page, context }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
   test.setTimeout(120_000);
+  // Daytime, so the Now tab shows the day deck with the first-step card.
+  await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   const server = await startUpgradeServer();
 
   try {

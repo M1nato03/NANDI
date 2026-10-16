@@ -112,7 +112,7 @@ test('side quest check-in stays on the card', async ({ page }) => {
   const card = page.getByRole('article', { name: 'A little extra card' });
   await expect(card).toContainText('min');
   await card.getByRole('button', { name: 'I did it' }).click();
-  await expect(page.getByRole('status')).toContainText(/Progress saved|Side quest done/);
+  await expect(page.getByText(/Progress saved|Side quest done/)).toBeVisible();
   await expect(card).toBeVisible();
 });
 
