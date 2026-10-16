@@ -378,6 +378,18 @@
               "sourceRefs": [
                 "lift"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "lift-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "lift-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -794,6 +806,18 @@
               "sourceRefs": [
                 "quad"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "multirotor-turns-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "multirotor-turns-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -813,7 +837,7 @@
             "claims": [
               {
                 "id": "battery-flight-time-c1",
-                "text": "Flight time rests on how much power is stored and how fast it is used.",
+                "text": "Flight time depends on stored energy and the rate at which it is used.",
                 "sourceRefs": [
                   "battery"
                 ]
@@ -915,7 +939,7 @@
                   {
                     "id": "a",
                     "text": "2 hours.",
-                    "feedback": "At this fixed rate, the stored power lasts two hours. Real flights use some spare energy.",
+                    "feedback": "At this fixed rate, the stored energy lasts two hours. Real flights keep some energy in reserve.",
                     "correct": true,
                     "sourceRefs": [
                       "battery"
@@ -1144,10 +1168,10 @@
             "sources": [
               {
                 "id": "battery",
-                "title": "Flight Time Calculations, Drone Design Report",
-                "publisher": "University of Central Florida Engineering",
-                "year": 2021,
-                "url": "https://www.ece.ucf.edu/seniordesign/su2020fa2020/g13/assets/SD1Report.pdf"
+                "title": "Flying Batteries: In-flight Battery Switching to Increase Multirotor Flight Time",
+                "publisher": "Jain and Mueller, University of California Berkeley",
+                "year": 2020,
+                "url": "https://hiperlab.berkeley.edu/wp-content/uploads/2020/06/2020_FlyingBatteries.pdf"
               }
             ],
             "quest": {
@@ -1155,6 +1179,18 @@
               "detail": "Sketch two made-up batteries. Add arrows for more stored energy and more mass. Say how each may change flight time.",
               "sourceRefs": [
                 "battery"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "battery-flight-time-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "battery-flight-time-c2",
+                  "verdict": "supported"
+                }
               ]
             }
           },
@@ -1632,6 +1668,18 @@
                 "gpsaccuracy",
                 "barometer"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "flight-sensors-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "flight-sensors-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -1642,11 +1690,13 @@
             ],
             "hook": "A bird can flap for both lift and forward push; a jet keeps fixed wings while its engine supplies the forward push.",
             "hookSourceRefs": [
-              "bird"
+              "bird",
+              "nasa"
             ],
             "rule": "Bird flaps can help give lift and forward push. A plane’s fixed wings make lift as air moves past them, while an engine or propeller gives forward push.",
             "ruleSourceRefs": [
-              "bird"
+              "bird",
+              "nasa"
             ],
             "claims": [
               {
@@ -1876,8 +1926,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Fuel storage.",
-                    "feedback": "Fuel sits in tanks; the wing's aerodynamic role is to support the plane.",
+                    "text": "The engine's main forward thrust.",
+                    "feedback": "A jet engine provides the main thrust; moving air over fixed wings provides lift.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -1982,10 +2032,17 @@
             "sources": [
               {
                 "id": "bird",
-                "title": "How Do Birds Fly?",
-                "publisher": "Arizona State University, Ask A Biologist",
-                "year": 2009,
-                "url": "https://askabiologist.asu.edu/how-do-birds-fly"
+                "title": "Birds Repurpose the Role of Drag and Lift to Take Off and Land",
+                "publisher": "Chin and Lentink, Nature Communications",
+                "year": 2019,
+                "url": "https://www.nature.com/articles/s41467-019-13347-3.pdf"
+              },
+              {
+                "id": "nasa",
+                "title": "Four Forces on an Airplane",
+                "publisher": "NASA Glenn Research Center",
+                "year": 2024,
+                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/"
               }
             ],
             "quest": {
@@ -1993,6 +2050,18 @@
               "detail": "Watch a bird and a plane clip. Draw an arrow for forward push and one for lift on each.",
               "sourceRefs": [
                 "bird"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "birds-and-planes-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c2",
+                  "verdict": "supported"
+                }
               ]
             }
           },
@@ -2394,10 +2463,23 @@
                 "fan",
                 "cooling"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "ceiling-fans-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ceiling-fans-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           }
         ]
       }
     ]
-  }
+  },
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks."
 }

@@ -28,7 +28,7 @@
               "lally",
               "wood"
             ],
-            "rule": "A cue can start a learned act. A good result can help the act stick. In Lally and team’s study, time to reach near full habit strength varied a lot; one missed day did not wipe it out.",
+            "rule": "A cue can start a learned act. Repeating it in a stable setting can strengthen the cue link. In Lally and team’s study, time to near full habit strength varied a lot; one missed day did not wipe it out.",
             "ruleSourceRefs": [
               "lally",
               "wood"
@@ -416,6 +416,18 @@
                 "lally",
                 "wood"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "habits-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -574,7 +586,7 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "A student describes the same score change as “keep five” or “lose five.” What changed?",
+                "stem": "A student hears the same final score framed as “keep five” or “lose five.” What changed?",
                 "options": [
                   {
                     "id": "a",
@@ -810,6 +822,18 @@
               "detail": "Write a made-up choice as a gain and then as a loss from a starting point. Ask how the frame may shift its feel.",
               "sourceRefs": [
                 "prospect"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "loss-aversion-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-c2",
+                  "verdict": "supported"
+                }
               ]
             }
           },
@@ -1208,6 +1232,18 @@
               "sourceRefs": [
                 "bias"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "anchoring-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -1257,7 +1293,7 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "During exam week, Aditi believes every hard paper has a trick question. Which paper might she recall first?",
+                "stem": "In exam week, Aditi thinks every hard paper hides a trick question. Which memory of hers shows this bias at work?",
                 "options": [
                   {
                     "id": "a",
@@ -1595,10 +1631,10 @@
               },
               {
                 "id": "wason",
-                "title": "On the Failure to Eliminate Hypotheses in a Conceptual Task",
-                "publisher": "P. C. Wason, Quarterly Journal of Experimental Psychology",
-                "year": 1960,
-                "url": "https://journals.sagepub.com/doi/10.1080/17470216008416717"
+                "title": "Motivated Reasoning and Performance on the Wason Selection Task",
+                "publisher": "Dawson, Gilovich and Regan, Personality and Social Psychology Bulletin",
+                "year": 2002,
+                "url": "https://web.mit.edu/curhan/www/docs/Articles/biases/Dawson_Gilovich_Regan_Motivated_Reasoning_and_Wason_Selection_Task.pdf"
               }
             ],
             "quest": {
@@ -1607,6 +1643,18 @@
               "sourceRefs": [
                 "bias",
                 "wason"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "confirmation-bias-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-c2",
+                  "verdict": "supported"
+                }
               ]
             }
           },
@@ -1970,6 +2018,18 @@
               "sourceRefs": [
                 "asch"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "social-proof-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           },
           {
@@ -2332,10 +2392,23 @@
               "sourceRefs": [
                 "planning"
               ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "planning-fallacy-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-c2",
+                  "verdict": "supported"
+                }
+              ]
             }
           }
         ]
       }
     ]
-  }
+  },
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks."
 }

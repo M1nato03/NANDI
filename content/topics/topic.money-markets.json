@@ -410,7 +410,19 @@
                 "url": "https://www.imf.org/en/publications/fandd/issues/series/back-to-basics/inflation",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "inflation-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           },
           {
             "id": "compounding",
@@ -855,7 +867,19 @@
                 "url": "https://www.investor.gov/introduction-investing",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "compounding-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           },
           {
             "id": "rule-of-72",
@@ -1230,7 +1254,19 @@
                 "url": "https://www.investor.gov/introduction-investing",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "rule-of-72-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           },
           {
             "id": "risk-return",
@@ -1310,7 +1346,7 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "During exam week, a family shop tries a new snack that may sell out or go unsold. Which outcome is possible?",
+                "stem": "During exam week, a family shop pays to make a new snack that may sell out or go unsold. Which outcome is possible?",
                 "options": [
                   {
                     "id": "a",
@@ -1586,7 +1622,19 @@
                 "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "risk-return-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           },
           {
             "id": "diversification",
@@ -1634,7 +1682,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Every sale line feels the same stall shock.",
+                    "text": "Its only sale line bears the whole stall shock.",
                     "feedback": "With one product, there is no other product line to offset that lost demand.",
                     "correct": true,
                     "sourceRefs": [
@@ -1666,7 +1714,7 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "At a college fest, one stall sells juice and snacks, while another sells only juice. If fruit prices jump, which stall has another line?",
+                "stem": "At a college fest, one stall sells juice and packaged snacks without fruit, while another sells only juice. If fruit prices jump, which stall has another line?",
                 "options": [
                   {
                     "id": "a",
@@ -1942,7 +1990,19 @@
                 "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "diversification-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           },
           {
             "id": "shares",
@@ -2298,10 +2358,23 @@
                 "url": "https://investor.sebi.gov.in/understandings_shares.html",
                 "asOf": "2026-10-16"
               }
-            ]
+            ],
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "shares-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-c2",
+                  "verdict": "supported"
+                }
+              ]
+            }
           }
         ]
       }
     ]
-  }
+  },
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks."
 }
