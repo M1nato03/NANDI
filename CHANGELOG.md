@@ -27,3 +27,4 @@
 - Redesign: Now deck / Plan (one list) / You, new warm dark look.
 - Teaching engine core (spec 09): adaptive mastery, FSRS scheduling per concept, Elo item difficulty, accuracy-gated topic packs, visible 7/30-day retention checks. Back navigation everywhere.
 - Night plan (if-then), nights back on plan, weekly "What your time became" recap card with Share, copy-lint check.
+- Android app part 1: Capacitor shell, notifications, native backups, CI-built APK, opt-in late-night pause.
