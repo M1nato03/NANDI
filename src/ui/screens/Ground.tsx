@@ -10,9 +10,12 @@ import { ErrorRing } from './ErrorRing';
 import type { Appearance } from '../shell/useAppearance';
 import { dayKey } from '../../core/time/dayKey';
 import { economyVisible } from '../mind/economyVisibility';
+import { readNightPlan, nightsBackOnPlan } from '../../core/nightPlan';
+import { NightPlanSetting } from './NightPlanSetting';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
+  const logs = useLiveQuery(() => db.dailyLog.toArray(), []) ?? [];
   const [message, setMessage] = useState('');
   const [today] = useState(() => dayKey(Date.now()));
   const value = (key: string, fallback: string) => {
@@ -31,7 +34,10 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     } catch { setMessage('Could not save that setting.'); }
   }
   const showEconomy = economyVisible(settings ?? [], today);
+  const nights = nightsBackOnPlan(logs);
   return <div className="you-settings"><section className="card"><h2>Progress</h2>{showEconomy ? <><strong className="rank">#500</strong><p>Bench · start where you are</p></> : <p>Your progress appears here when it is ready.</p>}</section>
+    <section className="card"><h2>Nights back on plan</h2><strong className="night-count">{nights}</strong><p>One night at a time. Back tonight.</p></section>
+    {readNightPlan(settings ?? []) && <NightPlanSetting />}
     <button type="button" className="secondary" onClick={() => go('you/backup')}>Backup and restore</button>
     <section className="card"><h2>Settings</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>

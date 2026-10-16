@@ -54,8 +54,8 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .deck-heading h1 { margin-bottom: 14px; }
 .deck-heading .eyebrow { margin: 0; }
 .deck-count { color: var(--muted); white-space: nowrap; margin-bottom: 19px; }
-.deck-dashes { display: flex; gap: 2px; margin: 4px 0 8px; }
-.deck-dashes button { min-height: 44px; height: 44px; flex: 1; border: 0; padding: 0; background: transparent; border-radius: 8px; position: relative; }
+  .deck-dashes { display: flex; gap: 2px; margin: 4px 0 8px; overflow-x: auto; }
+  .deck-dashes button { min-height: 44px; min-width: 44px; height: 44px; flex: 1 0 44px; border: 0; padding: 0; background: transparent; border-radius: 8px; position: relative; }
 .deck-dashes button::after { content: ''; position: absolute; inset: 19px 0 20px; background: var(--line); border-radius: 8px; }
 .deck-dashes button.active::after { background: var(--accent); }
 .deck-back, .screen-back { display: block; min-height: 44px; min-width: 44px; padding: 8px 12px; margin: 0 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--accent); text-align: left; }
@@ -105,6 +105,19 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .mastery-slot { margin-top: 16px; }
 .mastery-slot h2 { margin-top: 16px; }
 .you-settings > .secondary { width: 100%; }
+  .night-plan-setting { display: grid; gap: 10px; margin: 16px 0; }
+  .night-first-step { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; }
+  .night-first-step .secondary { min-height: 44px; }
+  .night-plan-setting h2, .night-plan-setting p { margin: 0; }
+  .night-plan-setting label { font-weight: 700; }
+  .night-plan-setting input, .night-plan-setting select { width: 100%; min-height: 48px; padding: 10px 12px; border-radius: 12px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+  .night-plan-preview { padding: 14px; border-left: 4px solid var(--accent); }
+  .night-count { font: 800 64px 'Bricolage Grotesque', sans-serif; color: var(--accent); }
+  .recap-slot { margin-top: 16px; }
+  .weekly-recap { width: 100%; }
+  .weekly-recap h2 { font-size: clamp(32px, 7vw, 52px); margin: 18px 0 10px; }
+  .weekly-recap ul { list-style: none; padding: 0; margin: 20px 0; display: grid; gap: 8px; }
+  .weekly-recap li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 18px; }
 .you-settings label { flex-wrap: wrap; }
 .app-shell:has(.mind-case) .screen-back { display: none; }
 .timer-ring span { font: 800 52px 'Bricolage Grotesque', sans-serif; }

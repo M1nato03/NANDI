@@ -985,7 +985,7 @@
         "id": "c12",
         "t": "Do hold it in (mind)",
         "scene": "A batchmate presents your idea to the professor as his own. You feel the urge to call him a liar right there.",
-        "q": "Which urges does the text say you should hold back?",
+        "q": "Which urges does the text suggest holding back?",
         "o": [
           "None; let everything out",
           "Rash acts, anger, greed, jealousy, harsh or lying words",
@@ -1036,7 +1036,7 @@
           "o": [
             "Suppressing feelings tends to backfire; reappraising them works better",
             "Because anger is always right",
-            "Because you should always say everything"
+            "Because saying everything at once is always best"
           ],
           "a": 0,
           "f": "Hold the reaction, process the feeling."
@@ -1055,7 +1055,7 @@
         },
         "cards": [
           [
-            "Charaka Su 7.26–29 · Urges you should hold back?",
+            "Charaka Su 7.26–29 · Which urges to hold back?",
             "Rash acts, greed, fear, anger, ego, jealousy, harsh or lying words."
           ],
           [

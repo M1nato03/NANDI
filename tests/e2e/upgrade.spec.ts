@@ -99,7 +99,7 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
 
   await page.goto(`${origin}/?e2e#you`);
   await expect(
-    page.getByRole('main').getByRole('heading', { name: 'You' }),
+    page.getByRole('main').getByRole('heading', { name: 'You', exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
   await page.waitForFunction(() => window.__nandiTest !== undefined);
@@ -140,7 +140,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await reloaded;
 
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
-    await expect(page.getByRole('main').getByRole('heading', { name: 'You' })).toBeVisible();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(
@@ -152,7 +152,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await context.setOffline(true);
     await page.reload();
     await expect(
-      page.getByRole('main').getByRole('heading', { name: 'You' }),
+      page.getByRole('main').getByRole('heading', { name: 'You', exact: true }),
     ).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
   } finally {
@@ -196,7 +196,7 @@ test('active focus waits until paused before updating', async ({ page, context }
     await reloaded;
 
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
-    await expect(page.getByRole('main').getByRole('heading', { name: 'You' })).toBeVisible();
+    await expect(page.getByRole('main').getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(await page.evaluate(

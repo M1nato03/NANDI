@@ -44,7 +44,7 @@ export function LessonPlayer({ lesson, packId, courseName, total, completed, dra
     <p className="eyebrow">{courseName} · {draft.review ? 'Review' : 'Today’s lesson'} · {draft.step + 1} of 8</p>
     <h1>{lesson.t}</h1>
     {afterBedtime && <p role="status">{nightMindNote(economyVisible)}</p>}
-    <p className="mind-save" role="status">{saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Save failed. Try again.'}</p>
+    <p className="mind-save" role="status">{saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Could not save. Try again.'}</p>
     <article className="card" aria-label={`${step} screen`}>
       {step === 'guess' && <><p className="mind-scene">{lesson.scene}</p>{quiz('guess', lesson, false)}{draft.picked.guess !== undefined && <><p>How confident are you?</p><div className="mind-lesson-options">{(['sure', 'think', 'guess'] as Confidence[]).map(value => <button key={value} type="button" onClick={() => { save({ ...draft, confidence: value, step: 1 }); window.scrollTo(0, 0); }}>{value === 'sure' ? 'Sure' : value === 'think' ? 'Think so' : 'Guessing'} · {confidencePercent(value)}%</button>)}</div></>}</>}
       {step === 'reveal' && <><h2>{isCorrect(draft.order.guess, draft.picked.guess ?? null, lesson.a) ? 'You called it.' : 'Not quite.'}</h2>{!isCorrect(draft.order.guess, draft.picked.guess ?? null, lesson.a) && <p>Answer: {lesson.o[lesson.a]}</p>}{!isCorrect(draft.order.guess, draft.picked.guess ?? null, lesson.a) && draft.confidence === 'sure' && <p>Surprised? Confident misses are the ones you remember best.</p>}<p>{lesson.rv}</p><Diagram data={lesson.pic} /><button type="button" onClick={() => advance(2)}>Continue</button></>}
