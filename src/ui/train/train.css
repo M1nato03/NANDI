@@ -24,15 +24,50 @@
 .train-chart { height: 90px; background: var(--raised); border-radius: 8px; padding: 5px; }
 .train-chart svg { width: 100%; height: 100%; }
 .train-chart polyline { fill: none; stroke: var(--accent); stroke-width: 3; }
-.train-rest { position: sticky; top: 0; z-index: 2; background: var(--accent); color: var(--bg); padding: 12px; border-radius: 8px; font-weight: 600; text-align: center; }
-.train-set { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding: 10px 0; }
-.train-cues { padding-left: 20px; color: var(--muted); line-height: 1.5; }
-.train-set > span:first-child { flex-basis: 100%; font-weight: 600; }
-.train-set label { margin: 0; gap: 3px; }
-.train-set input[type=number] { width: 54px; min-width: 44px; padding: 6px; color: var(--ink); background: var(--raised); border: 1px solid var(--line); border-radius: 6px; }
-.train-set button { padding: 8px; }
-.train-set .train-confirm { flex-basis: 100%; }
-.train-pain { color: var(--danger) !important; }
+.train-workout { min-width: 0; }
+.train-progress { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.train-progress .eyebrow { margin: 4px 0 10px; }
+.train-progress .text-button { min-width: 0; padding: 0 0 8px 8px; white-space: nowrap; font-size: 13px; }
+.train-dots { display: flex; gap: 7px; }
+.train-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.train-dots span.complete { background: var(--muted); }
+.train-dots span.current { width: 20px; border-radius: 8px; background: var(--accent); }
+.train-workout .train-exercise { position: relative; margin-top: 20px; padding: 22px; }
+.train-exercise h1 { font-size: clamp(30px, 9vw, 44px); margin: 8px 0 10px; }
+.train-exercise .train-target { color: var(--ink); font-weight: 700; margin: 0 0 16px; }
+.train-exercise .train-detail { margin: 8px 0; }
+.train-cues { padding-left: 20px; color: var(--muted); line-height: 1.5; margin: 14px 0; }
+.train-done-list { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.train-done-list li { display: flex; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+.train-done-list span { color: var(--accent); font-weight: 800; }
+.train-active-set { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 20px; }
+.train-active-set h3 { font-size: 22px; margin-bottom: 16px; }
+.train-stepper-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.train-stepper-grid:has(> :only-child) { grid-template-columns: 1fr; }
+.train-stepper { min-width: 0; }
+.train-stepper > span { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+.train-stepper-controls { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 3px; }
+.train-stepper-controls button { width: 48px; height: 52px; padding: 0; font-size: 24px; }
+.train-stepper-controls input { min-width: 0; width: 100%; height: 52px; text-align: center; font-size: 21px; font-weight: 700; color: var(--ink); background: var(--raised); border: 1px solid var(--line); border-radius: 8px; appearance: textfield; }
+.train-stepper-controls input::-webkit-inner-spin-button, .train-stepper-controls input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.train-active-set .train-log { display: block; width: 100%; min-height: 56px; margin-top: 22px; font-size: 17px; }
+.train-active-set .train-pain { display: block; margin: 8px auto 0; color: var(--muted); padding: 8px 12px; }
+.train-rest { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; background: var(--raised); color: var(--ink); padding: 12px; border-radius: 9px; margin-top: 16px; }
+.train-rest > div { display: flex; gap: 6px; }
+.train-rest button { padding: 8px 10px; font-size: 13px; }
+.train-nav { display: flex; gap: 10px; }
+.train-nav button { flex: 1; min-width: 0; }
+.train-all-toggle { margin-top: 10px; }
+.train-all-list { list-style: none; padding: 0; margin: 4px 0 20px; }
+.train-all-list li { margin-bottom: 5px; }
+.train-all-list button { width: 100%; display: flex; justify-content: space-between; gap: 10px; text-align: left; }
+.train-all-list button span { overflow: hidden; text-overflow: ellipsis; }
+.train-all-list small { white-space: nowrap; }
+.train-complete { animation: train-check 420ms ease-out; }
+.train-check { position: absolute; top: 16px; right: 18px; color: var(--accent); font-size: 26px; }
+@keyframes train-check { 50% { border-color: var(--accent); transform: scale(1.01); } }
+@media (prefers-reduced-motion: reduce) { .train-complete { animation: none; } }
+:root[data-motion='reduce'] .train-complete { animation: none; }
 .train-safety { color: var(--danger) !important; font-weight: 600; }
 .train-pr-badge { display: inline-block; background: var(--gold); color: var(--bg); border-radius: 4px; font-size: 12px; font-weight: 700; padding: 3px 6px; }
 .train-effort { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
