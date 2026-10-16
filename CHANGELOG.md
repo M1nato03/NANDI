@@ -25,3 +25,4 @@
 - Learning tracks: one active track at a time, daily unit with a 25-minute budget bar, cards into reviews; pilot Drone technology module (4 units).
 - Daily mystery case is part of the Daily Drop; focus sessions run 25/5 or 50/10 cycles; full weekly summary export.
 - Redesign: Now deck / Plan (one list) / You, new warm dark look.
+- Teaching engine core (spec 09): adaptive mastery, FSRS scheduling per concept, Elo item difficulty, accuracy-gated topic packs, visible 7/30-day retention checks. Back navigation everywhere.
