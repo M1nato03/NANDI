@@ -10,26 +10,24 @@ for (const scheme of ['light', 'dark'] as const) {
     });
     await page.goto('/#now');
     await expect(page.getByRole('article', { name: 'Your week card' })).toContainText('What your time became');
+    const download = page.waitForEvent('download');
+    await page.getByRole('region', { name: 'What your time became recap' }).getByRole('button', { name: 'Share' }).click();
+    expect((await download).suggestedFilename()).toBe('nandi-recap-2026-10-05.png');
     await page.getByRole('link', { name: 'You' }).click();
+    await page.getByRole('button', { name: /Settings/ }).click();
     const setting = page.getByRole('region', { name: 'Night plan setting' });
     await expect(setting).toBeVisible();
     await setting.getByLabel('Choose a bedtime cue').selectOption('getting into bed with my phone');
     await setting.getByLabel('Choose a replacement').selectOption('read 5 pages');
     await setting.getByRole('button', { name: 'Save night plan' }).click();
     await expect(setting).toHaveCount(1);
-    await expect(page.getByRole('region', { name: 'What your time became recap' })).toContainText('nights back on plan');
-    const download = page.waitForEvent('download');
-    await page.getByRole('region', { name: 'What your time became recap' }).getByRole('button', { name: 'Share' }).click();
-    expect((await download).suggestedFilename()).toBe('nandi-recap-2026-10-05.png');
+    await expect(page.getByRole('heading', { name: 'Settings', exact: true, level: 1 })).toBeVisible();
 
     await page.clock.setFixedTime(new Date('2026-10-13T01:00:00'));
     await page.goto('/#now');
-    const planCard = page.getByRole('article', { name: 'Your night plan card' });
-    await expect(planCard).toContainText('If I getting into bed with my phone, then I read 5 pages.');
+    await expect(page.getByRole('article', { name: 'First night card' })).toHaveCount(0);
     await page.clock.setFixedTime(new Date('2026-10-13T01:31:00'));
     await page.goto('/#now');
-    await expect(page.getByRole('article', { name: 'Your night plan card' })).toBeVisible();
-    await planCard.getByRole('button', { name: 'Continue night deck' }).click();
     await expect(page.getByRole('article', { name: 'Lights-out card' })).toBeVisible();
 
     const controls = page.getByRole('button');

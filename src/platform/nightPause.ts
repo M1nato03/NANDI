@@ -5,6 +5,7 @@ type Status = { usageAllowed: boolean; pendingPackage: string };
 type NightPausePlugin = {
   status(): Promise<Status>;
   openUsageSettings(): Promise<void>;
+  openAppInfo(): Promise<void>;
   configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number }): Promise<void>;
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
@@ -16,6 +17,7 @@ export async function nightPauseStatus(): Promise<Status> {
   return Capacitor.isNativePlatform() ? native.status() : { usageAllowed: false, pendingPackage: '' };
 }
 export async function openUsageSettings(): Promise<void> { if (Capacitor.isNativePlatform()) await native.openUsageSettings(); }
+export async function openNightPauseAppInfo(): Promise<void> { if (Capacitor.isNativePlatform()) await native.openAppInfo(); }
 export async function configureNightPause(enabled: boolean, bedtime: string, packages: string[]): Promise<void> {
   if (Capacitor.isNativePlatform()) await native.configure({ enabled, bedtime, packages: packages.join(','), leadMinutes: RULES.night.pauseLeadMin });
 }

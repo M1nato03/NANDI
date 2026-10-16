@@ -36,7 +36,7 @@ test('browser Back restores the deck card and saved puzzle progress', async ({ p
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#now');
   await page.getByRole('button', { name: 'Go to card 3: Think' }).click();
-  await page.getByRole('button', { name: 'Open board' }).click();
+  await page.getByRole('button', { name: 'Play' }).click();
   const board = page.locator('.mind-board');
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   const before = await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
@@ -46,7 +46,7 @@ test('browser Back restores the deck card and saved puzzle progress', async ({ p
   expect(cells).not.toEqual(before);
   await page.goBack();
   await expect(page.getByText('3 of 7')).toBeVisible();
-  await page.getByRole('button', { name: 'Open board' }).click();
+  await page.getByRole('button', { name: 'Play' }).click();
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   expect(await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(cells);
   await expect(page.getByRole('button', { name: 'Back to Now' })).toBeVisible();

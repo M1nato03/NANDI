@@ -23,6 +23,7 @@ test('restore preview keeps its first row clear on phone widths', async ({ page 
     progress: { items: { retired: { b: 99, due: '9999-12-31' } } },
   };
   await page.goto('/#you');
+  await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByRole('button', { name: /Backup and restore/ }).click();
   for (const width of [360, 412]) {
     await page.setViewportSize({ width, height: 800 });

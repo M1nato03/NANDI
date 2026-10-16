@@ -4,7 +4,7 @@ import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { DEFAULT_PAUSE_APPS } from '../../core/nightPause';
 import { RULES } from '../../core/rules.config';
-import { nightPauseAvailable, nightPauseStatus, openUsageSettings } from '../../platform/nightPause';
+import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openUsageSettings } from '../../platform/nightPause';
 import { notifier } from '../../platform/notifier';
 
 const defaultPackages: string[] = DEFAULT_PAUSE_APPS.map(app => app.packageName);
@@ -19,9 +19,9 @@ export function NightSettings() {
   const extras = packages.filter(item => !defaultPackages.includes(item));
   useEffect(() => {
     if (!nightPauseAvailable()) return;
-    const refresh = () => { void nightPauseStatus().then(status => setAllowed(status.usageAllowed)); };
-    refresh(); document.addEventListener('visibilitychange', refresh);
-    return () => document.removeEventListener('visibilitychange', refresh);
+    const refresh = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => setAllowed(status.usageAllowed)).catch(() => setMessage('Could not check Usage access.')); };
+    refresh(); document.addEventListener('visibilitychange', refresh); window.addEventListener('pageshow', refresh);
+    return () => { document.removeEventListener('visibilitychange', refresh); window.removeEventListener('pageshow', refresh); };
   }, []);
   if (!nightPauseAvailable()) return null;
   async function save(key: string, value: unknown) {
@@ -47,7 +47,7 @@ export function NightSettings() {
     <h3>Night pause</h3>
     <p>Optional. NANDI checks which app is in front during your bedtime window, so it can offer a short pause before a chosen app. This needs Android Usage access. The check and your choices stay on this phone.</p>
     <p>Usage access: {allowed ? 'Allowed' : 'Off'}</p>
-    {!allowed && <button type="button" className="secondary" onClick={() => void openUsageSettings()}>Open Usage access settings</button>}
+    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openNightPauseAppInfo()}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => void openUsageSettings()}>Open Usage access settings</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> Night pause on</label>
     <p>From {RULES.night.pauseLeadMin} minutes before bedtime until 04:00. Turn it off here any time.</p>
     {DEFAULT_PAUSE_APPS.map(app => <label key={app.packageName}><input type="checkbox" checked={packages.includes(app.packageName)} onChange={() => toggle(app.packageName)} /> {app.label}</label>)}
