@@ -1,6 +1,7 @@
 import { trackWrite } from '../core/pendingWrites';
 import { db } from '../data/db';
 import { getOrCreateDeviceId } from '../data/device';
+import { Capacitor } from '@capacitor/core';
 
 export interface ServiceWorkerState {
   needRefresh: boolean;
@@ -38,7 +39,7 @@ async function markOfflineReady(): Promise<void> {
 }
 
 export function registerServiceWorker(): void {
-  if (started || !(import.meta.env.PROD || import.meta.env.VITE_E2E === '1')) return;
+  if (Capacitor.isNativePlatform() || started || !(import.meta.env.PROD || import.meta.env.VITE_E2E === '1')) return;
   started = true;
   void import('virtual:pwa-register').then(({ registerSW }) => {
     updateSW = registerSW({

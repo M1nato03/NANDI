@@ -12,6 +12,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { economyVisible } from '../mind/economyVisibility';
 import { readNightPlan, nightsBackOnPlan } from '../../core/nightPlan';
 import { NightPlanSetting } from './NightPlanSetting';
+import { ReminderSettings } from './ReminderSettings';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
@@ -47,6 +48,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
       <label>Bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
       <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}. After three nights, the bedtime target can move 15 minutes earlier when two met the target.</p>
+      <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
     <p className="small">NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p>
