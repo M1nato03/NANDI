@@ -50,10 +50,9 @@ h3 { font-size: 23px; }
 .tabbar a[aria-current='page'] { color: var(--ink); background: var(--raised); }
 .tab-symbol { display: none; }
 select, input { background: var(--raised); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; max-width: 100%; }
-.deck-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
-.deck-heading h1 { margin-bottom: 14px; }
-.deck-heading .eyebrow { margin: 0; }
-.deck-count { color: var(--muted); white-space: nowrap; margin-bottom: 19px; }
+.deck-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.deck-heading h1 { font-size: 28px; margin: 0; }
+.deck-count { color: var(--muted); white-space: nowrap; }
   .deck-dashes { display: flex; gap: 2px; margin: 4px 0 8px; overflow-x: auto; }
   .deck-dashes button { min-height: 44px; min-width: 44px; height: 44px; flex: 1 0 44px; border: 0; padding: 0; background: transparent; border-radius: 8px; position: relative; }
 .deck-dashes button::after { content: ''; position: absolute; inset: 19px 0 20px; background: var(--line); border-radius: 8px; }
@@ -106,6 +105,8 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .mastery-slot h2 { margin-top: 16px; }
 .you-settings > .secondary { width: 100%; }
   .night-plan-setting { display: grid; gap: 10px; margin: 16px 0; }
+  .deck-card .night-plan-setting { margin: 0; }
+  .deck-card .night-plan-setting h2 { font-size: clamp(28px, 7vw, 36px); margin: 0; }
   .night-first-step { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; }
   .night-first-step .secondary { min-height: 44px; }
   .night-plan-setting h2, .night-plan-setting p { margin: 0; }
@@ -119,6 +120,11 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
   .weekly-recap ul { list-style: none; padding: 0; margin: 20px 0; display: grid; gap: 8px; }
   .weekly-recap li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 18px; }
 .you-settings label { flex-wrap: wrap; }
+.you-settings .day-night-heading { margin-top: 32px; }
+.you-settings .setting-help { font-size: 13px; margin: 4px 0 16px; }
+.about-app { margin: 20px 0; border: 1px solid var(--line); border-radius: 14px; padding: 0 16px; }
+.about-app summary { cursor: pointer; padding: 14px 0; font-weight: 600; }
+.about-app > .card { margin: 12px 0 16px; }
 .app-shell:has(.mind-case) .screen-back { display: none; }
 .timer-ring span { font: 800 52px 'Bricolage Grotesque', sans-serif; }
 .night-pause-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(8, 10, 16, .9); }
@@ -142,9 +148,9 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .deck-card p { font-size: 16px; margin: 10px 0; }
 .deck-card .deck-meta { font-size: 13px; color: var(--muted); }
 .deck-actions { margin-top: 22px; }
-.deck-dashes { overflow: visible; gap: 0; flex-wrap: wrap; }
+.deck-dashes { overflow: visible; gap: 0; flex-wrap: nowrap; }
 .deck-dashes button { flex: 1 1 44px; min-width: 44px; }
-.deck-dashes button::after { inset-inline: 2px; }
+.deck-dashes button::after { inset-inline: 0; width: 6px; height: 6px; margin-inline: auto; border-radius: 50%; }
 .deck-dashes button.active::after { background: var(--muted); }
 .deck-dashes button.complete::after { background: var(--accent); animation: segment-fill .45s ease-out both; }
 .deck-check { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-left: 9px; border-radius: 50%; background: var(--accent); color: var(--bg); font-weight: 800; vertical-align: middle; }
@@ -186,7 +192,7 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 @keyframes check-pop { 0% { transform: scale(.7); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
 @keyframes card-fill { 0% { box-shadow: inset 0 0 0 0 var(--accent); } 50% { box-shadow: inset 0 0 0 4px var(--accent); } 100% { box-shadow: inset 0 0 0 1px var(--line); } }
 @keyframes segment-fill { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
-@media (max-width: 600px) { .deck-card { min-height: 0; } .deck-actions { flex-direction: row; } .deck-actions button { width: auto; flex: 1 1 140px; } }
+@media (max-width: 600px) { .deck-card { min-height: 0; } .deck-actions { flex-direction: row; } .deck-actions button { width: auto; flex: 1 1 140px; } .deck-dashes { width: calc(100% + 36px); margin-left: -18px; padding-inline: 4px; } }
 @media (prefers-reduced-motion: reduce) { .deck-dashes button.complete::after, .just-completed .deck-check, .just-completed, .deck-celebration { animation: none; } }
 :root[data-motion='reduce'] .deck-dashes button.complete::after, :root[data-motion='reduce'] .just-completed .deck-check, :root[data-motion='reduce'] .just-completed, :root[data-motion='reduce'] .deck-celebration { animation: none; }
 

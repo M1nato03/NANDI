@@ -1,6 +1,11 @@
 .train-onboarding .card, .train-screen .card, .train-workout .card { margin-top: 14px; }
 .train-checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; }
 .train-checks label, .train-confirm { justify-content: flex-start; }
+.train-checks label { position: relative; display: block; min-width: 0; min-height: 44px; margin: 0; cursor: pointer; }
+.train-checks input[type=checkbox] { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.train-checks label span { display: flex; align-items: center; min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--raised); color: var(--ink); pointer-events: none; }
+.train-checks input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+.train-checks input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 3px; }
 .train-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin: 15px 0; }
 .train-days button { padding: 8px 0; min-width: 0; }
 .train-step { font-weight: 600; color: var(--ink) !important; }
