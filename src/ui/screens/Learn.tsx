@@ -30,12 +30,12 @@ export function Learn() {
     <p>Five small questions. A clearer idea to carry into the day.</p>
     <div className="learn-map-actions"><button type="button" onClick={() => setPractice(true)} disabled={!selected.length}>Practice more</button><button type="button" className="secondary" onClick={() => { go('now'); goToCard(new Date(openedAt).getDay() === 1 ? 5 : 4); }}>Today's drop</button></div>
     <h2>Topics</h2><p>Tap a topic to add or remove it from your drops.</p>
-    {topics.map(pack => {
+    {[...topics].sort((a, b) => Number(selected.includes(b.body.topic.id)) - Number(selected.includes(a.body.topic.id))).map(pack => {
       const concepts = pack.body.modules.flatMap(module => module.concepts);
       const due = concepts.filter(concept => { const state = states.find(row => row.id === concept.id); return state?.memory && state.memory.dueAt <= openedAt; }).length;
       const retentionDue = concepts.flatMap(concept => { const state = states.find(row => row.id === concept.id); if (!state?.firstLearnedAt) return []; return ([7, 30] as const).filter(day => openedAt >= state.firstLearnedAt! + day * 86_400_000 && !state.retentionChecks?.[day]); }).length;
-      return <section className="card learn-map-topic" key={pack.id}><span className="pill">{selected.includes(pack.body.topic.id) ? 'In your drops' : 'Explore anytime'}</span><h2>{pack.title}</h2><p>{pack.description}</p><button type="button" className="secondary" aria-pressed={selected.includes(pack.body.topic.id)} onClick={() => void toggle(pack.body.topic.id)}>{selected.includes(pack.body.topic.id) ? 'Selected ✓' : 'Add topic'}</button>
-        <p>{due ? `${due} review ${due === 1 ? 'check' : 'checks'} due` : 'No spaced reviews due'} · {retentionDue ? `${retentionDue} retention ${retentionDue === 1 ? 'check' : 'checks'} due` : 'No retention checks due'}</p>
+      return <section className="card learn-map-topic" key={pack.id}><span className="pill">{selected.includes(pack.body.topic.id) ? 'In your drops' : 'Explore anytime'}</span><h2>{pack.title}</h2><p>{pack.description}</p><button type="button" className="secondary" aria-pressed={selected.includes(pack.body.topic.id)} onClick={() => void toggle(pack.body.topic.id)}>{selected.includes(pack.body.topic.id) ? 'In my drops ✓' : 'Add to my drops'}</button>
+        <p>{due || retentionDue ? [due ? `${due} ${due === 1 ? 'idea' : 'ideas'} to review` : '', retentionDue ? `${retentionDue} memory ${retentionDue === 1 ? 'check' : 'checks'} due` : ''].filter(Boolean).join(' · ') : 'Nothing to review yet'}</p>
         <div className="learn-chips" aria-label={`${pack.title} mastery map`}>{concepts.map(concept => { const label = masteryMapState(states.find(row => row.id === concept.id)); return <span className="learn-chip" data-state={label.toLowerCase().replace(' ', '-')} key={concept.id}><strong>{concept.title}</strong><small>{label === 'Not started' ? 'New' : label}</small></span>; })}</div>
       </section>;
     })}

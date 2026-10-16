@@ -36,15 +36,16 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     <section className="card"><h2>Appearance</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>
       <label>Motion <select value={motion} onChange={event => void setMotion(event.target.value)}><option value="system">System</option><option value="reduce">Reduced</option></select></label>
-      <h3>Day and night</h3>
+      <h3 className="day-night-heading">Day and night</h3>
       <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>
       <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
-      <label>Bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
-      <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}. After three nights, the bedtime target can move 15 minutes earlier when two met the target.</p>
+      <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
+      <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
+      <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
+      <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}.</p>
       <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
-    <p className="small">NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p>
-    <ErrorRing />
+    <details className="about-app"><summary>About this app</summary><p className="small">NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><ErrorRing /></details>
   </div>;
 }

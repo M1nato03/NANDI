@@ -24,7 +24,7 @@ export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
     } catch { setMessage('Could not save your night plan. Try again.'); }
   }
 
-  return <section className="card night-plan-setting" aria-label="Night plan setting">
+  return <section className={`${firstRun ? '' : 'card '}night-plan-setting`} aria-label="Night plan setting">
     <span className="pill">{firstRun ? 'First night' : 'Night'}</span>
     <h2>{firstRun ? 'Make a tiny night plan' : 'Your night plan'}</h2>
     <p>When does the phone sneak into your night? Pick a cue and one easy next move.</p>

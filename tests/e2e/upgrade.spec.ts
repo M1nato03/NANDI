@@ -102,7 +102,7 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
     page.getByRole('main').getByRole('heading', { name: 'You', exact: true }),
   ).toBeVisible();
   await page.getByRole('button', { name: /Settings/ }).click();
-  await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeVisible();
+  await expect(page.getByText(/NANDI 0\.1\.0 ·/)).toBeAttached();
   await page.waitForFunction(() => window.__nandiTest !== undefined);
   await page.evaluate(async () => {
     await window.__nandiTest!.seedShell();
@@ -143,7 +143,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await expect(page.getByRole('main').getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await page.getByRole('button', { name: /Settings/ }).click();
-    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeAttached();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(
       await page.evaluate(
@@ -156,7 +156,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
     await expect(
       page.getByRole('main').getByRole('heading', { name: 'Settings', exact: true, level: 1 }),
     ).toBeVisible();
-    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeAttached();
   } finally {
     await server.close();
   }
@@ -199,7 +199,7 @@ test('active focus waits until paused before updating', async ({ page, context }
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await expect(page.getByRole('main').getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await page.getByRole('button', { name: /Settings/ }).click();
-    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeVisible();
+    await expect(page.getByText(/NANDI 0\.1\.0-b ·/)).toBeAttached();
     await page.waitForFunction(() => window.__nandiTest !== undefined);
     expect(await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,

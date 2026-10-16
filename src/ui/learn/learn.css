@@ -36,7 +36,7 @@
 .learn-map-topic .learn-chip { display: grid; gap: 3px; border-radius: 13px; }
 .learn-map-topic .learn-chip small { color: var(--muted); text-transform: capitalize; }
 .learn-map-topic .learn-chip[data-state='strong'], .learn-map-topic .learn-chip[data-state='mastered'] { border-color: var(--teal); }
-.learn-map-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.learn-map-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
 .learn-map-actions button { flex: 1; }
 @media (prefers-reduced-motion: reduce) { .learn-correct { animation: none; } .learn-progress span { transition: none; } }
 :root[data-motion='reduce'] .learn-correct { animation: none; }
