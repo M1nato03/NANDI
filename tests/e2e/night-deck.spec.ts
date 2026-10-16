@@ -22,6 +22,8 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await deck.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByRole('article', { name: 'Night drop card' })).toBeVisible();
   const pick = page.locator('.learn-topic-tile').first();
+  // Wait for the card to load (topic pick or the drop) before deciding; isVisible() alone does not wait.
+  await expect(pick.or(page.locator('.learn-drop-head'))).toBeVisible();
   if (await pick.isVisible()) {
     await pick.click();
     await page.getByRole('button', { name: 'Start my first drop' }).click();
