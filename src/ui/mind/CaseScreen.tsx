@@ -502,7 +502,7 @@ export function CaseScreen({
                 ? 'Saved.'
                 : saveState === 'saving'
                   ? 'Saving…'
-                  : 'Save failed.')}
+                  : 'Could not save. Try again.')}
           </p>
         </>
       )}

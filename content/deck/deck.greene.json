@@ -450,7 +450,7 @@
         "t": "scenario",
         "d": 1000,
         "scene": "Hostel · day 3",
-        "text": "Rahul, new on your floor, tells you on day 3: “Telling only you this: I failed a semester last year.” Ten minutes later he asks how your algo picks its trades and what returns it makes.",
+        "text": "Rahul, new on your floor, tells you on day 3: “Telling only you this: I had to repeat a semester last year.” Ten minutes later he asks how your algo picks its trades and what returns it makes.",
         "q": "Best move?",
         "opts": [
           "Share your strategy. He trusted you with a secret, so it's only fair.",
