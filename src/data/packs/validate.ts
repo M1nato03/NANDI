@@ -21,6 +21,27 @@ const datePattern = /\b(?:19|20)\d{2}(?:-\d{1,2}(?:-\d{1,2})?)?\b|\b(?:January|F
 const indianSettingPattern = /\b(?:hostel|exam|canteen|cricket|monsoon|UPI|train|family (?:shop|business)|college|classroom|school|rupee|Delhi|Mumbai|Chennai|Bengaluru)\b|\u20b9/i;
 const words = (value: string) => value.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
 const allTypes = ['predict', 'choose', 'why', 'scenario', 'fill-the-step', 'true-not-quite', 'explain-it-back', 'order', 'match', 'estimate'];
+// Each estimate must invoke a mechanism from its concept, rather than ask for a bare sum or product.
+const estimateMechanisms: Record<string, RegExp> = {
+  lift: /\b(?:lift|weight|airflow)\b/i,
+  'multirotor-turns': /\b(?:thrust|pitch|roll|yaw|rotor)\b/i,
+  'battery-flight-time': /\b(?:battery|flight|hover|power|weight)\b/i,
+  'flight-sensors': /\b(?:sensor|gps|barometer|pressure|height)\b/i,
+  'birds-and-planes': /\b(?:bird|plane|wing|lift|thrust)\b/i,
+  'ceiling-fans': /\b(?:fan|breeze|airflow|cool)\b/i,
+  inflation: /\b(?:inflation|basket|price level|purchasing power)\b/i,
+  compounding: /\b(?:compound|gain|interest|retained)\b/i,
+  'rule-of-72': /\b(?:rule of 72|double|doubling|steady rate)\b/i,
+  'risk-return': /\b(?:risk|return|loss|outcome|payout)\b/i,
+  diversification: /\b(?:diversif\w*|holdings?|portfolio|shared shock)\b/i,
+  shares: /\b(?:shares?|ownership|owner|dividend)\b/i,
+  habits: /\b(?:habits?|cue|automatic)\b/i,
+  'loss-aversion': /\b(?:loss|gain|avers|reference point)\b/i,
+  anchoring: /\b(?:anchor|first number|starting number)\b/i,
+  'confirmation-bias': /\b(?:confirm|belief|falsif|disconfirm|test)\b/i,
+  'social-proof': /\b(?:crowd|group|conform|majority)\b/i,
+  'planning-fallacy': /\b(?:plan\w*|past.task|prior.task|estimat\w*)\b/i,
+};
 
 export function validatePack(input: unknown, options: { allowUnchecked?: boolean; editorial?: boolean } = {}): string[] {
   const parsed = v.safeParse(packSchema, input);
@@ -57,6 +78,10 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         for (const [type, count] of typeCounts) if (count > 2) errors.push(`${where}: more than 2 ${type} items`);
         if (!typeCounts.has('estimate')) errors.push(`${where}: needs an estimate item`);
         if (concept.items.filter(item => (item.type === 'scenario' || item.type === 'predict') && indianSettingPattern.test(item.stem)).length < 2) errors.push(`${where}: needs 2 Indian student scenarios or predictions`);
+        const levels = concept.items.map(item => item.difficultySeed);
+        if (levels.some(level => level !== 1 && level !== 2 && level !== 3)) errors.push(`${where}: difficulty seeds must be levels 1-3`);
+        if (levels.filter(level => level === 1).length < 2) errors.push(`${where}: needs at least 2 level-1 items`);
+        if (levels.filter(level => level === 3).length < 2) errors.push(`${where}: needs at least 2 level-3 items`);
       }
       const stemPrefixes = new Set<string>();
       if (ids.has(where)) errors.push(`${where}: duplicate concept id`);
@@ -84,8 +109,9 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       {
         const verdicts = concept.factCheck?.verdicts ?? [];
         const checked = new Set(verdicts.map(verdict => verdict.claimId));
-        if (!options.allowUnchecked && (checked.size !== verdicts.length || checked.size !== claimIds.size || [...claimIds].some(id => !checked.has(id)))) errors.push(`${where}: missing fact-check verdict`);
-        if (verdicts.some(verdict => !claimIds.has(verdict.claimId))) errors.push(`${where}: fact-check references unknown claim`);
+        const factIds = new Set([...claimIds, ...concept.items.map(item => item.id)]);
+        if (!options.allowUnchecked && (checked.size !== verdicts.length || [...claimIds].some(id => !checked.has(id)))) errors.push(`${where}: missing fact-check verdict`);
+        if (verdicts.some(verdict => !factIds.has(verdict.claimId))) errors.push(`${where}: fact-check references unknown claim or item`);
         for (const verdict of verdicts) if (verdict.verdict !== 'supported') errors.push(`${where}: ${verdict.claimId} fact-check ${verdict.verdict}`);
       }
       const misconceptionIds = new Set(concept.misconceptions.map(m => m.id));
@@ -123,6 +149,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
           if (option.misconceptionIds?.some(tag => !misconceptionIds.has(tag))) errors.push(`${item.id}: unknown option misconception`);
         }
         if (item.type === 'estimate') {
+          if (options.editorial && !(estimateMechanisms[where] ?? new RegExp(words(concept.title)[0] ?? '^$','i')).test(item.stem)) errors.push(`${item.id}: estimate must name its concept or mechanism`);
           if (!(item.answer.min < item.answer.max && item.answer.value >= item.answer.min && item.answer.value <= item.answer.max)) errors.push(`${item.id}: invalid scored range`);
         } else if (item.type === 'order') {
           if (item.answer.length !== optionIds.size || new Set(item.answer).size !== item.answer.length || item.answer.some(id => !optionIds.has(id))) errors.push(`${item.id}: invalid order answer`);

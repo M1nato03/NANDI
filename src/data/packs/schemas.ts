@@ -10,7 +10,7 @@ const semver = v.pipe(v.string(), v.regex(/^\d+\.\d+\.\d+$/));
 const sourceRef = v.strictObject({ id: text, title: text, publisher: text, year: integer, url: v.pipe(v.string(), v.url()), asOf: v.optional(v.pipe(v.string(), v.isoDate())) });
 const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)) });
 const option = v.strictObject({ id: text, text, feedback: text, correct: v.boolean(), misconceptionIds: v.optional(strings), sourceRefs: v.pipe(strings, v.minLength(1)) });
-const itemBase = { id: text, conceptId: text, stem: text, difficultySeed: v.pipe(v.number(), v.minValue(400), v.maxValue(2400)), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
+const itemBase = { id: text, conceptId: text, stem: text, difficultySeed: v.union([v.picklist([1, 2, 3]), v.pipe(v.number(), v.minValue(400), v.maxValue(2400))]), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
 const choice = (type: 'predict' | 'choose' | 'scenario' | 'fill-the-step' | 'true-not-quite' | 'explain-it-back') => v.strictObject({ ...itemBase, type: v.literal(type) });
 export const topicItemSchema = v.variant('type', [
   choice('predict'), choice('choose'), v.strictObject({ ...itemBase, type: v.literal('why'), task: v.optional(v.picklist(['reason', 'spot-the-flaw'])) }),
@@ -28,7 +28,7 @@ export const topicConceptSchema = v.strictObject({
   misconceptions: v.array(v.strictObject({ id: text, name: text, correction: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
   sources: v.pipe(v.array(sourceRef), v.minLength(1)),
   quest: v.optional(v.strictObject({ title: text, detail: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
-  factCheck: v.optional(v.strictObject({ verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
+  factCheck: v.optional(v.strictObject({ checker: v.optional(text), verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
 });
 export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), modules: v.pipe(v.array(v.strictObject({ id: text, title: text, concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)) })), v.minLength(1)) });
 

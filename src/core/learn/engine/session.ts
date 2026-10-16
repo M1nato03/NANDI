@@ -1,6 +1,6 @@
 import { RULES } from '../../rules.config';
 import type { TopicConcept, TopicItem } from '../../../data/packs/schemas';
-import { DAY_MS, ENGINE_RULES, INITIAL_MASTERY, predictedSuccess, type ConceptState, type ItemState } from './model';
+import { DAY_MS, ENGINE_RULES, INITIAL_MASTERY, itemSeedRating, predictedSuccess, type ConceptState, type ItemState } from './model';
 import type { AnswerFact, RetentionDay } from './analytics';
 
 export interface EngineCatalog { concepts: readonly TopicConcept[] }
@@ -44,7 +44,7 @@ export function selectNextItem(context: SelectionContext): Selection | null {
       const itemState = context.items[item.id];
       if (itemState?.lastSeen !== undefined && context.now - itemState.lastSeen < 2 * DAY_MS) continue;
       if (lastTwo.length === 2 && lastTwo[0] === item.type && lastTwo[1] === item.type) continue;
-      const success = predictedSuccess(state?.mastery ?? INITIAL_MASTERY, itemState?.rating ?? item.difficultySeed, state?.memory, context.now);
+      const success = predictedSuccess(state?.mastery ?? INITIAL_MASTERY, itemState?.rating ?? itemSeedRating(item.difficultySeed), state?.memory, context.now);
       const [low, high] = ENGINE_RULES.targetSuccess;
       const distance = success < low ? low - success : success > high ? success - high : 0;
       const active = item.misconceptionTags.some(tag => state?.activeMisconceptions.includes(tag));

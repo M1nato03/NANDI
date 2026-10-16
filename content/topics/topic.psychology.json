@@ -56,7 +56,7 @@
                 "id": "habits-1",
                 "type": "predict",
                 "conceptId": "habits",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -95,7 +95,7 @@
                 "id": "habits-2",
                 "type": "scenario",
                 "conceptId": "habits",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -134,7 +134,7 @@
                 "id": "habits-3",
                 "type": "estimate",
                 "conceptId": "habits",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -142,12 +142,12 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "In one habit study, fitted times to near full strength ran from 18 to 254 days. About how wide is that range?",
+                "stem": "A coach says every habit forms in 21 days. In Lally’s study, people varied widely. About how many days was the median fitted time to near-full automaticity?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "236 days.",
-                    "feedback": "Subtracting the lower fitted time from the upper shows how much the observed paths varied.",
+                    "text": "66 days.",
+                    "feedback": "The study’s median was 66 days, while individual fitted times varied from 18 to 254.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -156,8 +156,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "18 days.",
-                    "feedback": "That is only the lower end, not the distance between the two fitted endpoints.",
+                    "text": "21 days.",
+                    "feedback": "One fixed deadline misses the measured variation and does not match the study’s median.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -169,9 +169,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 236,
-                  "min": 235.5,
-                  "max": 236.5,
+                  "value": 66,
+                  "min": 65.5,
+                  "max": 66.5,
                   "unit": "days"
                 }
               },
@@ -179,7 +179,7 @@
                 "id": "habits-4",
                 "type": "choose",
                 "conceptId": "habits",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -218,7 +218,7 @@
                 "id": "habits-5",
                 "type": "why",
                 "conceptId": "habits",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -226,12 +226,12 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "Why can an act feel easier to start in one room than another?",
+                "stem": "A student keeps the same goal after moving rooms, yet starts a practiced action less often. Why could the move matter?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "That room may carry a learned cue.",
-                    "feedback": "Context features can call up a practiced response without a fresh choice each time.",
+                    "text": "The old room’s cue may be absent.",
+                    "feedback": "The repeated setting can trigger the action; a new room may not provide that learned cue.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -240,8 +240,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The room forces the same goal on everyone.",
-                    "feedback": "A cue changes what comes to mind; it does not give all people one shared aim.",
+                    "text": "One new room resets every past repetition to zero.",
+                    "feedback": "Changing context may weaken a trigger, but it does not erase all prior practice.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -258,7 +258,7 @@
                 "id": "habits-6",
                 "type": "fill-the-step",
                 "conceptId": "habits",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -297,7 +297,7 @@
                 "id": "habits-7",
                 "type": "true-not-quite",
                 "conceptId": "habits",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -305,12 +305,12 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "“All habits lock in after 21 days,” says a cricket coach. What is too certain?",
+                "stem": "A student acts by habit after 21 days. A coach says every teammate will do the same by day 21. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "People and acts can take different times.",
-                    "feedback": "The fitted paths in the study ranged widely, so one fixed count hides real variation.",
+                    "text": "People and actions can vary widely.",
+                    "feedback": "One person’s timing cannot set a universal deadline; fitted times in the study spanned many weeks.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -319,8 +319,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "No habit can form in less than a year.",
-                    "feedback": "Some measured paths reached near full strength sooner; the error is one universal deadline.",
+                    "text": "One example fixes the deadline for similar people.",
+                    "feedback": "The measured paths differed enough that one observed case cannot set the time for all.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -336,7 +336,7 @@
                 "id": "habits-8",
                 "type": "order",
                 "conceptId": "habits",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
                 ],
@@ -426,8 +426,41 @@
                 {
                   "claimId": "habits-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -465,7 +498,7 @@
                 "id": "loss-aversion-1",
                 "type": "predict",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
@@ -501,7 +534,7 @@
                 "id": "loss-aversion-2",
                 "type": "scenario",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
@@ -537,19 +570,19 @@
                 "id": "loss-aversion-3",
                 "type": "estimate",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "A toy game offers a gain of 10 points or a loss of 10. What is the difference in point size?",
+                "stem": "In a toy model of loss aversion, a 10-point loss feels twice as strong as a 10-point gain. About how many gained points would balance that loss in felt value?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "0 points.",
-                    "feedback": "The amounts match on paper; loss aversion concerns their felt weight, not unequal point sizes.",
+                    "text": "20 points.",
+                    "feedback": "In the stated toy model, a larger gain is needed to match the felt weight of the loss.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -557,8 +590,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "20 points.",
-                    "feedback": "That adds the two swings instead of comparing their equal sizes from the same start.",
+                    "text": "10 points.",
+                    "feedback": "Equal point sizes do not balance felt value under the model’s stated loss aversion.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -569,9 +602,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 0,
-                  "min": -0.5,
-                  "max": 0.5,
+                  "value": 20,
+                  "min": 19.5,
+                  "max": 20.5,
                   "unit": "points"
                 }
               },
@@ -579,7 +612,7 @@
                 "id": "loss-aversion-4",
                 "type": "choose",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
@@ -615,19 +648,19 @@
                 "id": "loss-aversion-5",
                 "type": "why",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Why might a missed train ticket refund sting more than an equal surprise refund delights?",
+                "stem": "Two choices have the same final money, but one is framed as a loss from what a person holds. Why might they feel different?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Losses can weigh more near a reference point.",
-                    "feedback": "The sum is the same. The feel can change when it is lost instead of gained.",
+                    "text": "The starting reference point changes the felt value.",
+                    "feedback": "A drop from what is held can weigh more than an equal gain from another starting point.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -635,8 +668,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The two refunds use different currencies.",
-                    "feedback": "Both sums are in rupees. Loss and gain can still feel quite different.",
+                    "text": "Equal final money forces equal felt value.",
+                    "feedback": "Prospect theory allows the framing of a change to matter even when final sums match.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -652,7 +685,7 @@
                 "id": "loss-aversion-6",
                 "type": "fill-the-step",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
@@ -688,19 +721,19 @@
                 "id": "loss-aversion-7",
                 "type": "true-not-quite",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "“Everyone always hates any loss twice as much,” says a friend. What is too broad?",
+                "stem": "A study group shows loss aversion on average. A coach predicts exactly twice the pain for every player. What is unsupported?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The pattern is not a law for each person.",
-                    "feedback": "The theory describes a common shape in choices, not a fixed reaction in every case.",
+                    "text": "A group pattern is not one fixed personal ratio.",
+                    "feedback": "People differ. The study shows a common trend, not one set amount for every person.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -708,8 +741,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "People never notice gains.",
-                    "feedback": "Gains still have value; the error is claiming one exact rule for all people.",
+                    "text": "A group average fixes each person’s response.",
+                    "feedback": "A group trend cannot tell us how each person feels about a loss.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -724,7 +757,7 @@
                 "id": "loss-aversion-8",
                 "type": "match",
                 "conceptId": "loss-aversion",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
                 ],
@@ -833,8 +866,41 @@
                 {
                   "claimId": "loss-aversion-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loss-aversion-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -876,7 +942,7 @@
                 "id": "anchoring-1",
                 "type": "predict",
                 "conceptId": "anchoring",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -915,7 +981,7 @@
                 "id": "anchoring-2",
                 "type": "scenario",
                 "conceptId": "anchoring",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -954,52 +1020,49 @@
                 "id": "anchoring-3",
                 "type": "estimate",
                 "conceptId": "anchoring",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
                 "sourceRefs": [
-                  "bias",
-                  "philosophy"
+                  "tversky"
                 ],
-                "stem": "A canteen sign crosses out ₹500 and shows ₹300. What is the displayed cut in rupees?",
+                "stem": "In an anchoring study, one group saw a random 65% before guessing a percentage. About what median guess did that high-anchor group give?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "₹200.",
-                    "feedback": "The subtraction checks the actual shown gap, though it cannot prove the sale price is fair.",
+                    "text": "45%.",
+                    "feedback": "The high anchor pulled the group median upward; the low-anchor group’s median was 25%.",
                     "correct": true,
                     "sourceRefs": [
-                      "bias",
-                      "philosophy"
+                      "tversky"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "₹500.",
-                    "feedback": "That is the old tag, which may anchor a guess but is not the amount cut.",
+                    "text": "65%.",
+                    "feedback": "That was the random starting anchor, not the group’s later median estimate.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
                     ],
                     "sourceRefs": [
-                      "bias",
-                      "philosophy"
+                      "tversky"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 200,
-                  "min": 199.5,
-                  "max": 200.5,
-                  "unit": "rupees"
+                  "value": 45,
+                  "min": 44.5,
+                  "max": 45.5,
+                  "unit": "percent"
                 }
               },
               {
                 "id": "anchoring-4",
                 "type": "choose",
                 "conceptId": "anchoring",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -1038,7 +1101,7 @@
                 "id": "anchoring-5",
                 "type": "why",
                 "conceptId": "anchoring",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -1046,12 +1109,12 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "Why can even a random first number sway a school quiz guess?",
+                "stem": "A school quiz shows a random 65 before asking for a percentage. Why might guesses still shift after students hear that it is random?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It becomes a starting point for adjustment.",
-                    "feedback": "People may shift from the number they saw rather than build a fresh estimate from scratch.",
+                    "text": "They may adjust from the first number.",
+                    "feedback": "The first number can pull later guesses, even when it gives no real clue.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -1060,8 +1123,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Random numbers secretly know the answer.",
-                    "feedback": "The cue can affect a guess without carrying any true fact about the target.",
+                    "text": "A random number is a valid sample of the answer.",
+                    "feedback": "The number was picked at random. It tells us nothing about the true answer.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1078,7 +1141,7 @@
                 "id": "anchoring-6",
                 "type": "fill-the-step",
                 "conceptId": "anchoring",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -1117,7 +1180,7 @@
                 "id": "anchoring-7",
                 "type": "true-not-quite",
                 "conceptId": "anchoring",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -1125,12 +1188,12 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "“The first price I see must be the fair one,” says a buyer. What is the flaw?",
+                "stem": "A seller crosses out ₹500 and asks ₹300. A buyer treats the old tag as independent proof of fair value. What is the flaw?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "First does not mean well supported.",
-                    "feedback": "Seeing a price first can sway a guess. It does not prove the price is fair.",
+                    "text": "The seller may control that first number.",
+                    "feedback": "The crossed-out tag can anchor a guess without measuring the item’s value elsewhere.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -1139,8 +1202,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every first price is false.",
-                    "feedback": "The first number might help. Yet being first does not make it true.",
+                    "text": "The old tag independently checks the seller’s new tag.",
+                    "feedback": "Both numbers come from the same seller, so the first is not an outside comparison.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1156,7 +1219,7 @@
                 "id": "anchoring-8",
                 "type": "explain-it-back",
                 "conceptId": "anchoring",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
                 ],
@@ -1224,6 +1287,13 @@
                 "publisher": "OpenStax",
                 "year": 2022,
                 "url": "https://openstax.org/books/introduction-philosophy/pages/2-2-overcoming-cognitive-biases-and-engaging-in-critical-reflection"
+              },
+              {
+                "id": "tversky",
+                "title": "Judgment under Uncertainty: Heuristics and Biases",
+                "publisher": "Science",
+                "year": 1974,
+                "url": "https://cebma.org/assets/Uploads/Tversky_Kahneman_1974.pdf"
               }
             ],
             "quest": {
@@ -1242,8 +1312,41 @@
                 {
                   "claimId": "anchoring-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "anchoring-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -1285,7 +1388,7 @@
                 "id": "confirmation-bias-1",
                 "type": "predict",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1324,7 +1427,7 @@
                 "id": "confirmation-bias-2",
                 "type": "scenario",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1363,7 +1466,7 @@
                 "id": "confirmation-bias-3",
                 "type": "estimate",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1371,12 +1474,12 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A bus log has 20 rides; 5 were late. What share were on time?",
+                "stem": "In a Wason-style test, a rule could be checked by seeking a disconfirming card. About what percent in one nonthreatening-rule group chose the correct card pair?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "75%.",
-                    "feedback": "Fifteen of twenty rides arrived on time, a fact a late-bus belief might overlook.",
+                    "text": "16%.",
+                    "feedback": "Only a small share chose both cards needed to test the rule for a possible counterexample.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -1385,8 +1488,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "25%.",
-                    "feedback": "That is the late share; using it as the on-time share reverses the record.",
+                    "text": "84%.",
+                    "feedback": "Most did not choose the pair that could expose a false rule in that study group.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1398,9 +1501,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 75,
-                  "min": 74.5,
-                  "max": 75.5,
+                  "value": 16,
+                  "min": 15.5,
+                  "max": 16.5,
                   "unit": "percent"
                 }
               },
@@ -1408,7 +1511,7 @@
                 "id": "confirmation-bias-4",
                 "type": "choose",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1447,7 +1550,7 @@
                 "id": "confirmation-bias-5",
                 "type": "why",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1455,12 +1558,12 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "Why is a case that could break a rule useful in a classroom puzzle?",
+                "stem": "A rule predicts that every late bus is red. Why is checking a late bus that is not red useful?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It tests what the rule forbids.",
-                    "feedback": "One case may fit many rules. A case that breaks this rule tells us more.",
+                    "text": "It could disprove the universal rule.",
+                    "feedback": "A red late bus fits the rule, but one late bus of another colour would break it.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -1469,8 +1572,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "It has to make the rule true.",
-                    "feedback": "Evidence against a claim matters because it can show the claim is too broad.",
+                    "text": "Another red bus is the only decisive test.",
+                    "feedback": "More matching cases cannot rule out the counterexample that the claim forbids.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1487,7 +1590,7 @@
                 "id": "confirmation-bias-6",
                 "type": "fill-the-step",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1526,7 +1629,7 @@
                 "id": "confirmation-bias-7",
                 "type": "true-not-quite",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1534,12 +1637,12 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "“Three matching examples prove every case,” says a classmate. What is missing?",
+                "stem": "A student saves three bus logs that fit her belief and skips two that do not. She calls the belief proven. What is the flaw?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "An unchecked case might break the rule.",
-                    "feedback": "A few fits do not settle a universal claim when contrary cases have not been sought.",
+                    "text": "The saved sample leaves out contrary cases.",
+                    "feedback": "Selecting only matches can make a weak belief look stronger than the full record supports.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -1548,8 +1651,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The examples cannot be real.",
-                    "feedback": "They may be real yet still too narrow to establish what happens in every case.",
+                    "text": "Three saved logs outweigh every omitted log.",
+                    "feedback": "The omitted records may directly challenge the claim, regardless of how many matches were saved.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1565,7 +1668,7 @@
                 "id": "confirmation-bias-8",
                 "type": "explain-it-back",
                 "conceptId": "confirmation-bias",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
                 ],
@@ -1654,8 +1757,41 @@
                 {
                   "claimId": "confirmation-bias-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "confirmation-bias-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -1693,7 +1829,7 @@
                 "id": "social-proof-1",
                 "type": "predict",
                 "conceptId": "social-proof",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
@@ -1729,7 +1865,7 @@
                 "id": "social-proof-2",
                 "type": "scenario",
                 "conceptId": "social-proof",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
@@ -1765,41 +1901,41 @@
                 "id": "social-proof-3",
                 "type": "estimate",
                 "conceptId": "social-proof",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
                 "sourceRefs": [
-                  "asch"
+                  "asch-original"
                 ],
-                "stem": "In a toy vote, 8 of 10 classmates choose A. What percent chose A?",
+                "stem": "In Asch’s line task, a group gave wrong answers aloud. About what percent of critical answers from the lone participant followed the wrong group?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "80%.",
-                    "feedback": "The fraction describes the crowd's choice, but it tells nothing by itself about truth.",
+                    "text": "About 37%.",
+                    "feedback": "Asch reported 36.8% wrong answers on critical trials, showing a strong group pull.",
                     "correct": true,
                     "sourceRefs": [
-                      "asch"
+                      "asch-original"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "20%.",
-                    "feedback": "That is the share who chose something else, not the majority described here.",
+                    "text": "About 1%.",
+                    "feedback": "That was closer to the error rate without group pressure, not the critical group trials.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
                     ],
                     "sourceRefs": [
-                      "asch"
+                      "asch-original"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 80,
-                  "min": 79.5,
-                  "max": 80.5,
+                  "value": 37,
+                  "min": 36.5,
+                  "max": 37.5,
                   "unit": "percent"
                 }
               },
@@ -1807,7 +1943,7 @@
                 "id": "social-proof-4",
                 "type": "choose",
                 "conceptId": "social-proof",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
@@ -1843,19 +1979,19 @@
                 "id": "social-proof-5",
                 "type": "why",
                 "conceptId": "social-proof",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "Why might a student copy a group answer they privately doubt?",
+                "stem": "A student sees a clear line match but publicly follows a wrong group answer. Why can this happen?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The group acts as a strong social cue.",
-                    "feedback": "A visible consensus can pull a public response apart from the person's own first view.",
+                    "text": "Fitting in can outweigh a private judgment.",
+                    "feedback": "In Asch’s task, public group pressure could pull answers away from the visible line lengths.",
                     "correct": true,
                     "sourceRefs": [
                       "asch"
@@ -1863,8 +1999,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The printed question changed size.",
-                    "feedback": "A social effect concerns the other answers, not a hidden change to the page.",
+                    "text": "Unanimity makes the wrong line physically longer.",
+                    "feedback": "The lines do not change; the social setting can change what a person says aloud.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1880,7 +2016,7 @@
                 "id": "social-proof-6",
                 "type": "fill-the-step",
                 "conceptId": "social-proof",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
@@ -1916,19 +2052,19 @@
                 "id": "social-proof-7",
                 "type": "true-not-quite",
                 "conceptId": "social-proof",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "“If all my friends picked B, B must be true.” What is the leap?",
+                "stem": "A group chooses B before anyone checks the evidence. A student calls their unanimous votes independent proof. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Popularity is being treated as proof.",
-                    "feedback": "A shared choice can arise from influence or a shared error, not just correct evidence.",
+                    "text": "Their votes may influence one another.",
+                    "feedback": "A shared answer can spread through a group, so agreement alone is not a fresh check.",
                     "correct": true,
                     "sourceRefs": [
                       "asch"
@@ -1936,8 +2072,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Friends can never know the answer.",
-                    "feedback": "The group could be right; its size alone does not establish that fact.",
+                    "text": "Unanimous votes guarantee independent checks.",
+                    "feedback": "One group answer can spread to others. The votes need not come from separate checks.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1952,7 +2088,7 @@
                 "id": "social-proof-8",
                 "type": "explain-it-back",
                 "conceptId": "social-proof",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
                 ],
@@ -2010,6 +2146,13 @@
                 "publisher": "OpenStax",
                 "year": 2020,
                 "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience"
+              },
+              {
+                "id": "asch-original",
+                "title": "Opinions and Social Pressure",
+                "publisher": "Scientific American",
+                "year": 1955,
+                "url": "https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Influence_Compliance/Asch_1955_Opinions_and_social_pressure.pdf"
               }
             ],
             "quest": {
@@ -2028,8 +2171,41 @@
                 {
                   "claimId": "social-proof-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -2067,7 +2243,7 @@
                 "id": "planning-fallacy-1",
                 "type": "predict",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
@@ -2103,7 +2279,7 @@
                 "id": "planning-fallacy-2",
                 "type": "scenario",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
@@ -2139,19 +2315,19 @@
                 "id": "planning-fallacy-3",
                 "type": "estimate",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A club predicts 2 hours for posters; the last three took 3, 4, and 5 hours. What is their average?",
+                "stem": "A club plans posters in 2 hours but forgot printing. Similar past posters took 3, 4, and 5 hours. About how many hours does the past-task view suggest?",
                 "options": [
                   {
                     "id": "a",
                     "text": "4 hours.",
-                    "feedback": "Those past tasks provide a four-hour comparison point that includes real delays and extra steps.",
+                    "feedback": "Past completed jobs give a four-hour comparison point that includes steps the new plan missed.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -2160,7 +2336,7 @@
                   {
                     "id": "b",
                     "text": "2 hours.",
-                    "feedback": "That repeats the new guess rather than averaging the three completed poster jobs.",
+                    "feedback": "That repeats the plan despite the missing printing step and the longer past tasks.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2181,7 +2357,7 @@
                 "id": "planning-fallacy-4",
                 "type": "choose",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
@@ -2217,19 +2393,19 @@
                 "id": "planning-fallacy-5",
                 "type": "why",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "Why can a best-case plan give a short estimate for a train project?",
+                "stem": "A team imagines a smooth poster project and ignores likely printing delays. Why can its time guess run short?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It leaves out likely snags and extra steps.",
-                    "feedback": "The imagined smooth run is just one path, while actual work often includes delays.",
+                    "text": "The plan leaves out a common work step.",
+                    "feedback": "The imagined best case omits printing time that similar real tasks may include.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -2237,8 +2413,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A clock runs faster during projects.",
-                    "feedback": "The gap comes from the plan's omitted work, not from time changing speed.",
+                    "text": "A smooth plan makes unlisted steps take no time.",
+                    "feedback": "Missing work still takes time even when the planned steps go smoothly.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2254,7 +2430,7 @@
                 "id": "planning-fallacy-6",
                 "type": "fill-the-step",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
@@ -2290,19 +2466,19 @@
                 "id": "planning-fallacy-7",
                 "type": "true-not-quite",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "“Our last poster took five hours, but this one will surely take one.” What is too certain?",
+                "stem": "Past posters took four to six hours. A new plan says one hour because artwork is ready, but printing is uncounted. What is weak?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The earlier job gives relevant evidence.",
-                    "feedback": "A new task can differ, yet dismissing a similar past duration leaves the guess weak.",
+                    "text": "The guess omits a step and dismisses past times.",
+                    "feedback": "Ready artwork may help, yet the past tasks and missing printing step still matter.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -2310,8 +2486,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every poster takes exactly five hours.",
-                    "feedback": "The old job is a comparison point, not a fixed rule for all future posters.",
+                    "text": "Ready artwork proves all other steps vanish.",
+                    "feedback": "One completed part cannot establish the time for all remaining work.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2326,7 +2502,7 @@
                 "id": "planning-fallacy-8",
                 "type": "explain-it-back",
                 "conceptId": "planning-fallacy",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
                 ],
@@ -2402,13 +2578,46 @@
                 {
                   "claimId": "planning-fallacy-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           }
         ]
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck."
 }

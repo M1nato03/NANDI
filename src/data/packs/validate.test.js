@@ -63,7 +63,12 @@ describe('topic editorial rules', () => {
     expect(validatePack(copy, { allowUnchecked: true, editorial: true }).join(' ')).toContain(message);
   };
   it('accepts the hand-authored money pack', () => {
-    expect(validatePack(money, { allowUnchecked: true, editorial: true })).toEqual([]);
+    expect(validatePack(money, { editorial: true })).toEqual([]);
+  });
+  it('requires a difficulty ladder and concept-based estimates', () => {
+    badTopic((concepts) => { concepts[0].items[3].difficultySeed = 2; }, 'needs at least 2 level-1 items');
+    badTopic((concepts) => { concepts[0].items[4].difficultySeed = 2; }, 'needs at least 2 level-3 items');
+    badTopic((concepts) => { concepts[0].items[2].stem = 'A snack costs ₹20, then ₹25. With ₹100, how many fit?'; }, 'estimate must name its concept or mechanism');
   });
   it('requires eight items, one estimate and two Indian scenes', () => {
     badTopic((concepts) => { concepts[0].items.pop(); }, 'needs exactly 8 items');

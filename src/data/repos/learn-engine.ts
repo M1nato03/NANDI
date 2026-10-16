@@ -1,5 +1,5 @@
 import { trackWrite } from '../../core/pendingWrites';
-import { answerConcept, updateItemRating, advanceDrop, gradeItem, type AnswerFact, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
+import { answerConcept, updateItemRating, advanceDrop, gradeItem, itemSeedRating, type AnswerFact, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { dayKey } from '../../core/time';
 import type { TopicItem } from '../packs/schemas';
 import type { NandiDb } from '../db';
@@ -37,7 +37,7 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
       : state.retentionChecks;
     const concept: LearnConceptRow = { id: input.item.conceptId, mastery: state.mastery, memory: state.memory, attempts: state.attempts, firstLearnedAt: state.firstLearnedAt, retentionChecks, activeMisconceptions: state.activeMisconceptions, updatedAt: input.now, deleted: 0, deviceId: input.deviceId };
     const priorItem = await db.learnItems.get(input.item.id);
-    const rating = updateItemRating(priorItem && !priorItem.deleted ? { itemId: priorItem.id, rating: priorItem.rating, attempts: priorItem.attempts, lastSeen: priorItem.lastSeen } : undefined, input.item.difficultySeed, prior?.mastery ?? 0.2, grade.correct, input.now);
+    const rating = updateItemRating(priorItem && !priorItem.deleted ? { itemId: priorItem.id, rating: priorItem.rating, attempts: priorItem.attempts, lastSeen: priorItem.lastSeen } : undefined, itemSeedRating(input.item.difficultySeed), prior?.mastery ?? 0.2, grade.correct, input.now);
     const item: LearnItemRow = { id: input.item.id, rating: rating.rating, attempts: rating.attempts, lastSeen: rating.lastSeen, updatedAt: input.now, deleted: 0, deviceId: input.deviceId };
     await db.learnConcepts.put(concept);
     await db.learnItems.put(item);

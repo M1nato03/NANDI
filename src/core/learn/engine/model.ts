@@ -42,6 +42,9 @@ export const ENGINE_RULES = {
   targetSuccess: RULES.teachingEngine.targetSuccess,
 };
 
+/** Editorial levels are stored as 1-3; legacy packs still contain Elo seeds. */
+export const itemSeedRating = (seed: number): number => seed === 1 ? 800 : seed === 2 ? 950 : seed === 3 ? 1100 : seed;
+
 export function updateMastery(prior: number, type: TopicItem['type'], correct: boolean): number {
   const [slip, guess] = ENGINE_RULES.bkt[type];
   const p = clamp(prior, ...ENGINE_RULES.masteryBounds);

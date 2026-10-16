@@ -56,7 +56,7 @@
                 "id": "inflation-1",
                 "type": "predict",
                 "conceptId": "inflation",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -95,7 +95,7 @@
                 "id": "inflation-2",
                 "type": "scenario",
                 "conceptId": "inflation",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -134,7 +134,7 @@
                 "id": "inflation-3",
                 "type": "estimate",
                 "conceptId": "inflation",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -142,12 +142,12 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "A train snack costs ₹20, then ₹25. With ₹100, how many whole snacks fit at the new price?",
+                "stem": "A broad basket costs ₹100, then ₹125 after inflation. If cash stays at ₹100, about what percent of the original basket can it now buy?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "4 snacks.",
-                    "feedback": "Dividing the cash by the new price gives four; the old price would have allowed five.",
+                    "text": "80%.",
+                    "feedback": "The same cash now covers four fifths of the unchanged basket, showing lower purchasing power.",
                     "correct": true,
                     "sourceRefs": [
                       "inflation",
@@ -156,8 +156,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "5 snacks.",
-                    "feedback": "That count uses the earlier price and misses the extra ₹5 now charged for each snack.",
+                    "text": "125%.",
+                    "feedback": "That is the new price relative to the old one, not the basket share fixed cash buys.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -169,17 +169,17 @@
                   }
                 ],
                 "answer": {
-                  "value": 4,
-                  "min": 3.5,
-                  "max": 4.5,
-                  "unit": "snacks"
+                  "value": 80,
+                  "min": 79.5,
+                  "max": 80.5,
+                  "unit": "percent"
                 }
               },
               {
                 "id": "inflation-4",
                 "type": "choose",
                 "conceptId": "inflation",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -218,7 +218,7 @@
                 "id": "inflation-5",
                 "type": "why",
                 "conceptId": "inflation",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -226,12 +226,12 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "Why can a fixed scholarship buy fewer bus rides when fares rise?",
+                "stem": "Bus fares rise while most other prices stay flat. Why can a fixed scholarship buy fewer rides without proving broad inflation?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Each ride uses more of the same cash.",
-                    "feedback": "The fare changes the number of rides affordable even though the note's printed value stays fixed.",
+                    "text": "One fare changed, not the whole price basket.",
+                    "feedback": "The ride budget shrinks, but inflation is about a broad index rather than one fare.",
                     "correct": true,
                     "sourceRefs": [
                       "inflation",
@@ -240,8 +240,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The cash has physically shrunk.",
-                    "feedback": "Purchasing power can fall without any change to the size or face value of the notes.",
+                    "text": "Fewer affordable rides prove every price rose.",
+                    "feedback": "A single fare can cut one kind of purchasing power without describing the rest of the basket.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -258,7 +258,7 @@
                 "id": "inflation-6",
                 "type": "fill-the-step",
                 "conceptId": "inflation",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -297,7 +297,7 @@
                 "id": "inflation-7",
                 "type": "true-not-quite",
                 "conceptId": "inflation",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -305,12 +305,12 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "A classmate says, “My samosa costs more, so every price in India rose.” What is the flaw?",
+                "stem": "Samosas, tea and idlis all cost more at one canteen. A student says the national price index rose by the same share. What is the gap?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One item cannot tell the whole basket story.",
-                    "feedback": "The claim jumps from one observed price to many prices that were never checked.",
+                    "text": "One canteen is not the full basket.",
+                    "feedback": "A few foods at one shop cannot show how prices changed across the whole country.",
                     "correct": true,
                     "sourceRefs": [
                       "inflation",
@@ -319,8 +319,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The samosa price cannot ever change.",
-                    "feedback": "Individual prices do change; the mistake is using just one of them to describe all prices.",
+                    "text": "Three rising foods are enough to set the whole index.",
+                    "feedback": "The index also includes many other goods, services and places with different price changes.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -336,7 +336,7 @@
                 "id": "inflation-8",
                 "type": "order",
                 "conceptId": "inflation",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "inflation-m1"
                 ],
@@ -420,8 +420,41 @@
                 {
                   "claimId": "inflation-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -465,7 +498,7 @@
                 "id": "compounding-1",
                 "type": "predict",
                 "conceptId": "compounding",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -504,7 +537,7 @@
                 "id": "compounding-2",
                 "type": "scenario",
                 "conceptId": "compounding",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -543,7 +576,7 @@
                 "id": "compounding-3",
                 "type": "estimate",
                 "conceptId": "compounding",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -551,12 +584,12 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "At a made-up 10% yearly rate, ₹100 becomes ₹110 after one year. With the gain left in, about how much is there after two?",
+                "stem": "A toy account starts at ₹100 and gains 10% in year one. It keeps that gain. Under compounding at the same rate, about how many rupees of gain arrive in year two?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "₹121.",
-                    "feedback": "The second ₹11 gain includes ₹1 earned on last year's ₹10 gain.",
+                    "text": "₹11.",
+                    "feedback": "The second gain applies to ₹110 because the first gain stayed in the account.",
                     "correct": true,
                     "sourceRefs": [
                       "compound",
@@ -565,8 +598,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "₹120.",
-                    "feedback": "That is simple growth on the first ₹100 only and leaves out interest on the first gain.",
+                    "text": "₹10.",
+                    "feedback": "That repeats the first gain and misses interest earned on the retained ₹10.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -578,9 +611,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 121,
-                  "min": 120.5,
-                  "max": 121.5,
+                  "value": 11,
+                  "min": 10.5,
+                  "max": 11.5,
                   "unit": "rupees"
                 }
               },
@@ -588,7 +621,7 @@
                 "id": "compounding-4",
                 "type": "choose",
                 "conceptId": "compounding",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -630,7 +663,7 @@
                 "id": "compounding-5",
                 "type": "why",
                 "conceptId": "compounding",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -638,12 +671,12 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "Why does a later year add more rupees than an early year under one positive compound rate?",
+                "stem": "Two toy accounts start equal at the same steady positive rate. One keeps gains, the other removes them. Why can the first add more later?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The percentage acts on a larger balance.",
-                    "feedback": "Earlier gains enlarge the base, so the same rate produces a larger rupee gain later.",
+                    "text": "Retained gains enter the next rate base.",
+                    "feedback": "The same percentage applies to a larger balance when earlier gains remain in the account.",
                     "correct": true,
                     "sourceRefs": [
                       "compound",
@@ -652,8 +685,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The percentage rate rises by itself.",
-                    "feedback": "The rate stays the same. Yet it makes more rupees when the saved sum grows.",
+                    "text": "The stated rate must increase each year.",
+                    "feedback": "A steady rate can produce larger rupee gains because the balance it acts on grows.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -670,7 +703,7 @@
                 "id": "compounding-6",
                 "type": "fill-the-step",
                 "conceptId": "compounding",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -709,7 +742,7 @@
                 "id": "compounding-7",
                 "type": "true-not-quite",
                 "conceptId": "compounding",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -718,12 +751,12 @@
                   "sip",
                   "investing"
                 ],
-                "stem": "A cousin says, “Compounding means every real investment grows every year.” What part is wrong?",
+                "stem": "A chart compounds a fixed 10% each year, then a student predicts the same path for a real share. What assumption slipped in?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The process does not guarantee positive returns.",
-                    "feedback": "Compounding describes how retained gains build, while actual market values can fall or vary.",
+                    "text": "Real returns need not stay positive or fixed.",
+                    "feedback": "The toy calculation assumes a stable gain, while an actual share can change value in either direction.",
                     "correct": true,
                     "sourceRefs": [
                       "compound",
@@ -733,8 +766,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The arithmetic needs no starting balance.",
-                    "feedback": "A percentage must apply to some amount; the real flaw is treating uncertain gains as certain.",
+                    "text": "Compounding needs a monthly deposit to work.",
+                    "feedback": "Kept gains can grow without fresh cash. The flaw is treating future gains as sure.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -751,7 +784,7 @@
                 "id": "compounding-8",
                 "type": "match",
                 "conceptId": "compounding",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
@@ -877,8 +910,41 @@
                 {
                   "claimId": "compounding-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -918,7 +984,7 @@
                 "id": "rule-of-72-1",
                 "type": "predict",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -954,7 +1020,7 @@
                 "id": "rule-of-72-2",
                 "type": "scenario",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -990,19 +1056,19 @@
                 "id": "rule-of-72-3",
                 "type": "estimate",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "For a toy balance rising at a steady 6% each year, roughly how many years does 72 ÷ 6 suggest?",
+                "stem": "A toy account was growing at a steady 6%, then its steady rate falls to 3%. Using the rule of 72, about how many years would doubling take at the new rate?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "12 years.",
-                    "feedback": "The sum is twelve. A real yearly count may be close, but it need not match.",
+                    "text": "24 years.",
+                    "feedback": "The lower steady rate gives a longer rough doubling time; the shortcut uses the new rate.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72"
@@ -1010,8 +1076,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "6 years.",
-                    "feedback": "That copies the rate into the answer and skips the division that gives the shortcut its name.",
+                    "text": "12 years.",
+                    "feedback": "That uses the old six percent rate even though the account now grows at three percent.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1022,9 +1088,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 12,
-                  "min": 11.5,
-                  "max": 12.5,
+                  "value": 24,
+                  "min": 23.5,
+                  "max": 24.5,
                   "unit": "years"
                 }
               },
@@ -1032,7 +1098,7 @@
                 "id": "rule-of-72-4",
                 "type": "choose",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -1071,19 +1137,19 @@
                 "id": "rule-of-72-5",
                 "type": "why",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "Why does 72 ÷ 12 yield a shorter doubling guess than 72 ÷ 4?",
+                "stem": "A toy balance grows steadily at 12%, another at 4%. Why does the rule of 72 give different doubling times?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Faster growth needs fewer periods to double.",
-                    "feedback": "A bigger rate goes below 72. When you divide, the year count gets smaller.",
+                    "text": "A higher steady rate needs fewer years.",
+                    "feedback": "Dividing 72 by a larger rate gives a shorter rough time, assuming each rate stays steady.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72"
@@ -1091,8 +1157,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The starting rupee amount is larger.",
-                    "feedback": "The shortcut's time estimate uses the rate, not the size of the starting balance.",
+                    "text": "The faster account must have started with more money.",
+                    "feedback": "Starting balance is not part of this shortcut; the assumed percentage rate drives the time.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1108,7 +1174,7 @@
                 "id": "rule-of-72-6",
                 "type": "fill-the-step",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -1144,7 +1210,7 @@
                 "id": "rule-of-72-7",
                 "type": "true-not-quite",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -1152,12 +1218,12 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "A friend says, “The rule of 72 says my UPI wallet must double in nine years.” Spot the flaw.",
+                "stem": "A savings rate is 8% this year and 4% next year. A student says 72 ÷ 8 proves a nine-year doubling date. What is the flaw?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A wallet has no stated steady growth rate.",
-                    "feedback": "First pick a growth rate. Without one, there is no time to work out.",
+                    "text": "The shortcut needs a steady assumed rate.",
+                    "feedback": "A changing rate breaks the simple input, and even a steady-rate result would be approximate.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72",
@@ -1166,8 +1232,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The number 72 works only for coins.",
-                    "feedback": "The sum can use any kind of money. It still needs a rate to work.",
+                    "text": "The shortcut works only for a one-year balance.",
+                    "feedback": "The rule estimates years to double under a steady rate, not a guaranteed date from one year.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1183,7 +1249,7 @@
                 "id": "rule-of-72-8",
                 "type": "explain-it-back",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -1264,8 +1330,41 @@
                 {
                   "claimId": "rule-of-72-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -1303,7 +1402,7 @@
                 "id": "risk-return-1",
                 "type": "predict",
                 "conceptId": "risk-return",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -1339,7 +1438,7 @@
                 "id": "risk-return-2",
                 "type": "scenario",
                 "conceptId": "risk-return",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -1375,19 +1474,19 @@
                 "id": "risk-return-3",
                 "type": "estimate",
                 "conceptId": "risk-return",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A toy raffle pays ₹100 on one of four equal tickets and ₹0 otherwise. What is the average payout per ticket?",
+                "stem": "A raffle ticket costs ₹30. One of four equal tickets pays ₹100 and the others pay nothing. About what is the average net return per ticket, including the ticket cost?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "₹25.",
-                    "feedback": "One ticket pays ₹100 and three pay none. Share that ₹100 across four tickets for the mean.",
+                    "text": "A loss of ₹5.",
+                    "feedback": "The average payout is ₹25, below the ₹30 cost, even though one outcome pays ₹100.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1395,8 +1494,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "₹100.",
-                    "feedback": "That is the best single outcome, not the average across all four possible tickets.",
+                    "text": "A gain of ₹70.",
+                    "feedback": "That is the best single result after cost, not the average across all four outcomes.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1407,9 +1506,9 @@
                   }
                 ],
                 "answer": {
-                  "value": 25,
-                  "min": 24.5,
-                  "max": 25.5,
+                  "value": -5,
+                  "min": -5.5,
+                  "max": -4.5,
                   "unit": "rupees"
                 }
               },
@@ -1417,7 +1516,7 @@
                 "id": "risk-return-4",
                 "type": "choose",
                 "conceptId": "risk-return",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -1453,19 +1552,19 @@
                 "id": "risk-return-5",
                 "type": "why",
                 "conceptId": "risk-return",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Why can a high possible return fail to arrive for a share?",
+                "stem": "A share poster says its price could gain 30%, but gives no other outcomes or their chances. Why is its average return unknown?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The price can move in either direction.",
-                    "feedback": "Possible upside is one outcome in a wider set that includes weaker prices.",
+                    "text": "One possible gain is not the full outcome set.",
+                    "feedback": "To find an average, we need the other possible gains and losses, plus their chances.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1473,8 +1572,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The quoted upside is a fixed payment.",
-                    "feedback": "A quote about possible gain is not a contract to pay that gain.",
+                    "text": "Holding longer makes the quoted gain the average.",
+                    "feedback": "Time alone does not turn a possible upside into a known expected return.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1490,7 +1589,7 @@
                 "id": "risk-return-6",
                 "type": "fill-the-step",
                 "conceptId": "risk-return",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -1526,19 +1625,19 @@
                 "id": "risk-return-7",
                 "type": "true-not-quite",
                 "conceptId": "risk-return",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "“More risk always pays more,” says a cricket teammate. What is too strong?",
+                "stem": "Two games have the same average payout, but one has much wider results. A student says the wider game must pay more. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Risk can bring loss without extra return.",
-                    "feedback": "A big prize can come with a chance of loss. The prize may never arrive.",
+                    "text": "A wider range can bring lower outcomes too.",
+                    "feedback": "More variation changes the risk of each result; it does not raise the stated average by itself.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1546,8 +1645,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Risk means prices never fall.",
-                    "feedback": "A price may fall. That is why a sure gain is too strong a claim.",
+                    "text": "A wider range removes the chance of a loss.",
+                    "feedback": "The low end can fall further even when the average stays the same.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1562,7 +1661,7 @@
                 "id": "risk-return-8",
                 "type": "explain-it-back",
                 "conceptId": "risk-return",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -1632,8 +1731,41 @@
                 {
                   "claimId": "risk-return-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -1671,7 +1803,7 @@
                 "id": "diversification-1",
                 "type": "predict",
                 "conceptId": "diversification",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
@@ -1707,7 +1839,7 @@
                 "id": "diversification-2",
                 "type": "scenario",
                 "conceptId": "diversification",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
@@ -1743,19 +1875,19 @@
                 "id": "diversification-3",
                 "type": "estimate",
                 "conceptId": "diversification",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A toy portfolio has ₹100 in each of four firms. One holding falls to zero; the rest stay flat. How much remains?",
+                "stem": "A portfolio holds four firms that all need the same crop. That crop fails. About how many holdings are shielded just because the company names differ?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "₹300.",
-                    "feedback": "Only one quarter was tied to that single firm, though the portfolio still lost ₹100.",
+                    "text": "0 holdings.",
+                    "feedback": "All four share the crop risk. Different names alone do not shield any holding from that shock.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1763,8 +1895,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "₹0.",
-                    "feedback": "Only one firm failed here. The other three still keep their stated value.",
+                    "text": "3 holdings.",
+                    "feedback": "The crop can hurt all four. Separate names do not make three holdings safe.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1775,17 +1907,17 @@
                   }
                 ],
                 "answer": {
-                  "value": 300,
-                  "min": 299.5,
-                  "max": 300.5,
-                  "unit": "rupees"
+                  "value": 0,
+                  "min": -0.5,
+                  "max": 0.5,
+                  "unit": "holdings"
                 }
               },
               {
                 "id": "diversification-4",
                 "type": "choose",
                 "conceptId": "diversification",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
@@ -1821,19 +1953,19 @@
                 "id": "diversification-5",
                 "type": "why",
                 "conceptId": "diversification",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Why can spreading holdings reduce the harm from one firm's failure?",
+                "stem": "One holding fails while the others keep value. Why does spreading money help here but not promise safety from every shock?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Other holdings can keep some value.",
-                    "feedback": "A loss in one part then reaches only that part of the total, if others hold up.",
+                    "text": "The failure reaches only part of the mix.",
+                    "feedback": "Other holdings can cushion one firm’s loss, while a shared shock may still reach several.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1841,8 +1973,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every holding is guaranteed to rise.",
-                    "feedback": "Spreading exposure changes the share at risk from one firm; it does not promise gains.",
+                    "text": "Each holding cancels every other holding’s loss.",
+                    "feedback": "Separate names do not guarantee opposite price moves when the same event affects them.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1858,7 +1990,7 @@
                 "id": "diversification-6",
                 "type": "fill-the-step",
                 "conceptId": "diversification",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
@@ -1894,19 +2026,19 @@
                 "id": "diversification-7",
                 "type": "true-not-quite",
                 "conceptId": "diversification",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "“Ten company names mean ten separate risks,” says a classmate. What is missing?",
+                "stem": "A portfolio holds ten firms that all need the same crop. A student calls it fully protected because the names differ. What risk remains?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Some companies share the same drivers.",
-                    "feedback": "Ten names may still share buyers or costs. A shared shock can reach them all.",
+                    "text": "A crop shock could hurt all ten.",
+                    "feedback": "Many firms can share one driver, so their losses can arrive together.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1914,8 +2046,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Each name is legally the same company.",
-                    "feedback": "They can be distinct firms while still reacting to one common event.",
+                    "text": "Equal amounts remove any shared crop risk.",
+                    "feedback": "Equal weights limit one firm’s share but cannot erase a shock common to every firm.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1930,7 +2062,7 @@
                 "id": "diversification-8",
                 "type": "explain-it-back",
                 "conceptId": "diversification",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "diversification-m1"
                 ],
@@ -2000,8 +2132,41 @@
                 {
                   "claimId": "diversification-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "diversification-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           },
           {
@@ -2039,7 +2204,7 @@
                 "id": "shares-1",
                 "type": "predict",
                 "conceptId": "shares",
-                "difficultySeed": 800,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
@@ -2075,7 +2240,7 @@
                 "id": "shares-2",
                 "type": "scenario",
                 "conceptId": "shares",
-                "difficultySeed": 845,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
@@ -2111,19 +2276,19 @@
                 "id": "shares-3",
                 "type": "estimate",
                 "conceptId": "shares",
-                "difficultySeed": 890,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A toy company has 100 equal shares. A student owns 5. Roughly what fraction of shares is that?",
+                "stem": "A student owns 5 of a company’s 100 equal shares. The market price per share halves, but no shares are issued or sold. About what percent of the shares does she still own?",
                 "options": [
                   {
                     "id": "a",
                     "text": "5%.",
-                    "feedback": "Five out of a hundred is five percent, before any special share classes or rights.",
+                    "feedback": "A price fall changes the holding’s market value, not the fraction of unchanged shares she owns.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
@@ -2131,8 +2296,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "50%.",
-                    "feedback": "That would require half the shares, far more than the five stated here.",
+                    "text": "2.5%.",
+                    "feedback": "Halving the price does not halve the number of shares or the ownership fraction.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2153,7 +2318,7 @@
                 "id": "shares-4",
                 "type": "choose",
                 "conceptId": "shares",
-                "difficultySeed": 935,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
@@ -2189,19 +2354,19 @@
                 "id": "shares-5",
                 "type": "why",
                 "conceptId": "shares",
-                "difficultySeed": 980,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "Why can a share price fall even when its owner paid more earlier?",
+                "stem": "A company pays a dividend, yet its share price falls. Why is this possible for an owner?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Later buyers may value it differently.",
-                    "feedback": "Trading prices reflect current bids and offers, not a guarantee tied to the earlier purchase price.",
+                    "text": "Market price and dividend are separate outcomes.",
+                    "feedback": "Ownership can bring a dividend without guaranteeing what later buyers will pay for the share.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
@@ -2209,8 +2374,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The original purchase price is legally erased.",
-                    "feedback": "The old price remains a record; it simply does not force new buyers to match it.",
+                    "text": "Any dividend locks the price above the old price.",
+                    "feedback": "A cash payment to owners does not force the market price to stay up.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2226,7 +2391,7 @@
                 "id": "shares-6",
                 "type": "fill-the-step",
                 "conceptId": "shares",
-                "difficultySeed": 1025,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
@@ -2262,19 +2427,19 @@
                 "id": "shares-7",
                 "type": "true-not-quite",
                 "conceptId": "shares",
-                "difficultySeed": 1070,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "“One share means a set monthly payout,” says a train passenger. What is inaccurate?",
+                "stem": "A company paid a dividend last year. A student writes the same monthly payout into this year’s budget. What is the weak step?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Share payouts are not fixed by ownership alone.",
-                    "feedback": "The firm may pay cash to owners. It need not do so each month.",
+                    "text": "Past dividends do not guarantee new ones.",
+                    "feedback": "The firm may pay less, or nothing. Owning shares does not promise cash each month.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
@@ -2282,8 +2447,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A share can never receive cash.",
-                    "feedback": "Some firms do pay dividends; the false step is treating them as automatic.",
+                    "text": "A prior dividend creates a fixed monthly debt.",
+                    "feedback": "Shares are ownership claims, so a past payout is not a promise of a repeated payment.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2298,7 +2463,7 @@
                 "id": "shares-8",
                 "type": "explain-it-back",
                 "conceptId": "shares",
-                "difficultySeed": 1115,
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "shares-m1"
                 ],
@@ -2368,13 +2533,46 @@
                 {
                   "claimId": "shares-c2",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "shares-8",
+                  "verdict": "supported"
                 }
-              ]
+              ],
+              "checker": "codex-factcheck-2026-10-16b"
             }
           }
         ]
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck."
 }
