@@ -78,8 +78,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A magic fixed day count.",
-                    "feedback": "Repetition can build a cue link, but the study found no single deadline for everyone.",
+                    "text": "Reaching the same number of practice days as everyone else.",
+                    "feedback": "Repetition matters, so a fixed day target can sound useful. In this scene, the familiar desk is the cue that starts the action.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -118,7 +118,7 @@
                   {
                     "id": "b",
                     "text": "The whole habit must return to zero.",
-                    "feedback": "A learned cue association builds over time and is not normally wiped by one missed act.",
+                    "feedback": "One gap can feel like a reset. The learned cue link can still be there the next day.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -157,7 +157,7 @@
                   {
                     "id": "b",
                     "text": "21 days.",
-                    "feedback": "One fixed deadline misses the measured variation and does not match the study’s median.",
+                    "feedback": "The 21-day rule is easy to recall. The study found a 66-day median and wide spread.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -201,8 +201,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The total number of songs stored.",
-                    "feedback": "The library size says little about the repeated setting that precedes the action.",
+                    "text": "The student's goal to hear more music.",
+                    "feedback": "A goal can motivate app use, but the bag on the hook is the immediate cue that precedes this repeated action.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -220,7 +220,8 @@
                 "conceptId": "habits",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "habits-m1"
+                  "habits-m1",
+                  "habits-m3"
                 ],
                 "sourceRefs": [
                   "lally",
@@ -238,13 +239,14 @@
                       "wood"
                     ]
                   },
+                  { "id": "c", "text": "A strong goal should work just as well in any room.", "feedback": "The goal stays the same, so this feels right. The old cue may be gone.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
-                    "text": "One new room resets every past repetition to zero.",
-                    "feedback": "Changing context may weaken a trigger, but it does not erase all prior practice.",
+                    "text": "The goal alone should trigger the old action in the new room.",
+                    "feedback": "The goal is still there, which makes this sound right. The old room's cues may be missing.",
                     "correct": false,
                     "misconceptionIds": [
-                      "habits-m1"
+                      "habits-m3"
                     ],
                     "sourceRefs": [
                       "lally",
@@ -281,7 +283,7 @@
                   {
                     "id": "b",
                     "text": "Reward promised after every attempt.",
-                    "feedback": "A cue can trigger the response even without a fresh reward at that moment.",
+                    "feedback": "A reward can follow an act, so it is easy to mix up. A cue comes first.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -317,10 +319,11 @@
                       "wood"
                     ]
                   },
+                  { "id": "c", "text": "The 21-day mark is the same for every action.", "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
                     "text": "One example fixes the deadline for similar people.",
-                    "feedback": "The measured paths differed enough that one observed case cannot set the time for all.",
+                    "feedback": "A teammate's success feels like a guide. Habit times can differ across people and acts.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -391,7 +394,8 @@
                   "lally",
                   "wood"
                 ]
-              }
+              },
+              { "id": "habits-m3", "name": "Goal replaces cue", "correction": "A steady goal may not start a habit when a usual cue is gone.", "sourceRefs": ["wood"] }
             ],
             "sources": [
               {
@@ -519,7 +523,7 @@
                   {
                     "id": "b",
                     "text": "Both must feel exactly equal.",
-                    "feedback": "Equal token counts need not produce equal feelings when one change is framed as a loss.",
+                    "feedback": "The token amounts match, so equal feelings seem fair. A loss may feel stronger.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -555,7 +559,7 @@
                   {
                     "id": "b",
                     "text": "Only the possible gain can matter.",
-                    "feedback": "The starting point shapes the choice, so losing what is held can be a strong part.",
+                    "feedback": "The extra ₹50 draws the eye. Losing the ₹50 already held can also shape the choice.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -591,7 +595,7 @@
                   {
                     "id": "b",
                     "text": "10 points.",
-                    "feedback": "Equal point sizes do not balance felt value under the model’s stated loss aversion.",
+                    "feedback": "Ten matches the point loss. In this model, that loss feels twice as strong.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -633,7 +637,7 @@
                   {
                     "id": "b",
                     "text": "The number of points at stake.",
-                    "feedback": "Both lines mention five points; only their gain-or-loss wording changed.",
+                    "feedback": "The word lose can feel like more is at stake. Both lines still name five points.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -666,10 +670,11 @@
                       "prospect"
                     ]
                   },
+                  { "id": "c", "text": "Only the size of the final sum shapes the choice.", "feedback": "The end sum looks like the whole story. The starting point can change how it feels.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] },
                   {
                     "id": "b",
                     "text": "Equal final money forces equal felt value.",
-                    "feedback": "Prospect theory allows the framing of a change to matter even when final sums match.",
+                    "feedback": "The end sums match, so equal feelings seem likely. The frame can still change felt value.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -705,8 +710,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guaranteed gain.",
-                    "feedback": "Moving below a chosen start is the loss side of the comparison.",
+                    "text": "Smaller gain than expected.",
+                    "feedback": "Falling below a hoped-for result can feel disappointing, but the model calls a move below the starting point a loss.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -723,7 +728,8 @@
                 "conceptId": "loss-aversion",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "loss-aversion-m1"
+                  "loss-aversion-m1",
+                  "loss-aversion-m2"
                 ],
                 "sourceRefs": [
                   "prospect"
@@ -739,10 +745,11 @@
                       "prospect"
                     ]
                   },
+                  { "id": "c", "text": "The same loss must feel worse to every player.", "feedback": "The group trend is strong, so this sounds safe. It does not set each player's feeling.", "correct": false, "misconceptionIds": ["loss-aversion-m2"], "sourceRefs": ["prospect"] },
                   {
                     "id": "b",
                     "text": "A group average fixes each person’s response.",
-                    "feedback": "A group trend cannot tell us how each person feels about a loss.",
+                    "feedback": "A group average is easy to reuse. It does not set how each player feels.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -962,10 +969,11 @@
                       "philosophy"
                     ]
                   },
+                  { "id": "c", "text": "The ₹900 tag proves ₹600 is a fair price.", "feedback": "The cut looks large. That first tag is set by the seller, not an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "Only the ink colour.",
-                    "feedback": "The printed number gives a numeric starting point; colour does not explain the price estimate.",
+                    "text": "The later ₹600 price alone, without the old tag.",
+                    "feedback": "The current price looks like the obvious clue, but the first ₹900 tag can anchor the guess about what is fair.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1004,7 +1012,7 @@
                   {
                     "id": "b",
                     "text": "Their guesses must match exactly.",
-                    "feedback": "Each first number can pull a guess its way. The two guesses need not match.",
+                    "feedback": "Both guess the same trip cost, so matching guesses seem likely. Their first numbers differ.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1041,7 +1049,7 @@
                   {
                     "id": "b",
                     "text": "65%.",
-                    "feedback": "That was the random starting anchor, not the group’s later median estimate.",
+                    "feedback": "The 65% card was vivid, so it is easy to reuse. The group's median guess was 45%.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1085,7 +1093,7 @@
                   {
                     "id": "b",
                     "text": "The crossed-out number alone.",
-                    "feedback": "That first number may be chosen by the seller and need not reflect a normal price.",
+                    "feedback": "The old tag looks like a bargain clue. The seller may have set it high.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1103,7 +1111,8 @@
                 "conceptId": "anchoring",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "anchoring-m1"
+                  "anchoring-m1",
+                  "anchoring-m2"
                 ],
                 "sourceRefs": [
                   "bias",
@@ -1121,10 +1130,11 @@
                       "philosophy"
                     ]
                   },
+                  { "id": "c", "text": "Knowing the number is random stops it from shaping a guess.", "feedback": "The warning should help. Yet people can still start near the first number they saw.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
                     "text": "A random number is a valid sample of the answer.",
-                    "feedback": "The number was picked at random. It tells us nothing about the true answer.",
+                    "feedback": "It appeared right before the question, so it can feel relevant. The number was random.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1164,7 +1174,7 @@
                   {
                     "id": "b",
                     "text": "Independent check.",
-                    "feedback": "A number from the same prompt is the starting cue, not outside evidence.",
+                    "feedback": "A printed figure looks official. It is the first cue, not an outside check.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1200,10 +1210,11 @@
                       "philosophy"
                     ]
                   },
+                  { "id": "c", "text": "A large marked-down amount proves a good deal.", "feedback": "The cut price catches the eye. A price from another seller is a better check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
                     "text": "The old tag independently checks the seller’s new tag.",
-                    "feedback": "Both numbers come from the same seller, so the first is not an outside comparison.",
+                    "feedback": "Two tags look like two prices. Both came from the same seller, so neither is an outside check.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1242,7 +1253,7 @@
                   {
                     "id": "b",
                     "text": "The latest number always wins.",
-                    "feedback": "A later cue may matter too, but the bias concerns the pull of an initial figure.",
+                    "feedback": "The latest number feels fresh. The first one can still tug the later guess.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1411,7 +1422,7 @@
                   {
                     "id": "b",
                     "text": "A paper with no trick question.",
-                    "feedback": "That counterexample could test her claim, but it does not match what she expects.",
+                    "feedback": "A paper with no trick is easy to set aside. It could test her claim that all have one.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1450,7 +1461,7 @@
                   {
                     "id": "b",
                     "text": "Only the wettest low-sales day.",
-                    "feedback": "One fitting day supports many stories and cannot rule out rain days with normal sales.",
+                    "feedback": "A wet slow day fits her view. Rainy days with steady sales could test it better.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1489,7 +1500,7 @@
                   {
                     "id": "b",
                     "text": "84%.",
-                    "feedback": "Most did not choose the pair that could expose a false rule in that study group.",
+                    "feedback": "The large share left over seems close. Only 16% chose the key pair.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1534,7 +1545,7 @@
                   {
                     "id": "b",
                     "text": "Another poor chase innings.",
-                    "feedback": "More matches in line with the belief cannot by themselves rule out successful chases.",
+                    "feedback": "A poor chase fits the fan's view. One good chase could break the word always.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1570,10 +1581,11 @@
                       "wason"
                     ]
                   },
+                  { "id": "c", "text": "A late red bus confirms the rule for all buses.", "feedback": "A match feels like proof. One late bus of another colour would break the rule.", "correct": false, "misconceptionIds": ["confirmation-bias-m1"], "sourceRefs": ["bias", "wason"] },
                   {
                     "id": "b",
                     "text": "Another red bus is the only decisive test.",
-                    "feedback": "More matching cases cannot rule out the counterexample that the claim forbids.",
+                    "feedback": "Another red bus feels like support. A late bus of another colour would test the rule harder.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1612,8 +1624,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A random mix of all cases.",
-                    "feedback": "Selective saving changes the sample, so the folder no longer shows the full record.",
+                    "text": "A well-tested belief, because she found matching examples.",
+                    "feedback": "A few matches can feel like proof. Yet the skipped cases may show the guess is wrong.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1631,7 +1643,8 @@
                 "conceptId": "confirmation-bias",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "confirmation-bias-m1"
+                  "confirmation-bias-m1",
+                  "confirmation-bias-m2"
                 ],
                 "sourceRefs": [
                   "bias",
@@ -1649,10 +1662,11 @@
                       "wason"
                     ]
                   },
+                  { "id": "c", "text": "Only the saved matches count as evidence.", "feedback": "Saved cases feel clear and close at hand. The skipped logs can test the belief too.", "correct": false, "misconceptionIds": ["confirmation-bias-m2"], "sourceRefs": ["bias", "wason"] },
                   {
                     "id": "b",
                     "text": "Three saved logs outweigh every omitted log.",
-                    "feedback": "The omitted records may directly challenge the claim, regardless of how many matches were saved.",
+                    "feedback": "Three saved matches look strong. The skipped logs may be the cases that break the claim.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1690,8 +1704,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "It means all facts we like are lies.",
-                    "feedback": "The facts in favour may be real. Yet left-out cases can change the picture.",
+                    "text": "A strong belief makes every clue equally easy to remember.",
+                    "feedback": "Memory can feel fair. Yet we may recall what fits our view and miss what does not.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1850,7 +1864,7 @@
                   {
                     "id": "b",
                     "text": "It must stay fully independent.",
-                    "feedback": "Some people in the study did follow a group answer, even when it was wrong.",
+                    "feedback": "The line looks clear, so a solo choice seems safe. Some people still followed the wrong group.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1886,7 +1900,7 @@
                   {
                     "id": "b",
                     "text": "Prove the call was right.",
-                    "feedback": "Shared confidence does not replace the replay or make the first judgment accurate.",
+                    "feedback": "The crowd sounds sure, so the call may feel settled. The replay can still show it was wrong.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1922,7 +1936,7 @@
                   {
                     "id": "b",
                     "text": "About 1%.",
-                    "feedback": "That was closer to the error rate without group pressure, not the critical group trials.",
+                    "feedback": "One percent sounds right for an easy line task. The wrong group pulled far more answers.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1964,7 +1978,7 @@
                   {
                     "id": "b",
                     "text": "The answer is certainly right.",
-                    "feedback": "Many votes can point the same way even when the compared lines say otherwise.",
+                    "feedback": "A full class can look like proof. They may share the same wrong cue.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -1981,7 +1995,8 @@
                 "conceptId": "social-proof",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "social-proof-m1"
+                  "social-proof-m1",
+                  "social-proof-m2"
                 ],
                 "sourceRefs": [
                   "asch"
@@ -1997,10 +2012,11 @@
                       "asch"
                     ]
                   },
+                  { "id": "c", "text": "A clear line match cannot be swayed by public votes.", "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
-                    "text": "Unanimity makes the wrong line physically longer.",
-                    "feedback": "The lines do not change; the social setting can change what a person says aloud.",
+                    "text": "The group answer proves her own visual check was mistaken.",
+                    "feedback": "A unanimous group can seem more reliable than one person's view, but its votes can sway a public answer without changing the lines.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -2037,7 +2053,7 @@
                   {
                     "id": "b",
                     "text": "Private measurement.",
-                    "feedback": "A group vote is shared behaviour, not an independent check of the object.",
+                    "feedback": "Many votes look like many checks. The votes can sway one another.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -2070,10 +2086,11 @@
                       "asch"
                     ]
                   },
+                  { "id": "c", "text": "More votes make a wrong choice true.", "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
                     "text": "Unanimous votes guarantee independent checks.",
-                    "feedback": "One group answer can spread to others. The votes need not come from separate checks.",
+                    "feedback": "All votes match, so they look independent. The first answer may have shaped the rest.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -2109,7 +2126,7 @@
                   {
                     "id": "b",
                     "text": "Every participant copied on every trial.",
-                    "feedback": "The effect was real but varied across people and trials rather than being universal.",
+                    "feedback": "A strong group pull sounds like it works every time. Some people kept their own answer.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -2261,10 +2278,11 @@
                       "planning"
                     ]
                   },
+                  { "id": "c", "text": "Printing time does not count as project work.", "feedback": "The chart may be done in an hour. It still takes time to print and finish.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
                     "text": "It must finish in one hour.",
-                    "feedback": "A stated estimate does not print the pages or remove other uncounted work.",
+                    "feedback": "One hour is the team's clear target. It still leaves out print work.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2299,8 +2317,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The length of every past paper.",
-                    "feedback": "Forgetting a step affects her plan duration, not the printed size of old papers.",
+                    "text": "Only the time spent writing the revision sheet.",
+                    "feedback": "Writing feels like the main task, but collecting papers is another step and can make the whole plan take longer.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2336,7 +2354,7 @@
                   {
                     "id": "b",
                     "text": "2 hours.",
-                    "feedback": "That repeats the plan despite the missing printing step and the longer past tasks.",
+                    "feedback": "Two hours is the team's own guess. Past posters took three to five hours.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2377,8 +2395,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The colour of a finished poster.",
-                    "feedback": "A finished colour is a feature of output, not a missing step in the schedule.",
+                    "text": "The drawing time she already listed.",
+                    "feedback": "Drawing is the visible main task, so it dominates the estimate. Finding and printing images are extra steps she has not counted.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2395,7 +2413,8 @@
                 "conceptId": "planning-fallacy",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "planning-fallacy-m1"
+                  "planning-fallacy-m1",
+                  "planning-fallacy-m2"
                 ],
                 "sourceRefs": [
                   "planning"
@@ -2411,10 +2430,11 @@
                       "planning"
                     ]
                   },
+                  { "id": "c", "text": "The missing print step is too small to affect the guess.", "feedback": "It can look like a quick last step. Past tasks show such work still takes time.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
                     "text": "A smooth plan makes unlisted steps take no time.",
-                    "feedback": "Missing work still takes time even when the planned steps go smoothly.",
+                    "feedback": "The planned parts may go well. The print step still takes time even then.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2451,7 +2471,7 @@
                   {
                     "id": "b",
                     "text": "Were first hoped to take.",
-                    "feedback": "An earlier wish may repeat the same optimism instead of showing the work's duration.",
+                    "feedback": "Old plans are easy to compare. Old finish times show what the work took.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2468,7 +2488,8 @@
                 "conceptId": "planning-fallacy",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "planning-fallacy-m1"
+                  "planning-fallacy-m1",
+                  "planning-fallacy-m2"
                 ],
                 "sourceRefs": [
                   "planning"
@@ -2484,10 +2505,11 @@
                       "planning"
                     ]
                   },
+                  { "id": "c", "text": "The new plan makes the past times useless.", "feedback": "The ready art is a real change. Yet past times can still flag missed tasks such as print.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
                     "text": "Ready artwork proves all other steps vanish.",
-                    "feedback": "One completed part cannot establish the time for all remaining work.",
+                    "feedback": "Ready art does save time. It does not make print and other steps vanish.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2523,7 +2545,7 @@
                   {
                     "id": "b",
                     "text": "Every late job was planned badly.",
-                    "feedback": "The pattern concerns biased time guesses, not a verdict on every team or task.",
+                    "feedback": "A late job can look like a bad plan. This idea is about time guesses, not every delay.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2676,8 +2698,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sleep removes every trace of the poem.",
-                    "feedback": "Sleep can support retention; it does not normally erase all new learning.",
+                    "text": "Only a pause in learning, with no role in keeping the poem.",
+                    "feedback": "No new lines are practiced during sleep, so it can seem idle. Sleep can help stabilise what was learned earlier.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2715,8 +2737,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sleeping before ever seeing the chapter.",
-                    "feedback": "Sleep cannot organise details that the student has not taken in.",
+                    "text": "The night of sleep after reading.",
+                    "feedback": "Sleep can help keep what was read. But the first step was to read it.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2755,7 +2777,7 @@
                   {
                     "id": "b",
                     "text": "Only one.",
-                    "feedback": "Quiet rest can aid retention too, so the process is not exclusive to sleep.",
+                    "feedback": "Sleep is the usual example, so one seems right. Quiet waking rest can help too.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2800,7 +2822,7 @@
                   {
                     "id": "b",
                     "text": "Reading a page for the first time.",
-                    "feedback": "First you take in the lesson. Then the new trace can grow more firm.",
+                    "feedback": "Reading starts the trace, so it feels like the same step. The later change makes it more firm.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2818,7 +2840,8 @@
                 "conceptId": "sleep-memory",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "sleep-memory-m1"
+                  "sleep-memory-m1",
+                  "sleep-memory-m2"
                 ],
                 "sourceRefs": [
                   "sleep-review",
@@ -2836,10 +2859,11 @@
                       "sleep-rest"
                     ]
                   },
+                  { "id": "c", "text": "Sleep alone can teach the skill with no practice.", "feedback": "Better recall after sleep can look like new learning. The skill was first learned during practice.", "correct": false, "misconceptionIds": ["sleep-memory-m2"], "sourceRefs": ["sleep-review", "sleep-rest"] },
                   {
                     "id": "b",
-                    "text": "The skill was learned from nothing during sleep.",
-                    "feedback": "The student practiced first; sleep may help retain that practice.",
+                    "text": "Practice alone explains the gain; sleep played no part.",
+                    "feedback": "Practice came first, so it is easy to credit it all. Sleep may also help keep a new skill.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2878,7 +2902,7 @@
                   {
                     "id": "b",
                     "text": "The first encounter.",
-                    "feedback": "At first the word is new. The later step helps keep it.",
+                    "feedback": "The first sight of the word matters. The gap asks for what helps keep it later.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2914,10 +2938,11 @@
                       "sleep-rest"
                     ]
                   },
+                  { "id": "c", "text": "Quiet rest does nothing because the person stays awake.", "feedback": "Sleep has a known role, so this seems likely. Waking rest can help as well.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] },
                   {
                     "id": "b",
                     "text": "Only sleep can change a memory.",
-                    "feedback": "Quiet rest can help too. The rule leaves that out.",
+                    "feedback": "Sleep gets more notice in memory studies. Quiet rest can also help new learning last.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2956,7 +2981,7 @@
                   {
                     "id": "b",
                     "text": "Sleep creates knowledge of an unread chapter.",
-                    "feedback": "The student must first read the facts for sleep to help keep them.",
+                    "feedback": "Sleep can help after study, so it may sound like a teacher. The chapter must be read first.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -3127,7 +3152,7 @@
                   {
                     "id": "b",
                     "text": "Every next post is certain to be funny.",
-                    "feedback": "A fun post may come next, or many dull posts may come first.",
+                    "feedback": "The last post was fun, so another feels likely. The next one can still be dull.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3166,10 +3191,11 @@
                       "scroll-review"
                     ]
                   },
+                  { "id": "c", "text": "Likes must arrive at set time gaps after posting.", "feedback": "A steady clock would be easy to predict. Likes in the case arrive at uneven times.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
                     "text": "A fixed reward appears after every check.",
-                    "feedback": "Likes do not have to arrive on a strict every-check pattern.",
+                    "feedback": "A new check can feel due for a like. Likes can arrive at uneven times.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3211,7 +3237,7 @@
                   {
                     "id": "b",
                     "text": "Exactly five.",
-                    "feedback": "No set count of swipes can promise a fun post each time.",
+                    "feedback": "Five is easy to count. The next fun clip has no fixed swipe count.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3259,7 +3285,7 @@
                   {
                     "id": "b",
                     "text": "Every action gets the same payoff.",
-                    "feedback": "If each swipe pays, the next result is no real surprise.",
+                    "feedback": "A good clip may follow a swipe. It does not follow each one.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3298,10 +3324,11 @@
                       "scroll-review"
                     ]
                   },
+                  { "id": "c", "text": "A feed must reward every set number of swipes.", "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
                     "text": "All apps share a single programmed reward clock.",
-                    "feedback": "Posts and likes can vary from app to app and person to person.",
+                    "feedback": "The slot machine link invites one clock. Feeds and users can have different patterns.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3343,7 +3370,7 @@
                   {
                     "id": "b",
                     "text": "Guaranteed on every check.",
-                    "feedback": "Then the next reward would be sure, which is a new kind of pattern.",
+                    "feedback": "Past checks can bring a reward, so a sure next one sounds fair. The gap can vary.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3362,7 +3389,8 @@
                 "conceptId": "variable-rewards",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "variable-rewards-m1"
+                  "variable-rewards-m1",
+                  "variable-rewards-m2"
                 ],
                 "sourceRefs": [
                   "apa-learning",
@@ -3382,10 +3410,11 @@
                       "scroll-review"
                     ]
                   },
+                  { "id": "c", "text": "Each user opens a feed for the same reason.", "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.", "correct": false, "misconceptionIds": ["variable-rewards-m2"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
                     "text": "Only reward schedules ever matter.",
-                    "feedback": "The study shows one clue. It does not tell each user’s full story.",
+                    "feedback": "A reward can pull another check. People also open feeds for news or friends.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3427,7 +3456,7 @@
                   {
                     "id": "b",
                     "text": "Each swipe pays out on schedule.",
-                    "feedback": "A fixed payoff after every swipe would miss the uncertainty in this idea.",
+                    "feedback": "A machine can pay on a schedule. This comparison is about not knowing when a good result comes.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3582,7 +3611,8 @@
                 "conceptId": "if-then-plans",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "if-then-plans-m1"
+                  "if-then-plans-m1",
+                  "if-then-plans-m2"
                 ],
                 "sourceRefs": [
                   "konstanz-plan",
@@ -3600,10 +3630,11 @@
                       "plan-study"
                     ]
                   },
+                  { "id": "c", "text": "Writing that sentence makes revision certain after dinner.", "feedback": "The cue is clear, so action may be more likely. A plan cannot make it certain.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
                     "text": "The goal has no moment attached.",
-                    "feedback": "The dinner cue is the named moment in this sentence.",
+                    "feedback": "Dinner may seem like just a goal. The word if makes its end the start cue.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3642,7 +3673,7 @@
                   {
                     "id": "b",
                     "text": "A larger wish alone.",
-                    "feedback": "Making the goal louder still leaves the starting situation unclear.",
+                    "feedback": "A bigger wish can feel more firm. It still gives no clear moment to act.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3681,7 +3712,7 @@
                   {
                     "id": "b",
                     "text": "One.",
-                    "feedback": "The cue alone would not say what action follows when it appears.",
+                    "feedback": "The bus is easy to spot, so one part may feel enough. The plan also names an act.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3726,7 +3757,7 @@
                   {
                     "id": "b",
                     "text": "Drawing.",
-                    "feedback": "That act is the response named after the cue, in the then part.",
+                    "feedback": "The action is the goal, so it draws attention. The if part names the desk cue.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3762,10 +3793,11 @@
                       "plan-study"
                     ]
                   },
+                  { "id": "c", "text": "A broad cue works as well as a clear event.", "feedback": "Both sound like plans. A clear event is easier to spot when it is time to act.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
                     "text": "All if-then plans work equally well.",
-                    "feedback": "The research points to noticing the cue as part of the mechanism.",
+                    "feedback": "Both plans use if and then. A vague cue can still be hard to spot.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3804,7 +3836,7 @@
                   {
                     "id": "b",
                     "text": "Earlier cue.",
-                    "feedback": "The cue belongs in the if part; the response follows it.",
+                    "feedback": "The cue comes first, so it is easy to name. The then part names what to do.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3822,7 +3854,8 @@
                 "conceptId": "if-then-plans",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "if-then-plans-m1"
+                  "if-then-plans-m1",
+                  "if-then-plans-m2"
                 ],
                 "sourceRefs": [
                   "konstanz-plan",
@@ -3840,10 +3873,11 @@
                       "plan-study"
                     ]
                   },
+                  { "id": "c", "text": "Writing the plan makes its cue impossible to miss.", "feedback": "A written cue is easier to recall. Busy days can still hide or change it.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
                     "text": "A written plan controls every future event.",
-                    "feedback": "A cue may be missed or circumstances may change despite the plan.",
+                    "feedback": "Writing a plan can make it feel firm. A cue may still be missed or changed.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -3882,7 +3916,7 @@
                   {
                     "id": "b",
                     "text": "It only repeats a large goal.",
-                    "feedback": "A broad goal lacks the situation and response link at the heart of this plan.",
+                    "feedback": "Both name a goal, so they sound alike. This plan also names a cue and an act.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -4041,7 +4075,7 @@
                   {
                     "id": "b",
                     "text": "How bright the fabric looks under light.",
-                    "feedback": "The studied bias concerns other people’s attention, not the fabric’s colour.",
+                    "feedback": "A bright shirt catches her own eye. The effect asks how many others took note.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4058,7 +4092,8 @@
                 "conceptId": "spotlight-effect",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "spotlight-effect-m1"
+                  "spotlight-effect-m1",
+                  "spotlight-effect-m2"
                 ],
                 "sourceRefs": [
                   "spotlight-paper"
@@ -4074,13 +4109,14 @@
                       "spotlight-paper"
                     ]
                   },
+                  { "id": "c", "text": "All the listeners must recall her slip.", "feedback": "The slip stands out to Asha. Other listeners may have paid it little mind.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
-                    "text": "Everyone must have forgotten every word.",
-                    "feedback": "The effect does not mean that no one can notice a stumble.",
+                    "text": "No listener could have noticed the slip.",
+                    "feedback": "It may not stand out to most people. Yet some listeners can still catch it.",
                     "correct": false,
                     "misconceptionIds": [
-                      "spotlight-effect-m1"
+                      "spotlight-effect-m2"
                     ],
                     "sourceRefs": [
                       "spotlight-paper"
@@ -4113,7 +4149,7 @@
                   {
                     "id": "b",
                     "text": "About 46%.",
-                    "feedback": "That was the wearers’ guess. The share who named the image was much lower.",
+                    "feedback": "The 46% guess is easy to recall. Only about 23% of others named the image.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4154,8 +4190,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A literal light over a person.",
-                    "feedback": "The name is a metaphor for an error in judging others’ attention.",
+                    "text": "The feeling that everyone noticed is proof that they did.",
+                    "feedback": "The mistake feels vivid from the inside, but that feeling can overstate how much others noticed.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4188,10 +4224,11 @@
                       "spotlight-paper"
                     ]
                   },
+                  { "id": "c", "text": "A public slip must stand out as much to others.", "feedback": "The maker felt every detail. Others may have been busy with their own thoughts.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
                     "text": "Others have the same inside view.",
-                    "feedback": "Observers see the event from outside and may attend to many other things.",
+                    "feedback": "The slip filled the maker's mind. Others may have had many other things to watch.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4226,8 +4263,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Eyesight power.",
-                    "feedback": "The test asked what people took note of, not how well they could see.",
+                    "text": "Judgment of how serious a mistake was.",
+                    "feedback": "The slip may feel big to her. This effect asks how many others took note.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4244,7 +4281,8 @@
                 "conceptId": "spotlight-effect",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "spotlight-effect-m1"
+                  "spotlight-effect-m1",
+                  "spotlight-effect-m2"
                 ],
                 "sourceRefs": [
                   "spotlight-paper"
@@ -4260,10 +4298,11 @@
                       "spotlight-paper"
                     ]
                   },
+                  { "id": "c", "text": "The effect proves the guess is always too high.", "feedback": "The group trend can sound like a fixed law. Any one guess may still be right.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
                     "text": "Every observer always misses it.",
-                    "feedback": "The experiments did not find that all observers were blind to the event.",
+                    "feedback": "People often notice less than we fear. Some can still spot the mistake.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
@@ -4299,7 +4338,7 @@
                   {
                     "id": "b",
                     "text": "Others must think about me all day.",
-                    "feedback": "The test shows that others often take less note than we guess.",
+                    "feedback": "The moment looms large to us. Others may give it far less thought.",
                     "correct": false,
                     "misconceptionIds": [
                       "spotlight-effect-m1"
