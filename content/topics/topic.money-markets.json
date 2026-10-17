@@ -79,7 +79,7 @@
                   {
                     "id": "b",
                     "text": "Five idlis.",
-                    "feedback": "That count assumes the old price still applies, even though the canteen now asks for more per plate.",
+                    "feedback": "Five was the old count, so it comes to mind first. At ₹25 each, only four fit.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -115,10 +115,11 @@
                       "cpi"
                     ]
                   },
+                  { "id": "c", "text": "Yes; a common purchase such as tea must dominate the basket.", "feedback": "Tea is bought often, so its rise feels broad. One drink still cannot set the whole index.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
                     "text": "Yes; tea sets the whole index.",
-                    "feedback": "A single canteen item cannot stand in for the full mix of goods that households buy.",
+                    "feedback": "Tea is the price Meera sees, so it can feel like the whole story. The index has many goods.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -157,7 +158,7 @@
                   {
                     "id": "b",
                     "text": "125%.",
-                    "feedback": "That is the new price relative to the old one, not the basket share fixed cash buys.",
+                    "feedback": "The new price is 125% of the old one. Fixed cash buys only 100 ÷ 125 of the basket.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -201,8 +202,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every item in the index rose equally.",
-                    "feedback": "A crop shock tells us about mangoes; it does not say what happened to all other goods.",
+                    "text": "A rise in one common food shows the whole basket rose.",
+                    "feedback": "A common food can feel like a fair sample. The index also checks many other prices.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -238,10 +239,11 @@
                       "cpi"
                     ]
                   },
+                  { "id": "c", "text": "A fare rise alone measures the national price basket.", "feedback": "The bus bill is vivid. A broad index also checks many other costs.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
                     "text": "Fewer affordable rides prove every price rose.",
-                    "feedback": "A single fare can cut one kind of purchasing power without describing the rest of the basket.",
+                    "feedback": "The ride is what she buys, so it feels broad. One fare does not show the whole basket.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -280,8 +282,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "More than one full basket.",
-                    "feedback": "That would require the basket to cost less than the cash, while its new price is higher.",
+                    "text": "One full basket, because the note still says ₹100.",
+                    "feedback": "The note's face value is unchanged, but the same basket now costs ₹110, so the cash covers less than one.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -317,10 +319,11 @@
                       "cpi"
                     ]
                   },
+                  { "id": "c", "text": "The canteen's price change predicts the national rate.", "feedback": "A local bill is easy to see. The index draws on far more prices and places.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
                     "text": "Three rising foods are enough to set the whole index.",
-                    "feedback": "The index also includes many other goods, services and places with different price changes.",
+                    "feedback": "Three foods feel like a pattern. The index also checks many other goods and places.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -521,7 +524,7 @@
                   {
                     "id": "b",
                     "text": "Only the original ₹1,000.",
-                    "feedback": "That leaves out the gain still sitting in the balance, which can itself earn a later gain.",
+                    "feedback": "The first ₹1,000 is easy to track. The saved ₹100 is now in the base too.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -559,8 +562,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The club that removes every gain.",
-                    "feedback": "Taking gains out leaves the base unchanged, so later gains lack that added layer.",
+                    "text": "Both clubs grow at the same rate, so their balances stay equal.",
+                    "feedback": "The common rate makes equality seem likely, but retained gains enlarge one club's base for later growth.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -599,7 +602,7 @@
                   {
                     "id": "b",
                     "text": "₹10.",
-                    "feedback": "That repeats the first gain and misses interest earned on the retained ₹10.",
+                    "feedback": "The first gain was ₹10, so it is easy to reuse. The saved ₹10 earns more too.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -623,7 +626,8 @@
                 "conceptId": "compounding",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "compounding-m1"
+                  "compounding-m1",
+                  "compounding-m2"
                 ],
                 "sourceRefs": [
                   "compound",
@@ -643,10 +647,11 @@
                       "investing"
                     ]
                   },
+                  { "id": "c", "text": "A monthly payment means the fund rises every month.", "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip"] },
                   {
                     "id": "b",
-                    "text": "A guaranteed monthly profit.",
-                    "feedback": "Money added at set times can still face changing market prices and uncertain returns.",
+                    "text": "A fixed return from each monthly payment.",
+                    "feedback": "A set pay date can feel like a set gain. Yet the fund may rise or fall.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -683,10 +688,11 @@
                       "sip"
                     ]
                   },
+                  { "id": "c", "text": "Both balances grow by the same rupee amount each year.", "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] },
                   {
                     "id": "b",
                     "text": "The stated rate must increase each year.",
-                    "feedback": "A steady rate can produce larger rupee gains because the balance it acts on grows.",
+                    "feedback": "Larger gains can look like a higher rate. A steady rate also makes more on a larger base.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -726,7 +732,7 @@
                   {
                     "id": "b",
                     "text": "₹200.",
-                    "feedback": "That would ignore the money left in the account after the first gain.",
+                    "feedback": "The starting sum sticks in mind. The saved ₹20 also joins the new base.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -744,7 +750,8 @@
                 "conceptId": "compounding",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "compounding-m1"
+                  "compounding-m1",
+                  "compounding-m2"
                 ],
                 "sourceRefs": [
                   "compound",
@@ -764,10 +771,11 @@
                       "investing"
                     ]
                   },
+                  { "id": "c", "text": "Past gains make the next positive gain certain.", "feedback": "A rising line can invite that guess. A real share can lose value next year.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip", "investing"] },
                   {
                     "id": "b",
-                    "text": "Compounding needs a monthly deposit to work.",
-                    "feedback": "Kept gains can grow without fresh cash. The flaw is treating future gains as sure.",
+                    "text": "A constant rate in the chart will continue in a real share.",
+                    "feedback": "The smooth chart makes the rate look dependable, but a real share's return can change; compounding alone promises no path.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -1005,7 +1013,7 @@
                   {
                     "id": "b",
                     "text": "Exactly eight years.",
-                    "feedback": "Eight is the rate in this case; the estimate comes from dividing 72 by it.",
+                    "feedback": "Eight is the rate, so it is tempting to call it years. Divide 72 by 8 instead.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1041,7 +1049,7 @@
                   {
                     "id": "b",
                     "text": "The 6% case.",
-                    "feedback": "A smaller rate takes more periods to build the same doubling under the shortcut.",
+                    "feedback": "Six can look like the shorter wait. As a rate, it grows money more slowly than nine.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1077,7 +1085,7 @@
                   {
                     "id": "b",
                     "text": "12 years.",
-                    "feedback": "That uses the old six percent rate even though the account now grows at three percent.",
+                    "feedback": "Twelve years fit the old 6% rate. At 3%, the rough wait is twice as long.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1100,7 +1108,8 @@
                 "conceptId": "rule-of-72",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "rule-of-72-m1"
+                  "rule-of-72-m1",
+                  "rule-of-72-m2"
                 ],
                 "sourceRefs": [
                   "rule72",
@@ -1118,10 +1127,11 @@
                       "investing"
                     ]
                   },
+                  { "id": "c", "text": "As the result from this year's rate held fixed forever.", "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72"] },
                   {
                     "id": "b",
                     "text": "As a guaranteed doubling date.",
-                    "feedback": "Market changes can shift the path, so a single assumed percentage cannot fix a date.",
+                    "feedback": "A neat number can feel like a date. If rates move, the true wait can change too.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1155,10 +1165,11 @@
                       "rule72"
                     ]
                   },
+                  { "id": "c", "text": "The 12% case has more years because it earns more.", "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72"] },
                   {
                     "id": "b",
-                    "text": "The faster account must have started with more money.",
-                    "feedback": "Starting balance is not part of this shortcut; the assumed percentage rate drives the time.",
+                    "text": "A larger starting balance makes its percentage doubling faster.",
+                    "feedback": "More starting cash means more rupees gained, but the rule estimates doubling time from the percentage rate.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1195,7 +1206,7 @@
                   {
                     "id": "b",
                     "text": "About 3 years.",
-                    "feedback": "That repeats the rate as years and misses the much larger quotient from the division.",
+                    "feedback": "Three is the rate, so it is easy to reuse. The rule asks for 72 divided by 3.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1212,7 +1223,8 @@
                 "conceptId": "rule-of-72",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "rule-of-72-m1"
+                  "rule-of-72-m1",
+                  "rule-of-72-m2"
                 ],
                 "sourceRefs": [
                   "rule72",
@@ -1230,10 +1242,11 @@
                       "investing"
                     ]
                   },
+                  { "id": "c", "text": "The rule averages the two rates on its own.", "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72", "investing"] },
                   {
                     "id": "b",
-                    "text": "The shortcut works only for a one-year balance.",
-                    "feedback": "The rule estimates years to double under a steady rate, not a guaranteed date from one year.",
+                    "text": "The first year's 8% can stand in for every later year's rate.",
+                    "feedback": "Using the current rate gives a quick estimate, but the shortcut assumes it stays steady; next year's 4% breaks that assumption.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1272,7 +1285,7 @@
                   {
                     "id": "b",
                     "text": "It proves a market return will stay fixed.",
-                    "feedback": "A fast guess does not make a real rate stay the same each year.",
+                    "feedback": "The rule gives one clean number. Real rates can change, so the guess is not a promise.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1423,7 +1436,7 @@
                   {
                     "id": "b",
                     "text": "The sure game's range.",
-                    "feedback": "A fixed payoff has no spread between best and worst outcomes in this simple setup.",
+                    "feedback": "The sure prize may look safer and larger than zero. Its best and worst result are still the same.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1458,8 +1471,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only a gain, since the best case is large.",
-                    "feedback": "A strong best case does not remove the weaker outcome if buyers do not appear.",
+                    "text": "At least the production cost will come back if the snack sells slowly.",
+                    "feedback": "A busy shop can make some sales seem likely, but unsold stock can leave the owner with a loss.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1495,7 +1508,7 @@
                   {
                     "id": "b",
                     "text": "A gain of ₹70.",
-                    "feedback": "That is the best single result after cost, not the average across all four outcomes.",
+                    "feedback": "The ₹100 prize stands out. The three losing tickets also count in the average.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1536,8 +1549,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The colour of the poster.",
-                    "feedback": "Design does not reveal the range of payoffs or the chance of losing money.",
+                    "text": "The size of the best payout relative to the ticket cost.",
+                    "feedback": "A large best-case payout catches attention, but risk also depends on the other outcomes and their chances.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1570,10 +1583,11 @@
                       "risk"
                     ]
                   },
+                  { "id": "c", "text": "A possible 30% gain is the expected return.", "feedback": "The headline gain stands out. An average also needs the other results and their chances.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
                     "text": "Holding longer makes the quoted gain the average.",
-                    "feedback": "Time alone does not turn a possible upside into a known expected return.",
+                    "feedback": "A long hold can seem to smooth risk. It still does not tell us the other outcomes.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1609,8 +1623,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guaranteed larger payoff.",
-                    "feedback": "One branch gives nothing, so the larger headline amount is not assured.",
+                    "text": "Higher average payoff.",
+                    "feedback": "The possible ₹30 prize looks larger than ₹10, but one branch pays nothing; the range alone cannot establish the average.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1627,7 +1641,8 @@
                 "conceptId": "risk-return",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "risk-return-m1"
+                  "risk-return-m1",
+                  "risk-return-m2"
                 ],
                 "sourceRefs": [
                   "risk"
@@ -1643,10 +1658,11 @@
                       "risk"
                     ]
                   },
+                  { "id": "c", "text": "The same average means the same lowest payout.", "feedback": "A shared average can hide the spread. One game can still have a much worse low result.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "A wider range removes the chance of a loss.",
-                    "feedback": "The low end can fall further even when the average stays the same.",
+                    "text": "A higher top prize raises the average even with worse lows.",
+                    "feedback": "The high prize draws the eye. Lower results can offset it, leaving the same average.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1682,7 +1698,7 @@
                   {
                     "id": "b",
                     "text": "The largest prize is the only outcome that counts.",
-                    "feedback": "The zero prize can happen too. Leave it out and the game's range looks false.",
+                    "feedback": "The top prize is easy to picture. A zero result is also possible and widens the spread.",
                     "correct": false,
                     "misconceptionIds": [
                       "risk-return-m1"
@@ -1823,8 +1839,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The shop is shielded by selling one item.",
-                    "feedback": "Concentration ties the whole stall to demand for that one drink and its customers.",
+                    "text": "Regular customers will keep total sales steady despite the rain.",
+                    "feedback": "Loyal buyers can soften a bad day, but a shop with only one line has no other product to offset a juice slump.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1860,7 +1876,7 @@
                   {
                     "id": "b",
                     "text": "The juice-only stall.",
-                    "feedback": "All its sales still depend on juice, so a fruit cost shock reaches its sole line.",
+                    "feedback": "A juice stall can seem focused and strong. It has no fruit-free line to lean on.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1896,7 +1912,7 @@
                   {
                     "id": "b",
                     "text": "3 holdings.",
-                    "feedback": "The crop can hurt all four. Separate names do not make three holdings safe.",
+                    "feedback": "Four names look like four shields. All four still need the same crop.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1937,8 +1953,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "There is no shared risk at all.",
-                    "feedback": "The firms may be separate, yet one poor harvest can affect all of them.",
+                    "text": "Four company names remove the crop risk from the portfolio.",
+                    "feedback": "More names suggest diversification, but all four still depend on the same crop and can fall together.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1955,7 +1971,8 @@
                 "conceptId": "diversification",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "diversification-m1"
+                  "diversification-m1",
+                  "diversification-m2"
                 ],
                 "sourceRefs": [
                   "risk"
@@ -1971,10 +1988,11 @@
                       "risk"
                     ]
                   },
+                  { "id": "c", "text": "The mix protects against a shock shared by all firms.", "feedback": "Spread can help with one firm's loss. A shared shock can still pull all holdings down.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
                     "text": "Each holding cancels every other holding’s loss.",
-                    "feedback": "Separate names do not guarantee opposite price moves when the same event affects them.",
+                    "feedback": "More names can feel like a hedge. A shared shock may pull them down together.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2010,8 +2028,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "All links between holdings.",
-                    "feedback": "Shared markets and sectors can still connect prices across a mixed set.",
+                    "text": "Only a loss at one company, never a market-wide loss.",
+                    "feedback": "Spreading holdings can limit one firm's damage, but a shared market shock can still reach the whole mix.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2028,7 +2046,8 @@
                 "conceptId": "diversification",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "diversification-m1"
+                  "diversification-m1",
+                  "diversification-m2"
                 ],
                 "sourceRefs": [
                   "risk"
@@ -2044,10 +2063,11 @@
                       "risk"
                     ]
                   },
+                  { "id": "c", "text": "Ten names ensure at least one escapes the crop shock.", "feedback": "Many names look spread out. Here each business still needs the same crop.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
                     "text": "Equal amounts remove any shared crop risk.",
-                    "feedback": "Equal weights limit one firm’s share but cannot erase a shock common to every firm.",
+                    "feedback": "Equal weights look well spread. They still leave each firm tied to the crop.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2083,7 +2103,7 @@
                   {
                     "id": "b",
                     "text": "It removes all chance of a fall.",
-                    "feedback": "Broad market moves can reach many parts of a mix at the same time.",
+                    "feedback": "Many holdings can feel safe. A broad market fall can reach much of the mix.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2206,7 +2226,8 @@
                 "conceptId": "shares",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "shares-m1"
+                  "shares-m1",
+                  "shares-m2"
                 ],
                 "sourceRefs": [
                   "shares"
@@ -2222,10 +2243,11 @@
                       "shares"
                     ]
                   },
+                  { "id": "c", "text": "A claim to a fixed dividend each year.", "feedback": "Owners may get a payout, so it can sound owed. A firm may pay none.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
                     "text": "A fixed loan to the firm.",
-                    "feedback": "A share is an equity claim; a loan is a different kind of promise.",
+                    "feedback": "Both can fund a firm, so they are easy to mix up. A share gives ownership, not a loan claim.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2261,7 +2283,7 @@
                   {
                     "id": "b",
                     "text": "Yes; no dividend cancels the share.",
-                    "feedback": "A firm may retain profit or pay none without turning its shares into nonownership.",
+                    "feedback": "A dividend can feel like proof of ownership. The share still exists when none is paid.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2297,7 +2319,7 @@
                   {
                     "id": "b",
                     "text": "2.5%.",
-                    "feedback": "Halving the price does not halve the number of shares or the ownership fraction.",
+                    "feedback": "The price fell by half, so 2.5% looks natural. Her share count stayed five out of 100.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2338,8 +2360,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The one-match ticket.",
-                    "feedback": "Entry to one event is not the same as holding a slice of the organisation.",
+                    "text": "The ticket, because paying for it funds the club.",
+                    "feedback": "A ticket helps club revenue, but it buys entry to an event rather than an ownership claim.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2356,7 +2378,8 @@
                 "conceptId": "shares",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "shares-m1"
+                  "shares-m1",
+                  "shares-m2"
                 ],
                 "sourceRefs": [
                   "shares"
@@ -2372,10 +2395,11 @@
                       "shares"
                     ]
                   },
+                  { "id": "c", "text": "The dividend must be large enough to cover the price drop.", "feedback": "Cash paid out can feel like a safety net. Its size need not match a market fall.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
                     "text": "Any dividend locks the price above the old price.",
-                    "feedback": "A cash payment to owners does not force the market price to stay up.",
+                    "feedback": "The cash payout feels like a gain. Buyers can still set a lower share price.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2412,7 +2436,7 @@
                   {
                     "id": "b",
                     "text": "Guaranteed interest coupon.",
-                    "feedback": "Fixed loan interest belongs to debt terms; shares do not promise that coupon.",
+                    "feedback": "Both can pay cash, so the names are easy to mix up. A share may pay a dividend.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2429,7 +2453,8 @@
                 "conceptId": "shares",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "shares-m1"
+                  "shares-m1",
+                  "shares-m2"
                 ],
                 "sourceRefs": [
                   "shares"
@@ -2445,10 +2470,11 @@
                       "shares"
                     ]
                   },
+                  { "id": "c", "text": "Last year's payment sets a floor for this year's payout.", "feedback": "Past cash can feel like a pattern. The firm can pay less or none this year.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
                     "text": "A prior dividend creates a fixed monthly debt.",
-                    "feedback": "Shares are ownership claims, so a past payout is not a promise of a repeated payment.",
+                    "feedback": "Last year's payout can look like a schedule. Ownership does not make it a fixed monthly debt.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2484,7 +2510,7 @@
                   {
                     "id": "b",
                     "text": "It is a loan repaid at a fixed date.",
-                    "feedback": "A share does not have the fixed repayment promise that defines a loan.",
+                    "feedback": "Both raise money for a firm. A share is ownership and has no fixed loan due date.",
                     "correct": false,
                     "misconceptionIds": [
                       "shares-m1"
@@ -2625,8 +2651,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Money locked in a hard-to-sell item.",
-                    "feedback": "Its price may be high, but it cannot cover a bill until someone buys it.",
+                    "text": "A valuable item she expects to sell next week.",
+                    "feedback": "Resale value can look like savings, but a bill due today needs money the student can reach now.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2662,7 +2688,7 @@
                   {
                     "id": "b",
                     "text": "Money already set aside for next month’s rent.",
-                    "feedback": "Rent is a known bill; using that pot changes a planned payment.",
+                    "feedback": "Rent money is saved, so it may look like a reserve. The bill is known in advance.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2698,7 +2724,7 @@
                   {
                     "id": "b",
                     "text": "Two months.",
-                    "feedback": "The card has value, but that value is not cash for today’s bill.",
+                    "feedback": "The card has a price, so two months looks fair. It needs a buyer before the bill is due.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2739,8 +2765,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Locked away.",
-                    "feedback": "A reserve that cannot be reached quickly may be of little use in that moment.",
+                    "text": "Invested for the highest possible return.",
+                    "feedback": "Growth sounds useful for savings, but a sudden expense calls for money that can be accessed promptly.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2773,10 +2799,11 @@
                       "rbi-emergency"
                     ]
                   },
+                  { "id": "c", "text": "A listed card price is money ready to spend today.", "feedback": "A price tag makes value look real. The card still needs a buyer before it pays a bill.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
                   {
                     "id": "b",
                     "text": "Any valuable object works like cash.",
-                    "feedback": "The bill asks for payment, while finding a buyer can take time.",
+                    "feedback": "The card may be worth a lot. A buyer still has to turn that value into cash.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2812,7 +2839,7 @@
                   {
                     "id": "b",
                     "text": "A normal monthly bill.",
-                    "feedback": "The pass has a known cycle, but the sudden repair does not.",
+                    "feedback": "Both cost money, so they can seem alike. The repair was not planned each month.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2845,10 +2872,11 @@
                       "rbi-emergency"
                     ]
                   },
+                  { "id": "c", "text": "Selling later is enough for a bill due now.", "feedback": "A sale may bring cash later. A sudden bill needs funds that can be reached today.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
                   {
                     "id": "b",
                     "text": "The highest return always gives instant cash.",
-                    "feedback": "Return and access describe different features; a locked asset may be hard to use quickly.",
+                    "feedback": "A high gain feels useful. It may come in an asset that cannot pay a bill today.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -2884,7 +2912,7 @@
                   {
                     "id": "b",
                     "text": "Money earmarked for a known monthly bill.",
-                    "feedback": "A regular bill is expected, so it has a different place in a budget.",
+                    "feedback": "Both pools are set aside. A known bill belongs in the plan, while a surprise does not.",
                     "correct": false,
                     "misconceptionIds": [
                       "emergency-fund-m1"
@@ -3033,7 +3061,7 @@
                   {
                     "id": "b",
                     "text": "The original loan amount stays the interest base.",
-                    "feedback": "That would count debt which the person has paid off already.",
+                    "feedback": "The first loan sum is easy to recall. Paid principal is no longer part of the balance.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3069,7 +3097,7 @@
                   {
                     "id": "b",
                     "text": "Both EMI and total interest must fall.",
-                    "feedback": "A smaller monthly bill does not tell us the full cost across all months.",
+                    "feedback": "A lower EMI feels cheaper today. More months can still add to the total interest.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3105,7 +3133,7 @@
                   {
                     "id": "b",
                     "text": "One.",
-                    "feedback": "Either loan may cost more in total if it runs for more months.",
+                    "feedback": "The EMIs match, so one price may seem enough to compare. The month count is missing.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3146,8 +3174,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The lender’s monthly profit only.",
-                    "feedback": "The loan sum is not the lender’s gain. It is the debt being paid.",
+                    "text": "The full EMI paid each month.",
+                    "feedback": "The EMI is what you pay each month. The principal is the debt left to repay.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3164,7 +3192,8 @@
                 "conceptId": "loan-emi",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "loan-emi-m1"
+                  "loan-emi-m1",
+                  "loan-emi-m2"
                 ],
                 "sourceRefs": [
                   "rbi-loan"
@@ -3180,10 +3209,11 @@
                       "rbi-loan"
                     ]
                   },
+                  { "id": "c", "text": "The longer plan must cost less because each EMI matches.", "feedback": "The matching bill looks fair. More months can still add up to a larger total.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] },
                   {
                     "id": "b",
                     "text": "Same EMI proves the same total cost.",
-                    "feedback": "The same bill can add up to more if it runs for more months.",
+                    "feedback": "A matching EMI feels like a matching deal. Extra months can raise the total paid.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3218,8 +3248,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Original price tag.",
-                    "feedback": "The first price does not track the debt left after each repayment.",
+                    "text": "Original borrowed sum.",
+                    "feedback": "The first loan sum sticks in mind. Yet each payment cuts the debt used for new interest.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3252,10 +3282,11 @@
                       "rbi-loan"
                     ]
                   },
+                  { "id": "c", "text": "Every EMI pays down debt by its full amount.", "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] },
                   {
                     "id": "b",
                     "text": "Interest appears only after the last EMI.",
-                    "feedback": "Interest can be part of each bill. It need not wait till the end.",
+                    "feedback": "The debt is paid in parts, so interest may seem like a final fee. It can sit in each EMI.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3291,7 +3322,7 @@
                   {
                     "id": "b",
                     "text": "Interest always uses the first borrowed sum.",
-                    "feedback": "That describes a fixed original base, not the monthly reducing method in the source.",
+                    "feedback": "The first loan sum is easy to use. In this method, later interest uses the debt still owed.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3445,8 +3476,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "One manager’s favourite stock.",
-                    "feedback": "A single favourite stock is unlike a fund built to track an index.",
+                    "text": "The manager's pick of firms expected to beat the market.",
+                    "feedback": "A fund manager may pick stocks in other funds. This fund tracks a set list instead.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3485,7 +3516,7 @@
                   {
                     "id": "b",
                     "text": "The single company share.",
-                    "feedback": "One company leaves its own events concentrated in the whole holding.",
+                    "feedback": "A single winner can look strong. One firm's trouble also reaches the whole holding.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3524,7 +3555,7 @@
                   {
                     "id": "b",
                     "text": "About 25 percent.",
-                    "feedback": "That is the other share in the comparison, not the group that trailed.",
+                    "feedback": "25% is the share left over. The question asks for the group that trailed: 75%.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3568,8 +3599,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Promise to beat every stock.",
-                    "feedback": "An index is a benchmark to follow; it gives no promise of topping every share.",
+                    "text": "Pick the strongest companies before the index changes.",
+                    "feedback": "That sounds like an active strategy, but an index fund aims to track its index rather than forecast winners.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3587,7 +3618,8 @@
                 "conceptId": "index-funds",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "index-funds-m1"
+                  "index-funds-m1",
+                  "index-funds-m2"
                 ],
                 "sourceRefs": [
                   "sebi-index",
@@ -3605,10 +3637,11 @@
                       "spiva-india"
                     ]
                   },
+                  { "id": "c", "text": "A winning share shows the typical stock picker wins.", "feedback": "A winner is vivid. One case tells us little about the full set of picks.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
                   {
                     "id": "b",
                     "text": "One example settles all future markets.",
-                    "feedback": "Different shares and periods can turn out differently, so one case cannot settle the pattern.",
+                    "feedback": "One winner is easy to recall. It cannot tell how all picks fared over time.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3646,8 +3679,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guaranteed gain.",
-                    "feedback": "An expense ratio reduces what remains; it is not a payment to the holder.",
+                    "text": "One-time charge paid only when the fund gains.",
+                    "feedback": "A fee may look tied to successful returns, but the expense ratio is charged from fund assets regardless of a gain.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3665,7 +3698,8 @@
                 "conceptId": "index-funds",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "index-funds-m1"
+                  "index-funds-m1",
+                  "index-funds-m2"
                 ],
                 "sourceRefs": [
                   "sebi-index",
@@ -3683,10 +3717,11 @@
                       "spiva-india"
                     ]
                   },
+                  { "id": "c", "text": "The past group result is a rule for every future year.", "feedback": "A large study can feel final. Its past results do not set each new year's outcome.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
                   {
                     "id": "b",
                     "text": "Every manager has the same return.",
-                    "feedback": "The reported spread includes both higher and lower results across funds.",
+                    "feedback": "A broad average can hide the spread. Some managers did better, while others did worse.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3724,8 +3759,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Two names for the same guarantee.",
-                    "feedback": "Each can rise or fall. They also hold shares in different ways.",
+                    "text": "Both spread a single company's risk across many firms.",
+                    "feedback": "A broad fund can spread company risk, but one picked share still depends on that one company.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3889,10 +3924,11 @@
                       "npci-faq"
                     ]
                   },
+                  { "id": "c", "text": "Check that the refund sender has enough funds.", "feedback": "The PIN step can sound like a safety check. It can approve money leaving instead.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "Pull the refund in for free.",
-                    "feedback": "The PIN can let money leave, even if the note says refund.",
+                    "text": "Approve the bank to credit the refund to the account.",
+                    "feedback": "A refund sounds like cash coming in. A PIN can send cash out instead.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -3930,8 +3966,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A free deposit needing no approval.",
-                    "feedback": "The request asks the account holder to authorise a transfer out.",
+                    "text": "Confirmation that the prize will be credited to the account.",
+                    "feedback": "A prize message makes approval sound like a receipt step, but a collect request asks the payer to authorise money leaving.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -3970,7 +4006,7 @@
                   {
                     "id": "b",
                     "text": "One PIN approval.",
-                    "feedback": "A PIN prompt changes the action into approval of a payment, not simple receipt.",
+                    "feedback": "A cashback label sounds like money coming in. A PIN prompt can approve money going out.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4014,8 +4050,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A stranger’s prize message.",
-                    "feedback": "A message can claim a reward, but it cannot change what a PIN approval means.",
+                    "text": "Verification that a payment is about to arrive.",
+                    "feedback": "The caller calls it a check to get cash. A PIN can send cash out.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4033,7 +4069,8 @@
                 "conceptId": "upi-scams",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "upi-scams-m1"
+                  "upi-scams-m1",
+                  "upi-scams-m2"
                 ],
                 "sourceRefs": [
                   "npci-fraud",
@@ -4051,10 +4088,11 @@
                       "npci-faq"
                     ]
                   },
+                  { "id": "c", "text": "A bank-like tone proves the caller can be trusted.", "feedback": "A neat message can seem safe. The PIN still lets a payer send money out.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "A formal logo changes how UPI works.",
-                    "feedback": "A bank logo does not turn a payment into cash coming in.",
+                    "text": "The logo proves the PIN is only for receiving funds.",
+                    "feedback": "A bank mark can feel safe. The PIN can still approve money going out.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4092,8 +4130,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Prize receiver by default.",
-                    "feedback": "The label on the message does not decide the direction of the bank transfer.",
+                    "text": "Person who receives the transfer.",
+                    "feedback": "The word collect can sound like receiving money, but approving the request means paying it.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4111,7 +4149,8 @@
                 "conceptId": "upi-scams",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "upi-scams-m1"
+                  "upi-scams-m1",
+                  "upi-scams-m2"
                 ],
                 "sourceRefs": [
                   "npci-fraud",
@@ -4129,10 +4168,11 @@
                       "npci-faq"
                     ]
                   },
+                  { "id": "c", "text": "An official-looking request cannot be a scam.", "feedback": "The bank style can win trust. A false story can still lead to a real payment.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "Fraud only happens when the switch stops working.",
-                    "feedback": "NPCI describes fraud that uses messages, links and fear to steer users.",
+                    "text": "A payment app must be hacked before money can leave.",
+                    "feedback": "An app hack may sound like the only risk. A scammer can also trick you into paying.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4171,7 +4211,7 @@
                   {
                     "id": "b",
                     "text": "The PIN becomes a receipt code.",
-                    "feedback": "The PIN lets money leave. A false label does not change that.",
+                    "feedback": "The scam calls the PIN a receipt code. The code still approves money going out.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"

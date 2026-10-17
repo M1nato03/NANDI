@@ -72,8 +72,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "It must grow with no air flow.",
-                    "feedback": "The wing needs air moving past it to make the force that holds it up.",
+                    "text": "It stays fixed because the wing's shape stays the same.",
+                    "feedback": "The shape is still there, so that sounds right. Less moving air can mean less lift.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -108,8 +108,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only when all nearby air is still.",
-                    "feedback": "Still air relative to the wing offers no steady stream to turn downward.",
+                    "text": "Before it enters the stream, because its shape makes lift.",
+                    "feedback": "The curved shape looks ready to lift. It still needs air to move past it.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -145,7 +145,7 @@
                   {
                     "id": "b",
                     "text": "4 newtons.",
-                    "feedback": "Twice the weight would leave an upward imbalance instead of steady level flight.",
+                    "feedback": "More lift can sound safer. For steady level flight, upward lift matches the two-newton weight.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -187,7 +187,7 @@
                   {
                     "id": "b",
                     "text": "Air pushes the wing only backward.",
-                    "feedback": "Drag can act backward, but the downward turn also has an upward force pair.",
+                    "feedback": "A wing does meet backward drag. Turning air down also brings an upward push.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -220,10 +220,11 @@
                       "lift"
                     ]
                   },
+                  { "id": "c", "text": "The wing's shape keeps lift fixed at any speed.", "feedback": "The shape stays the same, so this sounds right. Lift also needs moving air.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] },
                   {
                     "id": "b",
                     "text": "Slower air raises lift because it stays near the wing longer.",
-                    "feedback": "Time near the wing alone does not replace enough flow to balance weight.",
+                    "feedback": "Longer contact can sound like more lift. The slower flow may give less upward push.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -260,7 +261,7 @@
                   {
                     "id": "b",
                     "text": "Forward.",
-                    "feedback": "The plane flies forward. Its weight still pulls down toward the ground.",
+                    "feedback": "The plane moves forward, so that direction comes to mind. Weight pulls down.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -277,7 +278,8 @@
                 "conceptId": "lift",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "lift-m1"
+                  "lift-m1",
+                  "lift-m2"
                 ],
                 "sourceRefs": [
                   "lift"
@@ -293,10 +295,11 @@
                       "lift"
                     ]
                   },
+                  { "id": "c", "text": "The wing can push against empty space in the same way.", "feedback": "Its shape is still there. But no air means no air to turn down.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] },
                   {
                     "id": "b",
                     "text": "Matching speed guarantees matching lift, whatever surrounds the wing.",
-                    "feedback": "The surrounding air is part of the force interaction, so removing it changes the result.",
+                    "feedback": "The wing keeps its speed and shape. With no air, it has nothing to turn down.",
                     "correct": false,
                     "misconceptionIds": [
                       "lift-m1"
@@ -465,7 +468,8 @@
                 "conceptId": "multirotor-turns",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "multirotor-turns-m1"
+                  "multirotor-turns-m1",
+                  "multirotor-turns-m2"
                 ],
                 "sourceRefs": [
                   "quad"
@@ -483,11 +487,11 @@
                   },
                   {
                     "id": "b",
-                    "text": "Perfectly level flight with no change.",
-                    "feedback": "A left-right thrust gap cannot leave the force balance exactly as it was.",
+                    "text": "Level flight, since all four rotors still run.",
+                    "feedback": "All rotors are on, so it can seem balanced. One side now pushes harder and tips the craft.",
                     "correct": false,
                     "misconceptionIds": [
-                      "multirotor-turns-m1"
+                      "multirotor-turns-m2"
                     ],
                     "sourceRefs": [
                       "quad"
@@ -521,8 +525,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Its GPS invented a steering wheel.",
-                    "feedback": "Position data can guide control, but the physical turn comes from rotor forces.",
+                    "text": "The GPS changed its location command without changing rotor forces.",
+                    "feedback": "A position command can guide the controller, but a physical turn needs a change in rotor forces.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -559,7 +563,7 @@
                   {
                     "id": "b",
                     "text": "2.5 newtons.",
-                    "feedback": "Equal front and rear thrust would not create the pitch change in this toy setup.",
+                    "feedback": "Matching 2.5 values look balanced. They would leave no front-rear gap to tip the craft.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -601,7 +605,7 @@
                   {
                     "id": "b",
                     "text": "All rotors push equally at all times.",
-                    "feedback": "Equal front and rear forces do not create the needed pitch moment in this setup.",
+                    "feedback": "Equal thrust can hold a hover. To pitch down, the rear must push harder.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -618,7 +622,8 @@
                 "conceptId": "multirotor-turns",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "multirotor-turns-m1"
+                  "multirotor-turns-m1",
+                  "multirotor-turns-m2"
                 ],
                 "sourceRefs": [
                   "quad",
@@ -636,10 +641,11 @@
                       "mit"
                     ]
                   },
+                  { "id": "c", "text": "Opposite spins are needed only while the drone moves forward.", "feedback": "A hover looks still. The rotors can still twist the craft unless spin effects balance.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad", "mit"] },
                   {
                     "id": "b",
                     "text": "Equal thrust alone cancels every turning effect.",
-                    "feedback": "Equal thrust balances upward force, but rotor spin can still twist the craft around its vertical axis.",
+                    "feedback": "Equal upward push looks fully balanced. Rotor spin can still twist the craft around.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -677,7 +683,7 @@
                   {
                     "id": "b",
                     "text": "Front-to-back.",
-                    "feedback": "Rotation around that axis describes roll, not the nose turning left or right.",
+                    "feedback": "The long axis runs through the craft, so it sounds like a turn. It names roll.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -710,10 +716,11 @@
                       "quad"
                     ]
                   },
+                  { "id": "c", "text": "GPS makes the correction once it knows the error.", "feedback": "A good position clue helps the controller. The motors still need to change force.", "correct": false, "misconceptionIds": ["multirotor-turns-m1"], "sourceRefs": ["quad"] },
                   {
                     "id": "b",
                     "text": "The position signal is the force that moves the craft.",
-                    "feedback": "Information about a drift can guide motion, but a radio signal does not provide the needed thrust.",
+                    "feedback": "GPS shows the drift, so it can seem to fix it. Motors make the force.",
                     "correct": false,
                     "misconceptionIds": [
                       "multirotor-turns-m1"
@@ -942,7 +949,7 @@
                   {
                     "id": "b",
                     "text": "It must double exactly.",
-                    "feedback": "That assumes the motors use energy at the old rate despite the added weight.",
+                    "feedback": "Twice the stored energy suggests twice the time. Extra battery mass may raise power use.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -977,8 +984,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The battery stops using energy.",
-                    "feedback": "Higher load does not remove the power cost of spinning the rotors.",
+                    "text": "Hover power stays the same because rotor count did not change.",
+                    "feedback": "The same rotors still fly, which makes this seem reasonable. Carrying more weight can make them use more power.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1014,7 +1021,7 @@
                   {
                     "id": "b",
                     "text": "3 hours.",
-                    "feedback": "Dividing the new energy by the old power ignores the extra load in this toy flight.",
+                    "feedback": "The old 60-watt rate is easy to reuse. The heavier pack raises power use to 90 watts.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1056,7 +1063,7 @@
                   {
                     "id": "b",
                     "text": "The lighter battery must always use more power.",
-                    "feedback": "With all else equal, extra mass tends to raise rather than lower hover demand.",
+                    "feedback": "The lighter pack stores less, so it may seem less useful. It needs less lift in hover.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1073,7 +1080,8 @@
                 "conceptId": "battery-flight-time",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "battery-flight-time-m1"
+                  "battery-flight-time-m1",
+                  "battery-flight-time-m2"
                 ],
                 "sourceRefs": [
                   "battery"
@@ -1089,10 +1097,11 @@
                       "battery"
                     ]
                   },
+                  { "id": "c", "text": "Battery weight cannot change how much power a hover needs.", "feedback": "The larger pack brings more energy. Its extra mass also asks the motors for more work.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
                     "text": "Energy and flight time must rise in the same ratio.",
-                    "feedback": "That ratio holds only if power use stays the same, which added mass can change.",
+                    "feedback": "More energy often means more time. Extra mass can also make the motors work harder.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1129,7 +1138,7 @@
                   {
                     "id": "b",
                     "text": "Rotor count alone.",
-                    "feedback": "The number of rotors does not state how fast all of them use energy.",
+                    "feedback": "Rotor count is easy to see. It does not tell how fast the craft uses stored energy.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1146,7 +1155,8 @@
                 "conceptId": "battery-flight-time",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "battery-flight-time-m1"
+                  "battery-flight-time-m1",
+                  "battery-flight-time-m2"
                 ],
                 "sourceRefs": [
                   "battery"
@@ -1162,10 +1172,11 @@
                       "battery"
                     ]
                   },
+                  { "id": "c", "text": "The extra weight affects takeoff but not a steady hover.", "feedback": "Takeoff may feel like the hard part. A heavier craft also needs more lift while it hovers.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
                     "text": "Battery energy alone fixes flight time.",
-                    "feedback": "Flight time depends on both usable energy and the rate at which the motors use it.",
+                    "feedback": "The battery rating looks like the full answer. Power use also sets how fast it runs down.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1200,8 +1211,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Minutes depend only on battery colour.",
-                    "feedback": "Paint tells us no useful fact about how much charge the cell holds or uses.",
+                    "text": "The battery's rated energy alone fixes the flight minutes.",
+                    "feedback": "Stored energy is an important input, but the craft's power use can change with weight and flight conditions.",
                     "correct": false,
                     "misconceptionIds": [
                       "battery-flight-time-m1"
@@ -1342,7 +1353,8 @@
                 "conceptId": "flight-sensors",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "flight-sensors-m1"
+                  "flight-sensors-m1",
+                  "flight-sensors-m2"
                 ],
                 "sourceRefs": [
                   "px4",
@@ -1364,10 +1376,11 @@
                       "barometer"
                     ]
                   },
+                  { "id": "c", "text": "The pressure sensor, because it still senses height.", "feedback": "Height sensing can work under a roof. The quick tilt clue comes from the IMU.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
                     "text": "Only the satellite receiver.",
-                    "feedback": "Satellites help place the drone on a map. A local sensor feels its fast tilt.",
+                    "feedback": "GPS tracks position, so it sounds like the motion clue. The IMU feels fast tilt nearby.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1411,8 +1424,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The idea that air has pressure.",
-                    "feedback": "A shaky map dot is about position signals, not proof that air pressure vanished.",
+                    "text": "The barometer's ability to sense altitude.",
+                    "feedback": "Both sensors can inform height, so they are easy to confuse. A wandering map dot under a roof points to weak satellite positioning.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1457,7 +1470,7 @@
                   {
                     "id": "b",
                     "text": "18 metres.",
-                    "feedback": "That repeats the GPS reading even though the premise says its signal is poor under the roof.",
+                    "feedback": "The GPS number is shown first, so it seems easy to use. Its weak signal rules it out here.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1508,7 +1521,7 @@
                   {
                     "id": "b",
                     "text": "A GPS antenna alone.",
-                    "feedback": "GPS times signals from space. It does not feel the air around the craft.",
+                    "feedback": "GPS can report height, so it seems apt. A barometer uses air pressure for that clue.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1550,10 +1563,11 @@
                       "barometer"
                     ]
                   },
+                  { "id": "c", "text": "The IMU stops working as soon as GPS drops out.", "feedback": "GPS is a strong map clue. The IMU can still sense quick motion on its own.", "correct": false, "misconceptionIds": ["flight-sensors-m1"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
                     "text": "The IMU gives exact map coordinates without satellites.",
-                    "feedback": "The IMU senses motion. It cannot tell an exact map spot by itself.",
+                    "feedback": "Fast motion data can seem like a full map. An IMU alone cannot fix an exact spot.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1598,8 +1612,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A fan blade.",
-                    "feedback": "A blade moves air but cannot supply the remote timing data used for position.",
+                    "text": "The barometer alone.",
+                    "feedback": "Pressure can help estimate height, but map location needs a position clue such as GPS.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1619,7 +1633,8 @@
                 "conceptId": "flight-sensors",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "flight-sensors-m1"
+                  "flight-sensors-m1",
+                  "flight-sensors-m2"
                 ],
                 "sourceRefs": [
                   "px4",
@@ -1641,10 +1656,11 @@
                       "barometer"
                     ]
                   },
+                  { "id": "c", "text": "More GPS readings can make a blocked signal exact.", "feedback": "More data can cut random noise. A shared roof error may still remain.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
                     "text": "Averaging always removes every roof-related error.",
-                    "feedback": "Repeated readings can share the same source of error, so their mean need not be exact.",
+                    "feedback": "More readings often help. A roof can skew them all in the same way.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1689,7 +1705,7 @@
                   {
                     "id": "b",
                     "text": "All sensors stop working at the same time.",
-                    "feedback": "The roof may hurt one clue while the on-board tilt sensor still works.",
+                    "feedback": "The roof blocks sky signals, so all sensing may seem gone. The IMU still feels tilt.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1871,8 +1887,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only a way to make noise.",
-                    "feedback": "The moving wing interacts with air to create forces that matter for flight.",
+                    "text": "Lift alone, with no help for forward motion.",
+                    "feedback": "Wings are often linked only with lift, but a bird's stroke can also help move it forward.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -1905,10 +1921,11 @@
                       "bird"
                     ]
                   },
+                  { "id": "c", "text": "The wing shape lifts even with no air moving past it.", "feedback": "Its shape is easy to see. The wing still needs moving air to make lift.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
-                    "text": "Its wings are secretly flapping.",
-                    "feedback": "Fixed wings can support flight without the wingbeats used by many birds.",
+                    "text": "Engine thrust itself holds the plane up.",
+                    "feedback": "The engine keeps the plane moving, so it can seem to provide all support. Airflow over the fixed wings creates the lift.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -1944,7 +1961,7 @@
                   {
                     "id": "b",
                     "text": "200 newtons.",
-                    "feedback": "That is the forward engine thrust. The upward wing force must balance the plane’s weight.",
+                    "feedback": "The engine's 200 is the visible force. Lift points up and must match the 500-newton weight.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -1985,8 +2002,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The painted wing stripe.",
-                    "feedback": "Paint can mark a wing but does not supply the forward force for flight.",
+                    "text": "The fixed wing's upward lift.",
+                    "feedback": "The wing supplies an important force, but that force is upward; the engine mainly supplies forward thrust.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -2019,10 +2036,11 @@
                       "bird"
                     ]
                   },
+                  { "id": "c", "text": "Only powered wings can make lift.", "feedback": "Flapping can add motion. A gliding wing also meets moving air.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
                     "text": "Both wings must flap to keep air moving.",
-                    "feedback": "Gliding birds and fixed plane wings can meet moving air without a flap.",
+                    "feedback": "Birds often flap, so it looks required. A glide also moves air past a wing.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -2059,7 +2077,7 @@
                   {
                     "id": "b",
                     "text": "The engine's main forward thrust.",
-                    "feedback": "A jet engine provides the main thrust; moving air over fixed wings provides lift.",
+                    "feedback": "The engine is loud and visible. It gives thrust while the wings make lift.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -2076,7 +2094,8 @@
                 "conceptId": "birds-and-planes",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "birds-and-planes-m1"
+                  "birds-and-planes-m1",
+                  "birds-and-planes-m2"
                 ],
                 "sourceRefs": [
                   "bird"
@@ -2092,10 +2111,11 @@
                       "bird"
                     ]
                   },
+                  { "id": "c", "text": "A fixed wing stops lifting the instant the engine stops.", "feedback": "The engine drives flight, so this feels likely. A glide still keeps air moving past the wing.", "correct": false, "misconceptionIds": ["birds-and-planes-m2"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
                     "text": "Engine thrust is the only possible source of wing airflow.",
-                    "feedback": "Airflow can persist during a glide even when the engine no longer pushes forward.",
+                    "feedback": "The engine drove the plane, so lift may seem to stop with it. A glide keeps air flowing.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -2130,8 +2150,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both use engines to flap wings.",
-                    "feedback": "Birds use muscles, and most planes do not flap their fixed wings.",
+                    "text": "Both need powered wingbeats to keep air moving.",
+                    "feedback": "Flapping is familiar from birds, but gliding birds and fixed-wing planes can both get lift from moving air without wingbeats.",
                     "correct": false,
                     "misconceptionIds": [
                       "birds-and-planes-m1"
@@ -2291,8 +2311,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Air made cold inside the motor.",
-                    "feedback": "A ceiling fan has no cooling coil; the sensation comes from moving air.",
+                    "text": "Air that the fan cooled while it spun.",
+                    "feedback": "The breeze feels cooler on skin, which suggests colder air. The fan moves room air rather than lowering its temperature.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2330,8 +2350,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The walls feel the same chill as skin.",
-                    "feedback": "A breeze helps a person lose heat; walls do not sweat or sense a breeze.",
+                    "text": "The room air cools while the fan runs.",
+                    "feedback": "A fan feels cool on skin. In an empty room, it just moves the air.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2370,7 +2390,7 @@
                   {
                     "id": "b",
                     "text": "3 degrees Celsius.",
-                    "feedback": "A cooler feeling needs a person in the breeze. Moving air alone does not chill the room.",
+                    "feedback": "A fan feels cool on skin, so three degrees sounds fair. Empty-room air stays warm.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2414,8 +2434,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The fan makes ice in the air.",
-                    "feedback": "The blades move air; they do not use a cooling cycle to freeze moisture.",
+                    "text": "The fan lowers the air temperature before it reaches skin.",
+                    "feedback": "The breeze feels cool, so the air may seem colder. It helps sweat dry; the room stays warm.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2433,7 +2453,8 @@
                 "conceptId": "ceiling-fans",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "ceiling-fans-m1"
+                  "ceiling-fans-m1",
+                  "ceiling-fans-m2"
                 ],
                 "sourceRefs": [
                   "fan",
@@ -2451,10 +2472,11 @@
                       "cooling"
                     ]
                   },
+                  { "id": "c", "text": "Spin alone moves air the same way with a flat blade.", "feedback": "The motor makes the motion. Blade tilt helps aim and push the air.", "correct": false, "misconceptionIds": ["ceiling-fans-m2"], "sourceRefs": ["fan", "cooling"] },
                   {
                     "id": "b",
                     "text": "A blade cools the air mainly by touching it.",
-                    "feedback": "Contact and spin alone do not remove heat; the tilt helps move the air.",
+                    "feedback": "A spinning blade touches air, so this sounds right. Its tilt steers the breeze.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2493,8 +2515,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Number of blades.",
-                    "feedback": "Blade count describes a fan, not the heat content of room air.",
+                    "text": "Speed over a person's skin.",
+                    "feedback": "A breeze feels cool on skin. An air conditioner can cool the air in the room too.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2530,10 +2552,11 @@
                       "cooling"
                     ]
                   },
+                  { "id": "c", "text": "A fan removes heat from the room while no one is there.", "feedback": "The breeze feels cool on skin. In an empty room, it does not carry room heat out.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] },
                   {
                     "id": "b",
                     "text": "Air movement slowly turns warm air into cold air.",
-                    "feedback": "The fan moves the same air; it does not run a heat-removing cooling cycle.",
+                    "feedback": "The breeze feels cool, so the room may seem colder. The fan just moves the air.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2571,8 +2594,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The motor removes all room heat.",
-                    "feedback": "A spinning motor uses energy and is not a device that carries heat outdoors.",
+                    "text": "The fan lowers room air temperature as it spins.",
+                    "feedback": "The breeze feels cool on skin. The fan moves air without chilling the room.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2720,7 +2743,8 @@
                 "conceptId": "upi-path",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "upi-path-m1"
+                  "upi-path-m1",
+                  "upi-path-m2"
                 ],
                 "sourceRefs": [
                   "npci-upi-faq",
@@ -2740,10 +2764,11 @@
                       "npci-booklet"
                     ]
                   },
+                  { "id": "c", "text": "Cash kept in the app until the seller accepts it.", "feedback": "The app shows the pay screen, so it can look like a wallet. The linked bank sends the funds.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
                     "text": "A balance stored inside the ID.",
-                    "feedback": "A payment address helps route the transfer but does not hold notes or coins.",
+                    "feedback": "The ID appears on the pay screen, so it can look like a wallet. The bank holds the funds.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2785,7 +2810,7 @@
                   {
                     "id": "b",
                     "text": "Reading Ravi’s UPI PIN.",
-                    "feedback": "The address identifies where to pay; it does not reveal the secret PIN.",
+                    "feedback": "The ID helps a sender find Ravi. It does not reveal his private PIN.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2827,7 +2852,7 @@
                   {
                     "id": "b",
                     "text": "Only one.",
-                    "feedback": "BHIM lets a user switch among linked accounts, so the app is not one bank.",
+                    "feedback": "One app can look tied to one bank. Here it can switch between two linked accounts.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2874,8 +2899,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "A bag of digital cash.",
-                    "feedback": "An address routes money; the bank accounts provide the balances.",
+                    "text": "An account balance held by the payment app.",
+                    "feedback": "The app displays an ID and a balance, so they can seem to be the same thing. The VPA is an address linked to a bank account.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2914,10 +2939,11 @@
                       "npci-booklet"
                     ]
                   },
+                  { "id": "c", "text": "The UPI ID holds the cash until the app sends it.", "feedback": "The ID appears on screen, so it can look like a wallet. It names a payment address.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
-                    "text": "The app prints cash on the phone.",
-                    "feedback": "Screen actions can start a request, but they do not create money.",
+                    "text": "The app's own balance replaces the linked bank account.",
+                    "feedback": "The app is the visible part of payment, but linked banks carry out the account transfer.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2958,8 +2984,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Camera sensors.",
-                    "feedback": "A camera may read a code, but it does not hold the two accounts.",
+                    "text": "Payment apps alone.",
+                    "feedback": "The apps start and display the transfer, but the linked banks hold the accounts that move the money.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2998,10 +3024,11 @@
                       "npci-booklet"
                     ]
                   },
+                  { "id": "c", "text": "Sharing the ID means the sender has already paid.", "feedback": "The address is ready to use. A payment still needs approval and a transfer.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
                     "text": "An address is the same as a receipt.",
-                    "feedback": "Knowing where to send money does not show that any money moved.",
+                    "feedback": "An address looks like payment proof. It only tells where money could be sent.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -3043,7 +3070,7 @@
                   {
                     "id": "b",
                     "text": "An ID stores cash until the phone opens.",
-                    "feedback": "The address points to an account rather than serving as a cash box.",
+                    "feedback": "The ID is visible in the app, so it may look like storage. It points to a bank account.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -3219,7 +3246,7 @@
                   {
                     "id": "b",
                     "text": "A finished picture painted by the lens.",
-                    "feedback": "The lens directs light; the sensor and processing create the stored image.",
+                    "feedback": "The lens frames the scene, so it can seem to paint it. It sends light to the sensor.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3237,7 +3264,8 @@
                 "conceptId": "phone-camera",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "phone-camera-m1"
+                  "phone-camera-m1",
+                  "phone-camera-m2"
                 ],
                 "sourceRefs": [
                   "nasa-camera",
@@ -3255,10 +3283,11 @@
                       "nasa-phone"
                     ]
                   },
+                  { "id": "c", "text": "A light reading saved by the lens itself.", "feedback": "The lens aims light, so it can seem to record it. The sensor makes the reading.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
-                    "text": "A printed paper dot.",
-                    "feedback": "The sensor creates signals, while a display or print comes later.",
+                    "text": "A complete coloured picture of that part of the scene.",
+                    "feedback": "A finished photo has colour at each point, but each sensor site first records a light signal for later processing.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3297,7 +3326,7 @@
                   {
                     "id": "b",
                     "text": "One.",
-                    "feedback": "A plain light value cannot show red, green and blue on its own.",
+                    "feedback": "A single filter sounds simple. The toy sensor uses three filter types for colour data.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3342,7 +3371,7 @@
                   {
                     "id": "b",
                     "text": "The screen glass.",
-                    "feedback": "The screen shows the finished result after the light has been measured.",
+                    "feedback": "The screen shows photos, so it can seem to make them. The sensor first reads light.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3360,7 +3389,8 @@
                 "conceptId": "phone-camera",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "phone-camera-m1"
+                  "phone-camera-m1",
+                  "phone-camera-m2"
                 ],
                 "sourceRefs": [
                   "nasa-camera",
@@ -3378,10 +3408,11 @@
                       "nasa-phone"
                     ]
                   },
+                  { "id": "c", "text": "The lens matters only when the pixel counts differ.", "feedback": "Pixel count is easy to compare. Lens quality can alter the light even at the same count.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
                     "text": "Pixel count fixes every image detail.",
-                    "feedback": "The optical path and processing also affect what the saved photo looks like.",
+                    "feedback": "Pixel count is easy to compare. Lens light and later processing can still change the photo.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3399,7 +3430,8 @@
                 "conceptId": "phone-camera",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "phone-camera-m1"
+                  "phone-camera-m1",
+                  "phone-camera-m2"
                 ],
                 "sourceRefs": [
                   "nasa-camera",
@@ -3419,11 +3451,11 @@
                   },
                   {
                     "id": "b",
-                    "text": "New lens.",
-                    "feedback": "Processing changes data into an image; it does not make the optical lens.",
+                    "text": "Photo made by the lens alone.",
+                    "feedback": "The lens directs the scene's light, so it can seem like the maker. The sensor must read it too.",
                     "correct": false,
                     "misconceptionIds": [
-                      "phone-camera-m1"
+                      "phone-camera-m2"
                     ],
                     "sourceRefs": [
                       "nasa-camera",
@@ -3456,10 +3488,11 @@
                       "nasa-phone"
                     ]
                   },
+                  { "id": "c", "text": "A sensor site stores a full colour from the scene.", "feedback": "The final photo has colour. Each site first gives a light reading for later work.", "correct": false, "misconceptionIds": ["phone-camera-m1"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
                     "text": "Every site contains a finished scene.",
-                    "feedback": "A single site has a light reading, not the whole picture.",
+                    "feedback": "The final photo shows a scene, so each site can seem like a tiny copy. It reads light.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
@@ -3477,7 +3510,8 @@
                 "conceptId": "phone-camera",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "phone-camera-m1"
+                  "phone-camera-m1",
+                  "phone-camera-m2"
                 ],
                 "sourceRefs": [
                   "nasa-camera",
@@ -3497,11 +3531,11 @@
                   },
                   {
                     "id": "b",
-                    "text": "Screen, memory card, then light.",
-                    "feedback": "A screen can show the result only after light has been measured.",
+                    "text": "Lens forms a full photo, then the sensor saves it.",
+                    "feedback": "The lens frames the scene, so it can seem to finish the photo. The sensor must read light first.",
                     "correct": false,
                     "misconceptionIds": [
-                      "phone-camera-m1"
+                      "phone-camera-m2"
                     ],
                     "sourceRefs": [
                       "nasa-camera",
@@ -3663,7 +3697,7 @@
                   {
                     "id": "b",
                     "text": "Red only.",
-                    "feedback": "Red travels more directly through clear air than the shorter blue part.",
+                    "feedback": "The Sun can look warm red, so red comes to mind. Blue scatters more across clear air.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3702,7 +3736,7 @@
                   {
                     "id": "b",
                     "text": "The Sun changed its own colour.",
-                    "feedback": "The source is the same; the path through Earth’s air is longer.",
+                    "feedback": "The Sun looks new at dusk. Its light has passed through more air on the way.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3741,7 +3775,7 @@
                   {
                     "id": "b",
                     "text": "Both by the same amount.",
-                    "feedback": "The two routes do not offer the same amount of air for scattering.",
+                    "feedback": "Both paths cross air, so equal change sounds fair. The long path has more air.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3786,7 +3820,7 @@
                   {
                     "id": "b",
                     "text": "Red.",
-                    "feedback": "Long red light tends to go more straight through the air.",
+                    "feedback": "The sunset hue stands out, so it is easy to pick. Blue scatters more in clear air.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3804,7 +3838,8 @@
                 "conceptId": "sky-colours",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "sky-colours-m1"
+                  "sky-colours-m1",
+                  "sky-colours-m2"
                 ],
                 "sourceRefs": [
                   "nasa-sky",
@@ -3822,10 +3857,11 @@
                       "nasa-light"
                     ]
                   },
+                  { "id": "c", "text": "The sky and Sun are coloured by different kinds of sunlight.", "feedback": "The views look unlike. The same light takes different paths through the air.", "correct": false, "misconceptionIds": ["sky-colours-m2"], "sourceRefs": ["nasa-sky", "nasa-light"] },
                   {
                     "id": "b",
-                    "text": "Two different Suns make the colours.",
-                    "feedback": "The same sunlight is changed by how it passes through air.",
+                    "text": "The Sun emits red light only near the horizon.",
+                    "feedback": "The low Sun looks red, so its output can seem different. The longer air path scatters more blue from the direct beam.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3863,8 +3899,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Blue paint.",
-                    "feedback": "The colour comes from light and air, with no blue dye overhead.",
+                    "text": "Only red light from the Sun.",
+                    "feedback": "The direct beam looks red at sunset, but it crossed a longer path of air that scattered away more blue light.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -3882,7 +3918,8 @@
                 "conceptId": "sky-colours",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "sky-colours-m1"
+                  "sky-colours-m1",
+                  "sky-colours-m2"
                 ],
                 "sourceRefs": [
                   "nasa-sky",
@@ -3900,13 +3937,14 @@
                       "nasa-light"
                     ]
                   },
+                  { "id": "c", "text": "Blue light vanishes before reaching the air.", "feedback": "The direct beam looks red. Blue light was in it, then spread along the air path.", "correct": false, "misconceptionIds": ["sky-colours-m2"], "sourceRefs": ["nasa-sky", "nasa-light"] },
                   {
                     "id": "b",
-                    "text": "Blue light never leaves the Sun.",
-                    "feedback": "Sunlight has many colours before it goes through the air.",
+                    "text": "The Sun sends less blue light at sunset.",
+                    "feedback": "The beam looks red, so the Sun may seem to change. Air scatters more blue along the path.",
                     "correct": false,
                     "misconceptionIds": [
-                      "sky-colours-m1"
+                      "sky-colours-m2"
                     ],
                     "sourceRefs": [
                       "nasa-sky",
@@ -3941,8 +3979,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Air makes red paint at dusk.",
-                    "feedback": "The colour shift is in the light path, not new paint in the sky.",
+                    "text": "The Sun switches to emitting mostly red light at dusk.",
+                    "feedback": "The Sun appears red, but the longer path through air changes which colours remain in the direct beam.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -4107,7 +4145,7 @@
                   {
                     "id": "b",
                     "text": "It drops because the lid is heavy.",
-                    "feedback": "More push on the water means more heat is needed to boil.",
+                    "feedback": "A heavy lid can look like a cooling weight. Its pressure lets water boil hotter.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4146,7 +4184,7 @@
                   {
                     "id": "b",
                     "text": "The open pot by turning up its flame.",
-                    "feedback": "Extra flame makes open water boil harder, not well above its boiling point.",
+                    "feedback": "A bigger flame makes more bubbles, so hotter water seems likely. Open pressure stays about the same.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4185,7 +4223,7 @@
                   {
                     "id": "b",
                     "text": "About 100 degrees Celsius.",
-                    "feedback": "That is the usual sea-level open boil, not the raised-pressure example.",
+                    "feedback": "The open-pot value is easy to recall. Higher pressure can lift the boil near 121 degrees.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4230,7 +4268,7 @@
                   {
                     "id": "b",
                     "text": "Always lowers it.",
-                    "feedback": "Lower pressure, as at altitude, is what lowers the boiling point.",
+                    "feedback": "More push might sound like less room to heat. Higher pressure raises the boiling point.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4266,10 +4304,11 @@
                       "gsu-pressure"
                     ]
                   },
+                  { "id": "c", "text": "The cooker cooks faster only because steam adds flavour.", "feedback": "Steam is easy to notice. Pressure lets the boiling water get hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
                   {
                     "id": "b",
                     "text": "Both boils must be exactly as hot.",
-                    "feedback": "How hot a boil gets can change with the push above it.",
+                    "feedback": "Both pots boil, so equal heat seems fair. The cooker has more pressure and a hotter boil.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4308,7 +4347,7 @@
                   {
                     "id": "b",
                     "text": "Down.",
-                    "feedback": "A lower boiling point fits lower air pressure, not this sealed cooker.",
+                    "feedback": "A drop fits a high mountain with less air pressure. The sealed cooker raises pressure instead.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4326,7 +4365,8 @@
                 "conceptId": "pressure-cooker",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "pressure-cooker-m1"
+                  "pressure-cooker-m1",
+                  "pressure-cooker-m2"
                 ],
                 "sourceRefs": [
                   "usda-pressure",
@@ -4344,10 +4384,11 @@
                       "gsu-pressure"
                     ]
                   },
+                  { "id": "c", "text": "More flame alone raises the open water's boiling point.", "feedback": "The water boils harder, so it may seem hotter. The open pot keeps the same air pressure.", "correct": false, "misconceptionIds": ["pressure-cooker-m2"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
                   {
                     "id": "b",
                     "text": "Any flame raises the open pot’s pressure.",
-                    "feedback": "The pot remains open to the same surrounding air pressure.",
+                    "feedback": "A large flame makes a hard boil. It does not seal the pot or raise its pressure.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4385,8 +4426,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The whistle itself cooks the food.",
-                    "feedback": "The sound can signal venting, but the heat comes from hotter contents.",
+                    "text": "The whistle drives heat into the food.",
+                    "feedback": "The whistle marks a pressure change, which can seem to be the cause. Higher pressure lets the water boil hotter; the sound does not heat the dal.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
