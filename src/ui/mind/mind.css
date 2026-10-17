@@ -101,6 +101,37 @@
 .mind-today-chip strong, .mind-today-chip span { min-width: 0; overflow-wrap: anywhere; }
 .mind-today-chip span { color: var(--muted); font-size: .78rem; }
 .mind-practice > button { min-height: 48px; }
+
+/* Think and Notice keep their own hue on shared controls. */
+.mind-hub { --area-color: var(--area-think); }
+.mind-today h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.mind-today-chips { gap: 8px; }
+.mind-today-chip { min-height: 76px; padding: 12px 8px; border: 0; border-radius: var(--radius-chip); background: var(--surface-2); text-align: left; }
+.mind-today-chip:first-child { --area-color: var(--area-notice); }
+.mind-today-chip:nth-child(2) { --area-color: var(--area-think); }
+.mind-today-chip:nth-child(3) { --area-color: var(--area-learn); }
+.mind-today-chip strong { color: var(--area-color); font-size: 14px; }
+.mind-today-chip span { color: var(--ink-3); font-size: 12px; }
+.mind-practice-options > div { width: 100%; min-width: 0; padding: 14px; border-radius: var(--radius-row); background: var(--surface-2); }
+.mind-practice-options > div h3 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.mind-practice-options button { min-height: 48px; }
+.mind-board { --area-color: var(--area-think); }
+.mind-board > .eyebrow { color: var(--area-think); }
+.mind-board h1 { margin-bottom: 8px; }
+.mind-board .rule { color: var(--ink-2); }
+.mind-timer { display: inline-flex; align-items: center; min-height: 36px; margin: 8px 0; padding: 6px 14px; color: var(--area-think); font-weight: 600; }
+.mind-actions button { background: var(--surface-2); color: var(--ink); }
+.mind-result { border: 0; }
+.mind-case { --area-color: var(--area-notice); }
+.mind-case .case-grid { gap: 4px; }
+.mind-case .case-grid button { border: 0; border-radius: var(--radius-chip); }
+.mind-case .case-grid button.case-blank { background: var(--surface-2); }
+.mind-case .case-grid button.case-no { background: var(--surface-3); color: var(--ink-2); }
+.mind-case .case-grid button.case-yes { border: 0; background: color-mix(in srgb, var(--area-notice) 23%, var(--surface-2)); }
+.mind-case .case-grid button.case-error { outline-color: var(--area-move); }
+.mind-lesson-options button { min-height: 56px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); }
+.mind-lesson-options button.selected { background: color-mix(in srgb, var(--area-think) 20%, var(--surface-2)); outline: 0; }
+.mind-feedback, .mind-scene, .mind-source { border-radius: var(--radius-row); background: var(--surface-2); }
 .mind-best-times { margin-top: 16px; }
 .mind-best-times ul { list-style: none; padding: 0; margin: 6px 0 0; }
 .mind-best-times li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }

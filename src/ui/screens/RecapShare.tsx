@@ -36,8 +36,9 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
     finally { setBusy(false); }
   };
   return <>
-    <button type="button" className={link ? 'text-button recap-link' : 'recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? 'Your week is ready to share' : 'Share my week'}</button>
-    {open && <div className="recap-sheet-backdrop" onClick={() => setOpen(false)}><section className="recap-sheet" role="dialog" aria-modal="true" aria-label="Weekly recap preview" onClick={event => event.stopPropagation()}>
+    <button type="button" className={link ? 'text-button recap-link' : 'secondary recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? 'Your week is ready to share' : 'Share my week'}</button>
+    {open && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Weekly recap preview" onClick={event => event.stopPropagation()}>
+      <div className="ui-sheet-handle" aria-hidden="true" />
       <h2>What my week became</h2>
       {preview ? <img src={preview} width="1080" height="1350" alt={`Weekly recap, ${card.dates}: ${card.lines.join(', ')}. ${card.highlight}.`} /> : <p>Making your card…</p>}
       <div className="recap-sheet-actions"><button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button><button type="button" className="secondary" onClick={() => setOpen(false)}>Not now</button></div>

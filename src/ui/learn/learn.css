@@ -64,3 +64,39 @@
 @media (max-width: 380px) { .learn-idea-row { grid-template-columns: minmax(0, 1fr) 92px; } }
 @media (prefers-reduced-motion: reduce) { .learn-correct { animation: none; } .learn-progress span { transition: none; } }
 :root[data-motion='reduce'] .learn-correct { animation: none; }
+
+/* Learn surfaces share the same chip, row, and progress language as the deck. */
+.learn-screen { --area-color: var(--area-learn); }
+.learn-today { gap: 10px; }
+.learn-today h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-today-status { min-height: 56px; padding: 8px 12px; border-radius: var(--radius-chip); background: var(--surface-2); }
+.learn-today-status + .learn-today-status { padding-top: 8px; border: 0; }
+.learn-today-status strong { font-size: 14px; }
+.learn-today-status button { background: color-mix(in srgb, var(--area-learn) 20%, var(--surface-1)); color: var(--area-learn); }
+.learn-today-status span { color: var(--ink-3); }
+.learn-map-heading { margin-top: 24px; }
+.learn-map-heading h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-map-topic { padding: 20px; margin: 12px 0; }
+.learn-topic-title { font-size: 22px; line-height: 26px; }
+.learn-topic-title > span { color: var(--area-learn); }
+.learn-topic-hook { color: var(--ink-2); }
+.learn-topic-progress { height: 6px; border-radius: 999px; background: var(--surface-3); }
+.learn-topic-progress > span, .learn-progress span { background: var(--area-learn); }
+.learn-topic-toggle { min-height: 48px; }
+.learn-ideas { display: grid; gap: 8px; margin-top: 16px; border: 0; }
+.learn-idea-group h3 { margin: 16px 0 8px; font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.learn-idea-row { min-height: 64px; padding: 12px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
+.learn-idea-row strong { font-size: 16px; }
+.learn-idea-row p { color: var(--ink-3); font-size: 13px; }
+.learn-idea-row button { min-height: 44px; font-size: 13px; }
+.learn-options { gap: 10px; }
+.learn-options button.ui-list-row { display: flex; width: 100%; min-height: 60px; padding: 14px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); font-size: 16px; line-height: 24px; text-align: left; }
+.learn-options button:disabled { opacity: 1; }
+.learn-options button.selected { background: var(--surface-3); }
+.learn-options button.right-option { background: color-mix(in srgb, var(--area-learn) 22%, var(--surface-2)); color: var(--ink); }
+.learn-options button.wrong-option { background: color-mix(in srgb, var(--area-move) 19%, var(--surface-2)); color: var(--ink); }
+.learn-option-check { flex: 0 0 28px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--area-learn); color: var(--surface-1); font-weight: 700; }
+.learn-feedback { padding: 20px; border: 0; border-radius: var(--radius-card); background: var(--surface-1); box-shadow: var(--shadow-1); }
+.learn-feedback.right { border: 0; }
+.learn-topic-tile { border: 0; border-radius: var(--radius-row); }
+.learn-topic-tile.chosen { border: 0; }

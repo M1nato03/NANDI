@@ -318,3 +318,68 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 @keyframes card-fill { from { box-shadow: var(--shadow-1); } to { box-shadow: var(--shadow-2); } }
 @media (prefers-reduced-motion: reduce) { .deck-card, .deck-dashes button.complete::after, .just-completed .deck-check, .just-completed { animation: none; } }
 :root[data-motion='reduce'] .deck-card, :root[data-motion='reduce'] .deck-dashes button.complete::after, :root[data-motion='reduce'] .just-completed .deck-check, :root[data-motion='reduce'] .just-completed { animation: none; }
+
+/* Stage 2: shared surface, row, and section rhythm. */
+.deck-card .deck-actions > button:not(.secondary):not(.text-button) { min-height: 52px; height: 52px; padding-block: 12px; }
+.deck-card .deck-actions > button.secondary { min-height: 52px; height: 52px; font-size: 14px; line-height: 18px; padding: 7px 10px; text-wrap: balance; }
+.deck-card .deck-actions { gap: 8px; }
+.plan-screen .ui-section-header, .planner-screen section > h2, .learn-map-heading, .mind-today > h2 { margin: 24px 0 12px; }
+.plan-screen .ui-section-header h2, .planner-screen section > h2, .learn-map-heading h2, .mind-today > h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.plan-rituals { margin-top: 24px; padding: 0; border: 0; background: transparent; }
+.plan-rituals .ui-section-header { margin: 0 0 12px; }
+.ritual-buttons { gap: 8px; }
+.ritual-buttons button { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; min-height: 112px; padding: 12px; border: 0; border-radius: var(--radius-row); background: var(--surface-1); box-shadow: var(--shadow-1); color: var(--ink); text-align: left; font-size: 13px; line-height: 18px; }
+.ritual-buttons button .deck-glyph { flex-basis: 36px; }
+.ritual-buttons button:nth-child(1) { --area-color: var(--area-do); }
+.ritual-buttons button:nth-child(2) { --area-color: var(--area-night); }
+.ritual-buttons button:nth-child(3) { --area-color: var(--area-extra); }
+.ritual-buttons small { color: var(--ink-3); font-size: 12px; line-height: 16px; }
+.you-week { padding: 20px; }
+.you-week .eyebrow { display: block; margin-bottom: 8px; }
+.you-week h2 { margin: 0 0 16px; font-size: 26px; line-height: 30px; }
+.you-week-numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.you-week-number { min-width: 0; display: grid; gap: 2px; padding: 12px 14px; border-radius: var(--radius-row); background: var(--surface-2); }
+.you-week-number strong { color: var(--ink); font: 800 34px/36px 'Bricolage Grotesque', sans-serif; }
+.you-week-number span { color: var(--ink-2); font: 500 12px/16px 'DM Sans', sans-serif; }
+.you-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.you-links .you-link, .you-links .settings-link { min-width: 0; min-height: 146px; margin: 0; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 8px; background: var(--surface-1); color: var(--ink); box-shadow: var(--shadow-1); }
+.you-link strong { font: 800 clamp(18px, 5vw, 22px)/24px 'Bricolage Grotesque', sans-serif; }
+.you-link > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-3); font: 500 12px/16px 'DM Sans', sans-serif; }
+.you-link .deck-glyph { flex: 0 0 36px; }
+.you-link .you-tile-eyebrow { margin: 0; color: var(--ink-3); font: 600 12px/16px 'DM Sans', sans-serif; }
+.recap-sheet-backdrop { align-items: end; place-items: end center; padding: 0; background: rgb(0 0 0 / 65%); }
+.recap-sheet { width: min(100%, 760px); max-height: 90dvh; padding: 8px 20px calc(24px + env(safe-area-inset-bottom)); border: 0; border-radius: 28px 28px 0 0; background: var(--surface-1); box-shadow: var(--shadow-2); }
+.recap-sheet img { max-height: 58dvh; }
+.recap-sheet-actions { margin-top: 20px; }
+.you-settings > .secondary { width: 100%; min-height: 56px; margin: 6px 0; text-align: left; }
+.you-settings .card { padding: 20px; }
+.you-settings .day-night-heading { margin-top: 0; }
+.you-settings .card > label, .you-settings .night-plan-setting > label, .screen:has(> .eyebrow + h1) > .card > label { min-height: 56px; margin: 0; padding: 12px 0; border-bottom: 1px solid var(--surface-3); }
+.you-settings .card > label:last-of-type { border-bottom: 0; }
+.you-settings input[type='checkbox'], .screen input[role='switch'] { width: 24px; height: 24px; flex: 0 0 24px; accent-color: var(--accent); }
+.you-settings .setting-help { margin: 4px 0 12px; color: var(--ink-3); }
+.you-settings .about-app { border: 0; background: var(--surface-1); box-shadow: var(--shadow-1); border-radius: var(--radius-card); }
+.about-app summary { min-height: 56px; }
+.task-sheet { border: 0; border-radius: 28px 28px 0 0; background: var(--surface-1); box-shadow: var(--shadow-2); }
+.task-sheet::before { content: ''; display: block; width: 36px; height: 4px; margin: -10px auto 20px; border-radius: 999px; background: var(--ink-3); }
+.planner-list { display: grid; gap: 8px; }
+.planner-item { min-height: 56px; padding: 12px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
+.planner-priority { border: 0; }
+.settings-group > h2, .backup-screen .card > h2 { margin-bottom: 12px; font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.settings-group label:has(> input[type='checkbox']), .backup-screen label:has(> input[type='checkbox']) { flex-direction: row-reverse; justify-content: space-between; min-height: 56px; padding: 12px 0; }
+.settings-group input[type='checkbox'], .backup-screen input[type='checkbox'] { position: relative; appearance: none; width: 52px; height: 44px; min-width: 52px; min-height: 44px; flex: 0 0 52px; margin: 0; padding: 6px 0; border: 0; border-radius: 999px; background: var(--surface-3); background-clip: content-box; cursor: pointer; }
+.settings-group input[type='checkbox']::after, .backup-screen input[type='checkbox']::after { content: ''; position: absolute; top: 9px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); box-shadow: var(--shadow-1); transition: transform var(--motion-press); }
+.settings-group input[type='checkbox']:checked, .backup-screen input[type='checkbox']:checked { background: var(--accent); }
+.settings-group input[type='checkbox']:checked::after, .backup-screen input[type='checkbox']:checked::after { transform: translateX(20px); background: var(--on-accent); }
+.settings-group input[type='checkbox']:focus-visible, .backup-screen input[type='checkbox']:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.backup-screen .card { margin-block: 12px; }
+.backup-screen .card > p { margin: 8px 0 14px; }
+.backup-screen .count-list { display: grid; gap: 8px; }
+.backup-screen .count-list li { min-height: 48px; align-items: center; padding: 8px 12px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
+@media (prefers-reduced-motion: reduce) { .settings-group input[type='checkbox']::after, .backup-screen input[type='checkbox']::after { transition: none; } }
+:root[data-motion='reduce'] .settings-group input[type='checkbox']::after, :root[data-motion='reduce'] .backup-screen input[type='checkbox']::after { transition: none; }
+@media (max-width: 400px) { .you-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ritual-buttons button { padding: 10px; } }
+
+/* Planner rows: the action panel gets its own full-width line instead of being squeezed beside the title. */
+.planner-item.ui-list-row { flex-wrap: wrap; align-items: flex-start; }
+.planner-item.ui-list-row > details, .planner-item.ui-list-row > .planner-actions { flex: 1 1 100%; min-width: 0; }

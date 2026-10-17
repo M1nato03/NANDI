@@ -16,8 +16,9 @@ test('deck Back, downward swipe, dashes and end card work at phone size', async 
   await page.goto('/#now');
   for (let i = 0; i < 3; i++) await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByText('4 of 7')).toBeVisible();
-  await page.getByRole('button', { name: 'Back to previous card' }).click();
-  await page.getByRole('button', { name: 'Back to previous card' }).click();
+  // The text Back link was removed in the redesign; the dots and a downward swipe go back.
+  await page.getByRole('button', { name: /^Go to card 3:/ }).click();
+  await swipeDown(page);
   await expect(page.getByText('2 of 7')).toBeVisible();
   await swipeDown(page);
   await expect(page.getByText('1 of 7')).toBeVisible();
