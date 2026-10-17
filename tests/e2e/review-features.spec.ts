@@ -5,7 +5,7 @@ test('daily case progress and completion survive reload', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.goto('/?e2e#you/mind');
-  await page.getByRole('button', { name: 'Open daily case' }).click();
+  await page.getByRole('button', { name: 'Case: not done' }).click();
   await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
   const cell = page.getByRole('region', { name: 'Who was where?' }).getByRole('button').first();
   const original = await cell.getAttribute('aria-label');
@@ -13,15 +13,15 @@ test('daily case progress and completion survive reload', async ({ page }) => {
   await expect(cell).toHaveAttribute('aria-label', original!.replace('blank', 'no'));
   await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
   await page.reload();
-  await page.getByRole('button', { name: 'Continue daily case' }).click();
   await expect(page.getByRole('button', { name: original!.replace('blank', 'no') })).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
   await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
   await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
   await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Case of the day' }).locator('..')).toContainText('Complete');
-  await expect(page.getByRole('heading', { name: "Today's drop complete." })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Back to Mind' }).click();
+  await expect(page.getByRole('button', { name: 'Case: done' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

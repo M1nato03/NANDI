@@ -46,8 +46,9 @@ test('three tabs remain reachable after reload in both themes', async ({ page },
 
 test('generator check displays five boards and the case from both threads', async ({ page }) => {
   test.setTimeout(90000);
-  await page.goto('/#you/mind');
-  await page.getByRole('button', { name: 'Generator check' }).click();
+  await page.goto('/#you/settings');
+  await page.getByText('About this app').click();
+  await page.getByRole('button', { name: 'Puzzle generator check' }).click();
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Match', { timeout: 60000 });
   const speed = page.getByRole('heading', { name: 'Number Path (hard) speed' }).locator('..');
   await expect(speed).toContainText('20 boards', { timeout: 60000 });
