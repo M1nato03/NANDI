@@ -117,9 +117,8 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const next = () => goToCard(Math.min(at + 1, NIGHT_CARDS.length - 1));
 
   return <section className="screen deck-screen deck-night" aria-label="Now deck">
-    <div className="deck-heading"><div><p className="eyebrow">A quieter close</p><h1>Now</h1></div><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span></div>
+    <div className="deck-heading"><h1>Now <span className="deck-night-label">Night</span></h1><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span></div>
     {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => goToCard(i)} />)}</div>}
-    {at > 0 && at < NIGHT_CARDS.length - 1 && <button type="button" className="deck-back" onClick={() => goToCard(at - 1)}>‹ Back</button>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
       {card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
       {card.id === 'learn' && <Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense>}

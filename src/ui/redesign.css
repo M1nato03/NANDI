@@ -278,3 +278,6 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 
 /* Match the 16 px phone gutter so the dots row never adds sideways scroll. */
 @media (max-width: 400px) { .deck-dashes { width: calc(100% + 32px); margin-left: -16px; } }
+
+/* Night deck uses the same compact header as the day deck, with a quiet label. */
+.deck-night-label { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); vertical-align: middle; margin-left: 8px; }
