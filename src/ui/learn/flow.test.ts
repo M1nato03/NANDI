@@ -6,7 +6,7 @@ describe('live learning drop glue', () => {
     expect(topics).toHaveLength(3);
     expect(chosenTopics(['money-markets', 'unknown'])).toEqual(['money-markets']);
     const concepts = catalogFor(['money-markets']);
-    expect(concepts).toHaveLength(6);
+    expect(concepts).toHaveLength(10);
     expect(findItem(concepts, concepts[0]!.items[0]!.id)?.concept.id).toBe(concepts[0]!.id);
   });
 
