@@ -72,7 +72,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It stays fixed because the wing's shape stays the same.",
+                    "text": "The wing can keep the same lift solely because its shape has not changed.",
                     "feedback": "The shape is still there, so that sounds right. Less moving air can mean less lift.",
                     "correct": false,
                     "misconceptionIds": [
@@ -223,7 +223,7 @@
                   { "id": "c", "text": "The wing's shape keeps lift fixed at any speed.", "feedback": "The shape stays the same, so this sounds right. Lift also needs moving air.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] },
                   {
                     "id": "b",
-                    "text": "Slower air raises lift because it stays near the wing longer.",
+                    "text": "Slower air can raise lift because it stays near the wing longer.",
                     "feedback": "Longer contact can sound like more lift. The slower flow may give less upward push.",
                     "correct": false,
                     "misconceptionIds": [
@@ -425,7 +425,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -644,7 +644,7 @@
                   { "id": "c", "text": "Opposite spins are needed only while the drone moves forward.", "feedback": "A hover looks still. The rotors can still twist the craft unless spin effects balance.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad", "mit"] },
                   {
                     "id": "b",
-                    "text": "Equal thrust alone cancels every turning effect.",
+                    "text": "Equal thrust can cancel every turning effect on the craft.",
                     "feedback": "Equal upward push looks fully balanced. Rotor spin can still twist the craft around.",
                     "correct": false,
                     "misconceptionIds": [
@@ -890,7 +890,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -948,7 +948,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It must double exactly.",
+                    "text": "The extra energy can double flight time exactly regardless of added weight.",
                     "feedback": "Twice the stored energy suggests twice the time. Extra battery mass may raise power use.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1100,7 +1100,7 @@
                   { "id": "c", "text": "Battery weight cannot change how much power a hover needs.", "feedback": "The larger pack brings more energy. Its extra mass also asks the motors for more work.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
-                    "text": "Energy and flight time must rise in the same ratio.",
+                    "text": "Extra stored energy can guarantee the same percent rise in flight time.",
                     "feedback": "More energy often means more time. Extra mass can also make the motors work harder.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1175,7 +1175,7 @@
                   { "id": "c", "text": "The extra weight affects takeoff but not a steady hover.", "feedback": "Takeoff may feel like the hard part. A heavier craft also needs more lift while it hovers.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
-                    "text": "Battery energy alone fixes flight time.",
+                    "text": "Battery energy alone can fix flight time despite heavier hover.",
                     "feedback": "The battery rating looks like the full answer. Power use also sets how fast it runs down.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1211,7 +1211,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The battery's rated energy alone fixes the flight minutes.",
+                    "text": "The battery rating can fix flight minutes regardless of power draw.",
                     "feedback": "Stored energy is an important input, but the craft's power use can change with weight and flight conditions.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1301,7 +1301,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1453,12 +1453,12 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "Under a roof, GPS reports 18 metres of height but its signal is poor. A calibrated barometer reports 12 metres. If the weak GPS reading is ignored, what height estimate remains?",
+                "stem": "Under a roof, GPS reports 18 metres of height with a weak signal. A calibrated barometer reports 12 metres. About what height should the controller use from these clues?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "12 metres.",
-                    "feedback": "The calibrated pressure clue remains when the poor satellite reading is set aside in this toy case.",
+                    "text": "The 12-metre pressure reading.",
+                    "feedback": "The roof weakens GPS here. Air pressure gives a second clue to height.",
                     "correct": true,
                     "sourceRefs": [
                       "px4",
@@ -1469,8 +1469,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "18 metres.",
-                    "feedback": "The GPS number is shown first, so it seems easy to use. Its weak signal rules it out here.",
+                    "text": "The 18-metre weak GPS reading.",
+                    "feedback": "GPS can estimate height, but the weak signal under the roof is a reason to check another clue.",
                     "correct": false,
                     "misconceptionIds": [
                       "flight-sensors-m1"
@@ -1704,7 +1704,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "All sensors stop working at the same time.",
+                    "text": "A roof can block both satellites and the onboard tilt sensor.",
                     "feedback": "The roof blocks sky signals, so all sensing may seem gone. The IMU still feels tilt.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1827,7 +1827,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2247,7 +2247,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2375,12 +2375,12 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A ceiling fan makes a breeze in an empty room. If only the breeze changes, about how many degrees Celsius does it lower the room air temperature?",
+                "stem": "A breeze from a fan helps a student feel cool, but no heat leaves the room. About how many degrees Celsius does the breeze alone lower room air temperature?",
                 "options": [
                   {
                     "id": "a",
                     "text": "0 degrees Celsius.",
-                    "feedback": "Air motion can cool skin through evaporation, but the breeze alone does not remove heat from room air.",
+                    "feedback": "The fan moves room air over skin. That can cool the student without lowering the air temperature.",
                     "correct": true,
                     "sourceRefs": [
                       "fan",
@@ -2390,7 +2390,7 @@
                   {
                     "id": "b",
                     "text": "3 degrees Celsius.",
-                    "feedback": "A fan feels cool on skin, so three degrees sounds fair. Empty-room air stays warm.",
+                    "feedback": "A cool feeling on skin is not a three-degree drop in the room air.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2540,23 +2540,23 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A fan runs for an hour in an empty classroom. A student expects the room to be cooler when people return. What did the student mix up?",
+                "stem": "A student feels cooler under a fan, but a room thermometer has not changed. What did she mix up when she called the whole room cooler?",
                 "options": [
                   {
                     "id": "a",
                     "text": "Skin cooling and room air cooling.",
-                    "feedback": "The breeze can help a person lose heat, but an empty room has no skin to cool.",
+                    "feedback": "Moving air helps sweat dry and cools skin. The room thermometer can stay the same.",
                     "correct": true,
                     "sourceRefs": [
                       "fan",
                       "cooling"
                     ]
                   },
-                  { "id": "c", "text": "A fan removes heat from the room while no one is there.", "feedback": "The breeze feels cool on skin. In an empty room, it does not carry room heat out.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] },
+                  { "id": "c", "text": "A breeze turns warm room air into cold air.", "feedback": "The moving air may feel cooler, but its temperature need not fall.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] },
                   {
                     "id": "b",
-                    "text": "Air movement slowly turns warm air into cold air.",
-                    "feedback": "The breeze feels cool, so the room may seem colder. The fan just moves the air.",
+                    "text": "Skin and air must cool by the same amount.",
+                    "feedback": "A fan can help skin lose heat without lowering the temperature of all the room air.",
                     "correct": false,
                     "misconceptionIds": [
                       "ceiling-fans-m1"
@@ -2594,7 +2594,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The fan lowers room air temperature as it spins.",
+                    "text": "A fan can cool room air as it spins without moving heat out.",
                     "feedback": "The breeze feels cool on skin. The fan moves air without chilling the room.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2695,7 +2695,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2809,7 +2809,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Reading Ravi’s UPI PIN.",
+                    "text": "Sharing the ID can reveal Ravi’s private UPI PIN.",
                     "feedback": "The ID helps a sender find Ravi. It does not reveal his private PIN.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2836,12 +2836,12 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "Your linked bank account starts at ₹2,000. A ₹750 UPI payment goes out, then ₹250 arrives through UPI in the same account. About how much remains?",
+                "stem": "A student has ₹1,500 in a bank account linked to a UPI app. She deletes the app without paying anyone. About how much stays in that bank account?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About ₹1,500.",
-                    "feedback": "The bank balance changes with both transfers: ₹2,000 minus ₹750 plus ₹250 leaves ₹1,500.",
+                    "text": "About ₹1,500 in the bank.",
+                    "feedback": "The app is an interface to the linked account. Deleting it does not move the money held by the bank.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-upi-faq",
@@ -2851,8 +2851,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "About ₹2,000; the app holds both transfers.",
-                    "feedback": "UPI moves money between bank accounts. The app does not hold these funds, so the balance changes.",
+                    "text": "About ₹0 after deleting the app.",
+                    "feedback": "The app can show a balance, but the linked bank holds these funds. Removing the app is not a transfer.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2865,8 +2865,8 @@
                   },
                   {
                     "id": "c",
-                    "text": "About ₹1,000; both transfers leave the account.",
-                    "feedback": "The ₹750 payment leaves, but the ₹250 receipt enters the bank account. Add it after subtracting the payment.",
+                    "text": "About ₹3,000 as bank and app balances.",
+                    "feedback": "The app does not hold a second copy of bank money. The bank still has ₹1,500.",
                     "correct": false,
                     "misconceptionIds": ["upi-path-m1"],
                     "sourceRefs": ["npci-upi-faq", "npci-booklet"]
@@ -3189,7 +3189,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3426,7 +3426,7 @@
                   { "id": "c", "text": "The lens matters only when the pixel counts differ.", "feedback": "Pixel count is easy to compare. Lens quality can alter the light even at the same count.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
-                    "text": "Pixel count fixes every image detail.",
+                    "text": "Pixel count can make lens differences irrelevant.",
                     "feedback": "Pixel count is easy to compare. Lens light and later processing can still change the photo.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3452,12 +3452,12 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "The lens aims light. The sensor reads it. The phone then makes a ___.",
+                "stem": "A lens has aimed light at a phone sensor. What step is still needed before a finished photo exists?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Photo.",
-                    "feedback": "The final image is built from the readings after the light has been detected.",
+                    "text": "Turn the sensor readings into an image.",
+                    "feedback": "The sensor records light signals; the phone processes those readings into the final picture.",
                     "correct": true,
                     "sourceRefs": [
                       "nasa-camera",
@@ -3466,8 +3466,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Photo made by the lens alone.",
-                    "feedback": "The lens directs the scene's light, so it can seem like the maker. The sensor must read it too.",
+                    "text": "Let the lens store a finished image.",
+                    "feedback": "The lens guides light but does not store the picture. The sensor readings still need processing.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m2"
@@ -3654,7 +3654,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3834,12 +3834,12 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "Which light colour scatters more easily in clear air?",
+                "stem": "Blue light scatters more than red in clear air. Which feature of blue light helps explain the difference?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Blue.",
-                    "feedback": "Its shorter wavelength spreads more readily than longer red light.",
+                    "text": "Its shorter wavelength.",
+                    "feedback": "In clear air, shorter wavelengths scatter more strongly than longer red light.",
                     "correct": true,
                     "sourceRefs": [
                       "nasa-sky",
@@ -3848,8 +3848,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Red.",
-                    "feedback": "The sunset hue stands out, so it is easy to pick. Blue scatters more in clear air.",
+                    "text": "Its longer wavelength.",
+                    "feedback": "Blue light has a shorter wavelength than red. That is why it scatters more in clear air.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
@@ -4116,7 +4116,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -4343,7 +4343,7 @@
                   { "id": "c", "text": "The cooker cooks faster only because steam adds flavour.", "feedback": "Steam is easy to notice. Pressure lets the boiling water get hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
                   {
                     "id": "b",
-                    "text": "Both boils must be exactly as hot.",
+                    "text": "Both boils can be as hot if the open flame is strong enough.",
                     "feedback": "Both pots boil, so equal heat seems fair. The cooker has more pressure and a hotter boil.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4368,12 +4368,12 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "A pressure cooker traps steam and raises pressure; the boiling point goes ___.",
+                "stem": "An open pot moves from a high hill to sea level, where air pressure is higher. Its boiling point goes ___.",
                 "options": [
                   {
                     "id": "a",
                     "text": "Up.",
-                    "feedback": "The extra push lets the hot water and steam heat up more.",
+                    "feedback": "More pressure at sea level lets water reach a hotter boil than on a high hill.",
                     "correct": true,
                     "sourceRefs": [
                       "usda-pressure",
@@ -4383,7 +4383,7 @@
                   {
                     "id": "b",
                     "text": "Down.",
-                    "feedback": "A drop fits a high mountain with less air pressure. The sealed cooker raises pressure instead.",
+                    "feedback": "Lower pressure on a high hill lowers the boiling point. More pressure at sea level raises it.",
                     "correct": false,
                     "misconceptionIds": [
                       "pressure-cooker-m1"
@@ -4563,7 +4563,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           }
         ]
