@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { effectiveShutdown, nightWindow } from '../../core/tasks/planner';
 import { RULES } from '../../core/rules.config';
 import { shuffleOptions, duePlan } from '../../core/learn/learn';
+import { masteryMapState } from '../../core/learn/engine';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
 import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
@@ -27,6 +28,7 @@ import { economyVisible, nightMindNote } from '../mind/economyVisibility';
 import { trackWindDownTime } from '../mind/windDown';
 import { CaseScreen } from '../mind/CaseScreen';
 import { caseRunId } from '../../data/repos/mysteries';
+import { chosenTopics, dailyDropId, selectedTopicKey, topics } from '../learn/flow';
 import '../mind/mind.css';
 
 type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; attempt?: number };
@@ -68,6 +70,12 @@ export function Mind({ entry }: { entry?: string }) {
   const lessonProgress = useLiveQuery(() => db.lessonProg.toArray(), []) ?? [];
   const cards = useLiveQuery(() => db.cards.toArray(), []) ?? [];
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
+  const flags = useLiveQuery(() => db.flags.toArray(), []) ?? [];
+  const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  // Live, so the Today chip flips to Done as soon as the daily board is solved.
+  const dailySolvedLive = puzzleRuns.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved');
+  const concepts = useLiveQuery(() => db.learnConcepts.toArray(), []) ?? [];
+  const dailyDrop = useLiveQuery(() => db.learnDrops.get(dailyDropId(now)), [today]);
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const settings = settingRows ?? [];
@@ -84,16 +92,17 @@ export function Mind({ entry }: { entry?: string }) {
   const windDownUsed = Number(settings.find(row => row.key === `mind.windDownMs:${today}` && !row.deleted)?.value ?? 0);
   const windDownOverride = settings.some(row => row.key === `mind.windDownOverride:${today}` && row.value === true && !row.deleted);
   const windDownCapped = night === 'windDown' && windDownUsed >= RULES.night.windDownCapMin * 60_000 && !windDownOverride;
-  const configuredUnlock = settings.find(row => row.key === 'mind.dropUnlockTime' && !row.deleted)?.value;
-  const unlockTime = typeof configuredUnlock === 'string' && /^\d{2}:\d{2}$/.test(configuredUnlock) ? configuredUnlock : RULES.mind.dropUnlockTime;
-  const unlocked = now >= new Date(`${today}T${unlockTime}:00`).getTime();
-  const reviewDone = settings.some(row => row.key === `mind.reviewsDone:${today}` && row.value === true && !row.deleted);
+  const selectedTopics = chosenTopics(settings.find(row => row.key === selectedTopicKey && !row.deleted)?.value);
+  const strongConcepts = concepts.filter(row => !row.deleted && ['Strong', 'Mastered'].includes(masteryMapState(row))).length;
+  const masterySummary = selectedTopics.length ? `${selectedTopics.length} ${selectedTopics.length === 1 ? 'topic' : 'topics'} in your drops · ${strongConcepts} strong concepts` : `${topics.length} topics ready to explore`;
+  const learnDone = !!dailyDrop && dailyDrop.drop.cursor >= dailyDrop.drop.items.length;
+  const hiddenCards = new Set(flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
+  const dueCount = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today).length;
+  const bestByType = Object.fromEntries(types.map(type => [type, puzzleRuns.filter(row => row.type === type && !row.deleted && row.result === 'solved' && row.solveMs !== undefined).reduce<number | undefined>((best, row) => best === undefined ? row.solveMs : Math.min(best, row.solveMs!), undefined)])) as Record<PuzzleType, number | undefined>;
   const pendingDraft = settings.find(row => row.key === 'mind.lessonDraft' && !row.deleted)?.value as LessonDraft | null | undefined;
   const dayLessons = lessonProgress.filter(row => row.doneDayKey === today && !row.deleted);
   const nextLessons = lessonPacks.map(pack => ({ pack, next: pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) })).filter(row => row.next);
   const lessonSlotDone = dayLessons.length > 0 || nextLessons.length === 0;
-  const dropComplete = caseDone && dailyDone && lessonSlotDone && reviewDone;
-  const dropRemaining = [caseDone ? null : "today's case", dailyDone ? null : "today's board", lessonSlotDone ? null : "today's lesson", reviewDone ? null : 'due reviews'].filter((item): item is string => item !== null);
   const activeLesson = lessonDraft && lessonPacks.flatMap(pack => pack.body.lessons.map((lesson, i) => ({ pack, lesson, index: i }))).find(row => row.lesson.id === lessonDraft.lessonId);
   const lessonCards: Record<string, [string, string]> = {};
   for (const pack of lessonPacks) for (const lesson of pack.body.lessons) lesson.cards.forEach((pair, index) => { lessonCards[`${pack.body.course.id}-${lesson.id}-${index + 1}`] = pair; });
@@ -149,10 +158,6 @@ export function Mind({ entry }: { entry?: string }) {
   const startReviews = () => {
     if (!deck) return;
     go('you/mind/reviews');
-  };
-  const openCase = () => {
-    history.pushState({ ...history.state, nandi: true, transientCase: true }, '', location.href);
-    setCaseOpen(true);
   };
   const finishReviews = async () => {
     const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
@@ -313,21 +318,24 @@ export function Mind({ entry }: { entry?: string }) {
   </section>;
 
   return <section className="screen mind-hub">
-    <p className="eyebrow">Daily drop · {today}</p><h1>Mind</h1>
+    <p className="eyebrow">Practice</p><h1>Mind &amp; learning</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
-    {!unlocked ? <div className="card"><h2>Today’s drop opens at {unlockTime}</h2></div> : dropComplete ? <div className="card"><h2>Today's drop complete.</h2><p>Next drop: {unlockTime}</p></div> : <>
-      <p role="status">{dropRemaining.length} left: {dropRemaining.join(', ')}</p>
-      <div className="card"><h2>Case of the day</h2><p>Logic-grid mystery · {caseDiff}</p>{caseDone ? <p>Complete</p> : <button type="button" disabled={!caseReady} onClick={openCase}>{caseRun ? 'Continue daily case' : 'Open daily case'}</button>}</div>
-      <div className="card"><h2>Today's board</h2><p>{PZ.TYPES[featured.type].name} · {featured.diff}</p>{dailyDone ? <p>Complete</p> : <button type="button" onClick={() => open({ ...featured, daily: true })}>Open daily board</button>}</div>
-      <div className="card"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>
-      <div className="card"><h2>Due reviews</h2>{reviewDone ? <p>Complete for today.</p> : <button type="button" onClick={startReviews}>Review due cards</button>}</div>
-    </>}
-    <div id="mind-tracks"><Tracks day={today} afterBedtime={night === 'lightsOut'} showUnit={entry === 'unit'} /></div>
-    {plans.filter(plan => duePlan(plan.madeDayKey, today, plan.fired)).slice(0, 1).map(plan => <div className="card" key={plan.id}><h2>Did your plan fire yesterday?</h2><p>If {plan.ifText}, then I will {plan.thenText}.</p><div className="mind-review-actions">{(['yes', 'partly', 'no', 'na'] as const).map(value => <button type="button" className="secondary" key={value} onClick={() => void answerPlan(db, plan, value)}>{value === 'na' ? 'Didn’t come up' : value}</button>)}</div></div>)}
-    <details className="card"><summary>Courses and past lessons</summary><button type="button" className="secondary" onClick={() => document.getElementById('mind-tracks')?.scrollIntoView({ behavior: 'smooth' })}>Open drone track</button>{lessonPacks.map(pack => <div key={pack.id}><h3>{pack.body.course.name}</h3><p>{pack.body.course.blurb}</p>{pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).map(lesson => <button type="button" className="secondary" key={lesson.id} onClick={() => void startLesson(pack.id, lesson, true)}>Review: {lesson.t}</button>)}{!dayLessons.some(row => row.packId === pack.id) && pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) && night === 'day' && <button type="button" className="secondary" onClick={() => { const lesson = pack.body.lessons.find(value => !lessonProgress.some(row => row.id === value.id && row.doneDayKey)); if (lesson) void startLesson(pack.id, lesson); }}>Start {pack.body.course.short} lesson</button>}</div>)}</details>
-    {night !== 'windDown' && <div className="card"><h2>Practice</h2><p>Choose a board and difficulty.</p><button type="button" className="secondary" onClick={() => practice ? back('you/mind') : go('you/mind/practice')} aria-expanded={practice}>Practice</button>
+    <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">
+      <button type="button" className="mind-today-chip" disabled={!caseReady} onClick={() => go('you/mind/case')} aria-label={`Case: ${caseDone ? 'done' : 'not done'}`}><strong>Case</strong><span>{caseDone ? 'Done' : 'Not done'}</span></button>
+      <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })} aria-label={`Board: ${dailyDone || dailySolvedLive ? 'done' : 'not done'}`}><strong>Board</strong><span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
+      <button type="button" className="mind-today-chip" onClick={() => go('you/learn')} aria-label={`Learn drop: ${learnDone ? 'done' : 'not done'}`}><strong>Learn drop</strong><span>{learnDone ? 'Done' : 'Not done'}</span></button>
+    </div></section>
+    <section className="card mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('you/mind') : go('you/mind/practice')} aria-expanded={practice}>Practice</button>
+      {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
-    </div>}
-    <button type="button" className="text-button mind-debug" onClick={() => go('you/mind/generator')}>Generator check ↗</button>
+    </section>
+    <section className="card"><h2>Reviews</h2>{dueCount ? <><p>{dueCount} {dueCount === 1 ? 'card' : 'cards'} due</p><button type="button" className="secondary" onClick={startReviews}>Review due cards</button></> : <p>Nothing due</p>}</section>
+    <section className="card"><h2>Learn</h2><p>{masterySummary}</p><button type="button" className="secondary" onClick={() => go('you/learn')}>Open Learn</button></section>
+    <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses and past lessons</summary>
+      <div className="card mind-old-lesson"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>
+      {lessonPacks.map(pack => <div className="mind-course" key={pack.id}><h3>{pack.body.course.name}</h3><p>{pack.body.course.blurb}</p>{pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).map(lesson => <button type="button" className="secondary" key={lesson.id} onClick={() => void startLesson(pack.id, lesson, true)}>Review: {lesson.t}</button>)}{!dayLessons.some(row => row.packId === pack.id) && pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) && night === 'day' && <button type="button" className="secondary" onClick={() => { const lesson = pack.body.lessons.find(value => !lessonProgress.some(row => row.id === value.id && row.doneDayKey)); if (lesson) void startLesson(pack.id, lesson); }}>Start {pack.body.course.short} lesson</button>}</div>)}
+      <Tracks day={today} afterBedtime={night === 'lightsOut'} showUnit={entry === 'unit'} />
+      {plans.filter(plan => duePlan(plan.madeDayKey, today, plan.fired)).slice(0, 1).map(plan => <div className="card" key={plan.id}><h2>Did your plan fire yesterday?</h2><p>If {plan.ifText}, then I will {plan.thenText}.</p><div className="mind-review-actions">{(['yes', 'partly', 'no', 'na'] as const).map(value => <button type="button" className="secondary" key={value} onClick={() => void answerPlan(db, plan, value)}>{value === 'na' ? 'Didn’t come up' : value}</button>)}</div></div>)}
+    </details>
   </section>;
 }

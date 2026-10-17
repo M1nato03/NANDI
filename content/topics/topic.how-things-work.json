@@ -2674,10 +2674,1824 @@
               ],
               "checker": "codex-factcheck-2026-10-16b"
             }
+          },
+          {
+            "id": "upi-path",
+            "title": "How UPI moves money",
+            "prerequisites": [
+              "flight-sensors"
+            ],
+            "hook": "A UPI ID helps route a payment between bank accounts; the money is not stored in the ID.",
+            "hookSourceRefs": [
+              "npci-upi-faq",
+              "npci-bhim",
+              "npci-booklet"
+            ],
+            "rule": "The payer approves a UPI request, NPCI routes it, and the linked banks carry out the transfer.",
+            "ruleSourceRefs": [
+              "npci-upi-faq",
+              "npci-bhim",
+              "npci-booklet"
+            ],
+            "claims": [
+              {
+                "id": "upi-path-c1",
+                "text": "A UPI ID is a payment address linked to a bank account.",
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ]
+              },
+              {
+                "id": "upi-path-c2",
+                "text": "UPI transfers money between bank accounts through the NPCI system.",
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "upi-path-1",
+                "type": "predict",
+                "conceptId": "upi-path",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "At a college canteen, Asha pays a seller’s UPI ID. Where is the money taken from?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her linked bank account.",
+                    "feedback": "The ID points the request to accounts; it is not a separate pot of cash.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A balance stored inside the ID.",
+                    "feedback": "A payment address helps route the transfer but does not hold notes or coins.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-2",
+                "type": "scenario",
+                "conceptId": "upi-path",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "During a train ride, Ravi shares his UPI ID for a refund. What can the sender use it for?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Finding the linked payment address.",
+                    "feedback": "The sender can direct money to that ID without being given the full account number.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Reading Ravi’s UPI PIN.",
+                    "feedback": "The address identifies where to pay; it does not reveal the secret PIN.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-3",
+                "type": "estimate",
+                "conceptId": "upi-path",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "A student has one UPI app linked to two bank accounts. How many bank accounts can that app let the student switch between in this example?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Two.",
+                    "feedback": "The app can show multiple linked accounts, while each still belongs to a bank.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only one.",
+                    "feedback": "BHIM lets a user switch among linked accounts, so the app is not one bank.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 2,
+                  "min": 1.5,
+                  "max": 2.5,
+                  "unit": "count"
+                }
+              },
+              {
+                "id": "upi-path-4",
+                "type": "choose",
+                "conceptId": "upi-path",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "What is a VPA in UPI?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A virtual payment address.",
+                    "feedback": "It is an ID used to direct a payment without typing the full account details.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A bag of digital cash.",
+                    "feedback": "An address routes money; the bank accounts provide the balances.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-5",
+                "type": "why",
+                "conceptId": "upi-path",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "A student says a UPI app sends money without any bank. What is the flaw?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "UPI links accounts at banks.",
+                    "feedback": "The app is a front door to a bank-to-bank payment through the shared system.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The app prints cash on the phone.",
+                    "feedback": "Screen actions can start a request, but they do not create money.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-6",
+                "type": "fill-the-step",
+                "conceptId": "upi-path",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "Payer approves, NPCI routes, and the linked ___ carry out the transfer.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Banks.",
+                    "feedback": "The debit and credit belong to the linked accounts at the banks.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Camera sensors.",
+                    "feedback": "A camera may read a code, but it does not hold the two accounts.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-7",
+                "type": "true-not-quite",
+                "conceptId": "upi-path",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "A classmate says a UPI ID alone proves a payment is complete. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Approval and a successful transfer.",
+                    "feedback": "The address names a destination; the payer still has to authorise a payment that completes.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "An address is the same as a receipt.",
+                    "feedback": "Knowing where to send money does not show that any money moved.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-path-8",
+                "type": "explain-it-back",
+                "conceptId": "upi-path",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-path-m1"
+                ],
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ],
+                "stem": "Which line best explains a UPI payment?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "An ID guides a bank-to-bank transfer through NPCI.",
+                    "feedback": "The app starts it, the payer approves it, and the system routes it to accounts.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "An ID stores cash until the phone opens.",
+                    "feedback": "The address points to an account rather than serving as a cash box.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-path-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-upi-faq",
+                      "npci-bhim",
+                      "npci-booklet"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "upi-path-m1",
+                "name": "ID is a wallet",
+                "correction": "The address helps find an account, but it does not itself hold the money.",
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ]
+              },
+              {
+                "id": "upi-path-m2",
+                "name": "App alone moves cash",
+                "correction": "The app starts the request while the payment system and banks do the transfer.",
+                "sourceRefs": [
+                  "npci-upi-faq",
+                  "npci-bhim",
+                  "npci-booklet"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "npci-upi-faq",
+                "title": "UPI Frequently Asked Questions",
+                "publisher": "National Payments Corporation of India",
+                "year": 2026,
+                "url": "https://www.npci.org.in/what-we-do/upi/faqs"
+              },
+              {
+                "id": "npci-bhim",
+                "title": "BHIM UPI App",
+                "publisher": "National Payments Corporation of India",
+                "year": 2026,
+                "url": "https://www.npci.org.in/product/bhim"
+              },
+              {
+                "id": "npci-booklet",
+                "title": "UPI Product Booklet",
+                "publisher": "National Payments Corporation of India",
+                "year": 2025,
+                "url": "https://www.npci.org.in/PDF/npci/upi/Product-Booklet.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Trace a payment",
+              "detail": "In a made-up canteen payment, label the payer, payee, ID and banks.",
+              "sourceRefs": [
+                "npci-upi-faq",
+                "npci-bhim",
+                "npci-booklet"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "upi-path-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-path-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "phone-camera",
+            "title": "How a phone camera takes a photo",
+            "prerequisites": [
+              "flight-sensors"
+            ],
+            "hook": "A camera lens aims light at a sensor; tiny light readings become a processed image.",
+            "hookSourceRefs": [
+              "nasa-camera",
+              "nasa-phone"
+            ],
+            "rule": "A phone sensor reads light at tiny sites. The phone then makes a photo from the data.",
+            "ruleSourceRefs": [
+              "nasa-camera",
+              "nasa-phone"
+            ],
+            "claims": [
+              {
+                "id": "phone-camera-c1",
+                "text": "Tiny sites in a phone sensor turn light into a charge.",
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ]
+              },
+              {
+                "id": "phone-camera-c2",
+                "text": "Red, green and blue filters help the phone make a colour photo.",
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "phone-camera-1",
+                "type": "predict",
+                "conceptId": "phone-camera",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "A student takes a phone photo in a dim hostel room. What reaches the sensor through the lens?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Less light from the scene.",
+                    "feedback": "The sensor can only measure the light that enters during the shot.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A finished picture painted by the lens.",
+                    "feedback": "The lens directs light; the sensor and processing create the stored image.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-2",
+                "type": "scenario",
+                "conceptId": "phone-camera",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "At a college fest, a phone camera faces bright stage lamps. What does each sensor site help record?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A reading from incoming light.",
+                    "feedback": "Each tiny site reads light. The phone then makes the image data.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A printed paper dot.",
+                    "feedback": "The sensor creates signals, while a display or print comes later.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-3",
+                "type": "estimate",
+                "conceptId": "phone-camera",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "A toy camera sensor has three colour-filter types: red, green and blue. About how many filter types help it form colour data?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Three.",
+                    "feedback": "The filters separate light by colour so later steps can build the picture.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One.",
+                    "feedback": "A plain light value cannot show red, green and blue on its own.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 3,
+                  "min": 2.5,
+                  "max": 3.5,
+                  "unit": "count"
+                }
+              },
+              {
+                "id": "phone-camera-4",
+                "type": "choose",
+                "conceptId": "phone-camera",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "In a phone camera, what part first turns light into a signal?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The sensor.",
+                    "feedback": "Its tiny light-sensitive sites make signals from the light that arrives.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The screen glass.",
+                    "feedback": "The screen shows the finished result after the light has been measured.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-5",
+                "type": "why",
+                "conceptId": "phone-camera",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "Two phones have the same pixel count but different lenses. Why might their photos still differ?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The light reaching the sensor can differ.",
+                    "feedback": "Pixel count alone says little about the lens or the later image processing.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Pixel count fixes every image detail.",
+                    "feedback": "The optical path and processing also affect what the saved photo looks like.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-6",
+                "type": "fill-the-step",
+                "conceptId": "phone-camera",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "The lens aims light. The sensor reads it. The phone then makes a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Photo.",
+                    "feedback": "The final image is built from the readings after the light has been detected.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "New lens.",
+                    "feedback": "Processing changes data into an image; it does not make the optical lens.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-7",
+                "type": "true-not-quite",
+                "conceptId": "phone-camera",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "A classmate says a sensor pixel stores a tiny full-colour painting. What is inaccurate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It records light information.",
+                    "feedback": "Filters sort the light. The phone uses many readings to make a colour photo.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every site contains a finished scene.",
+                    "feedback": "A single site has a light reading, not the whole picture.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "phone-camera-8",
+                "type": "explain-it-back",
+                "conceptId": "phone-camera",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "phone-camera-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ],
+                "stem": "Which sequence best explains a phone photo?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Light, sensor signals, image processing.",
+                    "feedback": "The lens guides light to sites that produce data for a final photo.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Screen, memory card, then light.",
+                    "feedback": "A screen can show the result only after light has been measured.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "phone-camera-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-camera",
+                      "nasa-phone"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "phone-camera-m1",
+                "name": "Pixel is painted ink",
+                "correction": "A sensor site detects incoming light; the displayed colour is formed from readings.",
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ]
+              },
+              {
+                "id": "phone-camera-m2",
+                "name": "Lens stores the image",
+                "correction": "The lens directs light, while the sensor records the signal.",
+                "sourceRefs": [
+                  "nasa-camera",
+                  "nasa-phone"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "nasa-camera",
+                "title": "Technology Originally Developed for Space Missions Now Integral to Everyday Life",
+                "publisher": "NASA Science",
+                "year": 2026,
+                "url": "https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/technology-originally-developed-for-space-missions-now-integral-to-everyday-life/"
+              },
+              {
+                "id": "nasa-phone",
+                "title": "A Guide to Smartphone Astrophotography",
+                "publisher": "NASA Science",
+                "year": 2023,
+                "url": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/a/Astrophotography_Guide.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Trace the light",
+              "detail": "In a made-up phone diagram, label lens, sensor and saved image.",
+              "sourceRefs": [
+                "nasa-camera",
+                "nasa-phone"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "phone-camera-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "phone-camera-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "sky-colours",
+            "title": "Blue sky and red sunsets",
+            "prerequisites": [
+              "lift"
+            ],
+            "hook": "Air scatters shorter blue light more readily; a long sunset path leaves more red light coming straight through.",
+            "hookSourceRefs": [
+              "nasa-sky",
+              "nasa-light"
+            ],
+            "rule": "In clear air, blue light scatters across the sky. Near sunset, a longer air path removes more blue from direct sunlight.",
+            "ruleSourceRefs": [
+              "nasa-sky",
+              "nasa-light"
+            ],
+            "claims": [
+              {
+                "id": "sky-colours-c1",
+                "text": "Shorter blue wavelengths scatter more easily in Earth’s air than red ones.",
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ]
+              },
+              {
+                "id": "sky-colours-c2",
+                "text": "At sunset sunlight crosses more atmosphere, so direct light can look red or orange.",
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "sky-colours-1",
+                "type": "predict",
+                "conceptId": "sky-colours",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "On a clear Delhi afternoon, sunlight crosses the air above a school. Which colour scatters strongly across the sky?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Blue.",
+                    "feedback": "Shorter blue wavelengths spread in many directions and reach eyes away from the Sun.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Red only.",
+                    "feedback": "Red travels more directly through clear air than the shorter blue part.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-2",
+                "type": "scenario",
+                "conceptId": "sky-colours",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "At sunset on a train, the Sun looks orange near the horizon. What changed in the light’s route?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It passed through more air.",
+                    "feedback": "The longer path scatters more blue out of the direct beam.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The Sun changed its own colour.",
+                    "feedback": "The source is the same; the path through Earth’s air is longer.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-3",
+                "type": "estimate",
+                "conceptId": "sky-colours",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "A diagram shows a short noon path and a long sunset path. How many paths scatter more blue than the other?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One: the long path.",
+                    "feedback": "More air along the sunset route gives short blue light more chances to scatter away.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both by the same amount.",
+                    "feedback": "The two routes do not offer the same amount of air for scattering.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1,
+                  "min": 0.5,
+                  "max": 1.5,
+                  "unit": "count"
+                }
+              },
+              {
+                "id": "sky-colours-4",
+                "type": "choose",
+                "conceptId": "sky-colours",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "Which light colour scatters more easily in clear air?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Blue.",
+                    "feedback": "Its shorter wavelength spreads more readily than longer red light.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Red.",
+                    "feedback": "Long red light tends to go more straight through the air.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-5",
+                "type": "why",
+                "conceptId": "sky-colours",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "Why can a clear sky be blue while the low Sun appears red?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They show light from different paths.",
+                    "feedback": "Scattered blue reaches the side view; the long direct path has less blue left.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Two different Suns make the colours.",
+                    "feedback": "The same sunlight is changed by how it passes through air.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-6",
+                "type": "fill-the-step",
+                "conceptId": "sky-colours",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "At sunset, the direct beam has crossed a longer path of ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Air.",
+                    "feedback": "That longer route lets more short blue light scatter out of view.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Blue paint.",
+                    "feedback": "The colour comes from light and air, with no blue dye overhead.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-7",
+                "type": "true-not-quite",
+                "conceptId": "sky-colours",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "A student says a red sunset proves the Sun emitted no blue light. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Blue light scattered away along the path.",
+                    "feedback": "The beam began with many colours; air changes which reach the eye directly.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Blue light never leaves the Sun.",
+                    "feedback": "Sunlight has many colours before it goes through the air.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sky-colours-8",
+                "type": "explain-it-back",
+                "conceptId": "sky-colours",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ],
+                "stem": "Which line links the two sky colours?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Blue spreads sideways; a long path leaves more red ahead.",
+                    "feedback": "Scattering sends blue around the sky while sunset light loses more blue directly.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Air makes red paint at dusk.",
+                    "feedback": "The colour shift is in the light path, not new paint in the sky.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sky-colours-m1"
+                    ],
+                    "sourceRefs": [
+                      "nasa-sky",
+                      "nasa-light"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "sky-colours-m1",
+                "name": "Sky is blue paint",
+                "correction": "The colour comes from scattered sunlight, not dye in the air.",
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ]
+              },
+              {
+                "id": "sky-colours-m2",
+                "name": "Sun turns red",
+                "correction": "The same Sun is seen through a longer path of air near the horizon.",
+                "sourceRefs": [
+                  "nasa-sky",
+                  "nasa-light"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "nasa-sky",
+                "title": "Eclipses and the Moon: Blood Moon, how it works",
+                "publisher": "NASA Science",
+                "year": 2026,
+                "url": "https://science.nasa.gov/moon/eclipses/"
+              },
+              {
+                "id": "nasa-light",
+                "title": "Visible Light Science Lesson",
+                "publisher": "NASA Heliophysics Education Activation Team",
+                "year": 2023,
+                "url": "https://assets.science.nasa.gov/content/dam/science/hpd/heat/Electromagnetic__Spectrum_Lesson_Helio%20Teachers.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Follow a ray",
+              "detail": "Draw a short noon path and a longer sunset path through clear air.",
+              "sourceRefs": [
+                "nasa-sky",
+                "nasa-light"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "sky-colours-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sky-colours-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "pressure-cooker",
+            "title": "Pressure cooker",
+            "prerequisites": [
+              "ceiling-fans"
+            ],
+            "hook": "A sealed cooker raises pressure, so water can boil at a higher temperature.",
+            "hookSourceRefs": [
+              "usda-pressure",
+              "gsu-pressure"
+            ],
+            "rule": "Higher pressure raises water’s boiling point. The hotter water and steam can cook food faster than an open boil.",
+            "ruleSourceRefs": [
+              "usda-pressure",
+              "gsu-pressure"
+            ],
+            "claims": [
+              {
+                "id": "pressure-cooker-c1",
+                "text": "Water boils at more heat when the air above it has more push.",
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ]
+              },
+              {
+                "id": "pressure-cooker-c2",
+                "text": "A pressure cooker can cook faster because its hot liquid and steam reach above an open pot’s normal boil.",
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "pressure-cooker-1",
+                "type": "predict",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "In a family shop kitchen, a sealed pressure cooker heats dal. What happens to water’s boiling point inside?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It rises as pressure rises.",
+                    "feedback": "With more push on it, the water needs more heat to boil.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It drops because the lid is heavy.",
+                    "feedback": "More push on the water means more heat is needed to boil.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-2",
+                "type": "scenario",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "At a hostel kitchen, two pots heat the same beans. One is open; one is under pressure. Which can reach hotter boiling water?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The pressure cooker.",
+                    "feedback": "More push lets the sealed pot boil at a higher heat.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The open pot by turning up its flame.",
+                    "feedback": "Extra flame makes open water boil harder, not well above its boiling point.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-3",
+                "type": "estimate",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "A pressure cooker reaches its working pressure. In the standard high-pressure example, about what temperature in Celsius can its water reach while boiling?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 121 degrees Celsius.",
+                    "feedback": "Georgia State’s example puts the boiling point near 121 degrees at that pressure.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 100 degrees Celsius.",
+                    "feedback": "That is the usual sea-level open boil, not the raised-pressure example.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 121,
+                  "min": 120.5,
+                  "max": 121.5,
+                  "unit": "degrees Celsius"
+                }
+              },
+              {
+                "id": "pressure-cooker-4",
+                "type": "choose",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "What does higher pressure do to water’s boiling point?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Raises it.",
+                    "feedback": "Water needs more heat before its vapour can form bubbles under greater pressure.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Always lowers it.",
+                    "feedback": "Lower pressure, as at altitude, is what lowers the boiling point.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-5",
+                "type": "why",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "Why may dal cook sooner in a cooker even though both pots contain boiling water?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The cooker’s boiling water can be hotter.",
+                    "feedback": "The word boiling does not mean the same temperature at every pressure.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both boils must be exactly as hot.",
+                    "feedback": "How hot a boil gets can change with the push above it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-6",
+                "type": "fill-the-step",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "A pressure cooker traps steam and raises pressure; the boiling point goes ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Up.",
+                    "feedback": "The extra push lets the hot water and steam heat up more.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Down.",
+                    "feedback": "A lower boiling point fits lower air pressure, not this sealed cooker.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-7",
+                "type": "true-not-quite",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "A classmate says a strong flame makes an open pot boil at cooker temperature. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Pressure, not flame size, sets the boiling point.",
+                    "feedback": "Once the open pot boils, more heat makes more steam. It stays near the same heat.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Any flame raises the open pot’s pressure.",
+                    "feedback": "The pot remains open to the same surrounding air pressure.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pressure-cooker-8",
+                "type": "explain-it-back",
+                "conceptId": "pressure-cooker",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "pressure-cooker-m1"
+                ],
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ],
+                "stem": "Which line explains a pressure cooker without a recipe?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Higher pressure permits a hotter boil.",
+                    "feedback": "Hotter water and steam can transfer heat to food faster than an open boil.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The whistle itself cooks the food.",
+                    "feedback": "The sound can signal venting, but the heat comes from hotter contents.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
+                    ],
+                    "sourceRefs": [
+                      "usda-pressure",
+                      "gsu-pressure"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "pressure-cooker-m1",
+                "name": "Pressure pushes flavour in",
+                "correction": "The extra push lets the water boil at a higher heat.",
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ]
+              },
+              {
+                "id": "pressure-cooker-m2",
+                "name": "More flame raises an open boil",
+                "correction": "Once open water boils, extra heat mainly makes it boil away faster.",
+                "sourceRefs": [
+                  "usda-pressure",
+                  "gsu-pressure"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "usda-pressure",
+                "title": "High Altitude Cooking",
+                "publisher": "USDA Food Safety and Inspection Service",
+                "year": 2024,
+                "url": "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/high-altitude-cooking"
+              },
+              {
+                "id": "gsu-pressure",
+                "title": "Pressure Cooker",
+                "publisher": "Georgia State University HyperPhysics",
+                "year": 2025,
+                "url": "https://www.hyperphysics.gsu.edu/hbase/thermo/precook.html"
+              }
+            ],
+            "quest": {
+              "title": "Compare two pots",
+              "detail": "In a made-up cooking diagram, label the pressure and boiling point in each pot.",
+              "sourceRefs": [
+                "usda-pressure",
+                "gsu-pressure"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "pressure-cooker-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "pressure-cooker-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
           }
         ]
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17."
 }

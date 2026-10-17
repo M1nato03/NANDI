@@ -1,6 +1,5 @@
 ﻿.mind-hub .card { border-color: var(--line); }
 .mind-hub .card button { width: 100%; }
-.mind-debug { display: inline-block; margin-top: 20px; min-height: 44px; padding: 12px 0; color: var(--muted); }
 .mind-board { max-width: 520px; }
 .mind-board .rule { color: var(--muted); }
 /* Eight-column Crowns cells are 40px at a 360px viewport: largest size without horizontal scroll. */
@@ -94,3 +93,15 @@
 /* Clues read as a left-aligned numbered list, not centred buttons. */
 .case-clues ol { padding-left: 22px; }
 .case-clues li > .text-button { display: block; width: 100%; text-align: left; padding: 6px 0; min-height: 44px; }
+
+.mind-today { margin: 18px 0 22px; }
+.mind-today h2 { margin-bottom: 10px; }
+.mind-today-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.mind-today-chip { display: grid; gap: 4px; min-width: 0; min-height: 68px; padding: 10px 6px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); text-align: center; }
+.mind-today-chip strong, .mind-today-chip span { min-width: 0; overflow-wrap: anywhere; }
+.mind-today-chip span { color: var(--muted); font-size: .78rem; }
+.mind-practice > button { min-height: 48px; }
+.mind-best-times { margin-top: 16px; }
+.mind-best-times ul { list-style: none; padding: 0; margin: 6px 0 0; }
+.mind-best-times li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.mind-courses > .card, .mind-courses > .mind-course { margin-top: 14px; }

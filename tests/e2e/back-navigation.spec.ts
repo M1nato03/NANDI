@@ -53,3 +53,13 @@ test('browser Back restores the deck card and saved puzzle progress', async ({ p
   const back = await page.getByRole('button', { name: 'Back to Now' }).boundingBox();
   expect(back && back.width >= 44 && back.height >= 44).toBe(true);
 });
+
+test('browser Back returns from the Practice hub daily board', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
+  await page.goto('/#you/mind');
+  await page.getByRole('button', { name: 'Board: not done' }).click();
+  await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
+  await page.goBack();
+  await expect(page.getByRole('heading', { name: 'Mind & learning' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Board: not done' })).toBeVisible();
+});

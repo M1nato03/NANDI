@@ -2569,10 +2569,1716 @@
               ],
               "checker": "codex-factcheck-2026-10-16b"
             }
+          },
+          {
+            "id": "emergency-fund",
+            "title": "Emergency fund",
+            "prerequisites": [
+              "shares"
+            ],
+            "hook": "A sudden repair bill is easier to meet when money is already set aside and easy to reach.",
+            "hookSourceRefs": [
+              "rbi-emergency"
+            ],
+            "rule": "An emergency fund is money kept for an unexpected need. Its useful feature is ready access when the need arrives.",
+            "ruleSourceRefs": [
+              "rbi-emergency"
+            ],
+            "claims": [
+              {
+                "id": "emergency-fund-c1",
+                "text": "An emergency fund is cash kept for a sudden need.",
+                "sourceRefs": [
+                  "rbi-emergency"
+                ]
+              },
+              {
+                "id": "emergency-fund-c2",
+                "text": "The reserve is useful when it can be reached without waiting for a sale.",
+                "sourceRefs": [
+                  "rbi-emergency"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "emergency-fund-1",
+                "type": "predict",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "A hostel student has a sudden phone repair bill. Which pool of money can meet it at once?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Cash kept aside for urgent needs.",
+                    "feedback": "A ready reserve can cover an unplanned bill while other plans stay separate.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Money locked in a hard-to-sell item.",
+                    "feedback": "Its price may be high, but it cannot cover a bill until someone buys it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-2",
+                "type": "scenario",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "During exam week, a family shop fridge stops. Which saved amount fits the term emergency fund?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Money held for an unplanned repair.",
+                    "feedback": "The repair was not on the normal bill list, so a ready reserve fits.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Money already set aside for next month’s rent.",
+                    "feedback": "Rent is a known bill; using that pot changes a planned payment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-3",
+                "type": "estimate",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "An emergency fund has cash for one month of bills and a rare cricket card worth the same. A bill needs cash today. About how many months are ready now?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One month.",
+                    "feedback": "The cash can pay today. The card would need a buyer first.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Two months.",
+                    "feedback": "The card has value, but that value is not cash for today’s bill.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1,
+                  "min": 0.5,
+                  "max": 1.5,
+                  "unit": "months"
+                }
+              },
+              {
+                "id": "emergency-fund-4",
+                "type": "choose",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "Which word best describes money held for a sudden expense?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Accessible.",
+                    "feedback": "A surprise bill needs money that can be reached when the bill arrives.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Locked away.",
+                    "feedback": "A reserve that cannot be reached quickly may be of little use in that moment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-5",
+                "type": "why",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "A student has valuable cricket cards but no ready cash. Why might a sudden bill still be hard to pay?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The cards first need a buyer.",
+                    "feedback": "Value on paper does not put money in hand on the bill date.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Any valuable object works like cash.",
+                    "feedback": "The bill asks for payment, while finding a buyer can take time.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-6",
+                "type": "fill-the-step",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "A bus pass bought every month is a planned cost. A sudden repair is ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "An unexpected cost.",
+                    "feedback": "The repair arrives without a set date, which is the kind of need the reserve covers.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A normal monthly bill.",
+                    "feedback": "The pass has a known cycle, but the sudden repair does not.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-7",
+                "type": "true-not-quite",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "A classmate says a reserve is only useful if it earns the highest return. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Access when a surprise arrives.",
+                    "feedback": "A high return says little about whether the money can pay an urgent bill.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The highest return always gives instant cash.",
+                    "feedback": "Return and access describe different features; a locked asset may be hard to use quickly.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "emergency-fund-8",
+                "type": "explain-it-back",
+                "conceptId": "emergency-fund",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "emergency-fund-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-emergency"
+                ],
+                "stem": "Which sentence best explains an emergency fund to a friend?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ready money for costs that arrive without warning.",
+                    "feedback": "The key is a separate reserve that can meet an unplanned need.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Money earmarked for a known monthly bill.",
+                    "feedback": "A regular bill is expected, so it has a different place in a budget.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "emergency-fund-m1",
+                "name": "Any savings will do",
+                "correction": "Money tied up in a hard-to-sell asset may not be ready when an urgent bill arrives.",
+                "sourceRefs": [
+                  "rbi-emergency"
+                ]
+              },
+              {
+                "id": "emergency-fund-m2",
+                "name": "Every planned bill is an emergency",
+                "correction": "A known monthly bill is planned spending, while an emergency is unexpected.",
+                "sourceRefs": [
+                  "rbi-emergency"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "rbi-emergency",
+                "title": "I Can Do: Financial Planning",
+                "publisher": "Reserve Bank of India",
+                "year": 2025,
+                "url": "https://www.rbi.org.in/FinancialEducation/content/I%20Can%20Do_RBI.pdf",
+                "asOf": "2026-10-17"
+              }
+            ],
+            "quest": {
+              "title": "Sort a bill",
+              "detail": "Name a planned bill and a surprise bill in a made-up hostel budget.",
+              "sourceRefs": [
+                "rbi-emergency"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "emergency-fund-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "emergency-fund-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "loan-emi",
+            "title": "EMI and loan cost",
+            "prerequisites": [
+              "compounding"
+            ],
+            "hook": "A smaller monthly EMI can still lead to more total interest when a loan runs longer.",
+            "hookSourceRefs": [
+              "rbi-loan"
+            ],
+            "rule": "An EMI pays interest and some principal. On a reducing balance, interest is based on what is still owed.",
+            "ruleSourceRefs": [
+              "rbi-loan"
+            ],
+            "claims": [
+              {
+                "id": "loan-emi-c1",
+                "text": "An EMI can pay loan interest and part of the loan sum.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-c2",
+                "text": "As a loan shrinks, later interest uses the sum still due.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "loan-emi-1",
+                "type": "predict",
+                "conceptId": "loan-emi",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "A family shop pays an EMI on a loan with a reducing balance. What happens after principal is repaid?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The balance used for later interest shrinks.",
+                    "feedback": "The lender works out later interest from what is still owed, not the old balance.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The original loan amount stays the interest base.",
+                    "feedback": "That would count debt which the person has paid off already.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-2",
+                "type": "scenario",
+                "conceptId": "loan-emi",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "A college student compares two loan plans at the same rate; one spreads payments longer. What may happen?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Monthly EMI falls while total interest rises.",
+                    "feedback": "More payment months can make each bill smaller while interest runs for longer.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both EMI and total interest must fall.",
+                    "feedback": "A smaller monthly bill does not tell us the full cost across all months.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-3",
+                "type": "estimate",
+                "conceptId": "loan-emi",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "Two loans show the same EMI but give no number of months. From the EMI alone, about how many can be named as the cheaper loan?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Zero.",
+                    "feedback": "A monthly bill without the term cannot show the full loan cost.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One.",
+                    "feedback": "Either loan may cost more in total if it runs for more months.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 0,
+                  "min": -0.5,
+                  "max": 0.5,
+                  "unit": "count"
+                }
+              },
+              {
+                "id": "loan-emi-4",
+                "type": "choose",
+                "conceptId": "loan-emi",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "What does principal mean in a loan schedule?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The amount of loan money still owed.",
+                    "feedback": "Paying down principal reduces the amount on which later interest can be worked out.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The lender’s monthly profit only.",
+                    "feedback": "The loan sum is not the lender’s gain. It is the debt being paid.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-5",
+                "type": "why",
+                "conceptId": "loan-emi",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "Two offers show the same EMI, yet one runs for more months. Why can the totals differ?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The number of payments also matters.",
+                    "feedback": "One monthly figure hides how many times it is paid and how long interest runs.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Same EMI proves the same total cost.",
+                    "feedback": "The same bill can add up to more if it runs for more months.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-6",
+                "type": "fill-the-step",
+                "conceptId": "loan-emi",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "On a reducing-balance loan, paying principal leaves a smaller ___ for the next interest charge.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Outstanding balance.",
+                    "feedback": "The remaining debt, rather than the first borrowed amount, becomes the next base.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Original price tag.",
+                    "feedback": "The first price does not track the debt left after each repayment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-7",
+                "type": "true-not-quite",
+                "conceptId": "loan-emi",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "A friend says every rupee in an EMI directly clears the borrowed amount. What is the flaw?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Some of it can pay interest.",
+                    "feedback": "A loan table shows what pays debt and what pays interest each month.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Interest appears only after the last EMI.",
+                    "feedback": "Interest can be part of each bill. It need not wait till the end.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-8",
+                "type": "explain-it-back",
+                "conceptId": "loan-emi",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "Which line captures a reducing-balance loan?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Interest follows the debt still unpaid.",
+                    "feedback": "As debt goes down, the next interest charge starts from less.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Interest always uses the first borrowed sum.",
+                    "feedback": "That describes a fixed original base, not the monthly reducing method in the source.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "loan-emi-m1",
+                "name": "EMI is all principal",
+                "correction": "Part of a typical EMI pays interest, while the rest lowers the debt.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-m2",
+                "name": "Small EMI means cheap loan",
+                "correction": "A longer term can lower each payment but raise total interest.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "rbi-loan",
+                "title": "RBI housing loan FAQs: reducing balance and amortization",
+                "publisher": "Reserve Bank of India",
+                "year": 2024,
+                "url": "https://systemhealth.rbi.org.in/Scripts/FS_FAQs.aspx_Id%3D77%26fn%3D2754.html",
+                "asOf": "2026-10-17"
+              }
+            ],
+            "quest": {
+              "title": "Read a schedule",
+              "detail": "In a sample EMI table, point to the principal, interest and balance columns.",
+              "sourceRefs": [
+                "rbi-loan"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "loan-emi-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "index-funds",
+            "title": "Index funds and stock picking",
+            "prerequisites": [
+              "diversification"
+            ],
+            "hook": "An index fund follows a basket; one chosen stock depends much more on one company.",
+            "hookSourceRefs": [
+              "sebi-index",
+              "spiva-india"
+            ],
+            "rule": "An index fund aims to track an index after costs. Picking one stock is a different bet on one firm.",
+            "ruleSourceRefs": [
+              "sebi-index",
+              "spiva-india"
+            ],
+            "claims": [
+              {
+                "id": "index-funds-c1",
+                "text": "An index fund holds securities to follow a named index and charges an expense ratio.",
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ]
+              },
+              {
+                "id": "index-funds-c2",
+                "text": "Past India fund data show many active funds below their index. The share varies by year and fund group.",
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "index-funds-1",
+                "type": "predict",
+                "conceptId": "index-funds",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "A college club buys a fund that copies a broad index. What mainly sets its holdings?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The index list and its weights.",
+                    "feedback": "The fund tries to mirror the named basket, so its mix follows that rule.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One manager’s favourite stock.",
+                    "feedback": "A single favourite stock is unlike a fund built to track an index.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-2",
+                "type": "scenario",
+                "conceptId": "index-funds",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "At a family shop, Tara compares one company share with a broad index fund. Which spreads company risk more?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The fund holding many companies.",
+                    "feedback": "One firm can stumble alone; a broad basket spreads that specific event.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The single company share.",
+                    "feedback": "One company leaves its own events concentrated in the whole holding.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-3",
+                "type": "estimate",
+                "conceptId": "index-funds",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "In an index fund comparison, 75 percent of large-cap active funds trailed their benchmark for one year. About what percent trailed in that group?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 75 percent.",
+                    "feedback": "The result describes that group and period; it is not a forecast for a new fund.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 25 percent.",
+                    "feedback": "That is the other share in the comparison, not the group that trailed.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 75,
+                  "min": 74.5,
+                  "max": 75.5,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "index-funds-4",
+                "type": "choose",
+                "conceptId": "index-funds",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "What is an index fund trying to do?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Track a named market basket.",
+                    "feedback": "Its stated job is to follow an index, allowing for fees and tracking gaps.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Promise to beat every stock.",
+                    "feedback": "An index is a benchmark to follow; it gives no promise of topping every share.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-5",
+                "type": "why",
+                "conceptId": "index-funds",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "A classmate points to one winning share and says stock picking always beats an index. Why is that weak?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One winner is not the average outcome.",
+                    "feedback": "The selected success leaves out other picks and the cost of choosing them.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One example settles all future markets.",
+                    "feedback": "Different shares and periods can turn out differently, so one case cannot settle the pattern.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-6",
+                "type": "fill-the-step",
+                "conceptId": "index-funds",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "An index fund’s expense ratio is a ___ charged from fund assets.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Cost.",
+                    "feedback": "The fund’s return to holders is affected by fees even when it tracks well.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Guaranteed gain.",
+                    "feedback": "An expense ratio reduces what remains; it is not a payment to the holder.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-7",
+                "type": "true-not-quite",
+                "conceptId": "index-funds",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "A student says past fund data prove no manager can beat an index. What goes too far?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Some managers did beat their benchmark.",
+                    "feedback": "The data show a group trend. Some funds still beat their index.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every manager has the same return.",
+                    "feedback": "The reported spread includes both higher and lower results across funds.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "index-funds-8",
+                "type": "explain-it-back",
+                "conceptId": "index-funds",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "index-funds-m1"
+                ],
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ],
+                "stem": "Which comparison fits an index fund and one picked stock?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A basket track versus a single-company choice.",
+                    "feedback": "The first follows an index after costs; the second rests on one company’s result.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Two names for the same guarantee.",
+                    "feedback": "Each can rise or fall. They also hold shares in different ways.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "index-funds-m1",
+                "name": "Index means guaranteed growth",
+                "correction": "Tracking a market index also means sharing its falls.",
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ]
+              },
+              {
+                "id": "index-funds-m2",
+                "name": "One winner proves a method",
+                "correction": "One strong stock says little about the average result of many picks.",
+                "sourceRefs": [
+                  "sebi-index",
+                  "spiva-india"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "sebi-index",
+                "title": "Index Mutual Funds",
+                "publisher": "SEBI Investor",
+                "year": 2025,
+                "url": "https://investor.sebi.gov.in/index_mutual_fund.html",
+                "asOf": "2026-10-17"
+              },
+              {
+                "id": "spiva-india",
+                "title": "SPIVA India Year-End 2025",
+                "publisher": "S&P Dow Jones Indices",
+                "year": 2026,
+                "url": "https://www.spglobal.com/spdji/en/spiva/article/spiva-india/",
+                "asOf": "2026-10-17"
+              }
+            ],
+            "quest": {
+              "title": "Compare baskets",
+              "detail": "Compare the holdings and fees in two made-up fund fact sheets.",
+              "sourceRefs": [
+                "sebi-index",
+                "spiva-india"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "index-funds-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "index-funds-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
+          },
+          {
+            "id": "upi-scams",
+            "title": "UPI scams and social engineering",
+            "prerequisites": [
+              "shares"
+            ],
+            "hook": "A fake prize message may ask for a UPI PIN to make a payment look like a receipt.",
+            "hookSourceRefs": [
+              "npci-fraud",
+              "npci-faq"
+            ],
+            "rule": "A scam story can steer a person to approve a payment. A UPI PIN lets money leave an account.",
+            "ruleSourceRefs": [
+              "npci-fraud",
+              "npci-faq"
+            ],
+            "claims": [
+              {
+                "id": "upi-scams-c1",
+                "text": "NPCI warns that a QR scan and UPI PIN can be used to make a payment, not collect a prize.",
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ]
+              },
+              {
+                "id": "upi-scams-c2",
+                "text": "A collect request asks the payer to approve money leaving an account.",
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "upi-scams-1",
+                "type": "predict",
+                "conceptId": "upi-scams",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "A hostel student is told to scan a QR and enter a UPI PIN to get a refund. What could that action do?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Approve money going out.",
+                    "feedback": "NPCI says a QR scan with a PIN is for paying, not receiving a refund.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Pull the refund in for free.",
+                    "feedback": "The PIN can let money leave, even if the note says refund.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-2",
+                "type": "scenario",
+                "conceptId": "upi-scams",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "During a college fest, an unknown caller says a prize needs a collect-request approval. What is being requested?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Permission for a payment.",
+                    "feedback": "The word collect can hide that the person approving it is the payer.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A free deposit needing no approval.",
+                    "feedback": "The request asks the account holder to authorise a transfer out.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-3",
+                "type": "estimate",
+                "conceptId": "upi-scams",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "A fake cashback link asks for a UPI PIN only to receive money. How many PIN approvals are needed for a normal receipt?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Zero PIN approvals.",
+                    "feedback": "Receiving money does not need the receiver to approve a debit with a PIN.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One PIN approval.",
+                    "feedback": "A PIN prompt changes the action into approval of a payment, not simple receipt.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 0,
+                  "min": -0.5,
+                  "max": 0.5,
+                  "unit": "count"
+                }
+              },
+              {
+                "id": "upi-scams-4",
+                "type": "choose",
+                "conceptId": "upi-scams",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "What does a UPI PIN mainly authorise?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A payment from an account.",
+                    "feedback": "The PIN is entered when the payer approves a bank transaction.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A stranger’s prize message.",
+                    "feedback": "A message can claim a reward, but it cannot change what a PIN approval means.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-5",
+                "type": "why",
+                "conceptId": "upi-scams",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "Why can a polished message from a supposed bank worker still mislead someone?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The story can press for a real payment approval.",
+                    "feedback": "The app can work well while a false story sways the person.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A formal logo changes how UPI works.",
+                    "feedback": "A bank logo does not turn a payment into cash coming in.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-6",
+                "type": "fill-the-step",
+                "conceptId": "upi-scams",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "In a collect request, the person who approves it is the ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Payer.",
+                    "feedback": "When that person says yes, money can leave the bank account.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Prize receiver by default.",
+                    "feedback": "The label on the message does not decide the direction of the bank transfer.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-7",
+                "type": "true-not-quite",
+                "conceptId": "upi-scams",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "A classmate says every scam needs a broken app. What is the missing route?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A person can be tricked into approving a real payment.",
+                    "feedback": "The bank may send the money as asked. The story can still be false.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Fraud only happens when the switch stops working.",
+                    "feedback": "NPCI describes fraud that uses messages, links and fear to steer users.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "upi-scams-8",
+                "type": "explain-it-back",
+                "conceptId": "upi-scams",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "upi-scams-m1"
+                ],
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ],
+                "stem": "Which line best sums up a trick with a UPI payment?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A false story steers a real payment approval.",
+                    "feedback": "The attacker targets a choice on the screen rather than changing the PIN’s job.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The PIN becomes a receipt code.",
+                    "feedback": "The PIN lets money leave. A false label does not change that.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "upi-scams-m1",
+                "name": "PIN to receive",
+                "correction": "To get money, a person need not key in a UPI PIN.",
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ]
+              },
+              {
+                "id": "upi-scams-m2",
+                "name": "Official tone proves safety",
+                "correction": "A neat bank-like note can still tell a false story.",
+                "sourceRefs": [
+                  "npci-fraud",
+                  "npci-faq"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "npci-fraud",
+                "title": "Fraud Awareness",
+                "publisher": "National Payments Corporation of India",
+                "year": 2026,
+                "url": "https://www.npci.org.in/fraud-awareness",
+                "asOf": "2026-10-17"
+              },
+              {
+                "id": "npci-faq",
+                "title": "UPI Frequently Asked Questions",
+                "publisher": "National Payments Corporation of India",
+                "year": 2026,
+                "url": "https://www.npci.org.in/what-we-do/upi/faqs",
+                "asOf": "2026-10-17"
+              }
+            ],
+            "quest": {
+              "title": "Read the prompt",
+              "detail": "In a made-up payment screen, identify the payer and the direction of money.",
+              "sourceRefs": [
+                "npci-fraud",
+                "npci-faq"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "upi-scams-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "upi-scams-8",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "codex-factcheck-2026-10-17"
+            }
           }
         ]
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17."
 }

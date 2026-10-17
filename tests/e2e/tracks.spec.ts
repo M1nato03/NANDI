@@ -7,6 +7,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.setFixedTime(new Date('2026-10-12T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/?e2e#you/mind');
+    await page.getByText('Courses and past lessons').click();
     const tracks = page.getByLabel('Learning tracks');
     await tracks.getByRole('button', { name: 'Pick this track' }).click();
     await expect(tracks).toContainText('Drone technology');
@@ -34,10 +35,12 @@ for (const scheme of ['light', 'dark'] as const) {
     const controls = await unit.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 44 && button.getBoundingClientRect().height >= 44));
     expect(controls).toBe(true);
     await unit.getByRole('button', { name: 'Finish unit' }).click();
+    await page.getByText('Courses and past lessons').click();
     await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible();
     await expect(tracks.getByLabel('Learning budget')).toContainText('15 / 25 min');
     await page.screenshot({ path: testInfo.outputPath(`track-stop-${scheme}.png`), fullPage: true });
     await page.reload();
+    await page.getByText('Courses and past lessons').click();
     await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible();
     await page.getByRole('button', { name: 'Review due cards' }).click();
     await expect(page.getByLabel('Review card')).toContainText('What do rotors push to make lift?');
