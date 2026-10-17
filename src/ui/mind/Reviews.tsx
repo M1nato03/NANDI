@@ -7,18 +7,24 @@ import { recordError } from '../errorRing';
 import { nightMindNote } from './economyVisibility';
 import { EmptyState } from '../EmptyState';
 
-type Props = { entries: ReviewEntry[]; cards: CardRow[]; progress: DeckProgRow[]; deck: DeckPack; lessonCards: Record<string, [string, string]>; afterBedtime: boolean; economyVisible: boolean; onDone: () => void };
-export function Reviews({ entries: initial, cards, progress, deck, lessonCards, afterBedtime, economyVisible, onDone }: Props) {
-  const [entries, setEntries] = useState(initial);
+type Props = { entries: ReviewEntry[]; cards: CardRow[]; progress: DeckProgRow[]; deck: DeckPack; lessonCards: Record<string, [string, string]>; afterBedtime: boolean; economyVisible: boolean; waiting: number; canOneMore: boolean; onDone: (oneMore: boolean) => Promise<void> };
+export function Reviews({ entries, cards, progress, deck, lessonCards, afterBedtime, economyVisible, waiting, canOneMore, onDone }: Props) {
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [picked, setPicked] = useState<number | null>(null);
   const [hint, setHint] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [stopping, setStopping] = useState(false);
   const [error, setError] = useState('');
   const [options] = useState(() => Object.fromEntries(deck.body.items.map(item => [item.id, itemOptions(item, deck)])));
   const entry = entries[index];
-  if (!entry) return <section className="screen mind-review"><h1>Reviews complete.</h1><EmptyState area="think">Your mind has room to rest.</EmptyState><button type="button" onClick={onDone}>Finish reviews</button></section>;
+  const stop = async (oneMore: boolean) => {
+    if (stopping) return;
+    setStopping(true);
+    try { await onDone(oneMore); }
+    catch (cause) { recordError('window', cause); setError('Could not save this session. Try again.'); setStopping(false); }
+  };
+  if (!entry) return <section className="screen mind-review"><h1>That's enough for today</h1><EmptyState area="think">Your mind has room to rest.</EmptyState>{waiting > 0 && <p>{waiting} more can wait until tomorrow</p>}<button type="button" disabled={stopping} onClick={() => void stop(false)}>Finish reviews</button>{canOneMore && waiting > 0 && <button type="button" className="text-button" disabled={stopping} onClick={() => void stop(true)}>One more set</button>}{error && <p role="alert">{error}</p>}</section>;
   const card = entry.kind === 'card' ? cards.find(row => row.id === entry.id) : undefined;
   const content = card ? (card.deckId === 'greene' ? deck.body.cards.find(row => row.id === card.id) : null) : null;
   const item = entry.kind === 'item' ? deck.body.items.find(row => row.id === entry.id) : undefined;
@@ -28,7 +34,7 @@ export function Reviews({ entries: initial, cards, progress, deck, lessonCards, 
   const gradeCard = async (correct: boolean) => {
     if (!card || busy) return;
     setBusy(true);
-    try { await reviewCard(db, card, correct, afterBedtime); if (!correct && !entries.some((row, i) => i > index && row.id === entry.id)) setEntries(value => [...value, entry]); next(); }
+    try { await reviewCard(db, card, correct, afterBedtime); next(); }
     catch (cause) { recordError('window', cause); setError('Review did not save. Try again.'); }
     finally { setBusy(false); }
   };

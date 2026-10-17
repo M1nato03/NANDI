@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { masteryMapState } from '../../core/learn/engine';
+import { dayKey } from '../../core/time/dayKey';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import type { LearnDropRow } from '../../data/types';
 import { LearnDrop } from '../learn/LearnDrop';
+import { ReviewToday } from '../mind/ReviewToday';
 import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from '../learn/flow';
 import { go, goToCard } from '../shell/router';
 
@@ -48,7 +50,8 @@ export function Learn() {
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={openDaily}>{dropStatus(data?.daily) === 'Done for today' ? 'View' : dropStatus(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
-      {dueCount > 0 && <button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Reviews due: {dueCount} · Start review drop</button>}
+      <ReviewToday day={dayKey(openedAt)} />
+      {dueCount > 0 && <><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>
     <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>
     {[...topics].sort((a, b) => Number(selected.includes(b.body.topic.id)) - Number(selected.includes(a.body.topic.id))).map(pack => {

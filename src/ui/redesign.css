@@ -122,6 +122,10 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-card h2 { font-size: clamp(30px, 8vw, 50px); margin: 18px 0 10px; }
 .deck-card p { font-size: 16px; margin: 10px 0; }
 .deck-card .deck-meta { font-size: 13px; color: var(--muted); }
+.mind-hub .deck-meta, .learn-today .deck-meta { font-size: 13px; color: var(--muted); }
+.review-today { display: grid; gap: 6px; width: 100%; padding: 12px 0; border-block: 1px solid var(--line); }
+.review-today p { margin: 0; }
+.review-today button { min-height: 44px; }
 .deck-actions { margin-top: 22px; }
 .deck-dashes { overflow: visible; gap: 0; flex-wrap: nowrap; }
 .deck-dashes button { flex: 1 1 44px; min-width: 44px; }

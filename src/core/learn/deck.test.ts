@@ -7,16 +7,20 @@ import { buildReviewSession, itemOptions } from './deck';
 const deck = v.parse(deckPackSchema, raw);
 const meta = { updatedAt: 1, deleted: 0 as const, deviceId: 'test' };
 
-it('Greene session mixes due recall and rated items without consecutive types', () => {
+it('Review session takes the oldest waiting cards up to its cap', () => {
   const cards = deck.body.cards.map(card => ({ ...meta, id: card.id, deckId: 'greene', due: '2026-10-10', box: 2 }));
   const hidden = new Set([`card:${cards[0]!.id}`]);
-  const session = buildReviewSession('2026-10-11', cards, [], [{ ...meta, id: 'people', value: 1000, n: 0 }], hidden, deck);
-  expect(session.filter(entry => entry.type === 'recall')).toHaveLength(4);
+  const session = buildReviewSession('2026-10-11', cards, [], [{ ...meta, id: 'people', value: 1000, n: 0 }], hidden, deck, 5);
+  expect(session).toHaveLength(5);
+  expect(session.every(entry => entry.type === 'recall')).toBe(true);
   expect(session.some(entry => entry.id === cards[0]!.id)).toBe(false);
-  expect(session.filter(entry => entry.type === 'scenario')).toHaveLength(2);
-  expect(session.filter(entry => entry.type === 'spot')).toHaveLength(2);
-  expect(session.filter(entry => entry.type === 'mystery')).toHaveLength(1);
-  for (let i = 1; i < session.length; i++) expect(session[i]!.type).not.toBe(session[i - 1]!.type);
+});
+
+it('People-reading items remain available in a separate short practice set', () => {
+  const session = buildReviewSession('2026-10-11', [], [], [], new Set(), deck, 10);
+  expect(session.length).toBeGreaterThan(0);
+  expect(session.length).toBeLessThanOrEqual(10);
+  expect(session.every(entry => entry.kind === 'item')).toBe(true);
 });
 
 it('spot and scenario answers remain correct after option shuffle', () => {

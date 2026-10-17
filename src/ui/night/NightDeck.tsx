@@ -17,6 +17,7 @@ import { deckIndex, go, goToCard, navigationEventName } from '../shell/router';
 import type { useTaskBoard } from '../tasks/useTaskBoard';
 import { NightPlanSetting } from '../screens/NightPlanSetting';
 import { DeckGlyph, type Glyph } from '../DeckGlyph';
+import { ReviewToday } from '../mind/ReviewToday';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
 let rememberedSwaps = { day: '', count: 0 };
@@ -130,7 +131,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
       <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
       {card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
-      {card.id === 'learn' && <Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense>}
+      {card.id === 'learn' && <><ReviewToday day={today} /><Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense></>}
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
       {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<div className="deck-end"><p><strong>Tomorrow’s first step</strong></p>{tomorrowTask ? <p>{tomorrowTask.title}</p> : <form className="deck-add" onSubmit={event => void saveTomorrow(event)}><label htmlFor="night-tomorrow">Name one small step</label><input id="night-tomorrow" value={tomorrowTitle} onChange={event => setTomorrowTitle(event.target.value)} maxLength={160} placeholder="Tomorrow’s first step" required /><button type="submit" disabled={board.busy}>Save</button></form>}</div></>}
       {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{suggestion.text}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMove.done}>{phoneMove.done ? 'Set for tonight' : "I’ll do it"}</button></div>{!phoneMove.done && phoneMove.swaps < 3 && <button type="button" className="text-button" onClick={anotherIdea}>Another idea</button>}</>}

@@ -49,9 +49,10 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await lesson.getByRole('button', { name: 'Done' }).click();
 
-    await page.getByRole('button', { name: 'Review due cards' }).click();
+    await expect(page.getByText('5 for today')).toBeVisible();
+    await page.getByRole('button', { name: 'Review cards' }).click();
     for (let i = 0; i < 20; i++) {
-      if (await page.getByRole('heading', { name: 'Reviews complete.' }).isVisible()) break;
+      if (await page.getByRole('heading', { name: "That's enough for today" }).isVisible()) break;
       const card = page.getByLabel('Review card');
       await expect(card).toBeVisible();
       if (i === 0) await page.screenshot({ path: testInfo.outputPath(`review-recall-${scheme}.png`), fullPage: true });
@@ -66,7 +67,7 @@ for (const scheme of ['light', 'dark'] as const) {
         await card.getByRole('button', { name: 'Continue' }).click();
       }
     }
-    await expect(page.getByRole('heading', { name: 'Reviews complete.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: "That's enough for today" })).toBeVisible();
     await page.getByRole('button', { name: 'Finish reviews' }).click();
     await page.getByRole('button', { name: 'Board: not done' }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });

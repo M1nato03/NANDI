@@ -5,6 +5,7 @@ import { RULES } from '../../core/rules.config';
 import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { masteryMapState } from '../../core/learn/engine';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
+import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
 import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
@@ -70,6 +71,10 @@ export function Mind({ entry }: { entry?: string }) {
   const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saving');
   const [lessonDraft, setLessonDraft] = useState<LessonDraft | null>(null);
   const [reviews, setReviews] = useState<ReviewEntry[] | null>(null);
+  const [reviewStartDue, setReviewStartDue] = useState(0);
+  const [reviewIsOneMore, setReviewIsOneMore] = useState(false);
+  const [reviewIsPractice, setReviewIsPractice] = useState(false);
+  const [reviewedIds, setReviewedIds] = useState<string[]>([]);
   const lessonProgress = useLiveQuery(() => db.lessonProg.toArray(), []) ?? [];
   const cards = useLiveQuery(() => db.cards.toArray(), []) ?? [];
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
@@ -101,6 +106,10 @@ export function Mind({ entry }: { entry?: string }) {
   const learnDone = !!dailyDrop && dailyDrop.drop.cursor >= dailyDrop.drop.items.length;
   const hiddenCards = new Set(flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
   const dueCount = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today).length;
+  const reviewRamp = readReviewRamp(settings.find(row => row.key === 'mind.reviewRamp' && !row.deleted)?.value);
+  const todayReviews = reviewAllowance(dueCount, today, reviewRamp);
+  const sessionSeen = new Set([...reviewedIds, ...(reviews ?? []).filter(row => row.kind === 'card').map(row => row.id)]);
+  const reviewWaiting = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today && !sessionSeen.has(row.id)).length;
   const bestByType = Object.fromEntries(types.map(type => [type, puzzleRuns.filter(row => row.type === type && !row.deleted && row.result === 'solved' && row.solveMs !== undefined).reduce<number | undefined>((best, row) => best === undefined ? row.solveMs : Math.min(best, row.solveMs!), undefined)])) as Record<PuzzleType, number | undefined>;
   const pendingDraft = settings.find(row => row.key === 'mind.lessonDraft' && !row.deleted)?.value as LessonDraft | null | undefined;
   const dayLessons = lessonProgress.filter(row => row.doneDayKey === today && !row.deleted);
@@ -162,10 +171,38 @@ export function Mind({ entry }: { entry?: string }) {
     if (!deck) return;
     go('you/mind/reviews');
   };
-  const finishReviews = async () => {
+  const startDeckPractice = async () => {
+    if (!deck) return;
+    const [progress, allRatings, allFlags] = await Promise.all([db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray()]);
+    const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
+    setReviewIsPractice(true);
+    setReviewedIds([]);
+    setReviews(buildReviewSession(today, [], progress, allRatings, hidden, deck, RULES.mind.reviewSession.ramp[2]));
+  };
+  const finishReviews = async (oneMore: boolean) => {
+    if (reviewIsPractice) { setReviews(null); setReviewIsPractice(false); return; }
     const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
-    await trackWrite(() => db.settings.put({ key: `mind.reviewsDone:${today}`, value: true, updatedAt: now, deleted: 0, deviceId }));
-    back('you/mind');
+    const [allCards, allFlags, stored] = await Promise.all([db.cards.toArray(), db.flags.toArray(), db.settings.get('mind.reviewRamp')]);
+    const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
+    const seen = new Set([...reviewedIds, ...(reviews ?? []).filter(row => row.kind === 'card').map(row => row.id)]);
+    const waiting = allCards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= today && !seen.has(row.id));
+    const state = readReviewRamp(stored?.value);
+    const amount = oneMore ? oneMoreAllowance(waiting.length, today, { ...state, lastDay: today }) : 0;
+    const nextState = finishReviewRamp(state, today, waiting.length, reviewIsOneMore);
+    const updates = oneMore ? [] : spreadReviewBacklog(waiting, today, reviewStartDue, nextState.step);
+    await trackWrite(() => db.transaction('rw', [db.settings, db.cards], async () => {
+      await db.settings.put({ key: 'mind.reviewRamp', value: nextState, updatedAt: now, deleted: 0, deviceId });
+      for (const update of updates) {
+        const row = await db.cards.get(update.id);
+        if (row && row.due <= today && !row.deleted) await db.cards.put({ ...row, due: update.due, updatedAt: now });
+      }
+    }));
+    if (oneMore) {
+      const next = buildReviewSession(today, waiting, [], [], hidden, deck!, amount).filter(row => row.kind === 'card');
+      setReviewedIds([...seen]);
+      setReviewIsOneMore(true);
+      setReviews(next);
+    } else { setReviews(null); setReviewedIds([]); setReviewIsOneMore(false); back('you/mind'); }
   };
 
   const persist = useCallback((row: PuzzleRunRow) => {
@@ -298,9 +335,14 @@ export function Mind({ entry }: { entry?: string }) {
         }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
       }
       else if (entry === 'case') setCaseOpen(true);
-      else if (entry === 'reviews' && deck) void Promise.all([db.cards.toArray(), db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray()]).then(([allCards, progress, allRatings, allFlags]) => {
+      else if (entry === 'reviews' && deck) void Promise.all([db.cards.toArray(), db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray(), db.settings.get('mind.reviewRamp')]).then(([allCards, progress, allRatings, allFlags, stored]) => {
         const hidden = new Set(allFlags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
-        setReviews(buildReviewSession(today, allCards, progress, allRatings, hidden, deck));
+        const due = allCards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= today).length;
+        setReviewedIds([]);
+        setReviewIsOneMore(false);
+        setReviewIsPractice(false);
+        setReviewStartDue(due);
+        setReviews(buildReviewSession(today, allCards, progress, allRatings, hidden, deck, reviewAllowance(due, today, readReviewRamp(stored?.value))));
       }).catch(error => recordError('window', error));
     }, 0);
     return () => window.clearTimeout(timer);
@@ -311,7 +353,7 @@ export function Mind({ entry }: { entry?: string }) {
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('you/mind')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
-  if (reviews && deck) return <Reviews entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onDone={() => void finishReviews()} />;
+  if (reviews && deck) return <Reviews key={reviewIsPractice ? 'practice' : reviewIsOneMore ? 'more' : 'daily'} entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} waiting={reviewIsPractice ? 0 : reviewWaiting} canOneMore={!reviewIsPractice && !reviewIsOneMore && reviewWaiting > 0 && reviewRamp.oneMoreDay !== today} onDone={finishReviews} />;
   if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => entry === 'case' ? go('you/mind') : history.back()} />;
   if (selection) return <section className="screen mind-board" data-save-state={saveState} data-board-seed={board?.seed}>
     {(night === 'lightsOut' || busy || !board || !run) && <div role="status">
@@ -343,9 +385,10 @@ export function Mind({ entry }: { entry?: string }) {
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
     </section>
-    <section className="card"><h2>Reviews</h2>{dueCount ? <><p>{dueCount} {dueCount === 1 ? 'card' : 'cards'} due</p><button type="button" className="secondary" onClick={startReviews}>Review due cards</button></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}</section>
+    <section className="card"><h2>Reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}</section>
     <section className="card"><h2>Learn</h2><p>{masterySummary}</p><button type="button" className="secondary" onClick={() => go('you/learn')}>Open Learn</button></section>
     <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses and past lessons</summary>
+      <button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button>
       <div className="card mind-old-lesson"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>
       {lessonPacks.map(pack => <div className="mind-course" key={pack.id}><h3>{pack.body.course.name}</h3><p>{pack.body.course.blurb}</p>{pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).map(lesson => <button type="button" className="secondary" key={lesson.id} onClick={() => void startLesson(pack.id, lesson, true)}>Review: {lesson.t}</button>)}{!dayLessons.some(row => row.packId === pack.id) && pack.body.lessons.find(lesson => !lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)) && night === 'day' && <button type="button" className="secondary" onClick={() => { const lesson = pack.body.lessons.find(value => !lessonProgress.some(row => row.id === value.id && row.doneDayKey)); if (lesson) void startLesson(pack.id, lesson); }}>Start {pack.body.course.short} lesson</button>}</div>)}
       <Tracks day={today} afterBedtime={night === 'lightsOut'} showUnit={entry === 'unit'} />
