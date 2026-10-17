@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { seedRecapWeek } from './recap-seed';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`night plan and weekly recap in ${scheme}`, async ({ page }) => {
@@ -10,9 +11,13 @@ for (const scheme of ['light', 'dark'] as const) {
     });
     await page.goto('/#now');
     await expect(page.getByRole('article', { name: 'Your week card' })).toContainText('What your time became');
+    await seedRecapWeek(page, '2026-10-08');
     const download = page.waitForEvent('download');
-    await page.getByRole('region', { name: 'What your time became recap' }).getByRole('button', { name: 'Share' }).click();
-    expect((await download).suggestedFilename()).toBe('nandi-recap-2026-10-05.png');
+    await page.getByRole('region', { name: 'What your time became recap' }).getByRole('button', { name: 'Share my week' }).click();
+    const preview = page.getByRole('dialog', { name: 'Weekly recap preview' });
+    await expect(preview.getByRole('img')).toBeVisible();
+    await preview.getByRole('button', { name: 'Share' }).click();
+    expect((await download).suggestedFilename()).toBe('nandi-week-2026-10-05.png');
     await page.getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Settings/ }).click();
     const setting = page.getByRole('region', { name: 'Night plan setting' });

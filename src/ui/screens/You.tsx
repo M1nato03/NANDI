@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { buildRecap } from '../../core/recap';
+import { buildRecap, recapCardContent } from '../../core/recap';
+import { RecapShare } from './RecapShare';
 import { nightsBackOnPlan } from '../../core/nightPlan';
 import { go } from '../shell/router';
 import { masteryMapState } from '../../core/learn/engine';
@@ -14,17 +15,13 @@ export function You() {
     return { tasks, focus, sessions, quests, concepts, logs };
   }, []);
   const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, sources) : null; // eslint-disable-line react-hooks/purity
-  const recapLines = recap ? [
-    [recap.tasks, `${recap.tasks} tasks finished`], [recap.focusHours, `${recap.focusHours} focus hours`],
-    [recap.workouts, `${recap.workouts} workouts`], [recap.sideQuests, `${recap.sideQuests} side quests completed`],
-    [recap.concepts, `${recap.concepts} concepts learned`], [recap.nights, `${recap.nights} nights back on plan`],
-  ].filter(([count]) => Number(count) > 0) : [];
+  const recapLines = recap ? recapCardContent(recap).lines : [];
   const nights = sources ? nightsBackOnPlan(sources.logs) : 0;
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const selected = chosenTopics(settings.find(row => row.key === selectedTopicKey)?.value);
   const strong = (sources?.concepts ?? []).filter(row => ['Strong', 'Mastered'].includes(masteryMapState(row))).length;
   return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1>
-    <section className="card you-week" aria-label="What your time became this week"><span className="pill">This week</span><h2>What your time became</h2>{recapLines.length ? <ul>{recapLines.map(([, line]) => <li key={line}>{line}</li>)}</ul> : <p>Your week is just beginning. One small step counts.</p>}</section>
+    <section className="card you-week" aria-label="What your time became this week"><span className="pill">This week</span><h2>What your time became</h2>{recapLines.length ? <ul>{recapLines.map(line => <li key={line}>{line}</li>)}</ul> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
     <div className="you-links"><button type="button" className="card you-link" onClick={() => go('you/train')}><span className="pill">Strength</span><strong>Train</strong><span>Program, session, history and metrics</span></button>
       <button type="button" className="card you-link" onClick={() => go('you/mind')}><span className="pill">Practice</span><strong>Mind & learning</strong><span>Boards, cases, reviews and tracks</span></button></div>
     {sources && sources.logs.some(row => !row.deleted && row.lightsOutAt) && <section className="card"><h2>Nights back on plan</h2><strong className="night-count">{nights}</strong><p>One night at a time. Back tonight.</p></section>}

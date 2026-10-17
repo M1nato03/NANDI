@@ -1,0 +1,47 @@
+import { useEffect, useState } from 'react';
+import { recapCardContent, type WeeklyRecapData } from '../../core/recap';
+import { shareOrDownload } from '../../platform/files';
+import { recapPng } from './recapCard';
+
+export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; link?: boolean }) {
+  const card = recapCardContent(recap);
+  const [open, setOpen] = useState(false);
+  const [preview, setPreview] = useState('');
+  const [blob, setBlob] = useState<Blob | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState('');
+  useEffect(() => {
+    if (!open) return;
+    let active = true;
+    let url = '';
+    void recapPng(card).then(image => {
+      if (!active) return;
+      url = URL.createObjectURL(image);
+      setBlob(image);
+      setPreview(url);
+    }).catch(() => { if (active) setMessage('Could not make the recap image.'); });
+    return () => { active = false; if (url) URL.revokeObjectURL(url); setPreview(''); setBlob(null); };
+    // The card is fixed while this sheet is open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+  if (card.lines.length < 2) return null;
+  const share = async () => {
+    if (!blob) return;
+    setBusy(true);
+    try {
+      const result = await shareOrDownload(new File([blob], `nandi-week-${recap.from}.png`, { type: 'image/png' }));
+      setOpen(false);
+      setMessage(result === 'shared' ? 'Week shared.' : result === 'downloaded' ? 'Recap image downloaded.' : '');
+    } catch { setMessage('Could not share the recap image.'); }
+    finally { setBusy(false); }
+  };
+  return <>
+    <button type="button" className={link ? 'text-button recap-link' : 'recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? 'Your week is ready to share' : 'Share my week'}</button>
+    {open && <div className="recap-sheet-backdrop" onClick={() => setOpen(false)}><section className="recap-sheet" role="dialog" aria-modal="true" aria-label="Weekly recap preview" onClick={event => event.stopPropagation()}>
+      <h2>What my week became</h2>
+      {preview ? <img src={preview} width="1080" height="1350" alt={`Weekly recap, ${card.dates}: ${card.lines.join(', ')}. ${card.highlight}.`} /> : <p>Making your card…</p>}
+      <div className="recap-sheet-actions"><button type="button" onClick={() => void share()} disabled={!blob || busy}>Share</button><button type="button" className="secondary" onClick={() => setOpen(false)}>Not now</button></div>
+    </section></div>}
+    {message && <p role="status">{message}</p>}
+  </>;
+}

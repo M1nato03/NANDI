@@ -181,6 +181,14 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .you-week h2 { margin: 12px 0 6px; font-size: clamp(25px, 6vw, 34px); }
 .you-week p { margin: 8px 0 0; }
 .you-week li { display: block; }
+.recap-trigger { margin-top: 18px; width: 100%; }
+.recap-link { margin-top: 12px; width: 100%; text-align: left; text-decoration: underline; text-underline-offset: 4px; }
+.recap-sheet-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgb(0 0 0 / 80%); }
+.recap-sheet { width: min(100%, 470px); max-height: 95dvh; overflow: auto; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 25px 80px rgb(0 0 0 / 50%); }
+.recap-sheet h2 { margin: 0 0 12px; }
+.recap-sheet img { display: block; width: min(100%, 330px); height: auto; max-height: 65dvh; object-fit: contain; margin: 0 auto; border-radius: 8px; }
+.recap-sheet-actions { display: flex; gap: 12px; margin-top: 16px; }
+.recap-sheet-actions button { flex: 1; }
 .you-links { gap: 10px; }
 .you-link { min-height: 128px; padding: 18px; }
 .you-link strong { font-size: 27px; }
