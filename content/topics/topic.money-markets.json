@@ -64,12 +64,12 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "At the hostel canteen, a ₹100 note once covered five ₹20 idlis. Each now costs ₹25. How many fit?",
+                "stem": "The price of an idli rises from ₹20 to ₹25 while a student still has ₹100. What changed for that student?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Four idlis.",
-                    "feedback": "The note is fixed while each serving costs more; one serving drops out of the budget.",
+                    "text": "The same cash buys fewer idlis.",
+                    "feedback": "The note has the same face value, but the higher price cuts its buying power from five idlis to four.",
                     "correct": true,
                     "sourceRefs": [
                       "inflation",
@@ -78,8 +78,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Five idlis.",
-                    "feedback": "Five was the old count, so it comes to mind first. At ₹25 each, only four fit.",
+                    "text": "The same cash buys the same number.",
+                    "feedback": "The note still says ₹100, but each idli now takes a larger share of it. Only four fit.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -188,12 +188,12 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "A family shop raises only mango prices after a poor crop. Which claim fits the price index?",
+                "stem": "A poor crop raises mango prices, while other prices in a family’s shopping basket move in different ways. What can the mango rise alone tell about broad inflation?",
                 "options": [
                   {
                     "id": "a",
                     "text": "The mango change alone cannot show broad inflation.",
-                    "feedback": "An index combines many prices, which can move in different directions from one crop.",
+                    "feedback": "One price may rise while others do not. The broad index needs the full basket.",
                     "correct": true,
                     "sourceRefs": [
                       "inflation",
@@ -203,7 +203,7 @@
                   {
                     "id": "b",
                     "text": "A rise in one common food shows the whole basket rose.",
-                    "feedback": "A common food can feel like a fair sample. The index also checks many other prices.",
+                    "feedback": "A common food can stand out, but other basket prices may offset its rise.",
                     "correct": false,
                     "misconceptionIds": [
                       "inflation-m1"
@@ -457,7 +457,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -523,7 +523,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only the original ₹1,000.",
+                    "text": "Only the original ₹1,000 earns interest; the saved ₹100 never joins the base.",
                     "feedback": "The first ₹1,000 is easy to track. The saved ₹100 is now in the base too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -548,12 +548,12 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "A hostel club keeps each year's fund gain in its account. A second club removes every gain. Which balance can grow faster at one fixed rate?",
+                "stem": "At a hostel, two clubs earn the same positive rate. One withdraws each gain; the other leaves it invested. Which club earns interest on past gains next year?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The club that keeps its gains.",
-                    "feedback": "Its later percentage acts on earlier gains as well as the starting amount.",
+                    "text": "The club that leaves gains invested.",
+                    "feedback": "Retained gains join the amount on which the next rate is applied.",
                     "correct": true,
                     "sourceRefs": [
                       "compound",
@@ -562,8 +562,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both clubs grow at the same rate, so their balances stay equal.",
-                    "feedback": "The common rate makes equality seem likely, but retained gains enlarge one club's base for later growth.",
+                    "text": "The club that withdraws gains each year.",
+                    "feedback": "Withdrawing gains keeps them out of the next rate base, even though both clubs use the same rate.",
                     "correct": false,
                     "misconceptionIds": [
                       "compounding-m1"
@@ -952,7 +952,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1377,7 +1377,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1661,7 +1661,7 @@
                   { "id": "c", "text": "The same average means the same lowest payout.", "feedback": "A shared average can hide the spread. One game can still have a much worse low result.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "A higher top prize raises the average even with worse lows.",
+                    "text": "A higher top prize can force the average higher despite worse lows.",
                     "feedback": "The high prize draws the eye. Lower results can offset it, leaving the same average.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1781,7 +1781,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1898,12 +1898,12 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A portfolio holds four firms that all need the same crop. That crop's harvest collapses. About how many holdings are shielded just because the company names differ?",
+                "stem": "Four holdings are in different businesses, but all their shops sit in one flood zone. A flood shuts that area. About how many are shielded just by business type?",
                 "options": [
                   {
                     "id": "a",
                     "text": "0 holdings.",
-                    "feedback": "All four share the crop risk. Different names alone do not shield any holding from that shock.",
+                    "feedback": "Different lines of business do not remove a location risk shared by all four.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1912,7 +1912,7 @@
                   {
                     "id": "b",
                     "text": "3 holdings.",
-                    "feedback": "Four names look like four shields. All four still need the same crop.",
+                    "feedback": "Different businesses may face different sales risks, but one flood can reach all four shops.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -1940,12 +1940,12 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A student holds shares in four firms that all rely on the same crop. What risk remains?",
+                "stem": "A student owns four firms in different businesses, but all depend on the same crop. Which risk has she left in the mix?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A crop shock can hurt all four.",
-                    "feedback": "All four firms need the crop. One bad harvest could hurt each of them.",
+                    "text": "A bad harvest that hurts them all.",
+                    "feedback": "All four firms need the crop, so a poor harvest can hurt the whole mix.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1953,8 +1953,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Four company names remove the crop risk from the portfolio.",
-                    "feedback": "More names suggest diversification, but all four still depend on the same crop and can fall together.",
+                    "text": "One firm’s own management mistake.",
+                    "feedback": "A mix can reduce exposure to one firm. Here the crop is a common risk across the whole mix.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2066,7 +2066,7 @@
                   { "id": "c", "text": "Ten names ensure at least one escapes the crop shock.", "feedback": "Many names look spread out. Here each business still needs the same crop.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "Equal amounts remove any shared crop risk.",
+                    "text": "Equal amounts can remove shared crop risk from all ten firms.",
                     "feedback": "Equal weights look well spread. They still leave each firm tied to the crop.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2102,7 +2102,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It removes all chance of a fall.",
+                    "text": "A mixed set can remove all chance of a fall.",
                     "feedback": "Many holdings can feel safe. A broad market fall can reach much of the mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2186,7 +2186,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2509,7 +2509,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It is a loan repaid at a fixed date.",
+                    "text": "It is a loan claim with a fixed repayment date and a promised dividend each year.",
                     "feedback": "Both raise money for a firm. A share is ownership and has no fixed loan due date.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2593,7 +2593,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3002,7 +3002,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3293,7 +3293,7 @@
                   { "id": "c", "text": "Every EMI pays down debt by its full amount.", "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] },
                   {
                     "id": "b",
-                    "text": "Interest appears only after the last EMI.",
+                    "text": "Every EMI can go fully to principal, with interest charged only at the end.",
                     "feedback": "The debt is paid in parts, so interest may seem like a final fee. It can sit in each EMI.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3420,7 +3420,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3548,12 +3548,12 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "In an index fund comparison, 75 percent of large-cap active funds trailed their benchmark for one year. About what percent trailed in that group?",
+                "stem": "A classmate expects most active large-cap funds to beat their index because managers pick stocks. In the cited India scorecard, about what share trailed the benchmark over one year?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About 75 percent.",
-                    "feedback": "The result describes that group and period; it is not a forecast for a new fund.",
+                    "feedback": "The scorecard reports 75% for this group and year. Active selection can trail an index; this figure is not a forecast.",
                     "correct": true,
                     "sourceRefs": [
                       "sebi-index",
@@ -3563,7 +3563,7 @@
                   {
                     "id": "b",
                     "text": "About 25 percent.",
-                    "feedback": "25% is the share left over. The question asks for the group that trailed: 75%.",
+                    "feedback": "That is the share left after 75% trailed. The cited result challenges the idea that stock picking usually won in this group.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3728,8 +3728,8 @@
                   { "id": "c", "text": "The past group result is a rule for every future year.", "feedback": "A large study can feel final. Its past results do not set each new year's outcome.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
                   {
                     "id": "b",
-                    "text": "Every manager has the same return.",
-                    "feedback": "A broad average can hide the spread. Some managers did better, while others did worse.",
+                    "text": "Some managers can beat the index, so the group result says nothing.",
+                    "feedback": "A few winners do not erase the group result. The study still found many funds below their benchmark.",
                     "correct": false,
                     "misconceptionIds": [
                       "index-funds-m1"
@@ -3870,7 +3870,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3999,12 +3999,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A fake cashback message promises ₹200 but sends a ₹2,000 UPI collect request. If you approve that request with your PIN, about how much leaves your bank account?",
+                "stem": "A fake cashback message promises ₹200 and shows a ₹2,000 UPI collect request. A student thinks the PIN is needed to receive the reward. About what value of payment would that PIN actually authorise?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About ₹2,000.",
-                    "feedback": "The PIN approves the ₹2,000 request. That money leaves your bank account.",
+                    "feedback": "The collect request asks the student to pay ₹2,000. The ₹200 promise does not change that amount.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4132,12 +4132,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "In a collect request, the person who approves it is the ___.",
+                "stem": "A stranger sends a collect request to your UPI app and asks you to approve it. Whose account would send money if you enter your PIN?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Payer.",
-                    "feedback": "When that person says yes, money can leave the bank account.",
+                    "text": "The account linked to your approval.",
+                    "feedback": "Approving a collect request with your PIN authorises a debit from your linked account.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4146,8 +4146,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Person who receives the transfer.",
-                    "feedback": "The word collect can sound like receiving money, but approving the request means paying it.",
+                    "text": "The stranger’s account that asked to collect.",
+                    "feedback": "The requester is asking to receive money. The person who approves with a PIN pays.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4329,7 +4329,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           }
         ]

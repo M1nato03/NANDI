@@ -242,8 +242,8 @@
                   { "id": "c", "text": "A strong goal should work just as well in any room.", "feedback": "The goal stays the same, so this feels right. The old cue may be gone.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
-                    "text": "The goal alone should trigger the old action in the new room.",
-                    "feedback": "The goal is still there, which makes this sound right. The old room's cues may be missing.",
+                    "text": "The goal alone can recreate the old room cue in any new room.",
+                    "feedback": "The goal is still there, but it does not bring back the old room cue on its own.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m3"
@@ -322,8 +322,8 @@
                   { "id": "c", "text": "The 21-day mark is the same for every action.", "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
-                    "text": "One example fixes the deadline for similar people.",
-                    "feedback": "A teammate's success feels like a guide. Habit times can differ across people and acts.",
+                    "text": "Sharing a cue can guarantee every teammate forms the habit by day 21.",
+                    "feedback": "A shared cue need not make different people reach the same habit strength on one day.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -464,7 +464,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -522,7 +522,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both must feel exactly equal.",
+                    "text": "Equal token size can force both feelings to be exactly equal.",
                     "feedback": "The token amounts match, so equal feelings seem fair. A loss may feel stronger.",
                     "correct": false,
                     "misconceptionIds": [
@@ -907,7 +907,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1011,7 +1011,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Their guesses must match exactly.",
+                    "text": "The same trip cost can force their first guesses to match.",
                     "feedback": "Both guess the same trip cost, so matching guesses seem likely. Their first numbers differ.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1133,7 +1133,7 @@
                   { "id": "c", "text": "Knowing the number is random stops it from shaping a guess.", "feedback": "The warning should help. Yet people can still start near the first number they saw.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "A random number is a valid sample of the answer.",
+                    "text": "A random number can serve as a valid sample of the real answer.",
                     "feedback": "It appeared right before the question, so it can feel relevant. The number was random.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1213,7 +1213,7 @@
                   { "id": "c", "text": "A large marked-down amount proves a good deal.", "feedback": "The cut price catches the eye. A price from another seller is a better check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "The old tag independently checks the seller’s new tag.",
+                    "text": "The old price tag can prove fair value without an outside check.",
                     "feedback": "Two tags look like two prices. Both came from the same seller, so neither is an outside check.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1252,7 +1252,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The latest number always wins.",
+                    "text": "The latest number can erase the effect of an earlier one.",
                     "feedback": "The latest number feels fresh. The first one can still tug the later guess.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1357,7 +1357,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1584,8 +1584,8 @@
                   { "id": "c", "text": "A late red bus confirms the rule for all buses.", "feedback": "A match feels like proof. One late bus of another colour would break the rule.", "correct": false, "misconceptionIds": ["confirmation-bias-m1"], "sourceRefs": ["bias", "wason"] },
                   {
                     "id": "b",
-                    "text": "Another red bus is the only decisive test.",
-                    "feedback": "Another red bus feels like support. A late bus of another colour would test the rule harder.",
+                    "text": "More red buses can outweigh one late bus of another colour.",
+                    "feedback": "A single late bus of another colour would break the rule, no matter how many red matches were found.",
                     "correct": false,
                     "misconceptionIds": [
                       "confirmation-bias-m1"
@@ -1704,7 +1704,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A strong belief makes every clue equally easy to remember.",
+                    "text": "A strong belief can make every clue equally easy to remember.",
                     "feedback": "Memory can feel fair. Yet we may recall what fits our view and miss what does not.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1805,7 +1805,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -1863,7 +1863,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It must stay fully independent.",
+                    "text": "A clear line task can keep every answer fully independent.",
                     "feedback": "The line looks clear, so a solo choice seems safe. Some people still followed the wrong group.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2015,7 +2015,7 @@
                   { "id": "c", "text": "A clear line match cannot be swayed by public votes.", "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
-                    "text": "The group answer proves her own visual check was mistaken.",
+                    "text": "The group’s vote can show that her clear visual check was wrong.",
                     "feedback": "A unanimous group can seem more reliable than one person's view, but its votes can sway a public answer without changing the lines.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2089,7 +2089,7 @@
                   { "id": "c", "text": "More votes make a wrong choice true.", "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
-                    "text": "Unanimous votes guarantee independent checks.",
+                    "text": "Unanimous votes can guarantee independent checks.",
                     "feedback": "All votes match, so they look independent. The first answer may have shaped the rest.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2222,7 +2222,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2281,7 +2281,7 @@
                   { "id": "c", "text": "Printing time does not count as project work.", "feedback": "The chart may be done in an hour. It still takes time to print and finish.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
-                    "text": "It must finish in one hour.",
+                    "text": "The one-hour target can include printing without adding any time.",
                     "feedback": "One hour is the team's clear target. It still leaves out print work.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2382,12 +2382,12 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A student lists only drawing time for a project. What overlooked step could add time?",
+                "stem": "A student plans only the time to draw a poster. What other work needs time?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Finding and printing source images.",
-                    "feedback": "The work also needs images and print time. A drawing-only count leaves those out.",
+                    "text": "Time to find and print the images.",
+                    "feedback": "Finding and printing images take time beyond the drawing step she counted.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -2395,8 +2395,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The drawing time she already listed.",
-                    "feedback": "Drawing is the visible main task, so it dominates the estimate. Finding and printing images are extra steps she has not counted.",
+                    "text": "The drawing time already counted.",
+                    "feedback": "Counting the same drawing time again does not cover the tasks she left out.",
                     "correct": false,
                     "misconceptionIds": [
                       "planning-fallacy-m1"
@@ -2544,7 +2544,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every late job was planned badly.",
+                    "text": "Every late job can be explained by a poor initial estimate.",
                     "feedback": "A late job can look like a bad plan. This idea is about time guesses, not every delay.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2634,7 +2634,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-16b"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -2698,7 +2698,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only a pause in learning, with no role in keeping the poem.",
+                    "text": "Sleep can only pause learning; it cannot help keep the poem.",
                     "feedback": "No new lines are practiced during sleep, so it can seem idle. Sleep can help stabilise what was learned earlier.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2814,12 +2814,12 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "After a school lesson, what does it mean to make a new memory more stable?",
+                "stem": "A student learns a poem, then recalls it better the next day. What could help the memory last?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Making a new memory more stable over time.",
-                    "feedback": "The term names later processing that can help a recent memory last.",
+                    "text": "Consolidation after the first lesson.",
+                    "feedback": "After the first lesson, the brain can help keep the new memory over time.",
                     "correct": true,
                     "sourceRefs": [
                       "sleep-review",
@@ -2828,8 +2828,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Reading a page for the first time.",
-                    "feedback": "Reading starts the trace, so it feels like the same step. The later change makes it more firm.",
+                    "text": "The first reading of the poem.",
+                    "feedback": "Reading starts the trace. The question asks what can strengthen it after that first encounter.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
@@ -2987,7 +2987,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sleep creates knowledge of an unread chapter.",
+                    "text": "Sleep can create knowledge of a chapter that was never read.",
                     "feedback": "Sleep can help after study, so it may sound like a teacher. The chapter must be read first.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3095,7 +3095,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3306,7 +3306,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every action gets the same payoff.",
+                    "text": "A variable schedule can guarantee a payoff after every action.",
                     "feedback": "A good clip may follow a swipe. It does not follow each one.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3349,7 +3349,7 @@
                   { "id": "c", "text": "A feed must reward every set number of swipes.", "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
-                    "text": "All apps share a single programmed reward clock.",
+                    "text": "Feeds can only reward all users on one fixed swipe count.",
                     "feedback": "The slot machine link invites one clock. Feeds and users can have different patterns.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3435,7 +3435,7 @@
                   { "id": "c", "text": "Each user opens a feed for the same reason.", "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.", "correct": false, "misconceptionIds": ["variable-rewards-m2"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
-                    "text": "Only reward schedules ever matter.",
+                    "text": "Uncertain rewards can be the only reason anyone opens a feed.",
                     "feedback": "A reward can pull another check. People also open feeds for news or friends.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3477,7 +3477,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Each swipe pays out on schedule.",
+                    "text": "Each swipe can be counted on to pay out on schedule.",
                     "feedback": "A machine can pay on a schedule. This comparison is about not knowing when a good result comes.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3589,7 +3589,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -3771,12 +3771,12 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "In “If I sit at my desk, then I draw,” what is the if part?",
+                "stem": "A student plans, “If I sit at my desk, then I draw.” What should tell her when to start?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Sitting at the desk.",
-                    "feedback": "It names the situation that can bring the planned action to mind.",
+                    "text": "Sitting down at the desk.",
+                    "feedback": "The desk moment is the cue linked in advance to the drawing action.",
                     "correct": true,
                     "sourceRefs": [
                       "konstanz-plan",
@@ -3785,8 +3785,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Drawing.",
-                    "feedback": "The action is the goal, so it draws attention. The if part names the desk cue.",
+                    "text": "Finishing the drawing first.",
+                    "feedback": "Drawing is the response to start when the desk cue appears, not the starting cue itself.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -4052,7 +4052,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17d"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           },
           {
@@ -4373,7 +4373,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Others must think about me all day.",
+                    "text": "Others can be expected to think about me all day.",
                     "feedback": "The moment looms large to us. Others may give it far less thought.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4463,7 +4463,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17e"
             }
           }
         ]
