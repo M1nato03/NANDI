@@ -86,7 +86,7 @@ test('backup downloads, previews, and restores only after confirmation', async (
   const preview = page.getByLabel('Restore preview');
   await expect(preview).toBeVisible();
   await expect(preview.getByText('tasks')).toBeVisible();
-  await expect(preview.getByText('2026-10-07')).toBeVisible();
+  await expect(preview.getByText(/Wed 7 Oct/)).toBeVisible();
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
   await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');

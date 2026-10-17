@@ -273,3 +273,6 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
   .planner-priority > button { flex: 1 1 100%; }
   .recap-sheet-actions { gap: 8px; }
 }
+
+/* Match the 16 px phone gutter so the dots row never adds sideways scroll. */
+@media (max-width: 400px) { .deck-dashes { width: calc(100% + 32px); margin-left: -16px; } }
