@@ -8,6 +8,7 @@ import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { taskGroups, todayTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
+import { DeckGlyph } from '../DeckGlyph';
 import '../tasks/tasks.css';
 
 export function Plan({ questId }: { questId?: string }) {
@@ -39,7 +40,7 @@ export function Plan({ questId }: { questId?: string }) {
       <TaskList title="Unplaced" groups={unplaced} {...listProps} />
       <TaskList title="Someday" groups={someday} {...listProps} />
     </details>
-    <section className="plan-rituals" aria-label="Planning routines"><h2>Rituals</h2><div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}>Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}>Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}>Weekly review<small>Sundays</small></button></div></section>
+    <section className="plan-rituals" aria-label="Planning routines"><div className="ui-section-header"><span className="eyebrow">Make it easier</span><h2>Rituals</h2></div><div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}><DeckGlyph type="do" />Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}><DeckGlyph type="night" />Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}><DeckGlyph type="extra" />Weekly review<small>Sundays</small></button></div></section>
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} />}
   </section>;
 }

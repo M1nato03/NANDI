@@ -59,12 +59,13 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     if (checked && permission !== 'granted') await askPermission();
   }
   return <div className="you-settings"><NightPlanSetting />
-    {nightPauseAvailable() && <button type="button" className="secondary" onClick={() => go('you/night')}>Night pause</button>}
-    <button type="button" className="secondary" onClick={() => go('you/backup')}>Backup and restore</button>
-    <section className="card"><h2>Appearance</h2>
+    {nightPauseAvailable() && <button type="button" className="secondary ui-list-row" onClick={() => go('you/night')}>Night pause</button>}
+    <button type="button" className="secondary ui-list-row" onClick={() => go('you/backup')}>Backup and restore</button>
+    <section className="card settings-group"><h2>Appearance</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>
       <label>Motion <select value={motion} onChange={event => void setMotion(event.target.value)}><option value="system">System</option><option value="reduce">Reduced</option></select></label>
-      <h3 className="day-night-heading">Day and night</h3>
+    </section>
+    <section className="card settings-group"><h2 className="day-night-heading">Day and night</h2>
       <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>
       <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
       <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>

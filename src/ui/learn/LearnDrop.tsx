@@ -27,7 +27,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   }), []);
   const [picked, setPicked] = useState<string[]>([]);
   const [practiceId, setPracticeId] = useState<string>();
-  const [feedback, setFeedback] = useState<{ cursor: number; correct: boolean; text: string; rule: string }>();
+  const [feedback, setFeedback] = useState<{ cursor: number; correct: boolean; text: string; rule: string; optionId?: string }>();
   const [sequence, setSequence] = useState<string[]>([]);
   const [matchLeft, setMatchLeft] = useState<string>();
   const [pairs, setPairs] = useState<{ left: string; right: string }[]>([]);
@@ -44,7 +44,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const savedAnswer = drop?.pendingFeedback?.answer;
   const savedOptionId = typeof savedAnswer === 'string' ? savedAnswer : Array.isArray(savedAnswer) ? (typeof savedAnswer.at(-1) === 'string' ? savedAnswer.at(-1) as string : (savedAnswer.at(-1) as { right?: string } | undefined)?.right) : found?.item.options.find(option => Number(option.text.match(/-?\d+(?:[.,]\d+)*/)?.[0]?.replaceAll(',', '')) === savedAnswer)?.id;
   const savedFeedback = drop?.pendingFeedback && found ? { cursor: drop.pendingFeedback.cursor, correct: drop.pendingFeedback.correct,
-    text: found.item.options.find(option => option.id === savedOptionId)?.feedback ?? (drop.pendingFeedback.correct ? 'That fits.' : 'Look at the idea again next time.'), rule: found.concept.rule } : undefined;
+    text: found.item.options.find(option => option.id === savedOptionId)?.feedback ?? (drop.pendingFeedback.correct ? 'That fits.' : 'Look at the idea again next time.'), rule: found.concept.rule, optionId: savedOptionId } : undefined;
   const visibleFeedback = feedback ?? savedFeedback;
   const feedbackRef = useRef<HTMLDivElement>(null);
   const feedbackKey = visibleFeedback ? visibleFeedback.cursor : -1;
@@ -95,7 +95,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     setBusy(true);
     const grade = gradeItem(found.item, value);
     const option = found.item.options.find(candidate => candidate.id === feedbackId);
-    setFeedback({ cursor: drop.cursor, correct: grade.correct, text: option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule });
+    setFeedback({ cursor: drop.cursor, correct: grade.correct, text: option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule, optionId: feedbackId });
     if (!night && grade.correct && !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') void tapHaptic(true);
     try {
       const at = currentTime();
@@ -156,7 +156,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     <p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p><h2>{item.stem}</h2>
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
-    <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || used.has(option.id)} className={`${matchLeft === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''}`} onClick={() => choose(option.id)}>{option.text}</button>)}</div>
+    <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}</div>;
 }

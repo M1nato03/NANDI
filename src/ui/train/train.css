@@ -74,4 +74,29 @@
 .train-effort legend { margin-bottom: 6px; }
 .train-finish button { margin-right: 8px; margin-bottom: 8px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Move uses the shared card and progress primitives. */
+.train-screen, .train-workout, .train-onboarding { --area-color: var(--area-move); }
+.train-hero { background: var(--surface-1); }
+.train-screen .card > h2, .train-workout .card > h2 { font-size: 26px; line-height: 30px; }
+.train-readiness button { min-height: 44px; border-radius: var(--radius-chip); }
+.train-readiness button[aria-pressed='true'] { background: color-mix(in srgb, var(--area-move) 20%, var(--surface-2)); color: var(--area-move); }
+.train-metrics, .train-history { display: grid; gap: 8px; }
+.train-metrics li, .train-history li { min-height: 56px; padding: 12px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
+.train-heatmap span { border: 0; border-radius: 6px; background: var(--surface-3); }
+.train-heatmap span.trained { background: var(--area-move); }
+.train-chart { border-radius: var(--radius-row); background: var(--surface-2); }
+.train-chart polyline { stroke: var(--area-move); }
+.train-exercise { --area-color: var(--area-move); }
+.train-exercise .eyebrow, .train-dots span.current, .train-check { color: var(--area-move); }
+.train-dots span.current { background: var(--area-move); }
+.train-stepper-controls { grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 4px; }
+.train-stepper-controls button { width: 48px; height: 52px; border-radius: var(--radius-chip); background: var(--surface-2); color: var(--area-move); }
+.train-stepper-controls input { height: 52px; border: 1px solid var(--input-line); border-radius: var(--radius-chip); background: var(--surface-2); }
+.train-rest { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 16px; border-radius: var(--radius-row); background: var(--surface-2); }
+.train-rest strong { color: var(--area-move); }
+.train-rest progress { width: 100%; accent-color: var(--area-move); }
+.train-rest > div { flex-wrap: wrap; }
+.train-rest button { min-height: 44px; }
+.train-all-list button { min-height: 56px; border-radius: var(--radius-row); }
 @media (max-width: 430px) { .train-checks { grid-template-columns: 1fr; } .train-days { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; } .train-days button { min-width: 44px; font-size: 12px; } }

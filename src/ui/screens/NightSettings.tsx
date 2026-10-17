@@ -43,7 +43,7 @@ export function NightSettings() {
     if (!packages.includes(value)) void save('night.pause.apps', [...packages, value]);
     setNewPackage('');
   };
-  return <section className="card" aria-label="Night pause settings">
+  return <section className="card settings-group" aria-label="Night pause settings">
     <h3>Night pause</h3>
     <p>Optional. NANDI checks which app is in front during your bedtime window, so it can offer a short pause before a chosen app. This needs Android Usage access. The check and your choices stay on this phone.</p>
     <p>Usage access: {allowed ? 'Allowed' : 'Off'}</p>

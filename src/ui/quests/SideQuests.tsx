@@ -70,13 +70,13 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
       setShowForm(false);
     });
   }
-  return <section className="card side-quests" aria-label="Side quests">
-    <div className="quest-heading"><div><p className="eyebrow">This week</p><h2>{selectedId ? 'Side quest' : 'Side quests'}</h2><span className="quest-count">{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
+  return <section className="card side-quests deck-area-extra" aria-label="Side quests">
+    <div className="quest-heading"><div className="ui-section-header"><p className="eyebrow">This week</p><h2>{selectedId ? 'Side quest' : 'Side quests'}</h2><span className="quest-count">{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
       {!selectedId && <div className="quest-heading-actions"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} aria-label="Swap one suggestion" onClick={() => void run(() => repo.swap(Date.now()))}>Swap</button><button type="button" className="secondary" aria-label="Add custom quest" onClick={() => setShowForm(value => !value)}>Add your own</button></div>}</div>
     <div className="quest-list">{shown.map(row => {
       const hint = hints[categories.get(row.sourceId) ?? ''] ?? { why: 'Make space for something you chose.', time: 'Your pace' };
       const expanded = expandedId?.toLowerCase() === row.id.toLowerCase();
-      return <article className={row.status === 'done' ? 'quest-row quest-done' : 'quest-row'} key={row.id}>
+      return <article className={row.status === 'done' ? 'quest-row quest-done ui-list-row' : 'quest-row ui-list-row'} key={row.id}>
         <div className="quest-row-main"><button type="button" className="quest-disclosure" aria-expanded={expanded} aria-controls={`quest-detail-${row.id}`} onClick={() => setExpandedId(expanded ? null : row.id)}>
           <strong>{row.title}</strong><span className="quest-why">{hint.why}</span><span className="quest-time">{hint.time}{row.custom ? ' · Custom' : ''} <span aria-hidden="true">{expanded ? '⌃' : '⌄'}</span></span>
         </button>
