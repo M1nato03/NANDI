@@ -228,3 +228,48 @@ select, input { background: var(--raised); color: var(--ink); border: 1px solid 
 .deck-night .deck-dashes button.complete::after { animation: none; }
 .deck-night .learn-progress span { transition: none; }
 @media (prefers-reduced-motion: reduce) { .deck-night *, .deck-night *::before, .deck-night *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Shared hierarchy and control rhythm across the tour. */
+.screen > .eyebrow { margin: 0 0 7px; }
+.screen > h1 { font-size: clamp(38px, 10vw, 58px); line-height: 1.12; margin: 0 0 24px; overflow-wrap: normal; }
+.screen h2 { font-size: clamp(24px, 6.4vw, 31px); line-height: 1.17; }
+.screen h3 { font-size: clamp(20px, 5.5vw, 23px); line-height: 1.2; }
+.card { padding: clamp(18px, 5vw, 24px); margin-block: 18px; }
+.card > :last-child { margin-bottom: 0; }
+.screen-back { margin-bottom: 18px; }
+.screen p, .screen li { line-height: 1.48; }
+.screen .actions > button, .planner-actions > button, .recap-sheet-actions > button, .train-nav > button, .learn-map-actions > button { min-height: 52px; border-radius: 14px; }
+.screen .actions, .planner-actions, .recap-sheet-actions { align-items: stretch; }
+.screen .actions > button { flex: 1 1 140px; }
+.planner-actions > button { padding-inline: 10px; line-height: 1.25; }
+.planner-priority { align-items: flex-start; }
+.planner-priority > button { flex: 0 0 42%; min-height: 48px; padding-inline: 8px; }
+.planner-capacity h2 { font-size: clamp(22px, 5.8vw, 28px); }
+.planner-step h2 .small { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0; }
+.planner-screen label, .planner-screen input, .planner-screen select { min-width: 0; }
+.plan-rituals { padding: 18px; }
+.ritual-buttons button { min-height: 70px; font-size: 13px; }
+.you-links .you-link { min-height: 132px; }
+.you-link strong { font-size: clamp(25px, 7vw, 30px); line-height: 1.1; }
+.mind-today-chip { min-height: 76px; align-content: center; }
+.mind-today-chip span { color: var(--secondary-ink); }
+.mind-courses > .card { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; padding: 16px 0 0; }
+.mind-practice-options > div { min-width: 0; }
+.mind-practice-options button { min-height: 48px; border-radius: 12px; }
+.deck-night { border-radius: 18px; padding: 0; background: transparent; min-height: 0; }
+.deck-night .deck-card { min-height: 0; }
+.train-metrics li { display: grid; grid-template-columns: minmax(80px, .85fr) minmax(0, 1.5fr); gap: 10px; align-items: baseline; }
+.train-metrics li span { color: var(--secondary-ink); }
+.train-history li { align-items: baseline; }
+.recap-sheet { padding: 20px; }
+.recap-sheet-actions button { min-width: 0; }
+@media (max-width: 400px) {
+  .content { padding-inline: 16px; }
+  .topbar { padding-inline: 16px; }
+  .quest-heading { flex-wrap: wrap; }
+  .quest-heading-actions { width: 100%; }
+  .quest-heading-actions button { flex: 1; width: auto; }
+  .planner-priority { flex-wrap: wrap; }
+  .planner-priority > button { flex: 1 1 100%; }
+  .recap-sheet-actions { gap: 8px; }
+}

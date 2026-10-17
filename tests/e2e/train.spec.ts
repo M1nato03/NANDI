@@ -47,7 +47,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await capture(page, testInfo.outputPath(`train-finish-${scheme}.png`));
     await page.getByRole('button', { name: 'View history' }).click();
     await expect(page.getByRole('heading', { name: 'History' })).toBeVisible();
-    await expect(page.locator('.train-history')).toContainText('safety');
+    await expect(page.locator('.train-history')).toContainText('Stopped for comfort');
     await capture(page, testInfo.outputPath(`train-history-${scheme}.png`));
   });
 }

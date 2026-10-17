@@ -13,6 +13,7 @@ import { trackWrite } from '../../core/pendingWrites';
 import { openDailyCase, saveDailyCase } from '../../data/repos/mysteries';
 import { accrueActive } from '../../data/repos/puzzleRuns';
 import { db } from '../../data/db';
+import { formatDayKey } from '../../core/time/formatDayKey';
 import type { PuzzleRunRow } from '../../data/types';
 import { recordError } from '../errorRing';
 
@@ -294,7 +295,7 @@ export function CaseScreen({
       <button type="button" className="text-button" onClick={onExit}>
         Back to Mind
       </button>
-      <p className="eyebrow">Case of the day · {day}</p>
+      <p className="eyebrow">Case of the day · {formatDayKey(day)}</p>
       {!mystery || !run || !grid ? (
         <p role="status">{message}</p>
       ) : (
