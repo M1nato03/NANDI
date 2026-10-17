@@ -6,7 +6,9 @@ import { nightPuzzleBoard, selectNightPuzzle } from '../../core/puzzles/night';
 import { dayKey } from '../../core/time/dayKey';
 import { shutdownAt } from '../../core/tasks/planner';
 import { nightPlanText, nightsBackOnPlan, readNightPlan } from '../../core/nightPlan';
+import { selectWinddownMove } from '../../core/winddown';
 import { weekKey } from '../../core/quests';
+import winddown from '../../../content/winddown/winddown.core.json';
 import { db } from '../../data/db';
 import { createQuestRepo } from '../../data/repos/quests';
 import { DelayedCardSkeleton } from '../shell/DelayedCardSkeleton';
@@ -16,6 +18,7 @@ import type { useTaskBoard } from '../tasks/useTaskBoard';
 import { NightPlanSetting } from '../screens/NightPlanSetting';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
+let rememberedSwaps = { day: '', count: 0 };
 
 export const NIGHT_CARDS = [
   { id: 'tonight', tag: 'Tonight' },
@@ -35,19 +38,13 @@ const NightPuzzle = memo(function NightPuzzle({ today, dailySolved, type, diff }
   return <><span className="pill">One calm puzzle</span><h2>{title}</h2><p>{choice.daily ? 'Today’s board is here when you want it.' : 'An easy board for a quiet moment.'}</p><div className="deck-puzzle" role="img" aria-label={`Preview of ${title} board`} data-board-seed={puzzle?.seed} style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}>{values.map((value, i) => <span key={i} className={puzzle?.type === 'crowns' ? `region-${puzzle.region[i] ?? 0}` : ''}>{value || ''}</span>)}</div><p className="deck-meta">{choice.daily ? `${choice.diff} board` : 'Easy practice'}</p><div className="deck-actions"><button type="button" onClick={() => go(choice.daily ? 'you/mind/board/daily' : `you/mind/board/${choice.type}/easy/night`)}>Play</button></div></>;
 });
 
-const windDownIds = ['read-pages', 'book-notes', 'quiet-minutes'] as const;
-const windDownText: Record<string, string> = {
-  'read-pages': 'Read 5 pages of a book.',
-  'book-notes': 'Write 3 lines about something you read.',
-  'quiet-minutes': 'Spend 10 quiet minutes without a screen.',
-};
-
 export function NightDeck({ now, bedtime, board }: { now: number; bedtime: string; board: ReturnType<typeof useTaskBoard> }) {
   useEffect(() => preloadOnIdle(() => import('../learn/LearnDrop')), []);
   const today = dayKey(now);
   const [index, setIndex] = useState(deckIndex);
   const [tomorrowTitle, setTomorrowTitle] = useState('');
-  const [phoneMoveDone, setPhoneMoveDone] = useState(false);
+  const [phoneMoveState, setPhoneMoveState] = useState(() => ({ day: today, swaps: rememberedSwaps.day === today ? rememberedSwaps.count : 0, done: false }));
+  const phoneMove = phoneMoveState.day === today ? phoneMoveState : { day: today, swaps: rememberedSwaps.day === today ? rememberedSwaps.count : 0, done: false };
   const [message, setMessage] = useState('');
   useEffect(() => { void createQuestRepo(db).ensureWeek(Date.now()).catch(() => setMessage('Side quests could not load.')); }, []);
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
@@ -78,7 +75,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   const tomorrow = dayKey(tomorrowDate.getTime());
   const tomorrowTask = board.tasks.find(row => !row.deleted && row.status !== 'done' && row.dayKey === tomorrow);
-  const suggestionId = windDownIds[Number(today.replaceAll('-', '')) % windDownIds.length]!;
+  const suggestion = selectWinddownMove(today, winddown.body.moves, phoneMove.swaps);
 
   useEffect(() => {
     const update = () => setIndex(deckIndex());
@@ -114,8 +111,14 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     if (!ok) setMessage('Could not save the check-in. Try again.');
   };
   const chooseMove = () => {
-    setPhoneMoveDone(true);
+    setPhoneMoveState({ ...phoneMove, done: true });
     if (now >= shutdownAt(now, bedtime) - 30 * 60_000 && !log?.lightsOutAt) void checkIn();
+  };
+  const anotherIdea = () => {
+    if (phoneMove.swaps >= 3) return;
+    const swaps = phoneMove.swaps + 1;
+    rememberedSwaps = { day: today, count: swaps };
+    setPhoneMoveState({ ...phoneMove, swaps });
   };
   const next = () => goToCard(Math.min(at + 1, NIGHT_CARDS.length - 1));
 
@@ -127,7 +130,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
       {card.id === 'learn' && <Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense>}
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
       {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<div className="deck-end"><p><strong>Tomorrow’s first step</strong></p>{tomorrowTask ? <p>{tomorrowTask.title}</p> : <form className="deck-add" onSubmit={event => void saveTomorrow(event)}><label htmlFor="night-tomorrow">Name one small step</label><input id="night-tomorrow" value={tomorrowTitle} onChange={event => setTomorrowTitle(event.target.value)} maxLength={160} placeholder="Tomorrow’s first step" required /><button type="submit" disabled={board.busy}>Save</button></form>}</div></>}
-      {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{windDownText[suggestionId]}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMoveDone}>{phoneMoveDone ? 'Set for tonight' : "I’ll do it"}</button></div></>}
+      {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{suggestion.text}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMove.done}>{phoneMove.done ? 'Set for tonight' : "I’ll do it"}</button></div>{!phoneMove.done && phoneMove.swaps < 3 && <button type="button" className="text-button" onClick={anotherIdea}>Another idea</button>}</>}
       {card.id === 'stop' && <><span className="pill">The stopping point</span><h2>That’s tonight. Phone down.</h2><p>Lights-out time: {bedtime}</p>{log?.lightsOutAt && <p className="deck-meta">Check-in saved. Rest when you are ready.</p>}<div className="deck-actions">{!log?.lightsOutAt && <button type="button" onClick={() => void checkIn()}>Lights-out check-in</button>}<button type="button" className="secondary" onClick={() => goToCard(0)}>Back to cards</button></div></>}
     </article>
     {card.id !== 'stop' && card.id !== 'learn' && <button type="button" className="secondary deck-next" onClick={next}>Next</button>}

@@ -1,0 +1,39 @@
+{
+  "id": "winddown.core",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Offline wind-down moves",
+  "description": "Small things to do after putting the phone down.",
+  "author": "claude",
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "kind": "winddown",
+  "body": {
+    "moves": [
+      { "id": "read-five-pages", "text": "Read 5 pages of a book.", "minutes": 10, "kind": "read" },
+      { "id": "lay-out-clothes", "text": "Lay out tomorrow's clothes.", "minutes": 3, "kind": "prepare" },
+      { "id": "window-breaths", "text": "Take 10 slow breaths by the window.", "minutes": 2, "kind": "quiet" },
+      { "id": "tidy-desk", "text": "Tidy the desk for 5 minutes.", "minutes": 5, "kind": "tidy" },
+      { "id": "first-step", "text": "Write tomorrow's first step on paper.", "minutes": 3, "kind": "write" },
+      { "id": "neck-shoulders", "text": "Stretch your neck and shoulders for 3 minutes.", "minutes": 3, "kind": "body" },
+      { "id": "read-poem", "text": "Read a poem aloud.", "minutes": 3, "kind": "read" },
+      { "id": "fill-water-bottle", "text": "Fill a water bottle for the morning.", "minutes": 2, "kind": "prepare" },
+      { "id": "sit-quietly", "text": "Sit quietly for 10 minutes.", "minutes": 10, "kind": "quiet" },
+      { "id": "clear-bedside-table", "text": "Clear the bedside table.", "minutes": 4, "kind": "tidy" },
+      { "id": "good-moment", "text": "Write down one good moment from today.", "minutes": 2, "kind": "write" },
+      { "id": "roll-shoulders", "text": "Roll your shoulders slowly for 2 minutes.", "minutes": 2, "kind": "body" },
+      { "id": "short-chapter", "text": "Read one short chapter.", "minutes": 15, "kind": "read" },
+      { "id": "book-by-bed", "text": "Put a book by the bed for tomorrow.", "minutes": 2, "kind": "prepare" },
+      { "id": "evening-sounds", "text": "Listen to the evening sounds for 5 minutes.", "minutes": 5, "kind": "quiet" },
+      { "id": "fold-clothes", "text": "Fold the loose clothes in your room.", "minutes": 5, "kind": "tidy" },
+      { "id": "tomorrow-needs", "text": "List three things to take with you tomorrow.", "minutes": 3, "kind": "write" },
+      { "id": "slow-room-walk", "text": "Walk slowly around the room for 3 minutes.", "minutes": 3, "kind": "body" },
+      { "id": "favorite-paragraph", "text": "Reread a favorite paragraph.", "minutes": 3, "kind": "read" },
+      { "id": "phone-away", "text": "Plug the phone in away from the bed.", "minutes": 2, "kind": "prepare" },
+      { "id": "look-out-window", "text": "Look out the window for 5 quiet minutes.", "minutes": 5, "kind": "quiet" },
+      { "id": "put-dishes-away", "text": "Put away a few clean dishes.", "minutes": 4, "kind": "tidy" },
+      { "id": "book-notes", "text": "Write 3 lines about something you read.", "minutes": 3, "kind": "write" },
+      { "id": "hands-wrists", "text": "Loosen your hands and wrists for 2 minutes.", "minutes": 2, "kind": "body" }
+    ]
+  }
+}

@@ -12,7 +12,7 @@ describe('pack schemas', () => {
     expect(v.safeParse(packSchema, charaka).success).toBe(true);
   });
   it('exposes the lessons and the Greene deck as offline seeds', () => {
-    expect(bundledPacks.map((pack) => pack.id).sort()).toEqual(['deck.greene', 'lessons.charaka-holds-up', 'lessons.gita-restless-mind', 'quests.core', 'track.drone-tech']);
+    expect(bundledPacks.map((pack) => pack.id).sort()).toEqual(['deck.greene', 'lessons.charaka-holds-up', 'lessons.gita-restless-mind', 'quests.core', 'track.drone-tech', 'winddown.core']);
   });
   it('accepts the pilot track and rejects missing checks, cards and video metadata', () => {
     expect(v.safeParse(packSchema, drone).success).toBe(true);

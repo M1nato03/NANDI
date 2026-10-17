@@ -91,6 +91,14 @@ export const questDefinitionSchema = v.strictObject({
 });
 export const questsBodySchema = v.strictObject({ quests: v.pipe(v.array(questDefinitionSchema), v.minLength(35)) });
 
+export const winddownMoveSchema = v.strictObject({
+  id: v.pipe(v.string(), v.regex(/^[a-z0-9-]+$/)),
+  text: v.pipe(v.string(), v.minLength(1), v.maxLength(70), v.regex(/^[A-Za-z0-9 ,.'!?-]+$/)),
+  minutes: v.pipe(integer, v.minValue(2), v.maxValue(15)),
+  kind: v.picklist(['read', 'write', 'body', 'tidy', 'prepare', 'quiet']),
+});
+export const winddownBodySchema = v.strictObject({ moves: v.pipe(v.array(winddownMoveSchema), v.minLength(24), v.maxLength(24)) });
+
 const trackQuestionSchema = v.strictObject({ q: text, options: v.tuple([text, text, text]), answer: v.pipe(integer, v.minValue(0), v.maxValue(2)), why: text });
 export const trackUnitSchema = v.strictObject({
   id: text, title: text, minutes: v.pipe(integer, v.minValue(1), v.maxValue(15)),
@@ -110,16 +118,18 @@ const envelope = {
 };
 export const packEnvelopeSchema = v.strictObject({
   ...envelope,
-  kind: v.picklist(['lessons', 'deck', 'quests', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop', 'topic']),
+  kind: v.picklist(['lessons', 'deck', 'quests', 'winddown', 'track', 'puzzles', 'program', 'rules', 'mystery-arc', 'shop', 'topic']),
   body: v.unknown(),
 });
 export const lessonsPackSchema = v.strictObject({ ...envelope, kind: v.literal('lessons'), body: lessonsBodySchema });
 export const deckPackSchema = v.strictObject({ ...envelope, kind: v.literal('deck'), body: deckBodySchema });
 export const questsPackSchema = v.strictObject({ ...envelope, kind: v.literal('quests'), body: questsBodySchema });
+export const winddownPackSchema = v.strictObject({ ...envelope, kind: v.literal('winddown'), body: winddownBodySchema });
 export const trackPackSchema = v.strictObject({ ...envelope, kind: v.literal('track'), body: trackBodySchema });
 export const topicPackSchema = v.strictObject({ ...envelope, kind: v.literal('topic'), body: topicBodySchema });
-export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, trackPackSchema, topicPackSchema]);
+export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, winddownPackSchema, trackPackSchema, topicPackSchema]);
 export type Pack = v.InferOutput<typeof packSchema>;
+export type WinddownMove = v.InferOutput<typeof winddownMoveSchema>;
 export type Lesson = v.InferOutput<typeof lessonSchema>;
 export type TrackPack = v.InferOutput<typeof trackPackSchema>;
 export type TrackUnit = v.InferOutput<typeof trackUnitSchema>;
