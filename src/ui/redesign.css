@@ -4,6 +4,7 @@
   --ink: #f3efe8; --secondary-ink: #cfc8bd; --muted: #aaa49b;
   --accent: #ffb25b; --teal: #5fd4c0; --button: #f3efe8; --button-ink: #101114;
   --ember: #ffb25b; --gold: #ffb25b; --mind: #5fd4c0; --danger: #ff8989; --ok: #5fd4c0;
+  --focus-ring: #ffb25b;
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
@@ -12,6 +13,7 @@
     --ink: #222126; --secondary-ink: #514d49; --muted: #5f5b55;
     --accent: #975008; --teal: #146b5e; --button: #222126; --button-ink: #f5f1e9;
     --ember: #975008; --gold: #975008; --mind: #146b5e; --danger: #a32828; --ok: #146b5e;
+    --focus-ring: #975008;
   }
 }
 :root[data-theme='light'] {
@@ -20,6 +22,7 @@
   --ink: #222126; --secondary-ink: #514d49; --muted: #5f5b55;
   --accent: #975008; --teal: #146b5e; --button: #222126; --button-ink: #f5f1e9;
   --ember: #975008; --gold: #975008; --mind: #146b5e; --danger: #a32828; --ok: #146b5e;
+  --focus-ring: #975008;
 }
 html { font-family: 'DM Sans', sans-serif; }
 body { overflow-x: hidden; }
@@ -27,7 +30,7 @@ button, select, input, summary, .tabbar a { min-height: 44px; }
 button { min-height: 60px; border-radius: 18px; background: var(--button); border: 1px solid var(--button); color: var(--button-ink); padding: 14px 22px; font-weight: 600; }
 button.secondary { min-height: 48px; border-radius: 14px; background: transparent; border-color: var(--line); color: var(--ink); }
 button.text-button { min-height: 44px; background: transparent; border: 0; color: var(--accent); padding: 8px 0; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [role="button"]:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
 .app-shell { max-width: 920px; }
 .topbar { min-height: 70px; padding: 12px 24px; }
 .brand { font: 800 24px 'Bricolage Grotesque', sans-serif; letter-spacing: -.04em; }

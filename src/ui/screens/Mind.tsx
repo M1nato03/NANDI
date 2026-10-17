@@ -313,8 +313,11 @@ export function Mind({ entry }: { entry?: string }) {
   if (reviews && deck) return <Reviews entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onDone={() => void finishReviews()} />;
   if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => entry === 'case' ? go('you/mind') : history.back()} />;
   if (selection) return <section className="screen mind-board" data-save-state={saveState} data-board-seed={board?.seed}>
-    {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
-    {busy || !board || !run ? <><h1>{PZ.TYPES[selection.type].name}</h1><p role="status">{message || 'Building board…'}</p></> : <>
+    {(night === 'lightsOut' || busy || !board || !run) && <div role="status">
+      {night === 'lightsOut' && <p>{nightMindNote(showEconomy)}</p>}
+      {(busy || !board || !run) && <p>{message || 'Building board…'}</p>}
+    </div>}
+    {busy || !board || !run ? <h1>{PZ.TYPES[selection.type].name}</h1> : <>
       <p className="eyebrow">{selection.intro ? `Intro board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
@@ -322,7 +325,7 @@ export function Mind({ entry }: { entry?: string }) {
         <p className="small" aria-label="Active time">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => commit({ ...state, grid }, notes ? { notes } : {})} onPath={path => commit({ ...state, path })} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" onClick={() => { const hint = nextHint(board, state); if (hint.changed) commit(hint.state, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), 3] }); setMessage(hint.message); }}>Hint</button></div>
-        {message && <p role="status">{message}</p>}
+        {message && <p>{message}</p>}
       </>}
     </>}
   </section>;
