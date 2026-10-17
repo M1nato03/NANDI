@@ -54,7 +54,7 @@ for (const scheme of ['light', 'dark'] as const) {
       if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses and past lessons').click();
       await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
     }).toPass({ timeout: 15_000 });
-    await page.getByRole('button', { name: 'Review due cards' }).click();
+    await page.getByRole('button', { name: 'Review cards' }).click();
     await expect(page.getByLabel('Review card')).toContainText('What do rotors push to make lift?');
     await page.screenshot({ path: testInfo.outputPath(`track-review-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

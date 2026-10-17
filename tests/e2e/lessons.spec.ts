@@ -52,9 +52,13 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByText('5 for today')).toBeVisible();
     await page.getByRole('button', { name: 'Review cards' }).click();
     for (let i = 0; i < 20; i++) {
-      if (await page.getByRole('heading', { name: "That's enough for today" }).isVisible()) break;
+      // Wait for the next card or the stopping screen; the set size follows the 5/7/10 ramp.
+      const done = page.getByRole('heading', { name: "That's enough for today" });
       const card = page.getByLabel('Review card');
-      await expect(card).toBeVisible();
+      await expect(done.or(card)).toBeVisible();
+      if (await done.isVisible()) break;
+      await expect(done.or(card.getByRole('button', { name: 'Reveal answer' })).or(card.locator('.mind-lesson-options button').first())).toBeVisible();
+      if (await done.isVisible()) break;
       if (i === 0) await page.screenshot({ path: testInfo.outputPath(`review-recall-${scheme}.png`), fullPage: true });
       if (await card.getByRole('button', { name: 'Reveal answer' }).isVisible()) {
         await card.getByRole('button', { name: 'Reveal answer' }).click();
