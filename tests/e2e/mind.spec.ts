@@ -9,7 +9,7 @@ test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   const grid = page.locator('.case-grid').first();
   await expect(grid).toBeVisible({ timeout: 30_000 });
   const blank = grid.locator('.case-blank').first();
-  await expect(blank).toHaveCSS('background-color', 'rgb(28, 29, 34)');
+  await expect(blank).toHaveCSS('background-color', 'rgb(30, 32, 39)');
   await blank.click();
   await expect(grid.locator('.case-no').first()).toBeVisible();
   await grid.locator('.case-no').first().click();

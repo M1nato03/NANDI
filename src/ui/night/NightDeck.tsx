@@ -16,6 +16,7 @@ import { preloadOnIdle } from '../shell/preloadOnIdle';
 import { deckIndex, go, goToCard, navigationEventName } from '../shell/router';
 import type { useTaskBoard } from '../tasks/useTaskBoard';
 import { NightPlanSetting } from '../screens/NightPlanSetting';
+import { DeckGlyph, type Glyph } from '../DeckGlyph';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
 let rememberedSwaps = { day: '', count: 0 };
@@ -58,6 +59,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const returned = nightsBackOnPlan(logs);
   const at = Math.min(index, NIGHT_CARDS.length - 1);
   const card = NIGHT_CARDS[at]!;
+  const glyph = ({ tonight: 'night', learn: 'learn', puzzle: 'think', words: 'end', phone: 'extra', stop: 'do' } as Record<string, Glyph>)[card.id] ?? 'night';
   const featured = featuredSpec(today);
   const dailySolved = runs.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved' && !row.deleted);
   const doneTasks = board.tasks.filter(row => !row.deleted && row.doneAt && dayKey(row.doneAt) === today);
@@ -126,6 +128,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     <div className="deck-heading"><h1>Now <span className="deck-night-label">Night</span></h1><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span></div>
     {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => goToCard(i)} />)}</div>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
+      <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
       {card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
       {card.id === 'learn' && <Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense>}
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
