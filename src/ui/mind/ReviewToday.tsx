@@ -11,5 +11,5 @@ export function ReviewToday({ day }: { day: string }) {
   const due = cards.filter(row => !row.deleted && !hidden.has(`card:${row.id}`) && row.due <= day).length;
   const count = reviewAllowance(due, day, readReviewRamp(state?.value));
   if (!count) return null;
-  return <div className="review-today"><p><strong>Reviews · {count} for today</strong></p>{due > count && <p className="deck-meta">{due} waiting</p>}<button type="button" className="secondary" onClick={() => go('you/mind/reviews')}>Review cards</button></div>;
+  return <div className="review-today"><p><strong>Reviews · {count} for today</strong></p>{due > count && <p className="deck-meta">{due} waiting</p>}<button type="button" className="secondary" onClick={() => go('mind/reviews')}>Review cards</button></div>;
 }

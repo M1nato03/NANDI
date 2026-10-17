@@ -32,7 +32,7 @@ export class WebNotifier implements Notifier {
     if (delay > 2_147_483_647) return;
     this.timers.set(reminder.id, window.setTimeout(() => {
       this.timers.delete(reminder.id);
-      if (document.visibilityState === 'visible') void navigator.serviceWorker?.ready.then(registration => registration.showNotification(reminder.title, { body: reminder.body }));
+      if (document.visibilityState === 'visible') void navigator.serviceWorker?.ready.then(registration => registration.showNotification(reminder.title, { body: reminder.body, data: { route: reminder.channel === 'rest' ? '#train' : '#plan' } }));
     }, delay));
   }
   async cancel(id: string): Promise<void> { const timer = this.timers.get(id); if (timer !== undefined) window.clearTimeout(timer); this.timers.delete(id); }

@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 async function checkLayout(page: Page) {
   const small = await page.locator('button, input, select, .tabbar a').evaluateAll(nodes => nodes
@@ -56,9 +56,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(restored.locator('.quest-row')).toHaveCount(4);
     await expect(restored.locator('.quest-row').filter({ hasText: 'Read two chapters' }).locator('.quest-check')).toBeVisible();
     await expect(restored.getByRole('button', { name: 'Swap one suggestion' })).toBeDisabled();
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await page.getByRole('button', { name: 'Go to card 6: A little extra' }).click();
-    await expect(page.getByRole('article', { name: 'A little extra card' })).toContainText('I did it');
+    await expect(page.getByRole('region', { name: 'Side quests' })).toBeVisible();
     await checkLayout(page);
   });
 }

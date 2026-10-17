@@ -6,7 +6,7 @@ import { DEFAULT_PAUSE_APPS } from '../../core/nightPause';
 import { readNightPlan, nightPlanText } from '../../core/nightPlan';
 import { RULES } from '../../core/rules.config';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
-import { go, goToCard } from '../shell/router';
+import { go } from '../shell/router';
 
 export function NightPauseCard({ packageName, close }: { packageName: string; close: () => void }) {
   const rows = useLiveQuery(() => db.settings.toArray(), []) ?? [];
@@ -33,7 +33,7 @@ export function NightPauseCard({ packageName, close }: { packageName: string; cl
   async function openDeck() {
     if (acting.current) return;
     acting.current = true;
-    try { await finish('openings'); close(); go('now'); goToCard(0); }
+    try { await finish('openings'); close(); go('night'); }
     catch { acting.current = false; setMessage('Could not open the deck. Try again.'); }
   }
   async function goAnyway() {

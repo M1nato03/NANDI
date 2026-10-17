@@ -1,6 +1,6 @@
-﻿import { expect, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-const tabs = ['Now', 'Plan', 'You'];
+const tabs = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {

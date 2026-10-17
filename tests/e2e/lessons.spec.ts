@@ -1,4 +1,4 @@
-﻿/// <reference lib="dom" />
+/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -6,8 +6,8 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(180_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#you/mind');
-    await page.getByText('Courses and past lessons').click();
+    await page.goto('/?e2e#learn');
+    await page.getByText('Courses', { exact: true }).click();
     await page.getByRole('button', { name: 'Start lesson', exact: true }).click();
     const lesson = page.locator('.mind-lesson');
     await expect(lesson.getByLabel('guess screen')).toBeVisible();
@@ -49,11 +49,16 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await lesson.getByRole('button', { name: 'Done' }).click();
 
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
     await expect(page.getByText('5 for today')).toBeVisible();
     await page.getByRole('button', { name: 'Review cards' }).click();
+    const finished = page.getByRole('heading', { name: "That's enough for today" });
     for (let i = 0; i < 20; i++) {
-      if (await page.getByRole('heading', { name: "That's enough for today" }).isVisible()) break;
       const card = page.getByLabel('Review card');
+      const reveal = card.getByRole('button', { name: 'Reveal answer' });
+      const option = card.locator('.mind-lesson-options button').first();
+      await expect(finished.or(reveal).or(option)).toBeVisible();
+      if (await finished.isVisible()) break;
       await expect(card).toBeVisible();
       if (i === 0) await page.screenshot({ path: testInfo.outputPath(`review-recall-${scheme}.png`), fullPage: true });
       if (await card.getByRole('button', { name: 'Reveal answer' }).isVisible()) {

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
@@ -7,6 +7,10 @@ import { reconcileSolvedBoards } from '../../data/repos/puzzleRuns';
 import { recordError } from '../errorRing';
 import { Today } from '../screens/Today';
 import { Now } from '../screens/Now';
+import { TodayDots } from './TodayDots';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { effectiveShutdown } from '../../core/tasks/planner';
+import { RULES } from '../../core/rules.config';
 import { DelayedCardSkeleton } from './DelayedCardSkeleton';
 import { back, backDestination, go, initializeHistory, navigationEventName, route, tabOf } from './router';
 import { TabBar } from './TabBar';
@@ -22,6 +26,7 @@ import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
 import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
+import { consumeWidgetLaunchRoute } from '../../platform/widget';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -38,18 +43,36 @@ const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(modul
 export function AppShell() {
   const [path, setPath] = useState(route);
   const [today, setToday] = useState(() => dayKey(Date.now()));
+  const [clockTime, setClockTime] = useState(Date.now);
   const [pausePackage, setPausePackage] = useState('');
+  const nightSettings = useLiveQuery(() => db.settings.toArray(), []);
+  const openingChecked = useRef(false);
   const appearance = useAppearance();
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
   useWidgetSync();
   useEffect(() => {
-    const refreshDate = () => setToday(dayKey(Date.now()));
+    const refreshDate = () => { const now = Date.now(); setToday(dayKey(now)); setClockTime(now); };
     const interval = window.setInterval(refreshDate, 60_000);
     document.addEventListener('visibilitychange', refreshDate);
     return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', refreshDate); };
   }, []);
-  useEffect(() => { initializeHistory(); const update = () => setPath(route()); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
+  useEffect(() => { initializeHistory(); const update = () => { const resolved = route(); if (location.hash !== `#${resolved}`) history.replaceState(history.state ?? { nandi: true }, '', `#${resolved}`); setPath(resolved); }; update(); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
+  useEffect(() => { void consumeWidgetLaunchRoute().then(path => { if (path === '#night' || path === '#plan') go(path.slice(1)); }).catch(error => recordError('promise', error)); }, []);
+  useEffect(() => {
+    if (!nightSettings || openingChecked.current) return;
+    openingChecked.current = true;
+    const setting = (key: string, fallback: string) => {
+      const value = nightSettings.find(row => row.key === key && !row.deleted)?.value;
+      return typeof value === 'string' ? value : fallback;
+    };
+    const bedtime = setting('planner.bedtime', RULES.night.defaultBedtime);
+    const shutdown = effectiveShutdown(setting('planner.shutdown', RULES.night.defaultShutdown), bedtime);
+    const now = new Date();
+    const minutes = now.getHours() * 60 + now.getMinutes();
+    const [hour = 23, minute = 15] = shutdown.split(':').map(Number);
+    if ((minutes < 240 || minutes >= hour * 60 + minute) && route() !== 'night') go('night');
+  }, [nightSettings]);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   useEffect(() => {
     if (Capacitor.isNativePlatform()) recordAppOpened();
@@ -63,10 +86,11 @@ export function AppShell() {
     if (!Capacitor.isNativePlatform()) return;
     let disposed = false;
     let remove: (() => Promise<void>) | undefined;
-    void LocalNotifications.addListener('localNotificationActionPerformed', action => {
+    void LocalNotifications.addListener('localNotificationActionPerformed', async action => {
       const id = action.notification.extra?.reminderId;
-      if (typeof id !== 'string' || !/^nudge:(night|morning):\d{4}-\d{2}-\d{2}$/.test(id)) return;
-      history.replaceState({ nandi: true, deckIndex: 0 }, '', '#now');
+      if (typeof id !== 'string') return;
+      const destination = id.startsWith('nudge:night:') ? 'night' : id.startsWith('nudge:morning:') ? 'plan' : (await db.reminders.get(id))?.refType === 'session' ? 'train' : 'plan';
+      history.replaceState({ nandi: true, deckIndex: 0 }, '', `#${destination}`);
       window.dispatchEvent(new Event(navigationEventName()));
     }).then(handle => { if (disposed) void handle.remove(); else remove = () => handle.remove(); }).catch(error => recordError('promise', error));
     return () => { disposed = true; void remove?.(); };
@@ -91,13 +115,16 @@ export function AppShell() {
   else if (path === 'tasks/plan' || path === 'plan/morning') screen = <Planner mode="plan" />;
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
-  else if (path === 'now/focus') screen = <Today />;
-  else if (path === 'you/learn') screen = <Learn />;
-  else if (path === 'train' || path.startsWith('you/train')) screen = <Train entry={path.split('/')[2]} />;
-  else if (path === 'mind' || path.startsWith('you/mind')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
+  else if (path === 'plan/focus') screen = <Today />;
+  else if (path === 'learn' || path === 'learn/drop') screen = <Learn entry={path.split('/')[1]} />;
+  else if (path === 'learn/lesson' || path === 'learn/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
+  else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
+  else if (path === 'mind' || path.startsWith('mind/')) screen = <Mind key={path} entry={path.split('/').slice(1).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
+  else if (path === 'night') screen = <Now />;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
-  else screen = <Now />;
-  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main><TabBar current={tab} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
+  else screen = <Plan />;
+  const root = ['plan', 'train', 'learn', 'mind', 'you'].includes(path);
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
 }

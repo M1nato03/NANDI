@@ -97,7 +97,7 @@ export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; a
   useEffect(() => { if (trackPacks.length) void introduceTrackCards(db, trackPacks).catch(cause => recordError('window', cause)); }, [day]);
   const start = async () => {
     if (!active || !nextUnit) return;
-    try { await saveTrackDraft(db, { packId: active.id, unitId: nextUnit.id, day, step: 'points', watched: false, answers: [], confidence: [] }); go('you/mind/unit'); }
+    try { await saveTrackDraft(db, { packId: active.id, unitId: nextUnit.id, day, step: 'points', watched: false, answers: [], confidence: [] }); go('learn/unit'); }
     catch (cause) { recordError('window', cause); setError('Could not start this unit.'); }
   };
   const addQuest = async () => {
@@ -111,8 +111,8 @@ export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; a
     catch (cause) { recordError('window', cause); setError('Could not save the module test.'); }
   };
   return <section className="card track-hub" aria-label="Learning tracks"><h2>Learning tracks</h2>
-      {playUnit && active && showUnit ? <TrackPlayer key={`${active.id}:${playUnit.id}:${day}`} pack={active} unit={playUnit} draft={activeDraft!} afterBedtime={afterBedtime} leave={() => back('you/mind')} /> : <>
-      {playUnit && <button type="button" onClick={() => go('you/mind/unit')}>Continue today’s unit</button>}
+      {playUnit && active && showUnit ? <TrackPlayer key={`${active.id}:${playUnit.id}:${day}`} pack={active} unit={playUnit} draft={activeDraft!} afterBedtime={afterBedtime} leave={() => back('learn')} /> : <>
+      {playUnit && <button type="button" onClick={() => go('learn/unit')}>Continue today’s unit</button>}
       {trackPacks.map(pack => <div className="track-choice" key={pack.id}><strong>{pack.body.track.name}</strong><p>{pack.body.track.blurb}</p><p>{activeId === pack.id ? 'Active' : 'Parked'}</p><button type="button" className="secondary" disabled={activeId === pack.id} onClick={() => void selectTrack(db, pack.id).catch(cause => { recordError('window', cause); setError('Could not select track.'); })}>{activeId === pack.id ? 'Selected' : 'Pick this track'}</button></div>)}
       {active && <><button type="button" className="text-button" onClick={() => void selectTrack(db, null).catch(cause => { recordError('window', cause); setError('Could not park track.'); })}>Park track</button>
         <div className="track-budget" role="group" aria-label="Learning budget">

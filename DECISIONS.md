@@ -42,3 +42,4 @@ One row per decision, newest last. New dependency → one line saying why.
 | 2026-10-16 | Android app ID is `app.nandi.personal` and must never change. | Android update identity and the app's local data depend on it. |
 | 2026-10-16 | Android scheme and hostname are pinned to `https://nandi.local` and must never change. | Changing the WebView origin would strand IndexedDB data. |
 | 2026-10-16 | Night pause is opt-in with Usage access, an on-device foreground service, and a full-screen-intent notification with heads-up fallback. | Android restricts background activity launches; the owner can always bypass the pause, and usage events never leave the phone. Device behavior still needs checking. |
+| 2026-10-17 | **Five feature tabs; one home per feature; night deck is an evening overlay.** | Jenil's navigation decision: Plan, Train, Learn, Mind, You own their flows; night stays special at `#night`. |

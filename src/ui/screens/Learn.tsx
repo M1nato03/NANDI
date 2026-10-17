@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { masteryMapState } from '../../core/learn/engine';
-import { dayKey } from '../../core/time/dayKey';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import type { LearnDropRow } from '../../data/types';
 import { LearnDrop } from '../learn/LearnDrop';
-import { ReviewToday } from '../mind/ReviewToday';
+import { Mind } from './Mind';
 import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from '../learn/flow';
-import { go, goToCard } from '../shell/router';
+import { go } from '../shell/router';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean };
 const dropStatus = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : 'Continue';
 
-export function Learn() {
+export function Learn({ entry }: { entry?: string }) {
   const [practice, setPractice] = useState<Practice>();
   const [expanded, setExpanded] = useState<string>();
   const [openedAt] = useState(() => Date.now());
@@ -44,13 +43,12 @@ export function Learn() {
       setMessage('Topics updated.');
     } catch { setMessage('Could not update topics. Try again.'); }
   };
-  const openDaily = () => { go('now'); goToCard(new Date(openedAt).getDay() === 1 ? 5 : 4); };
+  if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} /></section>;
   if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} onDone={() => setPractice(undefined)} /></section>;
   return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
-      <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={openDaily}>{dropStatus(data?.daily) === 'Done for today' ? 'View' : dropStatus(data?.daily)}</button></div>
+      <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropStatus(data?.daily) === 'Done for today' ? 'View' : dropStatus(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
-      <ReviewToday day={dayKey(openedAt)} />
       {dueCount > 0 && <><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>
     <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>
@@ -76,5 +74,6 @@ export function Learn() {
       </section>;
     })}
     {message && <p role="status">{message}</p>}
+    <Mind entry="courses" />
   </section>;
 }

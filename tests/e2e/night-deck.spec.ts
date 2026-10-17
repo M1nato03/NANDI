@@ -1,22 +1,20 @@
 import { expect, test } from '@playwright/test';
 
-test('night primary action clears the tab bar on a 390x844 phone', async ({ page }) => {
+test('night deck hides the tab bar on a 390x844 phone', async ({ page }) => {
   test.skip(page.viewportSize()?.width !== 390);
   await page.clock.install({ time: new Date('2026-10-17T23:40:00') });
-  await page.goto('/#now');
+  await page.goto('/#night');
   const next = page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: 'Next', exact: true });
   await expect(next).toBeVisible();
   const nextBox = await next.boundingBox();
-  const tabsBox = await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox();
   expect(nextBox).not.toBeNull();
-  expect(tabsBox).not.toBeNull();
-  expect(nextBox!.y + nextBox!.height).toBeLessThanOrEqual(tabsBox!.y);
+  await expect(page.getByRole('navigation', { name: 'Main tabs' })).toHaveCount(0);
 });
 
 test('night deck is six calm cards with a three item drop and a stopping point', async ({ page }, testInfo) => {
   test.setTimeout(90_000);
   await page.clock.install({ time: new Date('2026-10-17T23:30:00') });
-  await page.goto('/#now');
+  await page.goto('/#night');
   const deck = page.getByRole('region', { name: 'Now deck' });
   const shot = async (number: number) => {
     if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath(`night-card-${number}-390x844.png`) });
@@ -80,17 +78,18 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await shot(6);
   await expect(deck.getByRole('button', { name: 'Next', exact: true })).toHaveCount(0);
   await expect(deck.getByRole('button')).toHaveCount(2);
-  await stop.getByRole('button', { name: 'Back to cards' }).click();
-  await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();
+  await stop.getByRole('button', { name: 'Close' }).click();
+  await expect(page).toHaveURL(/#plan$/);
+  await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
   await page.clock.setFixedTime(new Date('2026-10-18T04:05:00'));
   await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
-  await expect(page.getByRole('article', { name: 'First step card' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
 });
 
 test('hard daily offers a matching easy night practice board', async ({ page }) => {
   test.setTimeout(60_000);
   await page.clock.install({ time: new Date('2026-10-17T23:30:00') });
-  await page.goto('/#now');
+  await page.goto('/#night');
   const deck = page.getByRole('region', { name: 'Now deck' });
   await expect(deck).toHaveClass(/deck-night/);
   await deck.getByRole('button', { name: 'Go to card 3: Think' }).click();
@@ -110,7 +109,7 @@ test('hard daily offers a matching easy night practice board', async ({ page }) 
 test('easy unsolved daily stays on the night card', async ({ page }) => {
   test.setTimeout(60_000);
   await page.clock.install({ time: new Date('2026-10-19T23:30:00') });
-  await page.goto('/#now');
+  await page.goto('/#night');
   const deck = page.getByRole('region', { name: 'Now deck' });
   await expect(deck).toHaveClass(/deck-night/);
   await deck.getByRole('button', { name: 'Go to card 3: Think' }).click();

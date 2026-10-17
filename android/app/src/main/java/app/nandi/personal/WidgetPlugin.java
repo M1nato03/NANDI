@@ -10,7 +10,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 public class WidgetPlugin extends Plugin {
     @PluginMethod
     public void setState(PluginCall call) {
-        String dayTitle = call.getString("dayTitle", "Now · Choose your first step");
+        String dayTitle = call.getString("dayTitle", "Plan · Choose your first step");
         String daySubtitle = call.getString("daySubtitle", "0 of 0 done today");
         String nightTitle = call.getString("nightTitle", "Night deck ready");
         String nightSubtitle = call.getString("nightSubtitle", "Six calm cards, then phone down.");
@@ -21,5 +21,14 @@ public class WidgetPlugin extends Plugin {
             .putInt("shutdownMinutes", Math.max(0, Math.min(1439, shutdownMinutes))).apply();
         NandiWidgetProvider.refresh(getContext());
         call.resolve();
+    }
+
+    @PluginMethod
+    public void consumeLaunchRoute(PluginCall call) {
+        String route = getActivity().getIntent().getStringExtra("nandiRoute");
+        getActivity().getIntent().removeExtra("nandiRoute");
+        com.getcapacitor.JSObject result = new com.getcapacitor.JSObject();
+        result.put("route", "#night".equals(route) || "#plan".equals(route) ? route : "");
+        call.resolve(result);
     }
 }

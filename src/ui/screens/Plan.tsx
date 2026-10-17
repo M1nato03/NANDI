@@ -31,6 +31,7 @@ export function Plan({ questId }: { questId?: string }) {
   const listProps = { onComplete: complete, onMove: setMoving, onDropGroup: dropGroup, busy: board.busy };
   if (questId) return <section className="screen plan-screen"><SideQuests selectedId={questId} /></section>;
   return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>
+    <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer</button>
     <TaskQuickAdd run={board.act} />
     {board.message && <p role="status">{board.message}</p>}
     <TaskList title="Today" groups={todayGroups} nextId={nextId} {...listProps} />

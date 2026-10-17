@@ -5,7 +5,7 @@ test('You previews a shareable week with seeded data', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-17T12:00:00') });
   await page.goto('/#you');
   await seedRecapWeek(page, '2026-10-15');
-  const week = page.getByRole('region', { name: 'What your time became this week' });
+  const week = page.getByRole('region', { name: 'This week in words' });
   await expect(week.getByRole('button', { name: 'Share my week' })).toBeVisible();
   await week.getByRole('button', { name: 'Share my week' }).click();
   const preview = page.getByRole('dialog', { name: 'Weekly recap preview' });
@@ -15,12 +15,10 @@ test('You previews a shareable week with seeded data', async ({ page }) => {
   await expect(preview).toHaveCount(0);
 });
 
-test('Monday end card links to the weekly preview', async ({ page }) => {
+test('You opens the weekly preview', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-19T12:00:00') });
-  await page.goto('/#now');
-  await seedRecapWeek(page, '2026-10-15');
-  await page.getByRole('button', { name: 'Go to card 8: The day is yours' }).click();
-  const end = page.getByRole('article', { name: 'The day is yours card' });
-  await end.getByRole('button', { name: 'Your week is ready to share' }).click();
+  await page.goto('/#you');
+  await seedRecapWeek(page, '2026-10-20');
+  await page.getByRole('region', { name: 'This week in words' }).getByRole('button', { name: 'Share my week' }).click();
   await expect(page.getByRole('dialog', { name: 'Weekly recap preview' }).getByRole('img')).toBeVisible({ timeout: 20_000 });
 });

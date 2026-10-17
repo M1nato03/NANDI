@@ -1,4 +1,4 @@
-﻿import { expect, test, type BrowserContext, type Page } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -165,7 +165,7 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
 test('active focus waits until paused before updating', async ({ page, context }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
   test.setTimeout(120_000);
-  // Daytime, so the Now tab shows the day deck with the first-step card.
+  // Daytime focus runs from Plan.
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   const server = await startUpgradeServer();
 
@@ -175,9 +175,9 @@ test('active focus waits until paused before updating', async ({ page, context }
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Focus through update');
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Start' }).click();
+    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await expect(page.getByRole('region', { name: 'Focus task' })).toContainText('Focus through update');
+    await page.getByRole('button', { name: 'Start focus' }).click();
     await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
     await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).focus).toBe(1);
     const count = await page.evaluate(
@@ -206,8 +206,9 @@ test('active focus waits until paused before updating', async ({ page, context }
     expect(await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Done' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
   } finally {
     await server.close();
   }
@@ -219,15 +220,15 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
   await page.clock.setFixedTime(new Date('2026-10-19T12:00:00+05:30'));
   const server = await startUpgradeServer();
   try {
-    await page.goto(`${server.origin}/#now`);
-    await expect(page.getByRole('region', { name: 'Now deck' }).getByRole('article').first()).toBeVisible();
+    await page.goto(`${server.origin}/#plan`);
+    await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     await page.evaluate(() => navigator.serviceWorker.ready);
     await page.reload();
     await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
     await context.setOffline(true);
 
     const screens: [string, string][] = [
-      ['you/train', 'Train'], ['you/mind', 'Mind & learning'], ['you/learn', 'Learn'],
+      ['train', 'Train'], ['mind', 'Mind'], ['learn', 'Learn'],
       ['plan', 'Plan'], ['plan/morning', 'Morning plan'], ['you/settings', 'Settings'],
       ['you/backup', 'Backup'], ['you/night', 'Night'],
     ];
@@ -236,16 +237,15 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
       await expect(page.getByRole('main').getByRole('heading', { name: heading, exact: true }).first()).toBeVisible();
     }
 
-    await page.goto(`${server.origin}/#you/mind/case`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${server.origin}/#mind/case`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('.mind-case')).toBeVisible();
-    await page.goto(`${server.origin}/#you/mind/board`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${server.origin}/#mind/board`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('.mind-board')).toBeVisible();
 
-    await page.evaluate(() => { location.hash = '#now'; });
-    await expect(page.getByRole('article', { name: 'Your week card' })).toBeVisible();
-    await expect(page.getByRole('region', { name: 'What your time became recap' })).toBeVisible();
-    await page.getByRole('button', { name: 'Go to card 6: Learn' }).click();
-    await expect(page.getByRole('article', { name: 'Learn card' })).toBeVisible();
+    await page.evaluate(() => { location.hash = '#you'; });
+    await expect(page.getByRole('region', { name: 'This week in words' })).toBeVisible();
+    await page.evaluate(() => { location.hash = '#learn'; });
+    await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
   } finally {
     await context.setOffline(false);
     await page.close();

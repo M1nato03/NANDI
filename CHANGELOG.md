@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-17
+
+- Replaced the day Now deck and three-tab navigation with Plan, Train, Learn, Mind, and You tabs. Feature content now lives in its own tab; the top bar shows four daily status dots.
+- Moved the five-item daily drop to Learn, courses and tracks into its collapsed Courses section, and removed feature tiles from You and the Learn card from Mind.
+- Gave the night deck its own `#night` overlay route with a Close action to Plan. Legacy links redirect to their feature routes, and notifications and the widget open Plan or Night as appropriate.
+
 ## Phase 0 (in progress)
 
 - Added the Vite, React, and TypeScript scaffold with PWA registration and a placeholder icon.

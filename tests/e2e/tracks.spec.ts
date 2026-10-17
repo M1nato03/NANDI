@@ -1,4 +1,4 @@
-﻿/// <reference lib="dom" />
+/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -6,8 +6,8 @@ for (const scheme of ['light', 'dark'] as const) {
     test.setTimeout(120_000);
     await page.clock.setFixedTime(new Date('2026-10-12T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#you/mind');
-    await page.getByText('Courses and past lessons').click();
+    await page.goto('/?e2e#learn');
+    await page.getByText('Courses').click();
     const tracks = page.getByLabel('Learning tracks');
     await tracks.getByRole('button', { name: 'Pick this track' }).click();
     await expect(tracks).toContainText('Drone technology');
@@ -36,25 +36,26 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(controls).toBe(true);
     await unit.getByRole('button', { name: 'Finish unit' }).click();
     // The section may already be open after finishing the unit; open it only if it is closed.
-    await expect(page.getByText('Courses and past lessons')).toBeVisible();
+    await expect(page.getByText('Courses')).toBeVisible();
     // The hub can re-render after the unit closes; retry until the section is open and shows the result.
     await expect(async () => {
-      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses and past lessons' }) });
-      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses and past lessons').click();
+      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses' }) });
+      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses').click();
       await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
     }).toPass({ timeout: 15_000 });
     await expect(tracks.getByLabel('Learning budget')).toContainText('15 / 25 min');
     await page.screenshot({ path: testInfo.outputPath(`track-stop-${scheme}.png`), fullPage: true });
     await page.reload();
     // The section may already be open after finishing the unit; open it only if it is closed.
-    await expect(page.getByText('Courses and past lessons')).toBeVisible();
+    await expect(page.getByText('Courses')).toBeVisible();
     // The hub can re-render after the unit closes; retry until the section is open and shows the result.
     await expect(async () => {
-      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses and past lessons' }) });
-      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses and past lessons').click();
+      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses' }) });
+      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses').click();
       await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
     }).toPass({ timeout: 15_000 });
-    await page.getByRole('button', { name: 'Review due cards' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+    await page.getByRole('button', { name: 'Review cards' }).click();
     await expect(page.getByLabel('Review card')).toContainText('What do rotors push to make lift?');
     await page.screenshot({ path: testInfo.outputPath(`track-review-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

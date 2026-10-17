@@ -29,12 +29,12 @@ public class NandiWidgetProvider extends AppWidgetProvider {
             ? minutes >= shutdown || minutes < 4 * 60
             : minutes >= shutdown && minutes < 4 * 60;
         String title = prefs.getString(night ? "nightTitle" : "dayTitle",
-            night ? "Night deck ready" : "Now · Choose your first step");
+            night ? "Night deck ready" : "Plan · Choose your first step");
         String subtitle = prefs.getString(night ? "nightSubtitle" : "daySubtitle",
             night ? "Six calm cards, then phone down." : "0 of 0 done today");
         Intent open = new Intent(context, MainActivity.class);
         open.setAction(Intent.ACTION_MAIN);
-        open.putExtra("nandiRoute", "#now");
+        open.putExtra("nandiRoute", night ? "#night" : "#plan");
         open.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent tap = PendingIntent.getActivity(context, 0, open,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

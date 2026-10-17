@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 test('large task preview, grouped progress, and whole-task drop', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
@@ -52,19 +52,19 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Write outline');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Today' })).toContainText('Write outline');
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Now' }).click();
-    await expect(page.getByRole('region', { name: 'Now deck' })).toContainText('Write outline');
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Start' }).click();
+    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await expect(page.getByRole('region', { name: 'Focus task' })).toContainText('Write outline');
+    await page.getByRole('button', { name: 'Start focus' }).click();
     await page.clock.fastForward(65_000);
     await page.evaluate("document.dispatchEvent(new Event('visibilitychange')); window.dispatchEvent(new Event('pageshow'));");
-    await expect(page.getByRole('timer', { name: 'Focus countdown' })).toContainText('23:');
+    await expect(page.locator('.timer-ring')).toContainText('23:');
     await page.getByRole('button', { name: 'Pause' }).click();
     await page.clock.fastForward(60_000);
     await page.getByRole('button', { name: 'Resume' }).click();
     await page.clock.fastForward(60_000);
     await page.evaluate("document.dispatchEvent(new Event('visibilitychange'));");
-    await expect(page.getByRole('timer', { name: 'Focus countdown' })).toContainText('22:');
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Done' }).click();
+    await expect(page.locator('.timer-ring')).toContainText('22:');
+    await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
     await expect(page.getByRole('status').filter({ hasText: 'Planned 30 min' })).toContainText('Took 2 min');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();

@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 async function capture(page: Page, path: string) {
   const sizes = await page.locator('button, input, select, .tabbar a').evaluateAll(nodes => nodes.map(node => { const box = node.getBoundingClientRect(); return { label: node.textContent?.trim() || node.getAttribute('aria-label') || node.tagName, width: box.width, height: box.height }; }).filter(box => box.width > 0 && box.height > 0));
@@ -11,7 +11,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`rank assessment to safety finish and history in ${scheme}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/#you/train');
+    await page.goto('/#train');
     await expect(page.getByText('Rank assessment')).toBeVisible();
     await capture(page, testInfo.outputPath(`train-assessment-${scheme}.png`));
     await page.getByRole('button', { name: 'Start placement' }).click();
@@ -54,7 +54,7 @@ for (const scheme of ['light', 'dark'] as const) {
 
 test('a full exercise advances, then a later set resumes after reload', async ({ page }, testInfo) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  await page.goto('/#you/train');
+  await page.goto('/#train');
   await page.getByRole('button', { name: 'Start placement' }).click();
   for (let pattern = 0; pattern < 7; pattern++) {
     if (pattern === 4 || pattern === 5) await page.getByRole('spinbutton', { name: 'Clean seconds' }).fill('30');

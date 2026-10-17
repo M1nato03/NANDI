@@ -18,7 +18,7 @@ export function Train({ entry }: { entry?: string }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const page = entry === 'history' || entry === 'settings' || entry === 'finish' || entry === 'retest' ? entry : 'today';
-  const setPage = (next: typeof page) => go(next === 'today' ? 'you/train' : `you/train/${next}`);
+  const setPage = (next: typeof page) => go(next === 'today' ? 'train' : `train/${next}`);
   async function act(action: (repos: Awaited<typeof reposPromise>, now: number) => Promise<unknown>, success: string): Promise<boolean> {
     setBusy(true); setMessage('');
     try { await action(await reposPromise, Date.now()); setMessage(success); return true; }
@@ -43,12 +43,12 @@ export function Train({ entry }: { entry?: string }) {
     pain={exerciseId => { void act((repos, now) => repos.flagPain(active.id, exerciseId, now), 'Exercise stopped. Choose an easier step or rest.'); }}
     effort={(exerciseId, value) => { void act((repos, now) => repos.setEffort(active.id, exerciseId, value, now), 'Effort saved.'); }}
     adjustRest={endAt => { void act((repos, now) => repos.setRestEnd(active.id, endAt, now), 'Rest updated.'); }}
-    finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) go('you/train/finish'); }); }} /></section>;
+    finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) go('train/finish'); }); }} /></section>;
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
   return <section className="screen train-screen"><p className="eyebrow">The Proving Ground</p><h1>Train</h1>
     {message && <p role="status">{message}</p>}
     {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Your session</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
-    {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('you/train/workout')}>Continue session</button></div>}
-    <Dashboard data={{ program, sessions, sets, prs, state, ledger }} page={page} setPage={setPage} startWorkout={() => go('you/train/workout')} busy={busy} message={message} act={act} />
+    {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('train/workout')}>Continue session</button></div>}
+    <Dashboard data={{ program, sessions, sets, prs, state, ledger }} page={page} setPage={setPage} startWorkout={() => go('train/workout')} busy={busy} message={message} act={act} />
   </section>;
 }

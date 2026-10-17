@@ -16,7 +16,7 @@ it('shows the next planned title and counts visible tasks completed today', () =
     task('old', 'Old task', { status: 'done', doneAt: now - 86_400_000, dayKey: '2026-10-16' }),
   ];
   const result = buildWidgetText(rows, [], now);
-  expect(result.dayTitle).toBe('Now · Read notes');
+  expect(result.dayTitle).toBe('Plan · Read notes');
   expect(result.daySubtitle).toBe('1 of 3 done today');
   expect(result.nightSubtitle).toBe('Six calm cards, then phone down.');
   expect(result.shutdownMinutes).toBe(23 * 60 + 15);
@@ -29,7 +29,7 @@ it('trims long titles and uses only the saved if-then plan for night text', () =
     now,
   );
   expect(result.dayTitle.length).toBeLessThanOrEqual(40);
-  expect(result.dayTitle).toMatch(/^Now · A very long task title/);
+  expect(result.dayTitle).toMatch(/^Plan · A very long task title/);
   expect(result.nightSubtitle).toBe('If I reach for the phone, then I read five pages.');
   expect(result.shutdownMinutes).toBe(22 * 60 + 40);
 });

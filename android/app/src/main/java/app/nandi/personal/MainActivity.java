@@ -17,8 +17,9 @@ public class MainActivity extends BridgeActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (bridge != null && bridge.getWebView() != null) {
-            if ("#now".equals(intent.getStringExtra("nandiRoute"))) {
-                bridge.getWebView().evaluateJavascript("window.location.hash='#now'; window.dispatchEvent(new Event('nandi:navigate'))", null);
+            String route = intent.getStringExtra("nandiRoute");
+            if ("#night".equals(route) || "#plan".equals(route)) {
+                bridge.getWebView().evaluateJavascript("window.location.hash='" + route + "'; window.dispatchEvent(new Event('nandi:navigate'))", null);
             }
             bridge.getWebView().evaluateJavascript("window.dispatchEvent(new Event('nandi:night-pause'))", null);
         }

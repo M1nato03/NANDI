@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }, testInfo) => {
 
 test('first night uses one card frame at 360x800', async ({ page }, testInfo) => {
   await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
-  await page.goto('/#now');
+  await page.goto('/#night');
   const card = page.getByRole('article', { name: 'Tonight card' });
   await expect(card.locator('.night-plan-setting')).toBeVisible();
   await expect(card.locator('.night-plan-setting')).not.toHaveClass(/\bcard\b/);
@@ -16,7 +16,7 @@ test('first night uses one card frame at 360x800', async ({ page }, testInfo) =>
   await page.screenshot({ path: testInfo.outputPath('first-night-360x800-dark.png') });
 });
 
-test('Now header leaves the first step action visible at 360x800', async ({ page }, testInfo) => {
+test('Plan and focus controls fit at 360x800', async ({ page }, testInfo) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
   // Let the one-time offline toast come and go so it cannot shift the layout mid-measurement.
@@ -26,25 +26,17 @@ test('Now header leaves the first step action visible at 360x800', async ({ page
   await expect(offlineReady).toBeHidden({ timeout: 10_000 });
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call bank 15m');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
-  await page.getByRole('link', { name: 'Now' }).click();
-  const heading = page.locator('.deck-heading');
-  await expect(heading.getByRole('heading', { name: 'Now' })).toBeVisible();
-  await expect(heading).toContainText('1 of 7');
-  const dots = await page.locator('.deck-dashes button').all();
-  expect(dots).toHaveLength(7);
-  // Measure all dots in one frame: the offline toast can appear between two separate measurements and shift the page.
-  const rows = await page.locator('.deck-dashes button').evaluateAll(buttons => new Set(buttons.map(button => Math.round(button.getBoundingClientRect().top))).size);
-  expect(rows).toBe(1);
-  const button = page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Start' });
-  const action = await button.boundingBox();
-  const nav = await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox();
-  expect(action && nav && action.y + action.height < nav.y).toBe(true);
+  await page.getByRole('button', { name: 'Focus timer' }).click();
+  const button = page.getByRole('button', { name: 'Start focus' });
+  await expect(button).toBeVisible();
+  const box = await button.boundingBox();
+  expect(box && box.width >= 44 && box.height >= 44).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: testInfo.outputPath('now-360x800-dark.png') });
+  await page.screenshot({ path: testInfo.outputPath('focus-360x800-dark.png') });
 });
 
 test('Train equipment has accessible toggle chips at 360x800', async ({ page }, testInfo) => {
-  await page.goto('/#you/train');
+  await page.goto('/#train');
   const gym = page.getByRole('checkbox', { name: 'Gym access' });
   await expect(gym).not.toBeChecked();
   await gym.check();

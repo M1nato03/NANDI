@@ -19,3 +19,9 @@ self.addEventListener('message', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const route = event.notification.data?.route === '#train' ? '#train' : event.notification.data?.route === '#night' ? '#night' : '#plan';
+  event.waitUntil(self.clients.openWindow(`/${route}`));
+});

@@ -11,7 +11,7 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
   const concept = concepts.find(row => row.items.some(item => item.stem === stem));
   const item = concept?.items.find(row => row.stem === stem);
   if (!item || !concept) throw new Error(`Unknown item: ${stem}`);
-  const tap = async (id: string) => page.getByRole('article', { name: 'Learn card' }).getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
+  const tap = async (id: string) => page.locator('.learn-drop').getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
   if (item.type === 'order') {
     const ids = item.answer as string[];
     for (const id of wrong ? [...ids].reverse() : ids) await tap(id);
@@ -40,9 +40,8 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
 test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-16T12:00:00'));
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/#now');
-  await page.getByRole('button', { name: 'Go to card 5: Learn' }).click();
-  const learnCard = page.getByRole('article', { name: 'Learn card' });
+  await page.goto('/#learn/drop');
+  const learnCard = page.locator('.learn-drop');
   await expect(learnCard.getByRole('heading', { name: 'What do you want to get sharp at?' })).toBeVisible();
   await learnCard.getByRole('button', { name: /Money and markets/ }).click();
   await learnCard.getByRole('button', { name: 'Start my first drop' }).click();
@@ -54,17 +53,15 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
   await expect(page.locator('.learn-drop-head')).toContainText('2 / 5');
   await answerItem(page, true);
-  const thirdStem = await learnCard.locator('.learn-drop h2').innerText();
+  const thirdStem = await learnCard.locator('h2').innerText();
   await page.reload();
-  await expect(learnCard.locator('.learn-drop h2')).toHaveText(thirdStem);
+  await expect(learnCard.locator('h2')).toHaveText(thirdStem);
   for (let i = 0; i < 3; i++) await answerItem(page, false);
   await expect(learnCard.getByRole('heading', { name: "That's today's drop" })).toBeVisible();
   await expect(learnCard).toContainText('Next review:');
   await page.screenshot({ path: testInfo.outputPath('learn-stop-390x844.png') });
   await learnCard.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('article', { name: 'A little extra card' })).toBeVisible();
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
-  await page.getByRole('button', { name: 'Open Learn' }).click();
+  await expect(page).toHaveURL(/#learn$/);
   await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Today' })).toContainText('Done for today');
   await expect(page.getByRole('region', { name: 'Today' })).toContainText('Night drop');

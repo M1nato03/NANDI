@@ -1,13 +1,12 @@
-﻿import { expect, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-const names = ['Now', 'Plan', 'You'];
+const names = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
 
-test('baseline hides economy copy in You and the bedtime Mind note', async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-10-11T02:00:00') });
+test('baseline hides economy copy in You and Mind', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#you');
   await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
-  await page.goto('/#you/mind');
-  await expect(page.getByText('Mind is resting for the night.')).toBeVisible();
+  await page.goto('/#mind');
   await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
 });
 
@@ -29,7 +28,7 @@ test('offline ready notice clears visible buttons and dismisses', async ({ page 
   await expect(toast).toBeHidden({ timeout: 5_000 });
 });
 
-test('three tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
+test('five tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
   await page.goto('/');
   for (const scheme of ['dark', 'light'] as const) {
     await page.emulateMedia({ colorScheme: scheme });

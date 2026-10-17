@@ -38,6 +38,14 @@ The APK's WebView and Chrome's PWA are **different origins with separate storage
 
 ## 3. Repo layout
 
+### Navigation
+
+The bottom bar has five feature tabs in order: **Plan · Train · Learn · Mind · You**. Each feature has one home. Plan owns tasks, focus, side quests, and rituals. Train owns the program, today's session, history, metrics, and rest-day check. Learn owns the five-item daily drop, topics, idea practice and checks, and a collapsed Courses section for older lessons and tracks. Mind owns the daily board and case, practice boards, and card reviews. You owns the weekly words and sharing plus settings.
+
+Routes are `#plan`, `#train`, `#learn`, `#mind`, and `#you`. Deep routes stay under their feature root. Old `#now`, `#today`, `#tasks/*`, `#you/train/*`, `#you/learn`, and `#you/mind/*` links redirect to their new homes. With no route, the app opens Plan or the last tab used within an hour. Four small status dots in the top bar show whether Plan, Train, Learn, and Mind daily work is done; a dot opens its tab.
+
+From shutdown until 04:00, opening the app shows the six-card night deck at `#night`. It is a full-screen overlay with no tab bar. Closing its final card opens Plan. Night reminders and the widget open `#night`; morning reminders and the day widget open `#plan`.
+
 ```
 src/
 ├─ core/                 pure TypeScript. No React, no Dexie, no DOM. 100% unit-tested.

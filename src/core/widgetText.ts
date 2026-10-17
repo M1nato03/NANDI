@@ -36,7 +36,7 @@ export function buildWidgetText(tasks: TaskRow[], settings: SettingRow[], now: n
   const [hour = 23, minute = 15] = shutdown.split(':').map(Number);
   const plan = readNightPlan(settings);
   return {
-    dayTitle: shortTitle(`Now · ${next}`),
+    dayTitle: shortTitle(`Plan · ${next}`),
     daySubtitle: `${done.length} of ${done.length + planned.length} done today`,
     nightTitle: 'Night deck ready',
     nightSubtitle: plan ? nightPlanText(plan) : 'Six calm cards, then phone down.',
