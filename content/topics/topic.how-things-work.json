@@ -2836,12 +2836,12 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "A student has one UPI app linked to two bank accounts. How many bank accounts can that app let the student switch between in this example?",
+                "stem": "Your linked bank account starts at ₹2,000. A ₹750 UPI payment goes out, then ₹250 arrives through UPI in the same account. About how much remains?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Two.",
-                    "feedback": "The app can show multiple linked accounts, while each still belongs to a bank.",
+                    "text": "About ₹1,500.",
+                    "feedback": "The bank balance changes with both transfers: ₹2,000 minus ₹750 plus ₹250 leaves ₹1,500.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-upi-faq",
@@ -2851,8 +2851,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only one.",
-                    "feedback": "One app can look tied to one bank. Here it can switch between two linked accounts.",
+                    "text": "About ₹2,000; the app holds both transfers.",
+                    "feedback": "UPI moves money between bank accounts. The app does not hold these funds, so the balance changes.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-path-m1"
@@ -2862,13 +2862,21 @@
                       "npci-bhim",
                       "npci-booklet"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About ₹1,000; both transfers leave the account.",
+                    "feedback": "The ₹750 payment leaves, but the ₹250 receipt enters the bank account. Add it after subtracting the payment.",
+                    "correct": false,
+                    "misconceptionIds": ["upi-path-m1"],
+                    "sourceRefs": ["npci-upi-faq", "npci-booklet"]
                   }
                 ],
                 "answer": {
-                  "value": 2,
-                  "min": 1.5,
-                  "max": 2.5,
-                  "unit": "count"
+                  "value": 1500,
+                  "min": 1450,
+                  "max": 1550,
+                  "unit": "rupees"
                 }
               },
               {
@@ -3181,7 +3189,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {
@@ -3309,39 +3317,46 @@
                 ],
                 "sourceRefs": [
                   "nasa-camera",
-                  "nasa-phone"
+                  "nasa-phone",
+                  "bayer-paper"
                 ],
-                "stem": "A toy camera sensor has three colour-filter types: red, green and blue. About how many filter types help it form colour data?",
+                "stem": "In a standard Bayer colour-filter pattern on a camera sensor, about how much of the filter array is green?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Three.",
-                    "feedback": "The filters separate light by colour so later steps can build the picture.",
+                    "text": "About 50%.",
+                    "feedback": "A Bayer block has two green sites, one red and one blue. Two out of four is 50%.",
                     "correct": true,
                     "sourceRefs": [
-                      "nasa-camera",
-                      "nasa-phone"
+                      "bayer-paper"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "One.",
-                    "feedback": "A single filter sounds simple. The toy sensor uses three filter types for colour data.",
+                    "text": "About 33%, one third for each colour.",
+                    "feedback": "There are three colours, but the Bayer pattern gives green two of every four sites to capture more detail.",
                     "correct": false,
                     "misconceptionIds": [
                       "phone-camera-m1"
                     ],
                     "sourceRefs": [
-                      "nasa-camera",
-                      "nasa-phone"
+                      "bayer-paper"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 25%, the same as red.",
+                    "feedback": "Red has one site in a four-site Bayer block. Green has two sites, or 50%.",
+                    "correct": false,
+                    "misconceptionIds": ["phone-camera-m1"],
+                    "sourceRefs": ["bayer-paper"]
                   }
                 ],
                 "answer": {
-                  "value": 3,
-                  "min": 2.5,
-                  "max": 3.5,
-                  "unit": "count"
+                  "value": 50,
+                  "min": 45,
+                  "max": 55,
+                  "unit": "percent"
                 }
               },
               {
@@ -3579,6 +3594,13 @@
                 "publisher": "NASA Science",
                 "year": 2023,
                 "url": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/a/Astrophotography_Guide.pdf"
+              },
+              {
+                "id": "bayer-paper",
+                "title": "Image Sampling with the Bayer Color Filter Array",
+                "publisher": "Palum, Eastman Kodak Company, IS&T PICS Conference",
+                "year": 2001,
+                "url": "https://www.imaging.org/common/uploaded%20files/pdfs/Papers/2001/PICS-0-251/4631.pdf"
               }
             ],
             "quest": {
@@ -3632,7 +3654,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {
@@ -3758,39 +3780,46 @@
                 ],
                 "sourceRefs": [
                   "nasa-sky",
-                  "nasa-light"
+                  "nasa-light",
+                  "nasa-rayleigh"
                 ],
-                "stem": "A diagram shows a short noon path and a long sunset path. How many paths scatter more blue than the other?",
+                "stem": "In clear air, Rayleigh scattering varies as one over wavelength to the fourth power. About how many times more strongly does 450 nm blue light scatter than 700 nm red light?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One: the long path.",
-                    "feedback": "More air along the sunset route gives short blue light more chances to scatter away.",
+                    "text": "About six times.",
+                    "feedback": "Use (700 ÷ 450) to the fourth power, which is about 5.9. Shorter blue light scatters more strongly.",
                     "correct": true,
                     "sourceRefs": [
-                      "nasa-sky",
-                      "nasa-light"
+                      "nasa-rayleigh"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Both by the same amount.",
-                    "feedback": "Both paths cross air, so equal change sounds fair. The long path has more air.",
+                    "text": "About 1.6 times.",
+                    "feedback": "That is only the wavelength ratio, 700 ÷ 450. Rayleigh scattering raises this ratio to the fourth power.",
                     "correct": false,
                     "misconceptionIds": [
                       "sky-colours-m1"
                     ],
                     "sourceRefs": [
-                      "nasa-sky",
-                      "nasa-light"
+                      "nasa-rayleigh"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About the same for both colours.",
+                    "feedback": "Clear air scatters both, but blue light scatters much more than red light.",
+                    "correct": false,
+                    "misconceptionIds": ["sky-colours-m1"],
+                    "sourceRefs": ["nasa-rayleigh"]
                   }
                 ],
                 "answer": {
-                  "value": 1,
-                  "min": 0.5,
-                  "max": 1.5,
-                  "unit": "count"
+                  "value": 5.9,
+                  "min": 5.4,
+                  "max": 6.4,
+                  "unit": "times"
                 }
               },
               {
@@ -4027,6 +4056,13 @@
                 "publisher": "NASA Heliophysics Education Activation Team",
                 "year": 2023,
                 "url": "https://assets.science.nasa.gov/content/dam/science/hpd/heat/Electromagnetic__Spectrum_Lesson_Helio%20Teachers.pdf"
+              },
+              {
+                "id": "nasa-rayleigh",
+                "title": "Aerosols in the Atmosphere",
+                "publisher": "NASA Goddard Institute for Space Studies",
+                "year": 1997,
+                "url": "https://www.giss.nasa.gov/edu/icp/research/ppa/1997/reyes/"
               }
             ],
             "quest": {
@@ -4080,7 +4116,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {

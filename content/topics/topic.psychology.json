@@ -2760,39 +2760,46 @@
                 ],
                 "sourceRefs": [
                   "sleep-review",
-                  "sleep-rest"
+                  "sleep-rest",
+                  "sleep-study"
                 ],
-                "stem": "Two students learn the same list. One sleeps, while the other rests quietly awake. How many of these states can support some memory consolidation?",
+                "stem": "In a small word-pair study, average recall after 12 hours was 20.38 pairs with sleep and 12.63 after wakefulness. About what percent higher was recall after sleep?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Two.",
-                    "feedback": "Sleep supports it, and quiet waking rest can also help some memories.",
+                    "text": "About 60% higher.",
+                    "feedback": "The difference is 7.75 pairs. Divide by the wake score, 12.63, to get about 61%. This was one small study.",
                     "correct": true,
                     "sourceRefs": [
-                      "sleep-review",
-                      "sleep-rest"
+                      "sleep-study"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Only one.",
-                    "feedback": "Sleep is the usual example, so one seems right. Quiet waking rest can help too.",
+                    "text": "About 38% higher.",
+                    "feedback": "Dividing 7.75 by the sleep score uses the larger group as the base. Compared with wake recall, the gain was about 61%.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-memory-m1"
                     ],
                     "sourceRefs": [
-                      "sleep-review",
-                      "sleep-rest"
+                      "sleep-study"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About the same.",
+                    "feedback": "Both groups learned pairs, but after 12 hours this study found higher recall after sleep.",
+                    "correct": false,
+                    "misconceptionIds": ["sleep-memory-m1"],
+                    "sourceRefs": ["sleep-study"]
                   }
                 ],
                 "answer": {
-                  "value": 2,
-                  "min": 1.5,
-                  "max": 2.5,
-                  "unit": "count"
+                  "value": 61,
+                  "min": 55,
+                  "max": 67,
+                  "unit": "percent"
                 }
               },
               {
@@ -3028,6 +3035,13 @@
                 "publisher": "Wamsley, Trends in Cognitive Sciences",
                 "year": 2019,
                 "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7024394/"
+              },
+              {
+                "id": "sleep-study",
+                "title": "Sleep-dependent memory consolidation and accelerated forgetting",
+                "publisher": "Atherton et al., Cortex",
+                "year": 2014,
+                "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4007033/"
               }
             ],
             "quest": {
@@ -3081,7 +3095,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {
@@ -3221,12 +3235,12 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "A toy feed gives a fun clip after a variable number of swipes. How many fixed swipes can a user count on before each reward?",
+                "stem": "In a toy feed with variable rewards, each swipe has an independent 20% chance of a fun clip. After five swipes, about what is the chance of seeing at least one fun clip?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Zero.",
-                    "feedback": "The point of the uneven schedule is that no fixed swipe count guarantees a reward.",
+                    "text": "About 67%.",
+                    "feedback": "The chance of no clip is 0.8 to the fifth power, about 33%. So at least one is about 67%, with no guarantee.",
                     "correct": true,
                     "sourceRefs": [
                       "apa-learning",
@@ -3236,8 +3250,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Exactly five.",
-                    "feedback": "Five is easy to count. The next fun clip has no fixed swipe count.",
+                    "text": "100%, because one in five means a clip by swipe five.",
+                    "feedback": "One in five is a chance on each swipe, not a promise every fifth swipe. Five misses are still possible.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -3247,13 +3261,21 @@
                       "social-reward",
                       "scroll-review"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "20%, the same as one swipe.",
+                    "feedback": "Each swipe has a 20% chance, but five independent chances raise the chance of at least one clip to about 67%.",
+                    "correct": false,
+                    "misconceptionIds": ["variable-rewards-m1"],
+                    "sourceRefs": ["apa-learning"]
                   }
                 ],
                 "answer": {
-                  "value": 0,
-                  "min": -0.5,
-                  "max": 0.5,
-                  "unit": "count"
+                  "value": 67,
+                  "min": 62,
+                  "max": 72,
+                  "unit": "percent"
                 }
               },
               {
@@ -3567,7 +3589,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {
@@ -3695,39 +3717,46 @@
                 ],
                 "sourceRefs": [
                   "konstanz-plan",
-                  "plan-study"
+                  "plan-study",
+                  "plan-meta"
                 ],
-                "stem": "A plan says, “If the bus arrives, then I open the chapter.” How many distinct parts form the cue-action link?",
+                "stem": "A review of 94 tests compared if-then plans with no such plan. About how large was the average gain in goal attainment, measured as Cohen's d?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Two.",
-                    "feedback": "The bus arrival is the cue, and opening the chapter is the response.",
+                    "text": "About 0.65 standard deviations.",
+                    "feedback": "Gollwitzer and Sheeran reported d = 0.65 across 94 tests. It is a standardised effect, not a 65% success rate.",
                     "correct": true,
                     "sourceRefs": [
-                      "konstanz-plan",
-                      "plan-study"
+                      "plan-meta"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "One.",
-                    "feedback": "The bus is easy to spot, so one part may feel enough. The plan also names an act.",
+                    "text": "About 65 percentage points.",
+                    "feedback": "The 0.65 figure uses spread in scores as its unit. It does not mean 65 percentage points.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
                     ],
                     "sourceRefs": [
-                      "konstanz-plan",
-                      "plan-study"
+                      "plan-meta"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About zero; plans showed no average effect.",
+                    "feedback": "A bare goal may not trigger action. Across these tests, specifying a cue and action had a positive average effect.",
+                    "correct": false,
+                    "misconceptionIds": ["if-then-plans-m1"],
+                    "sourceRefs": ["plan-meta"]
                   }
                 ],
                 "answer": {
-                  "value": 2,
-                  "min": 1.5,
-                  "max": 2.5,
-                  "unit": "count"
+                  "value": 0.65,
+                  "min": 0.6,
+                  "max": 0.7,
+                  "unit": "Cohen's d"
                 }
               },
               {
@@ -3963,6 +3992,13 @@
                 "publisher": "Parks-Stamm et al., Social Cognition",
                 "year": 2007,
                 "url": "https://doi.org/10.1521/SOCO.2007.25.2.248"
+              },
+              {
+                "id": "plan-meta",
+                "title": "Implementation Intentions and Goal Achievement: A Meta-analysis of Effects and Processes",
+                "publisher": "Gollwitzer and Sheeran, Advances in Experimental Social Psychology",
+                "year": 2006,
+                "url": "https://doi.org/10.1016/S0065-2601(06)38002-1"
               }
             ],
             "quest": {
@@ -4016,7 +4052,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {

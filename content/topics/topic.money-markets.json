@@ -3119,12 +3119,12 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "Two loans show the same EMI but give no number of months. From the EMI alone, about how many can be named as the cheaper loan?",
+                "stem": "A loan pays out ₹10,000. You make 12 EMIs of ₹900 and no other payments. About how much of the total paid is interest?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Zero.",
-                    "feedback": "A monthly bill without the term cannot show the full loan cost.",
+                    "text": "About ₹800.",
+                    "feedback": "Twelve payments of ₹900 total ₹10,800. Subtract the ₹10,000 borrowed to get ₹800 interest.",
                     "correct": true,
                     "sourceRefs": [
                       "rbi-loan"
@@ -3132,8 +3132,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "One.",
-                    "feedback": "The EMIs match, so one price may seem enough to compare. The month count is missing.",
+                    "text": "About ₹900.",
+                    "feedback": "One EMI is ₹900, but interest is part of all 12 payments. Total paid minus principal is ₹800.",
                     "correct": false,
                     "misconceptionIds": [
                       "loan-emi-m1"
@@ -3141,13 +3141,21 @@
                     "sourceRefs": [
                       "rbi-loan"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About ₹10,800.",
+                    "feedback": "₹10,800 is all you pay. Take away the ₹10,000 loan to get ₹800 in interest.",
+                    "correct": false,
+                    "misconceptionIds": ["loan-emi-m1"],
+                    "sourceRefs": ["rbi-loan"]
                   }
                 ],
                 "answer": {
-                  "value": 0,
-                  "min": -0.5,
-                  "max": 0.5,
-                  "unit": "count"
+                  "value": 800,
+                  "min": 750,
+                  "max": 850,
+                  "unit": "rupees"
                 }
               },
               {
@@ -3412,7 +3420,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           },
           {
@@ -3991,12 +3999,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A fake cashback link asks for a UPI PIN only to receive money. How many PIN approvals are needed for a normal receipt?",
+                "stem": "A fake cashback message promises ₹200 but sends a ₹2,000 UPI collect request. If you approve that request with your PIN, about how much leaves your bank account?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Zero PIN approvals.",
-                    "feedback": "Receiving money does not need the receiver to approve a debit with a PIN.",
+                    "text": "About ₹2,000.",
+                    "feedback": "The PIN approves the ₹2,000 request. That money leaves your bank account.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4005,8 +4013,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "One PIN approval.",
-                    "feedback": "A cashback label sounds like money coming in. A PIN prompt can approve money going out.",
+                    "text": "About ₹200 comes in.",
+                    "feedback": "The cashback promise describes a receipt, but the ₹2,000 collect request asks you to pay.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4015,13 +4023,21 @@
                       "npci-fraud",
                       "npci-faq"
                     ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About ₹1,800 leaves.",
+                    "feedback": "Subtracting the promised cashback assumes it arrives. The approved collect request is for the full ₹2,000.",
+                    "correct": false,
+                    "misconceptionIds": ["upi-scams-m1"],
+                    "sourceRefs": ["npci-fraud", "npci-faq"]
                   }
                 ],
                 "answer": {
-                  "value": 0,
-                  "min": -0.5,
-                  "max": 0.5,
-                  "unit": "count"
+                  "value": 2000,
+                  "min": 1950,
+                  "max": 2050,
+                  "unit": "rupees"
                 }
               },
               {
@@ -4313,7 +4329,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17"
+              "checker": "codex-factcheck-2026-10-17d"
             }
           }
         ]
