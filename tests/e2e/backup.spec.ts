@@ -31,7 +31,7 @@ test('restore preview keeps its first row clear on phone widths', async ({ page 
     await page.getByRole('button', { name: 'Choose restore file' }).click();
     await (await chooser).setFiles({ name: 'legacy-preview.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacy)) });
     const card = page.getByLabel('Restore preview');
-    await expect(card).toContainText('2026-10-02 to 2026-10-02');
+    await expect(card).toContainText('Fri 2 Oct to Fri 2 Oct');
     await expect(card).toContainText('1 retired');
     const subtitle = card.locator('p').first();
     const firstRow = card.locator('.count-list li').first();

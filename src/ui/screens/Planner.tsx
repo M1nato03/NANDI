@@ -4,6 +4,7 @@ import { db } from '../../data/db';
 import type { TaskRow } from '../../data/types';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time/dayKey';
+import { formatDayKey } from '../../core/time/formatDayKey';
 import { capacity, stepDownOffer, suggestSlots, weeklySummary } from '../../core/tasks/planner';
 import { minutesInWords, moveReasonInWords, weekInWords, weekInWordsSummary } from '../../core/tasks/plannerCopy';
 import { postponeWeekKey } from '../../core/tasks/budget';
@@ -156,7 +157,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       {policy?.raisedAtWeek === currentWeek && <p role="status">Budget raised to {policy.budget}. Plans should fit real life.</p>}
       {lowerOffer != null && <div className="card"><p>You were under budget in at least three of the last four weeks.</p><button type="button" className="secondary" onClick={() => void board.act((repos, now) => repos.lowerBudget(now), `Budget lowered to ${lowerOffer}.`)}>Lower the budget by 1?</button></div>}
       <section aria-label="Someday items"><h2>Someday</h2>{someday.length ? <GroupedSteps all={board.tasks} selected={someday} render={(task) => <><strong>{task.title}</strong>{summary.somedayMoved.includes(task.id) && <span>Moved this week</span>}<div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.postpone(task.id, now, { newStart: new Date(tomorrowSlot(now)).getTime() }), 'Task revived for tomorrow.')}>Revive</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task removed.')}>Delete</button></div></>} onDropGroup={dropGroup} busy={board.busy} /> : <p>No Someday items right now.</p>}</section>
-      <section aria-label="Upcoming checkpoints"><h2>Upcoming checkpoints</h2>{rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}>{task.title} · {task.dayKey}</p>).length ? rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}>{task.title} · {task.dayKey}</p>) : <p>No upcoming checkpoints.</p>}</section>
+      <section aria-label="Upcoming checkpoints"><h2>Upcoming checkpoints</h2>{rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}>{task.title} · {formatDayKey(task.dayKey)}</p>).length ? rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}>{task.title} · {formatDayKey(task.dayKey)}</p>) : <p>No upcoming checkpoints.</p>}</section>
       <div className="planner-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.markRitual('reviewDone', now), 'Weekly review complete.')}>Finish review</button><button type="button" className="secondary" onClick={() => void exportWeek()}>Export summary</button></div>
       {completed?.reviewDone && <p className="small">Review recorded for today.</p>}
     </>}

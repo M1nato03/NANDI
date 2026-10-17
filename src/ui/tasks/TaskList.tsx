@@ -15,7 +15,7 @@ export function TaskList({ title, groups, onComplete, onMove, onDropGroup, busy,
     {task.status !== 'done' && task.status !== 'dropped' ? <div className="task-row-actions"><button type="button" className="done-circle" aria-label="Done" disabled={busy} onClick={() => onComplete(task.id)}><span aria-hidden="true">✓</span></button><button type="button" className="secondary" disabled={busy} onClick={() => onMove(task)}>{task.status === 'someday' ? 'Plan' : 'Move'}</button></div> : task.status === 'done' ? <span className="done-circle done-mark" aria-label="Done">✓</span> : null}
   </li>;
   return <section className="task-list" aria-label={title}><h2>{title} <span className="task-count">{groups.length}</span></h2>
-    {groups.length === 0 ? <p className="small">Nothing here yet.</p> : <ul>{groups.map((group) => group.total ? <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} busy={busy}><ul>{group.steps.map(row)}</ul></GroupRow> : row(group.parent))}</ul>}</section>;
+    {groups.length === 0 ? <p className="small">{title === 'Today' ? 'A little room for your next step.' : 'Nothing waiting here right now.'}</p> : <ul>{groups.map((group) => group.total ? <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} busy={busy}><ul>{group.steps.map(row)}</ul></GroupRow> : row(group.parent))}</ul>}</section>;
 }
 
 export function GroupedSteps({ all, selected, render, onDropGroup, busy }: { all: TaskRow[]; selected: TaskRow[]; render: (task: TaskRow) => ReactNode; onDropGroup: (id: string) => void; busy: boolean }) {

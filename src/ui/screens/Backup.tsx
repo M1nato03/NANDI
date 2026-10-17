@@ -6,7 +6,7 @@ import { importLegacy, mapLegacy, validateLegacy, type LegacyExport } from '../.
 import { pickFile, shareOrDownload } from '../../platform/files';
 import { estimate, requestPersist } from '../../platform/storage';
 import { recordError } from '../errorRing';
-import { go } from '../shell/router';
+import { formatDayKey } from '../../core/time/formatDayKey';
 import { errorMessage } from '../shell/errorMessage';
 
 type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] }
@@ -91,13 +91,12 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   }
 
   return <section className="screen">
-      <button className="text-button" onClick={() => go('you')}>← You</button>
     <p className="eyebrow">Keep your work</p><h1>Backup</h1>
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
     <div className="card"><h2>Save a copy</h2><p>Last backup: {lastBackup === null ? 'Not yet' : new Date(lastBackup).toLocaleDateString()}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
     <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button></div>
     {choice && <div className="card preview" aria-label="Restore preview">
-      <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${choice.first} to ${choice.last}` : 'No dated rows'}</p>
+      <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'No dated rows'}</p>
       {choice.retired > 0 && <p>{choice.retired} retired</p>}
       <ul className="count-list">{Object.entries(choice.counts).map(([name, count]) => <li key={name}><span>{name}</span><strong>{count}</strong></li>)}</ul>
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}

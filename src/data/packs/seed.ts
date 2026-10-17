@@ -1,8 +1,8 @@
 import * as v from 'valibot';
 import { packSchema, type TopicPack } from './schemas';
 
-const files = import.meta.glob('../../../content/**/*.json', { eager: true, import: 'default' });
-const parsedPacks = Object.values(files).flatMap((pack) => {
+const files = import.meta.glob('../../../content/**/*.json', { import: 'default' });
+const parsedPacks = (await Promise.all(Object.values(files).map(load => load()))).flatMap((pack) => {
   const result = v.safeParse(packSchema, pack);
   return result.success ? [result.output] : [];
 });

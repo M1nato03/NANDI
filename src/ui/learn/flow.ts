@@ -1,13 +1,12 @@
 import { composeDrop, type ConceptState, type ItemState, type Drop } from '../../core/learn/engine';
-import { dayKey } from '../../core/time';
+import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
 import type { LearnConceptRow, LearnItemRow } from '../../data/types';
 
 export const topics = bundledTopicPacks;
 export const selectedTopicKey = 'learn.selectedTopics';
-export const dailyDropId = (now: number) => `drop:daily:${dayKey(now)}`;
-export const nightDropId = (now: number) => `drop:night:${dayKey(now)}`;
+export { dailyDropId, nightDropId };
 export function chosenTopics(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string' && topics.some(pack => pack.body.topic.id === id)) : [];
 }
