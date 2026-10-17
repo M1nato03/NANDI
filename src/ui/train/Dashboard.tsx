@@ -5,6 +5,7 @@ import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, calculatePlates, isRetestWeek, typ
 import type { ProgramRow, SessionRow, SetRow, PrRow, ExStateRow, LedgerRow } from '../../data/types';
 import type { createTrainRepos } from '../../data/repos/train';
 import { Reassessment } from './Reassessment';
+import { EmptyState } from '../EmptyState';
 
 type Page = 'today' | 'history' | 'settings' | 'finish' | 'retest';
 type Repos = ReturnType<typeof createTrainRepos>;
@@ -40,7 +41,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   const retestDue = isRetestWeek(program.startedAt ?? now, now) && program.lastRetestWeek !== retestWeek;
   if (page === 'finish') return null;
   if (page === 'retest') return <Reassessment busy={busy} save={placement => { void act((repos, at) => repos.recordRetest(placement, at), 'Steps updated.').then(ok => { if (ok) setPage('today'); }); }} />;
-  if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <p>Your sessions will appear here.</p> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{formatDayKey(row.dayKey)}</strong><span>{PROGRAMS[row.templateKey ?? '']?.name ?? 'Workout'} · {sessionWords[row.status] ?? 'Finished'}</span></li>)}</ol>}</div>;
+  if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <EmptyState area="move">Your sessions will appear here.</EmptyState> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{formatDayKey(row.dayKey)}</strong><span>{PROGRAMS[row.templateKey ?? '']?.name ?? 'Workout'} · {sessionWords[row.status] ?? 'Finished'}</span></li>)}</ol>}</div>;
   if (page === 'settings') return <div className="card"><h2>Training settings</h2><p>General fitness information, not medical advice.</p>
     <label>Track <select aria-label="Training track" value={program.track} onChange={event => { void act((repos, now) => repos.updateProgram({ track: event.target.value as Track }, now), 'Track saved.'); }}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
     <label>Weekly target <select value={target} onChange={event => { const next = Number(event.target.value) as 2 | 3; void act((repos, now) => repos.updateProgram({ weeklyTarget: next, days: next === 2 ? [1, 4] : [1, 3, 5] }, now), 'Training days saved.'); }}><option value="3">3 days</option><option value="2">2 days</option></select></label>

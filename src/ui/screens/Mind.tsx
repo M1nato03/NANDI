@@ -29,6 +29,7 @@ import { Tracks, trackCardContent } from '../mind/Tracks';
 import { economyVisible, nightMindNote } from '../mind/economyVisibility';
 import { trackWindDownTime } from '../mind/windDown';
 import { CaseScreen } from '../mind/CaseScreen';
+import { EmptyState } from '../EmptyState';
 import { caseRunId } from '../../data/repos/mysteries';
 import { chosenTopics, dailyDropId, selectedTopicKey, topics } from '../learn/flow';
 import '../mind/mind.css';
@@ -342,7 +343,7 @@ export function Mind({ entry }: { entry?: string }) {
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
     </section>
-    <section className="card"><h2>Reviews</h2>{dueCount ? <><p>{dueCount} {dueCount === 1 ? 'card' : 'cards'} due</p><button type="button" className="secondary" onClick={startReviews}>Review due cards</button></> : <p>You're all caught up for now.</p>}</section>
+    <section className="card"><h2>Reviews</h2>{dueCount ? <><p>{dueCount} {dueCount === 1 ? 'card' : 'cards'} due</p><button type="button" className="secondary" onClick={startReviews}>Review due cards</button></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}</section>
     <section className="card"><h2>Learn</h2><p>{masterySummary}</p><button type="button" className="secondary" onClick={() => go('you/learn')}>Open Learn</button></section>
     <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses and past lessons</summary>
       <div className="card mind-old-lesson"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>

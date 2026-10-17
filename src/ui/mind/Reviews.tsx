@@ -5,6 +5,7 @@ import { hideReview, reviewCard, reviewItem } from '../../data/repos/learn';
 import type { CardRow, DeckProgRow } from '../../data/types';
 import { recordError } from '../errorRing';
 import { nightMindNote } from './economyVisibility';
+import { EmptyState } from '../EmptyState';
 
 type Props = { entries: ReviewEntry[]; cards: CardRow[]; progress: DeckProgRow[]; deck: DeckPack; lessonCards: Record<string, [string, string]>; afterBedtime: boolean; economyVisible: boolean; onDone: () => void };
 export function Reviews({ entries: initial, cards, progress, deck, lessonCards, afterBedtime, economyVisible, onDone }: Props) {
@@ -17,7 +18,7 @@ export function Reviews({ entries: initial, cards, progress, deck, lessonCards, 
   const [error, setError] = useState('');
   const [options] = useState(() => Object.fromEntries(deck.body.items.map(item => [item.id, itemOptions(item, deck)])));
   const entry = entries[index];
-  if (!entry) return <section className="screen mind-review"><h1>Reviews complete.</h1><button type="button" onClick={onDone}>Finish reviews</button></section>;
+  if (!entry) return <section className="screen mind-review"><h1>Reviews complete.</h1><EmptyState area="think">Your mind has room to rest.</EmptyState><button type="button" onClick={onDone}>Finish reviews</button></section>;
   const card = entry.kind === 'card' ? cards.find(row => row.id === entry.id) : undefined;
   const content = card ? (card.deckId === 'greene' ? deck.body.cards.find(row => row.id === card.id) : null) : null;
   const item = entry.kind === 'item' ? deck.body.items.find(row => row.id === entry.id) : undefined;

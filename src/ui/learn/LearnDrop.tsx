@@ -52,7 +52,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     // The explanation lands below the options; bring it on screen so nobody has to hunt for it.
     if (feedbackKey < 0) return;
     const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
-    feedbackRef.current?.scrollIntoView?.({ block: 'nearest', behavior: smooth ? 'smooth' : 'auto' });
+    feedbackRef.current?.querySelector('button')?.scrollIntoView?.({ block: 'end', behavior: smooth ? 'smooth' : 'auto' });
   }, [feedbackKey]);
 
   const start = async (selected: string[], isDaily = daily) => {
@@ -152,11 +152,11 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const { item, concept } = found;
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
-  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{night ? <span>Night drop</span> : daily ? <button type="button" className="learn-header-link" onClick={() => go('you/learn')}>Learn ↗</button> : <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
+  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
     <p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p><h2>{item.stem}</h2>
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
-    {message && <p role="status">{message}</p>}</div>;
+    {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('you/learn')}>Open Learn</button>}</div>;
 }

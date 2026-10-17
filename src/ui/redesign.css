@@ -383,3 +383,28 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 /* Planner rows: the action panel gets its own full-width line instead of being squeezed beside the title. */
 .planner-item.ui-list-row { flex-wrap: wrap; align-items: flex-start; }
 .planner-item.ui-list-row > details, .planner-item.ui-list-row > .planner-actions { flex: 1 1 100%; min-width: 0; }
+
+/* Stage 3: one Learn header, reachable feedback, and compact shell notices. */
+.deck-card:has(.learn-drop) { position: relative; overflow: visible; }
+.deck-card:has(.learn-drop) .deck-card-head { padding-right: 54px; }
+.deck-card:has(.learn-drop) .learn-drop-head { position: absolute; top: 22px; right: 22px; height: 36px; margin: 0; color: var(--ink-3); font: 600 13px/20px 'DM Sans', sans-serif; }
+.deck-card:has(.learn-drop) .learn-progress { margin-top: -6px; }
+.learn-feedback, .learn-feedback button { scroll-margin-bottom: calc(80px + env(safe-area-inset-bottom)); }
+.deck-screen:has(.learn-feedback) { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+.learn-open-link { justify-self: start; min-height: 44px; margin-top: 2px; padding: 8px 0; border: 0; background: transparent; color: var(--accent-ink); font: 600 14px/20px 'DM Sans', sans-serif; }
+.offline-ready-toast, .update-bar, .native-update-bar { width: max-content; max-width: calc(100% - 32px); margin: 8px auto; padding: 8px 14px; border: 0; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--ink-2); box-shadow: var(--shadow-1); font: 500 13px/20px 'DM Sans', sans-serif; }
+.update-bar, .native-update-bar { justify-content: center; }
+.update-bar button, .native-update-bar button { min-height: 44px; padding: 8px 12px; border-radius: var(--radius-pill); background: var(--surface-3); color: var(--ink); font-size: 13px; }
+.update-bar button.secondary, .native-update-bar button.secondary { background: transparent; color: var(--ink-2); }
+.screen-back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: 0; padding: 0 16px; border: 0; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--accent-ink); font: 600 14px/20px 'DM Sans', sans-serif; }
+.screen-back .back-chevron { font-size: 22px; line-height: 1; }
+.content > .screen:has(> .screen-back) { margin-bottom: 24px; }
+.content > .screen:has(> .screen-back) + .screen > .eyebrow { margin: 0 0 4px; }
+.content > .screen:has(> .screen-back) + .screen > h1 { margin: 0 0 12px; }
+.ui-empty-state { --area-color: var(--area-do); display: grid; justify-items: center; gap: 8px; padding: 20px 12px; color: var(--ink-2); text-align: center; }
+.ui-empty-state .ui-empty-glyph { color: var(--area-color); font: 700 22px/24px 'Bricolage Grotesque', sans-serif; }
+.ui-empty-state p, .card .ui-empty-state p { margin: 0; color: var(--ink-2); font: 500 14px/20px 'DM Sans', sans-serif; }
+.ui-empty-state[data-area='think'] { --area-color: var(--area-think); }
+.ui-empty-state[data-area='move'] { --area-color: var(--area-move); }
+.ui-empty-state[data-area='learn'] { --area-color: var(--area-learn); }
+.ui-empty-state[data-area='extra'] { --area-color: var(--area-extra); }

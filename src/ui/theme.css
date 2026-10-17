@@ -65,6 +65,9 @@
   --bg: #0B0D16; --surface-1: #131726; --surface-2: #1A1F33; --surface-3: #272D45;
   --ink: #E6E4F0; --ink-2: #B4B1C6; --ink-3: #A5A2BC;
   --accent: #9FA8FF; --accent-ink: #9FA8FF; --on-accent: #0B0D16; --focus: #9FA8FF;
+  --teal: #5FD4C0; --area-learn: #5FD4C0; --area-night: #9FA8FF;
+  --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 8px 24px rgba(0,0,0,.35);
+  --shadow-2: 0 1px 0 rgba(255,255,255,.06) inset, 0 16px 40px rgba(0,0,0,.45);
   --button: var(--surface-2); --button-ink: var(--accent);
   --input-line: rgba(255,255,255,.06);
 }
