@@ -22,6 +22,7 @@
   --radius-chip: 10px; --radius-row: 16px; --radius-card: 24px; --radius-deck: 28px; --radius-pill: 999px;
   --motion-press: 160ms ease-out; --motion-card: 240ms cubic-bezier(.2,.8,.2,1);
   --region-ink: #10141A; --region-boundary: #17202D;
+  --focus-ring: #FFB25B;
   --region-0: #AE91F0; --region-1: #F4A26A; --region-2: #5BD3C8; --region-3: #EF85B6;
   --region-4: #B9D967; --region-5: #7DABFA; --region-6: #F3D46E; --region-7: #F18B7B;
 }
@@ -37,6 +38,7 @@
     --area-do: #9B5200; --area-move: #A84129; --area-think: #6950AA;
     --area-notice: #216C9B; --area-learn: #0F6E61; --area-extra: #657D13; --area-night: #535FB0;
     --input-line: rgba(0,0,0,.08);
+    --focus-ring: var(--focus);
     --region-ink: #10141A; --region-boundary: #344155;
     --region-0: #DFD0FF; --region-1: #FFD8B8; --region-2: #B7EBE5; --region-3: #FFD1E4;
     --region-4: #DCEEA5; --region-5: #C9DFFF; --region-6: #FFF0AD; --region-7: #FFCFC3;
@@ -53,6 +55,7 @@
   --area-do: #9B5200; --area-move: #A84129; --area-think: #6950AA;
   --area-notice: #216C9B; --area-learn: #0F6E61; --area-extra: #657D13; --area-night: #535FB0;
   --input-line: rgba(0,0,0,.08);
+    --focus-ring: var(--focus);
   --region-ink: #10141A; --region-boundary: #344155;
   --region-0: #DFD0FF; --region-1: #FFD8B8; --region-2: #B7EBE5; --region-3: #FFD1E4;
   --region-4: #DCEEA5; --region-5: #C9DFFF; --region-6: #FFF0AD; --region-7: #FFCFC3;

@@ -127,7 +127,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
     } catch { setExportMessage('Could not export the weekly summary.'); }
   }
   return <section className="screen planner-screen"><p className="eyebrow">Your plan</p><h1>{mode === 'plan' ? 'Morning plan' : mode === 'shutdown' ? 'Shutdown' : 'Weekly review'}</h1>
-    {board.message && <p role="status">{board.message}</p>}{exportMessage && <p role="status">{exportMessage}</p>}
+    {(board.message || exportMessage) && <div role="status">{board.message && <p>{board.message}</p>}{exportMessage && <p>{exportMessage}</p>}</div>}
     {mode === 'plan' && <>
       <section className="card planner-capacity" aria-label="Time for today"><h2>Today you have about {minutesInWords(Math.max(0, room.available - room.planned))} free</h2><progress max={room.available} value={Math.min(room.planned, room.available)} aria-label="Time planned" /><p>{minutesInWords(room.planned)} planned</p><details><summary>How is this worked out?</summary><p>Your tasks usually take {overrunRatio.toFixed(1)}× your guess, so NANDI plans with that. You have about {minutesInWords(room.available)} available today.</p></details>{room.over && <p role="note">This is more than your usual time. Adjust your plan if useful.</p>}</section>
       <p>A few minutes to give the day a shape. You can skip this.</p>

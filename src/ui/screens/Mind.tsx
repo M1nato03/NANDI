@@ -7,6 +7,7 @@ import { masteryMapState } from '../../core/learn/engine';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
 import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { nightPracticeSeed } from '../../core/puzzles/night';
 import { nextHint } from '../../core/puzzles/hint';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
@@ -32,7 +33,7 @@ import { caseRunId } from '../../data/repos/mysteries';
 import { chosenTopics, dailyDropId, selectedTopicKey, topics } from '../learn/flow';
 import '../mind/mind.css';
 
-type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; attempt?: number };
+type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
 const diffs: PuzzleDifficulty[] = ['easy', 'medium', 'hard'];
 const lessonPacks = bundledPacks.filter((pack): pack is Extract<typeof pack, { kind: 'lessons' }> => pack.kind === 'lessons');
@@ -192,7 +193,7 @@ export function Mind({ entry }: { entry?: string }) {
     if (!selection) return;
     let live = true;
     const worker = new Worker(new URL('../../workers/puzzle.worker.ts', import.meta.url), { type: 'module' });
-    const seed = PZ.hash(`${selection.daily ? 'daily' : 'practice'}:${today}:${selection.type}:${selection.diff}${selection.daily ? '' : `:${selection.attempt ?? 0}`}`);
+    const seed = selection.night ? nightPracticeSeed(today, selection.type) : PZ.hash(`${selection.daily ? 'daily' : 'practice'}:${today}:${selection.type}:${selection.diff}${selection.daily ? '' : `:${selection.attempt ?? 0}`}`);
     worker.onmessage = (event: MessageEvent<{ board?: PuzzleBoard | null; error?: string }>) => {
       if (!live) return;
       if (event.data.error || !event.data.board) { setMessage(event.data.error ?? 'Could not build this board.'); setBusy(false); return; }
@@ -275,12 +276,20 @@ export function Mind({ entry }: { entry?: string }) {
       entryHandled.current = true;
       if (entry === 'board' || entry.startsWith('board/')) {
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
-        const [, practiceType, practiceDiff] = entry.split('/');
+        const [, practiceType, practiceDiff, variant] = entry.split('/');
         const type = types.find(value => value === practiceType);
         const diff = diffs.find(value => value === practiceDiff);
+        if (practiceType === 'daily') {
+          setSelection({ type: featured.type, diff: featured.diff, daily: true });
+          return;
+        }
+        if (type && diff === 'easy' && variant === 'night') {
+          setSelection({ type, diff, daily: false, night: true, attempt: -2 });
+          return;
+        }
         void db.puzzleRuns.where('type').equals(type ?? featured.type).toArray().then(rows => {
           if (type && diff) {
-            const matching = rows.filter(row => !row.deleted && !row.daily && row.dayKey === today && row.diff === diff);
+            const matching = rows.filter(row => !row.deleted && !row.daily && row.dayKey === today && row.diff === diff && row.practiceAttempt !== -2);
             const unfinished = matching.find(row => !row.result);
             const attempt = unfinished?.practiceAttempt ?? (matching.length ? Math.max(...matching.map(row => row.practiceAttempt ?? 0)) + 1 : 0);
             setSelection({ type, diff, daily: false, attempt });
@@ -303,9 +312,12 @@ export function Mind({ entry }: { entry?: string }) {
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('you/mind')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
   if (reviews && deck) return <Reviews entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onDone={() => void finishReviews()} />;
   if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => entry === 'case' ? go('you/mind') : history.back()} />;
-  if (selection) return <section className="screen mind-board" data-save-state={saveState}>
-    {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
-    {busy || !board || !run ? <><h1>{PZ.TYPES[selection.type].name}</h1><p role="status">{message || 'Building board…'}</p></> : <>
+  if (selection) return <section className="screen mind-board" data-save-state={saveState} data-board-seed={board?.seed}>
+    {(night === 'lightsOut' || busy || !board || !run) && <div role="status">
+      {night === 'lightsOut' && <p>{nightMindNote(showEconomy)}</p>}
+      {(busy || !board || !run) && <p>{message || 'Building board…'}</p>}
+    </div>}
+    {busy || !board || !run ? <h1>{PZ.TYPES[selection.type].name}</h1> : <>
       <p className="eyebrow">{selection.intro ? `Intro board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
@@ -313,7 +325,7 @@ export function Mind({ entry }: { entry?: string }) {
         <p className="small" aria-label="Active time">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => commit({ ...state, grid }, notes ? { notes } : {})} onPath={path => commit({ ...state, path })} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" onClick={() => { const hint = nextHint(board, state); if (hint.changed) commit(hint.state, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), 3] }); setMessage(hint.message); }}>Hint</button></div>
-        {message && <p role="status">{message}</p>}
+        {message && <p>{message}</p>}
       </>}
     </>}
   </section>;

@@ -1,7 +1,8 @@
 import { lazy, memo, Suspense, useEffect, useState, type FormEvent } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import PZ from '../../core/puzzles';
-import { dailyBoard, featuredSpec } from '../../core/puzzles/daily';
+import { featuredSpec } from '../../core/puzzles/daily';
+import { nightPuzzleBoard, selectNightPuzzle } from '../../core/puzzles/night';
 import { dayKey } from '../../core/time/dayKey';
 import { shutdownAt } from '../../core/tasks/planner';
 import { nightPlanText, nightsBackOnPlan, readNightPlan } from '../../core/nightPlan';
@@ -27,11 +28,12 @@ export const NIGHT_CARDS = [
 ] as const;
 
 const NightPuzzle = memo(function NightPuzzle({ today, dailySolved, type, diff }: { today: string; dailySolved: boolean; type: ReturnType<typeof featuredSpec>['type']; diff: ReturnType<typeof featuredSpec>['diff'] }) {
-  const puzzle = dailySolved ? PZ.generate('sudoku', { seed: PZ.hash(`night-practice:${today}`), diff: 'easy' }) : dailyBoard(today);
-  const title = dailySolved ? 'Easy practice board' : PZ.TYPES[type].name;
+  const choice = selectNightPuzzle(type, diff, dailySolved);
+  const puzzle = nightPuzzleBoard(today, choice);
+  const title = PZ.TYPES[choice.type].name;
   const size = puzzle ? 'N' in puzzle ? puzzle.N : puzzle.type === 'sunmoon' ? 6 : puzzle.C : 0;
   const values = puzzle ? puzzle.type === 'sudoku' ? puzzle.givens : puzzle.type === 'sunmoon' ? puzzle.given.map(value => value < 0 ? '' : value ? '☀' : '☾') : puzzle.type === 'path' ? Array.from({ length: puzzle.R * puzzle.C }, (_, i) => puzzle.waypoints.includes(i) ? String(puzzle.waypoints.indexOf(i) + 1) : '') : puzzle.type === 'crowns' ? puzzle.region.map(() => '') : Array.from({ length: puzzle.N * puzzle.N }, (_, i) => puzzle.cages.find(cage => cage.cells[0] === i)?.target ?? '') : [];
-  return <><span className="pill">One calm puzzle</span><h2>{title}</h2><p>{dailySolved ? 'An easy board for a quiet moment.' : 'Today’s board is here when you want it.'}</p><div className="deck-puzzle" role="img" aria-label={`Preview of ${title} board`} style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}>{values.map((value, i) => <span key={i} className={puzzle?.type === 'crowns' ? `region-${puzzle.region[i] ?? 0}` : ''}>{value || ''}</span>)}</div><p className="deck-meta">{dailySolved ? 'Easy practice' : `${diff} board`}</p><div className="deck-actions"><button type="button" onClick={() => go(dailySolved ? 'you/mind/board/sudoku/easy' : 'you/mind/board')}>Play</button></div></>;
+  return <><span className="pill">One calm puzzle</span><h2>{title}</h2><p>{choice.daily ? 'Today’s board is here when you want it.' : 'An easy board for a quiet moment.'}</p><div className="deck-puzzle" role="img" aria-label={`Preview of ${title} board`} data-board-seed={puzzle?.seed} style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}>{values.map((value, i) => <span key={i} className={puzzle?.type === 'crowns' ? `region-${puzzle.region[i] ?? 0}` : ''}>{value || ''}</span>)}</div><p className="deck-meta">{choice.daily ? `${choice.diff} board` : 'Easy practice'}</p><div className="deck-actions"><button type="button" onClick={() => go(choice.daily ? 'you/mind/board/daily' : `you/mind/board/${choice.type}/easy/night`)}>Play</button></div></>;
 });
 
 const windDownIds = ['read-pages', 'book-notes', 'quiet-minutes'] as const;
@@ -52,7 +54,8 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const logs = useLiveQuery(() => db.dailyLog.toArray(), []) ?? [];
   const log = logs.find(row => row.dayKey === today && !row.deleted);
-  const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []);
+  const runs = puzzleRuns ?? [];
   const sessions = useLiveQuery(() => db.sessions.filter(row => !row.deleted).toArray(), []) ?? [];
   const quests = useLiveQuery(() => db.quests.where('week').equals(weekKey(now)).toArray(), [today]) ?? [];
   const plan = readNightPlan(settings);
@@ -125,7 +128,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
       <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
       {card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
       {card.id === 'learn' && <Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense>}
-      {card.id === 'puzzle' && <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />}
+      {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
       {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<div className="deck-end"><p><strong>Tomorrow’s first step</strong></p>{tomorrowTask ? <p>{tomorrowTask.title}</p> : <form className="deck-add" onSubmit={event => void saveTomorrow(event)}><label htmlFor="night-tomorrow">Name one small step</label><input id="night-tomorrow" value={tomorrowTitle} onChange={event => setTomorrowTitle(event.target.value)} maxLength={160} placeholder="Tomorrow’s first step" required /><button type="submit" disabled={board.busy}>Save</button></form>}</div></>}
       {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{windDownText[suggestionId]}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMoveDone}>{phoneMoveDone ? 'Set for tonight' : "I’ll do it"}</button></div></>}
       {card.id === 'stop' && <><span className="pill">The stopping point</span><h2>That’s tonight. Phone down.</h2><p>Lights-out time: {bedtime}</p>{log?.lightsOutAt && <p className="deck-meta">Check-in saved. Rest when you are ready.</p>}<div className="deck-actions">{!log?.lightsOutAt && <button type="button" onClick={() => void checkIn()}>Lights-out check-in</button>}<button type="button" className="secondary" onClick={() => goToCard(0)}>Back to cards</button></div></>}

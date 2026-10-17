@@ -80,7 +80,7 @@ test('a full exercise advances, then a later set resumes after reload', async ({
   await expect(page.getByText('Exercise 2 of 7')).toBeVisible();
   await expect(page.getByRole('heading', { name: /^Set 2 of/ })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('Set 1');
-  await page.getByRole('button', { name: 'All exercises +' }).click();
+  await page.getByRole('button', { name: 'All exercises', exact: true }).click();
   await expect(page.locator('.train-all-list li')).toHaveCount(7);
   await page.getByRole('button', { name: 'Previous' }).click();
   await expect(page.getByText('Exercise 1 of 7')).toBeVisible();
