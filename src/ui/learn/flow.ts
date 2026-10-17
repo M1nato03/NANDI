@@ -1,4 +1,4 @@
-import { composeDrop, type ConceptState, type ItemState, type Drop } from '../../core/learn/engine';
+import { composeConceptPractice, composeDrop, type ConceptState, type ItemState, type Drop } from '../../core/learn/engine';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -19,11 +19,19 @@ export function findItem(concepts: readonly TopicConcept[], id: string): { item:
     if (item) return { item, concept };
   }
 }
-export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[] }): Drop {
+export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; reviewDue?: boolean; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[] }): Drop {
   const conceptState = Object.fromEntries(input.concepts.filter(row => !row.deleted).map(row => [row.id, { ...row, conceptId: row.id } satisfies ConceptState]));
   const itemState = Object.fromEntries(input.items.filter(row => !row.deleted).map(row => [row.id, { ...row, itemId: row.id } satisfies ItemState]));
-  const drop = composeDrop({ catalog: { concepts: catalogFor(input.ids) }, concepts: conceptState, items: itemState,
-    now: input.now, seed: input.now % 1_000_000, requestedItems: input.itemCount ?? 5, spentMinutes: input.night ? 0 : input.spentMinutes,
-    answeredToday: input.night ? 0 : input.answeredToday, newToday: input.night ? 0 : input.newToday, facts: input.facts });
+  const catalog = catalogFor(input.ids);
+  const due = input.reviewDue ? catalog.filter(concept => {
+    const state = conceptState[concept.id];
+    return !!state && ((!!state.memory && state.memory.dueAt <= input.now) || ([7, 30] as const).some(day =>
+      !!state.firstLearnedAt && input.now >= state.firstLearnedAt + day * 86_400_000 && !state.retentionChecks?.[day]));
+  }) : catalog;
+  const context = { catalog: { concepts: due }, concepts: conceptState, items: itemState,
+    now: input.now, seed: input.now % 1_000_000, requestedItems: input.itemCount ?? 5, spentMinutes: input.night || !input.daily ? 0 : input.spentMinutes,
+    answeredToday: input.night || !input.daily ? 0 : input.answeredToday, newToday: input.night || !input.daily ? 0 : input.newToday,
+    afterBedtime: input.reviewDue, facts: input.facts };
+  const drop = input.preferredConceptId ? composeConceptPractice(context, input.preferredConceptId) : composeDrop(context);
   return { ...drop, id: input.night ? nightDropId(input.now) : input.daily ? dailyDropId(input.now) : `drop:practice:${input.now}` };
 }

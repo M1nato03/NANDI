@@ -5,7 +5,7 @@ import { exportBackup, importBackup, validateBackup } from '../../../data/backup
 import { validatePack } from '../../../data/packs/validate';
 import { saveDrop, saveEngineAnswer, loadDrop, loadEngineFacts } from '../../../data/repos/learn-engine';
 import { fixtureTopic } from './fixtures/topic';
-import { answerConcept, calibration, composeDrop, currentDropStep, DAY_MS, fsrsInterval, gradeItem, masteryMapState, predictedSuccess, retentionSummary, selectNextItem, updateMastery, updateMemory, type AnswerFact, type ConceptState, type ItemState } from '.';
+import { answerConcept, calibration, composeConceptPractice, composeDrop, currentDropStep, DAY_MS, fsrsInterval, gradeItem, masteryMapState, predictedSuccess, retentionSummary, selectNextItem, updateMastery, updateMemory, type AnswerFact, type ConceptState, type ItemState } from '.';
 
 const now = Date.UTC(2026, 9, 11, 12);
 const concepts = fixtureTopic.body.modules[0]!.concepts;
@@ -13,6 +13,25 @@ const items = concepts.flatMap(concept => concept.items);
 const catalog = { concepts };
 const state = (id: string, mastery: number, dueAt = now - 1): ConceptState => ({ conceptId: id, mastery, attempts: 3, activeMisconceptions: [], memory: { stability: 5, difficulty: 5, interval: 5, lastReview: now - 5 * DAY_MS, dueAt } });
 function fresh() { return createDb(`engine-${Math.random()}`); }
+
+it('practice selects only the requested concept, including recent items before its review date', () => {
+  const future = state('seed', 0.8, now + DAY_MS);
+  const recent = Object.fromEntries(concepts[0]!.items.map(item => [item.id, { itemId: item.id, rating: 900, attempts: 1, lastSeen: now }]));
+  const drop = composeConceptPractice({ catalog, concepts: { seed: future }, items: recent, now, seed: 4,
+    spentMinutes: 25, answeredToday: 10, newToday: 5, requestedItems: 3 }, 'seed');
+  expect(drop.items).toHaveLength(3);
+  expect(drop.items.every(item => item.conceptId === 'seed')).toBe(true);
+  expect(drop.ending.kind).toBe('stopping-screen');
+  expect(future.memory!.dueAt).toBe(now + DAY_MS);
+  expect(recent[concepts[0]!.items[0]!.id]!.lastSeen).toBe(now);
+});
+
+it('practice opens a new idea even when its daily prerequisite is locked', () => {
+  const drop = composeConceptPractice({ catalog, concepts: { seed: state('seed', 0.5) }, items: {}, now, seed: 2,
+    spentMinutes: 0, answeredToday: 0, newToday: 0 }, 'sprout');
+  expect(drop.items.length).toBeGreaterThan(0);
+  expect(drop.items.every(item => item.conceptId === 'sprout')).toBe(true);
+});
 
 it('09 §9 test 1: correct raises, wrong lowers, and repeated recall converges', () => {
   const p = 0.2;

@@ -34,4 +34,21 @@ describe('live learning drop glue', () => {
     expect(night.items).toHaveLength(3);
     expect(daily.items).toHaveLength(5);
   });
+
+  it('starts due reviews and concept practice under separate practice ids', () => {
+    const now = new Date('2026-10-17T12:00:00').getTime();
+    const idea = catalogFor(['money-markets'])[0]!;
+    const input = { ids: ['money-markets'], concepts: [{ id: idea.id, mastery: 0.8, attempts: 2,
+      memory: { stability: 2, difficulty: 5, interval: 2, lastReview: now - 3 * 86_400_000, dueAt: now - 1 },
+      activeMisconceptions: [], updatedAt: now, deleted: 0 as const, deviceId: 'test' }], items: [], now,
+      daily: false, answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [], itemCount: 3 };
+    const review = makeDrop({ ...input, reviewDue: true });
+    const focused = makeDrop({ ...input, preferredConceptId: idea.id });
+    expect(review.id).toMatch(/^drop:practice:/);
+    expect(review.id).not.toBe(makeDrop({ ...input, daily: true }).id);
+    expect(review.items.length).toBeGreaterThan(0);
+    expect(review.items.every(item => item.conceptId === idea.id && item.mode !== 'new')).toBe(true);
+    expect(focused.items).toHaveLength(3);
+    expect(focused.items.every(item => item.conceptId === idea.id)).toBe(true);
+  });
 });

@@ -99,6 +99,20 @@ export function composeDrop(context: ComposeContext): Drop {
   }
   return { id: `drop:${context.now}:${context.seed}`, items, cursor: 0, ending: { kind: 'stopping-screen' } };
 }
+
+/** Optional practice uses the normal selector, scoped to one idea. It may revisit
+ * a recent item or an idea whose scheduled review is later. */
+export function composeConceptPractice(context: ComposeContext, conceptId: string): Drop {
+  const concept = context.catalog.concepts.find(candidate => candidate.id === conceptId);
+  if (!concept) return composeDrop(context);
+  const prior = context.concepts[conceptId];
+  return composeDrop({ ...context,
+    catalog: { concepts: [{ ...concept, prerequisites: [] }] },
+    concepts: prior?.memory ? { ...context.concepts, [conceptId]: { ...prior, memory: { ...prior.memory, dueAt: context.now } } } : context.concepts,
+    items: Object.fromEntries(Object.entries(context.items).map(([id, state]) => [id, { ...state, lastSeen: undefined }])),
+    spentMinutes: 0, answeredToday: 0, newToday: 0, requestedItems: Math.min(3, context.requestedItems ?? 3),
+  });
+}
 export function currentDropStep(drop: Drop): DropItem | Drop['ending'] {
   return drop.items[drop.cursor] ?? drop.ending;
 }
