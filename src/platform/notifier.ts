@@ -3,6 +3,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 
 export type Reminder = { id: string; at: number; title: string; body: string; channel: 'tasks' | 'rest' | 'planning' };
 export interface Notifier {
+  checkPermission(): Promise<'granted' | 'denied' | 'prompt'>;
   requestPermission(): Promise<'granted' | 'denied' | 'prompt'>;
   schedule(reminder: Reminder): Promise<void>;
   cancel(id: string): Promise<void>;
@@ -18,6 +19,7 @@ export function notifId(id: string): number {
 
 export class WebNotifier implements Notifier {
   private timers = new Map<string, number>();
+  async checkPermission(): Promise<'granted' | 'denied' | 'prompt'> { return typeof Notification === 'undefined' ? 'denied' : Notification.permission === 'default' ? 'prompt' : Notification.permission; }
   async requestPermission(): Promise<'granted' | 'denied' | 'prompt'> {
     if (typeof Notification === 'undefined') return 'denied';
     const result = await Notification.requestPermission();
@@ -47,6 +49,10 @@ export class CapacitorNotifier implements Notifier {
   }
   async requestPermission(): Promise<'granted' | 'denied' | 'prompt'> {
     const result = await LocalNotifications.requestPermissions();
+    return result.display === 'granted' ? 'granted' : result.display === 'prompt' ? 'prompt' : 'denied';
+  }
+  async checkPermission(): Promise<'granted' | 'denied' | 'prompt'> {
+    const result = await LocalNotifications.checkPermissions();
     return result.display === 'granted' ? 'granted' : result.display === 'prompt' ? 'prompt' : 'denied';
   }
   async schedule(reminder: Reminder): Promise<void> {

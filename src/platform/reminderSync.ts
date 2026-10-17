@@ -6,6 +6,7 @@ import type { ReminderRow, SessionRow, TaskRow } from '../data/types';
 import { mayScheduleReminder } from '../core/notificationBudget';
 import { CapacitorNotifier, notifId, notifier, type Reminder } from './notifier';
 import { ulid } from 'ulidx';
+import { reconcileNudges } from './nudgeSync';
 
 export function wantedReminders(tasks: TaskRow[], sessions: SessionRow[], now: number): Reminder[] {
   const common = { now, optIn: true, scheduledEngagement: [], bedtime: '01:30', shutdown: '23:15' };
@@ -29,7 +30,7 @@ export async function reconcileReminders(now = Date.now()): Promise<void> {
   const desired = wantedReminders(tasks, sessions, now);
   const byRef = new Map(desired.map(row => [row.id, row]));
   const pendingIds = new Set(pending);
-  for (const row of stored.filter(row => row.status === 'scheduled')) {
+  for (const row of stored.filter(row => row.status === 'scheduled' && (row.refType === 'task' || row.refType === 'session'))) {
     const next = byRef.get(`${row.refType === 'session' ? 'rest' : 'task'}:${row.refId}`);
     if (!next || next.at !== row.at) {
       await notifier.cancel(row.id);
@@ -38,7 +39,7 @@ export async function reconcileReminders(now = Date.now()): Promise<void> {
   }
   if (!desired.length) return;
   if (Capacitor.isNativePlatform()) {
-    if (await notifier.requestPermission() !== 'granted') return;
+    if (await notifier.checkPermission() !== 'granted') return;
   } else if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
   const deviceId = await getOrCreateDeviceId(db, now);
   for (const reminder of desired) {
@@ -58,10 +59,10 @@ export async function reconcileReminders(now = Date.now()): Promise<void> {
 
 export function startReminderSync(onError: (error: unknown) => void): () => void {
   let busy = Promise.resolve();
-  const queue = () => { busy = busy.then(() => reconcileReminders()).catch(onError); };
+  const queue = () => { busy = busy.then(async () => { await reconcileReminders(); await reconcileNudges(); }).catch(onError); };
   if (notifier instanceof CapacitorNotifier) void notifier.createChannels().then(queue).catch(onError);
   else queue();
-  const subscription = liveQuery(() => Promise.all([db.tasks.toArray(), db.sessions.toArray()])).subscribe({ next: queue, error: onError });
+  const subscription = liveQuery(() => Promise.all([db.tasks.toArray(), db.sessions.toArray(), db.settings.toArray(), db.dailyLog.toArray()])).subscribe({ next: queue, error: onError });
   const resume = () => { if (document.visibilityState === 'visible') queue(); };
   document.addEventListener('visibilitychange', resume);
   window.addEventListener('pageshow', queue);

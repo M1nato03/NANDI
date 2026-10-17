@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mock = vi.hoisted(() => ({
   schedule: vi.fn().mockResolvedValue(undefined), cancel: vi.fn().mockResolvedValue(undefined),
-  listPending: vi.fn().mockResolvedValue([]), requestPermission: vi.fn().mockResolvedValue('granted'),
+  listPending: vi.fn().mockResolvedValue([]), checkPermission: vi.fn().mockResolvedValue('granted'),
 }));
 vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => true } }));
 vi.mock('./notifier', () => ({ notifier: mock, CapacitorNotifier: class {}, notifId: () => 123 }));
