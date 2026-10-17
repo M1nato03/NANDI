@@ -33,7 +33,7 @@ export function Today() {
     }, 'Task done.');
     if (ok) setJustFinished({ planned: current.estimateMin ?? 0, actual: Math.round(actual / 60_000) });
   }
-  return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('now')}>← Now</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>
+  return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('now')} aria-label="Back to Now"><span aria-hidden="true">←</span> Now</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>
     {board.message && <p role="status">{board.message}</p>}
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
     <section className="card now-card" aria-label="Focus task">{task ? <><span className="pill">{group ? `Step ${step} of ${group.total}` : 'Today'}</span><h2>{task.title}</h2>{task.firstStep && <p>First: {task.firstStep}</p>}
