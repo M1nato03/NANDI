@@ -1,32 +1,34 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
 import { reconcileSolvedBoards } from '../../data/repos/puzzleRuns';
 import { recordError } from '../errorRing';
-import { Backup } from '../screens/Backup';
-import { GeneratorCheck } from '../screens/GeneratorCheck';
 import { Today } from '../screens/Today';
 import { Now } from '../screens/Now';
-import { Learn } from '../screens/Learn';
-import { Plan } from '../screens/Plan';
-import { Planner } from '../screens/Planner';
-import { Train } from '../screens/Train';
-import { Mind } from '../screens/Mind';
-import { Ground } from '../screens/Ground';
-import { You } from '../screens/You';
+import { DelayedCardSkeleton } from './DelayedCardSkeleton';
 import { back, backDestination, initializeHistory, navigationEventName, route, tabOf } from './router';
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
 import { startReminderSync } from '../../platform/reminderSync';
 import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause';
-import { NightPauseCard } from '../screens/NightPauseCard';
-import { Night } from '../screens/Night';
 import { startNightPauseSync } from '../../platform/nightPauseSync';
 import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
+
+const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
+const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
+const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
+const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
+const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
+const Train = lazy(() => import('../screens/Train').then(module => ({ default: module.Train })));
+const Mind = lazy(() => import('../screens/Mind').then(module => ({ default: module.Mind })));
+const Ground = lazy(() => import('../screens/Ground').then(module => ({ default: module.Ground })));
+const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
+const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
+const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
 
 export function AppShell() {
   const [path, setPath] = useState(route);
@@ -71,5 +73,5 @@ export function AppShell() {
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Now />;
-  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}{screen}</main><TabBar current={tab} />{pausePackage && <NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} />}</div>;
+  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main><TabBar current={tab} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
 }

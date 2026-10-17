@@ -212,3 +212,44 @@ test('active focus waits until paused before updating', async ({ page, context }
     await server.close();
   }
 });
+
+test('precache opens lazy screens after the first visit goes offline', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-390x844', 'One offline precache check is enough');
+  test.setTimeout(120_000);
+  await page.clock.setFixedTime(new Date('2026-10-19T12:00:00+05:30'));
+  const server = await startUpgradeServer();
+  try {
+    await page.goto(`${server.origin}/#now`);
+    await expect(page.getByRole('region', { name: 'Now deck' }).getByRole('article').first()).toBeVisible();
+    await page.evaluate(() => navigator.serviceWorker.ready);
+    await page.reload();
+    await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+    await context.setOffline(true);
+
+    const screens: [string, string][] = [
+      ['you/train', 'Train'], ['you/mind', 'Mind & learning'], ['you/learn', 'Learn'],
+      ['plan', 'Plan'], ['plan/morning', 'Morning plan'], ['you/settings', 'Settings'],
+      ['you/backup', 'Backup'], ['you/night', 'Night'],
+    ];
+    for (const [hash, heading] of screens) {
+      await page.goto(`${server.origin}/#${hash}`, { waitUntil: 'domcontentloaded' });
+      await expect(page.getByRole('main').getByRole('heading', { name: heading, exact: true }).first()).toBeVisible();
+    }
+
+    await page.goto(`${server.origin}/#you/mind/case`, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('.mind-case')).toBeVisible();
+    await page.goto(`${server.origin}/#you/mind/board`, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('.mind-board')).toBeVisible();
+
+    await page.evaluate(() => { location.hash = '#now'; });
+    await expect(page.getByRole('article', { name: 'Your week card' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'What your time became recap' })).toBeVisible();
+    await page.getByRole('button', { name: 'Go to card 6: Learn' }).click();
+    await expect(page.getByRole('article', { name: 'Learn card' })).toBeVisible();
+  } finally {
+    await context.setOffline(false);
+    await page.close();
+    await context.close();
+    await server.close();
+  }
+});

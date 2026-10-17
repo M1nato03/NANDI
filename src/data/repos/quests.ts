@@ -5,9 +5,7 @@ import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
 import type { NandiDb } from '../db';
 import type { QuestRow } from '../types';
-import pack from '../../../content/quests/quests.core.json';
-
-const definitions = pack.body.quests;
+const definitions = () => import('../../../content/quests/quests.core.json').then(pack => pack.default.body.quests);
 function asQuest(row: QuestRow): Quest { return row; }
 
 export function createQuestRepo(db: NandiDb) {
@@ -20,6 +18,7 @@ export function createQuestRepo(db: NandiDb) {
   return {
     async ensureWeek(now: number): Promise<void> {
       const week = weekKey(now);
+      const quests = await definitions();
       await trackWrite(async () => {
         const deviceId = await getOrCreateDeviceId(db, now);
         await db.transaction('rw', db.quests, async () => {
@@ -28,7 +27,7 @@ export function createQuestRepo(db: NandiDb) {
           if (all.some(row => row.week === week)) return;
           const previous = [...new Set(all.map(row => row.week).filter(value => value < week))].sort().at(-1);
           const previousIds = all.filter(row => row.week === previous && !row.custom).map(row => row.sourceId);
-          const picked = selectWeekly(definitions.map(q => ({ ...q, sourceId: q.id })), week, previousIds);
+          const picked = selectWeekly(quests.map(q => ({ ...q, sourceId: q.id })), week, previousIds);
           await db.quests.bulkAdd(picked.map(q => ({ id: `${q.id}:${week}`, sourceId: q.id, week, title: q.title,
             kind: q.kind as QuestRow['kind'], target: q.target, unit: q.unit, step: q.step, progress: 0,
             tapIds: [], status: 'active' as const, custom: false, updatedAt: now, deleted: 0 as const, deviceId })));
@@ -37,6 +36,7 @@ export function createQuestRepo(db: NandiDb) {
     },
     async swap(now: number): Promise<void> {
       const week = weekKey(now);
+      const quests = await definitions();
       await trackWrite(async () => db.transaction('rw', db.quests, async () => {
         const all = await db.quests.toArray();
         const current = all.filter(q => q.week === week);
@@ -45,7 +45,7 @@ export function createQuestRepo(db: NandiDb) {
         if (!outgoing) throw new Error('No untouched suggestion to swap.');
         const previous = [...new Set(all.map(row => row.week).filter(value => value < week))].sort().at(-1);
         const excluded = new Set(all.filter(q => q.week === week || q.week === previous).map(q => q.sourceId));
-        const replacement = selectWeekly(definitions.filter(q => !excluded.has(q.id)).map(q => ({ ...q, sourceId: q.id })), `${week}:swap`, [], 1)[0];
+        const replacement = selectWeekly(quests.filter(q => !excluded.has(q.id)).map(q => ({ ...q, sourceId: q.id })), `${week}:swap`, [], 1)[0];
         if (!replacement) throw new Error('No more suggestions available.');
         await db.quests.put({ ...outgoing, status: 'swapped', updatedAt: now });
         await db.quests.add({ id: `${replacement.id}:${week}`, sourceId: replacement.id, week, title: replacement.title,
