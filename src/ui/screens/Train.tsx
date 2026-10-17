@@ -7,6 +7,7 @@ import { Onboarding } from '../train/Onboarding';
 import { Workout } from '../train/Workout';
 import { Dashboard } from '../train/Dashboard';
 import { errorMessage } from '../shell/errorMessage';
+import { formatDayKey } from '../../core/time/formatDayKey';
 import { go } from '../shell/router';
 import '../train/train.css';
 
@@ -46,7 +47,7 @@ export function Train({ entry }: { entry?: string }) {
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
   return <section className="screen train-screen"><p className="eyebrow">The Proving Ground</p><h1>Train</h1>
     {message && <p role="status">{message}</p>}
-    {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Matchday</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{finished.dayKey} · {finished.status}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
+    {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Your session</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
     {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('you/train/workout')}>Continue session</button></div>}
     <Dashboard data={{ program, sessions, sets, prs, state, ledger }} page={page} setPage={setPage} startWorkout={() => go('you/train/workout')} busy={busy} message={message} act={act} />
   </section>;

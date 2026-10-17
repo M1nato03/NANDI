@@ -25,7 +25,7 @@ export function You() {
     <div className="you-links"><button type="button" className="card you-link" onClick={() => go('you/train')}><span className="pill">Strength</span><strong>Train</strong><span>Program, session, history and metrics</span></button>
       <button type="button" className="card you-link" onClick={() => go('you/mind')}><span className="pill">Practice</span><strong>Mind & learning</strong><span>Boards, cases, reviews and tracks</span></button></div>
     {sources && sources.logs.some(row => !row.deleted && row.lightsOutAt) && <section className="card"><h2>Nights back on plan</h2><strong className="night-count">{nights}</strong><p>One night at a time. Back tonight.</p></section>}
-    <section className="card mastery-slot"><span className="pill">Learn</span><h2>Mastery map</h2><p>{selected.length ? `${selected.length} ${selected.length === 1 ? 'topic' : 'topics'} in your drops · ${strong} strong concepts` : `${topics.length} topics ready to explore`}</p><button type="button" onClick={() => go('you/learn')}>Open Learn</button></section>
+    <section className="card mastery-slot"><span className="pill">Learn</span><h2>Mastery map</h2><p>{selected.length ? `${selected.length} ${selected.length === 1 ? 'topic' : 'topics'} in your drops · ${strong ? `${strong} strong concepts` : 'your first ideas are taking shape'}` : `${topics.length} topics ready to explore`}</p><button type="button" onClick={() => go('you/learn')}>Open Learn</button></section>
     <button type="button" className="card you-link settings-link" onClick={() => go('you/settings')}><span className="pill">Preferences</span><strong>Settings</strong><span>Night plan, reminders, appearance and backup</span></button>
   </section>;
 }

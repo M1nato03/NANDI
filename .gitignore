@@ -32,3 +32,4 @@ dist-e2e-b/
 updates-site/*.apk
 updates-site/version.json
 .playwright-browsers/
+.ux-audit/
