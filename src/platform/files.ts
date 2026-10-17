@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { AUTO_BACKUP_FOLDER, autoBackupFilesToPrune } from '../core/autoBackup';
 
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
 export async function shareOrDownload(file: File): Promise<'shared' | 'downloaded' | 'cancelled'> {
@@ -51,6 +52,43 @@ export async function saveBackupToDocuments(file: File): Promise<string> {
   if (!Capacitor.isNativePlatform()) throw new Error('Device storage is unavailable.');
   await Filesystem.writeFile({ path: file.name, data: await file.text(), directory: Directory.Documents, encoding: Encoding.UTF8 });
   return `Documents/${file.name}`;
+}
+
+/** Stores daily backups in their own Documents folder, isolated from manual and update copies. */
+export async function saveAutoBackup(file: File): Promise<number> {
+  if (!Capacitor.isNativePlatform()) throw new Error('Device storage is unavailable.');
+  try {
+    await Filesystem.mkdir({ path: AUTO_BACKUP_FOLDER, directory: Directory.Documents, recursive: true });
+  } catch (error) {
+    // Capacitor rejects mkdir when the folder already exists, even with recursive: true.
+    if (!isFilesystemError(error, 'OS-PLUG-FILE-0010', /already exists/i)) throw error;
+  }
+  await Filesystem.writeFile({ path: `${AUTO_BACKUP_FOLDER}/${file.name}`, data: await file.text(), directory: Directory.Documents, encoding: Encoding.UTF8 });
+  const entries = await Filesystem.readdir({ path: AUTO_BACKUP_FOLDER, directory: Directory.Documents });
+  const names = entries.files.filter(entry => entry.type === 'file').map(entry => entry.name);
+  const prune = autoBackupFilesToPrune(names);
+  for (const name of prune) {
+    await Filesystem.deleteFile({ path: `${AUTO_BACKUP_FOLDER}/${name}`, directory: Directory.Documents });
+  }
+  return names.filter(name => /^nandi-auto-\d{4}-\d{2}-\d{2}\.json$/.test(name)).length - prune.length;
+}
+
+export async function listAutoBackups(): Promise<string[]> {
+  if (!Capacitor.isNativePlatform()) return [];
+  try {
+    const entries = await Filesystem.readdir({ path: AUTO_BACKUP_FOLDER, directory: Directory.Documents });
+    return entries.files.filter(entry => entry.type === 'file' && /^nandi-auto-\d{4}-\d{2}-\d{2}\.json$/.test(entry.name)).map(entry => entry.name);
+  } catch (error) {
+    // A fresh install has no auto folder yet. Other filesystem errors must be visible.
+    if (isFilesystemError(error, 'OS-PLUG-FILE-0008', /not exist|does not exist|not found/i)) return [];
+    throw error;
+  }
+}
+
+function isFilesystemError(error: unknown, code: string, message: RegExp): boolean {
+  return typeof error === 'object' && error !== null
+    && (('code' in error && error.code === code)
+      || ('message' in error && typeof error.message === 'string' && message.test(error.message)));
 }
 
 /** Returns null when the user closes the picker without selecting a file. */

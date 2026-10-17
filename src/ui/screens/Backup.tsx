@@ -8,6 +8,9 @@ import { estimate, requestPersist } from '../../platform/storage';
 import { recordError } from '../errorRing';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { errorMessage } from '../shell/errorMessage';
+import { Capacitor } from '@capacitor/core';
+import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBackupState } from '../../data/autoBackup';
+import { listAutoBackups } from '../../platform/files';
 
 type RestoreChoice = { kind: 'backup'; data: BackupEnvelope; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] }
   | { kind: 'legacy'; data: LegacyExport; counts: Record<string, number>; first: string | null; last: string | null; retired: number; skipped: string[] };
@@ -34,12 +37,18 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   const [persisted, setPersisted] = useState<boolean | null>(null);
   const [usage, setUsage] = useState<StorageEstimate | null>(null);
   const [counts, setCounts] = useState<Record<string, number> | null>(null);
+  const [auto, setAuto] = useState<AutoBackupState | null>(null);
+  const [autoKept, setAutoKept] = useState(0);
 
   const refresh = useCallback(async (): Promise<void> => {
     const [row, storage, state] = await Promise.all([db.settings.get('lastBackupAt'), estimate(), navigator.storage?.persisted?.()]);
     setLastBackup(typeof row?.value === 'number' ? row.value : null);
     setUsage(storage); setPersisted(state ?? null);
     setCounts(Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()]))));
+    if (Capacitor.isNativePlatform()) {
+      const [state, files] = await Promise.all([readAutoBackupState(), listAutoBackups()]);
+      setAuto(state); setAutoKept(files.length);
+    }
   }, []);
   useEffect(() => {
     const timer = window.setTimeout(() => { void refresh().catch(error => { recordError('promise', error); setMessage('Storage details are unavailable right now.'); }); }, 0);
@@ -79,6 +88,22 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     } catch (error) { setMessage(`Could not read that file: ${errorMessage(error)}`); }
   }
 
+  async function toggleAuto(enabled: boolean): Promise<void> {
+    try { await setAutoBackupEnabled(enabled); setAuto(await readAutoBackupState()); }
+    catch (error) { recordError('promise', error); setMessage('Could not save automatic backup setting.'); }
+  }
+
+  async function backUpNow(): Promise<void> {
+    setBusy(true); setMessage('');
+    try {
+      const state = await runAutoBackup(true);
+      setAuto(state); setAutoKept((await listAutoBackups()).length);
+      window.dispatchEvent(new Event('nandi:auto-backup-saved'));
+      setMessage('Automatic backup saved to Documents/NANDI/auto.');
+    } catch (error) { setMessage(`Automatic backup could not be saved: ${errorMessage(error)}`); }
+    finally { setBusy(false); }
+  }
+
   async function confirmRestore(): Promise<void> {
     if (!choice) return;
     setBusy(true); setMessage('');
@@ -94,6 +119,11 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     <p className="eyebrow">Keep your work</p><h1>Backup</h1>
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
     <div className="card"><h2>Save a copy</h2><p>Last backup: {lastBackup === null ? 'Not yet' : new Date(lastBackup).toLocaleDateString()}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
+    {Capacitor.isNativePlatform() && <div className="card"><h2>Automatic backup</h2>
+      <p>Automatic backup: {auto?.enabled === false ? 'off' : 'on'} · last saved {auto?.lastSavedAt ? new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(auto.lastSavedAt) : 'never'} · {autoKept} kept in Documents/NANDI/auto</p>
+      <label><input type="checkbox" role="switch" checked={auto?.enabled !== false} onChange={event => void toggleAuto(event.target.checked)} /> Automatic backup</label>
+      <button type="button" className="secondary" disabled={busy} onClick={() => void backUpNow()}>Back up now</button>
+    </div>}
     <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button></div>
     {choice && <div className="card preview" aria-label="Restore preview">
       <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'No dated rows'}</p>

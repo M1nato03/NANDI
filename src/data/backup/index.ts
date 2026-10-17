@@ -195,7 +195,8 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
   return { counts, earliestDayKey, latestDayKey, retired };
 }
 
-const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown']);
+const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
+  'autoBackup.saved', 'autoBackup.failure']);
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {
