@@ -66,6 +66,6 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
   await page.getByRole('button', { name: 'Open Learn' }).click();
   await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
-  await expect(page.getByLabel('Money and markets mastery map').locator('.learn-chip')).toHaveCount(6);
+  await expect(page.getByLabel('Money and markets mastery map').locator('.learn-chip')).toHaveCount(10);
   await expect(page.getByLabel('Money and markets mastery map')).toContainText(/Learning|Strong|Mastered/);
 });
