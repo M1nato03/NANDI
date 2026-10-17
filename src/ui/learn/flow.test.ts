@@ -3,8 +3,9 @@ import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, topics } fro
 
 describe('live learning drop glue', () => {
   it('keeps only bundled topic ids and resolves stored items', () => {
-    expect(topics).toHaveLength(3);
-    expect(chosenTopics(['money-markets', 'unknown'])).toEqual(['money-markets']);
+    expect(topics).toHaveLength(4);
+    expect(topics.map(pack => pack.body.topic.id).sort()).toEqual(['body-training', 'how-things-work', 'money-markets', 'psychology']);
+    expect(chosenTopics(['money-markets', 'body-training', 'unknown'])).toEqual(['money-markets', 'body-training']);
     const concepts = catalogFor(['money-markets']);
     expect(concepts).toHaveLength(10);
     expect(findItem(concepts, concepts[0]!.items[0]!.id)?.concept.id).toBe(concepts[0]!.id);

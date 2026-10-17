@@ -53,6 +53,8 @@ export interface ReminderRow extends EntityRow {
   at: number;
   notifId?: number;
   channel?: 'tasks' | 'rest' | 'planning';
+  title?: string;
+  body?: string;
   status?: 'scheduled' | 'fired' | 'cancelled';
 }
 export interface PlanRow extends EntityRow {

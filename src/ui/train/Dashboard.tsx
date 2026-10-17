@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { dayKey } from '../../core/time';
+import { formatDayKey } from '../../core/time/formatDayKey';
 import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, calculatePlates, isRetestWeek, type Track } from '../../core/train';
 import type { ProgramRow, SessionRow, SetRow, PrRow, ExStateRow, LedgerRow } from '../../data/types';
 import type { createTrainRepos } from '../../data/repos/train';
@@ -10,6 +11,9 @@ type Repos = ReturnType<typeof createTrainRepos>;
 type Data = { program: ProgramRow; sessions: SessionRow[]; sets: SetRow[]; prs: PrRow[]; state: ExStateRow[]; ledger: LedgerRow[] };
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const mondayOf = (at: number) => { const date = new Date(at); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() - ((date.getDay() + 6) % 7)); return dayKey(date.getTime()); };
+const sessionWords: Record<string, string> = { completed: 'Finished', minimum: 'Short session', partial: 'Partly finished', safety: 'Stopped for comfort' };
+const patternWords: Record<string, string> = { squat: 'Squat', hinge: 'Hinge', 'push-up': 'Push', row: 'Pull', 'core-anti-ext': 'Core hold', 'core-anti-rot': 'Side core', 'core-ext': 'Back strength' };
+const bestWords: Record<string, string> = { load: 'load', repsAtLoad: 'reps', e1rm: 'estimated strength', ladderStep: 'step', hold: 'hold' };
 
 export function Dashboard({ data, page, setPage, startWorkout, busy, message, act }: { data: Data; page: Page; setPage: (page: Page) => void; startWorkout?: () => void; busy: boolean; message: string; act: (action: (repos: Repos, now: number) => Promise<unknown>, success: string) => Promise<boolean> }) {
   const { program, sessions, sets, prs, state, ledger } = data;
@@ -36,7 +40,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   const retestDue = isRetestWeek(program.startedAt ?? now, now) && program.lastRetestWeek !== retestWeek;
   if (page === 'finish') return null;
   if (page === 'retest') return <Reassessment busy={busy} save={placement => { void act((repos, at) => repos.recordRetest(placement, at), 'Steps updated.').then(ok => { if (ok) setPage('today'); }); }} />;
-  if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <p>Your sessions will appear here.</p> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{row.dayKey}</strong><span>{row.templateKey?.replaceAll('-', ' ')} · {row.status}</span></li>)}</ol>}</div>;
+  if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <p>Your sessions will appear here.</p> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{formatDayKey(row.dayKey)}</strong><span>{PROGRAMS[row.templateKey ?? '']?.name ?? 'Workout'} · {sessionWords[row.status] ?? 'Finished'}</span></li>)}</ol>}</div>;
   if (page === 'settings') return <div className="card"><h2>Training settings</h2><p>General fitness information, not medical advice.</p>
     <label>Track <select aria-label="Training track" value={program.track} onChange={event => { void act((repos, now) => repos.updateProgram({ track: event.target.value as Track }, now), 'Track saved.'); }}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
     <label>Weekly target <select value={target} onChange={event => { const next = Number(event.target.value) as 2 | 3; void act((repos, now) => repos.updateProgram({ weeklyTarget: next, days: next === 2 ? [1, 4] : [1, 3, 5] }, now), 'Training days saved.'); }}><option value="3">3 days</option><option value="2">2 days</option></select></label>
@@ -62,18 +66,18 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
-    <div className="card"><h2>Consistency</h2><p>{thisWeek.length} of {target} sessions this week · {consecutiveWeeks} consecutive weeks with 2 or more sessions</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
+    <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
       const isTrained = completed.some(row => row.dayKey === key);
       const isRest = ledger.some(row => row.id === `train-rest:${key}`);
       const statusText = isTrained ? 'trained' : isRest ? 'rest' : 'no data';
       return <span key={key} className={isTrained ? 'trained' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
     })}</div></div>
-    <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}>{pattern} · step {actual}/{ladder?.length} {EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name}</li>; })}</ul>}
-      <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {pr.kind} {pr.value}</li>)}</ul> : <p>Best sets will appear after a session.</p>}
+    <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}><strong>{patternWords[pattern] ?? pattern.replaceAll('-', ' ')}</strong><span>Step {actual} of {ladder?.length ?? actual} · {EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name ?? 'Your current step'}</span></li>; })}</ul>}
+      <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {bestWords[pr.kind] ?? 'best'} {pr.value}</li>)}</ul> : <p>Your best sets will appear as you train.</p>}
       {best.length > 1 && <div className="train-chart" role="img" aria-label={`Best-set trend for ${EXERCISE_LIBRARY[best[0]!.exerciseId]?.name ?? best[0]!.exerciseId}`}><svg viewBox="0 0 240 80" preserveAspectRatio="none"><polyline points={best.map((pr, i) => `${i * 240 / (best.length - 1)},${78 - (pr.value ?? 0) / max * 70}`).join(' ')} /></svg></div>}
     </div>
     <div className="card"><h2>Weekly hard sets</h2>{Object.entries(hardSets).length ? <ul className="train-metrics">{Object.entries(hardSets).map(([muscle, count]) => <li key={muscle}>{muscle} · {count}</li>)}</ul> : <p>Log a set to see this week's volume.</p>}</div>
-    {completed[0] && <p className="small">Last session: {completed[0].dayKey} · {completed[0].status}</p>}
+    {completed[0] && <p className="small">Last session: {formatDayKey(completed[0].dayKey)} · {sessionWords[completed[0].status] ?? 'Finished'}</p>}
     <div className="card"><h2>Rest-day check</h2><p>On a non-session day, take a 10-minute walk or mobility break, then check in.</p><button type="button" className="secondary" disabled={busy || ledger.some(row => row.id === `train-rest:${dayKey(now)}`)} onClick={() => { void act((repos, at) => repos.restDayCheck(at, 10), 'Rest-day check saved.'); }}>I moved for 10 minutes</button></div>
   </>;
 }

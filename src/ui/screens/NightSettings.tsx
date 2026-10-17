@@ -23,7 +23,7 @@ export function NightSettings() {
     refresh(); document.addEventListener('visibilitychange', refresh); window.addEventListener('pageshow', refresh);
     return () => { document.removeEventListener('visibilitychange', refresh); window.removeEventListener('pageshow', refresh); };
   }, []);
-  if (!nightPauseAvailable()) return null;
+  if (!nightPauseAvailable()) return <p>Night pause is available in the Android app. You can set your night plan in Settings.</p>;
   async function save(key: string, value: unknown) {
     try {
       if (key === 'night.pause.enabled' && value === true && await notifier.requestPermission() !== 'granted') {

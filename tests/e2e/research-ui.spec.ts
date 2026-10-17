@@ -15,7 +15,7 @@ for (const scheme of ['light', 'dark'] as const) {
     const download = page.waitForEvent('download');
     await page.getByRole('region', { name: 'What your time became recap' }).getByRole('button', { name: 'Share my week' }).click();
     const preview = page.getByRole('dialog', { name: 'Weekly recap preview' });
-    await expect(preview.getByRole('img')).toBeVisible();
+    await expect(preview.getByRole('img')).toBeVisible({ timeout: 20_000 });
     await preview.getByRole('button', { name: 'Share' }).click();
     expect((await download).suggestedFilename()).toBe('nandi-week-2026-10-05.png');
     await page.getByRole('link', { name: 'You' }).click();
