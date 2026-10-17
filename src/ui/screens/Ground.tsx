@@ -18,6 +18,7 @@ import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
   const [message, setMessage] = useState('');
+  const [nudgeDraft, setNudgeDraft] = useState<Record<string, boolean>>({});
   const [permission, setPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
   const requestingPermission = useRef(false);
   useEffect(() => {
@@ -34,7 +35,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const bedtime = value('planner.bedtime', RULES.night.defaultBedtime);
   const goal = value('planner.goalBedtime', RULES.night.goalBedtime);
   const morning = value(NUDGE_MORNING_TIME, MORNING_DEFAULT);
-  const enabled = (key: string) => settings?.find(row => row.key === key && !row.deleted)?.value !== false;
+  const enabled = (key: string) => nudgeDraft[key] ?? (settings?.find(row => row.key === key && !row.deleted)?.value !== false);
   const asked = settings?.find(row => row.key === NUDGE_PERMISSION_ASKED && !row.deleted)?.value === true;
   async function save(key: string, next: unknown) {
     try {
@@ -42,7 +43,8 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       const deviceId = await getOrCreateDeviceId(db, now);
       await createSettingsRepos(db, deviceId).settings.put({ key, value: next }, now);
       setMessage('Planner settings saved.');
-    } catch { setMessage('Could not save that setting.'); }
+      return true;
+    } catch { setMessage('Could not save that setting.'); return false; }
   }
   async function askPermission() {
     if (asked || requestingPermission.current || !Capacitor.isNativePlatform()) return;
@@ -55,7 +57,11 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     } catch { setMessage('Could not check notification permission.'); }
   }
   async function toggleNudge(key: string, checked: boolean) {
-    await save(key, checked);
+    setNudgeDraft(previous => ({ ...previous, [key]: checked }));
+    if (!await save(key, checked)) {
+      setNudgeDraft(previous => previous[key] === checked ? { ...previous, [key]: !checked } : previous);
+      return;
+    }
     if (checked && permission !== 'granted') await askPermission();
   }
   return <div className="you-settings"><NightPlanSetting />

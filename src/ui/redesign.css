@@ -306,6 +306,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-end { border-top: 0; background: var(--surface-2); padding: 12px 16px; border-radius: var(--radius-row); }
 .deck-night { --area-color: var(--area-night); background: transparent; padding: 0; border: 0; }
 .deck-night .deck-card { background: var(--surface-1); min-height: min(430px, calc(100dvh - 300px)); }
+.deck-night .deck-next { position: sticky; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 4; }
 .deck-night .deck-card > .pill { display: none; }
 .deck-night .deck-card .deck-actions button, .deck-night .deck-next, .deck-night .deck-add button, .deck-night .night-plan-setting button { background: var(--surface-2); color: var(--accent); border: 0; }
 .deck-night .deck-dashes button.active::after { background: var(--area-night); }
