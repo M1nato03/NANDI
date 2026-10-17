@@ -53,7 +53,7 @@
 .planner-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 22px; }
 .planner-nav button { min-width: 0; min-height: 44px; padding-inline: 4px; }
 .planner-screen { min-width: 0; }
-.planner-screen label { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; font-weight: 600; }
+.planner-screen label { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; text-align: left; gap: 6px; margin: 12px 0; font-weight: 600; }
 .planner-screen input, .planner-screen select { width: 100%; min-width: 0; min-height: 44px; padding: 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--raised); color: var(--ink); font: inherit; }
 .planner-screen progress { display: block; width: 100%; height: 16px; accent-color: var(--accent); }
 .planner-screen button { min-height: 44px; }
@@ -66,3 +66,14 @@
 .planner-actions button { min-width: 0; }
 .planner-priority { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding: 10px 0; overflow-wrap: anywhere; }
 .planner-priority span { min-width: 0; }
+.planner-screen .card, .planner-screen section, .planner-screen details { min-width: 0; }
+.planner-screen details > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--accent); }
+.planner-capacity h2 { font-size: clamp(1.25rem, 5vw, 1.7rem); }
+.planner-capacity progress { margin-top: 16px; }
+.planner-capacity p { margin-bottom: 6px; }
+.planner-step { margin: 14px 0; }
+.planner-step h2 { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.step-number { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--accent); color: var(--surface); font: 700 0.9rem 'DM Sans', sans-serif; }
+.planner-week-words > p:last-child { color: var(--ink); font-size: 1.1rem; line-height: 1.5; }
+.planner-numbers { margin: 14px 0; overflow-wrap: anywhere; }
+.planner-numbers > p { margin: 12px 0; }

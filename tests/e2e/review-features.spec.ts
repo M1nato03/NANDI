@@ -1,6 +1,21 @@
 ﻿/// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
 
+test('weekly review starts with plain words and keeps details optional', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-18T12:00:00') });
+  await page.goto('/#plan/review');
+  const words = page.getByRole('region', { name: 'This week, in words' });
+  await expect(words).toContainText('Week of 12 Oct');
+  await expect(words).toContainText("A quiet week. That's data, not a verdict.");
+  await expect(page.getByRole('region', { name: 'What helped' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'What got in the way' })).toBeVisible();
+  const numbers = page.locator('.planner-numbers');
+  await expect(numbers).not.toHaveAttribute('open', '');
+  await numbers.locator('summary').click();
+  await expect(numbers).toContainText('Weekly move budget: 0 of 5 used');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test('daily case progress and completion survive reload', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
