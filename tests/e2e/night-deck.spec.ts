@@ -9,6 +9,9 @@ test('night deck is six calm cards with a three item drop and a stopping point',
     if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath(`night-card-${number}-390x844.png`) });
   };
   await expect(deck).toHaveClass(/deck-night/);
+  await expect(deck.locator('.deck-heading h1')).toContainText('Now Night');
+  await expect(deck.locator('.deck-heading .deck-count')).toHaveText('1 of 6');
+  await expect(deck.locator('.deck-heading .eyebrow')).toHaveCount(0);
   await expect(deck.getByText('1 of 6')).toBeVisible();
   await expect(page.getByRole('article', { name: 'Tonight card' })).toBeVisible();
   await expect(deck.getByText('Start session')).toHaveCount(0);
@@ -69,4 +72,44 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await page.clock.setFixedTime(new Date('2026-10-18T04:05:00'));
   await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
   await expect(page.getByRole('article', { name: 'First step card' })).toBeVisible();
+});
+
+test('hard daily offers a matching easy night practice board', async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.clock.install({ time: new Date('2026-10-17T23:30:00') });
+  await page.goto('/#now');
+  const deck = page.getByRole('region', { name: 'Now deck' });
+  await expect(deck).toHaveClass(/deck-night/);
+  await deck.getByRole('button', { name: 'Go to card 3: Think' }).click();
+  const card = page.getByRole('article', { name: 'Think card' });
+  await expect(card.getByRole('heading', { name: 'Crowns' })).toBeVisible();
+  await expect(card.getByText('Easy practice')).toBeVisible();
+  await expect(card.getByText('hard board')).toHaveCount(0);
+  const previewSeed = await card.getByRole('img', { name: 'Preview of Crowns board' }).getAttribute('data-board-seed');
+  expect(previewSeed).toBeTruthy();
+  await card.getByRole('button', { name: 'Play' }).click();
+  const board = page.locator('.mind-board');
+  await expect(page.getByRole('grid', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
+  await expect(board.locator('.eyebrow')).toHaveText('Practice · easy');
+  await expect(board).toHaveAttribute('data-board-seed', previewSeed!);
+});
+
+test('easy unsolved daily stays on the night card', async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.clock.install({ time: new Date('2026-10-19T23:30:00') });
+  await page.goto('/#now');
+  const deck = page.getByRole('region', { name: 'Now deck' });
+  await expect(deck).toHaveClass(/deck-night/);
+  await deck.getByRole('button', { name: 'Go to card 3: Think' }).click();
+  const card = page.getByRole('article', { name: 'Think card' });
+  await expect(card.getByRole('heading', { name: 'Mini Sudoku' })).toBeVisible();
+  await expect(card.getByText('easy board')).toBeVisible();
+  await expect(card.getByText('Easy practice')).toHaveCount(0);
+  const previewSeed = await card.getByRole('img', { name: 'Preview of Mini Sudoku board' }).getAttribute('data-board-seed');
+  expect(previewSeed).toBeTruthy();
+  await card.getByRole('button', { name: 'Play' }).click();
+  const board = page.locator('.mind-board');
+  await expect(page.getByRole('grid', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
+  await expect(board.locator('.eyebrow')).toContainText('Daily board');
+  await expect(board).toHaveAttribute('data-board-seed', previewSeed!);
 });

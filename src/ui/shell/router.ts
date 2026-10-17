@@ -6,6 +6,7 @@ const entry = (): Entry | null => history.state?.nandi === true ? history.state 
 
 export function route(): string { return location.hash.replace(/^#\/?/, '').toLowerCase() || 'now'; }
 function parentRoute(path: string): string {
+  if (path === 'you/mind/board/daily') return 'you/mind';
   if (path.startsWith('you/mind/board/')) return 'you/mind/practice';
   if (path.startsWith('you/mind/')) return 'you/mind';
   if (path === 'you/mind' || path === 'you/train' || path === 'you/learn' || path === 'you/settings') return 'you';
