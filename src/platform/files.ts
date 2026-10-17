@@ -5,10 +5,16 @@ import { Share } from '@capacitor/share';
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
 export async function shareOrDownload(file: File): Promise<'shared' | 'downloaded' | 'cancelled'> {
   if (Capacitor.isNativePlatform()) {
-    const data = await file.text();
-    const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, encoding: Encoding.UTF8 });
+    const image = file.type === 'image/png';
+    const data = image ? await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result).split(',')[1] ?? '');
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    }) : await file.text();
+    const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, ...(!image ? { encoding: Encoding.UTF8 } : {}) });
     try {
-      await Share.share({ title: 'NANDI backup', files: [saved.uri], dialogTitle: 'Save a copy of your NANDI backup' });
+      await Share.share({ title: image ? 'What my week became' : 'NANDI backup', files: [saved.uri], dialogTitle: image ? 'Share my week' : 'Save a copy of your NANDI backup' });
       return 'shared';
     } catch (error) {
       if (error !== null && typeof error === 'object' && 'message' in error && String(error.message).toLowerCase().includes('cancel')) return 'downloaded';

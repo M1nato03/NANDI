@@ -25,6 +25,7 @@ import { useTaskBoard } from '../tasks/useTaskBoard';
 import { deckNavigation, type DeckAction } from '../../core/deckNavigation';
 import { deckIndex, go, goToCard, navigationEventName } from '../shell/router';
 import { WeeklyRecap } from './WeeklyRecap';
+import { WeekEndShare } from './WeekEndShare';
 import { NightDeck } from '../night/NightDeck';
 
 type DeckCard = { id: string; tag: string; title: string; detail: string; action: string; href?: string; secondary?: string };
@@ -219,7 +220,7 @@ export function Now() {
       {card.id === 'board' && <><div className="deck-puzzle" role="img" aria-label={`Preview of ${card.title} board`} style={{ gridTemplateColumns: `repeat(${previewSize}, 1fr)` }}>{previewValues.map((value, i) => <span key={i} className={puzzle?.type === 'crowns' ? `region-${puzzle.region[i] ?? 0}` : ''}>{value || ''}</span>)}</div><p className="deck-meta">{featured.diff} · {best?.solveMs ? `Best ${shortTime(best.solveMs)}` : 'First try today'}{last?.solveMs ? ` · Last ${shortTime(last.solveMs)}` : ''}</p></>}
       {card.id === 'case' && mystery && <p className="deck-meta">{mystery.clues.length} clues to follow</p>}
       {card.id === 'quest' && quest && <p className="deck-meta">{quest.kind === 'total' ? `${quest.progress} of ${quest.target} ${quest.unit} · each tap adds ${quest.step}` : 'A one-time quest'} · {questTime}</p>}
-      {card.id === 'end' && <div className="deck-end"><p><strong>Tomorrow's first step</strong><br />{tomorrowTask?.title ?? 'Pick one small step tonight.'}</p><p><strong>Lights-out</strong><br />{bedtime}</p>{deckFinished && <p className="deck-celebration" role="status">You made room for the whole day. Rest well. ✦</p>}</div>}</div>
+      {card.id === 'end' && <div className="deck-end"><p><strong>Tomorrow's first step</strong><br />{tomorrowTask?.title ?? 'Pick one small step tonight.'}</p><p><strong>Lights-out</strong><br />{bedtime}</p>{deckFinished && <p className="deck-celebration" role="status">You made room for the whole day. Rest well. ✦</p>}<WeekEndShare now={board.now} /></div>}</div>
       <div className="deck-actions">{!(card.id === 'task' && !task) && <button type="button" onClick={action} disabled={card.id === 'quest' && (!quest || quest.status !== 'active')}>{card.id === 'task' && taskFocus ? isFocusRunning(taskFocus) ? 'Pause' : 'Resume' : card.action}</button>}{card.secondary && <button type="button" className="secondary" onClick={secondary} disabled={card.id === 'quest' && questRows.some(row => row.status === 'swapped')}>{card.secondary}</button>}{card.id === 'task' && task && <button type="button" className="text-button" onClick={next}>Not now</button>}{card.id === 'train' && message.includes('20%') && <label className="deck-confirm"><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}</div></>}
     </article>
     {card.id !== 'learn' && (at < deck.length - 1 ? <button type="button" className="secondary deck-next" onClick={next}>Next</button> : <button type="button" className="secondary deck-next" onClick={previous}>Back to cards</button>)}

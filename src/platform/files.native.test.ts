@@ -15,6 +15,14 @@ it('writes a backup to Android Documents and shares its URI', async () => {
   expect(mock.share).toHaveBeenCalledWith(expect.objectContaining({ files: ['file:///backup.json'] }));
 });
 
+it('writes a PNG as base64 bytes for Android sharing', async () => {
+  mock.writeFile.mockClear(); mock.share.mockClear();
+  const file = new File([new Uint8Array([137, 80, 78, 71])], 'nandi-week.png', { type: 'image/png' });
+  expect(await shareOrDownload(file)).toBe('shared');
+  expect(mock.writeFile).toHaveBeenCalledWith({ path: 'nandi-week.png', data: 'iVBORw==', directory: 'DOCUMENTS' });
+  expect(mock.share).toHaveBeenCalledWith(expect.objectContaining({ title: 'What my week became', files: ['file:///backup.json'] }));
+});
+
 it('saves an update backup to Documents without a share sheet', async () => {
   mock.writeFile.mockClear(); mock.share.mockClear();
   const file = Object.assign(new File(['{}'], 'nandi-update-backup.json', { type: 'application/json' }), { text: async () => '{}' });
