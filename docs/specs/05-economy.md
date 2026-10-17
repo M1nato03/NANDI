@@ -259,11 +259,12 @@ tiers    = #500–301 Bench · #300–151 Challenger · #150–51 Contender · #
 
 ## 10. Notifications budget
 
-- **Engagement pushes: max 2 a day, both opt-in:**
-  - a planning reminder (default 09:00);
-  - one streak reminder, scheduled no later than the earlier (on the night timeline) of bedtime − 90 min and the shutdown time, and **never during wind-down or lights-out**. Don't copy Duolingo's 10 pm streak-saver.
+- **Engagement pushes: max 2 a day:**
+  - the morning first-step nudge (default 08:30, opt-out), or an opt-in planning reminder;
+  - one opt-in streak reminder, scheduled no later than the earlier (on the night timeline) of bedtime − 90 min and the shutdown time, and **never during wind-down or lights-out**. Don't copy Duolingo's 10 pm streak-saver.
 - **Never send:** social, store or "new content" pushes.
 - **Self-scheduled reminders** (task blocks, rest timer, shutdown nudge) sit outside this budget.
+- The night-deck nudge is the shutdown reminder. Both nudges are local Android notifications and can be turned off in Day and night.
 
 ## 11. Juice budget
 

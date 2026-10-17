@@ -21,6 +21,9 @@ import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
 import { startReminderSync } from '../../platform/reminderSync';
+import { recordAppOpened } from '../../platform/nudgeSync';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause';
 import { NightPauseCard } from '../screens/NightPauseCard';
 import { Night } from '../screens/Night';
@@ -42,7 +45,26 @@ export function AppShell() {
   }, []);
   useEffect(() => { initializeHistory(); const update = () => setPath(route()); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
-  useEffect(() => startReminderSync(error => recordError('promise', error)), []);
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) recordAppOpened();
+    const opened = () => { if (Capacitor.isNativePlatform() && document.visibilityState === 'visible') recordAppOpened(); };
+    document.addEventListener('visibilitychange', opened);
+    window.addEventListener('pageshow', opened);
+    const stop = startReminderSync(error => recordError('promise', error));
+    return () => { stop(); document.removeEventListener('visibilitychange', opened); window.removeEventListener('pageshow', opened); };
+  }, []);
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    let disposed = false;
+    let remove: (() => Promise<void>) | undefined;
+    void LocalNotifications.addListener('localNotificationActionPerformed', action => {
+      const id = action.notification.extra?.reminderId;
+      if (typeof id !== 'string' || !/^nudge:(night|morning):\d{4}-\d{2}-\d{2}$/.test(id)) return;
+      history.replaceState({ nandi: true, deckIndex: 0 }, '', '#now');
+      window.dispatchEvent(new Event(navigationEventName()));
+    }).then(handle => { if (disposed) void handle.remove(); else remove = () => handle.remove(); }).catch(error => recordError('promise', error));
+    return () => { disposed = true; void remove?.(); };
+  }, []);
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
   useEffect(() => {
     if (!nightPauseAvailable()) return;

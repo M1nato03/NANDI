@@ -2,7 +2,7 @@ import { RULES } from './rules.config';
 import { dayKey } from './time/dayKey';
 import { effectiveShutdown, nightWindow, shutdownAt } from './tasks/planner';
 
-export type ReminderKind = 'task' | 'rest' | 'shutdown' | 'planning' | 'streak';
+export type ReminderKind = 'task' | 'rest' | 'shutdown' | 'morning' | 'planning' | 'streak';
 
 /** Self-scheduled reminders do not consume the two optional engagement slots. */
 export function mayScheduleReminder(input: {
@@ -14,7 +14,7 @@ export function mayScheduleReminder(input: {
   if (input.kind === 'task' || input.kind === 'rest' || input.kind === 'shutdown') return true;
   if (!input.optIn || nightWindow(input.at, effectiveShutdown(input.shutdown, input.bedtime), input.bedtime, input.windDownAt) !== 'day') return false;
   const used = input.scheduledEngagement.filter(row =>
-    (row.kind === 'planning' || row.kind === 'streak') && dayKey(row.at) === dayKey(input.at)).length;
+    (row.kind === 'morning' || row.kind === 'planning' || row.kind === 'streak') && dayKey(row.at) === dayKey(input.at)).length;
   if (used >= RULES.notifications.engagementPerDayMax) return false;
   if (input.scheduledEngagement.some(row => row.kind === input.kind && dayKey(row.at) === dayKey(input.at))) return false;
   if (input.kind === 'streak') {
