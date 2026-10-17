@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import gita from '../../../content/lessons/lessons.gita-restless-mind.json';
 import charaka from '../../../content/lessons/lessons.charaka-holds-up.json';
 import quests from '../../../content/quests/quests.core.json';
+import winddown from '../../../content/winddown/winddown.core.json';
 import money from '../../../content/topics/topic.money-markets.json';
 import body from '../../../content/topics/topic.body-training.json';
 import { validatePack } from './validate';
@@ -54,6 +55,25 @@ describe('quest pack', () => {
     const malformed = structuredClone(quests);
     malformed.body.quests[0].unit = '';
     expect(validatePack(malformed).join(' ')).toContain('invalid total unit');
+  });
+});
+
+describe('wind-down pack', () => {
+  it('validates 24 offline moves and rejects duplicate IDs and malformed moves', () => {
+    expect(winddown.body.moves).toHaveLength(24);
+    expect(validatePack(winddown)).toEqual([]);
+    const duplicate = structuredClone(winddown);
+    duplicate.body.moves[1].id = duplicate.body.moves[0].id;
+    expect(validatePack(duplicate).join(' ')).toContain('duplicate id');
+    const tooLong = structuredClone(winddown);
+    tooLong.body.moves[0].text = 'x'.repeat(71);
+    expect(validatePack(tooLong).length).toBeGreaterThan(0);
+    const markup = structuredClone(winddown);
+    markup.body.moves[0].text = '<b>Read</b>';
+    expect(validatePack(markup).length).toBeGreaterThan(0);
+    const duration = structuredClone(winddown);
+    duration.body.moves[0].minutes = 16;
+    expect(validatePack(duration).length).toBeGreaterThan(0);
   });
 });
 

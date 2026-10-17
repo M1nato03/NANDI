@@ -188,6 +188,12 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       if (quest.kind === 'once' && (quest.target !== 1 || quest.unit !== '' || quest.step !== 1)) errors.push(`${quest.id}: once must have target and step 1, empty unit`);
       if (quest.kind === 'total' && (!quest.unit || quest.step > quest.target)) errors.push(`${quest.id}: invalid total unit or step`);
     }
+  } else if (pack.kind === 'winddown') {
+    const ids = new Set<string>();
+    for (const move of pack.body.moves) {
+      if (ids.has(move.id)) errors.push(`${move.id}: duplicate id`);
+      ids.add(move.id);
+    }
   } else if (pack.kind === 'track') {
     const ids = new Set<string>();
     for (const module of pack.body.modules) {
