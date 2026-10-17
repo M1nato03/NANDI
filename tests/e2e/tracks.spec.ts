@@ -35,13 +35,25 @@ for (const scheme of ['light', 'dark'] as const) {
     const controls = await unit.evaluate(root => [...root.querySelectorAll<HTMLButtonElement>('button')].every(button => button.getBoundingClientRect().width >= 44 && button.getBoundingClientRect().height >= 44));
     expect(controls).toBe(true);
     await unit.getByRole('button', { name: 'Finish unit' }).click();
-    await page.getByText('Courses and past lessons').click();
-    await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible();
+    // The section may already be open after finishing the unit; open it only if it is closed.
+    await expect(page.getByText('Courses and past lessons')).toBeVisible();
+    // The hub can re-render after the unit closes; retry until the section is open and shows the result.
+    await expect(async () => {
+      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses and past lessons' }) });
+      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses and past lessons').click();
+      await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
+    }).toPass({ timeout: 15_000 });
     await expect(tracks.getByLabel('Learning budget')).toContainText('15 / 25 min');
     await page.screenshot({ path: testInfo.outputPath(`track-stop-${scheme}.png`), fullPage: true });
     await page.reload();
-    await page.getByText('Courses and past lessons').click();
-    await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible();
+    // The section may already be open after finishing the unit; open it only if it is closed.
+    await expect(page.getByText('Courses and past lessons')).toBeVisible();
+    // The hub can re-render after the unit closes; retry until the section is open and shows the result.
+    await expect(async () => {
+      const courses = page.locator('details', { has: page.locator('summary', { hasText: 'Courses and past lessons' }) });
+      if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses and past lessons').click();
+      await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
+    }).toPass({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Review due cards' }).click();
     await expect(page.getByLabel('Review card')).toContainText('What do rotors push to make lift?');
     await page.screenshot({ path: testInfo.outputPath(`track-review-${scheme}.png`), fullPage: true });

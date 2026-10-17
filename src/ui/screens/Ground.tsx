@@ -70,6 +70,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
       <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
       <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
+      <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}.</p>
       <label><input type="checkbox" checked={enabled(NUDGE_NIGHT_ON)} onChange={event => void toggleNudge(NUDGE_NIGHT_ON, event.target.checked)} /> Night deck nudge</label>
       <p className="setting-help">A quiet reminder at shutdown time ({effectiveShutdown(shutdown, bedtime)}). Stays on this phone.</p>
       <label><input type="checkbox" checked={enabled(NUDGE_MORNING_ON)} onChange={event => void toggleNudge(NUDGE_MORNING_ON, event.target.checked)} /> Morning first step nudge</label>
