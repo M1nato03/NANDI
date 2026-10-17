@@ -3,6 +3,7 @@ import gita from '../../../content/lessons/lessons.gita-restless-mind.json';
 import charaka from '../../../content/lessons/lessons.charaka-holds-up.json';
 import quests from '../../../content/quests/quests.core.json';
 import money from '../../../content/topics/topic.money-markets.json';
+import body from '../../../content/topics/topic.body-training.json';
 import { validatePack } from './validate';
 
 const bad = (pack, change, message) => {
@@ -64,6 +65,11 @@ describe('topic editorial rules', () => {
   };
   it('accepts the hand-authored money pack', () => {
     expect(validatePack(money, { editorial: true })).toEqual([]);
+  });
+  it('accepts the body and training pack with checked claims and editorial rules', () => {
+    expect(body.body.modules[0].concepts).toHaveLength(8);
+    expect(body.body.modules[0].concepts.flatMap(concept => concept.items)).toHaveLength(64);
+    expect(validatePack(body, { editorial: true })).toEqual([]);
   });
   it('requires a difficulty ladder and concept-based estimates', () => {
     badTopic((concepts) => { concepts[0].items[3].difficultySeed = 2; }, 'needs at least 2 level-1 items');
