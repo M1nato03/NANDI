@@ -21,6 +21,7 @@ import { startNightPauseSync } from '../../platform/nightPauseSync';
 import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
 import { useAutoBackup } from './useAutoBackup';
+import { useWidgetSync } from './useWidgetSync';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -41,6 +42,7 @@ export function AppShell() {
   const appearance = useAppearance();
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
+  useWidgetSync();
   useEffect(() => {
     const refreshDate = () => setToday(dayKey(Date.now()));
     const interval = window.setInterval(refreshDate, 60_000);

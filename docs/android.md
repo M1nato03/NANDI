@@ -28,6 +28,10 @@ On the APK, NANDI saves one local JSON backup when you first open or return to t
 2. To restore, tap **Choose restore file**. In Android's file picker, open **Documents**, then **NANDI**, then **auto**.
 3. Select a `nandi-auto-YYYY-MM-DD.json` file, review its contents, and tap **Confirm restore**.
 
+## Home screen widget
+
+Long-press an empty space on your home screen, choose **Widgets**, then find **NANDI**. Add the small widget and resize it wider if you like. Tap anywhere on it to open the Now deck. The text refreshes when NANDI's tasks or night plan change, when the app is put in the background, and periodically through Android.
+
 ## Optional Night pause
 
 Open **You > Night pause**. This feature is off by default. Android **Usage access** lets NANDI see which app is currently in front, so it can offer your own night plan when you open one of your selected apps after bedtime minus 30 minutes. NANDI uses this information only on your phone; it does not send it anywhere. It does not use an Accessibility Service.

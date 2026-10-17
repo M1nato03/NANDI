@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(NightPausePlugin.class);
         registerPlugin(UpdaterPlugin.class);
+        registerPlugin(WidgetPlugin.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -16,6 +17,9 @@ public class MainActivity extends BridgeActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (bridge != null && bridge.getWebView() != null) {
+            if ("#now".equals(intent.getStringExtra("nandiRoute"))) {
+                bridge.getWebView().evaluateJavascript("window.location.hash='#now'; window.dispatchEvent(new Event('nandi:navigate'))", null);
+            }
             bridge.getWebView().evaluateJavascript("window.dispatchEvent(new Event('nandi:night-pause'))", null);
         }
     }
