@@ -33,3 +33,4 @@ updates-site/*.apk
 updates-site/version.json
 .playwright-browsers/
 .ux-audit/
+# .design-ref/
