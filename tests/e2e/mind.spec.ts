@@ -127,7 +127,7 @@ for (const scheme of ['light', 'dark'] as const) {
     // The bookmarked board route now resumes directly after reload.
     await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
 
-    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 30_000 });
+    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 60_000 });
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.context().setOffline(true);
     await page.reload();

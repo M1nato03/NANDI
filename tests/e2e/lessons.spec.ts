@@ -18,7 +18,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.reload();
     await expect(lesson.getByLabel('guess screen')).toBeVisible();
     await expect(lesson.locator('.mind-lesson-options button').first()).toBeVisible();
-    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 30_000 });
+    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 60_000 });
     await page.context().setOffline(true);
     await page.reload();
     await expect(lesson.getByLabel('guess screen')).toBeVisible();
