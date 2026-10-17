@@ -20,6 +20,14 @@ After the baseline week ends around **26 October 2026**, open the PWA in Chrome 
 
 The APK has its own local IndexedDB. Its app ID (`app.nandi.personal`) and web origin (`https://nandi.local`) are pinned so future APKs use the same local storage. NANDI saves a backup before each in-app update; keep a separate copy of important backups too.
 
+## Automatic backups and restore
+
+On the APK, NANDI saves one local JSON backup when you first open or return to the app after 04:00 each day. The newest seven are kept in **Documents/NANDI/auto** on the phone, named `nandi-auto-YYYY-MM-DD.json`. These files are on the same phone, so copy an important one elsewhere if you need protection against losing the phone. Manual exports and pre-update backups stay separate. The PWA still uses manual export.
+
+1. Open **You > Settings > Backup and restore** to see the last saved time, switch automatic backups on or off, or tap **Back up now**.
+2. To restore, tap **Choose restore file**. In Android's file picker, open **Documents**, then **NANDI**, then **auto**.
+3. Select a `nandi-auto-YYYY-MM-DD.json` file, review its contents, and tap **Confirm restore**.
+
 ## Optional Night pause
 
 Open **You > Night pause**. This feature is off by default. Android **Usage access** lets NANDI see which app is currently in front, so it can offer your own night plan when you open one of your selected apps after bedtime minus 30 minutes. NANDI uses this information only on your phone; it does not send it anywhere. It does not use an Accessibility Service.

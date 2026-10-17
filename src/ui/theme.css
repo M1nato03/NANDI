@@ -51,6 +51,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .update-bar button { background: var(--bg); color: var(--accent); border-color: var(--bg); }
 .update-bar button.secondary { background: transparent; color: var(--bg); border-color: var(--bg); }
 .offline-ready-toast { margin: 0; padding: 10px 20px; background: var(--raised); color: var(--ink); border-bottom: 1px solid var(--line); pointer-events: none; }
+.auto-backup-warning { display: block; width: 100%; margin: 0; padding: 10px 20px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--raised); color: var(--ink); text-align: left; }
 .topbar { min-height: 64px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }
 .brand { margin: 0; font: 700 28px 'Bricolage Grotesque', sans-serif; letter-spacing: .08em; }
 .slash { color: var(--accent); font-size: 34px; padding-right: 4px; }

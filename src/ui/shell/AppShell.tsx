@@ -8,7 +8,7 @@ import { recordError } from '../errorRing';
 import { Today } from '../screens/Today';
 import { Now } from '../screens/Now';
 import { DelayedCardSkeleton } from './DelayedCardSkeleton';
-import { back, backDestination, initializeHistory, navigationEventName, route, tabOf } from './router';
+import { back, backDestination, go, initializeHistory, navigationEventName, route, tabOf } from './router';
 import { TabBar } from './TabBar';
 import { useAppearance } from './useAppearance';
 import { UpdateBar } from './UpdateBar';
@@ -20,6 +20,7 @@ import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause
 import { startNightPauseSync } from '../../platform/nightPauseSync';
 import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
+import { useAutoBackup } from './useAutoBackup';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -39,6 +40,7 @@ export function AppShell() {
   const [pausePackage, setPausePackage] = useState('');
   const appearance = useAppearance();
   const nativeUpdater = useNativeUpdater();
+  const autoBackupWarning = useAutoBackup();
   useEffect(() => {
     const refreshDate = () => setToday(dayKey(Date.now()));
     const interval = window.setInterval(refreshDate, 60_000);
@@ -95,5 +97,5 @@ export function AppShell() {
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Now />;
-  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar /><header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main><TabBar current={tab} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
+  return <div className="app-shell"><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span></header><main id="main" className="content">{path !== 'now' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}>‹ Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main><TabBar current={tab} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
 }
