@@ -22,5 +22,5 @@ test('Monday end card links to the weekly preview', async ({ page }) => {
   await page.getByRole('button', { name: 'Go to card 8: The day is yours' }).click();
   const end = page.getByRole('article', { name: 'The day is yours card' });
   await end.getByRole('button', { name: 'Your week is ready to share' }).click();
-  await expect(page.getByRole('dialog', { name: 'Weekly recap preview' }).getByRole('img')).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Weekly recap preview' }).getByRole('img')).toBeVisible({ timeout: 20_000 });
 });

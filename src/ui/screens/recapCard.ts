@@ -67,9 +67,13 @@ export function renderRecapCard(canvas: HTMLCanvasElement, card: RecapCardConten
 }
 
 export async function recapPng(card: RecapCardContent): Promise<Blob> {
-  await Promise.all([
-    document.fonts.load('800 88px "Bricolage Grotesque"'),
-    document.fonts.load('600 37px "DM Sans"'),
+  // Fonts are bundled, but never let a slow font load block the card: draw after at most 2 s.
+  await Promise.race([
+    Promise.all([
+      document.fonts.load('800 88px "Bricolage Grotesque"'),
+      document.fonts.load('600 37px "DM Sans"'),
+    ]).catch(() => undefined),
+    new Promise(resolve => setTimeout(resolve, 2000)),
   ]);
   const canvas = document.createElement('canvas');
   renderRecapCard(canvas, card);
