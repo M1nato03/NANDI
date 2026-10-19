@@ -119,6 +119,7 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
 }
 
 test('upgrade keeps data and works offline', async ({ page, context }, testInfo) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   test.skip(testInfo.project.name !== 'mobile-390x844', 'Build B is shared across projects');
   test.setTimeout(120_000);
   const server = await startUpgradeServer();

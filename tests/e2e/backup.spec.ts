@@ -18,6 +18,7 @@ test('backup survives a browser export, wipe, and import', async ({ page }) => {
 });
 
 test('restore preview keeps its first row clear on phone widths', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   const legacy = {
     cards: Array.from({ length: 40 }, (_, index) => ({ id: `card-${index}`, law: 1, due: '2026-10-02' })),
     progress: { items: { retired: { b: 99, due: '9999-12-31' } } },

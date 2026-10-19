@@ -4,6 +4,7 @@ const tabs = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/');
   for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
@@ -24,6 +25,7 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
 });
 
 test('theme and reduced motion survive reload', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/#you');
   await page.getByRole('button', { name: /Settings/ }).click();
   await page.getByLabel('Motion').selectOption('reduce');
@@ -38,6 +40,7 @@ test('theme and reduced motion survive reload', async ({ page }) => {
 });
 
 test('legacy fixture previews and imports through the restore picker', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you/backup');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   const chooserPromise = page.waitForEvent('filechooser');
@@ -56,6 +59,7 @@ test('legacy fixture previews and imports through the restore picker', async ({ 
 });
 
 test('theme survives backup, wipe, and picker restore', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   await page.getByRole('button', { name: /Settings/ }).click();

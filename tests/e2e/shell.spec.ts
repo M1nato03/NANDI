@@ -12,6 +12,7 @@ test('the economy is visible in You before Season 1', async ({ page }) => {
 });
 
 test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/');
   const toast = page.getByRole('status', { name: 'Offline ready' });
   await expect(toast).toBeVisible({ timeout: 30_000 });
@@ -30,6 +31,7 @@ test('offline ready notice clears visible buttons and dismisses', async ({ page 
 });
 
 test('five tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/');
   for (const scheme of ['dark', 'light'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
@@ -45,6 +47,7 @@ test('five tabs remain reachable after reload in both themes', async ({ page }, 
 });
 
 test('generator check displays five boards and the case from both threads', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   test.setTimeout(90000);
   await page.goto('/#you/settings');
   await page.getByText('About this app').click();
@@ -64,6 +67,7 @@ test('generator check displays five boards and the case from both threads', asyn
 });
 
 test('backup downloads, previews, and restores only after confirmation', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you');
   await page.waitForFunction(() => '__nandiTest' in globalThis);
   await page.evaluate(() => (globalThis as unknown as { __nandiTest: { seedShell: () => Promise<void> } }).__nandiTest.seedShell());
@@ -100,6 +104,7 @@ test('backup downloads, previews, and restores only after confirmation', async (
 });
 
 test('offline reload still opens every tab', async ({ page, context }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/');
   await page.evaluate(async () => { await (globalThis as unknown as { navigator: { serviceWorker: { ready: Promise<unknown> } } }).navigator.serviceWorker.ready; });
   await page.reload();

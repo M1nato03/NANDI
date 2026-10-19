@@ -71,6 +71,7 @@ test('confidence defaults to fairly sure and a changed tap survives reload', asy
 });
 
 test('Learn shows empty learning figures', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#learn');
   const figures = page.getByRole('region', { name: 'How your learning is holding' });
   await expect(figures).toContainText('30-day recall: Builds after your first 30 days');
@@ -79,6 +80,7 @@ test('Learn shows empty learning figures', async ({ page }) => {
 });
 
 test('owner flag with a note updates the count and survives reload', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   test.setTimeout(90_000);
   await page.goto('/?e2e#you/settings');
   await page.getByText('About this app').click();
