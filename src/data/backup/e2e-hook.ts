@@ -41,7 +41,7 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; learnConfidence: typeof learnConfidence };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; learnConfidence: typeof learnConfidence };
   }
 }
 
@@ -53,6 +53,21 @@ async function shellCounts(): Promise<Record<string, number>> {
   return Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()])));
 }
 async function wipeData(): Promise<void> { await Promise.all(db.tables.map(table => table.clear())); }
+async function seedPlannerComplete(kind: 'fresh' | 'calibration' | 'checkpoint' | 'history'): Promise<void> {
+  const at = (date: string) => new Date(date).getTime();
+  const meta = { updatedAt: at('2026-10-19T09:00:00'), deleted: 0 as const, deviceId: 'e2e-planner' };
+  if (kind === 'fresh') await db.tasks.put({ id: 'fresh-yesterday', title: 'Yesterday task', status: 'unplaced', dayKey: '2026-10-19', firstScheduledDayKey: '2026-10-18', size: 'M', plannedSize: 'M', estimateMin: 30, postponeCount: 0, ...meta });
+  if (kind === 'calibration') for (let i = 0; i < 5; i++) {
+    const id = `study-${i}`;
+    await db.tasks.put({ id, title: `Study sample ${i}`, status: 'done', dayKey: '2026-10-17', firstScheduledDayKey: '2026-10-17', size: 'M', plannedSize: 'M', estimateMin: 30, category: 'study', postponeCount: 0, doneAt: at('2026-10-17T12:00:00'), ...meta });
+    await db.focus.put({ id: `focus-${i}`, taskId: id, startedAt: at('2026-10-17T10:00:00'), endedAt: at('2026-10-17T10:42:00'), ...meta });
+  }
+  if (kind === 'checkpoint') await db.tasks.put({ id: 'due-task', title: 'Prepare exam', status: 'planned', dayKey: '2026-10-27', firstScheduledDayKey: '2026-10-27', scheduledStart: at('2026-10-27T12:00:00'), size: 'M', plannedSize: 'M', estimateMin: 60, postponeCount: 0, ...meta });
+  if (kind === 'history') {
+    await db.tasks.put({ id: 'history-task', title: 'History task', status: 'planned', dayKey: '2026-10-19', firstScheduledDayKey: '2026-10-18', scheduledStart: at('2026-10-19T14:00:00'), size: 'M', plannedSize: 'M', estimateMin: 30, postponeCount: 1, ...meta });
+    await db.taskEvents.put({ id: 'history-event', taskId: 'history-task', kind: 'postponed', at: at('2026-10-18T12:00:00'), reason: 'blocked', budgetCounted: true, ...meta });
+  }
+}
 
 async function seedLearnNight(conceptId: string, dueAt: number, selectedTopic = 'money-markets'): Promise<void> {
   const at = Date.now();
@@ -66,4 +81,4 @@ async function learnConfidence(): Promise<string | undefined> {
   return rows.at(-1)?.inputs.confidence as string | undefined;
 }
 
-window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, removeShellTask, shellCounts, wipeData, seedLearnNight, learnConfidence };
+window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, learnConfidence };

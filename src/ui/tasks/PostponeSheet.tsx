@@ -8,7 +8,7 @@ type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, succe
 const reasons: PostponeReason[] = ['underestimated', 'blocked', 'low energy', 'avoided it'];
 const realReasons: RealReason[] = ['class moved', 'illness', 'travel'];
 
-export function PostponeSheet({ task, run, close }: { task: TaskRow; run: Run; close: () => void }) {
+export function PostponeSheet({ task, run, close, onMoved }: { task: TaskRow; run: Run; close: () => void; onMoved?: (newStart: number) => void }) {
   const [slot, setSlot] = useState(() => defaultSlot(Math.max(Date.now(), task.scheduledStart ?? Date.now()) + 86_400_000));
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
   const [reason, setReason] = useState<PostponeReason | ''>('');
@@ -31,7 +31,7 @@ export function PostponeSheet({ task, run, close }: { task: TaskRow; run: Run; c
       reason: reason || undefined,
       realReason: action === 'real' ? realReason || undefined : undefined,
     }), action === 'do10' ? 'Focus started.' : 'Plan updated.');
-    if (ok) close();
+    if (ok) { close(); if (task.checkpointOf && Number.isFinite(next) && action !== 'someday' && action !== 'do10') onMoved?.(next); }
   }
   async function saveSplit() {
     if (parts.length < 2 || parts.some((part) => part < 25 || part > 60) || parts.reduce((sum, part) => sum + part, 0) !== task.estimateMin) {

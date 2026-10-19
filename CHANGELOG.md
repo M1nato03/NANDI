@@ -5,6 +5,8 @@
 - Kept Learn drops to due reviews after the saved bedtime target, with a calm stop when none are due.
 - Added optional confidence chips before answer feedback, 30-day recall and sure-answer figures on Learn, and a projected time gate for new track units.
 - Added a weekly offline content sample under Settings > About, with saved owner verdicts and notes included in backups.
+- Completed the Plan tab's Now card, fresh start, task detail, estimate calibration, optional focus reward, checkpoints, and seven-day planning line.
+- Added pure planner helpers and unit and browser coverage for these flows.
 
 ## 2026-10-17
 
