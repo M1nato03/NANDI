@@ -125,6 +125,8 @@ test('upgrade keeps data and works offline', async ({ page, context }, testInfo)
 
   try {
     await prepareUpgrade(page, context, server.origin);
+    // The e2e hook loads in a lazy chunk; wait until it is installed.
+    await page.waitForFunction(() => Boolean(window.__nandiTest), undefined, { timeout: 30_000 });
     const count = await page.evaluate(
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     );
