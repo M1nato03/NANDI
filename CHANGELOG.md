@@ -2,6 +2,7 @@
 
 ## 2026-10-19
 
+- Added Reminders on the Plan tab: a to-do list with no time, date, size or rules. They never earn XP, never count as postponed and never fill a Today dot; ticked ones fade after a week.
 - Added the visible economy to You: daily XP replay, levels, Season 1 rank and ladder, forgiving streaks, Clean Week, Shards, fixed-price shop, cosmetic themes, and practice packs.
 - Added morning lights-out back-fill, an opt-in early streak reminder, Learn drop Mind-slot credit, and calm progress feedback.
 - Added a three-step Mind hint ladder, technique cards earned from correct deductions, and per-type par and clean-clear results.
