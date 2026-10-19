@@ -11,13 +11,18 @@ export function rhythmForDay(day: string): 'new' | 'review' | 'apply' | 'off' {
   return weekday === 0 ? 'off' : weekday === 5 ? 'review' : weekday === 6 ? 'apply' : 'new';
 }
 
-export function chooseTrackDay(input: { day: string; active: boolean; unitIds: string[]; completed: CompletedUnit[]; dueReviews: number; spentMinutes?: number }): TrackDay {
+export function newUnitFitsBudget(input: { spentMinutes: number; unitMinutes: number; checkMinutes: number; reviewMinutes: number }): boolean {
+  return input.spentMinutes + input.unitMinutes + input.checkMinutes + input.reviewMinutes <= RULES.learningTracks.dailyBudgetMin;
+}
+
+export function chooseTrackDay(input: { day: string; active: boolean; unitIds: string[]; completed: CompletedUnit[]; dueReviews: number; spentMinutes?: number; unitMinutes?: number; checkMinutes?: number; reviewMinutes?: number }): TrackDay {
   if (!input.active) return { kind: 'parked', unitId: null };
   if (input.completed.some(row => row.day === input.day)) return { kind: 'done', unitId: null };
   const rhythm = rhythmForDay(input.day);
   if (rhythm !== 'new') return { kind: rhythm, unitId: null };
   if (input.dueReviews > RULES.learningTracks.backlogBrakeDue) return { kind: 'review', unitId: null, reason: 'backlog' };
-  if ((input.spentMinutes ?? 0) >= RULES.learningTracks.dailyBudgetMin) return { kind: 'done', unitId: null, reason: 'budget' };
+  if (!newUnitFitsBudget({ spentMinutes: input.spentMinutes ?? 0, unitMinutes: input.unitMinutes ?? 0,
+    checkMinutes: input.checkMinutes ?? 0, reviewMinutes: input.reviewMinutes ?? 0 })) return { kind: 'review', unitId: null, reason: 'budget' };
   const thisWeek = input.completed.filter(row => weekKey(new Date(`${row.day}T12:00:00`)) === weekKey(new Date(`${input.day}T12:00:00`))).length;
   if (thisWeek >= RULES.learningTracks.newUnitsPerWeek) return { kind: 'review', unitId: null, reason: 'weekly-limit' };
   const finished = new Set(input.completed.map(row => row.id));

@@ -27,6 +27,8 @@ test('browser Back restores the Mind board and saved puzzle progress', async ({ 
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   const before = await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
   await board.getByRole('button', { name: 'Hint' }).click();
+  await board.getByRole('button', { name: 'Hint' }).click();
+  await board.getByRole('button', { name: 'Hint' }).click();
   await expect(board).toHaveAttribute('data-save-state', 'saved');
   const cells = await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
   expect(cells).not.toEqual(before);

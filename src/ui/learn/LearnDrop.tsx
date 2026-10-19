@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { gradeItem, masteryMapState, type ItemAnswer } from '../../core/learn/engine';
-import { dayKey } from '../../core/time';
+import { gradeItem, masteryMapState, type Confidence, type ItemAnswer } from '../../core/learn/engine';
+import { RULES } from '../../core/rules.config';
+import { dayKey, isAfterBedtime } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { loadEngineFacts, saveDrop, saveEngineAnswer } from '../../data/repos/learn-engine';
 import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
-import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, selectedTopicKey, topics } from './flow';
+import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics } from './flow';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -18,6 +19,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [busy, setBusy] = useState(false);
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
+    bedtime: await db.settings.get('planner.bedtime'),
     dailyDrop: await db.learnDrops.get(dailyDropId(now)),
     nightDrop: night ? await db.learnDrops.get(nightDropId(now)) : undefined,
     drops: await db.learnDrops.toArray(),
@@ -28,6 +30,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [picked, setPicked] = useState<string[]>([]);
   const [practiceId, setPracticeId] = useState<string>();
   const [feedback, setFeedback] = useState<{ cursor: number; correct: boolean; text: string; rule: string; optionId?: string }>();
+  const [pending, setPending] = useState<{ value: ItemAnswer; optionId?: string }>();
+  const [confidence, setConfidence] = useState<Confidence>('fairly-sure');
   const [sequence, setSequence] = useState<string[]>([]);
   const [matchLeft, setMatchLeft] = useState<string>();
   const [pairs, setPairs] = useState<{ left: string; right: string }[]>([]);
@@ -39,6 +43,18 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const concepts = catalogFor(topics.map(pack => pack.body.topic.id));
   const row = night ? data?.nightDrop : daily ? data?.dailyDrop : data?.drops.find(candidate => candidate.id === practiceId);
   const drop = row?.drop;
+  useEffect(() => {
+    if (!row || !data) return;
+    const bedtime = typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
+    const trim = () => {
+      if (!isAfterBedtime(currentTime(), bedtime)) return;
+      const next = reviewsOnlyRemainder(row.drop);
+      if (next !== row.drop) void saveDrop(db, next, row.deviceId, currentTime());
+    };
+    trim();
+    const timer = window.setInterval(trim, 30_000);
+    return () => window.clearInterval(timer);
+  }, [row, data]);
   const step = drop?.items[feedback?.cursor ?? drop.pendingFeedback?.cursor ?? drop.cursor];
   const found = step ? findItem(concepts, step.itemId) : undefined;
   const savedAnswer = drop?.pendingFeedback?.answer;
@@ -69,6 +85,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       const answered = data.ledger.filter(fact => !fact.deleted && fact.dayKey === today);
       const { facts } = await loadEngineFacts(db);
       const created = makeDrop({ ids: selected, concepts: data.concepts, items: data.items, now: at, daily: isDaily, night, itemCount, preferredConceptId, reviewDue,
+        bedtime: typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime,
         answeredToday: answered.length, newToday: isDaily ? answered.filter(fact => data.drops.some(row => row.id === fact.inputs.dropId && row.drop.items.some(step => step.itemId === fact.inputs.itemId && step.mode === 'new'))).length : 0,
         spentMinutes: answered.length * 0.7, facts });
       if (isDaily || night) {
@@ -89,7 +106,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.dailyDrop, data?.nightDrop, data?.setting, practiceId]);
 
-  const answer = async (value: ItemAnswer, feedbackId?: string) => {
+  const answer = async (value: ItemAnswer, feedbackId?: string, chosenConfidence: Confidence = confidence) => {
     if (!drop || !found || !step || writing.current || visibleFeedback) return;
     writing.current = true;
     setBusy(true);
@@ -100,30 +117,30 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     try {
       const at = currentTime();
       await saveEngineAnswer(db, { answerId: `${drop.id}:${drop.cursor}`, dropId: drop.id, item: found.item,
-        answer: value, confidence: 'fairly-sure', deviceId: await getOrCreateDeviceId(db, at), now: at });
+        answer: value, confidence: chosenConfidence, deviceId: await getOrCreateDeviceId(db, at), now: at });
     } catch {
       setFeedback(undefined);
       setMessage('Could not save that answer. Tap again.');
     } finally { writing.current = false; setBusy(false); }
   };
   const choose = (id: string) => {
-    if (!found || visibleFeedback || writing.current) return;
+    if (!found || visibleFeedback || pending || writing.current) return;
     const item = found.item;
     if (item.type === 'order') {
       const next = [...sequence, id];
-      if (next.length === item.answer.length) void answer(next, id);
+      if (next.length === item.answer.length) setPending({ value: next, optionId: id });
       else setSequence(next);
     } else if (item.type === 'match') {
       if (!matchLeft) { setMatchLeft(id); return; }
       const next = [...pairs, { left: matchLeft, right: id }];
       setMatchLeft(undefined);
-      if (next.length === item.answer.length) void answer(next, id);
+      if (next.length === item.answer.length) setPending({ value: next, optionId: id });
       else setPairs(next);
     } else if (item.type === 'estimate') {
       const text = item.options.find(option => option.id === id)?.text ?? '';
       const number = Number(text.match(/-?\d+(?:[.,]\d+)*/)?.[0]?.replaceAll(',', ''));
-      void answer(number, id);
-    } else void answer(id, id);
+      setPending({ value: number, optionId: id });
+    } else setPending({ value: id, optionId: id });
   };
   const nextItem = async () => {
     if (writing.current || !drop) return;
@@ -131,13 +148,14 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     try {
       const current = await db.learnDrops.get(drop.id);
       if (current?.drop.pendingFeedback) await saveDrop(db, { ...current.drop, pendingFeedback: undefined }, current.deviceId, currentTime());
-      setFeedback(undefined); setSequence([]); setPairs([]); setMatchLeft(undefined); setMessage('');
+      setFeedback(undefined); setPending(undefined); setConfidence('fairly-sure'); setSequence([]); setPairs([]); setMatchLeft(undefined); setMessage('');
     } catch { setMessage('Could not continue this drop. Try again.'); }
     finally { setBusy(false); }
   };
 
   if (!data) return <div className="learn-drop" role="status">Opening your drop…</div>;
   if (!topics.length) return <div className="learn-drop"><h2>Learn</h2><p>Topics are unavailable right now.</p></div>;
+  if (!practiceIds.length && isAfterBedtime(now, typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime)) return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : "That's today's drop"}</h2><p>Nothing to review tonight. Sleep is the best study.</p><button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   if (!practiceIds.length) return <div className="learn-drop learn-pick"><p className="eyebrow">A small start</p><h2>What do you want to get sharp at?</h2><p>Pick one or a few. You can change them later.</p>
     <div className="learn-topic-tiles">{topics.map(pack => <button type="button" key={pack.id} className={`learn-topic-tile ${picked.includes(pack.body.topic.id) ? 'chosen' : ''}`} aria-pressed={picked.includes(pack.body.topic.id)} onClick={() => setPicked(current => current.includes(pack.body.topic.id) ? current.filter(id => id !== pack.body.topic.id) : [...current, pack.body.topic.id])}><strong>{pack.title}</strong><span>{pack.description}</span></button>)}</div>
     <button type="button" disabled={!picked.length || busy} onClick={() => void start(picked)}>Start my first drop</button>{message && <p role="status">{message}</p>}</div>;
@@ -146,7 +164,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);
     const improved = touched.filter(concept => masteryMapState(data.concepts.find(row => row.id === concept.id)) !== 'Not started');
     const due = touched.map(concept => data.concepts.find(row => row.id === concept.id)?.memory?.dueAt).filter((value): value is number => typeof value === 'number').sort((a, b) => a - b)[0];
-    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : "That's your practice drop"}</h2><p>{drop.items.length} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p><h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p><button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
+    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : "That's your practice drop"}</h2>{!drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <><p>{drop.items.length} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p><h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   }
   if (!found) return <div className="learn-drop"><h2>Learn</h2><p>This item is unavailable. Open Learn to choose a topic.</p><button type="button" onClick={() => go('learn')}>Open Learn</button></div>;
   const { item, concept } = found;
@@ -156,7 +174,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     <p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p><h2>{item.stem}</h2>
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
-    <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
+    <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
+    {pending && !visibleFeedback && <div className="learn-confidence"><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div><button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
 }

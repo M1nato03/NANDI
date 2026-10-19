@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 import type { MysteryCase } from '../../core/mysteries';
+import { revealedPanels } from '../../core/mysteries';
+import { nextCaseDeduction, availableCaseDeductions, caseNudge } from '../../core/mysteries/deduction';
+import { techniqueCard } from '../../core/puzzles/techniques';
+import { unlockTechnique } from '../../data/repos/techniques';
+import { shareText, shareTile } from '../../core/puzzles/share';
+import { shareOrDownload } from '../../platform/files';
+import { RULES } from '../../core/rules.config';
 import {
   accusationIsCorrect,
   caseGridMistakes,
@@ -39,11 +47,13 @@ export function CaseScreen({
   day,
   diff,
   afterBedtime,
+  canShare,
   onExit,
 }: {
   day: string;
   diff: 'easy' | 'medium' | 'hard';
   afterBedtime: boolean;
+  canShare: boolean;
   onExit: () => void;
 }) {
   const [mystery, setMystery] = useState<MysteryCase | null>(null);
@@ -55,6 +65,9 @@ export function CaseScreen({
   const [clock, setClock] = useState(() => Date.now());
   const [revealArmed, setRevealArmed] = useState(false);
   const [wrongCells, setWrongCells] = useState<string[]>([]);
+  const [hintStep, setHintStep] = useState(0);
+  const [newCard, setNewCard] = useState(false);
+  const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
   const [pick, setPick] = useState<Accusation>({ s: -1, i: -1, p: -1 });
   const pending = useRef<Promise<unknown>>(Promise.resolve());
   const latest = useRef<PuzzleRunRow | null>(null);
@@ -140,7 +153,10 @@ export function CaseScreen({
         i === index ? cycleMark(value) : value,
       ),
     };
-    persist({ ...row, caseGrid: next });
+    const deduction = availableCaseDeductions(mystery!, currentGrid).find(item => item.grid === name && item.cell === index && next[name][index] === item.value);
+    const learned = deduction?.technique;
+    setHintStep(0);
+    persist({ ...row, caseGrid: next, techniquesSeen: learned ? [...new Set([...(row.techniquesSeen ?? []), learned])] : row.techniquesSeen });
   };
   const strike = (index: number) => {
     const row = latest.current,
@@ -169,8 +185,9 @@ export function CaseScreen({
       result,
       finishedAt: result ? now : undefined,
       solveMs: result ? active.activeMs : undefined,
-      score: result === 'solved' ? (tries || row.hintsUsed ? 0.7 : 1) : 0,
+      score: result === 'solved' ? (tries || row.hintsUsed ? RULES.mind.caseScore.withHintsOrSecondTry : RULES.mind.caseScore.cleanSolve) : RULES.mind.caseScore.revealed,
     });
+    if (result === 'solved' && row.techniquesSeen?.length) void Promise.all(row.techniquesSeen.map(name => unlockTechnique(db, 'mystery', name))).then(values => { if (values.some(Boolean)) setNewCard(true); }).catch(error => recordError('window', error));
     setMessage(result ? '' : `Not quite. One more try.`);
   };
   const reveal = (now: number) => {
@@ -408,9 +425,25 @@ export function CaseScreen({
                   ))}
                 </ol>
               </details>
+              {run.result === 'solved' && <>{revealedPanels(runs, day).filter(panel => panel.dayKey === day && !panel.bonus).map(panel => <div className="mind-story-panel" key={panel.id}><h3>{panel.chapterTitle}</h3><p>{panel.text}</p></div>)}{newCard && <p role="status">New technique card</p>}{canShare && <><p className="small">{shareText(run, 'Case')}</p><button type="button" className="secondary" onClick={() => void shareTile(run, 'Case').then(file => shareOrDownload(file, shareText(run, 'Case'))).catch(error => recordError('window', error))}>Share</button></>}</>}
             </div>
           ) : (
             <div className="card">
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {
+                  const deduction = nextCaseDeduction(mystery, grid);
+                  const nudge = caseNudge(mystery, grid, deduction);
+                  const rung = caseGridMistakes(mystery, grid).length ? 1 : Math.min(RULES.mind.hintLadderRungs, hintStep + 1);
+                  const card = deduction && techniqueCard('mystery', deduction.technique);
+                  setWrongCells(nudge.cells);
+                  setHintStep(rung === 3 ? 0 : rung);
+                  if (rung === 3 && deduction) persist({ ...run, caseGrid: { ...grid, [deduction.grid]: grid[deduction.grid].map((value, index) => index === deduction.cell ? deduction.value : value) }, hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), rung] });
+                  else persist({ ...run, hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), rung] });
+                  setMessage(rung === 1 ? nudge.message : rung === 2 && card ? `${card.name}: ${card.example}` : deduction ? `Mark row ${Math.floor(deduction.cell / mystery.n) + 1} in the ${deduction.grid} grid.` : nudge.message);
+                }}
+              >Hint</button>
               <button
                 type="button"
                 className="secondary"
@@ -428,7 +461,7 @@ export function CaseScreen({
                         : 'Every mark so far is right. Keep going.',
                   );
                   if (marked)
-                    persist({ ...run, hintsUsed: (run.hintsUsed ?? 0) + 1 });
+                    persist({ ...run, hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), 1] });
                 }}
               >
                 Check my grid

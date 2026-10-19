@@ -4,6 +4,13 @@
 
 - Added the visible economy to You: daily XP replay, levels, Season 1 rank and ladder, forgiving streaks, Clean Week, Shards, fixed-price shop, cosmetic themes, and practice packs.
 - Added morning lights-out back-fill, an opt-in early streak reminder, Learn drop Mind-slot credit, and calm progress feedback.
+- Added a three-step Mind hint ladder, technique cards earned from correct deductions, and per-type par and clean-clear results.
+- Bundled four original Proving Ground mystery arcs, with daily case panels and Sunday boss bonuses.
+- Added spoiler-free Mind share tiles during daytime, pack validation, unit tests, and Edge browser coverage.
+- Gave every Gym Foundations lift a real load step (dumbbell, machine stack, cable stack or barbell; holds progress by time), with machine and cable steps and gym access in Train settings, and recorded optional starting loads in gym setup.
+- Kept Learn drops to due reviews after the saved bedtime target, with a calm stop when none are due.
+- Added optional confidence chips before answer feedback, 30-day recall and sure-answer figures on Learn, and a projected time gate for new track units.
+- Added a weekly offline content sample under Settings > About, with saved owner verdicts and notes included in backups.
 - Completed the Plan tab's Now card, fresh start, task detail, estimate calibration, optional focus reward, checkpoints, and seven-day planning line.
 - Added pure planner helpers and unit and browser coverage for these flows.
 

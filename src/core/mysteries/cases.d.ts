@@ -16,6 +16,6 @@ declare const CaseGen: {
   hash: (text: string) => number;
   countSolutions: (clues: Clue[], n: number) => number;
   holds: (clue: Clue, sp: number[], si: number[]) => boolean;
-  propagate: (clues: Clue[], n: number, cross: boolean) => { solved: boolean; G: { A: number[][]; B: number[][] } };
+  propagate: (clues: Clue[], n: number, cross: boolean, current?: { A: number[]; B: number[]; C: number[] }) => { solved: boolean; bad: boolean; steps: Array<{ g: 'A' | 'B' | 'C'; r: number; c: number; v: number; why: { rule: string } }>; G: { A: number[][]; B: number[][]; C: number[][] } };
 };
 export default CaseGen;

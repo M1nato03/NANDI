@@ -9,7 +9,13 @@ import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, sp
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
 import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
-import { nextHint } from '../../core/puzzles/hint';
+import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
+import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
+import { noHintClear, parMs } from '../../core/puzzles/mastery';
+import { shareText, shareTile } from '../../core/puzzles/share';
+import { revealedPanels, currentArcTitle } from '../../core/mysteries';
+import { unlockTechnique } from '../../data/repos/techniques';
+import { shareOrDownload } from '../../platform/files';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
@@ -65,6 +71,9 @@ export function Mind({ entry }: { entry?: string }) {
   const dailyDone = dailyDoneKey === today;
   const [best, setBest] = useState<number | undefined>();
   const [message, setMessage] = useState('');
+  const [hintStep, setHintStep] = useState(0);
+  const [hintFocus, setHintFocus] = useState<number[]>([]);
+  const [newCard, setNewCard] = useState(false);
   const [busy, setBusy] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saving');
@@ -79,6 +88,7 @@ export function Mind({ entry }: { entry?: string }) {
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
   const flags = useLiveQuery(() => db.flags.toArray(), []) ?? [];
   const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  const unlocks = useLiveQuery(() => db.unlocks.where('kind').equals('technique').toArray(), []) ?? [];
   // Live, so the Today chip flips to Done as soon as the daily board is solved.
   const dailySolvedLive = puzzleRuns.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved');
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
@@ -274,12 +284,16 @@ export function Mind({ entry }: { entry?: string }) {
     if (!board || !row || row.result) return;
     const checked = checkRules(board, state);
     const now = Date.now();
-    const next = { ...accrueActive(row, now), grid: state.grid, path: state.path, ...extra };
+    const before: PuzzleState = { grid: row.grid ?? initialGrid(board), path: row.path ?? [] };
+    const technique = usedTechnique(availableDeductions(board, before), before, state);
+    const techniquesSeen = technique && !extra.hintRungs && !row.techniquesSeen?.includes(technique) ? [...(row.techniquesSeen ?? []), technique] : row.techniquesSeen;
+    const next = { ...accrueActive(row, now), grid: state.grid, path: state.path, techniquesSeen, ...extra };
     if (checked.solved) {
       next.result = 'solved'; next.solveMs = next.activeMs; next.finishedAt = now;
       if (next.daily) setDailyDoneKey(today);
       setBest(previous => previous === undefined ? next.solveMs : Math.min(previous, next.solveMs ?? previous));
       setMessage('');
+      if (techniquesSeen?.length) void Promise.all(techniquesSeen.map(name => unlockTechnique(db, board.type, name))).then(results => { if (results.some(Boolean)) setNewCard(true); }).catch(error => recordError('window', error));
     } else if (checked.complete) setMessage('Board full. Check the marked rules.');
     else setMessage('');
     persist(next);
@@ -289,7 +303,7 @@ export function Mind({ entry }: { entry?: string }) {
 
   useEffect(() => {
     if (import.meta.env.VITE_E2E !== '1' || !new URLSearchParams(location.search).has('e2e') || !board || !current.current) return;
-    const hook = { solveKnownSolution: () => {
+    const hook = { nextDeduction: () => availableDeductions(board, { grid: current.current?.grid ?? initialGrid(board), path: current.current?.path ?? [] })[0], solveKnownSolution: () => {
       const state: PuzzleState = board.type === 'path' ? { grid: [], path: board.solution.slice() }
         : board.type === 'crowns' ? { grid: Array(board.N * board.N).fill(0).map((_, i) => board.solution[Math.floor(i / board.N)] === i % board.N ? 2 : 0), path: [] }
           : { grid: board.solution.slice(), path: [] };
@@ -343,12 +357,14 @@ export function Mind({ entry }: { entry?: string }) {
   }, [entry, caseReady, featured.type, featured.diff, today]);
   const state: PuzzleState = { grid: run?.grid ?? (board ? initialGrid(board) : []), path: run?.path ?? [] };
   const checked = board ? checkRules(board, state) : null;
+  const par = board ? parMs(puzzleRuns, board.type, board.diff) : undefined;
+  const panels = revealedPanels(puzzleRuns, today);
   const name = board ? PZ.TYPES[board.type].name : '';
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('learn')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
   if (reviews && deck) return <Reviews key={reviewIsPractice ? 'practice' : reviewIsOneMore ? 'more' : 'daily'} entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} waiting={reviewIsPractice ? 0 : reviewWaiting} canOneMore={!reviewIsPractice && !reviewIsOneMore && reviewWaiting > 0 && reviewRamp.oneMoreDay !== today} onDone={finishReviews} />;
-  if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} onExit={() => entry === 'case' ? go('mind') : history.back()} />;
+  if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} canShare={night === 'day'} onExit={() => entry === 'case' ? go('mind') : history.back()} />;
   if (selection) return <section className="screen mind-board" data-save-state={saveState} data-board-seed={board?.seed}>
     {(night === 'lightsOut' || busy || !board || !run) && <div role="status">
       {night === 'lightsOut' && <p>{nightMindNote(showEconomy)}</p>}
@@ -358,10 +374,20 @@ export function Mind({ entry }: { entry?: string }) {
       <p className="eyebrow">{selection.intro ? `Intro board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>Board complete</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} hints · Best {timeText(best ?? run.solveMs ?? 0)}</p></div> : <>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>Board complete</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} hints · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <><p className="small">{shareText(run, name)}</p><button type="button" className="secondary" onClick={() => void shareTile(run, name).then(file => shareOrDownload(file, shareText(run, name))).catch(error => recordError('window', error))}>Share</button></>}</div> : <>
         <p className="small mind-timer pill" aria-label="Active time">Time {timeText(elapsed)}</p>
-        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => commit({ ...state, grid }, notes ? { notes } : {})} onPath={path => commit({ ...state, path })} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
-        <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => { const hint = nextHint(board, state); if (hint.changed) commit(hint.state, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), 3] }); setMessage(hint.message); }}>Hint</button></div>
+        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
+        <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
+          const deduction = availableDeductions(board, state)[0];
+          const nudge = nudgeFor(board, state, deduction);
+          const rung = nudge.conflict ? 1 : Math.min(RULES.mind.hintLadderRungs, hintStep + 1);
+          const card = deduction && techniqueCard(board.type, deduction.technique);
+          setHintFocus(nudge.cells);
+          setHintStep(rung === 3 ? 0 : rung);
+          const next = rung === 3 && deduction ? board.type === 'path' ? { ...state, path: [...state.path, deduction.cell] } : { ...state, grid: state.grid.map((value, index) => index === deduction.cell ? deduction.value : value) } : state;
+          commit(next, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), rung] });
+          setMessage(rung === 1 ? nudge.message : rung === 2 && card ? `${card.name}: ${card.example}` : deduction ? `Move: row ${Math.floor(deduction.cell / (board.type === 'path' ? board.C : board.type === 'sunmoon' ? 6 : board.N)) + 1}, value ${deduction.value}.` : nudge.message);
+        }}>Hint</button></div>
         {message && <p>{message}</p>}
       </>}
     </>}
@@ -379,6 +405,8 @@ export function Mind({ entry }: { entry?: string }) {
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
       {practice && PUZZLE_PACKS.filter(pack => ownedPacks.some(row => !row.deleted && row.inputs.itemId === pack.id)).map(pack => <div className="mind-practice-pack" key={pack.id}><h3>{pack.name}</h3><p>Practice boards · 0 XP</p>{pack.boards.map((spec, index) => <button type="button" className="secondary" key={spec.seed} onClick={() => open({ type: spec.type, diff: spec.diff, daily: false, packSeed: spec.seed, attempt: 1000 + spec.seed + index })}>{PZ.TYPES[spec.type].name} {index + 1}</button>)}</div>)}
     </section>
+    <details className="card mind-story"><summary>Story so far · {currentArcTitle(today)}</summary>{panels.length ? panels.map(panel => <article key={panel.id}><h3>{panel.chapterTitle}{panel.bonus ? ' · Bonus' : ''}</h3><p>{panel.text}</p></article>) : <p>Solve today's case to uncover the first panel.</p>}</details>
+    <details className="card mind-techniques"><summary>Technique cards</summary>{(() => { const isOpen = (card: typeof techniqueCards[number]) => unlocks.some(row => row.id === techniqueId(card.type, card.name) && !row.deleted); const open = techniqueCards.filter(isOpen); const locked = techniqueCards.filter(card => !isOpen(card)); const typeNames: Record<string, string> = { sudoku: 'Mini Sudoku', crowns: 'Crowns', sunmoon: 'Sun & Moon', path: 'Number Path', calc: 'Calcudoku', mystery: 'Case' }; return <><p className="small">{open.length} of {techniqueCards.length} unlocked. Use a technique in a solve to unlock its card.</p>{open.length > 0 && <div className="mind-technique-list">{open.map(card => <article key={techniqueId(card.type, card.name)}><h3>{card.name}</h3><p>{card.explanation}</p><p className="small">{card.example}</p></article>)}</div>}{[...new Set(locked.map(card => card.type))].map(type => <div key={type} className="mind-technique-locked"><h3>{typeNames[type] ?? type}</h3><ul>{locked.filter(card => card.type === type).map(card => <li key={card.name}>{card.name}</li>)}</ul></div>)}</>; })()}</details>
     <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}<button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button></section>
     </>}
     {(entry === 'courses' || entry === 'unit') && <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses</summary>

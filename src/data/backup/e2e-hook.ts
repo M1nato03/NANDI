@@ -41,7 +41,7 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; roundTripCurrent: typeof roundTripCurrent; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; learnConfidence: typeof learnConfidence };
   }
 }
 
@@ -53,6 +53,11 @@ async function shellCounts(): Promise<Record<string, number>> {
   return Object.fromEntries(await Promise.all(db.tables.map(async table => [table.name, await table.count()])));
 }
 async function wipeData(): Promise<void> { await Promise.all(db.tables.map(table => table.clear())); }
+async function roundTripCurrent(): Promise<void> {
+  const envelope = await exportBackup(db, Date.now());
+  await importBackup(db, envelope);
+}
+
 async function seedPlannerComplete(kind: 'fresh' | 'calibration' | 'checkpoint' | 'history'): Promise<void> {
   const at = (date: string) => new Date(date).getTime();
   const meta = { updatedAt: at('2026-10-19T09:00:00'), deleted: 0 as const, deviceId: 'e2e-planner' };
@@ -69,4 +74,16 @@ async function seedPlannerComplete(kind: 'fresh' | 'calibration' | 'checkpoint' 
   }
 }
 
-window.__nandiTest = { backupRoundTrip: roundTrip, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData };
+async function seedLearnNight(conceptId: string, dueAt: number, selectedTopic = 'money-markets'): Promise<void> {
+  const at = Date.now();
+  await db.settings.put({ key: 'learn.selectedTopics', value: [selectedTopic], updatedAt: at, deleted: 0, deviceId: 'e2e-learn' });
+  await db.learnConcepts.put({ id: conceptId, mastery: 0.8, attempts: 2, firstLearnedAt: at - 3 * 86_400_000,
+    memory: { stability: 2, difficulty: 5, interval: 2, lastReview: at - 3 * 86_400_000, dueAt },
+    activeMisconceptions: [], updatedAt: at, deleted: 0, deviceId: 'e2e-learn' });
+}
+async function learnConfidence(): Promise<string | undefined> {
+  const rows = await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention').toArray();
+  return rows.at(-1)?.inputs.confidence as string | undefined;
+}
+
+window.__nandiTest = { backupRoundTrip: roundTrip, roundTripCurrent, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, learnConfidence };

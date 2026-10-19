@@ -4,6 +4,7 @@ import { expect, it } from 'vitest';
 import { createDb } from '../db';
 import { exportBackup, importBackup } from '../backup';
 import { createSettingsRepos } from './settings';
+import { contentReviewKey } from '../../core/learn/contentReview';
 
 it('round-trips theme and motion settings through the repo and backup', async () => {
   const db = createDb(`settings-round-trip-${crypto.randomUUID()}`);
@@ -21,4 +22,16 @@ it('round-trips theme and motion settings through the repo and backup', async ()
   } finally {
     await db.delete();
   }
+});
+
+it('round-trips a flagged content item and its note in backup', async () => {
+  const db = createDb(`content-review-${crypto.randomUUID()}`);
+  try {
+    const key = contentReviewKey('item-1');
+    await createSettingsRepos(db, 'device-a').settings.put({ key, value: { verdict: 'flag', note: 'Check the source year' } }, 100);
+    const backup = await exportBackup(db, 200);
+    await db.settings.clear();
+    await importBackup(db, backup);
+    expect((await db.settings.get(key))?.value).toEqual({ verdict: 'flag', note: 'Check the source year' });
+  } finally { await db.delete(); }
 });

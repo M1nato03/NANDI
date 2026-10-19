@@ -75,10 +75,11 @@ const CaseGen = (function(){
   }
 
   /* Human-style solver: only sound one-step deductions. Returns the steps it used. */
-  function propagate(clues,n,cross){
+  function propagate(clues,n,cross,current){
     const mk=()=>Array.from({length:n},()=>new Array(n).fill(0));
     const G={A:mk(),B:mk(),C:mk()}; // A: suspect x place, B: suspect x item, C: item x place
     const steps=[]; let bad=false, changed=true;
+    if(current) for(const g of ["A","B","C"]) for(let r=0;r<n;r++) for(let c=0;c<n;c++) G[g][r][c]=current[g]?.[r*n+c]||0;
     function set(g,r,c,v,why){ const cur=G[g][r][c]; if(cur===v) return; if(cur!==0){ bad=true; return; } G[g][r][c]=v; steps.push({g,r,c,v,why}); changed=true; }
     clues.forEach((cl,ix)=>{
       const w={rule:"clue",clue:ix};

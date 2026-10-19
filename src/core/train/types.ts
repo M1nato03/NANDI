@@ -6,6 +6,10 @@ export type EquipmentSetting = {
   resistanceBand: boolean;
   pullUpBar: boolean;
   sturdyAnchor: boolean;
+  /** Weight-stack step on gym machines, kg. */
+  machineStep?: number;
+  /** Weight-stack step on cable stations, kg. */
+  cableStep?: number;
 };
 
 export type MuscleGroup = 'chest' | 'back' | 'legs' | 'core' | 'shoulders' | 'arms';

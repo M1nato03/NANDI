@@ -49,6 +49,8 @@ The drop **unlocks at his chosen hour (default 07:00)** and resets with `dayKey`
 
 ## 3. New features
 
+**Implementation clarifications (2026-10-19):** The active hint rung is kept on the board screen; each tap is recorded in `puzzleRuns.hintRungs` and counts toward `hintsUsed`. A marked conflict takes priority on rung 1. Correct technique use is recorded during play, then its card is unlocked and announced only after a solve. Technique unlocks use the existing `unlocks` table and travel with full backups. The four bundled arcs each have five chapters so months with a fifth Sunday have a closing panel. Before the first season begins on 2 November 2026, Arc 0 is the prologue; later seasons follow `seasonIndex % 4`. Story visibility is derived from solved daily runs, including the Sunday boss bonus. Share tiles contain no board state and are offered only while the night window reports `day`.
+
 1. **Three-rung hint ladder, driven by the logic solvers:**
    - The rungs: (1) a nudge ("look at row 3"), (2) the named technique shown on a 4×4 mini example, (3) one move.
    - Extend each legacy solver (`latinLogic`, `crownLogic`, `binLogic`, `calcLogic`, the path solver, `CaseGen.propagate`) to **emit its next deduction** as `{technique, cells, value}` from the player's current grid.

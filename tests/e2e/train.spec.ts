@@ -88,3 +88,17 @@ test('a full exercise advances, then a later set resumes after reload', async ({
   await expect(page.getByText('Exercise 2 of 7')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
+
+test('gym setup records starting loads that the first session uses', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-12T12:00:00') });
+  await page.goto('/#train');
+  await page.getByLabel('Training track').selectOption('gym');
+  await page.getByLabel('Gym access').check();
+  await page.getByLabel('Goblet Squat load for 12 clean reps, kg').fill('12.5');
+  await page.getByRole('button', { name: 'Save assessment' }).click();
+  await expect(page.getByRole('heading', { name: 'Gym Foundations A' })).toBeVisible();
+  await page.reload();
+  await page.getByRole('button', { name: 'Start session' }).click();
+  await expect(page.getByRole('heading', { name: /^Warm-up 1 of/ })).toBeVisible();
+  await expect(page.getByRole('spinbutton', { name: 'Kg' })).not.toHaveValue('0');
+});

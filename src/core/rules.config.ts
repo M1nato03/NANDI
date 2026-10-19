@@ -41,6 +41,8 @@ export const RULES = {
 
   // 05-economy §2, Train; placement thresholds from 03-train §1 and DECISIONS.md.
   train: {
+    // Smallest load step per equipment kind, kg (spec 03 §3: from his equipment, never a constant).
+    increments: { dumbbell: 2.5, machine: 5, cable: 2.5 },
     sessionFullXp: 60,
     sessionPartialFloorXp: 40,
     minimumOrSafetyXp: 40,
@@ -87,6 +89,12 @@ export const RULES = {
     bossRotation: ['sudoku', 'crowns', 'calc', 'path', 'sunmoon'],
     caseDiffByWeekday: { 1: 'easy', 2: 'easy', 3: 'medium', 4: 'medium', 5: 'medium', 6: 'medium', 0: 'hard' },
     onboardingEasyCases: 3,
+    hintLadderRungs: 3,
+    parMinSolves: 5,
+    parWindow: 10,
+    arcCount: 4,
+    arcChapters: 5,
+    arcPanelMaxWords: 60,
     eloK: { early: 40, later: 24, earlyAnswers: 20 },
     eloClamp: [400, 2400],
     hintScore: 0.6,
@@ -100,11 +108,15 @@ export const RULES = {
 
   learningTracks: {
     activeTracks: 1, newUnitsPerWeek: 4, dailyBudgetMin: 25,
+    unitCheckMin: 3, moduleTestMin: 10, dueReviewMin: 1,
     newCardsPerDay: 5, backlogBrakeDue: 30, busyDayCards: 1,
     checkMinQuestions: 3, modulePassPercent: 70,
   },
 
   teachingEngine: {
+    calibrationDisplayMinAnswers: 20,
+    contentReviewSamplePerModule: 5,
+    contentReviewNoteMaxChars: 300,
     // [slip, guess] for each tap format. Both stay within [0.01, 0.49].
     bkt: {
       predict: [0.12, 0.25], choose: [0.10, 0.20], why: [0.12, 0.20],
@@ -197,9 +209,12 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
     [`teachingEngine.bkt.${type}.1`, [0.01, 0.49]],
   ])),
   'teachingEngine.learn': [0, 0.1], 'teachingEngine.eloK': [1, 80],
+  'teachingEngine.calibrationDisplayMinAnswers': [1, 100],
+  'teachingEngine.contentReviewSamplePerModule': [1, 20], 'teachingEngine.contentReviewNoteMaxChars': [50, 1000],
   'teachingEngine.targetSuccess.0': [0.5, 0.9], 'teachingEngine.targetSuccess.1': [0.5, 0.95],
   'learningTracks.activeTracks': [1, 1], 'learningTracks.newUnitsPerWeek': [1, 4],
   'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5],
+  'learningTracks.unitCheckMin': [1, 10], 'learningTracks.moduleTestMin': [5, 20], 'learningTracks.dueReviewMin': [0, 5],
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
   'learningTracks.checkMinQuestions': [3, 3], 'learningTracks.modulePassPercent': [50, 90],
   'quests.sideQuestXp': [0, 50],
@@ -234,6 +249,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'train.restDayCheckMinMinutes': [1, 60], 'train.prXp': [0, 100], 'train.prMaxPerDay': [0, 10],
   'train.weeklyTarget': [2, 7], 'train.weeklyBonus.targetMet': [0, 200], 'train.weeklyBonus.oneShort': [0, 200],
   'train.dailyCapExclWeekly': [40, 300],
+  'train.increments.dumbbell': [0.5, 10], 'train.increments.machine': [0.5, 20], 'train.increments.cable': [0.5, 10],
   'train.progression.confirmSessions': [1, 10], 'train.progression.failHoldAt': [1, 10],
   'train.progression.failDeloadAt': [1, 10], 'train.progression.deloadPct': [0, 50],
   'train.progression.maxIncreasesPerWeekEarly': [0, 5], 'train.progression.earlyWeeks': [0, 52],
@@ -254,6 +270,8 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.cardXp': [0, 20], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
   'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 120], 'mind.freePlayXp': [0, 0],
   'mind.onboardingEasyCases': [0, 20], 'mind.eloK.early': [1, 100], 'mind.eloK.later': [1, 100],
+  'mind.hintLadderRungs': [3, 3], 'mind.parMinSolves': [1, 10], 'mind.parWindow': [5, 20],
+  'mind.arcCount': [4, 4], 'mind.arcChapters': [4, 5], 'mind.arcPanelMaxWords': [1, 60],
   'mind.eloK.earlyAnswers': [1, 100], 'mind.eloClamp.0': [0, 3000], 'mind.eloClamp.1': [100, 4000],
   'mind.hintScore': [0, 1], 'mind.caseScore.cleanSolve': [0, 1],
   'mind.caseScore.withHintsOrSecondTry': [0, 1], 'mind.caseScore.revealed': [0, 1],

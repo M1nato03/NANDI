@@ -1,5 +1,14 @@
 import { expect, it } from 'vitest';
-import { budgetBar, chooseTrackDay, rhythmForDay, soonerWeakCards } from './tracks';
+import { budgetBar, chooseTrackDay, newUnitFitsBudget, rhythmForDay, soonerWeakCards } from './tracks';
+
+it('allows a new unit at 25 minutes and brakes one minute over', () => {
+  const input = { day: '2026-10-13', active: true, unitIds: units, completed: [], dueReviews: 4,
+    spentMinutes: 0, unitMinutes: 12, checkMinutes: 3, reviewMinutes: 10 };
+  expect(newUnitFitsBudget(input)).toBe(true);
+  expect(chooseTrackDay(input)).toMatchObject({ kind: 'new', unitId: 'lift' });
+  expect(newUnitFitsBudget({ ...input, reviewMinutes: 11 })).toBe(false);
+  expect(chooseTrackDay({ ...input, reviewMinutes: 11 })).toMatchObject({ kind: 'review', reason: 'budget' });
+});
 
 const units = ['lift', 'motors', 'battery', 'sensors'];
 

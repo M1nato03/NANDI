@@ -47,6 +47,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   for (let item = 0; item < 3; item++) {
     for (let attempt = 0; attempt < 12; attempt++) {
       if (await page.locator('.learn-feedback').isVisible()) break;
+      if (await page.locator('.learn-confidence').isVisible()) { await page.locator('.learn-confidence').getByRole('button', { name: 'Check' }).click(); break; }
       await page.locator('.learn-options button:enabled').first().click();
     }
     await expect(page.locator('.learn-feedback')).toBeVisible();

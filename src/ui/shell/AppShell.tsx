@@ -25,6 +25,7 @@ import { nightPauseAvailable, nightPauseStatus } from '../../platform/nightPause
 import { startNightPauseSync } from '../../platform/nightPauseSync';
 import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
+import { ContentReview } from '../screens/ContentReview';
 import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
@@ -125,6 +126,7 @@ export function AppShell() {
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={appearance.reload} />;
   else if (path === 'you/season') screen = <SeasonLadder />;
   else if (path === 'you/shop') screen = <SeasonShop />;
+  else if (path === 'you/contentreview') screen = <ContentReview />;
   else if (path === 'you/night') screen = <Night />;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
