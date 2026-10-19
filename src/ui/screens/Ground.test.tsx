@@ -33,9 +33,9 @@ describe('Day and night nudge controls', () => {
     fireEvent.change(screen.getByLabelText('Morning nudge time'), { target: { value: '07:10' } });
     fireEvent.click(night);
     fireEvent.click(morning);
-    expect(night.checked).toBe(false);
-    expect(morning.checked).toBe(false);
     await waitFor(async () => {
+      expect(night.checked).toBe(false);
+      expect(morning.checked).toBe(false);
       expect((await db.settings.get(NUDGE_MORNING_TIME))?.value).toBe('07:10');
       expect((await db.settings.get(NUDGE_NIGHT_ON))?.value).toBe(false);
       expect((await db.settings.get(NUDGE_MORNING_ON))?.value).toBe(false);

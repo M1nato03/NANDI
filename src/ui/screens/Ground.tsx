@@ -23,7 +23,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const [message, setMessage] = useState('');
   const [rewardDraft, setRewardDraft] = useState('');
   const [rewardToggleDraft, setRewardToggleDraft] = useState<boolean | null>(null);
-  const [nudgeDraft, setNudgeDraft] = useState<Record<string, boolean>>({});
+  const [nudgeSaving, setNudgeSaving] = useState<Record<string, boolean>>({});
   const [permission, setPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
   const requestingPermission = useRef(false);
   useEffect(() => {
@@ -44,7 +44,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const reward = settings?.find(row => row.key === 'planner.reward')?.value;
   const rewardName = typeof reward === 'string' ? reward : '';
   const rewardOn = settings?.find(row => row.key === 'planner.rewardEnabled')?.value === true;
-  const enabled = (key: string) => nudgeDraft[key] ?? (settings?.find(row => row.key === key && !row.deleted)?.value !== false);
+  const enabled = (key: string) => settings?.find(row => row.key === key && !row.deleted)?.value !== false;
   const asked = settings?.find(row => row.key === NUDGE_PERMISSION_ASKED && !row.deleted)?.value === true;
   async function save(key: string, next: unknown) {
     try {
@@ -66,12 +66,11 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     } catch { setMessage('Could not check notification permission.'); }
   }
   async function toggleNudge(key: string, checked: boolean) {
-    setNudgeDraft(previous => ({ ...previous, [key]: checked }));
-    if (!await save(key, checked)) {
-      setNudgeDraft(previous => previous[key] === checked ? { ...previous, [key]: !checked } : previous);
-      return;
-    }
-    if (checked && permission !== 'granted') await askPermission();
+    if (nudgeSaving[key]) return;
+    setNudgeSaving(previous => ({ ...previous, [key]: true }));
+    try {
+      if (await save(key, checked) && checked && permission !== 'granted') await askPermission();
+    } finally { setNudgeSaving(previous => ({ ...previous, [key]: false })); }
   }
   return <div className="you-settings"><NightPlanSetting />
     {nightPauseAvailable() && <button type="button" className="secondary ui-list-row" onClick={() => go('you/night')}>Night pause</button>}
@@ -90,12 +89,12 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <label>Weekly rest day <select value={String(settings?.find(row => row.key === restKey && !row.deleted)?.value ?? '')} onChange={event => void save(restKey, Number(event.target.value))}><option value="" disabled>Choose a day</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></label>
       <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
       <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}.</p>
-      <label><input type="checkbox" checked={enabled(NUDGE_NIGHT_ON)} onChange={event => void toggleNudge(NUDGE_NIGHT_ON, event.target.checked)} /> Night deck nudge</label>
+      <label><input type="checkbox" checked={enabled(NUDGE_NIGHT_ON)} disabled={!!nudgeSaving[NUDGE_NIGHT_ON]} onChange={event => void toggleNudge(NUDGE_NIGHT_ON, event.target.checked)} /> Night deck nudge</label>
       <p className="setting-help">A quiet reminder at shutdown time ({effectiveShutdown(shutdown, bedtime)}). Stays on this phone.</p>
-      <label><input type="checkbox" checked={enabled(NUDGE_MORNING_ON)} onChange={event => void toggleNudge(NUDGE_MORNING_ON, event.target.checked)} /> Morning first step nudge</label>
+      <label><input type="checkbox" checked={enabled(NUDGE_MORNING_ON)} disabled={!!nudgeSaving[NUDGE_MORNING_ON]} onChange={event => void toggleNudge(NUDGE_MORNING_ON, event.target.checked)} /> Morning first step nudge</label>
       <p className="setting-help">One local reminder for your first task each morning.</p>
       <label>Morning nudge time <input type="time" value={morning} onChange={event => void save(NUDGE_MORNING_TIME, event.target.value)} /></label>
-      <label><input type="checkbox" checked={nudgeDraft[NUDGE_STREAK_ON] ?? (settings?.find(row => row.key === NUDGE_STREAK_ON && !row.deleted)?.value === true)} onChange={event => void toggleNudge(NUDGE_STREAK_ON, event.target.checked)} /> Streak reminder</label>
+      <label><input type="checkbox" checked={settings?.find(row => row.key === NUDGE_STREAK_ON && !row.deleted)?.value === true} disabled={!!nudgeSaving[NUDGE_STREAK_ON]} onChange={event => void toggleNudge(NUDGE_STREAK_ON, event.target.checked)} /> Streak reminder</label>
       <p className="setting-help">Optional, before wind-down. A small step still counts.</p>
       {Capacitor.isNativePlatform() && permission !== 'granted' && <p className="setting-help">Notifications are off on this phone. {asked ? 'Allow NANDI notifications in Android app settings.' : 'Allow NANDI notifications to receive these nudges.'} {!asked && <button type="button" className="secondary" onClick={() => void askPermission()}>Allow notifications</button>}</p>}
       <ReminderSettings />

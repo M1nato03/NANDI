@@ -22,20 +22,22 @@ export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.n
   }));
 }
 
-export async function recordMorningBackfill(db: NandiDb, previousDay: string, time: string, now = Date.now()): Promise<void> {
-  if (!/^\d{2}:(00|15|30|45)$/.test(time)) throw new Error('Choose a 15-minute time.');
-  const [hour, minute] = time.split(':').map(Number);
-  if (hour == null || minute == null || hour > 23) throw new Error('Choose a time.');
+export async function recordMorningBackfill(db: NandiDb, previousDay: string, time: string | undefined, bucket: string, now = Date.now()): Promise<void> {
+  if (!['none', 'under-15', '15-60', 'over-60'].includes(bucket)) throw new Error('Choose a Reels time range.');
+  if (time !== undefined && !/^\d{2}:(00|15|30|45)$/.test(time)) throw new Error('Choose a 15-minute time.');
+  const [hour, minute] = time?.split(':').map(Number) ?? [];
+  if (time !== undefined && (hour == null || minute == null || hour > 23 || hour >= 4 && hour < 21)) throw new Error('Choose a night time.');
   const date = new Date(`${previousDay}T00:00:00`);
-  date.setHours(hour, minute, 0, 0);
-  if (hour < 4) date.setDate(date.getDate() + 1);
-  const at = date.getTime(), deviceId = await getOrCreateDeviceId(db, now);
+  if (hour != null && minute != null) { date.setHours(hour, minute, 0, 0); if (hour < 4) date.setDate(date.getDate() + 1); }
+  const at = time === undefined ? undefined : date.getTime(), deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.dailyLog, db.ledger], async () => {
     const prior = await db.dailyLog.get(previousDay);
-    if (prior?.lightsOutAt != null) return;
-    await db.dailyLog.put({ ...prior, dayKey: previousDay, lightsOutAt: at, updatedAt: now, deleted: 0, deviceId });
-    const id = `lightsout:${previousDay}`;
-    if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: previousDay, mode: 'bonuses', kind: 'lightsout', refId: previousDay,
-      inputs: { lightsOutAt: at, backfill: true, metTarget: false }, updatedAt: now, deleted: 0, deviceId });
+    if (prior?.lightsOutAt == null && at == null) throw new Error('Choose a phone-down time.');
+    await db.dailyLog.put({ ...prior, dayKey: previousDay, lightsOutAt: prior?.lightsOutAt ?? at, reelsBucket: prior?.reelsBucket || bucket, updatedAt: now, deleted: 0, deviceId });
+    if (prior?.lightsOutAt == null && at != null) {
+      const id = `lightsout:${previousDay}`;
+      if (!(await db.ledger.get(id))) await db.ledger.add({ id, dayKey: previousDay, mode: 'bonuses', kind: 'lightsout', refId: previousDay,
+        inputs: { lightsOutAt: at, backfill: true, metTarget: false }, updatedAt: now, deleted: 0, deviceId });
+    }
   }));
 }

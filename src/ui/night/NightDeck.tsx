@@ -4,7 +4,6 @@ import PZ from '../../core/puzzles';
 import { featuredSpec } from '../../core/puzzles/daily';
 import { nightPuzzleBoard, selectNightPuzzle } from '../../core/puzzles/night';
 import { dayKey } from '../../core/time/dayKey';
-import { shutdownAt } from '../../core/tasks/planner';
 import { nightPlanText, nightsBackOnPlan, readNightPlan } from '../../core/nightPlan';
 import { selectWinddownMove } from '../../core/winddown';
 import { weekKey } from '../../core/quests';
@@ -113,7 +112,6 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   };
   const chooseMove = () => {
     setPhoneMoveState({ ...phoneMove, done: true });
-    if (now >= shutdownAt(now, bedtime) - 30 * 60_000 && !log?.lightsOutAt) void checkIn();
   };
   const anotherIdea = () => {
     if (phoneMove.swaps >= 3) return;
