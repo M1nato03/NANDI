@@ -21,7 +21,6 @@ export function seasonFor(day: string): { index: number; start: string; end: str
 }
 /** Season 1 is index zero. The story owner can map index % 4 to an Arc. */
 export function seasonIndex(day: string): number { return Math.max(0, seasonFor(day).index); }
-export function currentArcTitle(): string | undefined { return undefined; }
 
 export interface EconomyDay {
   dayKey: string; tasks: number; train: number; mind: number; weekly: number; quests: number;

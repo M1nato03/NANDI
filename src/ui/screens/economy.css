@@ -49,3 +49,4 @@
 @keyframes economy-fade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .economy-toast, .economy-reveal-card { animation: economy-fade 160ms ease-out; } }
 :root[data-motion='reduce'] .economy-toast, :root[data-motion='reduce'] .economy-reveal-card { animation: economy-fade 160ms ease-out; }
+.ladder-gap { text-align: center; color: var(--ink-3); padding: 2px 0; }
