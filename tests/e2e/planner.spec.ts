@@ -54,7 +54,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await item.getByLabel('Priority').selectOption('must');
     await item.getByRole('button', { name: 'Place today' }).click();
     await page.locator('.planner-item').filter({ hasText: 'Keep for later' }).getByRole('button', { name: 'Someday' }).click();
-    await page.locator('.planner-item').filter({ hasText: 'Drop this one' }).getByRole('button', { name: 'Drop' }).click();
+    await page.locator('.planner-item').filter({ hasText: 'Drop this one' }).getByRole('button', { name: 'Drop', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toHaveCount(0);
     await expect(page.getByRole('region', { name: 'Top 3 for today' })).toContainText('Plan project outline');
     await expect(page.getByRole('region', { name: 'Top 3 for today' })).toContainText('1/3');

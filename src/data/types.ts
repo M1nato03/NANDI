@@ -24,6 +24,7 @@ export interface TaskRow extends EntityRow {
   firstStep?: string;
   postponeCount?: number;
   firstScheduledDayKey?: DayKey;
+  lastPlannedDayKey?: DayKey;
   doneAt?: number;
   parentId?: string;
   checkpointOf?: string;

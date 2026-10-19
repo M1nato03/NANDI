@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from '../../data/db';
 import type { TaskRow } from '../../data/types';
 import { focusPhase, isFocusRunning } from '../../core/tasks/focus';
 import { PostponeSheet } from '../tasks/PostponeSheet';
@@ -9,6 +11,9 @@ import '../tasks/tasks.css';
 
 export function Today() {
   const board = useTaskBoard();
+  const rewardSettings = useLiveQuery(() => db.settings.where('key').anyOf(['planner.reward', 'planner.rewardEnabled']).toArray(), []) ?? [];
+  const rewardOn = rewardSettings.find(row => row.key === 'planner.rewardEnabled')?.value === true;
+  const reward = rewardSettings.find(row => row.key === 'planner.reward')?.value;
   const [moving, setMoving] = useState<TaskRow | null>(null);
   const [justFinished, setJustFinished] = useState<{ planned: number; actual: number } | null>(null);
   const [cyclePreset, setCyclePreset] = useState<'25/5' | '50/10'>('25/5');
@@ -35,7 +40,8 @@ export function Today() {
   }
   return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('plan')} aria-label="Back to Plan"><span aria-hidden="true">←</span> Plan</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>
     {board.message && <p role="status">{board.message}</p>}
-    {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min</p>}
+    {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min ({justFinished.planned ? (justFinished.actual / justFinished.planned).toFixed(1) : '0.0'}x)</p>}
+    {rewardOn && typeof reward === 'string' && reward.trim() && ((taskFocus && phase && phase.phase !== 'work') || (justFinished && justFinished.actual >= 25)) && <p className="task-result" role="status">Block done. Time for {reward}.</p>}
     <section className="card now-card" aria-label="Focus task">{task ? <><span className="pill">{group ? `Step ${step} of ${group.total}` : 'Today'}</span><h2>{task.title}</h2>{task.firstStep && <p>First: {task.firstStep}</p>}
       <div className={`timer-ring${taskFocus && elapsedMs > plannedMs ? ' overtime' : ''}`} style={{ '--progress': `${percent}%` } as React.CSSProperties} aria-label={taskFocus ? `Focus time ${minutes(elapsedMs)}` : `Planned ${task.estimateMin} minutes`}><span>{phase ? minutes(phase.remainingMs) : `${task.estimateMin}m`}</span></div>
       {phase && <p role="status">{phase.paused ? 'Paused · ' : ''}{phase.phase === 'work' ? 'Focus' : phase.phase === 'longBreak' ? 'Long break' : 'Break'} · cycle {phase.cycle} · {minutes(phase.remainingMs)} left</p>}

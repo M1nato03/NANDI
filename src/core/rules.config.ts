@@ -33,6 +33,7 @@ export const RULES = {
     freeHours: { classDay: 4, weekend: 6 },
     focus: { workMin: 25, breakMin: 5, longBreakMin: 15, longBreakEvery: 4, extendMin: 10, presetLong: [50, 10] },
     calibrationMinSamples: 5,
+    rewardBlockedWords: ['instagram', 'insta', 'reels', 'shorts', 'youtube', 'tiktok', 'snapchat', 'facebook', 'twitter', 'x.com', 'threads'],
     startAdherenceWindowMin: 15,
     liveTimers: 1,
     preReminderMin: 5,

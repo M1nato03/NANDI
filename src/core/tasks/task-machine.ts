@@ -19,6 +19,7 @@ export interface CoreTask {
   firstStep?: string;
   postponeCount: number;
   firstScheduledDayKey?: string;
+  lastPlannedDayKey?: string;
   parentId?: string;
   xpShare?: number;
 }
@@ -45,6 +46,7 @@ export function createTask(
     ...options,
     firstScheduledDayKey:
       options.firstScheduledDayKey ?? (scheduled ? key : undefined),
+    lastPlannedDayKey: options.lastPlannedDayKey ?? (scheduled ? key : undefined),
   };
 }
 
@@ -99,6 +101,7 @@ export function postponeTask(
     dayKey: nextDay,
     postponeCount: count,
     firstScheduledDayKey: task.firstScheduledDayKey ?? nextDay,
+    lastPlannedDayKey: nextDay,
   };
 }
 
@@ -161,5 +164,6 @@ export function doRealReasonMove(task: CoreTask, newStart: number): CoreTask {
     scheduledStart: newStart,
     dayKey: nextDay,
     firstScheduledDayKey: nextDay,
+    lastPlannedDayKey: nextDay,
   };
 }

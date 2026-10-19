@@ -3,23 +3,24 @@ import type { TaskRow } from '../../data/types';
 import { taskGroups, type TaskGroup } from './model';
 import { EmptyState } from '../EmptyState';
 
-export function GroupRow({ group, children, onDrop, busy }: { group: TaskGroup; children: ReactNode; onDrop: (id: string) => void; busy: boolean }) {
+export function GroupRow({ group, children, onDrop, onDetail, busy }: { group: TaskGroup; children: ReactNode; onDrop: (id: string) => void; onDetail?: (task: TaskRow) => void; busy: boolean }) {
   const [confirm, setConfirm] = useState(false);
   return <li className="task-row task-group ui-list-row"><details><summary><strong>{group.parent.title}</strong> · {group.done} of {group.total} steps done</summary>{children}</details>
+    {onDetail && <button type="button" className="text-button" aria-label={`Details for ${group.parent.title}`} onClick={() => onDetail(group.parent)}>Details</button>}
     {confirm ? <div className="task-row-actions"><span>Drop this task and its remaining steps?</span><button type="button" disabled={busy} onClick={() => { onDrop(group.parent.id); setConfirm(false); }}>Confirm drop</button><button type="button" className="secondary" onClick={() => setConfirm(false)}>Cancel</button></div> : <button type="button" className="secondary" disabled={busy} onClick={() => setConfirm(true)}>Drop whole task</button>}
   </li>;
 }
 
-export function TaskList({ title, groups, onComplete, onMove, onDropGroup, busy, nextId }: { title: string; groups: TaskGroup[]; onComplete: (id: string) => void; onMove: (task: TaskRow) => void; onDropGroup: (id: string) => void; busy: boolean; nextId?: string }) {
+export function TaskList({ title, groups, onComplete, onMove, onDetail, onDropGroup, busy, nextId }: { title: string; groups: TaskGroup[]; onComplete: (id: string) => void; onMove: (task: TaskRow) => void; onDetail?: (task: TaskRow) => void; onDropGroup: (id: string) => void; busy: boolean; nextId?: string }) {
   const row = (task: TaskRow) => <li className="task-row ui-list-row" key={task.id}>
-    <div className="task-row-main"><strong>{task.title}</strong>{task.id === nextId && <span className="pill">Next</span>}<span className="small">{task.mustOrCould === 'must' ? 'Must' : 'Could'} · {task.estimateMin ?? 0} min{task.scheduledStart ? ` · ${new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : ''}{task.postponeCount ? ` · moved ${task.postponeCount}×` : ''}</span>{task.firstStep && <span className="small">First: {task.firstStep}</span>}</div>
+    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => onDetail?.(task)}>{task.title}</button>{task.id === nextId && <span className="pill">Next</span>}<span className="small">{task.mustOrCould === 'must' ? 'Must' : 'Could'} · {task.estimateMin ?? 0} min{task.scheduledStart ? ` · ${new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : ''}{task.postponeCount ? ` · moved ${task.postponeCount}×` : ''}</span>{task.firstStep && <span className="small">First: {task.firstStep}</span>}</div>
     {task.status !== 'done' && task.status !== 'dropped' ? <div className="task-row-actions"><button type="button" className="done-circle" aria-label="Done" disabled={busy} onClick={() => onComplete(task.id)}><span aria-hidden="true">✓</span></button><button type="button" className="secondary" disabled={busy} onClick={() => onMove(task)}>{task.status === 'someday' ? 'Plan' : 'Move'}</button></div> : task.status === 'done' ? <span className="done-circle done-mark" aria-label="Done"><span aria-hidden="true">✓</span></span> : null}
   </li>;
   return <section className="task-list" aria-label={title}><div className="ui-section-header"><span className="eyebrow">Your tasks</span><h2>{title} <span className="task-count">{groups.length}</span></h2></div>
-    {groups.length === 0 ? <EmptyState area="do">{title === 'Today' ? 'A little room for your next step.' : 'A little room to breathe.'}</EmptyState> : <ul>{groups.map((group) => group.total ? <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} busy={busy}><ul>{group.steps.map(row)}</ul></GroupRow> : row(group.parent))}</ul>}</section>;
+    {groups.length === 0 ? <EmptyState area="do">{title === 'Today' ? 'A little room for your next step.' : 'A little room to breathe.'}</EmptyState> : <ul>{groups.map((group) => group.total ? <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} onDetail={onDetail} busy={busy}><ul>{group.steps.map(row)}</ul></GroupRow> : row(group.parent))}</ul>}</section>;
 }
 
-export function GroupedSteps({ all, selected, render, onDropGroup, busy }: { all: TaskRow[]; selected: TaskRow[]; render: (task: TaskRow) => ReactNode; onDropGroup: (id: string) => void; busy: boolean }) {
+export function GroupedSteps({ all, selected, render, onDetail, onDropGroup, busy }: { all: TaskRow[]; selected: TaskRow[]; render: (task: TaskRow) => ReactNode; onDetail?: (task: TaskRow) => void; onDropGroup: (id: string) => void; busy: boolean }) {
   const byParent = new Map(taskGroups(all).map((group) => [group.parent.id, group]));
   const seen = new Set<string>();
   return <ul className="planner-list">{selected.map((task) => {
@@ -28,6 +29,6 @@ export function GroupedSteps({ all, selected, render, onDropGroup, busy }: { all
     seen.add(task.parentId);
     const group = byParent.get(task.parentId);
     if (!group) return <li key={task.id} className="planner-item ui-list-row">{render(task)}</li>;
-    return <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} busy={busy}><ul className="planner-list">{group.steps.map((step) => <li key={step.id} className="planner-item">{selected.some((item) => item.id === step.id) ? render(step) : <><strong>{step.title}</strong><span className="small">{step.status}</span></>}</li>)}</ul></GroupRow>;
+    return <GroupRow key={group.parent.id} group={group} onDrop={onDropGroup} onDetail={onDetail} busy={busy}><ul className="planner-list">{group.steps.map((step) => <li key={step.id} className="planner-item">{selected.some((item) => item.id === step.id) ? render(step) : <>{onDetail ? <button type="button" className="task-title-button" onClick={() => onDetail(step)}>{step.title}</button> : <strong>{step.title}</strong>}<span className="small">{step.status}</span></>}</li>)}</ul></GroupRow>;
   })}</ul>;
 }

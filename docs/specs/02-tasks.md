@@ -25,11 +25,14 @@ Evidence: `docs/research-brief.md`, section "Postponing costs a decision, never 
 | `firstStep` | Optional at creation; **required at the 2nd postpone** (≤10 min, ≤120 chars) |
 | `postponeCount` | Shown on the task card as small pips |
 | `firstScheduledDayKey` | Set on first scheduling. Gives the ×1.5 bonus if done on that day |
+| `lastPlannedDayKey` | Most recent scheduled dayKey, kept when a task returns to Unplaced; used for the next day's fresh-start check |
 | `status` | planned · unplaced · done · someday · dropped |
 | `parentId` | Set on subtasks from a split |
 | `checkpointOf` | Multi-day work (assignment, exam prep) gets 3–4 evenly spaced checkpoint tasks proposed |
 
 The day boundary is **4:00 am** (`dayKey`). There is **no silent rollover and no "postpone all" button.** At the boundary, a planned task that wasn't done moves to the **Unplaced tray** (`status: 'unplaced'`, slot cleared, `postponeCount` unchanged). It's triaged in the next morning plan or shutdown.
+
+The Plan tab's Now card chooses a task with an open focus first, then the earliest open block scheduled for today, then an open Must in today's tray. It stays hidden when there is no open task for today. A fresh-start card appears once per dayKey when the previous day had a planned task, none was completed that day, and shutdown was not recorded; its dismissal is stored in settings.
 
 ## 2. What counts as a postpone (definitions for `postponeGate()`)
 
@@ -71,6 +74,8 @@ The day boundary is **4:00 am** (`dayKey`). There is **no silent rollover and no
 - **Bounds:** a `rules` pack can set the budget between 3 and 15. Automatic logic stays within 5–12.
 - **Economic effect of postponing:** the task loses its ×1.5 first-day bonus. A task done after ≥2 postpones may earn the unannounced Clutch flat bonus (changed 2026-10-08 by the owner). So postponing never pays.
 - **Checkpoints:** postponing one moves only that checkpoint, then offers "Re-space the remaining checkpoints?".
+
+Checkpoint proposals are available when the task's due slot is at least three dayKeys away. Accepting creates three evenly spaced checkpoints, or four when at least eight days remain. Re-spacing changes only the remaining checkpoint slots and does not add postpones to their ladder counts.
 
 ## 4. Splitting
 

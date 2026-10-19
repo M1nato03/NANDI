@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-19
+
+- Completed the Plan tab's Now card, fresh start, task detail, estimate calibration, optional focus reward, checkpoints, and seven-day planning line.
+- Added pure planner helpers and unit and browser coverage for these flows.
+
 ## 2026-10-17
 
 - Replaced the day Now deck and three-tab navigation with Plan, Train, Learn, Mind, and You tabs. Feature content now lives in its own tab; the top bar shows four daily status dots.
