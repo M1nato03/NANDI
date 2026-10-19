@@ -27,6 +27,7 @@ import { NativeUpdateBar } from './NativeUpdateBar';
 import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
+import { nightRouteTime, nightRouteTransition } from './nightRoute';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -47,6 +48,7 @@ export function AppShell() {
   const [pausePackage, setPausePackage] = useState('');
   const nightSettings = useLiveQuery(() => db.settings.toArray(), []);
   const openingChecked = useRef(false);
+  const wasNight = useRef<boolean | null>(null);
   const appearance = useAppearance();
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
@@ -60,19 +62,24 @@ export function AppShell() {
   useEffect(() => { initializeHistory(); const update = () => { const resolved = route(); if (location.hash !== `#${resolved}`) history.replaceState(history.state ?? { nandi: true }, '', `#${resolved}`); setPath(resolved); }; update(); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void consumeWidgetLaunchRoute().then(path => { if (path === '#night' || path === '#plan') go(path.slice(1)); }).catch(error => recordError('promise', error)); }, []);
   useEffect(() => {
-    if (!nightSettings || openingChecked.current) return;
-    openingChecked.current = true;
+    if (!nightSettings) return;
     const setting = (key: string, fallback: string) => {
       const value = nightSettings.find(row => row.key === key && !row.deleted)?.value;
       return typeof value === 'string' ? value : fallback;
     };
     const bedtime = setting('planner.bedtime', RULES.night.defaultBedtime);
     const shutdown = effectiveShutdown(setting('planner.shutdown', RULES.night.defaultShutdown), bedtime);
-    const now = new Date();
-    const minutes = now.getHours() * 60 + now.getMinutes();
-    const [hour = 23, minute = 15] = shutdown.split(':').map(Number);
-    if ((minutes < 240 || minutes >= hour * 60 + minute) && route() !== 'night') go('night');
-  }, [nightSettings]);
+    const active = nightRouteTime(clockTime, shutdown);
+    if (!openingChecked.current) {
+      openingChecked.current = true;
+      wasNight.current = active;
+      if (active && route() !== 'night') go('night');
+      return;
+    }
+    const destination = nightRouteTransition(wasNight.current ?? active, active, route());
+    wasNight.current = active;
+    if (destination) go(destination);
+  }, [nightSettings, clockTime]);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   useEffect(() => {
     if (Capacitor.isNativePlatform()) recordAppOpened();

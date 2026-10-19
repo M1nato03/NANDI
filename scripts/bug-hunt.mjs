@@ -5,14 +5,15 @@ import { chromium } from '@playwright/test';
 
 const port = 4189;
 const base = `http://127.0.0.1:${port}`;
-const out = 'test-results/bug-hunt-2026-10-17';
+const out = 'test-results/bug-hunt-2026-10-19';
 const buildDir = 'test-results/bug-hunt-dist';
 const report = { steps: [], consoleErrors: [], pageErrors: [], failedRequests: [], unhandledPromises: [], overlaps: [], lostState: [] };
 await mkdir(out, { recursive: true });
 execFileSync(process.execPath, ['node_modules/vite/bin/vite.js', 'build', '--outDir', buildDir], {
-  env: { ...process.env, VITE_E2E: '1' }, stdio: 'inherit',
+  env: { ...process.env, VITE_E2E: '1' }, stdio: 'inherit', timeout: 900_000,
 });
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--outDir', buildDir, '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'ignore' });
+const watchdog = setTimeout(() => { server.kill(); console.error('Audit exceeded 900 seconds'); process.exit(124); }, 900_000);
 let browser;
 try {
   for (let attempt = 0; attempt < 100; attempt++) {
@@ -44,7 +45,7 @@ try {
   const step = async (name, action) => {
     try {
       await action();
-      await page.locator('.topbar').waitFor();
+      await page.locator('.app-shell').waitFor();
       const overlaps = await page.evaluate(() => {
         const bar = document.querySelector('.tabbar')?.getBoundingClientRect();
         if (!bar) return [];
@@ -74,6 +75,11 @@ try {
     finally { await context.setOffline(false); }
   });
   const nav = async route => page.goto(`${base}/?e2e#${route}`);
+  const tab = async name => {
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name, exact: true }).click();
+    await page.waitForURL(new RegExp(`#${name.toLowerCase()}$`));
+  };
+  const dot = async (area, done) => page.getByRole('navigation', { name: 'Today status' }).getByRole('button', { name: `${area}: ${done ? 'done' : 'not done'}` }).waitFor();
   const startDrop = async () => {
     await page.waitForFunction(() => Boolean(document.querySelector('.learn-topic-tile, .learn-drop-head')));
     const topic = page.locator('.learn-topic-tile').first();
@@ -91,20 +97,22 @@ try {
   });
   await reload('tasks-survive-reload', 'text=Write outline');
   await step('focus-start-pause-finish', async () => {
-    await nav('now');
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Start' }).click();
+    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Start focus' }).click();
     await page.clock.fastForward(65_000);
     await page.getByRole('button', { name: 'Pause' }).click();
+    await page.getByRole('status').filter({ hasText: 'Focus paused.' }).waitFor();
     await page.reload();
     await page.getByRole('button', { name: 'Resume' }).waitFor();
     await page.getByRole('button', { name: 'Resume' }).click();
     await page.clock.fastForward(60_000);
-    await page.getByRole('article', { name: 'First step card' }).getByRole('button', { name: 'Done' }).click();
+    await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
     await page.getByRole('status').filter({ hasText: 'Planned' }).waitFor();
+    await dot('Plan', true);
   });
-  await offlineReload('offline-task-reload', '.deck-screen');
+  await offlineReload('offline-task-reload', '.focus-screen');
   await step('full-workout', async () => {
-    await nav('you/train');
+    await tab('Train');
     await page.getByRole('button', { name: 'Start placement' }).waitFor();
     if (await page.getByRole('button', { name: 'Start placement' }).isVisible()) {
       await page.getByRole('button', { name: 'Start placement' }).click();
@@ -123,14 +131,15 @@ try {
     }
     await page.getByRole('button', { name: 'Finish session' }).click();
     await page.getByRole('heading', { name: 'Session finished' }).waitFor();
+    await dot('Train', true);
   });
   await step('workout-survives-reload', async () => {
     await page.reload();
-    await nav('you/train/history');
+    await page.getByRole('button', { name: 'View history' }).click();
     await page.getByRole('heading', { name: 'History' }).waitFor();
   });
   await step('daily-board', async () => {
-    await nav('you/mind');
+    await tab('Mind');
     await page.getByRole('button', { name: 'Board: not done' }).click();
     await page.locator('.mind-grid').waitFor({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean(window.__nandiMindTest));
@@ -145,6 +154,7 @@ try {
       await page.locator('.mind-board[data-save-state="saved"]').waitFor();
       await page.getByRole('button', { name: 'Back to Mind' }).click();
     }
+    await dot('Mind', true);
   });
   await step('daily-case', async () => {
     await page.getByRole('button', { name: 'Case: not done' }).click();
@@ -159,8 +169,8 @@ try {
     await page.getByRole('button', { name: 'Board: done' }).waitFor();
   });
   await step('five-item-learn-drop', async () => {
-    await nav('now');
-    await page.getByRole('button', { name: 'Go to card 5: Learn' }).click();
+    await tab('Learn');
+    await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Start' }).click();
     await startDrop();
     for (let item = 0; item < 5; item++) {
       await page.locator('.learn-drop-head').getByText(`${item + 1} / 5`).waitFor();
@@ -172,9 +182,10 @@ try {
       await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
     }
     await page.getByRole('heading', { name: "That's today's drop" }).waitFor();
+    await dot('Learn', true);
   });
   await step('side-quest', async () => {
-    await nav('plan');
+    await tab('Plan');
     const quest = page.getByRole('region', { name: 'Side quests' });
     const row = quest.locator('.quest-row').first();
     await row.waitFor();
@@ -199,7 +210,7 @@ try {
     await page.getByRole('region', { name: 'This week, in words' }).waitFor();
   });
   await step('settings-and-backup', async () => {
-    await nav('you');
+    await tab('You');
     await page.getByRole('button', { name: /Settings/ }).click();
     await page.getByLabel('Motion').selectOption('reduce');
     await page.getByLabel('Theme').selectOption('dark');
@@ -212,12 +223,19 @@ try {
     await (await download).path();
     await page.reload();
     await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark' && document.documentElement.dataset.motion === 'reduce');
-    await nav('you/settings');
+    await tab('You');
+    await page.getByRole('button', { name: /Settings/ }).click();
     if (await page.getByLabel('Night deck nudge').isChecked()) report.lostState.push('Night deck nudge');
     if (await page.getByLabel('Morning first step nudge').isChecked()) report.lostState.push('Morning first step nudge');
   });
   await page.clock.setFixedTime(new Date('2026-10-17T23:40:00+05:30'));
-  await step('night-deck-start', async () => { await nav('now'); await page.getByRole('article', { name: 'Tonight card' }).waitFor(); });
+  await step('night-deck-start', async () => { await nav('plan'); await page.reload(); await page.getByRole('article', { name: 'Tonight card' }).waitFor(); if (!page.url().endsWith('#night')) throw new Error('Night did not open at shutdown'); });
+  await step('night-leave-and-return', async () => {
+    await page.getByRole('button', { name: 'Leave night deck' }).click();
+    await page.waitForURL(/#plan$/);
+    await nav('night');
+    await page.getByRole('article', { name: 'Tonight card' }).waitFor();
+  });
   await step('night-drop', async () => {
     await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: 'Next', exact: true }).click();
     await startDrop();
@@ -235,7 +253,7 @@ try {
     await page.waitForFunction(() => Boolean(window.__nandiMindTest));
     await page.evaluate(() => window.__nandiMindTest.solveKnownSolution());
     await page.locator('.mind-board[data-save-state="saved"]').waitFor();
-    await nav('now');
+    await nav('night');
     await page.getByRole('button', { name: 'Go to card 4: Today, in words' }).click();
   });
   await step('tomorrows-step', async () => {
@@ -253,10 +271,22 @@ try {
     await page.getByText('Check-in saved.').waitFor();
   });
   await offlineReload('offline-night-reload', '.deck-night');
+  await step('night-last-card-close', async () => {
+    await page.getByRole('article', { name: /tonight card/ }).getByRole('button', { name: 'Close' }).click();
+    await page.waitForURL(/#plan$/);
+  });
+  await step('night-closes-at-04', async () => {
+    await page.clock.setSystemTime(new Date('2026-10-18T03:59:00+05:30'));
+    await nav('night');
+    await page.getByRole('article', { name: 'Tonight card' }).waitFor();
+    await page.clock.fastForward(2 * 60_000);
+    await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+    await page.waitForURL(/#plan$/);
+  });
   await page.clock.setFixedTime(new Date('2026-10-18T08:30:00+05:30'));
-  await step('day2-deck-reset', async () => { await nav('now'); await page.getByRole('article', { name: 'First step card' }).waitFor(); });
-  await step('day2-reviews-due', async () => { await nav('you/mind'); await page.getByRole('button', { name: 'Review due cards' }).waitFor(); });
-  await step('day2-recap', async () => { await nav('you'); await page.getByRole('button', { name: 'Share my week' }).click(); await page.getByRole('dialog', { name: 'Weekly recap preview' }).waitFor(); });
+  await step('day2-feature-homes', async () => { await nav('plan'); await page.getByRole('heading', { name: 'Plan', exact: true }).waitFor(); for (const name of ['Train', 'Learn', 'Mind', 'You']) { await tab(name); await page.getByRole('heading', { name, exact: true }).waitFor(); } });
+  await step('day2-reviews-due', async () => { await tab('Mind'); await page.getByRole('heading', { name: 'Card reviews' }).waitFor(); });
+  await step('day2-recap', async () => { await tab('You'); await page.getByRole('button', { name: 'Share my week' }).click(); await page.getByRole('dialog', { name: 'Weekly recap preview' }).waitFor(); });
   await step('offline-day2-recap', async () => {
     await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 30_000 });
     await context.setOffline(true);
@@ -266,10 +296,36 @@ try {
       await page.getByRole('dialog', { name: 'Weekly recap preview' }).waitFor();
     } finally { await context.setOffline(false); }
   });
+  await step('legacy-route-redirects', async () => {
+    const redirects = {
+      now: 'plan', 'now/focus': 'plan/focus', today: 'plan/focus', tasks: 'plan', 'tasks/plan': 'plan/morning',
+      'tasks/shutdown': 'plan/shutdown', 'tasks/review': 'plan/review', 'tasks/quest/sample': 'plan/quest/sample',
+      ground: 'you/settings', 'ground/backup': 'you/backup', 'ground/night': 'you/night',
+      'you/settings': 'you/settings', 'you/train': 'train', 'you/train/history': 'train/history',
+      'you/train/workout': 'train/workout', 'you/train/settings': 'train/settings', 'you/train/retest': 'train/retest',
+      'you/train/finish': 'train/finish', 'you/learn': 'learn', 'you/learn/drop': 'learn/drop',
+      'you/mind': 'mind', 'you/mind/board/daily': 'mind/board/daily', 'you/mind/board/crowns/easy': 'mind/board/crowns/easy',
+      'you/mind/practice': 'mind/practice', 'you/mind/case': 'mind/case', 'you/mind/generator': 'mind/generator',
+      'you/mind/reviews': 'mind/reviews', 'you/mind/lesson': 'learn/lesson', 'you/mind/unit': 'learn/unit',
+    };
+    for (const [oldRoute, destination] of Object.entries(redirects)) {
+      await nav(oldRoute);
+      await page.waitForURL(new RegExp(`#${destination}$`));
+    }
+  });
+  await step('notification-and-widget-destinations', async () => {
+    for (const destination of ['plan', 'night']) {
+      await nav(destination);
+      await page.waitForURL(new RegExp(`#${destination}$`));
+      await page.getByRole('heading', { name: destination === 'night' ? 'Tonight' : 'Plan', exact: true }).waitFor();
+    }
+  });
   await writeFile(`${out}/report.json`, JSON.stringify(report, null, 2));
   console.log(`Report: ${out}/report.json`);
+  process.exitCode = report.steps.some(item => item.result === 'fail') || report.lostState.length || report.pageErrors.length || report.unhandledPromises.length ? 1 : 0;
   await context.close();
 } finally {
+  clearTimeout(watchdog);
   if (browser) await browser.close();
   server.kill();
 }
