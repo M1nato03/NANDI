@@ -139,3 +139,13 @@
 .case-clues li > .text-button { color: var(--ink); font-weight: 500; }
 .case-clues li > .text-button[aria-pressed='true'] { color: var(--ink-3); }
 .mind-case > .screen-back { margin-bottom: 16px; }
+.mind-grid .mind-cell.hint-focus { outline: 3px solid var(--area-notice); outline-offset: -3px; }
+.mind-story, .mind-techniques { --area-color: var(--area-notice); margin-top: 16px; }
+.mind-story article, .mind-technique-list article { padding: 12px 0; border-bottom: 1px solid var(--surface-3); }
+.mind-story article:last-child, .mind-technique-list article:last-child { border-bottom: 0; }
+.mind-story h3, .mind-technique-list h3 { color: var(--ink); margin: 0 0 6px; }
+.mind-story p, .mind-technique-list p { color: var(--ink-2); margin: 0; }
+.mind-technique-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 0 16px; }
+.mind-stamp { display: inline-block; border-radius: 999px; padding: 8px 12px; background: color-mix(in srgb, var(--area-notice) 20%, var(--surface-2)); color: var(--ink); }
+.mind-story-panel { margin-top: 16px; padding: 14px; border-radius: var(--radius-row); background: color-mix(in srgb, var(--area-notice) 12%, var(--surface-2)); }
+.mind-result button, .mind-case button { min-width: 44px; min-height: 44px; }

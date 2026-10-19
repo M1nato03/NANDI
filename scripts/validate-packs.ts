@@ -6,13 +6,19 @@ import { validatePack } from '../src/data/packs/validate';
 export async function validateAll(contentDir?: string, options: { allowUnchecked?: boolean } = {}): Promise<string[]> {
   const errors: string[] = [];
   const seen = new Set<string>();
+  const arcIndexes = new Set<number>();
   for (const { path, value } of await loadPackFiles(contentDir)) {
     for (const error of validatePack(value, { ...options, editorial: true })) errors.push(`${path}: ${error}`);
     if (value && typeof value === 'object' && 'id' in value && typeof value.id === 'string') {
       if (seen.has(value.id)) errors.push(`${path}: duplicate pack id ${value.id}`);
       seen.add(value.id);
     }
+    if (value && typeof value === 'object' && 'kind' in value && value.kind === 'mystery-arc' && 'body' in value && value.body && typeof value.body === 'object' && 'arcIndex' in value.body && typeof value.body.arcIndex === 'number') {
+      if (arcIndexes.has(value.body.arcIndex)) errors.push(`${path}: duplicate arc index ${value.body.arcIndex}`);
+      arcIndexes.add(value.body.arcIndex);
+    }
   }
+  if (!contentDir && arcIndexes.size !== 4) errors.push('bundle needs four mystery arcs');
   return errors;
 }
 

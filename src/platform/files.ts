@@ -4,7 +4,7 @@ import { Share } from '@capacitor/share';
 import { AUTO_BACKUP_FOLDER, autoBackupFilesToPrune } from '../core/autoBackup';
 
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
-export async function shareOrDownload(file: File): Promise<'shared' | 'downloaded' | 'cancelled'> {
+export async function shareOrDownload(file: File, text?: string): Promise<'shared' | 'downloaded' | 'cancelled'> {
   if (Capacitor.isNativePlatform()) {
     const image = file.type === 'image/png';
     const data = image ? await new Promise<string>((resolve, reject) => {
@@ -15,7 +15,7 @@ export async function shareOrDownload(file: File): Promise<'shared' | 'downloade
     }) : await file.text();
     const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, ...(!image ? { encoding: Encoding.UTF8 } : {}) });
     try {
-      await Share.share({ title: image ? 'What my week became' : 'NANDI backup', files: [saved.uri], dialogTitle: image ? 'Share my week' : 'Save a copy of your NANDI backup' });
+      await Share.share({ title: image ? text ? 'NANDI Mind' : 'What my week became' : 'NANDI backup', ...(text ? { text } : {}), files: [saved.uri], dialogTitle: image ? text ? 'Share my solve' : 'Share my week' : 'Save a copy of your NANDI backup' });
       return 'shared';
     } catch (error) {
       if (error !== null && typeof error === 'object' && 'message' in error && String(error.message).toLowerCase().includes('cancel')) return 'downloaded';
@@ -25,12 +25,15 @@ export async function shareOrDownload(file: File): Promise<'shared' | 'downloade
   if (typeof navigator !== 'undefined' && typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [file] }) && typeof navigator.share === 'function') {
     try {
-      await navigator.share({ files: [file] });
+      await navigator.share({ files: [file], text });
       return 'shared';
     } catch (error) {
       if (error !== null && typeof error === 'object' && 'name' in error && error.name === 'AbortError') return 'cancelled';
       // Some browsers accept the file in canShare but reject the share request.
     }
+  }
+  if (text && typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    try { await navigator.clipboard.writeText(text); } catch { /* The downloaded tile still carries the same details. */ }
   }
   const url = URL.createObjectURL(file);
   try {

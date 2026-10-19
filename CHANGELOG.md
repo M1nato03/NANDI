@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-19
+
+- Added a three-step Mind hint ladder, technique cards earned from correct deductions, and per-type par and clean-clear results.
+- Bundled four original Proving Ground mystery arcs, with daily case panels and Sunday boss bonuses.
+- Added spoiler-free Mind share tiles during daytime, pack validation, unit tests, and Edge browser coverage.
+
 ## 2026-10-17
 
 - Replaced the day Now deck and three-tab navigation with Plan, Train, Learn, Mind, and You tabs. Feature content now lives in its own tab; the top bar shows four daily status dots.

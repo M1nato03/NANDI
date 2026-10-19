@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 import { packSchema, type Pack } from './schemas';
+import { RULES } from '../../core/rules.config';
 
 /** Flesch reading ease. A 0.5 point tolerance covers syllable heuristic rounding. */
 export function fleschReadingEase(value: string): number {
@@ -49,6 +50,12 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
   const pack: Pack = parsed.output;
   const errors: string[] = [];
   if (!pack.id.startsWith(`${pack.kind}.`)) errors.push('id must match kind');
+  if (pack.kind === 'mystery-arc') {
+    if (pack.body.chapters.length !== RULES.mind.arcChapters) errors.push('arc needs five chapters for long seasons');
+    for (const [index, chapter] of pack.body.chapters.entries()) {
+      for (const panel of [...chapter.panels, chapter.bonus]) if ((panel.match(/[\p{L}\p{N}]+/gu) ?? []).length > RULES.mind.arcPanelMaxWords) errors.push(`chapter ${index + 1}: panel exceeds 60 words`);
+    }
+  } else
   if (pack.kind === 'topic') {
     if (bannedPattern.test(JSON.stringify(pack.body))) errors.push('topic: banned words');
     if (advicePattern.test(JSON.stringify(pack.body))) errors.push('topic: advice is prohibited');

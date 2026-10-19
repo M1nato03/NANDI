@@ -113,7 +113,7 @@ export const trackBodySchema = v.strictObject({ track: v.strictObject({ id: text
 const envelope = {
   id: v.pipe(v.string(), v.regex(/^[a-z0-9-]+\.[a-z0-9-]+$/)),
   version: semver, schema: v.pipe(integer, v.minValue(1)), minAppVersion: semver,
-  title: text, description: v.optional(text), author: v.picklist(['claude', 'jenil', 'legacy']),
+  title: text, description: v.optional(text), author: v.picklist(['claude', 'jenil', 'legacy', 'codex']),
   createdAt: v.pipe(v.string(), v.isoTimestamp()), changelog: v.optional(text),
 };
 export const packEnvelopeSchema = v.strictObject({
@@ -127,7 +127,11 @@ export const questsPackSchema = v.strictObject({ ...envelope, kind: v.literal('q
 export const winddownPackSchema = v.strictObject({ ...envelope, kind: v.literal('winddown'), body: winddownBodySchema });
 export const trackPackSchema = v.strictObject({ ...envelope, kind: v.literal('track'), body: trackBodySchema });
 export const topicPackSchema = v.strictObject({ ...envelope, kind: v.literal('topic'), body: topicBodySchema });
-export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, winddownPackSchema, trackPackSchema, topicPackSchema]);
+export const mysteryArcPackSchema = v.strictObject({ ...envelope, kind: v.literal('mystery-arc'), body: v.strictObject({
+  arcIndex: v.pipe(integer, v.minValue(0), v.maxValue(3)),
+  chapters: v.pipe(v.array(v.strictObject({ title: text, panels: v.tuple([text, text, text, text, text, text, text]), bonus: text })), v.minLength(4), v.maxLength(5)),
+}) });
+export const packSchema = v.variant('kind', [lessonsPackSchema, deckPackSchema, questsPackSchema, winddownPackSchema, trackPackSchema, topicPackSchema, mysteryArcPackSchema]);
 export type Pack = v.InferOutput<typeof packSchema>;
 export type WinddownMove = v.InferOutput<typeof winddownMoveSchema>;
 export type Lesson = v.InferOutput<typeof lessonSchema>;
