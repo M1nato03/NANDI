@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { pauseWindowActive, shouldShowNightPause } from './nightPause';
+import { pauseWindowActive, pauseWindowTimes, shouldShowNightPause } from './nightPause';
 
 describe('Night pause decision', () => {
   it('starts 30 minutes before bedtime and ends at 04:00', () => {
@@ -7,6 +7,11 @@ describe('Night pause decision', () => {
     expect(pauseWindowActive(new Date(2026, 9, 16, 23, 0), '23:30')).toBe(true);
     expect(pauseWindowActive(new Date(2026, 9, 17, 3, 59), '23:30')).toBe(true);
     expect(pauseWindowActive(new Date(2026, 9, 17, 4, 0), '23:30')).toBe(false);
+  });
+  it('names the window as clock times, across midnight too', () => {
+    expect(pauseWindowTimes('01:30')).toEqual({ start: '01:00', end: '04:00' });
+    expect(pauseWindowTimes('23:30')).toEqual({ start: '23:00', end: '04:00' });
+    expect(pauseWindowTimes('00:15')).toEqual({ start: '23:45', end: '04:00' });
   });
   it('requires opt-in, permission, screen, selected foreground app, and a new app entry', () => {
     const base = { enabled: true, usageAllowed: true, screenOn: true, now: new Date(2026, 9, 16, 23, 10), bedtime: '23:30', foregroundPackage: 'com.instagram.android', selectedPackages: ['com.instagram.android'] };

@@ -1,8 +1,10 @@
 package app.nandi.personal;
 
 import android.app.AppOpsManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Process;
 import android.os.Build;
 import android.provider.Settings;
@@ -27,6 +29,7 @@ public class NightPausePlugin extends Plugin {
     public void status(PluginCall call) {
         JSObject result = new JSObject();
         result.put("usageAllowed", usageAllowed(getContext()));
+        result.put("overlayAllowed", Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(getContext()));
         result.put("pendingPackage", getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", ""));
         call.resolve(result);
     }
@@ -36,6 +39,34 @@ public class NightPausePlugin extends Plugin {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
+        call.resolve();
+    }
+
+    @PluginMethod
+    public void openOverlaySettings(PluginCall call) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:" + getContext().getPackageName()));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try { getContext().startActivity(intent); }
+        catch (android.content.ActivityNotFoundException error) {
+            Intent fallback = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            fallback.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(fallback);
+        }
+        call.resolve();
+    }
+
+    /** Treats the next few minutes as the bedtime window, so the pause can be tried by day. */
+    @PluginMethod
+    public void test(PluginCall call) {
+        int durationMs = Math.max(0, Math.min(call.getInt("durationMs", 120000), 600000));
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        if (!prefs.getBoolean("enabled", false) || !usageAllowed(getContext())) { call.reject("Night pause is off or Usage access is off"); return; }
+        prefs.edit().putLong("testUntil", System.currentTimeMillis() + durationMs)
+            .remove("suppressedPackage").remove("suppressUntil").apply();
+        Intent service = new Intent(getContext(), NightPauseService.class);
+        if (Build.VERSION.SDK_INT >= 26) getContext().startForegroundService(service);
+        else getContext().startService(service);
         call.resolve();
     }
 
@@ -69,6 +100,8 @@ public class NightPausePlugin extends Plugin {
     @PluginMethod
     public void clearPending(PluginCall call) {
         getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove("pending").apply();
+        NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notifications != null) notifications.cancel(NightPauseService.NOTICE_ID);
         call.resolve();
     }
 

@@ -18,6 +18,12 @@ export function pauseWindowActive(now: Date, bedtime: string): boolean {
   return current >= start && current < 28 * 60;
 }
 
+/** The pause window as clock times, for the settings screen. */
+export function pauseWindowTimes(bedtime: string): { start: string; end: string } {
+  const start = ((nightMinute(bedtime) - RULES.night.pauseLeadMin) % (24 * 60) + 24 * 60) % (24 * 60);
+  return { start: `${String(Math.floor(start / 60)).padStart(2, '0')}:${String(start % 60).padStart(2, '0')}`, end: '04:00' };
+}
+
 export function shouldShowNightPause(input: {
   enabled: boolean; usageAllowed: boolean; screenOn: boolean; now: Date; bedtime: string;
   foregroundPackage: string | null; selectedPackages: string[]; lastPromptPackage?: string;
