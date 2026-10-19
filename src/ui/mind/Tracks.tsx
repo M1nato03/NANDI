@@ -84,9 +84,16 @@ export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; a
   const completed = active ? progress.filter(row => row.packId === active.id && row.doneDayKey && row.id.startsWith('track:')).map(row => ({ id: row.id.split(':').at(-1)!, day: row.doneDayKey! })) : [];
   const due = cards.filter(row => !row.deleted && (row.reviews ?? 0) > 0 && row.due <= day).length;
   const spent = Number(settings.find(row => row.key === `mind.trackMinutes:${day}` && !row.deleted)?.value ?? 0);
-  const plan = chooseTrackDay({ day, active: !!active, unitIds: units.map(row => row.id), completed, dueReviews: due, spentMinutes: spent });
+  const candidate = units.find(row => !completed.some(done => done.id === row.id));
+  const candidateModule = active?.body.modules.find(module => module.units.some(unit => unit.id === candidate?.id));
+  const checkMinutes = candidate ? RULES.learningTracks.unitCheckMin + (candidateModule?.units.at(-1)?.id === candidate.id ? RULES.learningTracks.moduleTestMin : 0) : 0;
+  const reviewMinutes = due * RULES.learningTracks.dueReviewMin;
+  const plan = chooseTrackDay({ day, active: !!active, unitIds: units.map(row => row.id), completed, dueReviews: due, spentMinutes: spent,
+    unitMinutes: candidate?.minutes, checkMinutes, reviewMinutes });
   const nextUnit = units.find(row => row.id === plan.unitId);
-  const bar = budgetBar({ unitMinutes: activeDraft ? units.find(row => row.id === activeDraft.unitId)?.minutes ?? 0 : nextUnit?.minutes ?? 0, checkMinutes: activeDraft || nextUnit ? 3 : 0, dueReviews: due, spentMinutes: spent });
+  const projected = plan.kind === 'new' || plan.reason === 'budget';
+  const bar = budgetBar({ unitMinutes: activeDraft ? units.find(row => row.id === activeDraft.unitId)?.minutes ?? 0 : projected ? candidate?.minutes ?? 0 : 0,
+    checkMinutes: activeDraft || projected ? checkMinutes : 0, dueReviews: reviewMinutes, spentMinutes: spent });
   const playUnit = activeDraft && units.find(row => row.id === activeDraft.unitId);
   const module = active?.body.modules[0];
   const moduleDone = module && module.units.every(unit => completed.some(row => row.id === unit.id));
@@ -120,7 +127,7 @@ export function Tracks({ day, afterBedtime, showUnit = false }: { day: string; a
           <progress max={bar.limit} value={bar.used} aria-label="Minutes used" />
           <span>{bar.used} / {bar.limit} min planned today</span>
         </div>
-        {plan.kind === 'new' && nextUnit ? <><p>Today: {nextUnit.title}</p><button type="button" onClick={() => void start()}>Start today’s unit</button></> : <div className="track-stop"><h3>Done for today</h3><p>{plan.reason === 'backlog' ? 'Reviews are above 30. Today is for reviews.' : plan.kind === 'apply' ? 'Apply one idea from this module.' : plan.kind === 'review' ? 'Today is for review.' : plan.kind === 'off' ? 'Today is an off day.' : 'Your learning is complete for today.'}</p></div>}
+        {plan.kind === 'new' && nextUnit ? <><p>Today: {nextUnit.title}</p><button type="button" onClick={() => void start()}>Start today’s unit</button></> : <div className="track-stop"><h3>Done for today</h3><p>{plan.reason === 'budget' ? "Today's learning time is full. Reviews only." : plan.reason === 'backlog' ? 'Reviews are above 30. Today is for reviews.' : plan.kind === 'apply' ? 'Apply one idea from this module.' : plan.kind === 'review' ? 'Today is for review.' : plan.kind === 'off' ? 'Today is an off day.' : 'Your learning is complete for today.'}</p></div>}
         {module && (plan.kind === 'apply' || moduleDone) && <><p>{module.apply.detail}</p><button type="button" className="secondary" disabled={questAdded} onClick={() => void addQuest()}>{questAdded ? 'Added to side quests' : 'Add apply quest to this week'}</button></>}
         {moduleDone && !testDone && <><button type="button" className="secondary" onClick={() => setTesting(value => !value)}>{testing ? 'Close module test' : 'Take module test'}</button>{testing && <div className="track-test"><h3>Module test</h3>{questions.map((question, index) => <fieldset key={`${module.id}:${index}`}><legend>{index + 1}. {question.q}</legend>{question.options.map((option, optionIndex) => <label key={optionIndex}><input type="radio" name={`module-q-${active.id}-${module.id}-${index}`} checked={testAnswers[index] === optionIndex} onChange={() => setTestAnswers(previous => { const next = [...previous]; next[index] = optionIndex; return next; })} /> {option}</label>)}</fieldset>)}<button type="button" disabled={testAnswers.length !== questions.length || testAnswers.some(value => value === undefined)} onClick={() => void finishTest()}>Check module</button></div>}</>}
         {testResult && <p role="status">{testResult}</p>}

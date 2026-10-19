@@ -1,15 +1,18 @@
 import { useState, type FormEvent } from 'react';
 import { RULES } from '../../core/rules.config';
+import type { TaskRow, FocusRow } from '../../data/types';
+import { calibration, calibratedMinutes } from '../../core/tasks/complete';
 import { dayKey } from '../../core/time/dayKey';
 import { defaultSlot, splitEstimates, splitPreview, type SplitPlacement } from './model';
 import type { TaskRepos } from './useTaskBoard';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 
-export function TaskQuickAdd({ run }: { run: Run }) {
+export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?: TaskRow[]; focus?: FocusRow[] }) {
   const [title, setTitle] = useState('');
   const [size, setSize] = useState<'S' | 'M' | 'L'>('M');
   const [estimate, setEstimate] = useState('30');
+  const [category, setCategory] = useState('general');
   const [priority, setPriority] = useState<'must' | 'could'>('could');
   const [schedule, setSchedule] = useState<'today' | 'unplaced' | 'someday'>('today');
   const [slot, setSlot] = useState(() => defaultSlot(Date.now()));
@@ -20,6 +23,7 @@ export function TaskQuickAdd({ run }: { run: Run }) {
   const parsed = title.trim().match(/^(.*?)\s+(\d+)(m|h)$/i);
   const taskTitle = parsed ? (parsed[1] ?? '').trim() : title.trim();
   const taskMinutes = parsed ? Number(parsed[2]) * (parsed[3]?.toLowerCase() === 'h' ? 60 : 1) : Number(estimate);
+  const calibrated = calibration(tasks, focus, category);
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (submitting) return;
@@ -38,7 +42,7 @@ export function TaskQuickAdd({ run }: { run: Run }) {
     setSubmitting(true);
     try {
       const ok = await run(async (repos, now) => {
-          const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, scheduledStart, dayKey: dayKey(scheduledStart ?? now) }, now);
+          const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now) }, now);
           if (schedule === 'someday') await repos.postpone(task.id, now + 1, { newStart: null, choice: 'someday', baselineWeek: true });
         }, 'Task added.');
       if (ok) { setTitle(''); setOpen(false); setFeedback(''); }
@@ -52,7 +56,7 @@ export function TaskQuickAdd({ run }: { run: Run }) {
     if (!parts || preview.names.some((name) => !name.trim())) { setFeedback('Name every step.'); return; }
     setSubmitting(true);
     try {
-      const ok = await run((repos, now) => repos.createSplitTask(preview.title, parts, now, preview.scheduledStart, { titles: preview.names, priority: preview.priority, placement: preview.placement }), 'Split task saved.');
+      const ok = await run((repos, now) => repos.createSplitTask(preview.title, parts, now, preview.scheduledStart, { titles: preview.names, priority: preview.priority, placement: preview.placement, category }), 'Split task saved.');
       if (ok) { setPreview(null); setTitle(''); setOpen(false); setFeedback(''); }
     } finally { setSubmitting(false); }
   }
@@ -65,6 +69,8 @@ export function TaskQuickAdd({ run }: { run: Run }) {
       {parsed && <p className="small">{taskMinutes} minutes picked up from your task.</p>}
       <div className="task-form-grid"><label>Size <select value={size} onChange={(event) => { const value = event.target.value as typeof size; setSize(value); setEstimate(value === 'S' ? '15' : value === 'M' ? '30' : '60'); }}><option value="S">Small</option><option value="M">Medium</option><option value="L">Large</option></select></label>
       <label>Minutes <input type="number" min="1" max="600" inputMode="numeric" value={estimate} onChange={(event) => setEstimate(event.target.value)} /></label></div>
+      <label>Category <select value={category} onChange={event => setCategory(event.target.value)}>{['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'].map(item => <option key={item}>{item}</option>)}</select></label>
+      {calibrated && <p className="small">Your {category} tasks usually take about {calibrated.ratio.toFixed(1)}x the estimate. <button type="button" className="text-button" onClick={() => setEstimate(String(calibratedMinutes(taskMinutes, calibrated.ratio)))}>Use {calibratedMinutes(taskMinutes, calibrated.ratio)} min</button>?</p>}
       <fieldset><legend>Priority</legend><label><input type="radio" name="priority" checked={priority === 'could'} onChange={() => setPriority('could')} /> Could</label><label><input type="radio" name="priority" checked={priority === 'must'} onChange={() => setPriority('must')} /> Must</label></fieldset>
       <fieldset><legend>Place it</legend><label><input type="radio" name="schedule" checked={schedule === 'today'} onChange={() => setSchedule('today')} /> Today / time</label><label><input type="radio" name="schedule" checked={schedule === 'unplaced'} onChange={() => setSchedule('unplaced')} /> Unplaced</label><label><input type="radio" name="schedule" checked={schedule === 'someday'} onChange={() => setSchedule('someday')} /> Someday</label></fieldset>
       {schedule === 'today' && <label>Start time <input type="datetime-local" required value={slot} onChange={(event) => setSlot(event.target.value)} /></label>}

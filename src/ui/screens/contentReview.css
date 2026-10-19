@@ -1,0 +1,10 @@
+.content-review { --area-color: var(--area-learn); min-width: 0; }
+.content-review-item { display: grid; gap: 12px; margin: 14px 0; min-width: 0; overflow-wrap: anywhere; }
+.content-review-item h2 { margin: 0; font-size: 20px; }
+.content-review-item ol { display: grid; gap: 8px; margin: 0; padding-left: 24px; }
+.content-review-item li small { display: block; color: var(--ink-3); }
+.content-review-item a { display: inline-flex; align-items: center; min-height: 44px; overflow-wrap: anywhere; }
+.content-review-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.content-review-actions button { min-height: 44px; }
+.content-review-note label { display: grid; gap: 8px; }
+.content-review-note textarea { width: 100%; min-height: 80px; box-sizing: border-box; }

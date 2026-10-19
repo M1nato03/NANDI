@@ -56,3 +56,13 @@ it('keeps warm-ups and pain-flagged sets out of PRs and confirms a load jump', a
   expect(await db.prs.where('exerciseId').equals(exerciseId).count()).toBe(1);
   expect((await db.sets.toArray()).filter(set => set.type === 'warmup')).toHaveLength(1);
 });
+
+it('saves recorded gym starting loads for the first session, skipping blanks', async () => {
+  const db = fresh();
+  const train = createTrainRepos(db, 'test');
+  await train.completeOnboarding({ track: 'gym', days: [1, 3, 5], weeklyTarget: 3, restDay: 0, equipment: { gymAccess: true, dumbbells: true, barbell: null, smallestPlate: null, resistanceBand: false, pullUpBar: false, sturdyAnchor: false }, heatModeEnabled: false, placement: {}, startingLoads: { 'goblet-squat': 12.5, 'seated-cable-row': 25, 'db-rdl': 0 } }, 1000);
+  expect((await db.exState.get('goblet-squat'))?.loadKg).toBe(12.5);
+  expect((await db.exState.get('seated-cable-row'))?.loadKg).toBe(25);
+  expect(await db.exState.get('db-rdl')).toBeUndefined();
+  expect((await db.programs.toArray())[0]).not.toHaveProperty('startingLoads');
+});

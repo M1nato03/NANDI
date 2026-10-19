@@ -7,6 +7,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { baselineBudget, nextBudget, postponeWeekKey } from '../../core/tasks/budget';
 import { nextBedtimeTarget, shutdownAt, stepDownOffer } from '../../core/tasks/planner';
+import { respaceCheckpoints } from '../../core/tasks/complete';
 import {
   postponeGate,
   type PostponeAttempt,
@@ -200,6 +201,49 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         return repos.tasks.put({ ...task, firstStep: trimmed }, now);
       });
     },
+    async editTask(taskId: string, changes: Pick<TaskRow, 'title' | 'estimateMin' | 'mustOrCould' | 'category' | 'place' | 'firstStep'>, now: number): Promise<TaskRow> {
+      return mutation(async () => {
+        const task = await repos.tasks.get(taskId);
+        if (!task) throw new Error('Task not found');
+        const title = changes.title?.trim();
+        const estimate = changes.estimateMin;
+        if (!title || !Number.isInteger(estimate) || estimate! < 1 || estimate! > RULES.tasks.maxEstimateMin) throw new Error('Add a title and an estimate up to 90 min.');
+        if ((changes.firstStep?.length ?? 0) > RULES.tasks.firstStepMaxChars) throw new Error('Keep the first step short.');
+        if (changes.mustOrCould === 'must' && task.mustOrCould !== 'must') {
+          if (task.status !== 'planned') throw new Error('Give this Must a start time first.');
+          if (!canAddMust(await mustCount(task.dayKey))) throw new Error('Three Musts already. Make it a Could.');
+        }
+        return repos.tasks.put({ ...task, ...changes, title, estimateMin: estimate, category: changes.category?.trim() || 'general', place: changes.place?.trim(), firstStep: changes.firstStep?.trim() }, now);
+      });
+    },
+    async addCheckpoints(taskId: string, proposals: { title: string; scheduledStart: number; estimateMin: number }[], now: number): Promise<TaskRow[]> {
+      return mutation(async () => {
+        const parent = await repos.tasks.get(taskId);
+        if (!parent || parent.scheduledStart == null || await db.tasks.filter(row => row.checkpointOf === taskId && row.deleted === 0).count()) throw new Error('Checkpoints are already set.');
+        const rows: TaskRow[] = [];
+        for (const proposal of proposals) {
+          if (proposal.scheduledStart <= now || proposal.scheduledStart >= parent.scheduledStart) throw new Error('Pick times before the due date.');
+          const id = ulid(now + rows.length);
+          const key = dayKey(proposal.scheduledStart);
+          const size = proposal.estimateMin <= 15 ? 'S' : proposal.estimateMin <= 45 ? 'M' : 'L';
+          rows.push(await repos.tasks.put({ id, title: proposal.title, status: 'planned', dayKey: key, scheduledStart: proposal.scheduledStart, size, plannedSize: size, estimateMin: proposal.estimateMin, mustOrCould: 'could', category: parent.category, checkpointOf: taskId, postponeCount: 0, firstScheduledDayKey: key, lastPlannedDayKey: key }, now));
+          await event(id, 'created', now);
+        }
+        return rows;
+      });
+    },
+    async respaceRemainingCheckpoints(checkpointId: string, movedAt: number, now: number): Promise<void> {
+      return mutation(async () => {
+        const checkpoint = await repos.tasks.get(checkpointId);
+        const parent = checkpoint?.checkpointOf ? await repos.tasks.get(checkpoint.checkpointOf) : undefined;
+        if (!checkpoint || !parent?.scheduledStart) throw new Error('Checkpoint due date is missing.');
+        const remaining = await db.tasks.filter(row => row.checkpointOf === parent.id && row.id !== checkpointId && row.deleted === 0 && row.status === 'planned' && (row.scheduledStart ?? 0) > movedAt).toArray();
+        for (const item of respaceCheckpoints(remaining, movedAt, parent.scheduledStart)) {
+          const row = remaining.find(candidate => candidate.id === item.id)!;
+          await repos.tasks.put({ ...row, scheduledStart: item.scheduledStart, dayKey: dayKey(item.scheduledStart) }, now);
+        }
+      });
+    },
     async dropTask(taskId: string, now: number): Promise<TaskRow> {
       return mutation(async () => {
         const task = await repos.tasks.get(taskId);
@@ -259,6 +303,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
             plannedSize: input.size,
             firstScheduledDayKey:
               input.scheduledStart != null ? key : undefined,
+            lastPlannedDayKey: input.scheduledStart != null ? key : undefined,
             status: input.scheduledStart != null ? 'planned' : 'unplaced',
             postponeCount: 0,
           },
@@ -273,7 +318,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       estimates: number[],
       now: number,
       scheduledStart?: number,
-      options: { titles?: string[]; priority?: 'must' | 'could'; placement?: 'today' | 'unplaced' | 'someday' } = {},
+      options: { titles?: string[]; priority?: 'must' | 'could'; placement?: 'today' | 'unplaced' | 'someday'; category?: string } = {},
     ): Promise<TaskRow[]> {
       return mutation(async () => {
         const total = estimates.reduce((sum, value) => sum + value, 0);
@@ -314,6 +359,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
             estimateMin: total,
             postponeCount: 0,
             mustOrCould: options.priority,
+            category: options.category,
             firstScheduledDayKey: parentCore.firstScheduledDayKey,
           },
           now,
@@ -326,7 +372,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           const firstTimed = index === 0 && scheduledStart != null && options.placement !== 'someday' && options.placement !== 'unplaced';
           rows.push(
             await repos.tasks.put(
-              { ...child, title: options.titles?.[index]?.trim() ?? `${title} — step ${index + 1} of ${children.length}`, mustOrCould: options.priority ?? 'could', status: options.placement === 'someday' ? 'someday' : firstTimed ? 'planned' : 'unplaced', dayKey: firstTimed ? key : dayKey(now), scheduledStart: firstTimed ? scheduledStart : null, scheduledEnd: null, firstScheduledDayKey: firstTimed ? key : undefined },
+              { ...child, title: options.titles?.[index]?.trim() ?? `${title} — step ${index + 1} of ${children.length}`, mustOrCould: options.priority ?? 'could', category: options.category, status: options.placement === 'someday' ? 'someday' : firstTimed ? 'planned' : 'unplaced', dayKey: firstTimed ? key : dayKey(now), scheduledStart: firstTimed ? scheduledStart : null, scheduledEnd: null, firstScheduledDayKey: firstTimed ? key : undefined, lastPlannedDayKey: firstTimed ? key : undefined },
               now,
             ),
           );
