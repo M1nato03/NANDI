@@ -100,7 +100,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .about-app { margin: 20px 0; border: 1px solid var(--line); border-radius: 14px; padding: 0 16px; }
 .about-app summary { cursor: pointer; padding: 14px 0; font-weight: 600; }
 .about-app > .card { margin: 12px 0 16px; }
-.app-shell:has(.mind-case) .screen-back { display: none; }
+.app-shell:has(.mind-case) .screen-back:not(.mind-case > .screen-back) { display: none; }
 .timer-ring span { font: 800 52px 'Bricolage Grotesque', sans-serif; }
 .night-pause-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(8, 10, 16, .9); }
 .night-pause-card { width: min(100%, 520px); display: grid; gap: 20px; padding: 28px; }
