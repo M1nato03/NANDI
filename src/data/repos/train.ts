@@ -8,7 +8,7 @@ import { dayKey } from '../../core/time';
 import { RULES, rulesFor } from '../../core/rules.config';
 import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
 
-export type Onboarding = { track: Track; equipment: EquipmentSetting; days: number[]; weeklyTarget: 2 | 3; restDay: number; heatModeEnabled: boolean; placement: Record<string, number> };
+export type Onboarding = { track: Track; equipment: EquipmentSetting; days: number[]; weeklyTarget: 2 | 3; restDay: number; heatModeEnabled: boolean; placement: Record<string, number>; startingLoads?: Record<string, number> };
 const PROGRAM_ID = 'train-program';
 const live = <T extends { deleted: 0 | 1 }>(row: T) => row.deleted === 0;
 export const trainingWeek = (at: number | string): string => {
@@ -57,9 +57,11 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         if (await getProgram()) throw new Error('Rank assessment already saved');
         if (input.days.length !== input.weeklyTarget || new Set(input.days).size !== input.days.length || input.days.some(day => day < 0 || day > 6)) throw new Error('Choose training days');
-        const row: ProgramRow = { id: PROGRAM_ID, ...input, startedAt: now, heatStartedAt: input.heatModeEnabled ? now : undefined, sessionsStarted: 0, ...meta(now) };
+        const { startingLoads, ...programInput } = input;
+        const row: ProgramRow = { id: PROGRAM_ID, ...programInput, startedAt: now, heatStartedAt: input.heatModeEnabled ? now : undefined, sessionsStarted: 0, ...meta(now) };
         for (const ex of Object.values(EXERCISE_LIBRARY)) await db.exercises.put({ id: ex.id, pattern: Object.entries(LADDERS).find(([, steps]) => steps.some(step => step.exerciseId === ex.id))?.[0] ?? '', source: ex.licence === 'Custom' ? 'nandi' : 'free-exercise-db', name: ex.name, cues: ex.cues, licence: ex.licence, attribution: ex.attribution, custom: ex.licence === 'Custom', ...meta(now) });
         for (const [pattern, steps] of Object.entries(LADDERS)) await db.ladders.put({ id: `ladder:${pattern}`, pattern, steps: steps.map(step => ({ exerciseId: step.exerciseId, sets: RULES.train.ladder.sets, repMin: RULES.train.ladder.repMin, repMax: RULES.train.ladder.repMax })), ...meta(now) });
+        for (const [exerciseId, loadKg] of Object.entries(startingLoads ?? {})) if (Number.isFinite(loadKg) && loadKg > 0) await db.exState.put({ id: exerciseId, loadKg, ...meta(now) });
         await db.programs.add(row);
         return row;
       });

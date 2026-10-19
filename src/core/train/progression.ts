@@ -2,12 +2,34 @@ import { RULES } from '../rules.config';
 import { LADDERS } from './library';
 import { EquipmentSetting, LadderPattern, SessionExercise } from './types';
 
+export type IncrementSource = 'barbell' | 'dumbbell' | 'machine' | 'cable' | 'bodyweight' | 'time';
+
+/** Where each gym exercise's load step comes from. Holds progress by time, not load. */
+export const INCREMENT_SOURCE: Record<string, IncrementSource> = {
+  'goblet-squat': 'dumbbell', 'db-bench': 'dumbbell', 'db-rdl': 'dumbbell', 'seated-db-press': 'dumbbell',
+  'seated-cable-row': 'cable', 'lat-pulldown': 'cable', 'pallof-press': 'time', 'plank': 'time', 'side-plank': 'time',
+  'split-squat': 'dumbbell', 'hip-thrust': 'machine',
+};
+
+export function incrementSource(equipment: EquipmentSetting, exerciseId: string): IncrementSource {
+  const mapped = INCREMENT_SOURCE[exerciseId];
+  if (mapped === 'machine' && equipment.barbell && equipment.smallestPlate) return 'barbell';
+  if (mapped === 'dumbbell' && exerciseId === 'split-squat' && !equipment.dumbbells && !equipment.gymAccess) return 'bodyweight';
+  if (mapped) return mapped;
+  if (/^(barbell-|bb-)/.test(exerciseId)) return 'barbell';
+  if (/(^db-|-db-|dumbbell)/.test(exerciseId)) return 'dumbbell';
+  return 'bodyweight';
+}
+
 export function getSmallestIncrement(equipment: EquipmentSetting, exerciseId: string): number {
-  if (/^(barbell-|bb-)/.test(exerciseId))
-    return equipment.barbell && equipment.smallestPlate ? equipment.smallestPlate * 2 : 0;
-  if (/(^db-|-db-|dumbbell)/.test(exerciseId) || exerciseId === 'goblet-squat')
-    return equipment.dumbbells ? 2.5 : 0;
-  return 0;
+  const steps = RULES.train.increments;
+  switch (incrementSource(equipment, exerciseId)) {
+    case 'barbell': return equipment.barbell && equipment.smallestPlate ? equipment.smallestPlate * 2 : 0;
+    case 'dumbbell': return equipment.dumbbells || equipment.gymAccess ? steps.dumbbell : 0;
+    case 'machine': return equipment.gymAccess ? equipment.machineStep ?? steps.machine : 0;
+    case 'cable': return equipment.gymAccess ? equipment.cableStep ?? steps.cable : 0;
+    default: return 0;
+  }
 }
 
 export function roundToEquipment(load: number, smallestIncrement: number): number {

@@ -3,6 +3,7 @@ import { evaluateBodyweightPlacement, getBodyweightPlacementStartStep, LADDERS, 
 import type { Onboarding as OnboardingResult } from '../../data/repos/train';
 
 const patterns: LadderPattern[] = ['squat', 'push-up', 'hinge', 'row', 'core-anti-ext', 'core-anti-rot', 'core-ext'];
+const gymChecks = [['goblet-squat', 'Squat'], ['db-bench', 'Push'], ['seated-cable-row', 'Pull'], ['db-rdl', 'Hinge']] as const;
 const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const initialEquipment: EquipmentSetting = { gymAccess: false, dumbbells: false, barbell: null, smallestPlate: null, resistanceBand: false, pullUpBar: false, sturdyAnchor: false };
 
@@ -18,11 +19,13 @@ export function Onboarding({ save, busy }: { save: (result: OnboardingResult) =>
   const [tests, setTests] = useState<{ reps: number; stepRank: number }[]>([]);
   const [reps, setReps] = useState(8);
   const [placement, setPlacement] = useState<Record<string, number>>({});
+  const [loads, setLoads] = useState<Record<string, string>>({});
   const pattern = patterns[index];
   const current = pattern ? evaluateBodyweightPlacement(pattern, tests).finalStepRank : 1;
   const step = pattern ? LADDERS[pattern]?.[current - 1] : undefined;
   const toggle = (key: keyof EquipmentSetting) => setEquipment(old => ({ ...old, [key]: !old[key] }));
-  const result = { track, equipment, days, weeklyTarget: target, restDay, heatModeEnabled: hot, placement };
+  const startingLoads = Object.fromEntries(Object.entries(loads).map(([id, value]) => [id, Number(value)]).filter(([, kg]) => Number(kg) > 0));
+  const result = { track, equipment, days, weeklyTarget: target, restDay, heatModeEnabled: hot, placement, ...(track === 'gym' ? { startingLoads } : {}) };
   function record() {
     if (!pattern) return;
     const next = [...tests, { reps, stepRank: current }];
@@ -40,6 +43,7 @@ export function Onboarding({ save, busy }: { save: (result: OnboardingResult) =>
       <div className="card"><h2>Set your starting line</h2><p>General fitness information, not medical advice. Start easy. Clean reps count.</p>
         <label>Track <select aria-label="Training track" value={track} onChange={event => setTrack(event.target.value as Track)}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
         {track === 'gym' && <p>Your first session is a light load check. Start very light. Find a load for 12 clean reps, adding only your smallest available step. Use that load for the first two sessions.</p>}
+        {track === 'gym' && <fieldset className="train-loads"><legend>Starting loads</legend><p className="small">Optional: the load you can lift 12 clean times. Leave it blank if you are not sure yet.</p>{gymChecks.map(([id, pattern]) => <label key={id}>{pattern} · {EXERCISE_LIBRARY[id]?.name ?? id} <input type="number" inputMode="decimal" min="0" step="0.5" placeholder="kg" aria-label={`${EXERCISE_LIBRARY[id]?.name ?? id} load for 12 clean reps, kg`} value={loads[id] ?? ''} onChange={event => setLoads(old => ({ ...old, [id]: event.target.value }))} /></label>)}</fieldset>}
         <div className="train-checks"><label><input type="checkbox" checked={equipment.gymAccess} onChange={() => toggle('gymAccess')} /><span>Gym access</span></label><label><input type="checkbox" checked={equipment.dumbbells} onChange={() => toggle('dumbbells')} /><span>Dumbbells</span></label><label><input type="checkbox" checked={equipment.resistanceBand} onChange={() => toggle('resistanceBand')} /><span>Resistance band</span></label><label><input type="checkbox" checked={equipment.pullUpBar} onChange={() => toggle('pullUpBar')} /><span>Pull-up bar</span></label><label><input type="checkbox" checked={equipment.sturdyAnchor} onChange={() => toggle('sturdyAnchor')} /><span>Sturdy row anchor</span></label></div>
         <label>Barbell <select value={equipment.barbell ?? ''} onChange={event => setEquipment(old => ({ ...old, barbell: event.target.value ? Number(event.target.value) as 15 | 20 : null }))}><option value="">None</option><option value="15">15 kg</option><option value="20">20 kg</option></select></label>
         {equipment.barbell && <label>Smallest plate, kg <input type="number" min="0.5" step="0.5" value={equipment.smallestPlate ?? 2.5} onChange={event => setEquipment(old => ({ ...old, smallestPlate: Number(event.target.value) }))} /></label>}

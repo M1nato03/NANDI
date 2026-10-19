@@ -41,6 +41,8 @@ export const RULES = {
 
   // 05-economy §2, Train; placement thresholds from 03-train §1 and DECISIONS.md.
   train: {
+    // Smallest load step per equipment kind, kg (spec 03 §3: from his equipment, never a constant).
+    increments: { dumbbell: 2.5, machine: 5, cable: 2.5 },
     sessionFullXp: 60,
     sessionPartialFloorXp: 40,
     minimumOrSafetyXp: 40,
@@ -240,6 +242,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'train.restDayCheckMinMinutes': [1, 60], 'train.prXp': [0, 100], 'train.prMaxPerDay': [0, 10],
   'train.weeklyTarget': [2, 7], 'train.weeklyBonus.targetMet': [0, 200], 'train.weeklyBonus.oneShort': [0, 200],
   'train.dailyCapExclWeekly': [40, 300],
+  'train.increments.dumbbell': [0.5, 10], 'train.increments.machine': [0.5, 20], 'train.increments.cable': [0.5, 10],
   'train.progression.confirmSessions': [1, 10], 'train.progression.failHoldAt': [1, 10],
   'train.progression.failDeloadAt': [1, 10], 'train.progression.deloadPct': [0, 50],
   'train.progression.maxIncreasesPerWeekEarly': [0, 5], 'train.progression.earlyWeeks': [0, 52],

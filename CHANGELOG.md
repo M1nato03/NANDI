@@ -2,6 +2,7 @@
 
 ## 2026-10-19
 
+- Gave every Gym Foundations lift a real load step (dumbbell, machine stack, cable stack or barbell; holds progress by time), with machine and cable steps and gym access in Train settings, and recorded optional starting loads in gym setup.
 - Kept Learn drops to due reviews after the saved bedtime target, with a calm stop when none are due.
 - Added optional confidence chips before answer feedback, 30-day recall and sure-answer figures on Learn, and a projected time gate for new track units.
 - Added a weekly offline content sample under Settings > About, with saved owner verdicts and notes included in backups.
