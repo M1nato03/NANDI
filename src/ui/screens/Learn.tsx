@@ -11,7 +11,8 @@ import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from
 import { go } from '../shell/router';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean };
-const dropStatus = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : 'Continue';
+const dropStatus = (row?: LearnDropRow) => !row ? 'Not started' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : `${row.drop.cursor} of ${row.drop.items.length} done`;
+const dropAction = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= row.drop.items.length ? 'View' : 'Continue';
 
 export function Learn({ entry }: { entry?: string }) {
   const [practice, setPractice] = useState<Practice>();
@@ -47,7 +48,7 @@ export function Learn({ entry }: { entry?: string }) {
   if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} onDone={() => setPractice(undefined)} /></section>;
   return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
-      <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropStatus(data?.daily) === 'Done for today' ? 'View' : dropStatus(data?.daily)}</button></div>
+      <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
       {dueCount > 0 && <><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>
