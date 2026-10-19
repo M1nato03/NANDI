@@ -55,6 +55,9 @@ export function AppShell() {
   const openingChecked = useRef(false);
   const wasNight = useRef<boolean | null>(null);
   const appearance = useAppearance();
+  // A restore clears and refills every table; remount the always-visible live views so none keep stale rows.
+  const [restoreGen, setRestoreGen] = useState(0);
+  const restored = async () => { await appearance.reload(); setRestoreGen(gen => gen + 1); };
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
   useWidgetSync();
@@ -123,7 +126,7 @@ export function AppShell() {
   }, []);
   const tab = tabOf(path);
   let screen;
-  if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={appearance.reload} />;
+  if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={restored} />;
   else if (path === 'you/season') screen = <SeasonLadder />;
   else if (path === 'you/shop') screen = <SeasonShop />;
   else if (path === 'you/contentreview') screen = <ContentReview />;
@@ -148,5 +151,5 @@ export function AppShell() {
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
   const root = ['plan', 'train', 'learn', 'mind', 'you'].includes(path);
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
 }

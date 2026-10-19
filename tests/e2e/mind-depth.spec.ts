@@ -35,6 +35,9 @@ test('a correctly used technique unlocks after solve and survives reload and bac
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible({ timeout: 30_000 });
   await page.evaluate(() => (window as Window & { __nandiTest?: { roundTripCurrent: () => Promise<void> } }).__nandiTest!.roundTripCurrent());
+  // A real restore runs from the Backup screen and screens mount fresh afterwards; reload to match.
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible({ timeout: 30_000 });
   await page.getByText('Technique cards', { exact: true }).click();
   const card = page.locator('.mind-technique-list article').filter({ has: page.getByRole('heading', { name: deduction.technique, exact: true }) });
   await expect(card).not.toContainText('Solve to unlock');
