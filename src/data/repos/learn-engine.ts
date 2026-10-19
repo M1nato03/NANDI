@@ -1,6 +1,8 @@
 import { trackWrite } from '../../core/pendingWrites';
 import { answerConcept, updateItemRating, advanceDrop, gradeItem, itemSeedRating, type AnswerFact, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { dayKey } from '../../core/time';
+import { shutdownAt } from '../../core/tasks/planner';
+import { RULES } from '../../core/rules.config';
 import type { TopicItem } from '../packs/schemas';
 import type { NandiDb } from '../db';
 import type { LearnConceptRow, LearnItemRow } from '../types';
@@ -22,6 +24,9 @@ export async function loadEngineFacts(db: NandiDb): Promise<{ facts: AnswerFact[
 export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number }
 /** State, drop cursor and its immutable ledger fact commit atomically. */
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
+  const bedtimeValue = (await db.settings.get('planner.bedtime'))?.value;
+  const bedtime = typeof bedtimeValue === 'string' ? bedtimeValue : RULES.night.defaultBedtime;
+  const afterBedtime = input.now >= shutdownAt(input.now, bedtime);
   await trackWrite(() => db.transaction('rw', [db.learnConcepts, db.learnItems, db.learnDrops, db.ledger], async () => {
     const factId = `learn-answer:${input.answerId}`;
     if (await db.ledger.get(factId)) return;
@@ -43,7 +48,7 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
     await db.learnItems.put(item);
     await db.learnDrops.put({ ...current, drop: { ...advanceDrop(current.drop), pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
     await db.ledger.add({ id: factId, dayKey: dayKey(input.now), mode: 'mind', kind: step.mode === 'retention' ? 'learn-retention' : 'learn-answer', refId: input.answerId,
-      inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay },
+        inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime },
       updatedAt: input.now, deleted: 0, deviceId: input.deviceId });
   }));
 }

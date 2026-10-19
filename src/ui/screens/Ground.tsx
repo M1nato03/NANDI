@@ -3,6 +3,8 @@ import { Capacitor } from '@capacitor/core';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { RULES } from '../../core/rules.config';
+import { dayKey } from '../../core/time';
+import { weekStart } from '../../core/economy/deriveEconomy';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { validReward } from '../../core/tasks/complete';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -14,7 +16,7 @@ import { NightPlanSetting } from './NightPlanSetting';
 import { ReminderSettings } from './ReminderSettings';
 import { nightPauseAvailable } from '../../platform/nightPause';
 import { notifier } from '../../platform/notifier';
-import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
+import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
@@ -38,6 +40,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const bedtime = value('planner.bedtime', RULES.night.defaultBedtime);
   const goal = value('planner.goalBedtime', RULES.night.goalBedtime);
   const morning = value(NUDGE_MORNING_TIME, MORNING_DEFAULT);
+  const restKey = `economy.restWeekday:${weekStart(dayKey(Date.now()))}`; // eslint-disable-line react-hooks/purity
   const reward = settings?.find(row => row.key === 'planner.reward')?.value;
   const rewardName = typeof reward === 'string' ? reward : '';
   const rewardOn = settings?.find(row => row.key === 'planner.rewardEnabled')?.value === true;
@@ -77,12 +80,14 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
     <section className="card settings-group"><h2>Appearance</h2>
       <label>Theme <select value={theme} onChange={event => void setTheme(event.target.value)}><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select></label>
       <label>Motion <select value={motion} onChange={event => void setMotion(event.target.value)}><option value="system">System</option><option value="reduce">Reduced</option></select></label>
+      <label><input type="checkbox" checked={settings?.find(row => row.key === 'economy.soundOn')?.value === true} onChange={event => void save('economy.soundOn', event.target.checked)} /> Soft check-off sounds</label>
     </section>
     <section className="card settings-group"><h2 className="day-night-heading">Day and night</h2>
       <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>
       <label>Bedtime target <input type="time" value={bedtime} onChange={event => void save('planner.bedtime', event.target.value)} /></label>
       <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
       <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
+      <label>Weekly rest day <select value={String(settings?.find(row => row.key === restKey && !row.deleted)?.value ?? '')} onChange={event => void save(restKey, Number(event.target.value))}><option value="" disabled>Choose a day</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></label>
       <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
       <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}.</p>
       <label><input type="checkbox" checked={enabled(NUDGE_NIGHT_ON)} onChange={event => void toggleNudge(NUDGE_NIGHT_ON, event.target.checked)} /> Night deck nudge</label>
@@ -90,6 +95,8 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <label><input type="checkbox" checked={enabled(NUDGE_MORNING_ON)} onChange={event => void toggleNudge(NUDGE_MORNING_ON, event.target.checked)} /> Morning first step nudge</label>
       <p className="setting-help">One local reminder for your first task each morning.</p>
       <label>Morning nudge time <input type="time" value={morning} onChange={event => void save(NUDGE_MORNING_TIME, event.target.value)} /></label>
+      <label><input type="checkbox" checked={nudgeDraft[NUDGE_STREAK_ON] ?? (settings?.find(row => row.key === NUDGE_STREAK_ON && !row.deleted)?.value === true)} onChange={event => void toggleNudge(NUDGE_STREAK_ON, event.target.checked)} /> Streak reminder</label>
+      <p className="setting-help">Optional, before wind-down. A small step still counts.</p>
       {Capacitor.isNativePlatform() && permission !== 'granted' && <p className="setting-help">Notifications are off on this phone. {asked ? 'Allow NANDI notifications in Android app settings.' : 'Allow NANDI notifications to receive these nudges.'} {!asked && <button type="button" className="secondary" onClick={() => void askPermission()}>Allow notifications</button>}</p>}
       <ReminderSettings />
       {message && <p role="status">{message}</p>}

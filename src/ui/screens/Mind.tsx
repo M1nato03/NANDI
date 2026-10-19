@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { effectiveShutdown, nightWindow } from '../../core/tasks/planner';
 import { RULES } from '../../core/rules.config';
+import { PUZZLE_PACKS } from '../../core/economy/shop';
 import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
@@ -33,7 +34,7 @@ import { EmptyState } from '../EmptyState';
 import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
 
-type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number };
+type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
 const diffs: PuzzleDifficulty[] = ['easy', 'medium', 'hard'];
 const lessonPacks = bundledPacks.filter((pack): pack is Extract<typeof pack, { kind: 'lessons' }> => pack.kind === 'lessons');
@@ -82,6 +83,7 @@ export function Mind({ entry }: { entry?: string }) {
   const dailySolvedLive = puzzleRuns.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved');
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
+  const ownedPacks = useLiveQuery(() => db.ledger.where('kind').equals('purchase').toArray(), []) ?? [];
   const settings = settingRows ?? [];
   const showEconomy = economyVisible(settings, today);
   const log = useLiveQuery(() => db.dailyLog.get(today), [today]);
@@ -223,7 +225,7 @@ export function Mind({ entry }: { entry?: string }) {
     if (!selection) return;
     let live = true;
     const worker = new Worker(new URL('../../workers/puzzle.worker.ts', import.meta.url), { type: 'module' });
-    const seed = selection.night ? nightPracticeSeed(today, selection.type) : PZ.hash(`${selection.daily ? 'daily' : 'practice'}:${today}:${selection.type}:${selection.diff}${selection.daily ? '' : `:${selection.attempt ?? 0}`}`);
+    const seed = selection.packSeed ?? (selection.night ? nightPracticeSeed(today, selection.type) : PZ.hash(`${selection.daily ? 'daily' : 'practice'}:${today}:${selection.type}:${selection.diff}${selection.daily ? '' : `:${selection.attempt ?? 0}`}`));
     worker.onmessage = (event: MessageEvent<{ board?: PuzzleBoard | null; error?: string }>) => {
       if (!live) return;
       if (event.data.error || !event.data.board) { setMessage(event.data.error ?? 'Could not build this board.'); setBusy(false); return; }
@@ -375,6 +377,7 @@ export function Mind({ entry }: { entry?: string }) {
     <section className="card mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('mind') : go('mind/practice')} aria-expanded={practice}>Practice</button>
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
+      {practice && PUZZLE_PACKS.filter(pack => ownedPacks.some(row => !row.deleted && row.inputs.itemId === pack.id)).map(pack => <div className="mind-practice-pack" key={pack.id}><h3>{pack.name}</h3><p>Practice boards · 0 XP</p>{pack.boards.map((spec, index) => <button type="button" className="secondary" key={spec.seed} onClick={() => open({ type: spec.type, diff: spec.diff, daily: false, packSeed: spec.seed, attempt: 1000 + spec.seed + index })}>{PZ.TYPES[spec.type].name} {index + 1}</button>)}</div>)}
     </section>
     <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}<button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button></section>
     </>}

@@ -62,7 +62,7 @@ export function startReminderSync(onError: (error: unknown) => void): () => void
   const queue = () => { busy = busy.then(async () => { await reconcileReminders(); await reconcileNudges(); }).catch(onError); };
   if (notifier instanceof CapacitorNotifier) void notifier.createChannels().then(queue).catch(onError);
   else queue();
-  const subscription = liveQuery(() => Promise.all([db.tasks.toArray(), db.sessions.toArray(), db.settings.toArray(), db.dailyLog.toArray()])).subscribe({ next: queue, error: onError });
+  const subscription = liveQuery(() => Promise.all([db.tasks.toArray(), db.sessions.toArray(), db.settings.toArray(), db.dailyLog.toArray(), db.ledger.toArray()])).subscribe({ next: queue, error: onError });
   const resume = () => { if (document.visibilityState === 'visible') queue(); };
   document.addEventListener('visibilitychange', resume);
   window.addEventListener('pageshow', queue);

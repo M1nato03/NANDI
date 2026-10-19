@@ -1,7 +1,6 @@
 import * as v from 'valibot';
 import { RULES } from './rules.config';
-import { levelForXp } from './economy/levelCurve';
-import { calculateTasksDayXp, replayFactXp } from './economy/awards';
+import { deriveEconomy } from './economy/deriveEconomy';
 import { focusElapsedMs } from './tasks/focus';
 import { weeklySummary as taskSummary } from './tasks/planner';
 import type {
@@ -265,42 +264,9 @@ export function buildWeeklySummary(
   );
   const fired = { yes: 0, partly: 0, no: 0, na: 0 };
   for (const row of planAnswers) if (row.fired) fired[row.fired]++;
-  const xpByDay = new Map<string, number>();
-  for (const row of facts)
-    xpByDay.set(
-      row.dayKey,
-      (xpByDay.get(row.dayKey) ?? 0) +
-        (row.mode === 'tasks' ? 0 : replayFactXp(row)),
-    );
-  for (const key of new Set(
-    facts.filter((row) => row.mode === 'tasks').map((row) => row.dayKey),
-  ))
-    xpByDay.set(
-      key,
-      (xpByDay.get(key) ?? 0) +
-        calculateTasksDayXp(facts.filter((row) => row.dayKey === key)),
-    );
-  const totalXp = [...xpByDay.values()].reduce((sum, value) => sum + value, 0);
-  const allFacts = source.ledger.filter((row) => !row.deleted);
-  const lifetimeXp =
-    allFacts.reduce(
-      (sum, row) => sum + (row.mode === 'tasks' ? 0 : replayFactXp(row)),
-      0,
-    ) +
-    [
-      ...new Set(
-        allFacts.filter((row) => row.mode === 'tasks').map((row) => row.dayKey),
-      ),
-    ].reduce(
-      (sum, key) =>
-        sum + calculateTasksDayXp(allFacts.filter((row) => row.dayKey === key)),
-      0,
-    );
-  let streakDays = 0;
-  for (let offset = 6; offset >= 0; offset--) {
-    if (!xpByDay.has(addDays(weekStart, offset))) break;
-    streakDays++;
-  }
+  const economy = deriveEconomy(source.ledger, undefined, source.settings, to);
+  const totalXp = economy.days.filter(day => inDay(day.dayKey)).reduce((sum, day) => sum + day.total, 0);
+  const streakDays = economy.streak.days;
   const agency = logs
     .filter((row) => row.agency1to5 !== undefined)
     .map((row) => row.agency1to5!);
@@ -410,11 +376,11 @@ export function buildWeeklySummary(
     },
     economy: {
       xp: totalXp,
-      level: levelForXp(lifetimeXp),
+        level: economy.level,
       streakDays,
-      cleanWeek: streakDays === 7,
-      hatTricks: facts.filter((row) => row.kind === 'hatTrick').length,
-      freezesUsed: facts.filter((row) => row.kind === 'freeze').length,
+        cleanWeek: economy.cleanWeek.complete,
+        hatTricks: economy.cleanWeek.count,
+        freezesUsed: economy.streak.freezesUsed,
     },
     life: {
       reelsBuckets: logs

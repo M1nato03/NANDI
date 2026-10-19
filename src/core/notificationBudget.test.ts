@@ -16,5 +16,9 @@ describe('notification budget', () => {
     expect(mayScheduleReminder({ ...base, kind: 'planning', at: at(23) + 20 * 60_000 })).toBe(false);
     expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(22) + 30 * 60_000 })).toBe(false);
     expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(21) })).toBe(true);
+    expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(22) })).toBe(false);
+    expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(22) - 60_000 })).toBe(true);
+    expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(23), bedtime: '01:30' })).toBe(true);
+    expect(mayScheduleReminder({ ...base, kind: 'streak', at: at(23) + 15 * 60_000, bedtime: '01:30' })).toBe(false);
   });
 });

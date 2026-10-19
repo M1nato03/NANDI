@@ -67,6 +67,7 @@ export const RULES = {
 
   // 05-economy §2, Mind.
   mind: {
+    learnDropXp: 15,
     mysteryXp: 25,
     dropBoardXp: 10,
     lessonXp: 15,
@@ -248,6 +249,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
     'train.retestVolumeCutPct': [0, 80],
   // Mind: nonnegative XP, bounded daily volume and valid rating/interval domains.
   'mind.mysteryXp': [0, 100], 'mind.dropBoardXp': [0, 100], 'mind.lessonXp': [0, 100],
+  'mind.learnDropXp': [0, 100],
   'mind.lessonsPaidPerDay': [0, 10], 'mind.lessonsPerCoursePerDay': [0, 10],
   'mind.cardXp': [0, 20], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
   'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 120], 'mind.freePlayXp': [0, 0],

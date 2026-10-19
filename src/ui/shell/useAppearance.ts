@@ -20,9 +20,10 @@ export function useAppearance(): Appearance & { reload: () => Promise<void> } {
   const [theme, setThemeState] = useState<Theme>('system');
   const [motion, setMotionState] = useState<Motion>('system');
   const reload = useCallback(async () => {
-    const [themeRow, motionRow] = await Promise.all([db.settings.get('theme'), db.settings.get('motion')]);
+    const [themeRow, motionRow, economyTheme] = await Promise.all([db.settings.get('theme'), db.settings.get('motion'), db.settings.get('economy.theme')]);
     setThemeState(themeValue(themeRow?.deleted ? undefined : themeRow?.value));
     setMotionState(motionValue(motionRow?.deleted ? undefined : motionRow?.value));
+    document.documentElement.dataset.economyTheme = typeof economyTheme?.value === 'string' && !economyTheme.deleted ? economyTheme.value.replace('theme:', '') : '';
   }, []);
   useEffect(() => {
     const timer = window.setTimeout(() => { void reload().catch(error => recordError('promise', error)); }, 0);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { wantedNudges, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON } from './nudges';
+import { wantedNudges, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON } from './nudges';
 import type { SettingRow, TaskRow } from '../data/types';
 
 const now = new Date(2026, 9, 16, 8, 0).getTime();
@@ -35,5 +35,14 @@ describe('daily nudges', () => {
   });
   it('uses the fallback morning message when no task is set', () => {
     expect(wanted([], { tasks: [] }).find(row => row.id === 'nudge:morning:2026-10-16')?.body).toBe('Pick one small step for today.');
+  });
+  it('keeps the opt-in streak reminder before the night limit', () => {
+    expect(wanted().some(row => row.id === 'nudge:streak:2026-10-16')).toBe(false);
+    const at23 = wanted([setting(NUDGE_STREAK_ON, true), setting('planner.bedtime', '23:30')])
+      .find(row => row.id === 'nudge:streak:2026-10-16')?.at;
+    expect(at23).toBeLessThan(new Date(2026, 9, 16, 22).getTime());
+    const at130 = wanted([setting(NUDGE_STREAK_ON, true), setting('planner.bedtime', '01:30')])
+      .find(row => row.id === 'nudge:streak:2026-10-16')?.at;
+    expect(at130).toBeLessThan(new Date(2026, 9, 16, 23, 15).getTime());
   });
 });

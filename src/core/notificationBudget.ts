@@ -20,7 +20,7 @@ export function mayScheduleReminder(input: {
   if (input.kind === 'streak') {
     const bedtimeLimit = shutdownAt(input.at, input.bedtime) - RULES.night.streakReminderMinBeforeBedtime * 60_000;
     const shutdownLimit = shutdownAt(input.at, effectiveShutdown(input.shutdown, input.bedtime));
-    return input.at <= Math.min(bedtimeLimit, shutdownLimit);
+    return input.at < Math.min(bedtimeLimit, shutdownLimit);
   }
   return true;
 }

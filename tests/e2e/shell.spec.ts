@@ -2,12 +2,13 @@ import { expect, test } from '@playwright/test';
 
 const names = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
 
-test('baseline hides economy copy in You and Mind', async ({ page }) => {
+test('the economy is visible in You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#you');
-  await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
+  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('Season 1 starts Monday 2 Nov');
+  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('Level 1');
   await page.goto('/#mind');
-  await expect(page.getByRole('main')).not.toContainText(/\b(?:XP|rank|level)\b/i);
+  await expect(page.getByRole('main')).toContainText('Mind');
 });
 
 test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {

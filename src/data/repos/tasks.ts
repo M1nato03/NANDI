@@ -404,6 +404,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const key = dayKey(now);
         const inputs = {
           plannedSize: task.plannedSize ?? task.size,
+            wasPlanned: task.firstScheduledDayKey != null || task.scheduledStart != null || task.mustOrCould === 'must',
           isFirstDay:
             task.postponeCount === 0 && task.firstScheduledDayKey === key,
           postpones: task.postponeCount ?? 0,

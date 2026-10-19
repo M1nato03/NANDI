@@ -34,6 +34,7 @@ Evidence: `docs/research-brief.md`, section "One ledger pays all three modes". W
   - **Tasks and Train** still count, because real work beats scrolling, but get no macro celebration.
   - The lights-out check-in happens before bedtime.
 - **Baseline week:** the ledger is written, but the UI hides the economy until `settings.economyVisibleFrom`. Baseline XP counts toward level (endowed progress) but not toward Season 1.
+- **19 Oct 2026 decision:** existing installs set `economyVisibleFrom` to the current day on upgrade. Season 1 still begins on 2 Nov; earlier XP affects level and Shards, not Season 1 SP.
 
 ## 2. `src/core/rules.config.ts` (starting values; all are judgement unless marked)
 
@@ -80,6 +81,7 @@ export const RULES = {
 
   mind: {
     mysteryXp: 25, dropBoardXp: 10, lessonXp: 15, lessonsPaidPerDay: 1, lessonsPerCoursePerDay: 1,
+    learnDropXp: 15,                              // completed five-item Learn drop, inside the Mind cap
     cardXp: 1, cardsMaxPerDay: 20, sideBoardXp: 10, sideBoardsMaxPerDay: 1,
     dailyCap: 80, freePlayXp: 0,
     dropUnlockTime: '07:00',
@@ -129,7 +131,7 @@ export const RULES = {
 
 - **Planned task:** a task that had a time slot at some point, or was a Must for the day.
 - **Body slot:** a training session (any XP-earning session) or a rest-day check.
-- **Mind slot:** a **Daily Drop item completed before bedtime**: the mystery, the featured board, the side board, a lesson, or ≥10 due cards. Free Play never counts.
+- **Mind slot (19 Oct 2026):** the five-item Learn drop finished, the daily case solved, the daily board solved, or at least 10 due cards reviewed before bedtime. Practice and Free Play never count.
 
 | Mode | Event | XP | Rule |
 |---|---|---|---|
@@ -146,6 +148,7 @@ export const RULES = {
 | Train | Weekly target met / one short | +60 / +30 | Once per ISO week, outside the daily cap. "One short" only when the target is 3. In two-day mode, meeting 2 earns the full +60 |
 | Train | Cap | 100/day | Excluding the weekly bonus |
 | Mind | Mystery / featured board / lesson / card / side board | 25 / 10 / 15 / 1 / 10 | First solve of each date-seeded drop item only. **Only 1 lesson a day pays** (a second course's lesson is allowed at 0 XP). Cards max 20. Side boards max 1 |
+| Mind | Five-item Learn drop finished | 15 | Once per day before bedtime; inside the 80 XP Mind cap and counts as the Mind slot. Individual answers earn 0 XP. |
 | Mind | Cap | 80/day | Free Play: 0. After bedtime: 0 (see the night rule) |
 | All | Hat-trick | +30 | ≥1 planned task done + a Body slot + a Mind slot on the same dayKey |
 | All | Lights-out check-in | +15 | Self-report before his current bedtime target; once a day. If it's missed, a next-morning back-fill card records the time at 0 XP |

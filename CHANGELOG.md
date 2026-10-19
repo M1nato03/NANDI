@@ -2,6 +2,8 @@
 
 ## 2026-10-19
 
+- Added the visible economy to You: daily XP replay, levels, Season 1 rank and ladder, forgiving streaks, Clean Week, Shards, fixed-price shop, cosmetic themes, and practice packs.
+- Added morning lights-out back-fill, an opt-in early streak reminder, Learn drop Mind-slot credit, and calm progress feedback.
 - Completed the Plan tab's Now card, fresh start, task detail, estimate calibration, optional focus reward, checkpoints, and seven-day planning line.
 - Added pure planner helpers and unit and browser coverage for these flows.
 

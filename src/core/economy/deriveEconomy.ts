@@ -1,0 +1,191 @@
+import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
+import { calculateTasksDayXp, replayFactXp } from './awards';
+import type { LedgerRow, SettingRow } from '../../data/types';
+
+const MS_DAY = 86_400_000;
+const atUtc = (key: string) => Date.parse(`${key}T12:00:00Z`);
+export const addEconomyDays = (key: string, count: number): string => new Date(atUtc(key) + count * MS_DAY).toISOString().slice(0, 10);
+export const weekStart = (key: string): string => addEconomyDays(key, -((new Date(atUtc(key)).getUTCDay() + 6) % 7));
+export const firstMonday = (year: number, month: number): string => {
+  const first = new Date(Date.UTC(year, month - 1, 1));
+  return addEconomyDays(first.toISOString().slice(0, 10), (8 - first.getUTCDay()) % 7);
+};
+export function seasonFor(day: string): { index: number; start: string; end: string; days: number } {
+  const year = Number(day.slice(0, 4)), month = Number(day.slice(5, 7));
+  let start = firstMonday(year, month);
+  let cursor = new Date(Date.UTC(year, month - 1, 1));
+  if (day < start) { cursor = new Date(Date.UTC(year, month - 2, 1)); start = firstMonday(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1); }
+  const next = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1));
+  const nextStart = firstMonday(next.getUTCFullYear(), next.getUTCMonth() + 1);
+  return { index: (cursor.getUTCFullYear() - 2026) * 12 + cursor.getUTCMonth() - 10, start, end: addEconomyDays(nextStart, -1), days: Math.round((atUtc(nextStart) - atUtc(start)) / MS_DAY) };
+}
+/** Season 1 is index zero. The story owner can map index % 4 to an Arc. */
+export function seasonIndex(day: string): number { return Math.max(0, seasonFor(day).index); }
+export function currentArcTitle(): string | undefined { return undefined; }
+
+export interface EconomyDay {
+  dayKey: string; tasks: number; train: number; mind: number; weekly: number; quests: number;
+  hatTrick: boolean; lightsOut: number; total: number; mark: boolean; body: boolean; mindSlot: boolean;
+}
+export interface EconomyView {
+  days: EconomyDay[]; totalXp: number; level: number; nextLevelXp: number;
+  season: { index: number; start: string; end: string; active: boolean; sp: number; target: number; rank: number; tier: string; seed: number; nextSeed: number; placesThisWeek: number };
+  streak: { days: number; freezes: number; freezesUsed: number; paused: boolean; gold: boolean; restored: boolean };
+  cleanWeek: { count: number; days: boolean[]; complete: boolean; streak: number };
+  shards: number; owned: string[];
+}
+const value = (settings: readonly SettingRow[] | Record<string, unknown>, key: string): unknown => Array.isArray(settings)
+  ? (settings as SettingRow[]).find(row => row.key === key && !row.deleted)?.value
+  : (settings as Record<string, unknown>)[key];
+const valid = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey);
+const beforeBed = (fact: LedgerRow) => fact.inputs.afterBedtime !== true && fact.inputs.beforeBedtime !== false;
+const tierFor = (rank: number) => RULES.season.tiers.find(([, low, high]) => rank >= low && rank <= high)?.[0] ?? 'Bench';
+const xpToReach = (level: number, stepBase: number) => stepBase * level * (level - 1) / 2;
+const purchasePrices: Record<string, number> = {
+  freeze: RULES.shards.prices.freeze,
+  'cardback:weave': 100, 'cardback:orbit': 150, 'cardback:steps': 150,
+  'banner:dawn': 100, 'banner:grove': 150, 'banner:sky': 150,
+  'puzzle:paths': 150, 'puzzle:patterns': 250, 'sound:soft': 300,
+  'theme:linen': 400, 'theme:lagoon': 800,
+};
+
+export function deriveEconomy(
+  facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[] = RULES_HISTORY,
+  settings: readonly SettingRow[] | Record<string, unknown> = [], today: string,
+): EconomyView {
+  const seen = new Set<string>();
+  const ordered = [...facts].filter(fact => valid(fact) && fact.dayKey <= today).sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.updatedAt - b.updatedAt || a.id.localeCompare(b.id)).filter(fact => {
+    if (seen.has(fact.id)) return false;
+    seen.add(fact.id); return true;
+  });
+  const byDay = new Map<string, LedgerRow[]>();
+  for (const fact of ordered) byDay.set(fact.dayKey, [...(byDay.get(fact.dayKey) ?? []), fact]);
+  const start = ordered[0]?.dayKey ?? today;
+  const days: EconomyDay[] = [];
+  for (let key = start; key <= today; key = addEconomyDays(key, 1)) {
+    const rows = byDay.get(key) ?? [];
+    const rules = rulesFor(key, history)?.rules ?? RULES;
+    const tasks = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
+    const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => replayFactXp(row, history));
+    const bestSession = Math.max(0, ...sessions);
+    const rest = bestSession ? 0 : Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
+    const prs = rows.filter(row => row.mode === 'train' && row.kind === 'pr').slice(0, rules.train.prMaxPerDay).reduce((sum, row) => sum + replayFactXp(row, history), 0);
+    const train = Math.min(rules.train.dailyCapExclWeekly, bestSession + rest + prs);
+    const weekly = rows.filter(row => row.mode === 'train' && row.kind === 'weekly').reduce((sum, row) => sum + replayFactXp(row, history), 0);
+    const mindRows = rows.filter(row => row.mode === 'mind' && beforeBed(row));
+    const paid = new Set<string>();
+    const count = (kind: string, limit: number, amount: number) => mindRows.filter(row => row.kind === kind).slice(0, limit).reduce((sum, row) => {
+      const id = kind === 'board' ? `${row.kind}:${row.inputs.daily === false ? row.refId : key}` : `${kind}:${row.refId}`;
+      if (paid.has(id)) return sum; paid.add(id); return sum + amount;
+    }, 0);
+    const caseSolved = mindRows.some(row => row.kind === 'mystery' && row.inputs.result !== 'revealed');
+    const dailyBoard = mindRows.some(row => row.kind === 'board' && row.inputs.daily !== false);
+    const cards = mindRows.filter(row => row.kind === 'card');
+    const learnAnswers = new Set(mindRows.filter(row => row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`).map(row => row.refId));
+    const learnDrop = mindRows.some(row => row.kind === 'learn-drop') || learnAnswers.size >= 5;
+    const mind = Math.min(rules.mind.dailyCap,
+      (caseSolved ? rules.mind.mysteryXp : 0) + (dailyBoard ? rules.mind.dropBoardXp : 0) +
+      count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
+      Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
+      mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).length * rules.mind.sideBoardXp +
+      (learnDrop ? rules.mind.learnDropXp : 0));
+    const mindSlot = learnDrop || caseSolved || dailyBoard || cards.length >= rules.streak.minDueCardsForMark;
+    const plannedTask = rows.some(row => row.mode === 'tasks' && row.kind === 'done' && (row.inputs.planned === true || row.inputs.wasPlanned === true || row.inputs.hadTimeSlot === true || row.inputs.must === true || row.inputs.isFirstDay === true || row.inputs.scheduledStart != null));
+    const body = bestSession > 0 || rest > 0;
+    const hatTrick = plannedTask && body && mindSlot;
+    const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
+    const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest').reduce((sum, row) => sum + replayFactXp(row, history), 0);
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, hatTrick, lightsOut,
+      total: tasks + train + mind + weekly + quests + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut,
+      mark: plannedTask || body || mindSlot, body, mindSlot });
+  }
+  let totalXp = 0, level = 1, earnedFromXp = 0, levelShardBonus = 0;
+  for (const day of days) {
+    const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
+    totalXp += day.total;
+    earnedFromXp += day.total * rules.shards.perXp;
+    const candidate = Math.floor((1 + Math.sqrt(1 + 8 * totalXp / rules.level.stepBase)) / 2);
+    if (candidate > level) { levelShardBonus += (candidate - level) * rules.shards.levelUpBonus; level = candidate; }
+  }
+  const current = seasonFor(today < '2026-11-02' ? '2026-11-02' : today);
+  const active = today >= '2026-11-02';
+  const seasonSp = (season: ReturnType<typeof seasonFor>) => days.filter(day => day.dayKey >= season.start && day.dayKey <= season.end).reduce((sum, day) => sum + Math.min(day.total, RULES.season.spDailyCap), 0);
+  const targetFor = (season: ReturnType<typeof seasonFor>) => {
+    if (season.index <= 0) return RULES.season.targetPerDay * season.days;
+    const prior = seasonFor(addEconomyDays(season.start, -1));
+    const values = Array.from({ length: prior.days }, (_, index) => {
+      const key = addEconomyDays(prior.start, index);
+      return Math.min(days.find(day => day.dayKey === key)?.total ?? 0, RULES.season.spDailyCap);
+    }).sort((a, b) => a - b);
+    const middle = (values[Math.floor((values.length - 1) / 2)]! + values[Math.floor(values.length / 2)]!) / 2;
+    if (!middle) return RULES.season.targetPerDay * season.days;
+    const fractionAt50 = ((RULES.season.seats - 50) / (RULES.season.seats - 1)) ** (1 / RULES.season.exponent);
+    return Math.max(1, Math.round(middle * season.days / fractionAt50));
+  };
+  const rankFor = (sp: number, target: number) => RULES.season.seats - Math.floor((RULES.season.seats - 1) * Math.min(1, sp / target) ** RULES.season.exponent);
+  const target = targetFor(current);
+  const seedFor = (season: ReturnType<typeof seasonFor>) => season.index > 0
+    ? Math.min(seasonSp(seasonFor(addEconomyDays(season.start, -1))), targetFor(season)) * RULES.season.seedPct / 100 : 0;
+  const seed = seedFor(current);
+  const sp = active ? seed + seasonSp(current) : 0;
+  const rank = rankFor(sp, target);
+  const beforeWeek = days.filter(day => day.dayKey < weekStart(today) && day.dayKey >= current.start).reduce((sum, day) => sum + Math.min(day.total, RULES.season.spDailyCap), 0) + seed;
+  const placesThisWeek = active ? Math.max(0, rankFor(beforeWeek, target) - rank) : 0;
+  const nextSeason = seasonFor(addEconomyDays(current.end, 1));
+  const nextSeed = Math.min(sp, targetFor(nextSeason)) * RULES.season.seedPct / 100;
+  let freezes: number = RULES.streak.startFreezes, freezesUsed = 0, streakDays = 0, paused = false, restored = false, gold = false;
+  let breakAt = -1, repair = 0, freezeFreeDays = 0;
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i]!;
+    const weekday = new Date(atUtc(day.dayKey)).getUTCDay();
+    const restWeekday = value(settings, `economy.restWeekday:${weekStart(day.dayKey)}`) ?? value(settings, 'economy.restWeekday');
+    const isRest = typeof restWeekday === 'number' && restWeekday === weekday;
+    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && row.inputs.price === purchasePrices.freeze).length ?? 0;
+    freezes = Math.min(RULES.streak.maxFreezes, freezes + purchases);
+    if (day.mark) {
+      if (paused && breakAt >= 0 && i - breakAt <= 2) {
+        if (day.hatTrick) repair++;
+        if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt + 1; repair = 0; breakAt = -1; }
+      } else if (paused) {
+        // The 48 h earn-back window has passed: a marked day starts a fresh streak.
+        paused = false; restored = false; streakDays = 1; freezeFreeDays = 1; repair = 0; breakAt = -1;
+      } else {
+        streakDays++; freezeFreeDays++;
+        if (streakDays % RULES.streak.freezeEveryDays === 0) freezes = Math.min(RULES.streak.maxFreezes, freezes + 1);
+        if (freezeFreeDays >= RULES.streak.goldAfterDays) gold = true;
+      }
+    } else if (isRest) { if (!paused) { streakDays++; if (streakDays % RULES.streak.freezeEveryDays === 0) freezes = Math.min(RULES.streak.maxFreezes, freezes + 1); } }
+    else if (i < days.length - 1) {
+      if (!paused && freezes > 0) { freezes--; freezesUsed++; streakDays++; freezeFreeDays = 0; gold = false; }
+      else if (!paused) { paused = true; breakAt = i; repair = 0; gold = false; }
+      else if (breakAt >= 0 && i - breakAt > 2) { streakDays = 0; breakAt = -1; repair = 0; }
+    }
+  }
+  const monday = weekStart(today);
+  const thisWeek = Array.from({ length: 7 }, (_, index) => days.find(day => day.dayKey === addEconomyDays(monday, index))?.hatTrick ?? false);
+  const count = thisWeek.filter(Boolean).length;
+  let cleanStreak = 0;
+  for (let key = addEconomyDays(monday, -7); key >= start; key = addEconomyDays(key, -7)) {
+    if (days.filter(day => day.dayKey >= key && day.dayKey <= addEconomyDays(key, 6) && day.hatTrick).length < RULES.streak.cleanWeekHatTricks) break;
+    cleanStreak++;
+  }
+  if (count >= RULES.streak.cleanWeekHatTricks) cleanStreak++;
+  let seasonAward = 0;
+  for (let seasonStart = '2026-11-02'; seasonStart < current.start; seasonStart = addEconomyDays(seasonFor(seasonStart).end, 1)) {
+    const season = seasonFor(seasonStart);
+    if (season.end >= today) break;
+    const finalRank = rankFor(seasonSp(season) + seedFor(season), targetFor(season));
+    const awardRules = rulesFor(season.end, history)?.rules ?? RULES;
+    seasonAward += awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
+  }
+  let balance = Math.floor(earnedFromXp) + levelShardBonus + seasonAward;
+  const owned: string[] = [];
+  for (const row of ordered.filter(row => row.kind === 'purchase')) {
+    const price = Number(row.inputs.price);
+    const id = row.inputs.itemId;
+    if (typeof id !== 'string' || price !== purchasePrices[id] || price > balance) continue;
+    if (id !== 'freeze' && owned.includes(id)) continue;
+    balance -= price; if (id !== 'freeze') owned.push(id);
+  }
+  return { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, freezes, freezesUsed, paused, gold, restored }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned };
+}

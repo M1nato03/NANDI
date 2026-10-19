@@ -11,13 +11,13 @@ export function recordAppOpened(now = Date.now()): void { localStorage.setItem(O
 
 export async function reconcileNudges(now = Date.now()): Promise<void> {
   if (!Capacitor.isNativePlatform()) return;
-  const [settings, tasks, logs, stored, pending] = await Promise.all([
-    db.settings.toArray(), db.tasks.toArray(), db.dailyLog.toArray(), db.reminders.toArray(), notifier.listPending(),
+  const [settings, tasks, logs, facts, stored, pending] = await Promise.all([
+    db.settings.toArray(), db.tasks.toArray(), db.dailyLog.toArray(), db.ledger.toArray(), db.reminders.toArray(), notifier.listPending(),
   ]);
   const lastOpenedAt = Number(localStorage.getItem(OPENED_KEY)) || undefined;
   const scheduledEngagement = stored.filter(row => row.status === 'scheduled' && (row.refType === 'planning' || row.refType === 'streak'))
     .map(row => ({ kind: row.refType as 'planning' | 'streak', at: row.at }));
-  const desired = wantedNudges({ now, settings, tasks, logs, lastOpenedAt, scheduledEngagement });
+  const desired = wantedNudges({ now, settings, tasks, logs, facts, lastOpenedAt, scheduledEngagement });
   const wanted = new Map(desired.map(row => [row.id, row]));
   const existing = stored.filter(row => row.refType === 'nudge');
   const pendingIds = new Set(pending);

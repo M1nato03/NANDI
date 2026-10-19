@@ -3,6 +3,7 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
+import { getOrCreateDeviceId } from '../../data/device';
 import { reconcileSolvedBoards } from '../../data/repos/puzzleRuns';
 import { recordError } from '../errorRing';
 import { Today } from '../screens/Today';
@@ -28,6 +29,7 @@ import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
 import { nightRouteTime, nightRouteTransition } from './nightRoute';
+import { EconomyFeedback } from './EconomyFeedback';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -38,6 +40,8 @@ const Train = lazy(() => import('../screens/Train').then(module => ({ default: m
 const Mind = lazy(() => import('../screens/Mind').then(module => ({ default: module.Mind })));
 const Ground = lazy(() => import('../screens/Ground').then(module => ({ default: module.Ground })));
 const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
+const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
+const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
 
@@ -82,6 +86,13 @@ export function AppShell() {
   }, [nightSettings, clockTime]);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   useEffect(() => {
+    const now = Date.now(), today = dayKey(now);
+    void db.settings.get('economyVisibleFrom').then(async row => {
+      if (typeof row?.value === 'string' && row.value <= today && !row.deleted) return;
+      await db.settings.put({ key: 'economyVisibleFrom', value: today, updatedAt: now, deleted: 0, deviceId: await getOrCreateDeviceId(db, now) });
+    }).catch(error => recordError('promise', error));
+  }, []);
+  useEffect(() => {
     if (Capacitor.isNativePlatform()) recordAppOpened();
     const opened = () => { if (Capacitor.isNativePlatform() && document.visibilityState === 'visible') recordAppOpened(); };
     document.addEventListener('visibilitychange', opened);
@@ -112,6 +123,8 @@ export function AppShell() {
   const tab = tabOf(path);
   let screen;
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={appearance.reload} />;
+  else if (path === 'you/season') screen = <SeasonLadder />;
+  else if (path === 'you/shop') screen = <SeasonShop />;
   else if (path === 'you/night') screen = <Night />;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
@@ -133,5 +146,5 @@ export function AppShell() {
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
   const root = ['plan', 'train', 'learn', 'mind', 'you'].includes(path);
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
 }
