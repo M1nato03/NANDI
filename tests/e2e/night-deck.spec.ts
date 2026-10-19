@@ -20,7 +20,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
     if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath(`night-card-${number}-390x844.png`) });
   };
   await expect(deck).toHaveClass(/deck-night/);
-  await expect(deck.locator('.deck-heading h1')).toContainText('Now Night');
+  await expect(deck.locator('.deck-heading h1')).toContainText('Tonight');
   await expect(deck.locator('.deck-heading .deck-count')).toHaveText('1 of 6');
   await expect(deck.locator('.deck-heading .eyebrow')).toHaveCount(0);
   await expect(deck.getByText('1 of 6')).toBeVisible();
@@ -77,7 +77,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await expect(stop).toContainText('01:30');
   await shot(6);
   await expect(deck.getByRole('button', { name: 'Next', exact: true })).toHaveCount(0);
-  await expect(deck.getByRole('button')).toHaveCount(2);
+  await expect(stop.getByRole('button')).toHaveCount(2);
   await stop.getByRole('button', { name: 'Close' }).click();
   await expect(page).toHaveURL(/#plan$/);
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();

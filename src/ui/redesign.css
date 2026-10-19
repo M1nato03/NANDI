@@ -323,7 +323,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-end { border-top: 0; background: var(--surface-2); padding: 12px 16px; border-radius: var(--radius-row); }
 .deck-night { --area-color: var(--area-night); background: transparent; padding: 0; border: 0; }
 .deck-night .deck-card { background: var(--surface-1); min-height: min(430px, calc(100dvh - 300px)); }
-.deck-night .deck-next { position: sticky; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 4; }
+/* The night overlay hides the tab bar, so Next sits in normal flow under the card. */
+.deck-night .deck-next { position: static; }
 .deck-night .deck-card > .pill { display: none; }
 .deck-night .deck-card .deck-actions button, .deck-night .deck-next, .deck-night .deck-add button, .deck-night .night-plan-setting button { background: var(--surface-2); color: var(--accent); border: 0; }
 .deck-night .deck-dashes button.active::after { background: var(--area-night); }
@@ -428,3 +429,6 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .ui-empty-state[data-area='move'] { --area-color: var(--area-move); }
 .ui-empty-state[data-area='learn'] { --area-color: var(--area-learn); }
 .ui-empty-state[data-area='extra'] { --area-color: var(--area-extra); }
+/* Night overlay: a quiet close button so Plan is always one tap away. */
+.deck-night .deck-heading { align-items: center; gap: 12px; }
+.deck-night .night-close { min-width: 44px; min-height: 44px; width: 44px; padding: 0; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-size: 22px; line-height: 1; }

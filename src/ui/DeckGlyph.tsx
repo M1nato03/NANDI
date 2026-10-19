@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export type Glyph = 'do' | 'move' | 'think' | 'notice' | 'learn' | 'extra' | 'end' | 'night';
+export type Glyph = 'do' | 'move' | 'think' | 'notice' | 'learn' | 'extra' | 'end' | 'night' | 'you';
 
 export function DeckGlyph({ type }: { type: Glyph }) {
   const paths: Record<Glyph, ReactNode> = {
@@ -11,6 +11,7 @@ export function DeckGlyph({ type }: { type: Glyph }) {
     learn: <><path d="M9 18h6m-5 3h4M8.3 15.5A7 7 0 1 1 15.7 15.5L15 18H9l-.7-2.5Z" /></>,
     extra: <><circle cx="12" cy="12" r="8.5" /><path d="m15.7 8.3-2.1 5.3-5.3 2.1 2.1-5.3 5.3-2.1Z" /></>,
     end: <><path d="M3 16h18M5 20h14M4 12l2-2m14 2-2-2M12 2v3M7 5l1.5 1.5M17 5l-1.5 1.5M6 16a6 6 0 0 1 12 0" /></>,
+    you: <><circle cx="12" cy="8" r="3.8" /><path d="M4.5 20a7.5 7.5 0 0 1 15 0" /></>,
     night: <><path d="M20 15.3A8.5 8.5 0 0 1 8.7 4a8.5 8.5 0 1 0 11.3 11.3Z" /><path d="M17 4v3M15.5 5.5h3" /></>,
   };
   return <span className="deck-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[type]}</svg></span>;

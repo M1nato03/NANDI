@@ -124,7 +124,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const next = () => goToCard(Math.min(at + 1, NIGHT_CARDS.length - 1));
 
   return <section className="screen deck-screen deck-night" aria-label="Now deck">
-    <div className="deck-heading"><h1>Now <span className="deck-night-label">Night</span></h1><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span></div>
+    <div className="deck-heading"><h1>Tonight</h1><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span><button type="button" className="night-close" aria-label="Leave night deck" onClick={() => go('plan')}><span aria-hidden="true">×</span></button></div>
     {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => goToCard(i)} />)}</div>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
       <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
