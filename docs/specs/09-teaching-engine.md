@@ -2,17 +2,17 @@
 
 Status: approved direction, 2026-10-11 (Jenil). Offline-first: no AI at runtime. Content is written ahead of
 time and must pass an accuracy gate. First topics: **Money and markets**, **Human psychology**,
-**How things work**. The UI follows the approved redesign concept (Now / Plan / You, a finite deck of cards).
+**How things work**. Learning lives in the Learn tab of the five-tab layout; owner tools live in Settings.
 
 ## 1. Goal
 
 Teach real understanding in 3–8 minute bursts with less friction than Duolingo and more accuracy than an AI chat.
 Success is measured, not felt:
 - **Retention:** recall of a concept 7 and 30 days after its first answer (scheduled checks independent of FSRS),
-  target ≥ 80%. The You screen can show checked and recalled counts for each interval.
+  target ≥ 80%. The Learn tab shows the 30-day recalled share once checks exist.
 - **Transfer:** correct answers on *new* scenario questions the learner has never seen, target ≥ 70%.
-- **Calibration:** confidence vs accuracy gap, shrinking over time. The You screen can show the number of certain
-  answers and correct rates for certain and guess answers.
+- **Calibration:** confidence vs accuracy gap, shrinking over time. The Learn tab can show the number of certain
+  answers and correct rates for certain and guess answers. The Learn tab shows the sure-answer correct rate after 20 sure answers.
 - **Friction:** median time from opening the app to the first answer < 5 s; zero typing in the default path.
 
 ## 2. What the learning science says we must do (and Duolingo mostly doesn't)
@@ -27,7 +27,7 @@ Success is measured, not felt:
 | Concrete → abstract | Each concept is introduced through one vivid real example, then the general rule, then a second example from a different domain. |
 | Elaboration | "Why?" items: pick the reason, or spot the flaw in a wrong explanation. |
 | Worked example → faded | Multi-step skills (e.g. compound interest) show a full worked example, then the same with one step blank, then two. |
-| Confidence calibration | Optional confidence tap (Guess / Fairly sure / Certain); confident misses are re-scheduled sooner and highlighted kindly. |
+| Confidence calibration | Optional confidence tap (Sure / Fairly sure / Guessing), with Fairly sure selected by default; confident misses are re-scheduled sooner and highlighted kindly. |
 | Real-world transfer | Each module ends with a side quest that uses the idea outside the app (pairs with Side quests). |
 
 ## 3. The content model
@@ -99,7 +99,7 @@ id, a difficulty seed, misconception tags and a source reference.
 3. **Independent fact check:** a different model with web access (Gemini) checks each claim against its source and
    current reality, and writes a verdict per claim (supported / unsupported / outdated). Anything not "supported"
    blocks the pack.
-4. **Owner spot check:** Jenil reviews 5 random items per module in a review screen (Ground → Content review).
+4. **Owner spot check:** Jenil reviews 5 ISO-week-seeded items per module in Settings → About → Review content.
    Rejected items go back to step 1.
 5. **Live signal:** items with abnormal error rates or many "this seems wrong" flags are pulled for re-check.
 India-specific facts (taxes, regulations, rates) carry an `asOf` date and expire into re-check after 12 months.

@@ -1,5 +1,5 @@
 export { dayKey } from './dayKey';
-export { compareNightTimes, minutesAfterNoon } from './nightTimeline';
+export { compareNightTimes, minutesAfterNoon, isAfterBedtime } from './nightTimeline';
 export {
   createTimer,
   pauseTimer,

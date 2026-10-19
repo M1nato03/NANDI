@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { masteryMapState } from '../../core/learn/engine';
+import { learningFigures, masteryMapState } from '../../core/learn/engine';
+import { loadEngineFacts } from '../../data/repos/learn-engine';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -24,8 +25,10 @@ export function Learn({ entry }: { entry?: string }) {
     states: await db.learnConcepts.toArray(),
     daily: await db.learnDrops.get(dailyDropId(openedAt)),
     night: await db.learnDrops.get(nightDropId(openedAt)),
+    facts: (await loadEngineFacts(db)).facts,
   }), [openedAt]);
   const selected = chosenTopics(data?.setting?.value);
+  const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
   const isDue = (id: string) => {
     const state = stateById.get(id);
@@ -74,6 +77,7 @@ export function Learn({ entry }: { entry?: string }) {
         {open && <div id={`learn-ideas-${topicId}`} className="learn-ideas" aria-label={`${pack.title} mastery map`}>{groups.filter(group => group.rows.length).map(group => <section key={group.label} className="learn-idea-group"><h3>{group.label} <small>{group.rows.length}</small></h3>{group.rows.map(concept => <div className="learn-idea-row" data-state={group.label.toLowerCase()} key={concept.id}><div><strong>{concept.title}</strong><p>{concept.rule}</p>{masteryMapState(stateById.get(concept.id)) === 'Mastered' && <small>Mastered</small>}</div><button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button></div>)}</section>)}</div>}
       </section>;
     })}
+    <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2><p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>{figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>
     {message && <p role="status">{message}</p>}
     <Mind entry="courses" />
   </section>;

@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { compareNightTimes, minutesAfterNoon } from './index';
+import { compareNightTimes, minutesAfterNoon, isAfterBedtime } from './index';
+
+it('uses the 04:00 planning boundary around a 01:30 bedtime', () => {
+  const at = (day: number, hour: number, minute: number) => new Date(2026, 9, day, hour, minute).getTime();
+  expect(isAfterBedtime(at(17, 23, 59), '01:30')).toBe(false);
+  expect(isAfterBedtime(at(18, 0, 30), '01:30')).toBe(false);
+  expect(isAfterBedtime(at(18, 3, 59), '01:30')).toBe(true);
+  expect(isAfterBedtime(at(18, 4, 0), '01:30')).toBe(false);
+});
 
 const earlier = (left: string, right: string): string =>
   compareNightTimes(left, right) <= 0 ? left : right;

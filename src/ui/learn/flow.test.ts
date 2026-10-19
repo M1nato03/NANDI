@@ -1,7 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, topics } from './flow';
+import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, reviewsOnlyRemainder, topics } from './flow';
 
 describe('live learning drop glue', () => {
+  it('trims unstarted new steps on a resumed drop without losing the answered step', () => {
+    const drop = { id: 'one', items: [
+      { itemId: 'a', conceptId: 'a', optionOrder: [], mode: 'new' as const },
+      { itemId: 'b', conceptId: 'b', optionOrder: [], mode: 'review' as const },
+      { itemId: 'c', conceptId: 'c', optionOrder: [], mode: 'new' as const },
+    ], cursor: 1, ending: { kind: 'stopping-screen' as const } };
+    expect(reviewsOnlyRemainder(drop).items.map(item => item.itemId)).toEqual(['a', 'b']);
+    expect(reviewsOnlyRemainder({ ...drop, cursor: 3 })).toEqual({ ...drop, cursor: 3 });
+  });
+  it('offers due reviews only after bedtime and stops at once when none are due', () => {
+    const now = new Date(2026, 9, 18, 2, 0).getTime();
+    const idea = catalogFor(['money-markets'])[0]!;
+    const base = { ids: ['money-markets'], items: [], now, bedtime: '01:30', daily: true, night: true,
+      answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [] };
+    const empty = makeDrop({ ...base, concepts: [] });
+    expect(empty.items).toHaveLength(0);
+    expect(empty.ending.kind).toBe('stopping-screen');
+    const due = makeDrop({ ...base, concepts: [{ id: idea.id, mastery: 0.8, attempts: 2,
+      memory: { stability: 2, difficulty: 5, interval: 2, lastReview: now - 3 * 86_400_000, dueAt: now - 1 },
+      activeMisconceptions: [], updatedAt: now, deleted: 0 as const, deviceId: 'test' }] });
+    expect(due.items.length).toBeGreaterThan(0);
+    expect(due.items.every(item => item.mode !== 'new')).toBe(true);
+  });
   it('keeps only bundled topic ids and resolves stored items', () => {
     expect(topics).toHaveLength(4);
     expect(topics.map(pack => pack.body.topic.id).sort()).toEqual(['body-training', 'how-things-work', 'money-markets', 'psychology']);

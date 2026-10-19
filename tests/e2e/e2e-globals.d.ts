@@ -30,6 +30,8 @@ declare global {
       removeShellTask(): Promise<void>;
       shellCounts(): Promise<Record<string, number>>;
       wipeData(): Promise<void>;
+      seedLearnNight(conceptId: string, dueAt: number, selectedTopic?: string): Promise<void>;
+      learnConfidence(): Promise<string | undefined>;
       backupRoundTrip(): Promise<{
         exportedJson: string;
         beforeCounts: Record<string, number>;

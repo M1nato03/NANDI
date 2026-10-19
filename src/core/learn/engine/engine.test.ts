@@ -116,6 +116,18 @@ it('09 §9 test 10: a saved mid-drop resumes at the same item and option order',
   expect((await loadDrop(db, drop.id))?.pendingFeedback?.cursor).toBe(0);
   await db.delete();
 });
+
+it('stores the chosen confidence with the answer fact', async () => {
+  const db = fresh();
+  try {
+    const drop = composeDrop({ catalog, concepts: {}, items: {}, now, seed: 11, spentMinutes: 0, answeredToday: 0, newToday: 0 });
+    await saveDrop(db, drop, 'test', now);
+    const item = items.find(row => row.id === drop.items[0]?.itemId)!;
+    await saveEngineAnswer(db, { answerId: 'sure-1', dropId: drop.id, item, answer: item.options[0]!.id,
+      confidence: 'certain', deviceId: 'test', now });
+    expect((await loadEngineFacts(db)).facts[0]?.confidence).toBe('certain');
+  } finally { await db.delete(); }
+});
 it('09 section 9 test 11: a drop interleaves started concepts and stays with one new concept', () => {
   const third = { ...concepts[1]!, id: 'leaf', prerequisites: [], items: concepts[1]!.items.map(item => ({ ...item, id: `leaf-${item.id}`, conceptId: 'leaf' })) };
   const openCatalog = { concepts: [{ ...concepts[0]!, prerequisites: [] }, { ...concepts[1]!, prerequisites: [] }, third] };

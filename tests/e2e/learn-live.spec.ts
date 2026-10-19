@@ -23,6 +23,7 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
     if (!option) throw new Error('No matching option');
     await tap(option.id);
   }
+  await page.getByRole('button', { name: 'Check', exact: true }).click();
   const feedback = page.locator('.learn-feedback');
   await expect(feedback).toBeVisible();
   await expect(feedback).toContainText(concept.rule);

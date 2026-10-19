@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-19
+
+- Kept Learn drops to due reviews after the saved bedtime target, with a calm stop when none are due.
+- Added optional confidence chips before answer feedback, 30-day recall and sure-answer figures on Learn, and a projected time gate for new track units.
+- Added a weekly offline content sample under Settings > About, with saved owner verdicts and notes included in backups.
+
 ## 2026-10-17
 
 - Replaced the day Now deck and three-tab navigation with Plan, Train, Learn, Mind, and You tabs. Feature content now lives in its own tab; the top bar shows four daily status dots.

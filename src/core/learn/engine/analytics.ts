@@ -1,4 +1,5 @@
 import type { Confidence } from './model';
+import { RULES } from '../../rules.config';
 
 export type RetentionDay = 7 | 30;
 export interface AnswerFact {
@@ -48,5 +49,15 @@ export function calibration(state: EngineFactsState) {
     confidentAnswers,
     confidentCorrectRate: confidentAnswers ? confidentCorrect / confidentAnswers : 0,
     unsureCorrectRate: unsureAnswers ? unsureCorrect / unsureAnswers : 0,
+  };
+}
+
+export function learningFigures(state: EngineFactsState, now: number): { recall30: number | null; sureAccuracy: number | null } {
+  const retention = retentionSummary(state, now);
+  const confidence = calibration(state);
+  return {
+    recall30: retention.checked30 ? Math.round(100 * retention.recalled30 / retention.checked30) : null,
+    sureAccuracy: confidence.confidentAnswers >= RULES.teachingEngine.calibrationDisplayMinAnswers
+      ? Math.round(100 * confidence.confidentCorrectRate) : null,
   };
 }
