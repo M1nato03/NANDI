@@ -17,10 +17,10 @@ test('owner panel opens from five taps on the version line and asks for a PIN', 
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Owner panel' })).toBeVisible();
   await page.getByLabel('PIN').fill('1111');
-  await page.getByRole('button', { name: 'Open' }).click();
+  await page.getByRole('button', { name: 'Open', exact: true }).click();
   await expect(page.getByText('That PIN does not match.')).toBeVisible();
   await page.getByLabel('PIN').fill('2468');
-  await page.getByRole('button', { name: 'Open' }).click();
+  await page.getByRole('button', { name: 'Open', exact: true }).click();
   await expect(panel).toContainText('Learn accuracy (7 d)');
   await page.screenshot({ path: testInfo.outputPath('owner-panel.png'), fullPage: true });
 });
