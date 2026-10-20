@@ -10,6 +10,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Focus timer' })).toBeVisible();
+    // Rituals sit folded in one row until first used.
+    await page.locator('.plan-rituals-fold > summary').click();
     await expect(page.getByRole('button', { name: /Morning plan/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /Shutdown/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /Weekly review/ })).toBeVisible();
