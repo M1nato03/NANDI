@@ -3866,7 +3866,7 @@
                   {
                     "id": "c",
                     "text": "Government of India Act, 1858",
-                    "feedback": "The Company lost its administrative powers. The Crown then took over rule in India.",
+                    "feedback": "The Company’s powers to govern passed to the Crown. The Crown then ruled India directly.",
                     "correct": true,
                     "sourceRefs": [
                       "company",
@@ -3877,7 +3877,7 @@
                   {
                     "id": "d",
                     "text": "Crown takes over Company rule",
-                    "feedback": "The Company lost its administrative powers. This law put rule under the Crown instead.",
+                    "feedback": "The Company’s powers to govern passed to the Crown under this law of 1858.",
                     "correct": true,
                     "sourceRefs": [
                       "company",
