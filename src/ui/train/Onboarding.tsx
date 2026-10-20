@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { evaluateBodyweightPlacement, getBodyweightPlacementStartStep, LADDERS, EXERCISE_LIBRARY, type EquipmentSetting, type LadderPattern, type Track } from '../../core/train';
 import type { Onboarding as OnboardingResult } from '../../data/repos/train';
+import { ExerciseFigure } from './ExerciseFigure';
+import { formCues } from '../../core/train/cues';
+import { PATTERN_NAMES } from '../../core/train/patternNames';
 
 const patterns: LadderPattern[] = ['squat', 'push-up', 'hinge', 'row', 'core-anti-ext', 'core-anti-rot', 'core-ext'];
 const gymChecks = [['goblet-squat', 'Squat'], ['db-bench', 'Push'], ['seated-cable-row', 'Pull'], ['db-rdl', 'Hinge']] as const;
@@ -38,7 +41,7 @@ export function Onboarding({ save, busy }: { save: (result: OnboardingResult) =>
       else setIndex(index + 1);
     } else setTests(next);
   }
-  return <section className="train-onboarding"><p className="eyebrow">Rank assessment · about 3 minutes</p><h1>Train</h1>
+  return <section className="train-onboarding"><p className="eyebrow">Rank assessment · about 10 minutes</p><h1>Train</h1>
     {stage === 'setup' ? <>
       <div className="card"><h2>Set your starting line</h2><p>General fitness information, not medical advice. Start easy. Clean reps count.</p>
         <label>Track <select aria-label="Training track" value={track} onChange={event => setTrack(event.target.value as Track)}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
@@ -54,9 +57,9 @@ export function Onboarding({ save, busy }: { save: (result: OnboardingResult) =>
         <label className="train-switch"><input type="checkbox" checked={hot} onChange={event => setHot(event.target.checked)} /> Hot-day mode</label><p>On hot days, hot-day mode starts you with fewer sets. Train in the cool of the evening or indoors.</p>
       </div>
       <button type="button" disabled={days.length !== target || busy} onClick={() => track === 'bodyweight' ? setStage('placement') : save(result)}>{track === 'bodyweight' ? 'Start placement' : 'Save assessment'}</button>
-    </> : <div className="card"><h2>{pattern?.replaceAll('-', ' ')} · test {tests.length + 1} of 3</h2><p>Try one clean set at the suggested step. Stop if it hurts.</p><p className="train-step">{step ? EXERCISE_LIBRARY[step.exerciseId]?.name : getBodyweightPlacementStartStep(pattern!).exerciseId} · step {current}/{LADDERS[pattern!]?.length}</p>
+    </> : <div className="card"><p className="eyebrow">Movement {index + 1} of {patterns.length}</p><h2>{pattern ? PATTERN_NAMES[pattern] : ''}</h2><p>Try one clean set at the suggested step. Stop if it hurts.{tests.length ? ' Now try the step shown below.' : ''}</p><p className="train-step">{step ? EXERCISE_LIBRARY[step.exerciseId]?.name : getBodyweightPlacementStartStep(pattern!).exerciseId} · step {current}/{LADDERS[pattern!]?.length}</p>{step && <><ExerciseFigure id={step.exerciseId} name={EXERCISE_LIBRARY[step.exerciseId]?.name ?? step.exerciseId} /><ul className="train-cues" aria-label="Form cues">{formCues(step.exerciseId).map(cue => <li key={cue}>{cue}</li>)}</ul></>}
       <label>Clean {step && EXERCISE_LIBRARY[step.exerciseId]?.isHold ? 'seconds' : 'reps'} <input type="number" min="0" max="120" value={reps} onChange={event => setReps(Number(event.target.value))} /></label>
-      <button type="button" disabled={busy || reps < 0} onClick={record}>Record test</button><p>{index + 1} of {patterns.length} patterns</p>
+      <button type="button" disabled={busy || reps < 0} onClick={record}>Record test</button>
     </div>}
   </section>;
 }

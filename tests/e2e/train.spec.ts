@@ -15,7 +15,10 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByText('Rank assessment')).toBeVisible();
     await capture(page, testInfo.outputPath(`train-assessment-${scheme}.png`));
     await page.getByRole('button', { name: 'Start placement' }).click();
-    await expect(page.getByText('squat · test 1 of 3')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Squat', exact: true })).toBeVisible();
+    await expect(page.getByText('Movement 1 of 7')).toBeVisible();
+    await expect(page.getByRole('img', { name: /^How to do / })).toBeVisible();
+    await expect(page.getByRole('list', { name: 'Form cues' }).getByRole('listitem')).toHaveCount(3);
     await capture(page, testInfo.outputPath(`train-placement-${scheme}.png`));
     for (let pattern = 0; pattern < 7; pattern++) {
       if (pattern === 4 || pattern === 5) await page.getByRole('spinbutton', { name: 'Clean seconds' }).fill('30');

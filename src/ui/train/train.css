@@ -107,3 +107,16 @@
 .train-loads p { margin: 0 0 4px; }
 .train-loads label { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: center; gap: 12px; margin: 0; }
 .train-loads input { width: 100%; min-width: 0; min-height: 44px; }
+/* Exercise how-to drawings */
+.exercise-figure { display: block; width: 100%; max-width: 240px; height: auto; margin: 4px auto 8px; }
+.exercise-figure .fig-body path { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.exercise-figure .fig-body path.fig-far { stroke: var(--muted); stroke-width: 2.6; }
+.exercise-figure .fig-head { fill: var(--surface); stroke: var(--ink); stroke-width: 2.6; }
+.exercise-figure .fig-floor { stroke: var(--line); stroke-width: 1.5; }
+.exercise-figure .fig-prop { fill: var(--raised); stroke: var(--line); stroke-width: 1.2; }
+.exercise-figure .fig-prop-line { stroke: var(--muted); stroke-width: 2; stroke-linecap: round; fill: none; }
+.exercise-figure .fig-prop-line line { stroke: var(--muted); stroke-width: 2; stroke-linecap: round; }
+.exercise-figure .fig-iron, .exercise-figure .fig-iron rect { fill: var(--muted); }
+.exercise-figure .fig-band { stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 3 2; }
+.exercise-figure .fig-arrow { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; }
+.exercise-figure .fig-arrowhead { fill: var(--accent); }

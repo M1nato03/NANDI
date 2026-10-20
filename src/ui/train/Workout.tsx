@@ -3,6 +3,8 @@ import type { ExStateRow, SessionRow, SetRow } from '../../data/types';
 import { EXERCISE_LIBRARY, LADDERS, calculateWarmupRamp, getSmallestIncrement, remainingRestMs, heatAdvice, type EquipmentSetting } from '../../core/train';
 import { keepScreenAwake } from '../../platform/awake';
 import { tapHaptic } from '../../platform/haptics';
+import { ExerciseFigure } from './ExerciseFigure';
+import { formCues } from '../../core/train/cues';
 
 type Log = (exerciseId: string, slot: number, reps: number, loadKg: number, type?: 'warmup' | 'working', confirmedJump?: boolean) => Promise<boolean>;
 type Pending = { slot: number; type: 'warmup' | 'working'; target: number; load: number };
@@ -97,7 +99,8 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
     <article className={`card train-exercise${celebrate ? ' train-complete' : ''}`} aria-label={name}>
       <p className="eyebrow">Current exercise</p><h1>{name}</h1><p className="train-target">{ex.sets} × {ex.repMin}–{ex.repMax} {ex.isHold ? 'seconds' : 'reps'}{ex.isPerSide ? ' per side' : ''}</p>
       {showLoad && <p className="train-detail">Pick a load you can lift for 12 clean reps. Start light and use your smallest available step.</p>}
-      {EXERCISE_LIBRARY[ex.exerciseId]?.cues && <ul className="train-cues">{EXERCISE_LIBRARY[ex.exerciseId]!.cues!.slice(0, 2).map(cue => <li key={cue}>{cue}</li>)}</ul>}
+      <ExerciseFigure id={ex.exerciseId} name={name} />
+      {formCues(ex.exerciseId).length > 0 && <ul className="train-cues" aria-label="Form cues">{formCues(ex.exerciseId).map(cue => <li key={cue}>{cue}</li>)}</ul>}
       {ladder && <p className="train-detail">Step {last?.ladderStep ?? ladder.find(step => step.exerciseId === ex.exerciseId)?.rank ?? 1}/{ladder.length}</p>}
       {(ex.exerciseId === 'backpack-row' || ex.exerciseId === 'band-row') && <p className="train-detail">Limited pulling. A sturdy anchor or bar widens your options.</p>}
       {logged.length > 0 && <ol className="train-done-list" aria-label="Logged sets">{slots.filter(item => !!done(item)).map(item => { const row = done(item)!; return <li key={`${item.type}-${item.slot}`}>{item.type === 'warmup' ? `Warm-up ${item.slot + 3}` : `Set ${item.slot + 1}`} · {row.durationS ?? row.reps} {ex.isHold ? 'seconds' : 'reps'}{showLoad ? ` · ${row.loadKg} kg` : ''} <span aria-label="done"><span aria-hidden="true">✓</span></span></li>; })}</ol>}
