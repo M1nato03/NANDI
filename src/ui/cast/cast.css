@@ -6,9 +6,8 @@
 .cast-mor { --cast-body: #2470b3; --cast-detail: #1d8b75; --cast-accent: #f2a33a; }
 .cast-kachhua { --cast-body: #82a24d; --cast-detail: #3f7b5c; }
 /* Characters keep their own colours in light and dark (a theme token would turn Nandi's face black at night). */
-.cast-pose-cheer { transform: rotate(-4deg) translateY(-2px); }
-.cast-pose-think { transform: rotate(5deg); }
-.cast-pose-rest { transform: translateY(2px); }
+.cast-pose-cheer { animation: cast-hop .6s ease-out 1 both; }
+@keyframes cast-hop { 40% { transform: translateY(-6%); } 100% { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .cast-svg { animation: none !important; transition: none !important; transform: none !important; } }
 :root[data-motion='reduce'] .cast-svg { animation: none !important; transition: none !important; transform: none !important; }
 .cast-inline { display: inline-flex; align-items: center; gap: 8px; }
