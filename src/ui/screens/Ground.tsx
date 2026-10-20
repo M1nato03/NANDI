@@ -26,6 +26,13 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const [nudgeSaving, setNudgeSaving] = useState<Record<string, boolean>>({});
   const [permission, setPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
   const requestingPermission = useRef(false);
+  // Owner panel: tap the version line 5 times within 3 seconds.
+  const ownerTaps = useRef<number[]>([]);
+  const ownerTap = () => {
+    const now = Date.now();
+    ownerTaps.current = [...ownerTaps.current.filter(at => now - at < 3000), now];
+    if (ownerTaps.current.length >= 5) { ownerTaps.current = []; go('you/owner'); }
+  };
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
     const refresh = () => { if (document.visibilityState === 'visible') void notifier.checkPermission().then(setPermission); };
@@ -100,6 +107,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
-    <details className="about-app"><summary>About this app</summary><p className="small">NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
+    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
   </div>;
 }

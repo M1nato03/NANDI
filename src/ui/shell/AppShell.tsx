@@ -26,6 +26,9 @@ import { startNightPauseSync } from '../../platform/nightPauseSync';
 import { useNativeUpdater } from './useNativeUpdater';
 import { NativeUpdateBar } from './NativeUpdateBar';
 import { ContentReview } from '../screens/ContentReview';
+import { OwnerPanel } from '../screens/OwnerPanel';
+import { recordOwnerOpen } from '../../data/repos/owner';
+import { OPEN_GAP_MS } from '../../core/owner/metrics';
 import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
@@ -99,6 +102,18 @@ export function AppShell() {
     }).catch(error => recordError('promise', error));
   }, []);
   useEffect(() => {
+    // Owner panel: one open per cold start, and one per return after a minute or more away.
+    let hiddenAt = 0;
+    const count = () => void recordOwnerOpen(db, Date.now()).catch(error => recordError('promise', error));
+    count();
+    const visibility = () => {
+      if (document.visibilityState === 'hidden') hiddenAt = Date.now();
+      else if (hiddenAt && Date.now() - hiddenAt >= OPEN_GAP_MS) { hiddenAt = 0; count(); }
+    };
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
+  useEffect(() => {
     if (Capacitor.isNativePlatform()) recordAppOpened();
     const opened = () => { if (Capacitor.isNativePlatform() && document.visibilityState === 'visible') recordAppOpened(); };
     document.addEventListener('visibilitychange', opened);
@@ -133,6 +148,7 @@ export function AppShell() {
   else if (path === 'you/shop') screen = <SeasonShop />;
   else if (path === 'you/contentreview') screen = <ContentReview />;
   else if (path === 'you/cast') screen = <MeetCast />;
+  else if (path === 'you/owner') screen = <OwnerPanel />;
   else if (path === 'you/night') screen = <Night />;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>

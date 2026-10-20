@@ -1,0 +1,10 @@
+.owner-gate label { display: grid; gap: 8px; margin: 16px 0; }
+.owner-gate input { font-size: 1.4rem; letter-spacing: .3em; max-width: 12ch; }
+.owner-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.owner-panel .owner-tile { display: grid; gap: 4px; padding: 14px; min-width: 0; margin: 0; }
+.owner-tile strong { font-size: 1.3rem; overflow-wrap: anywhere; }
+.owner-chart { margin-bottom: 16px; }
+.owner-panel .owner-chart h2 { font-size: 1rem; margin: 0 0 12px; letter-spacing: 0; }
+.owner-bars { display: grid; grid-template-columns: repeat(30, minmax(0, 1fr)); align-items: end; gap: 2px; height: 96px; }
+.owner-bars span { display: block; border-radius: 2px; background: var(--input-line); }
+.owner-bars span.on { background: var(--accent); }
