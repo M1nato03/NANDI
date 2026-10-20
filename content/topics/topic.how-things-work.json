@@ -81,7 +81,8 @@
                     "sourceRefs": [
                       "lift"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "It always grows as the plane slows.", "feedback": "Slower air past the wing tends to cut lift, not raise it. That is why a slowing glider sinks.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -117,7 +118,8 @@
                     "sourceRefs": [
                       "lift"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Only when the train stops moving.", "feedback": "A stopped train means less air rushing past. The push comes when air flows over the wing.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -153,7 +155,8 @@
                     "sourceRefs": [
                       "lift"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "0 newtons, since gliders float.", "feedback": "Gliders do not float for free. Steady level flight needs about 2 newtons of lift to match the weight.", "correct": false, "sourceRefs": ["lift"] }
                 ],
                 "answer": {
                   "value": 2,
@@ -195,7 +198,8 @@
                     "sourceRefs": [
                       "lift"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Air pulls the wing downward.", "feedback": "Pushing air down brings an equal push back up on the wing. A downward pull would not hold a plane up.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -269,7 +273,8 @@
                     "sourceRefs": [
                       "lift"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Sideways.", "feedback": "Weight always pulls toward the ground. In level flight it points down while lift points up.", "correct": false, "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -321,31 +326,13 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "Put the two links of wing lift in order.",
+                "stem": "Put the links of wing lift in order.",
                 "options": [
-                  {
-                    "id": "a",
-                    "text": "First: the wing turns moving air down.",
-                    "feedback": "The altered air flow is the action that leads to the force on the wing.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "lift"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Next: the air pushes the wing up.",
-                    "feedback": "That reaction helps support the craft and must match weight in level flight.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "lift"
-                    ]
-                  }
+                  { "id": "a", "text": "Air flows past the moving wing.", "feedback": "Lift needs moving air first. A still wing in still air makes no lift.", "correct": true, "sourceRefs": ["lift"] },
+                  { "id": "b", "text": "The wing turns that air downward.", "feedback": "The angled wing changes the air's path and sends it down behind the wing.", "correct": true, "sourceRefs": ["lift"] },
+                  { "id": "c", "text": "The air pushes the wing up.", "feedback": "Turning air down brings an equal push back up, which can balance the weight.", "correct": true, "sourceRefs": ["lift"] }
                 ],
-                "answer": [
-                  "a",
-                  "b"
-                ]
+                "answer": ["a", "b", "c"]
               }
             ],
             "misconceptions": [
@@ -496,7 +483,8 @@
                     "sourceRefs": [
                       "quad"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "A straight climb with no tilt.", "feedback": "A straight climb needs every rotor to push harder together. One stronger side tips the craft instead.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad"] }
                 ]
               },
               {
@@ -535,7 +523,8 @@
                       "quad",
                       "mit"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The propellers were swapped mid-air.", "feedback": "Nothing is swapped in flight. The controller changes motor speeds, which shifts the spin balance and turns the nose.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad", "mit"] }
                 ]
               },
               {
@@ -571,7 +560,8 @@
                     "sourceRefs": [
                       "quad"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "2 newtons.", "feedback": "Leaving the front at 2 would raise total thrust to 9. The front pair must drop to 1.5 each to keep 8.", "correct": false, "sourceRefs": ["quad"] }
                 ],
                 "answer": {
                   "value": 1.5,
@@ -613,7 +603,8 @@
                     "sourceRefs": [
                       "quad"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The GPS points the nose down.", "feedback": "GPS can guide where the craft goes, but motor speeds make the tilt. More rear thrust lowers the nose.", "correct": false, "misconceptionIds": ["multirotor-turns-m1"], "sourceRefs": ["quad"] }
                 ]
               },
               {
@@ -691,7 +682,8 @@
                     "sourceRefs": [
                       "quad"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Side-to-side.", "feedback": "The side-to-side axis is the one for pitch, nose up or down. Yaw turns around the up-down axis.", "correct": false, "sourceRefs": ["quad"] }
                 ]
               },
               {
@@ -957,7 +949,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "It must drop below the old time.", "feedback": "More energy can still add some time. The extra weight eats into the gain, but need not wipe it out.", "correct": false, "misconceptionIds": ["battery-flight-time-m1"], "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -993,7 +986,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The rotors need less lift now.", "feedback": "Extra load adds weight, so the rotors must push harder, not less. Hover power tends to rise.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -1029,7 +1023,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "1 hour.", "feedback": "Energy over power gives 180 divided by 90, which is 2 hours. One hour would need a 180-watt draw.", "correct": false, "sourceRefs": ["battery"] }
                 ],
                 "answer": {
                   "value": 2,
@@ -1071,7 +1066,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Both give the same time, as energy is equal.", "feedback": "Equal energy is only half the story. The heavier pack needs more lift, so it spends that energy faster.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -1146,7 +1142,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Battery weight.", "feedback": "Weight changes how much power the craft needs, but the rate in the sum is the power use itself.", "correct": false, "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -1220,7 +1217,8 @@
                     "sourceRefs": [
                       "battery"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Sellers simply make the charts up.", "feedback": "Charts come from tests under set conditions. Wind and payload change power use once the craft is out flying.", "correct": false, "sourceRefs": ["battery"] }
                 ]
               }
             ],
@@ -1436,7 +1434,8 @@
                       "gpsaccuracy",
                       "barometer"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The IMU's sense of tilt.", "feedback": "The IMU works on board and does not need the sky. A wandering map dot points to weak GPS.", "correct": false, "misconceptionIds": ["flight-sensors-m1"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] }
                 ]
               },
               {
@@ -1481,7 +1480,8 @@
                       "gpsaccuracy",
                       "barometer"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The average, 15 metres.", "feedback": "Averaging mixes in a reading the roof has weakened. The calibrated pressure clue is the better one here.", "correct": false, "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] }
                 ],
                 "answer": {
                   "value": 12,
@@ -1532,7 +1532,8 @@
                       "gpsaccuracy",
                       "barometer"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The IMU.", "feedback": "An IMU senses quick turns and motion, not air pressure. A barometer reads pressure to track height.", "correct": false, "misconceptionIds": ["flight-sensors-m1"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] }
                 ]
               },
               {
@@ -1624,7 +1625,8 @@
                       "gpsaccuracy",
                       "barometer"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The motor speed.", "feedback": "How fast motors spin moves the craft but says nothing about where it is. A map spot needs satellite signals.", "correct": false, "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] }
                 ]
               },
               {
@@ -1716,7 +1718,8 @@
                       "gpsaccuracy",
                       "barometer"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The barometer stops working indoors.", "feedback": "Air pressure reaches under a roof too. The roof mainly harms the satellite signals that GPS needs.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] }
                 ]
               }
             ],
@@ -1896,7 +1899,8 @@
                     "sourceRefs": [
                       "bird"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Cooling for the bird's body only.", "feedback": "Flapping is not mainly for cooling. Each stroke pushes air to give the bird lift and forward push.", "correct": false, "sourceRefs": ["bird"] }
                 ]
               },
               {
@@ -1969,7 +1973,8 @@
                     "sourceRefs": [
                       "bird"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "700 newtons.", "feedback": "Adding the two mixes up directions. Lift must match the 500-newton weight on its own.", "correct": false, "sourceRefs": ["bird"] }
                 ],
                 "answer": {
                   "value": 500,
@@ -2011,7 +2016,8 @@
                     "sourceRefs": [
                       "bird"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The tail fin.", "feedback": "A tail helps steer and keep the plane stable. Forward thrust comes from the engine or propeller.", "correct": false, "sourceRefs": ["bird"] }
                 ]
               },
               {
@@ -2085,7 +2091,8 @@
                     "sourceRefs": [
                       "bird"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Drag.", "feedback": "Wings do make some drag, but that is a side effect. Their main job is to make lift.", "correct": false, "sourceRefs": ["bird"] }
                 ]
               },
               {
@@ -2159,7 +2166,8 @@
                     "sourceRefs": [
                       "bird"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Planes flap their wings too, just slowly.", "feedback": "Plane wings stay fixed. Air pushed past them by the engine's thrust is what makes their lift.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] }
                 ]
               }
             ],
@@ -2321,7 +2329,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Fresh air pulled in from outside.", "feedback": "With the window shut, no outside air comes in. The fan just speeds up the air already in the room.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
                 ]
               },
               {
@@ -2360,7 +2369,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "People in the next room.", "feedback": "A ceiling fan moves air mainly in its own room. With no one beneath it, nobody feels the breeze.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
                 ]
               },
               {
@@ -2399,7 +2409,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "10 degrees Celsius.", "feedback": "A fan has no way to remove ten degrees of heat. It moves air over skin while the room stays as warm.", "correct": false, "sourceRefs": ["fan", "cooling"] }
                 ],
                 "answer": {
                   "value": 0,
@@ -2444,7 +2455,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Moving air holds less heat.", "feedback": "Moving room air holds the same heat as still air. It feels cooler because it helps sweat dry.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
                 ]
               },
               {
@@ -2525,7 +2537,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Noise level.", "feedback": "An air conditioner can be loud or quiet, but its job is to remove heat. It lowers the air's temperature.", "correct": false, "sourceRefs": ["fan", "cooling"] }
                 ]
               },
               {
@@ -2604,7 +2617,8 @@
                       "fan",
                       "cooling"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "A faster fan makes the air colder.", "feedback": "A faster fan moves more air, which can feel cooler. It still does not lower the room's temperature.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
                 ]
               }
             ],
@@ -2820,7 +2834,8 @@
                       "npci-bhim",
                       "npci-booklet"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Taking money out of Ravi's account.", "feedback": "A UPI ID lets money be sent to Ravi. Money leaves his account only when he approves with his PIN.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               },
               {
@@ -2918,7 +2933,8 @@
                       "npci-bhim",
                       "npci-booklet"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "A bank branch code.", "feedback": "That is the IFSC, a different code. A VPA is a virtual payment address linked to a bank account.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               },
               {
@@ -3003,7 +3019,8 @@
                       "npci-bhim",
                       "npci-booklet"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Phone companies.", "feedback": "The phone network carries the message, but it does not hold the money. The linked banks move the funds.", "correct": false, "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               },
               {
@@ -3088,7 +3105,8 @@
                       "npci-bhim",
                       "npci-booklet"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "NPCI keeps the money and pays it later.", "feedback": "NPCI routes the request but does not hold the money. The linked banks debit and credit the accounts.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               }
             ],
@@ -3263,7 +3281,8 @@
                       "nasa-camera",
                       "nasa-phone"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Extra light made by the screen.", "feedback": "The screen does not light the scene for the sensor. Only light from the scene comes through the lens.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               },
               {
@@ -3395,7 +3414,8 @@
                       "nasa-camera",
                       "nasa-phone"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The lens.", "feedback": "A lens bends light to focus it, but it makes no signal. The sensor turns light into readings.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               },
               {
@@ -3476,7 +3496,8 @@
                       "nasa-camera",
                       "nasa-phone"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Point the lens at the scene again.", "feedback": "The light has already reached the sensor. What is left is to turn its readings into a picture.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               },
               {
@@ -3556,7 +3577,8 @@
                       "nasa-camera",
                       "nasa-phone"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Screen, light, then sensor.", "feedback": "The display only shows the result at the end. Light comes first, then sensor signals, then processing.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               }
             ],
@@ -3728,7 +3750,8 @@
                       "nasa-sky",
                       "nasa-light"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Green.", "feedback": "Its waves sit between blue and red. Blue, with the shortest waves here, scatters most across clear air.", "correct": false, "sourceRefs": ["nasa-sky", "nasa-light"] }
                 ]
               },
               {
@@ -3767,7 +3790,8 @@
                       "nasa-sky",
                       "nasa-light"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Clouds dyed the light orange.", "feedback": "Clouds can add colour but do not dye the light. The longer air path removes more blue from the beam.", "correct": false, "misconceptionIds": ["sky-colours-m1"], "sourceRefs": ["nasa-sky", "nasa-light"] }
                 ]
               },
               {
@@ -3858,7 +3882,8 @@
                       "nasa-sky",
                       "nasa-light"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Its brighter glow.", "feedback": "Brightness is not what sets scattering here. Blue's shorter wavelength makes it scatter more.", "correct": false, "sourceRefs": ["nasa-sky", "nasa-light"] }
                 ]
               },
               {
@@ -3938,7 +3963,8 @@
                       "nasa-sky",
                       "nasa-light"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Empty space.", "feedback": "Sunlight crosses space on every trip. At sunset, what grows is the path through air, which strips out blue.", "correct": false, "sourceRefs": ["nasa-sky", "nasa-light"] }
                 ]
               },
               {
@@ -4018,7 +4044,8 @@
                       "nasa-sky",
                       "nasa-light"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Dust makes the sky blue by day.", "feedback": "Clear air alone scatters blue light. Dust and haze can change sunsets, but they are not why the sky is blue.", "correct": false, "sourceRefs": ["nasa-sky", "nasa-light"] }
                 ]
               }
             ],
@@ -4190,7 +4217,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "It stays at 100 degrees no matter what.", "feedback": "That is the open-pot boil at sea level. Higher pressure inside lets the water boil hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               },
               {
@@ -4229,7 +4257,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Both reach the same heat in the end.", "feedback": "Open water stops near its boiling point however long it heats. The sealed pot can boil hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m2"], "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               },
               {
@@ -4268,7 +4297,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "About 150 degrees Celsius.", "feedback": "That is far above the standard example. Georgia State puts the boil near 121 degrees at working pressure.", "correct": false, "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ],
                 "answer": {
                   "value": 121,
@@ -4313,7 +4343,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Leaves it unchanged.", "feedback": "Pressure does change the boiling point. With more pressure, water must get hotter before it boils.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               },
               {
@@ -4392,7 +4423,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Stays exactly the same.", "feedback": "Air pressure changes with height, so the boiling point shifts too. At sea level it goes up.", "correct": false, "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               },
               {
@@ -4472,7 +4504,8 @@
                       "usda-pressure",
                       "gsu-pressure"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Less heat escapes, since the steam stays in.", "feedback": "Steam does leave through the whistle. The real gain is the hotter boil that the higher pressure allows.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               }
             ],
