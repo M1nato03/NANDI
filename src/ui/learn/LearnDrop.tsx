@@ -15,6 +15,7 @@ import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop,
 import { Cast } from '../cast/Cast';
 import { dropCast } from '../cast/placement';
 import { playCastSound } from '../cast/sound';
+import { estimateFeedback, formatEstimate, sliderScale } from '../../core/learn/estimate';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -39,6 +40,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [pending, setPending] = useState<{ value: ItemAnswer; optionId?: string }>();
   const [confidence, setConfidence] = useState<Confidence>('fairly-sure');
   const [sequence, setSequence] = useState<string[]>([]);
+  const [guess, setGuess] = useState<number>();
   const [matchLeft, setMatchLeft] = useState<string>();
   const [pairs, setPairs] = useState<{ left: string; right: string }[]>([]);
   const [message, setMessage] = useState('');
@@ -66,8 +68,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const found = step ? findItem(concepts, step.itemId) : undefined;
   const savedAnswer = drop?.pendingFeedback?.answer;
   const savedOptionId = typeof savedAnswer === 'string' ? savedAnswer : Array.isArray(savedAnswer) ? (typeof savedAnswer.at(-1) === 'string' ? savedAnswer.at(-1) as string : (savedAnswer.at(-1) as { right?: string } | undefined)?.right) : found?.item.options.find(option => Number(option.text.match(/-?\d+(?:[.,]\d+)*/)?.[0]?.replaceAll(',', '')) === savedAnswer)?.id;
+  const savedEstimate = found?.item.type === 'estimate' && typeof savedAnswer === 'number' && drop?.pendingFeedback ? estimateFeedback(found.item, savedAnswer, drop.pendingFeedback.correct) : undefined;
   const savedFeedback = drop?.pendingFeedback && found ? { cursor: drop.pendingFeedback.cursor, correct: drop.pendingFeedback.correct,
-    text: found.item.options.find(option => option.id === savedOptionId)?.feedback ?? (drop.pendingFeedback.correct ? 'That fits.' : 'Look at the idea again next time.'), rule: found.concept.rule, optionId: savedOptionId } : undefined;
+    text: savedEstimate?.text ?? found.item.options.find(option => option.id === savedOptionId)?.feedback ?? (drop.pendingFeedback.correct ? 'That fits.' : 'Look at the idea again next time.'), rule: found.concept.rule, optionId: savedEstimate ? savedEstimate.optionId : savedOptionId } : undefined;
   const visibleFeedback = feedback ?? savedFeedback;
   const feedbackRef = useRef<HTMLDivElement>(null);
   const feedbackKey = visibleFeedback ? visibleFeedback.cursor : -1;
@@ -119,7 +122,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     setBusy(true);
     const grade = gradeItem(found.item, value);
     const option = found.item.options.find(candidate => candidate.id === feedbackId);
-    setFeedback({ cursor: drop.cursor, correct: grade.correct, text: option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule, optionId: feedbackId });
+    const slid = found.item.type === 'estimate' && typeof value === 'number' ? estimateFeedback(found.item, value, grade.correct) : undefined;
+    setFeedback({ cursor: drop.cursor, correct: grade.correct, text: slid?.text ?? option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule, optionId: slid ? slid.optionId : feedbackId });
     if (!night) {
       if (grade.correct) playCastSound(combo > 0 ? 'combo' : 'correct', data?.sound?.value === true && !data.sound.deleted);
       setCombo(grade.correct ? combo + 1 : 0);
@@ -159,7 +163,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     try {
       const current = await db.learnDrops.get(drop.id);
       if (current?.drop.pendingFeedback) await saveDrop(db, { ...current.drop, pendingFeedback: undefined }, current.deviceId, currentTime());
-      setFeedback(undefined); setPending(undefined); setConfidence('fairly-sure'); setSequence([]); setPairs([]); setMatchLeft(undefined); setMessage('');
+      setFeedback(undefined); setPending(undefined); setGuess(undefined); setConfidence('fairly-sure'); setSequence([]); setPairs([]); setMatchLeft(undefined); setMessage('');
     } catch { setMessage('Could not continue this drop. Try again.'); }
     finally { setBusy(false); }
   };
@@ -196,7 +200,20 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p></div><h2>{item.stem}</h2>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {!goldReview && item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
-    <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
+    {item.type === 'estimate' ? (() => {
+      const scale = sliderScale(item), unit = item.answer.unit;
+      const shown = typeof savedAnswer === 'number' && visibleFeedback ? savedAnswer : guess ?? scale.start;
+      const set = (next: number) => { if (visibleFeedback || writing.current) return; const value = Math.min(scale.hi, Math.max(scale.lo, Number(next.toFixed(6)))); setGuess(value); setPending({ value, optionId: 'slider' }); };
+      return <div className={`learn-estimate${visibleFeedback ? (visibleFeedback.correct ? ' right' : ' missed') : ''}`}>
+        {!goldReview && !visibleFeedback && <p className="learn-hint">Drag to your best guess, then check.</p>}
+        <output className="learn-estimate-value" aria-live="polite">{formatEstimate(shown, unit)}</output>
+        <div className="learn-estimate-row"><button type="button" className="secondary" aria-label="A little less" disabled={!!visibleFeedback || shown <= scale.lo} onClick={() => set(shown - scale.step)}>−</button>
+          <input type="range" min={scale.lo} max={scale.hi} step={scale.step} value={shown} aria-label="Your guess" aria-valuetext={formatEstimate(shown, unit)} disabled={!!visibleFeedback} onChange={event => set(Number(event.target.value))} />
+          <button type="button" className="secondary" aria-label="A little more" disabled={!!visibleFeedback || shown >= scale.hi} onClick={() => set(shown + scale.step)}>+</button></div>
+        <div className="learn-estimate-scale" aria-hidden="true"><span>{formatEstimate(scale.lo, unit)}</span><span>{formatEstimate(scale.hi, unit)}</span></div>
+        {visibleFeedback && <p className="learn-estimate-answer">Answer: {formatEstimate(item.answer.value, unit)}</p>}
+      </div>;
+    })() : <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
     {pending && !visibleFeedback && <div className="learn-confidence">{!goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}<button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p></>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;

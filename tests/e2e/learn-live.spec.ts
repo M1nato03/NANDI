@@ -18,6 +18,10 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
   } else if (item.type === 'match') {
     const pairs = item.answer as { left: string; right: string }[];
     for (const pair of pairs) { await tap(pair.left); await tap(wrong ? pair.left : pair.right); }
+  } else if (item.type === 'estimate') {
+    // Drag-to-guess: the right value, or the top end of the slider for a miss.
+    const slider = page.locator('.learn-estimate input[type=range]');
+    await slider.fill(wrong ? (await slider.getAttribute('max'))! : String((item.answer as unknown as { value: number }).value));
   } else {
     const option = item.options.find(row => row.correct !== wrong);
     if (!option) throw new Error('No matching option');
@@ -27,7 +31,7 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
   const feedback = page.locator('.learn-feedback');
   await expect(feedback).toBeVisible();
   await expect(feedback).toContainText(concept.rule);
-  if (item.type !== 'order' && item.type !== 'match') await expect(feedback).toContainText(item.options.find(option => option.correct !== wrong)!.feedback);
+  if (item.type !== 'order' && item.type !== 'match') await expect(feedback).toContainText(item.options.find(option => item.type === 'estimate' ? option.correct : option.correct !== wrong)!.feedback);
   // The answer is saved after the feedback appears; Next turns on once the save finished.
   await expect(feedback.getByRole('button', { name: 'Next' })).toBeEnabled();
   if (advance) {
