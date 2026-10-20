@@ -47,7 +47,7 @@
 .learn-topic-expand { display: grid; gap: 7px; width: 100%; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); text-align: left; }
 .learn-topic-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 800 21px 'Bricolage Grotesque', sans-serif; }
 .learn-topic-title > span { font: 700 24px 'DM Sans', sans-serif; color: var(--accent); }
-.learn-topic-hook { color: var(--secondary-ink); font-size: 13px; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.learn-topic-hook { color: var(--secondary-ink); font-size: 13px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; text-align: left; }
 .learn-topic-progress-label { color: var(--muted); font-size: 12px; }
 .learn-topic-progress { display: block; height: 5px; overflow: hidden; border-radius: 5px; background: var(--raised); }
 .learn-topic-progress > span { display: block; height: 100%; background: var(--teal); }

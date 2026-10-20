@@ -11,4 +11,5 @@
 .welcome-goal.picked { border-color: var(--accent); background: var(--raised); box-shadow: inset 0 0 0 1px var(--accent); }
 .welcome-goal.picked::after { content: '✓'; float: right; color: var(--accent); font-weight: 800; }
 .welcome-time { display: grid; gap: 6px; width: 100%; font-weight: 700; }
-.welcome-time input { font-size: 1.4rem; text-align: center; min-height: 52px; }
+.welcome-time { text-align: center; }
+.welcome-time input { width: 100%; box-sizing: border-box; font-size: 1.4rem; text-align: center; min-height: 52px; }
