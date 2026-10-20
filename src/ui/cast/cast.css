@@ -1,0 +1,34 @@
+.cast-svg { display: inline-block; flex: none; vertical-align: middle; overflow: visible; --cast-line: #2b2118; --cast-body: #2f8f86; --cast-detail: #e5a96a; --cast-cream: #f7efe2; --cast-muzzle: #e8b48f; --cast-accent: #f29b38; }
+.cast-nandi { --cast-body: #c4683a; --cast-detail: #b45a33; --cast-cream: #f7efe2; --cast-muzzle: #ecb995; --cast-accent: #f29b38; }
+.cast-moti { --cast-body: #7da7cf; --cast-detail: #f1c3c6; }
+.cast-chiku { --cast-body: #c97b3c; --cast-detail: #8d4b28; --cast-cream: #f6e2c6; }
+.cast-kapi { --cast-body: #9b5b3b; --cast-detail: #c98d5c; --cast-cream: #f4dcc2; }
+.cast-mor { --cast-body: #2470b3; --cast-detail: #1d8b75; --cast-accent: #f2a33a; }
+.cast-kachhua { --cast-body: #82a24d; --cast-detail: #3f7b5c; }
+/* Characters keep their own colours in light and dark (a theme token would turn Nandi's face black at night). */
+.cast-pose-cheer { transform: rotate(-4deg) translateY(-2px); }
+.cast-pose-think { transform: rotate(5deg); }
+.cast-pose-rest { transform: translateY(2px); }
+@media (prefers-reduced-motion: reduce) { .cast-svg { animation: none !important; transition: none !important; transform: none !important; } }
+:root[data-motion='reduce'] .cast-svg { animation: none !important; transition: none !important; transform: none !important; }
+.cast-inline { display: inline-flex; align-items: center; gap: 8px; }
+.cast-gallery-row { margin: 16px 0; }
+.cast-gallery-row h2 { margin: 0 0 8px; }
+.cast-gallery-poses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.cast-gallery-pose { display: grid; justify-items: center; gap: 3px; font-size: 12px; text-transform: capitalize; }
+.cast-gallery-pose .cast-svg { max-width: 100%; }
+.cast-open { position: fixed; inset: 0; z-index: 40; width: 100%; height: 100%; border: 0; border-radius: 0; background: var(--bg); color: var(--ink); display: grid; place-items: center; padding: 0; }
+.cast-open-inner { display: grid; justify-items: center; gap: 8px; animation: cast-arrive 1.1s ease-out both; }
+.cast-open-inner strong { font: 800 32px 'Bricolage Grotesque', sans-serif; letter-spacing: .08em; }
+@keyframes cast-arrive { from { opacity: 0; transform: translateX(-30px) scale(.88); } 70% { opacity: 1; transform: translateX(0) scale(1.04); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .cast-open { display: none; } .cast-open-inner { animation: none; } }
+:root[data-motion='reduce'] .cast-open { display: none; }
+.cast-unit-scene { position: fixed; z-index: 35; inset: 0; background: var(--bg); display: grid; place-items: center; padding: 20px; }
+.cast-unit-card { width: min(100%, 420px); text-align: center; }
+.cast-unit-friends { display: flex; align-items: end; justify-content: center; gap: 4px; max-width: 100%; }
+.cast-unit-friends .cast-svg { max-width: calc((100% - 20px) / 6); }
+.cast-unit-card button { margin: 4px; }
+@media (prefers-reduced-motion: reduce) { .cast-unit-scene { display: none; } }
+:root[data-motion='reduce'] .cast-unit-scene { display: none; }
+body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; }
+.cast-unit-scene .cast-svg { visibility: visible !important; }

@@ -39,6 +39,7 @@ import { CaseScreen } from '../mind/CaseScreen';
 import { EmptyState } from '../EmptyState';
 import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
+import { Kapi } from '../cast/Cast';
 
 type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
@@ -393,7 +394,7 @@ export function Mind({ entry }: { entry?: string }) {
     </>}
   </section>;
 
-  return <section className="screen mind-hub">
+  return <section className="screen mind-hub">{entry !== 'courses' && entry !== 'unit' && <Kapi pose="think" size={48} />}
     {entry !== 'courses' && entry !== 'unit' && <><p className="eyebrow">Practice</p><h1>Mind</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">

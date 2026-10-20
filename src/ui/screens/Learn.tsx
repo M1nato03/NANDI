@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { learningFigures, masteryMapState } from '../../core/learn/engine';
 import { loadEngineFacts } from '../../data/repos/learn-engine';
@@ -12,6 +12,9 @@ import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from
 import { go } from '../shell/router';
 import { chestReady } from '../../core/economy/gamify';
 import { RULES } from '../../core/rules.config';
+import { completedModuleKey, UnitScene } from '../cast/UnitScene';
+import { Moti } from '../cast/Cast';
+import { playCastSound } from '../cast/sound';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
 const dropStatus = (row?: LearnDropRow) => !row ? 'Not started' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : `${row.drop.cursor} of ${row.drop.items.length} done`;
@@ -24,6 +27,7 @@ export function Learn({ entry }: { entry?: string }) {
   const [message, setMessage] = useState('');
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
+    sound: await db.settings.get('economy.soundOn'),
     states: await db.learnConcepts.toArray(),
     daily: await db.learnDrops.get(dailyDropId(openedAt)),
     night: await db.learnDrops.get(nightDropId(openedAt)),
@@ -33,6 +37,16 @@ export function Learn({ entry }: { entry?: string }) {
   const selected = chosenTopics(data?.setting?.value);
   const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
+  const [unitScene, setUnitScene] = useState<string>();
+  const learned = new Set((data?.states ?? []).filter(row => !!row.firstLearnedAt).map(row => row.id));
+  const completedUnit = data && completedModuleKey(topics.flatMap(pack => pack.body.modules), learned, id => localStorage.getItem(`cast.unit:${id}`) === 'seen');
+  useEffect(() => {
+    if (!completedUnit || matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce') return;
+    try { localStorage.setItem(`cast.unit:${completedUnit}`, 'seen'); } catch { /* Scene remains optional when storage is blocked. */ }
+    playCastSound('chest', data?.sound?.value === true && !data.sound.deleted);
+    queueMicrotask(() => setUnitScene(completedUnit));
+  }, [completedUnit, data?.sound]);
+  const scene = unitScene && <UnitScene moduleId={unitScene} close={() => setUnitScene(undefined)} />;
   const isDue = (id: string) => {
     const state = stateById.get(id);
     return !!state && ((!!state.memory && state.memory.dueAt <= openedAt) || ([7, 30] as const).some(day =>
@@ -50,13 +64,13 @@ export function Learn({ entry }: { entry?: string }) {
       setMessage('Topics updated.');
     } catch { setMessage('Could not update topics. Try again.'); }
   };
-  if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} /></section>;
-  if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} /></section>;
+  if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
+  if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
   return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
-      {dueCount > 0 && <><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
+      {dueCount > 0 && <><div className="cast-inline"><Moti pose="think" size={40} /><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button></div>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>
     <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>
     {[...topics].sort((a, b) => Number(selected.includes(b.body.topic.id)) - Number(selected.includes(a.body.topic.id))).map(pack => {
@@ -79,6 +93,6 @@ export function Learn({ entry }: { entry?: string }) {
     })}
     <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2><p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>{figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>
     {message && <p role="status">{message}</p>}
-    <Mind entry="courses" />
+    <Mind entry="courses" />{scene}
   </section>;
 }
