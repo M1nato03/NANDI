@@ -31,16 +31,18 @@ export function readDayLimit(value: unknown): number {
 
 export type PauseSwap = { label: string; route: string };
 /** What the pause card says, by why it opened, and the one-tap swaps offered after the breath. */
-export function pauseCardCopy(input: { reason: string; minutes: number; label: string; planText: string | null }): { lead: string; swaps: PauseSwap[] } {
+export function pauseCardCopy(input: { reason: string; minutes: number; label: string; planText: string | null; suggestion?: string | null }): { lead: string; swaps: PauseSwap[] } {
   const review = { label: 'One review card', route: 'mind/reviews' };
   if (input.reason === 'night') {
-    return { lead: input.planText ?? 'If I reach for Reels at night, then I open my night deck.', swaps: [{ label: 'Open my night deck', route: 'night' }, review, { label: 'Put the phone down', route: 'close' }] };
+    const middle = input.suggestion ? { label: input.suggestion, route: 'close' } : review;
+    return { lead: input.planText ?? 'If I reach for Reels at night, then I open my night deck.', swaps: [{ label: 'Open my night deck', route: 'night' }, middle, { label: 'Put the phone down', route: 'close' }] };
   }
   const minutes = Math.max(1, Math.round(input.minutes));
   const lead = input.reason === 'limit'
     ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} in your chosen apps today. Is the next scroll worth it?`
     : `You opened ${input.label}. Take a breath and choose on purpose.`;
-  return { lead, swaps: [{ label: 'A 2-minute puzzle', route: 'mind/board/daily' }, review, { label: 'Back to my day', route: 'plan' }] };
+  const second = input.suggestion ? { label: input.suggestion, route: 'close' } : review;
+  return { lead, swaps: [{ label: 'A 2-minute puzzle', route: 'mind/board/daily' }, second, { label: 'Back to my day', route: 'plan' }] };
 }
 
 export function pauseWindowActive(now: Date, bedtime: string): boolean {

@@ -3,6 +3,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { DEFAULT_PAUSE_APPS, pauseCardCopy } from '../../core/nightPause';
+import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
+import { dayKey } from '../../core/time';
 import { readNightPlan, nightPlanText } from '../../core/nightPlan';
 import { RULES } from '../../core/rules.config';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
@@ -17,7 +19,8 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
   const acting = useRef(false);
   const label = DEFAULT_PAUSE_APPS.find(app => app.packageName === packageName)?.label ?? 'the app';
   const plan = readNightPlan(rows);
-  const copy = pauseCardCopy({ reason, minutes, label, planText: plan ? nightPlanText(plan) : null });
+  const suggestion = boundedSuggestion(readInterests(rows), dayKey(Date.now()), reason === 'night'); // eslint-disable-line react-hooks/purity
+  const copy = pauseCardCopy({ reason, minutes, label, planText: plan ? nightPlanText(plan) : null, suggestion });
   useEffect(() => {
     const timer = window.setInterval(() => setSeconds(value => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);

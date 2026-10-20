@@ -12,6 +12,7 @@ import { dailyDropId } from '../learn/dropIds';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
+import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
@@ -133,7 +134,7 @@ export function EconomyFeedback() {
     const timer = window.setTimeout(() => { setNotice(null); setDoneCard(true); setPendingDone(false); }, RULES.juice.mesoMs[1] + 600);
     return () => window.clearTimeout(timer);
   }, [pendingDone]);
-  if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} />;
+  if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
   return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

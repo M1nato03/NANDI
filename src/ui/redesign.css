@@ -437,3 +437,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-night .night-close { min-width: 44px; min-height: 44px; width: 44px; padding: 0; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-size: 22px; line-height: 1; }
 
 .plan-screen > h1 + button.secondary { margin-bottom: 16px; }
+.interest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.interest-chip { min-height: 44px; border-radius: 999px; padding: 8px 14px; background: var(--surface); color: var(--ink); border: 1px solid var(--input-line); }
+.interest-chip.on { background: var(--accent); color: var(--button-ink, #1b140c); border-color: var(--accent); }
+.busy-day { margin: 0 0 12px; }
+.done-suggestion { font-weight: 600; }

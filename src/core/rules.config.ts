@@ -167,6 +167,9 @@ export const RULES = {
   },
 
   // 05-economy §2, night schedule. Clock bounds, if added, use the night timeline.
+  // spec 11 W5: a busy day moves the night later (bounded) and keeps Learn small.
+  adaptive: { busyMinutes: 240, busyShiftMin: 30, veryBusyMinutes: 360, veryBusyShiftMin: 60 },
+
   night: {
     windDownCapMin: 10,
     defaultBedtime: '01:30',
@@ -323,6 +326,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.shutdownMinBeforeBedtime': [0, 180], 'night.streakReminderMinBeforeBedtime': [0, 240],
   'night.pauseLeadMin': [0, 120],
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
+  'adaptive.busyMinutes': [60, 720], 'adaptive.busyShiftMin': [0, 60], 'adaptive.veryBusyMinutes': [60, 900], 'adaptive.veryBusyShiftMin': [0, 60],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],
   'juice.microMs.0': [0, 1000], 'juice.microMs.1': [0, 1000],
   'juice.mesoMs.0': [0, 2000], 'juice.mesoMs.1': [0, 2000],

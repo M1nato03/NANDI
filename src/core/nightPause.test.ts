@@ -25,6 +25,8 @@ describe('Night pause decision', () => {
     const limit = pauseCardCopy({ ...base, reason: 'limit', minutes: 34 });
     expect(limit.lead).toBe('34 minutes in your chosen apps today. Is the next scroll worth it?');
     expect(limit.swaps.map(swap => swap.label)).toEqual(['A 2-minute puzzle', 'One review card', 'Back to my day']);
+    const withInterest = pauseCardCopy({ ...base, reason: 'open', suggestion: 'Watch one episode, then stop' });
+    expect(withInterest.swaps[1]).toEqual({ label: 'Watch one episode, then stop', route: 'close' });
   });
   it('names the window as clock times, across midnight too', () => {
     expect(pauseWindowTimes('01:30')).toEqual({ start: '01:00', end: '04:00' });
