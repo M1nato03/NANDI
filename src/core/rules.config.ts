@@ -130,6 +130,9 @@ export const RULES = {
   // 05-economy §2, cross-mode bonuses.
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
   quests: { sideQuestXp: 20 },
+  gamify: { dailyQuestShards: 8, badgeTierShards: 5, unitChestShards: 25, perfectDropXp: 10,
+    focusMinutes: 15, focusMultiplier: 2, goldReviewItems: 5, goldReviewPass: 4,
+    badgeThresholds: [1, 5, 20] },
 
   // 05-economy §§2, 4, cumulative level curve.
   level: { stepBase: 100, softCap: 50 },
@@ -167,6 +170,9 @@ export const RULES = {
   },
 
   // 05-economy §2, night schedule. Clock bounds, if added, use the night timeline.
+  // spec 11 W5: a busy day moves the night later (bounded) and keeps Learn small.
+  adaptive: { busyMinutes: 240, busyShiftMin: 30, veryBusyMinutes: 360, veryBusyShiftMin: 60 },
+
   night: {
     windDownCapMin: 10,
     defaultBedtime: '01:30',
@@ -220,6 +226,11 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
   'learningTracks.checkMinQuestions': [3, 3], 'learningTracks.modulePassPercent': [50, 90],
   'quests.sideQuestXp': [0, 50],
+  'gamify.dailyQuestShards': [0, 100], 'gamify.badgeTierShards': [0, 100],
+  'gamify.unitChestShards': [0, 200], 'gamify.perfectDropXp': [0, 100],
+  'gamify.focusMinutes': [1, 60], 'gamify.focusMultiplier': [1, 3],
+  'gamify.goldReviewItems': [5, 5], 'gamify.goldReviewPass': [4, 5],
+  'gamify.badgeThresholds.0': [1, 100], 'gamify.badgeThresholds.1': [2, 500], 'gamify.badgeThresholds.2': [3, 1000],
   // Identity and day boundary: version is a positive schema number; hours use a local 24-hour clock.
   version: [1, 999], dayBoundaryHour: [0, 23],
   // Tasks: size bands cover practical estimates; XP and caps remain nonnegative.
@@ -323,6 +334,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.shutdownMinBeforeBedtime': [0, 180], 'night.streakReminderMinBeforeBedtime': [0, 240],
   'night.pauseLeadMin': [0, 120],
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
+  'adaptive.busyMinutes': [60, 720], 'adaptive.busyShiftMin': [0, 60], 'adaptive.veryBusyMinutes': [60, 900], 'adaptive.veryBusyShiftMin': [0, 60],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],
   'juice.microMs.0': [0, 1000], 'juice.microMs.1': [0, 1000],
   'juice.mesoMs.0': [0, 2000], 'juice.mesoMs.1': [0, 2000],

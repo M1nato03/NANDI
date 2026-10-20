@@ -127,6 +127,14 @@ export const RULES = {
 
 ## 3. Award rules (pure functions; test every line)
 
+### Gamification awards (20 Oct 2026)
+
+Daily quests are three deterministic picks from fifteen invitations per `dayKey`. Their progress comes from ledger facts. Each completed quest writes one idempotent `daily-quest:<dayKey>:<questId>` fact and grants 8 Shards. Completing all three writes one `focus-boost:<dayKey>` fact; for the next 15 minutes, eligible XP facts receive one extra copy of their replayed XP (2× total). The boost is fixed, time limited, and never costs Shards.
+
+A clean five-item Learn drop writes one `perfect-drop:<dayKey>` fact and adds 10 XP inside the Mind daily cap. Every badge has bronze, silver and gold thresholds at 1, 5 and 20 qualifying facts. Each newly earned tier writes one `badge-tier:<badgeId>:<tier>` fact and grants 5 Shards. Twenty completed daily quests in a month write one `monthly-challenge:<month>` badge fact. Once every concept in a module is Mastered, its unit chest writes one `unit-chest:<moduleId>` fact and grants 25 Shards. A five-item Gold review passes at four correct answers; it writes one `gold-review:<conceptId>` fact, changes the trail node to Gold, and has no extra XP or Shard award. An unsuccessful attempt writes a dated fact and can be retried tomorrow without lowering mastery.
+
+All these rows use the existing append-only ledger. XP and Shards are replayed from the rules active on each fact's day; reward amounts are never stored in a fact. No new database tables are needed.
+
 **Shared definitions:**
 
 - **Planned task:** a task that had a time slot at some point, or was a Must for the day.

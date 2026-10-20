@@ -9,9 +9,11 @@ import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow } from '../../data/types';
 import { dailyDropId } from '../learn/dropIds';
+import { reconcileGamify } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
+import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
@@ -26,7 +28,7 @@ type Notice = { text: string; macro: boolean; gain?: number; detail?: string; ne
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow };
 const complete = (source: Source, now: number) => Object.values(todayDotStatus(now, { tasks: source.tasks, sessions: source.sessions, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log })).every(Boolean);
 export function EconomyFeedback() {
-  const source = useLiveQuery(async () => { const now = Date.now(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
+  const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
   const [doneCard, setDoneCard] = useState(false);
@@ -48,6 +50,7 @@ export function EconomyFeedback() {
   }, []);
   useEffect(() => {
     if (!source) return;
+    void reconcileGamify(db).catch(() => { /* Later writes retry reconciliation. */ });
     const previous = prior.current;
     prior.current = source;
     if (!previous) {
@@ -80,6 +83,14 @@ export function EconomyFeedback() {
     const added = source.facts.filter(row => !oldIds.has(row.id));
     // Bulk restore and historical imports are data operations, not a new check-off.
     if (added.length > 5 || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
+    const badge = added.find(row => row.kind === 'badge-tier' || row.kind === 'monthly-challenge');
+    if (badge) {
+      // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
+      const label = badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier';
+      // A badge usually lands just after the finish that earned it: add it to that moment instead of replacing the warm line.
+      setNotice(current => current?.macro ? current : current ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : { text: label, macro: false });
+      return;
+    }
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);
@@ -133,7 +144,7 @@ export function EconomyFeedback() {
     const timer = window.setTimeout(() => { setNotice(null); setDoneCard(true); setPendingDone(false); }, RULES.juice.mesoMs[1] + 600);
     return () => window.clearTimeout(timer);
   }, [pendingDone]);
-  if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} />;
+  if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
   return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

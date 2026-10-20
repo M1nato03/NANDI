@@ -7,6 +7,6 @@ export function FinishMoment({ line, gain = 0, shownXp = 0, reduced, activity = 
   return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} /><span>{gain > 0 && <>+{shownXp} XP · </>}{line}</span></div>;
 }
 
-export function DoneForToday({ close, reduced }: { close: () => void; reduced: boolean }) {
-  return <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Done for today"><div className={`economy-reveal-card done-for-today${reduced ? '' : ' finish-bloom'}`} style={{ '--finish-duration': `${RULES.juice.mesoMs[1]}ms` } as React.CSSProperties}><Nandi pose="rest" size={80} /><h2>Done for today.</h2><p>The rest of the day is yours.</p><button type="button" onClick={close}>Close</button></div></div>;
+export function DoneForToday({ close, reduced, suggestion }: { close: () => void; reduced: boolean; suggestion?: string | null }) {
+  return <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Done for today"><div className={`economy-reveal-card done-for-today${reduced ? '' : ' finish-bloom'}`} style={{ '--finish-duration': `${RULES.juice.mesoMs[1]}ms` } as React.CSSProperties}><Nandi pose="rest" size={80} /><h2>Done for today.</h2><p>The rest of the day is yours.</p>{suggestion && <p className="done-suggestion">Something you enjoy: {suggestion}.</p>}<button type="button" onClick={close}>Close</button></div></div>;
 }

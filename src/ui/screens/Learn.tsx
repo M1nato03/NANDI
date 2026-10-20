@@ -10,11 +10,13 @@ import { LearnDrop } from '../learn/LearnDrop';
 import { Mind } from './Mind';
 import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from '../learn/flow';
 import { go } from '../shell/router';
+import { chestReady } from '../../core/economy/gamify';
+import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
 import { Moti } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 
-type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean };
+type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
 const dropStatus = (row?: LearnDropRow) => !row ? 'Not started' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : `${row.drop.cursor} of ${row.drop.items.length} done`;
 const dropAction = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= row.drop.items.length ? 'View' : 'Continue';
 
@@ -30,6 +32,7 @@ export function Learn({ entry }: { entry?: string }) {
     daily: await db.learnDrops.get(dailyDropId(openedAt)),
     night: await db.learnDrops.get(nightDropId(openedAt)),
     facts: (await loadEngineFacts(db)).facts,
+    ledger: await db.ledger.toArray(),
   }), [openedAt]);
   const selected = chosenTopics(data?.setting?.value);
   const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
@@ -62,7 +65,7 @@ export function Learn({ entry }: { entry?: string }) {
     } catch { setMessage('Could not update topics. Try again.'); }
   };
   if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
-  if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} onDone={() => setPractice(undefined)} />{scene}</section>;
+  if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
   return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
@@ -74,11 +77,8 @@ export function Learn({ entry }: { entry?: string }) {
       const topicId = pack.body.topic.id;
       const concepts = pack.body.modules.flatMap(module => module.concepts);
       const strong = concepts.filter(concept => ['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))).length;
-      const groups = [
-        { label: 'Strong', rows: concepts.filter(concept => ['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))) },
-        { label: 'Learning', rows: concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Learning') },
-        { label: 'New', rows: concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Not started') },
-      ];
+      const gold = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'gold-review').map(fact => fact.refId));
+      const mastered = new Set(concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Mastered' || gold.has(concept.id)).map(concept => concept.id));
       const open = expanded === topicId;
       return <section className="card learn-map-topic" key={pack.id}>
         <button type="button" className="learn-topic-expand" aria-expanded={open} aria-controls={`learn-ideas-${topicId}`} onClick={() => setExpanded(open ? undefined : topicId)}>
@@ -88,7 +88,7 @@ export function Learn({ entry }: { entry?: string }) {
           <span className="learn-topic-progress" role="progressbar" aria-label={`${pack.title} strong ideas`} aria-valuenow={strong} aria-valuemin={0} aria-valuemax={concepts.length}><span style={{ width: `${strong / concepts.length * 100}%` }} /></span>
         </button>
         <button type="button" className="secondary learn-topic-toggle" aria-pressed={selected.includes(topicId)} onClick={() => void toggle(topicId)}>{selected.includes(topicId) ? 'In my drops ✓' : 'Add to my drops'}</button>
-        {open && <div id={`learn-ideas-${topicId}`} className="learn-ideas" aria-label={`${pack.title} mastery map`}>{groups.filter(group => group.rows.length).map(group => <section key={group.label} className="learn-idea-group"><h3>{group.label} <small>{group.rows.length}</small></h3>{group.rows.map(concept => <div className="learn-idea-row" data-state={group.label.toLowerCase()} key={concept.id}><div><strong>{concept.title}</strong><p>{concept.rule}</p>{masteryMapState(stateById.get(concept.id)) === 'Mastered' && <small>Mastered</small>}</div><button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button></div>)}</section>)}</div>}
+        {open && <div id={`learn-ideas-${topicId}`} className="learn-trail" aria-label={`${pack.title} mastery map`}><div className="learn-trail-legend">{(['New', 'Learning', 'Strong'] as const).filter(label => concepts.some(concept => (masteryMapState(stateById.get(concept.id)) === 'Not started' ? 'New' : masteryMapState(stateById.get(concept.id))) === label)).map(label => <h3 key={label}>{label}</h3>)}</div>{pack.body.modules.map(module => <section key={module.id} className="learn-trail-module"><h3>{module.title}</h3>{module.concepts.map((concept, index) => { const state = gold.has(concept.id) ? 'Gold' : masteryMapState(stateById.get(concept.id)); const triedToday = (data?.ledger ?? []).some(fact => fact.kind === 'gold-attempt' && fact.refId === `${concept.id}:${new Date(openedAt).toISOString().slice(0, 10)}`); return <div key={concept.id}><div className={`learn-trail-node learn-idea-row offset-${index % 3}`} data-state={state === 'Not started' ? 'new' : state.toLowerCase()}><span className="learn-trail-dot" aria-hidden="true">{index + 1}</span><div><strong>{concept.title}</strong><small>{state}</small></div><button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button>{state === 'Mastered' && <button type="button" className="secondary" disabled={triedToday} onClick={() => setPractice({ conceptId: concept.id, topicId, goldReview: true })}>Gold review</button>}</div>{(index + 1) % 4 === 0 && index < module.concepts.length - 1 && <div className="learn-trail-checkpoint">Checkpoint · {index + 1} ideas</div>}</div>; })}<div className="learn-trail-chest">Unit chest · {chestReady(module.concepts.map(concept => concept.id), mastered) ? 'Opened' : 'Keep exploring'} · {RULES.gamify.unitChestShards} Shards</div></section>)}</div>}
       </section>;
     })}
     <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2><p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>{figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>

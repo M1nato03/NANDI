@@ -29,6 +29,7 @@ import { ContentReview } from '../screens/ContentReview';
 import { OwnerPanel } from '../screens/OwnerPanel';
 import { recordOwnerOpen } from '../../data/repos/owner';
 import { OPEN_GAP_MS } from '../../core/owner/metrics';
+import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { useAutoBackup } from './useAutoBackup';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
@@ -48,6 +49,7 @@ const Ground = lazy(() => import('../screens/Ground').then(module => ({ default:
 const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
+const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
 
@@ -57,6 +59,7 @@ export function AppShell() {
   const [clockTime, setClockTime] = useState(Date.now);
   const [pause, setPause] = useState<{ packageName: string; reason: string; minutes: number } | null>(null);
   const nightSettings = useLiveQuery(() => db.settings.toArray(), []);
+  const todayTasks = useLiveQuery(() => db.tasks.where('dayKey').equals(today).toArray(), [today]);
   const openingChecked = useRef(false);
   const wasNight = useRef<boolean | null>(null);
   const appearance = useAppearance();
@@ -75,13 +78,14 @@ export function AppShell() {
   useEffect(() => { initializeHistory(); const update = () => { const resolved = route(); if (location.hash !== `#${resolved}`) history.replaceState(history.state ?? { nandi: true }, '', `#${resolved}`); setPath(resolved); }; update(); window.addEventListener('hashchange', update); window.addEventListener('popstate', update); window.addEventListener(navigationEventName(), update); void requestPersist(); return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update); window.removeEventListener(navigationEventName(), update); }; }, []);
   useEffect(() => { void consumeWidgetLaunchRoute().then(path => { if (path === '#night' || path === '#plan') go(path.slice(1)); }).catch(error => recordError('promise', error)); }, []);
   useEffect(() => {
-    if (!nightSettings) return;
+    if (!nightSettings || !todayTasks) return;
     const setting = (key: string, fallback: string) => {
       const value = nightSettings.find(row => row.key === key && !row.deleted)?.value;
       return typeof value === 'string' ? value : fallback;
     };
-    const bedtime = setting('planner.bedtime', RULES.night.defaultBedtime);
-    const shutdown = effectiveShutdown(setting('planner.shutdown', RULES.night.defaultShutdown), bedtime);
+    // A busy day moves the whole night later (spec 11 W5); shutdown moves with the bedtime.
+    const night = adaptiveNight(nightSettings, todayTasks, dayKey(clockTime));
+    const shutdown = shiftClock(effectiveShutdown(setting('planner.shutdown', RULES.night.defaultShutdown), setting('planner.bedtime', RULES.night.defaultBedtime)), night.shift);
     const active = nightRouteTime(clockTime, shutdown);
     if (!openingChecked.current) {
       openingChecked.current = true;
@@ -92,7 +96,7 @@ export function AppShell() {
     const destination = nightRouteTransition(wasNight.current ?? active, active, route());
     wasNight.current = active;
     if (destination) go(destination);
-  }, [nightSettings, clockTime]);
+  }, [nightSettings, todayTasks, clockTime]);
   useEffect(() => { void reconcileSolvedBoards(db).catch(error => recordError('window', error)); }, []);
   useEffect(() => {
     const now = Date.now(), today = dayKey(now);
@@ -146,6 +150,7 @@ export function AppShell() {
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={restored} />;
   else if (path === 'you/season') screen = <SeasonLadder />;
   else if (path === 'you/shop') screen = <SeasonShop />;
+  else if (path === 'you/badges') screen = <Badges />;
   else if (path === 'you/contentreview') screen = <ContentReview />;
   else if (path === 'you/cast') screen = <MeetCast />;
   else if (path === 'you/owner') screen = <OwnerPanel />;

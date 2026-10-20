@@ -9,6 +9,8 @@ import { getOrCreateDeviceId } from '../../data/device';
 import { loadEngineFacts, saveDrop, saveEngineAnswer } from '../../data/repos/learn-engine';
 import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
+import { longestCombo, perfectDrop } from '../../core/economy/gamify';
+import { saveGoldReview } from '../../data/repos/gamify';
 import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics } from './flow';
 import { Cast } from '../cast/Cast';
 import { dropCast } from '../cast/placement';
@@ -17,7 +19,7 @@ import './learn.css';
 
 const currentTime = () => Date.now();
 
-export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; onDone?: () => void }) {
+export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, goldReview = false, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; goldReview?: boolean; onDone?: () => void }) {
   const [now] = useState(currentTime);
   const [busy, setBusy] = useState(false);
   const data = useLiveQuery(async () => ({
@@ -29,7 +31,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     drops: await db.learnDrops.toArray(),
     concepts: await db.learnConcepts.toArray(),
     items: await db.learnItems.toArray(),
-    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention').toArray(),
+    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention', 'gold-review', 'gold-attempt').toArray(),
   }), []);
   const [picked, setPicked] = useState<string[]>([]);
   const [practiceId, setPracticeId] = useState<string>();
@@ -89,7 +91,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       const today = dayKey(at);
       const answered = data.ledger.filter(fact => !fact.deleted && fact.dayKey === today);
       const { facts } = await loadEngineFacts(db);
-      const created = makeDrop({ ids: selected, concepts: data.concepts, items: data.items, now: at, daily: isDaily, night, itemCount, preferredConceptId, reviewDue,
+      const created = makeDrop({ ids: selected, concepts: data.concepts, items: data.items, now: at, daily: isDaily, night, itemCount, preferredConceptId, goldReview, reviewDue,
         bedtime: typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime,
         answeredToday: answered.length, newToday: isDaily ? answered.filter(fact => data.drops.some(row => row.id === fact.inputs.dropId && row.drop.items.some(step => step.itemId === fact.inputs.itemId && step.mode === 'new'))).length : 0,
         spentMinutes: answered.length * 0.7, facts });
@@ -109,7 +111,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     if (data && practiceIds.length && (night ? !data.nightDrop : daily ? !data.dailyDrop : !practiceId)) queueMicrotask(() => void start(practiceIds));
     // The database query updates after the drop is stored.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.dailyDrop, data?.nightDrop, data?.setting, practiceId]);
+  }, [data, practiceId]);
 
   const answer = async (value: ItemAnswer, feedbackId?: string, chosenConfidence: Confidence = confidence) => {
     if (!drop || !found || !step || writing.current || visibleFeedback) return;
@@ -126,7 +128,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     try {
       const at = currentTime();
       await saveEngineAnswer(db, { answerId: `${drop.id}:${drop.cursor}`, dropId: drop.id, item: found.item,
-        answer: value, confidence: chosenConfidence, deviceId: await getOrCreateDeviceId(db, at), now: at });
+        answer: value, confidence: chosenConfidence, deviceId: await getOrCreateDeviceId(db, at), now: at, goldReview });
     } catch {
       setFeedback(undefined);
       setMessage('Could not save that answer. Tap again.');
@@ -162,6 +164,14 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     finally { setBusy(false); }
   };
 
+  // Record the outcome once; a missed review can be tried again on a later day.
+  useEffect(() => {
+    if (!goldReview || !drop || drop.cursor < drop.items.length || !preferredConceptId || !data) return;
+    const answers = data.ledger.filter(row => row.kind === 'learn-answer' && row.inputs.dropId === drop.id);
+    if (answers.length !== drop.items.length || data.ledger.some(row => (row.kind === 'gold-review' && row.refId === preferredConceptId) || (row.kind === 'gold-attempt' && row.refId === `${preferredConceptId}:${dayKey(Date.now())}`))) return;
+    void saveGoldReview(db, preferredConceptId, answers.filter(row => row.inputs.correct === true).length, answers.length);
+  }, [goldReview, drop, preferredConceptId, data]);
+
   if (!data) return <div className="learn-drop" role="status">Opening your drop…</div>;
   if (!topics.length) return <div className="learn-drop"><h2>Learn</h2><p>Topics are unavailable right now.</p></div>;
   if (!practiceIds.length && isAfterBedtime(now, typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime)) return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : "That's today's drop"}</h2><p>Nothing to review tonight. Sleep is the best study.</p><button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
@@ -173,18 +183,21 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);
     const improved = touched.filter(concept => masteryMapState(data.concepts.find(row => row.id === concept.id)) !== 'Not started');
     const due = touched.map(concept => data.concepts.find(row => row.id === concept.id)?.memory?.dueAt).filter((value): value is number => typeof value === 'number').sort((a, b) => a - b)[0];
-    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : "That's your practice drop"}</h2>{!drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <><p>{drop.items.length} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p><h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
+    const goldAnswers = data.ledger.filter(fact => fact.kind === 'learn-answer' && fact.inputs.dropId === drop.id);
+    const passed = goldAnswers.filter(fact => fact.inputs.correct === true).length >= RULES.gamify.goldReviewPass;
+    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : goldReview ? 'Gold review complete' : "That's your practice drop"}</h2>{goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <><p>{drop.items.length} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, drop.items.length) && <p>Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   }
   if (!found) return <div className="learn-drop"><h2>Learn</h2><p>This item is unavailable. Open Learn to choose a topic.</p><button type="button" onClick={() => go('learn')}>Open Learn</button></div>;
   const { item, concept } = found;
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
-  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
+  const inARow = longestCombo(data.ledger, drop.id);
+  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span>{inARow >= 3 && <span className="pill">{inARow} in a row</span>}</header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
     <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p></div><h2>{item.stem}</h2>
-    {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
-    {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
+    {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
+    {!goldReview && item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
-    {pending && !visibleFeedback && <div className="learn-confidence"><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div><button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
-    {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p><button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
+    {pending && !visibleFeedback && <div className="learn-confidence">{!goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}<button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
+    {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p></>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
 }

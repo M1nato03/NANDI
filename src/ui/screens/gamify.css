@@ -1,0 +1,15 @@
+.gamify-quests { display: grid; gap: 10px; min-width: 0; margin: 16px 0; }
+.gamify-quests h2, .gamify-quests p { margin: 0; }
+.gamify-quests h2 { font-size: 21px; }
+.gamify-quest { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; padding: 12px; border-radius: var(--radius-row); background: var(--surface-2); }
+.gamify-quest span { min-width: 0; overflow-wrap: anywhere; line-height: 1.35; }
+.gamify-quest strong { flex: 0 0 auto; color: var(--area-learn); font-size: 13px; white-space: nowrap; }
+.gamify-quests .pill { justify-self: start; max-width: 100%; white-space: normal; }
+.gamify-badges-screen { min-width: 0; }
+.gamify-badges-screen > .card { margin-top: 18px; }
+.gamify-badges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.gamify-badges .card { min-width: 0; margin: 0; padding: 16px; }
+.gamify-badges h2 { margin: 0 0 6px; font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+.gamify-badges p { margin: 0 0 10px; color: var(--ink-2); font-size: 13px; line-height: 1.4; }
+.gamify-badges progress, .gamify-badges-screen progress { width: 100%; max-width: 100%; accent-color: var(--area-learn); }
+@media (max-width: 380px) { .gamify-badges { grid-template-columns: 1fr; } }

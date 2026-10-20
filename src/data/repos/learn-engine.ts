@@ -21,7 +21,7 @@ export async function loadEngineFacts(db: NandiDb): Promise<{ facts: AnswerFact[
       kind: row.kind === 'learn-retention' ? 'retention' as const : 'practice' as const,
       retentionDay: row.inputs.retentionDay as 7 | 30 | undefined })) };
 }
-export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number }
+export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number; goldReview?: boolean }
 /** State, drop cursor and its immutable ledger fact commit atomically. */
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
   const bedtimeValue = (await db.settings.get('planner.bedtime'))?.value;
@@ -44,8 +44,11 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
     const priorItem = await db.learnItems.get(input.item.id);
     const rating = updateItemRating(priorItem && !priorItem.deleted ? { itemId: priorItem.id, rating: priorItem.rating, attempts: priorItem.attempts, lastSeen: priorItem.lastSeen } : undefined, itemSeedRating(input.item.difficultySeed), prior?.mastery ?? 0.2, grade.correct, input.now);
     const item: LearnItemRow = { id: input.item.id, rating: rating.rating, attempts: rating.attempts, lastSeen: rating.lastSeen, updatedAt: input.now, deleted: 0, deviceId: input.deviceId };
-    await db.learnConcepts.put(concept);
-    await db.learnItems.put(item);
+    // A Gold review is a separate check. A miss cannot lower established mastery.
+    if (!input.goldReview) {
+      await db.learnConcepts.put(concept);
+      await db.learnItems.put(item);
+    }
     await db.learnDrops.put({ ...current, drop: { ...advanceDrop(current.drop), pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
     await db.ledger.add({ id: factId, dayKey: dayKey(input.now), mode: 'mind', kind: step.mode === 'retention' ? 'learn-retention' : 'learn-answer', refId: input.answerId,
         inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime },
