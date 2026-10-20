@@ -20,7 +20,9 @@ import android.os.Build;
 import android.provider.Settings;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /** Local foreground watcher. Usage events and pause counts never leave the device. */
@@ -33,37 +35,59 @@ public class NightPauseService extends Service {
     private String prompted = "";
     /** When the last screen-on check ran, so the next one reads every event since then. */
     private long lastCheck = 0;
+    /** Today's time in the chosen apps, read from usage events at most once a minute. */
+    private long usedMs = 0;
+    private long usedAt = 0;
     private final Runnable check = new Runnable() {
         @Override public void run() {
             SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
             if (!prefs.getBoolean("enabled", false) || !NightPausePlugin.usageAllowed(NightPauseService.this)) {
                 stopSelf(); return;
             }
-            boolean testing = System.currentTimeMillis() < prefs.getLong("testUntil", 0);
-            boolean active = testing || inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30));
+            long now = System.currentTimeMillis();
+            boolean night = now < prefs.getLong("testUntil", 0)
+                || inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30));
+            String dayMode = prefs.getString("dayMode", "off");
+            boolean watching = night || !"off".equals(dayMode);
             PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
             boolean screenOn = power != null && power.isInteractive();
             if (screenOn) {
-                long now = System.currentTimeMillis();
                 long lookback = current.isEmpty() || lastCheck == 0 ? 600000 : Math.min(600000, now - lastCheck + 2000);
                 lastCheck = now;
                 String seen = currentForeground(lookback);
                 if (!seen.isEmpty()) current = seen;
                 Set<String> selected = new HashSet<>(Arrays.asList(prefs.getString("packages", "").split(",")));
                 if (!selected.contains(current)) prompted = "";
-                boolean suppressed = current.equals(prefs.getString("suppressedPackage", ""))
-                    && System.currentTimeMillis() < prefs.getLong("suppressUntil", 0);
-                if (active && selected.contains(current) && !current.equals(prompted) && !suppressed) {
-                    prompted = current;
-                    prefs.edit().putString("pending", current).apply();
-                    showPause(current);
+                String snoozedPackage = prefs.getString("suppressedPackage", "");
+                long snoozeUntil = prefs.getLong("suppressUntil", 0);
+                if (current.equals(snoozedPackage) && snoozeUntil > 0 && now >= snoozeUntil) {
+                    // "Go anyway" bought a few minutes; still in the app when they end, so ask again.
+                    prompted = "";
+                    prefs.edit().remove("suppressedPackage").remove("suppressUntil").apply();
+                }
+                boolean snoozed = current.equals(snoozedPackage) && now < snoozeUntil;
+                if (watching && selected.contains(current) && !current.equals(prompted) && !snoozed) {
+                    String reason = null;
+                    long minutes = 0;
+                    if (night) reason = "night";
+                    else if ("open".equals(dayMode)) reason = "open";
+                    else if ("limit".equals(dayMode)) {
+                        long used = usedToday(selected, now);
+                        if (used >= prefs.getInt("dayLimitMinutes", 30) * 60000L) { reason = "limit"; minutes = used / 60000; }
+                    }
+                    if (reason != null) {
+                        prompted = current;
+                        prefs.edit().putString("pending", current).putString("pendingReason", reason)
+                            .putLong("pendingMinutes", minutes).apply();
+                        showPause(current);
+                    }
                 }
             } else {
                 current = "";
                 prompted = "";
                 lastCheck = 0;
             }
-            handler.postDelayed(this, active && screenOn ? 1500 : screenOn ? 30000 : 300000);
+            handler.postDelayed(this, watching && screenOn ? 1500 : screenOn ? 30000 : 300000);
         }
     };
     private final BroadcastReceiver screenReceiver = new BroadcastReceiver() {
@@ -77,14 +101,14 @@ public class NightPauseService extends Service {
         super.onCreate();
         NotificationManager notifications = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= 26) {
-            notifications.createNotificationChannel(new NotificationChannel("night_watch", "Night pause is on", NotificationManager.IMPORTANCE_LOW));
-            notifications.createNotificationChannel(new NotificationChannel("night_pause", "Night pause", NotificationManager.IMPORTANCE_HIGH));
+            notifications.createNotificationChannel(new NotificationChannel("night_watch", "App pause is on", NotificationManager.IMPORTANCE_LOW));
+            notifications.createNotificationChannel(new NotificationChannel("night_pause", "App pause", NotificationManager.IMPORTANCE_HIGH));
         }
         Notification.Builder ongoingBuilder = Build.VERSION.SDK_INT >= 26
             ? new Notification.Builder(this, "night_watch") : new Notification.Builder(this);
         Notification ongoing = ongoingBuilder
-            .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("NANDI night pause is on")
-            .setContentText("You can turn it off in You > Night.").setOngoing(true).build();
+            .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("NANDI app pause is on")
+            .setContentText("You can turn it off in You > Settings > App pause.").setOngoing(true).build();
         startForeground(43001, ongoing);
         IntentFilter screenEvents = new IntentFilter();
         screenEvents.addAction(Intent.ACTION_SCREEN_ON);
@@ -95,6 +119,7 @@ public class NightPauseService extends Service {
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
         handler.removeCallbacks(check);
+        usedAt = 0;
         handler.post(check);
         return START_STICKY;
     }
@@ -127,6 +152,47 @@ public class NightPauseService extends Service {
         return foreground;
     }
 
+    /** Called while a chosen app is in front: the cached total plus the time since it was read. */
+    private long usedToday(Set<String> selected, long now) {
+        if (usedAt == 0 || now - usedAt > 60000 || now < usedAt) {
+            usedMs = readUsedToday(selected, now);
+            usedAt = now;
+            return usedMs;
+        }
+        return usedMs + (now - usedAt);
+    }
+
+    /** Time in front for the chosen apps since 04:00 (NANDI's day starts there, after the night window). */
+    private long readUsedToday(Set<String> selected, long now) {
+        UsageStatsManager stats = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
+        if (stats == null) return 0;
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(now);
+        if (start.get(Calendar.HOUR_OF_DAY) < 4) start.add(Calendar.DAY_OF_MONTH, -1);
+        start.set(Calendar.HOUR_OF_DAY, 4);
+        start.set(Calendar.MINUTE, 0);
+        start.set(Calendar.SECOND, 0);
+        start.set(Calendar.MILLISECOND, 0);
+        UsageEvents events = stats.queryEvents(start.getTimeInMillis(), now);
+        UsageEvents.Event event = new UsageEvents.Event();
+        Map<String, Long> openSince = new HashMap<>();
+        long total = 0;
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event);
+            String name = event.getPackageName();
+            if (!selected.contains(name)) continue;
+            int type = event.getEventType();
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                if (!openSince.containsKey(name)) openSince.put(name, event.getTimeStamp());
+            } else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND) {
+                Long since = openSince.remove(name);
+                if (since != null) total += Math.max(0, event.getTimeStamp() - since);
+            }
+        }
+        for (Long since : openSince.values()) total += Math.max(0, now - since);
+        return total;
+    }
+
     private void showPause(String packageName) {
         Intent launch = new Intent(this, MainActivity.class);
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -139,7 +205,7 @@ public class NightPauseService extends Service {
             ? new Notification.Builder(this, "night_pause") : new Notification.Builder(this);
         Notification notice = pauseBuilder
             .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("Take one breath")
-            .setContentText("Tap to open your night plan in NANDI.")
+            .setContentText("Tap to open NANDI.")
             .setCategory(Notification.CATEGORY_REMINDER).setPriority(Notification.PRIORITY_HIGH)
             .setContentIntent(intent).setFullScreenIntent(intent, true).setAutoCancel(true).build();
         ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTICE_ID, notice);

@@ -50,7 +50,7 @@ export function AppShell() {
   const [path, setPath] = useState(route);
   const [today, setToday] = useState(() => dayKey(Date.now()));
   const [clockTime, setClockTime] = useState(Date.now);
-  const [pausePackage, setPausePackage] = useState('');
+  const [pause, setPause] = useState<{ packageName: string; reason: string; minutes: number } | null>(null);
   const nightSettings = useLiveQuery(() => db.settings.toArray(), []);
   const openingChecked = useRef(false);
   const wasNight = useRef<boolean | null>(null);
@@ -120,7 +120,7 @@ export function AppShell() {
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
   useEffect(() => {
     if (!nightPauseAvailable()) return;
-    const check = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPausePackage(status.pendingPackage); }).catch(error => recordError('promise', error)); };
+    const check = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)); };
     check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
     return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
   }, []);
@@ -151,5 +151,5 @@ export function AppShell() {
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
   const root = ['plan', 'train', 'learn', 'mind', 'you'].includes(path);
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pausePackage && <Suspense fallback={null}><NightPauseCard packageName={pausePackage} close={() => setPausePackage('')} /></Suspense>}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}><NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /></Suspense>}</div>;
 }

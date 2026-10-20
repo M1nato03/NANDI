@@ -1,14 +1,14 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { RULES } from '../core/rules.config';
 
-type Status = { usageAllowed: boolean; overlayAllowed: boolean; pendingPackage: string };
+type Status = { usageAllowed: boolean; overlayAllowed: boolean; pendingPackage: string; pendingReason?: string; pendingMinutes?: number };
 type NightPausePlugin = {
   status(): Promise<Status>;
   openUsageSettings(): Promise<void>;
   openAppInfo(): Promise<void>;
   openOverlaySettings(): Promise<void>;
   test(options: { durationMs: number }): Promise<void>;
-  configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number }): Promise<void>;
+  configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number; dayMode: string; dayLimitMinutes: number }): Promise<void>;
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
 };
@@ -23,8 +23,8 @@ export async function openNightPauseAppInfo(): Promise<void> { if (Capacitor.isN
 export async function openOverlaySettings(): Promise<void> { if (Capacitor.isNativePlatform()) await native.openOverlaySettings(); }
 /** Treats the next few minutes as the bedtime window, so the pause can be tried by day. */
 export async function testNightPause(durationMs: number): Promise<void> { if (Capacitor.isNativePlatform()) await native.test({ durationMs }); }
-export async function configureNightPause(enabled: boolean, bedtime: string, packages: string[]): Promise<void> {
-  if (Capacitor.isNativePlatform()) await native.configure({ enabled, bedtime, packages: packages.join(','), leadMinutes: RULES.night.pauseLeadMin });
+export async function configureNightPause(enabled: boolean, bedtime: string, packages: string[], day: { mode: string; limitMinutes: number }): Promise<void> {
+  if (Capacitor.isNativePlatform()) await native.configure({ enabled, bedtime, packages: packages.join(','), leadMinutes: RULES.night.pauseLeadMin, dayMode: day.mode, dayLimitMinutes: day.limitMinutes });
 }
 export async function clearNightPause(): Promise<void> { if (Capacitor.isNativePlatform()) await native.clearPending(); }
 export async function openPausedApp(packageName: string, snoozeMs: number): Promise<void> {

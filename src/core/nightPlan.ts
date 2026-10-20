@@ -3,7 +3,9 @@ import { shutdownAt } from './tasks/planner';
 
 export type NightPlan = { cue: string; action: string };
 export const NIGHT_PLAN_KEY = 'night.plan';
-export const CUES = ['getting into bed with my phone', 'reaching for one more scroll'];
+export const CUES = ['get into bed with my phone', 'reach for one more scroll'];
+/** Earlier cue wording, saved before the sentence read "If I <cue>". */
+const OLD_CUES: Record<string, string> = { 'getting into bed with my phone': 'get into bed with my phone', 'reaching for one more scroll': 'reach for one more scroll' };
 export const ACTIONS = ['open my night deck', 'read 5 pages', 'put the phone on the charger outside the bed'];
 
 export function readNightPlan(settings: SettingRow[]): NightPlan | null {
@@ -11,7 +13,7 @@ export function readNightPlan(settings: SettingRow[]): NightPlan | null {
   if (!value || typeof value !== 'object' || !('cue' in value) || !('action' in value)) return null;
   const { cue, action } = value;
   return typeof cue === 'string' && cue.trim() && typeof action === 'string' && action.trim()
-    ? { cue: cue.trim(), action: action.trim() } : null;
+    ? { cue: OLD_CUES[cue.trim()] ?? cue.trim(), action: action.trim() } : null;
 }
 
 export function nightPlanText(plan: NightPlan): string {

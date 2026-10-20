@@ -22,7 +22,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: /Settings/ }).click();
     const setting = page.getByRole('region', { name: 'Night plan setting' });
     await expect(setting).toBeVisible();
-    await setting.getByLabel('Choose a bedtime cue').selectOption('getting into bed with my phone');
+    await setting.getByLabel('Choose a bedtime cue').selectOption('get into bed with my phone');
     await setting.getByLabel('Choose a replacement').selectOption('read 5 pages');
     await setting.getByRole('button', { name: 'Save night plan' }).click();
     await expect(setting).toHaveCount(1);

@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
-import { DEFAULT_PAUSE_APPS } from '../../core/nightPause';
+import { DEFAULT_PAUSE_APPS, pauseCardCopy } from '../../core/nightPause';
 import { readNightPlan, nightPlanText } from '../../core/nightPlan';
 import { RULES } from '../../core/rules.config';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
 import { go } from '../shell/router';
 
-export function NightPauseCard({ packageName, close }: { packageName: string; close: () => void }) {
+export function NightPauseCard({ packageName, reason = 'night', minutes = 0, close }: { packageName: string; reason?: string; minutes?: number; close: () => void }) {
   const rows = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const [seconds, setSeconds] = useState<number>(RULES.night.pauseBreathSeconds);
   const [message, setMessage] = useState('');
@@ -16,6 +16,7 @@ export function NightPauseCard({ packageName, close }: { packageName: string; cl
   const acting = useRef(false);
   const label = DEFAULT_PAUSE_APPS.find(app => app.packageName === packageName)?.label ?? 'the app';
   const plan = readNightPlan(rows);
+  const copy = pauseCardCopy({ reason, minutes, label, planText: plan ? nightPlanText(plan) : null });
   useEffect(() => {
     const timer = window.setInterval(() => setSeconds(value => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);
@@ -33,7 +34,7 @@ export function NightPauseCard({ packageName, close }: { packageName: string; cl
   async function openDeck() {
     if (acting.current) return;
     acting.current = true;
-    try { await finish('openings'); close(); go('night'); }
+    try { await finish('openings'); close(); go(copy.route); }
     catch { acting.current = false; setMessage('Could not open the deck. Try again.'); }
   }
   async function goAnyway() {
@@ -49,8 +50,8 @@ export function NightPauseCard({ packageName, close }: { packageName: string; cl
     <section className="card night-pause-card">
       <p className="eyebrow">A small pause</p><h1>Take one breath</h1>
       <p role="timer">{seconds > 0 ? `Breathe for ${seconds} more seconds` : 'The breath is yours.'}</p>
-      <p>{plan ? nightPlanText(plan) : 'If I reach for Reels at night, then I open my night deck.'}</p>
-      <div className="actions"><button type="button" onClick={() => void openDeck()}>Open my night deck</button>
+      <p>{copy.lead}</p>
+      <div className="actions"><button type="button" onClick={() => void openDeck()}>{copy.primary}</button>
         <button type="button" className="secondary" onClick={() => void goAnyway()}>Go to {label} anyway</button></div>
       {message && <p role="status">{message}</p>}
     </section>

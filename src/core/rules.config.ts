@@ -183,6 +183,7 @@ export const RULES = {
     pauseBreathSeconds: 5,
     pauseSnoozeMin: 10,
     pauseTestMin: 2,
+    pauseDayLimitMin: 30,
   },
 
   // 05-economy §2, notifications, backup and animation timing.
@@ -321,7 +322,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.bedtimeRampEveryDays': [1, 30], 'night.bedtimeRampNeedsMetOfLast3': [0, 3],
   'night.shutdownMinBeforeBedtime': [0, 180], 'night.streakReminderMinBeforeBedtime': [0, 240],
   'night.pauseLeadMin': [0, 120],
-  'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10],
+  'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],
   'juice.microMs.0': [0, 1000], 'juice.microMs.1': [0, 1000],
   'juice.mesoMs.0': [0, 2000], 'juice.mesoMs.1': [0, 2000],

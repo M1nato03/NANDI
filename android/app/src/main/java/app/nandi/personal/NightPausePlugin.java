@@ -30,7 +30,10 @@ public class NightPausePlugin extends Plugin {
         JSObject result = new JSObject();
         result.put("usageAllowed", usageAllowed(getContext()));
         result.put("overlayAllowed", Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(getContext()));
-        result.put("pendingPackage", getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", ""));
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        result.put("pendingPackage", prefs.getString("pending", ""));
+        result.put("pendingReason", prefs.getString("pendingReason", "night"));
+        result.put("pendingMinutes", prefs.getLong("pendingMinutes", 0));
         call.resolve(result);
     }
 
@@ -85,8 +88,11 @@ public class NightPausePlugin extends Plugin {
         String bedtime = call.getString("bedtime", "01:30");
         String packages = call.getString("packages", "com.instagram.android,com.google.android.youtube,com.snapchat.android");
         int leadMinutes = call.getInt("leadMinutes", 30);
+        String dayMode = call.getString("dayMode", "off");
+        int dayLimitMinutes = call.getInt("dayLimitMinutes", 30);
         getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
             .putBoolean("enabled", enabled).putString("bedtime", bedtime).putString("packages", packages).putInt("leadMinutes", leadMinutes)
+            .putString("dayMode", dayMode).putInt("dayLimitMinutes", dayLimitMinutes)
             .putString("pending", enabled ? getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", "") : "").apply();
         Intent service = new Intent(getContext(), NightPauseService.class);
         if (enabled && usageAllowed(getContext())) {
@@ -99,7 +105,7 @@ public class NightPausePlugin extends Plugin {
 
     @PluginMethod
     public void clearPending(PluginCall call) {
-        getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove("pending").apply();
+        getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove("pending").remove("pendingReason").remove("pendingMinutes").apply();
         NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if (notifications != null) notifications.cancel(NightPauseService.NOTICE_ID);
         call.resolve();
