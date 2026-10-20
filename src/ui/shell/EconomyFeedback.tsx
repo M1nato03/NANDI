@@ -85,7 +85,9 @@ export function EconomyFeedback() {
     const badge = added.find(row => row.kind === 'badge-tier' || row.kind === 'monthly-challenge');
     if (badge) {
       // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
-      setNotice(current => current?.macro ? current : { text: badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier', macro: false });
+      const label = badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier';
+      // A badge usually lands just after the finish that earned it: add it to that moment instead of replacing the warm line.
+      setNotice(current => current?.macro ? current : current ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : { text: label, macro: false });
       return;
     }
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
