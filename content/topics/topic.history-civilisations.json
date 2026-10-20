@@ -1,0 +1,4666 @@
+{
+  "id": "topic.history-civilisations",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "History and civilisations",
+  "description": "Follow the choices, routes and ideas that changed societies.",
+  "author": "codex",
+  "createdAt": "2026-10-20T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "history-civilisations",
+      "title": "History and civilisations",
+      "description": "Follow the choices, routes and ideas that changed societies."
+    },
+    "modules": [
+      {
+        "id": "history-civilisations-module",
+        "title": "Turning points and connections",
+        "concepts": [
+          {
+            "id": "indus-cities",
+            "title": "Indus Valley cities",
+            "prerequisites": [],
+            "hook": "At Mohenjo-daro, streets crossed at right angles while drains linked homes to a wider network.",
+            "hookSourceRefs": [
+              "indus",
+              "unesco-indus",
+              "unesco-bath"
+            ],
+            "rule": "A planned street grid, brick buildings, public baths and drainage show coordinated urban work. The script remains unread, so we cannot name its rulers from its signs.",
+            "ruleSourceRefs": [
+              "indus",
+              "unesco-indus",
+              "unesco-bath"
+            ],
+            "claims": [
+              {
+                "id": "indus-cities-c1",
+                "text": "Mohenjo-daro had a street plan with roads that cross at right angles. It also had drains.",
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ]
+              },
+              {
+                "id": "indus-cities-c2",
+                "text": "The Great Bath was about 12 metres long; its exact social use is uncertain.",
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "indus-cities-1",
+                "type": "predict",
+                "conceptId": "indus-cities",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "A school visitor finds streets crossing at right angles in Mohenjo-daro. What does that suggest?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Some streets followed a planned layout.",
+                    "feedback": "UNESCO says the lower city has streets that meet at right angles. This points to a plan.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every lane grew without any plan.",
+                    "feedback": "Streets that cross at right angles point to a plan. They do not show each choice made by the builders.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indus-cities-2",
+                "type": "scenario",
+                "conceptId": "indus-cities",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "In a classroom model, a drain runs from a house toward a street channel. What is the stronger inference?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Homes were linked to shared drainage.",
+                    "feedback": "The house-to-street link shows a system beyond one building.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only public baths could use drains.",
+                    "feedback": "A drain from a private house contradicts a bath-only network.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The channel supplied drinking water to every home.",
+                    "feedback": "A wastewater drain does not by itself show a drinking-water supply.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indus-cities-3",
+                "type": "choose",
+                "conceptId": "indus-cities",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "What pair of clues can we see in the ruins of Mohenjo-daro?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Intersecting streets and an elaborate drain system.",
+                    "feedback": "Both features are recorded in UNESCO’s site account.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A street grid and a deciphered royal archive.",
+                    "feedback": "The streets are documented, but the Indus script has no accepted reading.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A public bath with no drainage.",
+                    "feedback": "The Great Bath had an outlet drain, so the second half misses the evidence.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indus-cities-4",
+                "type": "why",
+                "conceptId": "indus-cities",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "The Great Bath has steps and a water outlet. Why should a guide avoid calling it the king’s pool?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Its construction is clear; its exact social use is not.",
+                    "feedback": "Archaeology shows the structure, not a secure story about who used it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The outlet proves it was a grain store.",
+                    "feedback": "The outlet shows how water left the bath. It does not show grain in store.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Every large tank in an ancient city was royal.",
+                    "feedback": "A large bath does not tell us who used it. It does not name a ruler.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indus-cities-5",
+                "type": "estimate",
+                "conceptId": "indus-cities",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "In the Indus city of Mohenjo-daro, about how long was the Great Bath tank, per UNESCO?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 12 metres.",
+                    "feedback": "The UNESCO account gives a length of roughly 12 metres.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 2.5 metres.",
+                    "feedback": "That is the reported depth, not the length.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 25 metres.",
+                    "feedback": "UNESCO says the tank was about 12 metres long. Twenty five metres is too long.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 12,
+                  "min": 11.5,
+                  "max": 12.5,
+                  "unit": "metres"
+                }
+              },
+              {
+                "id": "indus-cities-6",
+                "type": "true-not-quite",
+                "conceptId": "indus-cities",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "A display translates an Indus seal into a named ruler’s order. What is the problem?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "There is no agreed reading of the Indus script.",
+                    "feedback": "The signs are real, but we still lack a sure way to read them.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The signs were on stone, so they cannot be writing.",
+                    "feedback": "Material does not decide whether marks are script.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m1"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The drain network itself translates the seal.",
+                    "feedback": "The drains show skill in building. They do not tell us how to read the signs.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indus-cities-7",
+                "type": "order",
+                "conceptId": "indus-cities",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "Put a plausible drainage path in sequence.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Water leaves a house floor.",
+                    "feedback": "Wastewater starts at a home. The water then moves away from the home.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A house drain carries it outward.",
+                    "feedback": "The smaller channel links the house to the street.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A street drain carries it onward.",
+                    "feedback": "This is the shared part of the network.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "indus-cities-8",
+                "type": "match",
+                "conceptId": "indus-cities",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indus-cities-m1",
+                  "indus-cities-m2"
+                ],
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ],
+                "stem": "Match each clue at the site with what it can tell us.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Right-angle streets",
+                    "feedback": "The crossing pattern supports planning. That street pattern is a sign of a planned city.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A planned layout",
+                    "feedback": "The crossing pattern supports planning. Streets that meet this way show a set layout.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Great Bath outlet",
+                    "feedback": "An outlet shows how water could leave the tank.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Water management",
+                    "feedback": "An outlet shows how water could leave the tank.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "indus-cities-m1",
+                "name": "A bath proves a palace",
+                "correction": "The Great Bath was a public structure; its precise use is still uncertain.",
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ]
+              },
+              {
+                "id": "indus-cities-m2",
+                "name": "A seal gives us a translation",
+                "correction": "Experts have not yet found a sure way to read the Indus signs.",
+                "sourceRefs": [
+                  "indus",
+                  "unesco-indus",
+                  "unesco-bath"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "indus",
+                "title": "Mohenjo-daro Street with Drains",
+                "publisher": "Harappa.com; based on Wheeler and Possehl",
+                "year": 2002,
+                "url": "https://www.harappa.com/blog/mohenjo-daro-street-drains"
+              },
+              {
+                "id": "unesco-indus",
+                "title": "Archaeological Ruins at Moenjodaro",
+                "publisher": "UNESCO World Heritage Centre",
+                "year": 2026,
+                "url": "https://whc.unesco.org/en/list/138"
+              },
+              {
+                "id": "unesco-bath",
+                "title": "Mohenjo-daro",
+                "publisher": "UNESCO History of Civilizations of Central Asia",
+                "year": 1996,
+                "url": "https://ar.unesco.org/silkroad/sites/default/files/knowledge-bank-article/vol_I%20silk%20road_the%20indus%20civilization%20BIS.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Trace a water path",
+              "detail": "On a walk, trace where rain or used water can leave a building and enter a public drain.",
+              "sourceRefs": [
+                "indus"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "indus-cities-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ashoka-edicts",
+            "title": "Ashoka's edicts",
+            "prerequisites": [
+              "indus-cities"
+            ],
+            "hook": "Ashoka put public messages on stone across a large empire; one pillar edict still stands about 32 feet high.",
+            "hookSourceRefs": [
+              "ashoka"
+            ],
+            "rule": "Rock and pillar edicts helped a ruler speak across regions. They record moral and religious messages, but their locations do not tell us that every person read them.",
+            "ruleSourceRefs": [
+              "ashoka"
+            ],
+            "claims": [
+              {
+                "id": "ashoka-edicts-c1",
+                "text": "Ashoka had edicts carved on rocks and later on pillars across his empire.",
+                "sourceRefs": [
+                  "ashoka"
+                ]
+              },
+              {
+                "id": "ashoka-edicts-c2",
+                "text": "A stone pillar at Lauriya Nandagarh still stands. It is about 32 feet tall.",
+                "sourceRefs": [
+                  "ashoka"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "ashoka-edicts-1",
+                "type": "predict",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "A school play shows a ruler who wants a message to last beyond a palace visit. Which Ashokan medium fits?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "An inscription cut into rock.",
+                    "feedback": "The Met says Ashoka had words cut into rocks at sites across his realm.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A court speech heard once.",
+                    "feedback": "A speech reaches listeners then, but stone preserves words for later visitors.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ashoka-edicts-2",
+                "type": "scenario",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "A classroom map marks edicts in several regions. What does their spread support?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ashoka used public sites to reach different areas.",
+                    "feedback": "The sites are far apart. That fits a ruler who sought to reach people past his main city.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Each site was a separate empire.",
+                    "feedback": "More than one site does not mean there were more Ashokas. One ruler could put words in many places.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Every resident could personally read them.",
+                    "feedback": "Where a stone stands shows reach. It does not tell us how many people could read it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ashoka-edicts-3",
+                "type": "choose",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "What words did Ashoka have cut into his later stone pillars?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Edicts carrying the ruler’s messages.",
+                    "feedback": "The Met describes seven later edicts on placed pillars.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only lists of market prices.",
+                    "feedback": "The words dealt with faith and good conduct. They did not just list prices.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The entire Buddhist canon.",
+                    "feedback": "An edict is a royal message, not a copy of all Buddhist texts.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ashoka-edicts-4",
+                "type": "why",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "A map shows a rock edict far from the capital. Why is that useful historical evidence?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It shows a message was placed in that region.",
+                    "feedback": "A stone that still stands shows one place where the ruler put his words.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It proves every person there agreed with Ashoka.",
+                    "feedback": "A posted message cannot reveal universal agreement. It shows the message was placed, not how all felt.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It proves the empire had no officials.",
+                    "feedback": "A far-off stone shows that his words reached the place. It says little about how the whole state was run.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ashoka-edicts-5",
+                "type": "estimate",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "For Ashoka’s edicts, about how high is the pillar at Lauriya Nandagarh, per the Met?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 32 feet.",
+                    "feedback": "The Met gives 32 feet for this preserved pillar.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 13 feet.",
+                    "feedback": "That is far shorter than the Met’s figure of about 32 feet for this pillar.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 84 feet.",
+                    "feedback": "The source gives no such height for this pillar.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 32,
+                  "min": 31.5,
+                  "max": 32.5,
+                  "unit": "feet"
+                }
+              },
+              {
+                "id": "ashoka-edicts-6",
+                "type": "true-not-quite",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "Someone calls all Ashokan edicts private Buddhist prayers. Which correction is best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They were royal messages carved at public sites.",
+                    "feedback": "Their placement and royal voice make them more than private devotion.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "They were only taxes with no moral content.",
+                    "feedback": "The edicts described by the Met include Buddhist messages.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "They were spoken only at one court ceremony.",
+                    "feedback": "Stone texts still stand at many sites. So the words were not just said aloud.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ashoka-edicts-7",
+                "type": "order",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "Trace how a stone edict can reach a later reader.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Words are carved into stone.",
+                    "feedback": "The message first needs a durable surface. Carved words can stay long after a speaker leaves.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The inscription remains at a site.",
+                    "feedback": "Stone can outlast one spoken announcement. A person could find the message at the site later.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Later visitors encounter the words.",
+                    "feedback": "A person could come back to the site and find the words again.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "ashoka-edicts-8",
+                "type": "match",
+                "conceptId": "ashoka-edicts",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
+                ],
+                "sourceRefs": [
+                  "ashoka"
+                ],
+                "stem": "Match each edict surface to a documented feature.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Rock edict",
+                    "feedback": "The Met records rock and cave edicts across the empire.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Carved across several regions",
+                    "feedback": "The Met records rock and cave edicts across the empire.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Pillar edict",
+                    "feedback": "Later edicts were cut into placed pillars. These words were cut into stone, not just spoken.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Set on polished sandstone",
+                    "feedback": "Later edicts were cut into placed pillars. The pillar could carry the message at a site.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "ashoka-edicts-m1",
+                "name": "Edicts stayed at court",
+                "correction": "Rock and pillar texts were placed across the empire.",
+                "sourceRefs": [
+                  "ashoka"
+                ]
+              },
+              {
+                "id": "ashoka-edicts-m2",
+                "name": "Every subject read the text",
+                "correction": "A public inscription could be seen or heard, but it does not prove universal reading.",
+                "sourceRefs": [
+                  "ashoka"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "ashoka",
+                "title": "Mauryan Empire",
+                "publisher": "The Metropolitan Museum of Art",
+                "year": 2000,
+                "url": "https://www.metmuseum.org/de/essays/mauryan-empire-ca-323-185-b-c"
+              }
+            ],
+            "quest": {
+              "title": "Read a public message",
+              "detail": "Find a public notice and ask whom it can reach beyond the person who wrote it.",
+              "sourceRefs": [
+                "ashoka"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "ashoka-edicts-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "ashoka-edicts-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "silk-road-ideas",
+            "title": "Silk Road ideas",
+            "prerequisites": [
+              "ashoka-edicts"
+            ],
+            "hook": "Routes through Gandhara carried trade that also helped pay for Buddhist images and monasteries.",
+            "hookSourceRefs": [
+              "silk"
+            ],
+            "rule": "Linked overland and sea routes connected distant communities. Traders, patrons and monks helped move ideas and artistic forms as well as goods.",
+            "ruleSourceRefs": [
+              "silk"
+            ],
+            "claims": [
+              {
+                "id": "silk-road-ideas-c1",
+                "text": "Trade paths linked India with western Central Asia. They also helped spread Buddhist art. People used them to move goods and ideas.",
+                "sourceRefs": [
+                  "silk"
+                ]
+              },
+              {
+                "id": "silk-road-ideas-c2",
+                "text": "Gandhara was connected to sea and overland routes rather than one straight road.",
+                "sourceRefs": [
+                  "silk"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "silk-road-ideas-1",
+                "type": "predict",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "A college map shows a trader at a Central Asian oasis beside a Buddhist complex. What might the location reveal?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Trade stops could support religious communities.",
+                    "feedback": "The Met describes Buddhist complexes at way stations used by traders.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Monasteries were always far from trade.",
+                    "feedback": "These oasis sites show that trade and monastic life could meet.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "silk-road-ideas-2",
+                "type": "scenario",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "A school exhibit shows art from Gandhara in sites to the west. How might people have spread it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Movement of people helped artistic forms travel.",
+                    "feedback": "The Met links displaced Gandharan monks with western Central Asian art.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "All western artists copied one surviving book.",
+                    "feedback": "The source points to contact and movement, not one required book.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Goods alone explain the style with no people involved.",
+                    "feedback": "People made, carried and adapted images along the routes.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "silk-road-ideas-3",
+                "type": "choose",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "Which account best fits the Silk Road routes in the Met’s exhibition?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Overland paths met river and sea trade.",
+                    "feedback": "The account traces goods from sea routes via the Indus and mountain passes.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One paved road ran from India to China.",
+                    "feedback": "Several passes and waterways appear in the account, not one paved road.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Sea trade replaced every land route.",
+                    "feedback": "The sea route fed an overland network rather than ending it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "silk-road-ideas-4",
+                "type": "why",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "Why did trade wealth matter for Buddhist art in Gandhara?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Patrons could pay for images and religious sites.",
+                    "feedback": "Trade gave people goods and funds. It also brought them into contact with new groups.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Trade automatically made every merchant a monk.",
+                    "feedback": "Funding Buddhist art does not mean all traders changed faith.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Art spread only when rulers banned travel.",
+                    "feedback": "The Met links exchange and finance, not a travel ban, to production.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "silk-road-ideas-5",
+                "type": "estimate",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "For the Silk Road spread of ideas, about how many years had Buddhism thrived in Gandhara and Swat by the fifth century, per the Met?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 600 years.",
+                    "feedback": "The exhibition account gives roughly six centuries. That is about how long Buddhism had thrived there.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 60 years.",
+                    "feedback": "That misses nearly all of the period described.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 6,000 years.",
+                    "feedback": "The source gives centuries, not millennia. Six thousand years is far longer than the source says.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 600,
+                  "min": 599.5,
+                  "max": 600.5,
+                  "unit": "years"
+                }
+              },
+              {
+                "id": "silk-road-ideas-6",
+                "type": "true-not-quite",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "A caption calls the Silk Road a single route that never changed. What is the flaw?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The name covers linked routes whose use changed.",
+                    "feedback": "The Met describes sea, river and mountain connections over time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "No route ever connected India and Central Asia.",
+                    "feedback": "The exhibition is built around those connections. It shows trade and travel did link those areas.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m1"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only a sea route carried Buddhist ideas.",
+                    "feedback": "The source also tells of land paths and monks who used them.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "silk-road-ideas-7",
+                "type": "order",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "Trace one trade path from the sea to Central Asia.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Goods move by sea toward India.",
+                    "feedback": "The account includes Arabian Sea travel. Sea routes were one way people and goods moved.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Cargo moves up the Indus toward Gandhara.",
+                    "feedback": "River transport links the coast with the region.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Routes cross passes toward Central Asia.",
+                    "feedback": "Mountain links carry goods onward. The passes made land travel between areas possible.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "silk-road-ideas-8",
+                "type": "match",
+                "conceptId": "silk-road-ideas",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "silk-road-ideas-m1",
+                  "silk-road-ideas-m2"
+                ],
+                "sourceRefs": [
+                  "silk"
+                ],
+                "stem": "Match each place to its role in the Met’s account.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Gandhara",
+                    "feedback": "Trade supported Buddhist patrons there. This support helped Buddhist art grow in Gandhara.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Trade and Buddhist art centre",
+                    "feedback": "Trade supported Buddhist patrons there. It links trade with Buddhist art at this site.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Central Asian oasis",
+                    "feedback": "Some complexes grew where traders stopped. Traders could stop at such places on the route.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Way station with Buddhist complexes",
+                    "feedback": "Some complexes grew where traders stopped. Trade stops could also host Buddhist art and worship.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "silk-road-ideas-m1",
+                "name": "Only silk moved",
+                "correction": "Goods, people, ideas and artistic forms moved through linked routes.",
+                "sourceRefs": [
+                  "silk"
+                ]
+              },
+              {
+                "id": "silk-road-ideas-m2",
+                "name": "One road crossed Asia",
+                "correction": "The Silk Road was a changing network of routes.",
+                "sourceRefs": [
+                  "silk"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "silk",
+                "title": "Buddhism along the Silk Road: 5th-8th Century",
+                "publisher": "The Metropolitan Museum of Art",
+                "year": 2012,
+                "url": "https://www.metmuseum.org/exhibitions/listings/2012/buddhism"
+              }
+            ],
+            "quest": {
+              "title": "Map an idea",
+              "detail": "Pick an everyday idea and trace two places or people through whom it reached you.",
+              "sourceRefs": [
+                "silk"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "silk-road-ideas-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "silk-road-ideas-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "indian-place-value",
+            "title": "Indian place value and zero",
+            "prerequisites": [
+              "silk-road-ideas"
+            ],
+            "hook": "The zero in 205 keeps the tens place open. Indian maths experts also made rules for zero as a number.",
+            "hookSourceRefs": [
+              "zero",
+              "gupta"
+            ],
+            "rule": "A zero can keep a place open in a number. Later, Brahmagupta gave rules to use zero in maths. Indian number signs then went west through Arabic texts.",
+            "ruleSourceRefs": [
+              "zero",
+              "gupta"
+            ],
+            "claims": [
+              {
+                "id": "indian-place-value-c1",
+                "text": "In the Indian base ten system, zero can mark an empty place in a number.",
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ]
+              },
+              {
+                "id": "indian-place-value-c2",
+                "text": "In the seventh century, Brahmagupta set out rules for sums with zero. In time, Indian number signs went west.",
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "indian-place-value-1",
+                "type": "predict",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "In a classroom, a student writes 205 rather than 25. What job does the zero do?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It keeps the tens place empty.",
+                    "feedback": "That placeholder keeps the 2 in the hundreds place.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It means the number has no value.",
+                    "feedback": "The whole number still has two hundreds and five ones.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indian-place-value-2",
+                "type": "scenario",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "A school museum credits one person with all uses of zero. What is a more fair view?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Placeholder signs and arithmetic rules developed over time.",
+                    "feedback": "MacTutor tells a long story with many steps. It does not pin all uses of zero to one day.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The Gwalior inscription proves who first invented zero.",
+                    "feedback": "It is secure dated evidence, not proof of a sole inventor.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "No Indian scholar worked on zero as a number.",
+                    "feedback": "Brahmagupta wrote rules for zero in the seventh century. He did not start every use of the sign.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indian-place-value-3",
+                "type": "fill-the-step",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "In 205, the zero marks an empty ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Tens place.",
+                    "feedback": "Without it, the 2 would sit in the tens place in 25.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Hundreds place.",
+                    "feedback": "The 2 occupies hundreds; zero marks the next place.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ones place.",
+                    "feedback": "The 5 occupies ones, so the empty position is tens.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indian-place-value-4",
+                "type": "why",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "Why does MacTutor treat “Who made zero?” as a hard question?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The placeholder and arithmetic concept have different histories.",
+                    "feedback": "Old sources show distinct ways to use zero. Those ways did not all start at once.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The zero sign has never appeared in dated writing.",
+                    "feedback": "MacTutor cites a carved zero at Gwalior that can be dated to 876.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Brahmagupta created every earlier place-value record.",
+                    "feedback": "His maths rules came later than some signs used to mark a blank place.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indian-place-value-5",
+                "type": "estimate",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "What year does MacTutor give for the first Indian carved zero that has a sure date?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "876 CE.",
+                    "feedback": "The Gwalior inscription is dated to 876 in MacTutor’s account.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "628 CE.",
+                    "feedback": "That is the year of Brahmagupta’s major work, not this inscription.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "1200 CE.",
+                    "feedback": "That date is near Fibonacci’s book in Europe. It came many years after the Gwalior sign.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 876,
+                  "min": 875.5,
+                  "max": 876.5,
+                  "unit": "year CE"
+                }
+              },
+              {
+                "id": "indian-place-value-6",
+                "type": "true-not-quite",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "An exhibit says the Bakhshali manuscript settles the exact first date for zero. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Its dating is debated.",
+                    "feedback": "The date of that old text is in doubt. It cannot prove one first use of zero.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A later copy can never contain an older idea.",
+                    "feedback": "A copy can preserve earlier work; dating still needs care.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m1"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Gwalior has no securely dated inscription.",
+                    "feedback": "MacTutor treats the Gwalior sign from 876 as a case with a sure date.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
+                    ],
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "indian-place-value-7",
+                "type": "order",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "Trace a known path by which Indian number signs went west.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Indian place-value notation develops.",
+                    "feedback": "The Indian number signs and zero sign came first on this path.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Al-Khwarizmi explains Indian reckoning.",
+                    "feedback": "His book taught the system in Arabic. It then reached more readers.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Fibonacci presents the symbols in Europe.",
+                    "feedback": "His Liber Abaci helped carry them west. That book helped more readers learn the Indian numerals.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "indian-place-value-8",
+                "type": "match",
+                "conceptId": "indian-place-value",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "indian-place-value-m1",
+                  "indian-place-value-m2"
+                ],
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ],
+                "stem": "Pair a name with a documented role.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Brahmagupta",
+                    "feedback": "MacTutor says Brahmagupta set out rules for sums with zero. He did so in the seventh century.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Wrote rules for arithmetic with zero",
+                    "feedback": "MacTutor records his seventh-century rules. He wrote about how zero works in sums.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Fibonacci",
+                    "feedback": "Liber Abaci tells of the number signs and the zero sign. That book helped them spread in Europe.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Presented Indian numerals to European readers",
+                    "feedback": "Liber Abaci tells of the number signs and the zero sign. It helped the signs move west.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "indian-place-value-m1",
+                "name": "One inventor made zero at once",
+                "correction": "The use of zero grew in stages. Old signs and later number rules are not the same step.",
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ]
+              },
+              {
+                "id": "indian-place-value-m2",
+                "name": "Placeholder and number are identical stories",
+                "correction": "A sign for an empty place and rules for zero in maths came at different times.",
+                "sourceRefs": [
+                  "zero",
+                  "gupta"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "zero",
+                "title": "Zero",
+                "publisher": "MacTutor History of Mathematics, University of St Andrews",
+                "year": 2024,
+                "url": "https://mathshistory.st-andrews.ac.uk/HistTopics/Zero/"
+              },
+              {
+                "id": "gupta",
+                "title": "Aryabhata",
+                "publisher": "MacTutor History of Mathematics, University of St Andrews",
+                "year": 2024,
+                "url": "https://mathshistory.st-andrews.ac.uk/Biographies/Aryabhata_I/"
+              }
+            ],
+            "quest": {
+              "title": "Spot an empty place",
+              "detail": "Write 205 and 25. Point to the place that zero keeps open in the first number.",
+              "sourceRefs": [
+                "zero",
+                "gupta"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "indian-place-value-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "indian-place-value-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "printing-and-reading",
+            "title": "Printing and reading",
+            "prerequisites": [
+              "indian-place-value"
+            ],
+            "hook": "Books were made with metal type in Korea before Gutenberg. His Bible was a big step for print in Europe.",
+            "hookSourceRefs": [
+              "print",
+              "loc-asia",
+              "loc-jikji"
+            ],
+            "rule": "Movable type can be rearranged for another page. East Asian printers used it earlier; Gutenberg’s mid-fifteenth-century work scaled metal-type printing in Europe.",
+            "ruleSourceRefs": [
+              "print",
+              "loc-asia",
+              "loc-jikji"
+            ],
+            "claims": [
+              {
+                "id": "printing-and-reading-c1",
+                "text": "Korean print with metal type came before the Bible made by Gutenberg.",
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ]
+              },
+              {
+                "id": "printing-and-reading-c2",
+                "text": "The Gutenberg Bible is a major early European book printed with movable metal type.",
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "printing-and-reading-1",
+                "type": "predict",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "In a school print shop, a printer moves letters for the next page. What is being reused?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Movable type.",
+                    "feedback": "Separate pieces can be set in a new order.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "An unchanged whole-page woodblock.",
+                    "feedback": "A block prints one carved page without rearranging its letters.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "printing-and-reading-2",
+                "type": "scenario",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "A college exhibit calls Gutenberg the first person anywhere to print with movable type. What needs repair?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "East Asian printers used movable type earlier.",
+                    "feedback": "The Library of Congress says print work in China and Korea came first.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Gutenberg printed no Bible.",
+                    "feedback": "His Bible is real; the error is claiming a world first.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Korean printers only copied Gutenberg later.",
+                    "feedback": "Korean metal type predates his work by centuries.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "printing-and-reading-3",
+                "type": "choose",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "Which list puts these print events in the right order?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Bi Sheng’s type, Korean metal type, then Gutenberg’s Bible.",
+                    "feedback": "The sources place these developments in that order.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Gutenberg, then Bi Sheng, then Korean type.",
+                    "feedback": "Bi Sheng worked with type in the eleventh century. That was before Gutenberg.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Korean metal type appeared only after the Bible.",
+                    "feedback": "A Korean book from 1377 predates the mid-1400s Bible.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "printing-and-reading-4",
+                "type": "explain-it-back",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "How can Gutenberg’s Bible be important without being the first movable-type book?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It marked a major European printing development.",
+                    "feedback": "His work mattered in Europe. Print had still begun in Asia before that.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Earlier Korean type must be a modern forgery.",
+                    "feedback": "The Library of Congress lists Jikji as an early book made with metal type.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "European printing began with no type to rearrange.",
+                    "feedback": "Gutenberg’s process used movable metal type. The letters could be set in a new order.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "printing-and-reading-5",
+                "type": "estimate",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "In the history of printing and reading, what year does the Library of Congress give for Jikji, the Korean metal-type book?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "1377 CE.",
+                    "feedback": "The Library of Congress dates Jikji to 1377.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "1455 CE.",
+                    "feedback": "That is about when Gutenberg printed his Bible.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "1045 CE.",
+                    "feedback": "That falls in Bi Sheng’s century, not Jikji’s.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1377,
+                  "min": 1376.5,
+                  "max": 1377.5,
+                  "unit": "year CE"
+                }
+              },
+              {
+                "id": "printing-and-reading-6",
+                "type": "true-not-quite",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "A guide says movable type instantly gave every person reading skill. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "More copies do not by themselves teach literacy.",
+                    "feedback": "The press can spread text, while reading requires learning.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Movable type cannot make multiple copies.",
+                    "feedback": "Repeated printing is one reason the method mattered.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "All pre-Gutenberg books were handwritten.",
+                    "feedback": "East Asian printing existed before Gutenberg. Books were also made by print in East Asia.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "printing-and-reading-7",
+                "type": "order",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "Put these steps in the story of print from first to last.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Bi Sheng experiments with movable type.",
+                    "feedback": "The Library of Congress puts this work in the eleventh century. It came first here.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Korean printers use metal type.",
+                    "feedback": "Korean printers used metal type before the Gutenberg Bible was made. Their work came earlier in this timeline.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Gutenberg prints his Bible.",
+                    "feedback": "This book is a key step for print in Europe. It came in the mid-fifteenth century.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "printing-and-reading-8",
+                "type": "match",
+                "conceptId": "printing-and-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "printing-and-reading-m1",
+                  "printing-and-reading-m2"
+                ],
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ],
+                "stem": "Pair the printer or book with its setting.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Jikji",
+                    "feedback": "The Jikji copy that remains was made with movable metal type. It came before the Gutenberg Bible.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Korea, 1377",
+                    "feedback": "The Jikji copy made in Korea in 1377 used metal type. It came before the Gutenberg Bible.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Gutenberg Bible",
+                    "feedback": "A landmark European metal-type book. It is a key book in the story of type in Europe.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Europe, about 1455",
+                    "feedback": "A landmark European metal-type book. It shows how metal type was used in Europe.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "printing-and-reading-m1",
+                "name": "Gutenberg invented all printing",
+                "correction": "Movable type existed in East Asia before his European work.",
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ]
+              },
+              {
+                "id": "printing-and-reading-m2",
+                "name": "One press made everyone literate",
+                "correction": "Printing spread copies; it did not instantly teach reading.",
+                "sourceRefs": [
+                  "print",
+                  "loc-asia",
+                  "loc-jikji"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "print",
+                "title": "The Gutenberg Bible",
+                "publisher": "Library of Congress",
+                "year": 2024,
+                "url": "https://www.loc.gov/exhibits/bibles/the-gutenberg-bible.html"
+              },
+              {
+                "id": "loc-asia",
+                "title": "The History of Printing in Asia According to Library of Congress Asian Collections",
+                "publisher": "Library of Congress",
+                "year": 2021,
+                "url": "https://blogs.loc.gov/international-collections/2021/06/the-history-of-printing-in-asia-according-to-library-of-congress-asian-collections-part-1/"
+              },
+              {
+                "id": "loc-jikji",
+                "title": "From Jikji to Gutenberg",
+                "publisher": "Library of Congress",
+                "year": 2023,
+                "url": "https://blogs.loc.gov/preservation/2023/05/jikji-gutenberg/"
+              }
+            ],
+            "quest": {
+              "title": "Follow one page",
+              "detail": "Find one shared printed page and ask how many readers may see the same words.",
+              "sourceRefs": [
+                "print"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "printing-and-reading-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "printing-and-reading-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "mughal-revenue",
+            "title": "Mughal administration",
+            "prerequisites": [
+              "printing-and-reading"
+            ],
+            "hook": "Akbar’s officials could use years of crop and price records to set land-revenue demands.",
+            "hookSourceRefs": [
+              "mughal",
+              "sathee-mughal"
+            ],
+            "rule": "The Mughal state used ranks and land tax. Zabt set tax on farm land where officers had good land checks and records. It did not work in all areas.",
+            "ruleSourceRefs": [
+              "mughal",
+              "sathee-mughal"
+            ],
+            "claims": [
+              {
+                "id": "mughal-revenue-c1",
+                "text": "Mansabdari set ranks for army and civil work in the Mughal state.",
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ]
+              },
+              {
+                "id": "mughal-revenue-c2",
+                "text": "Zabt set land tax from land size and good records. It did not work the same way in all areas.",
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "mughal-revenue-1",
+                "type": "predict",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "In a classroom role play, a Mughal officer holds a mansab. What does that place him within?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A ranked civil and military apparatus.",
+                    "feedback": "NCERT describes mansabdari as serving both kinds of state work.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only a village harvest calendar.",
+                    "feedback": "A mansab concerns a state officer’s rank, not a crop calendar.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "mughal-revenue-2",
+                "type": "scenario",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "A school map shows a province with poor land surveys. Why might a detailed zabt tax plan be hard there?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It depends on measurement and careful accounts.",
+                    "feedback": "NCERT says this system worked where records could be kept.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The emperor had no interest in revenue.",
+                    "feedback": "The state still got land tax. It lacked good land facts to set the rate here.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Every province used identical records.",
+                    "feedback": "NCERT notes that conditions differed across provinces. Local land and crops could vary from place to place.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "mughal-revenue-3",
+                "type": "choose",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "What was a mainstay of Mughal state income?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Land revenue from agriculture.",
+                    "feedback": "NCERT identifies land revenue as a central source.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only profits from overseas factories.",
+                    "feedback": "That factory story came with a later trade group, not the Mughal state.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only gifts from ranked officials.",
+                    "feedback": "Mansabdari was for state jobs. Farm land was a key source of tax.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "mughal-revenue-4",
+                "type": "why",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "A source says many mansabdars received jagirs rather than cash. What were jagirs?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Assignments of revenue from regions.",
+                    "feedback": "NCERT contrasts cash pay with revenue assignments. Officers could get income from an area instead of cash.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Private ownership of every farm in a province.",
+                    "feedback": "A revenue assignment did not make the officer owner of all land.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A fixed salary paid only in coins.",
+                    "feedback": "That describes cash pay, not the jagir arrangement.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "mughal-revenue-5",
+                "type": "estimate",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "For the Mughal zabt revenue rate under Akbar, about how many years of crop and price records does NCERT cite?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 10 years.",
+                    "feedback": "The NCERT account of Todar Mal’s survey gives a ten-year period.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 1 year.",
+                    "feedback": "One harvest would miss the longer record used for the rates.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 100 years.",
+                    "feedback": "The survey used a decade, not a century.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 10,
+                  "min": 9.5,
+                  "max": 10.5,
+                  "unit": "years"
+                }
+              },
+              {
+                "id": "mughal-revenue-6",
+                "type": "true-not-quite",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "A caption says zabt worked the same way everywhere. What is the key limitation?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It needed land surveys and careful local accounts.",
+                    "feedback": "NCERT notes this was not feasible in some provinces.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Land revenue never mattered outside Delhi.",
+                    "feedback": "The source does not reduce Mughal farming to one city.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Mansabdars could never be paid in cash.",
+                    "feedback": "NCERT describes both cash and revenue-assignment pay.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "mughal-revenue-7",
+                "type": "order",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "Put these steps in a simple zabt land tax plan in order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Survey cultivated land and crops.",
+                    "feedback": "Measurement is the evidence base. It gave a basis for judging what the land could yield.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Record yields and prices.",
+                    "feedback": "These records inform a cash schedule. Crop and price data helped set the cash rate.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Set a revenue rate.",
+                    "feedback": "The demand follows the survey and accounts. The rate used what the land and crops could yield.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "mughal-revenue-8",
+                "type": "match",
+                "conceptId": "mughal-revenue",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "mughal-revenue-m1",
+                  "mughal-revenue-m2"
+                ],
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ],
+                "stem": "Pair each Mughal term with its role.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Mansabdari",
+                    "feedback": "The apparatus helped run the state. It linked an officer's rank with service and pay.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Ranked civil and military service",
+                    "feedback": "The apparatus helped run the state. Ranks tied a post to both army and civil duties.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Jagir",
+                    "feedback": "Many mansabdars got pay from a jagir. It gave them tax from a set area.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Revenue assignment to an officer",
+                    "feedback": "Many mansabdars were paid through these assignments. That income could stand in for a cash wage.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "mughal-revenue-m1",
+                "name": "Rank meant only a title",
+                "correction": "Mansabdari tied a rank to both civil and army work.",
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ]
+              },
+              {
+                "id": "mughal-revenue-m2",
+                "name": "One tax method fit all provinces",
+                "correction": "Zabt needed good land checks. These were not in place in all areas.",
+                "sourceRefs": [
+                  "mughal",
+                  "sathee-mughal"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "mughal",
+                "title": "Peasants, Zamindars and the State",
+                "publisher": "NCERT",
+                "year": 2024,
+                "url": "https://ncert.nic.in/textbook/pdf/lehs204.pdf"
+              },
+              {
+                "id": "sathee-mughal",
+                "title": "The Mughals: 16th to 17th Century (NCERT text)",
+                "publisher": "IIT Kanpur SATHEE",
+                "year": 2026,
+                "url": "https://www.satheebihar.iitk.ac.in/or/sathee-ssc/student-corner/ncert-books/class-07/social-science/history-our-past-2/chapter-04-the-mughals-16th-to-17th-century/"
+              }
+            ],
+            "quest": {
+              "title": "Trace a public service",
+              "detail": "Name one service that needs records and resources to work across many towns.",
+              "sourceRefs": [
+                "mughal"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "mughal-revenue-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "mughal-revenue-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "company-trade-rule",
+            "title": "Company trade and rule",
+            "prerequisites": [
+              "mughal-revenue"
+            ],
+            "hook": "The Company was set up in 1600 to trade. Much later it took land tax in Bengal, Bihar and Orissa. Its role grew.",
+            "hookSourceRefs": [
+              "company",
+              "uk-company",
+              "uk-crown"
+            ],
+            "rule": "The East India Company began as a trade group. Wins at Plassey and Buxar came first. The diwani grant in 1765 gave it land tax rights. The Crown took over rule in 1858.",
+            "ruleSourceRefs": [
+              "company",
+              "uk-company",
+              "uk-crown"
+            ],
+            "claims": [
+              {
+                "id": "company-trade-rule-c1",
+                "text": "The Company won at Plassey in 1757 and Buxar in 1764. These wins helped it gain power beyond trade.",
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ]
+              },
+              {
+                "id": "company-trade-rule-c2",
+                "text": "The 1765 diwani gave the Company land tax rights. In 1858, rule then went to the Crown.",
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "company-trade-rule-1",
+                "type": "predict",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "A school timeline starts with the East India Company as a trader. What changed much later?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It gained territorial and revenue power.",
+                    "feedback": "Parliament traces its move from trade to political rule.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The 1600 charter itself gave rule over Bengal.",
+                    "feedback": "The revenue grant came in 1765, long after the charter.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "company-trade-rule-2",
+                "type": "scenario",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "A classroom timeline puts Plassey before the diwani grant. Which reading is sound?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Military victory came before formal revenue authority.",
+                    "feedback": "Plassey was 1757; the diwani was granted in 1765.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Diwani simply opened a warehouse at Hugli.",
+                    "feedback": "The word meant the right to take land tax. It was not a trade post.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The Crown took over immediately after Plassey.",
+                    "feedback": "The transfer of Company rule came in 1858.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m2"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "company-trade-rule-3",
+                "type": "choose",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "What did the 1765 diwani let the Company do?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Collect revenue in Bengal, Bihar and Orissa.",
+                    "feedback": "The British Library describes the Mughal grant in those terms.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Print the Mughal emperor’s coins only.",
+                    "feedback": "The diwani was about land tax rights. It was not a right to make coins.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Trade without any role in administration.",
+                    "feedback": "Revenue collection drew the Company into government. The right to tax land gave it a role in rule.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m2"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "company-trade-rule-4",
+                "type": "why",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "Why does Buxar belong between trade and Company rule on a timeline?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It was a military victory before the revenue grant.",
+                    "feedback": "Parliament names Buxar in 1764 as part of the shift to territorial power.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It was the date the Company was founded.",
+                    "feedback": "The trading company began in 1600. The grant came long after its start as a trader.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It marks the Crown takeover.",
+                    "feedback": "The Crown took over Company rule in 1858. That came well after this event.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m2"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "company-trade-rule-5",
+                "type": "estimate",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "What year did the Mughal ruler give the Company the diwani, or land tax right, in Bengal, Bihar and Orissa?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "1765 CE.",
+                    "feedback": "The British Library dates this revenue grant to 1765.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "1757 CE.",
+                    "feedback": "That is the year of Plassey, not the diwani grant.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "1858 CE.",
+                    "feedback": "That marks the Crown takeover, not the Mughal grant.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m2"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1765,
+                  "min": 1764.5,
+                  "max": 1765.5,
+                  "unit": "year CE"
+                }
+              },
+              {
+                "id": "company-trade-rule-6",
+                "type": "true-not-quite",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "A chart says the Company still ran India after 1858. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Its administrative powers passed to the Crown.",
+                    "feedback": "UK Parliament dates the transfer to the 1858 Act.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The diwani was granted only after Crown rule.",
+                    "feedback": "The 1765 grant preceded Crown rule by decades.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The Company had never held any administrative power.",
+                    "feedback": "Its pre-1858 revenue and territorial rule was real.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m2"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "company-trade-rule-7",
+                "type": "order",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "Put these steps in the Company’s rise to power in order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Plassey, 1757.",
+                    "feedback": "This victory preceded Buxar. The later battle at Buxar came in 1764.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Buxar, 1764.",
+                    "feedback": "This win gave the Company more power. It came after Plassey and before the diwani.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Diwani, 1765.",
+                    "feedback": "Revenue authority followed those battles. The grant gave the Company a right to tax land.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "company-trade-rule-8",
+                "type": "match",
+                "conceptId": "company-trade-rule",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "company-trade-rule-m1",
+                  "company-trade-rule-m2"
+                ],
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ],
+                "stem": "Pair each event with its consequence.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Diwani, 1765",
+                    "feedback": "The Mughal grant covered three eastern provinces. The right came from the Mughal emperor.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Company revenue authority",
+                    "feedback": "The Mughal grant covered three eastern provinces. It gave the Company power to collect land tax.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Government of India Act, 1858",
+                    "feedback": "The Company lost its administrative powers. The Crown then took over rule in India.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Crown takes over Company rule",
+                    "feedback": "The Company lost its administrative powers. This law put rule under the Crown instead.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "company-trade-rule-m1",
+                "name": "The charter meant rule from day one",
+                "correction": "The Company began trade in 1600. It gained land and power much later.",
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ]
+              },
+              {
+                "id": "company-trade-rule-m2",
+                "name": "Diwani was a trade licence",
+                "correction": "Diwani gave the Company the right to collect land tax.",
+                "sourceRefs": [
+                  "company",
+                  "uk-company",
+                  "uk-crown"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "company",
+                "title": "East India Company Factory Records: administrative context",
+                "publisher": "British Library",
+                "year": 2026,
+                "url": "https://searcharchives.bl.uk/catalog/032-000173250"
+              },
+              {
+                "id": "uk-company",
+                "title": "Parliament and the East India Company",
+                "publisher": "UK Parliament",
+                "year": 2026,
+                "url": "https://www.parliament.uk/about/living-heritage/evolutionofparliament/legislativescrutiny/parliament-and-empire/parliament-and-the-american-colonies-before-1765/parliament-and-the-east-india-company/"
+              },
+              {
+                "id": "uk-crown",
+                "title": "East India Company and Raj 1785-1858",
+                "publisher": "UK Parliament",
+                "year": 2026,
+                "url": "https://www.parliament.uk/about/living-heritage/evolutionofparliament/legislativescrutiny/parliament-and-empire/parliament-and-the-american-colonies-before-1765/east-india-company-and-raj-1785-1858/"
+              }
+            ],
+            "quest": {
+              "title": "Follow a trade route",
+              "detail": "Pick an old market or port on a map. Ask what goods moved and who set the rules.",
+              "sourceRefs": [
+                "company"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "company-trade-rule-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "company-trade-rule-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "independence-constitution",
+            "title": "Independence and Constitution",
+            "prerequisites": [
+              "company-trade-rule"
+            ],
+            "hook": "India voted to adopt its Constitution in November 1949. The text came into force two months later. The vote and the start of the law were two steps.",
+            "hookSourceRefs": [
+              "assembly",
+              "freedom",
+              "sansad-debates",
+              "sansad-jubilee"
+            ],
+            "rule": "The Constituent Assembly held talks and adopted the Constitution. Ambedkar led its Drafting Committee. The vote came on 26 November 1949. The text took effect on 26 January 1950. These were two steps.",
+            "ruleSourceRefs": [
+              "assembly",
+              "freedom",
+              "sansad-debates",
+              "sansad-jubilee"
+            ],
+            "claims": [
+              {
+                "id": "independence-constitution-c1",
+                "text": "Ambedkar led the group that drew up the draft. It worked for the Constituent Assembly.",
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ]
+              },
+              {
+                "id": "independence-constitution-c2",
+                "text": "India took up its Constitution on 26 November 1949. The text came into force on 26 January 1950.",
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "independence-constitution-1",
+                "type": "predict",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "In a school quiz, who debated and adopted India’s Constitution?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The Constituent Assembly.",
+                    "feedback": "The full Assembly held talks on the text. It then voted to adopt it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Ambedkar alone, without an Assembly.",
+                    "feedback": "He chaired the Drafting Committee, while the Assembly debated and adopted the text.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "independence-constitution-2",
+                "type": "scenario",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "A college student says the Drafting Committee and full Assembly did the same job. What distinction matters?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The committee prepared a draft for Assembly debate.",
+                    "feedback": "The group and its chair worked on a draft. The full Assembly held the debate.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The committee met only after the Constitution began.",
+                    "feedback": "The group began work in 1947. Its draft came before the final vote.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The Assembly had no role once drafting started.",
+                    "feedback": "The record shows that the full Assembly held many talks on the draft.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "independence-constitution-3",
+                "type": "choose",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "Which date marks adoption, rather than the start of the Constitution?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "26 November 1949.",
+                    "feedback": "Parliament lists that as the adoption date. The text came into force at a later date.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "26 January 1950.",
+                    "feedback": "That is when the Constitution came into force.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "9 December 1946.",
+                    "feedback": "That marks the Assembly’s first meeting, not adoption.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "independence-constitution-4",
+                "type": "why",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "Why is it wrong to say Ambedkar made the whole Constitution alone?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "He chaired a committee within a debating Assembly.",
+                    "feedback": "His central role did not erase the committee and Assembly’s work.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He joined only after January 1950.",
+                    "feedback": "He chaired the Drafting Committee from 1947. He led the draft work well before it became law.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The Assembly only signed a text without debate.",
+                    "feedback": "The record has many talks and changes made by the full Assembly.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "independence-constitution-5",
+                "type": "estimate",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "India won independence. Its new Constitution came into force later. In what year did that happen?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "1950 CE.",
+                    "feedback": "It commenced on 26 January 1950. That was the year it came into force.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "1949 CE.",
+                    "feedback": "That is its adoption year, a different step.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "1947 CE.",
+                    "feedback": "India won its freedom in 1947. The text came into force in 1950.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1950,
+                  "min": 1949.5,
+                  "max": 1950.5,
+                  "unit": "year CE"
+                }
+              },
+              {
+                "id": "independence-constitution-6",
+                "type": "true-not-quite",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "A school chart calls the day the text was adopted “Republic Day.” What is wrong with that label?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "That was adoption; commencement was 26 January 1950.",
+                    "feedback": "Parliament separates the two dates. The text took effect on a later day.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The Assembly first met in November 1949.",
+                    "feedback": "It first met in December 1946. It met years before the text was made law.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ambedkar became committee chair in 1950.",
+                    "feedback": "The Drafting Committee was set up in 1947.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "independence-constitution-7",
+                "type": "order",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "Put these steps in the story of the Constitution in order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Assembly first meets in 1946.",
+                    "feedback": "This starts the recorded Assembly process. The first meeting came before the draft was done.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Constitution is adopted in 1949.",
+                    "feedback": "Debate culminates in adoption. The vote came after long talks on the text.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Constitution comes into force in 1950.",
+                    "feedback": "The text came into force after the full Assembly had voted to adopt it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "independence-constitution-8",
+                "type": "match",
+                "conceptId": "independence-constitution",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "independence-constitution-m1",
+                  "independence-constitution-m2"
+                ],
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ],
+                "stem": "Pair the body or date with its role.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Drafting Committee",
+                    "feedback": "The group drew up a draft. The full Assembly then held talks on it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Prepared a draft under Ambedkar",
+                    "feedback": "The group made a draft for the full Assembly to debate and vote on.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "26 January 1950",
+                    "feedback": "This is commencement, not adoption. The text had been adopted at an earlier date.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Constitution came into force",
+                    "feedback": "This is commencement, not adoption. That date marks when the new text took effect.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "independence-constitution-m1",
+                "name": "One author wrote the Constitution alone",
+                "correction": "The Drafting Committee wrote a draft. The full Assembly held talks and voted on it.",
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ]
+              },
+              {
+                "id": "independence-constitution-m2",
+                "name": "Adoption and start were the same day",
+                "correction": "The Assembly adopted the text before it came into force.",
+                "sourceRefs": [
+                  "assembly",
+                  "freedom",
+                  "sansad-debates",
+                  "sansad-jubilee"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "assembly",
+                "title": "Constituent Assembly",
+                "publisher": "Lok Sabha Secretariat",
+                "year": 2024,
+                "url": "https://sansad.in/ls/about/constituent-assembly"
+              },
+              {
+                "id": "freedom",
+                "title": "Constituent Assembly: Background and Procedure",
+                "publisher": "Centre for Law and Policy Research",
+                "year": 2026,
+                "url": "https://www.constitutionofindia.net/constituent-assembly/"
+              },
+              {
+                "id": "sansad-debates",
+                "title": "Constituent Assembly Draft Making Debates",
+                "publisher": "Parliament of India",
+                "year": 2026,
+                "url": "https://elibrary.sansad.in/collections/586ed2c7-8d3b-4a75-a371-c342117c731d"
+              },
+              {
+                "id": "sansad-jubilee",
+                "title": "Select Proceedings of the Constituent Assembly",
+                "publisher": "Parliament of India",
+                "year": 2000,
+                "url": "https://eparlib.sansad.in/bitstream/123456789/782459/1/Golden_Jubilee_Republic_of_India.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Read a shared rule",
+              "detail": "Find a school or local rule. Ask who made it and who it is meant to serve.",
+              "sourceRefs": [
+                "assembly",
+                "freedom"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "independence-constitution-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "independence-constitution-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "changelog": "W3 review rewrite, 2026-10-20: all 64 items revised with specific distractor feedback, sourced quantities and checked source fields."
+}

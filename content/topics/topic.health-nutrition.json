@@ -1,0 +1,4487 @@
+{
+  "id": "topic.health-nutrition",
+  "version": "1.0.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Health and nutrition",
+  "description": "Explore food, rest and movement with everyday examples. This is general information, not medical advice.",
+  "author": "codex",
+  "createdAt": "2026-10-20T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "health-nutrition",
+      "title": "Health and nutrition",
+      "description": "Explore food, rest and movement with everyday examples. This is general information, not medical advice."
+    },
+    "modules": [
+      {
+        "id": "health-nutrition-module",
+        "title": "How the body uses daily inputs",
+        "concepts": [
+          {
+            "id": "protein-foods",
+            "title": "Protein in everyday food",
+            "prerequisites": [],
+            "hook": "ICMR-NIN notes that cereals and pulses can complement each other’s amino acids.",
+            "hookSourceRefs": [
+              "protein"
+            ],
+            "rule": "Protein comes from many foods. Pulses and cereals together give a good mix of key amino acids. No one food has to supply all we need.",
+            "ruleSourceRefs": [
+              "protein"
+            ],
+            "claims": [
+              {
+                "id": "protein-foods-c1",
+                "text": "Pulses are protein-rich plant foods.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              },
+              {
+                "id": "protein-foods-c2",
+                "text": "Cereals or millets and pulses can fill gaps in each other’s amino acid mix.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "protein-foods-1",
+                "type": "predict",
+                "conceptId": "protein-foods",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "At a college canteen, dal is served with rice. What does the dal bring that rice alone supplies less of?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A useful pulse protein source.",
+                    "feedback": "ICMR-NIN names pulses as protein-rich plant foods.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only starch with no protein.",
+                    "feedback": "Dal is a pulse; pulses supply protein. That makes dal part of the meal's protein mix.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "protein-foods-2",
+                "type": "scenario",
+                "conceptId": "protein-foods",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "A school cook pairs a millet with chana. Why can that pairing be useful?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Their amino-acid profiles complement each other.",
+                    "feedback": "ICMR-NIN describes the cereal or millet and pulse combination.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The foods become a new vitamin.",
+                    "feedback": "Mixing food groups does not create a vitamin.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only the millet contributes protein.",
+                    "feedback": "The pulse is itself protein-rich. The pulse adds protein to the meal as well.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m2"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "protein-foods-3",
+                "type": "choose",
+                "conceptId": "protein-foods",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "Which food pair fits the ICMR-NIN guide for protein?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Cereal or millet with a pulse.",
+                    "feedback": "The guide says these groups complement one another.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Two cereals with no pulse.",
+                    "feedback": "That can be a meal, but it misses the specific complementary pairing.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only a sweet drink with a cereal.",
+                    "feedback": "A sweet drink does not play the pulse role in this example.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m2"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "protein-foods-4",
+                "type": "why",
+                "conceptId": "protein-foods",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "A poster says a meal with no meat cannot give useful protein. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Pulses and other plant foods provide protein.",
+                    "feedback": "The guide says pulses can give protein. They can pair well with grains.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every plant food has the same amino acids.",
+                    "feedback": "The reason to vary groups is that their profiles differ.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Cereal and pulse pairing removes all need for variety.",
+                    "feedback": "Foods can fill gaps in each other’s amino acid mix. A varied diet helps too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m2"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "protein-foods-5",
+                "type": "estimate",
+                "conceptId": "protein-foods",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "According to ICMR-NIN, one gram of protein supplies about how much energy?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 4 kcal per gram.",
+                    "feedback": "The guideline gives protein energy as 4 kcal per gram.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 9 kcal per gram.",
+                    "feedback": "That is a common figure for fat, not protein.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 0 kcal per gram.",
+                    "feedback": "Protein gives the body energy. It also helps build and mend tissue.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m2"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 4,
+                  "min": 3.5,
+                  "max": 4.5,
+                  "unit": "kcal per gram"
+                }
+              },
+              {
+                "id": "protein-foods-6",
+                "type": "true-not-quite",
+                "conceptId": "protein-foods",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "A menu gives rice but says dal adds no nutritional value. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Dal adds protein and a different amino-acid mix.",
+                    "feedback": "That is why ICMR-NIN highlights cereal-pulse combinations.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Rice has no nutrients at all.",
+                    "feedback": "The two foods fill gaps in each other’s amino acid mix. Rice is not empty of protein.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m1"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Dal works only when meat is also served.",
+                    "feedback": "The guide gives cereal-pulse pairing as a plant-food example.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "protein-foods-m2"
+                    ],
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "protein-foods-7",
+                "type": "order",
+                "conceptId": "protein-foods",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "Build the logic of a cereal-pulse protein pairing.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Identify the cereal or millet.",
+                    "feedback": "This is one protein-containing food group. Cereals and pulses can both add protein to a meal.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Add a pulse.",
+                    "feedback": "Pulses add a different amino-acid profile. That can help fill gaps in the cereal's amino acids.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Consider the combined mix.",
+                    "feedback": "The groups complement each other. Each group brings amino acids the other has less of.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "protein-foods-8",
+                "type": "match",
+                "conceptId": "protein-foods",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m2"
+                ],
+                "sourceRefs": [
+                  "protein"
+                ],
+                "stem": "Match each food to its group.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Chana",
+                    "feedback": "A protein-rich legume. Chana is a pulse, so it adds protein to the meal.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Pulse",
+                    "feedback": "A protein-rich legume. This is why chana can add protein to a meal.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Rice",
+                    "feedback": "A grain that can pair with a pulse.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Cereal",
+                    "feedback": "A grain that can pair with a pulse.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "protein"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "protein-foods-m1",
+                "name": "Plant foods lack protein",
+                "correction": "Pulses are a substantial plant source of protein.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              },
+              {
+                "id": "protein-foods-m2",
+                "name": "One meal needs a perfect protein",
+                "correction": "A varied diet can draw amino acids from different foods.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "protein",
+                "title": "Dietary Guidelines for Indians 2024",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2024,
+                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Spot the mix",
+              "detail": "Look at a familiar meal and name its pulse, cereal or other protein foods.",
+              "sourceRefs": [
+                "protein"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "protein-foods-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "protein-foods-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "free-sugars",
+            "title": "Free sugars",
+            "prerequisites": [
+              "protein-foods"
+            ],
+            "hook": "Fruit juice counts toward WHO’s free-sugar guidance even when no spoonful of sugar was added.",
+            "hookSourceRefs": [
+              "sugar"
+            ],
+            "rule": "WHO free sugars include added sugar, honey, syrups and fruit juice sugars. On a 2,000-kcal day, below 10% of energy is about 50 g; 5% or less may add benefit.",
+            "ruleSourceRefs": [
+              "sugar"
+            ],
+            "claims": [
+              {
+                "id": "free-sugars-c1",
+                "text": "WHO includes honey, syrups and fruit juice sugars in free sugars, but excludes the sugars in whole fresh fruit.",
+                "sourceRefs": [
+                  "sugar"
+                ]
+              },
+              {
+                "id": "free-sugars-c2",
+                "text": "WHO says free sugars should give less than 10% of daily energy. At 5% or less, there may be more benefit.",
+                "sourceRefs": [
+                  "sugar"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "free-sugars-1",
+                "type": "predict",
+                "conceptId": "free-sugars",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "A school drink is sweetened with honey instead of table sugar. Does it escape the WHO free sugar rule?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No; honey’s sugars count.",
+                    "feedback": "WHO explicitly includes honey. Its source does not put it outside the free sugar rule.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Yes; only refined white sugar counts.",
+                    "feedback": "WHO’s definition covers more than white sugar.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "free-sugars-2",
+                "type": "scenario",
+                "conceptId": "free-sugars",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "At a college canteen, a glass of fruit juice and a whole orange contain fruit sugars. Which has free sugars under the WHO rule?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The juice.",
+                    "feedback": "WHO names fruit juice; sugars held in whole fruit are treated differently.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both in exactly the same way.",
+                    "feedback": "The definition singles out juice, not intact whole fruit.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Neither, because both began as fruit.",
+                    "feedback": "Juice sugars still count as free sugars, even when the juice comes from fruit.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "free-sugars-3",
+                "type": "choose",
+                "conceptId": "free-sugars",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "Which source is within WHO’s free-sugar category?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sugar naturally present in syrup.",
+                    "feedback": "Syrups are named in the definition. That is why sugar from syrup counts as free sugar.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "All carbohydrate in plain rice.",
+                    "feedback": "Starch in rice is not free sugar. The rule concerns added sugars, not all starch in food.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The sugars inside an intact apple.",
+                    "feedback": "Whole fruit is outside this definition. Its sugars stay within the whole fruit, unlike juice sugars.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "free-sugars-4",
+                "type": "why",
+                "conceptId": "free-sugars",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "A package says “no added sugar,” yet contains fruit juice concentrate. Why check it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Juice concentrate still brings free sugars.",
+                    "feedback": "WHO includes sugars in fruit juice concentrates. The source of the sugar still puts it in this group.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The claim proves the drink has zero sugar.",
+                    "feedback": "No added sugar does not mean no free sugars.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Whole fruit and juice concentrate are identical categories.",
+                    "feedback": "WHO draws a distinction between juice and intact fruit.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "free-sugars-5",
+                "type": "estimate",
+                "conceptId": "free-sugars",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "For a 2,000-kcal day, WHO equates its below-10% free-sugar guidance to about how many grams?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 50 grams.",
+                    "feedback": "WHO gives this approximate conversion for a 2,000-kcal day.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 5 grams.",
+                    "feedback": "Five is the further-benefit percentage, not this gram figure.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 200 grams.",
+                    "feedback": "That would be far above the stated energy share.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 50,
+                  "min": 49.5,
+                  "max": 50.5,
+                  "unit": "grams"
+                }
+              },
+              {
+                "id": "free-sugars-6",
+                "type": "true-not-quite",
+                "conceptId": "free-sugars",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "Someone says WHO’s 5% figure replaced the 10% limit for everyone. Which reading is closer?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Below 10% is the main limit; 5% or less may bring more benefit.",
+                    "feedback": "WHO states both levels with different roles. The lower level is a further aim, not the main cap.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Ten percent refers to all carbohydrates.",
+                    "feedback": "The WHO rule is about free sugars. It does not count all carbs in food.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m1"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Five percent means five grams a day.",
+                    "feedback": "A percentage of energy is not a fixed gram amount across diets.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "free-sugars-7",
+                "type": "order",
+                "conceptId": "free-sugars",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "Check whether a sweet source enters WHO’s free-sugar category.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Identify the sugar source.",
+                    "feedback": "The source matters for this definition. Added sugar and juice count, while whole fruit does not.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Check for added sugar, honey, syrup or juice.",
+                    "feedback": "WHO includes these sources. Honey and syrup count even when they sound natural.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Keep whole fruit distinct.",
+                    "feedback": "Its intrinsic sugars are not counted as free sugars.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "free-sugars-8",
+                "type": "match",
+                "conceptId": "free-sugars",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "free-sugars-m1",
+                  "free-sugars-m2"
+                ],
+                "sourceRefs": [
+                  "sugar"
+                ],
+                "stem": "Match each food to its WHO category.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Fruit juice",
+                    "feedback": "WHO explicitly includes juice sugars. Juice is one of the sources named in the rule.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Contains free sugars",
+                    "feedback": "WHO explicitly includes juice sugars. Those sugars count even when the juice has no added sugar.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Whole orange",
+                    "feedback": "Whole fruit is treated differently from juice. Its sugars remain inside the fruit, unlike those in juice.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Intrinsic fruit sugars",
+                    "feedback": "Whole fruit is treated differently from juice. That is the name for sugars held inside whole fruit.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sugar"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "free-sugars-m1",
+                "name": "Natural sweeteners are exempt",
+                "correction": "Honey and juice sugars count as free sugars.",
+                "sourceRefs": [
+                  "sugar"
+                ]
+              },
+              {
+                "id": "free-sugars-m2",
+                "name": "All fruit sugar is free sugar",
+                "correction": "The guidance treats whole fruit differently from juice.",
+                "sourceRefs": [
+                  "sugar"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "sugar",
+                "title": "Healthy diet",
+                "publisher": "World Health Organization",
+                "year": 2026,
+                "url": "https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet"
+              }
+            ],
+            "quest": {
+              "title": "Read a drink label",
+              "detail": "Find a drink label and note its sugar entry. Ask whether sugar was added or came from juice.",
+              "sourceRefs": [
+                "sugar"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "free-sugars-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "free-sugars-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "hydration-cues",
+            "title": "Hydration cues",
+            "prerequisites": [
+              "free-sugars"
+            ],
+            "hook": "NHS counts tea and milk as fluid, and calls its six-to-eight-cup figure a guide.",
+            "hookSourceRefs": [
+              "water"
+            ],
+            "rule": "Water is a useful drink, but other drinks and some foods add fluid. Heat and long activity can change needs, so one cup count does not fit every day.",
+            "ruleSourceRefs": [
+              "water"
+            ],
+            "claims": [
+              {
+                "id": "hydration-cues-c1",
+                "text": "NHS gives six to eight cups or glasses of fluid as a general guide, not a fixed water-only rule.",
+                "sourceRefs": [
+                  "water"
+                ]
+              },
+              {
+                "id": "hydration-cues-c2",
+                "text": "Tea, coffee, milk and foods can add fluid; hot settings and long activity can raise needs.",
+                "sourceRefs": [
+                  "water"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "hydration-cues-1",
+                "type": "predict",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "At school, a student drinks milk with breakfast. Does NHS count it toward fluid intake?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Yes, milk counts.",
+                    "feedback": "NHS lists lower-fat milk among drinks that count.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "No, only plain water counts.",
+                    "feedback": "That ignores other drinks in the NHS guide.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "hydration-cues-2",
+                "type": "scenario",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "After a long walk in hot weather, a college student checks the six to eight cup guide. Is it an exact cap?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No; heat and long activity can raise fluid needs.",
+                    "feedback": "NHS names both reasons needs may change. Hot weather and long activity can call for more fluid.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Yes; eight cups is a safe maximum for all adults.",
+                    "feedback": "The NHS calls it a guide, not a universal cap.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The walk matters only if no food was eaten.",
+                    "feedback": "Heat and a long walk can change fluid needs. Meal time does not set the guide.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m2"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "hydration-cues-3",
+                "type": "choose",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "Which of these adds fluid, as the NHS guide says?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Tea and water-rich food.",
+                    "feedback": "NHS counts tea and notes that food also supplies some fluid.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only water from a bottle.",
+                    "feedback": "That leaves out other drinks and food. Other drinks and fluid in food can count too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only drinks without any flavour.",
+                    "feedback": "Flavour is not the criterion in the NHS account.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m2"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "hydration-cues-4",
+                "type": "why",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "Why is the “exactly eight glasses of water” rule too rigid?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It mistakes a fluid guide for a fixed water-only target.",
+                    "feedback": "The NHS guide includes other drinks and variable conditions.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Because no one ever needs fluid from drinks.",
+                    "feedback": "Drinks remain an important source of fluid. The guide counts drinks as a main way to get fluid.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Because tea always cancels water intake.",
+                    "feedback": "NHS counts tea toward the daily fluid total.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m2"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "hydration-cues-5",
+                "type": "estimate",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "What is the lower end of the NHS hydration guide of six to eight daily cups or glasses of fluid?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Six cups or glasses.",
+                    "feedback": "The NHS range starts at six and remains a guide.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Eight glasses of water.",
+                    "feedback": "Eight is the upper end of a fluid range, not its lower end or a water-only rule.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Twelve cups.",
+                    "feedback": "That is outside the general range on the NHS page.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m2"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 6,
+                  "min": 5.5,
+                  "max": 6.5,
+                  "unit": "cups or glasses"
+                }
+              },
+              {
+                "id": "hydration-cues-6",
+                "type": "true-not-quite",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "A chart lists water but excludes coffee from all fluid totals. What should change?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Coffee can count as fluid too.",
+                    "feedback": "NHS includes lower-sugar drinks such as coffee.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Coffee and water are identical in every respect.",
+                    "feedback": "Both contribute fluid, but their other properties differ.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only hot coffee counts, not cold coffee.",
+                    "feedback": "Temperature is not what makes it a fluid.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "hydration-cues-m2"
+                    ],
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "hydration-cues-7",
+                "type": "order",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "Read a hydration guide in context.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Start with the general fluid range.",
+                    "feedback": "NHS offers a starting guide. It is a guide for most people, not an exact cap.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Count drinks and some food fluid.",
+                    "feedback": "Plain water is not the only contribution. Milk and tea can add fluid to a day as well.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Adjust for heat or long activity.",
+                    "feedback": "Those conditions can change needs. So the same cup guide may not fit every day.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "hydration-cues-8",
+                "type": "match",
+                "conceptId": "hydration-cues",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "hydration-cues-m1",
+                  "hydration-cues-m2"
+                ],
+                "sourceRefs": [
+                  "water"
+                ],
+                "stem": "Pair each clue with its implication.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Tea or milk",
+                    "feedback": "NHS includes these drinks. Tea and milk can add to the day's fluid intake.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Can add to fluid intake",
+                    "feedback": "NHS includes these drinks. They count toward fluid intake, even without plain water.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Hot weather",
+                    "feedback": "The guide allows for hotter conditions. A hot day may mean the usual guide is too low.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "May raise fluid needs",
+                    "feedback": "The guide allows for hotter conditions. The body can need more fluid when it is hot.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "water"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "hydration-cues-m1",
+                "name": "Only plain water counts",
+                "correction": "Other drinks and some foods contribute fluid.",
+                "sourceRefs": [
+                  "water"
+                ]
+              },
+              {
+                "id": "hydration-cues-m2",
+                "name": "Eight glasses fits everyone",
+                "correction": "The NHS figure is a guide that changes with conditions.",
+                "sourceRefs": [
+                  "water"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "water",
+                "title": "Water, drinks and hydration",
+                "publisher": "NHS",
+                "year": 2022,
+                "url": "https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/water-drinks-nutrition/"
+              }
+            ],
+            "quest": {
+              "title": "Notice fluids",
+              "detail": "For one meal, name the drink and any food that brings fluid, with no target to meet.",
+              "sourceRefs": [
+                "water"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "hydration-cues-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "hydration-cues-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "sleep-recovery",
+            "title": "Sleep and recovery",
+            "prerequisites": [
+              "hydration-cues"
+            ],
+            "hook": "Sleep is active: the brain cycles through stages while the body carries out repair.",
+            "hookSourceRefs": [
+              "sleep",
+              "cdc-sleep"
+            ],
+            "rule": "Adults generally need seven or more hours of sleep. Sleep quality and repeating stages also matter; deep sleep tends to be longer earlier in the night.",
+            "ruleSourceRefs": [
+              "sleep",
+              "cdc-sleep"
+            ],
+            "claims": [
+              {
+                "id": "sleep-recovery-c1",
+                "text": "CDC recommends seven or more hours of sleep for adults aged 18–60.",
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ]
+              },
+              {
+                "id": "sleep-recovery-c2",
+                "text": "NIH describes cycling sleep stages and more deep sleep earlier in the night.",
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "sleep-recovery-1",
+                "type": "predict",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "A school chart shows deep and REM sleep stages. What does that reveal?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sleep changes through the night.",
+                    "feedback": "NIH describes repeating non-REM and REM stages.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The brain is switched off throughout.",
+                    "feedback": "REM and other stages involve brain activity. The brain does different work as sleep stages change.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sleep-recovery-2",
+                "type": "scenario",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "A college student hears that everyone needs exactly five hours of sleep. What is closer to CDC guidance?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Adults aged 18–60 generally need seven or more hours.",
+                    "feedback": "CDC gives seven or more hours for that age band.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Five hours is the CDC target for all adults.",
+                    "feedback": "That is below the stated general recommendation. CDC says most adults in this age group need more.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The number of hours never varies with age.",
+                    "feedback": "CDC lists different ranges for different ages. A child and an adult can have different sleep needs.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sleep-recovery-3",
+                "type": "choose",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "Which stage tends to last longer in the first half of the night?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Deep sleep.",
+                    "feedback": "NIH places more deep sleep earlier in the night.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "REM sleep exclusively.",
+                    "feedback": "REM is part of sleep, but deep sleep is the stage emphasized early.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Waking.",
+                    "feedback": "The question concerns a sleep stage, not awake time.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sleep-recovery-4",
+                "type": "why",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "Why can a full night include several distinct patterns on a sleep study?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sleep cycles through stages repeatedly.",
+                    "feedback": "A changing pattern fits the NIH account of cycles.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One stage must last without interruption until morning.",
+                    "feedback": "The stages recur rather than forming one unbroken block.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "No brain activity occurs during REM.",
+                    "feedback": "REM is associated with active brain patterns. The brain stays active during this part of sleep.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sleep-recovery-5",
+                "type": "estimate",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "For adult sleep, what minimum nightly hours does CDC list for ages 18 to 60?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Seven or more hours.",
+                    "feedback": "CDC gives seven or more for this adult age band.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Five hours.",
+                    "feedback": "That falls below the general CDC recommendation. CDC lists seven or more hours for adults aged 18 to 60.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ten hours.",
+                    "feedback": "That is above the stated lower bound, not its value.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 7,
+                  "min": 6.5,
+                  "max": 7.5,
+                  "unit": "hours"
+                }
+              },
+              {
+                "id": "sleep-recovery-6",
+                "type": "true-not-quite",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "A claim says deep sleep lasts all night, so REM can be skipped in a diagram. What is wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A normal night includes both non-REM and REM stages.",
+                    "feedback": "NIH describes cycles through more than deep sleep.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Deep sleep is absent early in the night.",
+                    "feedback": "It often lasts longer in the first half.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "REM happens only while awake.",
+                    "feedback": "REM is itself a sleep stage. That makes it part of the night, not waking time.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sleep-recovery-7",
+                "type": "order",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "Trace a simplified sleep-stage cycle.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Light non-REM sleep begins.",
+                    "feedback": "The early cycle starts with lighter sleep. This stage comes before deeper sleep and REM sleep.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Deeper non-REM sleep follows.",
+                    "feedback": "Deep sleep is one later non-REM stage.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "REM sleep appears later in the cycle.",
+                    "feedback": "The stages can repeat through the night. Sleep can cycle through them more than once.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "sleep-recovery-8",
+                "type": "match",
+                "conceptId": "sleep-recovery",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m2"
+                ],
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ],
+                "stem": "Pair each source statement with its meaning.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "CDC: seven or more hours",
+                    "feedback": "The age band is 18–60. CDC gives this guide for adults aged 18 to 60.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "General adult duration guide",
+                    "feedback": "The age band is 18–60. It is a guide for that adult age group.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "NIH: repeating stages",
+                    "feedback": "The night is not one blank block. The brain and body change as the stages repeat.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Sleep is dynamic",
+                    "feedback": "The night is not one blank block. The stages repeat, with changes in brain activity.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "sleep",
+                      "cdc-sleep"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "sleep-recovery-m1",
+                "name": "Sleep is a blank state",
+                "correction": "Sleep has stages. They repeat, and the brain acts in new ways in each stage.",
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ]
+              },
+              {
+                "id": "sleep-recovery-m2",
+                "name": "One short night defines a person",
+                "correction": "The adult guidance is a population guide, not a diagnosis from one night.",
+                "sourceRefs": [
+                  "sleep",
+                  "cdc-sleep"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "sleep",
+                "title": "Healthy Sleep",
+                "publisher": "National Institutes of Health",
+                "year": 2024,
+                "url": "https://health.nih.gov/health-topics-a-z/healthy-sleep"
+              },
+              {
+                "id": "cdc-sleep",
+                "title": "About Sleep",
+                "publisher": "US Centers for Disease Control and Prevention",
+                "year": 2024,
+                "url": "https://www.cdc.gov/sleep/about/index.html"
+              }
+            ],
+            "quest": {
+              "title": "Draw a sleep wave",
+              "detail": "Draw a simple wave of light, deep and REM sleep. Mark where deep sleep tends to be longer.",
+              "sourceRefs": [
+                "sleep"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "sleep-recovery-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-recovery-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "exercise-heart",
+            "title": "Exercise and the heart",
+            "prerequisites": [
+              "sleep-recovery"
+            ],
+            "hook": "WHO says adults can build up time spent on walks and other moves each week. A brisk walk can count.",
+            "hookSourceRefs": [
+              "heart",
+              "who-activity"
+            ],
+            "rule": "A brisk walk makes the heart and lungs work more. WHO says adults can aim for 150 to 300 minutes of such work each week. Some is better than none.",
+            "ruleSourceRefs": [
+              "heart",
+              "who-activity"
+            ],
+            "claims": [
+              {
+                "id": "exercise-heart-c1",
+                "text": "WHO says adults can aim for 150 to 300 minutes of brisk walks or other moderate aerobic work each week.",
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ]
+              },
+              {
+                "id": "exercise-heart-c2",
+                "text": "Moves done often can help the heart. Some is better than none.",
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "exercise-heart-1",
+                "type": "predict",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "A college student takes a brisk walk. Which activity category can it fit?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Moderate aerobic activity.",
+                    "feedback": "WHO uses brisk walking as an example of moderate movement.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only maximal sprint training.",
+                    "feedback": "Brisk walking need not be a sprint to count.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "exercise-heart-2",
+                "type": "scenario",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "A school friend has less time than the WHO weekly range. Is some walking still meaningful?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Yes; some activity is better than none.",
+                    "feedback": "WHO explicitly says this while giving the weekly range.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "No; anything below 150 minutes has no benefit.",
+                    "feedback": "The range is a recommendation, not an on-off switch.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only gym exercise counts.",
+                    "feedback": "Walking for transport or leisure can count too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "exercise-heart-3",
+                "type": "choose",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "How much brisk walk time does WHO list for adults in one week?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "150–300 minutes.",
+                    "feedback": "That is the WHO recommended range. It applies to moderate aerobic activity in a week.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "15–30 minutes.",
+                    "feedback": "This drops a zero from both ends of the weekly range.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "600–900 minutes.",
+                    "feedback": "WHO does not set that as the standard range.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "exercise-heart-4",
+                "type": "why",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "Why can brisk walking support heart health over time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It is repeated aerobic movement that works the heart.",
+                    "feedback": "When muscles move, the heart has more work to do. Walks done often can help health.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The heart stops pumping during a walk.",
+                    "feedback": "Active muscles require continued blood flow. Working muscles still need blood while someone walks.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only the speed of a sprint can affect the heart.",
+                    "feedback": "Moderate aerobic activity also counts. A brisk walk can raise the heart's work too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "exercise-heart-5",
+                "type": "estimate",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "What is the lower end of the WHO weekly moderate exercise range for adults?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "150 minutes per week.",
+                    "feedback": "WHO gives 150–300 minutes as its adult range.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "75 minutes per week.",
+                    "feedback": "That is for harder work. WHO gives more time for brisk walks and other moderate work.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "300 minutes per day.",
+                    "feedback": "Three hundred is the upper weekly figure, not a daily minimum.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 150,
+                  "min": 149.5,
+                  "max": 150.5,
+                  "unit": "minutes per week"
+                }
+              },
+              {
+                "id": "exercise-heart-6",
+                "type": "true-not-quite",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "A poster calls 75 minutes of gentle walking identical to WHO’s 75-minute vigorous option. What is the mix-up?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It confuses moderate and vigorous intensity.",
+                    "feedback": "WHO lists different minute ranges for the two intensities.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Walking can never be activity.",
+                    "feedback": "A brisk walk can count as moderate activity.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The figures refer to minutes per month.",
+                    "feedback": "WHO states weekly amounts. WHO gives these as amounts for each week.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
+                    ],
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "exercise-heart-7",
+                "type": "order",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "Connect movement to a heart response.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Muscles work during a brisk walk.",
+                    "feedback": "Movement raises their demand. More blood and oxygen are needed as the muscles work.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The heart pumps blood to support them.",
+                    "feedback": "Circulation meets the working muscles. Blood brings oxygen to muscles while they move.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Regular activity supports health.",
+                    "feedback": "WHO says walks and other moves done often can help the heart.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "exercise-heart-8",
+                "type": "match",
+                "conceptId": "exercise-heart",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
+                ],
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ],
+                "stem": "Pair the activity with WHO’s weekly guide.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Moderate aerobic activity",
+                    "feedback": "This is the adult weekly range. WHO uses it for the weekly adult activity guide.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "150–300 minutes",
+                    "feedback": "This is the adult weekly range. It is the time range for adults in one week.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Vigorous aerobic activity",
+                    "feedback": "Harder work can meet the WHO guide in less time each week.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "75–150 minutes",
+                    "feedback": "The vigorous alternative uses fewer minutes. The weekly WHO range is shorter for this kind of work.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "heart",
+                      "who-activity"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "exercise-heart-m1",
+                "name": "Only hard sprints count",
+                "correction": "A brisk walk counts as a form of moderate exercise.",
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ]
+              },
+              {
+                "id": "exercise-heart-m2",
+                "name": "Less than 150 minutes is pointless",
+                "correction": "WHO says some activity is better than none.",
+                "sourceRefs": [
+                  "heart",
+                  "who-activity"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "heart",
+                "title": "What's the Link Between Physical Activity and Health?",
+                "publisher": "American Heart Association",
+                "year": 2024,
+                "url": "https://www.heart.org/en/health-topics/cardiac-rehab/getting-physically-active/whats-the-link-between-physical-activity-and-health"
+              },
+              {
+                "id": "who-activity",
+                "title": "WHO guidelines on physical activity and sedentary behaviour: at a glance",
+                "publisher": "World Health Organization",
+                "year": 2021,
+                "url": "https://www.who.int/europe/publications/i/item/9789240014886"
+              }
+            ],
+            "quest": {
+              "title": "Feel a pulse change",
+              "detail": "Notice a pulse at rest and after an easy walk. Treat it as a change to observe, not a score.",
+              "sourceRefs": [
+                "heart"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "exercise-heart-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "exercise-heart-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "iron-and-anaemia",
+            "title": "Iron and anaemia basics",
+            "prerequisites": [
+              "protein-foods",
+              "exercise-heart"
+            ],
+            "hook": "Beans contain non-haem iron; vitamin C in a meal can help the body absorb that form.",
+            "hookSourceRefs": [
+              "iron",
+              "anaemia",
+              "nih-iron",
+              "nih-vitc"
+            ],
+            "rule": "Iron helps make oxygen-carrying red blood cells. Plant iron is non-haem; vitamin C improves its absorption. Anaemia has several possible causes, so no food example can diagnose it.",
+            "ruleSourceRefs": [
+              "iron",
+              "anaemia",
+              "nih-iron",
+              "nih-vitc"
+            ],
+            "claims": [
+              {
+                "id": "iron-and-anaemia-c1",
+                "text": "Vitamin C improves absorption of non-haem iron from plant foods.",
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c2",
+                "text": "Low iron can cause anaemia. Other gaps in food and some infections can cause it too.",
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "iron-and-anaemia-1",
+                "type": "predict",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "At a school lunch, lentils supply which form of dietary iron?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Non-haem iron.",
+                    "feedback": "Plant foods supply the non-haem form described by NIH.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Haem iron.",
+                    "feedback": "Lentils have plant iron, called non-haem iron. Haem iron comes from animal foods.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-2",
+                "type": "scenario",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "A college meal pairs beans with a fruit rich in vitamin C. What could the fruit help with?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Absorption of non-haem iron.",
+                    "feedback": "NIH says vitamin C improves absorption of plant-food iron.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Turning iron into a vitamin.",
+                    "feedback": "Vitamin C helps the body take in plant iron. It does not turn iron into a new nutrient.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Proving the person has anaemia.",
+                    "feedback": "A food combination cannot diagnose a condition. A health test would be needed to tell the cause.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-3",
+                "type": "choose",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "Which claim about anaemia fits the WHO guide?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Iron deficiency is one possible cause.",
+                    "feedback": "WHO also lists other deficiencies and infections. So low iron is not the only possible cause.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every case is caused only by low iron.",
+                    "feedback": "That leaves out other causes WHO names. Low iron is one cause, yet it is not the only one.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Food choice alone reveals the cause.",
+                    "feedback": "A meal cannot tell the cause of a person’s anaemia. There are other causes too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-4",
+                "type": "why",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "Why does NIH distinguish haem from non-haem iron?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They differ in absorption and response to other foods.",
+                    "feedback": "Vitamin C can help the body take in plant iron, the non-haem form.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Only haem iron can support red blood cells.",
+                    "feedback": "Non-haem iron is still dietary iron. The body can still use iron from plant foods.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Plant iron disappears when eaten with fruit.",
+                    "feedback": "Vitamin C can help the body take in more plant iron. It does not block it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-5",
+                "type": "estimate",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "For iron from a mixed diet with meat, seafood and vitamin C, what lower end of the NIH absorption range applies, in percent?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 14%.",
+                    "feedback": "NIH gives roughly 14–18% for such mixed diets.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 5%.",
+                    "feedback": "Five is the lower end of its vegetarian-diet range.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 50%.",
+                    "feedback": "That is far above the range NIH reports.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 14,
+                  "min": 13.5,
+                  "max": 14.5,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "iron-and-anaemia-6",
+                "type": "true-not-quite",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "A page says a person with anaemia must simply eat more beans. What is the problem?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Anaemia can have causes beyond low iron.",
+                    "feedback": "WHO names other nutrient gaps, infections and blood loss.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Beans contain no iron.",
+                    "feedback": "Beans can supply non-haem iron; that does not settle a diagnosis.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Vitamin C always cures anaemia.",
+                    "feedback": "Better iron uptake does not show the cause of anaemia. It does not treat all causes.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-7",
+                "type": "order",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "Trace a supported food-and-iron link.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Plant food supplies non-haem iron.",
+                    "feedback": "Beans and lentils contain this form. That iron can help the body make haemoglobin.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Vitamin C can improve its absorption.",
+                    "feedback": "NIH describes this food interaction. This can help the body take in more plant iron.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Iron supports oxygen-carrying blood cells.",
+                    "feedback": "Iron helps make haemoglobin. Red blood cells use it to carry oxygen.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-8",
+                "type": "match",
+                "conceptId": "iron-and-anaemia",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1",
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ],
+                "stem": "Pair the term with its meaning.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Non-haem iron",
+                    "feedback": "NIH describes this form in plants. Beans and lentils are plant foods that supply it.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Iron in plant foods",
+                    "feedback": "NIH describes this form in plants. This is the iron form found in beans and lentils.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Vitamin C",
+                    "feedback": "It affects uptake, not diagnosis. It can help with plant iron, yet cannot name an illness.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Helps non-haem iron absorption",
+                    "feedback": "It affects uptake, not diagnosis. Food uptake does not show why a person has anaemia.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "iron",
+                      "anaemia",
+                      "nih-iron",
+                      "nih-vitc"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "iron-and-anaemia-m1",
+                "name": "All iron is absorbed alike",
+                "correction": "Haem and non-haem iron differ in absorption.",
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-m2",
+                "name": "All anaemia is low iron",
+                "correction": "Anaemia can have more than one cause, such as low iron or an infection.",
+                "sourceRefs": [
+                  "iron",
+                  "anaemia",
+                  "nih-iron",
+                  "nih-vitc"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "iron",
+                "title": "Iron - Vitamins and minerals",
+                "publisher": "NHS",
+                "year": 2020,
+                "url": "https://www.nhs.uk/conditions/vitamins-and-minerals/iron/"
+              },
+              {
+                "id": "anaemia",
+                "title": "Anaemia",
+                "publisher": "World Health Organization",
+                "year": 2025,
+                "url": "https://www.who.int/news-room/fact-sheets/detail/anaemia"
+              },
+              {
+                "id": "nih-iron",
+                "title": "Iron: Health Professional Fact Sheet",
+                "publisher": "NIH Office of Dietary Supplements",
+                "year": 2026,
+                "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/"
+              },
+              {
+                "id": "nih-vitc",
+                "title": "Vitamin C: Health Professional Fact Sheet",
+                "publisher": "NIH Office of Dietary Supplements",
+                "year": 2026,
+                "url": "https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/"
+              }
+            ],
+            "quest": {
+              "title": "Find food sources",
+              "detail": "Look at a meal and name any beans, nuts or other foods listed as iron sources.",
+              "sourceRefs": [
+                "iron",
+                "anaemia"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "iron-and-anaemia-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "food-label-reading",
+            "title": "Reading a food label",
+            "prerequisites": [
+              "free-sugars",
+              "iron-and-anaemia"
+            ],
+            "hook": "Two packs can use different serving sizes; a per-100-g line gives the same comparison base.",
+            "hookSourceRefs": [
+              "label"
+            ],
+            "rule": "Compare like foods on their per-100-g or per-100-ml lines. A serving may differ by pack, and ingredients are listed from greatest to least weight.",
+            "ruleSourceRefs": [
+              "label"
+            ],
+            "claims": [
+              {
+                "id": "food-label-reading-c1",
+                "text": "NHS says nutrition values are given per 100 g or 100 ml and may also be given per portion.",
+                "sourceRefs": [
+                  "label"
+                ]
+              },
+              {
+                "id": "food-label-reading-c2",
+                "text": "Packaged-food ingredients are listed in descending order by weight.",
+                "sourceRefs": [
+                  "label"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "food-label-reading-1",
+                "type": "predict",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "At a canteen, two biscuits have different serving sizes. Which line gives a fair same weight comparison?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The per-100-g line.",
+                    "feedback": "NHS says that base is common across labels.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The per-serving line alone.",
+                    "feedback": "Different serving weights make those numbers hard to compare.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-2",
+                "type": "scenario",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "At a family shop, one cereal lists sugar first among its ingredients. What does that position mean?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sugar is the greatest ingredient by weight.",
+                    "feedback": "NHS says ingredients run in descending weight order.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Sugar is present in the smallest amount.",
+                    "feedback": "That reverses the stated ordering rule. The first item has the most weight in the mix.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The cereal must have no other ingredients.",
+                    "feedback": "First does not mean only. There can still be more items later in the list.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-3",
+                "type": "fill-the-step",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "Which pair of label lines should be compared for two drinks?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The same nutrient per 100 ml on both.",
+                    "feedback": "Using the same amount gives a like-for-like base.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One per serving and one per 100 ml.",
+                    "feedback": "The bases differ and can distort the comparison.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Only the front picture on each bottle.",
+                    "feedback": "Pictures do not state comparable nutrient amounts. The back label gives amounts that can be checked.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-4",
+                "type": "why",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "Why can a lower salt value per serving hide a higher salt concentration?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Its serving may be smaller.",
+                    "feedback": "A smaller portion can contain less salt despite more per 100 g.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A serving is always exactly 100 g.",
+                    "feedback": "Labels can state other serving sizes. A pack may define one serving as more or less.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Salt is never shown per 100 g.",
+                    "feedback": "NHS describes per-100-g nutrition information. That line helps compare the same mass of two foods.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-5",
+                "type": "estimate",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "When reading a food label, above how many grams of salt per 100 g does NHS call a food high in salt?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Above 1.5 g per 100 g.",
+                    "feedback": "That is the NHS high-salt cutoff for food.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Above 0.3 g per 100 g.",
+                    "feedback": "That is near the low-salt boundary, not the high cutoff.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Above 15 g per 100 g.",
+                    "feedback": "This adds a zero to the NHS threshold.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 1.5,
+                  "min": 1,
+                  "max": 2,
+                  "unit": "grams per 100 g"
+                }
+              },
+              {
+                "id": "food-label-reading-6",
+                "type": "true-not-quite",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "A pack says “small serving” while the shopper eats twice that amount. What changes?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The per-serving nutrient amount must be scaled.",
+                    "feedback": "A label may call one small amount a serving. A person may eat more.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The per-100-g concentration doubles.",
+                    "feedback": "If you eat more, you take in more in all. The amount per 100 g stays the same.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m1"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The ingredient order reverses.",
+                    "feedback": "Ingredient order is based on product weight, not portion chosen.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "food-label-reading-m2"
+                    ],
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-7",
+                "type": "order",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "Compare two packaged foods fairly.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Find the same nutrient on each pack.",
+                    "feedback": "Compare salt with salt, for example. This keeps the kind of nutrient the same.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Use the same per-100-g base.",
+                    "feedback": "This removes serving-size differences. It lets the two packs be compared on equal weight.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Read the values and portion context.",
+                    "feedback": "The amount eaten can differ from the stated serving.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "food-label-reading-8",
+                "type": "match",
+                "conceptId": "food-label-reading",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m1",
+                  "food-label-reading-m2"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "Pair the label feature with its meaning.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Per 100 g",
+                    "feedback": "Both packs refer to the same mass. The same mass makes amounts fair to compare.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Common comparison base",
+                    "feedback": "Both packs refer to the same mass. A common weight base helps compare two packs.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "First ingredient",
+                    "feedback": "The list descends by ingredient weight. The first item makes up the most by weight.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Greatest by weight",
+                    "feedback": "The list descends by ingredient weight. The order tells which item weighs more in the mix.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "food-label-reading-m1",
+                "name": "Serving sizes are universal",
+                "correction": "Two food packs may use different sizes for one serving.",
+                "sourceRefs": [
+                  "label"
+                ]
+              },
+              {
+                "id": "food-label-reading-m2",
+                "name": "First ingredient is smallest",
+                "correction": "The first listed ingredient has the greatest weight.",
+                "sourceRefs": [
+                  "label"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "label",
+                "title": "Food labels",
+                "publisher": "NHS",
+                "year": 2022,
+                "url": "https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/how-to-read-food-labels/"
+              }
+            ],
+            "quest": {
+              "title": "Compare two labels",
+              "detail": "Look at two similar packs and find the same per-100 g or per-100 ml line on each.",
+              "sourceRefs": [
+                "label"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "food-label-reading-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fad-diet-claims",
+            "title": "Fad diet claims",
+            "prerequisites": [
+              "food-label-reading"
+            ],
+            "hook": "A “detox” menu promises a special clean-out, yet the body already has organs that process waste.",
+            "hookSourceRefs": [
+              "variety",
+              "nhs-detox",
+              "who-diet"
+            ],
+            "rule": "A varied diet supplies different nutrients. Be wary of single-food and detox claims; no one food covers every need, and the liver does not need a special detox diet.",
+            "ruleSourceRefs": [
+              "variety",
+              "nhs-detox",
+              "who-diet"
+            ],
+            "claims": [
+              {
+                "id": "fad-diet-claims-c1",
+                "text": "ICMR-NIN says to eat from many food groups. No one food gives all the key nutrients.",
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ]
+              },
+              {
+                "id": "fad-diet-claims-c2",
+                "text": "An NHS source says the liver does not need a detox diet; WHO gives a 400-g fruit-and-vegetable guide for people over ten.",
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "fad-diet-claims-1",
+                "type": "predict",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "A college diet plan allows only one food for every meal. Which claim is weakest?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "That one food can supply every needed nutrient.",
+                    "feedback": "ICMR-NIN stresses variety because foods differ. One food cannot meet every need on its own.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "That the food may contain some nutrients.",
+                    "feedback": "One food may help. It still cannot meet all the body’s needs alone.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fad-diet-claims-2",
+                "type": "scenario",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "A school poster says a special juice week is required to detox the liver. What is the sound response?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The liver does not need a detox diet.",
+                    "feedback": "The NHS source rejects that requirement. The liver already does this work without a special diet.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Juice contains no free sugar at all.",
+                    "feedback": "WHO counts juice sugars as free sugars. Juice sugars still count under the WHO free sugar rule.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A juice-only menu guarantees nutrient variety.",
+                    "feedback": "Removing food groups works against variety. A narrow menu can leave out key food groups.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fad-diet-claims-3",
+                "type": "choose",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "Which pattern best matches ICMR-NIN’s balanced-diet approach?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A variety of food groups over time.",
+                    "feedback": "Different groups contribute different nutrients. That mix helps cover needs one group may miss.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One “superfood” in every meal.",
+                    "feedback": "A single food cannot cover all nutrient needs.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Avoiding every cereal because all carbs are harmful.",
+                    "feedback": "The guide counts grains and millets as part of a varied mix of foods.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fad-diet-claims-4",
+                "type": "explain-it-back",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "Why is “all carbohydrates are bad” a poor reading of a varied-diet guide?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It lumps useful cereals, pulses and other foods into one ban.",
+                    "feedback": "ICMR-NIN includes these groups as part of balanced eating.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Every carbohydrate-rich food is identical.",
+                    "feedback": "Foods differ in nutrient mix and context. Two foods can differ in what else they supply.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Avoiding all plant foods improves variety.",
+                    "feedback": "That removes many food groups rather than broadening them.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fad-diet-claims-5",
+                "type": "estimate",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "When you check a fad diet claim, how many grams of fruit and veg a day does WHO advise for people older than ten?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 400 grams.",
+                    "feedback": "WHO gives 400 g as the adult and older-child guide.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 40 grams.",
+                    "feedback": "That drops a zero from the WHO amount.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 4,000 grams.",
+                    "feedback": "That adds a zero and is not the WHO guide.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 400,
+                  "min": 399.5,
+                  "max": 400.5,
+                  "unit": "grams"
+                }
+              },
+              {
+                "id": "fad-diet-claims-6",
+                "type": "true-not-quite",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "A claim says a single vegetable can replace pulses, grains and every other group. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Different groups supply different nutrients.",
+                    "feedback": "Variety is the point of the ICMR-NIN guidance.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Vegetables have no nutrients.",
+                    "feedback": "Veg can help, yet it does not meet all needs on its own.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Every pulse and cereal has the same profile.",
+                    "feedback": "The two foods have different mixes. That is why they can help fill each other’s gaps.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
+                    ],
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fad-diet-claims-7",
+                "type": "order",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "Check a sweeping food claim.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Read exactly what the ad promises.",
+                    "feedback": "A “one food does all” claim needs scrutiny.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Look for omitted food groups.",
+                    "feedback": "Variety supplies different nutrients. That is why a plan with one food is too narrow.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Compare the claim with a trusted guide.",
+                    "feedback": "The ICMR-NIN guide gives the broader pattern.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "fad-diet-claims-8",
+                "type": "match",
+                "conceptId": "fad-diet-claims",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fad-diet-claims-m1",
+                  "fad-diet-claims-m2"
+                ],
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ],
+                "stem": "Pair each claim with the evidence-based response.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One food supplies everything",
+                    "feedback": "The varied-diet guide rejects a single-food answer.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Different groups supply different nutrients",
+                    "feedback": "The varied-diet guide rejects a single-food answer.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A special detox diet is required",
+                    "feedback": "The NHS source rejects the supposed requirement. The liver does its work without a juice cleanse.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "The liver does not need one",
+                    "feedback": "The NHS source rejects the supposed requirement. No special juice plan is needed for the liver.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "variety",
+                      "nhs-detox",
+                      "who-diet"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "fad-diet-claims-m1",
+                "name": "One food can cover all needs",
+                "correction": "Food groups differ. Each can bring in nutrients that others have less of.",
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ]
+              },
+              {
+                "id": "fad-diet-claims-m2",
+                "name": "Detox menu repairs the liver",
+                "correction": "A special detox diet is not needed for normal liver function.",
+                "sourceRefs": [
+                  "variety",
+                  "nhs-detox",
+                  "who-diet"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "variety",
+                "title": "Dietary Guidelines for Indians 2024",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2024,
+                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf"
+              },
+              {
+                "id": "nhs-detox",
+                "title": "Abnormal Liver Blood Tests",
+                "publisher": "NHS MyHealth Devon",
+                "year": 2026,
+                "url": "https://myhealth-devon.nhs.uk/my-condition/condition/abnormal-liver-blood-tests/"
+              },
+              {
+                "id": "who-diet",
+                "title": "Healthy diet",
+                "publisher": "World Health Organization",
+                "year": 2026,
+                "url": "https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet"
+              }
+            ],
+            "quest": {
+              "title": "Check a bold food claim",
+              "detail": "Find a food ad that says one item does everything. Ask which food groups it leaves out.",
+              "sourceRefs": [
+                "variety"
+              ]
+            },
+            "factCheck": {
+              "checker": "W3 rewrite source review, 2026-10-20",
+              "verdicts": [
+                {
+                  "claimId": "fad-diet-claims-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "fad-diet-claims-8",
+                  "verdict": "supported"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "changelog": "W3 review rewrite, 2026-10-20: all 64 items revised with specific distractor feedback, sourced quantities and checked source fields."
+}
