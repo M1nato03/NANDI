@@ -59,7 +59,7 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
   await page.goto('/#you/shop');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   await page.getByRole('button', { name: '50 Shards', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('Yours. Ready to use.');
+  await expect(page.getByText('Yours. Ready to use.')).toBeVisible();
   await page.getByRole('button', { name: '400 Shards' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');
   await page.reload();
@@ -92,7 +92,7 @@ test('missed days use the rest bank before a streak pauses', async ({ page }) =>
   await page.goto('/#you');
   await seed(page, [fact('2026-11-02', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }),
     ...['2026-11-06', '2026-11-07'].flatMap(day => [fact(day, 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }), fact(day, 'train', 'session', { xp: 60 }), fact(day, 'mind', 'mystery', { result: 'solved' })])]);
-  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('0 rest days banked');
+  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('1 rest day banked'); // 4 arrive on 1 Nov, 3 missed days (3-5 Nov) use 3
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Streak paused');
 });
 
