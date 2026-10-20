@@ -23,7 +23,7 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
   }, []);
   async function finish(kind: 'openings' | 'dismissals') {
     if (recorded.current) return;
-    const now = Date.now();
+    const now = Date.now(); // eslint-disable-line react-hooks/purity
     const deviceId = await getOrCreateDeviceId(db, now);
     const key = `night.pause.${kind}`;
     const previous = await db.settings.get(key);
@@ -31,11 +31,11 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
     recorded.current = true;
     await clearNightPause();
   }
-  async function openDeck() {
+  async function swap(route: string) {
     if (acting.current) return;
     acting.current = true;
-    try { await finish('openings'); close(); go(copy.route); }
-    catch { acting.current = false; setMessage('Could not open the deck. Try again.'); }
+    try { await finish('openings'); close(); if (route !== 'close') go(route); }
+    catch { acting.current = false; setMessage('Could not open that. Try again.'); }
   }
   async function goAnyway() {
     if (acting.current) return;
@@ -51,8 +51,9 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
       <p className="eyebrow">A small pause</p><h1>Take one breath</h1>
       <p role="timer">{seconds > 0 ? `Breathe for ${seconds} more seconds` : 'The breath is yours.'}</p>
       <p>{copy.lead}</p>
-      <div className="actions"><button type="button" onClick={() => void openDeck()}>{copy.primary}</button>
-        <button type="button" className="secondary" onClick={() => void goAnyway()}>Go to {label} anyway</button></div>
+      {seconds === 0 && <><h2 className="night-pause-ask">What would feel better right now?</h2>
+        <div className="night-pause-swaps">{copy.swaps.map((item, index) => <button type="button" key={item.label} className={index === 0 ? undefined : 'secondary'} onClick={() => void swap(item.route)}>{item.label}</button>)}</div></>}
+      <button type="button" className="text-button night-pause-anyway" onClick={() => void goAnyway()}>Go to {label} anyway</button>
       {message && <p role="status">{message}</p>}
     </section>
   </div>;

@@ -107,6 +107,9 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .night-pause-card h1 { margin: 0; }
 .night-pause-card [role="timer"] { font-size: 1.4rem; }
 .night-pause-card .actions { display: grid; gap: 12px; }
+.night-pause-ask { margin: 0; font-size: 1.1rem; }
+.night-pause-swaps { display: grid; gap: 12px; }
+.night-pause-card .night-pause-anyway { justify-self: center; }
 @media (max-width: 600px) {
   .content { padding: 22px 18px calc(104px + env(safe-area-inset-bottom)); }
   .topbar { padding-inline: 18px; }
