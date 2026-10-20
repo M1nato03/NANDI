@@ -82,7 +82,8 @@
                     "sourceRefs": [
                       "protein"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Mostly vitamin C to go with the rice.", "feedback": "Dal is valued here as a pulse with protein. Vitamin C comes mostly from fruit and fresh vegetables.", "correct": false, "sourceRefs": ["protein"] }
                 ]
               },
               {
@@ -600,7 +601,8 @@
                     "sourceRefs": [
                       "sugar"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Yes, if the honey is raw and local.", "feedback": "WHO counts the sugars in honey whether it is raw, local or processed. Where it comes from does not change the rule.", "correct": false, "misconceptionIds": ["free-sugars-m1"], "sourceRefs": ["sugar"] }
                 ]
               },
               {
@@ -1118,7 +1120,8 @@
                     "sourceRefs": [
                       "water"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "No, milk counts as food, not fluid.", "feedback": "Milk is mostly water. The NHS lists lower-fat milk among the drinks that count toward fluid.", "correct": false, "misconceptionIds": ["hydration-cues-m1"], "sourceRefs": ["water"] }
                 ]
               },
               {
@@ -1643,7 +1646,8 @@
                       "sleep",
                       "cdc-sleep"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Most deep sleep comes just before waking.", "feedback": "Deep sleep tends to be longer early in the night. REM spells grow longer toward morning.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "cdc-sleep"] }
                 ]
               },
               {
@@ -2206,7 +2210,8 @@
                       "heart",
                       "who-activity"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "Light movement that does not count at all.", "feedback": "WHO uses a brisk walk as its example of moderate work. It counts toward the 150 to 300 weekly minutes.", "correct": false, "misconceptionIds": ["exercise-heart-m1"], "sourceRefs": ["heart", "who-activity"] }
                 ]
               },
               {
@@ -2784,7 +2789,8 @@
                       "nih-iron",
                       "nih-vitc"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The same iron that meat gives, taken up just as well.", "feedback": "Lentil iron is the plant kind. The body takes it up less easily than the iron in meat or fish.", "correct": false, "misconceptionIds": ["iron-and-anaemia-m1"], "sourceRefs": ["iron", "anaemia", "nih-iron", "nih-vitc"] }
                 ]
               },
               {
@@ -3418,7 +3424,8 @@
                     "sourceRefs": [
                       "label"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "The first name in the ingredients list.", "feedback": "That list shows order by weight, not amounts you can compare. The per-100-g line puts both packs on one base.", "correct": false, "misconceptionIds": ["food-label-reading-m2"], "sourceRefs": ["label"] }
                 ]
               },
               {
@@ -3950,7 +3957,8 @@
                       "nhs-detox",
                       "who-diet"
                     ]
-                  }
+                  },
+                  { "id": "c", "text": "That a mix of foods brings different nutrients.", "feedback": "That claim is well supported. Food groups differ, so a mix fills gaps one food leaves.", "correct": false, "misconceptionIds": ["fad-diet-claims-m1"], "sourceRefs": ["variety", "nhs-detox", "who-diet"] }
                 ]
               },
               {

@@ -22,11 +22,13 @@
           "items": [
             { "id": "progressive-overload-1", "type": "predict", "conceptId": "progressive-overload", "difficultySeed": 2, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "In a hostel room, ten clean push-ups feel easier after a few weeks. Which change can add a fresh challenge?", "options": [
               { "id": "a", "text": "Try one more clean rep.", "feedback": "A small rise in good work can give the muscles a new task after they adapt.", "correct": true, "sourceRefs": ["acsm"] },
-              { "id": "b", "text": "Add weight at once, even if the last reps lose form.", "feedback": "More load may look like progress. A clean rep can add a safer new task.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
+              { "id": "b", "text": "Add weight at once, even if the last reps lose form.", "feedback": "More load may look like progress. A clean rep can add a safer new task.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] },
+              { "id": "c", "text": "Switch to a brand new move every visit.", "feedback": "Changing moves all the time makes progress hard to track. A small, steady rise on one move gives a clear new task.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
             ] },
             { "id": "progressive-overload-2", "type": "scenario", "conceptId": "progressive-overload", "difficultySeed": 2, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "At a college gym, Asha adds a small load once her usual reps feel smooth. What idea is she using?", "options": [
               { "id": "a", "text": "A measured rise in resistance.", "feedback": "The work gets a little harder as her ability grows, which is the overload idea.", "correct": true, "sourceRefs": ["acsm"] },
-              { "id": "b", "text": "Proof that only load, not reps, can track progress.", "feedback": "The added load is easy to see. More clean reps can also raise the work.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
+              { "id": "b", "text": "Proof that only load, not reps, can track progress.", "feedback": "The added load is easy to see. More clean reps can also raise the work.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] },
+              { "id": "c", "text": "Proof that muscles stop changing after a month.", "feedback": "Muscles keep adapting when the work rises bit by bit. Her small added load shows that steady rise.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
             ] },
             { "id": "progressive-overload-3", "type": "estimate", "conceptId": "progressive-overload", "difficultySeed": 2, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "For progressive overload, a trainee compares two plans: add one clean push-up or add weight that makes form rough. About how many plans make a measured rise in work?", "options": [
               { "id": "a", "text": "One plan: add the clean rep.", "feedback": "One more controlled rep raises the work a little. The rough load jump is not measured progress.", "correct": true, "sourceRefs": ["acsm"] },
@@ -35,7 +37,8 @@
             ], "answer": { "value": 1, "min": 0.5, "max": 1.5, "unit": "plans" } },
             { "id": "progressive-overload-4", "type": "choose", "conceptId": "progressive-overload", "difficultySeed": 1, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "What can make a familiar lift a little harder over time?", "options": [
               { "id": "a", "text": "More clean reps with the same load.", "feedback": "Doing a little more sound work is one way to raise the task.", "correct": true, "sourceRefs": ["acsm"] },
-              { "id": "b", "text": "Add weight before the current lift feels controlled.", "feedback": "More weight can look like progress. First get the move right, then add a small load.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
+              { "id": "b", "text": "Add weight before the current lift feels controlled.", "feedback": "More weight can look like progress. First get the move right, then add a small load.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] },
+              { "id": "c", "text": "The same reps and load each week for a year.", "feedback": "Repeating the same task keeps it familiar. Without a small rise, the work stops being a fresh challenge.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
             ] },
             { "id": "progressive-overload-5", "type": "why", "task": "reason", "conceptId": "progressive-overload", "difficultySeed": 3, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "A trainee keeps the same easy set for months and expects that set to keep giving the same new strength gains. What is missing?", "options": [
               { "id": "a", "text": "The body can adapt to that task.", "feedback": "Once work feels easier, a measured rise can offer a new reason to adapt.", "correct": true, "sourceRefs": ["acsm"] },
@@ -44,17 +47,19 @@
             ] },
             { "id": "progressive-overload-6", "type": "fill-the-step", "conceptId": "progressive-overload", "difficultySeed": 1, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "Fill the gap: practice, adapt, then add a small new ___.", "options": [
               { "id": "a", "text": "Challenge.", "feedback": "A fresh task can keep resistance work useful as the old task gets easier.", "correct": true, "sourceRefs": ["acsm"] },
-              { "id": "b", "text": "Weight increase at every session.", "feedback": "Adding weight is one way to progress, but a clean rep or another gradual change can also raise the challenge.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
+              { "id": "b", "text": "Weight increase at every session.", "feedback": "Adding weight is one way to progress, but a clean rep or another gradual change can also raise the challenge.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] },
+              { "id": "c", "text": "Rest day.", "feedback": "Rest matters, but the step after adapting is a slightly harder task. That fresh challenge drives more change.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
             ] },
             { "id": "progressive-overload-7", "type": "true-not-quite", "conceptId": "progressive-overload", "difficultySeed": 3, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "A friend says overload means a heavier weight at every session, even when reps get rough. What needs fixing?", "options": [
               { "id": "a", "text": "Progress can come from more good reps too.", "feedback": "The challenge can rise in more than one way; a forced load jump is not required.", "correct": true, "sourceRefs": ["acsm"] },
               { "id": "b", "text": "Only added weight can count as overload.", "feedback": "Adding weight is easy to track, but more good reps can also raise the work.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] },
               { "id": "c", "text": "The weight must rise even when form breaks down.", "feedback": "A heavier bar can feel like progress. A sound move matters more than a forced jump.", "correct": false, "misconceptionIds": ["progressive-overload-m1"], "sourceRefs": ["acsm"] }
             ] },
-            { "id": "progressive-overload-8", "type": "order", "conceptId": "progressive-overload", "difficultySeed": 2, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "Put the two steps of a gradual training rise in order.", "options": [
-              { "id": "a", "text": "First: repeat a sound task until it feels easier.", "feedback": "Practice gives the body time to adapt before the task is raised.", "correct": true, "sourceRefs": ["acsm"] },
-              { "id": "b", "text": "Next: add a small new challenge.", "feedback": "More sound work can give the trained muscles a fresh task.", "correct": true, "sourceRefs": ["acsm"] }
-            ], "answer": ["a", "b"] }
+            { "id": "progressive-overload-8", "type": "order", "conceptId": "progressive-overload", "difficultySeed": 2, "misconceptionTags": ["progressive-overload-m1"], "sourceRefs": ["acsm"], "stem": "Put the steps of a gradual training rise in order.", "options": [
+              { "id": "a", "text": "Pick a move you can do with clean form.", "feedback": "A sound start gives a task the body can repeat safely and learn from.", "correct": true, "sourceRefs": ["acsm"] },
+              { "id": "b", "text": "Repeat it until the clean reps feel easier.", "feedback": "Practice gives the body time to adapt before the task is raised.", "correct": true, "sourceRefs": ["acsm"] },
+              { "id": "c", "text": "Add one small new challenge, like one more rep.", "feedback": "Once the old task feels easier, a small rise gives the muscles a fresh job.", "correct": true, "sourceRefs": ["acsm"] }
+            ], "answer": ["a", "b", "c"] }
           ],
           "misconceptions": [{ "id": "progressive-overload-m1", "name": "More weight every visit", "correction": "A gradual rise can use clean reps or load; every visit need not be harder.", "sourceRefs": ["acsm"] }],
           "sources": [{ "id": "acsm", "title": "Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance in Healthy Adults", "publisher": "American College of Sports Medicine", "year": 2026, "url": "https://pubmed.ncbi.nlm.nih.gov/41843416/" }],
@@ -69,7 +74,8 @@
           "items": [
             { "id": "muscle-protein-rest-1", "type": "predict", "conceptId": "muscle-protein-rest", "difficultySeed": 2, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "A hostel student trains with push-ups and eats dal, curd and meals across the day. What do the meals add?", "options": [
               { "id": "a", "text": "Protein that helps build new muscle tissue.", "feedback": "Resistance work is a signal, while food brings the parts the body can use to respond.", "correct": true, "sourceRefs": ["issn", "acsm"] },
-              { "id": "b", "text": "The training signal, even if he skips resistance work.", "feedback": "Protein gives building blocks, so food can seem like the whole answer. Resistance work supplies a separate signal to adapt.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
+              { "id": "b", "text": "The training signal, even if he skips resistance work.", "feedback": "Protein gives building blocks, so food can seem like the whole answer. Resistance work supplies a separate signal to adapt.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] },
+              { "id": "c", "text": "Instant muscle, however little he trains.", "feedback": "Food alone does not build muscle on the spot. Protein gives the parts, while training and time drive the change.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
             ] },
             { "id": "muscle-protein-rest-2", "type": "scenario", "conceptId": "muscle-protein-rest", "difficultySeed": 2, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "At a college gym, Dev trains hard then has a normal canteen meal with dal and rice. What is the sound link?", "options": [
               { "id": "a", "text": "Food protein can support the training response.", "feedback": "The stand says a varied daily diet can meet protein needs for active people.", "correct": true, "sourceRefs": ["issn", "acsm"] },
@@ -78,11 +84,13 @@
             ] },
             { "id": "muscle-protein-rest-3", "type": "estimate", "conceptId": "muscle-protein-rest", "difficultySeed": 2, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn"], "stem": "For muscle training, about how many grams of daily protein per kilogram sit near the middle of the ISSN range for most active people?", "options": [
               { "id": "a", "text": "About 1.7 grams per kilogram.", "feedback": "The stand gives a broad daily band from about 1.4 to 2.0 grams per kilogram.", "correct": true, "sourceRefs": ["issn"] },
-              { "id": "b", "text": "About 0.8 grams per kilogram.", "feedback": "That lower goal may fit a less active person. The range here is for people who train.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn"] }
+              { "id": "b", "text": "About 0.8 grams per kilogram.", "feedback": "That lower goal may fit a less active person. The range here is for people who train.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn"] },
+              { "id": "c", "text": "About 4 grams per kilogram.", "feedback": "That is about twice the top of the ISSN range. The stand gives roughly 1.4 to 2.0 grams for active people.", "correct": false, "sourceRefs": ["issn"] }
             ], "answer": { "value": 1.7, "min": 1.4, "max": 2.0, "unit": "grams per kilogram per day" } },
             { "id": "muscle-protein-rest-4", "type": "choose", "conceptId": "muscle-protein-rest", "difficultySeed": 1, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "Which pair helps explain how resistance work can change muscle?", "options": [
               { "id": "a", "text": "Training plus enough food and rest.", "feedback": "The exercise is the signal; food and time let the body respond to it.", "correct": true, "sourceRefs": ["issn", "acsm"] },
-              { "id": "b", "text": "A single hard set with no food.", "feedback": "The hard work stands out, so it can seem enough. Food and rest help the body respond.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
+              { "id": "b", "text": "A single hard set with no food.", "feedback": "The hard work stands out, so it can seem enough. Food and rest help the body respond.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] },
+              { "id": "c", "text": "Protein powder with no training at all.", "feedback": "Protein brings parts, but without the training signal there is little push for muscle to grow.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
             ] },
             { "id": "muscle-protein-rest-5", "type": "why", "task": "reason", "conceptId": "muscle-protein-rest", "difficultySeed": 3, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "A friend thinks adding protein to a meal can replace all resistance work for muscle growth. What part of the story is gone?", "options": [
               { "id": "a", "text": "The training stimulus.", "feedback": "Protein supplies parts, while resistance work gives the muscle a reason to adapt.", "correct": true, "sourceRefs": ["issn", "acsm"] },
@@ -91,7 +99,8 @@
             ] },
             { "id": "muscle-protein-rest-6", "type": "fill-the-step", "conceptId": "muscle-protein-rest", "difficultySeed": 1, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "Fill the gap: resistance work is a signal; food protein brings ___.", "options": [
               { "id": "a", "text": "Building blocks.", "feedback": "The body uses parts from food as it responds to the work done.", "correct": true, "sourceRefs": ["issn", "acsm"] },
-              { "id": "b", "text": "The whole training stimulus.", "feedback": "Food brings parts for growth, so it may seem like enough. Muscles also need the work signal.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
+              { "id": "b", "text": "The whole training stimulus.", "feedback": "Food brings parts for growth, so it may seem like enough. Muscles also need the work signal.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] },
+              { "id": "c", "text": "Extra hours of sleep.", "feedback": "Sleep gives time to recover, but it comes from rest, not food. Protein in food brings building blocks.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
             ] },
             { "id": "muscle-protein-rest-7", "type": "true-not-quite", "conceptId": "muscle-protein-rest", "difficultySeed": 3, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "A classmate says the daily protein band is a target for every person, no matter what they do. What is the gap?", "options": [
               { "id": "a", "text": "It is a range for most exercising people.", "feedback": "The stand ties that range to exercise, so it is not one rule for all people.", "correct": true, "sourceRefs": ["issn"] },
@@ -123,19 +132,23 @@
           "items": [
             { "id": "sleep-recovery-1", "type": "predict", "conceptId": "sleep-recovery", "difficultySeed": 2, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "After a short hostel night, Ravi starts his usual run. What might he notice?", "options": [
               { "id": "a", "text": "The run may feel harder.", "feedback": "Sleep loss can hurt exercise output, though no one night fixes the same result for all.", "correct": true, "sourceRefs": ["sport"] },
-              { "id": "b", "text": "Only the workout can affect how his run feels.", "feedback": "It is tempting to judge a run only by its training plan. A short night can affect exercise output too.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sport"] }
+              { "id": "b", "text": "Only the workout can affect how his run feels.", "feedback": "It is tempting to judge a run only by its training plan. A short night can affect exercise output too.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sport"] },
+              { "id": "c", "text": "He will run his best time yet.", "feedback": "A short night tends to lower exercise output, not lift it. A best time is less likely after poor sleep.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
             ] },
             { "id": "sleep-recovery-2", "type": "scenario", "conceptId": "sleep-recovery", "difficultySeed": 2, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "During exams, a student sleeps less and feels more drawn to canteen snacks. Which link fits?", "options": [
               { "id": "a", "text": "Sleep loss can shift hunger cues.", "feedback": "NIH notes that short sleep can change signals tied to hunger and fullness.", "correct": true, "sourceRefs": ["sleep"] },
-              { "id": "b", "text": "Sleep can have no link to appetite.", "feedback": "Hunger feels tied to meals, so sleep is easy to miss. A short night can shift those cues.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep"] }
+              { "id": "b", "text": "Sleep can have no link to appetite.", "feedback": "Hunger feels tied to meals, so sleep is easy to miss. A short night can shift those cues.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep"] },
+              { "id": "c", "text": "Exam stress alone explains it; sleep plays no part.", "feedback": "Stress may add to it, but short sleep itself can shift hunger and fullness signals, as NIH notes.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
             ] },
             { "id": "sleep-recovery-3", "type": "estimate", "conceptId": "sleep-recovery", "difficultySeed": 2, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["hours"], "stem": "For sleep that supports adult recovery, about how many hours a night sit near the middle of the NIH adult range?", "options": [
               { "id": "a", "text": "About eight hours.", "feedback": "The NIH page gives seven to nine hours as the usual adult range.", "correct": true, "sourceRefs": ["hours"] },
-              { "id": "b", "text": "About six hours.", "feedback": "Six hours can feel sufficient after a busy week, but it is below the cited adult sleep range.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["hours"] }
+              { "id": "b", "text": "About six hours.", "feedback": "Six hours can feel sufficient after a busy week, but it is below the cited adult sleep range.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["hours"] },
+              { "id": "c", "text": "About eleven hours.", "feedback": "Eleven hours sits above the usual adult range. NIH gives seven to nine hours for most adults.", "correct": false, "sourceRefs": ["hours"] }
             ], "answer": { "value": 8, "min": 7, "max": 9, "unit": "hours per night" } },
             { "id": "sleep-recovery-4", "type": "choose", "conceptId": "sleep-recovery", "difficultySeed": 1, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "Which part of a training week gives the body time to recover?", "options": [
               { "id": "a", "text": "Enough sleep and time away from hard work.", "feedback": "Sleep supports the body as it deals with the stress of exercise.", "correct": true, "sourceRefs": ["sleep", "sport"] },
-              { "id": "b", "text": "Only the hard sets themselves.", "feedback": "Training is the visible part. The body also needs time away from hard work to recover.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
+              { "id": "b", "text": "Only the hard sets themselves.", "feedback": "Training is the visible part. The body also needs time away from hard work to recover.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] },
+              { "id": "c", "text": "Extra sets on rest days.", "feedback": "More sets add more stress, not recovery. Sleep and time away from hard work let the body recover.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
             ] },
             { "id": "sleep-recovery-5", "type": "why", "task": "reason", "conceptId": "sleep-recovery", "difficultySeed": 3, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "A friend says one short night has no link to training because muscles only work during the session. What is missing?", "options": [
               { "id": "a", "text": "Recovery and effort can change after sleep loss.", "feedback": "Sleep is part of the time when the body resets; less sleep can hurt later output.", "correct": true, "sourceRefs": ["sleep", "sport"] },
@@ -144,7 +157,8 @@
             ] },
             { "id": "sleep-recovery-6", "type": "fill-the-step", "conceptId": "sleep-recovery", "difficultySeed": 1, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep"], "stem": "Fill the gap: sleep helps keep hunger and fullness cues in ___.", "options": [
               { "id": "a", "text": "Balance.", "feedback": "NIH says sleep helps the signals for feeling hungry or full work together.", "correct": true, "sourceRefs": ["sleep"] },
-              { "id": "b", "text": "One fixed pattern after each short night.", "feedback": "A short night can shift these cues, but it does not set the same response for all people.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep"] }
+              { "id": "b", "text": "One fixed pattern after each short night.", "feedback": "A short night can shift these cues, but it does not set the same response for all people.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep"] },
+              { "id": "c", "text": "Overdrive.", "feedback": "Good sleep does not push hunger up. NIH says it helps the hungry and full signals work together.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep"] }
             ] },
             { "id": "sleep-recovery-7", "type": "true-not-quite", "conceptId": "sleep-recovery", "difficultySeed": 3, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "A classmate reads that less sleep can hurt runs, then says every short night cuts each runner by the same amount. What is the gap?", "options": [
               { "id": "a", "text": "A group trend is not one fixed personal result.", "feedback": "The review shows an average effect; people and tasks still differ.", "correct": true, "sourceRefs": ["sport"] },
@@ -153,7 +167,8 @@
             ] },
             { "id": "sleep-recovery-8", "type": "explain-it-back", "conceptId": "sleep-recovery", "difficultySeed": 2, "misconceptionTags": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"], "stem": "Which line best links sleep, training and appetite?", "options": [
               { "id": "a", "text": "Sleep helps recovery and hunger cues.", "feedback": "Less sleep can change exercise output and the signals tied to food.", "correct": true, "sourceRefs": ["sleep", "sport"] },
-              { "id": "b", "text": "Sleep helps workouts but has no link to hunger cues.", "feedback": "Recovery gets the focus, so appetite is easy to miss. Sleep can shape both.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
+              { "id": "b", "text": "Sleep helps workouts but has no link to hunger cues.", "feedback": "Recovery gets the focus, so appetite is easy to miss. Sleep can shape both.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] },
+              { "id": "c", "text": "Sleep only matters before match days.", "feedback": "Sleep supports recovery and hunger cues every day, not just before a big game.", "correct": false, "misconceptionIds": ["sleep-recovery-m1"], "sourceRefs": ["sleep", "sport"] }
             ] }
           ],
           "misconceptions": [{ "id": "sleep-recovery-m1", "name": "Sleep is separate from training", "correction": "Sleep can shape rest, sport and hunger cues.", "sourceRefs": ["sleep", "sport"] }],
@@ -173,7 +188,8 @@
           "items": [
             { "id": "heat-hydration-1", "type": "predict", "conceptId": "heat-hydration", "difficultySeed": 2, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat"], "stem": "A hostel run moves from dawn to hot Ahmedabad noon. Which change fits the extra heat?", "options": [
               { "id": "a", "text": "A slower pace with more breaks.", "feedback": "Heat adds strain, so easing the work and taking breaks can lower heat risk.", "correct": true, "sourceRefs": ["heat"] },
-              { "id": "b", "text": "The same pace and breaks as on a cool morning.", "feedback": "A familiar route can feel like the same workout, but extra heat adds strain and calls for adjusting effort and breaks.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
+              { "id": "b", "text": "The same pace and breaks as on a cool morning.", "feedback": "A familiar route can feel like the same workout, but extra heat adds strain and calls for adjusting effort and breaks.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] },
+              { "id": "c", "text": "A faster pace, to finish before it gets hotter.", "feedback": "Rushing adds more heat strain. A slower pace with breaks lowers the risk on a hot day.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
             ] },
             { "id": "heat-hydration-2", "type": "scenario", "conceptId": "heat-hydration", "difficultySeed": 2, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "At a college cricket game in heat, a player feels dizzy and sick. What do those signs call for?", "options": [
               { "id": "a", "text": "Stop play and move to a cool place.", "feedback": "CDC lists these as heat signs and says to stop activity and cool down.", "correct": true, "sourceRefs": ["signs"] },
@@ -187,7 +203,8 @@
             ], "answer": { "value": 1, "min": 0.8, "max": 1.2, "unit": "litres per hour" } },
             { "id": "heat-hydration-4", "type": "choose", "conceptId": "heat-hydration", "difficultySeed": 1, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat"], "stem": "Why does a hot-day session often need a lower pace?", "options": [
               { "id": "a", "text": "Heat adds stress to the work.", "feedback": "The body has to shed heat while moving, so the same pace can be harder.", "correct": true, "sourceRefs": ["heat"] },
-              { "id": "b", "text": "A trained runner can keep the same pace in any heat.", "feedback": "Fitness helps with a familiar workout, but heat adds strain even for trained people, so pace may need to fall.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
+              { "id": "b", "text": "A trained runner can keep the same pace in any heat.", "feedback": "Fitness helps with a familiar workout, but heat adds strain even for trained people, so pace may need to fall.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] },
+              { "id": "c", "text": "Hot air makes muscles weaker for good.", "feedback": "Heat does not cause lasting weakness. The body is busy shedding heat, so the same pace feels harder for now.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
             ] },
             { "id": "heat-hydration-5", "type": "why", "task": "reason", "conceptId": "heat-hydration", "difficultySeed": 3, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "The Train hot-day mode cuts effort and adds breaks. Why does that make sense even for someone used to exercise?", "options": [
               { "id": "a", "text": "Heat and sweat add a load beyond the workout.", "feedback": "Fitness does not remove heat strain; a lower pace and breaks can help.", "correct": true, "sourceRefs": ["heat"] },
@@ -196,7 +213,8 @@
             ] },
             { "id": "heat-hydration-6", "type": "fill-the-step", "conceptId": "heat-hydration", "difficultySeed": 1, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat"], "stem": "Fill the gap: when sweat takes fluid away, drinking water helps replace ___.", "options": [
               { "id": "a", "text": "Some of that fluid.", "feedback": "Water can help cover the fluid that leaves the body as sweat.", "correct": true, "sourceRefs": ["heat"] },
-              { "id": "b", "text": "A drink can replace every need for rest in heat.", "feedback": "A drink can feel like a full fix. Heat still calls for shade and breaks.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
+              { "id": "b", "text": "All need for shade and breaks.", "feedback": "A drink can feel like a full fix. Heat still calls for shade and breaks.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] },
+              { "id": "c", "text": "Muscle tissue.", "feedback": "Sweat takes away fluid, not muscle. Water helps cover some of that fluid loss.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
             ] },
             { "id": "heat-hydration-7", "type": "true-not-quite", "conceptId": "heat-hydration", "difficultySeed": 3, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "A teammate says dizziness is just proof that a hot run is working. What is the gap?", "options": [
               { "id": "a", "text": "Dizziness can be a heat warning sign.", "feedback": "CDC lists it among signs to stop activity and get to a cool place.", "correct": true, "sourceRefs": ["signs"] },
@@ -205,7 +223,8 @@
             ] },
             { "id": "heat-hydration-8", "type": "explain-it-back", "conceptId": "heat-hydration", "difficultySeed": 2, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "Which line best sums up the hot-day mode in Train?", "options": [
               { "id": "a", "text": "Less strain, more breaks and fluid.", "feedback": "The heat guide links hot activity with fluid loss and calls for a paced effort.", "correct": true, "sourceRefs": ["heat"] },
-              { "id": "b", "text": "Keep the usual pace if you drink more water.", "feedback": "Water helps with fluid loss. It does not remove the heat load or warning signs.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"] }
+              { "id": "b", "text": "Keep the usual pace if you drink more water.", "feedback": "Water helps with fluid loss. It does not remove the heat load or warning signs.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"] },
+              { "id": "c", "text": "Train hardest at noon to build heat strength.", "feedback": "Noon heat adds the most strain. Hot-day mode eases effort, adds breaks and keeps fluid up.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"] }
             ] }
           ],
           "misconceptions": [{ "id": "heat-hydration-m1", "name": "Heat is a bonus workout", "correction": "Heat adds strain and fluid loss; warning signs call for a stop and a cool place.", "sourceRefs": ["heat", "signs"] }],
@@ -225,7 +244,8 @@
           "items": [
             { "id": "warmup-myths-1", "type": "predict", "conceptId": "warmup-myths", "difficultySeed": 2, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["guide"], "stem": "Before hostel stair sprints, Neel walks and then jogs a little. What changes first?", "options": [
               { "id": "a", "text": "Pulse and breathing rise in steps.", "feedback": "An easy start lets the heart and lungs build toward harder work.", "correct": true, "sourceRefs": ["guide"] },
-              { "id": "b", "text": "Only his leg flexibility, not his pulse.", "feedback": "Warm-ups are often linked with stretching, but easy walking and jogging also raise the pulse gradually.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] }
+              { "id": "b", "text": "Only his leg flexibility, not his pulse.", "feedback": "Warm-ups are often linked with stretching, but easy walking and jogging also raise the pulse gradually.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] },
+              { "id": "c", "text": "His muscles get longer for good.", "feedback": "An easy start does not change muscle length for good. It mainly lifts pulse and breathing step by step.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] }
             ] },
             { "id": "warmup-myths-2", "type": "scenario", "conceptId": "warmup-myths", "difficultySeed": 2, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["review"], "stem": "At a college gym, a friend holds one long static stretch then tries a jump test. What may happen right after?", "options": [
               { "id": "a", "text": "Jump output may dip a little.", "feedback": "The review found that longer holds can trim the next power test on average.", "correct": true, "sourceRefs": ["review"] },
@@ -234,11 +254,13 @@
             ] },
             { "id": "warmup-myths-3", "type": "estimate", "conceptId": "warmup-myths", "difficultySeed": 2, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"], "stem": "For a warm-up before a sprint, a runner compares walking then jogging with a long still hold alone. About how many starts raise pulse in steps?", "options": [
               { "id": "a", "text": "One: the walk then jog.", "feedback": "Walking then jogging raises effort in stages before the hard task.", "correct": true, "sourceRefs": ["guide"] },
-              { "id": "b", "text": "Both starts do that job.", "feedback": "A still hold can change range of motion, but it does not raise pulse like easy movement.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"] }
+              { "id": "b", "text": "Both starts do that job.", "feedback": "A still hold can change range of motion, but it does not raise pulse like easy movement.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"] },
+              { "id": "c", "text": "None: only sprinting raises pulse.", "feedback": "Easy walking and jogging raise pulse too, just more gently. That is why the walk then jog counts.", "correct": false, "sourceRefs": ["guide", "review"] }
             ], "answer": { "value": 1, "min": 0.5, "max": 1.5, "unit": "starts" } },
             { "id": "warmup-myths-4", "type": "choose", "conceptId": "warmup-myths", "difficultySeed": 1, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["guide"], "stem": "What is one job of an easy warm-up?", "options": [
               { "id": "a", "text": "Let pulse and breath rise bit by bit.", "feedback": "The body moves from rest toward the harder task in a gradual way.", "correct": true, "sourceRefs": ["guide"] },
-              { "id": "b", "text": "Hold one long stretch before any movement.", "feedback": "A static stretch can change range of motion, but an easy moving start gradually prepares the body for hard effort.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] }
+              { "id": "b", "text": "Hold one long stretch before any movement.", "feedback": "A static stretch can change range of motion, but an easy moving start gradually prepares the body for hard effort.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] },
+              { "id": "c", "text": "Tire the legs out before the main task.", "feedback": "A warm-up should ease the body in, not wear it out. Effort built in steps prepares it for harder work.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide"] }
             ] },
             { "id": "warmup-myths-5", "type": "why", "task": "reason", "conceptId": "warmup-myths", "difficultySeed": 3, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"], "stem": "A coach says a long static stretch always stops injury and gives the best next sprint. Which part needs care?", "options": [
               { "id": "a", "text": "Neither result is certain for every task.", "feedback": "The review finds mixed injury data and a small power dip after long holds.", "correct": true, "sourceRefs": ["review"] },
@@ -247,7 +269,8 @@
             ] },
             { "id": "warmup-myths-6", "type": "fill-the-step", "conceptId": "warmup-myths", "difficultySeed": 1, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["review"], "stem": "Fill the gap: a static stretch means holding a pose rather than moving through it ___.", "options": [
               { "id": "a", "text": "Again and again.", "feedback": "A still hold is the key part of static stretching, unlike a moving stretch.", "correct": true, "sourceRefs": ["review"] },
-              { "id": "b", "text": "Until the muscle feels fully warm.", "feedback": "A hold may feel warm, but static describes the held position rather than a required end point.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["review"] }
+              { "id": "b", "text": "Until the muscle feels fully warm.", "feedback": "A hold may feel warm, but static describes the held position rather than a required end point.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["review"] },
+              { "id": "c", "text": "Only once a week.", "feedback": "Static is about holding still, not how often. The pose is held instead of moved through again and again.", "correct": false, "sourceRefs": ["review"] }
             ] },
             { "id": "warmup-myths-7", "type": "true-not-quite", "conceptId": "warmup-myths", "difficultySeed": 3, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["review"], "stem": "A classmate hears that long still holds can dull power and says all static stretching is bad. What is missing?", "options": [
               { "id": "a", "text": "Static holds can also aid motion range.", "feedback": "The effect depends on task and dose; the review does not call every hold harmful.", "correct": true, "sourceRefs": ["review"] },
@@ -256,7 +279,8 @@
             ] },
             { "id": "warmup-myths-8", "type": "explain-it-back", "conceptId": "warmup-myths", "difficultySeed": 2, "misconceptionTags": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"], "stem": "Which line best sums up a warm-up before hard play?", "options": [
               { "id": "a", "text": "Build effort in steps and fit moves to the task.", "feedback": "A gradual start raises pulse and breath; stretch effects depend on the next task.", "correct": true, "sourceRefs": ["guide", "review"] },
-              { "id": "b", "text": "One long hold makes every task safe.", "feedback": "A stretch can feel like full prep. It cannot make every hard task safe.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["review"] }
+              { "id": "b", "text": "One long hold makes every task safe.", "feedback": "A stretch can feel like full prep. It cannot make every hard task safe.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["review"] },
+              { "id": "c", "text": "Skip the start and go all out at once.", "feedback": "Jumping straight to full effort skips the build-up. A warm-up raises pulse and breath in steps first.", "correct": false, "misconceptionIds": ["warmup-myths-m1"], "sourceRefs": ["guide", "review"] }
             ] }
           ],
           "misconceptions": [{ "id": "warmup-myths-m1", "name": "One stretch fixes all", "correction": "A warm-up can raise effort in steps; stretch effects vary by task and dose.", "sourceRefs": ["guide", "review"] }],
@@ -275,7 +299,8 @@
           "items": [
             { "id": "cardio-talk-test-1", "type": "predict", "conceptId": "cardio-talk-test", "difficultySeed": 2, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "On a hostel walk, Mira can chat but cannot sing a line. Which effort band fits the talk test?", "options": [
               { "id": "a", "text": "Moderate effort.", "feedback": "Being able to talk but not sing is the CDC clue for this broad band.", "correct": true, "sourceRefs": ["cdc"] },
-              { "id": "b", "text": "Vigorous effort, because singing is difficult.", "feedback": "Losing the ability to sing can sound like hard work, but being able to talk still fits the moderate band.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
+              { "id": "b", "text": "Vigorous effort, because singing is difficult.", "feedback": "Losing the ability to sing can sound like hard work, but being able to talk still fits the moderate band.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] },
+              { "id": "c", "text": "Rest, because she can still talk.", "feedback": "Being able to talk does not mean rest. Talking without singing is the CDC sign of moderate effort.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
             ] },
             { "id": "cardio-talk-test-2", "type": "scenario", "conceptId": "cardio-talk-test", "difficultySeed": 2, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "During college cricket drills, Arjun can say only a few words before a breath. Which band is closer?", "options": [
               { "id": "a", "text": "Vigorous effort.", "feedback": "Short speech bursts before a breath match the CDC clue for hard aerobic work.", "correct": true, "sourceRefs": ["cdc"] },
@@ -289,7 +314,8 @@
             ], "answer": { "value": 5.5, "min": 5, "max": 6, "unit": "out of 10" } },
             { "id": "cardio-talk-test-4", "type": "choose", "conceptId": "cardio-talk-test", "difficultySeed": 1, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "What does the talk test use as a clue to effort?", "options": [
               { "id": "a", "text": "How speech changes with breath.", "feedback": "As effort rises, talking and singing can become harder to keep up.", "correct": true, "sourceRefs": ["cdc"] },
-              { "id": "b", "text": "The speed shown on a watch.", "feedback": "Speed is easy to measure, but the same speed can feel different to different people; the talk test uses speech and breathing.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
+              { "id": "b", "text": "The speed shown on a watch.", "feedback": "Speed is easy to measure, but the same speed can feel different to different people; the talk test uses speech and breathing.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] },
+              { "id": "c", "text": "How sore the legs feel the next day.", "feedback": "Soreness comes later and varies a lot. The talk test reads effort in the moment from speech and breath.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
             ] },
             { "id": "cardio-talk-test-5", "type": "why", "task": "reason", "conceptId": "cardio-talk-test", "difficultySeed": 3, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "Two friends use the same bike speed; one can still sing and the other can only talk. Why can their effort bands differ?", "options": [
               { "id": "a", "text": "The talk test tracks each person's felt effort.", "feedback": "The same outside pace can ask different amounts of work from different bodies.", "correct": true, "sourceRefs": ["cdc"] },
@@ -298,7 +324,8 @@
             ] },
             { "id": "cardio-talk-test-6", "type": "fill-the-step", "conceptId": "cardio-talk-test", "difficultySeed": 1, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "A runner can say full sentences but cannot sing. What changes first if the pace rises into the vigorous band?", "options": [
               { "id": "a", "text": "Speech shrinks to a few words.", "feedback": "At a hard pace, a runner needs a breath after just a few words.", "correct": true, "sourceRefs": ["cdc"] },
-              { "id": "b", "text": "Singing becomes easy again.", "feedback": "Singing is hard at this pace. If effort rises, even speech gets short.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
+              { "id": "b", "text": "Singing becomes easy again.", "feedback": "Singing is hard at this pace. If effort rises, even speech gets short.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] },
+              { "id": "c", "text": "Talking gets easier and longer.", "feedback": "Harder effort leaves less breath for words. Speech gets shorter as the pace climbs into the vigorous band.", "correct": false, "sourceRefs": ["cdc"] }
             ] },
             { "id": "cardio-talk-test-7", "type": "true-not-quite", "conceptId": "cardio-talk-test", "difficultySeed": 3, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "A student says the talk test proves an exact heart-rate zone number for every runner. What is the gap?", "options": [
               { "id": "a", "text": "It gives a broad effort clue.", "feedback": "Speech sorts rough bands; it does not read a pulse or set one number for all.", "correct": true, "sourceRefs": ["cdc"] },
@@ -307,7 +334,8 @@
             ] },
             { "id": "cardio-talk-test-8", "type": "explain-it-back", "conceptId": "cardio-talk-test", "difficultySeed": 2, "misconceptionTags": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"], "stem": "Which line best explains the talk test to a friend?", "options": [
               { "id": "a", "text": "Speech gets shorter as aerobic effort rises.", "feedback": "Talking, singing and breath gaps offer a quick way to sort rough effort levels.", "correct": true, "sourceRefs": ["cdc"] },
-              { "id": "b", "text": "Speech stays the same at every pace.", "feedback": "A person can always try to talk. Hard effort can still cut words short.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
+              { "id": "b", "text": "Speech stays the same at every pace.", "feedback": "A person can always try to talk. Hard effort can still cut words short.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] },
+              { "id": "c", "text": "If you can sing, you are working hard.", "feedback": "Singing with ease means light effort. As effort rises, singing goes first and then speech gets short.", "correct": false, "misconceptionIds": ["cardio-talk-test-m1"], "sourceRefs": ["cdc"] }
             ] }
           ],
           "misconceptions": [{ "id": "cardio-talk-test-m1", "name": "One speed fits all", "correction": "The talk test gives broad effort bands that can differ between people.", "sourceRefs": ["cdc"] }],
@@ -323,19 +351,23 @@
           "items": [
             { "id": "showing-up-1", "type": "predict", "conceptId": "showing-up", "difficultySeed": 2, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who"], "stem": "In a hostel exam week, Leena has time for a short bodyweight session, not her usual full one. Does it count as activity?", "options": [
               { "id": "a", "text": "Yes, some movement still counts.", "feedback": "WHO says a short bout can help, even when it is less than the weekly goal.", "correct": true, "sourceRefs": ["who"] },
-              { "id": "b", "text": "Only a full session can count as activity.", "feedback": "The usual session feels like the standard. The guide counts even a short bout of work.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "Only a full session can count as activity.", "feedback": "The usual session feels like the standard. The guide counts even a short bout of work.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Only if it lasts at least an hour.", "feedback": "WHO sets no one-hour bar for movement to count. Even short bouts add up over the week.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
             ] },
             { "id": "showing-up-2", "type": "scenario", "conceptId": "showing-up", "difficultySeed": 2, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who", "acsm"], "stem": "A college friend trains on two steady days and skips a rare all-out day. What fits the guideline better?", "options": [
               { "id": "a", "text": "Regular muscle work on two days.", "feedback": "WHO lists two or more days for muscle work; regular visits make that possible.", "correct": true, "sourceRefs": ["who"] },
-              { "id": "b", "text": "One all-out day meets the two-day muscle goal.", "feedback": "A hard day feels like a lot. The guide counts days, so the second day still matters.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "One all-out day meets the two-day muscle goal.", "feedback": "A hard day feels like a lot. The guide counts days, so the second day still matters.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Muscle work only counts on weekends.", "feedback": "The guide counts days, not which days. Two or more days of muscle work in a week fits it.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who", "acsm"] }
             ] },
             { "id": "showing-up-3", "type": "estimate", "conceptId": "showing-up", "difficultySeed": 2, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who"], "stem": "For an adult habit of muscle work, about how many days each week mark the WHO minimum in its activity guide?", "options": [
               { "id": "a", "text": "Two days.", "feedback": "The guide sets two or more days of work for major muscle groups.", "correct": true, "sourceRefs": ["who"] },
-              { "id": "b", "text": "One all-out day each week.", "feedback": "One hard session can feel substantial, but the guide calls for muscle work on at least two days each week.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "One all-out day each week.", "feedback": "One hard session can feel substantial, but the guide calls for muscle work on at least two days each week.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Six days.", "feedback": "That goes well past the minimum. The WHO guide asks for muscle work on two or more days.", "correct": false, "sourceRefs": ["who"] }
             ], "answer": { "value": 2, "min": 1.5, "max": 2.5, "unit": "days per week" } },
             { "id": "showing-up-4", "type": "choose", "conceptId": "showing-up", "difficultySeed": 1, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who"], "stem": "Which line fits the WHO guide when a person is just starting?", "options": [
               { "id": "a", "text": "Some activity is better than none.", "feedback": "The guide says even a small amount of movement can have value.", "correct": true, "sourceRefs": ["who"] },
-              { "id": "b", "text": "Only the full target can have value.", "feedback": "A target looks like a pass mark. Some activity can help before that mark is reached.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "Only the full target can have value.", "feedback": "A target looks like a pass mark. Some activity can help before that mark is reached.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Start with the hardest plan there is.", "feedback": "A very hard start is tough to repeat. The guide says some activity beats none, so small starts count.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
             ] },
             { "id": "showing-up-5", "type": "why", "task": "reason", "conceptId": "showing-up", "difficultySeed": 3, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who", "acsm"], "stem": "A student does one very hard gym day, then no activity for many weeks, and calls the whole term covered. What is missing?", "options": [
               { "id": "a", "text": "The guide describes a weekly pattern.", "feedback": "One hard day does not fill the weeks that follow with muscle work.", "correct": true, "sourceRefs": ["who"] },
@@ -344,7 +376,8 @@
             ] },
             { "id": "showing-up-6", "type": "fill-the-step", "conceptId": "showing-up", "difficultySeed": 1, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who"], "stem": "Fill the gap: a brief walk can still be worth doing because some activity beats ___.", "options": [
               { "id": "a", "text": "None.", "feedback": "WHO says a little movement has value even when it does not meet the full weekly aim.", "correct": true, "sourceRefs": ["who"] },
-              { "id": "b", "text": "A full workout target.", "feedback": "The full goal can seem like the bar. Yet a short walk still counts as some activity.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "A full workout target.", "feedback": "The full goal can seem like the bar. Yet a short walk still counts as some activity.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Rest days.", "feedback": "A good week includes rest. The WHO line compares a little movement with doing none at all.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
             ] },
             { "id": "showing-up-7", "type": "true-not-quite", "conceptId": "showing-up", "difficultySeed": 3, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who"], "stem": "A friend says two muscle days are the whole activity guide, so walking has no place. What was left out?", "options": [
               { "id": "a", "text": "The guide also includes aerobic movement.", "feedback": "It pairs muscle work with time spent in moderate or vigorous activity.", "correct": true, "sourceRefs": ["who"] },
@@ -353,7 +386,8 @@
             ] },
             { "id": "showing-up-8", "type": "explain-it-back", "conceptId": "showing-up", "difficultySeed": 2, "misconceptionTags": ["showing-up-m1"], "sourceRefs": ["who", "acsm"], "stem": "Which line best sums up a workable training habit?", "options": [
               { "id": "a", "text": "Start with some work and return to it.", "feedback": "Small bouts count. Coming back to weekly activity can help over time.", "correct": true, "sourceRefs": ["who", "acsm"] },
-              { "id": "b", "text": "Wait until each day can be all-out.", "feedback": "A full plan can feel more useful. A short start still counts and is easier to repeat.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] }
+              { "id": "b", "text": "Wait until each day can be all-out.", "feedback": "A full plan can feel more useful. A short start still counts and is easier to repeat.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who"] },
+              { "id": "c", "text": "Train only on days you feel fully driven.", "feedback": "Drive comes and goes. Coming back for short sessions, even on flat days, builds the habit over time.", "correct": false, "misconceptionIds": ["showing-up-m1"], "sourceRefs": ["who", "acsm"] }
             ] }
           ],
           "misconceptions": [{ "id": "showing-up-m1", "name": "Only perfect sessions count", "correction": "A short session counts. Weekly work helps when it keeps coming back.", "sourceRefs": ["who"] }],
@@ -377,15 +411,18 @@
             ] },
             { "id": "food-labels-2", "type": "scenario", "conceptId": "food-labels", "difficultySeed": 2, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "A college student reads a canteen packet with 30 g per serve and 100 g per chart line. What does 30 g name?", "options": [
               { "id": "a", "text": "The stated serve size.", "feedback": "The label names the amount used for one serve, which can differ by pack.", "correct": true, "sourceRefs": ["fssai"] },
-              { "id": "b", "text": "The fixed amount in every pack.", "feedback": "Thirty grams is printed, so it can look like a rule. Other packs may name another serve.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
+              { "id": "b", "text": "The fixed amount in every pack.", "feedback": "Thirty grams is printed, so it can look like a rule. Other packs may name another serve.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
+              { "id": "c", "text": "The protein in one serve.", "feedback": "Thirty grams is a weight of food, not a nutrient. It names the serve size the label uses.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] },
             { "id": "food-labels-3", "type": "estimate", "conceptId": "food-labels", "difficultySeed": 2, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "Two food labels use different serving sizes. For a fair sugar comparison, about how many grams should the common base contain?", "options": [
               { "id": "a", "text": "100 grams.", "feedback": "The per 100 g line puts both foods on the same mass, so serving-size differences do not distort the comparison.", "correct": true, "sourceRefs": ["fssai"] },
-              { "id": "b", "text": "Each pack's own serving size.", "feedback": "Each pack can define a different serve. A shared 100 g base lets the nutrient amounts be compared.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
+              { "id": "b", "text": "Each pack's own serving size.", "feedback": "Each pack can define a different serve. A shared 100 g base lets the nutrient amounts be compared.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
+              { "id": "c", "text": "1,000 grams.", "feedback": "A kilo is not the shared base on labels. The per 100 g line is the one used to compare packs.", "correct": false, "sourceRefs": ["fssai"] }
             ], "answer": { "value": 100, "min": 99.5, "max": 100.5, "unit": "grams" } },
             { "id": "food-labels-4", "type": "choose", "conceptId": "food-labels", "difficultySeed": 1, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "What does protein per 100 g tell a reader?", "options": [
               { "id": "a", "text": "Protein in a set mass of that food.", "feedback": "The line gives the amount for one common mass, which helps compare packs.", "correct": true, "sourceRefs": ["fssai"] },
-              { "id": "b", "text": "Protein in any size of serving.", "feedback": "The label gives one clear number. That number is for 100 g, not every serve.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
+              { "id": "b", "text": "Protein in any size of serving.", "feedback": "The label gives one clear number. That number is for 100 g, not every serve.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
+              { "id": "c", "text": "How much protein a body needs each day.", "feedback": "The line describes the food, not a person's needs. It gives the protein in 100 g of that food.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] },
             { "id": "food-labels-5", "type": "why", "task": "reason", "conceptId": "food-labels", "difficultySeed": 3, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "One snack lists more protein per serving than another but also has a much larger serve. Why check the per 100 g lines?", "options": [
               { "id": "a", "text": "They put both foods on one mass base.", "feedback": "A larger serve can raise the serve number even when the food has less protein per 100 g.", "correct": true, "sourceRefs": ["fssai"] },
@@ -394,7 +431,8 @@
             ] },
             { "id": "food-labels-6", "type": "fill-the-step", "conceptId": "food-labels", "difficultySeed": 1, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "Fill the gap: on an Indian nutrition label, total sugars and added sugars are ___ lines.", "options": [
               { "id": "a", "text": "Different.", "feedback": "The label can show all sugars and the part added during food making.", "correct": true, "sourceRefs": ["fssai"] },
-              { "id": "b", "text": "Always the same.", "feedback": "Both lines say sugar, so they can look equal. Total can include sugar already in the food.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
+              { "id": "b", "text": "Always the same.", "feedback": "Both lines say sugar, so they can look equal. Total can include sugar already in the food.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
+              { "id": "c", "text": "Optional.", "feedback": "Total and added sugars are two lines with different meanings. Total can include sugar already in the food.", "correct": false, "sourceRefs": ["fssai"] }
             ] },
             { "id": "food-labels-7", "type": "true-not-quite", "conceptId": "food-labels", "difficultySeed": 3, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "A student sees zero added sugar and says the total sugars line must also be zero. What is the gap?", "options": [
               { "id": "a", "text": "Food may have sugars already in its parts.", "feedback": "Added sugar is one part of total sugar, so the two lines need not match.", "correct": true, "sourceRefs": ["fssai"] },
@@ -403,7 +441,8 @@
             ] },
             { "id": "food-labels-8", "type": "explain-it-back", "conceptId": "food-labels", "difficultySeed": 2, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "Which line best sums up a label check for sugar and protein?", "options": [
               { "id": "a", "text": "Use the same 100 g base across packs.", "feedback": "Equal food amounts let the two nutrient lines mean the same kind of comparison.", "correct": true, "sourceRefs": ["fssai"] },
-              { "id": "b", "text": "Compare per-serve numbers even when serving sizes differ.", "feedback": "Per-serve figures are convenient, but unlike serving sizes can hide a difference; use a common amount and read both sugar lines.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
+              { "id": "b", "text": "Compare per-serve numbers even when serving sizes differ.", "feedback": "Per-serve figures are convenient, but unlike serving sizes can hide a difference; use a common amount and read both sugar lines.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
+              { "id": "c", "text": "Pick the pack with the bigger serve.", "feedback": "A bigger serve says nothing about sugar per gram. Both packs need the same 100 g base to compare.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] }
           ],
           "misconceptions": [{ "id": "food-labels-m1", "name": "Each serve is the same size", "correction": "Serving sizes can vary; per 100 g lines give a common food amount.", "sourceRefs": ["fssai"] }],

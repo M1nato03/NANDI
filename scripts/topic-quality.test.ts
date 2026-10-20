@@ -44,6 +44,19 @@ describe.each(packs.map(pack => [pack.id, pack] as const))('%s', (_id, pack) => 
     expect(thin).toEqual([]);
   });
 
+  // Every pack, every level: a two-option question is a coin flip, so blind guessing would score 50%.
+  it('never offers a coin flip: three or more options on every choice question', () => {
+    const thin = items.filter(item => (choiceTypes.has(item.type) || item.type === 'explain-it-back') && (item.options?.length ?? 0) < 3).map(item => item.id);
+    expect(thin).toEqual([]);
+  });
+
+  it('orders three or more steps without giving the order away in the step text', () => {
+    const orders = items.filter(item => item.type === 'order');
+    expect(orders.filter(item => (item.options?.length ?? 0) < 3).map(item => item.id)).toEqual([]);
+    const labelled = orders.filter(item => item.options?.some(option => /^(?:first|second|third|next|then|finally|last|step \d)\b/i.test(option.text.trim()))).map(item => item.id);
+    expect(labelled).toEqual([]);
+  });
+
   it.runIf(strict(pack))('estimates a sourced quantity, not a count of words in the question', () => {
     const counts = items.filter(item => item.type === 'estimate' && (!item.answer?.unit || item.answer.unit === 'count')).map(item => item.id);
     expect(counts).toEqual([]);
