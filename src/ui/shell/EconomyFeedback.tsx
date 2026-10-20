@@ -31,6 +31,11 @@ export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
+  // A badge never pops up on its own: it waits to join the next finish moment (audit 10-21).
+  const noticeRef = useRef<Notice | null>(null);
+  const pendingBadge = useRef<string | null>(null);
+  useEffect(() => { noticeRef.current = notice; }, [notice]);
+  const withBadge = (next: Notice): Notice => { const label = pendingBadge.current; if (!label || next.macro) return next; pendingBadge.current = null; return next.text.includes(label) ? next : { ...next, text: `${next.text} · ${label}` }; };
   const [doneCard, setDoneCard] = useState(false);
   const [pendingDone, setPendingDone] = useState(false);
   const [shownXp, setShownXp] = useState(0);
@@ -43,7 +48,7 @@ export function EconomyFeedback() {
       lastLine.current = line;
       store.set(sessionStorage, 'finish.lastLine', line);
       void tapHaptic(true);
-      setNotice({ text: line, macro: false, activity });
+      setNotice(withBadge({ text: line, macro: false, activity }));
     };
     window.addEventListener(finishEvent, onFinish);
     return () => window.removeEventListener(finishEvent, onFinish);
@@ -88,7 +93,9 @@ export function EconomyFeedback() {
       // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
       const label = badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier';
       // A badge usually lands just after the finish that earned it: add it to that moment instead of replacing the warm line.
-      setNotice(current => current?.macro ? current : current ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : { text: label, macro: false });
+      // With no finish on screen (say, mid-question) it waits for the next one rather than covering an explanation.
+      if (noticeRef.current && !noticeRef.current.macro) setNotice(current => current && !current.macro ? { ...current, text: current.text.includes(label) ? current.text : `${current.text} · ${label}` } : current);
+      else pendingBadge.current = label;
       return;
     }
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
@@ -121,7 +128,7 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined });
+    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;

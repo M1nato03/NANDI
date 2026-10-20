@@ -34,7 +34,7 @@
     { "id": "receipt-review", "category": "money", "title": "Review 5 receipts and group the costs", "kind": "total", "target": 5, "unit": "receipts", "step": 1 },
     { "id": "compare-prices", "category": "money", "title": "Compare prices for 3 everyday items", "kind": "total", "target": 3, "unit": "items", "step": 1 },
     { "id": "subscription-review", "category": "money", "title": "Review your active subscriptions", "kind": "once", "target": 1, "unit": "", "step": 1 },
-    { "id": "instagram-five-nights", "category": "mind", "title": "Stay off Instagram after 23:00 for 5 nights", "kind": "total", "target": 5, "unit": "nights", "step": 1 },
+    { "id": "instagram-five-nights", "category": "mind", "title": "Keep your scroll app closed after bedtime for 5 nights", "kind": "total", "target": 5, "unit": "nights", "step": 1 },
     { "id": "quiet-minutes", "category": "mind", "title": "Spend 10 quiet minutes without a screen on 3 days", "kind": "total", "target": 3, "unit": "days", "step": 1 },
     { "id": "phone-away-meals", "category": "mind", "title": "Put your phone away for 4 meals", "kind": "total", "target": 4, "unit": "meals", "step": 1 },
     { "id": "gita-chapter", "category": "literature", "title": "Read one Gita chapter and summarise it in 3 lines", "kind": "once", "target": 1, "unit": "", "step": 1 },

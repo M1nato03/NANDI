@@ -69,7 +69,7 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
   }
   await page.getByRole('button', { name: /Badges/ }).click();
   await expect(page.getByRole('heading', { name: 'Badges', exact: true })).toBeVisible();
-  await expect(page.locator('.gamify-badges')).toContainText('Questions explored');
+  await expect(page.locator('.gamify-badges')).toContainText('Questions answered right');
   await expect(page.locator('.gamify-badges')).toContainText('Bronze');
   if (testInfo.project.name === 'mobile-360x800') {
     await page.screenshot({ path: testInfo.outputPath('badges-light-360.png'), fullPage: true });

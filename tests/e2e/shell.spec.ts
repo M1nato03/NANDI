@@ -2,11 +2,13 @@ import { expect, test } from '@playwright/test';
 
 const names = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
 
-test('the economy is visible in You before Season 1', async ({ page }) => {
+test('day one shows a calm You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#you');
-  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('Season 1 starts Monday 2 Nov');
+  // Day one stays calm: level, streak and the week; the season card waits for its last week.
   await expect(page.getByRole('region', { name: 'Your season' })).toContainText('Level 1');
+  await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Season 1 starts');
+  await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Shards');
   await page.goto('/#mind');
   await expect(page.getByRole('main')).toContainText('Mind');
 });

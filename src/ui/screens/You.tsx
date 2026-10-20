@@ -6,13 +6,15 @@ import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
 import { YourSeason } from './EconomyScreens';
 import { DailyQuests } from './GamifyScreens';
+import { revealMeters } from '../../core/economy/reveal';
+import { dayKey } from '../../core/time/dayKey';
 
 export function You() {
   const sources = useLiveQuery(async () => {
-    const [tasks, focus, sessions, quests, concepts, logs] = await Promise.all([
-      db.tasks.toArray(), db.focus.toArray(), db.sessions.toArray(), db.quests.toArray(), db.learnConcepts.toArray(), db.dailyLog.toArray(),
+    const [tasks, focus, sessions, quests, concepts, logs, facts] = await Promise.all([
+      db.tasks.toArray(), db.focus.toArray(), db.sessions.toArray(), db.quests.toArray(), db.learnConcepts.toArray(), db.dailyLog.toArray(), db.ledger.toArray(),
     ]);
-    return { tasks, focus, sessions, quests, concepts, logs };
+    return { tasks, focus, sessions, quests, concepts, logs, facts };
   }, []);
   const recap = sources ? buildRecap(Date.now() + 7 * 86_400_000, sources) : null; // eslint-disable-line react-hooks/purity
   const weekNumbers = recap ? [
@@ -23,8 +25,10 @@ export function You() {
     { value: recap.nights, label: 'nights back on plan' },
     { value: recap.sideQuests, label: 'side quests completed' },
   ].filter(item => item.value > 0).slice(0, 4) : [];
-  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button><YourSeason />
-    <DailyQuests /><button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>
+  // Day one shows level, streak and the week; the rest appear once they mean something.
+  const show = revealMeters(sources?.facts ?? [], dayKey(Date.now()), { start: '9999-12-31', active: false }, 0); // eslint-disable-line react-hooks/purity
+  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}<YourSeason />
+    {show.quests && <DailyQuests />}{show.badges && <button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>}
     <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;

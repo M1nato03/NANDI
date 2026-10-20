@@ -29,9 +29,10 @@ async function seed(page: Page, facts: Fact[]) {
 }
 
 test('pre-season level and streak appear before Season 1 begins', async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-10-19T12:00:00') });
+  // The season card appears in the last week before it starts.
+  await page.clock.install({ time: new Date('2026-10-27T12:00:00') });
   await page.goto('/#you');
-  await seed(page, [fact('2026-10-19', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true })]);
+  await seed(page, [fact('2026-10-27', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true })]);
   const season = page.getByRole('region', { name: 'Your season' });
   await expect(season).toContainText('Season 1 starts Monday 2 Nov');
   await expect(season).toContainText('1 day streak');

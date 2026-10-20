@@ -67,3 +67,4 @@
 @media (prefers-reduced-motion: reduce) { .finish-moment, .done-for-today, .finish-bloom .finish-check { animation: none; } }
 :root[data-motion='reduce'] .finish-moment, :root[data-motion='reduce'] .done-for-today, :root[data-motion='reduce'] .finish-bloom .finish-check { animation: none; }
 .ladder-gap { text-align: center; color: var(--ink-3); padding: 2px 0; }
+.economy-pair > :only-child { grid-column: 1 / -1; }

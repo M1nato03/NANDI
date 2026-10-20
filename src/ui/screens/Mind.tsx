@@ -109,6 +109,8 @@ export function Mind({ entry }: { entry?: string }) {
   const windDownUsed = Number(settings.find(row => row.key === `mind.windDownMs:${today}` && !row.deleted)?.value ?? 0);
   const windDownOverride = settings.some(row => row.key === `mind.windDownOverride:${today}` && row.value === true && !row.deleted);
   const windDownCapped = night === 'windDown' && windDownUsed >= RULES.night.windDownCapMin * 60_000 && !windDownOverride;
+  // Older installs already hold the seeded cards; for them the deck simply stays on.
+  const deckOn = settings.some(row => row.key === 'mind.deckOn' && row.value === true && !row.deleted) || cards.some(row => row.deckId === 'greene' && !row.deleted);
   const hiddenCards = new Set(flags.filter(row => row.hidden && !row.deleted).map(row => row.refId));
   const dueCount = cards.filter(row => !row.deleted && !hiddenCards.has(`card:${row.id}`) && row.due <= today).length;
   const reviewRamp = readReviewRamp(settings.find(row => row.key === 'mind.reviewRamp' && !row.deleted)?.value);
@@ -158,9 +160,14 @@ export function Mind({ entry }: { entry?: string }) {
   useEffect(() => {
     let live = true;
     void loadLessonDraft(db).then(draft => { if (live && entry === 'lesson' && draft?.day === today && draft.step < 7) setLessonDraft(current => current ?? draft); }).catch(error => recordError('window', error));
-    if (deck) void seedDeckCards(db, deck).catch(error => recordError('window', error));
     return () => { live = false; };
   }, [today, entry]);
+  // The people-reading deck is opt-in (audit 10-21): seed it only once the person has turned it on.
+  useEffect(() => { if (deck && deckOn) void seedDeckCards(db, deck).catch(error => recordError('window', error)); }, [deckOn]);
+  const turnOnDeck = async () => {
+    const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
+    await trackWrite(() => db.settings.put({ key: 'mind.deckOn', value: true, updatedAt: time, deleted: 0, deviceId }));
+  };
 
   const startLesson = async (packId: string, lesson: Lesson, review = false) => {
     const pack = lessonPacks.find(value => value.id === packId);
@@ -408,7 +415,7 @@ export function Mind({ entry }: { entry?: string }) {
     </section>
     <details className="card mind-story"><summary>Story so far · {currentArcTitle(today)}</summary>{panels.length ? panels.map(panel => <article key={panel.id}><h3>{panel.chapterTitle}{panel.bonus ? ' · Bonus' : ''}</h3><p>{panel.text}</p></article>) : <p>Solve today's case to uncover the first panel.</p>}</details>
     <details className="card mind-techniques"><summary>Technique cards</summary>{(() => { const isOpen = (card: typeof techniqueCards[number]) => unlocks.some(row => row.id === techniqueId(card.type, card.name) && !row.deleted); const open = techniqueCards.filter(isOpen); const locked = techniqueCards.filter(card => !isOpen(card)); const typeNames: Record<string, string> = { sudoku: 'Mini Sudoku', crowns: 'Crowns', sunmoon: 'Sun & Moon', path: 'Number Path', calc: 'Calcudoku', mystery: 'Case' }; return <><p className="small">{open.length} of {techniqueCards.length} unlocked. Use a technique in a solve to unlock its card.</p>{open.length > 0 && <div className="mind-technique-list">{open.map(card => <article key={techniqueId(card.type, card.name)}><h3>{card.name}</h3><p>{card.explanation}</p><p className="small">{card.example}</p></article>)}</div>}{[...new Set(locked.map(card => card.type))].map(type => <div key={type} className="mind-technique-locked"><h3>{typeNames[type] ?? type}</h3><ul>{locked.filter(card => card.type === type).map(card => <li key={card.name}>{card.name}</li>)}</ul></div>)}</>; })()}</details>
-    <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}<button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button></section>
+    <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}{deckOn ? <button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button> : <div className="mind-deck-off"><p className="small">People-reading deck: {deck?.body.cards.length ?? 0} cards on reading people and power. It stays off until you want it.</p><button type="button" className="secondary" onClick={() => void turnOnDeck()}>Turn on the deck</button></div>}</section>
     </>}
     {(entry === 'courses' || entry === 'unit') && <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses</summary>
       <div className="card mind-old-lesson"><h2>Today's lesson</h2>{lessonSlotDone ? <p>Complete for today.</p> : pendingDraft?.day === today && !pendingDraft.review && pendingDraft.step < 7 ? <button type="button" onClick={() => { const row = lessonPacks.find(pack => pack.body.course.id === pendingDraft.courseId); const lesson = row?.body.lessons.find(value => value.id === pendingDraft.lessonId); if (row && lesson) void startLesson(row.id, lesson); }}>Continue lesson</button> : night !== 'day' ? <p>New lessons wait for the morning.</p> : <><p>{nextLessons[0]?.next?.t}</p><button type="button" onClick={() => { const row = nextLessons[0]; if (row?.next) void startLesson(row.pack.id, row.next); }}>Start lesson</button></>}</div>

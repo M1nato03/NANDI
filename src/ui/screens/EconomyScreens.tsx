@@ -15,6 +15,7 @@ import type { SettingRow } from '../../data/types';
 import { go } from '../shell/router';
 import './economy.css';
 import { Mor, Kachhua } from '../cast/Cast';
+import { revealMeters } from '../../core/economy/reveal';
 
 function useEconomy() {
   const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
@@ -64,16 +65,17 @@ export function YourSeason() {
   const nextRival = view.season.rank > 1 ? rivalName(view.season.index, view.season.rank - 1) : undefined;
   const gap = view.season.rank > 1 ? Math.max(0, seatThreshold(view.season.rank - 1, target) - view.season.sp) : 0;
   const base = RULES.level.stepBase * view.level * (view.level - 1) / 2;
+  const show = revealMeters(economy.facts, economy.today, view.season, view.shards);
   return <section className="your-season" aria-label="Your season">{isAway(settings, economy.today) || view.streak.restUsedYesterday ? <Kachhua pose="rest" size={48} /> : <Mor pose="idle" size={48} />}
-    <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Level {view.level}</span><h2>Your season</h2><p>{view.totalXp.toLocaleString()} XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)} XP to level {view.level + 1}</span></div></div>
-    <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
+    <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Your progress</span><h2>Level {view.level}</h2><p>{view.totalXp.toLocaleString()} XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)} XP to level {view.level + 1}</span></div></div>
+    {show.season && <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
       <span className="eyebrow">Season {view.season.index + 1} · {seasonDates}</span>
       {view.season.active ? <><h2>Season {view.season.index + 1}</h2><p><strong>#{view.season.rank} of 500</strong> · {view.season.tier}</p><p>+{view.season.placesThisWeek} places this week</p>{nextRival && <p>{nextRival} sits just above · {gap} SP away</p>}<button type="button" className="secondary" onClick={() => go('you/season')}>View the ladder</button></> : <><h2>Season 1 starts Monday 2 Nov</h2><p>Your XP already counts toward your level.</p></>}
       {arc && <p className="small">Story: {arc}</p>}
-    </div>
+    </div>}
     <div className="economy-pair"><div className="card economy-streak"><span className="eyebrow">Stamina</span><h2>{view.streak.days} day streak</h2><p>{view.streak.restDays} {view.streak.restDays === 1 ? 'rest day' : 'rest days'} banked</p><p>4 more arrive on the 1st.{view.streak.gold ? ' · Gold stripe' : ''}</p>{view.streak.paused && <p>Streak paused. Life happens. Two Hat-trick days in 48 h restores it.</p>}<AwayPlanner settings={settings} today={economy.today} bank={view.streak.restDays} /></div>
-      <div className="card economy-clean"><span className="eyebrow">Clean Week</span><h2>{view.cleanWeek.count} of 4 Hat-tricks</h2><div className="clean-dots" aria-label="Hat-trick days this week">{view.cleanWeek.days.map((done, i) => <span key={i} className={done ? 'filled' : ''} />)}</div><p>{view.cleanWeek.complete ? 'A Clean Week is yours.' : 'Four days make a Clean Week.'}</p></div></div>
-    <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>
+      {show.cleanWeek && <div className="card economy-clean"><span className="eyebrow">Clean Week</span><h2>{view.cleanWeek.count} of 4 Hat-tricks</h2><div className="clean-dots" aria-label="Hat-trick days this week">{view.cleanWeek.days.map((done, i) => <span key={i} className={done ? 'filled' : ''} />)}</div><p>{view.cleanWeek.complete ? 'A Clean Week is yours.' : 'Four days make a Clean Week.'}</p></div>}</div>
+    {show.shards && <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>}
   </section>;
 }
 

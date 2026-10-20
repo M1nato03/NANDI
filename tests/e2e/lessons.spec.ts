@@ -50,6 +50,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await lesson.getByRole('button', { name: 'Done' }).click();
 
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+    // The people-reading deck is opt-in; turning it on adds its cards to the reviews.
+    await page.getByRole('button', { name: 'Turn on the deck' }).click();
     await expect(page.getByText('5 for today')).toBeVisible();
     await page.getByRole('button', { name: 'Review cards' }).click();
     const finished = page.getByRole('heading', { name: "That's enough for today" });

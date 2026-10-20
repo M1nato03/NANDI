@@ -60,7 +60,8 @@ export const badges: Badge[] = [
   { id: 'rest', title: 'Rest days kept', count: badgeCount('train', 'rest') },
   { id: 'prs', title: 'Personal bests', count: badgeCount('train', 'pr') },
   { id: 'drops', title: 'Drops finished', count: badgeCount('gamify', 'learn-drop') },
-  { id: 'answers', title: 'Questions explored', count: badgeCount('mind', 'learn-answer') },
+  // Only right answers count, so a first wrong answer never earns a badge (audit 10-21).
+  { id: 'answers', title: 'Questions answered right', count: f => all(f, 'mind', 'learn-answer').filter(x => x.inputs.correct === true).length },
   { id: 'perfect', title: 'Perfect drops', count: badgeCount('gamify', 'perfect-drop') },
   { id: 'gold', title: 'Gold reviews', count: badgeCount('gamify', 'gold-review') },
   { id: 'boards', title: 'Boards solved', count: badgeCount('mind', 'board') },
