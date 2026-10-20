@@ -101,6 +101,7 @@ export function replayFactXp(fact: LedgerRow, history: readonly RulesHistoryEntr
   const input = fact.inputs;
   if (fact.mode === 'tasks' && fact.kind === 'done') return calculateTasksDayXp([fact], rules);
   if (fact.mode === 'quests' && fact.kind === 'quest') return rules.quests.sideQuestXp;
+  if (fact.mode === 'gamify' && fact.kind === 'perfect-drop') return rules.gamify.perfectDropXp;
   if (fact.mode === 'bonuses' && fact.kind === 'lightsout') return input.metTarget === true ? rules.bonuses.lightsOutXp : 0;
   if (fact.mode === 'train') {
     if (fact.kind === 'pr') return rules.train.prXp;
@@ -135,5 +136,16 @@ export function replayFactXp(fact: LedgerRow, history: readonly RulesHistoryEntr
     if (fact.kind === 'lesson') return rules.mind.lessonXp;
     if (fact.kind === 'card') return rules.mind.cardXp;
   }
+  return 0;
+}
+
+/** Fixed Shard awards are replayed from facts under the rules active on their day. */
+export function replayFactShards(fact: LedgerRow, history: readonly RulesHistoryEntry[] = RULES_HISTORY): number {
+  if (fact.deleted || fact.mode !== 'gamify') return 0;
+  const rules = rulesFor(fact.dayKey, history)?.rules;
+  if (!rules) return 0;
+  if (fact.kind === 'daily-quest') return rules.gamify.dailyQuestShards;
+  if (fact.kind === 'badge-tier') return rules.gamify.badgeTierShards;
+  if (fact.kind === 'unit-chest') return rules.gamify.unitChestShards;
   return 0;
 }

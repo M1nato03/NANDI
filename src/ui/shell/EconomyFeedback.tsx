@@ -9,6 +9,7 @@ import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow } from '../../data/types';
 import { dailyDropId } from '../learn/dropIds';
+import { reconcileGamify } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
@@ -37,7 +38,7 @@ function softSound() {
   tone.onended = () => { void context.close(); };
 }
 export function EconomyFeedback() {
-  const source = useLiveQuery(async () => { const now = Date.now(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
+  const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
   const [doneCard, setDoneCard] = useState(false);
@@ -59,6 +60,7 @@ export function EconomyFeedback() {
   }, []);
   useEffect(() => {
     if (!source) return;
+    void reconcileGamify(db).catch(() => { /* Later writes retry reconciliation. */ });
     const previous = prior.current;
     prior.current = source;
     if (!previous) {
@@ -91,6 +93,12 @@ export function EconomyFeedback() {
     const added = source.facts.filter(row => !oldIds.has(row.id));
     // Bulk restore and historical imports are data operations, not a new check-off.
     if (added.length > 5 || added.some(row => Math.abs(Date.now() - row.updatedAt) > 5_000)) return;
+    const badge = added.find(row => row.kind === 'badge-tier' || row.kind === 'monthly-challenge');
+    if (badge) {
+      // Badge tiers can arrive while someone is answering or planning; mark the moment without covering their controls.
+      setNotice(current => current?.macro ? current : { text: badge.kind === 'monthly-challenge' ? 'Monthly challenge complete' : 'A new badge tier', macro: false });
+      return;
+    }
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);

@@ -43,6 +43,7 @@ const Ground = lazy(() => import('../screens/Ground').then(module => ({ default:
 const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
+const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
 
@@ -129,6 +130,7 @@ export function AppShell() {
   if (path === 'ground/backup' || path === 'you/backup') screen = <Backup onRestored={restored} />;
   else if (path === 'you/season') screen = <SeasonLadder />;
   else if (path === 'you/shop') screen = <SeasonShop />;
+  else if (path === 'you/badges') screen = <Badges />;
   else if (path === 'you/contentreview') screen = <ContentReview />;
   else if (path === 'you/night') screen = <Night />;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>

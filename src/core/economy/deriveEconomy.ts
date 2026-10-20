@@ -1,5 +1,5 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
-import { calculateTasksDayXp, replayFactXp } from './awards';
+import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
 const MS_DAY = 86_400_000;
@@ -24,7 +24,7 @@ export function seasonIndex(day: string): number { return Math.max(0, seasonFor(
 
 export interface EconomyDay {
   dayKey: string; tasks: number; train: number; mind: number; weekly: number; quests: number;
-  hatTrick: boolean; lightsOut: number; total: number; mark: boolean; body: boolean; mindSlot: boolean;
+  hatTrick: boolean; lightsOut: number; focus: number; total: number; mark: boolean; body: boolean; mindSlot: boolean;
 }
 export interface EconomyView {
   days: EconomyDay[]; totalXp: number; level: number; nextLevelXp: number;
@@ -89,15 +89,25 @@ export function deriveEconomy(
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
       mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).length * rules.mind.sideBoardXp +
-      (learnDrop ? rules.mind.learnDropXp : 0));
+      (learnDrop ? rules.mind.learnDropXp : 0) + rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0));
     const mindSlot = learnDrop || caseSolved || dailyBoard || cards.length >= rules.streak.minDueCardsForMark;
     const plannedTask = rows.some(row => row.mode === 'tasks' && row.kind === 'done' && (row.inputs.planned === true || row.inputs.wasPlanned === true || row.inputs.hadTimeSlot === true || row.inputs.must === true || row.inputs.isFirstDay === true || row.inputs.scheduledStart != null));
     const body = bestSession > 0 || rest > 0;
     const hatTrick = plannedTask && body && mindSlot;
     const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
     const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest').reduce((sum, row) => sum + replayFactXp(row, history), 0);
-    days.push({ dayKey: key, tasks, train, mind, weekly, quests, hatTrick, lightsOut,
-      total: tasks + train + mind + weekly + quests + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut,
+    const boost = rows.find(row => row.kind === 'focus-boost');
+    const focus = boost ? rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boost.updatedAt + rules.gamify.focusMinutes * 60_000 && row.kind !== 'focus-boost')
+      .reduce((sum, row) => {
+        let award = replayFactXp(row, history);
+        if (row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row)) {
+          const before = rows.slice(0, rows.indexOf(row) + 1).filter(candidate => candidate.mode === 'mind' && candidate.kind === 'learn-answer' && candidate.inputs.dropId === `drop:daily:${key}` && beforeBed(candidate));
+          if (before.length === 5) award = rules.mind.learnDropXp;
+        }
+        return sum + award * (rules.gamify.focusMultiplier - 1);
+      }, 0) : 0;
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut,
+      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut,
       mark: plannedTask || body || mindSlot, body, mindSlot });
   }
   let totalXp = 0, level = 1, earnedFromXp = 0, levelShardBonus = 0;
@@ -181,6 +191,7 @@ export function deriveEconomy(
     seasonAward += awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
   }
   let balance = Math.floor(earnedFromXp) + levelShardBonus + seasonAward;
+  balance += ordered.reduce((sum, row) => sum + replayFactShards(row, history), 0);
   const owned: string[] = [];
   for (const row of ordered.filter(row => row.kind === 'purchase')) {
     const price = Number(row.inputs.price);
