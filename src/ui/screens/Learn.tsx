@@ -83,10 +83,12 @@ export function Learn({ entry }: { entry?: string }) {
       const gold = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'gold-review').map(fact => fact.refId));
       const mastered = new Set(concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Mastered' || gold.has(concept.id)).map(concept => concept.id));
       const open = expanded === topicId;
+      // Each card leads with the next idea's own hook, so the six topics no longer read alike (audit 10-21).
+      const nextIdea = concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))) ?? concepts[0];
       return <section className="card learn-map-topic" key={pack.id}>
         <button type="button" className="learn-topic-expand" aria-expanded={open} aria-controls={`learn-ideas-${topicId}`} onClick={() => setExpanded(open ? undefined : topicId)}>
           <span className="learn-topic-title"><strong>{pack.title}</strong><span aria-hidden="true">{open ? '−' : '+'}</span></span>
-          <span className="learn-topic-hook">{pack.description}</span>
+          <span className="learn-topic-hook">{nextIdea?.hook ?? pack.description}</span>
           <span className="learn-topic-progress-label">{strong} of {concepts.length} ideas strong</span>
           <span className="learn-topic-progress" role="progressbar" aria-label={`${pack.title} strong ideas`} aria-valuenow={strong} aria-valuemin={0} aria-valuemax={concepts.length}><span style={{ width: `${strong / concepts.length * 100}%` }} /></span>
         </button>

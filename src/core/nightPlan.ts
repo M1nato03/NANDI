@@ -7,6 +7,11 @@ export const CUES = ['get into bed with my phone', 'reach for one more scroll'];
 /** Earlier cue wording, saved before the sentence read "If I <cue>". */
 const OLD_CUES: Record<string, string> = { 'getting into bed with my phone': 'get into bed with my phone', 'reaching for one more scroll': 'reach for one more scroll' };
 export const ACTIONS = ['open my night deck', 'read 5 pages', 'put the phone on the charger outside the bed'];
+export const QUICK_PLANS: readonly NightPlan[] = [
+  { cue: CUES[0]!, action: ACTIONS[2]! },
+  { cue: CUES[1]!, action: ACTIONS[0]! },
+  { cue: CUES[0]!, action: ACTIONS[1]! },
+];
 
 export function readNightPlan(settings: SettingRow[]): NightPlan | null {
   const value = settings.find(row => row.key === NIGHT_PLAN_KEY && !row.deleted)?.value;

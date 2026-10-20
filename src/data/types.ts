@@ -29,6 +29,9 @@ export interface TaskRow extends EntityRow {
   parentId?: string;
   checkpointOf?: string;
   xpShare?: number;
+  /** Repeating tasks: how it repeats, and which task this one follows. */
+  repeat?: 'daily' | 'weekdays' | 'weekly';
+  repeatOf?: string;
 }
 export interface TaskEventRow extends EntityRow {
   taskId: string;

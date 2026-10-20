@@ -27,5 +27,5 @@ export function TodayDots({ now }: { now: number }) {
     log: await db.dailyLog.get(dayKey(now)),
   }), [dayKey(now)]);
   const status = data && todayDotStatus(now, data);
-  return <nav className="today-dots" aria-label="Today status">{(['plan', 'train', 'learn', 'mind'] as const).map(area => <button key={area} type="button" className={`today-dot deck-area-${{ plan: 'do', train: 'move', learn: 'learn', mind: 'think' }[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /></button>)}</nav>;
+  return <nav className="today-dots" aria-label="Today status">{(['plan', 'train', 'learn', 'mind'] as const).map(area => <button key={area} type="button" className={`today-dot deck-area-${{ plan: 'do', train: 'move', learn: 'learn', mind: 'think' }[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{`${area[0]!.toUpperCase()}${area.slice(1)}`}</small></button>)}</nav>;
 }

@@ -275,9 +275,11 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .tabbar a[aria-current='page'] { color: var(--area-color); }
 .tabbar a[aria-current='page']::after { background: var(--area-color); }
 .today-dots { display: flex; gap: 0; margin-left: auto; }
-.today-dot { display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 0; border: 0; background: transparent; }
-.today-dot span { width: 8px; height: 8px; border: 1.5px solid var(--area-color); border-radius: 50%; }
+.today-dot { display: grid; place-items: center; align-content: center; gap: 3px; width: 44px; min-width: 44px; height: 44px; padding: 0; border: 0; background: transparent; }
+.today-dot span[data-done] { width: 8px; height: 8px; border: 1.5px solid var(--area-color); border-radius: 50%; }
 .today-dot span[data-done='true'] { background: var(--area-color); }
+/* Each dot names its tab, so nobody has to guess what the four dots mean (audit 10-21). */
+.today-dot-label { font-size: 10px; line-height: 1; font-weight: 600; color: var(--muted); letter-spacing: .01em; }
 .topbar .top-date { display: none; }
 .night-route .topbar, .night-route .tabbar { display: none; }
 .night-route .content { padding-top: 24px; padding-bottom: 24px; }
@@ -444,3 +446,9 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .done-suggestion { font-weight: 600; }
 .you-courtyard-link.you-link { min-height: 0; gap: 4px; margin: 0 0 12px; }
 .you-courtyard-link.you-link strong { font-size: 22px; letter-spacing: -.02em; }
+.plan-rituals-fold > summary { list-style: none; cursor: pointer; }
+.plan-rituals-fold > summary::-webkit-details-marker { display: none; }
+.plan-rituals-fold > summary .small { display: block; color: var(--muted); }
+.plan-rituals-fold[open] > summary .small { display: none; }
+.night-plan-quick { display: grid; gap: 8px; }
+.night-plan-quick button { white-space: normal; text-align: left; min-height: 48px; line-height: 1.35; }

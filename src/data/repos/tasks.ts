@@ -1,3 +1,4 @@
+import { nextRepeatDay, sameTimeOn } from '../../core/tasks/repeat';
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
 import { db as appDb } from '../db';
@@ -396,6 +397,16 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           now,
         );
         await event(taskId, 'done', now);
+        if (task.repeat && !task.parentId && !(await db.tasks.filter((row) => row.repeatOf === taskId && !row.deleted).count())) {
+          // Finishing a repeating task plans the next one, same time of day, never on a past day.
+          const nextDay = nextRepeatDay(task.repeat, task.dayKey, dayKey(now));
+          const nextStart = task.scheduledStart != null ? sameTimeOn(task.scheduledStart, nextDay) : null;
+          const nextId = ulid(now + 1);
+          await repos.tasks.put({ id: nextId, title: task.title, status: 'planned', dayKey: nextDay, size: task.size, estimateMin: task.estimateMin, plannedSize: task.plannedSize ?? task.size,
+            category: task.category, mustOrCould: 'could', scheduledStart: nextStart, scheduledEnd: nextStart != null && task.estimateMin ? nextStart + task.estimateMin * 60_000 : null,
+            firstStep: task.firstStep, place: task.place, postponeCount: 0, firstScheduledDayKey: nextDay, lastPlannedDayKey: nextDay, repeat: task.repeat, repeatOf: taskId }, now);
+          await event(nextId, 'created', now);
+        }
         const created = await db.taskEvents
           .where('taskId')
           .equals(taskId)

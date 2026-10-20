@@ -28,9 +28,9 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await expect(deck.getByText('Start session')).toHaveCount(0);
   await shot(1);
   const plan = page.getByRole('region', { name: 'Night plan setting' });
-  await plan.getByRole('textbox', { name: 'Bedtime cue' }).fill('reach for Reels at night');
-  await plan.getByRole('textbox', { name: 'Replacement action' }).fill('open my night deck');
-  await plan.getByRole('button', { name: 'Save night plan' }).click();
+  // The first night offers three one-tap plans before any form.
+  await expect(plan.getByRole('textbox', { name: 'Bedtime cue' })).toHaveCount(0);
+  await plan.getByRole('button', { name: 'If I reach for one more scroll, then I open my night deck.' }).click();
   await expect(deck.getByText('You opened NANDI instead. That counts.')).toBeVisible();
 
   await deck.getByRole('button', { name: 'Next', exact: true }).click();

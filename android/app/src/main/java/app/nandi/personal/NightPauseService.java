@@ -101,11 +101,17 @@ public class NightPauseService extends Service {
         super.onCreate();
         NotificationManager notifications = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= 26) {
-            notifications.createNotificationChannel(new NotificationChannel("night_watch", "App pause is on", NotificationManager.IMPORTANCE_LOW));
+            // The always-on notice is silent and sits at the bottom of the shade (audit 10-21). A channel's
+            // importance cannot change once made, so the old low-importance channel is replaced.
+            notifications.deleteNotificationChannel("night_watch");
+            NotificationChannel quiet = new NotificationChannel("night_watch_quiet", "App pause is on", NotificationManager.IMPORTANCE_MIN);
+            quiet.setShowBadge(false);
+            quiet.setSound(null, null);
+            notifications.createNotificationChannel(quiet);
             notifications.createNotificationChannel(new NotificationChannel("night_pause", "App pause", NotificationManager.IMPORTANCE_HIGH));
         }
         Notification.Builder ongoingBuilder = Build.VERSION.SDK_INT >= 26
-            ? new Notification.Builder(this, "night_watch") : new Notification.Builder(this);
+            ? new Notification.Builder(this, "night_watch_quiet") : new Notification.Builder(this).setPriority(Notification.PRIORITY_MIN);
         Notification ongoing = ongoingBuilder
             .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("NANDI app pause is on")
             .setContentText("You can turn it off in You > Settings > App pause.").setOngoing(true).build();

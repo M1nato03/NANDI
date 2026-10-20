@@ -6,6 +6,7 @@ import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
 import { YourSeason } from './EconomyScreens';
 import { DailyQuests } from './GamifyScreens';
+import { BackupNudge } from './BackupNudge';
 import { revealMeters } from '../../core/economy/reveal';
 import { dayKey } from '../../core/time/dayKey';
 
@@ -30,6 +31,7 @@ export function You() {
   return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}<YourSeason />
     {show.quests && <DailyQuests />}{show.badges && <button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>}
     <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
+    <BackupNudge />
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;
 }

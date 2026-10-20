@@ -1,3 +1,4 @@
+import { REPEATS, type Repeat } from '../../core/tasks/repeat';
 import { useState, type FormEvent } from 'react';
 import { RULES } from '../../core/rules.config';
 import type { TaskRow, FocusRow } from '../../data/types';
@@ -15,6 +16,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
   const [category, setCategory] = useState('general');
   const [priority, setPriority] = useState<'must' | 'could'>('could');
   const [schedule, setSchedule] = useState<'today' | 'unplaced' | 'someday'>('today');
+  const [repeat, setRepeat] = useState<Repeat | ''>('');
   const [slot, setSlot] = useState(() => defaultSlot(Date.now()));
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -42,10 +44,10 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
     setSubmitting(true);
     try {
       const ok = await run(async (repos, now) => {
-          const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now) }, now);
+          const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now), ...(repeat && schedule === 'today' ? { repeat } : {}) }, now);
           if (schedule === 'someday') await repos.postpone(task.id, now + 1, { newStart: null, choice: 'someday', baselineWeek: true });
         }, 'Task added.');
-      if (ok) { setTitle(''); setOpen(false); setFeedback(''); }
+      if (ok) { setTitle(''); setRepeat(''); setOpen(false); setFeedback(''); }
     } finally {
       setSubmitting(false);
     }
@@ -73,6 +75,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
       {calibrated && <p className="small">Your {category} tasks usually take about {calibrated.ratio.toFixed(1)}x the estimate. <button type="button" className="text-button" onClick={() => setEstimate(String(calibratedMinutes(taskMinutes, calibrated.ratio)))}>Use {calibratedMinutes(taskMinutes, calibrated.ratio)} min</button>?</p>}
       <fieldset><legend>Priority</legend><label><input type="radio" name="priority" checked={priority === 'could'} onChange={() => setPriority('could')} /> Could</label><label><input type="radio" name="priority" checked={priority === 'must'} onChange={() => setPriority('must')} /> Must</label></fieldset>
       <fieldset><legend>Place it</legend><label><input type="radio" name="schedule" checked={schedule === 'today'} onChange={() => setSchedule('today')} /> Today / time</label><label><input type="radio" name="schedule" checked={schedule === 'unplaced'} onChange={() => setSchedule('unplaced')} /> Unplaced</label><label><input type="radio" name="schedule" checked={schedule === 'someday'} onChange={() => setSchedule('someday')} /> Someday</label></fieldset>
+      {schedule === 'today' && <label>Repeat <select value={repeat} onChange={(event) => setRepeat(event.target.value as Repeat | '')}><option value="">Does not repeat</option>{REPEATS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>}
       {schedule === 'today' && <label>Start time <input type="datetime-local" required value={slot} onChange={(event) => setSlot(event.target.value)} /></label>}
       <button type="submit" disabled={submitting}>{submitting ? 'Adding task…' : 'Add task'}</button>{feedback && <p role="alert">{feedback}</p>}
     </form>}

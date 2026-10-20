@@ -41,6 +41,8 @@ for (const scheme of ['light', 'dark'] as const) {
       await page.getByRole('button', { name: 'Add task', exact: true }).click();
       await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText(title);
     }
+    // Rituals stay folded until the first one is used; after that they open by themselves.
+    await page.locator('.plan-rituals-fold > summary').click();
     await page.getByRole('button', { name: 'Morning plan' }).click();
     await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toContainText('Plan project outline');
     await expect(page.getByRole('region', { name: 'Time for today' })).toContainText('Today you have about');
