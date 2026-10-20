@@ -6,7 +6,7 @@ import type { LedgerRow, SettingRow } from '../../data/types';
 export type ShopKind = 'freeze' | 'cardBack' | 'banner' | 'puzzlePack' | 'soundPack' | 'theme';
 export type ShopItem = { id: string; kind: ShopKind; name: string; price: number; description: string };
 export const SHOP_ITEMS: readonly ShopItem[] = [
-  { id: 'freeze', kind: 'freeze', name: 'Streak freeze', price: RULES.shards.prices.freeze, description: 'One more day of breathing room.' },
+  { id: 'freeze', kind: 'freeze', name: 'Rest day', price: RULES.shards.prices.freeze, description: 'Adds one day to your rest bank.' },
   { id: 'cardback:weave', kind: 'cardBack', name: 'Weave card back', price: 100, description: 'A quiet woven pattern.' },
   { id: 'cardback:orbit', kind: 'cardBack', name: 'Orbit card back', price: 150, description: 'Small circles in motion.' },
   { id: 'cardback:steps', kind: 'cardBack', name: 'Steps card back', price: 150, description: 'A path of gentle steps.' },
@@ -39,7 +39,7 @@ export function purchaseDecision(itemId: string, facts: readonly LedgerRow[], se
   if (!item) return { ok: false, reason: 'This item is not in this season.' };
   const economy = deriveEconomy(facts, history, settings, today);
   if (item.kind !== 'freeze' && economy.owned.includes(itemId)) return { ok: false, reason: 'Already yours.' };
-  if (item.kind === 'freeze' && economy.streak.freezes >= RULES.streak.maxFreezes) return { ok: false, reason: 'You already have two freezes.' };
+  if (item.kind === 'freeze' && economy.streak.restDays >= RULES.streak.restBankMax) return { ok: false, reason: 'Your rest bank is full.' };
   if (economy.shards < item.price) return { ok: false, reason: `You need ${item.price - economy.shards} more Shards.` };
   return { ok: true, item };
 }

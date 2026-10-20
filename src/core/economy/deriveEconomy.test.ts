@@ -65,21 +65,39 @@ describe('economy replay', () => {
     answers[4]!.inputs.afterBedtime = true;
     expect(view(answers).days[0]).toMatchObject({ mind: 0, mindSlot: false });
   });
-  it('handles freezes, rest days, repair, and Free Play', () => {
+  it('holds a streak on a banked rest day and leaves the weekly rest weekday untouched', () => {
     const mon = '2026-11-02';
     const keeping = deriveEconomy([task(mon, 'M'), row('2026-11-04', 'mind', 'board', { daily: false })], undefined, [{ key: 'economy.restWeekday', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-04');
-    expect(keeping.streak).toMatchObject({ freezes: 1, freezesUsed: 1, paused: false });
+    expect(keeping.streak).toMatchObject({ restDays: 3, restDaysUsed: 1, restUsedYesterday: true, days: 2, paused: false });
     expect(keeping.days[2]!.mark).toBe(false);
-    const paused = view([task(mon, 'M')], '2026-11-06');
+    const paused = view([task(mon, 'M')], '2026-11-08');
     expect(paused.streak.paused).toBe(true);
-    const repaired = view([task(mon, 'M'), task('2026-11-06', 'M'), full('2026-11-06'), caseFact('2026-11-06'),
-      task('2026-11-07', 'M'), full('2026-11-07'), caseFact('2026-11-07')], '2026-11-07');
+    const repaired = view([task(mon, 'M'), task('2026-11-08', 'M'), full('2026-11-08'), caseFact('2026-11-08'),
+      task('2026-11-09', 'M'), full('2026-11-09'), caseFact('2026-11-09')], '2026-11-09');
     expect(repaired.streak.restored).toBe(true);
     expect(repaired.streak.paused).toBe(false);
   });
   it('starts a fresh streak once the earn-back window has passed', () => {
-    const facts = [task('2026-11-02', 'M'), task('2026-11-08', 'M'), task('2026-11-09', 'M'), task('2026-11-10', 'M')];
-    expect(view(facts, '2026-11-10').streak).toMatchObject({ paused: false, restored: false, days: 3 });
+    const facts = [task('2026-11-02', 'M'), task('2026-11-11', 'M'), task('2026-11-12', 'M'), task('2026-11-13', 'M')];
+    expect(view(facts, '2026-11-13').streak).toMatchObject({ paused: false, restored: false, days: 3 });
+  });
+  it('grants four rest days in the first month and carries up to twelve across months', () => {
+    expect(view([], '2026-10-20').streak.restDays).toBe(4);
+    expect(deriveEconomy([], undefined, [{ key: 'economyVisibleFrom', value: '2026-10-31', updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-01').streak)
+      .toMatchObject({ restDays: 7, restDaysUsed: 1 });
+    const facts = Array.from({ length: 95 }, (_, i) => task(new Date(Date.UTC(2026, 9, 1 + i)).toISOString().slice(0, 10), 'S'));
+    expect(view(facts, '2026-11-01').streak.restDays).toBe(8);
+    expect(view(facts, '2026-12-01').streak.restDays).toBe(12);
+    expect(view(facts, '2027-01-03').streak.restDays).toBe(12);
+  });
+  it('uses one day without growing the streak, then leaves today untouched', () => {
+    const facts = [task('2026-10-20', 'M')];
+    expect(view(facts, '2026-10-21').streak).toMatchObject({ days: 1, restDays: 4, restDaysUsed: 0 });
+    expect(view(facts, '2026-10-22').streak).toMatchObject({ days: 1, restDays: 3, restDaysUsed: 1, restUsedYesterday: true });
+  });
+  it('adds a purchased rest day using the legacy freeze item id', () => {
+    const facts = [task('2026-10-20', 'L'), row('2026-10-20', 'economy', 'purchase', { itemId: 'freeze', price: 50 })];
+    expect(view(facts, '2026-10-20').streak.restDays).toBe(5);
   });
   it('makes a Clean Week with three workouts and one rest check', () => {
     const facts: LedgerRow[] = [];

@@ -63,6 +63,15 @@ export function EconomyFeedback() {
     prior.current = source;
     if (!previous) {
       const now = Date.now(), today = dayKey(now), season = seasonFor(today);
+      const restNoticeKey = `economy.restUsed:${today}`;
+      if (!store.get(sessionStorage, restNoticeKey)) {
+        const current = deriveEconomy(source.facts, undefined, source.settings, today);
+        if (current.streak.restUsedYesterday) {
+          store.set(sessionStorage, restNoticeKey, 'seen');
+          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false }));
+          return;
+        }
+      }
       const key = `economy.seasonReveal:${season.index - 1}`;
       const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
       if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {

@@ -45,4 +45,9 @@ describe('daily nudges', () => {
       .find(row => row.id === 'nudge:streak:2026-10-16')?.at;
     expect(at130).toBeLessThan(new Date(2026, 9, 16, 23, 15).getTime());
   });
+  it('keeps every nudge quiet on planned days away', () => {
+    const rows = wanted([setting('economy.away', [{ start: '2026-10-16', end: '2026-10-18' }]), setting(NUDGE_STREAK_ON, true)]);
+    expect(rows.some(row => /2026-10-(16|17|18)$/.test(row.id))).toBe(false);
+    expect(rows.some(row => row.id.endsWith('2026-10-19'))).toBe(true);
+  });
 });

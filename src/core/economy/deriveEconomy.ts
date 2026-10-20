@@ -29,7 +29,7 @@ export interface EconomyDay {
 export interface EconomyView {
   days: EconomyDay[]; totalXp: number; level: number; nextLevelXp: number;
   season: { index: number; start: string; end: string; active: boolean; sp: number; target: number; rank: number; tier: string; seed: number; nextSeed: number; placesThisWeek: number };
-  streak: { days: number; freezes: number; freezesUsed: number; paused: boolean; gold: boolean; restored: boolean };
+  streak: { days: number; restDays: number; restDaysUsed: number; restUsedYesterday: boolean; paused: boolean; gold: boolean; restored: boolean };
   cleanWeek: { count: number; days: boolean[]; complete: boolean; streak: number };
   shards: number; owned: string[];
 }
@@ -59,7 +59,9 @@ export function deriveEconomy(
   });
   const byDay = new Map<string, LedgerRow[]>();
   for (const fact of ordered) byDay.set(fact.dayKey, [...(byDay.get(fact.dayKey) ?? []), fact]);
-  const start = ordered[0]?.dayKey ?? today;
+  const visibleFrom = value(settings, 'economyVisibleFrom');
+  const firstDay = typeof visibleFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(visibleFrom) && !Number.isNaN(Date.parse(`${visibleFrom}T12:00:00Z`)) && new Date(`${visibleFrom}T12:00:00Z`).toISOString().slice(0, 10) === visibleFrom && visibleFrom <= today ? visibleFrom : today;
+  const start = ordered[0]?.dayKey && ordered[0].dayKey < firstDay ? ordered[0].dayKey : firstDay;
   const days: EconomyDay[] = [];
   for (let key = start; key <= today; key = addEconomyDays(key, 1)) {
     const rows = byDay.get(key) ?? [];
@@ -132,30 +134,31 @@ export function deriveEconomy(
   const placesThisWeek = active ? Math.max(0, rankFor(beforeWeek, target) - rank) : 0;
   const nextSeason = seasonFor(addEconomyDays(current.end, 1));
   const nextSeed = Math.min(sp, targetFor(nextSeason)) * RULES.season.seedPct / 100;
-  let freezes: number = RULES.streak.startFreezes, freezesUsed = 0, streakDays = 0, paused = false, restored = false, gold = false;
-  let breakAt = -1, repair = 0, freezeFreeDays = 0;
+  let restDays = 0, restDaysUsed = 0, restUsedYesterday = false, streakDays = 0, paused = false, restored = false, gold = false;
+  let breakAt = -1, repair = 0, markedDays = 0;
   for (let i = 0; i < days.length; i++) {
     const day = days[i]!;
+    if (i === 0 || day.dayKey.slice(0, 7) !== days[i - 1]!.dayKey.slice(0, 7))
+      restDays = Math.min(RULES.streak.restBankMax, restDays + RULES.streak.restBankMonthly);
     const weekday = new Date(atUtc(day.dayKey)).getUTCDay();
     const restWeekday = value(settings, `economy.restWeekday:${weekStart(day.dayKey)}`) ?? value(settings, 'economy.restWeekday');
     const isRest = typeof restWeekday === 'number' && restWeekday === weekday;
     const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && row.inputs.price === purchasePrices.freeze).length ?? 0;
-    freezes = Math.min(RULES.streak.maxFreezes, freezes + purchases);
+    restDays = Math.min(RULES.streak.restBankMax, restDays + purchases);
     if (day.mark) {
       if (paused && breakAt >= 0 && i - breakAt <= 2) {
         if (day.hatTrick) repair++;
         if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt + 1; repair = 0; breakAt = -1; }
       } else if (paused) {
         // The 48 h earn-back window has passed: a marked day starts a fresh streak.
-        paused = false; restored = false; streakDays = 1; freezeFreeDays = 1; repair = 0; breakAt = -1;
+        paused = false; restored = false; streakDays = 1; markedDays = 1; repair = 0; breakAt = -1;
       } else {
-        streakDays++; freezeFreeDays++;
-        if (streakDays % RULES.streak.freezeEveryDays === 0) freezes = Math.min(RULES.streak.maxFreezes, freezes + 1);
-        if (freezeFreeDays >= RULES.streak.goldAfterDays) gold = true;
+        streakDays++; markedDays++;
+        if (markedDays >= RULES.streak.goldAfterDays) gold = true;
       }
-    } else if (isRest) { if (!paused) { streakDays++; if (streakDays % RULES.streak.freezeEveryDays === 0) freezes = Math.min(RULES.streak.maxFreezes, freezes + 1); } }
+    } else if (isRest) { if (!paused) streakDays++; }
     else if (i < days.length - 1) {
-      if (!paused && freezes > 0) { freezes--; freezesUsed++; streakDays++; freezeFreeDays = 0; gold = false; }
+      if (!paused && restDays > 0) { restDays--; restDaysUsed++; restUsedYesterday = i === days.length - 2; markedDays = 0; gold = false; }
       else if (!paused) { paused = true; breakAt = i; repair = 0; gold = false; }
       else if (breakAt >= 0 && i - breakAt > 2) { streakDays = 0; breakAt = -1; repair = 0; }
     }
@@ -186,5 +189,5 @@ export function deriveEconomy(
     if (id !== 'freeze' && owned.includes(id)) continue;
     balance -= price; if (id !== 'freeze') owned.push(id);
   }
-  return { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, freezes, freezesUsed, paused, gold, restored }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned };
+  return { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned };
 }

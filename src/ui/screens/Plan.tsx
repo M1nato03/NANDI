@@ -19,6 +19,7 @@ import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import { DeckGlyph } from '../DeckGlyph';
 import { MorningBackfill } from './MorningBackfill';
+import { isAway } from '../../core/economy/away';
 import '../tasks/tasks.css';
 
 export function Plan({ questId }: { questId?: string }) {
@@ -32,6 +33,7 @@ export function Plan({ questId }: { questId?: string }) {
   const events = useLiveQuery(() => db.taskEvents.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const groups = taskGroups(board.tasks).filter(group => group.placement !== 'dropped');
   const today = dayKey(board.now);
+  const awayToday = isAway(settings, today);
   const yesterday = dayKey(new Date(`${today}T12:00:00`).getTime() - 86_400_000);
   // Count only yesterday's facts through the dayKey index; the ledger grows every day.
   const yesterdayFacts = useLiveQuery(() => db.ledger.where('dayKey').equals(yesterday).filter(row => row.deleted === 0).count(), [yesterday]) ?? 0;
@@ -53,7 +55,7 @@ export function Plan({ questId }: { questId?: string }) {
   const bedtime = settings.find(row => row.key === 'planner.bedtime')?.value;
   const shutdownTime = effectiveShutdown(typeof shutdown === 'string' ? shutdown : RULES.night.defaultShutdown, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
   const dismissed = settings.find(row => row.key === 'planner.freshStartDismissed')?.value;
-  const fresh = needsFreshStart(board.tasks, logs, today) && dismissed !== today;
+  const fresh = !awayToday && needsFreshStart(board.tasks, logs, today) && dismissed !== today;
   async function dismissFresh() { const at = board.now; await db.settings.put({ key: 'planner.freshStartDismissed', value: today, updatedAt: at, deleted: 0, deviceId: await getOrCreateDeviceId(db, at) }); }
   async function pinMust(task: TaskRow) {
     const occupied = todayOpen.filter(row => row.scheduledStart != null).map(row => ({ start: row.scheduledStart!, end: row.scheduledEnd ?? row.scheduledStart! + (row.estimateMin ?? 30) * 60_000 }));
@@ -69,12 +71,12 @@ export function Plan({ questId }: { questId?: string }) {
   const dropGroup = (id: string) => { void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.'); };
   const listProps = { onComplete: complete, onMove: setMoving, onDetail: setDetail, onDropGroup: dropGroup, busy: board.busy };
   if (questId) return <section className="screen plan-screen"><SideQuests selectedId={questId} /></section>;
-  return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><h1>Plan</h1><MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />
+  return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>{awayToday && <p>You're away. Rest well.</p>}<MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />
     {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <button type="button" className="secondary fresh-choice" key={task.id} onClick={() => void pinMust(task)}>{task.title}</button>)}</div>}</section>}
     {nowTask && <section className="card plan-now-card" aria-label="Now card"><span className="eyebrow">Now</span><h2><button type="button" className="task-title-button" onClick={() => setDetail(nowTask)}>{nowTask.title}</button></h2>{nowTask.firstStep && <p>First: {nowTask.firstStep}</p>}<div className={`timer-ring plan-ring${elapsed > planned ? ' overtime' : ''}`} style={{ '--progress': `${planned ? Math.max(0, (planned - elapsed) / planned * 100) : 0}%` } as React.CSSProperties}><span>{elapsed > planned ? `+${Math.floor((elapsed - planned) / 60_000)}m` : `${Math.ceil(Math.max(0, planned - elapsed) / 60_000)}m`}</span></div><p className="small">{elapsed > planned ? `Planned ${nowTask.estimateMin}m · +${Math.floor((elapsed - planned) / 60_000)}m` : `Planned ${nowTask.estimateMin}m`}</p><div className="now-actions"><button type="button" onClick={() => void board.act((repos, at) => repos.startFocus(nowTask.id, at), 'Focus started.').then(ok => { if (ok) go('plan/focus'); })}>Start focus</button><button type="button" className="secondary" onClick={() => complete(nowTask.id)}>Done</button><button type="button" className="secondary" onClick={() => setMoving(nowTask)}>Move</button></div>{next.length > 0 && <div className="next-strip"><h3>Next</h3>{next.map(task => <p key={task.id}>{task.title}<span>{task.scheduledStart ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span></p>)}</div>}<p className="day-horizon">{dayHorizon(todayOpen.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0), board.now, shutdownTime)}</p></section>}
     <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer</button>
     <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} />
-    <p className="small steady-line">{steadyLine(board.tasks, board.focus, today)}</p>
+    {!awayToday && <p className="small steady-line">{steadyLine(board.tasks, board.focus, today)}</p>}
     {board.message && <p role="status">{board.message}</p>}
     <TaskList title="Today" groups={todayGroups} nextId={nextId} {...listProps} />
     <Reminders />

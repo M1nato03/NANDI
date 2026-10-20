@@ -6,6 +6,7 @@ import { dayKey } from './time/dayKey';
 import type { DailyLogRow, SettingRow, TaskRow } from '../data/types';
 import type { LedgerRow } from '../data/types';
 import { addEconomyDays, deriveEconomy } from './economy/deriveEconomy';
+import { isAway } from './economy/away';
 import type { Reminder } from '../platform/notifier';
 
 export const NUDGE_NIGHT_ON = 'nudge.night.enabled';
@@ -35,6 +36,7 @@ export function wantedNudges(input: {
     const date = new Date(`${dayKey(now)}T12:00:00`);
     date.setDate(date.getDate() + offset);
     const key = dayKey(date.getTime());
+    if (isAway(settings, key)) continue;
     const nightAt = shutdownAt(date.getTime(), shutdown);
     const log = logs.find(row => row.dayKey === key && !row.deleted);
     if (on(settings, NUDGE_NIGHT_ON) && !log?.lightsOutAt &&

@@ -18,9 +18,13 @@ describe('Night pause decision', () => {
   });
   it('words the card by why it opened', () => {
     const base = { minutes: 0, label: 'Instagram', planText: 'If I reach for one more scroll, then I read 5 pages.' };
-    expect(pauseCardCopy({ ...base, reason: 'night' })).toEqual({ lead: base.planText, primary: 'Open my night deck', route: 'night' });
+    const night = pauseCardCopy({ ...base, reason: 'night' });
+    expect(night.lead).toBe(base.planText);
+    expect(night.swaps.map(swap => swap.route)).toEqual(['night', 'mind/reviews', 'close']);
     expect(pauseCardCopy({ ...base, reason: 'open' }).lead).toBe('You opened Instagram. Take a breath and choose on purpose.');
-    expect(pauseCardCopy({ ...base, reason: 'limit', minutes: 34 })).toEqual({ lead: '34 minutes in your chosen apps today. Is the next scroll worth it?', primary: 'Back to my day', route: 'plan' });
+    const limit = pauseCardCopy({ ...base, reason: 'limit', minutes: 34 });
+    expect(limit.lead).toBe('34 minutes in your chosen apps today. Is the next scroll worth it?');
+    expect(limit.swaps.map(swap => swap.label)).toEqual(['A 2-minute puzzle', 'One review card', 'Back to my day']);
   });
   it('names the window as clock times, across midnight too', () => {
     expect(pauseWindowTimes('01:30')).toEqual({ start: '01:00', end: '04:00' });
