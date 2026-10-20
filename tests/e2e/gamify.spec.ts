@@ -35,6 +35,9 @@ async function answerItem(page: Page, wrong = false) {
   else if (item.type === 'match') {
     const pairs = item.answer as { left: string; right: string }[];
     for (const [index, pair] of pairs.entries()) { await tap(pair.left); await tap(wrong ? pairs[(index + 1) % pairs.length]!.right : pair.right); }
+  } else if (item.type === 'estimate') {
+    const slider = page.locator('.learn-estimate input[type=range]');
+    await slider.fill(wrong ? (await slider.getAttribute('max'))! : String((item.answer as unknown as { value: number }).value));
   } else await tap(item.options.find(option => option.correct !== wrong)!.id);
   await page.getByRole('button', { name: 'Check', exact: true }).click();
   const next = page.locator('.learn-feedback').getByRole('button', { name: 'Next' });

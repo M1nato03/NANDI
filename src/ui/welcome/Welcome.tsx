@@ -29,7 +29,8 @@ async function hasHistory(): Promise<boolean> {
 export function useWelcomeNeeded(): [boolean, () => void] {
   const [needed, setNeeded] = useState(false);
   useEffect(() => {
-    if (!allowed()) return;
+    // A friend's challenge link opens straight onto the board; the first run waits for the next visit.
+    if (!allowed() || location.hash.startsWith('#mind/challenge/')) return;
     let live = true;
     void (async () => {
       const done = await db.settings.get(DONE_KEY);

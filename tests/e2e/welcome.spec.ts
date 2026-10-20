@@ -12,13 +12,14 @@ async function answerRight(page: Page) {
   const tap = (id: string) => page.locator('.learn-drop').getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
   if (item.type === 'order') for (const id of item.answer as string[]) await tap(id);
   else if (item.type === 'match') for (const pair of item.answer as { left: string; right: string }[]) { await tap(pair.left); await tap(pair.right); }
-  else if (item.type === 'estimate' && await page.locator('.learn-estimate input[type=range]').count()) {
+  else if (item.type === 'estimate') {
     const value = (item.answer as { value: number }).value;
     await page.locator('.learn-estimate input[type=range]').fill(String(value));
   } else await tap(item.options.find(option => option.correct)!.id);
   await page.getByRole('button', { name: 'Check', exact: true }).click();
   await expect(page.locator('.learn-feedback').getByRole('button', { name: 'Next' })).toBeEnabled();
   await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
+  await expect(page.locator('.learn-feedback')).toHaveCount(0);
 }
 
 test('a fresh install reaches its first finished drop in under 90 seconds', async ({ page }) => {

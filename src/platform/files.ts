@@ -115,3 +115,14 @@ export function pickFile(): Promise<File | null> {
     input.click();
   });
 }
+
+/** Shares a short message that carries its own link (WhatsApp and friends); falls back to copying it. */
+export async function shareLink(text: string): Promise<'shared' | 'copied' | 'cancelled' | 'failed'> {
+  try {
+    if (Capacitor.isNativePlatform()) { await Share.share({ title: 'NANDI challenge', text, dialogTitle: 'Challenge a friend' }); return 'shared'; }
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') { await navigator.share({ title: 'NANDI challenge', text }); return 'shared'; }
+  } catch (error) {
+    if (error !== null && typeof error === 'object' && (('name' in error && error.name === 'AbortError') || ('message' in error && String(error.message).toLowerCase().includes('cancel')))) return 'cancelled';
+  }
+  try { await navigator.clipboard.writeText(text); return 'copied'; } catch { return 'failed'; }
+}
