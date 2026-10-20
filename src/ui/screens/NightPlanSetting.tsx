@@ -5,21 +5,24 @@ import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { createSettingsRepos } from '../../data/repos/settings';
 
+const currentTime = () => Date.now();
+
 export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const saved = readNightPlan(settings);
   const [draft, setDraft] = useState<NightPlan | null>(null);
   const cue = draft?.cue ?? saved?.cue ?? '';
   const action = draft?.action ?? saved?.action ?? '';
+  const cueNow = cue, actionNow = action;
   const [message, setMessage] = useState('');
   // The first night starts with three one-tap plans; writing your own is one tap further (audit 10-21).
   const [ownWords, setOwnWords] = useState(!firstRun);
 
-  async function save(plan: NightPlan = { cue, action }) {
-    const cue = plan.cue, action = plan.action;
+  async function save(plan?: NightPlan) {
+    const cue = plan?.cue ?? cueNow, action = plan?.action ?? actionNow;
     if (!cue.trim() || !action.trim()) { setMessage('Pick a cue and a next move.'); return; }
     try {
-      const now = Date.now();
+      const now = currentTime();
       const deviceId = await getOrCreateDeviceId(db, now);
       await createSettingsRepos(db, deviceId).settings.put({ key: NIGHT_PLAN_KEY, value: { cue: cue.trim(), action: action.trim() } }, now);
       setDraft(null);

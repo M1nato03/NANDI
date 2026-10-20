@@ -34,7 +34,7 @@ export function BackupNudge() {
   };
   const later = async () => { const at = Date.now(); await db.settings.put({ key: DISMISS_KEY, value: backupWeekOf(today), updatedAt: at, deleted: 0, deviceId: await getOrCreateDeviceId(db, at) }); };
   return <section className="card backup-nudge" aria-label="Backup copy"><span className="eyebrow">Once a week</span><h2>Keep a copy somewhere safe</h2>
-    <p>Everything lives on this phone. Send a backup to Drive, email or a chat with yourself, so a lost phone never takes your progress.</p>
+    <p>Everything lives on this phone. Send a backup to Drive, email or a chat with yourself, so your progress moves with you to any new phone.</p>
     {message ? <p role="status">{message}</p> : <div className="sheet-actions"><button type="button" disabled={busy} onClick={() => void copy()}>Copy my backup</button><button type="button" className="secondary" disabled={busy} onClick={() => void later().catch(error => recordError('promise', error))}>Not this week</button></div>}
   </section>;
 }
