@@ -442,3 +442,5 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .interest-chip.on { background: var(--accent); color: var(--button-ink, #1b140c); border-color: var(--accent); }
 .busy-day { margin: 0 0 12px; }
 .done-suggestion { font-weight: 600; }
+.you-courtyard-link.you-link { min-height: 0; gap: 4px; margin: 0 0 12px; }
+.you-courtyard-link.you-link strong { font-size: 22px; letter-spacing: -.02em; }

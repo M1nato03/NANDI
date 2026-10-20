@@ -4,7 +4,8 @@ import { completedModuleKey } from './UnitScene';
 
 describe('cast placement', () => {
   it('uses the intended friend for each finish and a memory keeper for review', () => {
-    expect(finishCast.task.name).toBe('Nandi');
+    expect(finishCast.task.name).toBe('Mor');
+    expect(finishCast.train.name).toBe('Nandi');
     expect(finishCast.learn.name).toBe('Chiku');
     expect(finishCast.puzzle.name).toBe('Kapi');
     expect(finishCast.night.name).toBe('Kachhua');

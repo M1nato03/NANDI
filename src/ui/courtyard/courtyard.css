@@ -1,0 +1,49 @@
+.courtyard { position: relative; width: 100%; border-radius: var(--radius-card, 16px); overflow: hidden; background: #e8c896; isolation: isolate; }
+.courtyard-placeholder { background: var(--surface); }
+.courtyard-scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.courtyard-friend { position: absolute; display: block; margin: 0; padding: 0; border: 0; background: none; min-height: 0; line-height: 0; border-radius: 50%; cursor: default; }
+button.courtyard-friend { cursor: pointer; }
+.courtyard-friend .cast-svg { width: 100%; height: auto; }
+.courtyard-friend.selected::after { content: ''; position: absolute; left: 15%; right: 15%; bottom: -2%; height: 7%; border-radius: 50%; background: #fff; opacity: .55; z-index: -1; }
+button.courtyard-friend:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.courtyard-night .courtyard-friend { filter: brightness(.68) saturate(.75); }
+.courtyard-evening .courtyard-friend { filter: brightness(.94) sepia(.08); }
+.courtyard-banner { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; background: none; text-align: left; color: var(--ink); min-height: 0; }
+.courtyard-caption { display: block; margin: 8px 2px 0; color: var(--secondary-ink); font-size: 14px; }
+.courtyard-screen .courtyard-caption { margin-bottom: 4px; }
+.courtyard-card h2 { margin: 0; font-size: 18px; }
+.courtyard-card p { margin: 8px 0 0; }
+.courtyard-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; }
+.courtyard-steps span { height: 8px; border-radius: 4px; background: var(--line); }
+.courtyard-steps span.got { background: var(--accent); }
+.courtyard-friends-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0; }
+.courtyard-chip { display: grid; gap: 2px; min-height: 52px; padding: 8px; border-radius: var(--radius-row, 12px); text-align: left; font-weight: 700; }
+.courtyard-chip small { font-weight: 400; font-size: 12px; color: var(--secondary-ink); }
+.courtyard-chip.selected { outline: 2px solid var(--accent); }
+.storybook { display: grid; gap: 12px; text-align: center; }
+.story-page { display: grid; justify-items: center; gap: 12px; min-height: 260px; align-content: center; }
+.story-page .courtyard { max-width: 100%; }
+.story-cover h2 { margin: 0; font: 800 26px 'Bricolage Grotesque', sans-serif; }
+.story-cover p, .story-close p { margin: 0; }
+.story-text { margin: 0; font-size: 19px; line-height: 1.45; max-width: 30ch; }
+.story-dots, .story-pager { display: flex; justify-content: center; gap: 6px; }
+.story-dots span { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
+.story-dots span.got { background: var(--accent); }
+.story-pager span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.story-pager span.on { background: var(--ink); }
+.storybook .sheet-actions { justify-content: center; }
+.storybook-card.you-link, .storybook-list .you-link, .courtyard-screen .you-link { min-height: 0; gap: 4px; margin: 0 0 12px; }
+.storybook-card.you-link strong, .storybook-list .you-link strong, .courtyard-screen .you-link strong { font-size: 20px; letter-spacing: -.02em; }
+.courtyard-swing { transform-origin: 151px 82px; animation: courtyard-sway 4s ease-in-out infinite; }
+.courtyard-kite { animation: courtyard-bob 5s ease-in-out infinite; }
+.courtyard-clouds { animation: courtyard-drift 30s ease-in-out infinite alternate; }
+.courtyard-twinkle { animation: courtyard-twinkle 2.6s ease-in-out infinite alternate; }
+.courtyard-flicker { animation: courtyard-twinkle 1.4s ease-in-out infinite alternate; }
+@keyframes courtyard-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes courtyard-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes courtyard-drift { to { transform: translateX(14px); } }
+@keyframes courtyard-twinkle { from { opacity: .65; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .courtyard-swing, .courtyard-kite, .courtyard-clouds, .courtyard-twinkle, .courtyard-flicker { animation: none; } }
+:root[data-motion='reduce'] :is(.courtyard-swing, .courtyard-kite, .courtyard-clouds, .courtyard-twinkle, .courtyard-flicker) { animation: none; }
+.storybook .sheet-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.storybook .sheet-actions button { flex: 0 1 auto; white-space: nowrap; padding-inline: 20px; }

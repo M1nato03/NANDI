@@ -28,6 +28,7 @@ export function parentRoute(path: string): string {
   if (path === 'night') return 'plan';
   if (path === 'mind/board/daily') return 'mind';
   if (path.startsWith('mind/board/')) return 'mind/practice';
+  if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];
   return root && tabs.some(tab => tab.toLowerCase() === root) ? root : 'plan';

@@ -37,6 +37,8 @@ import { nightRouteTime, nightRouteTransition } from './nightRoute';
 import { EconomyFeedback } from './EconomyFeedback';
 import { MeetCast } from '../cast/MeetCast';
 import { OpenMoment } from '../cast/OpenMoment';
+import { CourtyardScreen } from '../courtyard/Courtyard';
+import { StorybookList, StorybookScreen, weekFromRoute } from '../courtyard/Storybook';
 
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
@@ -153,6 +155,9 @@ export function AppShell() {
   else if (path === 'you/badges') screen = <Badges />;
   else if (path === 'you/contentreview') screen = <ContentReview />;
   else if (path === 'you/cast') screen = <MeetCast />;
+  else if (path === 'you/courtyard') screen = <CourtyardScreen />;
+  else if (path === 'you/stories') screen = <StorybookList />;
+  else if (/^you\/story\/\d{8}$/.test(path)) screen = <StorybookScreen key={path} weekStart={weekFromRoute(path.slice(10))} />;
   else if (path === 'you/owner') screen = <OwnerPanel />;
   else if (path === 'you/night') screen = <Night />;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
