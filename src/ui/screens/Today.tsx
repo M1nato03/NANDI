@@ -7,11 +7,15 @@ import { PostponeSheet } from '../tasks/PostponeSheet';
 import { currentFocus, elapsed, minutes, taskGroups, todayTasks, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
+import { isAway } from '../../core/economy/away';
+import { dayKey } from '../../core/time';
 import '../tasks/tasks.css';
 
 export function Today() {
   const board = useTaskBoard();
   const rewardSettings = useLiveQuery(() => db.settings.where('key').anyOf(['planner.reward', 'planner.rewardEnabled']).toArray(), []) ?? [];
+  const awaySettings = useLiveQuery(() => db.settings.where('key').equals('economy.away').toArray(), []) ?? [];
+  const awayToday = isAway(awaySettings, dayKey(board.now));
   const rewardOn = rewardSettings.find(row => row.key === 'planner.rewardEnabled')?.value === true;
   const reward = rewardSettings.find(row => row.key === 'planner.reward')?.value;
   const [moving, setMoving] = useState<TaskRow | null>(null);
@@ -38,7 +42,7 @@ export function Today() {
     }, 'Task done.');
     if (ok) setJustFinished({ planned: current.estimateMin ?? 0, actual: Math.round(actual / 60_000) });
   }
-  return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('plan')} aria-label="Back to Plan"><span aria-hidden="true">←</span> Plan</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>
+  return <section className="screen focus-screen"><button type="button" className="text-button" onClick={() => go('plan')} aria-label="Back to Plan"><span aria-hidden="true">←</span> Plan</button><p className="eyebrow">One step at a time</p><h1>Focus</h1>{awayToday && <p>You're away. Rest well.</p>}
     {board.message && <p role="status">{board.message}</p>}
     {justFinished && <p className="task-result" role="status">Planned {justFinished.planned} min · Took {justFinished.actual} min ({justFinished.planned ? (justFinished.actual / justFinished.planned).toFixed(1) : '0.0'}x)</p>}
     {rewardOn && typeof reward === 'string' && reward.trim() && ((taskFocus && phase && phase.phase !== 'work') || (justFinished && justFinished.actual >= 25)) && <p className="task-result" role="status">Block done. Time for {reward}.</p>}

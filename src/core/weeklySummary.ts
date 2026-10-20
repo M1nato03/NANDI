@@ -89,7 +89,7 @@ export const weeklySummarySchema = v.object({
     streakDays: count,
     cleanWeek: v.boolean(),
     hatTricks: count,
-    freezesUsed: count,
+    restDaysUsed: count,
   }),
   life: v.object({
     reelsBuckets: v.array(v.string()),
@@ -380,7 +380,7 @@ export function buildWeeklySummary(
       streakDays,
         cleanWeek: economy.cleanWeek.complete,
         hatTricks: economy.cleanWeek.count,
-        freezesUsed: economy.streak.freezesUsed,
+        restDaysUsed: economy.streak.restDaysUsed,
     },
     life: {
       reelsBuckets: logs

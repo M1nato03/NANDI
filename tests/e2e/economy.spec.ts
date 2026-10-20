@@ -39,7 +39,7 @@ test('pre-season level and streak appear before Season 1 begins', async ({ page 
   await expect(season).not.toContainText('#500 of 500');
 });
 
-test('seeded week shows rank and Clean Week; freeze and theme survive a backup round trip', async ({ page }) => {
+test('seeded week shows rank and Clean Week; rest day and theme survive a backup round trip', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-08T12:00:00') });
   await page.goto('/#you');
   const days = ['2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06', '2026-11-08'];
@@ -48,7 +48,7 @@ test('seeded week shows rank and Clean Week; freeze and theme survive a backup r
   await expect(season).toContainText(/Level \d+/);
   await expect(season).toContainText(/#\d+ of 500/);
   await expect(season).toContainText('6 of 4 Hat-tricks');
-  await expect(season).toContainText('9 day streak');
+  await expect(season).toContainText('8 day streak');
   await expect(season).toContainText('Shards');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   const rankText = (await season.locator('.economy-season-card strong').textContent())?.trim();
@@ -87,12 +87,12 @@ test('short balance leaves a theme unavailable', async ({ page }) => {
   await expect(page.getByText(/more Shards/).first()).toBeVisible();
 });
 
-test('a missed day uses a freeze and two Hat-tricks restore a paused streak', async ({ page }) => {
+test('missed days use the rest bank before a streak pauses', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-07T12:00:00') });
   await page.goto('/#you');
   await seed(page, [fact('2026-11-02', 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }),
     ...['2026-11-06', '2026-11-07'].flatMap(day => [fact(day, 'tasks', 'done', { plannedSize: 'M', wasPlanned: true }), fact(day, 'train', 'session', { xp: 60 }), fact(day, 'mind', 'mystery', { result: 'solved' })])]);
-  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('0 freezes ready');
+  await expect(page.getByRole('region', { name: 'Your season' })).toContainText('0 rest days banked');
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Streak paused');
 });
 

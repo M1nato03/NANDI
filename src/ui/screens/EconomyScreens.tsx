@@ -8,6 +8,9 @@ import { boardSeats, rivalName, seatThreshold } from '../../core/economy/ladder'
 import { catalogue, purchaseDecision } from '../../core/economy/shop';
 import { purchaseShopItem } from '../../data/repos/economy';
 import { RULES } from '../../core/rules.config';
+import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
+import { getOrCreateDeviceId } from '../../data/device';
+import type { SettingRow } from '../../data/types';
 import { go } from '../shell/router';
 import './economy.css';
 
@@ -17,6 +20,34 @@ function useEconomy() {
   return source ? { ...source, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined;
 }
 const activeSetting = (rows: { key: string; value: unknown; deleted: number }[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
+
+function AwayPlanner({ settings, today, bank }: { settings: SettingRow[]; today: string; bank: number }) {
+  const [open, setOpen] = useState(false);
+  const [start, setStart] = useState(today);
+  const [end, setEnd] = useState(today);
+  const [message, setMessage] = useState('');
+  const [busy, setBusy] = useState(false);
+  const ranges = awayRanges(settings);
+  const save = async (next: typeof ranges) => {
+    setBusy(true);
+    try {
+      const now = Date.now();
+      await db.settings.put({ key: AWAY_KEY, value: next, updatedAt: now, deleted: 0, deviceId: await getOrCreateDeviceId(db, now) });
+      setOpen(false); setMessage('Days away saved. Rest well.');
+    } catch { setMessage('Could not save your dates. Try again.'); }
+    finally { setBusy(false); }
+  };
+  const plan = () => {
+    const result = planAway(settings, start, end, today, bank);
+    if (result.error) { setMessage(result.error); return; }
+    if (result.ranges) void save(result.ranges);
+  };
+  return <div className="away-planner"><button type="button" className="secondary" onClick={() => { setMessage(''); setOpen(!open); }}>Plan days away</button>
+    {open && <div className="away-form"><label>Start date <input type="date" value={start} min={today} onChange={event => setStart(event.target.value)} /></label><label>End date <input type="date" value={end} min={start} onChange={event => setEnd(event.target.value)} /></label><p className="small">Up to {RULES.streak.awayMaxDays} days, within your rest bank.</p><button type="button" disabled={busy} onClick={plan}>Save trip</button></div>}
+    {ranges.filter(row => row.end >= today).length > 0 && <div><p className="small">Upcoming trips</p>{ranges.filter(row => row.end >= today).map(row => <div key={`${row.start}:${row.end}`}><span>{row.start} to {row.end}</span> <button type="button" className="text-button" disabled={busy} onClick={() => void save(ranges.filter(item => item !== row))}>Cancel</button></div>)}</div>}
+    {message && <p role="status">{message}</p>}
+  </div>;
+}
 
 export function YourSeason() {
   const economy = useEconomy();
@@ -38,7 +69,7 @@ export function YourSeason() {
       {view.season.active ? <><h2>Season {view.season.index + 1}</h2><p><strong>#{view.season.rank} of 500</strong> · {view.season.tier}</p><p>+{view.season.placesThisWeek} places this week</p>{nextRival && <p>{nextRival} sits just above · {gap} SP away</p>}<button type="button" className="secondary" onClick={() => go('you/season')}>View the ladder</button></> : <><h2>Season 1 starts Monday 2 Nov</h2><p>Your XP already counts toward your level.</p></>}
       {arc && <p className="small">Story: {arc}</p>}
     </div>
-    <div className="economy-pair"><div className="card economy-streak"><span className="eyebrow">Stamina</span><h2>{view.streak.days} day streak</h2><div className="stamina-pips" aria-label={`${view.streak.freezes} freezes ready`}>{Array.from({ length: 2 }, (_, i) => <span key={i} className={i < view.streak.freezes ? 'filled' : ''} />)}</div><p>{view.streak.paused ? 'Streak paused. Life happens. Two Hat-trick days in 48 h restores it.' : `${view.streak.freezes} freezes ready${view.streak.gold ? ' · Gold stripe' : ''}`}</p></div>
+    <div className="economy-pair"><div className="card economy-streak"><span className="eyebrow">Stamina</span><h2>{view.streak.days} day streak</h2><p>{view.streak.restDays} rest days banked</p><p>4 more arrive on the 1st.{view.streak.gold ? ' · Gold stripe' : ''}</p>{view.streak.paused && <p>Streak paused. Life happens. Two Hat-trick days in 48 h restores it.</p>}<AwayPlanner settings={settings} today={economy.today} bank={view.streak.restDays} /></div>
       <div className="card economy-clean"><span className="eyebrow">Clean Week</span><h2>{view.cleanWeek.count} of 4 Hat-tricks</h2><div className="clean-dots" aria-label="Hat-trick days this week">{view.cleanWeek.days.map((done, i) => <span key={i} className={done ? 'filled' : ''} />)}</div><p>{view.cleanWeek.complete ? 'A Clean Week is yours.' : 'Four days make a Clean Week.'}</p></div></div>
     <div className="card economy-shards"><div><span className="eyebrow">Shards</span><h2>{view.shards.toLocaleString()}</h2></div><button type="button" onClick={() => go('you/shop')}>Shop</button></div>
   </section>;
@@ -70,6 +101,6 @@ export function SeasonShop() {
   return <section className="screen economy-shop"><p className="eyebrow">Your season</p><h1>Shop</h1><p>{economy.view.shards} Shards ready</p><div className="shop-list">{catalogue(economy.today).map(item => {
     const decision = purchaseDecision(item.id, economy.facts, economy.settings, economy.today);
     const owned = economy.view.owned.includes(item.id);
-    return <section className="card shop-item" key={item.id}><div><span className="eyebrow">{item.kind.replace(/([A-Z])/g, ' $1')}</span><h2>{item.name}</h2><p>{item.description}</p></div><button type="button" disabled={busy || !decision.ok} onClick={() => void buy(item.id)}>{owned ? 'Owned' : `${item.price} Shards`}</button>{!decision.ok && !owned && <p className="small">{decision.reason}</p>}</section>;
+    return <section className="card shop-item" key={item.id}><div><span className="eyebrow">{item.kind === 'freeze' ? 'Rest day' : item.kind.replace(/([A-Z])/g, ' $1')}</span><h2>{item.name}</h2><p>{item.description}</p></div><button type="button" disabled={busy || !decision.ok} onClick={() => void buy(item.id)}>{owned ? 'Owned' : `${item.price} Shards`}</button>{!decision.ok && !owned && <p className="small">{decision.reason}</p>}</section>;
   })}</div>{message && <p role="status">{message}</p>}</section>;
 }

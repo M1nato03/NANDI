@@ -40,6 +40,15 @@ export function EconomyFeedback() {
     prior.current = source;
     if (!previous) {
       const now = Date.now(), today = dayKey(now), season = seasonFor(today);
+      const restNoticeKey = `economy.restUsed:${today}`;
+      if (!store.get(sessionStorage, restNoticeKey)) {
+        const current = deriveEconomy(source.facts, undefined, source.settings, today);
+        if (current.streak.restUsedYesterday) {
+          store.set(sessionStorage, restNoticeKey, 'seen');
+          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false }));
+          return;
+        }
+      }
       const key = `economy.seasonReveal:${season.index - 1}`;
       const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
       if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {
@@ -102,5 +111,5 @@ export function EconomyFeedback() {
     return () => window.clearTimeout(timer);
   }, [notice]);
   if (!notice) return null;
-  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <div className="economy-toast" role="status">+{shownXp} XP · {notice.text}</div>;
+  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <div className="economy-toast" role="status">{notice.gain ? `+${shownXp} XP · ` : ''}{notice.text}</div>;
 }

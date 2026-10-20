@@ -111,6 +111,7 @@ export type LegacyCounts = { [K in keyof LegacyRows]: number } & { skipped: stri
 
 const puzzleTypes = new Set<PuzzleRunRow['type']>(['sudoku', 'crowns', 'sunmoon', 'path', 'calc']);
 const auxiliaryProgressKeys = new Set([
+  // Recognize historical export fields; rest-bank replay uses the ledger instead.
   'v', 'casesDone', 'days', 'decks', 'freezes', 'frozen', 'freezeCheck',
   'lastEarn', 'freezeNote', 'rhist', 'errors', 'updatedAt',
 ]);

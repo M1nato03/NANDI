@@ -13,6 +13,12 @@
 .economy-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .economy-pair h2 { font-size: 21px; line-height: 1.15; }
 .economy-pair p { font-size: 13px; line-height: 1.4; margin-bottom: 0; }
+.away-planner { display: grid; gap: 10px; margin-top: 14px; }
+.away-planner > button { justify-self: start; }
+.away-form { display: grid; gap: 10px; }
+.away-form label { display: grid; gap: 4px; font-size: 13px; }
+.away-form input { width: 100%; min-width: 0; }
+.away-form button { justify-self: start; }
 .stamina-pips, .clean-dots { display: flex; gap: 6px; margin-top: 14px; }
 .stamina-pips span { width: 25px; height: 8px; border-radius: 5px; background: var(--surface-3); }
 .stamina-pips span.filled, .clean-dots span.filled { background: var(--teal); }
@@ -36,7 +42,7 @@
 .economy-season-card.cardback-weave { background-size: 18px 18px; background-image: repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--teal) 14%, transparent) 7px 9px); }
 .economy-season-card.cardback-orbit { background-image: radial-gradient(circle at 80% 20%, transparent 0 30px, color-mix(in srgb, var(--teal) 28%, transparent) 31px 33px, transparent 34px); }
 .economy-season-card.cardback-steps { background-image: repeating-linear-gradient(135deg, transparent 0 18px, color-mix(in srgb, var(--teal) 16%, transparent) 19px 21px); }
-@media (max-width: 390px) { .economy-pair { grid-template-columns: 1fr; } .shop-item { grid-template-columns: 1fr; } .shop-item button { justify-self: start; } }
+@media (max-width: 500px) { .economy-pair { grid-template-columns: 1fr; } .shop-item { grid-template-columns: 1fr; } .shop-item button { justify-self: start; } }
 .backfill-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; }
 .backfill-slots button { min-height: 44px; padding: 6px; }
 .economy-toast { position: fixed; z-index: 20; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-2); border-radius: 16px; padding: 12px 18px; min-width: min(280px, 90vw); text-align: center; animation: economy-toast-in 500ms ease-out; }

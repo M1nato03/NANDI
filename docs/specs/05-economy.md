@@ -12,7 +12,7 @@ Evidence: `docs/research-brief.md`, section "One ledger pays all three modes". W
   - So: XP is framed as **feedback** ("3 of 3 planned tasks, your best Tuesday this month"). Surprises are deterministic but unannounced. Puzzles (already fun) are capped low. Real-world tasks and workouts carry most of the base XP (about 70% excluding bonuses; about 57% of the worked example below including bonuses). **No defeat states.**
 - **No variable-ratio rewards of any kind:** no loot boxes, spins or random drops. That loop is what he's escaping.
 - **Gamification decays:** the novelty dip comes around weeks 4–6. So: seasons, an Arc 2 change around week 5, and judging at weeks 8–10.
-- **Streaks:** two freezes beat one, and three add nothing. Earn-back beats paying. Broken streaks cause drop-off. So: forgiving streaks, and a weekly Clean Week as the headline.
+- **Streaks:** small emergency reserves can support persistence after a miss (Sharif & Shu, 2019); a visibly broken streak can lower continuation, so repair remains possible (Barasch & Silverman, 2022). Use a rest-day bank and a weekly Clean Week as the headline.
 - **Progress never goes backwards:** no XP is ever removed. Level and Shards never decrease, whether from postponing, rule changes or anything else.
 
 ## 1. The ledger
@@ -104,7 +104,7 @@ export const RULES = {
   season: { spDailyCap: 300, targetPerDay: 250, exponent: 0.7, seats: 500, seedPct: 10,
             tiers: [ ['Bench',301,500], ['Challenger',151,300], ['Contender',51,150], ['Elite',11,50], ['Ace',2,10], ['Apex',1,1] ] },
 
-  streak: { startFreezes: 2, maxFreezes: 2, freezeEveryDays: 7, freezeShardPrice: 50, restDaysPerWeek: 1,
+  streak: { restBankMonthly: 4, restBankMax: 12, awayMaxDays: 14, freezeShardPrice: 50, restDaysPerWeek: 1,
             repairWindowHours: 48, repairHatTricks: 2, goldAfterDays: 7, cleanWeekHatTricks: 4, minDueCardsForMark: 10 },
 
   shards: { perXp: 0.1, levelUpBonus: 20,
@@ -197,13 +197,12 @@ tiers    = #500–301 Bench · #300–151 Challenger · #150–51 Contender · #
 ## 6. Streaks and Clean Week
 
 - **Daily mark:** the day counts with **one meaningful action**: a planned task done, a Body slot, or a Mind slot (the definitions in section 3). Opening the app doesn't count.
-- **Freezes:**
-  - Start each streak with **2**; never hold more than 2.
-  - +1 free at each 7-day milestone (if under 2); buy one for 50 Shards.
-  - A freeze is applied automatically to a missed day.
-- **Rest day:** one pre-chosen rest day a week never uses a freeze.
+- **Rest-day bank:** start at zero and grant **4** on the first replayed day of every calendar month, including the first month. Carry unused days, capped at **12**. Extra grants above the cap are lost. A shop purchase adds one, using the legacy `freeze` ledger id.
+- **Missed day:** on a past unmarked day, spend one banked rest day automatically. The streak is held without growing; gold resets. Today never spends one. If the bank is empty, use the existing pause, repair, and fresh-start flow.
+- **Weekly rest weekday:** the fixed pre-chosen day remains free and does not spend the bank.
+- **Days away:** You can plan a date range of up to **14** days, within the current bank, with no past dates or overlap. Store ranges in the `economy.away` settings row so backups restore them. Suppress engagement notifications and streak nudges during the range; a marked day still counts normally.
 - **Earn-back:** within **48 h** of a break, **2 Hat-trick days restore** the streak.
-- **Gold "perfect" streak:** shown after day 7, only for weeks with no freezes used.
+- **Gold "perfect" streak:** shown after day 7 and reset when a banked rest day is used.
 - **Headline metric: the Clean Week.** At least **4 Hat-trick days** from Monday to Sunday, tracked as its own weekly streak. With 3 workouts plus rest-day checks, 4 or more stays reachable.
 - **Copy on a break:** "Streak paused. Life happens. Two Hat-trick days in 48 h restores it."
 - **Symbol:** **not a flame.** Use a stamina pip or jersey stripe.
@@ -216,7 +215,7 @@ tiers    = #500–301 Bench · #300–151 Challenger · #150–51 Contender · #
   - a season-end award by tier: Bench 50, Challenger 100, Contender 150, Elite 200, Ace 250, Apex 300.
   - That comes to roughly 800–1,100 per season.
 - **Balance** = earned − spent (derived). It never goes negative, because earnings never decrease (forward-only rules).
-- **Fixed prices:** freeze 50 · card back or banner 100–150 · handcrafted puzzle pack 150–250 · sound pack 300 · full UI theme 400–800.
+- **Fixed prices:** rest day 50 · card back or banner 100–150 · handcrafted puzzle pack 150–250 · sound pack 300 · full UI theme 400–800.
 - **Never:** convert Shards to XP, buy rank, or sell anything random. The catalogue rotates each season. Puzzle packs earn no XP beyond the daily cap.
 
 ## 8. Hexagon (six stats, 28-day rolling, 0–100 each; Phase 3)
@@ -300,10 +299,10 @@ Medium-to-high juice beat both none and extreme (Kao 2020, n = 3,018).
    - a seed of 700 → #401;
    - the seed is capped at 10% of target.
 10. **Streak:**
-    - a missed day with 1 freeze → kept, freezes = 0;
-    - a second consecutive miss → broken;
+    - a missed day with 1 banked rest day → held, bank = 0;
+    - a further miss with an empty bank → paused;
     - 2 Hat-tricks within 48 h → restored;
-    - the rest day → no freeze used;
+    - the weekly rest weekday → no bank day used;
     - a Free Play board alone doesn't mark the day.
 11. Clean Week: 4 Hat-trick days with 3 workouts + 1 rest-day check → true.
 12. The Shards balance never goes negative. A purchase is refused if the balance is short. There is no random purchase type.

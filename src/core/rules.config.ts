@@ -146,9 +146,9 @@ export const RULES = {
 
   // 05-economy §2, streaks.
   streak: {
-    startFreezes: 2,
-    maxFreezes: 2,
-    freezeEveryDays: 7,
+    restBankMonthly: 4,
+    restBankMax: 12,
+    awayMaxDays: 14,
     freezeShardPrice: 50,
     restDaysPerWeek: 1,
     repairWindowHours: 48,
@@ -302,8 +302,8 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'season.tiers.4.1': [1, 1000], 'season.tiers.4.2': [1, 1000],
   'season.tiers.5.1': [1, 1000], 'season.tiers.5.2': [1, 1000],
   // Streak windows and repair costs are finite and nonnegative.
-  'streak.startFreezes': [0, 10], 'streak.maxFreezes': [0, 10],
-  'streak.freezeEveryDays': [1, 60], 'streak.freezeShardPrice': [0, 1000],
+  'streak.restBankMonthly': [0, 31], 'streak.restBankMax': [0, 365],
+  'streak.awayMaxDays': [1, 365], 'streak.freezeShardPrice': [0, 1000],
   'streak.restDaysPerWeek': [0, 7], 'streak.repairWindowHours': [1, 168],
   'streak.repairHatTricks': [0, 7], 'streak.goldAfterDays': [1, 365],
   'streak.cleanWeekHatTricks': [0, 7], 'streak.minDueCardsForMark': [0, 100],
