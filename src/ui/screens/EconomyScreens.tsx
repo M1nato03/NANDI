@@ -9,10 +9,12 @@ import { catalogue, purchaseDecision } from '../../core/economy/shop';
 import { purchaseShopItem } from '../../data/repos/economy';
 import { RULES } from '../../core/rules.config';
 import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
+import { isAway } from '../../core/economy/away';
 import { getOrCreateDeviceId } from '../../data/device';
 import type { SettingRow } from '../../data/types';
 import { go } from '../shell/router';
 import './economy.css';
+import { Mor, Kachhua } from '../cast/Cast';
 
 function useEconomy() {
   const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
@@ -62,7 +64,7 @@ export function YourSeason() {
   const nextRival = view.season.rank > 1 ? rivalName(view.season.index, view.season.rank - 1) : undefined;
   const gap = view.season.rank > 1 ? Math.max(0, seatThreshold(view.season.rank - 1, target) - view.season.sp) : 0;
   const base = RULES.level.stepBase * view.level * (view.level - 1) / 2;
-  return <section className="your-season" aria-label="Your season">
+  return <section className="your-season" aria-label="Your season">{isAway(settings, economy.today) || view.streak.restUsedYesterday ? <Kachhua pose="rest" size={48} /> : <Mor pose="idle" size={48} />}
     <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Level {view.level}</span><h2>Your season</h2><p>{view.totalXp.toLocaleString()} XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)} XP to level {view.level + 1}</span></div></div>
     <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
       <span className="eyebrow">Season {view.season.index + 1} · {seasonDates}</span>

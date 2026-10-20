@@ -10,6 +10,9 @@ import { loadEngineFacts, saveDrop, saveEngineAnswer } from '../../data/repos/le
 import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
 import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics } from './flow';
+import { Cast } from '../cast/Cast';
+import { dropCast } from '../cast/placement';
+import { playCastSound } from '../cast/sound';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -20,6 +23,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
     bedtime: await db.settings.get('planner.bedtime'),
+    sound: await db.settings.get('economy.soundOn'),
     dailyDrop: await db.learnDrops.get(dailyDropId(now)),
     nightDrop: night ? await db.learnDrops.get(nightDropId(now)) : undefined,
     drops: await db.learnDrops.toArray(),
@@ -36,6 +40,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [matchLeft, setMatchLeft] = useState<string>();
   const [pairs, setPairs] = useState<{ left: string; right: string }[]>([]);
   const [message, setMessage] = useState('');
+  const [combo, setCombo] = useState(0);
   const writing = useRef(false);
   const starting = useRef(false);
   const ids = chosenTopics(data?.setting?.value);
@@ -113,6 +118,10 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const grade = gradeItem(found.item, value);
     const option = found.item.options.find(candidate => candidate.id === feedbackId);
     setFeedback({ cursor: drop.cursor, correct: grade.correct, text: option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule, optionId: feedbackId });
+    if (!night) {
+      if (grade.correct) playCastSound(combo > 0 ? 'combo' : 'correct', data?.sound?.value === true && !data.sound.deleted);
+      setCombo(grade.correct ? combo + 1 : 0);
+    }
     if (!night && grade.correct && !(daily && drop.cursor === drop.items.length - 1) && !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') void tapHaptic(true);
     try {
       const at = currentTime();
@@ -171,7 +180,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
   return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span></header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
-    <p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p><h2>{item.stem}</h2>
+    <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p></div><h2>{item.stem}</h2>
     {item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>

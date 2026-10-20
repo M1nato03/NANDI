@@ -7,6 +7,7 @@ import { readNightPlan, nightPlanText } from '../../core/nightPlan';
 import { RULES } from '../../core/rules.config';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
 import { go } from '../shell/router';
+import { Kachhua } from '../cast/Cast';
 
 export function NightPauseCard({ packageName, reason = 'night', minutes = 0, close }: { packageName: string; reason?: string; minutes?: number; close: () => void }) {
   const rows = useLiveQuery(() => db.settings.toArray(), []) ?? [];
@@ -48,7 +49,7 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
   }
   return <div className="night-pause-overlay" role="dialog" aria-modal="true" aria-label="Night pause">
     <section className="card night-pause-card">
-      <p className="eyebrow">A small pause</p><h1>Take one breath</h1>
+      <Kachhua pose="rest" size={48} /><p className="eyebrow">A small pause</p><h1>Take one breath</h1>
       <p role="timer">{seconds > 0 ? `Breathe for ${seconds} more seconds` : 'The breath is yours.'}</p>
       <p>{copy.lead}</p>
       {seconds === 0 && <><h2 className="night-pause-ask">What would feel better right now?</h2>

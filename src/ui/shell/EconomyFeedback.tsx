@@ -12,6 +12,8 @@ import { dailyDropId } from '../learn/dropIds';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
+import { Cast } from '../cast/Cast';
+import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
 
 /** Browser storage can be blocked (private mode, cleared site data); reveals then simply show again. */
@@ -20,22 +22,9 @@ const store = {
   set: (area: Storage, key: string, value: string): void => { try { area.setItem(key, value); } catch { /* ignore */ } },
 };
 
-type Notice = { text: string; macro: boolean; gain?: number; detail?: string; nextSeason?: string };
+type Notice = { text: string; macro: boolean; gain?: number; detail?: string; nextSeason?: string; activity?: FinishActivity; character?: 'Mor' | 'Kachhua' };
 type Source = { facts: LedgerRow[]; settings: SettingRow[]; tasks: TaskRow[]; sessions: SessionRow[]; runs: PuzzleRunRow[]; drop?: LearnDropRow; log?: DailyLogRow };
 const complete = (source: Source, now: number) => Object.values(todayDotStatus(now, { tasks: source.tasks, sessions: source.sessions, ledger: source.facts, runs: source.runs, drop: source.drop, log: source.log })).every(Boolean);
-function softSound() {
-  const AudioContextType = window.AudioContext;
-  if (!AudioContextType) return;
-  const context = new AudioContextType();
-  const tone = context.createOscillator(), gain = context.createGain();
-  tone.type = 'sine'; tone.frequency.setValueAtTime(520, context.currentTime);
-  tone.frequency.exponentialRampToValueAtTime(660, context.currentTime + 0.12);
-  gain.gain.setValueAtTime(0.0001, context.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.2);
-  tone.connect(gain); gain.connect(context.destination); tone.start(); tone.stop(context.currentTime + 0.21);
-  tone.onended = () => { void context.close(); };
-}
 export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
@@ -52,7 +41,7 @@ export function EconomyFeedback() {
       lastLine.current = line;
       store.set(sessionStorage, 'finish.lastLine', line);
       void tapHaptic(true);
-      setNotice({ text: line, macro: false });
+      setNotice({ text: line, macro: false, activity });
     };
     window.addEventListener(finishEvent, onFinish);
     return () => window.removeEventListener(finishEvent, onFinish);
@@ -68,7 +57,7 @@ export function EconomyFeedback() {
         const current = deriveEconomy(source.facts, undefined, source.settings, today);
         if (current.streak.restUsedYesterday) {
           store.set(sessionStorage, restNoticeKey, 'seen');
-          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false }));
+          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false, character: 'Kachhua' }));
           return;
         }
       }
@@ -80,7 +69,7 @@ export function EconomyFeedback() {
         const count = Number(store.get(sessionStorage, countKey) ?? 0);
         if (count < RULES.juice.macroPerDayMax) {
           store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
-          queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true,
+          queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Mor',
             detail: `${past.season.sp} SP · ${past.totalXp.toLocaleString()} XP · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
             nextSeason: `Next season · Season ${season.index + 1}` }));
         }
@@ -114,13 +103,14 @@ export function EconomyFeedback() {
       else setDoneCard(true);
     }
     void tapHaptic(true, justCompleted ? [30, 50, 30] : 20);
-    if (!motionReduced && !afterBedtime && source.settings.some(row => row.key === 'economy.soundOn' && row.value === true && !row.deleted) && view.owned.includes('sound:soft')) softSound();
+    const soundOn = source.settings.some(row => row.key === 'economy.soundOn' && row.value === true && !row.deleted);
+    if (!motionReduced && !afterBedtime) playCastSound(macro ? 'level-up' : 'finish', soundOn);
     if (!achievement && !dropFinished) return;
     const activity: FinishActivity = dropFinished ? 'learn' : achievement?.mode === 'tasks' ? 'task' : achievement?.mode === 'train' ? 'train' : achievement?.kind === 'mystery' ? 'case' : 'puzzle';
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro });
+    setNotice({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined });
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -145,5 +135,5 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} />;
   if (!notice) return null;
-  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} />;
+  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }
