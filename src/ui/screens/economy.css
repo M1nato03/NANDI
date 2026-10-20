@@ -49,4 +49,15 @@
 @keyframes economy-fade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .economy-toast, .economy-reveal-card { animation: economy-fade 160ms ease-out; } }
 :root[data-motion='reduce'] .economy-toast, :root[data-motion='reduce'] .economy-reveal-card { animation: economy-fade 160ms ease-out; }
+.finish-moment { display: flex; align-items: center; justify-content: center; gap: 9px; animation: finish-toast-in 500ms ease-out; }
+.finish-check { display: inline-grid; place-items: center; flex: 0 0 27px; width: 27px; height: 27px; border-radius: 50%; background: var(--teal); color: white; font-weight: 700; }
+.finish-bloom .finish-check { animation: finish-check-in var(--finish-duration, 600ms) ease-out both; }
+.done-for-today { display: grid; justify-items: center; gap: 12px; }
+.done-for-today.finish-bloom { animation: economy-reveal-in var(--finish-duration) ease-out; }
+.done-for-today h2, .done-for-today p { margin: 0; }
+.done-for-today .finish-check { width: 48px; height: 48px; font-size: 25px; }
+@keyframes finish-check-in { from { opacity: 0; transform: scale(.65); } to { opacity: 1; transform: scale(1); } }
+@keyframes finish-toast-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .finish-moment, .done-for-today, .finish-bloom .finish-check { animation: none; } }
+:root[data-motion='reduce'] .finish-moment, :root[data-motion='reduce'] .done-for-today, :root[data-motion='reduce'] .finish-bloom .finish-check { animation: none; }
 .ladder-gap { text-align: center; color: var(--ink-3); padding: 2px 0; }

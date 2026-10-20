@@ -17,9 +17,18 @@ import type { useTaskBoard } from '../tasks/useTaskBoard';
 import { NightPlanSetting } from '../screens/NightPlanSetting';
 import { DeckGlyph, type Glyph } from '../DeckGlyph';
 import { ReviewToday } from '../mind/ReviewToday';
+import { announceFinish } from '../shell/finish';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
 let rememberedSwaps = { day: '', count: 0 };
+function finishNightOnce(day: string): void {
+  const key = `finish.night:${day}`;
+  try {
+    if (localStorage.getItem(key)) return;
+    localStorage.setItem(key, 'seen');
+  } catch { /* Storage may be unavailable; keep the finish visible. */ }
+  announceFinish('night');
+}
 
 export const NIGHT_CARDS = [
   { id: 'tonight', tag: 'Tonight' },
@@ -91,11 +100,13 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
       if (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes((event.target as HTMLElement).tagName)) return;
       if (at === NIGHT_CARDS.length - 1) return;
       event.preventDefault();
-      goToCard(Math.max(0, Math.min(NIGHT_CARDS.length - 1, at + (event.key === 'ArrowUp' || event.key === 'PageUp' ? -1 : 1))));
+      const destination = Math.max(0, Math.min(NIGHT_CARDS.length - 1, at + (event.key === 'ArrowUp' || event.key === 'PageUp' ? -1 : 1)));
+      if (at === NIGHT_CARDS.length - 2 && destination === NIGHT_CARDS.length - 1) finishNightOnce(today);
+      goToCard(destination);
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
-  }, [at]);
+  }, [at, today]);
 
   const saveTomorrow = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -119,11 +130,11 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     rememberedSwaps = { day: today, count: swaps };
     setPhoneMoveState({ ...phoneMove, swaps });
   };
-  const next = () => goToCard(Math.min(at + 1, NIGHT_CARDS.length - 1));
+  const next = () => { if (at === NIGHT_CARDS.length - 2) finishNightOnce(today); goToCard(Math.min(at + 1, NIGHT_CARDS.length - 1)); };
 
   return <section className="screen deck-screen deck-night" aria-label="Now deck">
     <div className="deck-heading"><h1>Tonight</h1><span className="deck-count">{at + 1} of {NIGHT_CARDS.length}</span><button type="button" className="night-close" aria-label="Leave night deck" onClick={() => go('plan')}><span aria-hidden="true">×</span></button></div>
-    {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => goToCard(i)} />)}</div>}
+    {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => { if (at === NIGHT_CARDS.length - 2 && i === NIGHT_CARDS.length - 1) finishNightOnce(today); goToCard(i); }} />)}</div>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
       <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
       {card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
