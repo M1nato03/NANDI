@@ -1,10 +1,11 @@
-.cast-svg { display: inline-block; flex: none; vertical-align: middle; overflow: visible; --cast-line: var(--ink); --cast-body: var(--teal); --cast-detail: var(--area-learn); --cast-cream: var(--surface-2); --cast-muzzle: var(--area-do); --cast-accent: var(--accent); }
-.cast-nandi { --cast-body: var(--area-do); --cast-detail: var(--area-move); --cast-cream: var(--surface-2); --cast-muzzle: var(--area-do); }
-.cast-moti { --cast-body: var(--area-notice); --cast-detail: var(--surface-2); }
-.cast-chiku { --cast-body: var(--area-do); --cast-detail: var(--area-move); --cast-cream: var(--surface-2); }
-.cast-kapi { --cast-body: var(--area-move); --cast-detail: var(--area-do); --cast-cream: var(--surface-2); }
-.cast-mor { --cast-body: var(--area-notice); --cast-detail: var(--area-learn); }
-.cast-kachhua { --cast-body: var(--area-extra); --cast-detail: var(--area-learn); }
+.cast-svg { display: inline-block; flex: none; vertical-align: middle; overflow: visible; --cast-line: #2b2118; --cast-body: #2f8f86; --cast-detail: #e5a96a; --cast-cream: #f7efe2; --cast-muzzle: #e8b48f; --cast-accent: #f29b38; }
+.cast-nandi { --cast-body: #c4683a; --cast-detail: #b45a33; --cast-cream: #f7efe2; --cast-muzzle: #ecb995; --cast-accent: #f29b38; }
+.cast-moti { --cast-body: #7da7cf; --cast-detail: #f1c3c6; }
+.cast-chiku { --cast-body: #c97b3c; --cast-detail: #8d4b28; --cast-cream: #f6e2c6; }
+.cast-kapi { --cast-body: #9b5b3b; --cast-detail: #c98d5c; --cast-cream: #f4dcc2; }
+.cast-mor { --cast-body: #2470b3; --cast-detail: #1d8b75; --cast-accent: #f2a33a; }
+.cast-kachhua { --cast-body: #82a24d; --cast-detail: #3f7b5c; }
+/* Characters keep their own colours in light and dark (a theme token would turn Nandi's face black at night). */
 .cast-pose-cheer { transform: rotate(-4deg) translateY(-2px); }
 .cast-pose-think { transform: rotate(5deg); }
 .cast-pose-rest { transform: translateY(2px); }
