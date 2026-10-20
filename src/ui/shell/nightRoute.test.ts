@@ -7,6 +7,10 @@ it('opens at shutdown and closes at 04:00 while the app remains open', () => {
   expect(nightRouteTime(at(23, 40), '23:40')).toBe(true);
   expect(nightRouteTime(at(3, 59), '23:40')).toBe(true);
   expect(nightRouteTime(at(4, 0), '23:40')).toBe(false);
+  expect(nightRouteTime(at(12, 0), '00:15')).toBe(false);
+  expect(nightRouteTime(at(23, 59), '00:15')).toBe(false);
+  expect(nightRouteTime(at(0, 15), '00:15')).toBe(true);
+  expect(nightRouteTime(at(4, 0), '00:15')).toBe(false);
   expect(nightRouteTransition(false, true, 'plan')).toBe('night');
   expect(nightRouteTransition(true, false, 'night')).toBe('plan');
   expect(nightRouteTransition(true, true, 'plan')).toBeNull(); // Leaving the overlay is respected until the next boundary.

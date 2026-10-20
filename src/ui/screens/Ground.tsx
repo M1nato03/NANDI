@@ -15,7 +15,7 @@ import type { Appearance } from '../shell/useAppearance';
 import { NightPlanSetting } from './NightPlanSetting';
 import { ReminderSettings } from './ReminderSettings';
 import { nightPauseAvailable } from '../../platform/nightPause';
-import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests } from '../../core/adaptive/day';
+import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
 import { notifier } from '../../platform/notifier';
 import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
 
@@ -30,6 +30,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const interests = readInterests(settings ?? []);
   // Owner panel: tap the version line 5 times within 3 seconds.
   const ownerTaps = useRef<number[]>([]);
+  const interestQueue = useRef<Promise<unknown>>(Promise.resolve());
   const ownerTap = () => {
     const now = Date.now();
     ownerTaps.current = [...ownerTaps.current.filter(at => now - at < 3000), now];
@@ -55,9 +56,18 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const rewardOn = settings?.find(row => row.key === 'planner.rewardEnabled')?.value === true;
   const enabled = (key: string) => settings?.find(row => row.key === key && !row.deleted)?.value !== false;
   const asked = settings?.find(row => row.key === NUDGE_PERMISSION_ASKED && !row.deleted)?.value === true;
+  // Taps are queued and read the stored list, so two quick taps never overwrite each other.
+  function toggleInterest(id: InterestId) {
+    interestQueue.current = interestQueue.current.then(async () => {
+      const row = await db.settings.get(INTERESTS_KEY);
+      const current = readInterests(row ? [row] : []);
+      return save(INTERESTS_KEY, current.includes(id) ? current.filter(item => item !== id) : [...current, id]);
+    }).catch(() => undefined);
+  }
+
   async function save(key: string, next: unknown) {
     try {
-      const now = Date.now();
+      const now = Date.now(); // eslint-disable-line react-hooks/purity
       const deviceId = await getOrCreateDeviceId(db, now);
       await createSettingsRepos(db, deviceId).settings.put({ key, value: next }, now);
       setMessage('Planner settings saved.');
@@ -91,7 +101,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <label><input type="checkbox" checked={settings?.find(row => row.key === 'economy.soundOn')?.value === true} onChange={event => void save('economy.soundOn', event.target.checked)} /> Soft check-off sounds</label>
     </section>
     <section className="card settings-group" aria-label="What you enjoy"><h2>What you enjoy</h2><p className="setting-help">NANDI suggests one of these, with a clear end, when you pause or finish your day.</p>
-      <div className="interest-chips">{INTERESTS.map(item => { const chosen = interests.includes(item.id); return <button type="button" key={item.id} className={chosen ? 'interest-chip on' : 'interest-chip'} aria-pressed={chosen} onClick={() => void save(INTERESTS_KEY, chosen ? interests.filter(id => id !== item.id) : [...interests, item.id])}>{item.label}</button>; })}</div>
+      <div className="interest-chips">{INTERESTS.map(item => { const chosen = interests.includes(item.id); return <button type="button" key={item.id} className={chosen ? 'interest-chip on' : 'interest-chip'} aria-pressed={chosen} onClick={() => toggleInterest(item.id)}>{item.label}</button>; })}</div>
     </section>
     <section className="card settings-group"><h2 className="day-night-heading">Day and night</h2>
       <label>Shutdown time <input type="time" value={shutdown} onChange={event => void save('planner.shutdown', event.target.value)} /></label>

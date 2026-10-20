@@ -39,7 +39,9 @@ test('interests are chosen in Settings and survive reload', async ({ page }) => 
   await group.getByRole('button', { name: 'Anime and shows' }).click();
   await group.getByRole('button', { name: 'Gym' }).click();
   await expect(group.getByRole('button', { name: 'Anime and shows' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(group.getByRole('button', { name: 'Gym' })).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
+  await expect(page.getByRole('region', { name: 'What you enjoy' }).getByRole('button', { name: 'Anime and shows' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('region', { name: 'What you enjoy' }).getByRole('button', { name: 'Gym' })).toHaveAttribute('aria-pressed', 'true');
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
 });
