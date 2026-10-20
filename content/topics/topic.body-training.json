@@ -214,7 +214,7 @@
             { "id": "heat-hydration-6", "type": "fill-the-step", "conceptId": "heat-hydration", "difficultySeed": 1, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat"], "stem": "Fill the gap: when sweat takes fluid away, drinking water helps replace ___.", "options": [
               { "id": "a", "text": "Some of that fluid.", "feedback": "Water can help cover the fluid that leaves the body as sweat.", "correct": true, "sourceRefs": ["heat"] },
               { "id": "b", "text": "All need for shade and breaks.", "feedback": "A drink can feel like a full fix. Heat still calls for shade and breaks.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] },
-              { "id": "c", "text": "Lost muscle.", "feedback": "Sweat takes away fluid, not muscle. Water helps cover some of that fluid loss.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
+              { "id": "c", "text": "Muscle tissue.", "feedback": "Sweat takes away fluid, not muscle. Water helps cover some of that fluid loss.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat"] }
             ] },
             { "id": "heat-hydration-7", "type": "true-not-quite", "conceptId": "heat-hydration", "difficultySeed": 3, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "A teammate says dizziness is just proof that a hot run is working. What is the gap?", "options": [
               { "id": "a", "text": "Dizziness can be a heat warning sign.", "feedback": "CDC lists it among signs to stop activity and get to a cool place.", "correct": true, "sourceRefs": ["signs"] },
