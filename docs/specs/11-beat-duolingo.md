@@ -42,7 +42,7 @@ This spec lists every Duolingo pull mechanic, what NANDI does instead, and the r
 
 | Character | Animal | Role and where they appear | Voice |
 |---|---|---|---|
-| **Nandi** (lead) | young bull, cream with a soft orange garland | guide: app-open, Today, finishes, streak days, Done for today | steady, warm, few words |
+| **Nandi** (lead) | friendly young bull, cream with a soft orange scarf; no religious symbols (owner, 10-20) | guide: app-open, Today, finishes, streak days, Done for today | steady, warm, few words |
 | **Moti** | baby elephant | memory keeper: reviews, retention checks, Gold review ("I kept this one for you") | gentle, proud |
 | **Chiku** | squirrel | curious quizmaster: Learn drops, Guess-first items, combos | quick, playful |
 | **Kapi** | monkey | puzzle friend: Mind boards, hints, cases | cheeky, clever |

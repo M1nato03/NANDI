@@ -48,15 +48,14 @@ function Frame({ name, pose = 'idle', size = 48, title, children }: CastProps & 
 }
 const Shadow = ({ cx = 50, rx = 30 }: { cx?: number; rx?: number }) => <ellipse cx={cx} cy="93.5" rx={rx} ry="3.8" fill="#000" opacity=".1" />;
 
-/** Nandi ji: a young white bull resting in the temple pose, with painted horns, hump, garland and bell. */
-const N = { line: '#5b4232', cream: '#fbf5ea', shade: '#e6d6c0', muzzle: '#9a8171', muzzleHi: '#b39d8c', dark: '#33241b', horn: '#f2e8d5', saffron: '#ef8a25', gold: '#f2be45', goldLine: '#b9861f', ear: '#f2b5a3', cloth: '#c8433b', hoof: '#6f5546' };
+/** Nandi: a friendly young bull resting, with a hump, a dark muzzle and an orange knitted scarf. */
+const N = { line: '#5b4232', cream: '#fbf5ea', shade: '#e6d6c0', muzzle: '#9a8171', muzzleHi: '#b39d8c', dark: '#33241b', horn: '#f2e8d5', ear: '#f2b5a3', hoof: '#6f5546', patch: '#ead8c1', scarf: '#ef8a2b', scarfLine: '#c96a17', scarfStripe: '#fde3c2', hornTip: '#d9c7aa' };
 export function Nandi(props: CastProps) {
   const pose = props.pose ?? 'idle'; const id = useUid();
   const head = pose === 'cheer' ? 'rotate(-6 38 60) translate(0 -1.5)' : pose === 'think' ? 'rotate(5 38 60)' : pose === 'rest' ? 'translate(1 3) rotate(4 38 60)' : undefined;
   const earL = pose === 'cheer' ? 'rotate(-14 24 34)' : pose === 'rest' ? 'rotate(12 24 34)' : undefined;
   const earR = pose === 'cheer' ? 'rotate(14 52 34)' : pose === 'rest' ? 'rotate(-12 52 34)' : undefined;
   const body = 'M34 82C33 70 40 62 50 60C51 49 61 44 69 50C72 52 73 56 72 59C85 61 95 67 95 79C95 88 88 92 77 92L44 92C37 92 34 88 34 82Z';
-  const garland = Array.from({ length: 9 }, (_, i) => { const t = i / 8; return [(1 - t) ** 2 * 27 + 2 * (1 - t) * t * 38.5 + t * t * 52, (1 - t) ** 2 * 62 + 2 * (1 - t) * t * 81 + t * t * 64] as const; });
   return <Frame name="Nandi" {...props}>
     <defs><clipPath id={`${id}b`}><path d={body} /></clipPath></defs>
     <Shadow cx={62} rx={36} />
@@ -64,9 +63,7 @@ export function Nandi(props: CastProps) {
     <path d="M94.5 55.5C89 52.5 89.6 44.6 95 45C99.6 46.4 99.2 52.6 94.5 55.5Z" fill={N.muzzle} stroke={N.line} strokeWidth="1.1" />
     <path d={body} fill={N.cream} stroke={N.line} strokeWidth="1.6" />
     <g clipPath={`url(#${id}b)`}><ellipse cx="66" cy="96" rx="34" ry="9.5" fill={N.shade} /><path d="M78 69C88 71 91 81 87 92" fill="none" stroke={N.shade} strokeWidth="2.6" strokeLinecap="round" /><path d="M53 50C57 47 63 46.5 67 49" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".9" /></g>
-    <path d="M64 61C72 59.5 82 61.5 89 67L86 82C78 84 70 83.5 64 81Z" fill={N.cloth} stroke={N.gold} strokeWidth="2" strokeLinejoin="round" />
-    <g fill={N.gold}>{[[70, 67], [78, 66.2], [84.6, 70], [69, 75], [77, 75], [83.4, 78]].map(([x, y]) => <circle key={`${x}${y}`} cx={x} cy={y} r=".95" />)}
-      {[[66, 82.4], [72.6, 83.8], [79.4, 83.6], [85.6, 82.4]].map(([x, y]) => <path key={x} d={`M${x} ${y}l-1.3 3.2h2.6z`} />)}</g>
+    <path d="M73 63.5C79.5 61.5 86 65.5 85 72C84 77.5 77 78 73.5 74C71 71 70.5 66 73 63.5Z" fill={N.patch} />
     <ellipse cx="88.4" cy="90.6" rx="4" ry="2.2" fill={N.hoof} />
     <path d="M36 85.5C37 82.5 46 82.5 50 84.8L50 90.5C46 92.2 38.5 92.2 36 90Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="38" cy="89" rx="3.2" ry="2.6" fill={N.hoof} />
     <path d="M50 86.5C52 83.6 60 83.6 63 86.4L62.4 91C58.4 92.6 52.4 92.6 50 91Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="60.6" cy="89.6" rx="3" ry="2.4" fill={N.hoof} />
@@ -74,17 +71,18 @@ export function Nandi(props: CastProps) {
       <g transform={earL}><path d="M24.5 32C17 31 9.5 33 6 38.2C10 41.5 18 40.6 25 37Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><path d="M22.5 33.8C16.5 33.7 11.5 35.2 9 37.8C13 39.4 18 38.8 22.6 36.6Z" fill={N.ear} /></g>
       <g transform={earR}><path d="M51.5 32C59 31 66.5 33 70 38.2C66 41.5 58 40.6 51 37Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><path d="M53.5 33.8C59.5 33.7 64.5 35.2 67 37.8C63 39.4 58 38.8 53.4 36.6Z" fill={N.ear} /></g>
       <path d="M25 24C19 22 14 18 13.5 11C13.4 8.6 15.8 8 16.6 10C18 14 23 16.5 33 17.5Z" fill={N.horn} stroke={N.line} strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="M13.6 12.4C13.2 9.8 13.9 8.2 15.2 8.3C16 8.4 16.4 9.2 16.9 10.4C16 11.4 14.7 12.1 13.6 12.4Z" fill={N.saffron} /><path d="M23.4 23.2L24.6 17" stroke={N.gold} strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M13.6 12.4C13.2 9.8 13.9 8.2 15.2 8.3C16 8.4 16.4 9.2 16.9 10.4C16 11.4 14.7 12.1 13.6 12.4Z" fill={N.hornTip} />
       <path d="M51 24C57 22 62 18 62.5 11C62.6 8.6 60.2 8 59.4 10C58 14 53 16.5 43 17.5Z" fill={N.horn} stroke={N.line} strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="M62.4 12.4C62.8 9.8 62.1 8.2 60.8 8.3C60 8.4 59.6 9.2 59.1 10.4C60 11.4 61.3 12.1 62.4 12.4Z" fill={N.saffron} /><path d="M52.6 23.2L51.4 17" stroke={N.gold} strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M62.4 12.4C62.8 9.8 62.1 8.2 60.8 8.3C60 8.4 59.6 9.2 59.1 10.4C60 11.4 61.3 12.1 62.4 12.4Z" fill={N.hornTip} />
       <path d="M27 48C26 60 29 70 38 74C44 75 50 72 53 66C53 58 51 52 49 47Z" fill={N.cream} stroke={N.line} strokeWidth="1.5" />
       <path d="M29 62C28 70 31 78 37 81C40 79 41 74 40 70" fill={N.cream} stroke={N.line} strokeWidth="1.3" />
-      {garland.map(([x, y], i) => <g key={i}><circle cx={x} cy={y} r="2.6" fill={i % 2 ? '#f9c43f' : '#f39a2b'} stroke="#d4721c" strokeWidth=".6" /><circle cx={x} cy={y} r=".8" fill="#c9611a" /></g>)}
-      <path d="M38.7 73.6v2" stroke={N.cloth} strokeWidth="1.2" />
-      <path d="M35.3 80.6C35.1 77.1 36.5 75.5 38.7 75.5C40.9 75.5 42.3 77.1 42.1 80.6L43.2 81.9H34.2Z" fill={N.gold} stroke={N.goldLine} strokeWidth=".9" /><circle cx="38.7" cy="82.7" r="1" fill="#8a5d12" />
+      <path d="M26.5 59.5C31 66 45.5 66.5 52.6 60.4L53.8 66.6C46 73 30.5 72.4 27 65.8Z" fill={N.scarf} stroke={N.scarfLine} strokeWidth="1.1" strokeLinejoin="round" />
+      <path d="M29 63.4C34 67.6 45 68 51.8 63.6" fill="none" stroke={N.scarfStripe} strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M41.6 67.6L48.6 67.2L50.6 80.6L43.2 81.6Z" fill={N.scarf} stroke={N.scarfLine} strokeWidth="1.1" strokeLinejoin="round" />
+      <path d="M42.6 72.2L49.2 71.8M43.2 76.6L49.8 76.2" stroke={N.scarfStripe} strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M44.4 81.6v2.6M46.6 81.3v2.6M48.8 81v2.6" stroke={N.scarfLine} strokeWidth="1.1" strokeLinecap="round" />
       <path d="M23 30C23 19 53 19 53 30C53 38 51.5 44 50.5 48L25.5 48C24.5 44 23 38 23 30Z" fill={N.cream} stroke={N.line} strokeWidth="1.6" />
       <path d="M33.6 22.4C34.4 17.8 39.6 16.6 41.8 20.2C40 19.5 38.2 20.3 37.4 22.4Z" fill={N.cream} stroke={N.line} strokeWidth="1.1" strokeLinejoin="round" />
-      <path d="M38 24.4v4" stroke={N.saffron} strokeWidth="1.9" strokeLinecap="round" /><circle cx="38" cy="29.8" r="1.3" fill="#d23a2e" />
       <path d="M25.5 47.6C25.5 43 50.5 43 50.5 47.6C50.5 54.8 45.4 58.8 38 58.8C30.6 58.8 25.5 54.8 25.5 47.6Z" fill={N.muzzle} stroke={N.line} strokeWidth="1.5" />
       <ellipse cx="38" cy="45.8" rx="8.6" ry="1.4" fill={N.muzzleHi} />
       <path d="M30.8 49C31.6 47.4 34 47.6 33.9 49.6C33.8 50.9 31.8 51.1 30.8 49ZM45.2 49C44.4 47.4 42 47.6 42.1 49.6C42.2 50.9 44.2 51.1 45.2 49Z" fill={N.dark} />
