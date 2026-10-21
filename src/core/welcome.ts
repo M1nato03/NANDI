@@ -23,7 +23,11 @@ const ACTIONS: Record<Goal, FirstAction> = {
 };
 const ORDER: readonly Goal[] = ['learn', 'mind', 'train', 'plan', 'sleep'];
 
-export function firstAction(goals: readonly Goal[]): FirstAction {
+/** After bedtime nothing new is offered (a drop would only say there is nothing tonight), so the first action is the night routine. */
+export const NIGHT_ACTION: FirstAction = { route: 'night', label: 'Start my night routine' };
+
+export function firstAction(goals: readonly Goal[], afterBedtime = false): FirstAction {
+  if (afterBedtime) return NIGHT_ACTION;
   const pick = ORDER.find(goal => goals.includes(goal));
   return ACTIONS[pick ?? 'learn'];
 }

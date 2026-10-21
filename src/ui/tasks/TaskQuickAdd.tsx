@@ -65,7 +65,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
   const counts = preview ? Array.from({ length: Math.floor(preview.total / 25) - 1 }, (_, index) => index + 2).filter((count) => splitEstimates(preview.total, count)) : [];
   const previewParts = preview ? splitEstimates(preview.total, preview.count) : null;
   return <div className="quick-add">
-    <label className="quick-add-field">Add a task<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => setTitle(event.target.value)} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" aria-expanded={open} /></label>
+    <label className="quick-add-field">Add a task<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => { setTitle(event.target.value); setOpen(true); }} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" aria-expanded={open} /></label>
     {open && <form id="plan-add-form" className="card task-form" onSubmit={(event) => void submit(event)}>
       <h2>Task details</h2>
       {parsed && <p className="small">{taskMinutes} minutes picked up from your task.</p>}
