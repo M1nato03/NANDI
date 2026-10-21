@@ -1599,13 +1599,13 @@
                         "id": "a",
                         "text": "Edicts on rocks.",
                         "correct": true,
-                        "feedback": "Yes. The rock edicts came first; pillar edicts were added about 13 years later."
+                        "feedback": "Yes. The rock edicts came first; pillar edicts were added years later."
                       },
                       {
                         "id": "b",
                         "text": "Edicts on tall polished pillars.",
                         "correct": false,
-                        "feedback": "The pillars came later, about 13 years after the rock edicts began."
+                        "feedback": "The pillars came later, some years after the rock edicts began."
                       },
                       {
                         "id": "c",
