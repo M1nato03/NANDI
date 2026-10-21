@@ -152,7 +152,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
           if (wordCount(step.teach) > 30) errors.push(`${at}: teach card over 30 words`);
           if (fleschReadingEase(step.teach) < 69.5) errors.push(`${at}: teach card Flesch reading ease below 70`);
           if (wordCount(step.takeaway) > 15) errors.push(`${at}: takeaway over 15 words`);
-          for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join('')]] as const) checkText(`${at}.${label}`, value);
+          for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join(' ')]] as const) checkText(`${at}.${label}`, value);
           if (step.example.parts.filter(part => part === step.example.spot).length !== 1) errors.push(`${at}: example spot must be exactly one of its parts`);
           oneRight(`${at}.hook`, step.hook.options);
           step.guided.forEach((guided, index) => { oneRight(`${at}.guided.${index}`, guided.options); checkText(`${at}.guided.${index}`, guided.stem); });

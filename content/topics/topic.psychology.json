@@ -2975,7 +2975,7 @@
                     }
                   ]
                 },
-                "teach": "We tend to notice and recall the clues that fit what we already believe. Clues that do not fit get skipped.",
+                "teach": "People notice and recall the clues that fit what they already believe. Clues that do not fit get skipped.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4531,7 +4531,7 @@
                     }
                   ]
                 },
-                "teach": "We tend to guess too little time for our own tasks. In one study, students took about 56 days for a project they guessed would take 34.",
+                "teach": "Guesses for our own tasks often fall short. In one study, students took about 56 days for a thesis they guessed would take 34.",
                 "visual": {
                   "kind": "scale",
                   "label": "Days to finish a thesis, in one study",
@@ -7417,7 +7417,7 @@
                 "teach": "Across 94 tests, if-then plans helped people reach goals more than a goal alone. They help on average but cannot promise action.",
                 "visual": {
                   "kind": "scale",
-                  "label": "Effect size across 94 tests",
+                  "label": "How much if-then plans helped, across 94 tests",
                   "min": "0",
                   "max": "1",
                   "marks": [

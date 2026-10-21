@@ -74,3 +74,14 @@ describe('teach-first kill-test numbers', () => {
     expect(lessonMetrics(ledger, stepOf)).toEqual({ lessons: 1, guidedFirstTry: 50, guidedCount: 2, yourTurn: 50, yourTurnCount: 2 });
   });
 });
+
+describe('lesson option order', () => {
+  it('does not always put the right option first', async () => {
+    const { shuffled } = await import('./StepLesson');
+    const steps = catalogFor(['psychology']).flatMap(concept => concept.steps ?? []);
+    const questions = steps.flatMap(step => [{ seed: `${step.id}:hook`, options: step.hook.options }, ...step.guided.map((guided, index) => ({ seed: `${step.id}:${index}`, options: guided.options }))]);
+    const firstRight = questions.filter(question => shuffled(question.options, question.seed)[0]!.correct).length;
+    expect(questions.length).toBeGreaterThan(60);
+    expect(firstRight / questions.length).toBeLessThan(0.5);
+  });
+});

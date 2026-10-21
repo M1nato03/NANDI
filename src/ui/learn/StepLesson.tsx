@@ -3,6 +3,9 @@ import type { StepVisual as StepVisualData, TopicStep } from '../../data/packs/s
 import { Cast, type CastName } from '../cast/Cast';
 import { tapHaptic } from '../../platform/haptics';
 
+// Content lists the right option first; show a stable shuffle so position never gives it away.
+const hash = (value: string) => { let h = 2166136261; for (const char of value) h = Math.imul(h ^ char.charCodeAt(0), 16777619) >>> 0; return h; };
+export const shuffled = <T extends { id: string }>(options: readonly T[], seed: string): T[] => [...options].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`));
 const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
 
 /** A small diagram drawn from the step's data: a flow of chips, two columns, or a scale with marks. */
@@ -71,7 +74,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, onDone }: { step:
       {question && <>
         <h2>{question.stem}</h2>
         {phase.kind === 'guided' && !picked && (hint ? <p className="step-hint" role="note">Hint: {step.guided[phase.index]!.hint}</p> : <button type="button" className="text-button step-hint-button" onClick={() => setHint(true)}>Show hint</button>)}
-        <div className="learn-options">{question.options.map(option => <button type="button" key={option.id} disabled={!!picked} className={`ui-list-row ${picked === option.id ? 'selected' : ''} ${picked && option.correct ? 'right-option' : ''} ${picked === option.id && !option.correct ? 'wrong-option' : ''}`} onClick={() => pick(option.id)}>{option.text}{picked && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
+        <div className="learn-options">{shuffled(question.options, `${step.id}:${phase.kind === 'guided' ? phase.index : 'hook'}`).map(option => <button type="button" key={option.id} disabled={!!picked} className={`ui-list-row ${picked === option.id ? 'selected' : ''} ${picked && option.correct ? 'right-option' : ''} ${picked === option.id && !option.correct ? 'wrong-option' : ''}`} onClick={() => pick(option.id)}>{option.text}{picked && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
         {chosen && <div className={`learn-feedback learn-sheet ${chosen.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{chosen.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{chosen.feedback}</p><button type="button" disabled={busy} onClick={next}>{last ? 'Your turn' : 'Continue'}</button></div>}
       </>}
       {phase.kind === 'teach' && <button type="button" className="step-continue" disabled={busy} onClick={next}>Continue</button>}
