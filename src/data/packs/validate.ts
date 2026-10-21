@@ -127,6 +127,27 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         refs(`${where}.quest`, concept.quest.sourceRefs);
         if (advicePattern.test(concept.quest.detail)) errors.push(`${where}.quest: advice is prohibited`);
       }
+      if (concept.steps) {
+        const stepIds = new Set<string>();
+        const wordCount = (value: string) => words(value).length;
+        const oneRight = (location: string, list: readonly { correct: boolean }[]) => { if (list.filter(option => option.correct).length !== 1) errors.push(`${location}: needs exactly one right option`); };
+        for (const step of concept.steps) {
+          const at = `${where}.step.${step.id}`;
+          if (stepIds.has(step.id) || ids.has(step.id)) errors.push(`${at}: duplicate step id`);
+          stepIds.add(step.id);
+          if (!claimIds.has(step.claimId)) errors.push(`${at}: claimId must name a fact-checked claim of the concept`);
+          refs(`${at}.sourceRefs`, step.sourceRefs);
+          if (wordCount(step.teach) > 30) errors.push(`${at}: teach card over 30 words`);
+          if (fleschReadingEase(step.teach) < 69.5) errors.push(`${at}: teach card Flesch reading ease below 70`);
+          if (wordCount(step.takeaway) > 15) errors.push(`${at}: takeaway over 15 words`);
+          for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join('')]] as const) checkText(`${at}.${label}`, value);
+          if (step.example.parts.filter(part => part === step.example.spot).length !== 1) errors.push(`${at}: example spot must be exactly one of its parts`);
+          oneRight(`${at}.hook`, step.hook.options);
+          step.guided.forEach((guided, index) => { oneRight(`${at}.guided.${index}`, guided.options); checkText(`${at}.guided.${index}`, guided.stem); });
+          if (!concept.items.some(item => item.step === step.id)) errors.push(`${at}: needs at least one practice item`);
+        }
+        for (const item of concept.items) if (!item.step || !stepIds.has(item.step)) errors.push(`${item.id}: must be tagged to one step of ${where}`);
+      } else for (const item of concept.items) if (item.step) errors.push(`${item.id}: step tag without concept steps`);
       for (const item of concept.items) {
         if (ids.has(item.id)) errors.push(`${item.id}: duplicate item id`);
         ids.add(item.id);

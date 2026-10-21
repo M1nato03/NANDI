@@ -49,6 +49,13 @@
                   "lally",
                   "wood"
                 ]
+              },
+              {
+                "id": "habits-c3",
+                "text": "In that study, the typical time to near full habit strength was 66 days.",
+                "sourceRefs": [
+                  "lally"
+                ]
               }
             ],
             "items": [
@@ -56,6 +63,7 @@
                 "id": "habits-1",
                 "type": "predict",
                 "conceptId": "habits",
+                "step": "habits-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
@@ -89,13 +97,26 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "Pure willpower each evening.", "feedback": "Willpower can start an act, but here the same dinner and desk come first each day. That steady setting is the cue.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "c",
+                    "text": "Pure willpower each evening.",
+                    "feedback": "Willpower can start an act, but here the same dinner and desk come first each day. That steady setting is the cue.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m3"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ]
               },
               {
                 "id": "habits-2",
                 "type": "scenario",
                 "conceptId": "habits",
+                "step": "habits-s3",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
@@ -129,13 +150,26 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "She must start a 21-day count again.", "feedback": "Lally's study found no fixed day count, and one miss did not undo earlier habit growth.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "c",
+                    "text": "She must start a 21-day count again.",
+                    "feedback": "Lally's study found no fixed day count, and one miss did not undo earlier habit growth.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ]
               },
               {
                 "id": "habits-3",
                 "type": "estimate",
                 "conceptId": "habits",
+                "step": "habits-s3",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
@@ -169,7 +203,16 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "254 days.", "feedback": "That was the longest fitted time in the study, not the middle. The median was 66 days.", "correct": false, "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "c",
+                    "text": "254 days.",
+                    "feedback": "That was the longest fitted time in the study, not the middle. The median was 66 days.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 66,
@@ -182,6 +225,7 @@
                 "id": "habits-4",
                 "type": "choose",
                 "conceptId": "habits",
+                "step": "habits-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "habits-m1"
@@ -215,13 +259,23 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "The song that plays after.", "feedback": "That music comes after the act, so it cannot start it. The bag on the hook comes first.", "correct": false, "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "c",
+                    "text": "The song that plays after.",
+                    "feedback": "That music comes after the act, so it cannot start it. The bag on the hook comes first.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ]
               },
               {
                 "id": "habits-5",
                 "type": "why",
                 "conceptId": "habits",
+                "step": "habits-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "habits-m1",
@@ -243,7 +297,19 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "A strong goal works in any room.", "feedback": "The goal stays the same, so this feels right. The old cue may be gone.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] },
+                  {
+                    "id": "c",
+                    "text": "A strong goal works in any room.",
+                    "feedback": "The goal stays the same, so this feels right. The old cue may be gone.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m3"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "The goal alone brings back the old cue.",
@@ -264,6 +330,7 @@
                 "id": "habits-6",
                 "type": "fill-the-step",
                 "conceptId": "habits",
+                "step": "habits-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "habits-m1"
@@ -297,13 +364,26 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "Goal written in a diary.", "feedback": "A written goal can help, but a cue is a feature of the setting just before the act, like a place.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "c",
+                    "text": "Goal written in a diary.",
+                    "feedback": "A written goal can help, but a cue is a feature of the setting just before the act, like a place.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m3"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ]
               },
               {
                 "id": "habits-7",
                 "type": "true-not-quite",
                 "conceptId": "habits",
+                "step": "habits-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "habits-m1"
@@ -324,7 +404,19 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "Day 21 works for every habit.", "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] },
+                  {
+                    "id": "c",
+                    "text": "Day 21 works for every habit.",
+                    "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "habits-m1"
+                    ],
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Using the same cue makes everyone match by day 21.",
@@ -344,6 +436,7 @@
                 "id": "habits-8",
                 "type": "order",
                 "conceptId": "habits",
+                "step": "habits-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
@@ -354,11 +447,42 @@
                 ],
                 "stem": "Put Ravi's phone habit in order.",
                 "options": [
-                  { "id": "a", "text": "Ravi gets home and drops his bag on the bed.", "feedback": "This usual moment is the cue. It comes first and sets the loop going.", "correct": true, "sourceRefs": ["lally", "wood"] },
-                  { "id": "b", "text": "He picks up his phone without much thought.", "feedback": "After many repeats, the cue can start the learned act with little thought.", "correct": true, "sourceRefs": ["lally", "wood"] },
-                  { "id": "c", "text": "A new message gives a small lift, and the link grows.", "feedback": "A pay-off after the act can make the cue and act more tightly linked over time.", "correct": true, "sourceRefs": ["lally", "wood"] }
+                  {
+                    "id": "a",
+                    "text": "Ravi gets home and drops his bag on the bed.",
+                    "feedback": "This usual moment is the cue. It comes first and sets the loop going.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He picks up his phone without much thought.",
+                    "feedback": "After many repeats, the cue can start the learned act with little thought.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A new message gives a small lift, and the link grows.",
+                    "feedback": "A pay-off after the act can make the cue and act more tightly linked over time.",
+                    "correct": true,
+                    "sourceRefs": [
+                      "lally",
+                      "wood"
+                    ]
+                  }
                 ],
-                "answer": ["a", "b", "c"]
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
               }
             ],
             "misconceptions": [
@@ -380,7 +504,14 @@
                   "wood"
                 ]
               },
-              { "id": "habits-m3", "name": "Goal replaces cue", "correction": "A steady goal may not start a habit when a usual cue is gone.", "sourceRefs": ["wood"] }
+              {
+                "id": "habits-m3",
+                "name": "Goal replaces cue",
+                "correction": "A steady goal may not start a habit when a usual cue is gone.",
+                "sourceRefs": [
+                  "wood"
+                ]
+              }
             ],
             "sources": [
               {
@@ -447,10 +578,330 @@
                 {
                   "claimId": "habits-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "habits-c3",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "habits-s1",
+                "title": "A cue starts a habit",
+                "claimId": "habits-c1",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "hook": {
+                  "stem": "Why do many people grab their phone the moment they get home?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Getting home sets it off.",
+                      "correct": true,
+                      "feedback": "Right. Something just before the act can start it. That is a cue."
+                    },
+                    {
+                      "id": "b",
+                      "text": "They decide to, every single time.",
+                      "correct": false,
+                      "feedback": "Often there is no fresh decision. Something just before the act sets it off."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Phones send more alerts in the evening.",
+                      "correct": false,
+                      "feedback": "Alerts can pull us in, but the grab happens even with no alert."
+                    }
+                  ]
+                },
+                "teach": "A habit often starts with a cue: a place, a time or an act just before it. The cue sets the habit off with little thought.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Cue",
+                    "Act",
+                    "Small reward"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "After brushing his teeth",
+                    ", Arun does ten push-ups."
+                  ],
+                  "spot": "After brushing his teeth",
+                  "feedback": "Brushing his teeth comes just before the push-ups, so it is the cue."
+                },
+                "guided": [
+                  {
+                    "stem": "Every time Meera sits on the bus, she opens a game. What is the cue?",
+                    "hint": "The cue comes just before the act.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sitting on the bus.",
+                        "correct": true,
+                        "feedback": "Yes. Sitting down comes first and sets the game off."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Opening the game.",
+                        "correct": false,
+                        "feedback": "Opening the game is the act itself. The cue comes just before it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Winning a level.",
+                        "correct": false,
+                        "feedback": "Winning comes after the act, so it is the reward, not the cue."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Ravi studies well at the library desk, but not at home. What might be missing at home?",
+                    "hint": "Which thing is only in one place?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The desk cue.",
+                        "correct": true,
+                        "feedback": "Right. The library desk is the cue, and home does not have it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "His wish to study.",
+                        "correct": false,
+                        "feedback": "His goal goes with him. What stays behind is the cue of the desk."
+                      },
+                      {
+                        "id": "c",
+                        "text": "His books.",
+                        "correct": false,
+                        "feedback": "He can carry books home. The library desk itself is the cue he leaves behind."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Find the cue, and you find what starts the habit."
+              },
+              {
+                "id": "habits-s2",
+                "title": "Repeats in one setting make it stronger",
+                "claimId": "habits-c1",
+                "sourceRefs": [
+                  "lally",
+                  "wood"
+                ],
+                "hook": {
+                  "stem": "You always study in one corner of your room. What happens when you sit there?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Studying feels easier to start.",
+                      "correct": true,
+                      "feedback": "Yes. Doing it again and again in one spot ties the spot to the act."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Nothing; places do not matter.",
+                      "correct": false,
+                      "feedback": "Places do matter. A spot you repeat an act in can start that act."
+                    },
+                    {
+                      "id": "c",
+                      "text": "You get bored and stop.",
+                      "correct": false,
+                      "feedback": "Repeats in one spot usually make the act easier to start, not harder."
+                    }
+                  ]
+                },
+                "teach": "Each time you repeat an act in the same setting, the link between cue and act gets stronger. A new setting can weaken it.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Same place",
+                    "lines": [
+                      "Cue is there",
+                      "Link grows"
+                    ]
+                  },
+                  "right": {
+                    "title": "New place",
+                    "lines": [
+                      "Old cue is gone",
+                      "Link is weaker"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "For a month, Sana walks ",
+                    "at the same park gate",
+                    " each morning, and now her feet head there by themselves."
+                  ],
+                  "spot": "at the same park gate",
+                  "feedback": "The same gate every morning is the stable setting that made the link strong."
+                },
+                "guided": [
+                  {
+                    "stem": "Dev revises at the same desk every evening. Now sitting there makes him reach for his notes. Why?",
+                    "hint": "What has he done again and again in one place?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Many repeats at that desk.",
+                        "correct": true,
+                        "feedback": "Right. Repeating the act at one desk made the desk a strong cue."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The desk is very comfortable.",
+                        "correct": false,
+                        "feedback": "Comfort helps a little, but the repeats in one place built the link."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He made a new decision tonight.",
+                        "correct": false,
+                        "feedback": "No fresh decision is needed. The repeated setting does the work."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Asha always skips rope in her yard. On a trip, she forgets to skip at all. Why?",
+                    "hint": "What is missing on the trip?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Her yard cue is not there.",
+                        "correct": true,
+                        "feedback": "Yes. Away from the yard, the cue that set off her habit is gone."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She no longer likes skipping.",
+                        "correct": false,
+                        "feedback": "Her liking did not change. The setting that cued it did."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Habits stop after a month.",
+                        "correct": false,
+                        "feedback": "Habits do not expire. A new place just removes the usual cue."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Same place, same act, again and again: the link grows."
+              },
+              {
+                "id": "habits-s3",
+                "title": "It takes weeks, and one miss is fine",
+                "claimId": "habits-c2",
+                "sourceRefs": [
+                  "lally"
+                ],
+                "hook": {
+                  "stem": "A poster says every habit takes exactly 21 days. Is that right?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, it varies a lot.",
+                      "correct": true,
+                      "feedback": "Right. In one study it took from 18 to 254 days."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, 21 days for everyone.",
+                      "correct": false,
+                      "feedback": "The 21-day rule is a myth. In one study the time ranged from 18 to 254 days."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It takes about one week.",
+                      "correct": false,
+                      "feedback": "Most habits took much longer. The typical one took about two months."
+                    }
+                  ]
+                },
+                "teach": "A new habit takes weeks, and the time varies a lot from person to person. Missing one day does not wipe it out.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Days until a habit felt automatic, in one study",
+                  "min": "18 days",
+                  "max": "254 days",
+                  "marks": [
+                    {
+                      "at": 20,
+                      "text": "Typical: 66"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Meena missed her morning run once. ",
+                    "The next day, the run still felt automatic",
+                    "."
+                  ],
+                  "spot": "The next day, the run still felt automatic",
+                  "feedback": "One missed day did not reset her habit. It was still there the next day."
+                },
+                "guided": [
+                  {
+                    "stem": "Kiran has meditated daily for three weeks, but it still takes effort. What does this show?",
+                    "hint": "In one study the typical habit took about two months.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Habits often take longer than three weeks.",
+                        "correct": true,
+                        "feedback": "Yes. Three weeks is early. Many habits need about two months or more."
+                      },
+                      {
+                        "id": "b",
+                        "text": "He is doing it wrong.",
+                        "correct": false,
+                        "feedback": "Not at all. Taking longer than 21 days is normal."
+                      },
+                      {
+                        "id": "c",
+                        "text": "This habit will never form.",
+                        "correct": false,
+                        "feedback": "It can still form. Many habits take two months or more."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Pooja skips her evening reading once during a wedding. What happens next?",
+                    "hint": "Does one gap wipe out weeks of repeats?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Her habit carries on.",
+                        "correct": true,
+                        "feedback": "Right. One missed day did not undo habit growth in the study."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She starts again from zero.",
+                        "correct": false,
+                        "feedback": "One miss does not reset a habit to zero."
+                      },
+                      {
+                        "id": "c",
+                        "text": "She must wait 21 days.",
+                        "correct": false,
+                        "feedback": "There is no 21-day wait. She can just carry on the next day."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Give it weeks, and do not worry about one missed day."
+              }
+            ]
           },
           {
             "id": "loss-aversion",
@@ -517,7 +968,18 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Winning one, by a lot.", "feedback": "Prospect theory suggests the opposite tilt. Losses often weigh more than gains of the same size.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
+                  {
+                    "id": "c",
+                    "text": "Winning one, by a lot.",
+                    "feedback": "Prospect theory suggests the opposite tilt. Losses often weigh more than gains of the same size.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
                 ]
               },
               {
@@ -554,7 +1016,18 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Nothing, it is only ₹50.", "feedback": "Small sums can still pull on a choice. Losing the ₹50 already held often weighs more than gaining ₹50.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
+                  {
+                    "id": "c",
+                    "text": "Nothing, it is only ₹50.",
+                    "feedback": "Small sums can still pull on a choice. Losing the ₹50 already held often weighs more than gaining ₹50.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
                 ]
               },
               {
@@ -591,7 +1064,15 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "5 points.", "feedback": "Fewer points could not balance a loss that feels twice as strong. It takes 20 gained points here.", "correct": false, "sourceRefs": ["prospect"] }
+                  {
+                    "id": "c",
+                    "text": "5 points.",
+                    "feedback": "Fewer points could not balance a loss that feels twice as strong. It takes 20 gained points here.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 20,
@@ -634,7 +1115,15 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "The final score.", "feedback": "Both lines end at the same score. Only the frame, keep or lose, has changed.", "correct": false, "sourceRefs": ["prospect"] }
+                  {
+                    "id": "c",
+                    "text": "The final score.",
+                    "feedback": "Both lines end at the same score. Only the frame, keep or lose, has changed.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
                 ]
               },
               {
@@ -659,7 +1148,18 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Only the final total matters.", "feedback": "The end sum looks like the whole story. The starting point can change how it feels.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] },
+                  {
+                    "id": "c",
+                    "text": "Only the final total matters.",
+                    "feedback": "The end sum looks like the whole story. The starting point can change how it feels.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Same money must feel the same.",
@@ -709,7 +1209,15 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Fresh start.", "feedback": "The model has no such category. A move below the starting point is framed as a loss.", "correct": false, "sourceRefs": ["prospect"] }
+                  {
+                    "id": "c",
+                    "text": "Fresh start.",
+                    "feedback": "The model has no such category. A move below the starting point is framed as a loss.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  }
                 ]
               },
               {
@@ -735,7 +1243,18 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Every player must feel losses more.", "feedback": "The group trend is strong, so this sounds safe. It does not set each player's feeling.", "correct": false, "misconceptionIds": ["loss-aversion-m2"], "sourceRefs": ["prospect"] },
+                  {
+                    "id": "c",
+                    "text": "Every player must feel losses more.",
+                    "feedback": "The group trend is strong, so this sounds safe. It does not set each player's feeling.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loss-aversion-m2"
+                    ],
+                    "sourceRefs": [
+                      "prospect"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A group average sets each person's feeling.",
@@ -959,7 +1478,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "The ₹900, as proof ₹600 is fair.", "feedback": "The cut looks large. That first tag is set by the seller, not an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
+                  {
+                    "id": "c",
+                    "text": "The ₹900, as proof ₹600 is fair.",
+                    "feedback": "The cut looks large. That first tag is set by the seller, not an outside check.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Only the ₹600 price.",
@@ -1012,7 +1543,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Neither guess changes.", "feedback": "Studies show a heard number can tug a guess, even a random one. Their first guesses may drift apart.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] }
+                  {
+                    "id": "c",
+                    "text": "Neither guess changes.",
+                    "feedback": "Studies show a heard number can tug a guess, even a random one. Their first guesses may drift apart.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m2"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
                 ]
               },
               {
@@ -1049,7 +1592,15 @@
                       "tversky"
                     ]
                   },
-                  { "id": "c", "text": "25%.", "feedback": "That was the low-anchor group's median. The group shown 65% gave a median guess of 45%.", "correct": false, "sourceRefs": ["tversky"] }
+                  {
+                    "id": "c",
+                    "text": "25%.",
+                    "feedback": "That was the low-anchor group's median. The group shown 65% gave a median guess of 45%.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "tversky"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 45,
@@ -1095,7 +1646,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Look at how big the sale sticker is.", "feedback": "A big sticker is still set by the seller. A price for the same pen elsewhere gives an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
+                  {
+                    "id": "c",
+                    "text": "Look at how big the sale sticker is.",
+                    "feedback": "A big sticker is still set by the seller. A price for the same pen elsewhere gives an outside check.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
                 ]
               },
               {
@@ -1123,7 +1686,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Knowing it is random stops the pull.", "feedback": "The warning should help. Yet people can still start near the first number they saw.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] },
+                  {
+                    "id": "c",
+                    "text": "Knowing it is random stops the pull.",
+                    "feedback": "The warning should help. Yet people can still start near the first number they saw.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m2"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A random number is a fair clue.",
@@ -1177,7 +1752,16 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Average.", "feedback": "The figure was not worked out from many guesses. It is the first number heard, which is an anchor.", "correct": false, "sourceRefs": ["bias", "philosophy"] }
+                  {
+                    "id": "c",
+                    "text": "Average.",
+                    "feedback": "The figure was not worked out from many guesses. It is the first number heard, which is an anchor.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
                 ]
               },
               {
@@ -1204,7 +1788,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "A big cut always means a good deal.", "feedback": "The cut price catches the eye. A price from another seller is a better check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
+                  {
+                    "id": "c",
+                    "text": "A big cut always means a good deal.",
+                    "feedback": "The cut price catches the eye. A price from another seller is a better check.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "The old tag proves value on its own.",
@@ -1257,7 +1853,19 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "A guess is right if it matches the first number.", "feedback": "Matching the first number does not make a guess right. That number may have been random.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
+                  {
+                    "id": "c",
+                    "text": "A guess is right if it matches the first number.",
+                    "feedback": "Matching the first number does not make a guess right. That number may have been random.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "anchoring-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "philosophy"
+                    ]
+                  }
                 ]
               }
             ],
@@ -1427,7 +2035,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "Papers she has not taken yet.", "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she recalls.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "Papers she has not taken yet.",
+                    "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she recalls.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ]
               },
               {
@@ -1467,7 +2084,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "Only dry days with high sales.", "feedback": "Dry days say little about the rain claim. Rainy days with steady sales are the records that test it.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "Only dry days with high sales.",
+                    "feedback": "Dry days say little about the rain claim. Rainy days with steady sales are the records that test it.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ]
               },
               {
@@ -1507,7 +2133,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "50%.", "feedback": "Half is a natural guess, but far fewer found it. Only 16% chose the pair that could disprove the rule.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "50%.",
+                    "feedback": "Half is a natural guess, but far fewer found it. Only 16% chose the pair that could disprove the rule.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 16,
@@ -1553,7 +2188,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "His average across all matches.", "feedback": "An overall average mixes chases with other games. One good chase innings is what breaks the word always.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "His average across all matches.",
+                    "feedback": "An overall average mixes chases with other games. One good chase innings is what breaks the word always.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ]
               },
               {
@@ -1580,7 +2224,19 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "A red late bus proves it for all.", "feedback": "A match feels like proof. One late bus of another colour would break the rule.", "correct": false, "misconceptionIds": ["confirmation-bias-m1"], "sourceRefs": ["bias", "wason"] },
+                  {
+                    "id": "c",
+                    "text": "A red late bus proves it for all.",
+                    "feedback": "A match feels like proof. One late bus of another colour would break the rule.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Lots of red buses outweigh it.",
@@ -1634,7 +2290,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "A random mix.", "feedback": "Picking only matching screenshots is the opposite of random. She keeps what fits and drops the rest.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "A random mix.",
+                    "feedback": "Picking only matching screenshots is the opposite of random. She keeps what fits and drops the rest.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ]
               },
               {
@@ -1662,7 +2327,19 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "Only the saved logs count.", "feedback": "Saved cases feel clear and close at hand. The skipped logs can test the belief too.", "correct": false, "misconceptionIds": ["confirmation-bias-m2"], "sourceRefs": ["bias", "wason"] },
+                  {
+                    "id": "c",
+                    "text": "Only the saved logs count.",
+                    "feedback": "Saved cases feel clear and close at hand. The skipped logs can test the belief too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "confirmation-bias-m2"
+                    ],
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Three logs beat any dropped ones.",
@@ -1715,7 +2392,16 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "Only people with weak beliefs miss clues.", "feedback": "Strong and weak beliefs alike can steer what we notice. The bias is uneven search, not belief strength.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  {
+                    "id": "c",
+                    "text": "Only people with weak beliefs miss clues.",
+                    "feedback": "Strong and weak beliefs alike can steer what we notice. The bias is uneven search, not belief strength.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "bias",
+                      "wason"
+                    ]
+                  }
                 ]
               }
             ],
@@ -1874,7 +2560,18 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "It moves away from the group on purpose.", "feedback": "Some people do resist, but few go against a group just to differ. The pull tends to run toward the group.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] }
+                  {
+                    "id": "c",
+                    "text": "It moves away from the group on purpose.",
+                    "feedback": "Some people do resist, but few go against a group just to differ. The pull tends to run toward the group.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m2"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
                 ]
               },
               {
@@ -1911,7 +2608,15 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Change what the replay shows.", "feedback": "Cheers cannot change the footage. They can only make the call feel more certain before the replay.", "correct": false, "sourceRefs": ["asch"] }
+                  {
+                    "id": "c",
+                    "text": "Change what the replay shows.",
+                    "feedback": "Cheers cannot change the footage. They can only make the call feel more certain before the replay.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
                 ]
               },
               {
@@ -1948,7 +2653,15 @@
                       "asch-original"
                     ]
                   },
-                  { "id": "c", "text": "About 75%.", "feedback": "About three in four people went along at least once. Of all critical answers, about 37% followed the wrong group.", "correct": false, "sourceRefs": ["asch-original"] }
+                  {
+                    "id": "c",
+                    "text": "About 75%.",
+                    "feedback": "About three in four people went along at least once. Of all critical answers, about 37% followed the wrong group.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "asch-original"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 37,
@@ -1991,7 +2704,15 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Everyone cheated.", "feedback": "Shared answers do not prove cheating either. Agreement by itself cannot settle whether the answer is right.", "correct": false, "sourceRefs": ["asch"] }
+                  {
+                    "id": "c",
+                    "text": "Everyone cheated.",
+                    "feedback": "Shared answers do not prove cheating either. Agreement by itself cannot settle whether the answer is right.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
                 ]
               },
               {
@@ -2017,7 +2738,18 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Votes cannot sway a clear answer.", "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] },
+                  {
+                    "id": "c",
+                    "text": "Votes cannot sway a clear answer.",
+                    "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m2"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "The group's vote proves her eyes wrong.",
@@ -2067,7 +2799,18 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Answer key.", "feedback": "A crowd's choice is not an answer key. It works as a social cue, which can still be wrong.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] }
+                  {
+                    "id": "c",
+                    "text": "Answer key.",
+                    "feedback": "A crowd's choice is not an answer key. It works as a social cue, which can still be wrong.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
                 ]
               },
               {
@@ -2092,7 +2835,18 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "More votes make an answer true.", "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] },
+                  {
+                    "id": "c",
+                    "text": "More votes make an answer true.",
+                    "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "social-proof-m1"
+                    ],
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "All agreeing means each one checked.",
@@ -2141,7 +2895,15 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Nobody was swayed by the group.", "feedback": "Many critical answers did follow the wrong majority. The pull was real, though not total.", "correct": false, "sourceRefs": ["asch"] }
+                  {
+                    "id": "c",
+                    "text": "Nobody was swayed by the group.",
+                    "feedback": "Many critical answers did follow the wrong majority. The pull was real, though not total.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "asch"
+                    ]
+                  }
                 ]
               }
             ],
@@ -2285,7 +3047,18 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Printing does not count as work.", "feedback": "The chart may be done in an hour. It still takes time to print and finish.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] },
+                  {
+                    "id": "c",
+                    "text": "Printing does not count as work.",
+                    "feedback": "The chart may be done in an hour. It still takes time to print and finish.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "The hour still covers printing.",
@@ -2334,7 +3107,15 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Her teacher's marking time.", "feedback": "Marking happens after she finishes. The missed step changes her own finish-time guess.", "correct": false, "sourceRefs": ["planning"] }
+                  {
+                    "id": "c",
+                    "text": "Her teacher's marking time.",
+                    "feedback": "Marking happens after she finishes. The missed step changes her own finish-time guess.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
                 ]
               },
               {
@@ -2371,7 +3152,15 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "5 hours.", "feedback": "That was the longest past job, not the typical one. The average of 3, 4 and 5 is 4 hours.", "correct": false, "sourceRefs": ["planning"] }
+                  {
+                    "id": "c",
+                    "text": "5 hours.",
+                    "feedback": "That was the longest past job, not the typical one. The average of 3, 4 and 5 is 4 hours.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 4,
@@ -2414,7 +3203,15 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Nothing else.", "feedback": "A poster needs more than drawing. Finding and printing images add time the plan left out.", "correct": false, "sourceRefs": ["planning"] }
+                  {
+                    "id": "c",
+                    "text": "Nothing else.",
+                    "feedback": "A poster needs more than drawing. Finding and printing images add time the plan left out.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
                 ]
               },
               {
@@ -2440,7 +3237,18 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Printing is too small to matter.", "feedback": "It can look like a quick last step. Past tasks show such work still takes time.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
+                  {
+                    "id": "c",
+                    "text": "Printing is too small to matter.",
+                    "feedback": "It can look like a quick last step. Past tasks show such work still takes time.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m2"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A smooth plan makes extra steps free.",
@@ -2490,7 +3298,18 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Would take with no snags.", "feedback": "A snag-free time is just another hopeful guess. The real time old tasks took includes the delays.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] }
+                  {
+                    "id": "c",
+                    "text": "Would take with no snags.",
+                    "feedback": "A snag-free time is just another hopeful guess. The real time old tasks took includes the delays.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
                 ]
               },
               {
@@ -2516,7 +3335,18 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "The new plan makes the past times useless.", "feedback": "The ready art is a real change. Yet past times can still flag missed tasks such as print.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
+                  {
+                    "id": "c",
+                    "text": "The new plan makes the past times useless.",
+                    "feedback": "The ready art is a real change. Yet past times can still flag missed tasks such as print.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "planning-fallacy-m2"
+                    ],
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Ready art makes other steps disappear.",
@@ -2565,7 +3395,15 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Longer plans always finish late.", "feedback": "The idea is not about plan length. It is about guessing too little time for our own task.", "correct": false, "sourceRefs": ["planning"] }
+                  {
+                    "id": "c",
+                    "text": "Longer plans always finish late.",
+                    "feedback": "The idea is not about plan length. It is about guessing too little time for our own task.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "planning"
+                    ]
+                  }
                 ]
               }
             ],
@@ -2721,7 +3559,19 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "It gets erased.", "feedback": "Sleep does not wipe new memories. In some studies, sleep after learning helps people recall more later.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  {
+                    "id": "c",
+                    "text": "It gets erased.",
+                    "feedback": "Sleep does not wipe new memories. In some studies, sleep after learning helps people recall more later.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-memory-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  }
                 ]
               },
               {
@@ -2761,7 +3611,16 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Waking up next morning.", "feedback": "Waking is not when learning starts. Reading the chapter is the first step that puts it in memory.", "correct": false, "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  {
+                    "id": "c",
+                    "text": "Waking up next morning.",
+                    "feedback": "Waking is not when learning starts. Reading the chapter is the first step that puts it in memory.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  }
                 ]
               },
               {
@@ -2805,8 +3664,12 @@
                     "text": "About the same.",
                     "feedback": "Both groups learned pairs, but after 12 hours this study found higher recall after sleep.",
                     "correct": false,
-                    "misconceptionIds": ["sleep-memory-m1"],
-                    "sourceRefs": ["sleep-study"]
+                    "misconceptionIds": [
+                      "sleep-memory-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep-study"
+                    ]
                   }
                 ],
                 "answer": {
@@ -2853,7 +3716,16 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Forgetting it overnight.", "feedback": "Losing the poem would make recall worse, not better. The step after learning that helps it last is called consolidation.", "correct": false, "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  {
+                    "id": "c",
+                    "text": "Forgetting it overnight.",
+                    "feedback": "Losing the poem would make recall worse, not better. The step after learning that helps it last is called consolidation.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  }
                 ]
               },
               {
@@ -2881,7 +3753,19 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Sleep teaches the skill without practice.", "feedback": "Better recall after sleep can look like new learning. The skill was first learned during practice.", "correct": false, "misconceptionIds": ["sleep-memory-m2"], "sourceRefs": ["sleep-review", "sleep-rest"] },
+                  {
+                    "id": "c",
+                    "text": "Sleep teaches the skill without practice.",
+                    "feedback": "Better recall after sleep can look like new learning. The skill was first learned during practice.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-memory-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Sleep plays no part; it is all practice.",
@@ -2934,7 +3818,16 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Forgetting.", "feedback": "A memory that gets steadier is not fading. The later step that firms it up is consolidation.", "correct": false, "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  {
+                    "id": "c",
+                    "text": "Forgetting.",
+                    "feedback": "A memory that gets steadier is not fading. The later step that firms it up is consolidation.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  }
                 ]
               },
               {
@@ -2961,7 +3854,19 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Awake rest does nothing.", "feedback": "Sleep has a known role, so this seems likely. Waking rest can help as well.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] },
+                  {
+                    "id": "c",
+                    "text": "Awake rest does nothing.",
+                    "feedback": "Sleep has a known role, so this seems likely. Waking rest can help as well.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-memory-m1"
+                    ],
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Only sleep can change a memory.",
@@ -3014,7 +3919,19 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Sleep makes study time pointless.", "feedback": "Sleep helps keep what was studied, so study still matters. It works on learning that already happened.", "correct": false, "misconceptionIds": ["sleep-memory-m2"], "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  {
+                    "id": "c",
+                    "text": "Sleep makes study time pointless.",
+                    "feedback": "Sleep helps keep what was studied, so study still matters. It works on learning that already happened.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "sleep-memory-m2"
+                    ],
+                    "sourceRefs": [
+                      "sleep-review",
+                      "sleep-rest"
+                    ]
+                  }
                 ]
               }
             ],
@@ -3194,7 +4111,20 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "He knows every post will be dull.", "feedback": "If every post were sure to be dull, there would be little pull to swipe. Not knowing is the draw.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  {
+                    "id": "c",
+                    "text": "He knows every post will be dull.",
+                    "feedback": "If every post were sure to be dull, there would be little pull to swipe. Not knowing is the draw.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "variable-rewards-m1"
+                    ],
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  }
                 ]
               },
               {
@@ -3223,7 +4153,20 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Likes come on a fixed timer.", "feedback": "A steady clock would be easy to predict. Likes in the case arrive at uneven times.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  {
+                    "id": "c",
+                    "text": "Likes come on a fixed timer.",
+                    "feedback": "A steady clock would be easy to predict. Likes in the case arrive at uneven times.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "variable-rewards-m1"
+                    ],
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Every check brings a like.",
@@ -3285,8 +4228,12 @@
                     "text": "20%, the same as one swipe.",
                     "feedback": "Each swipe has a 20% chance, but five independent chances raise the chance of at least one clip to about 67%.",
                     "correct": false,
-                    "misconceptionIds": ["variable-rewards-m1"],
-                    "sourceRefs": ["apa-learning"]
+                    "misconceptionIds": [
+                      "variable-rewards-m1"
+                    ],
+                    "sourceRefs": [
+                      "apa-learning"
+                    ]
                   }
                 ],
                 "answer": {
@@ -3336,7 +4283,17 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "The reward grows each time.", "feedback": "Variable is about when the reward comes, not steady growth. The timing or count of payoffs can change.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  {
+                    "id": "c",
+                    "text": "The reward grows each time.",
+                    "feedback": "Variable is about when the reward comes, not steady growth. The timing or count of payoffs can change.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  }
                 ]
               },
               {
@@ -3365,7 +4322,20 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Every feed pays out on a fixed count.", "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  {
+                    "id": "c",
+                    "text": "Every feed pays out on a fixed count.",
+                    "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "variable-rewards-m1"
+                    ],
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "All users get rewards at the same swipe.",
@@ -3422,7 +4392,17 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Fixed at every fifth check.", "feedback": "A reward on every fifth check is a set pattern. Here the reward comes after some checks, at no set gap.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  {
+                    "id": "c",
+                    "text": "Fixed at every fifth check.",
+                    "feedback": "A reward on every fifth check is a set pattern. Here the reward comes after some checks, at no set gap.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  }
                 ]
               },
               {
@@ -3452,7 +4432,20 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Everyone opens feeds for one reason.", "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.", "correct": false, "misconceptionIds": ["variable-rewards-m2"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  {
+                    "id": "c",
+                    "text": "Everyone opens feeds for one reason.",
+                    "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "variable-rewards-m2"
+                    ],
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Surprise rewards are the only reason.",
@@ -3509,7 +4502,17 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Casinos build feeds.", "feedback": "The comparison is about the reward pattern, not who builds feeds. Uncertain payoffs invite another try in both.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  {
+                    "id": "c",
+                    "text": "Casinos build feeds.",
+                    "feedback": "The comparison is about the reward pattern, not who builds feeds. Uncertain payoffs invite another try in both.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "apa-learning",
+                      "social-reward",
+                      "scroll-review"
+                    ]
+                  }
                 ]
               }
             ],
@@ -3673,7 +4676,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Saying it makes revision certain.", "feedback": "The cue is clear, so action may be more likely. A plan cannot make it certain.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  {
+                    "id": "c",
+                    "text": "Saying it makes revision certain.",
+                    "feedback": "The cue is clear, so action may be more likely. A plan cannot make it certain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m2"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "There is no set moment.",
@@ -3726,7 +4741,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "A teacher's deadline.", "feedback": "A deadline names an end, not the moment to start. An if-then plan links a cue to a chosen action.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  {
+                    "id": "c",
+                    "text": "A teacher's deadline.",
+                    "feedback": "A deadline names an end, not the moment to start. An if-then plan links a cue to a chosen action.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m1"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  }
                 ]
               },
               {
@@ -3770,8 +4797,12 @@
                     "text": "About zero; no effect.",
                     "feedback": "A bare goal may not trigger action. Across these tests, specifying a cue and action had a positive average effect.",
                     "correct": false,
-                    "misconceptionIds": ["if-then-plans-m1"],
-                    "sourceRefs": ["plan-meta"]
+                    "misconceptionIds": [
+                      "if-then-plans-m1"
+                    ],
+                    "sourceRefs": [
+                      "plan-meta"
+                    ]
                   }
                 ],
                 "answer": {
@@ -3818,7 +4849,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Feeling inspired.", "feedback": "Waiting for a mood leaves the start open. Her plan names a cue: sitting down at the desk.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  {
+                    "id": "c",
+                    "text": "Feeling inspired.",
+                    "feedback": "Waiting for a mood leaves the start open. Her plan names a cue: sitting down at the desk.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m1"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  }
                 ]
               },
               {
@@ -3845,7 +4888,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "A vague cue works as well as a clear one.", "feedback": "Both sound like plans. A clear event is easier to spot when it is time to act.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  {
+                    "id": "c",
+                    "text": "A vague cue works as well as a clear one.",
+                    "feedback": "Both sound like plans. A clear event is easier to spot when it is time to act.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m1"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "All if-then plans work the same.",
@@ -3898,7 +4953,16 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Reward after the task.", "feedback": "A plan may include a reward, but the then part names the action to take when the cue appears.", "correct": false, "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  {
+                    "id": "c",
+                    "text": "Reward after the task.",
+                    "feedback": "A plan may include a reward, but the then part names the action to take when the cue appears.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  }
                 ]
               },
               {
@@ -3926,7 +4990,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Writing it makes the cue impossible to miss.", "feedback": "A written cue is easier to recall. Busy days can still hide or change it.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  {
+                    "id": "c",
+                    "text": "Writing it makes the cue impossible to miss.",
+                    "feedback": "A written cue is easier to recall. Busy days can still hide or change it.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m2"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A written plan controls the future.",
@@ -3979,7 +5055,19 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "It promises you will always do it.", "feedback": "A cue can be missed or changed, so it is no promise. It links a named moment with a chosen act.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  {
+                    "id": "c",
+                    "text": "It promises you will always do it.",
+                    "feedback": "A cue can be missed or changed, so it is no promise. It links a named moment with a chosen act.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "if-then-plans-m2"
+                    ],
+                    "sourceRefs": [
+                      "konstanz-plan",
+                      "plan-study"
+                    ]
+                  }
                 ]
               }
             ],
@@ -4145,7 +5233,15 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "How much it cost.", "feedback": "The price is not the point here. The effect is about how many people she expects noticed the shirt.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  {
+                    "id": "c",
+                    "text": "How much it cost.",
+                    "feedback": "The price is not the point here. The effect is about how many people she expects noticed the shirt.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  }
                 ]
               },
               {
@@ -4171,7 +5267,18 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Every listener must remember.", "feedback": "The slip stands out to Asha. Other listeners may have paid it little mind.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
+                  {
+                    "id": "c",
+                    "text": "Every listener must remember.",
+                    "feedback": "The slip stands out to Asha. Other listeners may have paid it little mind.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "spotlight-effect-m1"
+                    ],
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Nobody could have noticed.",
@@ -4220,7 +5327,15 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "About 80%.", "feedback": "That is far above the result. About 23% named the image, half of what the wearers had guessed.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  {
+                    "id": "c",
+                    "text": "About 80%.",
+                    "feedback": "That is far above the result. About 23% named the image, half of what the wearers had guessed.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 23,
@@ -4263,7 +5378,15 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Stage lights making us nervous.", "feedback": "The name borrows from stage lights, but the effect is about overrating how much others notice us.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  {
+                    "id": "c",
+                    "text": "Stage lights making us nervous.",
+                    "feedback": "The name borrows from stage lights, but the effect is about overrating how much others notice us.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  }
                 ]
               },
               {
@@ -4288,7 +5411,18 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "A slip stands out the same to everyone.", "feedback": "The maker felt every detail. Others may have been busy with their own thoughts.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
+                  {
+                    "id": "c",
+                    "text": "A slip stands out the same to everyone.",
+                    "feedback": "The maker felt every detail. Others may have been busy with their own thoughts.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "spotlight-effect-m1"
+                    ],
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Others have the same inside view.",
@@ -4337,7 +5471,15 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Height.", "feedback": "The effect is not about how tall people are. It is about a guess of how much others pay attention.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  {
+                    "id": "c",
+                    "text": "Height.",
+                    "feedback": "The effect is not about how tall people are. It is about a guess of how much others pay attention.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  }
                 ]
               },
               {
@@ -4363,7 +5505,18 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "The guess is always too high.", "feedback": "The group trend can sound like a fixed law. Any one guess may still be right.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] },
+                  {
+                    "id": "c",
+                    "text": "The guess is always too high.",
+                    "feedback": "The group trend can sound like a fixed law. Any one guess may still be right.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "spotlight-effect-m2"
+                    ],
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Everyone always misses it.",
@@ -4412,7 +5565,18 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Nobody ever notices me.", "feedback": "Some people do notice. The research finds that fewer notice than we guess, not that nobody does.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] }
+                  {
+                    "id": "c",
+                    "text": "Nobody ever notices me.",
+                    "feedback": "Some people do notice. The research finds that fewer notice than we guess, not that nobody does.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "spotlight-effect-m2"
+                    ],
+                    "sourceRefs": [
+                      "spotlight-paper"
+                    ]
+                  }
                 ]
               }
             ],

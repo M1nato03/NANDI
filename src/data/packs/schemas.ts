@@ -10,7 +10,7 @@ const semver = v.pipe(v.string(), v.regex(/^\d+\.\d+\.\d+$/));
 const sourceRef = v.strictObject({ id: text, title: text, publisher: text, year: integer, url: v.pipe(v.string(), v.url()), asOf: v.optional(v.pipe(v.string(), v.isoDate())) });
 const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)) });
 const option = v.strictObject({ id: text, text, feedback: text, correct: v.boolean(), misconceptionIds: v.optional(strings), sourceRefs: v.pipe(strings, v.minLength(1)) });
-const itemBase = { id: text, conceptId: text, stem: text, difficultySeed: v.union([v.picklist([1, 2, 3]), v.pipe(v.number(), v.minValue(400), v.maxValue(2400))]), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
+const itemBase = { id: text, conceptId: text, step: v.optional(text), stem: text, difficultySeed: v.union([v.picklist([1, 2, 3]), v.pipe(v.number(), v.minValue(400), v.maxValue(2400))]), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
 const choice = (type: 'predict' | 'choose' | 'scenario' | 'fill-the-step' | 'true-not-quite' | 'explain-it-back') => v.strictObject({ ...itemBase, type: v.literal(type) });
 export const topicItemSchema = v.variant('type', [
   choice('predict'), choice('choose'), v.strictObject({ ...itemBase, type: v.literal('why'), task: v.optional(v.picklist(['reason', 'spot-the-flaw'])) }),
@@ -19,12 +19,29 @@ export const topicItemSchema = v.variant('type', [
   v.strictObject({ ...itemBase, type: v.literal('match'), answer: v.pipe(v.array(v.strictObject({ left: text, right: text })), v.minLength(2)) }),
   v.strictObject({ ...itemBase, type: v.literal('estimate'), answer: v.strictObject({ value: v.number(), min: v.number(), max: v.number(), unit: text }) }),
 ]);
+// Spec 14: a step teaches one small idea before any question on it (hook guess, teach card, worked example, guided tries).
+const lessonOption = v.strictObject({ id: text, text, correct: v.boolean(), feedback: text });
+const lessonOptions = v.pipe(v.array(lessonOption), v.minLength(2), v.maxLength(3));
+export const stepVisualSchema = v.variant('kind', [
+  v.strictObject({ kind: v.literal('flow'), nodes: v.pipe(strings, v.minLength(2), v.maxLength(4)) }),
+  v.strictObject({ kind: v.literal('compare'), left: v.strictObject({ title: text, lines: v.pipe(strings, v.minLength(1), v.maxLength(3)) }), right: v.strictObject({ title: text, lines: v.pipe(strings, v.minLength(1), v.maxLength(3)) }) }),
+  v.strictObject({ kind: v.literal('scale'), label: text, min: text, max: text, marks: v.pipe(v.array(v.strictObject({ at: v.pipe(v.number(), v.minValue(0), v.maxValue(100)), text })), v.minLength(1), v.maxLength(3)) }),
+]);
+export const topicStepSchema = v.strictObject({
+  id: text, title: text, claimId: text, sourceRefs: v.pipe(strings, v.minLength(1)),
+  hook: v.strictObject({ stem: text, options: lessonOptions }),
+  teach: text, visual: stepVisualSchema,
+  example: v.strictObject({ parts: v.pipe(strings, v.minLength(2), v.maxLength(5)), spot: text, feedback: text }),
+  guided: v.pipe(v.array(v.strictObject({ stem: text, hint: text, options: lessonOptions })), v.minLength(1), v.maxLength(2)),
+  takeaway: text,
+});
 export const topicConceptSchema = v.strictObject({
   id: text, title: text, prerequisites: strings,
   hook: v.pipe(text, v.maxLength(280)), hookSourceRefs: v.pipe(strings, v.minLength(1)),
   rule: v.pipe(text, v.maxLength(280)), ruleSourceRefs: v.pipe(strings, v.minLength(1)),
   claims: v.pipe(v.array(claim), v.minLength(1)),
   items: v.pipe(v.array(topicItemSchema), v.minLength(1)),
+  steps: v.optional(v.pipe(v.array(topicStepSchema), v.minLength(2), v.maxLength(3))),
   misconceptions: v.array(v.strictObject({ id: text, name: text, correction: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
   sources: v.pipe(v.array(sourceRef), v.minLength(1)),
   quest: v.optional(v.strictObject({ title: text, detail: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
@@ -140,3 +157,5 @@ export type TrackUnit = v.InferOutput<typeof trackUnitSchema>;
 export type TopicPack = v.InferOutput<typeof topicPackSchema>;
 export type TopicConcept = v.InferOutput<typeof topicConceptSchema>;
 export type TopicItem = v.InferOutput<typeof topicItemSchema>;
+export type TopicStep = v.InferOutput<typeof topicStepSchema>;
+export type StepVisual = v.InferOutput<typeof stepVisualSchema>;
