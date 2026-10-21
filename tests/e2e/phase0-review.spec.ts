@@ -11,14 +11,13 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
     for (const name of tabs) {
       await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
       await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
-      const controls = page.locator('button, a, select, input');
-      for (let index = 0; index < await controls.count(); index++) {
-        const control = controls.nth(index);
-        if (!await control.isVisible()) continue;
-        const box = await control.boundingBox();
-        expect(box?.width, `${scheme} ${name}: ${await control.evaluate(node => node.outerHTML)} width`).toBeGreaterThanOrEqual(44);
-        expect(box?.height, `${scheme} ${name}: ${await control.evaluate(node => node.outerHTML)} height`).toBeGreaterThanOrEqual(44);
-      }
+      // One pass in the page (a round trip per control made this test slow enough to time out under load).
+      const tooSmall = await page.locator('button, a, select, input').evaluateAll(nodes => nodes.flatMap(node => {
+        const box = node.getBoundingClientRect();
+        const visible = box.width > 0 && box.height > 0 && getComputedStyle(node).visibility !== 'hidden';
+        return visible && (box.width < 44 || box.height < 44) ? [`${Math.round(box.width)}x${Math.round(box.height)} ${node.outerHTML}`] : [];
+      }));
+      expect(tooSmall, `${scheme} ${name}: controls under 44 px`).toEqual([]);
       expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } } }).document.documentElement.scrollWidth), `${scheme} ${name} horizontal scroll`).toBeLessThanOrEqual(page.viewportSize()!.width);
     }
   }
