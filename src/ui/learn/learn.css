@@ -203,3 +203,39 @@
 .learn-today-status button { --edge: color-mix(in srgb, var(--area-learn) 45%, var(--surface-3)); }
 .learn-check-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .learn-check-pair button { min-height: 48px; padding: 10px 8px; }
+
+/* Spec 14: a step lesson (hook, teach card with a diagram, show me, guided tries). */
+.step-lesson { display: grid; gap: 14px; min-width: 0; }
+.step-dots { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.step-dots li { flex: 1; height: 6px; border-radius: 999px; background: var(--surface-3); }
+.step-dots li.done { background: var(--area-learn); }
+.step-dots li.now { background: color-mix(in srgb, var(--area-learn) 55%, var(--surface-3)); }
+.step-teach { display: grid; gap: 12px; padding: 18px; border-radius: 22px; background: color-mix(in srgb, var(--area-learn) 10%, var(--surface-1)); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--area-learn) 35%, transparent); }
+.learn-drop .step-teach h2 { margin: 0; }
+.learn-drop .step-teach-text, .learn-drop .step-takeaway { margin: 0; font-size: 18px; line-height: 27px; color: var(--ink); }
+.step-continue { width: 100%; }
+.step-visual { min-width: 0; }
+.step-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.step-node { padding: 8px 12px; border-radius: 12px; background: var(--surface-1); box-shadow: inset 0 0 0 2px var(--area-learn), 0 3px 0 var(--edge-learn, var(--area-learn)); font-weight: 700; color: var(--ink); }
+.step-arrow { color: var(--area-learn); font-weight: 800; }
+.step-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.step-side { display: grid; gap: 4px; align-content: start; padding: 10px 12px; border-radius: 14px; background: var(--surface-1); box-shadow: inset 0 0 0 2px var(--edge-soft, var(--line)); }
+.step-side strong { color: var(--area-learn); }
+.step-side span { font-size: 14px; color: var(--ink-2); }
+.step-scale { display: grid; gap: 6px; }
+.step-scale-label { font-size: 13px; color: var(--ink-2); }
+.step-scale-bar { position: relative; height: 14px; margin: 22px 0 0; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--area-learn) 25%, var(--surface-3)), var(--area-learn)); }
+.step-scale-mark { position: absolute; top: -22px; transform: translateX(-50%); display: grid; justify-items: center; white-space: nowrap; }
+.step-scale-mark b { font-size: 12px; color: var(--ink); }
+.step-scale-mark i { width: 2px; height: 30px; background: var(--ink); opacity: .6; }
+.step-scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+.learn-drop .step-example { margin: 0; font-size: 18px; line-height: 2.1; }
+.step-part { display: inline; min-height: 0; margin: 0 1px; padding: 4px 6px; border-radius: 8px; background: var(--surface-2); color: var(--ink); font: inherit; box-shadow: inset 0 0 0 2px var(--edge-soft, var(--line)); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.step-part.right { background: color-mix(in srgb, var(--area-learn) 25%, var(--surface-1)); box-shadow: inset 0 0 0 2px var(--area-learn); }
+.step-part.wrong { background: color-mix(in srgb, var(--area-move) 18%, var(--surface-1)); box-shadow: inset 0 0 0 2px var(--area-move); }
+.step-part:disabled { opacity: 1; }
+.step-hint-button { justify-self: start; }
+.learn-drop .step-hint { margin: 0; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, #e9a23b 14%, var(--surface-1)); color: var(--ink); }
+.step-today { display: grid; gap: 10px; }
+.step-again { display: grid; gap: 10px; margin: 8px 0; padding: 12px; border-radius: 14px; background: var(--surface-1); }
+.step-again-button { justify-self: start; }

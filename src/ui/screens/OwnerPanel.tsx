@@ -5,6 +5,8 @@ import { hashPin, ownerMetrics, validPin } from '../../core/owner/metrics';
 import { readPinHash, savePinHash } from '../../data/repos/owner';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { dayKey } from '../../core/time';
+import { lessonMetrics } from '../../core/learn/steps';
+import { catalogFor, topics } from '../learn/flow';
 import './owner.css';
 
 const UNLOCK_KEY = 'nandi.owner.unlocked';
@@ -48,6 +50,8 @@ function OwnerNumbers() {
   const economy = deriveEconomy(source.ledger, undefined, source.settings, today);
   const maxFacts = Math.max(1, ...m.days.map(point => point.facts));
   const maxOpens = Math.max(1, ...m.days.map(point => point.opens));
+  const stepById = new Map(catalogFor(topics.map(pack => pack.body.topic.id)).flatMap(concept => concept.items.map(item => [item.id, item.step] as const)));
+  const lessons = lessonMetrics(source.ledger, itemId => stepById.get(itemId));
   const pct = (part: number, whole: number) => whole ? `${Math.round(part / whole * 100)}%` : '—';
   const tiles: [string, string][] = [
     ['Opens today', String(m.opensToday)], ['Opens a day (7 d)', String(m.opensAvg7)],
@@ -60,6 +64,8 @@ function OwnerNumbers() {
     ['Recall at 30 days', `${pct(m.retention.recalled30, m.retention.checked30)} (${m.retention.checked30})`],
     ['App pause: chose NANDI', String(m.pauseOpenings)], ['App pause: went anyway', String(m.pauseWentAnyway)],
     ['Rest days banked', String(economy.streak.restDays)], ['Errors saved', String(m.errors)],
+    ['Lessons taught', String(lessons.lessons)], ['Guided first try (aim 85–95%)', lessons.guidedFirstTry === null ? '—' : `${lessons.guidedFirstTry}% (${lessons.guidedCount})`],
+    ['Your turn right (aim ~80%)', lessons.yourTurn === null ? '—' : `${lessons.yourTurn}% (${lessons.yourTurnCount})`],
   ];
   return <section className="screen owner-panel" aria-label="Owner panel">
     <p className="eyebrow">Owner</p><h1>How NANDI is doing</h1>

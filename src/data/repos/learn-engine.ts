@@ -55,3 +55,14 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
       updatedAt: input.now, deleted: 0, deviceId: input.deviceId });
   }));
 }
+
+/** Spec 14: a taught step is one ledger fact, written with the drop moving past its lesson entry. */
+export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; spotCorrect: boolean; guidedFirstTry: boolean[] }
+export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResult, deviceId: string, now: number): Promise<void> {
+  const id = `learn-lesson:${result.stepId}`;
+  await trackWrite(() => db.transaction('rw', db.ledger, db.learnDrops, async () => {
+    if (!await db.ledger.get(id)) await db.ledger.add({ id, mode: 'learn', kind: 'learn-lesson', refId: result.stepId, dayKey: dayKey(now),
+      inputs: { conceptId: result.conceptId, dropId: result.dropId, hookCorrect: result.hookCorrect, spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
+    await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
+  }));
+}

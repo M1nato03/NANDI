@@ -76,6 +76,18 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       const moduleTypes = new Set<string>(module.concepts.flatMap(concept => concept.items.map(item => item.type)));
       for (const type of allTypes) if (!moduleTypes.has(type)) errors.push(`${module.id}: missing item type ${type}`);
     }
+    {
+      // Spec 14: same-shaped teach cards would undo the point; vary how teach cards, hooks and examples open.
+      const steps = pack.body.modules.flatMap(module => module.concepts.flatMap(concept => concept.steps ?? []));
+      const openers = (label: string, texts: string[], size: number, max: number) => {
+        const counts = new Map<string, number>();
+        for (const value of texts) { const key = words(value).slice(0, size).join(' '); counts.set(key, (counts.get(key) ?? 0) + 1); }
+        for (const [key, count] of counts) if (count > max) errors.push(`topic: ${count} step ${label}s open with "${key}"`);
+      };
+      openers('teach card', steps.map(step => step.teach), 3, 2);
+      openers('hook', steps.map(step => step.hook.stem), 3, 2);
+      openers('example', steps.map(step => step.example.parts.join(' ')), 2, 2);
+    }
     for (const module of pack.body.modules) for (const concept of module.concepts) {
       const where = concept.id;
       if (options.editorial && concept.items.length !== 8) errors.push(`${where}: needs exactly 8 items`);
