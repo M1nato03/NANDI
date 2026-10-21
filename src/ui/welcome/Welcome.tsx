@@ -5,6 +5,7 @@ import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time/dayKey';
 import { logHasActivity } from '../../core/guard';
 import { firstAction, GOALS, toggleGoal, WELCOME_BEDTIME, type Goal } from '../../core/welcome';
+import { isAfterBedtime } from '../../core/time/nightTimeline';
 import { Cast } from '../cast/Cast';
 import { recordError } from '../errorRing';
 import { go } from '../shell/router';
@@ -49,7 +50,8 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [bedtime, setBedtime] = useState(WELCOME_BEDTIME);
   const [saving, setSaving] = useState(false);
-  const action = firstAction(goals);
+  const [openedAt] = useState(() => Date.now());
+  const action = firstAction(goals, isAfterBedtime(openedAt, bedtime));
   const finish = async () => {
     setSaving(true);
     try {

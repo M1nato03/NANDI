@@ -40,6 +40,14 @@ describe('planner persistence', () => {
     expect((await db.settings.get('planner.bedtimeDays'))?.value).toBe(0);
     expect((await db.dailyLog.get('2026-10-07'))?.lightsOutAt).toBe(at(7, 23));
   });
+  it('a lights-out at 04:05 counts for the night just gone, as a late night', async () => {
+    await repos.recordLightsOut(at(6, 4, 5));
+    expect(await db.dailyLog.get('2026-10-06')).toBeUndefined();
+    const night = await db.dailyLog.get('2026-10-05');
+    expect(night?.lightsOutAt).toBe(at(6, 4, 5));
+    expect(night!.bedtimeTarget!).toBeLessThan(at(6, 4, 5));
+    expect((await db.ledger.get('lightsout:2026-10-05'))?.inputs.metTarget).toBe(false);
+  });
   it('counts a missing night in the three-night bedtime window', async () => {
     await repos.recordLightsOut(at(5, 23));
     await repos.recordLightsOut(at(7, 23));

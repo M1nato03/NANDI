@@ -146,7 +146,11 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     },
     async recordLightsOut(now: number): Promise<DailyLogRow> {
       return mutation(async () => {
-        const key = dayKey(now);
+        // A check-in after 04:00 but before noon still belongs to the night just gone, not to tonight
+        // (otherwise a 04:05 lights-out is compared with tomorrow's bedtime and counts as early).
+        const hour = new Date(now).getHours();
+        const nightAt = hour >= 4 && hour < 12 ? now - 12 * 3_600_000 : now;
+        const key = dayKey(nightAt);
         const previous = await db.dailyLog.get(key);
         const factId = `lightsout:${key}`;
         if (previous?.lightsOutAt != null) {
@@ -157,7 +161,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const goalRow = await db.settings.get('planner.goalBedtime');
         let target = typeof targetRow?.value === 'string' ? targetRow.value : RULES.night.defaultBedtime;
         const goal = typeof goalRow?.value === 'string' ? goalRow.value : RULES.night.goalBedtime;
-        const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(now, target), updatedAt: now, deleted: 0, deviceId };
+        const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(nightAt, target), updatedAt: now, deleted: 0, deviceId };
         await db.dailyLog.put(row);
         await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= row.bedtimeTarget! }, updatedAt: now, deleted: 0, deviceId });
         const shift = (from: string, days: number) => { const date = new Date(`${from}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
