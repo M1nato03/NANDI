@@ -1,5 +1,6 @@
 import type { LedgerRow } from '../../data/types';
 import { AREAS, deriveCourtyard, type AreaId, type FriendName } from './courtyard';
+import { storyGoodThings } from '../soft/soft';
 
 type Band = 'one' | 'some' | 'many';
 type Lines = Record<Band, readonly [string, string]>;
@@ -38,9 +39,12 @@ const LINES: Record<AreaId, Lines> = {
   },
 };
 const QUIET = ['A quiet week in the courtyard. The friends rested and kept your place warm.', 'The courtyard had a slow week. Everyone is still here, ready when you are.'] as const;
+// Spec 15: soft days get their own page. {day} is the weekday of a single soft day; {n} the count.
+const SOFT_ONE = ['On {day} you were tired and still lit a lantern.', 'On {day} you went gently, and Kachhua lit a lantern for it.'] as const;
+const SOFT_MANY = ['{n} lanterns this week. Kachhua kept every one glowing.', '{n} soft days this week, and a lantern for each. You kept showing up.'] as const;
 const CLOSE = ['That was your week. Same courtyard, a little more lived in.', 'Week done. The friends are saving a spot for next week.'] as const;
 
-export interface StoryPage { kind: 'cover' | 'area' | 'quiet' | 'close'; friend?: FriendName; area?: AreaId; stage?: number; days?: number; text: string }
+export interface StoryPage { kind: 'cover' | 'area' | 'quiet' | 'soft' | 'close'; friend?: FriendName; area?: AreaId; stage?: number; days?: number; text: string }
 export interface Storybook { weekStart: string; weekEnd: string; pages: StoryPage[]; practisedAreas: number }
 
 const addDays = (key: string, count: number) => new Date(Date.parse(`${key}T12:00:00Z`) + count * 86_400_000).toISOString().slice(0, 10);
@@ -56,10 +60,19 @@ export function buildStorybook(facts: readonly LedgerRow[], weekStart: string): 
   const state = deriveCourtyard(facts, weekEnd, weekStart);
   const practised = state.areas.filter(area => area.week > 0).sort((a, b) => b.week - a.week);
   const pages: StoryPage[] = [{ kind: 'cover', text: `${short(weekStart)} – ${short(weekEnd)}` }];
-  if (!practised.length) pages.push({ kind: 'quiet', friend: 'Kachhua', text: pick(QUIET, weekStart) });
+  const hasSoft = facts.some(fact => !fact.deleted && fact.kind === 'soft' && fact.dayKey >= weekStart && fact.dayKey <= weekEnd);
+  if (!practised.length && !hasSoft) pages.push({ kind: 'quiet', friend: 'Kachhua', text: pick(QUIET, weekStart) });
   for (const area of practised) pages.push({ kind: 'area', friend: area.friend, area: area.id, stage: area.stage, days: area.week,
     text: pick(LINES[area.id][band(area.week)], weekStart + area.id).replace('{n}', String(area.week)) });
-  if (practised.length) pages.push({ kind: 'close', text: pick(CLOSE, weekStart) });
+  const softDays = [...new Set(facts.filter(fact => !fact.deleted && fact.kind === 'soft' && fact.dayKey >= weekStart && fact.dayKey <= weekEnd).map(fact => fact.dayKey))].sort();
+  if (softDays.length) {
+    const weekday = new Date(`${softDays[0]}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'UTC' });
+    const kept = storyGoodThings(facts, weekStart, weekEnd);
+    pages.push({ kind: 'soft', friend: 'Kachhua', days: softDays.length,
+      text: (softDays.length === 1 ? pick(SOFT_ONE, weekStart) : pick(SOFT_MANY, weekStart)).replace('{day}', weekday).replace('{n}', String(softDays.length))
+        + (kept.length ? ` A good thing you kept: “${kept[0]}”` : '') });
+  }
+  if (practised.length || softDays.length) pages.push({ kind: 'close', text: pick(CLOSE, weekStart) });
   return { weekStart, weekEnd, pages, practisedAreas: practised.length };
 }
 

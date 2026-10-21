@@ -33,19 +33,22 @@ export function areaOf(fact: LedgerRow): AreaId | null {
   return null;
 }
 /** Ledger kinds worth reading for the courtyard (indexed query). */
-export const COURTYARD_KINDS = ['session', 'rest', 'done', 'lightsout', 'board', 'mystery', 'learn-retention', 'card', 'learn-answer', 'learn-drop', 'lesson'];
+export const COURTYARD_KINDS = ['session', 'rest', 'done', 'lightsout', 'board', 'mystery', 'learn-retention', 'card', 'learn-answer', 'learn-drop', 'lesson', 'soft'];
 
 export function stageFor(days: number): number { return STAGE_DAYS.filter(need => days >= need).length; }
 
 export interface AreaState { id: AreaId; friend: FriendName; label: string; practice: string; days: number; stage: number; today: boolean; week: number; nextAt: number | null; nextObject: string | null }
-export interface CourtyardState { areas: AreaState[]; activeDays: number; treeStage: number; todayCount: number }
+/** `lanterns`: spec 15 soft days, one per day a gentle thing was done (Kachhua's corner); they never go away. */
+export interface CourtyardState { areas: AreaState[]; activeDays: number; treeStage: number; todayCount: number; lanterns: number }
 
 /** Days per area, all time and in the week starting `weekFrom` (inclusive) up to `today`. */
 export function deriveCourtyard(facts: readonly LedgerRow[], today: string, weekFrom?: string): CourtyardState {
   const days = new Map<AreaId, Set<string>>(AREAS.map(area => [area.id, new Set()]));
   const active = new Set<string>();
+  const lanterns = new Set<string>();
   for (const fact of facts) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey) || fact.dayKey > today) continue;
+    if (fact.kind === 'soft' && !fact.deleted) lanterns.add(fact.dayKey);
     const area = areaOf(fact);
     if (!area) continue;
     days.get(area)!.add(fact.dayKey);
@@ -58,7 +61,7 @@ export function deriveCourtyard(facts: readonly LedgerRow[], today: string, week
       week: weekFrom ? [...set].filter(day => day >= weekFrom).length : 0,
       nextAt: stage < 5 ? STAGE_DAYS[stage]! : null, nextObject: stage < 5 ? area.objects[stage]! : null };
   });
-  return { areas, activeDays: active.size, treeStage: stageFor(active.size), todayCount: areas.filter(area => area.today).length };
+  return { areas, activeDays: active.size, treeStage: stageFor(active.size), todayCount: areas.filter(area => area.today).length, lanterns: lanterns.size };
 }
 
 const minutesOf = (clock: string) => { const [hour = 0, minute = 0] = clock.split(':').map(Number); return hour * 60 + minute; };

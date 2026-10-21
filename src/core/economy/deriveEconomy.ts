@@ -25,6 +25,8 @@ export function seasonIndex(day: string): number { return Math.max(0, seasonFor(
 export interface EconomyDay {
   dayKey: string; tasks: number; train: number; mind: number; weekly: number; quests: number;
   hatTrick: boolean; lightsOut: number; focus: number; total: number; mark: boolean; body: boolean; mindSlot: boolean;
+  /** Spec 15: XP from a soft day's gentle thing, and the fixed gift on the first marked day after a miss. */
+  soft: number; welcome: number;
 }
 export interface EconomyView {
   days: EconomyDay[]; totalXp: number; level: number; nextLevelXp: number;
@@ -106,9 +108,23 @@ export function deriveEconomy(
         }
         return sum + award * (rules.gamify.focusMultiplier - 1);
       }, 0) : 0;
-    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut,
-      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut,
-      mark: plannedTask || body || mindSlot, body, mindSlot });
+    // Spec 15: one gentle thing on a tired or low day keeps the day. It is never a Hat-trick slot.
+    const soft = rows.some(row => row.kind === 'soft') ? rules.soft.dayXp : 0;
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, welcome: 0,
+      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft,
+      mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
+  }
+  // Spec 15 D: the first marked day after an unmarked one (not a chosen weekly rest day) gets a fixed, announced gift.
+  let everMarked = false;
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i]!, before = days[i - 1];
+    const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
+    if (day.mark && before && !before.mark && everMarked && day.dayKey >= rules.soft.from) {
+      const weekday = new Date(atUtc(before.dayKey)).getUTCDay();
+      const restWeekday = value(settings, `economy.restWeekday:${weekStart(before.dayKey)}`) ?? value(settings, 'economy.restWeekday');
+      if (restWeekday !== weekday) { day.welcome = rules.soft.welcomeBackXp; day.total += day.welcome; }
+    }
+    if (day.mark) everMarked = true;
   }
   let totalXp = 0, level = 1, earnedFromXp = 0, levelShardBonus = 0;
   for (const day of days) {
