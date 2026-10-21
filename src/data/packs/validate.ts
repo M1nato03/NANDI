@@ -88,6 +88,12 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       openers('hook', steps.map(step => step.hook.stem), 3, 2);
       openers('example', steps.map(step => step.example.parts.join(' ')), 2, 2);
     }
+    {
+      // A topic moves to teach-first as a whole: once one idea has steps, every idea needs them.
+      const concepts = pack.body.modules.flatMap(module => module.concepts);
+      const stepped = concepts.filter(concept => concept.steps).length;
+      if (stepped > 0 && stepped < concepts.length) for (const concept of concepts) if (!concept.steps) errors.push(`${concept.id}: this topic teaches in steps, so this idea needs steps too`);
+    }
     for (const module of pack.body.modules) for (const concept of module.concepts) {
       const where = concept.id;
       if (options.editorial && concept.items.length !== 8) errors.push(`${where}: needs exactly 8 items`);
@@ -159,6 +165,13 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
           if (!concept.items.some(item => item.step === step.id)) errors.push(`${at}: needs at least one practice item`);
         }
         for (const item of concept.items) if (!item.step || !stepIds.has(item.step)) errors.push(`${item.id}: must be tagged to one step of ${where}`);
+        // Owner, 21 Oct: every question must test a different angle, so each step carries few questions and its own claim.
+        if (concept.claims.length < 3) errors.push(`${where}: a stepped idea needs at least 3 fact-checked claims`);
+        for (const step of concept.steps) {
+          const count = concept.items.filter(item => item.step === step.id).length;
+          if (count > 3) errors.push(`${where}.step.${step.id}: ${count} questions; at most 3 per step`);
+        }
+        if (new Set(concept.steps.map(step => step.claimId)).size !== concept.steps.length) errors.push(`${where}: each step must teach its own claim`);
       } else for (const item of concept.items) if (item.step) errors.push(`${item.id}: step tag without concept steps`);
       for (const item of concept.items) {
         if (ids.has(item.id)) errors.push(`${item.id}: duplicate item id`);
