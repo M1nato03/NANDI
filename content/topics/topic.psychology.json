@@ -64,11 +64,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "Each day after hostel dinner, Nikhil reaches for a notebook on the same desk. What might start the action?",
+                "stem": "Every night after hostel dinner, Nikhil sits at the same desk and picks up his notebook. What sets this off?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The familiar dinner-and-desk cue.",
+                    "text": "Dinner and the same desk.",
                     "feedback": "The repeated setting can bring back the learned act before he thinks much about a goal.",
                     "correct": true,
                     "sourceRefs": [
@@ -78,7 +78,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Reaching the same number of practice days as everyone else.",
+                    "text": "Hitting a fixed number of practice days.",
                     "feedback": "Repetition matters, so a fixed day target can sound useful. In this scene, the familiar desk is the cue that starts the action.",
                     "correct": false,
                     "misconceptionIds": [
@@ -104,11 +104,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "During exam week, Tara misses one usual evening sketch. What does habit research suggest about that single gap?",
+                "stem": "Tara sketches every evening, but skips one day in exam week. What happens to the habit?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One miss need not erase the learned link.",
+                    "text": "It is still there.",
                     "feedback": "In the study, an occasional missed chance did not make earlier habit growth vanish.",
                     "correct": true,
                     "sourceRefs": [
@@ -118,7 +118,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The whole habit must return to zero.",
+                    "text": "It drops back to zero.",
                     "feedback": "One gap can feel like a reset. The learned cue link can still be there the next day.",
                     "correct": false,
                     "misconceptionIds": [
@@ -129,7 +129,7 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "She must restart a 21-day count.", "feedback": "Lally's study found no fixed day count, and one miss did not undo earlier habit growth.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] }
+                  { "id": "c", "text": "She must start a 21-day count again.", "feedback": "Lally's study found no fixed day count, and one miss did not undo earlier habit growth.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] }
                 ]
               },
               {
@@ -144,7 +144,7 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "A coach says every habit forms in 21 days. In Lally’s study, people varied widely. About how many days was the median fitted time to near-full automaticity?",
+                "stem": "People say a habit takes 21 days. In a real study, about how many days did a typical habit take to feel automatic?",
                 "options": [
                   {
                     "id": "a",
@@ -190,11 +190,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "A student opens a music app after placing a bag on one hook. What is the likely cue in this example?",
+                "stem": "Riya hangs her bag on a hook, then opens a music app. She does this every day. What starts the app habit?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Seeing the bag on that hook.",
+                    "text": "Hanging the bag on the hook.",
                     "feedback": "The repeated place can become linked to the act even when the student's goal changes.",
                     "correct": true,
                     "sourceRefs": [
@@ -204,7 +204,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The student's goal to hear more music.",
+                    "text": "Wanting to hear more music.",
                     "feedback": "A goal can motivate app use, but the bag on the hook is the immediate cue that precedes this repeated action.",
                     "correct": false,
                     "misconceptionIds": [
@@ -215,7 +215,7 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "The song that plays once the app opens.", "feedback": "That music comes after the act, so it cannot start it. The bag on the hook comes first.", "correct": false, "sourceRefs": ["lally", "wood"] }
+                  { "id": "c", "text": "The song that plays after.", "feedback": "That music comes after the act, so it cannot start it. The bag on the hook comes first.", "correct": false, "sourceRefs": ["lally", "wood"] }
                 ]
               },
               {
@@ -231,11 +231,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "A student keeps the same goal after moving rooms, yet starts a practiced action less often. Why could the move matter?",
+                "stem": "Arjun moves to a new room. He still wants to practise, but he does it less. Why?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The old room’s cue may be absent.",
+                    "text": "The old room's cue is gone.",
                     "feedback": "The repeated setting can trigger the action; a new room may not provide that learned cue.",
                     "correct": true,
                     "sourceRefs": [
@@ -243,10 +243,10 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "A strong goal should work just as well in any room.", "feedback": "The goal stays the same, so this feels right. The old cue may be gone.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] },
+                  { "id": "c", "text": "A strong goal works in any room.", "feedback": "The goal stays the same, so this feels right. The old cue may be gone.", "correct": false, "misconceptionIds": ["habits-m3"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
-                    "text": "The goal alone can recreate the old room cue in any new room.",
+                    "text": "The goal alone brings back the old cue.",
                     "feedback": "The goal is still there, but it does not bring back the old room cue on its own.",
                     "correct": false,
                     "misconceptionIds": [
@@ -272,11 +272,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "A cue appears, an act follows, and the link grows with repeats. The cue is part of the ___.",
+                "stem": "A cue is something around you that starts a habit. It is part of the ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Setting that comes before the act.",
+                    "text": "Moment just before the act.",
                     "feedback": "Habits join a response to features of its usual context, such as place or prior action.",
                     "correct": true,
                     "sourceRefs": [
@@ -286,7 +286,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Reward promised after every attempt.",
+                    "text": "Reward that comes after.",
                     "feedback": "A reward can follow an act, so it is easy to mix up. A cue comes first.",
                     "correct": false,
                     "misconceptionIds": [
@@ -312,11 +312,11 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "A student acts by habit after 21 days. A coach says every teammate will do the same by day 21. What is missing?",
+                "stem": "Kabir built a habit in 21 days. His coach says the whole team will too. What is wrong with that?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "People and actions can vary widely.",
+                    "text": "Each person and habit takes its own time.",
                     "feedback": "One person’s timing cannot set a universal deadline; fitted times in the study spanned many weeks.",
                     "correct": true,
                     "sourceRefs": [
@@ -324,10 +324,10 @@
                       "wood"
                     ]
                   },
-                  { "id": "c", "text": "The 21-day mark is the same for every action.", "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] },
+                  { "id": "c", "text": "Day 21 works for every habit.", "feedback": "One clear number is easy to teach. The study found wide gaps across acts and people.", "correct": false, "misconceptionIds": ["habits-m1"], "sourceRefs": ["lally", "wood"] },
                   {
                     "id": "b",
-                    "text": "Sharing a cue can guarantee every teammate forms the habit by day 21.",
+                    "text": "Using the same cue makes everyone match by day 21.",
                     "feedback": "A shared cue need not make different people reach the same habit strength on one day.",
                     "correct": false,
                     "misconceptionIds": [
@@ -352,7 +352,7 @@
                   "lally",
                   "wood"
                 ],
-                "stem": "Put this familiar habit loop in a plausible order.",
+                "stem": "Put Ravi's phone habit in order.",
                 "options": [
                   { "id": "a", "text": "Ravi gets home and drops his bag on the bed.", "feedback": "This usual moment is the cue. It comes first and sets the loop going.", "correct": true, "sourceRefs": ["lally", "wood"] },
                   { "id": "b", "text": "He picks up his phone without much thought.", "feedback": "After many repeats, the cue can start the learned act with little thought.", "correct": true, "sourceRefs": ["lally", "wood"] },
@@ -494,11 +494,11 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "At a hostel game, Dev has ten tokens and loses one. How might that feel beside gaining one from ten?",
+                "stem": "At a hostel game, Dev has ten tokens. Which feels bigger: losing one, or winning one?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The loss may feel stronger.",
+                    "text": "Losing one.",
                     "feedback": "Prospect theory models changes from a starting point, with losses often carrying extra weight.",
                     "correct": true,
                     "sourceRefs": [
@@ -507,7 +507,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Equal token size can force both feelings to be exactly equal.",
+                    "text": "Both feel exactly the same.",
                     "feedback": "The token amounts match, so equal feelings seem fair. A loss may feel stronger.",
                     "correct": false,
                     "misconceptionIds": [
@@ -517,7 +517,7 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "The gain may feel much stronger.", "feedback": "Prospect theory suggests the opposite tilt. Losses often weigh more than gains of the same size.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
+                  { "id": "c", "text": "Winning one, by a lot.", "feedback": "Prospect theory suggests the opposite tilt. Losses often weigh more than gains of the same size.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
                 ]
               },
               {
@@ -531,11 +531,11 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "In a cricket pool, a student is handed ₹50, then asked to risk losing it for a chance at ₹50 more. Which pull may matter?",
+                "stem": "Meera is given ₹50. She can bet it to win ₹50 more, or lose it. What pulls hardest on her choice?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The possible loss of the held ₹50.",
+                    "text": "Fear of losing the ₹50 she has.",
                     "feedback": "Once the amount feels owned, giving it up can weigh more than a same-size gain.",
                     "correct": true,
                     "sourceRefs": [
@@ -544,7 +544,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only the possible gain can matter.",
+                    "text": "Only the chance to win more.",
                     "feedback": "The extra ₹50 draws the eye. Losing the ₹50 already held can also shape the choice.",
                     "correct": false,
                     "misconceptionIds": [
@@ -554,7 +554,7 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Neither, since it is only ₹50.", "feedback": "Small sums can still pull on a choice. Losing the ₹50 already held often weighs more than gaining ₹50.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
+                  { "id": "c", "text": "Nothing, it is only ₹50.", "feedback": "Small sums can still pull on a choice. Losing the ₹50 already held often weighs more than gaining ₹50.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] }
                 ]
               },
               {
@@ -568,7 +568,7 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "In a toy model of loss aversion, a 10-point loss feels twice as strong as a 10-point gain. About how many gained points would balance that loss in felt value?",
+                "stem": "Say a 10-point loss hurts twice as much as a 10-point gain feels good. How many points must you gain to balance the loss?",
                 "options": [
                   {
                     "id": "a",
@@ -611,11 +611,11 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "A student hears the same final score framed as “keep five” or “lose five.” What changed?",
+                "stem": "A teacher says either “you keep five points” or “you lose five points.” The final score is the same. What changed?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The frame around the starting point.",
+                    "text": "Only the wording.",
                     "feedback": "A reference point can shift how a result is felt even if the arithmetic stays the same.",
                     "correct": true,
                     "sourceRefs": [
@@ -624,7 +624,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The number of points at stake.",
+                    "text": "The number of points.",
                     "feedback": "The word lose can feel like more is at stake. Both lines still name five points.",
                     "correct": false,
                     "misconceptionIds": [
@@ -634,7 +634,7 @@
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "The final score itself.", "feedback": "Both lines end at the same score. Only the frame, keep or lose, has changed.", "correct": false, "sourceRefs": ["prospect"] }
+                  { "id": "c", "text": "The final score.", "feedback": "Both lines end at the same score. Only the frame, keep or lose, has changed.", "correct": false, "sourceRefs": ["prospect"] }
                 ]
               },
               {
@@ -648,21 +648,21 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Two choices have the same final money, but one is framed as a loss from what a person holds. Why might they feel different?",
+                "stem": "Two offers end with the same money. One is described as losing part of what you have. Why does that one feel worse?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The starting reference point changes the felt value.",
+                    "text": "Losing from what you hold feels heavier.",
                     "feedback": "A drop from what is held can weigh more than an equal gain from another starting point.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "Only the size of the final sum shapes the choice.", "feedback": "The end sum looks like the whole story. The starting point can change how it feels.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] },
+                  { "id": "c", "text": "Only the final total matters.", "feedback": "The end sum looks like the whole story. The starting point can change how it feels.", "correct": false, "misconceptionIds": ["loss-aversion-m1"], "sourceRefs": ["prospect"] },
                   {
                     "id": "b",
-                    "text": "Equal final money forces equal felt value.",
+                    "text": "Same money must feel the same.",
                     "feedback": "The end sums match, so equal feelings seem likely. The frame can still change felt value.",
                     "correct": false,
                     "misconceptionIds": [
@@ -686,7 +686,7 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Prospect theory compares changes with a starting point. A move below it is framed as a ___.",
+                "stem": "We judge a result against where we started. Ending up below the start feels like a ___.",
                 "options": [
                   {
                     "id": "a",
@@ -724,21 +724,21 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "A study group shows loss aversion on average. A coach predicts exactly twice the pain for every player. What is unsupported?",
+                "stem": "A coach says every player will feel a loss exactly twice as much as a win. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A group pattern is not one fixed personal ratio.",
+                    "text": "That is an average; people differ.",
                     "feedback": "People differ. The study shows a common trend, not one set amount for every person.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
                     ]
                   },
-                  { "id": "c", "text": "The same loss must feel worse to every player.", "feedback": "The group trend is strong, so this sounds safe. It does not set each player's feeling.", "correct": false, "misconceptionIds": ["loss-aversion-m2"], "sourceRefs": ["prospect"] },
+                  { "id": "c", "text": "Every player must feel losses more.", "feedback": "The group trend is strong, so this sounds safe. It does not set each player's feeling.", "correct": false, "misconceptionIds": ["loss-aversion-m2"], "sourceRefs": ["prospect"] },
                   {
                     "id": "b",
-                    "text": "A group average fixes each person’s response.",
+                    "text": "A group average sets each person's feeling.",
                     "feedback": "A group average is easy to reuse. It does not set how each player feels.",
                     "correct": false,
                     "misconceptionIds": [
@@ -761,7 +761,7 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Match the change to its label from a ten-token start.",
+                "stem": "You start with ten tokens. Match each change to what it is.",
                 "options": [
                   {
                     "id": "a",
@@ -947,11 +947,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "At a family shop, a tag first says ₹900 and then ₹600. What may shape a student's first price guess?",
+                "stem": "A shop tag shows ₹900 crossed out, then ₹600. What sways your guess of a fair price?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The ₹900 first number.",
+                    "text": "The ₹900 you saw first.",
                     "feedback": "An early figure can pull a later judgment before any outside price is checked.",
                     "correct": true,
                     "sourceRefs": [
@@ -959,10 +959,10 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "The ₹900 tag proves ₹600 is a fair price.", "feedback": "The cut looks large. That first tag is set by the seller, not an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
+                  { "id": "c", "text": "The ₹900, as proof ₹600 is fair.", "feedback": "The cut looks large. That first tag is set by the seller, not an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "The later ₹600 price alone, without the old tag.",
+                    "text": "Only the ₹600 price.",
                     "feedback": "The current price looks like the obvious clue, but the first ₹900 tag can anchor the guess about what is fair.",
                     "correct": false,
                     "misconceptionIds": [
@@ -987,11 +987,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "On a train, two classmates guess the cost of a school trip. One first hears ₹2,000; the other hears ₹8,000. What might differ?",
+                "stem": "Two friends guess the cost of a school trip. One first hears ₹2,000, the other ₹8,000. What happens to their guesses?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Their first guesses may be pulled apart.",
+                    "text": "They get pulled apart.",
                     "feedback": "Each guess can start near the first number heard. The numbers may have been made up.",
                     "correct": true,
                     "sourceRefs": [
@@ -1001,7 +1001,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The same trip cost can force their first guesses to match.",
+                    "text": "They match, since it is the same trip.",
                     "feedback": "Both guess the same trip cost, so matching guesses seem likely. Their first numbers differ.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1012,7 +1012,7 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Neither guess is swayed by what they heard.", "feedback": "Studies show a heard number can tug a guess, even a random one. Their first guesses may drift apart.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] }
+                  { "id": "c", "text": "Neither guess changes.", "feedback": "Studies show a heard number can tug a guess, even a random one. Their first guesses may drift apart.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] }
                 ]
               },
               {
@@ -1026,7 +1026,7 @@
                 "sourceRefs": [
                   "tversky"
                 ],
-                "stem": "In an anchoring study, one group saw a random 65% before guessing a percentage. About what median guess did that high-anchor group give?",
+                "stem": "In a study, people saw a random first number, 65, before guessing a percentage. What was their typical guess?",
                 "options": [
                   {
                     "id": "a",
@@ -1070,11 +1070,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "Which clue would test whether a marked-down pen is cheap?",
+                "stem": "A pen's old price is crossed out and cut. How can you tell if it is really cheap?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A price for the same pen elsewhere.",
+                    "text": "Check the same pen at another shop.",
                     "feedback": "A second shop's price gives a fresh clue that the first tag cannot give.",
                     "correct": true,
                     "sourceRefs": [
@@ -1084,7 +1084,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The crossed-out number alone.",
+                    "text": "Look at the crossed-out price.",
                     "feedback": "The old tag looks like a bargain clue. The seller may have set it high.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1095,7 +1095,7 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "The size of the discount sticker.", "feedback": "A big sticker is still set by the seller. A price for the same pen elsewhere gives an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
+                  { "id": "c", "text": "Look at how big the sale sticker is.", "feedback": "A big sticker is still set by the seller. A price for the same pen elsewhere gives an outside check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
                 ]
               },
               {
@@ -1111,11 +1111,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "A school quiz shows a random 65 before asking for a percentage. Why might guesses still shift after students hear that it is random?",
+                "stem": "Students are told a number is random. They see 65, then guess a percentage. Why do guesses still drift toward 65?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They may adjust from the first number.",
+                    "text": "They start from the first number and adjust.",
                     "feedback": "The first number can pull later guesses, even when it gives no real clue.",
                     "correct": true,
                     "sourceRefs": [
@@ -1123,10 +1123,10 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "Knowing the number is random stops it from shaping a guess.", "feedback": "The warning should help. Yet people can still start near the first number they saw.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] },
+                  { "id": "c", "text": "Knowing it is random stops the pull.", "feedback": "The warning should help. Yet people can still start near the first number they saw.", "correct": false, "misconceptionIds": ["anchoring-m2"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "A random number can serve as a valid sample of the real answer.",
+                    "text": "A random number is a fair clue.",
                     "feedback": "It appeared right before the question, so it can feel relevant. The number was random.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1152,7 +1152,7 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "A student guesses near a figure printed on a poster, then adjusts a little. That first figure is an ___.",
+                "stem": "Riya sees a number on a poster, then guesses close to it. That first number is an ___.",
                 "options": [
                   {
                     "id": "a",
@@ -1192,11 +1192,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "A seller crosses out ₹500 and asks ₹300. A buyer treats the old tag as independent proof of fair value. What is the flaw?",
+                "stem": "A seller crosses out ₹500 and asks ₹300. A buyer says the old tag proves it is a good deal. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The seller may control that first number.",
+                    "text": "The seller chose that old number.",
                     "feedback": "The crossed-out tag can anchor a guess without measuring the item’s value elsewhere.",
                     "correct": true,
                     "sourceRefs": [
@@ -1204,10 +1204,10 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "A large marked-down amount proves a good deal.", "feedback": "The cut price catches the eye. A price from another seller is a better check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
+                  { "id": "c", "text": "A big cut always means a good deal.", "feedback": "The cut price catches the eye. A price from another seller is a better check.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] },
                   {
                     "id": "b",
-                    "text": "The old price tag can prove fair value without an outside check.",
+                    "text": "The old tag proves value on its own.",
                     "feedback": "Two tags look like two prices. Both came from the same seller, so neither is an outside check.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1232,11 +1232,11 @@
                   "bias",
                   "philosophy"
                 ],
-                "stem": "Which line best sums up anchoring in a quiz?",
+                "stem": "Which line explains anchoring best?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "An early number can tug a later guess.",
+                    "text": "The first number you hear pulls your guess.",
                     "feedback": "Even a made-up first number can pull a later guess toward it.",
                     "correct": true,
                     "sourceRefs": [
@@ -1246,7 +1246,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The latest number can erase the effect of an earlier one.",
+                    "text": "The latest number wipes out the first.",
                     "feedback": "The latest number feels fresh. The first one can still tug the later guess.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1257,7 +1257,7 @@
                       "philosophy"
                     ]
                   },
-                  { "id": "c", "text": "A guess is right when it matches the first number.", "feedback": "Matching the first number does not make a guess right. That number may have been random.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
+                  { "id": "c", "text": "A guess is right if it matches the first number.", "feedback": "Matching the first number does not make a guess right. That number may have been random.", "correct": false, "misconceptionIds": ["anchoring-m1"], "sourceRefs": ["bias", "philosophy"] }
                 ]
               }
             ],
@@ -1402,11 +1402,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "In exam week, Aditi thinks every hard paper hides a trick question. Which memory of hers shows this bias at work?",
+                "stem": "Aditi thinks every hard exam has a trick in it. Which papers does she recall most?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The one with a trick question.",
+                    "text": "The ones with a trick question.",
                     "feedback": "A matching case fits her belief and may stand out more than a plain paper.",
                     "correct": true,
                     "sourceRefs": [
@@ -1416,7 +1416,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A paper with no trick question.",
+                    "text": "Ones with no trick question.",
                     "feedback": "A paper with no trick is easy to set aside. It could test her claim that all have one.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1427,7 +1427,7 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "A paper she has not sat yet.", "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she recalls.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  { "id": "c", "text": "Papers she has not taken yet.", "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she recalls.", "correct": false, "sourceRefs": ["bias", "wason"] }
                 ]
               },
               {
@@ -1442,11 +1442,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A family shop owner thinks rain always cuts sales. What record would test the claim best?",
+                "stem": "A family shop owner thinks rain always cuts sales. Which days should she check to test that?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Days with rain and steady sales too.",
+                    "text": "Rainy days when sales held up.",
                     "feedback": "A possible exception can show whether the word “always” holds up across the records.",
                     "correct": true,
                     "sourceRefs": [
@@ -1456,7 +1456,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only the wettest low-sales day.",
+                    "text": "Only the wettest, slowest day.",
                     "feedback": "A wet slow day fits her view. Rainy days with steady sales could test it better.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1482,7 +1482,7 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "In a Wason-style test, a rule could be checked by seeking a disconfirming card. About what percent in one nonthreatening-rule group chose the correct card pair?",
+                "stem": "In one card puzzle, people had to pick the cards that could test a rule and prove it wrong. About what percent got it right?",
                 "options": [
                   {
                     "id": "a",
@@ -1528,11 +1528,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A cricket fan says a batter always flops in chases. Which scorecard matters most for checking “always”?",
+                "stem": "A fan says a batter always flops in run chases. Which innings would show that is not true?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A successful chase innings.",
+                    "text": "One good chase innings.",
                     "feedback": "One clear counterexample is enough to break a claim with the word “always.”",
                     "correct": true,
                     "sourceRefs": [
@@ -1542,7 +1542,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Another poor chase innings.",
+                    "text": "Another poor chase.",
                     "feedback": "A poor chase fits the fan's view. One good chase could break the word always.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1553,7 +1553,7 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "The batter's average across all matches.", "feedback": "An overall average mixes chases with other games. One good chase innings is what breaks the word always.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  { "id": "c", "text": "His average across all matches.", "feedback": "An overall average mixes chases with other games. One good chase innings is what breaks the word always.", "correct": false, "sourceRefs": ["bias", "wason"] }
                 ]
               },
               {
@@ -1568,11 +1568,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A rule predicts that every late bus is red. Why is checking a late bus that is not red useful?",
+                "stem": "Someone claims every late bus is red. Why check a late bus that is not red?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It could disprove the universal rule.",
+                    "text": "One could prove the claim wrong.",
                     "feedback": "A red late bus fits the rule, but one late bus of another colour would break it.",
                     "correct": true,
                     "sourceRefs": [
@@ -1580,10 +1580,10 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "A late red bus confirms the rule for all buses.", "feedback": "A match feels like proof. One late bus of another colour would break the rule.", "correct": false, "misconceptionIds": ["confirmation-bias-m1"], "sourceRefs": ["bias", "wason"] },
+                  { "id": "c", "text": "A red late bus proves it for all.", "feedback": "A match feels like proof. One late bus of another colour would break the rule.", "correct": false, "misconceptionIds": ["confirmation-bias-m1"], "sourceRefs": ["bias", "wason"] },
                   {
                     "id": "b",
-                    "text": "More red buses can outweigh one late bus of another colour.",
+                    "text": "Lots of red buses outweigh it.",
                     "feedback": "A single late bus of another colour would break the rule, no matter how many red matches were found.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1609,11 +1609,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A student saves only screenshots that support her guess. She is filtering evidence toward ___.",
+                "stem": "Sana keeps only the screenshots that agree with her guess. Her pile is tilted toward ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Her existing belief.",
+                    "text": "What she already believes.",
                     "feedback": "The pattern can make a weak idea seem stronger by hiding cases that point away.",
                     "correct": true,
                     "sourceRefs": [
@@ -1623,7 +1623,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A well-tested belief, because she found matching examples.",
+                    "text": "A tested idea, since she found matches.",
                     "feedback": "A few matches can feel like proof. Yet the skipped cases may show the guess is wrong.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1634,7 +1634,7 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "A random sample.", "feedback": "Picking only matching screenshots is the opposite of random. She keeps what fits and drops the rest.", "correct": false, "sourceRefs": ["bias", "wason"] }
+                  { "id": "c", "text": "A random mix.", "feedback": "Picking only matching screenshots is the opposite of random. She keeps what fits and drops the rest.", "correct": false, "sourceRefs": ["bias", "wason"] }
                 ]
               },
               {
@@ -1650,11 +1650,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "A student saves three bus logs that fit her belief and skips two that do not. She calls the belief proven. What is the flaw?",
+                "stem": "Priya keeps three bus logs that fit her belief and drops two that do not. She calls it proven. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The saved sample leaves out contrary cases.",
+                    "text": "She left out the logs that disagree.",
                     "feedback": "Selecting only matches can make a weak belief look stronger than the full record supports.",
                     "correct": true,
                     "sourceRefs": [
@@ -1662,10 +1662,10 @@
                       "wason"
                     ]
                   },
-                  { "id": "c", "text": "Only the saved matches count as evidence.", "feedback": "Saved cases feel clear and close at hand. The skipped logs can test the belief too.", "correct": false, "misconceptionIds": ["confirmation-bias-m2"], "sourceRefs": ["bias", "wason"] },
+                  { "id": "c", "text": "Only the saved logs count.", "feedback": "Saved cases feel clear and close at hand. The skipped logs can test the belief too.", "correct": false, "misconceptionIds": ["confirmation-bias-m2"], "sourceRefs": ["bias", "wason"] },
                   {
                     "id": "b",
-                    "text": "Three saved logs outweigh every omitted log.",
+                    "text": "Three logs beat any dropped ones.",
                     "feedback": "Three saved matches look strong. The skipped logs may be the cases that break the claim.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1690,11 +1690,11 @@
                   "bias",
                   "wason"
                 ],
-                "stem": "How can a student miss clues against a belief?",
+                "stem": "How can someone miss clues that go against their belief?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "We may notice support and miss possible exceptions.",
+                    "text": "We notice what fits and skip the rest.",
                     "feedback": "The bias lies in uneven search or recall, regardless of whether the starting idea is true.",
                     "correct": true,
                     "sourceRefs": [
@@ -1704,7 +1704,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A strong belief can make every clue equally easy to remember.",
+                    "text": "A strong belief makes all clues easy to recall.",
                     "feedback": "Memory can feel fair. Yet we may recall what fits our view and miss what does not.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1851,11 +1851,11 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "At a hostel quiz, most students pick the wrong line length aloud. What may happen to the last student's answer?",
+                "stem": "At a hostel quiz, most students call out the wrong line as longest. What happens to the last student's answer?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It may move toward the group choice.",
+                    "text": "It often moves toward the group.",
                     "feedback": "A public majority can change some answers even when the visual task seems clear.",
                     "correct": true,
                     "sourceRefs": [
@@ -1864,7 +1864,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A clear line task can keep every answer fully independent.",
+                    "text": "A clear task keeps it fully their own.",
                     "feedback": "The line looks clear, so a solo choice seems safe. Some people still followed the wrong group.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1874,7 +1874,7 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "It will move away from the group on purpose.", "feedback": "Some people do resist, but few go against a group just to differ. The pull tends to run toward the group.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] }
+                  { "id": "c", "text": "It moves away from the group on purpose.", "feedback": "Some people do resist, but few go against a group just to differ. The pull tends to run toward the group.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] }
                 ]
               },
               {
@@ -1888,11 +1888,11 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "During a cricket watch party, everyone cheers a disputed call before the replay. What might the crowd signal do?",
+                "stem": "At a cricket watch party, everyone cheers a close call before the replay. What do the cheers do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Make the call seem more certain.",
+                    "text": "Make the call feel more certain.",
                     "feedback": "The cheers come first. They can sway a guess before the replay gives a clear view.",
                     "correct": true,
                     "sourceRefs": [
@@ -1911,7 +1911,7 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Change what the replay will show.", "feedback": "Cheers cannot change the footage. They can only make the call feel more certain before the replay.", "correct": false, "sourceRefs": ["asch"] }
+                  { "id": "c", "text": "Change what the replay shows.", "feedback": "Cheers cannot change the footage. They can only make the call feel more certain before the replay.", "correct": false, "sourceRefs": ["asch"] }
                 ]
               },
               {
@@ -1925,7 +1925,7 @@
                 "sourceRefs": [
                   "asch-original"
                 ],
-                "stem": "In Asch’s line task, a group gave wrong answers aloud. About what percent of critical answers from the lone participant followed the wrong group?",
+                "stem": "In a famous test, a group gave the same wrong answer out loud. About what percent of the time did the one real person go along?",
                 "options": [
                   {
                     "id": "a",
@@ -1968,11 +1968,11 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "A whole class picks the same answer to an easy line puzzle. What does that show by itself?",
+                "stem": "A whole class picks the same answer to an easy puzzle. What does that alone tell you?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Agreement, not proof of accuracy.",
+                    "text": "They agree, not that they are right.",
                     "feedback": "The group may share a mistake, so a headcount alone cannot settle the visual fact.",
                     "correct": true,
                     "sourceRefs": [
@@ -1981,7 +1981,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The answer is certainly right.",
+                    "text": "The answer is surely right.",
                     "feedback": "A full class can look like proof. They may share the same wrong cue.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1991,7 +1991,7 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Everyone in the class cheated.", "feedback": "Shared answers do not prove cheating either. Agreement by itself cannot settle whether the answer is right.", "correct": false, "sourceRefs": ["asch"] }
+                  { "id": "c", "text": "Everyone cheated.", "feedback": "Shared answers do not prove cheating either. Agreement by itself cannot settle whether the answer is right.", "correct": false, "sourceRefs": ["asch"] }
                 ]
               },
               {
@@ -2006,21 +2006,21 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "A student sees a clear line match but publicly follows a wrong group answer. Why can this happen?",
+                "stem": "Nisha can clearly see which line matches. She still says the group's wrong answer out loud. Why?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Fitting in can outweigh a private judgment.",
+                    "text": "Fitting in can beat what she sees.",
                     "feedback": "In Asch’s task, public group pressure could pull answers away from the visible line lengths.",
                     "correct": true,
                     "sourceRefs": [
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "A clear line match cannot be swayed by public votes.", "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] },
+                  { "id": "c", "text": "Votes cannot sway a clear answer.", "feedback": "The lines look clear, so this sounds likely. Group pressure can still shift a public answer.", "correct": false, "misconceptionIds": ["social-proof-m2"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
-                    "text": "The group’s vote can show that her clear visual check was wrong.",
+                    "text": "The group's vote proves her eyes wrong.",
                     "feedback": "A unanimous group can seem more reliable than one person's view, but its votes can sway a public answer without changing the lines.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2044,7 +2044,7 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "If a crowd's visible choice nudges a person's own choice, the crowd is serving as a ___.",
+                "stem": "When a crowd's choice nudges your own choice, the crowd works as a ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2057,7 +2057,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Private measurement.",
+                    "text": "Private check.",
                     "feedback": "Many votes look like many checks. The votes can sway one another.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2067,7 +2067,7 @@
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "Final answer key.", "feedback": "A crowd's choice is not an answer key. It works as a social cue, which can still be wrong.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] }
+                  { "id": "c", "text": "Answer key.", "feedback": "A crowd's choice is not an answer key. It works as a social cue, which can still be wrong.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] }
                 ]
               },
               {
@@ -2081,21 +2081,21 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "A group chooses B before anyone checks the evidence. A student calls their unanimous votes independent proof. What is missing?",
+                "stem": "A group picks B before anyone checks. A student says everyone agrees, so it is proven. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Their votes may influence one another.",
+                    "text": "They may have copied each other.",
                     "feedback": "A shared answer can spread through a group, so agreement alone is not a fresh check.",
                     "correct": true,
                     "sourceRefs": [
                       "asch"
                     ]
                   },
-                  { "id": "c", "text": "More votes make a wrong choice true.", "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] },
+                  { "id": "c", "text": "More votes make an answer true.", "feedback": "A crowd can feel like strong proof. Its size does not fix a wrong answer.", "correct": false, "misconceptionIds": ["social-proof-m1"], "sourceRefs": ["asch"] },
                   {
                     "id": "b",
-                    "text": "Unanimous votes can guarantee independent checks.",
+                    "text": "All agreeing means each one checked.",
                     "feedback": "All votes match, so they look independent. The first answer may have shaped the rest.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2118,11 +2118,11 @@
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "Which explanation fits the line-length result in Asch's task?",
+                "stem": "What did the famous line test show?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A wrong majority sometimes shifted individual answers.",
+                    "text": "A wrong group sometimes swayed people.",
                     "feedback": "The finding shows influence in that setting, while people did not all copy every time.",
                     "correct": true,
                     "sourceRefs": [
@@ -2131,7 +2131,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every participant copied on every trial.",
+                    "text": "Everyone copied every time.",
                     "feedback": "A strong group pull sounds like it works every time. Some people kept their own answer.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2274,21 +2274,21 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A hostel team says its chart will take one hour but has not counted printing. What might happen?",
+                "stem": "A hostel team says its chart will take one hour. They forgot about printing. What happens?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It may take longer than guessed.",
+                    "text": "It takes longer than they guessed.",
                     "feedback": "Missing a step from the imagined path can make the finish time estimate too short.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "Printing time does not count as project work.", "feedback": "The chart may be done in an hour. It still takes time to print and finish.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] },
+                  { "id": "c", "text": "Printing does not count as work.", "feedback": "The chart may be done in an hour. It still takes time to print and finish.", "correct": false, "misconceptionIds": ["planning-fallacy-m1"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
-                    "text": "The one-hour target can include printing without adding any time.",
+                    "text": "The hour still covers printing.",
                     "feedback": "One hour is the team's clear target. It still leaves out print work.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2311,11 +2311,11 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "During exam week, Isha plans a revision sheet and forgets to gather past papers. Which estimate is at risk?",
+                "stem": "In exam week, Isha plans a revision sheet but forgets she must find past papers first. Which guess is now too short?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Her own finish-time guess.",
+                    "text": "Her guess of when she will finish.",
                     "feedback": "The missing collection step adds work outside the smooth path she pictured.",
                     "correct": true,
                     "sourceRefs": [
@@ -2324,7 +2324,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only the time spent writing the revision sheet.",
+                    "text": "Only her writing time.",
                     "feedback": "Writing feels like the main task, but collecting papers is another step and can make the whole plan take longer.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2348,7 +2348,7 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A club plans posters in 2 hours but forgot printing. Similar past posters took 3, 4, and 5 hours. About how many hours does the past-task view suggest?",
+                "stem": "A club plans posters in 2 hours. Past posters took 3, 4 and 5 hours. What is a better guess?",
                 "options": [
                   {
                     "id": "a",
@@ -2391,11 +2391,11 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A student plans only the time to draw a poster. What other work needs time?",
+                "stem": "Sara plans time only for drawing her poster. What else needs time?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Time to find and print the images.",
+                    "text": "Time to find and print images.",
                     "feedback": "Finding and printing images take time beyond the drawing step she counted.",
                     "correct": true,
                     "sourceRefs": [
@@ -2404,7 +2404,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The drawing time already counted.",
+                    "text": "The drawing time, again.",
                     "feedback": "Counting the same drawing time again does not cover the tasks she left out.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2414,7 +2414,7 @@
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "No other work; drawing is all of it.", "feedback": "A poster needs more than drawing. Finding and printing images add time the plan left out.", "correct": false, "sourceRefs": ["planning"] }
+                  { "id": "c", "text": "Nothing else.", "feedback": "A poster needs more than drawing. Finding and printing images add time the plan left out.", "correct": false, "sourceRefs": ["planning"] }
                 ]
               },
               {
@@ -2429,21 +2429,21 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "A team imagines a smooth poster project and ignores likely printing delays. Why can its time guess run short?",
+                "stem": "A team pictures a smooth poster project and ignores printing delays. Why is their time guess too short?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The plan leaves out a common work step.",
+                    "text": "They left out a step.",
                     "feedback": "The imagined best case omits printing time that similar real tasks may include.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
                     ]
                   },
-                  { "id": "c", "text": "The missing print step is too small to affect the guess.", "feedback": "It can look like a quick last step. Past tasks show such work still takes time.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
+                  { "id": "c", "text": "Printing is too small to matter.", "feedback": "It can look like a quick last step. Past tasks show such work still takes time.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
-                    "text": "A smooth plan makes unlisted steps take no time.",
+                    "text": "A smooth plan makes extra steps free.",
                     "feedback": "The planned parts may go well. The print step still takes time even then.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2467,7 +2467,7 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "To compare a new task with old ones, the useful number is the time those old tasks ___.",
+                "stem": "To guess how long a new task will take, look at how long old tasks ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2480,7 +2480,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Were first hoped to take.",
+                    "text": "Were hoped to take.",
                     "feedback": "Old plans are easy to compare. Old finish times show what the work took.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2505,11 +2505,11 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "Past posters took four to six hours. A new plan says one hour because artwork is ready, but printing is uncounted. What is weak?",
+                "stem": "Past posters took four to six hours. A new plan says one hour because the art is ready. Printing is not counted. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The guess omits a step and dismisses past times.",
+                    "text": "It skips printing and ignores past times.",
                     "feedback": "Ready artwork may help, yet the past tasks and missing printing step still matter.",
                     "correct": true,
                     "sourceRefs": [
@@ -2519,7 +2519,7 @@
                   { "id": "c", "text": "The new plan makes the past times useless.", "feedback": "The ready art is a real change. Yet past times can still flag missed tasks such as print.", "correct": false, "misconceptionIds": ["planning-fallacy-m2"], "sourceRefs": ["planning"] },
                   {
                     "id": "b",
-                    "text": "Ready artwork proves all other steps vanish.",
+                    "text": "Ready art makes other steps disappear.",
                     "feedback": "Ready art does save time. It does not make print and other steps vanish.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2542,11 +2542,11 @@
                 "sourceRefs": [
                   "planning"
                 ],
-                "stem": "Which sentence sums up the planning fallacy in a school project?",
+                "stem": "Which sentence sums up the planning fallacy?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A smooth imagined path can understate real time.",
+                    "text": "We picture a smooth path, so we guess too little time.",
                     "feedback": "Past completed jobs can reveal delays that a new plan has not pictured.",
                     "correct": true,
                     "sourceRefs": [
@@ -2555,7 +2555,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every late job can be explained by a poor initial estimate.",
+                    "text": "Every late job comes from a bad plan.",
                     "feedback": "A late job can look like a bad plan. This idea is about time guesses, not every delay.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2696,11 +2696,11 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "After a hostel student learns a short poem, a night of sleep follows. What can happen to the new memory?",
+                "stem": "In the hostel, Kiran learns a short poem, then sleeps. What happens to the memory overnight?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It may become more stable.",
+                    "text": "It can get stronger.",
                     "feedback": "In some tests, sleep after study helps people recall more later.",
                     "correct": true,
                     "sourceRefs": [
@@ -2710,7 +2710,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sleep can only pause learning; it cannot help keep the poem.",
+                    "text": "Sleep only pauses it.",
                     "feedback": "No new lines are practiced during sleep, so it can seem idle. Sleep can help stabilise what was learned earlier.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2721,7 +2721,7 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "It is erased each night.", "feedback": "Sleep does not wipe new memories. In some studies, sleep after learning helps people recall more later.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  { "id": "c", "text": "It gets erased.", "feedback": "Sleep does not wipe new memories. In some studies, sleep after learning helps people recall more later.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] }
                 ]
               },
               {
@@ -2736,7 +2736,7 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "During exam week, Rohan reads a chapter once, then sleeps. Which part is the initial learning?",
+                "stem": "In exam week, Rohan reads a chapter once, then sleeps. Which part is the actual learning?",
                 "options": [
                   {
                     "id": "a",
@@ -2750,7 +2750,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The night of sleep after reading.",
+                    "text": "Sleeping after.",
                     "feedback": "Sleep can help keep what was read. But the first step was to read it.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2761,7 +2761,7 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Waking up the next morning.", "feedback": "Waking is not when learning starts. Reading the chapter is the first step that puts it in memory.", "correct": false, "sourceRefs": ["sleep-review", "sleep-rest"] }
+                  { "id": "c", "text": "Waking up next morning.", "feedback": "Waking is not when learning starts. Reading the chapter is the first step that puts it in memory.", "correct": false, "sourceRefs": ["sleep-review", "sleep-rest"] }
                 ]
               },
               {
@@ -2777,7 +2777,7 @@
                   "sleep-rest",
                   "sleep-study"
                 ],
-                "stem": "In a small word-pair study, average recall after 12 hours was 20.38 pairs with sleep and 12.63 after wakefulness. About what percent higher was recall after sleep?",
+                "stem": "In a small sleep study, people recalled 20.4 word pairs after sleep and 12.6 after staying awake. About what percent better was sleep?",
                 "options": [
                   {
                     "id": "a",
@@ -2828,11 +2828,11 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "A student learns a poem, then recalls it better the next day. What could help the memory last?",
+                "stem": "Meena learns a poem and remembers it better the next day. What helped it last?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Consolidation after the first lesson.",
+                    "text": "Firming up after the lesson (consolidation).",
                     "feedback": "After the first lesson, the brain can help keep the new memory over time.",
                     "correct": true,
                     "sourceRefs": [
@@ -2842,7 +2842,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The first reading of the poem.",
+                    "text": "The first reading only.",
                     "feedback": "Reading starts the trace. The question asks what can strengthen it after that first encounter.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2869,11 +2869,11 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "A student sleeps after practice and recalls a skill better. Why is sleep a plausible part of the story?",
+                "stem": "Dev practises a skill, sleeps, and does better the next day. How could sleep help?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Some new traces are processed after practice.",
+                    "text": "The brain keeps working on new practice.",
                     "feedback": "Sleep can aid recall. One test alone does not show each brain step.",
                     "correct": true,
                     "sourceRefs": [
@@ -2881,10 +2881,10 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Sleep alone can teach the skill with no practice.", "feedback": "Better recall after sleep can look like new learning. The skill was first learned during practice.", "correct": false, "misconceptionIds": ["sleep-memory-m2"], "sourceRefs": ["sleep-review", "sleep-rest"] },
+                  { "id": "c", "text": "Sleep teaches the skill without practice.", "feedback": "Better recall after sleep can look like new learning. The skill was first learned during practice.", "correct": false, "misconceptionIds": ["sleep-memory-m2"], "sourceRefs": ["sleep-review", "sleep-rest"] },
                   {
                     "id": "b",
-                    "text": "Practice alone explains the gain; sleep played no part.",
+                    "text": "Sleep plays no part; it is all practice.",
                     "feedback": "Practice came first, so it is easy to credit it all. Sleep may also help keep a new skill.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2909,7 +2909,7 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "First a student learns a word; later the memory becomes steadier. The later step is ___.",
+                "stem": "First you learn a word. Later the memory gets steadier. That later step is called ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2949,11 +2949,11 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "A classmate says no memory can strengthen while someone is awake. What is too broad?",
+                "stem": "A friend says memories only get stronger while you sleep. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Quiet waking rest can also help.",
+                    "text": "Quiet rest while awake helps too.",
                     "feedback": "Sleep has an important role, but studies also find gains after low-interference rest.",
                     "correct": true,
                     "sourceRefs": [
@@ -2961,7 +2961,7 @@
                       "sleep-rest"
                     ]
                   },
-                  { "id": "c", "text": "Quiet rest does nothing because the person stays awake.", "feedback": "Sleep has a known role, so this seems likely. Waking rest can help as well.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] },
+                  { "id": "c", "text": "Awake rest does nothing.", "feedback": "Sleep has a known role, so this seems likely. Waking rest can help as well.", "correct": false, "misconceptionIds": ["sleep-memory-m1"], "sourceRefs": ["sleep-review", "sleep-rest"] },
                   {
                     "id": "b",
                     "text": "Only sleep can change a memory.",
@@ -2989,7 +2989,7 @@
                   "sleep-review",
                   "sleep-rest"
                 ],
-                "stem": "Which line best sums up sleep and new learning?",
+                "stem": "Which line sums up sleep and learning?",
                 "options": [
                   {
                     "id": "a",
@@ -3003,7 +3003,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sleep can create knowledge of a chapter that was never read.",
+                    "text": "Sleep can teach a chapter you never read.",
                     "feedback": "Sleep can help after study, so it may sound like a teacher. The chapter must be read first.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3167,11 +3167,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "At a hostel, a student scrolls past dull posts, then finds a funny one. What might draw another swipe?",
+                "stem": "In the hostel, Ali scrolls past dull posts, then finds a funny one. What makes him swipe again?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The next good post is uncertain.",
+                    "text": "He cannot tell when the next good one comes.",
                     "feedback": "A fun find now and then can make the next swipe feel worth it.",
                     "correct": true,
                     "sourceRefs": [
@@ -3182,7 +3182,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every next post is certain to be funny.",
+                    "text": "He knows the next one will be funny.",
                     "feedback": "The last post was fun, so another feels likely. The next one can still be dull.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3194,7 +3194,7 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Knowing every post will be dull.", "feedback": "If every post were sure to be dull, there would be little pull to swipe. Not knowing is the draw.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  { "id": "c", "text": "He knows every post will be dull.", "feedback": "If every post were sure to be dull, there would be little pull to swipe. Not knowing is the draw.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
                 ]
               },
               {
@@ -3210,11 +3210,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "During a train ride, likes arrive at uneven times on a college post. Why might the app be checked again?",
+                "stem": "Likes on Zoya's college post come in at random times. Why does she keep checking?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The next social reward is hard to predict.",
+                    "text": "She cannot predict the next like.",
                     "feedback": "Research found that social feedback can shape when people return to post or check.",
                     "correct": true,
                     "sourceRefs": [
@@ -3223,10 +3223,10 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Likes must arrive at set time gaps after posting.", "feedback": "A steady clock would be easy to predict. Likes in the case arrive at uneven times.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  { "id": "c", "text": "Likes come on a fixed timer.", "feedback": "A steady clock would be easy to predict. Likes in the case arrive at uneven times.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
-                    "text": "A fixed reward appears after every check.",
+                    "text": "Every check brings a like.",
                     "feedback": "A new check can feel due for a like. Likes can arrive at uneven times.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3253,7 +3253,7 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "In a toy feed with variable rewards, each swipe has an independent 20% chance of a fun clip. After five swipes, about what is the chance of seeing at least one fun clip?",
+                "stem": "In a feed with variable rewards, each swipe has a 1-in-5 chance of a fun clip. After five swipes, what is the chance of at least one?",
                 "options": [
                   {
                     "id": "a",
@@ -3309,11 +3309,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "What does variable mean in a reward pattern?",
+                "stem": "In a reward pattern, what does variable mean?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The timing or count can change.",
+                    "text": "When the reward comes keeps changing.",
                     "feedback": "The next payoff does not arrive after one fixed number of actions.",
                     "correct": true,
                     "sourceRefs": [
@@ -3324,7 +3324,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A variable schedule can guarantee a payoff after every action.",
+                    "text": "Every action pays out.",
                     "feedback": "A good clip may follow a swipe. It does not follow each one.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3336,7 +3336,7 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "The reward gets bigger each time.", "feedback": "Variable is about when the reward comes, not steady growth. The timing or count of payoffs can change.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  { "id": "c", "text": "The reward grows each time.", "feedback": "Variable is about when the reward comes, not steady growth. The timing or count of payoffs can change.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
                 ]
               },
               {
@@ -3352,11 +3352,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "A friend says feeds use precisely the same schedule as every slot machine. Why is that too exact?",
+                "stem": "A friend says every feed works exactly like a slot machine. Why is that too strong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Feeds and users can differ.",
+                    "text": "Feeds and people differ.",
                     "feedback": "The link is the unsure payoff. Feeds do not all have one set rule.",
                     "correct": true,
                     "sourceRefs": [
@@ -3365,10 +3365,10 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "A feed must reward every set number of swipes.", "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  { "id": "c", "text": "Every feed pays out on a fixed count.", "feedback": "A slot machine can suggest a strict rule. Feed posts and likes can vary in other ways.", "correct": false, "misconceptionIds": ["variable-rewards-m1"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
-                    "text": "Feeds can only reward all users on one fixed swipe count.",
+                    "text": "All users get rewards at the same swipe.",
                     "feedback": "The slot machine link invites one clock. Feeds and users can have different patterns.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3395,11 +3395,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "A reward comes after some checks, but not after each one. The pattern is ___.",
+                "stem": "A reward comes after some checks but not others. That pattern is called ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Intermittent.",
+                    "text": "Intermittent (now and then).",
                     "feedback": "Some actions bring a rewarding result while others do not.",
                     "correct": true,
                     "sourceRefs": [
@@ -3410,7 +3410,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guaranteed on every check.",
+                    "text": "Guaranteed every time.",
                     "feedback": "Past checks can bring a reward, so a sure next one sounds fair. The gap can vary.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3439,11 +3439,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "A classmate says uncertain rewards alone explain why anyone opens a feed. What is missing?",
+                "stem": "A classmate says people open feeds only for surprise rewards. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "People can have other motives too.",
+                    "text": "People have other reasons too.",
                     "feedback": "People can also look for friends, news or a break.",
                     "correct": true,
                     "sourceRefs": [
@@ -3452,10 +3452,10 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Each user opens a feed for the same reason.", "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.", "correct": false, "misconceptionIds": ["variable-rewards-m2"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
+                  { "id": "c", "text": "Everyone opens feeds for one reason.", "feedback": "A shared app can make motives look alike. People may check news, friends, or other things.", "correct": false, "misconceptionIds": ["variable-rewards-m2"], "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] },
                   {
                     "id": "b",
-                    "text": "Uncertain rewards can be the only reason anyone opens a feed.",
+                    "text": "Surprise rewards are the only reason.",
                     "feedback": "A reward can pull another check. People also open feeds for news or friends.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3482,11 +3482,11 @@
                   "social-reward",
                   "scroll-review"
                 ],
-                "stem": "Which line best captures the slot-machine comparison?",
+                "stem": "Why compare feeds to slot machines?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "An uncertain payoff can invite another try.",
+                    "text": "Not knowing when a win comes makes you try again.",
                     "feedback": "The next nice post is hard to guess. That is the useful link.",
                     "correct": true,
                     "sourceRefs": [
@@ -3497,7 +3497,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Each swipe can be counted on to pay out on schedule.",
+                    "text": "Every swipe pays out on schedule.",
                     "feedback": "A machine can pay on a schedule. This comparison is about not knowing when a good result comes.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3509,7 +3509,7 @@
                       "scroll-review"
                     ]
                   },
-                  { "id": "c", "text": "Feeds are built by casinos.", "feedback": "The comparison is about the reward pattern, not who builds feeds. Uncertain payoffs invite another try in both.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
+                  { "id": "c", "text": "Casinos build feeds.", "feedback": "The comparison is about the reward pattern, not who builds feeds. Uncertain payoffs invite another try in both.", "correct": false, "sourceRefs": ["apa-learning", "social-reward", "scroll-review"] }
                 ]
               }
             ],
@@ -3661,11 +3661,11 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "A hostel student says, “If dinner ends, then I will open my notes.” What may help start the task?",
+                "stem": "Om, a hostel student, says: “If dinner ends, then I open my notes.” What helps him start?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Dinner ending acts as a cue.",
+                    "text": "Dinner ending is his signal.",
                     "feedback": "The plan links a visible moment to the first action, making it easier to notice.",
                     "correct": true,
                     "sourceRefs": [
@@ -3673,10 +3673,10 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Writing that sentence makes revision certain after dinner.", "feedback": "The cue is clear, so action may be more likely. A plan cannot make it certain.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  { "id": "c", "text": "Saying it makes revision certain.", "feedback": "The cue is clear, so action may be more likely. A plan cannot make it certain.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
-                    "text": "The goal has no moment attached.",
+                    "text": "There is no set moment.",
                     "feedback": "Dinner may seem like just a goal. The word if makes its end the start cue.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3701,11 +3701,11 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "Before a college quiz, Mira says only, “I will revise more.” What is missing from an if-then plan?",
+                "stem": "Before a college quiz, Mira says only, “I will revise more.” What does her plan lack?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A specific cue and response.",
+                    "text": "A clear when and what.",
                     "feedback": "The wish names a goal but no moment that starts a chosen action.",
                     "correct": true,
                     "sourceRefs": [
@@ -3715,7 +3715,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A larger wish alone.",
+                    "text": "Wishing harder.",
                     "feedback": "A bigger wish can feel more firm. It still gives no clear moment to act.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3726,7 +3726,7 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "A deadline set by the teacher.", "feedback": "A deadline names an end, not the moment to start. An if-then plan links a cue to a chosen action.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  { "id": "c", "text": "A teacher's deadline.", "feedback": "A deadline names an end, not the moment to start. An if-then plan links a cue to a chosen action.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
                 ]
               },
               {
@@ -3742,11 +3742,11 @@
                   "plan-study",
                   "plan-meta"
                 ],
-                "stem": "A review of 94 tests compared if-then plans with no such plan. About how large was the average gain in goal attainment, measured as Cohen's d?",
+                "stem": "94 studies tested if-then plans. Scientists score help on a scale where 0.2 is small, 0.5 medium and 0.8 large. What did plans score?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 0.65 standard deviations.",
+                    "text": "About 0.65.",
                     "feedback": "Gollwitzer and Sheeran reported d = 0.65 across 94 tests. It is a standardised effect, not a 65% success rate.",
                     "correct": true,
                     "sourceRefs": [
@@ -3755,7 +3755,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "About 65 percentage points.",
+                    "text": "About 65 points.",
                     "feedback": "The 0.65 figure uses spread in scores as its unit. It does not mean 65 percentage points.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3767,7 +3767,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "About zero; plans showed no average effect.",
+                    "text": "About zero; no effect.",
                     "feedback": "A bare goal may not trigger action. Across these tests, specifying a cue and action had a positive average effect.",
                     "correct": false,
                     "misconceptionIds": ["if-then-plans-m1"],
@@ -3793,7 +3793,7 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "A student plans, “If I sit at my desk, then I draw.” What should tell her when to start?",
+                "stem": "Lia's plan: “If I sit at my desk, then I draw.” What tells her to start?",
                 "options": [
                   {
                     "id": "a",
@@ -3807,7 +3807,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Finishing the drawing first.",
+                    "text": "Finishing the drawing.",
                     "feedback": "Drawing is the response to start when the desk cue appears, not the starting cue itself.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3818,7 +3818,7 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Feeling inspired to draw.", "feedback": "Waiting for a mood leaves the start open. Her plan names a cue: sitting down at the desk.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  { "id": "c", "text": "Feeling inspired.", "feedback": "Waiting for a mood leaves the start open. Her plan names a cue: sitting down at the desk.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] }
                 ]
               },
               {
@@ -3833,11 +3833,11 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "A student writes “if I am free, I will study,” but free time is hard to notice. Why may that weaken the plan?",
+                "stem": "Sam's plan: “If I am free, I will study.” Why might it not work?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The cue is vague.",
+                    "text": "Being free is hard to notice.",
                     "feedback": "A cue that is hard to spot may not prompt the action at a clear moment.",
                     "correct": true,
                     "sourceRefs": [
@@ -3845,10 +3845,10 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "A broad cue works as well as a clear event.", "feedback": "Both sound like plans. A clear event is easier to spot when it is time to act.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  { "id": "c", "text": "A vague cue works as well as a clear one.", "feedback": "Both sound like plans. A clear event is easier to spot when it is time to act.", "correct": false, "misconceptionIds": ["if-then-plans-m1"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
-                    "text": "All if-then plans work equally well.",
+                    "text": "All if-then plans work the same.",
                     "feedback": "Both plans use if and then. A vague cue can still be hard to spot.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3873,7 +3873,7 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "In an if-then plan, the “then” part names the ___.",
+                "stem": "In “if this, then that,” the then part is the ___.",
                 "options": [
                   {
                     "id": "a",
@@ -3914,11 +3914,11 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "A coach says an if-then plan makes action certain. What is too strong?",
+                "stem": "A coach says an if-then plan guarantees you will act. What is too strong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It helps, but cannot promise every action.",
+                    "text": "It helps, but cannot promise.",
                     "feedback": "The plans can help on average. They do not make each act sure.",
                     "correct": true,
                     "sourceRefs": [
@@ -3926,10 +3926,10 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "Writing the plan makes its cue impossible to miss.", "feedback": "A written cue is easier to recall. Busy days can still hide or change it.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
+                  { "id": "c", "text": "Writing it makes the cue impossible to miss.", "feedback": "A written cue is easier to recall. Busy days can still hide or change it.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] },
                   {
                     "id": "b",
-                    "text": "A written plan controls every future event.",
+                    "text": "A written plan controls the future.",
                     "feedback": "Writing a plan can make it feel firm. A cue may still be missed or changed.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3954,11 +3954,11 @@
                   "konstanz-plan",
                   "plan-study"
                 ],
-                "stem": "Which line tells a friend what an if-then plan does?",
+                "stem": "How would you explain an if-then plan to a friend?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It links a named moment with a chosen act.",
+                    "text": "Pick a moment, and decide what you will do then.",
                     "feedback": "The cue comes first; the response is ready if that moment arrives.",
                     "correct": true,
                     "sourceRefs": [
@@ -3968,7 +3968,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It only repeats a large goal.",
+                    "text": "Just repeat your big goal.",
                     "feedback": "Both name a goal, so they sound alike. This plan also names a cue and an act.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3979,7 +3979,7 @@
                       "plan-study"
                     ]
                   },
-                  { "id": "c", "text": "It promises the act will always happen.", "feedback": "A cue can be missed or changed, so it is no promise. It links a named moment with a chosen act.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] }
+                  { "id": "c", "text": "It promises you will always do it.", "feedback": "A cue can be missed or changed, so it is no promise. It links a named moment with a chosen act.", "correct": false, "misconceptionIds": ["if-then-plans-m2"], "sourceRefs": ["konstanz-plan", "plan-study"] }
                 ]
               }
             ],
@@ -4122,11 +4122,11 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "A student wears a bright shirt to a college class and expects all classmates to recall it. What might be overestimated?",
+                "stem": "Neha wears a bright shirt to college. She thinks the whole class will remember it. What is she overestimating?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "How many people noticed the shirt.",
+                    "text": "How many people noticed.",
                     "feedback": "In the test, the wearers guessed too high. Fewer people knew the shirt image.",
                     "correct": true,
                     "sourceRefs": [
@@ -4135,7 +4135,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "How bright the fabric looks under light.",
+                    "text": "How bright the shirt is.",
                     "feedback": "A bright shirt catches her own eye. The effect asks how many others took note.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4145,7 +4145,7 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "How much the shirt cost.", "feedback": "The price is not the point here. The effect is about how many people she expects noticed the shirt.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  { "id": "c", "text": "How much it cost.", "feedback": "The price is not the point here. The effect is about how many people she expects noticed the shirt.", "correct": false, "sourceRefs": ["spotlight-paper"] }
                 ]
               },
               {
@@ -4160,21 +4160,21 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "At a cricket club talk, Asha slips on one word. She thinks all recall it. What may be happening?",
+                "stem": "Asha trips over one word in a cricket club talk. She thinks everyone remembers. What is going on?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "She may overrate how prominent it was.",
+                    "text": "It felt bigger to her than to them.",
                     "feedback": "In a group talk, speakers guessed their words stood out more than they did.",
                     "correct": true,
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "All the listeners must recall her slip.", "feedback": "The slip stands out to Asha. Other listeners may have paid it little mind.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
+                  { "id": "c", "text": "Every listener must remember.", "feedback": "The slip stands out to Asha. Other listeners may have paid it little mind.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
-                    "text": "No listener could have noticed the slip.",
+                    "text": "Nobody could have noticed.",
                     "feedback": "It may not stand out to most people. Yet some listeners can still catch it.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4197,7 +4197,7 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "In one shirt test, wearers thought 46% of people would name the image. About what percent in fact did?",
+                "stem": "People wore an odd shirt and guessed 46% of others would notice it. About what percent really did?",
                 "options": [
                   {
                     "id": "a",
@@ -4240,11 +4240,11 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "What does the spotlight effect describe?",
+                "stem": "What is the spotlight effect?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Overrating how much others notice us.",
+                    "text": "Thinking others notice us more than they do.",
                     "feedback": "Our own experience is vivid, so it can loom larger than it does to observers.",
                     "correct": true,
                     "sourceRefs": [
@@ -4253,7 +4253,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The feeling that everyone noticed is proof that they did.",
+                    "text": "Feeling noticed proves we were.",
                     "feedback": "The mistake feels vivid from the inside, but that feeling can overstate how much others noticed.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4263,7 +4263,7 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Stage lights making people nervous.", "feedback": "The name borrows from stage lights, but the effect is about overrating how much others notice us.", "correct": false, "sourceRefs": ["spotlight-paper"] }
+                  { "id": "c", "text": "Stage lights making us nervous.", "feedback": "The name borrows from stage lights, but the effect is about overrating how much others notice us.", "correct": false, "sourceRefs": ["spotlight-paper"] }
                 ]
               },
               {
@@ -4277,18 +4277,18 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "Why might a small mistake seem huge to the person who made it?",
+                "stem": "Why does a small mistake feel huge to the one who made it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They know every detail of their own moment.",
+                    "text": "They lived every detail of it.",
                     "feedback": "That vivid inside view can anchor a guess about how much others saw.",
                     "correct": true,
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "A public slip must stand out as much to others.", "feedback": "The maker felt every detail. Others may have been busy with their own thoughts.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
+                  { "id": "c", "text": "A slip stands out the same to everyone.", "feedback": "The maker felt every detail. Others may have been busy with their own thoughts.", "correct": false, "misconceptionIds": ["spotlight-effect-m1"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
                     "text": "Others have the same inside view.",
@@ -4314,11 +4314,11 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "The spotlight effect is about a guess of other people’s ___.",
+                "stem": "The spotlight effect is a bad guess about other people's ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Attention.",
+                    "text": "Attention to us.",
                     "feedback": "The bias is in estimating how much of our action or appearance others notice.",
                     "correct": true,
                     "sourceRefs": [
@@ -4327,7 +4327,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Judgment of how serious a mistake was.",
+                    "text": "Opinion of our mistake.",
                     "feedback": "The slip may feel big to her. This effect asks how many others took note.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4352,21 +4352,21 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "A friend says the spotlight effect proves nobody notices a public mistake. What is wrong?",
+                "stem": "A friend says the spotlight effect means nobody notices mistakes. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It predicts overestimation, not zero notice.",
+                    "text": "Fewer notice, not zero.",
                     "feedback": "Some observers may notice; the key is that the person often guesses too many.",
                     "correct": true,
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "The effect proves the guess is always too high.", "feedback": "The group trend can sound like a fixed law. Any one guess may still be right.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] },
+                  { "id": "c", "text": "The guess is always too high.", "feedback": "The group trend can sound like a fixed law. Any one guess may still be right.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] },
                   {
                     "id": "b",
-                    "text": "Every observer always misses it.",
+                    "text": "Everyone always misses it.",
                     "feedback": "People often notice less than we fear. Some can still spot the mistake.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4389,11 +4389,11 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "Which sentence fairly states the spotlight effect?",
+                "stem": "Which line fairly states the spotlight effect?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "My own moment may feel bigger to me than to others.",
+                    "text": "My moment feels bigger to me than to others.",
                     "feedback": "The research concerns a gap between my guess and what observers recall.",
                     "correct": true,
                     "sourceRefs": [
@@ -4402,7 +4402,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Others can be expected to think about me all day.",
+                    "text": "Others think about me all day.",
                     "feedback": "The moment looms large to us. Others may give it far less thought.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4412,7 +4412,7 @@
                       "spotlight-paper"
                     ]
                   },
-                  { "id": "c", "text": "Nobody ever notices anything about me.", "feedback": "Some people do notice. The research finds that fewer notice than we guess, not that nobody does.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] }
+                  { "id": "c", "text": "Nobody ever notices me.", "feedback": "Some people do notice. The research finds that fewer notice than we guess, not that nobody does.", "correct": false, "misconceptionIds": ["spotlight-effect-m2"], "sourceRefs": ["spotlight-paper"] }
                 ]
               }
             ],

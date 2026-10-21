@@ -71,6 +71,31 @@ is our own look: warm Indian motifs, our cast, our sounds.
   question on every question. Recommendation: hide it by default (engine gets 'fairly-sure'), keep it on gold
   review only.
 
+## Plain words: rewrite rules for all topic questions
+Why they confuse (from the psychology pack): stems ask about research ("What does habit research suggest about
+that single gap?"), use words never taught ("median fitted time to near-full automaticity", "framed", "felt
+value", "Cohen's d"), and the right option is the hedged one ("may", "need not") while the wrong ones say "must"
+or "force". So the quiz tests spotting hedges, not the idea.
+1. One situation, then one direct question. Aim for 18 words or fewer; never more than 2 sentences of setup.
+2. Ask about the thing, not the study ("What sets this off?", not "What might start the action?").
+3. No untaught terms in stems or options. The concept's own term only where it is the answer (fill-the-step),
+   or with its meaning beside it ("Firming up after the lesson (consolidation).").
+4. Options short (aim 8 words or fewer), concrete and parallel. No "may/might" in options; wrong options must
+   not be the only ones with "must/always/exactly".
+5. Keep each option's meaning, so the existing feedback still fits; change feedback only if it no longer does.
+6. Validator rules still bind: 2 Indian settings in each concept's predict and scenario stems, estimate stems
+   name the mechanism (see `estimateMechanisms`), Flesch ≥ 60, feedback never starts with the option's words.
+Worked example: psychology, all 80 questions, on this branch (stem avg 18.0 → 16.4 words, option avg 6.2 → 5.1
+words, hedged options 16 → 3, validate-packs green). Before → after:
+- "During exam week, Tara misses one usual evening sketch. What does habit research suggest about that single
+  gap?" / "One miss need not erase the learned link." → "Tara sketches every evening, but skips one day in exam
+  week. What happens to the habit?" / "It is still there."
+- "A review of 94 tests … average gain in goal attainment, measured as Cohen's d?" → "94 studies tested if-then
+  plans. Scientists score help on a scale where 0.2 is small, 0.5 medium and 0.8 large. What did plans score?"
+Tool (idea-engine scratchpad, C:\Users\JENIL\AppData\Local\Temp\claude\C--Users-JENIL\589d3564-f928-4360-b358-30ce2b3ec501\scratchpad\pw\):
+`apply.mjs <topic> <patch.json>` replaces stems and option texts in place (minimal diff)
+and checks the result against the intended data; `pw/metrics.mjs` prints the before/after numbers.
+
 ## Acceptance
 - Each item A–H visible in a 360 px screen recording of one drop, light and dark.
 - Reduced motion: no animation at all (existing e2e pattern).
