@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { gradeItem, masteryMapState, type Confidence, type ItemAnswer } from '../../core/learn/engine';
 import { RULES } from '../../core/rules.config';
@@ -20,6 +20,7 @@ import { askFor } from '../../core/learn/ask';
 import { findStep } from '../../core/learn/steps';
 import { saveLessonDone } from '../../data/repos/learn-engine';
 import { StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
+import { useCountUp } from './useCountUp';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -51,6 +52,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [message, setMessage] = useState('');
   const [combo, setCombo] = useState(0);
   const [ideaAgain, setIdeaAgain] = useState(false);
+  // A celebration plays only for a drop finished on this screen, never when a finished drop is reopened.
+  const [answeredHere, setAnsweredHere] = useState(false);
   const writing = useRef(false);
   const starting = useRef(false);
   const ids = chosenTopics(data?.setting?.value);
@@ -132,8 +135,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const option = found.item.options.find(candidate => candidate.id === feedbackId);
     const slid = found.item.type === 'estimate' && typeof value === 'number' ? estimateFeedback(found.item, value, grade.correct) : undefined;
     setFeedback({ cursor: drop.cursor, correct: grade.correct, text: slid?.text ?? option?.feedback ?? (grade.correct ? 'That fits.' : 'Look at the order and try the idea again next time.'), rule: found.concept.rule, optionId: slid ? slid.optionId : feedbackId });
+    setAnsweredHere(true);
     if (!night) {
-      if (grade.correct) playCastSound(combo > 0 ? 'combo' : 'correct', data?.sound?.value === true && !data.sound.deleted);
+      playCastSound(grade.correct ? (combo > 0 ? 'combo' : 'correct') : 'idea', data?.sound?.value === true && !data.sound.deleted);
       setCombo(grade.correct ? combo + 1 : 0);
     }
     if (!night && grade.correct && !(daily && drop.cursor === drop.items.length - 1) && !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') void tapHaptic(true);
@@ -149,7 +153,10 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const choose = (id: string) => {
     if (!found || visibleFeedback || pending || writing.current) return;
     const item = found.item;
-    if (!night && motionOn()) void tapHaptic(true, 8);
+    if (!night) {
+      playCastSound('tick', data?.sound?.value === true && !data.sound.deleted);
+      if (motionOn()) void tapHaptic(true, 8);
+    }
     if (item.type === 'order') {
       const next = [...sequence, id];
       if (next.length === item.answer.length) setPending({ value: next, optionId: id });
@@ -193,6 +200,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       const at = currentTime();
       const current = (await db.learnDrops.get(drop.id))?.drop ?? drop;
       await saveLessonDone(db, current, { stepId, conceptId, dropId: drop.id, ...result }, await getOrCreateDeviceId(db, at), at);
+      setAnsweredHere(true);
     } catch { setMessage('Could not save this lesson. Try again.'); }
     finally { writing.current = false; setBusy(false); }
   };
@@ -210,9 +218,17 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const due = touched.map(concept => data.concepts.find(row => row.id === concept.id)?.memory?.dueAt).filter((value): value is number => typeof value === 'number').sort((a, b) => a - b)[0];
     const questions = drop.items.filter(item => !item.lesson).length;
     const taughtToday = drop.items.map(item => item.lesson && findStep(concepts, item.lesson)).find(Boolean);
-    const goldAnswers = data.ledger.filter(fact => fact.kind === 'learn-answer' && fact.inputs.dropId === drop.id);
-    const passed = goldAnswers.filter(fact => fact.inputs.correct === true).length >= RULES.gamify.goldReviewPass;
-    return <div className="learn-drop learn-stop"><span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : goldReview ? 'Gold review complete' : "That's your practice drop"}</h2>{goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <>{taughtToday && <div className="step-today card"><p className="eyebrow">Today's idea · {taughtToday.step.title}</p><p className="step-takeaway">{taughtToday.step.takeaway}</p><StepVisual visual={taughtToday.step.visual} /></div>}<p>{questions} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p>Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map(concept => <span className="learn-chip" key={concept.id}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
+    const dropAnswers = data.ledger.filter(fact => fact.kind === 'learn-answer' && fact.inputs.dropId === drop.id);
+    const right = dropAnswers.filter(fact => fact.inputs.correct === true).length;
+    const passed = right >= RULES.gamify.goldReviewPass;
+    const friends = [...new Set(drop.items.map(item => dropCast(item.mode === 'review' || reviewDue, true).name))];
+    const celebrate = answeredHere && !night && drop.items.length > 0 && (!goldReview || passed);
+    return <div className={`learn-drop learn-stop${celebrate ? ' learn-celebrate' : ''}`}>{celebrate && <FinishBurst />}<span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : goldReview ? 'Gold review complete' : "That's your practice drop"}</h2>
+      {celebrate && <div className="learn-finish-friends" aria-hidden="true">{friends.map((name, index) => <span key={name} style={{ '--i': index } as CSSProperties}><Cast name={name} pose="cheer" size={64} /></span>)}</div>}
+      {goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <>
+        {taughtToday && <div className="step-today card"><p className="eyebrow">Today's idea · {taughtToday.step.title}</p><p className="step-takeaway">{taughtToday.step.takeaway}</p><StepVisual visual={taughtToday.step.visual} /></div>}
+        {questions > 0 && <FinishStats run={celebrate} stats={[[questions, 'questions'], [right, 'right'], [touched.length, touched.length === 1 ? 'idea' : 'ideas']]} />}
+        <p>{questions} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p className="learn-perfect">Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map((concept, index) => <span className="learn-chip" key={concept.id} style={{ '--i': index } as CSSProperties}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   }
   if (step.lesson) {
     const taught = findStep(concepts, step.lesson);
@@ -258,4 +274,23 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         : <button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button>}</div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback learn-sheet ${visibleFeedback.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p>{itemStep ? (!visibleFeedback.correct && (ideaAgain ? <div className="step-again"><p className="step-teach-text">{itemStep.step.teach}</p><StepVisual visual={itemStep.step.visual} /></div> : <button type="button" className="text-button step-again-button" onClick={() => setIdeaAgain(true)}>See the idea again</button>)) : <p className="learn-rule">{visibleFeedback.rule}</p>}</>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
+}
+
+/** Spec 13 E: numbers count up once, when the drop is finished on this screen. */
+function FinishStats({ stats, run }: { stats: [number, string][]; run: boolean }) {
+  return <div className="learn-finish-stats">{stats.map(([value, label]) => <FinishStat key={label} value={value} label={label} run={run} />)}</div>;
+}
+function FinishStat({ value, label, run }: { value: number; label: string; run: boolean }) {
+  const shown = useCountUp(value, 700, run);
+  return <div className="learn-finish-stat"><strong>{shown}</strong><span>{label}</span></div>;
+}
+
+// Marigold petals and diya sparks: the same fixed burst every time, never random (spec 13 E).
+const BURST: [number, number, number, 'petal' | 'spark'][] = [
+  [-120, -150, 40, 'petal'], [-80, -190, -25, 'spark'], [-40, -160, 70, 'petal'], [0, -205, 10, 'spark'], [40, -165, -60, 'petal'], [85, -190, 30, 'spark'],
+  [125, -145, -40, 'petal'], [-140, -90, 90, 'spark'], [-95, -120, -80, 'petal'], [100, -115, 60, 'petal'], [145, -85, -90, 'spark'], [-20, -230, 120, 'petal'],
+  [22, -125, -110, 'spark'], [-60, -230, 20, 'petal'],
+];
+function FinishBurst() {
+  return <div className="learn-burst" aria-hidden="true">{BURST.map(([x, y, r, kind], index) => <i key={index} className={kind} style={{ '--x': `${x}px`, '--y': `${y}px`, '--r': `${r}deg`, '--d': `${(index % 5) * 40}ms` } as CSSProperties} />)}</div>;
 }
