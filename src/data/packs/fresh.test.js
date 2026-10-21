@@ -15,7 +15,7 @@ const item = (id, stepId, job, extra = {}) => ({
   options: [opt('a', 'Your money buys a bit less', true), opt('b', 'Your money buys a lot more'), opt('c', 'Your money stays worth it')], ...extra,
 });
 const pack = (change = () => {}) => {
-  const concept = { id: 'inflation', title: 'Inflation', rule: 'Prices rise over time.', steps: [step('s1'), step('s2')],
+  const concept = { id: 'inflation', title: 'Inflation', rule: 'Prices rise over time.', hook: 'Why does the same note buy less?', claims: [{ id: 'c1', text: 'Prices rise over time.' }], steps: [step('s1'), step('s2')],
     items: [item('i1', 's1', 'transfer'), item('i2', 's1', 'misconception'), item('i3', 's2', 'reverse'), item('i4', 's2', 'edge')] };
   change(concept);
   return { id: 'topic.test', kind: 'topic', body: { modules: [{ id: 'm', concepts: [concept] }] } };
@@ -36,6 +36,7 @@ describe('spec 16 fresh-practice rules', () => {
     expect(errors(c => { c.items[0].stem = 'Prices rise 6% again. What follows?'; })).toContain('i1: reuses 6 from');
     expect(errors(c => { c.items[0].stem = 'A shop near Riya raises prices. What follows?'; })).toContain('i1: reuses Riya from');
     expect(errors(c => { c.items[0].stem = 'A shop in Delhi raises prices by 10%. What follows?'; })).not.toContain('i1: reuses');
+    expect(errors(c => { for (const s of c.steps) s.hook.stem = 'Prices rise 0, 1, 2 or 100 times. What does ₹250 buy?'; c.items[0].stem = 'Prices rise 0, 1, 2 or 100 times again. What follows?'; })).not.toContain('i1: reuses');
   });
   it('R3: a match has 3-4 pairs with no shared words', () => {
     const match = (options, answer) => ({ type: 'match', options, answer });
@@ -50,12 +51,19 @@ describe('spec 16 fresh-practice rules', () => {
     expect(errors(c => { for (const entry of c.items) entry.options[0].text = 'Your money buys a little bit less than it did a year ago'; for (const s of c.steps) { s.hook.options[0].text = 'Much less than it bought before now'; s.guided[0].options[0].text = 'Bread costs more than it did last year'; } }))
       .toMatch(/topic: the right answer is the longest option in \d+% of questions/);
   });
+  it('R5: absolute words do not sit mostly in the wrong options', () => {
+    const loaded = c => { for (const entry of c.items) { entry.options[1].text = 'Your money always buys more'; entry.options[2].text = 'Every rupee keeps its worth'; } };
+    expect(errors(loaded)).toMatch(/topic: absolute words \(always, never, only, every\.\.\.\) sit mostly in wrong options \(8 in \d+ wrong vs 0 in \d+ right\)/);
+    expect(errors(c => { loaded(c); for (const entry of c.items) entry.options[0].text = 'Every rupee always buys less'; })).not.toContain('absolute words');
+  });
   it('R6: a hint points without giving the answer', () => {
     expect(errors(c => { c.steps[0].guided[0].hint = 'Bread prices follow the rest.'; })).toContain('s1.guided.0: hint gives the answer away ("bread")');
   });
   it('R7: teach cards give the reason, not the authority', () => {
     expect(errors(c => { c.steps[0].teach = 'Prices rise every year for most goods.'; })).toContain('s1: teach card needs a reason link');
     expect(errors(c => { c.steps[0].teach = 'The RBI says prices rise, so money buys less.'; })).toContain('s1: teach card leans on an authority');
+    expect(errors(c => { c.steps[0].teach = 'Since WHO tracks sugar, the limit sits low.'; })).toContain('s1: teach card leans on an authority');
+    expect(errors(c => { c.steps[0].teach = 'Prices rise, which means the same note buys less.'; })).not.toContain('s1: teach card');
   });
   it('content words skip short and stop words and fold plurals', () => {
     expect([...contentWords('The prices of the goods, and this rise')]).toEqual(['price', 'good', 'rise']);

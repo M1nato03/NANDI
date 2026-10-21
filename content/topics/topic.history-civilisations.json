@@ -111,7 +111,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Every house was built by one family.",
+                    "text": "One builder put up the houses.",
                     "correct": false,
                     "feedback": "Who built the houses is not shown by the grid. The grid shows a plan.",
                     "sourceRefs": [
@@ -1660,7 +1660,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, every edict used the Brahmi script.",
+                      "text": "Yes, Brahmi worked across the empire.",
                       "correct": false,
                       "feedback": "Most did, but not all. Edicts in the northwest and Afghanistan used other scripts."
                     },
@@ -1824,7 +1824,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Every home was handed a written copy.",
+                        "text": "Copies were handed out to homes to read.",
                         "correct": false,
                         "feedback": "Few people could read, and copies were not handed out. Officers carried the message."
                       },
@@ -3137,7 +3137,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes, every town switched within a year.",
+                    "text": "Yes, towns switched within a year or two.",
                     "correct": false,
                     "feedback": "The change was slow. The digits were not widely used for a long time.",
                     "sourceRefs": [
@@ -3708,7 +3708,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Blocks print faster in every case.",
+                    "text": "Blocks printed faster than type.",
                     "correct": false,
                     "feedback": "Speed was not the reason. The huge number of characters was.",
                     "sourceRefs": [
@@ -4918,9 +4918,9 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes, zabt worked the same way in every province.",
+                    "text": "Yes, zabt could be used on forest land too.",
                     "correct": false,
-                    "feedback": "It did not. It did not work in places like Gujarat and Bengal.",
+                    "feedback": "No. Zabt needed measured fields and price records, which forest land did not have.",
                     "misconceptionIds": [
                       "mughal-revenue-m2"
                     ],
@@ -5337,9 +5337,9 @@
                     },
                     {
                       "id": "c",
-                      "text": "Charge every farmer one coin.",
+                      "text": "Set the tax by the ruler's needs that year.",
                       "correct": false,
-                      "feedback": "Crops and land differ, so zabt set a rate for each crop."
+                      "feedback": "A fair rate comes from the land's own yields, so zabt used years of records."
                     }
                   ]
                 },
@@ -6129,7 +6129,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Every European ship sailing anywhere in Asia.",
+                        "text": "Dutch and Portuguese ships in Asia.",
                         "correct": false,
                         "feedback": "It could not stop other European powers from trading there."
                       },
@@ -6163,7 +6163,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "A licence to sell tea in every market.",
+                      "text": "A licence to sell tea in Bengal.",
                       "correct": false,
                       "feedback": "The diwani was about revenue, not a trading licence."
                     },
@@ -6694,7 +6694,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every member voting on the final rules at the end.",
+                    "text": "The members voting on the final rules.",
                     "correct": false,
                     "feedback": "That is like the full Assembly, which debated and adopted the text.",
                     "sourceRefs": [
@@ -7042,7 +7042,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "By a direct vote of every adult in the land.",
+                        "text": "By a direct vote of the people.",
                         "correct": false,
                         "feedback": "The vote was indirect: provincial assembly members chose them."
                       },
@@ -7174,9 +7174,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Almost every one.",
+                        "text": "About nine in ten.",
                         "correct": false,
-                        "feedback": "Far fewer than all were taken up, about a third."
+                        "feedback": "Far fewer were taken up: about a third."
                       }
                     ]
                   }
