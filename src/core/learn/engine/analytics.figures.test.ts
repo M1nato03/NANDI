@@ -15,3 +15,8 @@ it('shows 30-day recall and sure accuracy from saved answers', () => {
   const retention: AnswerFact[] = [answer('r1', true), answer('r2', false)].map(fact => ({ ...fact, kind: 'retention', retentionDay: 30 }));
   expect(learningFigures({ facts: [...sure, ...retention] }, now)).toEqual({ recall30: 50, sureAccuracy: 86 });
 });
+
+it('never counts the default fairly-sure of new items toward the sure figure', () => {
+  const newItems = Array.from({ length: 25 }, (_, index) => answer(`new-${index}`, true, 'fairly-sure'));
+  expect(learningFigures({ facts: newItems }, now).sureAccuracy).toBeNull();
+});
