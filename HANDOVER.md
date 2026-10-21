@@ -189,7 +189,7 @@ Note: exact reminders and the visible economy arrive together, so the week 8–1
 - [x] Technique cards and the three-rung hint ladder driven by the logic solvers. Write the Number Path logic solver first. (Number Path solver done 21 Oct.)
 - [ ] Hexagon stats and mastery tracks. (Hexagon done 21 Oct: You → Your six stats.)
 - [ ] Mystery meta-arc: daily cases reveal story panels and **Sunday's case closes the chapter**; the Sunday Boss board adds a bonus panel. **Four Arcs and four shop catalogues ship bundled** and cycle if no new pack arrives.
-- [ ] Content-pack pipeline live: CI validation, `/packs/index.json`, the app's pack updater (keeps the old version until the new one passes).
+- [ ] Content-pack pipeline live: CI validation, `/packs/index.json`, the app's pack updater (keeps the old version until the new one passes). (Pack updater moved to Phase 4 by the owner, 21 Oct; app updates carry new content until then.)
 
 **Exit check:** Arc 2 content and a new shop catalogue on Monday 7 December. A week 8–10 review against the baseline metrics.
 
