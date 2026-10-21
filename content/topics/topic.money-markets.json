@@ -919,454 +919,397 @@
                   "sip",
                   "investing"
                 ]
+              },
+              {
+                "id": "compounding-c3",
+                "text": "Saved at 5% a year, 365 grows to about 466 after five years and about 1,578 after thirty years.",
+                "sourceRefs": [
+                  "compound"
+                ]
+              },
+              {
+                "id": "compounding-c4",
+                "text": "The sooner saving starts, the more time compound interest has to build it up.",
+                "sourceRefs": [
+                  "finra"
+                ]
               }
             ],
             "items": [
               {
-                "id": "compounding-1",
-                "type": "predict",
-                "conceptId": "compounding",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "compounding-m1"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "sip"
-                ],
-                "stem": "Riya's family shop earns ₹100 interest on ₹1,000 and leaves it in. What earns interest next time?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Both the ₹1,000 and the ₹100.",
-                    "feedback": "Once a gain stays in the account, later growth can apply to that larger total.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Only the ₹1,000; the ₹100 never counts.",
-                    "feedback": "The first ₹1,000 is easy to track. The saved ₹100 is now in the base too.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Nothing; interest is paid just once.",
-                    "feedback": "Interest keeps arriving at the same rate. Each time, it builds on the larger total left in the account.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "compounding-2",
-                "type": "scenario",
-                "conceptId": "compounding",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "compounding-m1"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "sip"
-                ],
-                "stem": "Two hostel clubs earn the same rate. Club A takes gains out; Club B leaves them in. Which earns on past gains?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Club B, which leaves gains in.",
-                    "feedback": "Retained gains join the amount on which the next rate is applied.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Club A, which takes gains out.",
-                    "feedback": "Withdrawing gains keeps them out of the next rate base, even though both clubs use the same rate.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Both earn the same on past gains.",
-                    "feedback": "Only kept gains join the base. The club that withdraws its gains earns nothing on them next year.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "compounding-3",
+                "id": "compounding-9",
                 "type": "estimate",
                 "conceptId": "compounding",
+                "step": "compounding-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
                 ],
                 "sourceRefs": [
-                  "compound",
-                  "sip"
+                  "compound"
                 ],
-                "stem": "₹100 earns 10% in year one and the ₹10 gain stays in. About how much gain comes in year two?",
+                "stem": "₹2,000 earns compound interest at 10% a year, with nothing taken out. About what is it worth after two years?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "₹11.",
-                    "feedback": "The second gain applies to ₹110 because the first gain stayed in the account.",
+                    "text": "About ₹2,420.",
                     "correct": true,
+                    "feedback": "Year one adds ₹200 to make ₹2,200. Year two adds 10% of ₹2,200, which is ₹220.",
                     "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "₹10.",
-                    "feedback": "The first gain was ₹10, so it is easy to reuse. The saved ₹10 earns more too.",
+                    "text": "About ₹2,400.",
                     "correct": false,
+                    "feedback": "That adds ₹200 twice. In year two the 10% works on ₹2,200, so it adds ₹220.",
                     "misconceptionIds": [
                       "compounding-m1"
                     ],
                     "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "₹20.",
-                    "feedback": "That doubles the first gain. Ten percent of ₹110 is ₹11, so the second year adds ₹11.",
+                    "text": "About ₹2,200.",
                     "correct": false,
+                    "feedback": "That is the value after one year. A second year of 10% takes it to about ₹2,420.",
                     "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 11,
-                  "min": 10.5,
-                  "max": 11.5,
+                  "value": 2420,
+                  "min": 2410,
+                  "max": 2430,
                   "unit": "rupees"
                 }
               },
               {
-                "id": "compounding-4",
-                "type": "choose",
-                "conceptId": "compounding",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "compounding-m1",
-                  "compounding-m2"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "sip",
-                  "investing"
-                ],
-                "stem": "An exam club adds ₹100 to a fund each month. Which part is a payment plan, not a promised return?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Adding ₹100 every month.",
-                    "feedback": "The schedule says when money enters; it cannot set what markets later pay.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip",
-                      "investing"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A monthly payment makes the fund rise monthly.",
-                    "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m2"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "A fixed return from each payment.",
-                    "feedback": "A set pay date can feel like a set gain. Yet the fund may rise or fall.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip",
-                      "investing"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "compounding-5",
-                "type": "why",
-                "conceptId": "compounding",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "compounding-m1"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "sip"
-                ],
-                "stem": "Two equal accounts earn the same steady rate. One keeps its gains; one takes them out. Why does the first grow more?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Kept gains also earn interest.",
-                    "feedback": "The same percentage applies to a larger balance when earlier gains remain in the account.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Both grow by the same rupees each year.",
-                    "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Its rate rises each year.",
-                    "feedback": "Larger gains can look like a higher rate. A steady rate also makes more on a larger base.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  }
-                ],
-                "task": "reason"
-              },
-              {
-                "id": "compounding-6",
-                "type": "fill-the-step",
-                "conceptId": "compounding",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "compounding-m1"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "sip"
-                ],
-                "stem": "₹200 grows to ₹220, and the ₹20 stays in. Next year's 10% is worked out on ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "₹220.",
-                    "feedback": "The saved gain has joined the base, which is the key step in compounding.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "₹200.",
-                    "feedback": "The starting sum sticks in mind. The saved ₹20 also joins the new base.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "₹20.",
-                    "feedback": "The gain alone is too small a base. The next 10% is worked out on the full ₹220.",
-                    "correct": false,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "compounding-7",
+                "id": "compounding-10",
                 "type": "true-not-quite",
                 "conceptId": "compounding",
+                "step": "compounding-s1",
                 "difficultySeed": 3,
-                "misconceptionTags": [
-                  "compounding-m1",
-                  "compounding-m2"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
-                  "compound",
-                  "sip",
-                  "investing"
+                  "compound"
                 ],
-                "stem": "A chart shows money growing 10% every year. Neha expects a real share to do the same. What is wrong?",
+                "stem": "Tanvi says ₹1,000 at 10% a year for three years adds exactly ₹300 if gains stay in. What is she missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A real share's return can change each year.",
-                    "feedback": "The chart assumes the same gain every year. A real share's value can go up or down from year to year.",
+                    "text": "Each year, 10% works on a bigger sum.",
                     "correct": true,
+                    "feedback": "Kept gains grow the base, so the years add ₹100, ₹110 and ₹121. That is ₹331, not ₹300.",
                     "sourceRefs": [
-                      "compound",
-                      "sip",
-                      "investing"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Nothing: past gains make the next gain certain.",
-                    "feedback": "A rising line can invite that guess. A real share can lose value next year.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m2"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "sip",
-                      "investing"
+                      "compound"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Nothing: the chart's steady rate will carry on.",
-                    "feedback": "The smooth chart makes the rate look dependable, but a real share's return can change; compounding alone promises no path.",
+                    "text": "The 10% counts only in the first year.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
+                    "feedback": "The rate applies every year. Each year it works on the sum plus the gains kept in.",
                     "sourceRefs": [
-                      "compound",
-                      "sip",
-                      "investing"
+                      "compound"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Interest is paid only at the very end.",
+                    "correct": false,
+                    "feedback": "Here gains are added each year and stay in, so later years earn on them too.",
+                    "sourceRefs": [
+                      "compound"
                     ]
                   }
                 ]
               },
               {
-                "id": "compounding-8",
-                "type": "match",
+                "id": "compounding-11",
+                "type": "order",
                 "conceptId": "compounding",
+                "step": "compounding-s1",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "compounding-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
-                  "compound",
-                  "sip"
+                  "compound"
                 ],
-                "stem": "Match each amount to its job in a savings account.",
+                "stem": "Put one year of compound growth in order.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Starting ₹100",
-                    "feedback": "This sum came first. It is the base on which the first gain is worked out.",
+                    "text": "Work out the interest on the balance.",
                     "correct": true,
+                    "feedback": "The gain for the year comes from the rate times the money now in the pot.",
                     "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Base for the first gain",
-                    "feedback": "The first base is present before any gain has been added to the account.",
+                    "text": "Add that interest to the balance.",
                     "correct": true,
+                    "feedback": "Leaving the gain in makes the pot bigger than it was at the start.",
                     "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Saved ₹10 gain",
-                    "feedback": "This gain stays in the account, so it can join the amount used for the next gain.",
+                    "text": "Use the new balance for next year's interest.",
                     "correct": true,
+                    "feedback": "Next year the rate works on the bigger pot, so the gain grows too.",
                     "sourceRefs": [
-                      "compound",
-                      "sip"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "Part of the next base",
-                    "feedback": "The later rate can act on this saved gain as well as the first sum.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "compound",
-                      "sip"
+                      "compound"
                     ]
                   }
                 ],
                 "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "compounding-12",
+                "type": "scenario",
+                "conceptId": "compounding",
+                "step": "compounding-s2",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "compounding-m3"
+                ],
+                "sourceRefs": [
+                  "compound",
+                  "finra"
+                ],
+                "stem": "Riya puts ₹10,000 away at age 15. Dev puts the same away at 20. Same rate, no withdrawals. Who has more at 30?",
+                "options": [
                   {
-                    "left": "a",
-                    "right": "b"
+                    "id": "a",
+                    "text": "Riya, with five more years of growth.",
+                    "correct": true,
+                    "feedback": "Her money grows for fifteen years and his for ten, so hers has longer to build on gains.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
                   },
                   {
-                    "left": "b",
-                    "right": "a"
+                    "id": "b",
+                    "text": "Dev, since his money is newer.",
+                    "correct": false,
+                    "feedback": "Newer money has had less time to grow. At the same rate, more years give more.",
+                    "misconceptionIds": [
+                      "compounding-m3"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
                   },
                   {
-                    "left": "c",
-                    "right": "d"
+                    "id": "c",
+                    "text": "Both have the same, since the sum matches.",
+                    "correct": false,
+                    "feedback": "The sums match, but Riya's grows for five extra years, and those gains earn gains too.",
+                    "misconceptionIds": [
+                      "compounding-m3"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-13",
+                "type": "why",
+                "conceptId": "compounding",
+                "step": "compounding-s2",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "compound",
+                  "finra"
+                ],
+                "stem": "At the same steady rate, why do the last ten years of saving add more than the first ten?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Later gains work on a bigger pot.",
+                    "correct": true,
+                    "feedback": "By then the pot holds years of kept gains, so the same rate adds more rupees.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
                   },
                   {
-                    "left": "d",
-                    "right": "c"
+                    "id": "b",
+                    "text": "Rates rise as savers get older.",
+                    "correct": false,
+                    "feedback": "The rate here stays the same. The pot is bigger, so each year adds more.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Banks pay a bonus to long savers.",
+                    "correct": false,
+                    "feedback": "No bonus is needed. Growth on a bigger, older pot is what makes later years add more.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-14",
+                "type": "choose",
+                "conceptId": "compounding",
+                "step": "compounding-s2",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "compound",
+                  "finra"
+                ],
+                "stem": "Which ends with more at 8% a year: ₹10,000 left for 20 years, or ₹20,000 left for 10 years?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The ₹10,000 left for 20 years.",
+                    "correct": true,
+                    "feedback": "It grows to about ₹46,600. The ₹20,000 grows to about ₹43,200, as it has half the time.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The ₹20,000 left for 10 years.",
+                    "correct": false,
+                    "feedback": "Starting bigger helps, but ten extra years of growth on growth help more here.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Both end the same, since 10,000 × 20 equals 20,000 × 10.",
+                    "correct": false,
+                    "feedback": "Growth is not sum times years. Extra years multiply, so the longer one ends higher.",
+                    "sourceRefs": [
+                      "compound",
+                      "finra"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-15",
+                "type": "fill-the-step",
+                "conceptId": "compounding",
+                "step": "compounding-s3",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "sip",
+                  "investing"
+                ],
+                "stem": "Putting a set sum into a fund at set times, like ₹500 each month, is called a ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "SIP.",
+                    "correct": true,
+                    "feedback": "A systematic investment plan, or SIP, is a way to invest a set sum at set times.",
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Lump sum.",
+                    "correct": false,
+                    "feedback": "A lump sum goes in all at once. Here money goes in bit by bit each month.",
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Fixed deposit.",
+                    "correct": false,
+                    "feedback": "A fixed deposit locks one sum at a bank rate. Monthly sums into a fund make a SIP.",
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "compounding-16",
+                "type": "predict",
+                "conceptId": "compounding",
+                "step": "compounding-s3",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "compounding-m2"
+                ],
+                "sourceRefs": [
+                  "sip",
+                  "investing"
+                ],
+                "stem": "Kiran pays ₹500 into her SIP every month. Then the market falls this year. What happens to her fund's value?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It can fall, even with every payment made.",
+                    "correct": true,
+                    "feedback": "Her payments are regular, but the fund's value still moves with the market.",
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It must rise, because she paid on time.",
+                    "correct": false,
+                    "feedback": "Paying on time sets her habit. It does not set what the market does.",
+                    "misconceptionIds": [
+                      "compounding-m2"
+                    ],
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It stays flat until prices recover.",
+                    "correct": false,
+                    "feedback": "A fund's value moves with what it holds. When prices fall, its value can fall too.",
+                    "sourceRefs": [
+                      "sip",
+                      "investing"
+                    ]
                   }
                 ]
               }
@@ -1388,6 +1331,15 @@
                 "sourceRefs": [
                   "compound",
                   "sip"
+                ]
+              },
+              {
+                "id": "compounding-m3",
+                "name": "A late start costs nothing",
+                "correction": "Starting later gives money fewer years to grow, so it ends smaller.",
+                "sourceRefs": [
+                  "compound",
+                  "finra"
                 ]
               }
             ],
@@ -1415,6 +1367,14 @@
                 "year": 2026,
                 "url": "https://www.investor.gov/introduction-investing",
                 "asOf": "2026-10-16"
+              },
+              {
+                "id": "finra",
+                "title": "Financial Education for Kids: Creating a Path to Financial Fluency",
+                "publisher": "FINRA",
+                "year": 2025,
+                "url": "https://syndication.finra.org/content/financial-education-kids-creating-path-financial-fluency",
+                "asOf": "2026-10-21"
               }
             ],
             "factCheck": {
@@ -1428,40 +1388,376 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-3",
+                  "claimId": "compounding-c3",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-1",
+                  "claimId": "compounding-c4",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-2",
+                  "claimId": "compounding-9",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-4",
+                  "claimId": "compounding-10",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-5",
+                  "claimId": "compounding-11",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-6",
+                  "claimId": "compounding-12",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-7",
+                  "claimId": "compounding-13",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-8",
+                  "claimId": "compounding-14",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-15",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "compounding-16",
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17e"
-            }
+              "checker": "builder content agent source check 2026-10-21 (Investor.gov Small Savings Add Up: 365 at 5% is 465.84 after 5 years and 1,577.50 after 30; FINRA: sooner saving, more compound interest; SEBI SIP page; Investor.gov intro)"
+            },
+            "steps": [
+              {
+                "id": "compounding-s1",
+                "title": "Gains start earning gains",
+                "claimId": "compounding-c1",
+                "sourceRefs": [
+                  "compound"
+                ],
+                "hook": {
+                  "stem": "Sana and Om each save ₹1,000 at 10%. Sana leaves her interest in; Om spends his. Who has more after two years?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Sana, with ₹1,210.",
+                      "correct": true,
+                      "feedback": "Right. Her ₹100 gain stayed in and earned ₹10 more in year two."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Both have ₹1,200.",
+                      "correct": false,
+                      "feedback": "Om has ₹1,000 plus ₹200 spent. Sana's kept gain earned extra, so she has ₹1,210."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Om, since he took ₹200 out.",
+                      "correct": false,
+                      "feedback": "Spending the interest means it cannot earn more. Sana ends with ₹1,210 saved."
+                    }
+                  ]
+                },
+                "teach": "With compound interest, you earn on your savings and on the interest they already made. So each year's gain is a bit bigger.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "₹1,000 saved",
+                    "Earns ₹100",
+                    "₹1,100 earns ₹110"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the interest on interest.",
+                  "parts": [
+                    "Meera's ₹1,000 earned ₹100 in year one.",
+                    "In year two, that ₹100 earned ₹10 of its own,",
+                    "so her gain grew from ₹100 to ₹110."
+                  ],
+                  "spot": "In year two, that ₹100 earned ₹10 of its own,",
+                  "feedback": "The ₹10 came from last year's gain, not from her first ₹1,000."
+                },
+                "guided": [
+                  {
+                    "stem": "₹500 earns 10% a year and the gain stays in. What is it worth after one year?",
+                    "hint": "Find 10% of ₹500 and add it.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "₹550.",
+                        "correct": true,
+                        "feedback": "Yes. 10% of ₹500 is ₹50, so the pot is now ₹550."
+                      },
+                      {
+                        "id": "b",
+                        "text": "₹510.",
+                        "correct": false,
+                        "feedback": "That adds only ₹10. 10% of ₹500 is ₹50, which makes ₹550."
+                      },
+                      {
+                        "id": "c",
+                        "text": "₹600.",
+                        "correct": false,
+                        "feedback": "That adds ₹100, which is 20%. At 10% the gain is ₹50."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "In year two, the ₹550 earns 10% again. How big is the new gain?",
+                    "hint": "Work out 10% of the new total, not of the first ₹500.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "₹55.",
+                        "correct": true,
+                        "feedback": "Right. The rate now works on ₹550, so the gain grows to ₹55."
+                      },
+                      {
+                        "id": "b",
+                        "text": "₹50.",
+                        "correct": false,
+                        "feedback": "That is 10% of the old ₹500. The pot is now ₹550, so the gain is ₹55."
+                      },
+                      {
+                        "id": "c",
+                        "text": "₹10.",
+                        "correct": false,
+                        "feedback": "That is only the gain on last year's gain. The full gain is 10% of ₹550, or ₹55."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Gains you leave in start to earn gains too."
+              },
+              {
+                "id": "compounding-s2",
+                "title": "Time does most of the work",
+                "claimId": "compounding-c3",
+                "sourceRefs": [
+                  "compound",
+                  "finra"
+                ],
+                "hook": {
+                  "stem": "You save ₹365 once at 5% a year and leave it. About how much is it after 30 years?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "About ₹1,578.",
+                      "correct": true,
+                      "feedback": "Right. Growth on growth for 30 years takes ₹365 to about ₹1,578."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About ₹913.",
+                      "correct": false,
+                      "feedback": "That counts 5% of ₹365 each year, as if gains never earned. Compounding gives about ₹1,578."
+                    },
+                    {
+                      "id": "c",
+                      "text": "About ₹466.",
+                      "correct": false,
+                      "feedback": "That is the value after five years. Twenty-five more years take it near ₹1,578."
+                    }
+                  ]
+                },
+                "teach": "Growth on growth is slow at first and fast later. Saved at 5%, ₹365 is about ₹466 after five years, but about ₹1,578 after thirty.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "₹365 saved at 5% a year",
+                  "min": "₹365",
+                  "max": "₹1,600",
+                  "marks": [
+                    {
+                      "at": 8,
+                      "text": "5 years: ₹466"
+                    },
+                    {
+                      "at": 32,
+                      "text": "15 years: ₹759"
+                    },
+                    {
+                      "at": 98,
+                      "text": "30 years: ₹1,578"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap why Asha ends with more.",
+                  "parts": [
+                    "Asha and Rohan both save at the same rate,",
+                    "but Asha starts ten years sooner,",
+                    "so her money has longer to grow."
+                  ],
+                  "spot": "but Asha starts ten years sooner,",
+                  "feedback": "The same rate gives more when it has more years to work on past gains."
+                },
+                "guided": [
+                  {
+                    "stem": "Asha leaves ₹1,000 at 8% for 10 years. Ben leaves ₹1,000 at 8% for 20 years. How do they compare?",
+                    "hint": "Ten more years of growth work on a bigger pot.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Ben has about twice as much.",
+                        "correct": true,
+                        "feedback": "Yes. Asha reaches about ₹2,160; Ben reaches about ₹4,660."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Ben has just ₹800 more.",
+                        "correct": false,
+                        "feedback": "That counts ₹80 a year with no growth on growth. Ben ends with about twice as much."
+                      },
+                      {
+                        "id": "c",
+                        "text": "They have about the same.",
+                        "correct": false,
+                        "feedback": "Ben's money grows for ten more years, so he ends with far more."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Over 30 years at 5%, which five years add the most rupees?",
+                    "hint": "The pot is biggest near the end.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The last five years.",
+                        "correct": true,
+                        "feedback": "Right. By then the pot is largest, so the same 5% adds the most rupees."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The first five years.",
+                        "correct": false,
+                        "feedback": "The pot is smallest then, so 5% adds the fewest rupees."
+                      },
+                      {
+                        "id": "c",
+                        "text": "All five-year spans add the same.",
+                        "correct": false,
+                        "feedback": "Each span starts from a bigger pot, so later spans add more."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The longer money grows, the faster it grows."
+              },
+              {
+                "id": "compounding-s3",
+                "title": "A SIP is a habit, not a promise",
+                "claimId": "compounding-c2",
+                "sourceRefs": [
+                  "sip",
+                  "investing"
+                ],
+                "hook": {
+                  "stem": "A SIP takes ₹500 from your account every month. What does it fix?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "How much goes in, and when.",
+                      "correct": true,
+                      "feedback": "Right. A SIP sets the sum and the dates. The market sets the return."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The return you will earn.",
+                      "correct": false,
+                      "feedback": "A SIP does not fix the return. The fund's value moves with the market."
+                    },
+                    {
+                      "id": "c",
+                      "text": "That the fund only goes up.",
+                      "correct": false,
+                      "feedback": "Funds can fall as well as rise. A SIP just keeps adding money on set dates."
+                    }
+                  ]
+                },
+                "teach": "A SIP puts in the same sum at set times, like ₹500 each month. It sets your habit. It does not set what the market pays back.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "A SIP fixes",
+                    "lines": [
+                      "How much you put in",
+                      "When you put it in"
+                    ]
+                  },
+                  "right": {
+                    "title": "A SIP does not fix",
+                    "lines": [
+                      "What the market pays",
+                      "Whether the fund rises"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part a SIP cannot promise.",
+                  "parts": [
+                    "Ravi sets up a ₹1,000 SIP each month,",
+                    "the money goes in on the 5th,",
+                    "and the fund's value moves with the market."
+                  ],
+                  "spot": "and the fund's value moves with the market.",
+                  "feedback": "Ravi controls the sum and the date. The market decides how the fund's value moves."
+                },
+                "guided": [
+                  {
+                    "stem": "A friend says a SIP fund is safe because money goes in every month. What is mixed up?",
+                    "hint": "Ask what the regular part controls.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Paying often does not fix returns.",
+                        "correct": true,
+                        "feedback": "Yes. Regular payments set a habit. The fund can still fall."
+                      },
+                      {
+                        "id": "b",
+                        "text": "SIPs take money only once.",
+                        "correct": false,
+                        "feedback": "A SIP takes money again and again. The mix-up is about returns."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing; monthly payments make it safe.",
+                        "correct": false,
+                        "feedback": "Monthly payments do not stop a fund from falling in a bad year."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Which of these does a ₹500 SIP set for you?",
+                    "hint": "Think of what you choose when you sign up.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The date money goes in.",
+                        "correct": true,
+                        "feedback": "Right. You pick the sum and the dates when you start."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Next year's return.",
+                        "correct": false,
+                        "feedback": "No one can set that. The market decides the return."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The fund's top value.",
+                        "correct": false,
+                        "feedback": "A SIP has no say over how high or low the fund goes."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A SIP fixes what you put in, not what you get back."
+              }
+            ]
           },
           {
             "id": "rule-of-72",
@@ -1473,7 +1769,7 @@
             "hookSourceRefs": [
               "rule72"
             ],
-            "rule": "For a steady percent gain, divide 72 by the rate to guess the years to double. It is a rough math shortcut, not a promise of market growth.",
+            "rule": "For a steady percent rate, divide 72 by the rate to guess the years to double. It works for unpaid debt too. It is a rough shortcut, not a promise of market growth.",
             "ruleSourceRefs": [
               "rule72",
               "investing"
@@ -1493,290 +1789,105 @@
                   "rule72",
                   "investing"
                 ]
+              },
+              {
+                "id": "rule-of-72-c3",
+                "text": "At 4% a year, savings double in about 18 years, since 72 divided by 4 is 18.",
+                "sourceRefs": [
+                  "rule72"
+                ]
+              },
+              {
+                "id": "rule-of-72-c4",
+                "text": "The rule works for debt too: an unpaid card balance at 18% interest doubles in about four years.",
+                "sourceRefs": [
+                  "rule72"
+                ]
               }
             ],
             "items": [
               {
-                "id": "rule-of-72-1",
-                "type": "predict",
-                "conceptId": "rule-of-72",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "rule-of-72-m1"
-                ],
-                "sourceRefs": [
-                  "rule72"
-                ],
-                "stem": "A hostel quiz uses a steady 8% growth rate. By the rule of 72, about when does money double?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About nine years.",
-                    "feedback": "The shortcut divides 72 by eight, then treats the answer as a rough time.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Eight years.",
-                    "feedback": "Eight is the rate, so it is tempting to call it years. Divide 72 by 8 instead.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 72 years.",
-                    "feedback": "Seventy-two is the number you divide, not the answer. Divided by 8, it gives about nine years.",
-                    "correct": false,
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "rule-of-72-2",
-                "type": "scenario",
-                "conceptId": "rule-of-72",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "rule-of-72-m1"
-                ],
-                "sourceRefs": [
-                  "rule72"
-                ],
-                "stem": "On a train, Arjun compares two steady rates: 6% and 9%. Which one doubles money sooner?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "The 9% case.",
-                    "feedback": "A larger assumed rate makes 72 divided by that rate smaller.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The 6% case.",
-                    "feedback": "Six can look like the shorter wait. As a rate, it grows money more slowly than nine.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Both take the same time.",
-                    "feedback": "Different rates give different waits. 72 ÷ 9 is 8 years, while 72 ÷ 6 is 12 years.",
-                    "correct": false,
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "rule-of-72-3",
+                "id": "rule-of-72-9",
                 "type": "estimate",
                 "conceptId": "rule-of-72",
+                "step": "rule-of-72-s1",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "rule-of-72-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "A steady rate drops from 6% to 3%. By the rule of 72, about how many years to double now?",
+                "stem": "A savings account pays a steady 2% a year. By the rule of 72, about how many years until the money doubles?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "24 years.",
-                    "feedback": "The lower steady rate gives a longer rough doubling time; the shortcut uses the new rate.",
+                    "text": "About 36 years.",
                     "correct": true,
+                    "feedback": "Divide 72 by 2 to get 36. At a slow rate, doubling takes a long time.",
                     "sourceRefs": [
                       "rule72"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "12 years.",
-                    "feedback": "Twelve years fit the old 6% rate. At 3%, the rough wait is twice as long.",
+                    "text": "About 2 years.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
+                    "feedback": "The rate is not the time. Dividing 72 by 2 gives about 36 years.",
                     "sourceRefs": [
                       "rule72"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "6 years.",
-                    "feedback": "A lower rate makes doubling slower, not faster. 72 ÷ 3 gives about 24 years.",
+                    "text": "About 144 years.",
                     "correct": false,
+                    "feedback": "That multiplies 72 by 2. The rule divides 72 by the rate, giving 36.",
                     "sourceRefs": [
                       "rule72"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 24,
-                  "min": 23.5,
-                  "max": 24.5,
+                  "value": 36,
+                  "min": 35,
+                  "max": 37,
                   "unit": "years"
                 }
               },
               {
-                "id": "rule-of-72-4",
-                "type": "choose",
-                "conceptId": "rule-of-72",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "rule-of-72-m1",
-                  "rule-of-72-m2"
-                ],
-                "sourceRefs": [
-                  "rule72",
-                  "investing"
-                ],
-                "stem": "A class chart shows a rate that changes every year. How should you read its rule-of-72 answer?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "As a rough guess if the rate held steady.",
-                    "feedback": "The shortcut assumes one rate, so a changing path may reach double at another time.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "rule72",
-                      "investing"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "As the true answer, using this year's rate.",
-                    "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m2"
-                    ],
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "As a sure date for doubling.",
-                    "feedback": "A neat number can feel like a date. If rates move, the true wait can change too.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
-                    "sourceRefs": [
-                      "rule72",
-                      "investing"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "rule-of-72-5",
-                "type": "why",
-                "conceptId": "rule-of-72",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "rule-of-72-m1"
-                ],
-                "sourceRefs": [
-                  "rule72"
-                ],
-                "stem": "One balance grows at a steady 12%, another at 4%. Why does the rule of 72 give different times?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A higher rate needs fewer years.",
-                    "feedback": "Dividing 72 by a larger rate gives a shorter rough time, assuming each rate stays steady.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The 12% one takes longer, since it earns more.",
-                    "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "A bigger starting balance doubles faster.",
-                    "feedback": "More starting cash means more rupees gained, but the rule works out doubling time from the percent rate alone.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  }
-                ],
-                "task": "reason"
-              },
-              {
-                "id": "rule-of-72-6",
+                "id": "rule-of-72-10",
                 "type": "fill-the-step",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "rule-of-72-m1"
-                ],
+                "step": "rule-of-72-s1",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "At a steady 3% rate, the rule gives 72 ÷ 3 = ___.",
+                "stem": "To double money in 6 years, the rule needs a steady rate of 72 ÷ 6 = ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 24 years.",
-                    "feedback": "A low rate makes the time to double long. The rule still gives only a rough answer.",
+                    "text": "12%.",
                     "correct": true,
+                    "feedback": "Working backwards, 72 divided by 6 years gives a 12% yearly rate.",
                     "sourceRefs": [
                       "rule72"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 3 years.",
-                    "feedback": "Three is the rate, so it is easy to reuse. The rule asks for 72 divided by 3.",
+                    "text": "6%.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
+                    "feedback": "At 6% the rule gives 12 years. To halve that time, the rate must be 12%.",
                     "sourceRefs": [
                       "rule72"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 216 years.",
-                    "feedback": "That multiplies instead of dividing. The rule asks for 72 ÷ 3, which is about 24 years.",
+                    "text": "432%.",
                     "correct": false,
+                    "feedback": "That multiplies 72 by 6. Dividing gives the rate: 12% a year.",
                     "sourceRefs": [
                       "rule72"
                     ]
@@ -1784,35 +1895,209 @@
                 ]
               },
               {
-                "id": "rule-of-72-7",
-                "type": "true-not-quite",
+                "id": "rule-of-72-11",
+                "type": "predict",
                 "conceptId": "rule-of-72",
+                "step": "rule-of-72-s1",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "On a train, Arjun's uncle says his deposit rate is going up from 6% to 8%. What happens to its doubling time?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It gets shorter, about 9 years.",
+                    "correct": true,
+                    "feedback": "A higher rate means fewer years. 72 ÷ 8 is 9, down from 72 ÷ 6, which is 12.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It gets longer.",
+                    "correct": false,
+                    "feedback": "More growth each year gets money to double sooner, not later.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It stays at 12 years.",
+                    "correct": false,
+                    "feedback": "The doubling time depends on the rate. At 8% it drops to about 9 years.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-12",
+                "type": "scenario",
+                "conceptId": "rule-of-72",
+                "step": "rule-of-72-s2",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "rule-of-72-m3"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "A college student owes ₹8,000 at 12% a year and pays nothing back. About when will she owe ₹16,000?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "In about 6 years.",
+                    "correct": true,
+                    "feedback": "Unpaid debt grows like savings do. 72 ÷ 12 is 6, so it doubles in about six years.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "In about 12 years.",
+                    "correct": false,
+                    "feedback": "The rate is not the time. 72 divided by 12 gives about six years.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Never, if she borrows no more.",
+                    "correct": false,
+                    "feedback": "Interest keeps adding to an unpaid sum, so it grows even with no new borrowing.",
+                    "misconceptionIds": [
+                      "rule-of-72-m3"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-13",
+                "type": "choose",
+                "conceptId": "rule-of-72",
+                "step": "rule-of-72-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "rule-of-72-m1",
+                  "rule-of-72-m3"
+                ],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "Ishan has ₹10,000 saved at 6% and owes ₹10,000 at 18%. After about 12 years, how do the two compare?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The debt ends up several times bigger.",
+                    "correct": true,
+                    "feedback": "Savings double once in 12 years. The debt doubles about three times, so it ends far bigger.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Both end up the same size.",
+                    "correct": false,
+                    "feedback": "They start the same, but 18% doubles every four years while 6% takes twelve.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The savings end up bigger.",
+                    "correct": false,
+                    "feedback": "The savings grow more slowly. 18% makes the debt grow about three times as fast.",
+                    "misconceptionIds": [
+                      "rule-of-72-m3"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-14",
+                "type": "why",
+                "conceptId": "rule-of-72",
+                "step": "rule-of-72-s2",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "stem": "Why does paying only a small part of a card bill each month let the debt keep growing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The unpaid part keeps earning interest.",
+                    "correct": true,
+                    "feedback": "The part you leave unpaid is charged interest too, so the bill can keep growing.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Cards stop charging once you pay something.",
+                    "correct": false,
+                    "feedback": "Any amount left unpaid is still charged interest, month after month.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Interest is charged only on new buys.",
+                    "correct": false,
+                    "feedback": "The old unpaid balance is charged too, which is why it can keep growing.",
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "rule-of-72-15",
+                "type": "explain-it-back",
+                "conceptId": "rule-of-72",
+                "step": "rule-of-72-s3",
+                "difficultySeed": 1,
+                "misconceptionTags": [
                   "rule-of-72-m2"
                 ],
                 "sourceRefs": [
                   "rule72",
                   "investing"
                 ],
-                "stem": "A rate is 8% this year and 4% next year. Sam says 72 ÷ 8 proves nine years to double. What is wrong?",
+                "stem": "How would you sum up when the rule of 72 works well?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The rule needs a rate that stays steady.",
-                    "feedback": "A rate that keeps changing breaks the shortcut, and even a steady rate gives only a rough answer.",
+                    "text": "When the rate stays the same each year.",
                     "correct": true,
+                    "feedback": "The rule turns one steady rate into a rough doubling time.",
                     "sourceRefs": [
                       "rule72",
                       "investing"
                     ]
                   },
                   {
-                    "id": "c",
-                    "text": "The rule averages the two rates itself.",
-                    "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.",
+                    "id": "b",
+                    "text": "Only for share prices.",
                     "correct": false,
+                    "feedback": "It works best for steady rates, like a fixed deposit, not for jumpy share prices.",
                     "misconceptionIds": [
                       "rule-of-72-m2"
                     ],
@@ -1822,12 +2107,12 @@
                     ]
                   },
                   {
-                    "id": "b",
-                    "text": "This year's 8% can stand for every year.",
-                    "feedback": "Using this year's rate gives a quick guess, but the shortcut needs the rate to stay steady. Next year's 4% breaks that.",
+                    "id": "c",
+                    "text": "For any return, even a jumpy one.",
                     "correct": false,
+                    "feedback": "A return that jumps around has no single rate to divide by.",
                     "misconceptionIds": [
-                      "rule-of-72-m1"
+                      "rule-of-72-m2"
                     ],
                     "sourceRefs": [
                       "rule72",
@@ -1837,10 +2122,11 @@
                 ]
               },
               {
-                "id": "rule-of-72-8",
-                "type": "explain-it-back",
+                "id": "rule-of-72-16",
+                "type": "true-not-quite",
                 "conceptId": "rule-of-72",
-                "difficultySeed": 2,
+                "step": "rule-of-72-s3",
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "rule-of-72-m1"
                 ],
@@ -1848,13 +2134,13 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "Why is this shortcut useful in class?",
+                "stem": "Kabir says a fund that averaged 9% over ten years doubled in exactly eight. What is the mistake?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It turns a rate into a quick doubling guess.",
-                    "feedback": "You can do this sum in your head. A full growth sum may give a different time.",
+                    "text": "An average hides ups and downs.",
                     "correct": true,
+                    "feedback": "Real returns changed each year, so the time to double can differ from 72 ÷ 9.",
                     "sourceRefs": [
                       "rule72",
                       "investing"
@@ -1862,12 +2148,9 @@
                   },
                   {
                     "id": "b",
-                    "text": "It proves a return will stay fixed.",
-                    "feedback": "The rule gives one clean number. Real rates can change, so the guess is not a promise.",
+                    "text": "72 ÷ 9 is nine, not eight.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "rule-of-72-m1"
-                    ],
+                    "feedback": "The sum is right: 72 ÷ 9 is 8. The flaw is using it on returns that were not steady.",
                     "sourceRefs": [
                       "rule72",
                       "investing"
@@ -1875,9 +2158,9 @@
                   },
                   {
                     "id": "c",
-                    "text": "It tells the day money doubles.",
-                    "feedback": "The shortcut gives a rough guess, not a date. Real growth sums and changing rates can differ.",
+                    "text": "Funds always double sooner than the rule.",
                     "correct": false,
+                    "feedback": "No such rule exists. Uneven returns can make doubling take longer or shorter.",
                     "misconceptionIds": [
                       "rule-of-72-m1"
                     ],
@@ -1902,6 +2185,14 @@
                 "id": "rule-of-72-m2",
                 "name": "Any market rate is fixed",
                 "correction": "Market gains can vary; the shortcut needs a steady assumed rate.",
+                "sourceRefs": [
+                  "rule72"
+                ]
+              },
+              {
+                "id": "rule-of-72-m3",
+                "name": "Debt stays the same size",
+                "correction": "Unpaid debt gathers interest too, and a high rate doubles it fast.",
                 "sourceRefs": [
                   "rule72"
                 ]
@@ -1936,40 +2227,372 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-3",
+                  "claimId": "rule-of-72-c3",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-1",
+                  "claimId": "rule-of-72-c4",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-2",
+                  "claimId": "rule-of-72-9",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-4",
+                  "claimId": "rule-of-72-10",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-5",
+                  "claimId": "rule-of-72-11",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-6",
+                  "claimId": "rule-of-72-12",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-7",
+                  "claimId": "rule-of-72-13",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-8",
+                  "claimId": "rule-of-72-14",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-15",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "rule-of-72-16",
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17e"
-            }
+              "checker": "builder content agent source check 2026-10-21 (FINRA kids page: divide 72 by the rate, 4% doubles in 18 years, 18% card debt doubles in four years, unpaid balances gather compound interest; Investor.gov intro)"
+            },
+            "steps": [
+              {
+                "id": "rule-of-72-s1",
+                "title": "Divide 72 by the rate",
+                "claimId": "rule-of-72-c1",
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "hook": {
+                  "stem": "Money grows at a steady 6% a year. About how long until it doubles?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "About 12 years.",
+                      "correct": true,
+                      "feedback": "Right. 72 divided by 6 is 12, so about 12 years at a steady 6%."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About 6 years.",
+                      "correct": false,
+                      "feedback": "That uses the rate as the years. Divide 72 by 6 to get about 12."
+                    },
+                    {
+                      "id": "c",
+                      "text": "About 72 years.",
+                      "correct": false,
+                      "feedback": "72 is the number you divide, not the answer. 72 ÷ 6 gives about 12 years."
+                    }
+                  ]
+                },
+                "teach": "To guess how long money takes to double, divide 72 by the yearly rate. At 8%, 72 ÷ 8 is 9, so about nine years.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Yearly rate: 8%",
+                    "72 ÷ 8 = 9",
+                    "About 9 years to double"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the shortcut sum.",
+                  "parts": [
+                    "Nisha's savings grow at a steady 4% a year.",
+                    "She works out 72 ÷ 4 = 18,",
+                    "so they double in about 18 years."
+                  ],
+                  "spot": "She works out 72 ÷ 4 = 18,",
+                  "feedback": "Dividing 72 by the rate gives the rough number of years to double."
+                },
+                "guided": [
+                  {
+                    "stem": "A deposit pays a steady 9%. Roughly how many years to double?",
+                    "hint": "Work out 72 divided by 9.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "About 8.",
+                        "correct": true,
+                        "feedback": "Yes. 72 ÷ 9 is 8, so about eight years."
+                      },
+                      {
+                        "id": "b",
+                        "text": "About 9.",
+                        "correct": false,
+                        "feedback": "Nine is the rate. Dividing 72 by 9 gives about 8 years."
+                      },
+                      {
+                        "id": "c",
+                        "text": "About 81.",
+                        "correct": false,
+                        "feedback": "That multiplies 9 by 9. The rule divides 72 by 9."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Which rate doubles money in about 6 years?",
+                    "hint": "Try 72 divided by each rate.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "12%.",
+                        "correct": true,
+                        "feedback": "Right. 72 ÷ 12 is 6."
+                      },
+                      {
+                        "id": "b",
+                        "text": "6%.",
+                        "correct": false,
+                        "feedback": "At 6%, 72 ÷ 6 gives 12 years, not 6."
+                      },
+                      {
+                        "id": "c",
+                        "text": "72%.",
+                        "correct": false,
+                        "feedback": "At 72%, money would double in about one year by the rule."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Years to double is about 72 divided by the rate."
+              },
+              {
+                "id": "rule-of-72-s2",
+                "title": "Debt doubles the same way",
+                "claimId": "rule-of-72-c4",
+                "sourceRefs": [
+                  "rule72"
+                ],
+                "hook": {
+                  "stem": "A card balance of ₹10,000 is left unpaid at 18% a year. About when does it reach ₹20,000?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "In about 4 years.",
+                      "correct": true,
+                      "feedback": "Right. 72 ÷ 18 is 4, so unpaid card debt doubles in about four years."
+                    },
+                    {
+                      "id": "b",
+                      "text": "In about 18 years.",
+                      "correct": false,
+                      "feedback": "The rate is not the years. 72 divided by 18 gives about four."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Never, with no new spending.",
+                      "correct": false,
+                      "feedback": "Interest keeps adding to the unpaid balance, so it grows on its own."
+                    }
+                  ]
+                },
+                "teach": "The rule works on debt too. An unpaid card balance at 18% doubles in about four years, since 72 ÷ 18 is 4.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Savings at 4%",
+                    "lines": [
+                      "72 ÷ 4 = 18",
+                      "Double in about 18 years"
+                    ]
+                  },
+                  "right": {
+                    "title": "Card debt at 18%",
+                    "lines": [
+                      "72 ÷ 18 = 4",
+                      "Double in about 4 years"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap why the debt doubles.",
+                  "parts": [
+                    "Arav owes ₹5,000 on a card at 18% a year,",
+                    "and he leaves it unpaid,",
+                    "so in about four years he owes near ₹10,000."
+                  ],
+                  "spot": "and he leaves it unpaid,",
+                  "feedback": "An unpaid balance keeps gathering interest, so 18% doubles it in about four years."
+                },
+                "guided": [
+                  {
+                    "stem": "A loan app charges 24% a year on an unpaid sum. Roughly how fast does it double?",
+                    "hint": "Use 72 ÷ 24.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "About 3 years.",
+                        "correct": true,
+                        "feedback": "Yes. 72 ÷ 24 is 3, so the sum doubles in about three years."
+                      },
+                      {
+                        "id": "b",
+                        "text": "About 24 years.",
+                        "correct": false,
+                        "feedback": "That uses the rate as the time. 72 ÷ 24 gives about three years."
+                      },
+                      {
+                        "id": "c",
+                        "text": "About 12 years.",
+                        "correct": false,
+                        "feedback": "That would be a 6% rate. At 24% it doubles in about three."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Which grows faster: savings at 6% or a debt at 18%?",
+                    "hint": "Find the doubling time for each.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The 18% debt.",
+                        "correct": true,
+                        "feedback": "Right. It doubles in about 4 years; the savings take about 12."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The 6% savings.",
+                        "correct": false,
+                        "feedback": "Savings at 6% take about 12 years to double. The debt takes about 4."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both grow the same.",
+                        "correct": false,
+                        "feedback": "A higher rate doubles faster, so the 18% debt grows about three times as fast."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "High-interest debt doubles fast; 18% takes about four years."
+              },
+              {
+                "id": "rule-of-72-s3",
+                "title": "Only for a steady rate",
+                "claimId": "rule-of-72-c2",
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ],
+                "hook": {
+                  "stem": "A fund gained 20% last year and fell 5% this year. What does 72 ÷ 20 tell you about it?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Not much, as the rate did not stay steady.",
+                      "correct": true,
+                      "feedback": "Right. The rule needs one rate that holds. This fund's return jumped around."
+                    },
+                    {
+                      "id": "b",
+                      "text": "It will double in 3.6 years.",
+                      "correct": false,
+                      "feedback": "That would need 20% every year. Last year's gain is no promise."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It will double in 72 years.",
+                      "correct": false,
+                      "feedback": "72 is only the number you divide. The real issue is that the rate changes."
+                    }
+                  ]
+                },
+                "teach": "The shortcut needs a rate that stays the same. Market returns jump around, so for them it only answers a what-if question.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Fixed deposit at 7%",
+                    "lines": [
+                      "Rate stays the same",
+                      "72 ÷ 7 is a fair guess"
+                    ]
+                  },
+                  "right": {
+                    "title": "Shares that jump around",
+                    "lines": [
+                      "Return changes each year",
+                      "72 ÷ rate is only a what-if"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that breaks the shortcut.",
+                  "parts": [
+                    "Jaya's fund rose 15% one year,",
+                    "then dropped 10% the next,",
+                    "so 72 ÷ 15 cannot give its doubling time."
+                  ],
+                  "spot": "then dropped 10% the next,",
+                  "feedback": "The return changed from year to year, so no single rate fits the rule."
+                },
+                "guided": [
+                  {
+                    "stem": "Which case suits the rule of 72 best?",
+                    "hint": "Look for a rate that does not change.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A deposit at a fixed 6%.",
+                        "correct": true,
+                        "feedback": "Yes. A fixed rate is just what the rule needs."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A share that rose 30% last year.",
+                        "correct": false,
+                        "feedback": "One good year does not set future returns, so the rule is only a what-if here."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A fund whose return changes monthly.",
+                        "correct": false,
+                        "feedback": "A return that keeps changing gives the rule no steady rate."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "A friend says 72 ÷ 12 proves his share will double in six years. What is the flaw?",
+                    "hint": "Ask if a share's return stays fixed.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Share returns are not fixed.",
+                        "correct": true,
+                        "feedback": "Right. The sum is fine, but a share has no steady 12% to rely on."
+                      },
+                      {
+                        "id": "b",
+                        "text": "He should divide 12 by 72.",
+                        "correct": false,
+                        "feedback": "The sum 72 ÷ 12 is right. The flaw is treating the rate as fixed."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing is wrong.",
+                        "correct": false,
+                        "feedback": "The rule only guesses for steady rates. It proves nothing about a share."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The rule needs a steady rate; markets do not give one."
+              }
+            ]
           },
           {
             "id": "risk-return",
@@ -1999,326 +2622,375 @@
                 "sourceRefs": [
                   "risk"
                 ]
+              },
+              {
+                "id": "risk-return-c3",
+                "text": "Cash savings are the safest of the three main kinds of assets but earn the least; shares carry the most risk and have earned the most over time.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "risk-return-c4",
+                "text": "In the US, large company shares as a group have dropped in value in about one year out of every three.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "risk-return-c5",
+                "text": "A longer time to a goal gives more room to wait out ups and downs; money needed soon usually suits lower-risk places.",
+                "sourceRefs": [
+                  "risk"
+                ]
               }
             ],
             "items": [
               {
-                "id": "risk-return-1",
-                "type": "predict",
-                "conceptId": "risk-return",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "At a school fair, Game A pays ₹30 or ₹0. Game B always pays ₹12. Which has the wider spread?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Game A.",
-                    "feedback": "Its two possible payouts are far apart, so you are less sure what you will get.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Game B, the sure one.",
-                    "feedback": "The sure prize may look safer and larger than zero. Its best and worst result are still the same.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Both are the same.",
-                    "feedback": "One game always pays ₹12. The other swings from ₹0 to ₹30, so its range is much wider.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-2",
-                "type": "scenario",
-                "conceptId": "risk-return",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "In exam week, a family shop spends money making a new snack. Which result is possible?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A loss or a gain.",
-                    "feedback": "Some snacks may not sell. A big best case does not tell us how many buyers will come.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Its costs come back even if sales are slow.",
-                    "feedback": "A busy shop can make some sales seem likely, but unsold stock can leave the owner with a loss.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Only a gain, since exam week brings buyers.",
-                    "feedback": "Exam weeks can bring buyers, but nothing makes sales sure. Unsold stock can turn the plan into a loss.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m2"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-3",
+                "id": "risk-return-9",
                 "type": "estimate",
                 "conceptId": "risk-return",
+                "step": "risk-return-s1",
                 "difficultySeed": 2,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A ₹30 raffle ticket has a 1-in-4 chance to win ₹100. After its cost, what is the average return?",
+                "stem": "A share has an even chance of ending at ₹150 or at ₹70. What is its average outcome?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A loss of ₹5.",
-                    "feedback": "The average payout is ₹25, below the ₹30 cost, even though one outcome pays ₹100.",
+                    "text": "About ₹110.",
                     "correct": true,
+                    "feedback": "Add the two outcomes and halve: ₹150 plus ₹70 is ₹220, and half of that is ₹110.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "A gain of ₹70.",
-                    "feedback": "The ₹100 prize stands out. The three losing tickets also count in the average.",
+                    "text": "About ₹150.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
+                    "feedback": "That is only the good outcome. The bad one counts just as often, so the average is ₹110.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "No gain or loss: ₹0.",
-                    "feedback": "The average payout is ₹25, below the ₹30 ticket. On average, each ticket ends ₹5 down.",
+                    "text": "About ₹220.",
                     "correct": false,
+                    "feedback": "That adds both outcomes without halving. With even chances the average is ₹110.",
                     "sourceRefs": [
                       "risk"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": -5,
-                  "min": -5.5,
-                  "max": -4.5,
+                  "value": 110,
+                  "min": 105,
+                  "max": 115,
                   "unit": "rupees"
                 }
               },
               {
-                "id": "risk-return-4",
-                "type": "choose",
-                "conceptId": "risk-return",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "A poster shows only the best possible prize. What does it leave out about risk?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "How often bad results happen, and how bad.",
-                    "feedback": "A maximum alone leaves out how often that amount occurs and what losses remain possible.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "How big the best prize is next to the cost.",
-                    "feedback": "A large best-case payout catches attention, but risk also depends on the other outcomes and their chances.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The name of the prize sponsor.",
-                    "feedback": "Who pays the prize says little about risk. What matters is how often poor results happen and how bad they are.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-5",
-                "type": "why",
-                "conceptId": "risk-return",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "A poster says a share could gain 30%, and shows nothing else. Why can't you know its average return?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "One possible gain is not all the outcomes.",
-                    "feedback": "To find an average, we need the other possible gains and losses, plus their chances.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A possible 30% gain is the average.",
-                    "feedback": "The headline gain stands out. An average also needs the other results and their chances.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Holding longer makes 30% the average.",
-                    "feedback": "A long hold can seem to smooth risk. It still does not tell us the other outcomes.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ],
-                "task": "reason"
-              },
-              {
-                "id": "risk-return-6",
-                "type": "fill-the-step",
-                "conceptId": "risk-return",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "₹10 for sure has a narrow range. ₹0 or ₹30 has a ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Wider range of results.",
-                    "feedback": "The second payoff can land at either extreme, making its result less predictable.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Higher average payoff.",
-                    "feedback": "The possible ₹30 prize looks larger than ₹10, but one branch pays nothing; the range alone cannot establish the average.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Lower chance of zero.",
-                    "feedback": "The ₹0 branch makes a zero more likely, not less. What the second option clearly has is a wider spread.",
-                    "correct": false,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-7",
+                "id": "risk-return-10",
                 "type": "true-not-quite",
                 "conceptId": "risk-return",
+                "step": "risk-return-s1",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "risk-return-m1",
+                  "risk-return-m3",
                   "risk-return-m2"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Two games have the same average payout, but one has wider results. Ravi says it must pay more. What is wrong?",
+                "stem": "Om says shares of a big, famous company cannot go down. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Wider results can include lower ones.",
-                    "feedback": "More variation changes the risk of each result; it does not raise the stated average by itself.",
+                    "text": "Big-company shares can drop too.",
                     "correct": true,
+                    "feedback": "In the US, big-company shares as a group have dropped in about one year in three.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "They drop, but only a tiny bit.",
+                    "correct": false,
+                    "feedback": "Drops in big-company shares can be large, not just tiny.",
+                    "misconceptionIds": [
+                      "risk-return-m3"
+                    ],
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Same average means the same lowest payout.",
-                    "feedback": "A shared average can hide the spread. One game can still have a much worse low result.",
+                    "text": "Only their dividends can drop.",
                     "correct": false,
+                    "feedback": "The price of the share itself can fall, not just any payout.",
+                    "misconceptionIds": [
+                      "risk-return-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-11",
+                "type": "scenario",
+                "conceptId": "risk-return",
+                "step": "risk-return-s1",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "In the school canteen, two raffles cost ₹10. Raffle A gives ₹10 back for sure. Raffle B gives ₹0 or ₹25. Which one has risk?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Raffle B.",
+                    "correct": true,
+                    "feedback": "Its result is unsure and could be zero. That chance of a loss is risk.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Raffle A.",
+                    "correct": false,
+                    "feedback": "It always gives your ₹10 back, so nothing about it is unsure.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Neither, since both cost ₹10.",
+                    "correct": false,
+                    "feedback": "Cost is the same, but only Raffle B can leave you with nothing.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-12",
+                "type": "predict",
+                "conceptId": "risk-return",
+                "step": "risk-return-s2",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A college student moves her savings from a bank deposit into shares. What changes?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Higher possible return, bigger swings.",
+                    "correct": true,
+                    "feedback": "Shares have earned more than cash over time, but they also rise and fall far more.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Same return, less risk.",
+                    "correct": false,
+                    "feedback": "Shares carry more risk than a bank deposit, not less.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A sure higher return.",
+                    "correct": false,
+                    "feedback": "A higher return is possible, not sure. Shares can also drop.",
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-13",
+                "type": "order",
+                "conceptId": "risk-return",
+                "step": "risk-return-s2",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Put these in order, from lowest risk to highest risk.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Cash savings.",
+                    "correct": true,
+                    "feedback": "Cash is the safest of the three main kinds, but it earns the least.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Bonds.",
+                    "correct": true,
+                    "feedback": "These usually swing less than shares and pay more modest returns.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Shares.",
+                    "correct": true,
+                    "feedback": "The most risk sits here, along with the highest returns over long spans.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "risk-return-14",
+                "type": "why",
+                "conceptId": "risk-return",
+                "step": "risk-return-s2",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "risk-return-m1"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "A friend offers 30% a year \"with zero risk\". Why is that a warning sign?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "High returns and no risk rarely go together.",
+                    "correct": true,
+                    "feedback": "The reward for taking risk is a chance of a higher return. An offer of both is a red flag.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "30% is too small to matter.",
+                    "correct": false,
+                    "feedback": "30% a year is very high. The problem is the promise of no risk with it.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Risk only matters for big sums.",
+                    "correct": false,
+                    "feedback": "Risk applies to any amount. The worry is a big return paired with no risk.",
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-15",
+                "type": "choose",
+                "conceptId": "risk-return",
+                "step": "risk-return-s3",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Which goal suits low-risk savings best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A laptop needed in three months.",
+                    "correct": true,
+                    "feedback": "Money needed soon has no time to recover from a drop, so low risk fits.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A goal 35 years away.",
+                    "correct": false,
+                    "feedback": "A far-off goal has time to wait out dips, so it can take more swing.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A house planned in 25 years.",
+                    "correct": false,
+                    "feedback": "With 25 years to go, there is time to ride out ups and downs.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "risk-return-16",
+                "type": "explain-it-back",
+                "conceptId": "risk-return",
+                "step": "risk-return-s3",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "risk-return-m2"
+                ],
+                "sourceRefs": [
+                  "risk"
+                ],
+                "stem": "Which line best explains why time to a goal matters for risk?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "More time lets you wait out drops.",
+                    "correct": true,
+                    "feedback": "A long wait gives prices time to recover. Money needed soon does not have that.",
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Time makes shares free of risk.",
+                    "correct": false,
+                    "feedback": "Shares stay risky. Time only gives more room to wait out the drops.",
                     "misconceptionIds": [
                       "risk-return-m2"
                     ],
@@ -2327,61 +2999,10 @@
                     ]
                   },
                   {
-                    "id": "b",
-                    "text": "A higher top prize forces the average up.",
-                    "feedback": "The high prize draws the eye. Lower results can offset it, leaving the same average.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-8",
-                "type": "explain-it-back",
-                "conceptId": "risk-return",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "What trade does the fair-game example show?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A bigger possible prize comes with more spread.",
-                    "feedback": "Comparing both good and bad outcomes shows what the attractive headline hides.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Only the biggest prize counts.",
-                    "feedback": "The top prize is easy to picture. A zero result is also possible and widens the spread.",
-                    "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
                     "id": "c",
-                    "text": "A sure prize is the better choice.",
-                    "feedback": "The example compares spread, not which is better. A sure prize narrows the range but caps the gain.",
+                    "text": "Time only matters for cash.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
+                    "feedback": "Time matters most for risky things like shares, which can drop just when you need them.",
                     "sourceRefs": [
                       "risk"
                     ]
@@ -2402,6 +3023,14 @@
                 "id": "risk-return-m2",
                 "name": "No loss is possible",
                 "correction": "An uncertain asset can lose value as well as gain it.",
+                "sourceRefs": [
+                  "risk"
+                ]
+              },
+              {
+                "id": "risk-return-m3",
+                "name": "Big names cannot fall",
+                "correction": "Shares of large, famous firms can drop in value too.",
                 "sourceRefs": [
                   "risk"
                 ]
@@ -2428,40 +3057,378 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-3",
+                  "claimId": "risk-return-c3",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-1",
+                  "claimId": "risk-return-c4",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-2",
+                  "claimId": "risk-return-c5",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-4",
+                  "claimId": "risk-return-9",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-5",
+                  "claimId": "risk-return-10",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-6",
+                  "claimId": "risk-return-11",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-7",
+                  "claimId": "risk-return-12",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-8",
+                  "claimId": "risk-return-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-14",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-15",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "risk-return-16",
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17e"
-            }
+              "checker": "builder content agent source check 2026-10-21 (Investor.gov Beginners Guide to Asset Allocation: you could lose some or all, stocks greatest risk and highest returns, cash safest and lowest, large company stocks lost money about one year in three, time horizon)"
+            },
+            "steps": [
+              {
+                "id": "risk-return-s1",
+                "title": "Risk means you could get back less",
+                "claimId": "risk-return-c1",
+                "sourceRefs": [
+                  "risk"
+                ],
+                "hook": {
+                  "stem": "You put ₹1,000 into one company's shares. What could it be worth in a year?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "More or less than ₹1,000.",
+                      "correct": true,
+                      "feedback": "Right. Share prices move, so you could end up above or below what you paid."
+                    },
+                    {
+                      "id": "b",
+                      "text": "At least ₹1,000.",
+                      "correct": false,
+                      "feedback": "Nothing holds a share price up. It can end below what you paid."
+                    },
+                    {
+                      "id": "c",
+                      "text": "₹1,000 plus a gain.",
+                      "correct": false,
+                      "feedback": "A gain is possible, not promised. The price can fall too."
+                    }
+                  ]
+                },
+                "teach": "Risk is the chance that the result is not what you hoped. With shares or funds, you could get back less than you put in, or even nothing.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Put in ₹1,000",
+                    "Price moves",
+                    "Get back more, less or nothing"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the risk.",
+                  "parts": [
+                    "Sahil buys ₹2,000 of one company's shares,",
+                    "hoping for a gain by Diwali,",
+                    "but its price could drop below what he paid."
+                  ],
+                  "spot": "but its price could drop below what he paid.",
+                  "feedback": "Risk is the chance of ending up with less than you put in."
+                },
+                "guided": [
+                  {
+                    "stem": "Which of these has the least risk of giving back less than you put in?",
+                    "hint": "Look for the one whose price does not move.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Cash in a bank savings account.",
+                        "correct": true,
+                        "feedback": "Yes. Cash savings are the safest of the main choices."
+                      },
+                      {
+                        "id": "b",
+                        "text": "One company's shares.",
+                        "correct": false,
+                        "feedback": "A single share can drop a lot, so it carries more risk."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A share a friend says will double.",
+                        "correct": false,
+                        "feedback": "A tip is not a promise. That share can still fall."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "A share's price swings a lot from week to week. What does that tell you?",
+                    "hint": "Big swings mean the result is hard to know.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Its result is less certain.",
+                        "correct": true,
+                        "feedback": "Right. Wide swings mean you cannot be sure where it ends."
+                      },
+                      {
+                        "id": "b",
+                        "text": "It is sure to rise.",
+                        "correct": false,
+                        "feedback": "Swings go both ways. Big swings can end in a loss too."
+                      },
+                      {
+                        "id": "c",
+                        "text": "It cannot fall below what you paid.",
+                        "correct": false,
+                        "feedback": "Nothing stops a price falling below your cost."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Risk is the chance of getting back less than you put in."
+              },
+              {
+                "id": "risk-return-s2",
+                "title": "Bigger possible return, bigger swings",
+                "claimId": "risk-return-c3",
+                "sourceRefs": [
+                  "risk"
+                ],
+                "hook": {
+                  "stem": "Which has usually earned the most over many years: cash savings, bonds or shares?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Shares.",
+                      "correct": true,
+                      "feedback": "Right. Shares have earned the most over time, but they also swing the most."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Cash savings.",
+                      "correct": false,
+                      "feedback": "Cash is the safest, but it has earned the least of the three."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Bonds.",
+                      "correct": false,
+                      "feedback": "Bonds sit in the middle, with less swing than shares and smaller returns."
+                    }
+                  ]
+                },
+                "teach": "Shares swing the most and have earned the most over time. Cash is the safest but earns the least. Bonds sit in between.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Risk and return of three kinds",
+                  "min": "Low risk, low return",
+                  "max": "High risk, high return",
+                  "marks": [
+                    {
+                      "at": 10,
+                      "text": "Cash savings"
+                    },
+                    {
+                      "at": 50,
+                      "text": "Bonds"
+                    },
+                    {
+                      "at": 90,
+                      "text": "Shares"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the price of the higher return.",
+                  "parts": [
+                    "Shares have earned more than cash over long spans,",
+                    "but they swing much more along the way,",
+                    "so the extra return comes with extra risk."
+                  ],
+                  "spot": "but they swing much more along the way,",
+                  "feedback": "The extra return is paid for with bigger ups and downs."
+                },
+                "guided": [
+                  {
+                    "stem": "A scheme promises share-like returns with no risk at all. What does that tell you?",
+                    "hint": "Higher returns usually come with more risk.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The claim does not fit how risk works.",
+                        "correct": true,
+                        "feedback": "Yes. A high return with no risk is a warning sign."
+                      },
+                      {
+                        "id": "b",
+                        "text": "It is a rare safe bargain.",
+                        "correct": false,
+                        "feedback": "Higher returns come with more risk. A no-risk promise does not add up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Shares have become safe.",
+                        "correct": false,
+                        "feedback": "Shares still swing. The promise is what is wrong."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Bonds usually swing less than shares. What do they usually give up?",
+                    "hint": "Lower risk tends to mean lower return.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Some return.",
+                        "correct": true,
+                        "feedback": "Right. Less swing usually comes with more modest returns."
+                      },
+                      {
+                        "id": "b",
+                        "text": "All their safety.",
+                        "correct": false,
+                        "feedback": "Bonds are usually safer than shares, not less safe."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing at all.",
+                        "correct": false,
+                        "feedback": "The calmer ride usually costs some return."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A chance of more gain comes with bigger ups and downs."
+              },
+              {
+                "id": "risk-return-s3",
+                "title": "Time decides how much swing you can wait out",
+                "claimId": "risk-return-c5",
+                "sourceRefs": [
+                  "risk"
+                ],
+                "hook": {
+                  "stem": "Money for next month's college fee: where does it fit best?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Somewhere low-risk, like savings.",
+                      "correct": true,
+                      "feedback": "Right. Money needed soon has no time to recover from a drop."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Shares, for the highest return.",
+                      "correct": false,
+                      "feedback": "Shares could drop just before the fee is due, with no time to recover."
+                    },
+                    {
+                      "id": "c",
+                      "text": "One hot share a friend likes.",
+                      "correct": false,
+                      "feedback": "One share is even riskier, and the fee is due very soon."
+                    }
+                  ]
+                },
+                "teach": "If you need money soon, a drop could hit just when you need it. A far-off goal gives time to wait out the dips.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Goal next month",
+                    "lines": [
+                      "No time to wait out a dip",
+                      "Low-risk savings fit"
+                    ]
+                  },
+                  "right": {
+                    "title": "Goal in 20 years",
+                    "lines": [
+                      "Time to ride out dips",
+                      "Can take more swing"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap why she keeps it in savings.",
+                  "parts": [
+                    "Aditi needs ₹30,000 for exam fees in March,",
+                    "so she keeps it in a savings account,",
+                    "because a fall in shares could hit just then."
+                  ],
+                  "spot": "because a fall in shares could hit just then.",
+                  "feedback": "Money needed soon has no time to recover from a drop."
+                },
+                "guided": [
+                  {
+                    "stem": "US big-company shares have dropped in about one year out of three. Who is hurt most by such a drop?",
+                    "hint": "Ask who has no time to wait for a recovery.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Someone who needs the money next month.",
+                        "correct": true,
+                        "feedback": "Yes. They may have to sell at the low price."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Someone saving for 25 years from now.",
+                        "correct": false,
+                        "feedback": "They have years to wait for prices to recover."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No one, since prices bounce back next day.",
+                        "correct": false,
+                        "feedback": "Recoveries can take a long time, not one day."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Raj, 22, saves for a goal 30 years away. What does the long wait give him?",
+                    "hint": "Think about time to recover from dips.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Time to ride out ups and downs.",
+                        "correct": true,
+                        "feedback": "Right. A long horizon gives room to wait out bad years."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A promise of no losses.",
+                        "correct": false,
+                        "feedback": "Time helps, but losses are still possible."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No reason to think about risk.",
+                        "correct": false,
+                        "feedback": "Risk still matters; he just has more time to handle it."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Money needed soon belongs where drops are unlikely."
+              }
+            ]
           },
           {
             "id": "diversification",
