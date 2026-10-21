@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { RULES, RULES_BOUNDS, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from './rules.config';
 
@@ -38,6 +39,15 @@ describe('RULES', () => {
 });
 
 describe('rule history', () => {
+  it('never changes scoring rules in place', () => {
+    // Past days are replayed with RULES_HISTORY, so editing a scoring value in place rescores the past
+    // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
+    // this frozen copy for the old entry, and only then add a fingerprint for the new one.
+    const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards'] as const;
+    const fingerprint = (rules: typeof RULES) => createHash('sha256').update(JSON.stringify(scoring.map(key => [key, rules[key]]))).digest('hex').slice(0, 16);
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '65d0d8ffcb834e2e']]);
+  });
+
   it('starts with the current rules', () => {
     expect(RULES_HISTORY[0]).toEqual({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
   });

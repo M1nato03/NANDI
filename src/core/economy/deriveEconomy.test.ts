@@ -65,6 +65,15 @@ describe('economy replay', () => {
     answers[4]!.inputs.afterBedtime = true;
     expect(view(answers).days[0]).toMatchObject({ mind: 0, mindSlot: false });
   });
+  it('credits a finished teach-first drop with only two scored answers', () => {
+    const day = '2026-11-03';
+    const answers = Array.from({ length: 2 }, () => row(day, 'mind', 'learn-answer', { dropId: `drop:daily:${day}`, afterBedtime: false }));
+    expect(view(answers).days[0]).toMatchObject({ mind: 0, mindSlot: false });
+    const finished = { ...row(day, 'gamify', 'learn-drop'), refId: day };
+    expect(view([...answers, finished]).days[0]).toMatchObject({ mind: 15, mindSlot: true });
+    for (const answer of answers) answer.inputs.afterBedtime = true;
+    expect(view([...answers, finished]).days[0]).toMatchObject({ mind: 0, mindSlot: false });
+  });
   it('holds a streak on a banked rest day and leaves the weekly rest weekday untouched', () => {
     const mon = '2026-11-02';
     const keeping = deriveEconomy([task(mon, 'M'), row('2026-11-04', 'mind', 'board', { daily: false })], undefined, [{ key: 'economy.restWeekday', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-04');
