@@ -103,7 +103,7 @@ describe('topic editorial rules', () => {
   });
   it('limits type repetition and requires all ten types in a module', () => {
     badTopic((concepts) => { concepts[0].items[3].type = 'predict'; concepts[0].items[4].type = 'predict'; delete concepts[0].items[4].task; }, 'more than 2 predict items');
-    badTopic((concepts) => { const item = concepts[0].items[7]; item.type = 'choose'; delete item.answer; }, 'missing item type order');
+    badTopic((concepts) => { for (const concept of concepts) for (const item of concept.items) if (item.type === 'order') { item.type = 'choose'; delete item.answer; } }, 'missing item type order');
   });
   it('rejects cloned openings, option sets and dates in stems', () => {
     badTopic((concepts) => { concepts[0].items[1].stem = concepts[0].items[0].stem + ' Again?'; }, 'repeated stem prefix');
