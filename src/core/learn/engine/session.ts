@@ -62,13 +62,14 @@ export function selectNextItem(context: SelectionContext): Selection | null {
   return ranked[0] ?? null;
 }
 
-export interface DropItem { itemId: string; conceptId: string; optionOrder: string[]; mode: 'review' | 'new' | 'retention'; retentionDay?: RetentionDay }
+/** A lesson entry (spec 14) carries `lesson` = the step id and teaches before any question; it has no answer of its own. */
+export interface DropItem { itemId: string; conceptId: string; optionOrder: string[]; mode: 'review' | 'new' | 'retention'; retentionDay?: RetentionDay; lesson?: string }
 export interface Drop { id: string; items: DropItem[]; cursor: number; ending: { kind: 'stopping-screen' }; pendingFeedback?: { cursor: number; answer: ItemAnswer; correct: boolean } }
 export interface ComposeContext extends Omit<SelectionContext, 'recentTypes' | 'excludedItemIds' | 'mode'> {
   spentMinutes: number; answeredToday: number; newToday: number; busyDay?: boolean; afterBedtime?: boolean;
   minutesPerItem?: number; requestedItems?: number;
 }
-function orderOptions(item: TopicItem, seed: number): string[] {
+export function orderOptions(item: TopicItem, seed: number): string[] {
   return item.options.map(option => option.id).sort((a, b) => hash(`${item.id}:${a}`, seed) - hash(`${item.id}:${b}`, seed));
 }
 export function composeDrop(context: ComposeContext): Drop {

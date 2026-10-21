@@ -26,7 +26,7 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     const drop = await db.learnDrops.get(`drop:daily:${today}`);
     if (drop && drop.drop.items.length > 0 && drop.drop.cursor >= drop.drop.items.length) {
       await add('learn-drop', today, today);
-      if (perfectDrop(facts, drop.id, drop.drop.items.length)) await add('perfect-drop', today, today);
+      if (perfectDrop(facts, drop.id, drop.drop.items.filter(item => !item.lesson).length)) await add('perfect-drop', today, today);
     }
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
     if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`))) await add('focus-boost', today, today);

@@ -76,6 +76,18 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       const moduleTypes = new Set<string>(module.concepts.flatMap(concept => concept.items.map(item => item.type)));
       for (const type of allTypes) if (!moduleTypes.has(type)) errors.push(`${module.id}: missing item type ${type}`);
     }
+    {
+      // Spec 14: same-shaped teach cards would undo the point; vary how teach cards, hooks and examples open.
+      const steps = pack.body.modules.flatMap(module => module.concepts.flatMap(concept => concept.steps ?? []));
+      const openers = (label: string, texts: string[], size: number, max: number) => {
+        const counts = new Map<string, number>();
+        for (const value of texts) { const key = words(value).slice(0, size).join(' '); counts.set(key, (counts.get(key) ?? 0) + 1); }
+        for (const [key, count] of counts) if (count > max) errors.push(`topic: ${count} step ${label}s open with "${key}"`);
+      };
+      openers('teach card', steps.map(step => step.teach), 3, 2);
+      openers('hook', steps.map(step => step.hook.stem), 3, 2);
+      openers('example', steps.map(step => step.example.parts.join(' ')), 2, 2);
+    }
     for (const module of pack.body.modules) for (const concept of module.concepts) {
       const where = concept.id;
       if (options.editorial && concept.items.length !== 8) errors.push(`${where}: needs exactly 8 items`);
@@ -127,6 +139,27 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         refs(`${where}.quest`, concept.quest.sourceRefs);
         if (advicePattern.test(concept.quest.detail)) errors.push(`${where}.quest: advice is prohibited`);
       }
+      if (concept.steps) {
+        const stepIds = new Set<string>();
+        const wordCount = (value: string) => words(value).length;
+        const oneRight = (location: string, list: readonly { correct: boolean }[]) => { if (list.filter(option => option.correct).length !== 1) errors.push(`${location}: needs exactly one right option`); };
+        for (const step of concept.steps) {
+          const at = `${where}.step.${step.id}`;
+          if (stepIds.has(step.id) || ids.has(step.id)) errors.push(`${at}: duplicate step id`);
+          stepIds.add(step.id);
+          if (!claimIds.has(step.claimId)) errors.push(`${at}: claimId must name a fact-checked claim of the concept`);
+          refs(`${at}.sourceRefs`, step.sourceRefs);
+          if (wordCount(step.teach) > 30) errors.push(`${at}: teach card over 30 words`);
+          if (fleschReadingEase(step.teach) < 69.5) errors.push(`${at}: teach card Flesch reading ease below 70`);
+          if (wordCount(step.takeaway) > 15) errors.push(`${at}: takeaway over 15 words`);
+          for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join(' ')]] as const) checkText(`${at}.${label}`, value);
+          if (step.example.parts.filter(part => part === step.example.spot).length !== 1) errors.push(`${at}: example spot must be exactly one of its parts`);
+          oneRight(`${at}.hook`, step.hook.options);
+          step.guided.forEach((guided, index) => { oneRight(`${at}.guided.${index}`, guided.options); checkText(`${at}.guided.${index}`, guided.stem); });
+          if (!concept.items.some(item => item.step === step.id)) errors.push(`${at}: needs at least one practice item`);
+        }
+        for (const item of concept.items) if (!item.step || !stepIds.has(item.step)) errors.push(`${item.id}: must be tagged to one step of ${where}`);
+      } else for (const item of concept.items) if (item.step) errors.push(`${item.id}: step tag without concept steps`);
       for (const item of concept.items) {
         if (ids.has(item.id)) errors.push(`${item.id}: duplicate item id`);
         ids.add(item.id);

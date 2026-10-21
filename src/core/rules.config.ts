@@ -110,6 +110,8 @@ export const RULES = {
     activeTracks: 1, newUnitsPerWeek: 4, dailyBudgetMin: 25,
     unitCheckMin: 3, moduleTestMin: 10, dueReviewMin: 1,
     newCardsPerDay: 5, backlogBrakeDue: 30, busyDayCards: 1,
+    // Spec 14: a lesson day is one new step plus up to this many reviews of earlier steps.
+    lessonReviews: 4,
     checkMinQuestions: 3, modulePassPercent: 70,
   },
 
@@ -221,7 +223,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'teachingEngine.contentReviewSamplePerModule': [1, 20], 'teachingEngine.contentReviewNoteMaxChars': [50, 1000],
   'teachingEngine.targetSuccess.0': [0.5, 0.9], 'teachingEngine.targetSuccess.1': [0.5, 0.95],
   'learningTracks.activeTracks': [1, 1], 'learningTracks.newUnitsPerWeek': [1, 4],
-  'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5],
+  'learningTracks.dailyBudgetMin': [10, 45], 'learningTracks.newCardsPerDay': [1, 5], 'learningTracks.lessonReviews': [0, 10],
   'learningTracks.unitCheckMin': [1, 10], 'learningTracks.moduleTestMin': [5, 20], 'learningTracks.dueReviewMin': [0, 5],
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
   'learningTracks.checkMinQuestions': [3, 3], 'learningTracks.modulePassPercent': [50, 90],

@@ -1,4 +1,5 @@
-import { composeConceptPractice, composeDrop, type ConceptState, type ItemState, type Drop } from '../../core/learn/engine';
+import { composeConceptPractice, composeDrop, orderOptions, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
+import { lessonItemId, nextStep, stepPractice, taughtCatalog } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -27,12 +28,21 @@ export function reviewsOnlyRemainder(drop: Drop): Drop {
   if (!remaining.some(item => item.mode === 'new')) return drop;
   return { ...drop, items: [...drop.items.slice(0, drop.cursor), ...remaining.filter(item => item.mode !== 'new')] };
 }
-export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; goldReview?: boolean; reviewDue?: boolean; bedtime?: string; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[] }): Drop {
+export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; goldReview?: boolean; reviewDue?: boolean; bedtime?: string; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[]; taughtSteps?: readonly string[]; lessonToday?: boolean }): Drop {
   const conceptState = Object.fromEntries(input.concepts.filter(row => !row.deleted).map(row => [row.id, { ...row, conceptId: row.id } satisfies ConceptState]));
   const itemState = Object.fromEntries(input.items.filter(row => !row.deleted).map(row => [row.id, { ...row, itemId: row.id } satisfies ItemState]));
-  const catalog = catalogFor(input.ids);
+  const fullCatalog = catalogFor(input.ids);
+  // Spec 14: items of a stepped concept are quiz material only once their step has been taught.
+  const taught = new Set(input.taughtSteps ?? []);
+  const catalog = taughtCatalog(fullCatalog, taught);
+  const lesson = (conceptId?: string): DropItem[] | undefined => {
+    const next = nextStep(fullCatalog, taught, conceptId);
+    if (!next) return undefined;
+    return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id },
+      ...stepPractice(next.concept, next.step.id).map((item, index) => ({ itemId: item.id, conceptId: next.concept.id, optionOrder: orderOptions(item, input.now % 1_000_000 + index), mode: 'new' as const }))];
+  };
   if (input.goldReview && input.preferredConceptId) {
-    const concept = catalog.find(row => row.id === input.preferredConceptId);
+    const concept = catalog.find(row => row.id === input.preferredConceptId) ?? fullCatalog.find(row => row.id === input.preferredConceptId && !row.steps);
     if (concept) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
       items: [...concept.items].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
         .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: item.options.map(option => option.id), mode: 'review' as const })) };
@@ -47,6 +57,16 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
     now: input.now, seed: input.now % 1_000_000, requestedItems: input.itemCount ?? 5, spentMinutes: input.night || !input.daily ? 0 : input.spentMinutes,
     answeredToday: input.night || !input.daily ? 0 : input.answeredToday, newToday: input.night || !input.daily ? 0 : input.newToday,
     afterBedtime, facts: input.facts };
-  const drop = input.preferredConceptId && !afterBedtime ? composeConceptPractice(context, input.preferredConceptId) : composeDrop(context);
-  return { ...drop, id: input.night ? nightDropId(input.now) : input.daily ? dailyDropId(input.now) : `drop:practice:${input.now}` };
+  const id = input.night ? nightDropId(input.now) : input.daily ? dailyDropId(input.now) : `drop:practice:${input.now}`;
+  if (!afterBedtime && !input.night) {
+    // Practising an idea that still has an untaught step teaches that step first.
+    const taughtFirst = input.preferredConceptId ? lesson(input.preferredConceptId) : input.daily && !input.lessonToday ? lesson() : undefined;
+    if (taughtFirst) {
+      // Order is fixed: the lesson, then this step's own your-turn items, then reviews of earlier steps (no other new items).
+      const reviews = input.preferredConceptId ? [] : composeDrop({ ...context, requestedItems: RULES.learningTracks.lessonReviews, newToday: RULES.learningTracks.newCardsPerDay }).items.filter(item => item.mode !== 'new');
+      return { id, items: [...taughtFirst, ...reviews.filter(item => !taughtFirst.some(entry => entry.itemId === item.itemId))], cursor: 0, ending: { kind: 'stopping-screen' } };
+    }
+  }
+  const drop = input.preferredConceptId && !afterBedtime && catalog.some(row => row.id === input.preferredConceptId) ? composeConceptPractice(context, input.preferredConceptId) : composeDrop(context);
+  return { ...drop, id };
 }
