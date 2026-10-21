@@ -273,3 +273,8 @@
 .step-today { display: grid; gap: 10px; }
 .step-again { display: grid; gap: 10px; margin: 8px 0; padding: 12px; border-radius: 14px; background: var(--surface-1); }
 .step-again-button { justify-self: start; }
+
+/* QA 21 Oct: a drop is a focused screen. The tab bar steps aside, and the result sheet stays pinned in reach. */
+.app-shell:has(.learn-drop.learn-active:not(.learn-night)) .tabbar { display: none; }
+.app-shell:has(.learn-drop.learn-active:not(.learn-night)) .content { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+.learn-drop.learn-active:not(.learn-night) .learn-sheet { position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 5; scroll-margin-bottom: 0; }

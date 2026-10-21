@@ -751,7 +751,7 @@
                   {
                     "id": "a",
                     "text": "A real share's return can change each year.",
-                    "feedback": "The toy calculation assumes a stable gain, while an actual share can change value in either direction.",
+                    "feedback": "The chart assumes the same gain every year. A real share's value can go up or down from year to year.",
                     "correct": true,
                     "sourceRefs": [
                       "compound",
@@ -949,7 +949,7 @@
             "prerequisites": [
               "compounding"
             ],
-            "hook": "At a made-up 9% rate, 72 ÷ 9 says eight years to double. The exact compound calculation lands close, but not on eight.",
+            "hook": "At a made-up 9% rate, 72 ÷ 9 says eight years to double. Working it out exactly gives close to eight, but not exactly eight.",
             "hookSourceRefs": [
               "rule72"
             ],
@@ -1160,7 +1160,7 @@
                   {
                     "id": "b",
                     "text": "A bigger starting balance doubles faster.",
-                    "feedback": "More starting cash means more rupees gained, but the rule estimates doubling time from the percentage rate.",
+                    "feedback": "More starting cash means more rupees gained, but the rule works out doubling time from the percent rate alone.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1188,7 +1188,7 @@
                   {
                     "id": "a",
                     "text": "About 24 years.",
-                    "feedback": "A low rate makes the doubling estimate long; the rule still gives only an approximation.",
+                    "feedback": "A low rate makes the time to double long. The rule still gives only a rough answer.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72"
@@ -1227,7 +1227,7 @@
                   {
                     "id": "a",
                     "text": "The rule needs a rate that stays steady.",
-                    "feedback": "A changing rate breaks the simple input, and even a steady-rate result would be approximate.",
+                    "feedback": "A rate that keeps changing breaks the shortcut, and even a steady rate gives only a rough answer.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72",
@@ -1238,7 +1238,7 @@
                   {
                     "id": "b",
                     "text": "This year's 8% can stand for every year.",
-                    "feedback": "Using the current rate gives a quick estimate, but the shortcut assumes it stays steady; next year's 4% breaks that assumption.",
+                    "feedback": "Using this year's rate gives a quick guess, but the shortcut needs the rate to stay steady. Next year's 4% breaks that.",
                     "correct": false,
                     "misconceptionIds": [
                       "rule-of-72-m1"
@@ -1420,7 +1420,7 @@
                   {
                     "id": "a",
                     "text": "Game A.",
-                    "feedback": "Its two possible payoffs are far apart, so its outcome is less certain.",
+                    "feedback": "Its two possible payouts are far apart, so you are less sure what you will get.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -1956,7 +1956,7 @@
                   {
                     "id": "b",
                     "text": "One firm's own bad decision.",
-                    "feedback": "A mix can reduce exposure to one firm. Here the crop is a common risk across the whole mix.",
+                    "feedback": "Owning several firms cuts the harm from one firm's mistake. Here the shared crop is a risk to the whole mix.",
                     "correct": false,
                     "misconceptionIds": [
                       "diversification-m1"
@@ -2023,7 +2023,7 @@
                   {
                     "id": "a",
                     "text": "A loss that hits many holdings at once.",
-                    "feedback": "A broad shock can move several assets at once even when no single firm dominates.",
+                    "feedback": "A big shock can pull many holdings down together, even when no single firm is a large part of the mix.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
@@ -2200,7 +2200,7 @@
             "prerequisites": [
               "diversification"
             ],
-            "hook": "One share can make a student a tiny owner of a company, yet it does not give a fixed coupon or a promised dividend.",
+            "hook": "One share makes a student a tiny owner of a company. It does not promise a fixed payment or any dividend.",
             "hookSourceRefs": [
               "shares"
             ],
@@ -3450,7 +3450,7 @@
             "prerequisites": [
               "diversification"
             ],
-            "hook": "An index fund follows a basket; one chosen stock depends much more on one company.",
+            "hook": "An index fund holds a whole basket of companies. One chosen stock rides on a single company.",
             "hookSourceRefs": [
               "sebi-index",
               "spiva-india"
@@ -4166,7 +4166,7 @@
                   {
                     "id": "a",
                     "text": "Yours, the one that approves.",
-                    "feedback": "Approving a collect request with your PIN authorises a debit from your linked account.",
+                    "feedback": "Entering your PIN on a collect request approves money leaving your own linked account.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",

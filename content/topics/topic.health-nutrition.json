@@ -23,7 +23,7 @@
             "id": "protein-foods",
             "title": "Protein in everyday food",
             "prerequisites": [],
-            "hook": "ICMR-NIN notes that cereals and pulses can complement each other’s amino acids.",
+            "hook": "India's food guide (ICMR-NIN) says cereals and pulses fill gaps in each other's protein, which is why dal and rice work well together.",
             "hookSourceRefs": [
               "protein"
             ],
@@ -103,7 +103,7 @@
                   {
                     "id": "a",
                     "text": "Each fills gaps in the other's protein.",
-                    "feedback": "ICMR-NIN describes the cereal or millet and pulse combination.",
+                    "feedback": "India's food guide (ICMR-NIN) describes this pairing: a cereal or millet with a pulse gives a better mix of protein.",
                     "correct": true,
                     "sourceRefs": [
                       "protein"
@@ -161,7 +161,7 @@
                   {
                     "id": "b",
                     "text": "Two cereals with no pulse.",
-                    "feedback": "That can be a meal, but it misses the specific complementary pairing.",
+                    "feedback": "That can still be a meal, but it misses the cereal-and-pulse pairing that fills each other's protein gaps.",
                     "correct": false,
                     "misconceptionIds": [
                       "protein-foods-m1"
@@ -305,7 +305,7 @@
                   {
                     "id": "a",
                     "text": "Dal adds protein and different amino acids.",
-                    "feedback": "That is why ICMR-NIN highlights cereal-pulse combinations.",
+                    "feedback": "That is why India's food guide highlights cereals and pulses eaten together, like rice with dal.",
                     "correct": true,
                     "sourceRefs": [
                       "protein"
@@ -542,7 +542,7 @@
             "prerequisites": [
               "protein-foods"
             ],
-            "hook": "Fruit juice counts toward WHO’s free-sugar guidance even when no spoonful of sugar was added.",
+            "hook": "WHO counts the sugar in fruit juice as free sugar, even when no spoonful of sugar was added.",
             "hookSourceRefs": [
               "sugar"
             ],
@@ -584,7 +584,7 @@
                   {
                     "id": "a",
                     "text": "Yes; honey's sugars count.",
-                    "feedback": "WHO explicitly includes honey. Its source does not put it outside the free sugar rule.",
+                    "feedback": "WHO names honey in its list. Where the sugar comes from does not take honey out of the free-sugar rule.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -593,7 +593,7 @@
                   {
                     "id": "b",
                     "text": "No; only white sugar counts.",
-                    "feedback": "WHO’s definition covers more than white sugar.",
+                    "feedback": "WHO's list covers much more than white sugar. Honey, syrups and fruit juice sugars count too.",
                     "correct": false,
                     "misconceptionIds": [
                       "free-sugars-m1"
@@ -622,7 +622,7 @@
                   {
                     "id": "a",
                     "text": "Riya's juice.",
-                    "feedback": "WHO names fruit juice; sugars held in whole fruit are treated differently.",
+                    "feedback": "WHO names fruit juice in its list. Sugar still held inside whole fruit is treated differently.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -631,7 +631,7 @@
                   {
                     "id": "b",
                     "text": "Both, in the same way.",
-                    "feedback": "The definition singles out juice, not intact whole fruit.",
+                    "feedback": "The WHO list names juice, but not the sugar still held inside a whole orange.",
                     "correct": false,
                     "misconceptionIds": [
                       "free-sugars-m1"
@@ -671,7 +671,7 @@
                   {
                     "id": "a",
                     "text": "Sugar in syrup.",
-                    "feedback": "Syrups are named in the definition. That is why sugar from syrup counts as free sugar.",
+                    "feedback": "Syrups are named in WHO's list. That is why sugar from syrup counts as free sugar.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -692,7 +692,7 @@
                   {
                     "id": "c",
                     "text": "The sugars inside a whole apple.",
-                    "feedback": "Whole fruit is outside this definition. Its sugars stay within the whole fruit, unlike juice sugars.",
+                    "feedback": "Whole fruit is not on this list. Its sugars stay inside the fruit, unlike the sugars in juice.",
                     "correct": false,
                     "misconceptionIds": [
                       "free-sugars-m2"
@@ -720,7 +720,7 @@
                   {
                     "id": "a",
                     "text": "Juice concentrate still brings free sugars.",
-                    "feedback": "WHO includes sugars in fruit juice concentrates. The source of the sugar still puts it in this group.",
+                    "feedback": "WHO counts the sugar in fruit juice concentrate. So a pack can say no added sugar and still have free sugar.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -769,7 +769,7 @@
                   {
                     "id": "a",
                     "text": "About 50 grams.",
-                    "feedback": "WHO gives this approximate conversion for a 2,000-kcal day.",
+                    "feedback": "WHO gives this rough figure: under 10% of a 2,000-kcal day is about 50 grams of free sugar.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -873,7 +873,7 @@
                   {
                     "id": "a",
                     "text": "Find where the sugar comes from.",
-                    "feedback": "The source matters for this definition. Added sugar and juice count, while whole fruit does not.",
+                    "feedback": "Where the sugar comes from decides it. Added sugar and juice count, while whole fruit does not.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -921,7 +921,7 @@
                   {
                     "id": "a",
                     "text": "Fruit juice",
-                    "feedback": "WHO explicitly includes juice sugars. Juice is one of the sources named in the rule.",
+                    "feedback": "WHO counts the sugars in juice. Juice is one of the sources named in its list.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -930,7 +930,7 @@
                   {
                     "id": "b",
                     "text": "Contains free sugars",
-                    "feedback": "WHO explicitly includes juice sugars. Those sugars count even when the juice has no added sugar.",
+                    "feedback": "WHO counts the sugars in juice as free sugars, even when the juice has no added sugar.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -939,7 +939,7 @@
                   {
                     "id": "c",
                     "text": "Whole orange",
-                    "feedback": "Whole fruit is treated differently from juice. Its sugars remain inside the fruit, unlike those in juice.",
+                    "feedback": "Whole fruit is treated differently from juice. Its sugars stay held inside the fruit.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -948,7 +948,7 @@
                   {
                     "id": "d",
                     "text": "Intrinsic fruit sugars",
-                    "feedback": "Whole fruit is treated differently from juice. That is the name for sugars held inside whole fruit.",
+                    "feedback": "That is the name for sugars held inside whole fruit, which WHO treats differently from juice.",
                     "correct": true,
                     "sourceRefs": [
                       "sugar"
@@ -1141,7 +1141,7 @@
                   {
                     "id": "a",
                     "text": "No; heat and long activity can raise needs.",
-                    "feedback": "NHS names both reasons needs may change. Hot weather and long activity can call for more fluid.",
+                    "feedback": "The NHS names both reasons you may need more. Hot weather and long activity can call for more fluid.",
                     "correct": true,
                     "sourceRefs": [
                       "water"
@@ -1150,7 +1150,7 @@
                   {
                     "id": "b",
                     "text": "Yes; eight cups is the safe maximum.",
-                    "feedback": "The NHS calls it a guide, not a universal cap.",
+                    "feedback": "The NHS calls six to eight cups a guide, not a limit that fits everyone.",
                     "correct": false,
                     "misconceptionIds": [
                       "hydration-cues-m1"
@@ -1364,7 +1364,7 @@
                   {
                     "id": "c",
                     "text": "Only hot coffee counts, not cold.",
-                    "feedback": "Temperature is not what makes it a fluid.",
+                    "feedback": "Hot or cold does not matter here. Coffee adds fluid either way, so it belongs in the total.",
                     "correct": false,
                     "misconceptionIds": [
                       "hydration-cues-m2"
@@ -1401,7 +1401,7 @@
                   {
                     "id": "b",
                     "text": "Count drinks and fluid from food.",
-                    "feedback": "Plain water is not the only contribution. Milk and tea can add fluid to a day as well.",
+                    "feedback": "Plain water is not the only source. Milk, tea and some foods add fluid to a day as well.",
                     "correct": true,
                     "sourceRefs": [
                       "water"
@@ -1678,7 +1678,7 @@
                   {
                     "id": "b",
                     "text": "Five hours is the target for all adults.",
-                    "feedback": "That is below the stated general recommendation. CDC says most adults in this age group need more.",
+                    "feedback": "That is below the usual advice. The CDC says most adults in this age group need seven hours or more.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-recovery-m1"
@@ -1731,7 +1731,7 @@
                   {
                     "id": "b",
                     "text": "REM sleep only.",
-                    "feedback": "REM is part of sleep, but deep sleep is the stage emphasized early.",
+                    "feedback": "REM is part of sleep, but deep sleep is the stage that lasts longer early in the night.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-recovery-m1"
@@ -1797,7 +1797,7 @@
                   {
                     "id": "c",
                     "text": "The brain is silent during REM.",
-                    "feedback": "REM is associated with active brain patterns. The brain stays active during this part of sleep.",
+                    "feedback": "The brain is busy during REM, the dreaming stage. It stays active during this part of sleep.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-recovery-m2"
@@ -1837,7 +1837,7 @@
                   {
                     "id": "b",
                     "text": "Five hours.",
-                    "feedback": "That falls below the general CDC recommendation. CDC lists seven or more hours for adults aged 18 to 60.",
+                    "feedback": "That is below the CDC advice. The CDC lists seven or more hours for adults aged 18 to 60.",
                     "correct": false,
                     "misconceptionIds": [
                       "sleep-recovery-m1"
@@ -2021,7 +2021,7 @@
                   {
                     "id": "d",
                     "text": "Sleep is dynamic",
-                    "feedback": "The night is not one blank block. The stages repeat, with changes in brain activity.",
+                    "feedback": "The night is not one blank block. The stages repeat, and brain activity changes as they do.",
                     "correct": true,
                     "sourceRefs": [
                       "sleep",
@@ -2232,7 +2232,7 @@
                   {
                     "id": "a",
                     "text": "Yes; some activity is better than none.",
-                    "feedback": "WHO explicitly says this while giving the weekly range.",
+                    "feedback": "WHO says this plainly when it gives the weekly range: some activity is better than none.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2242,7 +2242,7 @@
                   {
                     "id": "b",
                     "text": "No; under 150 minutes gives no benefit.",
-                    "feedback": "The range is a recommendation, not an on-off switch.",
+                    "feedback": "The range is a goal, not an on-off switch. Even less than 150 minutes still helps.",
                     "correct": false,
                     "misconceptionIds": [
                       "exercise-heart-m1"
@@ -2285,7 +2285,7 @@
                   {
                     "id": "a",
                     "text": "150–300 minutes.",
-                    "feedback": "That is the WHO recommended range. It applies to moderate aerobic activity in a week.",
+                    "feedback": "That is WHO's range for adults. It is for moderate activity that gets you breathing harder, spread over a week.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2361,7 +2361,7 @@
                   {
                     "id": "c",
                     "text": "Only sprinting can affect the heart.",
-                    "feedback": "Moderate aerobic activity also counts. A brisk walk can raise the heart's work too.",
+                    "feedback": "Moderate activity counts too. A brisk walk also makes the heart work harder.",
                     "correct": false,
                     "misconceptionIds": [
                       "exercise-heart-m2"
@@ -2450,7 +2450,7 @@
                   {
                     "id": "a",
                     "text": "It mixes up moderate and hard effort.",
-                    "feedback": "WHO lists different minute ranges for the two intensities.",
+                    "feedback": "WHO gives different weekly minutes for moderate effort and for hard effort, so the two are not the same.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2460,7 +2460,7 @@
                   {
                     "id": "b",
                     "text": "Walking can never count as activity.",
-                    "feedback": "A brisk walk can count as moderate activity.",
+                    "feedback": "A brisk walk can count as moderate activity, so walking does count.",
                     "correct": false,
                     "misconceptionIds": [
                       "exercise-heart-m1"
@@ -2513,7 +2513,7 @@
                   {
                     "id": "b",
                     "text": "The heart pumps blood to support them.",
-                    "feedback": "Circulation meets the working muscles. Blood brings oxygen to muscles while they move.",
+                    "feedback": "The blood flow reaches the working muscles and brings them oxygen while they move.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2555,7 +2555,7 @@
                   {
                     "id": "a",
                     "text": "Moderate aerobic activity",
-                    "feedback": "This is the adult weekly range. WHO uses it for the weekly adult activity guide.",
+                    "feedback": "This is WHO's weekly range for adults doing moderate activity, like a brisk walk.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2585,7 +2585,7 @@
                   {
                     "id": "d",
                     "text": "75–150 minutes",
-                    "feedback": "The vigorous alternative uses fewer minutes. The weekly WHO range is shorter for this kind of work.",
+                    "feedback": "Hard activity needs fewer minutes. WHO's weekly range is shorter for this kind of work.",
                     "correct": true,
                     "sourceRefs": [
                       "heart",
@@ -2709,7 +2709,7 @@
               "protein-foods",
               "exercise-heart"
             ],
-            "hook": "Beans contain non-haem iron; vitamin C in a meal can help the body absorb that form.",
+            "hook": "Beans have a plant form of iron. Vitamin C in the same meal can help the body take it in.",
             "hookSourceRefs": [
               "iron",
               "anaemia",
@@ -2840,7 +2840,7 @@
                   {
                     "id": "c",
                     "text": "It proves the person has anaemia.",
-                    "feedback": "A food combination cannot diagnose a condition. A health test would be needed to tell the cause.",
+                    "feedback": "A food pairing cannot tell you someone has a health problem. A health test would be needed to find the cause.",
                     "correct": false,
                     "misconceptionIds": [
                       "iron-and-anaemia-m2"
@@ -2874,7 +2874,7 @@
                   {
                     "id": "a",
                     "text": "Low iron is one possible cause.",
-                    "feedback": "WHO also lists other deficiencies and infections. So low iron is not the only possible cause.",
+                    "feedback": "WHO also lists other causes, such as other missing nutrients and infections. Low iron is not the only one.",
                     "correct": true,
                     "sourceRefs": [
                       "iron",
@@ -3008,7 +3008,7 @@
                   {
                     "id": "b",
                     "text": "About 5%.",
-                    "feedback": "Five is the lower end of its vegetarian-diet range.",
+                    "feedback": "Five per cent is the low end for a vegetarian diet, not for a mixed diet with meat and fish.",
                     "correct": false,
                     "misconceptionIds": [
                       "iron-and-anaemia-m1"
@@ -3124,7 +3124,7 @@
                   {
                     "id": "a",
                     "text": "Plant food supplies non-haem iron.",
-                    "feedback": "Beans and lentils contain this form. That iron can help the body make haemoglobin.",
+                    "feedback": "Beans and lentils have this plant form of iron. The body can use it to make red blood cells.",
                     "correct": true,
                     "sourceRefs": [
                       "iron",
@@ -3136,7 +3136,7 @@
                   {
                     "id": "b",
                     "text": "Vitamin C helps the body take it in.",
-                    "feedback": "NIH describes this food interaction. This can help the body take in more plant iron.",
+                    "feedback": "The NIH describes this: vitamin C in the meal helps the body take in more plant iron.",
                     "correct": true,
                     "sourceRefs": [
                       "iron",
@@ -3148,7 +3148,7 @@
                   {
                     "id": "c",
                     "text": "Iron helps make oxygen-carrying blood cells.",
-                    "feedback": "Iron helps make haemoglobin. Red blood cells use it to carry oxygen.",
+                    "feedback": "Iron goes into haemoglobin, the part of red blood cells that carries oxygen.",
                     "correct": true,
                     "sourceRefs": [
                       "iron",
@@ -3365,7 +3365,7 @@
               "free-sugars",
               "iron-and-anaemia"
             ],
-            "hook": "Two packs can use different serving sizes; a per-100-g line gives the same comparison base.",
+            "hook": "Two packs can use different serving sizes. The per-100-g line puts them on the same base so you can compare them.",
             "hookSourceRefs": [
               "label"
             ],
@@ -3503,7 +3503,7 @@
                   {
                     "id": "b",
                     "text": "One per serving, one per 100 ml.",
-                    "feedback": "The bases differ and can distort the comparison.",
+                    "feedback": "The two lines use different bases, so comparing them can mislead you. Use the same base for both.",
                     "correct": false,
                     "misconceptionIds": [
                       "food-label-reading-m1"
@@ -3564,7 +3564,7 @@
                   {
                     "id": "c",
                     "text": "Labels do not show salt per 100 g.",
-                    "feedback": "NHS describes per-100-g nutrition information. That line helps compare the same mass of two foods.",
+                    "feedback": "NHS labels do show values per 100 g. That line compares the same amount of two foods.",
                     "correct": false,
                     "misconceptionIds": [
                       "food-label-reading-m2"
@@ -3705,7 +3705,7 @@
                   {
                     "id": "b",
                     "text": "Use the same per-100-g base.",
-                    "feedback": "This removes serving-size differences. It lets the two packs be compared on equal weight.",
+                    "feedback": "This removes the difference in serving sizes, so both packs are compared on the same weight.",
                     "correct": true,
                     "sourceRefs": [
                       "label"
@@ -3980,7 +3980,7 @@
                   {
                     "id": "a",
                     "text": "The liver does not need a detox diet.",
-                    "feedback": "The NHS source rejects that requirement. The liver already does this work without a special diet.",
+                    "feedback": "The NHS says this is not needed. The liver already does this work without a special diet.",
                     "correct": true,
                     "sourceRefs": [
                       "variety",
@@ -4105,7 +4105,7 @@
                   {
                     "id": "b",
                     "text": "Every carb-rich food is the same.",
-                    "feedback": "Foods differ in nutrient mix and context. Two foods can differ in what else they supply.",
+                    "feedback": "Foods differ in what else they bring, like fibre or protein. Two carb-rich foods can be very different.",
                     "correct": false,
                     "misconceptionIds": [
                       "fad-diet-claims-m1"
@@ -4349,7 +4349,7 @@
                   {
                     "id": "c",
                     "text": "A special detox diet is required",
-                    "feedback": "The NHS source rejects the supposed requirement. The liver does its work without a juice cleanse.",
+                    "feedback": "The NHS says no special diet is needed. The liver does its work without a juice cleanse.",
                     "correct": true,
                     "sourceRefs": [
                       "variety",
@@ -4360,7 +4360,7 @@
                   {
                     "id": "d",
                     "text": "The liver does not need one",
-                    "feedback": "The NHS source rejects the supposed requirement. No special juice plan is needed for the liver.",
+                    "feedback": "The NHS says the liver does not need a special juice plan to do its work.",
                     "correct": true,
                     "sourceRefs": [
                       "variety",

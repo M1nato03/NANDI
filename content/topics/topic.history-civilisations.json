@@ -144,7 +144,7 @@
                   {
                     "id": "c",
                     "text": "The channel brought drinking water to every home.",
-                    "feedback": "A wastewater drain does not by itself show a drinking-water supply.",
+                    "feedback": "A drain that carries dirty water away does not show that clean drinking water came in.",
                     "correct": false,
                     "misconceptionIds": [
                       "indus-cities-m2"
@@ -176,7 +176,7 @@
                   {
                     "id": "a",
                     "text": "Crossing streets and a detailed drain system.",
-                    "feedback": "Both features are recorded in UNESCO’s site account.",
+                    "feedback": "Both are recorded at the site by UNESCO: streets that cross and a careful drain system.",
                     "correct": true,
                     "sourceRefs": [
                       "indus",
@@ -187,7 +187,7 @@
                   {
                     "id": "b",
                     "text": "A street grid and a decoded royal archive.",
-                    "feedback": "The streets are documented, but the Indus script has no accepted reading.",
+                    "feedback": "The streets are well recorded, but nobody has yet been able to read the Indus script.",
                     "correct": false,
                     "misconceptionIds": [
                       "indus-cities-m1"
@@ -233,7 +233,7 @@
                   {
                     "id": "a",
                     "text": "We know how it was built, not who used it.",
-                    "feedback": "Archaeology shows the structure, not a secure story about who used it.",
+                    "feedback": "Digging shows us how the building was made, not a sure story about who used it.",
                     "correct": true,
                     "sourceRefs": [
                       "indus",
@@ -410,7 +410,7 @@
                   {
                     "id": "a",
                     "text": "Water leaves a house floor.",
-                    "feedback": "Wastewater starts at a home. The water then moves away from the home.",
+                    "feedback": "Dirty water starts at a home, and then it flows away from the house.",
                     "correct": true,
                     "sourceRefs": [
                       "indus",
@@ -819,7 +819,7 @@
                   {
                     "id": "b",
                     "text": "Everyone there agreed with Ashoka.",
-                    "feedback": "A posted message cannot reveal universal agreement. It shows the message was placed, not how all felt.",
+                    "feedback": "A message on display cannot show that everyone agreed. It shows the message was put there, not how people felt.",
                     "correct": false,
                     "misconceptionIds": [
                       "ashoka-edicts-m1"
@@ -1151,7 +1151,7 @@
             "prerequisites": [
               "ashoka-edicts"
             ],
-            "hook": "Routes through Gandhara carried trade that also helped pay for Buddhist images and monasteries.",
+            "hook": "Trade routes through Gandhara carried goods, and that trade also helped pay for Buddhist statues and monasteries.",
             "hookSourceRefs": [
               "silk"
             ],
@@ -1378,7 +1378,7 @@
                   {
                     "id": "a",
                     "text": "About 600 years.",
-                    "feedback": "The exhibition account gives roughly six centuries. That is about how long Buddhism had thrived there.",
+                    "feedback": "The museum account gives about six hundred years. That is roughly how long Buddhism had done well there.",
                     "correct": true,
                     "sourceRefs": [
                       "silk"
@@ -1442,7 +1442,7 @@
                   {
                     "id": "b",
                     "text": "No route ever connected India and Central Asia.",
-                    "feedback": "The exhibition is built around those connections. It shows trade and travel did link those areas.",
+                    "feedback": "The show is built on those very links. Trade and travel did join India and Central Asia.",
                     "correct": false,
                     "misconceptionIds": [
                       "silk-road-ideas-m1"
@@ -1717,7 +1717,7 @@
                   {
                     "id": "a",
                     "text": "It keeps the tens place empty.",
-                    "feedback": "That placeholder keeps the 2 in the hundreds place.",
+                    "feedback": "The zero holds the tens place open, which keeps the 2 in the hundreds place.",
                     "correct": true,
                     "sourceRefs": [
                       "zero",
@@ -1927,7 +1927,7 @@
                   {
                     "id": "b",
                     "text": "628 CE.",
-                    "feedback": "That is the year of Brahmagupta’s major work, not this inscription.",
+                    "feedback": "That is the year of Brahmagupta's big maths book, not the year of this carving.",
                     "correct": false,
                     "misconceptionIds": [
                       "indian-place-value-m1"
@@ -2081,7 +2081,7 @@
                   {
                     "id": "a",
                     "text": "Brahmagupta",
-                    "feedback": "MacTutor says Brahmagupta set out rules for sums with zero. He did so in the seventh century.",
+                    "feedback": "A trusted maths history site says Brahmagupta wrote rules for sums with zero. He did it in the 600s.",
                     "correct": true,
                     "sourceRefs": [
                       "zero",
@@ -2388,7 +2388,7 @@
                   {
                     "id": "a",
                     "text": "Bi Sheng, Korean metal type, then Gutenberg.",
-                    "feedback": "The sources place these developments in that order.",
+                    "feedback": "The sources put them in this order: Bi Sheng first, then Korean metal type, then Gutenberg.",
                     "correct": true,
                     "sourceRefs": [
                       "print",
@@ -2844,7 +2844,7 @@
             "prerequisites": [
               "printing-and-reading"
             ],
-            "hook": "Akbar’s officials could use years of crop and price records to set land-revenue demands.",
+            "hook": "Akbar's officials used years of crop and price records to decide how much land tax a farm should pay.",
             "hookSourceRefs": [
               "mughal",
               "sathee-mughal"
@@ -2891,7 +2891,7 @@
                   {
                     "id": "a",
                     "text": "A ranked system for civil and army jobs.",
-                    "feedback": "NCERT describes mansabdari as serving both kinds of state work.",
+                    "feedback": "The school textbook (NCERT) says this rank system covered both army jobs and other state jobs.",
                     "correct": true,
                     "sourceRefs": [
                       "mughal",
@@ -2985,7 +2985,7 @@
                   {
                     "id": "a",
                     "text": "Tax on farm land.",
-                    "feedback": "NCERT identifies land revenue as a central source.",
+                    "feedback": "The school textbook (NCERT) names tax on farm land as a main source of income.",
                     "correct": true,
                     "sourceRefs": [
                       "mughal",
@@ -3061,7 +3061,7 @@
                   {
                     "id": "c",
                     "text": "A fixed salary paid only in coins.",
-                    "feedback": "That describes cash pay, not the jagir arrangement.",
+                    "feedback": "That describes pay in cash. A jagir was the right to collect tax from a piece of land instead.",
                     "correct": false,
                     "misconceptionIds": [
                       "mughal-revenue-m2"
@@ -3203,7 +3203,7 @@
                   {
                     "id": "a",
                     "text": "Survey the farmed land and crops.",
-                    "feedback": "Measurement is the evidence base. It gave a basis for judging what the land could yield.",
+                    "feedback": "Measuring the land came first. It showed officers how much the land could grow.",
                     "correct": true,
                     "sourceRefs": [
                       "mughal",
@@ -3255,7 +3255,7 @@
                   {
                     "id": "a",
                     "text": "Mansabdari",
-                    "feedback": "The apparatus helped run the state. It linked an officer's rank with service and pay.",
+                    "feedback": "This system helped run the state. It linked an officer's rank with his job and pay.",
                     "correct": true,
                     "sourceRefs": [
                       "mughal",
@@ -3265,7 +3265,7 @@
                   {
                     "id": "b",
                     "text": "Ranked civil and military service",
-                    "feedback": "The apparatus helped run the state. Ranks tied a post to both army and civil duties.",
+                    "feedback": "This system helped run the state. Each rank tied a post to both army and other duties.",
                     "correct": true,
                     "sourceRefs": [
                       "mughal",
@@ -3460,7 +3460,7 @@
                   {
                     "id": "a",
                     "text": "It gained land and tax power.",
-                    "feedback": "Parliament traces its move from trade to political rule.",
+                    "feedback": "The UK Parliament's history shows the Company went from buying and selling goods to ruling land.",
                     "correct": true,
                     "sourceRefs": [
                       "company",
@@ -3618,7 +3618,7 @@
                   {
                     "id": "a",
                     "text": "It was a war win before the tax grant.",
-                    "feedback": "Parliament names Buxar in 1764 as part of the shift to territorial power.",
+                    "feedback": "Buxar, in 1764, was a war win. The UK Parliament's history counts it as a step toward Company rule.",
                     "correct": true,
                     "sourceRefs": [
                       "company",
@@ -3763,7 +3763,7 @@
                   {
                     "id": "c",
                     "text": "The Company never had any power to govern.",
-                    "feedback": "Its pre-1858 revenue and territorial rule was real.",
+                    "feedback": "Before 1858 the Company really did collect tax and rule land, so it did have power.",
                     "correct": false,
                     "misconceptionIds": [
                       "company-trade-rule-m2"
@@ -3817,7 +3817,7 @@
                   {
                     "id": "c",
                     "text": "Diwani, 1765.",
-                    "feedback": "Revenue authority followed those battles. The grant gave the Company a right to tax land.",
+                    "feedback": "The tax right came after those battles. The 1765 grant let the Company collect land tax.",
                     "correct": true,
                     "sourceRefs": [
                       "company",
@@ -4194,7 +4194,7 @@
                   {
                     "id": "b",
                     "text": "26 January 1950.",
-                    "feedback": "That is when the Constitution came into force.",
+                    "feedback": "That later date is when the Constitution came into force. It was adopted two months before, in November 1949.",
                     "correct": false,
                     "misconceptionIds": [
                       "independence-constitution-m1"
@@ -4371,7 +4371,7 @@
                   {
                     "id": "a",
                     "text": "That was adoption; it began on 26 January 1950.",
-                    "feedback": "Parliament separates the two dates. The text took effect on a later day.",
+                    "feedback": "Parliament keeps the two dates apart. The text was adopted first and came into force on a later day.",
                     "correct": true,
                     "sourceRefs": [
                       "assembly",
@@ -4444,7 +4444,7 @@
                   {
                     "id": "b",
                     "text": "Constitution is adopted in 1949.",
-                    "feedback": "Debate culminates in adoption. The vote came after long talks on the text.",
+                    "feedback": "Long talks ended in a vote. The vote to adopt the text came in 1949.",
                     "correct": true,
                     "sourceRefs": [
                       "assembly",
@@ -4516,7 +4516,7 @@
                   {
                     "id": "c",
                     "text": "26 January 1950",
-                    "feedback": "This is commencement, not adoption. The text had been adopted at an earlier date.",
+                    "feedback": "This is the day it came into force. The text had been adopted two months earlier.",
                     "correct": true,
                     "sourceRefs": [
                       "assembly",
@@ -4528,7 +4528,7 @@
                   {
                     "id": "d",
                     "text": "Constitution came into force",
-                    "feedback": "This is commencement, not adoption. That date marks when the new text took effect.",
+                    "feedback": "That date, 26 January 1950, marks when the new Constitution came into force.",
                     "correct": true,
                     "sourceRefs": [
                       "assembly",

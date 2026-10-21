@@ -19,11 +19,12 @@ import { estimateFeedback, formatEstimate, sliderScale } from '../../core/learn/
 import { askFor } from '../../core/learn/ask';
 import { findStep } from '../../core/learn/steps';
 import { saveLessonDone } from '../../data/repos/learn-engine';
-import { StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
+import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
 import { useCountUp } from './useCountUp';
 import './learn.css';
 
 const currentTime = () => Date.now();
+const progressWord = (state: string) => state === 'Learning' ? 'started' : state.toLowerCase();
 const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
 
 export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, goldReview = false, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; goldReview?: boolean; onDone?: () => void }) {
@@ -75,6 +76,10 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   }, [row, data]);
   const step = drop?.items[feedback?.cursor ?? drop.pendingFeedback?.cursor ?? drop.cursor];
   const found = step ? findItem(concepts, step.itemId) : undefined;
+  // One bar for the whole drop: a lesson counts its screens, every question counts one.
+  const weight = (entry: NonNullable<typeof drop>['items'][number]) => { const taught = entry.lesson ? findStep(concepts, entry.lesson) : undefined; return taught ? lessonScreens(taught.step) : 1; };
+  const unitsBefore = (index: number) => (drop?.items.slice(0, index) ?? []).reduce((sum, entry) => sum + weight(entry), 0);
+  const totalUnits = unitsBefore(drop?.items.length ?? 0);
   const savedAnswer = drop?.pendingFeedback?.answer;
   const savedOptionId = typeof savedAnswer === 'string' ? savedAnswer : Array.isArray(savedAnswer) ? (typeof savedAnswer.at(-1) === 'string' ? savedAnswer.at(-1) as string : (savedAnswer.at(-1) as { right?: string } | undefined)?.right) : found?.item.options.find(option => Number(option.text.match(/-?\d+(?:[.,]\d+)*/)?.[0]?.replaceAll(',', '')) === savedAnswer)?.id;
   const savedEstimate = found?.item.type === 'estimate' && typeof savedAnswer === 'number' && drop?.pendingFeedback ? estimateFeedback(found.item, savedAnswer, drop.pendingFeedback.correct) : undefined;
@@ -228,12 +233,12 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       {goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <>
         {taughtToday && <div className="step-today card"><p className="eyebrow">Today's idea · {taughtToday.step.title}</p><p className="step-takeaway">{taughtToday.step.takeaway}</p><StepVisual visual={taughtToday.step.visual} /></div>}
         {questions > 0 && <FinishStats run={celebrate} stats={[[questions, 'questions'], [right, 'right'], [touched.length, touched.length === 1 ? 'idea' : 'ideas']]} />}
-        <p>{questions} questions explored. {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p className="learn-perfect">Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map((concept, index) => <span className="learn-chip" key={concept.id} style={{ '--i': index } as CSSProperties}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} is ${masteryMapState(data.concepts.find(row => row.id === concept.id)).toLowerCase()}`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
+        <p>{taughtToday ? `1 new idea · ${questions} ${questions === 1 ? 'question' : 'questions'}.` : `${questions} questions explored.`} {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p className="learn-perfect">Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map((concept, index) => <span className="learn-chip" key={concept.id} style={{ '--i': index } as CSSProperties}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} (${progressWord(masteryMapState(data.concepts.find(row => row.id === concept.id)))})`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   }
   if (step.lesson) {
     const taught = findStep(concepts, step.lesson);
-    if (taught) return <div className="learn-drop learn-lesson"><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>New idea</span></header>
-      <StepLesson key={step.lesson} step={taught.step} conceptTitle={taught.concept.title} friend={dropCast(false, undefined).name} busy={busy} onDone={result => void finishLesson(taught.step.id, taught.concept.id, result)} />
+    if (taught) return <div className="learn-drop learn-lesson learn-active"><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>New idea</span></header>
+      <StepLesson key={step.lesson} step={taught.step} conceptTitle={taught.concept.title} friend={dropCast(false, undefined).name} busy={busy} progress={{ before: unitsBefore(drop.cursor), total: totalUnits }} onDone={result => void finishLesson(taught.step.id, taught.concept.id, result)} />
       {message && <p role="status">{message}</p>}</div>;
   }
   if (!found) return <div className="learn-drop"><h2>Learn</h2><p>This item is unavailable. Open Learn to choose a topic.</p><button type="button" onClick={() => go('learn')}>Open Learn</button></div>;
@@ -244,10 +249,12 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const inARow = longestCombo(data.ledger, drop.id);
   const position = visibleFeedback?.cursor ?? drop.cursor;
   // The bar moves forward after every answer, right or not (spec 13 D: a miss never moves it back).
-  const filled = ((visibleFeedback ? position + 1 : position) / drop.items.length) * 100;
+  const filled = ((unitsBefore(position) + (visibleFeedback ? 1 : 0)) / totalUnits) * 100;
+  const questionItems = drop.items.filter(entry => !entry.lesson);
+  const questionNumber = drop.items.slice(0, position).filter(entry => !entry.lesson).length + 1;
   const friend = dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct).name;
   const pose = visibleFeedback ? (visibleFeedback.correct ? 'cheer' : 'think') : 'idle';
-  return <div className={`learn-drop${night ? ' learn-night' : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{position + 1} / {drop.items.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
+  return <div className={`learn-drop learn-active${night ? ' learn-night' : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{questionNumber} / {questionItems.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
     <div className="learn-q" key={position}>
     <div className={`learn-ask-row${pending && !visibleFeedback ? ' leaning' : ''}`}><span className="learn-friend"><Cast name={friend} pose={pose} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span><div className="learn-ask-bubble"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2>{item.stem}</h2>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
@@ -273,7 +280,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       {!goldReview && step.mode !== 'new' ? <div className="learn-check-pair"><button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId, 'certain')}>Check · I'm sure</button><button type="button" className="secondary" disabled={busy} onClick={() => void answer(pending.value, pending.optionId, 'guess')}>Check · Guessing</button></div>
         : <button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button>}</div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback learn-sheet ${visibleFeedback.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p>{itemStep ? (!visibleFeedback.correct && (ideaAgain ? <div className="step-again"><p className="step-teach-text">{itemStep.step.teach}</p><StepVisual visual={itemStep.step.visual} /></div> : <button type="button" className="text-button step-again-button" onClick={() => setIdeaAgain(true)}>See the idea again</button>)) : <p className="learn-rule">{visibleFeedback.rule}</p>}</>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
-    {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
+    {message && <p role="status">{message}</p>}</div>;
 }
 
 /** Spec 13 E: numbers count up once, when the drop is finished on this screen. */
