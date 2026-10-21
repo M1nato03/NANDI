@@ -628,6 +628,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the cue.",
                   "parts": [
                     "After brushing his teeth,",
                     "Arun does ten push-ups."
@@ -737,6 +738,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the same setting.",
                   "parts": [
                     "For a month, Sana walks",
                     "at the same park gate",
@@ -841,6 +843,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap what happened after the miss.",
                   "parts": [
                     "Meena missed her morning run once.",
                     "The next day, the run still felt automatic."
@@ -1428,7 +1431,7 @@
             "steps": [
               {
                 "id": "loss-aversion-s1",
-                "title": "A drop feels bigger than a gain",
+                "title": "A loss feels bigger than a gain",
                 "claimId": "loss-aversion-c2",
                 "sourceRefs": [
                   "prospect"
@@ -1456,7 +1459,7 @@
                     }
                   ]
                 },
-                "teach": "A drop often feels stronger than a gain of the same size. So a fair bet to win or pay ₹100 feels like a bad deal.",
+                "teach": "A loss often feels stronger than a gain of the same size. This is called loss aversion.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1474,6 +1477,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap how the drop felt.",
                   "parts": [
                     "Sahil finds ₹50 on the bus and smiles for a minute, but when ₹50 falls out of his pocket,",
                     "he is upset all evening."
@@ -1531,7 +1535,7 @@
                     ]
                   }
                 ],
-                "takeaway": "A drop tends to feel bigger than a gain of the same size."
+                "takeaway": "A loss tends to feel bigger than a gain of the same size."
               },
               {
                 "id": "loss-aversion-s2",
@@ -1580,6 +1584,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap where Meghna started.",
                   "parts": [
                     "Meghna and Kunal both end the month with ₹1,000, but",
                     "Meghna started with ₹1,500,",
@@ -2235,6 +2240,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the first number.",
                   "parts": [
                     "Rohit hears “50,000” on TV,",
                     "then guesses that 45,000 people fit in the stadium."
@@ -2343,6 +2349,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the random number.",
                   "parts": [
                     "Arnav writes down his roll number, which ends in 90,",
                     "then guesses that a canteen thali costs ₹90."
@@ -2975,7 +2982,7 @@
                     }
                   ]
                 },
-                "teach": "People notice and recall the clues that fit what they already believe. Clues that do not fit get skipped.",
+                "teach": "People notice and recall clues that fit what they already believe, and skip the rest. This is called confirmation bias.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2994,6 +3001,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap what she skips.",
                   "parts": [
                     "Zara thinks Mondays are unlucky, so",
                     "she writes down every bad Monday and skips the good ones."
@@ -3101,6 +3109,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the test that could break his idea.",
                   "parts": [
                     "To test his idea that the 8 o’clock bus is always late,",
                     "Farhan looks for a day it came on time."
@@ -3189,6 +3198,22 @@
                 "text": "Group agreement is social input, not proof that a claim is true.",
                 "sourceRefs": [
                   "asch"
+                ]
+              },
+              {
+                "id": "social-proof-c3",
+                "text": "Seeing what many others choose can lean a person’s own choice toward it.",
+                "sourceRefs": [
+                  "asch",
+                  "asch-original"
+                ]
+              },
+              {
+                "id": "social-proof-c4",
+                "text": "A group can agree on a wrong answer, so agreement alone is a clue, not proof.",
+                "sourceRefs": [
+                  "asch",
+                  "asch-original"
                 ]
               }
             ],
@@ -3664,6 +3689,14 @@
                 {
                   "claimId": "social-proof-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-c4",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
@@ -3672,7 +3705,7 @@
               {
                 "id": "social-proof-s1",
                 "title": "A crowd’s choice is a clue",
-                "claimId": "social-proof-c2",
+                "claimId": "social-proof-c3",
                 "sourceRefs": [
                   "asch",
                   "asch-original"
@@ -3700,7 +3733,7 @@
                     }
                   ]
                 },
-                "teach": "What a crowd picks works as a clue. When many people choose one answer, our own choice can lean toward it.",
+                "teach": "What a crowd picks works as a clue, so our own choice leans toward it. This is called social proof.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -3710,6 +3743,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap what pulled Neel.",
                   "parts": [
                     "At the canteen,",
                     "Neel sees everyone order the masala dosa,",
@@ -3819,6 +3853,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap where Tanya goes along.",
                   "parts": [
                     "Every student before Tanya calls the shorter line the longest, and",
                     "Tanya says the same,",
@@ -3882,7 +3917,7 @@
               {
                 "id": "social-proof-s3",
                 "title": "Agreement is not proof",
-                "claimId": "social-proof-c2",
+                "claimId": "social-proof-c4",
                 "sourceRefs": [
                   "asch",
                   "asch-original"
@@ -3928,6 +3963,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the fresh check.",
                   "parts": [
                     "Everyone in the hostel says the mess serves paneer on Friday, but",
                     "when Sid checks the menu, it says Thursday."
@@ -4020,7 +4056,14 @@
               },
               {
                 "id": "planning-fallacy-c3",
-                "text": "In one study, linking past tasks to a new plan removed the short time guess.",
+                "text": "In one study, linking past tasks to a new plan made the too-short guesses go away.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              },
+              {
+                "id": "planning-fallacy-c4",
+                "text": "When people plan, they tend to picture the task going smoothly and leave delays out of the guess.",
                 "sourceRefs": [
                   "planning"
                 ]
@@ -4496,6 +4539,10 @@
                 {
                   "claimId": "planning-fallacy-c3",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-c4",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
@@ -4531,7 +4578,7 @@
                     }
                   ]
                 },
-                "teach": "Guesses for our own tasks often fall short. In one study, students took about 56 days for a thesis they guessed would take 34.",
+                "teach": "Guesses for our own tasks often fall short; this is the planning fallacy. In one study, students took about 56 days for a thesis they guessed would take 34.",
                 "visual": {
                   "kind": "scale",
                   "label": "Days to finish a thesis, in one study",
@@ -4553,6 +4600,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap what really happened.",
                   "parts": [
                     "Ishan says his science model will take one evening,",
                     "but three evenings later he is still gluing parts."
@@ -4615,7 +4663,7 @@
               {
                 "id": "planning-fallacy-s2",
                 "title": "We picture a smooth path",
-                "claimId": "planning-fallacy-c2",
+                "claimId": "planning-fallacy-c4",
                 "sourceRefs": [
                   "planning"
                 ],
@@ -4662,6 +4710,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the step she left out.",
                   "parts": [
                     "Ritu plans her poster as draw, then colour, but",
                     "she forgets the trip to buy chart paper."
@@ -4751,7 +4800,7 @@
                     }
                   ]
                 },
-                "teach": "How long similar tasks really took is a good guide. In one study, linking past tasks to a new plan removed the too short guess.",
+                "teach": "How long similar tasks really took is a good guide. In one study, linking past tasks to a new plan made the too-short guesses go away.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4761,6 +4810,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the past tasks he uses.",
                   "parts": [
                     "Before guessing,",
                     "Yash recalls that his last two speeches took a week to prepare,",
@@ -5427,12 +5477,13 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the learning step.",
                   "parts": [
-                    "Divya reads her notes on the Mughals in the evening, and",
-                    "a week later the dates still come back easily."
+                    "Divya reads her notes on the Mughals carefully,",
+                    "and a week later the dates still come back easily."
                   ],
-                  "spot": "a week later the dates still come back easily.",
-                  "feedback": "She learned first, and the memory firmed up over the next days."
+                  "spot": "Divya reads her notes on the Mughals carefully,",
+                  "feedback": "Reading carefully is the learning step. Only after it can the memory firm up and last."
                 },
                 "guided": [
                   {
@@ -5534,6 +5585,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap what came between practice and morning.",
                   "parts": [
                     "Gautam practises a new bowling action,",
                     "sleeps,",
@@ -5641,6 +5693,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the quiet rest.",
                   "parts": [
                     "After learning the steps of a new dance,",
                     "Lakshmi sits quietly for a few minutes,",
@@ -5738,6 +5791,13 @@
                   "apa-learning",
                   "social-reward",
                   "scroll-review"
+                ]
+              },
+              {
+                "id": "variable-rewards-c3",
+                "text": "A variable reward comes after some tries but not others, so you cannot tell which try will bring it.",
+                "sourceRefs": [
+                  "apa-learning"
                 ]
               }
             ],
@@ -6290,6 +6350,10 @@
                 {
                   "claimId": "variable-rewards-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "variable-rewards-c3",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
@@ -6298,7 +6362,7 @@
               {
                 "id": "variable-rewards-s1",
                 "title": "Variable means you cannot tell when",
-                "claimId": "variable-rewards-c1",
+                "claimId": "variable-rewards-c3",
                 "sourceRefs": [
                   "apa-learning"
                 ],
@@ -6344,6 +6408,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the uneven reward.",
                   "parts": [
                     "Each time Zubin opens his messages,",
                     "there might be a reply or nothing at all."
@@ -6444,6 +6509,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap why she keeps going.",
                   "parts": [
                     "Nikita finds a funny meme only now and then,",
                     "so she keeps swiping in case the next one is good."
@@ -6552,6 +6618,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap his other reason.",
                   "parts": [
                     "Kiran opens his feed after class",
                     "to see what his cousins posted from the wedding."
@@ -6641,6 +6708,14 @@
               {
                 "id": "if-then-plans-c2",
                 "text": "Studies find that such plans can help goal pursuit compared with a goal alone.",
+                "sourceRefs": [
+                  "konstanz-plan",
+                  "plan-study"
+                ]
+              },
+              {
+                "id": "if-then-plans-c3",
+                "text": "An if-then plan names a clear moment to act, which is easier to notice than a vague goal.",
                 "sourceRefs": [
                   "konstanz-plan",
                   "plan-study"
@@ -7168,6 +7243,10 @@
                 {
                   "claimId": "if-then-plans-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "if-then-plans-c3",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
@@ -7213,6 +7292,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap the \"if\" moment.",
                   "parts": [
                     "Ananya decides that",
                     "when the school bell rings at 4,",
@@ -7276,7 +7356,7 @@
               {
                 "id": "if-then-plans-s2",
                 "title": "Pick a moment you will notice",
-                "claimId": "if-then-plans-c1",
+                "claimId": "if-then-plans-c3",
                 "sourceRefs": [
                   "konstanz-plan",
                   "plan-study"
@@ -7323,6 +7403,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the clear moment.",
                   "parts": [
                     "Instead of planning to practise someday, Dhruv picks a moment:",
                     "when he gets home from school,",
@@ -7436,6 +7517,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap where the plan did not work.",
                   "parts": [
                     "Govind plans, “If I wake up, then I stretch,” and he stretches most days,",
                     "but not on the day he oversleeps."
@@ -8027,7 +8109,7 @@
                     }
                   ]
                 },
-                "teach": "We tend to think more people notice us than really do. In one study, wearers of an odd shirt guessed 46% noticed; about 23% did.",
+                "teach": "We think more people notice us than really do: the spotlight effect. In one study, wearers of an odd shirt guessed 46% noticed; about 23% did.",
                 "visual": {
                   "kind": "scale",
                   "label": "People who noticed an odd T-shirt",
@@ -8045,6 +8127,7 @@
                   ]
                 },
                 "example": {
+                  "ask": "Tap how many really noticed.",
                   "parts": [
                     "Prerna gets a bad haircut and hides all day, yet",
                     "at lunch only one friend says anything."
@@ -8153,6 +8236,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap how big it felt to him.",
                   "parts": [
                     "Arush says one wrong word in his group talk,",
                     "and he replays it all night,",
@@ -8262,6 +8346,7 @@
                   }
                 },
                 "example": {
+                  "ask": "Tap the people who noticed.",
                   "parts": [
                     "When Lavanya trips on the stage steps,",
                     "a few people in the hall look up,",

@@ -31,7 +31,8 @@ export const topicStepSchema = v.strictObject({
   id: text, title: text, claimId: text, sourceRefs: v.pipe(strings, v.minLength(1)),
   hook: v.strictObject({ stem: text, options: lessonOptions }),
   teach: text, visual: stepVisualSchema,
-  example: v.strictObject({ parts: v.pipe(strings, v.minLength(2), v.maxLength(5)), spot: text, feedback: text }),
+  // `ask` names exactly what to tap, since more than one part could fairly 'show the idea'.
+  example: v.strictObject({ ask: v.pipe(text, v.maxLength(60)), parts: v.pipe(strings, v.minLength(2), v.maxLength(5)), spot: text, feedback: text }),
   guided: v.pipe(v.array(v.strictObject({ stem: text, hint: text, options: lessonOptions })), v.minLength(1), v.maxLength(2)),
   takeaway: text,
 });

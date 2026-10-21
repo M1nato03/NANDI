@@ -53,7 +53,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, onDone }: { step:
     const right = question.options.find(option => option.id === id)?.correct === true;
     setResult(current => phase.kind === 'hook' ? { ...current, hookCorrect: right } : { ...current, guidedFirstTry: [...current.guidedFirstTry, right] });
   };
-  const ask = phase.kind === 'hook' ? 'Guess first' : phase.kind === 'teach' ? 'The idea' : phase.kind === 'show' ? 'Tap the part that shows the idea' : 'Pick the best answer';
+  const ask = phase.kind === 'hook' ? 'Guess first' : phase.kind === 'teach' ? 'The idea' : phase.kind === 'show' ? step.example.ask : 'Pick the best answer';
   const eyebrow = phase.kind === 'guided' ? `Try it · ${phase.index + 1} of ${step.guided.length}` : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
   const pose = chosen ? (chosen.correct ? 'cheer' : 'think') : phase.kind === 'show' && picked ? (picked === step.example.spot ? 'cheer' : 'think') : 'idle';
   const last = at === phases.length - 1;
