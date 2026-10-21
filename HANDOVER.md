@@ -187,7 +187,7 @@ Note: exact reminders and the visible economy arrive together, so the week 8–1
 - [ ] Shards and a fixed-price shop: freezes, cosmetics, handcrafted puzzle packs, themes. Nothing random.
 - [ ] Share cards for puzzles (spoiler-free; WhatsApp or plain text by default; off during wind-down).
 - [x] Technique cards and the three-rung hint ladder driven by the logic solvers. Write the Number Path logic solver first. (Number Path solver done 21 Oct.)
-- [ ] Hexagon stats and mastery tracks.
+- [ ] Hexagon stats and mastery tracks. (Hexagon done 21 Oct: You → Your six stats.)
 - [ ] Mystery meta-arc: daily cases reveal story panels and **Sunday's case closes the chapter**; the Sunday Boss board adds a bonus panel. **Four Arcs and four shop catalogues ship bundled** and cycle if no new pack arrives.
 - [ ] Content-pack pipeline live: CI validation, `/packs/index.json`, the app's pack updater (keeps the old version until the new one passes).
 

@@ -364,6 +364,16 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .you-week-numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .you-week-number { min-width: 0; display: grid; gap: 2px; padding: 12px 14px; border-radius: var(--radius-row); background: var(--surface-2); }
 .you-week-number strong { color: var(--ink); font: 800 34px/36px 'Bricolage Grotesque', sans-serif; }
+.you-hexagon h2 { margin-bottom: 0; }
+.hex-chart { display: block; width: 100%; max-width: 300px; margin: 0 auto; overflow: visible; }
+.hex-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.hex-spoke { stroke: var(--line); stroke-width: 1; }
+.hex-shape { fill: color-mix(in srgb, var(--accent) 28%, transparent); stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
+.hex-label { fill: var(--ink-2); font: 600 12px/1 'DM Sans', sans-serif; }
+.hex-value { fill: var(--ink); font: 800 15px/1 'Bricolage Grotesque', sans-serif; }
+.hex-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.hex-list li { display: grid; gap: 2px; }
+.hex-list span { color: var(--ink-3); font-size: 13px; }
 .you-week-number span { color: var(--ink-2); font: 500 12px/16px 'DM Sans', sans-serif; }
 .you-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .you-links .you-link, .you-links .settings-link { min-width: 0; min-height: 146px; margin: 0; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 8px; background: var(--surface-1); color: var(--ink); box-shadow: var(--shadow-1); }
