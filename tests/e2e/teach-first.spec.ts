@@ -30,6 +30,11 @@ test('a new step is taught in order: hook, idea, show me, two guided tries with 
 
   const lesson = page.locator('.step-lesson');
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'hook');
+  // QA 21 Oct: a focused screen with one bar for the whole drop and no tab bar or stray links.
+  await expect(page.getByRole('navigation', { name: 'Main tabs' })).toBeHidden();
+  await expect(page.locator('.learn-progress')).toHaveCount(1);
+  await expect(page.locator('.step-dots')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Open Learn' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Show hint' })).toHaveCount(0);
   await page.getByRole('button', { name: stepOne!.hook.options[1]!.text, exact: true }).click();
   await expect(page.locator('.learn-feedback')).toBeVisible();
@@ -57,13 +62,20 @@ test('a new step is taught in order: hook, idea, show me, two guided tries with 
   await expect(page.locator('.step-lesson')).toHaveCount(0);
   for (let turn = 0; turn < 6 && !(await page.locator('.learn-stop').isVisible()); turn++) {
     await expect(page.getByRole('button', { name: 'Show hint' })).toHaveCount(0);
+    await expect(page.locator('.learn-progress')).toHaveCount(1);
     const item = await answerQuestion(page);
+    // The result sheet and its button sit inside the screen, never under a bar.
+    const next = page.locator('.learn-feedback').getByRole('button', { name: 'Next' });
+    await expect.poll(async () => { const box = await next.boundingBox(); return box!.y + box!.height; }).toBeLessThanOrEqual(page.viewportSize()!.height);
+    if (turn === 0) await page.screenshot({ path: `D:/nandi-gate-logs/shots/qa-sheet-${page.viewportSize()!.width}.png` });
     expect(item.step).toBe(stepOne!.id);
     await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
     await expect(page.locator('.learn-feedback')).toHaveCount(0);
   }
   await expect(page.locator('.learn-stop')).toContainText(`Today's idea · ${habits.steps![0]!.id === stepOne!.id ? 'A cue starts a habit' : ''}`);
   await expect(page.locator('.step-takeaway')).toHaveText(stepOne!.takeaway);
+  await expect(page.locator('.learn-stop')).toContainText(/1 new idea · \d+ questions?\./);
+  await expect(page.getByRole('navigation', { name: 'Main tabs' })).toBeVisible();
 
   // The next day teaches step two before any review of step one.
   await page.clock.setFixedTime(new Date(2026, 9, 23, 12));

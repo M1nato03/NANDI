@@ -80,7 +80,7 @@
             { "id": "muscle-protein-rest-2", "type": "scenario", "conceptId": "muscle-protein-rest", "difficultySeed": 2, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"], "stem": "At a college gym, Dev trains hard, then eats dal and rice at the canteen. How do these link?", "options": [
               { "id": "a", "text": "The food's protein helps the muscles respond.", "feedback": "The stand says a varied daily diet can meet protein needs for active people.", "correct": true, "sourceRefs": ["issn", "acsm"] },
               { "id": "b", "text": "Only a special product makes muscles adapt.", "feedback": "A shake can seem more direct. Normal food can give protein that helps the body respond to work.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] },
-              { "id": "c", "text": "The hard session alone, even with little food.", "feedback": "The workout is vivid, so it can seem enough. Food gives parts for the response.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
+              { "id": "c", "text": "The hard session alone, even with little food.", "feedback": "The workout is vivid, so it can seem enough. Food gives the body the parts it builds muscle from.", "correct": false, "misconceptionIds": ["muscle-protein-rest-m1"], "sourceRefs": ["issn", "acsm"] }
             ] },
             { "id": "muscle-protein-rest-3", "type": "estimate", "conceptId": "muscle-protein-rest", "difficultySeed": 2, "misconceptionTags": ["muscle-protein-rest-m1"], "sourceRefs": ["issn"], "stem": "For muscle building, about how many grams of protein a day per kilo of body weight suit most active people?", "options": [
               { "id": "a", "text": "About 1.7 grams per kilogram.", "feedback": "The stand gives a broad daily band from about 1.4 to 2.0 grams per kilogram.", "correct": true, "sourceRefs": ["issn"] },
@@ -222,7 +222,7 @@
               { "id": "c", "text": "A drink is enough to keep running.", "feedback": "Water can help with fluid loss. It does not make a heat warning sign safe to ignore.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["signs"] }
             ] },
             { "id": "heat-hydration-8", "type": "explain-it-back", "conceptId": "heat-hydration", "difficultySeed": 2, "misconceptionTags": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"], "stem": "Which line best sums up the app's hot-day mode?", "options": [
-              { "id": "a", "text": "Less strain, more breaks and fluid.", "feedback": "The heat guide links hot activity with fluid loss and calls for a paced effort.", "correct": true, "sourceRefs": ["heat"] },
+              { "id": "a", "text": "Less strain, more breaks and fluid.", "feedback": "The heat guide says hot-day work loses more fluid, so it calls for an easier pace with breaks and water.", "correct": true, "sourceRefs": ["heat"] },
               { "id": "b", "text": "Keep your pace if you drink more.", "feedback": "Water helps with fluid loss. It does not remove the heat load or warning signs.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"] },
               { "id": "c", "text": "Train hardest at noon to build heat strength.", "feedback": "Noon heat adds the most strain. Hot-day mode eases effort, adds breaks and keeps fluid up.", "correct": false, "misconceptionIds": ["heat-hydration-m1"], "sourceRefs": ["heat", "signs"] }
             ] }
@@ -415,7 +415,7 @@
               { "id": "c", "text": "The protein in one serving.", "feedback": "Thirty grams is a weight of food, not a nutrient. It names the serve size the label uses.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] },
             { "id": "food-labels-3", "type": "estimate", "conceptId": "food-labels", "difficultySeed": 2, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "Two food labels use different serving sizes. To compare sugar fairly, how many grams should the shared base be?", "options": [
-              { "id": "a", "text": "100 grams.", "feedback": "The per 100 g line puts both foods on the same mass, so serving-size differences do not distort the comparison.", "correct": true, "sourceRefs": ["fssai"] },
+              { "id": "a", "text": "100 grams.", "feedback": "The per 100 g line puts both foods on the same amount, so different serving sizes do not mislead you.", "correct": true, "sourceRefs": ["fssai"] },
               { "id": "b", "text": "Each pack's own serving size.", "feedback": "Each pack can define a different serve. A shared 100 g base lets the nutrient amounts be compared.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
               { "id": "c", "text": "1,000 grams.", "feedback": "A kilo is not the shared base on labels. The per 100 g line is the one used to compare packs.", "correct": false, "sourceRefs": ["fssai"] }
             ], "answer": { "value": 100, "min": 99.5, "max": 100.5, "unit": "grams" } },
@@ -440,7 +440,7 @@
               { "id": "c", "text": "Total sugars counts only added sugar.", "feedback": "The two lines sit close together, so they are easy to mix up. Total includes more.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] },
             { "id": "food-labels-8", "type": "explain-it-back", "conceptId": "food-labels", "difficultySeed": 2, "misconceptionTags": ["food-labels-m1"], "sourceRefs": ["fssai"], "stem": "Which line best sums up checking sugar and protein on labels?", "options": [
-              { "id": "a", "text": "Compare packs on the same 100 g base.", "feedback": "Equal food amounts let the two nutrient lines mean the same kind of comparison.", "correct": true, "sourceRefs": ["fssai"] },
+              { "id": "a", "text": "Compare packs on the same 100 g base.", "feedback": "Using the same amount of food means the sugar and protein numbers can be compared fairly.", "correct": true, "sourceRefs": ["fssai"] },
               { "id": "b", "text": "Compare per-serving numbers, even if servings differ.", "feedback": "Per-serve figures are convenient, but unlike serving sizes can hide a difference; use a common amount and read both sugar lines.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] },
               { "id": "c", "text": "Pick the pack with the bigger serve.", "feedback": "A bigger serve says nothing about sugar per gram. Both packs need the same 100 g base to compare.", "correct": false, "misconceptionIds": ["food-labels-m1"], "sourceRefs": ["fssai"] }
             ] }

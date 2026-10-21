@@ -427,7 +427,6 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-card:has(.learn-drop) .learn-progress { margin-top: -6px; }
 .learn-feedback, .learn-feedback button { scroll-margin-bottom: calc(80px + env(safe-area-inset-bottom)); }
 .deck-screen:has(.learn-feedback) { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
-.learn-open-link { justify-self: start; min-height: 44px; margin-top: 2px; padding: 8px 0; border: 0; background: transparent; color: var(--accent-ink); font: 600 14px/20px 'DM Sans', sans-serif; }
 .offline-ready-toast, .update-bar, .native-update-bar { width: max-content; max-width: calc(100% - 32px); margin: 8px auto; padding: 8px 14px; border: 0; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--ink-2); box-shadow: var(--shadow-1); font: 500 13px/20px 'DM Sans', sans-serif; }
 .update-bar, .native-update-bar { justify-content: center; }
 .update-bar button, .native-update-bar button { min-height: 44px; padding: 8px 12px; border-radius: var(--radius-pill); background: var(--surface-3); color: var(--ink); font-size: 13px; }

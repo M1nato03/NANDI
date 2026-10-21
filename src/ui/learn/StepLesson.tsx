@@ -31,7 +31,10 @@ type Phase = { kind: 'hook' } | { kind: 'teach' } | { kind: 'show' } | { kind: '
  * (tap the part that shows the idea) → one or two guided tries with a hint. The your-turn items follow
  * as normal questions in the drop.
  */
-export function StepLesson({ step, conceptTitle, friend, busy, onDone }: { step: TopicStep; conceptTitle: string; friend: CastName; busy: boolean; onDone: (result: StepLessonResult) => void }) {
+/** Screens in a step lesson before its own questions: hook, idea, show me, then each guided try. */
+export const lessonScreens = (step: TopicStep) => 3 + step.guided.length;
+
+export function StepLesson({ step, conceptTitle, friend, busy, progress, onDone }: { step: TopicStep; conceptTitle: string; friend: CastName; busy: boolean; progress?: { before: number; total: number }; onDone: (result: StepLessonResult) => void }) {
   const [phase, setPhase] = useState<Phase>({ kind: 'hook' });
   const [picked, setPicked] = useState<string>();
   const [hint, setHint] = useState(false);
@@ -58,7 +61,9 @@ export function StepLesson({ step, conceptTitle, friend, busy, onDone }: { step:
   const pose = chosen ? (chosen.correct ? 'cheer' : 'think') : phase.kind === 'show' && picked ? (picked === step.example.spot ? 'cheer' : 'think') : 'idle';
   const last = at === phases.length - 1;
   return <div className="step-lesson" data-lesson-phase={phase.kind === 'guided' ? `guided-${phase.index + 1}` : phase.kind}>
-    <ol className="step-dots" aria-label={`Lesson part ${at + 1} of ${phases.length}`}>{phases.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>
+    {/* QA 21 Oct: one bar for the whole drop; the lesson fills its share of it, screen by screen. */}
+    {progress ? <div className="learn-progress" role="progressbar" aria-label={`Lesson part ${at + 1} of ${phases.length}`} aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.before + at}><span style={{ width: `${(progress.before + at) / progress.total * 100}%` }} /></div>
+      : <ol className="step-dots" aria-label={`Lesson part ${at + 1} of ${phases.length}`}>{phases.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>}
     <div className="learn-q" key={at}>
       <div className="learn-ask-row"><span className="learn-friend"><Cast name={friend} pose={pose} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span>
         <div className="learn-ask-bubble"><p className="eyebrow">{eyebrow}</p><p className="learn-ask">{ask}</p></div></div>

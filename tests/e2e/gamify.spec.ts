@@ -90,7 +90,7 @@ test('combo appears in a drop and the topic trail opens practice', async ({ page
   await expect(page.locator('.learn-options')).toBeVisible();
   for (let index = 0; index < 3; index++) await answerItem(page);
   await expect(page.locator('.learn-drop-head')).toContainText('3 in a row');
-  await page.getByRole('button', { name: 'Open Learn' }).click();
+  await page.goto('/#learn');
   const topic = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
   await topic.getByRole('button', { name: /Money and markets/ }).click();
   const trail = page.getByLabel('Money and markets mastery map');

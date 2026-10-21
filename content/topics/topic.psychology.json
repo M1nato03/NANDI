@@ -23,12 +23,12 @@
             "id": "habits",
             "title": "Habits",
             "prerequisites": [],
-            "hook": "One missed day did not reset habit growth in Lally's study; the fitted time to near full habit strength ran from 18 to 254 days.",
+            "hook": "Missing one day did not undo a new habit in Lally's study. Habits took anywhere from 18 to 254 days to settle in.",
             "hookSourceRefs": [
               "lally",
               "wood"
             ],
-            "rule": "A cue can start a learned act. Repeating it in a stable setting can strengthen the cue link. In Lally and team’s study, time to near full habit strength varied a lot; one missed day did not wipe it out.",
+            "rule": "A cue can start a learned act. Repeating it in the same place makes the link stronger. In Lally's study, habits took very different times to settle, and one missed day did not undo them.",
             "ruleSourceRefs": [
               "lally",
               "wood"
@@ -87,7 +87,7 @@
                   {
                     "id": "b",
                     "text": "Hitting a fixed number of practice days.",
-                    "feedback": "Repetition matters, so a fixed day target can sound useful. In this scene, the familiar desk is the cue that starts the action.",
+                    "feedback": "Repeating matters, so a fixed day count sounds useful. But here the familiar desk is the cue that starts the action.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -130,7 +130,7 @@
                   {
                     "id": "a",
                     "text": "It is still there.",
-                    "feedback": "In the study, an occasional missed chance did not make earlier habit growth vanish.",
+                    "feedback": "In the study, missing a day now and then did not wipe out the habit built so far.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -183,7 +183,7 @@
                   {
                     "id": "a",
                     "text": "66 days.",
-                    "feedback": "The study’s median was 66 days, while individual fitted times varied from 18 to 254.",
+                    "feedback": "The middle person in the study took 66 days. Others took anywhere from 18 to 254 days.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -193,7 +193,7 @@
                   {
                     "id": "b",
                     "text": "21 days.",
-                    "feedback": "The 21-day rule is easy to recall. The study found a 66-day median and wide spread.",
+                    "feedback": "The 21-day rule is easy to remember. In the study, the middle person took 66 days, and the spread was wide.",
                     "correct": false,
                     "misconceptionIds": [
                       "habits-m1"
@@ -206,7 +206,7 @@
                   {
                     "id": "c",
                     "text": "254 days.",
-                    "feedback": "That was the longest fitted time in the study, not the middle. The median was 66 days.",
+                    "feedback": "That was the slowest person in the study, not the middle one. The middle person took 66 days.",
                     "correct": false,
                     "sourceRefs": [
                       "lally",
@@ -344,7 +344,7 @@
                   {
                     "id": "a",
                     "text": "Moment just before the act.",
-                    "feedback": "Habits join a response to features of its usual context, such as place or prior action.",
+                    "feedback": "A habit links an action to the things around it, such as the place you are in or what you just did.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -397,7 +397,7 @@
                   {
                     "id": "a",
                     "text": "Each person and habit takes its own time.",
-                    "feedback": "One person’s timing cannot set a universal deadline; fitted times in the study spanned many weeks.",
+                    "feedback": "One person's timing cannot set a deadline for everyone. In the study, people took very different numbers of weeks.",
                     "correct": true,
                     "sourceRefs": [
                       "lally",
@@ -911,7 +911,7 @@
             "prerequisites": [
               "habits"
             ],
-            "hook": "In classic choice experiments, the value curve is steeper for losses than for equal gains around a starting point.",
+            "hook": "In choice studies, losing ₹100 often feels worse than winning ₹100 feels good.",
             "hookSourceRefs": [
               "prospect"
             ],
@@ -953,7 +953,7 @@
                   {
                     "id": "a",
                     "text": "Losing one.",
-                    "feedback": "Prospect theory models changes from a starting point, with losses often carrying extra weight.",
+                    "feedback": "Gains and losses are felt from a starting point, and a loss often weighs more than a gain of the same size.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -974,7 +974,7 @@
                   {
                     "id": "c",
                     "text": "Winning one, by a lot.",
-                    "feedback": "Prospect theory suggests the opposite tilt. Losses often weigh more than gains of the same size.",
+                    "feedback": "It is the other way round. A loss usually weighs more than a gain of the same size.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -1103,7 +1103,7 @@
                   {
                     "id": "a",
                     "text": "Only the wording.",
-                    "feedback": "A reference point can shift how a result is felt even if the arithmetic stays the same.",
+                    "feedback": "Calling it keeping or losing changes the starting point you feel, even though the final score stays the same.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -1199,7 +1199,7 @@
                   {
                     "id": "a",
                     "text": "Loss.",
-                    "feedback": "The reference point is key: the same final amount can be viewed through different frames.",
+                    "feedback": "The starting point is key: the same final amount can feel like a gain or like a loss.",
                     "correct": true,
                     "sourceRefs": [
                       "prospect"
@@ -1208,7 +1208,7 @@
                   {
                     "id": "b",
                     "text": "Smaller gain than expected.",
-                    "feedback": "Falling below a hoped-for result can feel disappointing, but the model calls a move below the starting point a loss.",
+                    "feedback": "Missing a hoped-for result can feel disappointing. But here, a loss means ending below where you started.",
                     "correct": false,
                     "misconceptionIds": [
                       "loss-aversion-m1"
@@ -1220,7 +1220,7 @@
                   {
                     "id": "c",
                     "text": "Fresh start.",
-                    "feedback": "The model has no such category. A move below the starting point is framed as a loss.",
+                    "feedback": "A fresh start is not what this pattern describes. Ending below where you started is felt as a loss.",
                     "correct": false,
                     "sourceRefs": [
                       "prospect"
@@ -1723,7 +1723,7 @@
                   {
                     "id": "b",
                     "text": "Only the ₹600 price.",
-                    "feedback": "The current price looks like the obvious clue, but the first ₹900 tag can anchor the guess about what is fair.",
+                    "feedback": "The current price looks like the obvious clue, but the first ₹900 tag can pull the guess about a fair price.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1805,7 +1805,7 @@
                   {
                     "id": "a",
                     "text": "45%.",
-                    "feedback": "The high anchor pulled the group median upward; the low-anchor group’s median was 25%.",
+                    "feedback": "The high number pulled guesses up. The typical guess in the group shown the low number was 25%.",
                     "correct": true,
                     "sourceRefs": [
                       "tversky"
@@ -1814,7 +1814,7 @@
                   {
                     "id": "b",
                     "text": "65%.",
-                    "feedback": "The 65% card was vivid, so it is easy to reuse. The group's median guess was 45%.",
+                    "feedback": "The 65% card was vivid, so it is easy to reuse. The typical guess in that group was 45%.",
                     "correct": false,
                     "misconceptionIds": [
                       "anchoring-m1"
@@ -1826,7 +1826,7 @@
                   {
                     "id": "c",
                     "text": "25%.",
-                    "feedback": "That was the low-anchor group's median. The group shown 65% gave a median guess of 45%.",
+                    "feedback": "That was the typical guess after the low number. People shown 65% gave a typical guess of 45%.",
                     "correct": false,
                     "sourceRefs": [
                       "tversky"
@@ -1989,7 +1989,7 @@
                   {
                     "id": "c",
                     "text": "Average.",
-                    "feedback": "The figure was not worked out from many guesses. It is the first number heard, which is an anchor.",
+                    "feedback": "The figure was not worked out from many guesses. It is simply the first number heard, so it acts as an anchor.",
                     "correct": false,
                     "sourceRefs": [
                       "bias",
@@ -2016,7 +2016,7 @@
                   {
                     "id": "a",
                     "text": "The seller chose that old number.",
-                    "feedback": "The crossed-out tag can anchor a guess without measuring the item’s value elsewhere.",
+                    "feedback": "The crossed-out tag can pull the guess, even though it says nothing about what the item is worth elsewhere.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -2417,7 +2417,7 @@
             "prerequisites": [
               "anchoring"
             ],
-            "hook": "In Wason's rule task, many people picked a card that could confirm the rule and skipped one that could break it.",
+            "hook": "In Wason's card task, most people turned a card that could prove the rule right and skipped the one that could prove it wrong.",
             "hookSourceRefs": [
               "bias",
               "wason"
@@ -2487,7 +2487,7 @@
                   {
                     "id": "c",
                     "text": "Papers she has not taken yet.",
-                    "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she recalls.",
+                    "feedback": "A paper not yet taken is no memory at all. The bias shows in how trick papers stand out when she looks back.",
                     "correct": false,
                     "sourceRefs": [
                       "bias",
@@ -2564,7 +2564,7 @@
                   {
                     "id": "a",
                     "text": "16%.",
-                    "feedback": "Only a small share chose both cards needed to test the rule for a possible counterexample.",
+                    "feedback": "Only a few people chose both cards needed to check whether the rule could be broken.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -2620,7 +2620,7 @@
                   {
                     "id": "a",
                     "text": "One good chase innings.",
-                    "feedback": "One clear counterexample is enough to break a claim with the word “always.”",
+                    "feedback": "One clear case that breaks it is enough to disprove a claim that says “always.”",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -2828,7 +2828,7 @@
                   {
                     "id": "a",
                     "text": "We notice what fits and skip the rest.",
-                    "feedback": "The bias lies in uneven search or recall, regardless of whether the starting idea is true.",
+                    "feedback": "The bias is in what we look for and remember, whether the first idea is true or not.",
                     "correct": true,
                     "sourceRefs": [
                       "bias",
@@ -2851,7 +2851,7 @@
                   {
                     "id": "c",
                     "text": "Only people with weak beliefs miss clues.",
-                    "feedback": "Strong and weak beliefs alike can steer what we notice. The bias is uneven search, not belief strength.",
+                    "feedback": "Strong and weak beliefs can both steer what we notice. The bias is lopsided searching, not how strong the belief is.",
                     "correct": false,
                     "sourceRefs": [
                       "bias",
@@ -3177,7 +3177,7 @@
             "prerequisites": [
               "confirmation-bias"
             ],
-            "hook": "In Asch's line task, a plainly wrong group answer still pulled some participants away from what they saw.",
+            "hook": "In Asch's line test, a group giving a plainly wrong answer still pulled some people away from what they could see.",
             "hookSourceRefs": [
               "asch"
             ],
@@ -3235,7 +3235,7 @@
                   {
                     "id": "a",
                     "text": "It often moves toward the group.",
-                    "feedback": "A public majority can change some answers even when the visual task seems clear.",
+                    "feedback": "When everyone answers out loud, the group can change some answers, even on an easy task.",
                     "correct": true,
                     "sourceRefs": [
                       "asch"
@@ -3450,7 +3450,7 @@
                   {
                     "id": "b",
                     "text": "The group's vote proves her eyes wrong.",
-                    "feedback": "A unanimous group can seem more reliable than one person's view, but its votes can sway a public answer without changing the lines.",
+                    "feedback": "A group that all agrees can seem more trustworthy than one person. But their votes can sway an answer without changing the lines.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -3549,7 +3549,7 @@
                   {
                     "id": "b",
                     "text": "All agreeing means each one checked.",
-                    "feedback": "All votes match, so they look independent. The first answer may have shaped the rest.",
+                    "feedback": "All the votes match, so they look like separate choices. But the first answer may have shaped the rest.",
                     "correct": false,
                     "misconceptionIds": [
                       "social-proof-m1"
@@ -3598,7 +3598,7 @@
                   {
                     "id": "c",
                     "text": "Nobody was swayed by the group.",
-                    "feedback": "Many critical answers did follow the wrong majority. The pull was real, though not total.",
+                    "feedback": "Many answers on the test rounds did follow the wrong group. The pull was real, though not total.",
                     "correct": false,
                     "sourceRefs": [
                       "asch"
@@ -4087,7 +4087,7 @@
                   {
                     "id": "a",
                     "text": "It takes longer than they guessed.",
-                    "feedback": "Missing a step from the imagined path can make the finish time estimate too short.",
+                    "feedback": "Leaving a step out of the plan in your head makes the finish-time guess too short.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -4182,7 +4182,7 @@
                   {
                     "id": "a",
                     "text": "4 hours.",
-                    "feedback": "Past completed jobs give a four-hour comparison point that includes steps the new plan missed.",
+                    "feedback": "Past posters averaged four hours, and that time includes steps the new plan left out.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -4281,7 +4281,7 @@
                   {
                     "id": "a",
                     "text": "They left out a step.",
-                    "feedback": "The imagined best case omits printing time that similar real tasks may include.",
+                    "feedback": "The best-case picture leaves out printing time, which real tasks like this often include.",
                     "correct": true,
                     "sourceRefs": [
                       "planning"
@@ -5116,7 +5116,7 @@
                   {
                     "id": "c",
                     "text": "Forgetting it overnight.",
-                    "feedback": "Losing the poem would make recall worse, not better. The step after learning that helps it last is called consolidation.",
+                    "feedback": "Losing the poem would make recall worse, not better. The step after learning that helps a memory last is called consolidation.",
                     "correct": false,
                     "sourceRefs": [
                       "sleep-review",
@@ -5220,7 +5220,7 @@
                   {
                     "id": "c",
                     "text": "Forgetting.",
-                    "feedback": "A memory that gets steadier is not fading. The later step that firms it up is consolidation.",
+                    "feedback": "A memory that gets steadier is not fading. The later step that firms it up is called consolidation.",
                     "correct": false,
                     "sourceRefs": [
                       "sleep-review",
@@ -5247,7 +5247,7 @@
                   {
                     "id": "a",
                     "text": "Quiet rest while awake helps too.",
-                    "feedback": "Sleep has an important role, but studies also find gains after low-interference rest.",
+                    "feedback": "Sleep plays a big part, but studies also find gains after quiet rest with few distractions.",
                     "correct": true,
                     "sourceRefs": [
                       "sleep-review",
@@ -5762,7 +5762,7 @@
             "prerequisites": [
               "habits"
             ],
-            "hook": "An unpredictable good post can make the next swipe tempting even after several dull ones.",
+            "hook": "A surprise good post can make the next swipe tempting, even after several dull ones.",
             "hookSourceRefs": [
               "apa-learning",
               "social-reward",
@@ -5960,7 +5960,7 @@
                   {
                     "id": "c",
                     "text": "20%, the same as one swipe.",
-                    "feedback": "Each swipe has a 20% chance, but five independent chances raise the chance of at least one clip to about 67%.",
+                    "feedback": "Each swipe has a 20% chance. Over five swipes, the chance of at least one good clip is about 67%.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -6230,7 +6230,7 @@
                   {
                     "id": "b",
                     "text": "Every swipe pays out on schedule.",
-                    "feedback": "A machine can pay on a schedule. This comparison is about not knowing when a good result comes.",
+                    "feedback": "A machine can pay on a fixed plan. This comparison is about not knowing when a good result will come.",
                     "correct": false,
                     "misconceptionIds": [
                       "variable-rewards-m1"
@@ -6244,7 +6244,7 @@
                   {
                     "id": "c",
                     "text": "Casinos build feeds.",
-                    "feedback": "The comparison is about the reward pattern, not who builds feeds. Uncertain payoffs invite another try in both.",
+                    "feedback": "The comparison is about the reward pattern, not who builds feeds. Not knowing when a win comes invites another try in both.",
                     "correct": false,
                     "sourceRefs": [
                       "apa-learning",
@@ -6849,7 +6849,7 @@
                   {
                     "id": "a",
                     "text": "About 0.65.",
-                    "feedback": "Gollwitzer and Sheeran reported d = 0.65 across 94 tests. It is a standardised effect, not a 65% success rate.",
+                    "feedback": "Across 94 tests, plans had a medium-to-large effect (d = 0.65). That is not the same as a 65% success rate.",
                     "correct": true,
                     "sourceRefs": [
                       "plan-meta"
@@ -6915,7 +6915,7 @@
                   {
                     "id": "b",
                     "text": "Finishing the drawing.",
-                    "feedback": "Drawing is the response to start when the desk cue appears, not the starting cue itself.",
+                    "feedback": "Drawing is the action to start when the desk cue appears. It is not the cue itself.",
                     "correct": false,
                     "misconceptionIds": [
                       "if-then-plans-m1"
@@ -7011,7 +7011,7 @@
                   {
                     "id": "a",
                     "text": "Action to take.",
-                    "feedback": "It states the response linked in advance to the selected situation.",
+                    "feedback": "It names the action that was linked, ahead of time, to the chosen moment.",
                     "correct": true,
                     "sourceRefs": [
                       "konstanz-plan",
@@ -7115,7 +7115,7 @@
                   {
                     "id": "a",
                     "text": "Pick a moment, and decide what you will do then.",
-                    "feedback": "The cue comes first; the response is ready if that moment arrives.",
+                    "feedback": "The cue comes first. The action is ready to go when that moment arrives.",
                     "correct": true,
                     "sourceRefs": [
                       "konstanz-plan",
@@ -7796,7 +7796,7 @@
                   {
                     "id": "c",
                     "text": "Stage lights making us nervous.",
-                    "feedback": "The name borrows from stage lights, but the effect is about overrating how much others notice us.",
+                    "feedback": "The name comes from stage lights, but the effect is about thinking others notice us more than they do.",
                     "correct": false,
                     "sourceRefs": [
                       "spotlight-paper"
@@ -7821,7 +7821,7 @@
                   {
                     "id": "a",
                     "text": "They lived every detail of it.",
-                    "feedback": "That vivid inside view can anchor a guess about how much others saw.",
+                    "feedback": "That vivid view from the inside can pull your guess about how much others saw.",
                     "correct": true,
                     "sourceRefs": [
                       "spotlight-paper"
@@ -7870,7 +7870,7 @@
                   {
                     "id": "a",
                     "text": "Attention to us.",
-                    "feedback": "The bias is in estimating how much of our action or appearance others notice.",
+                    "feedback": "The bias is in guessing how much others notice what we do or how we look.",
                     "correct": true,
                     "sourceRefs": [
                       "spotlight-paper"
