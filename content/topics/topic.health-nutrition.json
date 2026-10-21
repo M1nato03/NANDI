@@ -60,11 +60,11 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "At a college canteen, dal is served with rice. What does the dal bring that rice alone supplies less of?",
+                "stem": "At a college canteen, dal comes with rice. What does the dal add that rice has less of?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A useful pulse protein source.",
+                    "text": "Protein from a pulse.",
                     "feedback": "ICMR-NIN names pulses as protein-rich plant foods.",
                     "correct": true,
                     "sourceRefs": [
@@ -73,7 +73,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only starch with no protein.",
+                    "text": "Only starch, no protein.",
                     "feedback": "Dal is a pulse; pulses supply protein. That makes dal part of the meal's protein mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -83,7 +83,7 @@
                       "protein"
                     ]
                   },
-                  { "id": "c", "text": "Mostly vitamin C to go with the rice.", "feedback": "Dal is valued here as a pulse with protein. Vitamin C comes mostly from fruit and fresh vegetables.", "correct": false, "sourceRefs": ["protein"] }
+                  { "id": "c", "text": "Mostly vitamin C for the rice.", "feedback": "Dal is valued here as a pulse with protein. Vitamin C comes mostly from fruit and fresh vegetables.", "correct": false, "sourceRefs": ["protein"] }
                 ]
               },
               {
@@ -98,11 +98,11 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "A school cook pairs a millet with chana. Why can that pairing be useful?",
+                "stem": "A school cook serves millet with chana. Why is that a good pair?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Their amino-acid profiles complement each other.",
+                    "text": "Each fills gaps in the other's protein.",
                     "feedback": "ICMR-NIN describes the cereal or millet and pulse combination.",
                     "correct": true,
                     "sourceRefs": [
@@ -111,7 +111,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The foods become a new vitamin.",
+                    "text": "The two foods become a new vitamin.",
                     "feedback": "Mixing food groups does not create a vitamin.",
                     "correct": false,
                     "misconceptionIds": [
@@ -123,7 +123,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Only the millet contributes protein.",
+                    "text": "Only the millet gives protein.",
                     "feedback": "The pulse is itself protein-rich. The pulse adds protein to the meal as well.",
                     "correct": false,
                     "misconceptionIds": [
@@ -147,7 +147,7 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "Which food pair fits the ICMR-NIN guide for protein?",
+                "stem": "Which food pair does India's ICMR-NIN food guide suggest for protein?",
                 "options": [
                   {
                     "id": "a",
@@ -172,7 +172,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Only a sweet drink with a cereal.",
+                    "text": "A sweet drink with a cereal.",
                     "feedback": "A sweet drink does not play the pulse role in this example.",
                     "correct": false,
                     "misconceptionIds": [
@@ -196,11 +196,11 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "A poster says a meal with no meat cannot give useful protein. What is wrong?",
+                "stem": "A poster says a meal with no meat has no useful protein. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Pulses and other plant foods provide protein.",
+                    "text": "Pulses and other plant foods give protein.",
                     "feedback": "The guide says pulses can give protein. They can pair well with grains.",
                     "correct": true,
                     "sourceRefs": [
@@ -221,7 +221,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Cereal and pulse pairing removes all need for variety.",
+                    "text": "Cereal plus pulse removes all need for variety.",
                     "feedback": "Foods can fill gaps in each other’s amino acid mix. A varied diet helps too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -245,7 +245,7 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "According to ICMR-NIN, one gram of protein supplies about how much energy?",
+                "stem": "About how many kcal of food energy does one gram of protein give?",
                 "options": [
                   {
                     "id": "a",
@@ -300,11 +300,11 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "A menu gives rice but says dal adds no nutritional value. What is missing?",
+                "stem": "A menu serves rice and says dal adds nothing useful. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Dal adds protein and a different amino-acid mix.",
+                    "text": "Dal adds protein and different amino acids.",
                     "feedback": "That is why ICMR-NIN highlights cereal-pulse combinations.",
                     "correct": true,
                     "sourceRefs": [
@@ -325,7 +325,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Dal works only when meat is also served.",
+                    "text": "Dal works only when meat is served too.",
                     "feedback": "The guide gives cereal-pulse pairing as a plant-food example.",
                     "correct": false,
                     "misconceptionIds": [
@@ -349,11 +349,11 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "Build the logic of a cereal-pulse protein pairing.",
+                "stem": "Build a cereal-plus-pulse protein meal, step by step.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Identify the cereal or millet.",
+                    "text": "Pick the cereal or millet.",
                     "feedback": "This is one protein-containing food group. Cereals and pulses can both add protein to a meal.",
                     "correct": true,
                     "sourceRefs": [
@@ -371,7 +371,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Consider the combined mix.",
+                    "text": "Look at what the two give together.",
                     "feedback": "The groups complement each other. Each group brings amino acids the other has less of.",
                     "correct": true,
                     "sourceRefs": [
@@ -579,11 +579,11 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "A school drink is sweetened with honey instead of table sugar. Does it escape the WHO free sugar rule?",
+                "stem": "A school drink uses honey instead of table sugar. Does WHO's free sugar limit still apply?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No; honey’s sugars count.",
+                    "text": "Yes; honey's sugars count.",
                     "feedback": "WHO explicitly includes honey. Its source does not put it outside the free sugar rule.",
                     "correct": true,
                     "sourceRefs": [
@@ -592,7 +592,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes; only refined white sugar counts.",
+                    "text": "No; only white sugar counts.",
                     "feedback": "WHO’s definition covers more than white sugar.",
                     "correct": false,
                     "misconceptionIds": [
@@ -602,7 +602,7 @@
                       "sugar"
                     ]
                   },
-                  { "id": "c", "text": "Yes, if the honey is raw and local.", "feedback": "WHO counts the sugars in honey whether it is raw, local or processed. Where it comes from does not change the rule.", "correct": false, "misconceptionIds": ["free-sugars-m1"], "sourceRefs": ["sugar"] }
+                  { "id": "c", "text": "No, if the honey is raw and local.", "feedback": "WHO counts the sugars in honey whether it is raw, local or processed. Where it comes from does not change the rule.", "correct": false, "misconceptionIds": ["free-sugars-m1"], "sourceRefs": ["sugar"] }
                 ]
               },
               {
@@ -617,11 +617,11 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "At a college canteen, a glass of fruit juice and a whole orange contain fruit sugars. Which has free sugars under the WHO rule?",
+                "stem": "In a college canteen, Riya drinks fruit juice and Om eats a whole orange. Whose sugar is free sugar for WHO?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The juice.",
+                    "text": "Riya's juice.",
                     "feedback": "WHO names fruit juice; sugars held in whole fruit are treated differently.",
                     "correct": true,
                     "sourceRefs": [
@@ -630,7 +630,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both in exactly the same way.",
+                    "text": "Both, in the same way.",
                     "feedback": "The definition singles out juice, not intact whole fruit.",
                     "correct": false,
                     "misconceptionIds": [
@@ -642,7 +642,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Neither, because both began as fruit.",
+                    "text": "Neither, since both come from fruit.",
                     "feedback": "Juice sugars still count as free sugars, even when the juice comes from fruit.",
                     "correct": false,
                     "misconceptionIds": [
@@ -666,11 +666,11 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "Which source is within WHO’s free-sugar category?",
+                "stem": "Which of these counts as free sugar for WHO?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Sugar naturally present in syrup.",
+                    "text": "Sugar in syrup.",
                     "feedback": "Syrups are named in the definition. That is why sugar from syrup counts as free sugar.",
                     "correct": true,
                     "sourceRefs": [
@@ -679,7 +679,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "All carbohydrate in plain rice.",
+                    "text": "All the carbs in plain rice.",
                     "feedback": "Starch in rice is not free sugar. The rule concerns added sugars, not all starch in food.",
                     "correct": false,
                     "misconceptionIds": [
@@ -691,7 +691,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The sugars inside an intact apple.",
+                    "text": "The sugars inside a whole apple.",
                     "feedback": "Whole fruit is outside this definition. Its sugars stay within the whole fruit, unlike juice sugars.",
                     "correct": false,
                     "misconceptionIds": [
@@ -715,7 +715,7 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "A package says “no added sugar,” yet contains fruit juice concentrate. Why check it?",
+                "stem": "A pack says no added sugar, but it has fruit juice concentrate. Why check it?",
                 "options": [
                   {
                     "id": "a",
@@ -728,7 +728,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The claim proves the drink has zero sugar.",
+                    "text": "The claim proves it has zero sugar.",
                     "feedback": "No added sugar does not mean no free sugars.",
                     "correct": false,
                     "misconceptionIds": [
@@ -740,7 +740,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Whole fruit and juice concentrate are identical categories.",
+                    "text": "Whole fruit and concentrate count the same.",
                     "feedback": "WHO draws a distinction between juice and intact fruit.",
                     "correct": false,
                     "misconceptionIds": [
@@ -764,7 +764,7 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "For a 2,000-kcal day, WHO equates its below-10% free-sugar guidance to about how many grams?",
+                "stem": "WHO says free sugars should stay under 10% of energy. On a 2,000-kcal day, about how many grams is that?",
                 "options": [
                   {
                     "id": "a",
@@ -819,11 +819,11 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "Someone says WHO’s 5% figure replaced the 10% limit for everyone. Which reading is closer?",
+                "stem": "Someone says WHO's 5% figure replaced the 10% limit for everyone. What is closer to the truth?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Below 10% is the main limit; 5% or less may bring more benefit.",
+                    "text": "Under 10% is the limit; 5% is a further aim.",
                     "feedback": "WHO states both levels with different roles. The lower level is a further aim, not the main cap.",
                     "correct": true,
                     "sourceRefs": [
@@ -832,7 +832,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Ten percent refers to all carbohydrates.",
+                    "text": "The 10% refers to all carbs.",
                     "feedback": "The WHO rule is about free sugars. It does not count all carbs in food.",
                     "correct": false,
                     "misconceptionIds": [
@@ -844,7 +844,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Five percent means five grams a day.",
+                    "text": "The 5% means five grams a day.",
                     "feedback": "A percentage of energy is not a fixed gram amount across diets.",
                     "correct": false,
                     "misconceptionIds": [
@@ -868,11 +868,11 @@
                 "sourceRefs": [
                   "sugar"
                 ],
-                "stem": "Check whether a sweet source enters WHO’s free-sugar category.",
+                "stem": "Check if a sweet food counts as free sugar.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Identify the sugar source.",
+                    "text": "Find where the sugar comes from.",
                     "feedback": "The source matters for this definition. Added sugar and juice count, while whole fruit does not.",
                     "correct": true,
                     "sourceRefs": [
@@ -890,7 +890,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Keep whole fruit distinct.",
+                    "text": "Keep whole fruit separate.",
                     "feedback": "Its intrinsic sugars are not counted as free sugars.",
                     "correct": true,
                     "sourceRefs": [
@@ -1098,7 +1098,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "At school, a student drinks milk with breakfast. Does NHS count it toward fluid intake?",
+                "stem": "At school, a student drinks milk with breakfast. Does it count toward fluid for the day?",
                 "options": [
                   {
                     "id": "a",
@@ -1136,11 +1136,11 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "After a long walk in hot weather, a college student checks the six to eight cup guide. Is it an exact cap?",
+                "stem": "After a long walk in the heat, a college student checks the six-to-eight-cup guide. Is it an exact cap?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No; heat and long activity can raise fluid needs.",
+                    "text": "No; heat and long activity can raise needs.",
                     "feedback": "NHS names both reasons needs may change. Hot weather and long activity can call for more fluid.",
                     "correct": true,
                     "sourceRefs": [
@@ -1149,7 +1149,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes; eight cups is a safe maximum for all adults.",
+                    "text": "Yes; eight cups is the safe maximum.",
                     "feedback": "The NHS calls it a guide, not a universal cap.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1185,7 +1185,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "Which of these adds fluid, as the NHS guide says?",
+                "stem": "Which of these adds fluid to your day?",
                 "options": [
                   {
                     "id": "a",
@@ -1198,7 +1198,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only water from a bottle.",
+                    "text": "Only bottled water.",
                     "feedback": "That leaves out other drinks and food. Other drinks and fluid in food can count too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1210,7 +1210,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Only drinks without any flavour.",
+                    "text": "Only drinks without flavour.",
                     "feedback": "Flavour is not the criterion in the NHS account.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1234,11 +1234,11 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "Why is the “exactly eight glasses of water” rule too rigid?",
+                "stem": "Why is “exactly eight glasses of water” too strict a rule?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It mistakes a fluid guide for a fixed water-only target.",
+                    "text": "It treats a fluid guide as a water-only target.",
                     "feedback": "The NHS guide includes other drinks and variable conditions.",
                     "correct": true,
                     "sourceRefs": [
@@ -1247,7 +1247,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Because no one ever needs fluid from drinks.",
+                    "text": "No one ever needs fluid from drinks.",
                     "feedback": "Drinks remain an important source of fluid. The guide counts drinks as a main way to get fluid.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1259,7 +1259,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Because tea always cancels water intake.",
+                    "text": "Tea cancels out the water you drink.",
                     "feedback": "NHS counts tea toward the daily fluid total.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1283,7 +1283,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "What is the lower end of the NHS hydration guide of six to eight daily cups or glasses of fluid?",
+                "stem": "The NHS hydration guide gives a daily range of cups of fluid. What is the low end?",
                 "options": [
                   {
                     "id": "a",
@@ -1338,11 +1338,11 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "A chart lists water but excludes coffee from all fluid totals. What should change?",
+                "stem": "A chart counts water but leaves coffee out of fluid totals. What should change?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Coffee can count as fluid too.",
+                    "text": "Coffee counts as fluid too.",
                     "feedback": "NHS includes lower-sugar drinks such as coffee.",
                     "correct": true,
                     "sourceRefs": [
@@ -1351,7 +1351,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Coffee and water are identical in every respect.",
+                    "text": "Coffee and water are the same in every way.",
                     "feedback": "Both contribute fluid, but their other properties differ.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1363,7 +1363,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Only hot coffee counts, not cold coffee.",
+                    "text": "Only hot coffee counts, not cold.",
                     "feedback": "Temperature is not what makes it a fluid.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1387,7 +1387,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "Read a hydration guide in context.",
+                "stem": "Put these steps for using a fluid guide in order.",
                 "options": [
                   {
                     "id": "a",
@@ -1400,7 +1400,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Count drinks and some food fluid.",
+                    "text": "Count drinks and fluid from food.",
                     "feedback": "Plain water is not the only contribution. Milk and tea can add fluid to a day as well.",
                     "correct": true,
                     "sourceRefs": [
@@ -1435,7 +1435,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "Pair each clue with its implication.",
+                "stem": "Match each clue with what it means.",
                 "options": [
                   {
                     "id": "a",
@@ -1466,7 +1466,7 @@
                   },
                   {
                     "id": "d",
-                    "text": "May raise fluid needs",
+                    "text": "Can raise fluid needs",
                     "feedback": "The guide allows for hotter conditions. The body can need more fluid when it is hot.",
                     "correct": true,
                     "sourceRefs": [
@@ -1622,7 +1622,7 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "A school chart shows deep and REM sleep stages. What does that reveal?",
+                "stem": "A school chart shows deep sleep and REM (dreaming) sleep stages. What does it show?",
                 "options": [
                   {
                     "id": "a",
@@ -1636,7 +1636,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The brain is switched off throughout.",
+                    "text": "The brain is off all night.",
                     "feedback": "REM and other stages involve brain activity. The brain does different work as sleep stages change.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1663,11 +1663,11 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "A college student hears that everyone needs exactly five hours of sleep. What is closer to CDC guidance?",
+                "stem": "A college student hears everyone needs exactly five hours of sleep. What do health guides say?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Adults aged 18–60 generally need seven or more hours.",
+                    "text": "Adults aged 18–60 need seven or more hours.",
                     "feedback": "CDC gives seven or more hours for that age band.",
                     "correct": true,
                     "sourceRefs": [
@@ -1677,7 +1677,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Five hours is the CDC target for all adults.",
+                    "text": "Five hours is the target for all adults.",
                     "feedback": "That is below the stated general recommendation. CDC says most adults in this age group need more.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1690,7 +1690,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The number of hours never varies with age.",
+                    "text": "Sleep needs never change with age.",
                     "feedback": "CDC lists different ranges for different ages. A child and an adult can have different sleep needs.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1716,7 +1716,7 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "Which stage tends to last longer in the first half of the night?",
+                "stem": "Which stage lasts longer in the first half of the night?",
                 "options": [
                   {
                     "id": "a",
@@ -1730,7 +1730,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "REM sleep exclusively.",
+                    "text": "REM sleep only.",
                     "feedback": "REM is part of sleep, but deep sleep is the stage emphasized early.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1743,7 +1743,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Waking.",
+                    "text": "Being awake.",
                     "feedback": "The question concerns a sleep stage, not awake time.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1769,11 +1769,11 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "Why can a full night include several distinct patterns on a sleep study?",
+                "stem": "Why does a sleep study show several patterns in one night?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Sleep cycles through stages repeatedly.",
+                    "text": "Sleep cycles through stages again and again.",
                     "feedback": "A changing pattern fits the NIH account of cycles.",
                     "correct": true,
                     "sourceRefs": [
@@ -1783,7 +1783,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One stage must last without interruption until morning.",
+                    "text": "One stage must last until morning.",
                     "feedback": "The stages recur rather than forming one unbroken block.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1796,7 +1796,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "No brain activity occurs during REM.",
+                    "text": "The brain is silent during REM.",
                     "feedback": "REM is associated with active brain patterns. The brain stays active during this part of sleep.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1822,7 +1822,7 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "For adult sleep, what minimum nightly hours does CDC list for ages 18 to 60?",
+                "stem": "For adults aged 18 to 60, what is the fewest hours of sleep a night that the CDC lists?",
                 "options": [
                   {
                     "id": "a",
@@ -1881,11 +1881,11 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "A claim says deep sleep lasts all night, so REM can be skipped in a diagram. What is wrong?",
+                "stem": "A diagram skips REM sleep, saying deep sleep lasts all night. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A normal night includes both non-REM and REM stages.",
+                    "text": "A normal night has both deep and REM stages.",
                     "feedback": "NIH describes cycles through more than deep sleep.",
                     "correct": true,
                     "sourceRefs": [
@@ -1895,7 +1895,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Deep sleep is absent early in the night.",
+                    "text": "Deep sleep is missing early in the night.",
                     "feedback": "It often lasts longer in the first half.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1934,7 +1934,7 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "Trace a simplified sleep-stage cycle.",
+                "stem": "Put one simple sleep cycle in order.",
                 "options": [
                   {
                     "id": "a",
@@ -1986,7 +1986,7 @@
                   "sleep",
                   "cdc-sleep"
                 ],
-                "stem": "Pair each source statement with its meaning.",
+                "stem": "Match each guide statement to its meaning.",
                 "options": [
                   {
                     "id": "a",
@@ -2186,11 +2186,11 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "A college student takes a brisk walk. Which activity category can it fit?",
+                "stem": "A college student takes a brisk walk. What kind of activity is it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Moderate aerobic activity.",
+                    "text": "Moderate, heart-pumping activity.",
                     "feedback": "WHO uses brisk walking as an example of moderate movement.",
                     "correct": true,
                     "sourceRefs": [
@@ -2200,7 +2200,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only maximal sprint training.",
+                    "text": "Only all-out sprint training.",
                     "feedback": "Brisk walking need not be a sprint to count.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2211,7 +2211,7 @@
                       "who-activity"
                     ]
                   },
-                  { "id": "c", "text": "Light movement that does not count at all.", "feedback": "WHO uses a brisk walk as its example of moderate work. It counts toward the 150 to 300 weekly minutes.", "correct": false, "misconceptionIds": ["exercise-heart-m1"], "sourceRefs": ["heart", "who-activity"] }
+                  { "id": "c", "text": "Light movement that does not count.", "feedback": "WHO uses a brisk walk as its example of moderate work. It counts toward the 150 to 300 weekly minutes.", "correct": false, "misconceptionIds": ["exercise-heart-m1"], "sourceRefs": ["heart", "who-activity"] }
                 ]
               },
               {
@@ -2227,7 +2227,7 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "A school friend has less time than the WHO weekly range. Is some walking still meaningful?",
+                "stem": "A school friend walks less than WHO's weekly range. Is it still worth it?",
                 "options": [
                   {
                     "id": "a",
@@ -2241,7 +2241,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "No; anything below 150 minutes has no benefit.",
+                    "text": "No; under 150 minutes gives no benefit.",
                     "feedback": "The range is a recommendation, not an on-off switch.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2280,7 +2280,7 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "How much brisk walk time does WHO list for adults in one week?",
+                "stem": "How many minutes of brisk walking a week does WHO suggest for adults?",
                 "options": [
                   {
                     "id": "a",
@@ -2333,11 +2333,11 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "Why can brisk walking support heart health over time?",
+                "stem": "Why does brisk walking help the heart over time?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It is repeated aerobic movement that works the heart.",
+                    "text": "It is repeated movement that works the heart.",
                     "feedback": "When muscles move, the heart has more work to do. Walks done often can help health.",
                     "correct": true,
                     "sourceRefs": [
@@ -2360,7 +2360,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Only the speed of a sprint can affect the heart.",
+                    "text": "Only sprinting can affect the heart.",
                     "feedback": "Moderate aerobic activity also counts. A brisk walk can raise the heart's work too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2386,7 +2386,7 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "What is the lower end of the WHO weekly moderate exercise range for adults?",
+                "stem": "For adults, what is the low end of WHO's weekly range for moderate exercise?",
                 "options": [
                   {
                     "id": "a",
@@ -2445,11 +2445,11 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "A poster calls 75 minutes of gentle walking identical to WHO’s 75-minute vigorous option. What is the mix-up?",
+                "stem": "A poster says 75 minutes of gentle walking equals WHO's 75 minutes of vigorous exercise. What is the mix-up?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It confuses moderate and vigorous intensity.",
+                    "text": "It mixes up moderate and hard effort.",
                     "feedback": "WHO lists different minute ranges for the two intensities.",
                     "correct": true,
                     "sourceRefs": [
@@ -2459,7 +2459,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Walking can never be activity.",
+                    "text": "Walking can never count as activity.",
                     "feedback": "A brisk walk can count as moderate activity.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2472,7 +2472,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The figures refer to minutes per month.",
+                    "text": "The figures are minutes per month.",
                     "feedback": "WHO states weekly amounts. WHO gives these as amounts for each week.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2498,7 +2498,7 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "Connect movement to a heart response.",
+                "stem": "Put the steps from movement to the heart in order.",
                 "options": [
                   {
                     "id": "a",
@@ -2550,7 +2550,7 @@
                   "heart",
                   "who-activity"
                 ],
-                "stem": "Pair the activity with WHO’s weekly guide.",
+                "stem": "Match each kind of work to WHO's weekly time.",
                 "options": [
                   {
                     "id": "a",
@@ -2761,11 +2761,11 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "At a school lunch, lentils supply which form of dietary iron?",
+                "stem": "At a school lunch, lentils give which kind of iron?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Non-haem iron.",
+                    "text": "Non-haem (plant) iron.",
                     "feedback": "Plant foods supply the non-haem form described by NIH.",
                     "correct": true,
                     "sourceRefs": [
@@ -2790,7 +2790,7 @@
                       "nih-vitc"
                     ]
                   },
-                  { "id": "c", "text": "The same iron that meat gives, taken up just as well.", "feedback": "Lentil iron is the plant kind. The body takes it up less easily than the iron in meat or fish.", "correct": false, "misconceptionIds": ["iron-and-anaemia-m1"], "sourceRefs": ["iron", "anaemia", "nih-iron", "nih-vitc"] }
+                  { "id": "c", "text": "The same iron as meat, taken up as well.", "feedback": "Lentil iron is the plant kind. The body takes it up less easily than the iron in meat or fish.", "correct": false, "misconceptionIds": ["iron-and-anaemia-m1"], "sourceRefs": ["iron", "anaemia", "nih-iron", "nih-vitc"] }
                 ]
               },
               {
@@ -2808,11 +2808,11 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "A college meal pairs beans with a fruit rich in vitamin C. What could the fruit help with?",
+                "stem": "A college meal pairs beans with a fruit rich in vitamin C. How does the fruit help?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Absorption of non-haem iron.",
+                    "text": "It helps the body take in plant iron.",
                     "feedback": "NIH says vitamin C improves absorption of plant-food iron.",
                     "correct": true,
                     "sourceRefs": [
@@ -2824,7 +2824,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Turning iron into a vitamin.",
+                    "text": "It turns iron into a vitamin.",
                     "feedback": "Vitamin C helps the body take in plant iron. It does not turn iron into a new nutrient.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2839,7 +2839,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Proving the person has anaemia.",
+                    "text": "It proves the person has anaemia.",
                     "feedback": "A food combination cannot diagnose a condition. A health test would be needed to tell the cause.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2869,11 +2869,11 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "Which claim about anaemia fits the WHO guide?",
+                "stem": "Which claim about anaemia (too few healthy red blood cells) fits the WHO guide?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Iron deficiency is one possible cause.",
+                    "text": "Low iron is one possible cause.",
                     "feedback": "WHO also lists other deficiencies and infections. So low iron is not the only possible cause.",
                     "correct": true,
                     "sourceRefs": [
@@ -2900,7 +2900,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Food choice alone reveals the cause.",
+                    "text": "Food choice alone shows the cause.",
                     "feedback": "A meal cannot tell the cause of a person’s anaemia. There are other causes too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2930,11 +2930,11 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "Why does NIH distinguish haem from non-haem iron?",
+                "stem": "Why does NIH keep haem iron and non-haem iron apart?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They differ in absorption and response to other foods.",
+                    "text": "The body takes them in differently.",
                     "feedback": "Vitamin C can help the body take in plant iron, the non-haem form.",
                     "correct": true,
                     "sourceRefs": [
@@ -2946,7 +2946,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only haem iron can support red blood cells.",
+                    "text": "Only haem iron can help make blood cells.",
                     "feedback": "Non-haem iron is still dietary iron. The body can still use iron from plant foods.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2961,7 +2961,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Plant iron disappears when eaten with fruit.",
+                    "text": "Plant iron vanishes when eaten with fruit.",
                     "feedback": "Vitamin C can help the body take in more plant iron. It does not block it.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2991,7 +2991,7 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "For iron from a mixed diet with meat, seafood and vitamin C, what lower end of the NIH absorption range applies, in percent?",
+                "stem": "From a mixed diet with meat, fish and vitamin C, what is the low end of iron taken in, in percent?",
                 "options": [
                   {
                     "id": "a",
@@ -3058,11 +3058,11 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "A page says a person with anaemia must simply eat more beans. What is the problem?",
+                "stem": "A web page says anyone with anaemia just needs more beans. What is the problem?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Anaemia can have causes beyond low iron.",
+                    "text": "Anaemia can have causes besides low iron.",
                     "feedback": "WHO names other nutrient gaps, infections and blood loss.",
                     "correct": true,
                     "sourceRefs": [
@@ -3089,7 +3089,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Vitamin C always cures anaemia.",
+                    "text": "Vitamin C cures anaemia.",
                     "feedback": "Better iron uptake does not show the cause of anaemia. It does not treat all causes.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3119,7 +3119,7 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "Trace a supported food-and-iron link.",
+                "stem": "Put the steps from food iron to blood in order.",
                 "options": [
                   {
                     "id": "a",
@@ -3135,7 +3135,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Vitamin C can improve its absorption.",
+                    "text": "Vitamin C helps the body take it in.",
                     "feedback": "NIH describes this food interaction. This can help the body take in more plant iron.",
                     "correct": true,
                     "sourceRefs": [
@@ -3147,7 +3147,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Iron supports oxygen-carrying blood cells.",
+                    "text": "Iron helps make oxygen-carrying blood cells.",
                     "feedback": "Iron helps make haemoglobin. Red blood cells use it to carry oxygen.",
                     "correct": true,
                     "sourceRefs": [
@@ -3179,7 +3179,7 @@
                   "nih-iron",
                   "nih-vitc"
                 ],
-                "stem": "Pair the term with its meaning.",
+                "stem": "Match each term to its meaning.",
                 "options": [
                   {
                     "id": "a",
@@ -3402,7 +3402,7 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "At a canteen, two biscuits have different serving sizes. Which line gives a fair same weight comparison?",
+                "stem": "Two canteen biscuit packs list different serving sizes. Which line compares them fairly?",
                 "options": [
                   {
                     "id": "a",
@@ -3440,11 +3440,11 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "At a family shop, one cereal lists sugar first among its ingredients. What does that position mean?",
+                "stem": "At a family shop, a cereal lists sugar first in its ingredients. What does that mean?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Sugar is the greatest ingredient by weight.",
+                    "text": "Sugar is the biggest ingredient by weight.",
                     "feedback": "NHS says ingredients run in descending weight order.",
                     "correct": true,
                     "sourceRefs": [
@@ -3453,7 +3453,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sugar is present in the smallest amount.",
+                    "text": "Sugar is the smallest amount.",
                     "feedback": "That reverses the stated ordering rule. The first item has the most weight in the mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3465,7 +3465,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The cereal must have no other ingredients.",
+                    "text": "The cereal has no other ingredients.",
                     "feedback": "First does not mean only. There can still be more items later in the list.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3489,7 +3489,7 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "Which pair of label lines should be compared for two drinks?",
+                "stem": "Which label lines should you compare for two drinks?",
                 "options": [
                   {
                     "id": "a",
@@ -3502,7 +3502,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One per serving and one per 100 ml.",
+                    "text": "One per serving, one per 100 ml.",
                     "feedback": "The bases differ and can distort the comparison.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3538,11 +3538,11 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "Why can a lower salt value per serving hide a higher salt concentration?",
+                "stem": "A food shows less salt per serving than another, but more per 100 g. How can that be?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its serving may be smaller.",
+                    "text": "Its serving is smaller.",
                     "feedback": "A smaller portion can contain less salt despite more per 100 g.",
                     "correct": true,
                     "sourceRefs": [
@@ -3551,7 +3551,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A serving is always exactly 100 g.",
+                    "text": "Every serving is 100 g.",
                     "feedback": "Labels can state other serving sizes. A pack may define one serving as more or less.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3563,7 +3563,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Salt is never shown per 100 g.",
+                    "text": "Labels do not show salt per 100 g.",
                     "feedback": "NHS describes per-100-g nutrition information. That line helps compare the same mass of two foods.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3587,7 +3587,7 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "When reading a food label, above how many grams of salt per 100 g does NHS call a food high in salt?",
+                "stem": "When reading a food label, above how many grams of salt per 100 g counts as high salt?",
                 "options": [
                   {
                     "id": "a",
@@ -3642,11 +3642,11 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "A pack says “small serving” while the shopper eats twice that amount. What changes?",
+                "stem": "A pack's serving is small, but Kabir eats twice that. What changes?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The per-serving nutrient amount must be scaled.",
+                    "text": "He must double the per-serving numbers.",
                     "feedback": "A label may call one small amount a serving. A person may eat more.",
                     "correct": true,
                     "sourceRefs": [
@@ -3655,7 +3655,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The per-100-g concentration doubles.",
+                    "text": "The per-100-g amount doubles.",
                     "feedback": "If you eat more, you take in more in all. The amount per 100 g stays the same.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3667,7 +3667,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The ingredient order reverses.",
+                    "text": "The ingredient order flips.",
                     "feedback": "Ingredient order is based on product weight, not portion chosen.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3691,7 +3691,7 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "Compare two packaged foods fairly.",
+                "stem": "Put the steps to compare two packed foods in order.",
                 "options": [
                   {
                     "id": "a",
@@ -3713,7 +3713,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Read the values and portion context.",
+                    "text": "Read the numbers and how much you eat.",
                     "feedback": "The amount eaten can differ from the stated serving.",
                     "correct": true,
                     "sourceRefs": [
@@ -3739,7 +3739,7 @@
                 "sourceRefs": [
                   "label"
                 ],
-                "stem": "Pair the label feature with its meaning.",
+                "stem": "Match each label feature to its meaning.",
                 "options": [
                   {
                     "id": "a",
@@ -3931,11 +3931,11 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "A college diet plan allows only one food for every meal. Which claim is weakest?",
+                "stem": "A college diet plan allows one food for every meal. Which claim about it is weakest?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "That one food can supply every needed nutrient.",
+                    "text": "That one food gives every nutrient you need.",
                     "feedback": "ICMR-NIN stresses variety because foods differ. One food cannot meet every need on its own.",
                     "correct": true,
                     "sourceRefs": [
@@ -3946,7 +3946,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "That the food may contain some nutrients.",
+                    "text": "That the food has some nutrients.",
                     "feedback": "One food may help. It still cannot meet all the body’s needs alone.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3958,7 +3958,7 @@
                       "who-diet"
                     ]
                   },
-                  { "id": "c", "text": "That a mix of foods brings different nutrients.", "feedback": "That claim is well supported. Food groups differ, so a mix fills gaps one food leaves.", "correct": false, "misconceptionIds": ["fad-diet-claims-m1"], "sourceRefs": ["variety", "nhs-detox", "who-diet"] }
+                  { "id": "c", "text": "That a mix of foods gives different nutrients.", "feedback": "That claim is well supported. Food groups differ, so a mix fills gaps one food leaves.", "correct": false, "misconceptionIds": ["fad-diet-claims-m1"], "sourceRefs": ["variety", "nhs-detox", "who-diet"] }
                 ]
               },
               {
@@ -3975,7 +3975,7 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "A school poster says a special juice week is required to detox the liver. What is the sound response?",
+                "stem": "A school poster says a juice-only week is needed to detox the liver. What is the best reply?",
                 "options": [
                   {
                     "id": "a",
@@ -3990,7 +3990,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Juice contains no free sugar at all.",
+                    "text": "Juice has no free sugar at all.",
                     "feedback": "WHO counts juice sugars as free sugars. Juice sugars still count under the WHO free sugar rule.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4004,7 +4004,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "A juice-only menu guarantees nutrient variety.",
+                    "text": "A juice-only menu gives plenty of variety.",
                     "feedback": "Removing food groups works against variety. A narrow menu can leave out key food groups.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4032,7 +4032,7 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "Which pattern best matches ICMR-NIN’s balanced-diet approach?",
+                "stem": "Which eating pattern fits India's ICMR-NIN balanced-diet guide best?",
                 "options": [
                   {
                     "id": "a",
@@ -4061,7 +4061,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Avoiding every cereal because all carbs are harmful.",
+                    "text": "No cereals, since all carbs are harmful.",
                     "feedback": "The guide counts grains and millets as part of a varied mix of foods.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4089,11 +4089,11 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "Why is “all carbohydrates are bad” a poor reading of a varied-diet guide?",
+                "stem": "Why is “all carbs are bad” a poor reading of a varied-diet guide?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It lumps useful cereals, pulses and other foods into one ban.",
+                    "text": "It bans useful cereals, pulses and more at once.",
                     "feedback": "ICMR-NIN includes these groups as part of balanced eating.",
                     "correct": true,
                     "sourceRefs": [
@@ -4104,7 +4104,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every carbohydrate-rich food is identical.",
+                    "text": "Every carb-rich food is the same.",
                     "feedback": "Foods differ in nutrient mix and context. Two foods can differ in what else they supply.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4118,7 +4118,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Avoiding all plant foods improves variety.",
+                    "text": "Cutting all plant foods adds variety.",
                     "feedback": "That removes many food groups rather than broadening them.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4146,7 +4146,7 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "When you check a fad diet claim, how many grams of fruit and veg a day does WHO advise for people older than ten?",
+                "stem": "When checking a fad diet, how many grams of fruit and veg a day does WHO advise for people over ten?",
                 "options": [
                   {
                     "id": "a",
@@ -4209,11 +4209,11 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "A claim says a single vegetable can replace pulses, grains and every other group. What is missing?",
+                "stem": "A claim says one vegetable can replace pulses, grains and all other food groups. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Different groups supply different nutrients.",
+                    "text": "Different groups give different nutrients.",
                     "feedback": "Variety is the point of the ICMR-NIN guidance.",
                     "correct": true,
                     "sourceRefs": [
@@ -4238,7 +4238,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Every pulse and cereal has the same profile.",
+                    "text": "Every pulse and cereal has the same mix.",
                     "feedback": "The two foods have different mixes. That is why they can help fill each other’s gaps.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4266,7 +4266,7 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "Check a sweeping food claim.",
+                "stem": "Check a big food claim, step by step.",
                 "options": [
                   {
                     "id": "a",
@@ -4322,7 +4322,7 @@
                   "nhs-detox",
                   "who-diet"
                 ],
-                "stem": "Pair each claim with the evidence-based response.",
+                "stem": "Match each claim with the evidence-based reply.",
                 "options": [
                   {
                     "id": "a",
