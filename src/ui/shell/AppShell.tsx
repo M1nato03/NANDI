@@ -31,6 +31,7 @@ import { recordOwnerOpen } from '../../data/repos/owner';
 import { OPEN_GAP_MS } from '../../core/owner/metrics';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { useAutoBackup } from './useAutoBackup';
+import { useForegroundMinutes } from './useForegroundMinutes';
 import { useWidgetSync } from './useWidgetSync';
 import { consumeWidgetLaunchRoute } from '../../platform/widget';
 import { nightRouteTime, nightRouteTransition } from './nightRoute';
@@ -71,6 +72,7 @@ export function AppShell() {
   const restored = async () => { await appearance.reload(); setRestoreGen(gen => gen + 1); };
   const nativeUpdater = useNativeUpdater();
   const autoBackupWarning = useAutoBackup();
+  useForegroundMinutes();
   const [welcomeNeeded, closeWelcome] = useWelcomeNeeded();
   useWidgetSync();
   useEffect(() => {

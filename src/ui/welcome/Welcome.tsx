@@ -3,6 +3,7 @@ import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time/dayKey';
+import { logHasActivity } from '../../core/guard';
 import { firstAction, GOALS, toggleGoal, WELCOME_BEDTIME, type Goal } from '../../core/welcome';
 import { Cast } from '../cast/Cast';
 import { recordError } from '../errorRing';
@@ -22,7 +23,7 @@ async function markDone(extra: { key: string; value: unknown }[] = []): Promise<
 
 /** Anything already done on this phone means the person has used NANDI before. */
 async function hasHistory(): Promise<boolean> {
-  const counts = await Promise.all([db.ledger.count(), db.tasks.count(), db.sessions.count(), db.puzzleRuns.count(), db.learnDrops.count(), db.dailyLog.count(), db.reminders.count(), db.lessonProg.count()]);
+  const counts = await Promise.all([db.ledger.count(), db.tasks.count(), db.sessions.count(), db.puzzleRuns.count(), db.learnDrops.count(), db.dailyLog.filter(logHasActivity).count(), db.reminders.count(), db.lessonProg.count()]);
   return counts.some(count => count > 0) || (await db.settings.get('planner.bedtime')) !== undefined;
 }
 

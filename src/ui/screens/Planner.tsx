@@ -18,6 +18,7 @@ import { defaultSlot, localDateTime, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { LearningTask } from '../mind/LearningTask';
 import { EmptyState } from '../EmptyState';
+import { AgencyCheck } from '../tasks/AgencyCheck';
 import '../tasks/tasks.css';
 
 function tomorrowSlot(now: number) {
@@ -161,6 +162,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       {lowerOffer != null && <div className="card"><p>You were under budget in at least three of the last four weeks.</p><button type="button" className="secondary" onClick={() => void board.act((repos, now) => repos.lowerBudget(now), `Budget lowered to ${lowerOffer}.`)}>Lower the budget by 1?</button></div>}
       <section aria-label="Someday items"><h2>Someday</h2>{someday.length ? <GroupedSteps all={board.tasks} selected={someday} render={(task) => <><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button>{summary.somedayMoved.includes(task.id) && <span>Moved this week</span>}<div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.postpone(task.id, now, { newStart: new Date(tomorrowSlot(now)).getTime() }), 'Task revived for tomorrow.')}>Revive</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task removed.')}>Delete</button></div></>} onDetail={setDetail} onDropGroup={dropGroup} busy={board.busy} /> : <p>No Someday items right now.</p>}</section>
       <section aria-label="Upcoming checkpoints"><h2>Upcoming checkpoints</h2>{rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button> · {formatDayKey(task.dayKey)}</p>).length ? rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button> · {formatDayKey(task.dayKey)}</p>) : <p>No upcoming checkpoints.</p>}</section>
+      <AgencyCheck now={board.now} />
       <div className="planner-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.markRitual('reviewDone', now), 'Weekly review complete.')}>Finish review</button><button type="button" className="secondary" onClick={() => void exportWeek()}>Export summary</button></div>
       {completed?.reviewDone && <p className="small">Review recorded for today.</p>}
     </>}
