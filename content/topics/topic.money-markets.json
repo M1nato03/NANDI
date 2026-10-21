@@ -64,11 +64,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "The price of an idli rises from ₹20 to ₹25 while a student still has ₹100. What changed for that student?",
+                "stem": "An idli goes from ₹20 to ₹25. A student still has ₹100. What changed for her?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The same cash buys fewer idlis.",
+                    "text": "Her ₹100 buys fewer idlis.",
                     "feedback": "The note has the same face value, but the higher price cuts its buying power from five idlis to four.",
                     "correct": true,
                     "sourceRefs": [
@@ -78,7 +78,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The same cash buys the same number.",
+                    "text": "Her ₹100 buys the same number.",
                     "feedback": "The note still says ₹100, but each idli now takes a larger share of it. Only four fit.",
                     "correct": false,
                     "misconceptionIds": [
@@ -89,7 +89,7 @@
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "Only the idli seller's money changed.", "feedback": "The seller's new price reaches the buyer too. At ₹25 each, ₹100 now covers four idlis, not five.", "correct": false, "misconceptionIds": ["inflation-m2"], "sourceRefs": ["inflation", "cpi"] }
+                  { "id": "c", "text": "Only the seller's money changed.", "feedback": "The seller's new price reaches the buyer too. At ₹25 each, ₹100 now covers four idlis, not five.", "correct": false, "misconceptionIds": ["inflation-m2"], "sourceRefs": ["inflation", "cpi"] }
                 ]
               },
               {
@@ -104,11 +104,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "During exam week, Meera's tea price doubles but most other prices stay flat. Does that prove broad inflation doubled?",
+                "stem": "In exam week, Meera's tea price doubles. Most other prices stay flat. Have prices overall doubled?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No; one price is not the basket.",
+                    "text": "No. Tea is only one price.",
                     "feedback": "The index follows many items, so a sharp tea price jump need not match the broad change.",
                     "correct": true,
                     "sourceRefs": [
@@ -116,10 +116,10 @@
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "Yes; a common purchase such as tea must dominate the basket.", "feedback": "Tea is bought often, so its rise feels broad. One drink still cannot set the whole index.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
+                  { "id": "c", "text": "Yes. Tea is bought so often it outweighs the rest.", "feedback": "Tea is bought often, so its rise feels broad. One drink still cannot set the whole index.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
-                    "text": "Yes; tea sets the whole index.",
+                    "text": "Yes. Tea alone sets the overall index.",
                     "feedback": "Tea is the price Meera sees, so it can feel like the whole story. The index has many goods.",
                     "correct": false,
                     "misconceptionIds": [
@@ -144,7 +144,7 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "A broad basket costs ₹100, then ₹125 after inflation. If cash stays at ₹100, about what percent of the original basket can it now buy?",
+                "stem": "After inflation, a ₹100 basket of shopping costs ₹125. About what percent of it does ₹100 buy now?",
                 "options": [
                   {
                     "id": "a",
@@ -190,11 +190,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "A poor crop raises mango prices, while other prices in a family’s shopping basket move in different ways. What can the mango rise alone tell about broad inflation?",
+                "stem": "A bad crop pushes mango prices up. Other prices move in different ways. Does this show inflation overall?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The mango change alone cannot show broad inflation.",
+                    "text": "No. One price alone cannot show it.",
                     "feedback": "One price may rise while others do not. The broad index needs the full basket.",
                     "correct": true,
                     "sourceRefs": [
@@ -204,7 +204,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A rise in one common food shows the whole basket rose.",
+                    "text": "Yes. One common food shows all prices rose.",
                     "feedback": "A common food can stand out, but other basket prices may offset its rise.",
                     "correct": false,
                     "misconceptionIds": [
@@ -230,11 +230,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "Bus fares rise while most other prices stay flat. Why can a fixed scholarship buy fewer rides without proving broad inflation?",
+                "stem": "Priya's fixed scholarship now buys fewer bus rides. Other prices stay flat. Why is this not proof of inflation?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One fare changed, not the whole price basket.",
+                    "text": "Only one price changed, not all of them.",
                     "feedback": "The ride budget shrinks, but inflation is about a broad index rather than one fare.",
                     "correct": true,
                     "sourceRefs": [
@@ -242,10 +242,10 @@
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "A fare rise alone measures the national price basket.", "feedback": "The bus bill is vivid. A broad index also checks many other costs.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
+                  { "id": "c", "text": "One fare rise measures prices across the country.", "feedback": "The bus bill is vivid. A broad index also checks many other costs.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
-                    "text": "Fewer affordable rides prove every price rose.",
+                    "text": "Fewer rides prove every price rose.",
                     "feedback": "The ride is what she buys, so it feels broad. One fare does not show the whole basket.",
                     "correct": false,
                     "misconceptionIds": [
@@ -271,11 +271,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "Fill the gap: compare ₹100 with a basket costing ₹100, then with the same basket costing ₹110. The cash now covers ___.",
+                "stem": "₹100 buys one basket of shopping. Then the same basket costs ₹110. Now your ₹100 covers ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Less than one full basket.",
+                    "text": "Less than one basket.",
                     "feedback": "A higher basket price lowers what unchanged cash covers; this is the purchasing power link.",
                     "correct": true,
                     "sourceRefs": [
@@ -285,7 +285,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One full basket, because the note still says ₹100.",
+                    "text": "One full basket, since the note says ₹100.",
                     "feedback": "The note's face value is unchanged, but the same basket now costs ₹110, so the cash covers less than one.",
                     "correct": false,
                     "misconceptionIds": [
@@ -296,7 +296,7 @@
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "More than one full basket.", "feedback": "The basket now costs ₹110, more than the cash. ₹100 cannot cover even one full basket.", "correct": false, "sourceRefs": ["inflation", "cpi"] }
+                  { "id": "c", "text": "More than one basket.", "feedback": "The basket now costs ₹110, more than the cash. ₹100 cannot cover even one full basket.", "correct": false, "sourceRefs": ["inflation", "cpi"] }
                 ]
               },
               {
@@ -311,11 +311,11 @@
                   "inflation",
                   "cpi"
                 ],
-                "stem": "Samosas, tea and idlis all cost more at one canteen. A student says the national price index rose by the same share. What is the gap?",
+                "stem": "Samosas, tea and idlis cost more at one canteen. Ravi says all-India prices rose just as much. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One canteen is not the full basket.",
+                    "text": "One canteen is not the whole country.",
                     "feedback": "A few foods at one shop cannot show how prices changed across the whole country.",
                     "correct": true,
                     "sourceRefs": [
@@ -323,10 +323,10 @@
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "The canteen's price change predicts the national rate.", "feedback": "A local bill is easy to see. The index draws on far more prices and places.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
+                  { "id": "c", "text": "One canteen's prices predict the national rate.", "feedback": "A local bill is easy to see. The index draws on far more prices and places.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
-                    "text": "Three rising foods are enough to set the whole index.",
+                    "text": "Three foods are enough to set the index.",
                     "feedback": "Three foods feel like a pattern. The index also checks many other goods and places.",
                     "correct": false,
                     "misconceptionIds": [
@@ -353,9 +353,9 @@
                 ],
                 "stem": "Put the steps in order for fixed cash to lose buying power.",
                 "options": [
-                  { "id": "a", "text": "A student keeps ₹100 that will not grow.", "feedback": "Fixed cash is the start: the amount stays the same while prices can move.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
-                  { "id": "b", "text": "Prices across the basket rise by a tenth.", "feedback": "The broad price level goes up, so each item in the basket costs more rupees.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
-                  { "id": "c", "text": "The ₹100 now covers less of that basket.", "feedback": "The same note meets higher prices, so it buys less than it did before.", "correct": true, "sourceRefs": ["inflation", "cpi"] }
+                  { "id": "a", "text": "A student keeps ₹100 that does not grow.", "feedback": "Fixed cash is the start: the amount stays the same while prices can move.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
+                  { "id": "b", "text": "Prices of most things rise by a tenth.", "feedback": "The broad price level goes up, so each item in the basket costs more rupees.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
+                  { "id": "c", "text": "The ₹100 now buys less than before.", "feedback": "The same note meets higher prices, so it buys less than it did before.", "correct": true, "sourceRefs": ["inflation", "cpi"] }
                 ],
                 "answer": ["a", "b", "c"]
               }
@@ -493,11 +493,11 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "In a family shop ledger, Riya leaves ₹100 interest beside ₹1,000. At the same rate, what earns interest next?",
+                "stem": "Riya's family shop earns ₹100 interest on ₹1,000 and leaves it in. What earns interest next time?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Both the start amount and the saved interest.",
+                    "text": "Both the ₹1,000 and the ₹100.",
                     "feedback": "Once a gain stays in the account, later growth can apply to that larger total.",
                     "correct": true,
                     "sourceRefs": [
@@ -507,7 +507,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only the original ₹1,000 earns interest; the saved ₹100 never joins the base.",
+                    "text": "Only the ₹1,000; the ₹100 never counts.",
                     "feedback": "The first ₹1,000 is easy to track. The saved ₹100 is now in the base too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -518,7 +518,7 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "Neither; interest is paid just once.", "feedback": "Interest keeps arriving at the same rate. Each time, it builds on the larger total left in the account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] }
+                  { "id": "c", "text": "Nothing; interest is paid just once.", "feedback": "Interest keeps arriving at the same rate. Each time, it builds on the larger total left in the account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] }
                 ]
               },
               {
@@ -533,11 +533,11 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "At a hostel, two clubs earn the same positive rate. One withdraws each gain; the other leaves it invested. Which club earns interest on past gains next year?",
+                "stem": "Two hostel clubs earn the same rate. Club A takes gains out; Club B leaves them in. Which earns on past gains?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The club that leaves gains invested.",
+                    "text": "Club B, which leaves gains in.",
                     "feedback": "Retained gains join the amount on which the next rate is applied.",
                     "correct": true,
                     "sourceRefs": [
@@ -547,7 +547,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The club that withdraws gains each year.",
+                    "text": "Club A, which takes gains out.",
                     "feedback": "Withdrawing gains keeps them out of the next rate base, even though both clubs use the same rate.",
                     "correct": false,
                     "misconceptionIds": [
@@ -573,7 +573,7 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "A toy account starts at ₹100 and gains 10% in year one. It keeps that gain. Under compounding at the same rate, about how many rupees of gain arrive in year two?",
+                "stem": "₹100 earns 10% in year one and the ₹10 gain stays in. About how much gain comes in year two?",
                 "options": [
                   {
                     "id": "a",
@@ -621,11 +621,11 @@
                   "sip",
                   "investing"
                 ],
-                "stem": "An exam club adds ₹100 each month to a fund. Which part is a payment pattern, rather than a return promise?",
+                "stem": "An exam club adds ₹100 to a fund each month. Which part is a payment plan, not a promised return?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The repeated monthly addition.",
+                    "text": "Adding ₹100 every month.",
                     "feedback": "The schedule says when money enters; it cannot set what markets later pay.",
                     "correct": true,
                     "sourceRefs": [
@@ -634,10 +634,10 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "A monthly payment means the fund rises every month.", "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip"] },
+                  { "id": "c", "text": "A monthly payment makes the fund rise monthly.", "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip"] },
                   {
                     "id": "b",
-                    "text": "A fixed return from each monthly payment.",
+                    "text": "A fixed return from each payment.",
                     "feedback": "A set pay date can feel like a set gain. Yet the fund may rise or fall.",
                     "correct": false,
                     "misconceptionIds": [
@@ -663,11 +663,11 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "Two toy accounts start equal at the same steady positive rate. One keeps gains, the other removes them. Why can the first add more later?",
+                "stem": "Two equal accounts earn the same steady rate. One keeps its gains; one takes them out. Why does the first grow more?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Retained gains enter the next rate base.",
+                    "text": "Kept gains also earn interest.",
                     "feedback": "The same percentage applies to a larger balance when earlier gains remain in the account.",
                     "correct": true,
                     "sourceRefs": [
@@ -675,10 +675,10 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "Both balances grow by the same rupee amount each year.", "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] },
+                  { "id": "c", "text": "Both grow by the same rupees each year.", "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] },
                   {
                     "id": "b",
-                    "text": "The stated rate must increase each year.",
+                    "text": "Its rate rises each year.",
                     "feedback": "Larger gains can look like a higher rate. A steady rate also makes more on a larger base.",
                     "correct": false,
                     "misconceptionIds": [
@@ -704,7 +704,7 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "A toy account grows from ₹200 to ₹220. If the ₹20 stays, the next year's 10% is taken from ___.",
+                "stem": "₹200 grows to ₹220, and the ₹20 stays in. Next year's 10% is worked out on ___.",
                 "options": [
                   {
                     "id": "a",
@@ -746,11 +746,11 @@
                   "sip",
                   "investing"
                 ],
-                "stem": "A chart compounds a fixed 10% each year, then a student predicts the same path for a real share. What assumption slipped in?",
+                "stem": "A chart shows money growing 10% every year. Neha expects a real share to do the same. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Real returns need not stay positive or fixed.",
+                    "text": "A real share's return can change each year.",
                     "feedback": "The toy calculation assumes a stable gain, while an actual share can change value in either direction.",
                     "correct": true,
                     "sourceRefs": [
@@ -759,10 +759,10 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "Past gains make the next positive gain certain.", "feedback": "A rising line can invite that guess. A real share can lose value next year.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip", "investing"] },
+                  { "id": "c", "text": "Nothing: past gains make the next gain certain.", "feedback": "A rising line can invite that guess. A real share can lose value next year.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip", "investing"] },
                   {
                     "id": "b",
-                    "text": "A constant rate in the chart will continue in a real share.",
+                    "text": "Nothing: the chart's steady rate will carry on.",
                     "feedback": "The smooth chart makes the rate look dependable, but a real share's return can change; compounding alone promises no path.",
                     "correct": false,
                     "misconceptionIds": [
@@ -788,7 +788,7 @@
                   "compound",
                   "sip"
                 ],
-                "stem": "Match each label to its role in a toy account.",
+                "stem": "Match each amount to its job in a savings account.",
                 "options": [
                   {
                     "id": "a",
@@ -987,7 +987,7 @@
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "A hostel quiz shows a steady 8% toy growth rate. What doubling time does the rule of 72 suggest?",
+                "stem": "A hostel quiz uses a steady 8% growth rate. By the rule of 72, about when does money double?",
                 "options": [
                   {
                     "id": "a",
@@ -1000,7 +1000,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Exactly eight years.",
+                    "text": "Eight years.",
                     "feedback": "Eight is the rate, so it is tempting to call it years. Divide 72 by 8 instead.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1024,7 +1024,7 @@
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "On a train, Arjun compares two made-up constant rates: 6% and 9%. Which has the shorter rough doubling time?",
+                "stem": "On a train, Arjun compares two steady rates: 6% and 9%. Which one doubles money sooner?",
                 "options": [
                   {
                     "id": "a",
@@ -1061,7 +1061,7 @@
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "A toy account was growing at a steady 6%, then its steady rate falls to 3%. Using the rule of 72, about how many years would doubling take at the new rate?",
+                "stem": "A steady rate drops from 6% to 3%. By the rule of 72, about how many years to double now?",
                 "options": [
                   {
                     "id": "a",
@@ -1106,11 +1106,11 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "A class chart shows a market rate that changes each year. How should its rule-of-72 answer be read?",
+                "stem": "A class chart shows a rate that changes every year. How should you read its rule-of-72 answer?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "As a rough what-if under a steady rate.",
+                    "text": "As a rough guess if the rate held steady.",
                     "feedback": "The shortcut assumes one rate, so a changing path may reach double at another time.",
                     "correct": true,
                     "sourceRefs": [
@@ -1118,10 +1118,10 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "As the result from this year's rate held fixed forever.", "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72"] },
+                  { "id": "c", "text": "As the true answer, using this year's rate.", "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72"] },
                   {
                     "id": "b",
-                    "text": "As a guaranteed doubling date.",
+                    "text": "As a sure date for doubling.",
                     "feedback": "A neat number can feel like a date. If rates move, the true wait can change too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1145,21 +1145,21 @@
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "A toy balance grows steadily at 12%, another at 4%. Why does the rule of 72 give different doubling times?",
+                "stem": "One balance grows at a steady 12%, another at 4%. Why does the rule of 72 give different times?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A higher steady rate needs fewer years.",
+                    "text": "A higher rate needs fewer years.",
                     "feedback": "Dividing 72 by a larger rate gives a shorter rough time, assuming each rate stays steady.",
                     "correct": true,
                     "sourceRefs": [
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "The 12% case has more years because it earns more.", "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72"] },
+                  { "id": "c", "text": "The 12% one takes longer, since it earns more.", "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72"] },
                   {
                     "id": "b",
-                    "text": "A larger starting balance makes its percentage doubling faster.",
+                    "text": "A bigger starting balance doubles faster.",
                     "feedback": "More starting cash means more rupees gained, but the rule estimates doubling time from the percentage rate.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1183,7 +1183,7 @@
                 "sourceRefs": [
                   "rule72"
                 ],
-                "stem": "At a fixed 3% toy rate, the rule gives 72 ÷ 3 = ___.",
+                "stem": "At a steady 3% rate, the rule gives 72 ÷ 3 = ___.",
                 "options": [
                   {
                     "id": "a",
@@ -1222,11 +1222,11 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "A savings rate is 8% this year and 4% next year. A student says 72 ÷ 8 proves a nine-year doubling date. What is the flaw?",
+                "stem": "A rate is 8% this year and 4% next year. Sam says 72 ÷ 8 proves nine years to double. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The shortcut needs a steady assumed rate.",
+                    "text": "The rule needs a rate that stays steady.",
                     "feedback": "A changing rate breaks the simple input, and even a steady-rate result would be approximate.",
                     "correct": true,
                     "sourceRefs": [
@@ -1234,10 +1234,10 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "The rule averages the two rates on its own.", "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72", "investing"] },
+                  { "id": "c", "text": "The rule averages the two rates itself.", "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72", "investing"] },
                   {
                     "id": "b",
-                    "text": "The first year's 8% can stand in for every later year's rate.",
+                    "text": "This year's 8% can stand for every year.",
                     "feedback": "Using the current rate gives a quick estimate, but the shortcut assumes it stays steady; next year's 4% breaks that assumption.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1262,7 +1262,7 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "Which line best explains why this shortcut is useful in a classroom?",
+                "stem": "Why is this shortcut useful in class?",
                 "options": [
                   {
                     "id": "a",
@@ -1276,7 +1276,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It proves a market return will stay fixed.",
+                    "text": "It proves a return will stay fixed.",
                     "feedback": "The rule gives one clean number. Real rates can change, so the guess is not a promise.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1287,7 +1287,7 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "It tells the exact day money doubles.", "feedback": "The shortcut gives a rough guess, not a date. Real growth sums and changing rates can differ.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72", "investing"] }
+                  { "id": "c", "text": "It tells the day money doubles.", "feedback": "The shortcut gives a rough guess, not a date. Real growth sums and changing rates can differ.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72", "investing"] }
                 ]
               }
             ],
@@ -1415,11 +1415,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "At a school fair, a game pays ₹30 or ₹0. A second game pays ₹12 for sure. Which result range is wider?",
+                "stem": "At a school fair, Game A pays ₹30 or ₹0. Game B always pays ₹12. Which has the wider spread?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The first game's range.",
+                    "text": "Game A.",
                     "feedback": "Its two possible payoffs are far apart, so its outcome is less certain.",
                     "correct": true,
                     "sourceRefs": [
@@ -1428,7 +1428,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The sure game's range.",
+                    "text": "Game B, the sure one.",
                     "feedback": "The sure prize may look safer and larger than zero. Its best and worst result are still the same.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1438,7 +1438,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Both ranges are the same.", "feedback": "One game always pays ₹12. The other swings from ₹0 to ₹30, so its range is much wider.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Both are the same.", "feedback": "One game always pays ₹12. The other swings from ₹0 to ₹30, so its range is much wider.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1452,11 +1452,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "During exam week, a family shop pays to make a new snack that may sell out or go unsold. Which outcome is possible?",
+                "stem": "In exam week, a family shop spends money making a new snack. Which result is possible?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A loss as well as a gain.",
+                    "text": "A loss or a gain.",
                     "feedback": "Some snacks may not sell. A big best case does not tell us how many buyers will come.",
                     "correct": true,
                     "sourceRefs": [
@@ -1465,7 +1465,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "At least the production cost will come back if the snack sells slowly.",
+                    "text": "Its costs come back even if sales are slow.",
                     "feedback": "A busy shop can make some sales seem likely, but unsold stock can leave the owner with a loss.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1475,7 +1475,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Only a gain, since snacks always sell in exam week.", "feedback": "Exam weeks can bring buyers, but nothing makes sales sure. Unsold stock can turn the plan into a loss.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Only a gain, since exam week brings buyers.", "feedback": "Exam weeks can bring buyers, but nothing makes sales sure. Unsold stock can turn the plan into a loss.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1489,7 +1489,7 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A raffle ticket costs ₹30. One of four equal tickets pays ₹100 and the others pay nothing. About what is the average net return per ticket, including the ticket cost?",
+                "stem": "A ₹30 raffle ticket has a 1-in-4 chance to win ₹100. After its cost, what is the average return?",
                 "options": [
                   {
                     "id": "a",
@@ -1532,11 +1532,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A poster shows only its best possible payout. What key part of risk is missing?",
+                "stem": "A poster shows only the best possible prize. What does it leave out about risk?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The chance and size of poor outcomes.",
+                    "text": "How often bad results happen, and how bad.",
                     "feedback": "A maximum alone leaves out how often that amount occurs and what losses remain possible.",
                     "correct": true,
                     "sourceRefs": [
@@ -1545,7 +1545,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The size of the best payout relative to the ticket cost.",
+                    "text": "How big the best prize is next to the cost.",
                     "feedback": "A large best-case payout catches attention, but risk also depends on the other outcomes and their chances.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1569,21 +1569,21 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A share poster says its price could gain 30%, but gives no other outcomes or their chances. Why is its average return unknown?",
+                "stem": "A poster says a share could gain 30%, and shows nothing else. Why can't you know its average return?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One possible gain is not the full outcome set.",
+                    "text": "One possible gain is not all the outcomes.",
                     "feedback": "To find an average, we need the other possible gains and losses, plus their chances.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "A possible 30% gain is the expected return.", "feedback": "The headline gain stands out. An average also needs the other results and their chances.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] },
+                  { "id": "c", "text": "A possible 30% gain is the average.", "feedback": "The headline gain stands out. An average also needs the other results and their chances.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "Holding longer makes the quoted gain the average.",
+                    "text": "Holding longer makes 30% the average.",
                     "feedback": "A long hold can seem to smooth risk. It still does not tell us the other outcomes.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1607,11 +1607,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Complete the comparison: ₹10 for sure has a narrow range; ₹0 or ₹30 has a ___.",
+                "stem": "₹10 for sure has a narrow range. ₹0 or ₹30 has a ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Wider range of outcomes.",
+                    "text": "Wider range of results.",
                     "feedback": "The second payoff can land at either extreme, making its result less predictable.",
                     "correct": true,
                     "sourceRefs": [
@@ -1630,7 +1630,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Lower chance of a zero.", "feedback": "The ₹0 branch makes a zero more likely, not less. What the second option clearly has is a wider spread.", "correct": false, "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Lower chance of zero.", "feedback": "The ₹0 branch makes a zero more likely, not less. What the second option clearly has is a wider spread.", "correct": false, "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1645,21 +1645,21 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Two games have the same average payout, but one has much wider results. A student says the wider game must pay more. What is wrong?",
+                "stem": "Two games have the same average payout, but one has wider results. Ravi says it must pay more. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A wider range can bring lower outcomes too.",
+                    "text": "Wider results can include lower ones.",
                     "feedback": "More variation changes the risk of each result; it does not raise the stated average by itself.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "The same average means the same lowest payout.", "feedback": "A shared average can hide the spread. One game can still have a much worse low result.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] },
+                  { "id": "c", "text": "Same average means the same lowest payout.", "feedback": "A shared average can hide the spread. One game can still have a much worse low result.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "A higher top prize can force the average higher despite worse lows.",
+                    "text": "A higher top prize forces the average up.",
                     "feedback": "The high prize draws the eye. Lower results can offset it, leaving the same average.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1682,11 +1682,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Which sentence captures the trade in this fair-game example?",
+                "stem": "What trade does the fair-game example show?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The larger possible prize comes with more spread.",
+                    "text": "A bigger possible prize comes with more spread.",
                     "feedback": "Comparing both good and bad outcomes shows what the attractive headline hides.",
                     "correct": true,
                     "sourceRefs": [
@@ -1695,7 +1695,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The largest prize is the only outcome that counts.",
+                    "text": "Only the biggest prize counts.",
                     "feedback": "The top prize is easy to picture. A zero result is also possible and widens the spread.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1705,7 +1705,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "A sure prize is always the better choice.", "feedback": "The example compares spread, not which is better. A sure prize narrows the range but caps the gain.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "A sure prize is the better choice.", "feedback": "The example compares spread, not which is better. A sure prize narrows the range but caps the gain.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
                 ]
               }
             ],
@@ -1825,11 +1825,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A family shop sells only mango juice. Monsoon rain cuts foot traffic. What happens to its sales mix?",
+                "stem": "A family shop sells only mango juice. Monsoon rain keeps buyers away. What happens to its sales?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its only sale line bears the whole stall shock.",
+                    "text": "All its sales take the hit.",
                     "feedback": "With one product, there is no other product line to offset that missing demand.",
                     "correct": true,
                     "sourceRefs": [
@@ -1838,7 +1838,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Regular customers will keep total sales steady despite the rain.",
+                    "text": "Regular buyers keep sales steady.",
                     "feedback": "Loyal buyers can soften a bad day, but a shop with only one line has no other product to offset a juice slump.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1848,7 +1848,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Its sales shift to its other products.", "feedback": "There are no other products to shift to. With one line, the rain hits all of the shop's sales.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Sales shift to its other products.", "feedback": "There are no other products to shift to. With one line, the rain hits all of the shop's sales.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1862,11 +1862,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "At a college fest, one stall sells juice and packaged snacks without fruit, while another sells only juice. If fruit prices jump, which stall has another line?",
+                "stem": "At a college fest, Stall A sells juice and snacks; Stall B sells only juice. Fruit prices jump. Which stall has a backup?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The juice-and-snacks stall.",
+                    "text": "Stall A, with juice and snacks.",
                     "feedback": "A separate product gives it one source of sales that does not use the costly fruit.",
                     "correct": true,
                     "sourceRefs": [
@@ -1875,7 +1875,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The juice-only stall.",
+                    "text": "Stall B, with only juice.",
                     "feedback": "A juice stall can seem focused and strong. It has no fruit-free line to lean on.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1885,7 +1885,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Both stalls are equally exposed.", "feedback": "Only the juice-only stall depends fully on fruit. The other has snacks that do not use fruit.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Both are hit equally.", "feedback": "Only the juice-only stall depends fully on fruit. The other has snacks that do not use fruit.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1899,7 +1899,7 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Four holdings are in different businesses, but all their shops sit in one flood zone. A flood shuts that area. About how many are shielded just by business type?",
+                "stem": "Four holdings are different businesses in one flood zone. A flood hits. How many does business type protect?",
                 "options": [
                   {
                     "id": "a",
@@ -1942,11 +1942,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A student owns four firms in different businesses, but all depend on the same crop. Which risk has she left in the mix?",
+                "stem": "Sana owns four firms in different businesses, but all need the same crop. What risk is still there?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A bad harvest that hurts them all.",
+                    "text": "A bad harvest hurting all four.",
                     "feedback": "All four firms need the crop, so a poor harvest can hurt the whole mix.",
                     "correct": true,
                     "sourceRefs": [
@@ -1955,7 +1955,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One firm’s own management mistake.",
+                    "text": "One firm's own bad decision.",
                     "feedback": "A mix can reduce exposure to one firm. Here the crop is a common risk across the whole mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1965,7 +1965,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "No risk, since there are four firms.", "feedback": "Four firms can still share one weak spot. Here a bad harvest can hit every firm at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "None, since there are four firms.", "feedback": "Four firms can still share one weak spot. Here a bad harvest can hit every firm at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -1980,21 +1980,21 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "One holding collapses while the others keep value. Why does spreading money help here but not promise safety from every shock?",
+                "stem": "One holding crashes while the others hold steady. Why does spreading money help here, but not with every shock?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The damage reaches only part of the mix.",
+                    "text": "Only part of the mix is hit.",
                     "feedback": "Other holdings can cushion one firm’s loss, while a shared shock may still reach several.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "The mix protects against a shock shared by all firms.", "feedback": "Spread can help with one firm's loss. A shared shock can still pull all holdings down.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
+                  { "id": "c", "text": "A mix protects against shocks hitting all firms.", "feedback": "Spread can help with one firm's loss. A shared shock can still pull all holdings down.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "Each holding cancels every other holding’s loss.",
+                    "text": "Each holding cancels the others' losses.",
                     "feedback": "More names can feel like a hedge. A shared shock may pull them down together.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2018,11 +2018,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A mix of holdings can limit one firm's harm. What kind of loss can still hit the whole mix?",
+                "stem": "Spreading money limits the harm from one firm. What loss can still hit the whole mix?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Losses that hit many holdings together.",
+                    "text": "A loss that hits many holdings at once.",
                     "feedback": "A broad shock can move several assets at once even when no single firm dominates.",
                     "correct": true,
                     "sourceRefs": [
@@ -2031,7 +2031,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only a loss at one company, never a market-wide loss.",
+                    "text": "Only a loss at one company.",
                     "feedback": "Spreading holdings can limit one firm's damage, but a shared market shock can still reach the whole mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2041,7 +2041,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "No loss at all once there are ten holdings.", "feedback": "More holdings can cut single-firm harm, but not shared shocks. A broad market fall can still reach the mix.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "None, once you hold ten.", "feedback": "More holdings can cut single-firm harm, but not shared shocks. A broad market fall can still reach the mix.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
                 ]
               },
               {
@@ -2056,21 +2056,21 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "A portfolio holds ten firms that all need the same crop. A student calls it fully protected because the names differ. What risk remains?",
+                "stem": "Amit owns ten firms that all need one crop. He says the different names keep him fully safe. What risk remains?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A crop shock could hurt all ten.",
+                    "text": "A bad crop can hurt all ten.",
                     "feedback": "Many firms can share one driver, so their losses can arrive together.",
                     "correct": true,
                     "sourceRefs": [
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Ten names ensure at least one escapes the crop shock.", "feedback": "Many names look spread out. Here each business still needs the same crop.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
+                  { "id": "c", "text": "Ten names make sure one escapes.", "feedback": "Many names look spread out. Here each business still needs the same crop.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
                   {
                     "id": "b",
-                    "text": "Equal amounts can remove shared crop risk from all ten firms.",
+                    "text": "Equal amounts in each remove the crop risk.",
                     "feedback": "Equal weights look well spread. They still leave each firm tied to the crop.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2093,11 +2093,11 @@
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "How can a mixed set still lose value?",
+                "stem": "Which line explains why a mix of holdings can still fall?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It limits some single-part risk, not every loss.",
+                    "text": "It cuts one-firm risk, not every loss.",
                     "feedback": "The mix matters because weak parts may differ, while a common shock can still hurt all.",
                     "correct": true,
                     "sourceRefs": [
@@ -2106,7 +2106,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A mixed set can remove all chance of a fall.",
+                    "text": "It can't; a mix removes all risk of a fall.",
                     "feedback": "Many holdings can feel safe. A broad market fall can reach much of the mix.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2116,7 +2116,7 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Only if one holding drops to zero.", "feedback": "Losses can come without any holding hitting zero. A common shock can push many parts down a little at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  { "id": "c", "text": "Only when one holding drops to zero.", "feedback": "Losses can come without any holding hitting zero. A common shock can push many parts down a little at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
                 ]
               }
             ],
@@ -2237,21 +2237,21 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "At a family shop lesson, Asha gets one share in a firm. What does that piece stand for?",
+                "stem": "In a family shop lesson, Asha gets one share in a firm. What does it give her?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A small ownership claim.",
+                    "text": "A small part of owning the firm.",
                     "feedback": "Ownership can link its value to the firm, while future price and payouts remain uncertain.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "A claim to a fixed dividend each year.", "feedback": "Owners may get a payout, so it can sound owed. A firm may pay none.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  { "id": "c", "text": "A fixed payout every year.", "feedback": "Owners may get a payout, so it can sound owed. A firm may pay none.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
-                    "text": "A fixed loan to the firm.",
+                    "text": "A loan she made to the firm.",
                     "feedback": "Both can fund a firm, so they are easy to mix up. A share gives ownership, not a loan claim.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2274,11 +2274,11 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "During a hostel quiz, a firm reports no dividend this year. Does a shareholder stop being an owner?",
+                "stem": "At the hostel, Kiran owns shares in a firm. It pays no dividend (profit payout) this year. Is he still an owner?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No; ownership remains.",
+                    "text": "Yes, he still owns part of it.",
                     "feedback": "A dividend is a possible payout, not the test for whether a share represents ownership.",
                     "correct": true,
                     "sourceRefs": [
@@ -2287,7 +2287,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes; no dividend cancels the share.",
+                    "text": "No, no payout cancels the share.",
                     "feedback": "A dividend can feel like proof of ownership. The share still exists when none is paid.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2311,7 +2311,7 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A student owns 5 of a company’s 100 equal shares. The market price per share halves, but no shares are issued or sold. About what percent of the shares does she still own?",
+                "stem": "Nisha owns 5 of a company's 100 shares. The share price halves; no new shares are made. What percent does she own?",
                 "options": [
                   {
                     "id": "a",
@@ -2354,7 +2354,7 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A cricket club sells a ticket and issues an ownership share. Which gives a claim on the club itself?",
+                "stem": "A cricket club sells match tickets and ownership shares. Which one gives a claim on the club itself?",
                 "options": [
                   {
                     "id": "a",
@@ -2367,7 +2367,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The ticket, because paying for it funds the club.",
+                    "text": "The ticket, since it funds the club.",
                     "feedback": "A ticket helps club revenue, but it buys entry to an event rather than an ownership claim.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2377,7 +2377,7 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Both give an equal claim.", "feedback": "A ticket buys entry to an event. Only the share gives a claim of ownership in the club.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  { "id": "c", "text": "Both, equally.", "feedback": "A ticket buys entry to an event. Only the share gives a claim of ownership in the club.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
                 ]
               },
               {
@@ -2392,21 +2392,21 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A company pays a dividend, yet its share price falls. Why is this possible for an owner?",
+                "stem": "A company pays a dividend, but its share price still falls. How can both happen?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Market price and dividend are separate outcomes.",
+                    "text": "Price and dividend are separate things.",
                     "feedback": "Ownership can bring a dividend without guaranteeing what later buyers will pay for the share.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "The dividend must be large enough to cover the price drop.", "feedback": "Cash paid out can feel like a safety net. Its size need not match a market fall.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  { "id": "c", "text": "The dividend always makes up for the drop.", "feedback": "Cash paid out can feel like a safety net. Its size need not match a market fall.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
-                    "text": "Any dividend locks the price above the old price.",
+                    "text": "Any dividend keeps the price above the old one.",
                     "feedback": "The cash payout feels like a gain. Buyers can still set a lower share price.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2430,7 +2430,7 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A company may pay owners some profit. That possible payment is called a ___.",
+                "stem": "Some companies pay owners part of their profit. That payment is called a ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2443,7 +2443,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guaranteed interest coupon.",
+                    "text": "Fixed interest payment.",
                     "feedback": "Both can pay cash, so the names are easy to mix up. A share may pay a dividend.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2468,21 +2468,21 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "A company paid a dividend last year. A student writes the same monthly payout into this year’s budget. What is the weak step?",
+                "stem": "A company paid a dividend last year. Dev plans on the same monthly payout this year. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Past dividends do not guarantee new ones.",
+                    "text": "Past payouts do not promise new ones.",
                     "feedback": "The firm may pay less, or nothing. Owning shares does not promise cash each month.",
                     "correct": true,
                     "sourceRefs": [
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Last year's payment sets a floor for this year's payout.", "feedback": "Past cash can feel like a pattern. The firm can pay less or none this year.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  { "id": "c", "text": "Last year's payout sets a minimum for this year.", "feedback": "Past cash can feel like a pattern. The firm can pay less or none this year.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
                   {
                     "id": "b",
-                    "text": "A prior dividend creates a fixed monthly debt.",
+                    "text": "Last year's payout is now a fixed monthly debt.",
                     "feedback": "Last year's payout can look like a schedule. Ownership does not make it a fixed monthly debt.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2505,11 +2505,11 @@
                 "sourceRefs": [
                   "shares"
                 ],
-                "stem": "Which line could a student use to explain a share?",
+                "stem": "Which line explains what a share is?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It is ownership with an uncertain price and possible dividends.",
+                    "text": "Part ownership, with a changing price and possible payouts.",
                     "feedback": "The two ways to get a return can vary, and neither is built in as a guarantee.",
                     "correct": true,
                     "sourceRefs": [
@@ -2518,7 +2518,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It is a loan claim with a fixed repayment date and a promised dividend each year.",
+                    "text": "A loan with a fixed due date and yearly payout.",
                     "feedback": "Both raise money for a firm. A share is ownership and has no fixed loan due date.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2528,7 +2528,7 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "It is a coupon for discounts at the firm.", "feedback": "Some firms offer perks, but that is not what a share is. A share is part ownership with an uncertain price.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  { "id": "c", "text": "A coupon for discounts at the firm.", "feedback": "Some firms offer perks, but that is not what a share is. A share is part ownership with an uncertain price.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
                 ]
               }
             ],
@@ -2648,11 +2648,11 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "A hostel student has a sudden phone repair bill. Which pool of money can meet it at once?",
+                "stem": "A hostel student gets a sudden phone repair bill. Which money can pay it right away?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Cash kept aside for urgent needs.",
+                    "text": "Cash kept aside for surprises.",
                     "feedback": "A ready reserve can cover an unplanned bill while other plans stay separate.",
                     "correct": true,
                     "sourceRefs": [
@@ -2661,7 +2661,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A valuable item she expects to sell next week.",
+                    "text": "An item she plans to sell next week.",
                     "feedback": "Resale value can look like savings, but a bill due today needs money the student can reach now.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2685,11 +2685,11 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "During exam week, a family shop fridge stops. Which saved amount fits the term emergency fund?",
+                "stem": "In exam week, the family shop's fridge breaks. Which savings count as an emergency fund?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Money held for an unplanned repair.",
+                    "text": "Money kept for a surprise repair.",
                     "feedback": "The repair was not on the normal bill list, so a ready reserve fits.",
                     "correct": true,
                     "sourceRefs": [
@@ -2698,7 +2698,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Money already set aside for next month’s rent.",
+                    "text": "Money saved for next month's rent.",
                     "feedback": "Rent money is saved, so it may look like a reserve. The bill is known in advance.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2722,7 +2722,7 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "An emergency fund has cash for one month of bills and a rare cricket card worth the same. A bill needs cash today. About how many months are ready now?",
+                "stem": "An emergency fund holds one month's cash and a cricket card worth one month. How many months can pay today?",
                 "options": [
                   {
                     "id": "a",
@@ -2765,11 +2765,11 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "Which word best describes money held for a sudden expense?",
+                "stem": "What matters most about money kept for a sudden bill?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Accessible.",
+                    "text": "Easy to reach.",
                     "feedback": "A surprise bill needs money that can be reached when the bill arrives.",
                     "correct": true,
                     "sourceRefs": [
@@ -2778,7 +2778,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Invested for the highest possible return.",
+                    "text": "Invested for the highest return.",
                     "feedback": "Growth sounds useful for savings, but a sudden expense calls for money that can be accessed promptly.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2788,7 +2788,7 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Hidden.", "feedback": "Out of sight can help, but the key feature is being reachable. A sudden bill needs money that is easy to get.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] }
+                  { "id": "c", "text": "Hidden away.", "feedback": "Out of sight can help, but the key feature is being reachable. A sudden bill needs money that is easy to get.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] }
                 ]
               },
               {
@@ -2802,7 +2802,7 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "A student has valuable cricket cards but no ready cash. Why might a sudden bill still be hard to pay?",
+                "stem": "Kabir has valuable cricket cards but no cash. Why is a sudden bill still hard to pay?",
                 "options": [
                   {
                     "id": "a",
@@ -2813,10 +2813,10 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "A listed card price is money ready to spend today.", "feedback": "A price tag makes value look real. The card still needs a buyer before it pays a bill.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
+                  { "id": "c", "text": "A card's listed price is cash today.", "feedback": "A price tag makes value look real. The card still needs a buyer before it pays a bill.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
                   {
                     "id": "b",
-                    "text": "Any valuable object works like cash.",
+                    "text": "Any valuable thing works like cash.",
                     "feedback": "The card may be worth a lot. A buyer still has to turn that value into cash.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2839,7 +2839,7 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "A bus pass bought every month is a planned cost. A sudden repair is ___.",
+                "stem": "A monthly bus pass is a planned cost. A sudden repair is ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2876,21 +2876,21 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "A classmate says a reserve is only useful if it earns the highest return. What is missing?",
+                "stem": "Neha says emergency savings only matter if they earn the most. What is she missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Access when a surprise arrives.",
+                    "text": "Being able to reach it in a surprise.",
                     "feedback": "A high return says little about whether the money can pay an urgent bill.",
                     "correct": true,
                     "sourceRefs": [
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Selling later is enough for a bill due now.", "feedback": "A sale may bring cash later. A sudden bill needs funds that can be reached today.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
+                  { "id": "c", "text": "Selling later is fine for a bill due now.", "feedback": "A sale may bring cash later. A sudden bill needs funds that can be reached today.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
                   {
                     "id": "b",
-                    "text": "The highest return always gives instant cash.",
+                    "text": "A high return gives instant cash.",
                     "feedback": "A high gain feels useful. It may come in an asset that cannot pay a bill today.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2913,11 +2913,11 @@
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "Which sentence best explains an emergency fund to a friend?",
+                "stem": "How would you explain an emergency fund to a friend?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Ready money for costs that arrive without warning.",
+                    "text": "Ready money for costs that come without warning.",
                     "feedback": "The key is a separate reserve that can meet an unplanned need.",
                     "correct": true,
                     "sourceRefs": [
@@ -2926,7 +2926,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Money earmarked for a known monthly bill.",
+                    "text": "Money set aside for a known monthly bill.",
                     "feedback": "Both pools are set aside. A known bill belongs in the plan, while a surprise does not.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2936,7 +2936,7 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Money to spend on sales and deals.", "feedback": "Sale spending is a choice, not a surprise need. The fund is ready money for costs that come without warning.", "correct": false, "misconceptionIds": ["emergency-fund-m2"], "sourceRefs": ["rbi-emergency"] }
+                  { "id": "c", "text": "Money for sales and deals.", "feedback": "Sale spending is a choice, not a surprise need. The fund is ready money for costs that come without warning.", "correct": false, "misconceptionIds": ["emergency-fund-m2"], "sourceRefs": ["rbi-emergency"] }
                 ]
               }
             ],
@@ -3063,11 +3063,11 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "A family shop pays an EMI on a loan with a reducing balance. What happens after principal is repaid?",
+                "stem": "A family shop pays a loan EMI (fixed monthly payment). Part of it cuts the debt. What happens next month?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The balance used for later interest shrinks.",
+                    "text": "Interest is charged on a smaller debt.",
                     "feedback": "The lender works out later interest from what is still owed, not the old balance.",
                     "correct": true,
                     "sourceRefs": [
@@ -3076,7 +3076,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The original loan amount stays the interest base.",
+                    "text": "Interest is still charged on the first amount.",
                     "feedback": "The first loan sum is easy to recall. Paid principal is no longer part of the balance.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3086,7 +3086,7 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "The EMI amount doubles.", "feedback": "A fixed EMI usually stays the same. What changes is the split: less goes to interest as the balance falls.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] }
+                  { "id": "c", "text": "The EMI doubles.", "feedback": "A fixed EMI usually stays the same. What changes is the split: less goes to interest as the balance falls.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] }
                 ]
               },
               {
@@ -3100,11 +3100,11 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "A college student compares two loan plans at the same rate; one spreads payments longer. What may happen?",
+                "stem": "A college student compares two loans at the same rate. One spreads payments over more months. What happens?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Monthly EMI falls while total interest rises.",
+                    "text": "Each EMI is smaller, but total interest is higher.",
                     "feedback": "More payment months can make each bill smaller while interest runs for longer.",
                     "correct": true,
                     "sourceRefs": [
@@ -3113,7 +3113,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both EMI and total interest must fall.",
+                    "text": "Both the EMI and total interest fall.",
                     "feedback": "A lower EMI feels cheaper today. More months can still add to the total interest.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3123,7 +3123,7 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Total interest falls because each EMI is smaller.", "feedback": "Smaller payments over more months keep interest running longer. Total interest tends to rise, not fall.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] }
+                  { "id": "c", "text": "Total interest falls, since each EMI is smaller.", "feedback": "Smaller payments over more months keep interest running longer. Total interest tends to rise, not fall.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] }
                 ]
               },
               {
@@ -3137,7 +3137,7 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "A loan pays out ₹10,000. You make 12 EMIs of ₹900 and no other payments. About how much of the total paid is interest?",
+                "stem": "You borrow ₹10,000 and repay 12 EMIs of ₹900. About how much of that is interest?",
                 "options": [
                   {
                     "id": "a",
@@ -3187,11 +3187,11 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "What does principal mean in a loan schedule?",
+                "stem": "In a loan, what is the principal?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The amount of loan money still owed.",
+                    "text": "The loan money still owed.",
                     "feedback": "Paying down principal reduces the amount on which later interest can be worked out.",
                     "correct": true,
                     "sourceRefs": [
@@ -3225,21 +3225,21 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "Two offers show the same EMI, yet one runs for more months. Why can the totals differ?",
+                "stem": "Two loans have the same EMI, but one runs for more months. Why can their total costs differ?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The number of payments also matters.",
+                    "text": "The number of payments matters too.",
                     "feedback": "One monthly figure hides how many times it is paid and how long interest runs.",
                     "correct": true,
                     "sourceRefs": [
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "The longer plan must cost less because each EMI matches.", "feedback": "The matching bill looks fair. More months can still add up to a larger total.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] },
+                  { "id": "c", "text": "The longer loan costs less, since EMIs match.", "feedback": "The matching bill looks fair. More months can still add up to a larger total.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] },
                   {
                     "id": "b",
-                    "text": "Same EMI proves the same total cost.",
+                    "text": "Same EMI means the same total cost.",
                     "feedback": "A matching EMI feels like a matching deal. Extra months can raise the total paid.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3262,11 +3262,11 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "On a reducing-balance loan, paying principal leaves a smaller ___ for the next interest charge.",
+                "stem": "Each EMI pays off some of the loan. That leaves a smaller ___ to charge interest on.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Outstanding balance.",
+                    "text": "Amount still owed.",
                     "feedback": "The remaining debt, rather than the first borrowed amount, becomes the next base.",
                     "correct": true,
                     "sourceRefs": [
@@ -3275,7 +3275,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Original borrowed sum.",
+                    "text": "First amount borrowed.",
                     "feedback": "The first loan sum sticks in mind. Yet each payment cuts the debt used for new interest.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3299,21 +3299,21 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "A friend says every rupee in an EMI directly clears the borrowed amount. What is the flaw?",
+                "stem": "Ravi says every rupee of his EMI pays off the loan amount. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Some of it can pay interest.",
+                    "text": "Part of each EMI pays interest.",
                     "feedback": "A loan table shows what pays debt and what pays interest each month.",
                     "correct": true,
                     "sourceRefs": [
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Every EMI pays down debt by its full amount.", "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] },
+                  { "id": "c", "text": "Every EMI cuts the debt by its full amount.", "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] },
                   {
                     "id": "b",
-                    "text": "Every EMI can go fully to principal, with interest charged only at the end.",
+                    "text": "All of it pays debt; interest comes at the end.",
                     "feedback": "The debt is paid in parts, so interest may seem like a final fee. It can sit in each EMI.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3336,7 +3336,7 @@
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "Which line captures a reducing-balance loan?",
+                "stem": "Which line best sums up how EMI interest works?",
                 "options": [
                   {
                     "id": "a",
@@ -3349,7 +3349,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Interest always uses the first borrowed sum.",
+                    "text": "Interest uses the first amount borrowed.",
                     "feedback": "The first loan sum is easy to use. In this method, later interest uses the debt still owed.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3491,11 +3491,11 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "A college club buys a fund that copies a broad index. What mainly sets its holdings?",
+                "stem": "A college club buys a fund that copies a big market list (an index). What decides what it holds?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The index list and its weights.",
+                    "text": "The index list and how much of each.",
                     "feedback": "The fund tries to mirror the named basket, so its mix follows that rule.",
                     "correct": true,
                     "sourceRefs": [
@@ -3505,7 +3505,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The manager's pick of firms expected to beat the market.",
+                    "text": "A manager picking likely winners.",
                     "feedback": "A fund manager may pick stocks in other funds. This fund tracks a set list instead.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3516,7 +3516,7 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Whatever stocks are trending online.", "feedback": "Online buzz does not set this fund's holdings. It follows the index list and its weights.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  { "id": "c", "text": "Whatever stocks trend online.", "feedback": "Online buzz does not set this fund's holdings. It follows the index list and its weights.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
                 ]
               },
               {
@@ -3531,11 +3531,11 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "At a family shop, Tara compares one company share with a broad index fund. Which spreads company risk more?",
+                "stem": "At the family shop, Tara compares one company's share with an index fund of many firms. Which spreads risk more?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The fund holding many companies.",
+                    "text": "The fund of many companies.",
                     "feedback": "One firm can stumble alone; a broad basket spreads that specific event.",
                     "correct": true,
                     "sourceRefs": [
@@ -3545,7 +3545,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The single company share.",
+                    "text": "The single share.",
                     "feedback": "A single winner can look strong. One firm's trouble also reaches the whole holding.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3556,7 +3556,7 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Both spread it equally.", "feedback": "One share rests on one firm. A fund holding many firms spreads that company risk much more widely.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  { "id": "c", "text": "Both equally.", "feedback": "One share rests on one firm. A fund holding many firms spreads that company risk much more widely.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
                 ]
               },
               {
@@ -3571,7 +3571,7 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "A classmate expects most active large-cap funds to beat their index because managers pick stocks. In the cited India scorecard, about what share trailed the benchmark over one year?",
+                "stem": "Managers pick stocks to beat an index. In one Indian year, about what percent of large-company funds did worse?",
                 "options": [
                   {
                     "id": "a",
@@ -3621,7 +3621,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Track a named market basket.",
+                    "text": "Follow a named list of companies.",
                     "feedback": "Its stated job is to follow an index, allowing for fees and tracking gaps.",
                     "correct": true,
                     "sourceRefs": [
@@ -3631,7 +3631,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Pick the strongest companies before the index changes.",
+                    "text": "Pick winners before the index changes.",
                     "feedback": "That sounds like an active strategy, but an index fund aims to track its index rather than forecast winners.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3658,11 +3658,11 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "A classmate points to one winning share and says stock picking always beats an index. Why is that weak?",
+                "stem": "Arjun points to one winning share and says picking stocks always beats an index. Why is that weak?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "One winner is not the average outcome.",
+                    "text": "One winner is not the typical result.",
                     "feedback": "The selected success leaves out other picks and the cost of choosing them.",
                     "correct": true,
                     "sourceRefs": [
@@ -3670,7 +3670,7 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "A winning share shows the typical stock picker wins.", "feedback": "A winner is vivid. One case tells us little about the full set of picks.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
+                  { "id": "c", "text": "One winning share shows pickers usually win.", "feedback": "A winner is vivid. One case tells us little about the full set of picks.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
                   {
                     "id": "b",
                     "text": "One example settles all future markets.",
@@ -3698,7 +3698,7 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "An index fund’s expense ratio is a ___ charged from fund assets.",
+                "stem": "An index fund's expense ratio is a ___ taken out of the fund's money.",
                 "options": [
                   {
                     "id": "a",
@@ -3712,7 +3712,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One-time charge paid only when the fund gains.",
+                    "text": "One-time charge paid only on gains.",
                     "feedback": "A fee may look tied to successful returns, but the expense ratio is charged from fund assets regardless of a gain.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3739,11 +3739,11 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "A student says past fund data prove no manager can beat an index. What goes too far?",
+                "stem": "Asha says past data prove no manager can beat an index. What goes too far?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Some managers did beat their benchmark.",
+                    "text": "Some managers did beat their index.",
                     "feedback": "The data show a group trend. Some funds still beat their index.",
                     "correct": true,
                     "sourceRefs": [
@@ -3751,10 +3751,10 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "The past group result is a rule for every future year.", "feedback": "A large study can feel final. Its past results do not set each new year's outcome.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
+                  { "id": "c", "text": "Past group results set every future year.", "feedback": "A large study can feel final. Its past results do not set each new year's outcome.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
                   {
                     "id": "b",
-                    "text": "Some managers can beat the index, so the group result says nothing.",
+                    "text": "Some beat it, so the group result means nothing.",
                     "feedback": "A few winners do not erase the group result. The study still found many funds below their benchmark.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3779,11 +3779,11 @@
                   "sebi-index",
                   "spiva-india"
                 ],
-                "stem": "Which comparison fits an index fund and one picked stock?",
+                "stem": "Which line compares an index fund with one picked stock?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A basket track versus a single-company choice.",
+                    "text": "Following a whole list vs betting on one firm.",
                     "feedback": "The first follows an index after costs; the second rests on one company’s result.",
                     "correct": true,
                     "sourceRefs": [
@@ -3793,7 +3793,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both spread a single company's risk across many firms.",
+                    "text": "Both spread risk across many firms.",
                     "feedback": "A broad fund can spread company risk, but one picked share still depends on that one company.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3947,11 +3947,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A hostel student is told to scan a QR and enter a UPI PIN to get a refund. What could that action do?",
+                "stem": "A caller tells a hostel student to scan a QR code and enter her UPI PIN for a refund. What does this do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Approve money going out.",
+                    "text": "It approves money going out.",
                     "feedback": "NPCI says a QR scan with a PIN is for paying, not receiving a refund.",
                     "correct": true,
                     "sourceRefs": [
@@ -3959,10 +3959,10 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "Check that the refund sender has enough funds.", "feedback": "The PIN step can sound like a safety check. It can approve money leaving instead.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] },
+                  { "id": "c", "text": "It checks the sender has enough money.", "feedback": "The PIN step can sound like a safety check. It can approve money leaving instead.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "Approve the bank to credit the refund to the account.",
+                    "text": "It lets the bank send her the refund.",
                     "feedback": "A refund sounds like cash coming in. A PIN can send cash out instead.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3987,7 +3987,7 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "During a college fest, an unknown caller says a prize needs a collect-request approval. What is being requested?",
+                "stem": "At a college fest, a caller asks Priya to approve a collect request for a prize. What is he asking for?",
                 "options": [
                   {
                     "id": "a",
@@ -4001,7 +4001,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Confirmation that the prize will be credited to the account.",
+                    "text": "Proof the prize will reach her account.",
                     "feedback": "A prize message makes approval sound like a receipt step, but a collect request asks the payer to authorise money leaving.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4027,7 +4027,7 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A fake cashback message promises ₹200 and shows a ₹2,000 UPI collect request. A student thinks the PIN is needed to receive the reward. About what value of payment would that PIN actually authorise?",
+                "stem": "A fake message promises ₹200 cashback but sends a ₹2,000 UPI collect request. If you enter your PIN, about what do you pay?",
                 "options": [
                   {
                     "id": "a",
@@ -4080,11 +4080,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "What does a UPI PIN mainly authorise?",
+                "stem": "What does a UPI PIN mainly do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A payment from an account.",
+                    "text": "Approves a payment from your account.",
                     "feedback": "The PIN is entered when the payer approves a bank transaction.",
                     "correct": true,
                     "sourceRefs": [
@@ -4094,7 +4094,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Verification that a payment is about to arrive.",
+                    "text": "Checks that a payment is about to arrive.",
                     "feedback": "The caller calls it a check to get cash. A PIN can send cash out.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4121,11 +4121,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "Why can a polished message from a supposed bank worker still mislead someone?",
+                "stem": "A neat message seems to come from a bank worker. Why can it still fool someone?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The story can press for a real payment approval.",
+                    "text": "Its story can push you into a real payment.",
                     "feedback": "The app can work well while a false story sways the person.",
                     "correct": true,
                     "sourceRefs": [
@@ -4133,10 +4133,10 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "A bank-like tone proves the caller can be trusted.", "feedback": "A neat message can seem safe. The PIN still lets a payer send money out.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
+                  { "id": "c", "text": "A bank-like tone proves the caller is safe.", "feedback": "A neat message can seem safe. The PIN still lets a payer send money out.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "The logo proves the PIN is only for receiving funds.",
+                    "text": "The logo proves the PIN only receives money.",
                     "feedback": "A bank mark can feel safe. The PIN can still approve money going out.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4161,11 +4161,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A stranger sends a collect request to your UPI app and asks you to approve it. Whose account would send money if you enter your PIN?",
+                "stem": "A stranger sends you a collect request. If you enter your PIN to approve it, whose account pays?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The account linked to your approval.",
+                    "text": "Yours, the one that approves.",
                     "feedback": "Approving a collect request with your PIN authorises a debit from your linked account.",
                     "correct": true,
                     "sourceRefs": [
@@ -4175,7 +4175,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The stranger’s account that asked to collect.",
+                    "text": "The stranger's, who asked to collect.",
                     "feedback": "The requester is asking to receive money. The person who approves with a PIN pays.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4186,7 +4186,7 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "No account, since it is only a request.", "feedback": "A request turns into a payment once the PIN is entered. The money then leaves the account of whoever approves.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  { "id": "c", "text": "No one's; it is only a request.", "feedback": "A request turns into a payment once the PIN is entered. The money then leaves the account of whoever approves.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
                 ]
               },
               {
@@ -4202,11 +4202,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A classmate says every scam needs a broken app. What is the missing route?",
+                "stem": "Jay says every UPI scam needs a hacked app. What is he missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A person can be tricked into approving a real payment.",
+                    "text": "People can be tricked into real payments.",
                     "feedback": "The bank may send the money as asked. The story can still be false.",
                     "correct": true,
                     "sourceRefs": [
@@ -4217,7 +4217,7 @@
                   { "id": "c", "text": "An official-looking request cannot be a scam.", "feedback": "The bank style can win trust. A false story can still lead to a real payment.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
                   {
                     "id": "b",
-                    "text": "A payment app must be hacked before money can leave.",
+                    "text": "An app must be hacked before money leaves.",
                     "feedback": "An app hack may sound like the only risk. A scammer can also trick you into paying.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4242,11 +4242,11 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "Which line best sums up a trick with a UPI payment?",
+                "stem": "Which line best sums up a UPI payment trick?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A false story steers a real payment approval.",
+                    "text": "A false story gets a real payment approved.",
                     "feedback": "The attacker targets a choice on the screen rather than changing the PIN’s job.",
                     "correct": true,
                     "sourceRefs": [
@@ -4256,7 +4256,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The PIN becomes a receipt code.",
+                    "text": "The PIN turns into a receipt code.",
                     "feedback": "The scam calls the PIN a receipt code. The code still approves money going out.",
                     "correct": false,
                     "misconceptionIds": [
