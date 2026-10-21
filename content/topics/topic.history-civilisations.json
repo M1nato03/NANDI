@@ -70,11 +70,11 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "A school visitor finds streets crossing at right angles in Mohenjo-daro. What does that suggest?",
+                "stem": "On a school visit to Mohenjo-daro, Riya sees streets crossing at right angles. What does that tell us?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Some streets followed a planned layout.",
+                    "text": "Some streets were planned.",
                     "feedback": "UNESCO says the lower city has streets that meet at right angles. This points to a plan.",
                     "correct": true,
                     "sourceRefs": [
@@ -85,7 +85,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Every lane grew without any plan.",
+                    "text": "Every lane grew with no plan.",
                     "feedback": "Streets that cross at right angles point to a plan. They do not show each choice made by the builders.",
                     "correct": false,
                     "misconceptionIds": [
@@ -114,11 +114,11 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "In a classroom model, a drain runs from a house toward a street channel. What is the stronger inference?",
+                "stem": "In a classroom model, a drain runs from a house to a street channel. What does this show?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Homes were linked to shared drainage.",
+                    "text": "Homes were linked to shared drains.",
                     "feedback": "The house-to-street link shows a system beyond one building.",
                     "correct": true,
                     "sourceRefs": [
@@ -129,7 +129,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Only public baths could use drains.",
+                    "text": "Only public baths had drains.",
                     "feedback": "A drain from a private house contradicts a bath-only network.",
                     "correct": false,
                     "misconceptionIds": [
@@ -143,7 +143,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The channel supplied drinking water to every home.",
+                    "text": "The channel brought drinking water to every home.",
                     "feedback": "A wastewater drain does not by itself show a drinking-water supply.",
                     "correct": false,
                     "misconceptionIds": [
@@ -171,11 +171,11 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "What pair of clues can we see in the ruins of Mohenjo-daro?",
+                "stem": "Which two things can we still see in the ruins of Mohenjo-daro?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Intersecting streets and an elaborate drain system.",
+                    "text": "Crossing streets and a detailed drain system.",
                     "feedback": "Both features are recorded in UNESCO’s site account.",
                     "correct": true,
                     "sourceRefs": [
@@ -186,7 +186,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A street grid and a deciphered royal archive.",
+                    "text": "A street grid and a decoded royal archive.",
                     "feedback": "The streets are documented, but the Indus script has no accepted reading.",
                     "correct": false,
                     "misconceptionIds": [
@@ -200,7 +200,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "A public bath with no drainage.",
+                    "text": "A public bath with no drains.",
                     "feedback": "The Great Bath had an outlet drain, so the second half misses the evidence.",
                     "correct": false,
                     "misconceptionIds": [
@@ -228,11 +228,11 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "The Great Bath has steps and a water outlet. Why should a guide avoid calling it the king’s pool?",
+                "stem": "The Great Bath has steps and a water outlet. Why not call it the king's pool?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its construction is clear; its exact social use is not.",
+                    "text": "We know how it was built, not who used it.",
                     "feedback": "Archaeology shows the structure, not a secure story about who used it.",
                     "correct": true,
                     "sourceRefs": [
@@ -243,7 +243,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The outlet proves it was a grain store.",
+                    "text": "The outlet proves it stored grain.",
                     "feedback": "The outlet shows how water left the bath. It does not show grain in store.",
                     "correct": false,
                     "misconceptionIds": [
@@ -257,7 +257,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Every large tank in an ancient city was royal.",
+                    "text": "Every big ancient tank was royal.",
                     "feedback": "A large bath does not tell us who used it. It does not name a ruler.",
                     "correct": false,
                     "misconceptionIds": [
@@ -285,7 +285,7 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "In the Indus city of Mohenjo-daro, about how long was the Great Bath tank, per UNESCO?",
+                "stem": "About how long was the Great Bath in the Indus city of Mohenjo-daro?",
                 "options": [
                   {
                     "id": "a",
@@ -348,11 +348,11 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "A display translates an Indus seal into a named ruler’s order. What is the problem?",
+                "stem": "A museum display turns an Indus seal into a named king's order. What is the problem?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "There is no agreed reading of the Indus script.",
+                    "text": "No one can yet read the Indus script.",
                     "feedback": "The signs are real, but we still lack a sure way to read them.",
                     "correct": true,
                     "sourceRefs": [
@@ -363,7 +363,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The signs were on stone, so they cannot be writing.",
+                    "text": "The signs are on stone, so they are not writing.",
                     "feedback": "Material does not decide whether marks are script.",
                     "correct": false,
                     "misconceptionIds": [
@@ -377,7 +377,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The drain network itself translates the seal.",
+                    "text": "The drains help us read the seal.",
                     "feedback": "The drains show skill in building. They do not tell us how to read the signs.",
                     "correct": false,
                     "misconceptionIds": [
@@ -405,7 +405,7 @@
                   "unesco-indus",
                   "unesco-bath"
                 ],
-                "stem": "Put a plausible drainage path in sequence.",
+                "stem": "Put the path of waste water from a house in order.",
                 "options": [
                   {
                     "id": "a",
@@ -420,7 +420,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A house drain carries it outward.",
+                    "text": "A house drain carries it out.",
                     "feedback": "The smaller channel links the house to the street.",
                     "correct": true,
                     "sourceRefs": [
@@ -431,7 +431,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "A street drain carries it onward.",
+                    "text": "A street drain carries it on.",
                     "feedback": "This is the shared part of the network.",
                     "correct": true,
                     "sourceRefs": [
@@ -669,11 +669,11 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "A school play shows a ruler who wants a message to last beyond a palace visit. Which Ashokan medium fits?",
+                "stem": "In a school play, a king wants his message to last for years. Which method did Ashoka use?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "An inscription cut into rock.",
+                    "text": "Words cut into rock.",
                     "feedback": "The Met says Ashoka had words cut into rocks at sites across his realm.",
                     "correct": true,
                     "sourceRefs": [
@@ -692,7 +692,7 @@
                       "ashoka"
                     ]
                   },
-                  { "id": "c", "text": "A cloth banner hung in the palace hall.", "feedback": "Cloth wears out and stays in one room. Ashoka had words cut into rock and pillars across his realm.", "correct": false, "misconceptionIds": ["ashoka-edicts-m1"], "sourceRefs": ["ashoka"] }
+                  { "id": "c", "text": "A cloth banner in the palace hall.", "feedback": "Cloth wears out and stays in one room. Ashoka had words cut into rock and pillars across his realm.", "correct": false, "misconceptionIds": ["ashoka-edicts-m1"], "sourceRefs": ["ashoka"] }
                 ]
               },
               {
@@ -707,11 +707,11 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "A classroom map marks edicts in several regions. What does their spread support?",
+                "stem": "A classroom map marks Ashoka's edicts (carved messages) in many regions. What does that spread show?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Ashoka used public sites to reach different areas.",
+                    "text": "Ashoka used public sites to reach many areas.",
                     "feedback": "The sites are far apart. That fits a ruler who sought to reach people past his main city.",
                     "correct": true,
                     "sourceRefs": [
@@ -732,7 +732,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Every resident could personally read them.",
+                    "text": "Everyone there could read them.",
                     "feedback": "Where a stone stands shows reach. It does not tell us how many people could read it.",
                     "correct": false,
                     "misconceptionIds": [
@@ -756,11 +756,11 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "What words did Ashoka have cut into his later stone pillars?",
+                "stem": "What did Ashoka have carved on his later stone pillars?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Edicts carrying the ruler’s messages.",
+                    "text": "His messages (edicts) to the people.",
                     "feedback": "The Met describes seven later edicts on placed pillars.",
                     "correct": true,
                     "sourceRefs": [
@@ -781,7 +781,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The entire Buddhist canon.",
+                    "text": "All the Buddhist holy texts.",
                     "feedback": "An edict is a royal message, not a copy of all Buddhist texts.",
                     "correct": false,
                     "misconceptionIds": [
@@ -805,11 +805,11 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "A map shows a rock edict far from the capital. Why is that useful historical evidence?",
+                "stem": "A rock edict stands far from Ashoka's capital. What does it tell historians?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It shows a message was placed in that region.",
+                    "text": "His message was placed in that region.",
                     "feedback": "A stone that still stands shows one place where the ruler put his words.",
                     "correct": true,
                     "sourceRefs": [
@@ -818,7 +818,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It proves every person there agreed with Ashoka.",
+                    "text": "Everyone there agreed with Ashoka.",
                     "feedback": "A posted message cannot reveal universal agreement. It shows the message was placed, not how all felt.",
                     "correct": false,
                     "misconceptionIds": [
@@ -830,7 +830,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "It proves the empire had no officials.",
+                    "text": "The empire had no officials.",
                     "feedback": "A far-off stone shows that his words reached the place. It says little about how the whole state was run.",
                     "correct": false,
                     "misconceptionIds": [
@@ -854,7 +854,7 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "For Ashoka’s edicts, about how high is the pillar at Lauriya Nandagarh, per the Met?",
+                "stem": "One of Ashoka's stone pillars still stands at Lauriya Nandagarh. About how tall is it?",
                 "options": [
                   {
                     "id": "a",
@@ -909,11 +909,11 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "Someone calls all Ashokan edicts private Buddhist prayers. Which correction is best?",
+                "stem": "Someone says all of Ashoka's edicts were private Buddhist prayers. What is the best correction?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They were royal messages carved at public sites.",
+                    "text": "They were royal messages at public sites.",
                     "feedback": "Their placement and royal voice make them more than private devotion.",
                     "correct": true,
                     "sourceRefs": [
@@ -922,7 +922,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "They were only taxes with no moral content.",
+                    "text": "They were only taxes, with no moral message.",
                     "feedback": "The edicts described by the Met include Buddhist messages.",
                     "correct": false,
                     "misconceptionIds": [
@@ -934,7 +934,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "They were spoken only at one court ceremony.",
+                    "text": "They were spoken once at one court event.",
                     "feedback": "Stone texts still stand at many sites. So the words were not just said aloud.",
                     "correct": false,
                     "misconceptionIds": [
@@ -958,7 +958,7 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "Trace how a stone edict can reach a later reader.",
+                "stem": "How does a carved message reach a reader years later? Put the steps in order.",
                 "options": [
                   {
                     "id": "a",
@@ -971,7 +971,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The inscription remains at a site.",
+                    "text": "The stone stays at a site.",
                     "feedback": "Stone can outlast one spoken announcement. A person could find the message at the site later.",
                     "correct": true,
                     "sourceRefs": [
@@ -980,7 +980,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Later visitors encounter the words.",
+                    "text": "Later visitors read the words.",
                     "feedback": "A person could come back to the site and find the words again.",
                     "correct": true,
                     "sourceRefs": [
@@ -1006,7 +1006,7 @@
                 "sourceRefs": [
                   "ashoka"
                 ],
-                "stem": "Match each edict surface to a documented feature.",
+                "stem": "Match each type of edict to a known feature.",
                 "options": [
                   {
                     "id": "a",
@@ -1188,11 +1188,11 @@
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "A college map shows a trader at a Central Asian oasis beside a Buddhist complex. What might the location reveal?",
+                "stem": "A college map shows a trader at a Central Asian oasis next to a Buddhist site. What does this tell us?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Trade stops could support religious communities.",
+                    "text": "Trade stops supported religious groups.",
                     "feedback": "The Met describes Buddhist complexes at way stations used by traders.",
                     "correct": true,
                     "sourceRefs": [
@@ -1201,7 +1201,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Monasteries were always far from trade.",
+                    "text": "Monasteries stayed far from trade.",
                     "feedback": "These oasis sites show that trade and monastic life could meet.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1226,11 +1226,11 @@
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "A school exhibit shows art from Gandhara in sites to the west. How might people have spread it?",
+                "stem": "A school exhibit shows Gandhara-style art found farther west. How did it spread?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Movement of people helped artistic forms travel.",
+                    "text": "People on the move carried the style.",
                     "feedback": "The Met links displaced Gandharan monks with western Central Asian art.",
                     "correct": true,
                     "sourceRefs": [
@@ -1239,7 +1239,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "All western artists copied one surviving book.",
+                    "text": "All western artists copied one book.",
                     "feedback": "The source points to contact and movement, not one required book.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1251,7 +1251,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Goods alone explain the style with no people involved.",
+                    "text": "Goods alone carried it; people played no part.",
                     "feedback": "People made, carried and adapted images along the routes.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1275,11 +1275,11 @@
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "Which account best fits the Silk Road routes in the Met’s exhibition?",
+                "stem": "Which picture of the Silk Road fits the Met museum's account?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Overland paths met river and sea trade.",
+                    "text": "Land paths met river and sea trade.",
                     "feedback": "The account traces goods from sea routes via the Indus and mountain passes.",
                     "correct": true,
                     "sourceRefs": [
@@ -1328,7 +1328,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Patrons could pay for images and religious sites.",
+                    "text": "Rich patrons paid for statues and temples.",
                     "feedback": "Trade gave people goods and funds. It also brought them into contact with new groups.",
                     "correct": true,
                     "sourceRefs": [
@@ -1337,7 +1337,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Trade automatically made every merchant a monk.",
+                    "text": "Trade turned every merchant into a monk.",
                     "feedback": "Funding Buddhist art does not mean all traders changed faith.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1373,7 +1373,7 @@
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "For the Silk Road spread of ideas, about how many years had Buddhism thrived in Gandhara and Swat by the fifth century, per the Met?",
+                "stem": "On the Silk Road, Buddhism grew in Gandhara and Swat. By the fifth century, about how many years had it thrived there?",
                 "options": [
                   {
                     "id": "a",
@@ -1428,11 +1428,11 @@
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "A caption calls the Silk Road a single route that never changed. What is the flaw?",
+                "stem": "A caption calls the Silk Road one route that never changed. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The name covers linked routes whose use changed.",
+                    "text": "It was many linked routes that changed over time.",
                     "feedback": "The Met describes sea, river and mountain connections over time.",
                     "correct": true,
                     "sourceRefs": [
@@ -1481,7 +1481,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Goods move by sea toward India.",
+                    "text": "Goods sail toward India.",
                     "feedback": "The account includes Arabian Sea travel. Sea routes were one way people and goods moved.",
                     "correct": true,
                     "sourceRefs": [
@@ -1490,7 +1490,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Cargo moves up the Indus toward Gandhara.",
+                    "text": "Cargo goes up the Indus to Gandhara.",
                     "feedback": "River transport links the coast with the region.",
                     "correct": true,
                     "sourceRefs": [
@@ -1499,7 +1499,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Routes cross passes toward Central Asia.",
+                    "text": "Routes cross mountain passes to Central Asia.",
                     "feedback": "Mountain links carry goods onward. The passes made land travel between areas possible.",
                     "correct": true,
                     "sourceRefs": [
@@ -1753,11 +1753,11 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "A school museum credits one person with all uses of zero. What is a more fair view?",
+                "stem": "A school museum says one person invented every use of zero. What is a fairer view?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Placeholder signs and arithmetic rules developed over time.",
+                    "text": "Zero's uses grew step by step over time.",
                     "feedback": "MacTutor tells a long story with many steps. It does not pin all uses of zero to one day.",
                     "correct": true,
                     "sourceRefs": [
@@ -1767,7 +1767,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The Gwalior inscription proves who first invented zero.",
+                    "text": "The Gwalior carving proves who first invented zero.",
                     "feedback": "It is secure dated evidence, not proof of a sole inventor.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1859,11 +1859,11 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "Why does MacTutor treat “Who made zero?” as a hard question?",
+                "stem": "Why is “Who invented zero?” a hard question?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The placeholder and arithmetic concept have different histories.",
+                    "text": "Zero as a place mark and as a number grew separately.",
                     "feedback": "Old sources show distinct ways to use zero. Those ways did not all start at once.",
                     "correct": true,
                     "sourceRefs": [
@@ -1873,7 +1873,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The zero sign has never appeared in dated writing.",
+                    "text": "Zero has never appeared in dated writing.",
                     "feedback": "MacTutor cites a carved zero at Gwalior that can be dated to 876.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1886,7 +1886,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Brahmagupta created every earlier place-value record.",
+                    "text": "Brahmagupta made every earlier place-value record.",
                     "feedback": "His maths rules came later than some signs used to mark a blank place.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1912,7 +1912,7 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "What year does MacTutor give for the first Indian carved zero that has a sure date?",
+                "stem": "In what year was the first Indian carved zero with a sure date made?",
                 "options": [
                   {
                     "id": "a",
@@ -1971,11 +1971,11 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "An exhibit says the Bakhshali manuscript settles the exact first date for zero. What is missing?",
+                "stem": "An exhibit says the Bakhshali manuscript proves the exact first date for zero. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its dating is debated.",
+                    "text": "Its date is still debated.",
                     "feedback": "The date of that old text is in doubt. It cannot prove one first use of zero.",
                     "correct": true,
                     "sourceRefs": [
@@ -1985,7 +1985,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A later copy can never contain an older idea.",
+                    "text": "A later copy can never hold an older idea.",
                     "feedback": "A copy can preserve earlier work; dating still needs care.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1998,7 +1998,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Gwalior has no securely dated inscription.",
+                    "text": "Gwalior has no surely dated carving.",
                     "feedback": "MacTutor treats the Gwalior sign from 876 as a case with a sure date.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2024,11 +2024,11 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "Trace a known path by which Indian number signs went west.",
+                "stem": "Put the steps of how Indian number signs went west in order.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Indian place-value notation develops.",
+                    "text": "Indians develop place-value numbers.",
                     "feedback": "The Indian number signs and zero sign came first on this path.",
                     "correct": true,
                     "sourceRefs": [
@@ -2038,7 +2038,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Al-Khwarizmi explains Indian reckoning.",
+                    "text": "Al-Khwarizmi explains them in Arabic.",
                     "feedback": "His book taught the system in Arabic. It then reached more readers.",
                     "correct": true,
                     "sourceRefs": [
@@ -2048,7 +2048,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Fibonacci presents the symbols in Europe.",
+                    "text": "Fibonacci shows the signs in Europe.",
                     "feedback": "His Liber Abaci helped carry them west. That book helped more readers learn the Indian numerals.",
                     "correct": true,
                     "sourceRefs": [
@@ -2076,7 +2076,7 @@
                   "zero",
                   "gupta"
                 ],
-                "stem": "Pair a name with a documented role.",
+                "stem": "Match each name to what they did.",
                 "options": [
                   {
                     "id": "a",
@@ -2282,11 +2282,11 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "In a school print shop, a printer moves letters for the next page. What is being reused?",
+                "stem": "In a school print shop, a printer rearranges letters for the next page. What is being reused?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Movable type.",
+                    "text": "Movable type (single letter pieces).",
                     "feedback": "Separate pieces can be set in a new order.",
                     "correct": true,
                     "sourceRefs": [
@@ -2297,7 +2297,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "An unchanged whole-page woodblock.",
+                    "text": "A whole-page woodblock.",
                     "feedback": "A block prints one carved page without rearranging its letters.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2326,11 +2326,11 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "A college exhibit calls Gutenberg the first person anywhere to print with movable type. What needs repair?",
+                "stem": "A college exhibit says Gutenberg was the first anywhere to print with movable type. What needs fixing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "East Asian printers used movable type earlier.",
+                    "text": "Printers in East Asia used it earlier.",
                     "feedback": "The Library of Congress says print work in China and Korea came first.",
                     "correct": true,
                     "sourceRefs": [
@@ -2355,7 +2355,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Korean printers only copied Gutenberg later.",
+                    "text": "Korean printers copied Gutenberg later.",
                     "feedback": "Korean metal type predates his work by centuries.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2383,11 +2383,11 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "Which list puts these print events in the right order?",
+                "stem": "Which list puts these printing events in the right order?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Bi Sheng’s type, Korean metal type, then Gutenberg’s Bible.",
+                    "text": "Bi Sheng, Korean metal type, then Gutenberg.",
                     "feedback": "The sources place these developments in that order.",
                     "correct": true,
                     "sourceRefs": [
@@ -2412,7 +2412,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Korean metal type appeared only after the Bible.",
+                    "text": "Korean metal type came only after the Bible.",
                     "feedback": "A Korean book from 1377 predates the mid-1400s Bible.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2440,11 +2440,11 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "How can Gutenberg’s Bible be important without being the first movable-type book?",
+                "stem": "Gutenberg's Bible was not the first movable-type book. Why is it still important?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It marked a major European printing development.",
+                    "text": "It was a big step for printing in Europe.",
                     "feedback": "His work mattered in Europe. Print had still begun in Asia before that.",
                     "correct": true,
                     "sourceRefs": [
@@ -2455,7 +2455,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Earlier Korean type must be a modern forgery.",
+                    "text": "Earlier Korean type must be a modern fake.",
                     "feedback": "The Library of Congress lists Jikji as an early book made with metal type.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2469,7 +2469,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "European printing began with no type to rearrange.",
+                    "text": "European printing began with no movable letters.",
                     "feedback": "Gutenberg’s process used movable metal type. The letters could be set in a new order.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2497,7 +2497,7 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "In the history of printing and reading, what year does the Library of Congress give for Jikji, the Korean metal-type book?",
+                "stem": "In printing history, what year was Jikji, the Korean metal-type book, made?",
                 "options": [
                   {
                     "id": "a",
@@ -2560,11 +2560,11 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "A guide says movable type instantly gave every person reading skill. What is missing?",
+                "stem": "A guide says movable type at once taught everyone to read. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "More copies do not by themselves teach literacy.",
+                    "text": "More books do not teach reading by themselves.",
                     "feedback": "The press can spread text, while reading requires learning.",
                     "correct": true,
                     "sourceRefs": [
@@ -2575,7 +2575,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Movable type cannot make multiple copies.",
+                    "text": "Movable type cannot make many copies.",
                     "feedback": "Repeated printing is one reason the method mattered.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2589,7 +2589,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "All pre-Gutenberg books were handwritten.",
+                    "text": "All books before Gutenberg were handwritten.",
                     "feedback": "East Asian printing existed before Gutenberg. Books were also made by print in East Asia.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2617,7 +2617,7 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "Put these steps in the story of print from first to last.",
+                "stem": "Put these printing steps in order, from first to last.",
                 "options": [
                   {
                     "id": "a",
@@ -2673,7 +2673,7 @@
                   "loc-asia",
                   "loc-jikji"
                 ],
-                "stem": "Pair the printer or book with its setting.",
+                "stem": "Match each printer or book to its time and place.",
                 "options": [
                   {
                     "id": "a",
@@ -2886,11 +2886,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "In a classroom role play, a Mughal officer holds a mansab. What does that place him within?",
+                "stem": "In a classroom role play, a Mughal officer holds a mansab (rank). What is he part of?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A ranked civil and military apparatus.",
+                    "text": "A ranked system for civil and army jobs.",
                     "feedback": "NCERT describes mansabdari as serving both kinds of state work.",
                     "correct": true,
                     "sourceRefs": [
@@ -2927,11 +2927,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "A school map shows a province with poor land surveys. Why might a detailed zabt tax plan be hard there?",
+                "stem": "A school map shows a province with poor land surveys. Why is the zabt tax plan hard there?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It depends on measurement and careful accounts.",
+                    "text": "It needs measured land and careful records.",
                     "feedback": "NCERT says this system worked where records could be kept.",
                     "correct": true,
                     "sourceRefs": [
@@ -2941,7 +2941,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The emperor had no interest in revenue.",
+                    "text": "The emperor did not care about tax.",
                     "feedback": "The state still got land tax. It lacked good land facts to set the rate here.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2954,7 +2954,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Every province used identical records.",
+                    "text": "Every province kept the same records.",
                     "feedback": "NCERT notes that conditions differed across provinces. Local land and crops could vary from place to place.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2980,11 +2980,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "What was a mainstay of Mughal state income?",
+                "stem": "What was a main source of Mughal state income?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Land revenue from agriculture.",
+                    "text": "Tax on farm land.",
                     "feedback": "NCERT identifies land revenue as a central source.",
                     "correct": true,
                     "sourceRefs": [
@@ -3033,11 +3033,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "A source says many mansabdars received jagirs rather than cash. What were jagirs?",
+                "stem": "Many mansabdars (ranked officers) got jagirs instead of cash. What were jagirs?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Assignments of revenue from regions.",
+                    "text": "The right to collect tax from an area.",
                     "feedback": "NCERT contrasts cash pay with revenue assignments. Officers could get income from an area instead of cash.",
                     "correct": true,
                     "sourceRefs": [
@@ -3047,7 +3047,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Private ownership of every farm in a province.",
+                    "text": "Owning every farm in a province.",
                     "feedback": "A revenue assignment did not make the officer owner of all land.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3086,7 +3086,7 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "For the Mughal zabt revenue rate under Akbar, about how many years of crop and price records does NCERT cite?",
+                "stem": "To set the Mughal zabt tax under Akbar, about how many years of crop and price records were used?",
                 "options": [
                   {
                     "id": "a",
@@ -3145,11 +3145,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "A caption says zabt worked the same way everywhere. What is the key limitation?",
+                "stem": "A caption says zabt worked the same way everywhere. What is its key limit?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It needed land surveys and careful local accounts.",
+                    "text": "It needed land surveys and careful local records.",
                     "feedback": "NCERT notes this was not feasible in some provinces.",
                     "correct": true,
                     "sourceRefs": [
@@ -3159,7 +3159,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Land revenue never mattered outside Delhi.",
+                    "text": "Land tax mattered only around Delhi.",
                     "feedback": "The source does not reduce Mughal farming to one city.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3198,11 +3198,11 @@
                   "mughal",
                   "sathee-mughal"
                 ],
-                "stem": "Put these steps in a simple zabt land tax plan in order.",
+                "stem": "Put the steps of a simple zabt land tax plan in order.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Survey cultivated land and crops.",
+                    "text": "Survey the farmed land and crops.",
                     "feedback": "Measurement is the evidence base. It gave a basis for judging what the land could yield.",
                     "correct": true,
                     "sourceRefs": [
@@ -3212,7 +3212,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Record yields and prices.",
+                    "text": "Record harvests and prices.",
                     "feedback": "These records inform a cash schedule. Crop and price data helped set the cash rate.",
                     "correct": true,
                     "sourceRefs": [
@@ -3222,7 +3222,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Set a revenue rate.",
+                    "text": "Set a tax rate.",
                     "feedback": "The demand follows the survey and accounts. The rate used what the land and crops could yield.",
                     "correct": true,
                     "sourceRefs": [
@@ -3455,11 +3455,11 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "A school timeline starts with the East India Company as a trader. What changed much later?",
+                "stem": "A school timeline shows the East India Company starting as a trader. What changed much later?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It gained territorial and revenue power.",
+                    "text": "It gained land and tax power.",
                     "feedback": "Parliament traces its move from trade to political rule.",
                     "correct": true,
                     "sourceRefs": [
@@ -3470,7 +3470,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The 1600 charter itself gave rule over Bengal.",
+                    "text": "The 1600 charter gave it rule over Bengal.",
                     "feedback": "The revenue grant came in 1765, long after the charter.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3482,7 +3482,7 @@
                       "uk-crown"
                     ]
                   },
-                  { "id": "c", "text": "It stopped trade and left India.", "feedback": "The Company kept trading. Its land and tax power grew later, with wins in battle and then the diwani grant.", "correct": false, "misconceptionIds": ["company-trade-rule-m1"], "sourceRefs": ["company", "uk-company", "uk-crown"] }
+                  { "id": "c", "text": "It stopped trading and left India.", "feedback": "The Company kept trading. Its land and tax power grew later, with wins in battle and then the diwani grant.", "correct": false, "misconceptionIds": ["company-trade-rule-m1"], "sourceRefs": ["company", "uk-company", "uk-crown"] }
                 ]
               },
               {
@@ -3499,11 +3499,11 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "A classroom timeline puts Plassey before the diwani grant. Which reading is sound?",
+                "stem": "A classroom timeline puts the battle of Plassey before the diwani (tax right). Which reading is right?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Military victory came before formal revenue authority.",
+                    "text": "A war win came before the tax right.",
                     "feedback": "Plassey was 1757; the diwani was granted in 1765.",
                     "correct": true,
                     "sourceRefs": [
@@ -3556,11 +3556,11 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "What did the 1765 diwani let the Company do?",
+                "stem": "What did the diwani of 1765 let the Company do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Collect revenue in Bengal, Bihar and Orissa.",
+                    "text": "Collect tax in Bengal, Bihar and Orissa.",
                     "feedback": "The British Library describes the Mughal grant in those terms.",
                     "correct": true,
                     "sourceRefs": [
@@ -3585,7 +3585,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "Trade without any role in administration.",
+                    "text": "Trade with no role in running things.",
                     "feedback": "Revenue collection drew the Company into government. The right to tax land gave it a role in rule.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3613,11 +3613,11 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "Why does Buxar belong between trade and Company rule on a timeline?",
+                "stem": "Why does the battle of Buxar sit between trade and Company rule on a timeline?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It was a military victory before the revenue grant.",
+                    "text": "It was a war win before the tax grant.",
                     "feedback": "Parliament names Buxar in 1764 as part of the shift to territorial power.",
                     "correct": true,
                     "sourceRefs": [
@@ -3628,7 +3628,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "It was the date the Company was founded.",
+                    "text": "It was when the Company was founded.",
                     "feedback": "The trading company began in 1600. The grant came long after its start as a trader.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3670,7 +3670,7 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "What year did the Mughal ruler give the Company the diwani, or land tax right, in Bengal, Bihar and Orissa?",
+                "stem": "In what year did the Mughal ruler give the Company the diwani, the right to collect land tax?",
                 "options": [
                   {
                     "id": "a",
@@ -3733,11 +3733,11 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "A chart says the Company still ran India after 1858. What is wrong?",
+                "stem": "A chart says the Company still ruled India after 1858. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Its administrative powers passed to the Crown.",
+                    "text": "Its powers to govern passed to the Crown.",
                     "feedback": "UK Parliament dates the transfer to the 1858 Act.",
                     "correct": true,
                     "sourceRefs": [
@@ -3748,7 +3748,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The diwani was granted only after Crown rule.",
+                    "text": "The diwani came only after Crown rule.",
                     "feedback": "The 1765 grant preceded Crown rule by decades.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3762,7 +3762,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The Company had never held any administrative power.",
+                    "text": "The Company never had any power to govern.",
                     "feedback": "Its pre-1858 revenue and territorial rule was real.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3790,7 +3790,7 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "Put these steps in the Company’s rise to power in order.",
+                "stem": "Put the steps of the Company's rise to power in order.",
                 "options": [
                   {
                     "id": "a",
@@ -3846,7 +3846,7 @@
                   "uk-company",
                   "uk-crown"
                 ],
-                "stem": "Pair each event with its consequence.",
+                "stem": "Match each event to what it led to.",
                 "options": [
                   {
                     "id": "a",
@@ -4069,7 +4069,7 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "In a school quiz, who debated and adopted India’s Constitution?",
+                "stem": "In a school quiz: who debated and adopted India's Constitution?",
                 "options": [
                   {
                     "id": "a",
@@ -4085,7 +4085,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Ambedkar alone, without an Assembly.",
+                    "text": "Ambedkar alone, with no Assembly.",
                     "feedback": "He chaired the Drafting Committee, while the Assembly debated and adopted the text.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4116,11 +4116,11 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "A college student says the Drafting Committee and full Assembly did the same job. What distinction matters?",
+                "stem": "A college student says the Drafting Committee and the full Assembly did the same job. What is the difference?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The committee prepared a draft for Assembly debate.",
+                    "text": "The committee wrote a draft; the Assembly debated it.",
                     "feedback": "The group and its chair worked on a draft. The full Assembly held the debate.",
                     "correct": true,
                     "sourceRefs": [
@@ -4147,7 +4147,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The Assembly had no role once drafting started.",
+                    "text": "The Assembly had no role once drafting began.",
                     "feedback": "The record shows that the full Assembly held many talks on the draft.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4177,7 +4177,7 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "Which date marks adoption, rather than the start of the Constitution?",
+                "stem": "Which date is when the Constitution was adopted, not when it began?",
                 "options": [
                   {
                     "id": "a",
@@ -4238,11 +4238,11 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "Why is it wrong to say Ambedkar made the whole Constitution alone?",
+                "stem": "Why is it wrong to say Ambedkar wrote the whole Constitution alone?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "He chaired a committee within a debating Assembly.",
+                    "text": "He led a committee inside a debating Assembly.",
                     "feedback": "His central role did not erase the committee and Assembly’s work.",
                     "correct": true,
                     "sourceRefs": [
@@ -4269,7 +4269,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "The Assembly only signed a text without debate.",
+                    "text": "The Assembly signed the text with no debate.",
                     "feedback": "The record has many talks and changes made by the full Assembly.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4366,11 +4366,11 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "A school chart calls the day the text was adopted “Republic Day.” What is wrong with that label?",
+                "stem": "A school chart labels the adoption day as Republic Day. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "That was adoption; commencement was 26 January 1950.",
+                    "text": "That was adoption; it began on 26 January 1950.",
                     "feedback": "Parliament separates the two dates. The text took effect on a later day.",
                     "correct": true,
                     "sourceRefs": [
@@ -4487,7 +4487,7 @@
                   "sansad-debates",
                   "sansad-jubilee"
                 ],
-                "stem": "Pair the body or date with its role.",
+                "stem": "Match each body or date to its role.",
                 "options": [
                   {
                     "id": "a",

@@ -59,11 +59,11 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "A student throws a paper plane across a classroom. As it slows, what may happen to lift?",
+                "stem": "In a classroom, a paper plane slows down as it flies. What happens to its lift (the upward push)?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It can weaken.",
+                    "text": "It gets weaker.",
                     "feedback": "Less relative airflow can reduce the wing's upward force, so the glider may sink.",
                     "correct": true,
                     "sourceRefs": [
@@ -72,7 +72,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The wing can keep the same lift solely because its shape has not changed.",
+                    "text": "It stays the same, since the shape is unchanged.",
                     "feedback": "The shape is still there, so that sounds right. Less moving air can mean less lift.",
                     "correct": false,
                     "misconceptionIds": [
@@ -82,7 +82,7 @@
                       "lift"
                     ]
                   },
-                  { "id": "c", "text": "It always grows as the plane slows.", "feedback": "Slower air past the wing tends to cut lift, not raise it. That is why a slowing glider sinks.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
+                  { "id": "c", "text": "It grows as the plane slows.", "feedback": "Slower air past the wing tends to cut lift, not raise it. That is why a slowing glider sinks.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -96,7 +96,7 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "On a train, a student holds a small paper wing outside a moving air stream, then in it. When can it feel a push?",
+                "stem": "On a train, Om holds a paper wing inside, then out the window in the wind. When does it get pushed?",
                 "options": [
                   {
                     "id": "a",
@@ -109,7 +109,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Before it enters the stream, because its shape makes lift.",
+                    "text": "Before the wind reaches it, because of its shape.",
                     "feedback": "The curved shape looks ready to lift. It still needs air to move past it.",
                     "correct": false,
                     "misconceptionIds": [
@@ -119,7 +119,7 @@
                       "lift"
                     ]
                   },
-                  { "id": "c", "text": "Only when the train stops moving.", "feedback": "A stopped train means less air rushing past. The push comes when air flows over the wing.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
+                  { "id": "c", "text": "Only when the train stops.", "feedback": "A stopped train means less air rushing past. The push comes when air flows over the wing.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -133,7 +133,7 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "A toy glider weighs 2 newtons. For steady level flight, about how much upward lift must balance that weight?",
+                "stem": "A toy glider's weight is 2 newtons (a unit of force). In steady level flight, about how much lift does it need?",
                 "options": [
                   {
                     "id": "a",
@@ -176,11 +176,11 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "A wing sends air downward. Which other force fits Newton's third law?",
+                "stem": "A wing pushes air down. Newton's third law says every push has an equal push back. What pushes back?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Air pushes the wing upward.",
+                    "text": "Air pushes the wing up.",
                     "feedback": "Turning air down and receiving an upward push are two sides of the interaction.",
                     "correct": true,
                     "sourceRefs": [
@@ -199,7 +199,7 @@
                       "lift"
                     ]
                   },
-                  { "id": "c", "text": "Air pulls the wing downward.", "feedback": "Pushing air down brings an equal push back up on the wing. A downward pull would not hold a plane up.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] }
+                  { "id": "c", "text": "Air pulls the wing down.", "feedback": "Pushing air down brings an equal push back up on the wing. A downward pull would not hold a plane up.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] }
                 ]
               },
               {
@@ -213,21 +213,21 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "A glider slows in still air, yet its mass stays the same. Why may it start to descend?",
+                "stem": "A glider slows down in still air. Its weight stays the same. Why does it start to sink?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Less airflow can mean less lift.",
+                    "text": "Less airflow means less lift.",
                     "feedback": "A slower wing may turn less air downward each second, so lift can fall below weight.",
                     "correct": true,
                     "sourceRefs": [
                       "lift"
                     ]
                   },
-                  { "id": "c", "text": "The wing's shape keeps lift fixed at any speed.", "feedback": "The shape stays the same, so this sounds right. Lift also needs moving air.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] },
+                  { "id": "c", "text": "The wing's shape keeps lift the same at any speed.", "feedback": "The shape stays the same, so this sounds right. Lift also needs moving air.", "correct": false, "misconceptionIds": ["lift-m1"], "sourceRefs": ["lift"] },
                   {
                     "id": "b",
-                    "text": "Slower air can raise lift because it stays near the wing longer.",
+                    "text": "Slower air gives more lift by staying longer.",
                     "feedback": "Longer contact can sound like more lift. The slower flow may give less upward push.",
                     "correct": false,
                     "misconceptionIds": [
@@ -251,7 +251,7 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "For a paper plane cruising level, lift points up while weight points ___.",
+                "stem": "A paper plane flies level. Lift points up, and weight points ___.",
                 "options": [
                   {
                     "id": "a",
@@ -289,21 +289,21 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "A model wing lifts in a wind tunnel. A student expects the same lift when it moves just as fast in a vacuum. What is the flaw?",
+                "stem": "A model wing lifts in a wind tunnel. Isha expects the same lift at that speed in a vacuum, with no air. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The wing has no air to turn down.",
+                    "text": "There is no air to push down.",
                     "feedback": "Matching speed is not enough: the wing needs air to receive an upward push.",
                     "correct": true,
                     "sourceRefs": [
                       "lift"
                     ]
                   },
-                  { "id": "c", "text": "The wing can push against empty space in the same way.", "feedback": "Its shape is still there. But no air means no air to turn down.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] },
+                  { "id": "c", "text": "The wing can push on empty space the same way.", "feedback": "Its shape is still there. But no air means no air to turn down.", "correct": false, "misconceptionIds": ["lift-m2"], "sourceRefs": ["lift"] },
                   {
                     "id": "b",
-                    "text": "Matching speed guarantees matching lift, whatever surrounds the wing.",
+                    "text": "Same speed gives same lift, whatever is around it.",
                     "feedback": "The wing keeps its speed and shape. With no air, it has nothing to turn down.",
                     "correct": false,
                     "misconceptionIds": [
@@ -326,7 +326,7 @@
                 "sourceRefs": [
                   "lift"
                 ],
-                "stem": "Put the links of wing lift in order.",
+                "stem": "Put the steps of wing lift in order.",
                 "options": [
                   { "id": "a", "text": "Air flows past the moving wing.", "feedback": "Lift needs moving air first. A still wing in still air makes no lift.", "correct": true, "sourceRefs": ["lift"] },
                   { "id": "b", "text": "The wing turns that air downward.", "feedback": "The angled wing changes the air's path and sends it down behind the wing.", "correct": true, "sourceRefs": ["lift"] },
@@ -461,11 +461,11 @@
                 "sourceRefs": [
                   "quad"
                 ],
-                "stem": "At a school drone demo, one side's rotors push harder. Which motion may begin?",
+                "stem": "At a school drone show, the rotors on one side push harder. What does the drone do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A tilt toward the weaker side.",
+                    "text": "Tilts toward the weaker side.",
                     "feedback": "Unequal upward push makes a turning effect on the craft before it moves sideways.",
                     "correct": true,
                     "sourceRefs": [
@@ -474,7 +474,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Level flight, since all four rotors still run.",
+                    "text": "Stays level, since all rotors still run.",
                     "feedback": "All rotors are on, so it can seem balanced. One side now pushes harder and tips the craft.",
                     "correct": false,
                     "misconceptionIds": [
@@ -484,7 +484,7 @@
                       "quad"
                     ]
                   },
-                  { "id": "c", "text": "A straight climb with no tilt.", "feedback": "A straight climb needs every rotor to push harder together. One stronger side tips the craft instead.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad"] }
+                  { "id": "c", "text": "Climbs straight up with no tilt.", "feedback": "A straight climb needs every rotor to push harder together. One stronger side tips the craft instead.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad"] }
                 ]
               },
               {
@@ -499,11 +499,11 @@
                   "quad",
                   "mit"
                 ],
-                "stem": "In a college lab, a four-rotor craft turns its nose while hovering. What changed?",
+                "stem": "In a college lab, a hovering four-rotor drone turns its nose. What changed?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The balance of rotor spin effects.",
+                    "text": "The balance of the rotors' spin.",
                     "feedback": "Yaw comes from uneven turning moments, even while total upward thrust can still hold height.",
                     "correct": true,
                     "sourceRefs": [
@@ -513,7 +513,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The GPS changed its location command without changing rotor forces.",
+                    "text": "The GPS changed its target, not the rotor forces.",
                     "feedback": "A position command can guide the controller, but a physical turn needs a change in rotor forces.",
                     "correct": false,
                     "misconceptionIds": [
@@ -538,7 +538,7 @@
                 "sourceRefs": [
                   "quad"
                 ],
-                "stem": "A drone hovers on four rotors at 2 newtons each. To pitch nose down while total thrust stays at 8 newtons, each rear rotor rises to 2.5. What thrust must each front rotor give?",
+                "stem": "To tip a drone nose down, its two rear rotors push 2.5 newtons each. Total thrust stays 8. What does each front rotor push?",
                 "options": [
                   {
                     "id": "a",
@@ -581,11 +581,11 @@
                 "sourceRefs": [
                   "quad"
                 ],
-                "stem": "A drone pitches nose down. Which simple cause fits?",
+                "stem": "A drone tips its nose down. What simple cause fits?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Rear thrust exceeds front thrust.",
+                    "text": "The rear rotors push more than the front.",
                     "feedback": "The rear side lifts more, rotating the body toward a lower nose.",
                     "correct": true,
                     "sourceRefs": [
@@ -594,7 +594,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "All rotors push equally at all times.",
+                    "text": "All rotors push equally all the time.",
                     "feedback": "Equal thrust can hold a hover. To pitch down, the rear must push harder.",
                     "correct": false,
                     "misconceptionIds": [
@@ -620,11 +620,11 @@
                   "quad",
                   "mit"
                 ],
-                "stem": "A quadcopter hovers with equal rotor thrust. Why are opposite spin directions still needed?",
+                "stem": "A four-rotor drone hovers with equal thrust. Why do its rotors still spin in opposite directions?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They can cancel yaw turning effects.",
+                    "text": "Opposite spins cancel the twist on the body.",
                     "feedback": "Even when each rotor lifts equally, its spin can turn the craft. Opposite spins help balance that turn.",
                     "correct": true,
                     "sourceRefs": [
@@ -632,10 +632,10 @@
                       "mit"
                     ]
                   },
-                  { "id": "c", "text": "Opposite spins are needed only while the drone moves forward.", "feedback": "A hover looks still. The rotors can still twist the craft unless spin effects balance.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad", "mit"] },
+                  { "id": "c", "text": "Opposite spins matter only when moving forward.", "feedback": "A hover looks still. The rotors can still twist the craft unless spin effects balance.", "correct": false, "misconceptionIds": ["multirotor-turns-m2"], "sourceRefs": ["quad", "mit"] },
                   {
                     "id": "b",
-                    "text": "Equal thrust can cancel every turning effect on the craft.",
+                    "text": "Equal thrust already cancels every twist.",
                     "feedback": "Equal upward push looks fully balanced. Rotor spin can still twist the craft around.",
                     "correct": false,
                     "misconceptionIds": [
@@ -660,7 +660,7 @@
                 "sourceRefs": [
                   "quad"
                 ],
-                "stem": "Rolling changes the craft's tilt from side to side; yaw turns it around the ___ axis.",
+                "stem": "Roll tilts a drone side to side. Yaw turns it around the ___ axis.",
                 "options": [
                   {
                     "id": "a",
@@ -697,21 +697,21 @@
                 "sourceRefs": [
                   "quad"
                 ],
-                "stem": "GPS reports that a drone drifted left, and its controller speeds up rotors. A student says GPS itself pushed it right. What is the flaw?",
+                "stem": "GPS shows a drone drifted left, so its controller speeds up some rotors. Ravi says GPS pushed it right. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The motors made the correcting force.",
+                    "text": "The motors made the push.",
                     "feedback": "GPS supplied a position clue; the controller used it to change rotor forces that moved the craft.",
                     "correct": true,
                     "sourceRefs": [
                       "quad"
                     ]
                   },
-                  { "id": "c", "text": "GPS makes the correction once it knows the error.", "feedback": "A good position clue helps the controller. The motors still need to change force.", "correct": false, "misconceptionIds": ["multirotor-turns-m1"], "sourceRefs": ["quad"] },
+                  { "id": "c", "text": "GPS makes the fix once it knows the error.", "feedback": "A good position clue helps the controller. The motors still need to change force.", "correct": false, "misconceptionIds": ["multirotor-turns-m1"], "sourceRefs": ["quad"] },
                   {
                     "id": "b",
-                    "text": "The position signal is the force that moves the craft.",
+                    "text": "The position signal is the push that moves it.",
                     "feedback": "GPS shows the drift, so it can seem to fix it. Motors make the force.",
                     "correct": false,
                     "misconceptionIds": [
@@ -735,7 +735,7 @@
                   "quad",
                   "mit"
                 ],
-                "stem": "Match the two drone motions with their force patterns.",
+                "stem": "Match each drone motion with its force pattern.",
                 "options": [
                   {
                     "id": "a",
@@ -927,11 +927,11 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "A school drone carries a heavier battery with more energy. What happens to flight time?",
+                "stem": "A school drone gets a heavier battery with more energy. What happens to its flight time?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It may rise by less than energy did.",
+                    "text": "It rises, but less than the energy did.",
                     "feedback": "The extra mass raises the force and power needed to stay aloft.",
                     "correct": true,
                     "sourceRefs": [
@@ -940,7 +940,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The extra energy can double flight time exactly regardless of added weight.",
+                    "text": "It rises as much as the energy did.",
                     "feedback": "Twice the stored energy suggests twice the time. Extra battery mass may raise power use.",
                     "correct": false,
                     "misconceptionIds": [
@@ -950,7 +950,7 @@
                       "battery"
                     ]
                   },
-                  { "id": "c", "text": "It must drop below the old time.", "feedback": "More energy can still add some time. The extra weight eats into the gain, but need not wipe it out.", "correct": false, "misconceptionIds": ["battery-flight-time-m1"], "sourceRefs": ["battery"] }
+                  { "id": "c", "text": "It falls below the old time.", "feedback": "More energy can still add some time. The extra weight eats into the gain, but need not wipe it out.", "correct": false, "misconceptionIds": ["battery-flight-time-m1"], "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -964,11 +964,11 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "At a hostel robotics meet, a craft carries a heavy camera. What likely changes in hover?",
+                "stem": "At a hostel robotics meet, a drone carries a heavy camera. What changes when it hovers?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The motors need more lift.",
+                    "text": "The motors must give more lift.",
                     "feedback": "The extra load adds weight, so the rotors must supply more upward force.",
                     "correct": true,
                     "sourceRefs": [
@@ -977,7 +977,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Hover power stays the same because rotor count did not change.",
+                    "text": "Hover power stays the same; rotor count did not change.",
                     "feedback": "The same rotors still fly, which makes this seem reasonable. Carrying more weight can make them use more power.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1001,7 +1001,7 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "A drone uses a 120 watt-hour battery at 60 watts in hover. A heavier 180 watt-hour battery raises hover power to 90 watts. About how long can it fly in this ideal model?",
+                "stem": "A heavier 180 watt-hour battery makes a drone hover at 90 watts instead of 60. About how many hours can it fly?",
                 "options": [
                   {
                     "id": "a",
@@ -1044,7 +1044,7 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "Two batteries store equal energy but one is heavier. In the same craft, which may give shorter flight?",
+                "stem": "Two batteries hold the same energy, but one is heavier. In the same drone, which gives a shorter flight?",
                 "options": [
                   {
                     "id": "a",
@@ -1057,7 +1057,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The lighter battery must always use more power.",
+                    "text": "The lighter one, which uses more power.",
                     "feedback": "The lighter pack stores less, so it may seem less useful. It needs less lift in hover.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1067,7 +1067,7 @@
                       "battery"
                     ]
                   },
-                  { "id": "c", "text": "Both give the same time, as energy is equal.", "feedback": "Equal energy is only half the story. The heavier pack needs more lift, so it spends that energy faster.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] }
+                  { "id": "c", "text": "Both the same, since energy is equal.", "feedback": "Equal energy is only half the story. The heavier pack needs more lift, so it spends that energy faster.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] }
                 ]
               },
               {
@@ -1082,21 +1082,21 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "A larger battery stores more energy, yet a drone gains little flight time. Why can both observations be true?",
+                "stem": "A bigger battery holds more energy, yet the drone gains little flight time. How can both be true?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Added battery mass can raise hover power.",
+                    "text": "The extra weight raises hover power.",
                     "feedback": "Extra energy helps, but the motors may spend it faster while lifting the heavier craft.",
                     "correct": true,
                     "sourceRefs": [
                       "battery"
                     ]
                   },
-                  { "id": "c", "text": "Battery weight cannot change how much power a hover needs.", "feedback": "The larger pack brings more energy. Its extra mass also asks the motors for more work.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
+                  { "id": "c", "text": "Battery weight cannot change hover power.", "feedback": "The larger pack brings more energy. Its extra mass also asks the motors for more work.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
-                    "text": "Extra stored energy can guarantee the same percent rise in flight time.",
+                    "text": "More energy gives the same percent more time.",
                     "feedback": "More energy often means more time. Extra mass can also make the motors work harder.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1120,7 +1120,7 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "To guess flight time, divide stored energy by how fast the drone uses it. What is that rate?",
+                "stem": "Flight time is stored energy divided by how fast the drone uses it. What is that rate called?",
                 "options": [
                   {
                     "id": "a",
@@ -1158,21 +1158,21 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "A heavier battery stores twice the energy, and a student predicts exactly twice the flight time. Which missing factor could break that prediction?",
+                "stem": "A heavier battery holds twice the energy. Tara predicts exactly twice the flight time. What could break that?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The added weight can raise power use.",
+                    "text": "The added weight raises power use.",
                     "feedback": "The larger energy store can drain faster because the rotors must carry more mass.",
                     "correct": true,
                     "sourceRefs": [
                       "battery"
                     ]
                   },
-                  { "id": "c", "text": "The extra weight affects takeoff but not a steady hover.", "feedback": "Takeoff may feel like the hard part. A heavier craft also needs more lift while it hovers.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
+                  { "id": "c", "text": "Extra weight matters at takeoff, not in hover.", "feedback": "Takeoff may feel like the hard part. A heavier craft also needs more lift while it hovers.", "correct": false, "misconceptionIds": ["battery-flight-time-m2"], "sourceRefs": ["battery"] },
                   {
                     "id": "b",
-                    "text": "Battery energy alone can fix flight time despite heavier hover.",
+                    "text": "Battery energy alone sets flight time.",
                     "feedback": "The battery rating looks like the full answer. Power use also sets how fast it runs down.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1195,11 +1195,11 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "Which line best explains why flight-time charts are estimates?",
+                "stem": "Why are flight-time charts only estimates?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Useable energy and power draw can both change.",
+                    "text": "Usable energy and power use both change.",
                     "feedback": "Wind, payload, and battery mass affect how fast the stored energy is spent.",
                     "correct": true,
                     "sourceRefs": [
@@ -1208,7 +1208,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The battery rating can fix flight minutes regardless of power draw.",
+                    "text": "The battery rating fixes flight time, whatever the power use.",
                     "feedback": "Stored energy is an important input, but the craft's power use can change with weight and flight conditions.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1218,7 +1218,7 @@
                       "battery"
                     ]
                   },
-                  { "id": "c", "text": "Sellers simply make the charts up.", "feedback": "Charts come from tests under set conditions. Wind and payload change power use once the craft is out flying.", "correct": false, "sourceRefs": ["battery"] }
+                  { "id": "c", "text": "Sellers just make them up.", "feedback": "Charts come from tests under set conditions. Wind and payload change power use once the craft is out flying.", "correct": false, "sourceRefs": ["battery"] }
                 ]
               }
             ],
@@ -1360,11 +1360,11 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "At a school lab, a drone tilts quickly under an awning. Which sensor can notice that motion?",
+                "stem": "In a school lab, a drone under a roof tilts quickly. Which sensor notices the tilt?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The inertial sensor.",
+                    "text": "The motion sensor (IMU).",
                     "feedback": "The IMU feels a quick spin or push. It needs no clear view of the sky.",
                     "correct": true,
                     "sourceRefs": [
@@ -1374,10 +1374,10 @@
                       "barometer"
                     ]
                   },
-                  { "id": "c", "text": "The pressure sensor, because it still senses height.", "feedback": "Height sensing can work under a roof. The quick tilt clue comes from the IMU.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
+                  { "id": "c", "text": "The pressure sensor, since it senses height.", "feedback": "Height sensing can work under a roof. The quick tilt clue comes from the IMU.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
-                    "text": "Only the satellite receiver.",
+                    "text": "Only the satellite receiver (GPS).",
                     "feedback": "GPS tracks position, so it sounds like the motion clue. The IMU feels fast tilt nearby.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1406,11 +1406,11 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "On a train platform under a roof, a drone's map dot wanders. What may have weakened?",
+                "stem": "On a train platform under a roof, a drone's map dot wanders. What has weakened?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The satellite position clue.",
+                    "text": "The GPS satellite signal.",
                     "feedback": "A roof can block or bounce the signal. The map dot may drift, though tilt sensing works.",
                     "correct": true,
                     "sourceRefs": [
@@ -1422,7 +1422,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The barometer's ability to sense altitude.",
+                    "text": "The barometer's sense of height.",
                     "feedback": "Both sensors can inform height, so they are easy to confuse. A wandering map dot under a roof points to weak satellite positioning.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1452,7 +1452,7 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "Under a roof, GPS reports 18 metres of height with a weak signal. A calibrated barometer reports 12 metres. About what height should the controller use from these clues?",
+                "stem": "Under a roof, weak GPS says 18 metres high. A checked barometer (air-pressure sensor) says 12 metres. Which height should the drone use?",
                 "options": [
                   {
                     "id": "a",
@@ -1504,7 +1504,7 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "Which sensor mainly gives a pressure clue used for height?",
+                "stem": "Which sensor reads air pressure to track height?",
                 "options": [
                   {
                     "id": "a",
@@ -1550,11 +1550,11 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "A drone briefly loses GPS under a roof but keeps moving. Why can its controller still use IMU data?",
+                "stem": "Under a roof, a drone loses GPS for a moment but keeps flying. Why can it still use its IMU?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The IMU senses quick motion between location clues.",
+                    "text": "The IMU senses motion between GPS fixes.",
                     "feedback": "The IMU tracks quick turns and moves while the GPS signal is weak. Its errors can grow.",
                     "correct": true,
                     "sourceRefs": [
@@ -1564,10 +1564,10 @@
                       "barometer"
                     ]
                   },
-                  { "id": "c", "text": "The IMU stops working as soon as GPS drops out.", "feedback": "GPS is a strong map clue. The IMU can still sense quick motion on its own.", "correct": false, "misconceptionIds": ["flight-sensors-m1"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
+                  { "id": "c", "text": "The IMU stops once GPS drops out.", "feedback": "GPS is a strong map clue. The IMU can still sense quick motion on its own.", "correct": false, "misconceptionIds": ["flight-sensors-m1"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
-                    "text": "The IMU gives exact map coordinates without satellites.",
+                    "text": "The IMU gives exact map points without satellites.",
                     "feedback": "Fast motion data can seem like a full map. An IMU alone cannot fix an exact spot.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1597,7 +1597,7 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "A quick spin is sensed by an IMU; a map location can be aided by ___.",
+                "stem": "An IMU senses a quick spin. A map location is helped by ___.",
                 "options": [
                   {
                     "id": "a",
@@ -1644,11 +1644,11 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "A GPS dot wanders under a roof. A student averages its readings and calls the result exact. What remains uncertain?",
+                "stem": "Under a roof, a GPS dot wanders. Dev averages its readings and calls the result exact. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Blocked signals can keep the location wrong.",
+                    "text": "Blocked signals can still leave it wrong.",
                     "feedback": "A roof can block or bend signals. Taking their average may still leave the dot wrong.",
                     "correct": true,
                     "sourceRefs": [
@@ -1658,10 +1658,10 @@
                       "barometer"
                     ]
                   },
-                  { "id": "c", "text": "More GPS readings can make a blocked signal exact.", "feedback": "More data can cut random noise. A shared roof error may still remain.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
+                  { "id": "c", "text": "More readings make a blocked signal exact.", "feedback": "More data can cut random noise. A shared roof error may still remain.", "correct": false, "misconceptionIds": ["flight-sensors-m2"], "sourceRefs": ["px4", "gps", "gpsaccuracy", "barometer"] },
                   {
                     "id": "b",
-                    "text": "Averaging always removes every roof-related error.",
+                    "text": "Averaging removes every roof error.",
                     "feedback": "More readings often help. A roof can skew them all in the same way.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1690,11 +1690,11 @@
                   "gpsaccuracy",
                   "barometer"
                 ],
-                "stem": "Which explanation fits a drone under a school roof?",
+                "stem": "A drone flies under a school roof. Which line fits?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Tilt sensing may work while GPS gets worse.",
+                    "text": "Tilt sensing still works; GPS gets worse.",
                     "feedback": "The IMU feels movement on board. A roof may block the space signals.",
                     "correct": true,
                     "sourceRefs": [
@@ -1706,7 +1706,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A roof can block both satellites and the onboard tilt sensor.",
+                    "text": "The roof blocks satellites and the tilt sensor.",
                     "feedback": "The roof blocks sky signals, so all sensing may seem gone. The IMU still feels tilt.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1877,7 +1877,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "A student sees a bird flap beside a train. What can the wing stroke help provide?",
+                "stem": "From a train, a student sees a bird flapping alongside. What does each wing stroke give it?",
                 "options": [
                   {
                     "id": "a",
@@ -1890,7 +1890,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Lift alone, with no help for forward motion.",
+                    "text": "Lift only, no forward push.",
                     "feedback": "Wings are often linked only with lift, but a bird's stroke can also help move it forward.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1914,7 +1914,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "During a school trip, a jet passes overhead with wings that do not flap. Why can it stay up?",
+                "stem": "On a school trip, a jet passes over. Its wings do not flap. How does it stay up?",
                 "options": [
                   {
                     "id": "a",
@@ -1925,10 +1925,10 @@
                       "bird"
                     ]
                   },
-                  { "id": "c", "text": "The wing shape lifts even with no air moving past it.", "feedback": "Its shape is easy to see. The wing still needs moving air to make lift.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
+                  { "id": "c", "text": "Wing shape lifts even with no air moving.", "feedback": "Its shape is easy to see. The wing still needs moving air to make lift.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
-                    "text": "Engine thrust itself holds the plane up.",
+                    "text": "Engine thrust holds it up.",
                     "feedback": "The engine keeps the plane moving, so it can seem to provide all support. Airflow over the fixed wings creates the lift.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1951,7 +1951,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "A plane weighs 500 newtons in steady level flight. Its engine gives 200 newtons of forward thrust. About how much upward lift must its fixed wings still make?",
+                "stem": "A plane weighing 500 newtons flies level. Its engine pushes forward with 200 newtons. How much lift must the wings make?",
                 "options": [
                   {
                     "id": "a",
@@ -1994,7 +1994,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "On a plane, which part mainly gives forward thrust?",
+                "stem": "On a plane, what mainly pushes it forward?",
                 "options": [
                   {
                     "id": "a",
@@ -2007,7 +2007,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The fixed wing's upward lift.",
+                    "text": "The wing's upward lift.",
                     "feedback": "The wing supplies an important force, but that force is upward; the engine mainly supplies forward thrust.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2031,7 +2031,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "A bird glides without flapping and a plane flies with fixed wings. What common condition lets both wings lift?",
+                "stem": "A bird glides without flapping. A plane flies on fixed wings. What lets both wings lift?",
                 "options": [
                   {
                     "id": "a",
@@ -2042,10 +2042,10 @@
                       "bird"
                     ]
                   },
-                  { "id": "c", "text": "Only powered wings can make lift.", "feedback": "Flapping can add motion. A gliding wing also meets moving air.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
+                  { "id": "c", "text": "Only powered wings make lift.", "feedback": "Flapping can add motion. A gliding wing also meets moving air.", "correct": false, "misconceptionIds": ["birds-and-planes-m1"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
-                    "text": "Both wings must flap to keep air moving.",
+                    "text": "Both wings must flap to move air.",
                     "feedback": "Birds often flap, so it looks required. A glide also moves air past a wing.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2069,7 +2069,7 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "A jet engine mainly gives thrust; the fixed wings mainly give ___.",
+                "stem": "A jet engine mainly gives thrust. The fixed wings mainly give ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2107,21 +2107,21 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "A plane’s engine stops, yet it glides for a while. A student says only flapping wings can lift without engine thrust. What is missing?",
+                "stem": "A plane's engine stops, but it glides for a while. Sam says only flapping wings lift without an engine. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Forward glide keeps air moving past fixed wings.",
+                    "text": "Gliding keeps air moving past fixed wings.",
                     "feedback": "The plane can trade height for motion, and its fixed wings can still make lift.",
                     "correct": true,
                     "sourceRefs": [
                       "bird"
                     ]
                   },
-                  { "id": "c", "text": "A fixed wing stops lifting the instant the engine stops.", "feedback": "The engine drives flight, so this feels likely. A glide still keeps air moving past the wing.", "correct": false, "misconceptionIds": ["birds-and-planes-m2"], "sourceRefs": ["bird"] },
+                  { "id": "c", "text": "A fixed wing stops lifting when the engine stops.", "feedback": "The engine drives flight, so this feels likely. A glide still keeps air moving past the wing.", "correct": false, "misconceptionIds": ["birds-and-planes-m2"], "sourceRefs": ["bird"] },
                   {
                     "id": "b",
-                    "text": "Engine thrust is the only possible source of wing airflow.",
+                    "text": "Only the engine can move air past a wing.",
                     "feedback": "The engine drove the plane, so lift may seem to stop with it. A glide keeps air flowing.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2144,11 +2144,11 @@
                 "sourceRefs": [
                   "bird"
                 ],
-                "stem": "Which comparison captures the shared rule?",
+                "stem": "What do birds and planes share in flight?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Both use air to make lift, by different motions.",
+                    "text": "Both use moving air for lift, in different ways.",
                     "feedback": "Bird wingbeats can add thrust, while a plane engine drives air past its fixed wings.",
                     "correct": true,
                     "sourceRefs": [
@@ -2157,7 +2157,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Both need powered wingbeats to keep air moving.",
+                    "text": "Both need flapping wings to move air.",
                     "feedback": "Flapping is familiar from birds, but gliding birds and fixed-wing planes can both get lift from moving air without wingbeats.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2305,11 +2305,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A classroom fan starts while the window stays shut. What reaches a student's face?",
+                "stem": "A classroom fan starts. The window stays shut. What reaches a student's face?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Faster moving room air.",
+                    "text": "Room air, moving faster.",
                     "feedback": "The blades push air through the room, giving a breeze without making new cold air.",
                     "correct": true,
                     "sourceRefs": [
@@ -2319,7 +2319,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Air that the fan cooled while it spun.",
+                    "text": "Air the fan has cooled.",
                     "feedback": "The breeze feels cooler on skin, which suggests colder air. The fan moves room air rather than lowering its temperature.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2330,7 +2330,7 @@
                       "cooling"
                     ]
                   },
-                  { "id": "c", "text": "Fresh air pulled in from outside.", "feedback": "With the window shut, no outside air comes in. The fan just speeds up the air already in the room.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
+                  { "id": "c", "text": "Fresh air from outside.", "feedback": "With the window shut, no outside air comes in. The fan just speeds up the air already in the room.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] }
                 ]
               },
               {
@@ -2345,11 +2345,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "During monsoon heat, a hostel fan runs in an empty room. Who feels its breeze?",
+                "stem": "In monsoon heat, a hostel fan runs in an empty room. Who or what does it cool?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No person in that room.",
+                    "text": "No one, since nobody is there.",
                     "feedback": "The motor still moves air, but the main cooling effect needs a person beneath it.",
                     "correct": true,
                     "sourceRefs": [
@@ -2359,7 +2359,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The room air cools while the fan runs.",
+                    "text": "The room air itself.",
                     "feedback": "A fan feels cool on skin. In an empty room, it just moves the air.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2385,7 +2385,7 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A breeze from a fan helps a student feel cool, but no heat leaves the room. About how many degrees Celsius does the breeze alone lower room air temperature?",
+                "stem": "A fan's breeze makes a student feel cool, but no heat leaves the room. By how many degrees does the room air cool?",
                 "options": [
                   {
                     "id": "a",
@@ -2431,11 +2431,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "Why can the same air feel cooler when it moves over skin?",
+                "stem": "Why does moving air feel cooler on skin?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It helps sweat evaporate.",
+                    "text": "It helps sweat dry (evaporate).",
                     "feedback": "Moving air helps sweat dry. That can cool skin while the room air stays warm.",
                     "correct": true,
                     "sourceRefs": [
@@ -2445,7 +2445,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The fan lowers the air temperature before it reaches skin.",
+                    "text": "The fan chills the air before it reaches you.",
                     "feedback": "The breeze feels cool, so the air may seem colder. It helps sweat dry; the room stays warm.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2472,11 +2472,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A tilted fan blade spins and makes a breeze. Why does the tilt matter?",
+                "stem": "Fan blades are tilted. Why does the tilt matter?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It redirects nearby air as it turns.",
+                    "text": "It pushes nearby air along as it turns.",
                     "feedback": "The blade pushes air along; that moving air can then pass over skin.",
                     "correct": true,
                     "sourceRefs": [
@@ -2484,7 +2484,7 @@
                       "cooling"
                     ]
                   },
-                  { "id": "c", "text": "Spin alone moves air the same way with a flat blade.", "feedback": "The motor makes the motion. Blade tilt helps aim and push the air.", "correct": false, "misconceptionIds": ["ceiling-fans-m2"], "sourceRefs": ["fan", "cooling"] },
+                  { "id": "c", "text": "A flat blade would move air just as well.", "feedback": "The motor makes the motion. Blade tilt helps aim and push the air.", "correct": false, "misconceptionIds": ["ceiling-fans-m2"], "sourceRefs": ["fan", "cooling"] },
                   {
                     "id": "b",
                     "text": "A blade cools the air mainly by touching it.",
@@ -2513,7 +2513,7 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A fan moves room air; an air conditioner can lower the air's ___.",
+                "stem": "A fan moves room air. An air conditioner can lower the air's ___.",
                 "options": [
                   {
                     "id": "a",
@@ -2527,7 +2527,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Speed over a person's skin.",
+                    "text": "Speed over your skin.",
                     "feedback": "A breeze feels cool on skin. An air conditioner can cool the air in the room too.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2553,11 +2553,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "A student feels cooler under a fan, but a room thermometer has not changed. What did she mix up when she called the whole room cooler?",
+                "stem": "Under a fan, Meera feels cooler, but the room thermometer has not changed. She says the room is cooler. What did she mix up?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Skin cooling and room air cooling.",
+                    "text": "Cooler skin and cooler room air.",
                     "feedback": "Moving air helps sweat dry and cools skin. The room thermometer can stay the same.",
                     "correct": true,
                     "sourceRefs": [
@@ -2565,7 +2565,7 @@
                       "cooling"
                     ]
                   },
-                  { "id": "c", "text": "A breeze turns warm room air into cold air.", "feedback": "The moving air may feel cooler, but its temperature need not fall.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] },
+                  { "id": "c", "text": "A breeze turns warm air into cold air.", "feedback": "The moving air may feel cooler, but its temperature need not fall.", "correct": false, "misconceptionIds": ["ceiling-fans-m1"], "sourceRefs": ["fan", "cooling"] },
                   {
                     "id": "b",
                     "text": "Skin and air must cool by the same amount.",
@@ -2593,11 +2593,11 @@
                   "fan",
                   "cooling"
                 ],
-                "stem": "Which line best explains a fan during a hot exam?",
+                "stem": "Which line best explains a fan on a hot exam day?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Moving air can cool people without chilling the room.",
+                    "text": "Moving air cools skin without chilling the room.",
                     "feedback": "The breeze raises evaporation and heat loss at skin while air temperature may stay near the same.",
                     "correct": true,
                     "sourceRefs": [
@@ -2607,7 +2607,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A fan can cool room air as it spins without moving heat out.",
+                    "text": "A fan cools room air without moving heat out.",
                     "feedback": "The breeze feels cool on skin. The fan moves air without chilling the room.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2765,7 +2765,7 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "At a college canteen, Asha pays a seller’s UPI ID. Where is the money taken from?",
+                "stem": "At a college canteen, Asha pays to a seller's UPI ID. Where does the money come from?",
                 "options": [
                   {
                     "id": "a",
@@ -2778,7 +2778,7 @@
                       "npci-booklet"
                     ]
                   },
-                  { "id": "c", "text": "Cash kept in the app until the seller accepts it.", "feedback": "The app shows the pay screen, so it can look like a wallet. The linked bank sends the funds.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
+                  { "id": "c", "text": "Cash held in the app until the seller accepts.", "feedback": "The app shows the pay screen, so it can look like a wallet. The linked bank sends the funds.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
                     "text": "A balance stored inside the ID.",
@@ -2808,11 +2808,11 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "During a train ride, Ravi shares his UPI ID for a refund. What can the sender use it for?",
+                "stem": "On a train, Ravi shares his UPI ID to get a refund. What can the sender do with it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Finding the linked payment address.",
+                    "text": "Find where to send the money.",
                     "feedback": "The sender can direct money to that ID without being given the full account number.",
                     "correct": true,
                     "sourceRefs": [
@@ -2823,7 +2823,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sharing the ID can reveal Ravi’s private UPI PIN.",
+                    "text": "See Ravi's private UPI PIN.",
                     "feedback": "The ID helps a sender find Ravi. It does not reveal his private PIN.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2835,7 +2835,7 @@
                       "npci-booklet"
                     ]
                   },
-                  { "id": "c", "text": "Taking money out of Ravi's account.", "feedback": "A UPI ID lets money be sent to Ravi. Money leaves his account only when he approves with his PIN.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
+                  { "id": "c", "text": "Take money out of Ravi's account.", "feedback": "A UPI ID lets money be sent to Ravi. Money leaves his account only when he approves with his PIN.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               },
               {
@@ -2851,7 +2851,7 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "A student has ₹1,500 in a bank account linked to a UPI app. She deletes the app without paying anyone. About how much stays in that bank account?",
+                "stem": "A student has ₹1,500 in a bank account linked to her UPI app. She deletes the app. How much stays in the bank?",
                 "options": [
                   {
                     "id": "a",
@@ -2907,11 +2907,11 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "What is a VPA in UPI?",
+                "stem": "In UPI, what is a VPA?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A virtual payment address.",
+                    "text": "A virtual payment address, like your UPI ID.",
                     "feedback": "It is an ID used to direct a payment without typing the full account details.",
                     "correct": true,
                     "sourceRefs": [
@@ -2922,7 +2922,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "An account balance held by the payment app.",
+                    "text": "A balance held by the payment app.",
                     "feedback": "The app displays an ID and a balance, so they can seem to be the same thing. The VPA is an address linked to a bank account.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2950,11 +2950,11 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "A student says a UPI app sends money without any bank. What is the flaw?",
+                "stem": "Kiran says a UPI app sends money without any bank. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "UPI links accounts at banks.",
+                    "text": "UPI moves money between bank accounts.",
                     "feedback": "The app is a front door to a bank-to-bank payment through the shared system.",
                     "correct": true,
                     "sourceRefs": [
@@ -2963,10 +2963,10 @@
                       "npci-booklet"
                     ]
                   },
-                  { "id": "c", "text": "The UPI ID holds the cash until the app sends it.", "feedback": "The ID appears on screen, so it can look like a wallet. It names a payment address.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
+                  { "id": "c", "text": "The UPI ID holds the cash until it is sent.", "feedback": "The ID appears on screen, so it can look like a wallet. It names a payment address.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
-                    "text": "The app's own balance replaces the linked bank account.",
+                    "text": "The app's own balance replaces the bank.",
                     "feedback": "The app is the visible part of payment, but linked banks carry out the account transfer.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2993,7 +2993,7 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "Payer approves, NPCI routes, and the linked ___ carry out the transfer.",
+                "stem": "The payer approves, NPCI (India's payment network) routes it, and the linked ___ move the money.",
                 "options": [
                   {
                     "id": "a",
@@ -3036,11 +3036,11 @@
                   "npci-bhim",
                   "npci-booklet"
                 ],
-                "stem": "A classmate says a UPI ID alone proves a payment is complete. What is missing?",
+                "stem": "A classmate says a UPI ID alone proves a payment is done. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Approval and a successful transfer.",
+                    "text": "Approval and a completed transfer.",
                     "feedback": "The address names a destination; the payer still has to authorise a payment that completes.",
                     "correct": true,
                     "sourceRefs": [
@@ -3049,7 +3049,7 @@
                       "npci-booklet"
                     ]
                   },
-                  { "id": "c", "text": "Sharing the ID means the sender has already paid.", "feedback": "The address is ready to use. A payment still needs approval and a transfer.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
+                  { "id": "c", "text": "Sharing the ID means the money is paid.", "feedback": "The address is ready to use. A payment still needs approval and a transfer.", "correct": false, "misconceptionIds": ["upi-path-m1"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] },
                   {
                     "id": "b",
                     "text": "An address is the same as a receipt.",
@@ -3106,7 +3106,7 @@
                       "npci-booklet"
                     ]
                   },
-                  { "id": "c", "text": "NPCI keeps the money and pays it later.", "feedback": "NPCI routes the request but does not hold the money. The linked banks debit and credit the accounts.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
+                  { "id": "c", "text": "NPCI keeps the money and pays later.", "feedback": "NPCI routes the request but does not hold the money. The linked banks debit and credit the accounts.", "correct": false, "misconceptionIds": ["upi-path-m2"], "sourceRefs": ["npci-upi-faq", "npci-bhim", "npci-booklet"] }
                 ]
               }
             ],
@@ -3271,7 +3271,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A finished picture painted by the lens.",
+                    "text": "A finished picture made by the lens.",
                     "feedback": "The lens frames the scene, so it can seem to paint it. It sends light to the sensor.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3282,7 +3282,7 @@
                       "nasa-phone"
                     ]
                   },
-                  { "id": "c", "text": "Extra light made by the screen.", "feedback": "The screen does not light the scene for the sensor. Only light from the scene comes through the lens.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
+                  { "id": "c", "text": "Extra light from the screen.", "feedback": "The screen does not light the scene for the sensor. Only light from the scene comes through the lens.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               },
               {
@@ -3298,11 +3298,11 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "At a college fest, a phone camera faces bright stage lamps. What does each sensor site help record?",
+                "stem": "At a college fest, a phone camera faces bright stage lights. What does each tiny sensor spot record?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A reading from incoming light.",
+                    "text": "How much light hits it.",
                     "feedback": "Each tiny site reads light. The phone then makes the image data.",
                     "correct": true,
                     "sourceRefs": [
@@ -3313,7 +3313,7 @@
                   { "id": "c", "text": "A light reading saved by the lens itself.", "feedback": "The lens aims light, so it can seem to record it. The sensor makes the reading.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
-                    "text": "A complete coloured picture of that part of the scene.",
+                    "text": "A full colour picture of that spot.",
                     "feedback": "A finished photo has colour at each point, but each sensor site first records a light signal for later processing.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3339,7 +3339,7 @@
                   "nasa-phone",
                   "bayer-paper"
                 ],
-                "stem": "In a standard Bayer colour-filter pattern on a camera sensor, about how much of the filter array is green?",
+                "stem": "Phone camera sensors put a red, green or blue filter on each tiny spot. About how much of the filter grid is green?",
                 "options": [
                   {
                     "id": "a",
@@ -3431,11 +3431,11 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "Two phones have the same pixel count but different lenses. Why might their photos still differ?",
+                "stem": "Two phones have the same pixel count but different lenses. Why can their photos differ?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The light reaching the sensor can differ.",
+                    "text": "Different light reaches the sensor.",
                     "feedback": "Pixel count alone says little about the lens or the later image processing.",
                     "correct": true,
                     "sourceRefs": [
@@ -3443,10 +3443,10 @@
                       "nasa-phone"
                     ]
                   },
-                  { "id": "c", "text": "The lens matters only when the pixel counts differ.", "feedback": "Pixel count is easy to compare. Lens quality can alter the light even at the same count.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
+                  { "id": "c", "text": "The lens matters only if pixel counts differ.", "feedback": "Pixel count is easy to compare. Lens quality can alter the light even at the same count.", "correct": false, "misconceptionIds": ["phone-camera-m2"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
-                    "text": "Pixel count can make lens differences irrelevant.",
+                    "text": "Pixel count makes the lens not matter.",
                     "feedback": "Pixel count is easy to compare. Lens light and later processing can still change the photo.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3472,7 +3472,7 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "A lens has aimed light at a phone sensor. What step is still needed before a finished photo exists?",
+                "stem": "A lens has aimed light at a phone sensor. What step is left before there is a photo?",
                 "options": [
                   {
                     "id": "a",
@@ -3512,11 +3512,11 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "A classmate says a sensor pixel stores a tiny full-colour painting. What is inaccurate?",
+                "stem": "A classmate says each sensor pixel stores a tiny full-colour painting. What is wrong?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "It records light information.",
+                    "text": "Each pixel records only a light reading.",
                     "feedback": "Filters sort the light. The phone uses many readings to make a colour photo.",
                     "correct": true,
                     "sourceRefs": [
@@ -3524,10 +3524,10 @@
                       "nasa-phone"
                     ]
                   },
-                  { "id": "c", "text": "A sensor site stores a full colour from the scene.", "feedback": "The final photo has colour. Each site first gives a light reading for later work.", "correct": false, "misconceptionIds": ["phone-camera-m1"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
+                  { "id": "c", "text": "Each pixel stores a full colour from the scene.", "feedback": "The final photo has colour. Each site first gives a light reading for later work.", "correct": false, "misconceptionIds": ["phone-camera-m1"], "sourceRefs": ["nasa-camera", "nasa-phone"] },
                   {
                     "id": "b",
-                    "text": "Every site contains a finished scene.",
+                    "text": "Every pixel holds a finished scene.",
                     "feedback": "The final photo shows a scene, so each site can seem like a tiny copy. It reads light.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3553,11 +3553,11 @@
                   "nasa-camera",
                   "nasa-phone"
                 ],
-                "stem": "Which sequence best explains a phone photo?",
+                "stem": "Which order best explains a phone photo?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Light, sensor signals, image processing.",
+                    "text": "Light, then sensor signals, then processing.",
                     "feedback": "The lens guides light to sites that produce data for a final photo.",
                     "correct": true,
                     "sourceRefs": [
@@ -3567,7 +3567,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Lens forms a full photo, then the sensor saves it.",
+                    "text": "The lens makes a photo; the sensor saves it.",
                     "feedback": "The lens frames the scene, so it can seem to finish the photo. The sensor must read light first.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3578,7 +3578,7 @@
                       "nasa-phone"
                     ]
                   },
-                  { "id": "c", "text": "Screen, light, then sensor.", "feedback": "The display only shows the result at the end. Light comes first, then sensor signals, then processing.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
+                  { "id": "c", "text": "Screen, then light, then sensor.", "feedback": "The display only shows the result at the end. Light comes first, then sensor signals, then processing.", "correct": false, "sourceRefs": ["nasa-camera", "nasa-phone"] }
                 ]
               }
             ],
@@ -3726,7 +3726,7 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "On a clear Delhi afternoon, sunlight crosses the air above a school. Which colour scatters strongly across the sky?",
+                "stem": "On a clear Delhi afternoon, which colour of sunlight spreads most across the sky above a school?",
                 "options": [
                   {
                     "id": "a",
@@ -3766,7 +3766,7 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "At sunset on a train, the Sun looks orange near the horizon. What changed in the light’s route?",
+                "stem": "From a train at sunset, the Sun looks orange near the horizon. What changed about the light's path?",
                 "options": [
                   {
                     "id": "a",
@@ -3807,7 +3807,7 @@
                   "nasa-light",
                   "nasa-rayleigh"
                 ],
-                "stem": "In clear air, Rayleigh scattering varies as one over wavelength to the fourth power. About how many times more strongly does 450 nm blue light scatter than 700 nm red light?",
+                "stem": "Scattering goes as 1 ÷ wavelength to the fourth power. About how many times more does blue light (450 nm) scatter than red (700 nm)?",
                 "options": [
                   {
                     "id": "a",
@@ -3858,7 +3858,7 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "Blue light scatters more than red in clear air. Which feature of blue light helps explain the difference?",
+                "stem": "Blue light scatters more than red in clear air. What about blue light explains this?",
                 "options": [
                   {
                     "id": "a",
@@ -3899,11 +3899,11 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "Why can a clear sky be blue while the low Sun appears red?",
+                "stem": "Why is a clear sky blue while the low Sun looks red?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They show light from different paths.",
+                    "text": "The light reaches you by different paths.",
                     "feedback": "Scattered blue reaches the side view; the long direct path has less blue left.",
                     "correct": true,
                     "sourceRefs": [
@@ -3911,10 +3911,10 @@
                       "nasa-light"
                     ]
                   },
-                  { "id": "c", "text": "The sky and Sun are coloured by different kinds of sunlight.", "feedback": "The views look unlike. The same light takes different paths through the air.", "correct": false, "misconceptionIds": ["sky-colours-m2"], "sourceRefs": ["nasa-sky", "nasa-light"] },
+                  { "id": "c", "text": "Different kinds of sunlight colour the sky and Sun.", "feedback": "The views look unlike. The same light takes different paths through the air.", "correct": false, "misconceptionIds": ["sky-colours-m2"], "sourceRefs": ["nasa-sky", "nasa-light"] },
                   {
                     "id": "b",
-                    "text": "The Sun emits red light only near the horizon.",
+                    "text": "The Sun gives off red light only near the horizon.",
                     "feedback": "The low Sun looks red, so its output can seem different. The longer air path scatters more blue from the direct beam.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3939,7 +3939,7 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "At sunset, the direct beam has crossed a longer path of ___.",
+                "stem": "At sunset, sunlight crosses a longer path of ___.",
                 "options": [
                   {
                     "id": "a",
@@ -3980,11 +3980,11 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "A student says a red sunset proves the Sun emitted no blue light. What is missing?",
+                "stem": "Raj says a red sunset proves the Sun sent out no blue light. What is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Blue light scattered away along the path.",
+                    "text": "The blue scattered away along the path.",
                     "feedback": "The beam began with many colours; air changes which reach the eye directly.",
                     "correct": true,
                     "sourceRefs": [
@@ -4020,11 +4020,11 @@
                   "nasa-sky",
                   "nasa-light"
                 ],
-                "stem": "Which line links the two sky colours?",
+                "stem": "Which line links the blue sky and red sunset?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Blue spreads sideways; a long path leaves more red ahead.",
+                    "text": "Blue spreads sideways; a long path leaves red.",
                     "feedback": "Scattering sends blue around the sky while sunset light loses more blue directly.",
                     "correct": true,
                     "sourceRefs": [
@@ -4034,7 +4034,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The Sun switches to emitting mostly red light at dusk.",
+                    "text": "The Sun gives off mostly red light at dusk.",
                     "feedback": "The Sun appears red, but the longer path through air changes which colours remain in the direct beam.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4193,7 +4193,7 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "In a family shop kitchen, a sealed pressure cooker heats dal. What happens to water’s boiling point inside?",
+                "stem": "In a family shop kitchen, a sealed pressure cooker heats dal. What happens to the water's boiling point?",
                 "options": [
                   {
                     "id": "a",
@@ -4233,7 +4233,7 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "At a hostel kitchen, two pots heat the same beans. One is open; one is under pressure. Which can reach hotter boiling water?",
+                "stem": "In a hostel kitchen, one pot of beans is open and one is a pressure cooker. Which can boil hotter?",
                 "options": [
                   {
                     "id": "a",
@@ -4247,7 +4247,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "The open pot by turning up its flame.",
+                    "text": "The open pot, with a bigger flame.",
                     "feedback": "A bigger flame makes more bubbles, so hotter water seems likely. Open pressure stays about the same.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4273,7 +4273,7 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "A pressure cooker reaches its working pressure. In the standard high-pressure example, about what temperature in Celsius can its water reach while boiling?",
+                "stem": "At full working pressure, about how hot can the boiling water in a pressure cooker get, in degrees Celsius?",
                 "options": [
                   {
                     "id": "a",
@@ -4333,7 +4333,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Always lowers it.",
+                    "text": "Lowers it.",
                     "feedback": "More push might sound like less room to heat. Higher pressure raises the boiling point.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4359,11 +4359,11 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "Why may dal cook sooner in a cooker even though both pots contain boiling water?",
+                "stem": "Both pots hold boiling water. Why does dal cook sooner in the pressure cooker?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The cooker’s boiling water can be hotter.",
+                    "text": "The cooker's boiling water is hotter.",
                     "feedback": "The word boiling does not mean the same temperature at every pressure.",
                     "correct": true,
                     "sourceRefs": [
@@ -4371,10 +4371,10 @@
                       "gsu-pressure"
                     ]
                   },
-                  { "id": "c", "text": "The cooker cooks faster only because steam adds flavour.", "feedback": "Steam is easy to notice. Pressure lets the boiling water get hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
+                  { "id": "c", "text": "Only because steam adds flavour.", "feedback": "Steam is easy to notice. Pressure lets the boiling water get hotter.", "correct": false, "misconceptionIds": ["pressure-cooker-m1"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
                   {
                     "id": "b",
-                    "text": "Both boils can be as hot if the open flame is strong enough.",
+                    "text": "A strong flame makes both boils as hot.",
                     "feedback": "Both pots boil, so equal heat seems fair. The cooker has more pressure and a hotter boil.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4399,7 +4399,7 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "An open pot moves from a high hill to sea level, where air pressure is higher. Its boiling point goes ___.",
+                "stem": "An open pot goes from a high hill down to sea level, where air pressure is higher. Its boiling point goes ___.",
                 "options": [
                   {
                     "id": "a",
@@ -4424,7 +4424,7 @@
                       "gsu-pressure"
                     ]
                   },
-                  { "id": "c", "text": "Stays exactly the same.", "feedback": "Air pressure changes with height, so the boiling point shifts too. At sea level it goes up.", "correct": false, "sourceRefs": ["usda-pressure", "gsu-pressure"] }
+                  { "id": "c", "text": "Nowhere; it stays put.", "feedback": "Air pressure changes with height, so the boiling point shifts too. At sea level it goes up.", "correct": false, "sourceRefs": ["usda-pressure", "gsu-pressure"] }
                 ]
               },
               {
@@ -4440,7 +4440,7 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "A classmate says a strong flame makes an open pot boil at cooker temperature. What is wrong?",
+                "stem": "Sana says a strong flame makes an open pot boil as hot as a cooker. What is wrong?",
                 "options": [
                   {
                     "id": "a",
@@ -4452,10 +4452,10 @@
                       "gsu-pressure"
                     ]
                   },
-                  { "id": "c", "text": "More flame alone raises the open water's boiling point.", "feedback": "The water boils harder, so it may seem hotter. The open pot keeps the same air pressure.", "correct": false, "misconceptionIds": ["pressure-cooker-m2"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
+                  { "id": "c", "text": "More flame raises the open pot's boiling point.", "feedback": "The water boils harder, so it may seem hotter. The open pot keeps the same air pressure.", "correct": false, "misconceptionIds": ["pressure-cooker-m2"], "sourceRefs": ["usda-pressure", "gsu-pressure"] },
                   {
                     "id": "b",
-                    "text": "Any flame raises the open pot’s pressure.",
+                    "text": "Any flame raises the open pot's pressure.",
                     "feedback": "A large flame makes a hard boil. It does not seal the pot or raise its pressure.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4480,11 +4480,11 @@
                   "usda-pressure",
                   "gsu-pressure"
                 ],
-                "stem": "Which line explains a pressure cooker without a recipe?",
+                "stem": "Which line explains how a pressure cooker works?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Higher pressure permits a hotter boil.",
+                    "text": "Higher pressure allows a hotter boil.",
                     "feedback": "Hotter water and steam can transfer heat to food faster than an open boil.",
                     "correct": true,
                     "sourceRefs": [
