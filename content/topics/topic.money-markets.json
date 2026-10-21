@@ -53,7 +53,7 @@
               },
               {
                 "id": "inflation-c3",
-                "text": "India's inflation rate compares the price of a basket in one month with the same month a year earlier, using prices collected from over 50,000 shops.",
+                "text": "India's inflation rate compares the price of a basket this month with the same month last year. Survey staff collect the prices in markets across India.",
                 "sourceRefs": [
                   "cpi"
                 ]
@@ -228,9 +228,9 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Survey staff note prices in 50,000+ shops.",
+                    "text": "Survey staff note prices in towns and villages.",
                     "correct": true,
-                    "feedback": "Yes. Staff visit over 50,000 shops in 2,295 markets every month to record retail prices.",
+                    "feedback": "Yes. Every month, survey staff record retail prices in markets across India, in towns and in villages.",
                     "sourceRefs": [
                       "cpi"
                     ]
@@ -248,7 +248,7 @@
                     "id": "c",
                     "text": "It guesses from a few big cities.",
                     "correct": false,
-                    "feedback": "No guessing is involved. Prices come from over 50,000 shops across 2,295 markets.",
+                    "feedback": "No guessing is involved. Survey staff record prices every month in markets across India, in villages as well as cities.",
                     "sourceRefs": [
                       "cpi"
                     ]
@@ -554,7 +554,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms 50,000+ shops in 2,295 markets monthly and the same-month-last-year formula; DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
+              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms monthly price collection and the same-month-last-year formula (shop and market counts dropped 22 Oct: they described the old 2012-base series; the 2024-base series from Jan 2026 uses a different market list); DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
             },
             "steps": [
               {
@@ -592,7 +592,7 @@
                 "visual": {
                   "kind": "flow",
                   "nodes": [
-                    "Prices from 50,000+ shops",
+                    "Prices from many markets",
                     "One basket",
                     "Compare with last year"
                   ]
@@ -4368,7 +4368,7 @@
               },
               {
                 "id": "upi-scams-c2",
-                "text": "A collect request asks the payer to approve money leaving an account.",
+                "text": "Entering a UPI PIN approves money leaving your account. You never need a PIN to receive money.",
                 "sourceRefs": [
                   "npci-fraud",
                   "npci-faq"
@@ -4428,12 +4428,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "At a college fest, a caller asks Priya to approve a collect request for a prize. What is he asking for?",
+                "stem": "At a college fest, a caller says Priya won a prize and asks for her UPI PIN to send it. What would the PIN really do?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Permission for a payment.",
-                    "feedback": "The word collect can hide that the person approving it is the payer.",
+                    "text": "Approve a payment from her account.",
+                    "feedback": "A PIN only ever lets money leave. A real prize would arrive with no PIN at all.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4442,8 +4442,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "Proof the prize will reach her account.",
-                    "feedback": "A prize message makes approval sound like a receipt step, but a collect request asks the payer to authorise money leaving.",
+                    "text": "Let the prize reach her account.",
+                    "feedback": "Getting money never needs a PIN, so a request for one is a sign that money is about to leave.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4453,7 +4453,7 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "A survey about the fest.", "feedback": "A collect request is not a survey. Approving it with a PIN lets money leave the payer's account.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  { "id": "c", "text": "A survey about the fest.", "feedback": "A PIN is not a survey answer. Typing it approves a payment from her own account.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
                 ]
               },
               {
@@ -4468,12 +4468,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A fake message promises ₹200 cashback but sends a ₹2,000 UPI collect request. If you enter your PIN, about what do you pay?",
+                "stem": "A fake message promises ₹200 cashback, but the UPI payment screen it opens shows ₹2,000. If you enter your PIN, about what do you pay?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About ₹2,000.",
-                    "feedback": "The collect request asks the student to pay ₹2,000. The ₹200 promise does not change that amount.",
+                    "feedback": "The screen asks you to pay ₹2,000. The ₹200 promise does not change that amount at all.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4483,7 +4483,7 @@
                   {
                     "id": "b",
                     "text": "About ₹200 comes in.",
-                    "feedback": "The cashback promise describes a receipt, but the ₹2,000 collect request asks you to pay.",
+                    "feedback": "The cashback promise describes money coming in, but the screen you approve is a ₹2,000 payment.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4496,7 +4496,7 @@
                   {
                     "id": "c",
                     "text": "About ₹1,800 leaves.",
-                    "feedback": "Subtracting the promised cashback assumes it arrives. The approved collect request is for the full ₹2,000.",
+                    "feedback": "Subtracting the promised cashback assumes it arrives. The approved payment is for the full ₹2,000.",
                     "correct": false,
                     "misconceptionIds": ["upi-scams-m1"],
                     "sourceRefs": ["npci-fraud", "npci-faq"]
@@ -4602,12 +4602,12 @@
                   "npci-fraud",
                   "npci-faq"
                 ],
-                "stem": "A stranger sends you a collect request. If you enter your PIN to approve it, whose account pays?",
+                "stem": "A stranger says to enter your UPI PIN so you can get money. If you do, whose account pays?",
                 "options": [
                   {
                     "id": "a",
                     "text": "Yours, the one that approves.",
-                    "feedback": "Entering your PIN on a collect request approves money leaving your own linked account.",
+                    "feedback": "A PIN approves money leaving your own linked account, whatever the stranger says it is for.",
                     "correct": true,
                     "sourceRefs": [
                       "npci-fraud",
@@ -4616,8 +4616,8 @@
                   },
                   {
                     "id": "b",
-                    "text": "The stranger's, who asked to collect.",
-                    "feedback": "The requester is asking to receive money. The person who approves with a PIN pays.",
+                    "text": "The stranger's, who promised the money.",
+                    "feedback": "The stranger wants to receive money. The person who types the PIN is the one who pays.",
                     "correct": false,
                     "misconceptionIds": [
                       "upi-scams-m1"
@@ -4627,7 +4627,7 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "No one's; it is only a request.", "feedback": "A request turns into a payment once the PIN is entered. The money then leaves the account of whoever approves.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  { "id": "c", "text": "No one's; a PIN only checks your name.", "feedback": "A PIN is not just a name check. Once it is entered, money leaves the account of whoever typed it.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
                 ]
               },
               {

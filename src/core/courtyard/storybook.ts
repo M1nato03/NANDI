@@ -40,7 +40,7 @@ const LINES: Record<AreaId, Lines> = {
 };
 const QUIET = ['A quiet week in the courtyard. The friends rested and kept your place warm.', 'The courtyard had a slow week. Everyone is still here, ready when you are.'] as const;
 // Spec 15: soft days get their own page. {day} is the weekday of a single soft day; {n} the count.
-const SOFT_ONE = ['On {day} you were tired and still lit a lantern.', 'On {day} you went gently, and Kachhua lit a lantern for it.'] as const;
+const SOFT_ONE = ['On {day} you took it slow and still lit a lantern.', 'On {day} you went gently, and Kachhua lit a lantern for it.'] as const;
 const SOFT_MANY = ['{n} lanterns this week. Kachhua kept every one glowing.', '{n} soft days this week, and a lantern for each. You kept showing up.'] as const;
 const CLOSE = ['That was your week. Same courtyard, a little more lived in.', 'Week done. The friends are saving a spot for next week.'] as const;
 

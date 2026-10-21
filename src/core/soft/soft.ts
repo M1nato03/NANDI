@@ -3,7 +3,7 @@ import { RULES } from '../rules.config';
 
 /**
  * Spec 15, soft days. On a tired or low day one gentle thing keeps the day. Two ledger kinds:
- * `soft-start` { state } (one per day, the latest wins; 'okay' switches back) and `soft` { choice } (the gentle thing done).
+ * `soft-start` { state } (one row per tap, the latest wins; 'okay' switches back) and `soft` { choice } (the gentle thing done).
  */
 export type SoftState = 'tired' | 'low';
 export type SoftChoice = 'breathe' | 'stretch' | 'tiny-task' | 'outside' | 'kind-word' | 'good-thing';
@@ -36,7 +36,8 @@ export const KIND_WORDS = [
 ] as const;
 
 const live = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey);
-const latest = (facts: readonly LedgerRow[]) => [...facts].sort((a, b) => a.updatedAt - b.updatedAt).at(-1);
+// Ties (two taps in one millisecond) fall back to the id, which is monotonic within a day.
+const latest = (facts: readonly LedgerRow[]) => [...facts].sort((a, b) => a.updatedAt - b.updatedAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).at(-1);
 
 export interface SoftToday { state: SoftState | null; done: LedgerRow | null }
 /** Today's soft state: the latest soft-start (unless switched back to okay) and the gentle thing, if done. */
@@ -89,7 +90,7 @@ export function softNumbers(facts: readonly LedgerRow[], today: string): SoftNum
   const soft = new Set(lanternDays(live2));
   const finished = startDays.filter(day => soft.has(day)).length;
   const minutes = startDays.flatMap(day => {
-    const start = live2.filter(fact => fact.dayKey === day && fact.kind === 'soft-start').sort((a, b) => a.updatedAt - b.updatedAt)[0];
+    const start = live2.filter(fact => fact.dayKey === day && fact.kind === 'soft-start' && fact.inputs.state !== 'okay').sort((a, b) => a.updatedAt - b.updatedAt)[0];
     const done = live2.filter(fact => fact.dayKey === day && fact.kind === 'soft').sort((a, b) => a.updatedAt - b.updatedAt)[0];
     return start && done && done.updatedAt >= start.updatedAt ? [(done.updatedAt - start.updatedAt) / 60_000] : [];
   });

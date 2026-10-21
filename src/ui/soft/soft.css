@@ -39,5 +39,7 @@
 .soft-care .sheet-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .soft-care .button-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 12px; background: var(--button); color: var(--button-ink); font-weight: 700; text-decoration: none; }
 .soft-note { margin: 0; }
-@media (prefers-reduced-motion: reduce) { .soft-breath span { animation-duration: 20s; } }
-:root[data-motion="reduce"] .soft-breath span { animation-duration: 20s; }
+/* Reduced motion: no growing circle; a still ring that only fades, and the words lead the breath. */
+@keyframes soft-breath-fade { 0%, 100% { opacity: .45; } 45%, 55% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .soft-breath span { width: 140px; height: 140px; animation-name: soft-breath-fade; } }
+:root[data-motion="reduce"] .soft-breath span { width: 140px; height: 140px; animation-name: soft-breath-fade; }

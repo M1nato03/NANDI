@@ -30,3 +30,12 @@ it('saves an update backup to Documents without a share sheet', async () => {
   expect(mock.writeFile).toHaveBeenCalledWith({ path: file.name, data: '{}', directory: 'DOCUMENTS', encoding: 'utf8' });
   expect(mock.share).not.toHaveBeenCalled();
 });
+
+it('treats a closed share sheet as not sent when asked, and names the kind-word sheet', async () => {
+  mock.share.mockClear(); mock.share.mockRejectedValueOnce(new Error('Share canceled'));
+  const file = new File([new Uint8Array([137, 80, 78, 71])], 'kind-word.png', { type: 'image/png' });
+  expect(await shareOrDownload(file, 'Thinking of you today.', { title: 'A kind word', dialogTitle: 'Send a kind word', cancelledIfClosed: true })).toBe('cancelled');
+  expect(mock.share).toHaveBeenCalledWith(expect.objectContaining({ title: 'A kind word', dialogTitle: 'Send a kind word' }));
+  mock.share.mockRejectedValueOnce(new Error('Share canceled'));
+  expect(await shareOrDownload(file)).toBe('downloaded');
+});

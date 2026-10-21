@@ -78,7 +78,7 @@ export function EconomyFeedback() {
         if (count < RULES.juice.macroPerDayMax) {
           store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
           queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Mor',
-            detail: `${past.season.sp} SP · ${past.totalXp.toLocaleString()} XP · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
+            detail: `${past.season.sp} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
             nextSeason: `Next season · Season ${season.index + 1}` }));
         }
       }
@@ -115,7 +115,11 @@ export function EconomyFeedback() {
     // Spec 15 D: the first marked day after a miss brings a fixed, announced gift (a soft day counts too).
     const welcomed = (view.days.at(-1)?.welcome ?? 0) > 0 && !(oldView.days.at(-1)?.welcome);
     const welcomeLine = 'Welcome back. Here is a small gift for coming back.';
-    if (welcomed && !achievement && !dropFinished && !justCompleted) { void tapHaptic(true, 20); setNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return; }
+    if (welcomed && !achievement && !dropFinished && !justCompleted) {
+      // On a soft day the gift line sits inside the calm soft finish, with no count-up overlay.
+      if ((view.days.at(-1)?.soft ?? 0) > 0) return;
+      void tapHaptic(true, 20); setNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return;
+    }
     if (!achievement && !dropFinished && !justCompleted) return;
     const macro = !justCompleted && !!macroKind && realWorld && !afterBedtime && count < RULES.juice.macroPerDayMax;
     if (macro || justCompleted) store.set(sessionStorage, key, String(count + 1));
