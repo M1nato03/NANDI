@@ -959,7 +959,19 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "Nothing; interest is paid just once.", "feedback": "Interest keeps arriving at the same rate. Each time, it builds on the larger total left in the account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] }
+                  {
+                    "id": "c",
+                    "text": "Nothing; interest is paid just once.",
+                    "feedback": "Interest keeps arriving at the same rate. Each time, it builds on the larger total left in the account.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
                 ]
               },
               {
@@ -999,7 +1011,19 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "Both earn the same on past gains.", "feedback": "Only kept gains join the base. The club that withdraws its gains earns nothing on them next year.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] }
+                  {
+                    "id": "c",
+                    "text": "Both earn the same on past gains.",
+                    "feedback": "Only kept gains join the base. The club that withdraws its gains earns nothing on them next year.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
                 ]
               },
               {
@@ -1039,7 +1063,16 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "₹20.", "feedback": "That doubles the first gain. Ten percent of ₹110 is ₹11, so the second year adds ₹11.", "correct": false, "sourceRefs": ["compound", "sip"] }
+                  {
+                    "id": "c",
+                    "text": "₹20.",
+                    "feedback": "That doubles the first gain. Ten percent of ₹110 is ₹11, so the second year adds ₹11.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 11,
@@ -1075,7 +1108,19 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "A monthly payment makes the fund rise monthly.", "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip"] },
+                  {
+                    "id": "c",
+                    "text": "A monthly payment makes the fund rise monthly.",
+                    "feedback": "A steady pay date can feel like steady growth. The fund price can still fall.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m2"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A fixed return from each payment.",
@@ -1116,7 +1161,19 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "Both grow by the same rupees each year.", "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.", "correct": false, "misconceptionIds": ["compounding-m1"], "sourceRefs": ["compound", "sip"] },
+                  {
+                    "id": "c",
+                    "text": "Both grow by the same rupees each year.",
+                    "feedback": "The common rate makes this sound fair. Saved gains grow the base in only one account.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m1"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Its rate rises each year.",
@@ -1170,7 +1227,16 @@
                       "sip"
                     ]
                   },
-                  { "id": "c", "text": "₹20.", "feedback": "The gain alone is too small a base. The next 10% is worked out on the full ₹220.", "correct": false, "sourceRefs": ["compound", "sip"] }
+                  {
+                    "id": "c",
+                    "text": "₹20.",
+                    "feedback": "The gain alone is too small a base. The next 10% is worked out on the full ₹220.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "compound",
+                      "sip"
+                    ]
+                  }
                 ]
               },
               {
@@ -1200,7 +1266,20 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "Nothing: past gains make the next gain certain.", "feedback": "A rising line can invite that guess. A real share can lose value next year.", "correct": false, "misconceptionIds": ["compounding-m2"], "sourceRefs": ["compound", "sip", "investing"] },
+                  {
+                    "id": "c",
+                    "text": "Nothing: past gains make the next gain certain.",
+                    "feedback": "A rising line can invite that guess. A real share can lose value next year.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "compounding-m2"
+                    ],
+                    "sourceRefs": [
+                      "compound",
+                      "sip",
+                      "investing"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Nothing: the chart's steady rate will carry on.",
@@ -1451,7 +1530,15 @@
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "About 72 years.", "feedback": "Seventy-two is the number you divide, not the answer. Divided by 8, it gives about nine years.", "correct": false, "sourceRefs": ["rule72"] }
+                  {
+                    "id": "c",
+                    "text": "About 72 years.",
+                    "feedback": "Seventy-two is the number you divide, not the answer. Divided by 8, it gives about nine years.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
                 ]
               },
               {
@@ -1488,7 +1575,15 @@
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "Both take the same time.", "feedback": "Different rates give different waits. 72 ÷ 9 is 8 years, while 72 ÷ 6 is 12 years.", "correct": false, "sourceRefs": ["rule72"] }
+                  {
+                    "id": "c",
+                    "text": "Both take the same time.",
+                    "feedback": "Different rates give different waits. 72 ÷ 9 is 8 years, while 72 ÷ 6 is 12 years.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
                 ]
               },
               {
@@ -1525,7 +1620,15 @@
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "6 years.", "feedback": "A lower rate makes doubling slower, not faster. 72 ÷ 3 gives about 24 years.", "correct": false, "sourceRefs": ["rule72"] }
+                  {
+                    "id": "c",
+                    "text": "6 years.",
+                    "feedback": "A lower rate makes doubling slower, not faster. 72 ÷ 3 gives about 24 years.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 24,
@@ -1559,7 +1662,18 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "As the true answer, using this year's rate.", "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72"] },
+                  {
+                    "id": "c",
+                    "text": "As the true answer, using this year's rate.",
+                    "feedback": "A current rate is easy to plug in. The shortcut needs it to stay steady for the guess.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m2"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "As a sure date for doubling.",
@@ -1597,7 +1711,18 @@
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "The 12% one takes longer, since it earns more.", "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72"] },
+                  {
+                    "id": "c",
+                    "text": "The 12% one takes longer, since it earns more.",
+                    "feedback": "More gain can sound like more time. At a steady rate, more gain means a shorter wait.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A bigger starting balance doubles faster.",
@@ -1647,7 +1772,15 @@
                       "rule72"
                     ]
                   },
-                  { "id": "c", "text": "About 216 years.", "feedback": "That multiplies instead of dividing. The rule asks for 72 ÷ 3, which is about 24 years.", "correct": false, "sourceRefs": ["rule72"] }
+                  {
+                    "id": "c",
+                    "text": "About 216 years.",
+                    "feedback": "That multiplies instead of dividing. The rule asks for 72 ÷ 3, which is about 24 years.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rule72"
+                    ]
+                  }
                 ]
               },
               {
@@ -1675,7 +1808,19 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "The rule averages the two rates itself.", "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.", "correct": false, "misconceptionIds": ["rule-of-72-m2"], "sourceRefs": ["rule72", "investing"] },
+                  {
+                    "id": "c",
+                    "text": "The rule averages the two rates itself.",
+                    "feedback": "A quick rule may seem to handle changes. Here it uses one assumed steady rate.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m2"
+                    ],
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "This year's 8% can stand for every year.",
@@ -1728,7 +1873,19 @@
                       "investing"
                     ]
                   },
-                  { "id": "c", "text": "It tells the day money doubles.", "feedback": "The shortcut gives a rough guess, not a date. Real growth sums and changing rates can differ.", "correct": false, "misconceptionIds": ["rule-of-72-m1"], "sourceRefs": ["rule72", "investing"] }
+                  {
+                    "id": "c",
+                    "text": "It tells the day money doubles.",
+                    "feedback": "The shortcut gives a rough guess, not a date. Real growth sums and changing rates can differ.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "rule-of-72-m1"
+                    ],
+                    "sourceRefs": [
+                      "rule72",
+                      "investing"
+                    ]
+                  }
                 ]
               }
             ],
@@ -1879,7 +2036,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Both are the same.", "feedback": "One game always pays ₹12. The other swings from ₹0 to ₹30, so its range is much wider.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Both are the same.",
+                    "feedback": "One game always pays ₹12. The other swings from ₹0 to ₹30, so its range is much wider.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -1916,7 +2084,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Only a gain, since exam week brings buyers.", "feedback": "Exam weeks can bring buyers, but nothing makes sales sure. Unsold stock can turn the plan into a loss.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Only a gain, since exam week brings buyers.",
+                    "feedback": "Exam weeks can bring buyers, but nothing makes sales sure. Unsold stock can turn the plan into a loss.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -1953,7 +2132,15 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "No gain or loss: ₹0.", "feedback": "The average payout is ₹25, below the ₹30 ticket. On average, each ticket ends ₹5 down.", "correct": false, "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "No gain or loss: ₹0.",
+                    "feedback": "The average payout is ₹25, below the ₹30 ticket. On average, each ticket ends ₹5 down.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": -5,
@@ -1996,7 +2183,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "The name of the prize sponsor.", "feedback": "Who pays the prize says little about risk. What matters is how often poor results happen and how bad they are.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "The name of the prize sponsor.",
+                    "feedback": "Who pays the prize says little about risk. What matters is how often poor results happen and how bad they are.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2021,7 +2219,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "A possible 30% gain is the average.", "feedback": "The headline gain stands out. An average also needs the other results and their chances.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] },
+                  {
+                    "id": "c",
+                    "text": "A possible 30% gain is the average.",
+                    "feedback": "The headline gain stands out. An average also needs the other results and their chances.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Holding longer makes 30% the average.",
@@ -2071,7 +2280,15 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Lower chance of zero.", "feedback": "The ₹0 branch makes a zero more likely, not less. What the second option clearly has is a wider spread.", "correct": false, "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Lower chance of zero.",
+                    "feedback": "The ₹0 branch makes a zero more likely, not less. What the second option clearly has is a wider spread.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2097,7 +2314,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Same average means the same lowest payout.", "feedback": "A shared average can hide the spread. One game can still have a much worse low result.", "correct": false, "misconceptionIds": ["risk-return-m2"], "sourceRefs": ["risk"] },
+                  {
+                    "id": "c",
+                    "text": "Same average means the same lowest payout.",
+                    "feedback": "A shared average can hide the spread. One game can still have a much worse low result.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A higher top prize forces the average up.",
@@ -2146,7 +2374,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "A sure prize is the better choice.", "feedback": "The example compares spread, not which is better. A sure prize narrows the range but caps the gain.", "correct": false, "misconceptionIds": ["risk-return-m1"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "A sure prize is the better choice.",
+                    "feedback": "The example compares spread, not which is better. A sure prize narrows the range but caps the gain.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "risk-return-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               }
             ],
@@ -2289,7 +2528,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Sales shift to its other products.", "feedback": "There are no other products to shift to. With one line, the rain hits all of the shop's sales.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Sales shift to its other products.",
+                    "feedback": "There are no other products to shift to. With one line, the rain hits all of the shop's sales.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2326,7 +2576,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Both are hit equally.", "feedback": "Only the juice-only stall depends fully on fruit. The other has snacks that do not use fruit.", "correct": false, "misconceptionIds": ["diversification-m1"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Both are hit equally.",
+                    "feedback": "Only the juice-only stall depends fully on fruit. The other has snacks that do not use fruit.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m1"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2363,7 +2624,15 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "4 holdings.", "feedback": "Business type does not stop a flood. All four shops sit in the same zone, so none is shielded.", "correct": false, "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "4 holdings.",
+                    "feedback": "Business type does not stop a flood. All four shops sit in the same zone, so none is shielded.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 0,
@@ -2406,7 +2675,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "None, since there are four firms.", "feedback": "Four firms can still share one weak spot. Here a bad harvest can hit every firm at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "None, since there are four firms.",
+                    "feedback": "Four firms can still share one weak spot. Here a bad harvest can hit every firm at once.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2432,7 +2712,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "A mix protects against shocks hitting all firms.", "feedback": "Spread can help with one firm's loss. A shared shock can still pull all holdings down.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
+                  {
+                    "id": "c",
+                    "text": "A mix protects against shocks hitting all firms.",
+                    "feedback": "Spread can help with one firm's loss. A shared shock can still pull all holdings down.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Each holding cancels the others' losses.",
@@ -2482,7 +2773,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "None, once you hold ten.", "feedback": "More holdings can cut single-firm harm, but not shared shocks. A broad market fall can still reach the mix.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "None, once you hold ten.",
+                    "feedback": "More holdings can cut single-firm harm, but not shared shocks. A broad market fall can still reach the mix.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               },
               {
@@ -2508,7 +2810,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Ten names make sure one escapes.", "feedback": "Many names look spread out. Here each business still needs the same crop.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] },
+                  {
+                    "id": "c",
+                    "text": "Ten names make sure one escapes.",
+                    "feedback": "Many names look spread out. Here each business still needs the same crop.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Equal amounts in each remove the crop risk.",
@@ -2557,7 +2870,18 @@
                       "risk"
                     ]
                   },
-                  { "id": "c", "text": "Only when one holding drops to zero.", "feedback": "Losses can come without any holding hitting zero. A common shock can push many parts down a little at once.", "correct": false, "misconceptionIds": ["diversification-m2"], "sourceRefs": ["risk"] }
+                  {
+                    "id": "c",
+                    "text": "Only when one holding drops to zero.",
+                    "feedback": "Losses can come without any holding hitting zero. A common shock can push many parts down a little at once.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
+                    "sourceRefs": [
+                      "risk"
+                    ]
+                  }
                 ]
               }
             ],
@@ -2689,7 +3013,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "A fixed payout every year.", "feedback": "Owners may get a payout, so it can sound owed. A firm may pay none.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  {
+                    "id": "c",
+                    "text": "A fixed payout every year.",
+                    "feedback": "Owners may get a payout, so it can sound owed. A firm may pay none.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m2"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A loan she made to the firm.",
@@ -2738,7 +3073,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Only until the price falls.", "feedback": "A falling price changes what the share is worth, not who owns it. The holder remains an owner.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  {
+                    "id": "c",
+                    "text": "Only until the price falls.",
+                    "feedback": "A falling price changes what the share is worth, not who owns it. The holder remains an owner.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
                 ]
               },
               {
@@ -2775,7 +3121,15 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "10%.", "feedback": "Her share count did not change, so her fraction did not double. She still owns 5 of the 100 shares.", "correct": false, "sourceRefs": ["shares"] }
+                  {
+                    "id": "c",
+                    "text": "10%.",
+                    "feedback": "Her share count did not change, so her fraction did not double. She still owns 5 of the 100 shares.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 5,
@@ -2818,7 +3172,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Both, equally.", "feedback": "A ticket buys entry to an event. Only the share gives a claim of ownership in the club.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  {
+                    "id": "c",
+                    "text": "Both, equally.",
+                    "feedback": "A ticket buys entry to an event. Only the share gives a claim of ownership in the club.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
                 ]
               },
               {
@@ -2844,7 +3209,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "The dividend always makes up for the drop.", "feedback": "Cash paid out can feel like a safety net. Its size need not match a market fall.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  {
+                    "id": "c",
+                    "text": "The dividend always makes up for the drop.",
+                    "feedback": "Cash paid out can feel like a safety net. Its size need not match a market fall.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m2"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Any dividend keeps the price above the old one.",
@@ -2894,7 +3270,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Loan.", "feedback": "Money lent is paid back with interest. Profit paid out to owners is called a dividend.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  {
+                    "id": "c",
+                    "text": "Loan.",
+                    "feedback": "Money lent is paid back with interest. Profit paid out to owners is called a dividend.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
                 ]
               },
               {
@@ -2920,7 +3307,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "Last year's payout sets a minimum for this year.", "feedback": "Past cash can feel like a pattern. The firm can pay less or none this year.", "correct": false, "misconceptionIds": ["shares-m2"], "sourceRefs": ["shares"] },
+                  {
+                    "id": "c",
+                    "text": "Last year's payout sets a minimum for this year.",
+                    "feedback": "Past cash can feel like a pattern. The firm can pay less or none this year.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m2"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Last year's payout is now a fixed monthly debt.",
@@ -2969,7 +3367,18 @@
                       "shares"
                     ]
                   },
-                  { "id": "c", "text": "A coupon for discounts at the firm.", "feedback": "Some firms offer perks, but that is not what a share is. A share is part ownership with an uncertain price.", "correct": false, "misconceptionIds": ["shares-m1"], "sourceRefs": ["shares"] }
+                  {
+                    "id": "c",
+                    "text": "A coupon for discounts at the firm.",
+                    "feedback": "Some firms offer perks, but that is not what a share is. A share is part ownership with an uncertain price.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "shares-m1"
+                    ],
+                    "sourceRefs": [
+                      "shares"
+                    ]
+                  }
                 ]
               }
             ],
@@ -3112,7 +3521,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "A fixed deposit that ends next year.", "feedback": "Locked money may not be ready today. A cash reserve kept aside can pay the bill at once.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "A fixed deposit that ends next year.",
+                    "feedback": "Locked money may not be ready today. A cash reserve kept aside can pay the bill at once.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ]
               },
               {
@@ -3149,7 +3569,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Money saved for a planned holiday.", "feedback": "A holiday is a plan, not a surprise. An emergency fund is for costs like a sudden fridge repair.", "correct": false, "misconceptionIds": ["emergency-fund-m2"], "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "Money saved for a planned holiday.",
+                    "feedback": "A holiday is a plan, not a surprise. An emergency fund is for costs like a sudden fridge repair.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ]
               },
               {
@@ -3186,7 +3617,15 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Zero months.", "feedback": "The cash is ready and can pay today. Only the card needs a buyer first, so one month is ready.", "correct": false, "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "Zero months.",
+                    "feedback": "The cash is ready and can pay today. Only the card needs a buyer first, so one month is ready.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 1,
@@ -3229,7 +3668,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Hidden away.", "feedback": "Out of sight can help, but the key feature is being reachable. A sudden bill needs money that is easy to get.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "Hidden away.",
+                    "feedback": "Out of sight can help, but the key feature is being reachable. A sudden bill needs money that is easy to get.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ]
               },
               {
@@ -3254,7 +3704,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "A card's listed price is cash today.", "feedback": "A price tag makes value look real. The card still needs a buyer before it pays a bill.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
+                  {
+                    "id": "c",
+                    "text": "A card's listed price is cash today.",
+                    "feedback": "A price tag makes value look real. The card still needs a buyer before it pays a bill.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Any valuable thing works like cash.",
@@ -3303,7 +3764,15 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "A savings goal.", "feedback": "Goals are planned on purpose. A sudden repair comes without warning, so it is an unexpected cost.", "correct": false, "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "A savings goal.",
+                    "feedback": "Goals are planned on purpose. A sudden repair comes without warning, so it is an unexpected cost.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ]
               },
               {
@@ -3328,7 +3797,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Selling later is fine for a bill due now.", "feedback": "A sale may bring cash later. A sudden bill needs funds that can be reached today.", "correct": false, "misconceptionIds": ["emergency-fund-m1"], "sourceRefs": ["rbi-emergency"] },
+                  {
+                    "id": "c",
+                    "text": "Selling later is fine for a bill due now.",
+                    "feedback": "A sale may bring cash later. A sudden bill needs funds that can be reached today.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "A high return gives instant cash.",
@@ -3377,7 +3857,18 @@
                       "rbi-emergency"
                     ]
                   },
-                  { "id": "c", "text": "Money for sales and deals.", "feedback": "Sale spending is a choice, not a surprise need. The fund is ready money for costs that come without warning.", "correct": false, "misconceptionIds": ["emergency-fund-m2"], "sourceRefs": ["rbi-emergency"] }
+                  {
+                    "id": "c",
+                    "text": "Money for sales and deals.",
+                    "feedback": "Sale spending is a choice, not a surprise need. The fund is ready money for costs that come without warning.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "emergency-fund-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-emergency"
+                    ]
+                  }
                 ]
               }
             ],
@@ -3527,7 +4018,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "The EMI doubles.", "feedback": "A fixed EMI usually stays the same. What changes is the split: less goes to interest as the balance falls.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] }
+                  {
+                    "id": "c",
+                    "text": "The EMI doubles.",
+                    "feedback": "A fixed EMI usually stays the same. What changes is the split: less goes to interest as the balance falls.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
                 ]
               },
               {
@@ -3564,7 +4066,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Total interest falls, since each EMI is smaller.", "feedback": "Smaller payments over more months keep interest running longer. Total interest tends to rise, not fall.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] }
+                  {
+                    "id": "c",
+                    "text": "Total interest falls, since each EMI is smaller.",
+                    "feedback": "Smaller payments over more months keep interest running longer. Total interest tends to rise, not fall.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
                 ]
               },
               {
@@ -3606,8 +4119,12 @@
                     "text": "About ₹10,800.",
                     "feedback": "₹10,800 is all you pay. Take away the ₹10,000 loan to get ₹800 in interest.",
                     "correct": false,
-                    "misconceptionIds": ["loan-emi-m1"],
-                    "sourceRefs": ["rbi-loan"]
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
                   }
                 ],
                 "answer": {
@@ -3651,7 +4168,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "The interest rate on the loan.", "feedback": "The rate is a percentage charged on the debt. Principal is the loan money still owed.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] }
+                  {
+                    "id": "c",
+                    "text": "The interest rate on the loan.",
+                    "feedback": "The rate is a percentage charged on the debt. Principal is the loan money still owed.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
                 ]
               },
               {
@@ -3677,7 +4205,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "The longer loan costs less, since EMIs match.", "feedback": "The matching bill looks fair. More months can still add up to a larger total.", "correct": false, "misconceptionIds": ["loan-emi-m2"], "sourceRefs": ["rbi-loan"] },
+                  {
+                    "id": "c",
+                    "text": "The longer loan costs less, since EMIs match.",
+                    "feedback": "The matching bill looks fair. More months can still add up to a larger total.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Same EMI means the same total cost.",
@@ -3726,7 +4265,15 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Interest rate.", "feedback": "Paying principal does not change the rate. It lowers the balance that the next interest charge is based on.", "correct": false, "sourceRefs": ["rbi-loan"] }
+                  {
+                    "id": "c",
+                    "text": "Interest rate.",
+                    "feedback": "Paying principal does not change the rate. It lowers the balance that the next interest charge is based on.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
                 ]
               },
               {
@@ -3751,7 +4298,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Every EMI cuts the debt by its full amount.", "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] },
+                  {
+                    "id": "c",
+                    "text": "Every EMI cuts the debt by its full amount.",
+                    "feedback": "The debt does fall, so this sounds right. Part of a payment can cover interest.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "All of it pays debt; interest comes at the end.",
@@ -3800,7 +4358,18 @@
                       "rbi-loan"
                     ]
                   },
-                  { "id": "c", "text": "Interest is paid only at the end.", "feedback": "Each EMI pays some interest as it goes. When the debt shrinks, the next interest charge shrinks too.", "correct": false, "misconceptionIds": ["loan-emi-m1"], "sourceRefs": ["rbi-loan"] }
+                  {
+                    "id": "c",
+                    "text": "Interest is paid only at the end.",
+                    "feedback": "Each EMI pays some interest as it goes. When the debt shrinks, the next interest charge shrinks too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
                 ]
               }
             ],
@@ -3957,7 +4526,16 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Whatever stocks trend online.", "feedback": "Online buzz does not set this fund's holdings. It follows the index list and its weights.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "Whatever stocks trend online.",
+                    "feedback": "Online buzz does not set this fund's holdings. It follows the index list and its weights.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ]
               },
               {
@@ -3997,7 +4575,16 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Both equally.", "feedback": "One share rests on one firm. A fund holding many firms spreads that company risk much more widely.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "Both equally.",
+                    "feedback": "One share rests on one firm. A fund holding many firms spreads that company risk much more widely.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ]
               },
               {
@@ -4037,7 +4624,16 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "About 50 percent.", "feedback": "Half is a natural guess, but the cited scorecard reports about 75% trailing for this group and year.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "About 50 percent.",
+                    "feedback": "Half is a natural guess, but the cited scorecard reports about 75% trailing for this group and year.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ],
                 "answer": {
                   "value": 75,
@@ -4083,7 +4679,19 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Promise a fixed yearly return.", "feedback": "No index fund promises a set return. It tracks its index, so it shares the index's falls too.", "correct": false, "misconceptionIds": ["index-funds-m1"], "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "Promise a fixed yearly return.",
+                    "feedback": "No index fund promises a set return. It tracks its index, so it shares the index's falls too.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m1"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ]
               },
               {
@@ -4111,7 +4719,19 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "One winning share shows pickers usually win.", "feedback": "A winner is vivid. One case tells us little about the full set of picks.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
+                  {
+                    "id": "c",
+                    "text": "One winning share shows pickers usually win.",
+                    "feedback": "A winner is vivid. One case tells us little about the full set of picks.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m2"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "One example settles all future markets.",
@@ -4164,7 +4784,16 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Bonus.", "feedback": "A bonus is extra money paid out. The expense ratio is a cost taken from the fund's assets.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "Bonus.",
+                    "feedback": "A bonus is extra money paid out. The expense ratio is a cost taken from the fund's assets.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ]
               },
               {
@@ -4192,7 +4821,19 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "Past group results set every future year.", "feedback": "A large study can feel final. Its past results do not set each new year's outcome.", "correct": false, "misconceptionIds": ["index-funds-m2"], "sourceRefs": ["sebi-index", "spiva-india"] },
+                  {
+                    "id": "c",
+                    "text": "Past group results set every future year.",
+                    "feedback": "A large study can feel final. Its past results do not set each new year's outcome.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "index-funds-m2"
+                    ],
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "Some beat it, so the group result means nothing.",
@@ -4245,7 +4886,16 @@
                       "spiva-india"
                     ]
                   },
-                  { "id": "c", "text": "The index fund rests on one company's result.", "feedback": "That is backwards. The single stock rests on one company, while the fund follows a whole index.", "correct": false, "sourceRefs": ["sebi-index", "spiva-india"] }
+                  {
+                    "id": "c",
+                    "text": "The index fund rests on one company's result.",
+                    "feedback": "That is backwards. The single stock rests on one company, while the fund follows a whole index.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "sebi-index",
+                      "spiva-india"
+                    ]
+                  }
                 ]
               }
             ],
@@ -4400,7 +5050,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "It checks the sender has enough money.", "feedback": "The PIN step can sound like a safety check. It can approve money leaving instead.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] },
+                  {
+                    "id": "c",
+                    "text": "It checks the sender has enough money.",
+                    "feedback": "The PIN step can sound like a safety check. It can approve money leaving instead.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "It lets the bank send her the refund.",
@@ -4453,7 +5115,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "A survey about the fest.", "feedback": "A collect request is not a survey. Approving it with a PIN lets money leave the payer's account.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  {
+                    "id": "c",
+                    "text": "A survey about the fest.",
+                    "feedback": "A collect request is not a survey. Approving it with a PIN lets money leave the payer's account.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
                 ]
               },
               {
@@ -4498,8 +5172,13 @@
                     "text": "About ₹1,800 leaves.",
                     "feedback": "Subtracting the promised cashback assumes it arrives. The approved collect request is for the full ₹2,000.",
                     "correct": false,
-                    "misconceptionIds": ["upi-scams-m1"],
-                    "sourceRefs": ["npci-fraud", "npci-faq"]
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
                   }
                 ],
                 "answer": {
@@ -4546,7 +5225,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "Unlocking the payment app.", "feedback": "App unlock codes are separate. The UPI PIN is what approves money leaving a bank account.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  {
+                    "id": "c",
+                    "text": "Unlocking the payment app.",
+                    "feedback": "App unlock codes are separate. The UPI PIN is what approves money leaving a bank account.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
                 ]
               },
               {
@@ -4574,7 +5265,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "A bank-like tone proves the caller is safe.", "feedback": "A neat message can seem safe. The PIN still lets a payer send money out.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
+                  {
+                    "id": "c",
+                    "text": "A bank-like tone proves the caller is safe.",
+                    "feedback": "A neat message can seem safe. The PIN still lets a payer send money out.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m2"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "The logo proves the PIN only receives money.",
@@ -4627,7 +5330,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "No one's; it is only a request.", "feedback": "A request turns into a payment once the PIN is entered. The money then leaves the account of whoever approves.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  {
+                    "id": "c",
+                    "text": "No one's; it is only a request.",
+                    "feedback": "A request turns into a payment once the PIN is entered. The money then leaves the account of whoever approves.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
                 ]
               },
               {
@@ -4655,7 +5370,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "An official-looking request cannot be a scam.", "feedback": "The bank style can win trust. A false story can still lead to a real payment.", "correct": false, "misconceptionIds": ["upi-scams-m2"], "sourceRefs": ["npci-fraud", "npci-faq"] },
+                  {
+                    "id": "c",
+                    "text": "An official-looking request cannot be a scam.",
+                    "feedback": "The bank style can win trust. A false story can still lead to a real payment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m2"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  },
                   {
                     "id": "b",
                     "text": "An app must be hacked before money leaves.",
@@ -4708,7 +5435,19 @@
                       "npci-faq"
                     ]
                   },
-                  { "id": "c", "text": "The scammer changes the bank's PIN rules.", "feedback": "The PIN rules stay the same. The trick works by steering a person to approve a real payment.", "correct": false, "misconceptionIds": ["upi-scams-m1"], "sourceRefs": ["npci-fraud", "npci-faq"] }
+                  {
+                    "id": "c",
+                    "text": "The scammer changes the bank's PIN rules.",
+                    "feedback": "The PIN rules stay the same. The trick works by steering a person to approve a real payment.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "upi-scams-m1"
+                    ],
+                    "sourceRefs": [
+                      "npci-fraud",
+                      "npci-faq"
+                    ]
+                  }
                 ]
               }
             ],

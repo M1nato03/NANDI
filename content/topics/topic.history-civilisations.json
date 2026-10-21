@@ -97,7 +97,20 @@
                       "unesco-bath"
                     ]
                   },
-                  { "id": "c", "text": "A king's name was on each street sign.", "feedback": "The Indus script is still unread, so no ruler can be named from its signs. The grid only shows a plan.", "correct": false, "misconceptionIds": ["indus-cities-m2"], "sourceRefs": ["indus", "unesco-indus", "unesco-bath"] }
+                  {
+                    "id": "c",
+                    "text": "A king's name was on each street sign.",
+                    "feedback": "The Indus script is still unread, so no ruler can be named from its signs. The grid only shows a plan.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "indus-cities-m2"
+                    ],
+                    "sourceRefs": [
+                      "indus",
+                      "unesco-indus",
+                      "unesco-bath"
+                    ]
+                  }
                 ]
               },
               {
@@ -692,7 +705,18 @@
                       "ashoka"
                     ]
                   },
-                  { "id": "c", "text": "A cloth banner in the palace hall.", "feedback": "Cloth wears out and stays in one room. Ashoka had words cut into rock and pillars across his realm.", "correct": false, "misconceptionIds": ["ashoka-edicts-m1"], "sourceRefs": ["ashoka"] }
+                  {
+                    "id": "c",
+                    "text": "A cloth banner in the palace hall.",
+                    "feedback": "Cloth wears out and stays in one room. Ashoka had words cut into rock and pillars across his realm.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
+                    "sourceRefs": [
+                      "ashoka"
+                    ]
+                  }
                 ]
               },
               {
@@ -1211,7 +1235,18 @@
                       "silk"
                     ]
                   },
-                  { "id": "c", "text": "The route was one straight road.", "feedback": "The Silk Road was a changing web of land and sea routes. An oasis stop joined many paths, not one road.", "correct": false, "misconceptionIds": ["silk-road-ideas-m2"], "sourceRefs": ["silk"] }
+                  {
+                    "id": "c",
+                    "text": "The route was one straight road.",
+                    "feedback": "The Silk Road was a changing web of land and sea routes. An oasis stop joined many paths, not one road.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
+                    ],
+                    "sourceRefs": [
+                      "silk"
+                    ]
+                  }
                 ]
               },
               {
@@ -1737,7 +1772,16 @@
                       "gupta"
                     ]
                   },
-                  { "id": "c", "text": "It doubles the value of the 2.", "feedback": "The zero does not multiply the 2 by anything. It holds the tens place, so the 2 means two hundreds.", "correct": false, "sourceRefs": ["zero", "gupta"] }
+                  {
+                    "id": "c",
+                    "text": "It doubles the value of the 2.",
+                    "feedback": "The zero does not multiply the 2 by anything. It holds the tens place, so the 2 means two hundreds.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "zero",
+                      "gupta"
+                    ]
+                  }
                 ]
               },
               {
@@ -2309,7 +2353,17 @@
                       "loc-jikji"
                     ]
                   },
-                  { "id": "c", "text": "The ink from the last page.", "feedback": "Ink is used up on each sheet. The parts set again in a new order are the pieces of type.", "correct": false, "sourceRefs": ["print", "loc-asia", "loc-jikji"] }
+                  {
+                    "id": "c",
+                    "text": "The ink from the last page.",
+                    "feedback": "Ink is used up on each sheet. The parts set again in a new order are the pieces of type.",
+                    "correct": false,
+                    "sourceRefs": [
+                      "print",
+                      "loc-asia",
+                      "loc-jikji"
+                    ]
+                  }
                 ]
               },
               {
@@ -2911,7 +2965,19 @@
                       "sathee-mughal"
                     ]
                   },
-                  { "id": "c", "text": "A temple's private estate staff.", "feedback": "A mansab was a rank in the state. It tied an officer to both civil and army work, not to a temple.", "correct": false, "misconceptionIds": ["mughal-revenue-m1"], "sourceRefs": ["mughal", "sathee-mughal"] }
+                  {
+                    "id": "c",
+                    "text": "A temple's private estate staff.",
+                    "feedback": "A mansab was a rank in the state. It tied an officer to both civil and army work, not to a temple.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
+                    ],
+                    "sourceRefs": [
+                      "mughal",
+                      "sathee-mughal"
+                    ]
+                  }
                 ]
               },
               {
@@ -3482,7 +3548,20 @@
                       "uk-crown"
                     ]
                   },
-                  { "id": "c", "text": "It stopped trading and left India.", "feedback": "The Company kept trading. Its land and tax power grew later, with wins in battle and then the diwani grant.", "correct": false, "misconceptionIds": ["company-trade-rule-m1"], "sourceRefs": ["company", "uk-company", "uk-crown"] }
+                  {
+                    "id": "c",
+                    "text": "It stopped trading and left India.",
+                    "feedback": "The Company kept trading. Its land and tax power grew later, with wins in battle and then the diwani grant.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
+                    ],
+                    "sourceRefs": [
+                      "company",
+                      "uk-company",
+                      "uk-crown"
+                    ]
+                  }
                 ]
               },
               {
@@ -4098,7 +4177,21 @@
                       "sansad-jubilee"
                     ]
                   },
-                  { "id": "c", "text": "The British Parliament in London.", "feedback": "Britain passed the act that ended its rule. India's own Assembly held the talks and voted the text in.", "correct": false, "misconceptionIds": ["independence-constitution-m1"], "sourceRefs": ["assembly", "freedom", "sansad-debates", "sansad-jubilee"] }
+                  {
+                    "id": "c",
+                    "text": "The British Parliament in London.",
+                    "feedback": "Britain passed the act that ended its rule. India's own Assembly held the talks and voted the text in.",
+                    "correct": false,
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
+                    "sourceRefs": [
+                      "assembly",
+                      "freedom",
+                      "sansad-debates",
+                      "sansad-jubilee"
+                    ]
+                  }
                 ]
               },
               {
