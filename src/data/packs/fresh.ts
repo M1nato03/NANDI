@@ -50,7 +50,9 @@ export function freshPracticeErrors(pack: Pack): string[] {
       questions.push({ where: `${at}.hook`, options: step.hook.options });
       const lesson = [step.hook.stem, ...step.hook.options.map(option => option.text), ...step.example.parts, ...step.guided.flatMap(guided => [guided.stem, ...guided.options.map(option => option.text)])].join(' ');
       const lessonNumbers = numbers(lesson);
-      const known = new Set([...names(step.teach), ...names(step.takeaway), ...names(concept.title), ...names(concept.rule)]);
+      // The idea's own people and places (named in its teaching or claims) are the subject, not a reused story frame.
+      const capitals = (value: string) => value.match(/\b[A-Z][a-z]{2,}\b/g) ?? [];
+      const known = new Set([step.teach, step.takeaway, concept.title, concept.rule, concept.hook, ...concept.claims.map(claim => claim.text)].flatMap(capitals));
       const lessonNames = new Set([...names(lesson)].filter(name => !known.has(name) && !COMMON_NAMES.has(name)));
       const jobs = new Set<string>();
       for (const item of concept.items.filter(candidate => candidate.step === step.id)) {

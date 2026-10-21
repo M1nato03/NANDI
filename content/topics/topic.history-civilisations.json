@@ -78,6 +78,7 @@
                 "type": "predict",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "indus-cities-m3"
@@ -124,6 +125,7 @@
                 "type": "fill-the-step",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s1",
+                "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -165,6 +167,7 @@
                 "type": "why",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s1",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indus-cities-m3"
@@ -208,6 +211,7 @@
                 "type": "scenario",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s2",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -249,6 +253,7 @@
                 "type": "true-not-quite",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s2",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indus-cities-m4"
@@ -292,6 +297,7 @@
                 "type": "choose",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s2",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -337,6 +343,7 @@
                 "type": "estimate",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s3",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -384,6 +391,7 @@
                 "type": "match",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indus-cities-m1"
@@ -1007,6 +1015,7 @@
                 "type": "predict",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1052,6 +1061,7 @@
                 "type": "estimate",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s1",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1099,6 +1109,7 @@
                 "type": "true-not-quite",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s1",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "ashoka-edicts-m1"
@@ -1146,6 +1157,7 @@
                 "type": "choose",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s2",
+                "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1187,6 +1199,7 @@
                 "type": "scenario",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s2",
+                "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "ashoka-edicts-m3"
@@ -1233,6 +1246,7 @@
                 "type": "fill-the-step",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s2",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1274,6 +1288,7 @@
                 "type": "true-not-quite",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s3",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "ashoka-edicts-m4"
@@ -1317,6 +1332,7 @@
                 "type": "match",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s3",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1555,7 +1571,7 @@
                     }
                   ]
                 },
-                "teach": "Ashoka carved messages on rocks near towns and routes, so passers-by could see them. About 13 years later, he added polished pillars. Stone lasts, so some still stand.",
+                "teach": "Ashoka carved messages on rocks near towns and routes, so passers-by could see them. Years later, he added polished pillars. Stone lasts, so some still stand.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1568,11 +1584,11 @@
                   "ask": "Tap the later kind of edict.",
                   "parts": [
                     "Ashoka's first messages went on natural rocks,",
-                    "and about 13 years later more went on pillars,",
+                    "and years later more went on pillars,",
                     "some of which still stand today."
                   ],
-                  "spot": "and about 13 years later more went on pillars,",
-                  "feedback": "The pillar edicts came about 13 years after the rock edicts began."
+                  "spot": "and years later more went on pillars,",
+                  "feedback": "The pillar edicts came some years after the rock edicts began."
                 },
                 "guided": [
                   {
@@ -1906,6 +1922,7 @@
                 "type": "order",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s1",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1962,6 +1979,7 @@
                 "type": "predict",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2003,6 +2021,7 @@
                 "type": "fill-the-step",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s1",
+                "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "silk-road-ideas-m2"
@@ -2049,6 +2068,7 @@
                 "type": "why",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s2",
+                "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2090,6 +2110,7 @@
                 "type": "estimate",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s2",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2137,6 +2158,7 @@
                 "type": "scenario",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s2",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2178,6 +2200,7 @@
                 "type": "match",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2272,6 +2295,7 @@
                 "type": "true-not-quite",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s3",
+                "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "silk-road-ideas-m3"
@@ -2775,6 +2799,7 @@
                 "type": "predict",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2816,18 +2841,19 @@
                 "type": "estimate",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s1",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "zero"
                 ],
-                "stem": "In Indian place value, a number written without its zeros reads 46. The real one has 4 thousands and 6 ones. About how many times bigger is it?",
+                "stem": "In Indian place value, a number written without its zeros reads 79. The real one has 7 thousands and 9 ones. About how many times bigger is it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 87 times.",
+                    "text": "About 89 times.",
                     "correct": true,
-                    "feedback": "The real number is 4,006, and 4,006 divided by 46 is about 87.",
+                    "feedback": "The real number is 7,009, and 7,009 divided by 79 is about 89.",
                     "sourceRefs": [
                       "zero"
                     ]
@@ -2836,7 +2862,7 @@
                     "id": "b",
                     "text": "About 9 times.",
                     "correct": false,
-                    "feedback": "That is far too small. 46 times 9 is only 414.",
+                    "feedback": "That is far too small. 79 times 9 is only 711.",
                     "sourceRefs": [
                       "zero"
                     ]
@@ -2845,16 +2871,16 @@
                     "id": "c",
                     "text": "About 900 times, since three places moved.",
                     "correct": false,
-                    "feedback": "That is far too big. 46 times 900 would be over 40,000.",
+                    "feedback": "That is far too big. 79 times 900 would be over 70,000.",
                     "sourceRefs": [
                       "zero"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 87,
-                  "min": 83,
-                  "max": 91,
+                  "value": 89,
+                  "min": 85,
+                  "max": 93,
                   "unit": "times"
                 }
               },
@@ -2863,6 +2889,7 @@
                 "type": "true-not-quite",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s1",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indian-place-value-m2"
@@ -2906,6 +2933,7 @@
                 "type": "fill-the-step",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s2",
+                "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -2947,6 +2975,7 @@
                 "type": "scenario",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s2",
+                "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "indian-place-value-m4"
@@ -2993,6 +3022,7 @@
                 "type": "explain-it-back",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s2",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "indian-place-value-m2"
@@ -3039,6 +3069,7 @@
                 "type": "order",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indian-place-value-m3"
@@ -3087,6 +3118,7 @@
                 "type": "choose",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s3",
+                "job": "edge",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -3604,6 +3636,7 @@
                 "type": "predict",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -3645,6 +3678,7 @@
                 "type": "why",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s1",
+                "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "printing-and-reading-m3"
@@ -3688,6 +3722,7 @@
                 "type": "fill-the-step",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s1",
+                "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -3729,6 +3764,7 @@
                 "type": "true-not-quite",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s2",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "printing-and-reading-m1"
@@ -3780,6 +3816,7 @@
                 "type": "scenario",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s2",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -3821,6 +3858,7 @@
                 "type": "estimate",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s2",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -3872,6 +3910,7 @@
                 "type": "scenario",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s3",
+                "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "printing-and-reading-m2"
@@ -3918,6 +3957,7 @@
                 "type": "match",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4525,6 +4565,7 @@
                 "type": "predict",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4566,6 +4607,7 @@
                 "type": "estimate",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s1",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4613,6 +4655,7 @@
                 "type": "why",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s1",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "mughal-revenue-m1"
@@ -4660,6 +4703,7 @@
                 "type": "true-not-quite",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s2",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "mughal-revenue-m3"
@@ -4707,6 +4751,7 @@
                 "type": "scenario",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s2",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4748,6 +4793,7 @@
                 "type": "match",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s2",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4849,6 +4895,7 @@
                 "type": "scenario",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s3",
+                "job": "edge",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "mughal-revenue-m2"
@@ -4899,6 +4946,7 @@
                 "type": "fill-the-step",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s3",
+                "job": "combine",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5438,6 +5486,7 @@
                 "type": "predict",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s1",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5479,12 +5528,13 @@
                 "type": "why",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s1",
+                "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "ncert-trade"
                 ],
-                "stem": "The charter shut out English rivals. Why could Dutch and other European traders still compete in the East?",
+                "stem": "The charter shut out English rivals. Why could Dutch traders and others still compete in the East?",
                 "options": [
                   {
                     "id": "a",
@@ -5520,6 +5570,7 @@
                 "type": "true-not-quite",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s1",
+                "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "company-trade-rule-m1"
@@ -5567,6 +5618,7 @@
                 "type": "estimate",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s2",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5618,6 +5670,7 @@
                 "type": "scenario",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s2",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "company-trade-rule-m2"
@@ -5668,6 +5721,7 @@
                 "type": "choose",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s2",
+                "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5709,6 +5763,7 @@
                 "type": "match",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5817,6 +5872,7 @@
                 "type": "fill-the-step",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s3",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -6383,6 +6439,7 @@
                 "type": "predict",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s1",
+                "job": "edge",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -6424,13 +6481,14 @@
                 "type": "estimate",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s1",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "assembly",
                   "pib-nis"
                 ],
-                "stem": "After independence, the Assembly's task took two years, eleven months and seventeen days. About how many months is that in all?",
+                "stem": "From its first sitting before independence, the Assembly's work took two years, eleven months and seventeen days. About how many months is that in all?",
                 "options": [
                   {
                     "id": "a",
@@ -6475,6 +6533,7 @@
                 "type": "why",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s1",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "independence-constitution-m4"
@@ -6518,6 +6577,7 @@
                 "type": "why",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s2",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "independence-constitution-m3"
@@ -6565,6 +6625,7 @@
                 "type": "true-not-quite",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s2",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "independence-constitution-m1"
@@ -6612,6 +6673,7 @@
                 "type": "scenario",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s2",
+                "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -6657,6 +6719,7 @@
                 "type": "order",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s3",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -6723,6 +6786,7 @@
                 "type": "true-not-quite",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s3",
+                "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "independence-constitution-m2"
