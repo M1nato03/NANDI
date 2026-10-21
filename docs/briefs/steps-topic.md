@@ -1,7 +1,7 @@
 # Brief: teach one Learn topic in steps (spec 14), every question a different angle
 
-Repo: D:\NANDI-feel, branch learn-steps. Work only in this folder. Do NOT commit, push or run Playwright/e2e.
-Never open D:\NANDI-private or any legacy-export.json.
+Branch learn-steps of this repo. Do not run Playwright/e2e. Never open any legacy-export.json or personal data.
+Keep the module's item-type coverage: every item type (including `match`) must still appear somewhere in the module.
 
 ## Why
 The owner used Learn and said: "the questions in learn for inflation all feel the same and exact repetition."
@@ -42,12 +42,12 @@ TOPIC_FILE = content/topics/topic.{TOPIC}.json. Concepts to convert: {CONCEPTS}.
 
 ## How to edit
 The JSON files are 2-space `json.dumps(..., ensure_ascii=False, indent=2)` + trailing newline. Edit with a Python
-script that loads, changes and writes back in exactly that format (write scripts to
-D:\nandi-gate-logs\tmp\, not the repo). Do not touch other topics or code.
+script that loads, changes and writes back in exactly that format (keep scripts outside the repo). Do not touch
+other topics or code.
 
 ## Check
-`npm.cmd run validate-packs` in D:\NANDI-feel must show NO error for your topic (other topics may still have
-errors; ignore them). Also run `npx.cmd tsx scripts/copy-lint.ts` and `npm.cmd run banned-words`.
+`npm run validate-packs` must show NO error for your topic (other topics may still have errors; ignore them).
+Also run `npx tsx scripts/copy-lint.ts` and `npm run banned-words`.
 
 ## Psychology fix-up (only when TOPIC is psychology)
 Concepts already have steps. Make each have exactly 3 steps, ≥3 claims, each step its own claim, 8 items split
