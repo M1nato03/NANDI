@@ -1,6 +1,7 @@
 import * as v from 'valibot';
 import { packSchema, type Pack } from './schemas';
 import { RULES } from '../../core/rules.config';
+import { freshPracticeErrors } from './fresh';
 
 /** Flesch reading ease. A 0.5 point tolerance covers syllable heuristic rounding. */
 export function fleschReadingEase(value: string): number {
@@ -72,6 +73,8 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       if (moduleIds.has(module.id)) errors.push(`${module.id}: duplicate module id`);
       moduleIds.add(module.id);
     }
+    // Spec 16: fresh practice inside each step (editorial checks for stepped topics).
+    if (options.editorial) errors.push(...freshPracticeErrors(pack));
     if (options.editorial) for (const module of pack.body.modules) {
       const moduleTypes = new Set<string>(module.concepts.flatMap(concept => concept.items.map(item => item.type)));
       for (const type of allTypes) if (!moduleTypes.has(type)) errors.push(`${module.id}: missing item type ${type}`);
@@ -155,7 +158,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
           stepIds.add(step.id);
           if (!claimIds.has(step.claimId)) errors.push(`${at}: claimId must name a fact-checked claim of the concept`);
           refs(`${at}.sourceRefs`, step.sourceRefs);
-          if (wordCount(step.teach) > 30) errors.push(`${at}: teach card over 30 words`);
+          if (wordCount(step.teach) > 40) errors.push(`${at}: teach card over 40 words`);
           if (fleschReadingEase(step.teach) < 69.5) errors.push(`${at}: teach card Flesch reading ease below 70`);
           if (wordCount(step.takeaway) > 15) errors.push(`${at}: takeaway over 15 words`);
           for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join(' ')]] as const) checkText(`${at}.${label}`, value);

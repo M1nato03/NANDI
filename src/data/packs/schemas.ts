@@ -10,7 +10,9 @@ const semver = v.pipe(v.string(), v.regex(/^\d+\.\d+\.\d+$/));
 const sourceRef = v.strictObject({ id: text, title: text, publisher: text, year: integer, url: v.pipe(v.string(), v.url()), asOf: v.optional(v.pipe(v.string(), v.isoDate())) });
 const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)) });
 const option = v.strictObject({ id: text, text, feedback: text, correct: v.boolean(), misconceptionIds: v.optional(strings), sourceRefs: v.pipe(strings, v.minLength(1)) });
-const itemBase = { id: text, conceptId: text, step: v.optional(text), stem: text, difficultySeed: v.union([v.picklist([1, 2, 3]), v.pipe(v.number(), v.minValue(400), v.maxValue(2400))]), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
+// Spec 16 R1: what a practice item asks the learner to do with the idea.
+const practiceJob = v.picklist(['reverse', 'misconception', 'transfer', 'combine', 'edge', 'recall']);
+const itemBase = { id: text, conceptId: text, step: v.optional(text), job: v.optional(practiceJob), stem: text, difficultySeed: v.union([v.picklist([1, 2, 3]), v.pipe(v.number(), v.minValue(400), v.maxValue(2400))]), misconceptionTags: strings, sourceRefs: v.pipe(strings, v.minLength(1)), options: v.pipe(v.array(option), v.minLength(2)) };
 const choice = (type: 'predict' | 'choose' | 'scenario' | 'fill-the-step' | 'true-not-quite' | 'explain-it-back') => v.strictObject({ ...itemBase, type: v.literal(type) });
 export const topicItemSchema = v.variant('type', [
   choice('predict'), choice('choose'), v.strictObject({ ...itemBase, type: v.literal('why'), task: v.optional(v.picklist(['reason', 'spot-the-flaw'])) }),
