@@ -114,15 +114,17 @@ export function deriveEconomy(
       total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft,
       mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
   }
-  // Spec 15 D: the first marked day after an unmarked one (not a chosen weekly rest day) gets a fixed, announced gift.
+  // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days
+  // are not misses, so walk back over them: a gap that is only the rest day gets nothing, a longer one does.
+  const isRestDay = (key: string) => (value(settings, `economy.restWeekday:${weekStart(key)}`) ?? value(settings, 'economy.restWeekday')) === new Date(atUtc(key)).getUTCDay();
   let everMarked = false;
   for (let i = 0; i < days.length; i++) {
-    const day = days[i]!, before = days[i - 1];
+    const day = days[i]!;
     const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
-    if (day.mark && before && !before.mark && everMarked && day.dayKey >= rules.soft.from) {
-      const weekday = new Date(atUtc(before.dayKey)).getUTCDay();
-      const restWeekday = value(settings, `economy.restWeekday:${weekStart(before.dayKey)}`) ?? value(settings, 'economy.restWeekday');
-      if (restWeekday !== weekday) { day.welcome = rules.soft.welcomeBackXp; day.total += day.welcome; }
+    if (day.mark && everMarked && day.dayKey >= rules.soft.from) {
+      let j = i - 1;
+      while (j >= 0 && !days[j]!.mark && isRestDay(days[j]!.dayKey)) j--;
+      if (j >= 0 && !days[j]!.mark) { day.welcome = rules.soft.welcomeBackXp; day.total += day.welcome; }
     }
     if (day.mark) everMarked = true;
   }
@@ -136,13 +138,15 @@ export function deriveEconomy(
   }
   const current = seasonFor(today < '2026-11-02' ? '2026-11-02' : today);
   const active = today >= '2026-11-02';
-  const seasonSp = (season: ReturnType<typeof seasonFor>) => days.filter(day => day.dayKey >= season.start && day.dayKey <= season.end).reduce((sum, day) => sum + Math.min(day.total, RULES.season.spDailyCap), 0);
+  // Spec 15 B: the Season counts the real slots only, so soft-day and welcome-back XP stay out of SP.
+  const daySp = (day: { total: number; soft: number; welcome: number } | undefined) => day ? Math.min(day.total - day.soft - day.welcome, RULES.season.spDailyCap) : 0;
+  const seasonSp = (season: ReturnType<typeof seasonFor>) => days.filter(day => day.dayKey >= season.start && day.dayKey <= season.end).reduce((sum, day) => sum + daySp(day), 0);
   const targetFor = (season: ReturnType<typeof seasonFor>) => {
     if (season.index <= 0) return RULES.season.targetPerDay * season.days;
     const prior = seasonFor(addEconomyDays(season.start, -1));
     const values = Array.from({ length: prior.days }, (_, index) => {
       const key = addEconomyDays(prior.start, index);
-      return Math.min(days.find(day => day.dayKey === key)?.total ?? 0, RULES.season.spDailyCap);
+      return daySp(days.find(day => day.dayKey === key));
     }).sort((a, b) => a - b);
     const middle = (values[Math.floor((values.length - 1) / 2)]! + values[Math.floor(values.length / 2)]!) / 2;
     if (!middle) return RULES.season.targetPerDay * season.days;
@@ -156,7 +160,7 @@ export function deriveEconomy(
   const seed = seedFor(current);
   const sp = active ? seed + seasonSp(current) : 0;
   const rank = rankFor(sp, target);
-  const beforeWeek = days.filter(day => day.dayKey < weekStart(today) && day.dayKey >= current.start).reduce((sum, day) => sum + Math.min(day.total, RULES.season.spDailyCap), 0) + seed;
+  const beforeWeek = days.filter(day => day.dayKey < weekStart(today) && day.dayKey >= current.start).reduce((sum, day) => sum + daySp(day), 0) + seed;
   const placesThisWeek = active ? Math.max(0, rankFor(beforeWeek, target) - rank) : 0;
   const nextSeason = seasonFor(addEconomyDays(current.end, 1));
   const nextSeed = Math.min(sp, targetFor(nextSeason)) * RULES.season.seedPct / 100;

@@ -11,7 +11,7 @@ import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
 import { longestCombo, perfectDrop } from '../../core/economy/gamify';
 import { saveGoldReview } from '../../data/repos/gamify';
-import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics } from './flow';
+import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics, withoutMissing } from './flow';
 import { Cast } from '../cast/Cast';
 import { dropCast } from '../cast/placement';
 import { playCastSound } from '../cast/sound';
@@ -66,8 +66,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     if (!row || !data) return;
     const bedtime = typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
     const trim = () => {
-      if (!isAfterBedtime(currentTime(), bedtime)) return;
-      const next = reviewsOnlyRemainder(row.drop);
+      const kept = withoutMissing(row.drop, catalogFor(topics.map(pack => pack.body.topic.id)));
+      const next = isAfterBedtime(currentTime(), bedtime) ? reviewsOnlyRemainder(kept) : kept;
       if (next !== row.drop) void saveDrop(db, next, row.deviceId, currentTime());
     };
     trim();

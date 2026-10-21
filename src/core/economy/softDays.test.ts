@@ -40,4 +40,20 @@ describe('soft days (spec 15)', () => {
     expect(rest.days.at(-1)!.welcome).toBe(0);
     expect(view([walk('2026-10-18'), walk('2026-10-20')], '2026-10-20').days.at(-1)!.welcome).toBe(0);
   });
+
+  it('a long miss that ends on the chosen rest weekday still gets the welcome back', () => {
+    // Rest weekday Sunday (0). Walk Mon 2 Nov, miss Tue 3 to Sun 8, walk Mon 9.
+    const economy = deriveEconomy([walk('2026-11-02'), walk('2026-11-09')], undefined, { 'economy.restWeekday': 0 }, '2026-11-09');
+    expect(economy.days.at(-1)!.welcome).toBe(15);
+    // A gap that is only the rest day is not a miss.
+    const restOnly = deriveEconomy([walk('2026-11-07'), walk('2026-11-09')], undefined, { 'economy.restWeekday': 0 }, '2026-11-09');
+    expect(restOnly.days.at(-1)!.welcome).toBe(0);
+  });
+
+  it('soft-day and welcome-back XP do not count toward Season SP', () => {
+    const withSoft = deriveEconomy([walk('2026-11-02'), soft('2026-11-04')], undefined, [], '2026-11-04');
+    const walkOnly = deriveEconomy([walk('2026-11-02')], undefined, [], '2026-11-04');
+    expect(withSoft.days.at(-1)!.total).toBe(25);
+    expect(withSoft.season.sp).toBe(walkOnly.season.sp);
+  });
 });

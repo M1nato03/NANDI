@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -80,7 +80,7 @@ export function KindWord({ done }: { done: () => void }) {
     setBusy(true); setMessage('');
     try {
       const blob = await kindCardPng(text, friend.current?.querySelector('svg') ?? null, WEB_APP);
-      const result = await shareOrDownload(new File([blob], 'kind-word.png', { type: 'image/png' }), text);
+      const result = await shareOrDownload(new File([blob], 'kind-word.png', { type: 'image/png' }), text, { title: 'A kind word', dialogTitle: 'Send a kind word', cancelledIfClosed: true });
       if (result !== 'cancelled') done();
     } catch { setMessage('Could not make the card. You can still send the words yourself.'); }
     finally { setBusy(false); }
@@ -108,8 +108,11 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
 }) {
   const [choice, setChoice] = useState<SoftChoice | null>(null);
   const [closed, setClosed] = useState(false);
+  const [careClosed, setCareClosed] = useState(false);
   const careShown = settings.find(row => row.key === 'soft.careShownAt')?.value;
-  const care = state === 'low' && careCardDue(facts, today, careShown);
+  // Shown once: the day it first appears is saved straight away, so it stays for today and then waits 14 days.
+  const care = state === 'low' && !careClosed && (careShown === today || careCardDue(facts, today, careShown));
+  useEffect(() => { if (care && careShown !== today) void saveSetting('soft.careShownAt', today); }, [care, careShown, today]);
   const finish = async (picked: SoftChoice, extra?: { text?: string; inStory?: boolean }) => {
     await doSoftThing(db, picked, Date.now(), extra);
     void tapHaptic(true, 15);
@@ -124,7 +127,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   </section>;
   const option = SOFT_OPTIONS[state].find(item => item.id === choice);
   return <>
-    {care && <CareCard close={() => void saveSetting('soft.careShownAt', today)} />}
+    {care && <CareCard close={() => setCareClosed(true)} />}
     <section className="card soft-card" aria-label="Soft day">
       <div className="soft-host"><Cast name="Kachhua" pose="rest" size={72} title="Kachhua resting" /><p className="soft-line">{SOFT_LINES[state]}</p></div>
       {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => setChoice(item.id)}>{item.label}{item.minutes && <small> · {item.minutes} min</small>}</button></li>)}</ul>

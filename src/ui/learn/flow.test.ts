@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, reviewsOnlyRemainder, topics } from './flow';
+import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, reviewsOnlyRemainder, topics, withoutMissing } from './flow';
 
 // These cases test drop composition, not lessons: every Money step counts as already taught.
 const taughtSteps = catalogFor(['money-markets']).flatMap(concept => concept.steps?.map(step => step.id) ?? []);
@@ -76,5 +76,15 @@ describe('live learning drop glue', () => {
     expect(review.items.every(item => item.conceptId === idea.id && item.mode !== 'new')).toBe(true);
     expect(focused.items).toHaveLength(3);
     expect(focused.items.every(item => item.conceptId === idea.id)).toBe(true);
+  });
+
+  it('drops unanswered steps whose question was removed by a content update, and keeps answered ones', () => {
+    const concepts = catalogFor(['money-markets']);
+    const real = concepts[0]!.items[0]!;
+    const entry = (itemId: string) => ({ itemId, conceptId: concepts[0]!.id, optionOrder: [], mode: 'review' as const });
+    const drop = { id: 'drop:test', cursor: 1, ending: { kind: 'stopping-screen' as const }, items: [entry('inflation-1'), entry('inflation-2'), entry(real.id)] };
+    expect(withoutMissing(drop, concepts).items.map(item => item.itemId)).toEqual(['inflation-1', real.id]);
+    const clean = { ...drop, items: [entry(real.id)], cursor: 0 };
+    expect(withoutMissing(clean, concepts)).toBe(clean);
   });
 });
