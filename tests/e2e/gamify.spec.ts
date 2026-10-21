@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
+import { seedTaughtTopics } from './learn-helpers';
 
 type Fact = { id: string; dayKey: string; mode: string; kind: string; refId: string; inputs: Record<string, unknown>; updatedAt: number; deleted: 0; deviceId: string };
 const day = '2026-10-20';
@@ -84,7 +85,10 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
 
 test('combo appears in a drop and the topic trail opens practice', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/#learn/drop');
+  await page.goto('/?e2e#learn');
+  await seedTaughtTopics(page, ['money-markets']);
+  await page.goto('/?e2e#learn/drop');
+  await page.reload();
   await page.getByRole('button', { name: /Money and markets/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   await expect(page.locator('.learn-options')).toBeVisible();

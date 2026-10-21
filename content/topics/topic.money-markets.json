@@ -554,7 +554,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent check pending"
+              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms 50,000+ shops in 2,295 markets monthly and the same-month-last-year formula; DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
             },
             "steps": [
               {

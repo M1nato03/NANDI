@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
+import { seedTaughtTopics } from './learn-helpers';
 
 const pack = JSON.parse(readFileSync('content/topics/topic.money-markets.json', 'utf8')) as {
-  body: { modules: { concepts: { id: string; rule: string; items: { stem: string; type: string; options: { id: string; text: string; feedback: string; correct: boolean }[]; answer?: string[] | { left: string; right: string }[] }[] }[] }[] };
+  body: { modules: { concepts: { id: string; rule: string; steps?: unknown[]; items: { stem: string; type: string; options: { id: string; text: string; feedback: string; correct: boolean }[]; answer?: string[] | { left: string; right: string }[] }[] }[] }[] };
 };
 const concepts = pack.body.modules.flatMap(module => module.concepts);
 
@@ -30,7 +31,8 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
   await page.getByRole('button', { name: /^Check/ }).first().click();
   const feedback = page.locator('.learn-feedback');
   await expect(feedback).toBeVisible();
-  await expect(feedback).toContainText(concept.rule);
+  // A taught idea (spec 14) offers "See the idea again" instead of the one-line rule.
+  if (!concept.steps) await expect(feedback).toContainText(concept.rule);
   if (item.type !== 'order' && item.type !== 'match') await expect(feedback).toContainText(item.options.find(option => item.type === 'estimate' ? option.correct : option.correct !== wrong)!.feedback);
   // The answer is saved after the feedback appears; Next turns on once the save finished.
   await expect(feedback.getByRole('button', { name: 'Next' })).toBeEnabled();
@@ -45,7 +47,9 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
 test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-16T12:00:00'));
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/#learn/drop');
+  await page.goto('/?e2e#learn/drop');
+  await seedTaughtTopics(page, ['money-markets']);
+  await page.reload();
   const learnCard = page.locator('.learn-drop');
   await expect(learnCard.getByRole('heading', { name: 'What do you want to get sharp at?' })).toBeVisible();
   await learnCard.getByRole('button', { name: /Money and markets/ }).click();
