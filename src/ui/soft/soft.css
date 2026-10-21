@@ -1,5 +1,5 @@
 /* Spec 15, soft days: quiet, roomy, one thing at a time. */
-.soft-chip { align-self: flex-start; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: var(--surface-2, var(--surface)); color: var(--ink); border: 1px solid var(--line); font-weight: 600; box-shadow: none; }
+.soft-chip { align-self: flex-start; margin: 4px 0 12px; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: var(--surface-2, var(--surface)); color: var(--ink); border: 1px solid var(--line); font-weight: 600; box-shadow: none; }
 .soft-sheet h2 { margin-bottom: 12px; }
 .soft-sheet-choices { display: grid; gap: 10px; }
 .soft-card { display: grid; gap: 14px; }
@@ -12,8 +12,8 @@
 .soft-doing h2 { margin: 0; }
 .soft-task { display: grid; gap: 12px; }
 .soft-okay { justify-self: center; }
-.soft-field { display: grid; gap: 6px; font-weight: 600; }
-.soft-field input { min-height: 44px; }
+.soft-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; font-weight: 600; }
+.soft-field input { width: 100%; min-height: 44px; }
 .soft-check { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .soft-check input { width: 22px; height: 22px; }
 .soft-tiny { display: grid; gap: 8px; }
@@ -27,8 +27,9 @@
 .soft-stretches .exercise-figure { width: 110px; height: auto; }
 .soft-stretches p { margin: 2px 0 0; }
 .soft-kind-friend { justify-self: center; }
-.soft-kind-lines { display: flex; flex-wrap: wrap; gap: 8px; }
-.soft-kind-lines .chip { min-height: 44px; text-align: left; }
+.soft-kind-lines { display: grid; gap: 8px; }
+.soft-kind-line { width: 100%; min-height: 44px; text-align: left; justify-content: flex-start; font-weight: 500; }
+.soft-kind-line.selected { outline: 2px solid var(--accent); font-weight: 700; }
 .soft-kind-preview { font-size: 1.1rem; font-weight: 600; text-align: center; margin: 4px 0; }
 .soft-finish { justify-items: center; text-align: center; }
 .soft-finish h2 { margin: 0; }

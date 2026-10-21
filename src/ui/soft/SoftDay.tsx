@@ -87,7 +87,7 @@ export function KindWord({ done }: { done: () => void }) {
   };
   return <div className="soft-task">
     <div ref={friend} className="soft-kind-friend"><Cast name="Kachhua" pose="cheer" size={72} title="Kachhua" /></div>
-    <div className="soft-kind-lines" role="radiogroup" aria-label="Pick a line">{KIND_WORDS.map(item => <button type="button" key={item} role="radio" aria-checked={!own.trim() && line === item} className={`chip${!own.trim() && line === item ? ' selected' : ''}`} onClick={() => { setOwn(''); setLine(item); }}>{item}</button>)}</div>
+    <div className="soft-kind-lines" role="radiogroup" aria-label="Pick a line">{KIND_WORDS.map(item => <button type="button" key={item} role="radio" aria-checked={!own.trim() && line === item} className={`secondary soft-kind-line${!own.trim() && line === item ? ' selected' : ''}`} onClick={() => { setOwn(''); setLine(item); }}>{item}</button>)}</div>
     <label className="soft-field">Or your own words<input value={own} maxLength={120} onChange={event => setOwn(event.target.value)} /></label>
     <p className="soft-kind-preview">“{text}”</p>
     <button type="button" disabled={busy} onClick={() => void send()}>Send it</button>

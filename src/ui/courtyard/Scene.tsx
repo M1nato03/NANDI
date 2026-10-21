@@ -175,10 +175,10 @@ function Rest({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
 function Lanterns({ count, glowLayer }: { count: number; glowLayer?: boolean }) {
   const shown = Math.min(count, 12);
   if (!shown) return null;
-  const xs = Array.from({ length: shown }, (_, index) => 16 + index * 7.6);
-  if (glowLayer) return <g className="courtyard-flicker">{xs.map(x => <circle key={x} cx={x} cy="146" r="5" fill={C.glow} opacity=".35" />)}</g>;
-  return <g className="courtyard-lanterns" data-lanterns={count}><path d={`M12 139.5H${xs.at(-1)! + 5}`} stroke="#6b4a2c" strokeWidth=".8" />
-    {xs.map(x => <g key={x}><path d={`M${x} 139.5v2.5`} stroke="#6b4a2c" strokeWidth=".6" /><rect x={x - 2.4} y="142" width="4.8" height="6.4" rx="1.6" fill="#f6a640" /><rect x={x - 1.5} y="143.3" width="3" height="3.8" rx="1" fill="#ffd98a" /></g>)}</g>;
+  const xs = Array.from({ length: shown }, (_, index) => 16 + index * 9);
+  if (glowLayer) return <g className="courtyard-flicker">{xs.map(x => <circle key={x} cx={x} cy="147" r="7" fill={C.glow} opacity=".35" />)}</g>;
+  return <g className="courtyard-lanterns" data-lanterns={count}><path d={`M10 137H${xs.at(-1)! + 6}`} stroke="#6b4a2c" strokeWidth="1" />
+    {xs.map(x => <g key={x}><path d={`M${x} 137v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={x - 3.6} y="140" width="7.2" height="10" rx="2.4" fill="#f6a640" /><rect x={x - 2.2} y="142" width="4.4" height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
 }
 
 /** Chiku looks after Learn: a book, a stack, a low shelf, a lamp and a globe. */
