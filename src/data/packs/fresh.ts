@@ -7,7 +7,7 @@ import type { Pack } from './schemas';
 export const PRACTICE_JOBS = ['reverse', 'misconception', 'transfer', 'combine', 'edge', 'recall'] as const;
 
 const STOP = new Set(['about', 'after', 'again', 'also', 'because', 'been', 'before', 'being', 'both', 'does', 'each', 'even', 'from', 'have', 'into', 'just', 'less', 'like', 'more', 'most', 'much', 'only', 'other', 'over', 'same', 'some', 'such', 'than', 'that', 'their', 'them', 'then', 'there', 'these', 'they', 'this', 'those', 'what', 'when', 'where', 'which', 'while', 'will', 'with', 'would', 'your', 'very', 'make', 'makes', 'made']);
-const ABSOLUTE = /\b(?:always|never|only|all|nothing|exactly)\b/gi;
+const ABSOLUTE = /\b(?:always|never|only|all|nothing|exactly|every)\b/gi;
 const REASON = /\b(?:because|so|which means|that is why|this is why|since)\b/i;
 const AUTHORITY = /\b(?:says|said|according to|recommends?|the guide)\b/i;
 const AUTHORITY_NAMES = /\b(?:WHO|CDC|NHS)\b/;
@@ -102,6 +102,6 @@ export function freshPracticeErrors(pack: Pack): string[] {
     return { hits: texts.reduce((sum, value) => sum + (value.match(ABSOLUTE)?.length ?? 0), 0), count: texts.length };
   };
   const wrong = rate(false), right = rate(true);
-  if (wrong.hits > 2 && wrong.hits / wrong.count > 1.5 * (right.hits / right.count)) errors.push(`topic: absolute words (always, never, only...) sit mostly in wrong options (${wrong.hits} in ${wrong.count} wrong vs ${right.hits} in ${right.count} right)`);
+  if (wrong.hits > 2 && wrong.hits / wrong.count > 1.5 * (right.hits / right.count)) errors.push(`topic: absolute words (always, never, only, every...) sit mostly in wrong options (${wrong.hits} in ${wrong.count} wrong vs ${right.hits} in ${right.count} right)`);
   return errors;
 }

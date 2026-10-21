@@ -115,6 +115,13 @@ describe('topic editorial rules', () => {
     badTopic((concepts) => { concepts[0].items[0].stem = 'On 2026-10-16, the canteen price rises. What follows?'; }, 'date in stem');
     badTopic((concepts) => { delete concepts[0].sources[0].asOf; }, 'money source needs asOf metadata');
   });
+  it('allows teach cards up to 40 words (spec 16 R7)', () => {
+    const teach = (count) => Array.from({ length: count }, () => 'cat').join(' ') + '.';
+    badTopic((concepts) => { concepts[0].steps[0].teach = teach(41); }, 'teach card over 40 words');
+    const copy = structuredClone(money);
+    copy.body.modules[0].concepts[0].steps[0].teach = teach(40);
+    expect(validatePack(copy, { allowUnchecked: true, editorial: true }).join(' ')).not.toContain('teach card over');
+  });
   it('requires explanatory feedback in fresh words', () => {
     badTopic((concepts) => { concepts[0].items[0].options[1].feedback = 'Same.'; }, 'feedback needs 8-30 words');
     badTopic((concepts) => { const option = concepts[0].items[0].options[1]; option.feedback = option.text + ' That is the answer written again with some padding.'; }, 'feedback repeats option');
