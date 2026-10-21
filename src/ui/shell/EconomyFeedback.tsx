@@ -41,8 +41,16 @@ export function EconomyFeedback() {
   const [shownXp, setShownXp] = useState(0);
   const lastLine = useRef<string | undefined>(store.get(sessionStorage, 'finish.lastLine') ?? undefined);
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
+  // The finish listener is set up once, so it reads the latest bedtime through a ref.
+  const bedtimeRef = useRef<string>(RULES.night.defaultBedtime);
+  useEffect(() => {
+    const value = source?.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
+    bedtimeRef.current = typeof value === 'string' ? value : RULES.night.defaultBedtime;
+  }, [source]);
   useEffect(() => {
     const onFinish = (event: Event) => {
+      // After bedtime nothing celebrates: no buzz, no toast (night audit 10-22).
+      if (isAfterBedtime(Date.now(), bedtimeRef.current)) return;
       const activity = (event as CustomEvent<FinishActivity>).detail;
       const line = pickFinishLine(activity, lastLine.current);
       lastLine.current = line;
