@@ -1,8 +1,8 @@
-/* Spec 13 feel pass, A: buttons with a raised edge that press down.
+/* Spec 13 feel pass, A and F: buttons with a raised edge that press down, and cards with depth.
    Transform and box-shadow only; reduced motion keeps the look and drops the movement. */
-:root, :root[data-theme='dark'] { --edge-soft: color-mix(in srgb, var(--surface-3), #8a8f9c 28%); }
-@media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); } }
-:root[data-theme='light'] { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); }
+:root, :root[data-theme='dark'] { --edge-soft: color-mix(in srgb, var(--surface-3), #8a8f9c 28%); --card-highlight: rgba(255, 255, 255, .05); }
+@media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); --card-highlight: rgba(255, 255, 255, .7); } }
+:root[data-theme='light'] { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); --card-highlight: rgba(255, 255, 255, .7); }
 :root { --press: 4px; --edge-accent: color-mix(in srgb, var(--accent) 68%, #000); --edge-learn: color-mix(in srgb, var(--area-learn) 68%, #000); }
 
 button:not([class]), button.secondary, .ui-button {
@@ -16,3 +16,6 @@ button:not([class]):active:not(:disabled), button.secondary:active:not(:disabled
 button:not([class]):disabled, button.secondary:disabled { box-shadow: none; }
 /* Places that are flat on purpose stay flat: the night deck, the deck dashes, bars. */
 .deck-night button, .deck-dashes button, .update-bar button, .native-update-bar button { box-shadow: none; }
+
+.card, .ui-card { box-shadow: inset 0 1px 0 var(--card-highlight), var(--shadow-1); }
+.deck-card, .ui-deck-card { box-shadow: inset 0 1px 0 var(--card-highlight), var(--shadow-2); }

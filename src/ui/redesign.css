@@ -462,3 +462,6 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .plan-rituals-fold[open] > summary .small { display: none; }
 .night-plan-quick { display: grid; gap: 8px; }
 .night-plan-quick button { white-space: normal; text-align: left; min-height: 48px; line-height: 1.35; }
+.agency-check p { margin: 8px 0; }
+.agency-ends { display: flex; justify-content: space-between; max-width: 290px; margin-top: 4px; }
+.agency-check .interest-chip { min-width: 44px; }

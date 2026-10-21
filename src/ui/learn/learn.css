@@ -144,8 +144,9 @@
 .learn-estimate-answer { justify-self: center; margin: 0; font-weight: 700; }
 .learn-estimate.right .learn-estimate-value { color: var(--ok); }
 
-/* Spec 13 feel pass (A–D) for the drop. Timings sit inside RULES.juice: micro 90–250 ms, meso 300–800 ms. */
-.learn-q { display: grid; gap: 14px; min-width: 0; }
+/* Spec 13 feel pass (A–G) for the drop. Timings sit inside RULES.juice: micro 90–250 ms, meso 300–800 ms, one 1.4 s finish burst. */
+.learn-q { display: grid; gap: 14px; min-width: 0; animation: learn-in .25s ease-out both; }
+@keyframes learn-in { from { opacity: 0; transform: translateX(28px); } }
 .learn-progress { height: 12px; border-radius: 999px; background: var(--surface-3); transition: box-shadow .3s ease-out; }
 .learn-progress span { position: relative; border-radius: inherit; transition: width .4s cubic-bezier(.34, 1.56, .64, 1); }
 .learn-progress span::after { content: ''; position: absolute; left: 6px; right: 6px; top: 2px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .38); }
@@ -191,15 +192,48 @@
 @keyframes learn-sheet-up { from { opacity: 0; transform: translateY(44px); } }
 @keyframes learn-pop { from { opacity: 0; transform: scale(.8); } }
 
-/* The night drop stays calm: no bounce, shake or breathing after bedtime. */
+/* E: the finish moment, once, when the drop ends on this screen. */
+.learn-stop { position: relative; }
+.learn-finish-friends { display: flex; gap: 6px; justify-content: center; }
+.learn-finish-friends > span { display: grid; animation: learn-hop .6s ease-out calc(var(--i) * 160ms + 250ms) 2 both; }
+.learn-finish-friends .cast-svg { animation: none; visibility: visible !important; }
+@keyframes learn-hop { 40% { transform: translateY(-12px); } }
+.learn-finish-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.learn-finish-stat { display: grid; justify-items: center; gap: 2px; padding: 12px 6px; border-radius: var(--radius-row); background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--edge-soft), 0 var(--press) 0 var(--edge-soft); }
+.learn-finish-stat strong { font: 800 28px/32px 'Bricolage Grotesque', sans-serif; color: var(--area-learn); font-variant-numeric: tabular-nums; }
+.learn-finish-stat span { color: var(--ink-3); font-size: 13px; }
+.learn-celebrate .learn-chip { animation: learn-chip-in .3s ease-out calc(var(--i) * 60ms + 600ms) both; }
+@keyframes learn-chip-in { from { opacity: 0; transform: translateX(-14px); } }
+.learn-perfect { font-weight: 700; color: var(--area-learn); }
+.learn-burst { position: absolute; left: 50%; top: 230px; width: 0; height: 0; pointer-events: none; z-index: 2; }
+.learn-burst i { position: absolute; left: 0; top: 0; opacity: 0; animation: learn-burst 1.4s cubic-bezier(.2, .7, .3, 1) var(--d) both; }
+.learn-burst i.petal { width: 11px; height: 11px; border-radius: 60% 0 60% 0; background: #f29b38; box-shadow: inset -2px -2px 0 #d9761c; }
+.learn-burst i.spark { width: 6px; height: 6px; border-radius: 50%; background: #ffd36b; box-shadow: 0 0 8px #ffb347; }
+@keyframes learn-burst { 0% { opacity: 0; transform: translate(0, 0) rotate(0) scale(.4); } 12% { opacity: 1; } 65% { opacity: 1; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1); } 100% { opacity: 0; transform: translate(var(--x), calc(var(--y) + 70px)) rotate(calc(var(--r) * 2)) scale(.9); } }
+
+/* F: trail nodes become raised discs; the current one pulses softly, finished ones wear a gold ring. */
+.learn-trail-dot { --dot: var(--surface-3); background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 30%, var(--dot)), var(--dot) 70%); box-shadow: 0 var(--press) 0 var(--edge-soft); }
+.learn-trail-node[data-state='learning'] .learn-trail-dot { --dot: color-mix(in srgb, var(--area-learn) 24%, var(--surface-1)); background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 30%, var(--dot)), var(--dot) 70%); }
+.learn-trail-node[data-state='strong'] .learn-trail-dot { --dot: color-mix(in srgb, var(--area-learn) 50%, var(--surface-1)); background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 30%, var(--dot)), var(--dot) 70%); }
+.learn-trail-node[data-state='mastered'] .learn-trail-dot { --dot: var(--area-learn); background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 30%, var(--dot)), var(--dot) 70%); box-shadow: 0 var(--press) 0 var(--edge-learn), 0 0 0 3px #d9bc69; }
+.learn-trail-node[data-state='gold'] .learn-trail-dot { --dot: #d9bc69; background: radial-gradient(circle at 35% 30%, #fff3c9, var(--dot) 70%); border-color: #b59648; box-shadow: 0 var(--press) 0 #8f7230, 0 0 0 3px color-mix(in srgb, #d9bc69 55%, transparent); }
+.learn-trail-node[data-current] .learn-trail-dot { animation: learn-pulse 2.4s ease-in-out infinite; }
+@keyframes learn-pulse { 0%, 100% { box-shadow: 0 var(--press) 0 var(--edge-soft), 0 0 0 0 color-mix(in srgb, var(--area-learn) 50%, transparent); } 50% { box-shadow: 0 var(--press) 0 var(--edge-soft), 0 0 0 9px transparent; } }
+.learn-trail-module::before { animation: learn-fade .8s ease-out both; }
+@keyframes learn-fade { from { opacity: 0; } }
+
+/* The night drop stays calm: no bounce, shake, breathing or burst after bedtime. */
 .learn-night .learn-friend .cast-svg, .learn-night .learn-friend .cast-eye, .learn-night .learn-options button.ui-list-row { animation: none; }
 .deck-night .learn-options button.ui-list-row { box-shadow: inset 0 0 0 2px var(--edge-soft); }
 @media (prefers-reduced-motion: reduce) {
-  .learn-drop, .learn-drop * { animation: none !important; transition: none !important; }
+  .learn-drop, .learn-drop *, .learn-trail-dot, .learn-trail-module::before { animation: none !important; transition: none !important; }
   .learn-ask-row.leaning .learn-friend { transform: none; }
+  .learn-burst { display: none; }
 }
-:root[data-motion='reduce'] :is(.learn-drop, .learn-drop *) { animation: none !important; transition: none !important; }
+:root[data-motion='reduce'] :is(.learn-drop, .learn-drop *, .learn-trail-dot) { animation: none !important; transition: none !important; }
+:root[data-motion='reduce'] .learn-trail-module::before { animation: none; }
 :root[data-motion='reduce'] .learn-ask-row.leaning .learn-friend { transform: none; }
+:root[data-motion='reduce'] .learn-burst { display: none; }
 .learn-today-status button { --edge: color-mix(in srgb, var(--area-learn) 45%, var(--surface-3)); }
 .learn-check-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .learn-check-pair button { min-height: 48px; padding: 10px 8px; }
