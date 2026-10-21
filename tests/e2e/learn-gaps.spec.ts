@@ -56,7 +56,7 @@ test('a daily question asks one thing: no "How sure?" step, and the answer is sa
   await pickAnswer(page);
   await expect(page.locator('.learn-confidence-chips')).toHaveCount(0);
   await expect(page.getByText('How sure are you?')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Check', exact: true }).click();
+  await page.getByRole('button', { name: /^Check/ }).first().click();
   await expect(page.locator('.learn-feedback')).toBeVisible();
   await expect(page.locator('.learn-feedback').getByRole('button', { name: 'Next' })).toBeEnabled();
   await page.reload();

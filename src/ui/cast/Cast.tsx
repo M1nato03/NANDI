@@ -17,7 +17,7 @@ function Eye({ x, y, pose, ink, s = 1 }: { x: number; y: number; pose: Pose; ink
     <path d={`M${x - 2.2 * s} ${y + 1.9 * s}l-.9 1.4M${x + 2.2 * s} ${y + 1.9 * s}l.9 1.4`} strokeWidth={1.1 * s} />
   </g>;
   const lx = pose === 'think' ? 1.2 * s : 0.5 * s, ly = pose === 'think' ? -1.1 * s : 0.7 * s;
-  return <g>
+  return <g className="cast-eye">
     <ellipse cx={x} cy={y} rx={4 * s} ry={4.7 * s} fill="#fff" stroke={ink} strokeWidth={0.7 * s} strokeOpacity=".35" />
     <circle cx={x + lx} cy={y + ly} r={2.9 * s} fill={ink} />
     <circle cx={x + lx - 1 * s} cy={y + ly - 1.1 * s} r={1.15 * s} fill="#fff" />

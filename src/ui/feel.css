@@ -1,0 +1,18 @@
+/* Spec 13 feel pass, A: buttons with a raised edge that press down.
+   Transform and box-shadow only; reduced motion keeps the look and drops the movement. */
+:root, :root[data-theme='dark'] { --edge-soft: color-mix(in srgb, var(--surface-3), #8a8f9c 28%); }
+@media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); } }
+:root[data-theme='light'] { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); }
+:root { --press: 4px; --edge-accent: color-mix(in srgb, var(--accent) 68%, #000); --edge-learn: color-mix(in srgb, var(--area-learn) 68%, #000); }
+
+button:not([class]), button.secondary, .ui-button {
+  box-shadow: 0 var(--press) 0 var(--edge, var(--edge-accent));
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color var(--motion-press), color var(--motion-press);
+}
+button.secondary { --edge: var(--edge-soft); }
+button:not([class]):active:not(:disabled), button.secondary:active:not(:disabled), .ui-button:active:not(:disabled) {
+  filter: none; transform: translateY(var(--press)); box-shadow: 0 0 0 var(--edge, var(--edge-accent));
+}
+button:not([class]):disabled, button.secondary:disabled { box-shadow: none; }
+/* Places that are flat on purpose stay flat: the night deck, the deck dashes, bars. */
+.deck-night button, .deck-dashes button, .update-bar button, .native-update-bar button { box-shadow: none; }

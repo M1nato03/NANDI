@@ -16,7 +16,7 @@ async function answerRight(page: Page) {
     const value = (item.answer as { value: number }).value;
     await page.locator('.learn-estimate input[type=range]').fill(String(value));
   } else await tap(item.options.find(option => option.correct)!.id);
-  await page.getByRole('button', { name: 'Check', exact: true }).click();
+  await page.getByRole('button', { name: /^Check/ }).first().click();
   await expect(page.locator('.learn-feedback').getByRole('button', { name: 'Next' })).toBeEnabled();
   await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
   await expect(page.locator('.learn-feedback')).toHaveCount(0);

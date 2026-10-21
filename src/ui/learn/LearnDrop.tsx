@@ -20,6 +20,7 @@ import { askFor } from '../../core/learn/ask';
 import './learn.css';
 
 const currentTime = () => Date.now();
+const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
 
 export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, goldReview = false, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; goldReview?: boolean; onDone?: () => void }) {
   const [now] = useState(currentTime);
@@ -142,6 +143,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const choose = (id: string) => {
     if (!found || visibleFeedback || pending || writing.current) return;
     const item = found.item;
+    if (!night && motionOn()) void tapHaptic(true, 8);
     if (item.type === 'order') {
       const next = [...sequence, id];
       if (next.length === item.answer.length) setPending({ value: next, optionId: id });
@@ -197,8 +199,14 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
   const inARow = longestCombo(data.ledger, drop.id);
-  return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span>{inARow >= 3 && <span className="pill">{inARow} in a row</span>}</header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
-    <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><div className="learn-ask-text"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2>{item.stem}</h2>
+  const position = visibleFeedback?.cursor ?? drop.cursor;
+  // The bar moves forward after every answer, right or not (spec 13 D: a miss never moves it back).
+  const filled = ((visibleFeedback ? position + 1 : position) / drop.items.length) * 100;
+  const friend = dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct).name;
+  const pose = visibleFeedback ? (visibleFeedback.correct ? 'cheer' : 'think') : 'idle';
+  return <div className={`learn-drop${night ? ' learn-night' : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{position + 1} / {drop.items.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
+    <div className="learn-q" key={position}>
+    <div className={`learn-ask-row${pending && !visibleFeedback ? ' leaning' : ''}`}><span className="learn-friend"><Cast name={friend} pose={pose} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span><div className="learn-ask-bubble"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2>{item.stem}</h2>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {!goldReview && item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     {item.type === 'estimate' ? (() => {
@@ -215,8 +223,12 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         {visibleFeedback && <p className="learn-estimate-answer">Answer: {formatEstimate(item.answer.value, unit)}</p>}
       </div>;
     })() : <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
-    {/* Spec 13 L: one question per question. "How sure?" is asked only on gold review; elsewhere the engine records fairly sure. */}
-    {pending && !visibleFeedback && <div className="learn-confidence">{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}<button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
-    {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p></>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
+    </div>
+    {/* Spec 13 L: one question per question. A new idea records fairly sure; a review folds "how sure?" into Check itself (one tap),
+        because "do I still know this?" is the real question there. Gold review keeps the three chips. */}
+    {pending && !visibleFeedback && <div className="learn-confidence learn-check">{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}
+      {!goldReview && step.mode !== 'new' ? <div className="learn-check-pair"><button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId, 'certain')}>Check · I'm sure</button><button type="button" className="secondary" disabled={busy} onClick={() => void answer(pending.value, pending.optionId, 'guess')}>Check · Guessing</button></div>
+        : <button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button>}</div>}
+    {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback learn-sheet ${visibleFeedback.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p></>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
 }

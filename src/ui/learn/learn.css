@@ -143,7 +143,63 @@
 .learn-estimate-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding: 0 56px; }
 .learn-estimate-answer { justify-self: center; margin: 0; font-weight: 700; }
 .learn-estimate.right .learn-estimate-value { color: var(--ok); }
-/* Spec 13 K: the line above a question says what to do. */
-.learn-ask-text { display: grid; gap: 1px; min-width: 0; }
-.learn-drop .learn-ask-text .eyebrow { margin: 0; font-size: 11px; }
-.learn-drop .learn-ask { margin: 0; font: 800 17px/22px 'Bricolage Grotesque', sans-serif; color: var(--ink); }
+
+/* Spec 13 feel pass (A–D) for the drop. Timings sit inside RULES.juice: micro 90–250 ms, meso 300–800 ms. */
+.learn-q { display: grid; gap: 14px; min-width: 0; }
+.learn-progress { height: 12px; border-radius: 999px; background: var(--surface-3); transition: box-shadow .3s ease-out; }
+.learn-progress span { position: relative; border-radius: inherit; transition: width .4s cubic-bezier(.34, 1.56, .64, 1); }
+.learn-progress span::after { content: ''; position: absolute; left: 6px; right: 6px; top: 2px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .38); }
+.learn-progress.hot { box-shadow: 0 0 0 2px color-mix(in srgb, var(--area-learn) 45%, transparent), 0 0 14px color-mix(in srgb, var(--area-learn) 50%, transparent); }
+.learn-progress.hot span { filter: saturate(1.25) brightness(1.08); }
+.learn-streak-pill { animation: learn-rise .8s ease-out both; }
+@keyframes learn-rise { from { opacity: 0; transform: translateY(8px); } 35% { opacity: 1; transform: translateY(-2px); } to { transform: none; } }
+
+/* C: the friend sits in its own row and says the instruction. */
+.learn-ask-row { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.learn-friend { flex: 0 0 72px; display: grid; place-items: center; transform-origin: 50% 90%; transition: transform .2s ease-out; }
+.learn-friend .cast-svg { transform-origin: 50% 90%; animation: learn-breathe 3s ease-in-out infinite; }
+.learn-friend .cast-pose-cheer { animation: cast-hop .6s ease-out 1 both; }
+.learn-friend .cast-pose-think { animation: learn-tilt .5s ease-out 1 both; }
+.learn-friend .cast-eye { transform-box: fill-box; transform-origin: center; animation: learn-blink 4.6s ease-in-out infinite; }
+.learn-ask-row.leaning .learn-friend { transform: rotate(5deg) translateX(3px); }
+@keyframes learn-breathe { 50% { transform: scale(1.02); } }
+@keyframes learn-tilt { to { transform: rotate(-6deg); } }
+@keyframes learn-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.12); } }
+.learn-ask-bubble { position: relative; flex: 1; min-width: 0; padding: 10px 14px; border: 2px solid var(--edge-soft); border-radius: 16px; background: var(--surface-2); }
+.learn-ask-bubble::before { content: ''; position: absolute; left: -8px; top: 50%; width: 12px; height: 12px; background: var(--surface-2); border-left: 2px solid var(--edge-soft); border-bottom: 2px solid var(--edge-soft); transform: translateY(-50%) rotate(45deg); }
+.learn-drop .learn-ask-bubble .eyebrow { margin: 0 0 2px; font-size: 11px; }
+.learn-drop .learn-ask { margin: 0; font: 800 18px/23px 'Bricolage Grotesque', sans-serif; color: var(--ink); }
+
+/* A: options and tiles with a raised edge that press down. */
+.learn-options button.ui-list-row, .learn-topic-tile { box-shadow: inset 0 0 0 2px var(--edge-soft), 0 var(--press) 0 var(--edge-soft); transition: transform 90ms ease-out, box-shadow 90ms ease-out, background-color .16s; }
+.learn-options button.ui-list-row:active:not(:disabled), .learn-topic-tile:active { transform: translateY(var(--press)); box-shadow: inset 0 0 0 2px var(--edge-soft), 0 0 0 var(--edge-soft); }
+.learn-options button.ui-list-row.selected, .learn-topic-tile.chosen { box-shadow: inset 0 0 0 2px var(--area-learn), 0 var(--press) 0 var(--edge-learn); }
+.learn-options button.ui-list-row:disabled:not(.selected) { box-shadow: inset 0 0 0 2px var(--edge-soft); }
+.learn-options button.ui-list-row.right-option { box-shadow: inset 0 0 0 2px var(--area-learn), 0 var(--press) 0 var(--edge-learn); animation: learn-bounce .25s ease-out 1; }
+.learn-options button.ui-list-row.wrong-option { box-shadow: inset 0 0 0 2px var(--area-move); animation: learn-shake .24s ease-in-out 1; }
+@keyframes learn-bounce { 50% { transform: scale(1.05); } }
+@keyframes learn-shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+
+/* B: the result sheet slides up in a colour: teal for right, warm amber for "here is the idea". */
+.learn-feedback.learn-sheet { position: relative; padding: 18px; border-radius: 22px; animation: learn-sheet-up .3s cubic-bezier(.34, 1.4, .64, 1) both; }
+.learn-sheet.right { background: color-mix(in srgb, var(--area-learn) 15%, var(--surface-1)); box-shadow: inset 0 3px 0 var(--area-learn), var(--shadow-1); }
+.learn-sheet.idea { background: color-mix(in srgb, #e9a23b 15%, var(--surface-1)); box-shadow: inset 0 3px 0 #e9a23b, var(--shadow-1); }
+.learn-sheet .learn-sheet-title { display: block; animation: learn-pop .3s ease-out .08s both; }
+.learn-sheet.right .learn-sheet-title { color: var(--area-learn); }
+.learn-sheet.idea .learn-sheet-title { color: var(--accent-ink); }
+.learn-sheet.right button { --edge: var(--edge-learn); background: var(--area-learn); color: var(--surface-1); }
+@keyframes learn-sheet-up { from { opacity: 0; transform: translateY(44px); } }
+@keyframes learn-pop { from { opacity: 0; transform: scale(.8); } }
+
+/* The night drop stays calm: no bounce, shake or breathing after bedtime. */
+.learn-night .learn-friend .cast-svg, .learn-night .learn-friend .cast-eye, .learn-night .learn-options button.ui-list-row { animation: none; }
+.deck-night .learn-options button.ui-list-row { box-shadow: inset 0 0 0 2px var(--edge-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .learn-drop, .learn-drop * { animation: none !important; transition: none !important; }
+  .learn-ask-row.leaning .learn-friend { transform: none; }
+}
+:root[data-motion='reduce'] :is(.learn-drop, .learn-drop *) { animation: none !important; transition: none !important; }
+:root[data-motion='reduce'] .learn-ask-row.leaning .learn-friend { transform: none; }
+.learn-today-status button { --edge: color-mix(in srgb, var(--area-learn) 45%, var(--surface-3)); }
+.learn-check-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.learn-check-pair button { min-height: 48px; padding: 10px 8px; }

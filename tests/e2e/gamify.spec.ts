@@ -39,7 +39,7 @@ async function answerItem(page: Page, wrong = false) {
     const slider = page.locator('.learn-estimate input[type=range]');
     await slider.fill(wrong ? (await slider.getAttribute('max'))! : String((item.answer as unknown as { value: number }).value));
   } else await tap(item.options.find(option => option.correct !== wrong)!.id);
-  await page.getByRole('button', { name: 'Check', exact: true }).click();
+  await page.getByRole('button', { name: /^Check/ }).first().click();
   const next = page.locator('.learn-feedback').getByRole('button', { name: 'Next' });
   await expect(next).toBeEnabled();
   const progress = (await page.locator('.learn-drop-head').innerText()).match(/(\d+) \/ (\d+)/);
