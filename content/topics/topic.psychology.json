@@ -938,6 +938,7 @@
                 "id": "loss-aversion-1",
                 "type": "predict",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -986,6 +987,7 @@
                 "id": "loss-aversion-2",
                 "type": "scenario",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1034,6 +1036,7 @@
                 "id": "loss-aversion-3",
                 "type": "estimate",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1085,6 +1088,7 @@
                 "id": "loss-aversion-4",
                 "type": "choose",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1130,6 +1134,7 @@
                 "id": "loss-aversion-5",
                 "type": "why",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1179,6 +1184,7 @@
                 "id": "loss-aversion-6",
                 "type": "fill-the-step",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1224,6 +1230,7 @@
                 "id": "loss-aversion-7",
                 "type": "true-not-quite",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1",
@@ -1273,6 +1280,7 @@
                 "id": "loss-aversion-8",
                 "type": "match",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1417,7 +1425,224 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "loss-aversion-s1",
+                "title": "A drop feels bigger than a gain",
+                "claimId": "loss-aversion-c2",
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "hook": {
+                  "stem": "A friend offers a coin toss: heads you win ₹100, tails you pay ₹100. Do most people take it?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, most say no.",
+                      "correct": true,
+                      "feedback": "Right. Most people turn down a fair bet like this. Paying ₹100 feels bigger than winning ₹100."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, since it is fair.",
+                      "correct": false,
+                      "feedback": "It is fair on paper, but most people still say no. Paying ₹100 feels worse than winning ₹100 feels good."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only people who dislike games say no.",
+                      "correct": false,
+                      "feedback": "Most people say no, not just a few. A drop tends to weigh more than a gain of the same size."
+                    }
+                  ]
+                },
+                "teach": "A drop often feels stronger than a gain of the same size. So a fair bet to win or pay ₹100 feels like a bad deal.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Win ₹100",
+                    "lines": [
+                      "Feels good"
+                    ]
+                  },
+                  "right": {
+                    "title": "Pay ₹100",
+                    "lines": [
+                      "Feels bad",
+                      "Weighs more"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Sahil finds ₹50 on the bus and smiles for a minute, but when ₹50 falls out of his pocket, ",
+                    "he is upset all evening",
+                    "."
+                  ],
+                  "spot": "he is upset all evening",
+                  "feedback": "The same ₹50 felt much bigger as a drop than as a find."
+                },
+                "guided": [
+                  {
+                    "stem": "In a hostel game, Varun has 10 points. Giving up 2 points upsets him more than winning 2 points pleases him. What does this show?",
+                    "hint": "Compare a drop and a gain of the same size.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A drop weighs more than a gain.",
+                        "correct": true,
+                        "feedback": "Yes. The same 2 points feel bigger as a drop than as a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "He does not care about points.",
+                        "correct": false,
+                        "feedback": "He clearly cares. The drop just feels stronger than the gain."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Gains always feel bigger.",
+                        "correct": false,
+                        "feedback": "Here it is the other way round. The drop feels stronger."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "In a cricket match, Anjali’s team gets 5 lucky runs, then gives away 5 runs from a bad throw. Which moment stays with her longer?",
+                    "hint": "Which feels stronger: a gain or a drop of the same size?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The 5 runs given away.",
+                        "correct": true,
+                        "feedback": "Right. A drop often feels stronger than a gain of the same size."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The 5 lucky runs.",
+                        "correct": false,
+                        "feedback": "The gain is nice, but a drop of the same size tends to weigh more."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both stay with her the same.",
+                        "correct": false,
+                        "feedback": "The runs are the same, but a drop tends to feel bigger than a gain."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A drop tends to feel bigger than a gain of the same size."
+              },
+              {
+                "id": "loss-aversion-s2",
+                "title": "It depends on where you start",
+                "claimId": "loss-aversion-c1",
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "hook": {
+                  "stem": "Riya hoped for ₹500 from her aunt and got ₹300. Ravi hoped for nothing and got ₹300. Who feels better?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Ravi.",
+                      "correct": true,
+                      "feedback": "Right. Ravi hoped for nothing, so ₹300 is a gain. Riya hoped for ₹500, so ₹300 feels like a drop."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Riya.",
+                      "correct": false,
+                      "feedback": "Riya hoped for ₹500, so ₹300 feels ₹200 short. Ravi hoped for nothing, so it is all gain."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both feel the same, since both got ₹300.",
+                      "correct": false,
+                      "feedback": "The amount is the same, but the starting points differ. We judge from where we start."
+                    }
+                  ]
+                },
+                "teach": "We judge a result by where we start or what we expect. The same ₹300 can feel like a gain or a loss.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Hoped ₹0, got ₹300",
+                    "lines": [
+                      "Feels like a gain"
+                    ]
+                  },
+                  "right": {
+                    "title": "Hoped ₹500, got ₹300",
+                    "lines": [
+                      "Feels like a loss"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Meghna and Kunal both end the month with ₹1,000, but ",
+                    "Meghna started with ₹1,500",
+                    ", so her month feels like a loss."
+                  ],
+                  "spot": "Meghna started with ₹1,500",
+                  "feedback": "Her start point was higher, so the same ₹1,000 feels like a drop."
+                },
+                "guided": [
+                  {
+                    "stem": "In an exam, Pranav hoped for 90 and got 80. Neha hoped for 70 and got 80. Who is more pleased?",
+                    "hint": "Compare each score with what each one hoped for.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Neha.",
+                        "correct": true,
+                        "feedback": "Yes. For Neha, 80 is above her start point, so it feels like a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Pranav.",
+                        "correct": false,
+                        "feedback": "Pranav hoped for 90, so 80 feels like a drop for him."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both, since the score is the same.",
+                        "correct": false,
+                        "feedback": "The score is the same, but their start points differ."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "One canteen says “Pay ₹5 extra by card.” Another says “Get ₹5 off with cash.” The prices end up the same. What differs?",
+                    "hint": "Look at the start price each one names.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Only the start point in the wording.",
+                        "correct": true,
+                        "feedback": "Right. One frames card as a loss, the other frames cash as a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The real cost.",
+                        "correct": false,
+                        "feedback": "The money ends up the same. Only the framing changed."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing at all.",
+                        "correct": false,
+                        "feedback": "The money is the same, but the frame changes how it feels."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Gain or loss depends on where you start."
+              }
+            ]
           },
           {
             "id": "anchoring",
@@ -1458,6 +1683,7 @@
                 "id": "anchoring-1",
                 "type": "predict",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1510,6 +1736,7 @@
                 "id": "anchoring-2",
                 "type": "scenario",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1562,6 +1789,7 @@
                 "id": "anchoring-3",
                 "type": "estimate",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1613,6 +1841,7 @@
                 "id": "anchoring-4",
                 "type": "choose",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1665,6 +1894,7 @@
                 "id": "anchoring-5",
                 "type": "why",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1",
@@ -1719,6 +1949,7 @@
                 "id": "anchoring-6",
                 "type": "fill-the-step",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1768,6 +1999,7 @@
                 "id": "anchoring-7",
                 "type": "true-not-quite",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1820,6 +2052,7 @@
                 "id": "anchoring-8",
                 "type": "explain-it-back",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1961,7 +2194,217 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "anchoring-s1",
+                "title": "A first number pulls your guess",
+                "claimId": "anchoring-c1",
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "hook": {
+                  "stem": "A seller first says a kurta costs ₹2,000, then offers it for ₹1,200. Why does ₹1,200 seem cheap?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The ₹2,000 came first.",
+                      "correct": true,
+                      "feedback": "Right. The first number set the starting point for your sense of the price."
+                    },
+                    {
+                      "id": "b",
+                      "text": "₹1,200 is always low for a kurta.",
+                      "correct": false,
+                      "feedback": "Not always. It seems low mainly because ₹2,000 came first."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Sellers never start too high.",
+                      "correct": false,
+                      "feedback": "Sellers can start at any number. The first one still pulls your sense of the price."
+                    }
+                  ]
+                },
+                "teach": "The first number you see can pull your later guess toward it. That first number is called an anchor.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "See a first number",
+                    "Start the guess there",
+                    "End up close to it"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Rohit hears “50,000” on TV",
+                    ", then guesses that 45,000 people fit in the stadium."
+                  ],
+                  "spot": "Rohit hears “50,000” on TV",
+                  "feedback": "The TV number came first and pulled his guess close to it."
+                },
+                "guided": [
+                  {
+                    "stem": "At a fair, a stall shows ₹800 for a bag, then cuts it to ₹500. What is the anchor?",
+                    "hint": "The anchor is the number you see first.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The ₹800 tag.",
+                        "correct": true,
+                        "feedback": "Yes. The ₹800 came first and makes ₹500 look small."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The ₹500 price.",
+                        "correct": false,
+                        "feedback": "That is the final price. The anchor is the first number, ₹800."
+                      },
+                      {
+                        "id": "c",
+                        "text": "What the bag is really worth.",
+                        "correct": false,
+                        "feedback": "Its real worth is not shown here. The anchor is the first number shown."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Before guessing how long a train trip takes, Kavya’s friend says “maybe 10 hours.” Kavya guesses 9. Why so close to 10?",
+                    "hint": "Which number did she hear first?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Her friend’s number pulled her guess.",
+                        "correct": true,
+                        "feedback": "Right. The first number she heard acted as an anchor."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She checked the timetable.",
+                        "correct": false,
+                        "feedback": "She did not check anything. Her friend’s number came first and pulled her guess."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Train trips always take 9 hours.",
+                        "correct": false,
+                        "feedback": "Trip times vary. Her guess sat near the first number she heard."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The first number you hear can steer your guess."
+              },
+              {
+                "id": "anchoring-s2",
+                "title": "Even a random number pulls",
+                "claimId": "anchoring-c2",
+                "sourceRefs": [
+                  "tversky",
+                  "bias"
+                ],
+                "hook": {
+                  "stem": "People spin a wheel that lands on a random number, then guess a fact. Does the random number change their guess?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, guesses drift toward it.",
+                      "correct": true,
+                      "feedback": "Right. In a classic study, even a number from a wheel pulled guesses toward it."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, people ignore random numbers.",
+                      "correct": false,
+                      "feedback": "People try to, but in studies the random number still pulled their guesses."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only if the number is very large.",
+                      "correct": false,
+                      "feedback": "In the classic study, both a high and a low random number pulled guesses."
+                    }
+                  ]
+                },
+                "teach": "Even a random number can pull a guess. People start from it and do not move far enough away.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Typical guess of a percentage after a random number",
+                  "min": "0%",
+                  "max": "100%",
+                  "marks": [
+                    {
+                      "at": 25,
+                      "text": "Saw 10: guessed 25%"
+                    },
+                    {
+                      "at": 45,
+                      "text": "Saw 65: guessed 45%"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Arnav writes down his roll number, which ends in 90",
+                    ", then guesses that a canteen thali costs ₹90."
+                  ],
+                  "spot": "Arnav writes down his roll number, which ends in 90",
+                  "feedback": "His roll number has nothing to do with the thali, yet it pulled his guess."
+                },
+                "guided": [
+                  {
+                    "stem": "Before a GK quiz, a screen flashes a random number, 900. Then Tara guesses a tower is 800 metres tall. Why so high?",
+                    "hint": "Did the first number have any link to the tower?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The random number pulled her guess up.",
+                        "correct": true,
+                        "feedback": "Yes. Even a number with no link can pull a guess toward it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She knew the real height.",
+                        "correct": false,
+                        "feedback": "She was guessing. The random 900 pulled her guess up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Random numbers have no effect.",
+                        "correct": false,
+                        "feedback": "In studies they did. People start from the number and move too little."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "One cricket team sees a random 12 on the board, another sees 2. Then both guess how many sixes a match will have. Who guesses higher?",
+                    "hint": "Each group starts from the number it saw.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The team that saw 12.",
+                        "correct": true,
+                        "feedback": "Right. A higher first number tends to pull guesses higher."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The team that saw 2.",
+                        "correct": false,
+                        "feedback": "A low number tends to pull guesses down, not up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both guess the same.",
+                        "correct": false,
+                        "feedback": "In studies, groups that saw different numbers gave different guesses."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Even a made-up number can tug your guess toward it."
+              }
+            ]
           },
           {
             "id": "confirmation-bias",
@@ -2002,6 +2445,7 @@
                 "id": "confirmation-bias-1",
                 "type": "predict",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2051,6 +2495,7 @@
                 "id": "confirmation-bias-2",
                 "type": "scenario",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2100,6 +2545,7 @@
                 "id": "confirmation-bias-3",
                 "type": "estimate",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2155,6 +2601,7 @@
                 "id": "confirmation-bias-4",
                 "type": "choose",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2204,6 +2651,7 @@
                 "id": "confirmation-bias-5",
                 "type": "why",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2257,6 +2705,7 @@
                 "id": "confirmation-bias-6",
                 "type": "fill-the-step",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2306,6 +2755,7 @@
                 "id": "confirmation-bias-7",
                 "type": "true-not-quite",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1",
@@ -2359,6 +2809,7 @@
                 "id": "confirmation-bias-8",
                 "type": "explain-it-back",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2493,7 +2944,227 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "confirmation-bias-s1",
+                "title": "We notice what fits",
+                "claimId": "confirmation-bias-c1",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "hook": {
+                  "stem": "Mohit thinks his lucky pen helps in exams. Which exams does he recall best?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The ones that went well with the pen.",
+                      "correct": true,
+                      "feedback": "Right. Cases that fit a belief stand out. The others fade from view."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Every exam, good and bad, the same.",
+                      "correct": false,
+                      "feedback": "Memory is not that even. Cases that fit his belief stand out more."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The ones that went badly with the pen.",
+                      "correct": false,
+                      "feedback": "Those go against his belief, so they tend to get less notice."
+                    }
+                  ]
+                },
+                "teach": "We tend to notice and recall the clues that fit what we already believe. Clues that do not fit get skipped.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Fits the belief",
+                    "lines": [
+                      "Noticed",
+                      "Recalled"
+                    ]
+                  },
+                  "right": {
+                    "title": "Goes against it",
+                    "lines": [
+                      "Skipped",
+                      "Missed"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Zara thinks Mondays are unlucky, so ",
+                    "she writes down every bad Monday and skips the good ones",
+                    "."
+                  ],
+                  "spot": "she writes down every bad Monday and skips the good ones",
+                  "feedback": "She keeps only the cases that fit her belief, so it looks stronger than it is."
+                },
+                "guided": [
+                  {
+                    "stem": "Arjun thinks one shopkeeper is rude. He recalls two rude moments, not the ten polite ones. What is going on?",
+                    "hint": "Which moments fit his belief?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "He notices what fits his belief.",
+                        "correct": true,
+                        "feedback": "Yes. The rude moments fit, so they stand out."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The shopkeeper is always rude.",
+                        "correct": false,
+                        "feedback": "The ten polite moments say otherwise. He just recalls the ones that fit."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He has a weak memory.",
+                        "correct": false,
+                        "feedback": "His memory works. It just picks out the moments that fit his belief."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Sneha thinks her team plays better in white jerseys. She only looks up the matches they won in white. What is missing?",
+                    "hint": "What about the matches that do not fit?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The matches in white they did not win.",
+                        "correct": true,
+                        "feedback": "Right. Those could go against her idea, so they matter too."
+                      },
+                      {
+                        "id": "b",
+                        "text": "More wins in white.",
+                        "correct": false,
+                        "feedback": "More matches that fit will not test the idea. She needs the ones that do not fit."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing, since the wins prove it.",
+                        "correct": false,
+                        "feedback": "Wins alone show only the cases that fit. The other cases are missing."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "We see what fits our belief and skip what does not."
+              },
+              {
+                "id": "confirmation-bias-s2",
+                "title": "Test with a case that could break it",
+                "claimId": "confirmation-bias-c2",
+                "sourceRefs": [
+                  "wason",
+                  "bias"
+                ],
+                "hook": {
+                  "stem": "A friend says every crow is black. What would test that claim best?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Looking for a crow that is not black.",
+                      "correct": true,
+                      "feedback": "Right. One crow of another colour would break the claim. That is a strong test."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Counting more black crows.",
+                      "correct": false,
+                      "feedback": "Each black crow fits, but it cannot show the claim is wrong. A strong test looks for one that breaks it."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Asking friends if they agree.",
+                      "correct": false,
+                      "feedback": "Agreement is not a test. A crow of another colour would be."
+                    }
+                  ]
+                },
+                "teach": "A strong test looks for a case that could show the idea is wrong. One clear exception can break a claim that says “always.”",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Weak test",
+                    "lines": [
+                      "Look for cases that fit"
+                    ]
+                  },
+                  "right": {
+                    "title": "Strong test",
+                    "lines": [
+                      "Look for a case that breaks it"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "To test his idea that the 8 o’clock bus is always late, ",
+                    "Farhan looks for a day it came on time",
+                    "."
+                  ],
+                  "spot": "Farhan looks for a day it came on time",
+                  "feedback": "One on-time day would break “always late,” so it is a strong test."
+                },
+                "guided": [
+                  {
+                    "stem": "Dev says phones that cost more always have better cameras. Which phone could prove him wrong?",
+                    "hint": "Look for a case that breaks the “always.”",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A costly phone with a weak camera.",
+                        "correct": true,
+                        "feedback": "Yes. One such phone would break his claim."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A costly phone with a great camera.",
+                        "correct": false,
+                        "feedback": "That fits his claim, so it cannot prove it wrong."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A cheap phone with a weak camera.",
+                        "correct": false,
+                        "feedback": "That fits too. Only a costly phone with a weak camera would break it."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Pooja thinks music while studying always lowers her marks. What would test this best?",
+                    "hint": "Which result would go against her idea?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A test where she did well with music on.",
+                        "correct": true,
+                        "feedback": "Right. A good result with music would go against her idea."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Recalling low marks with music on.",
+                        "correct": false,
+                        "feedback": "Those fit her idea, so they cannot test it well."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Asking friends what they think.",
+                        "correct": false,
+                        "feedback": "Views are not a test. A result that goes against the idea is."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "To test an idea, look for the case that could break it."
+              }
+            ]
           },
           {
             "id": "social-proof",
