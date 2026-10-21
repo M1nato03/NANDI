@@ -3,9 +3,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { doSoftThing, setSoftState } from '../../data/repos/soft';
+import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { careCardDue, KIND_WORDS, SOFT_LINES, SOFT_OPTIONS, type SoftChoice, type SoftState } from '../../core/soft/soft';
 import { WEB_APP } from '../../core/puzzles/challenge';
-import type { SettingRow, TaskRow } from '../../data/types';
+import type { LedgerRow, SettingRow, TaskRow } from '../../data/types';
 import { Cast } from '../cast/Cast';
 import { ExerciseFigure } from '../train/ExerciseFigure';
 import { tapHaptic } from '../../platform/haptics';
@@ -113,6 +114,9 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   // Shown once: the day it first appears is saved straight away, so it stays for today and then waits 14 days.
   const care = state === 'low' && !careClosed && (careShown === today || careCardDue(facts, today, careShown));
   useEffect(() => { if (care && careShown !== today) void saveSetting('soft.careShownAt', today); }, [care, careShown, today]);
+  // Spec 15 D: a soft day after a miss carries the welcome-back gift; say it here, calmly, not in an overlay.
+  const ledger = useLiveQuery(() => done ? db.ledger.toArray() : Promise.resolve<LedgerRow[]>([]), [done]);
+  const welcome = done && ledger?.length ? deriveEconomy(ledger, undefined, settings, today).days.find(day => day.dayKey === today)?.welcome ?? 0 : 0;
   const finish = async (picked: SoftChoice, extra?: { text?: string; inStory?: boolean }) => {
     await doSoftThing(db, picked, Date.now(), extra);
     void tapHaptic(true, 15);
@@ -121,7 +125,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   if (done) return <section className="card soft-card soft-finish" aria-label="Soft day">
     <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" />
     <div className="soft-lantern" aria-hidden="true" />
-    {closed ? <><h2>Today is kept.</h2><p>Rest well. See you tomorrow.</p></> : <><h2>That counts. Kachhua lit a lantern for today.</h2><p>You can stop here.</p>
+    {closed ? <><h2>Today is kept.</h2><p>Rest well. See you tomorrow.</p></> : <><h2>That counts. Kachhua lit a lantern for today.</h2>{welcome > 0 && <p>Welcome back. Here is a small gift for coming back: +{welcome} XP.</p>}<p>You can stop here.</p>
       <button type="button" onClick={() => setClosed(true)}>Close for today</button></>}
     <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>I feel better, show me more</button>
   </section>;

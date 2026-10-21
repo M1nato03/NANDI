@@ -48,7 +48,8 @@ export function deriveCourtyard(facts: readonly LedgerRow[], today: string, week
   const lanterns = new Set<string>();
   for (const fact of facts) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey) || fact.dayKey > today) continue;
-    if (fact.kind === 'soft' && !fact.deleted) lanterns.add(fact.dayKey);
+    // A soft day kept the day, so it is an active day for the neem tree too (it belongs to no single area).
+    if (fact.kind === 'soft' && !fact.deleted) { lanterns.add(fact.dayKey); active.add(fact.dayKey); }
     const area = areaOf(fact);
     if (!area) continue;
     days.get(area)!.add(fact.dayKey);
