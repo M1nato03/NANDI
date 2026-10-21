@@ -112,6 +112,10 @@ export function EconomyFeedback() {
     const key = `economy.macro:${today}`;
     const count = Number(store.get(sessionStorage, key) ?? 0);
     const justCompleted = shouldShowDoneForToday({ wasComplete: complete(previous, now), isComplete: complete(source, now), seen: !!store.get(localStorage, `finish.done:${today}`), afterBedtime: isAfterBedtime(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime), macroCount: count });
+    // Spec 15 D: the first marked day after a miss brings a fixed, announced gift (a soft day counts too).
+    const welcomed = (view.days.at(-1)?.welcome ?? 0) > 0 && !(oldView.days.at(-1)?.welcome);
+    const welcomeLine = 'Welcome back. Here is a small gift for coming back.';
+    if (welcomed && !achievement && !dropFinished && !justCompleted) { void tapHaptic(true, 20); setNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return; }
     if (!achievement && !dropFinished && !justCompleted) return;
     const macro = !justCompleted && !!macroKind && realWorld && !afterBedtime && count < RULES.juice.macroPerDayMax;
     if (macro || justCompleted) store.set(sessionStorage, key, String(count + 1));
@@ -128,7 +132,7 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined }));
+    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;

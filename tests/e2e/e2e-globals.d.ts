@@ -31,6 +31,7 @@ declare global {
       shellCounts(): Promise<Record<string, number>>;
       wipeData(): Promise<void>;
       seedLearnNight(conceptId: string, dueAt: number, selectedTopic?: string): Promise<void>;
+      seedTaughtSteps(stepIds: string[]): Promise<void>;
       learnConfidence(): Promise<string | undefined>;
       backupRoundTrip(): Promise<{
         exportedJson: string;

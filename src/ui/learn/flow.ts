@@ -42,7 +42,9 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
       ...stepPractice(next.concept, next.step.id).map((item, index) => ({ itemId: item.id, conceptId: next.concept.id, optionOrder: orderOptions(item, input.now % 1_000_000 + index), mode: 'new' as const }))];
   };
   if (input.goldReview && input.preferredConceptId) {
-    const concept = catalog.find(row => row.id === input.preferredConceptId) ?? fullCatalog.find(row => row.id === input.preferredConceptId && !row.steps);
+    // Gold review tests a mastered idea as a whole, so it draws from every item, taught step or not
+    // (an idea mastered before it gained steps still gets its five hardest questions).
+    const concept = fullCatalog.find(row => row.id === input.preferredConceptId);
     if (concept) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
       items: [...concept.items].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
         .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: item.options.map(option => option.id), mode: 'review' as const })) };

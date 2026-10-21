@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { softNumbers } from '../../core/soft/soft';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { hashPin, ownerMetrics, validPin } from '../../core/owner/metrics';
@@ -53,6 +54,8 @@ function OwnerNumbers() {
   const stepById = new Map(catalogFor(topics.map(pack => pack.body.topic.id)).flatMap(concept => concept.items.map(item => [item.id, item.step] as const)));
   const lessons = lessonMetrics(source.ledger, itemId => stepById.get(itemId));
   const pct = (part: number, whole: number) => whole ? `${Math.round(part / whole * 100)}%` : '—';
+  const soft = softNumbers(source.ledger, today);
+  const share = (value: number | null) => value === null ? '—' : `${Math.round(value * 100)}%`;
   const tiles: [string, string][] = [
     ['Opens today', String(m.opensToday)], ['Opens a day (7 d)', String(m.opensAvg7)],
     ['Active days (7 d)', `${m.activeDays7} of 7`], ['Active days (30 d)', `${m.activeDays30} of 30`],
@@ -66,6 +69,10 @@ function OwnerNumbers() {
     ['Rest days banked', String(economy.streak.restDays)], ['Errors saved', String(m.errors)],
     ['Lessons taught', String(lessons.lessons)], ['Guided first try (aim 85–95%)', lessons.guidedFirstTry === null ? '—' : `${lessons.guidedFirstTry}% (${lessons.guidedCount})`],
     ['Your turn right (aim ~80%)', lessons.yourTurn === null ? '—' : `${lessons.yourTurn}% (${lessons.yourTurnCount})`],
+    // Spec 15 §6 kill test for soft days.
+    ['Soft days finished (keep if ≥70%)', soft.started ? `${share(soft.finishRate)} (${soft.finished} of ${soft.started})` : '—'],
+    ['Soft day minutes (aim ≤4)', soft.medianMinutes === null ? '—' : `${Math.round(soft.medianMinutes * 10) / 10} min`],
+    ['Back next day: soft vs missed', `${share(soft.returnAfterSoft)} vs ${share(soft.returnAfterMiss)}`],
   ];
   return <section className="screen owner-panel" aria-label="Owner panel">
     <p className="eyebrow">Owner</p><h1>How NANDI is doing</h1>

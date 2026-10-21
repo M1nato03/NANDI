@@ -1,4 +1,5 @@
 import { createDb, db } from '../db';
+import { dayKey } from '../../core/time';
 import { exportBackup, importBackup } from './index';
 
 export interface BackupRoundTripResult {
@@ -41,7 +42,7 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip; roundTripCurrent: typeof roundTripCurrent; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; learnConfidence: typeof learnConfidence };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; roundTripCurrent: typeof roundTripCurrent; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; seedTaughtSteps: typeof seedTaughtSteps; learnConfidence: typeof learnConfidence };
   }
 }
 
@@ -81,9 +82,15 @@ async function seedLearnNight(conceptId: string, dueAt: number, selectedTopic = 
     memory: { stability: 2, difficulty: 5, interval: 2, lastReview: at - 3 * 86_400_000, dueAt },
     activeMisconceptions: [], updatedAt: at, deleted: 0, deviceId: 'e2e-learn' });
 }
+/** Spec 14: marks lessons as taught a week ago, so quiz-focused specs start on questions, not on a lesson. */
+async function seedTaughtSteps(stepIds: string[]): Promise<void> {
+  const at = Date.now() - 7 * 86_400_000;
+  await db.ledger.bulkPut(stepIds.map(stepId => ({ id: `learn-lesson:${stepId}`, mode: 'learn' as const, kind: 'learn-lesson' as const, refId: stepId, dayKey: dayKey(at),
+    inputs: { seeded: true }, updatedAt: at, deleted: 0 as const, deviceId: 'e2e-learn' })));
+}
 async function learnConfidence(): Promise<string | undefined> {
   const rows = await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention').toArray();
   return rows.at(-1)?.inputs.confidence as string | undefined;
 }
 
-window.__nandiTest = { backupRoundTrip: roundTrip, roundTripCurrent, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, learnConfidence };
+window.__nandiTest = { backupRoundTrip: roundTrip, roundTripCurrent, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, seedTaughtSteps, learnConfidence };

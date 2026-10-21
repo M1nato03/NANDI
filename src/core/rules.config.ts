@@ -131,6 +131,8 @@ export const RULES = {
 
   // 05-economy §2, cross-mode bonuses.
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
+  // Spec 15, soft days: one gentle thing keeps the day (flat XP, no Hat-trick slot); a fixed gift on the first day back.
+  soft: { dayXp: 10, welcomeBackXp: 15, from: '2026-10-22', careLowDays: 4, careWindowDays: 14 },
   quests: { sideQuestXp: 20 },
   gamify: { dailyQuestShards: 8, badgeTierShards: 5, unitChestShards: 25, perfectDropXp: 10,
     focusMinutes: 15, focusMultiplier: 2, goldReviewItems: 5, goldReviewPass: 4,
@@ -304,6 +306,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.itemRetryDays.default': [0, 30], 'mind.itemRetryDays.teaser': [0, 30],
   // Cross-mode rewards and the level curve.
   'bonuses.hatTrickXp': [0, 100], 'bonuses.lightsOutXp': [0, 100],
+  'soft.dayXp': [0, 100], 'soft.welcomeBackXp': [0, 100], 'soft.careLowDays': [1, 14], 'soft.careWindowDays': [1, 60],
   'level.stepBase': [1, 1000], 'level.softCap': [1, 200],
   // Season percentages and ranks remain inside a 1–1000-seat ladder.
   'season.spDailyCap': [1, 1000], 'season.targetPerDay': [1, 1000],

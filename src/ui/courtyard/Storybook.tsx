@@ -22,7 +22,7 @@ function Page({ page, facts, weekEnd }: { page: StoryPage; facts: Parameters<typ
   </div>;
   if (page.kind === 'close') return <div className="story-page story-close"><CourtyardView state={deriveCourtyard(facts, weekEnd)} phase="evening" forcePose="idle" /><p>{page.text}</p></div>;
   return <div className="story-page">
-    <Cast name={page.friend!} pose={page.kind === 'quiet' ? 'rest' : 'cheer'} size={120} title={`${page.friend} ${page.kind === 'quiet' ? 'resting' : 'cheering'}`} />
+    <Cast name={page.friend!} pose={page.kind === 'quiet' || page.kind === 'soft' ? 'rest' : 'cheer'} size={120} title={`${page.friend} ${page.kind === 'quiet' || page.kind === 'soft' ? 'resting' : 'cheering'}`} />
     <p className="story-text">{page.text}</p>
     {page.days != null && <div className="story-dots" aria-label={`${page.days} of 7 days`}>{Array.from({ length: 7 }, (_, index) => <span key={index} className={index < page.days! ? 'got' : ''} />)}</div>}
   </div>;
@@ -48,7 +48,7 @@ export function StorybookList() {
   const facts = useFacts();
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   if (!facts) return <section className="screen"><h1>Storybooks</h1></section>;
-  const weeks = recentWeeks(today, 8).map(week => buildStorybook(facts, week)).filter((book, index) => index === 0 || book.practisedAreas > 0);
+  const weeks = recentWeeks(today, 8).map(week => buildStorybook(facts, week)).filter((book, index) => index === 0 || book.practisedAreas > 0 || book.pages.some(page => page.kind === 'soft'));
   return <section className="screen storybook-list"><p className="eyebrow">Your courtyard</p><h1>Storybooks</h1>
     <p className="small">A new story is ready each Sunday. Stories are made on this phone from what you did.</p>
     {weeks.map(book => <button type="button" key={book.weekStart} className="card you-link" onClick={() => go(storyRoute(book.weekStart))}>
