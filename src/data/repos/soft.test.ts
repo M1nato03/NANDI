@@ -37,3 +37,13 @@ it('counts a day that was backed out of in the finish rate and the low-day count
   }
   expect(careCardDue(await db.ledger.toArray(), '2026-11-07', undefined)).toBe(true);
 });
+
+it('two taps in the same millisecond keep tap order', async () => {
+  const db = fresh();
+  const now = at('2026-11-03', '12:00');
+  await setSoftState(db, 'low', now);
+  await setSoftState(db, 'okay', now);
+  expect(softToday(await db.ledger.toArray(), '2026-11-03').state).toBeNull();
+  await setSoftState(db, 'tired', now);
+  expect(softToday(await db.ledger.toArray(), '2026-11-03').state).toBe('tired');
+});
