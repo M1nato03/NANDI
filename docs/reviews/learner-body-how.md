@@ -245,7 +245,7 @@ in "drink more water", so the "drink more" idea is taught twice.
 - s2 is fine. Say what to do about the salt: "on long, very sweaty days, nimbu-pani with a pinch of salt or ORS
   helps replace it". Otherwise item 13 asks *why* you lose salt and the learner never learns what to do.
 - s3 lists signs and "stop", but leaves out the emergency case. It needs one line: "Confused, fainting or very hot
-  and not sweating is an emergency: call 108 or 112 and cool them with water and fanning." Guided 2 hints at this
+  to the touch is an emergency: call 108 or 112 and cool them with water and fanning." Guided 2 hints at this
   ("Confusion is a serious sign") without teaching it.
 
 **(c) Same-feeling pairs.**
@@ -610,7 +610,7 @@ s2 guided 2 "Makes it read zero" nobody picks. s3 guided 2 "Turn it up to chill 
 
 **(e) Plain words.** Item 14 ("4°F warmer … how many degrees Celsius") is a US-unit conversion with no value to an
 Indian learner. State 2°C directly and ask something else. s3 teach "it lets you set the AC about 2°C warmer":
-most hostel students have no AC. Add a non-AC angle (a fan on its own costs about a tenth of an AC to run).
+most hostel students have no AC. Add a non-AC angle (a fan uses a small fraction of an AC's power).
 
 **(f) Example / step match.** s1 example "Tap the setting that makes the breeze → spins counterclockwise" turns a
 direction into the "idea", which spec 14 did not intend for `spot`.
@@ -705,8 +705,8 @@ air is blue". Item 12 47 vs 30.
 **(e) Plain words.**
 - s2 guided 1: "Scattering goes as 1 over the wavelength to the fourth power. If one wave is half as long, how much
   more does it scatter?" This is a physics formula on a phone at night, inside a *guided* try. Rewrite: "Half the
-  wavelength scatters about 16 times more. Blue waves are a bit over half as long as red. Roughly how much more
-  does blue scatter?" → "several times more".
+  wavelength scatters about 16 times more. Blue waves are about two thirds as long as red. Does blue scatter
+  a little more, or several times more?" → "several times more".
 - Item 11 needs (700/400)⁴ = 9.4, which you cannot work out in your head. Drop it, or give the answer as a fact
   in the teach card.
 - "molecules" is fine for this audience.
@@ -742,7 +742,7 @@ it steady. Excellent everyday topic.
 **(d) Giveaways.** Item 10 73 vs 36/29, the second-worst in the file. Item 14 61 vs 35. s3 guided 1 50 vs 25/23.
 
 **(e) Plain words.** s1 guided 1 "At 10,000 feet, water boils at about 193°F": feet and °F in an Indian app.
-Rewrite: "At about 3,000 m (like Leh), water boils near 90°C. Why does dal take longer there?" Item 12 (psi) has
+Rewrite: "In Leh, about 3,500 m up, water boils below 90°C. Why does dal take longer there?" Item 12 (psi) has
 the same problem; Indian cookers are rated in kg/cm². Drop it or convert.
 
 **(f) Example / step match.** Item 16 ("By the Indian standard, how full may the cooker be? No more than half full
@@ -752,7 +752,7 @@ fact in the concept; teach it, don't spring it.
 
 **(g) India / tone / safety.** Rajma, chana and dal are perfect. The s2 example "Amma seals the rajma" puts the
 cooking with the mother; vary it ("Kabir seals the rajma"). That matters for a 20-year-old hostel user who cooks
-for himself. Safety: s3 guided 2 ("wait until pressure has fully dropped") is good. Add "never force the lid,
+their own food. Safety: s3 guided 2 ("wait until pressure has fully dropped") is good. Add "never force the lid,
 never cover the vent" to the takeaway.
 
 ---
