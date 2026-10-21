@@ -629,10 +629,10 @@
                 },
                 "example": {
                   "parts": [
-                    "After brushing his teeth",
-                    ", Arun does ten push-ups."
+                    "After brushing his teeth,",
+                    "Arun does ten push-ups."
                   ],
-                  "spot": "After brushing his teeth",
+                  "spot": "After brushing his teeth,",
                   "feedback": "Brushing his teeth comes just before the push-ups, so it is the cue."
                 },
                 "guided": [
@@ -738,9 +738,9 @@
                 },
                 "example": {
                   "parts": [
-                    "For a month, Sana walks ",
+                    "For a month, Sana walks",
                     "at the same park gate",
-                    " each morning, and now her feet head there by themselves."
+                    "each morning, and now her feet head there by themselves."
                   ],
                   "spot": "at the same park gate",
                   "feedback": "The same gate every morning is the stable setting that made the link strong."
@@ -842,11 +842,10 @@
                 },
                 "example": {
                   "parts": [
-                    "Meena missed her morning run once. ",
-                    "The next day, the run still felt automatic",
-                    "."
+                    "Meena missed her morning run once.",
+                    "The next day, the run still felt automatic."
                   ],
-                  "spot": "The next day, the run still felt automatic",
+                  "spot": "The next day, the run still felt automatic.",
                   "feedback": "One missed day did not reset her habit. It was still there the next day."
                 },
                 "guided": [
@@ -938,6 +937,7 @@
                 "id": "loss-aversion-1",
                 "type": "predict",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -986,6 +986,7 @@
                 "id": "loss-aversion-2",
                 "type": "scenario",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1034,6 +1035,7 @@
                 "id": "loss-aversion-3",
                 "type": "estimate",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1085,6 +1087,7 @@
                 "id": "loss-aversion-4",
                 "type": "choose",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1130,6 +1133,7 @@
                 "id": "loss-aversion-5",
                 "type": "why",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1179,6 +1183,7 @@
                 "id": "loss-aversion-6",
                 "type": "fill-the-step",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1224,6 +1229,7 @@
                 "id": "loss-aversion-7",
                 "type": "true-not-quite",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s1",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "loss-aversion-m1",
@@ -1273,6 +1279,7 @@
                 "id": "loss-aversion-8",
                 "type": "match",
                 "conceptId": "loss-aversion",
+                "step": "loss-aversion-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1417,7 +1424,223 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "loss-aversion-s1",
+                "title": "A drop feels bigger than a gain",
+                "claimId": "loss-aversion-c2",
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "hook": {
+                  "stem": "A friend offers a coin toss: heads you win ₹100, tails you pay ₹100. Do most people take it?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, most say no.",
+                      "correct": true,
+                      "feedback": "Right. Most people turn down a fair bet like this. Paying ₹100 feels bigger than winning ₹100."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, since it is fair.",
+                      "correct": false,
+                      "feedback": "It is fair on paper, but most people still say no. Paying ₹100 feels worse than winning ₹100 feels good."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only people who dislike games say no.",
+                      "correct": false,
+                      "feedback": "Most people say no, not just a few. A drop tends to weigh more than a gain of the same size."
+                    }
+                  ]
+                },
+                "teach": "A drop often feels stronger than a gain of the same size. So a fair bet to win or pay ₹100 feels like a bad deal.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Win ₹100",
+                    "lines": [
+                      "Feels good"
+                    ]
+                  },
+                  "right": {
+                    "title": "Pay ₹100",
+                    "lines": [
+                      "Feels bad",
+                      "Weighs more"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Sahil finds ₹50 on the bus and smiles for a minute, but when ₹50 falls out of his pocket,",
+                    "he is upset all evening."
+                  ],
+                  "spot": "he is upset all evening.",
+                  "feedback": "The same ₹50 felt much bigger as a drop than as a find."
+                },
+                "guided": [
+                  {
+                    "stem": "In a hostel game, Varun has 10 points. Giving up 2 points upsets him more than winning 2 points pleases him. What does this show?",
+                    "hint": "Compare a drop and a gain of the same size.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A drop weighs more than a gain.",
+                        "correct": true,
+                        "feedback": "Yes. The same 2 points feel bigger as a drop than as a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "He does not care about points.",
+                        "correct": false,
+                        "feedback": "He clearly cares. The drop just feels stronger than the gain."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Gains always feel bigger.",
+                        "correct": false,
+                        "feedback": "Here it is the other way round. The drop feels stronger."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "In a cricket match, Anjali’s team gets 5 lucky runs, then gives away 5 runs from a bad throw. Which moment stays with her longer?",
+                    "hint": "Which feels stronger: a gain or a drop of the same size?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The 5 runs given away.",
+                        "correct": true,
+                        "feedback": "Right. A drop often feels stronger than a gain of the same size."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The 5 lucky runs.",
+                        "correct": false,
+                        "feedback": "The gain is nice, but a drop of the same size tends to weigh more."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both stay with her the same.",
+                        "correct": false,
+                        "feedback": "The runs are the same, but a drop tends to feel bigger than a gain."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A drop tends to feel bigger than a gain of the same size."
+              },
+              {
+                "id": "loss-aversion-s2",
+                "title": "It depends on where you start",
+                "claimId": "loss-aversion-c1",
+                "sourceRefs": [
+                  "prospect"
+                ],
+                "hook": {
+                  "stem": "Riya hoped for ₹500 from her aunt and got ₹300. Ravi hoped for nothing and got ₹300. Who feels better?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Ravi.",
+                      "correct": true,
+                      "feedback": "Right. Ravi hoped for nothing, so ₹300 is a gain. Riya hoped for ₹500, so ₹300 feels like a drop."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Riya.",
+                      "correct": false,
+                      "feedback": "Riya hoped for ₹500, so ₹300 feels ₹200 short. Ravi hoped for nothing, so it is all gain."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both feel the same, since both got ₹300.",
+                      "correct": false,
+                      "feedback": "The amount is the same, but the starting points differ. We judge from where we start."
+                    }
+                  ]
+                },
+                "teach": "We judge a result by where we start or what we expect. The same ₹300 can feel like a gain or a loss.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Hoped ₹0, got ₹300",
+                    "lines": [
+                      "Feels like a gain"
+                    ]
+                  },
+                  "right": {
+                    "title": "Hoped ₹500, got ₹300",
+                    "lines": [
+                      "Feels like a loss"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Meghna and Kunal both end the month with ₹1,000, but",
+                    "Meghna started with ₹1,500,",
+                    "so her month feels like a loss."
+                  ],
+                  "spot": "Meghna started with ₹1,500,",
+                  "feedback": "Her start point was higher, so the same ₹1,000 feels like a drop."
+                },
+                "guided": [
+                  {
+                    "stem": "In an exam, Pranav hoped for 90 and got 80. Neha hoped for 70 and got 80. Who is more pleased?",
+                    "hint": "Compare each score with what each one hoped for.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Neha.",
+                        "correct": true,
+                        "feedback": "Yes. For Neha, 80 is above her start point, so it feels like a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Pranav.",
+                        "correct": false,
+                        "feedback": "Pranav hoped for 90, so 80 feels like a drop for him."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both, since the score is the same.",
+                        "correct": false,
+                        "feedback": "The score is the same, but their start points differ."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "One canteen says “Pay ₹5 extra by card.” Another says “Get ₹5 off with cash.” The prices end up the same. What differs?",
+                    "hint": "Look at the start price each one names.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Only the start point in the wording.",
+                        "correct": true,
+                        "feedback": "Right. One frames card as a loss, the other frames cash as a gain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The real cost.",
+                        "correct": false,
+                        "feedback": "The money ends up the same. Only the framing changed."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing at all.",
+                        "correct": false,
+                        "feedback": "The money is the same, but the frame changes how it feels."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Gain or loss depends on where you start."
+              }
+            ]
           },
           {
             "id": "anchoring",
@@ -1458,6 +1681,7 @@
                 "id": "anchoring-1",
                 "type": "predict",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1510,6 +1734,7 @@
                 "id": "anchoring-2",
                 "type": "scenario",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1562,6 +1787,7 @@
                 "id": "anchoring-3",
                 "type": "estimate",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1613,6 +1839,7 @@
                 "id": "anchoring-4",
                 "type": "choose",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1665,6 +1892,7 @@
                 "id": "anchoring-5",
                 "type": "why",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1",
@@ -1719,6 +1947,7 @@
                 "id": "anchoring-6",
                 "type": "fill-the-step",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1768,6 +1997,7 @@
                 "id": "anchoring-7",
                 "type": "true-not-quite",
                 "conceptId": "anchoring",
+                "step": "anchoring-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1820,6 +2050,7 @@
                 "id": "anchoring-8",
                 "type": "explain-it-back",
                 "conceptId": "anchoring",
+                "step": "anchoring-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1961,7 +2192,217 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "anchoring-s1",
+                "title": "A first number pulls your guess",
+                "claimId": "anchoring-c1",
+                "sourceRefs": [
+                  "bias",
+                  "philosophy"
+                ],
+                "hook": {
+                  "stem": "A seller first says a kurta costs ₹2,000, then offers it for ₹1,200. Why does ₹1,200 seem cheap?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The ₹2,000 came first.",
+                      "correct": true,
+                      "feedback": "Right. The first number set the starting point for your sense of the price."
+                    },
+                    {
+                      "id": "b",
+                      "text": "₹1,200 is always low for a kurta.",
+                      "correct": false,
+                      "feedback": "Not always. It seems low mainly because ₹2,000 came first."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Sellers never start too high.",
+                      "correct": false,
+                      "feedback": "Sellers can start at any number. The first one still pulls your sense of the price."
+                    }
+                  ]
+                },
+                "teach": "The first number you see can pull your later guess toward it. That first number is called an anchor.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "See a first number",
+                    "Start the guess there",
+                    "End up close to it"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Rohit hears “50,000” on TV,",
+                    "then guesses that 45,000 people fit in the stadium."
+                  ],
+                  "spot": "Rohit hears “50,000” on TV,",
+                  "feedback": "The TV number came first and pulled his guess close to it."
+                },
+                "guided": [
+                  {
+                    "stem": "At a fair, a stall shows ₹800 for a bag, then cuts it to ₹500. What is the anchor?",
+                    "hint": "The anchor is the number you see first.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The ₹800 tag.",
+                        "correct": true,
+                        "feedback": "Yes. The ₹800 came first and makes ₹500 look small."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The ₹500 price.",
+                        "correct": false,
+                        "feedback": "That is the final price. The anchor is the first number, ₹800."
+                      },
+                      {
+                        "id": "c",
+                        "text": "What the bag is really worth.",
+                        "correct": false,
+                        "feedback": "Its real worth is not shown here. The anchor is the first number shown."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Before guessing how long a train trip takes, Kavya’s friend says “maybe 10 hours.” Kavya guesses 9. Why so close to 10?",
+                    "hint": "Which number did she hear first?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Her friend’s number pulled her guess.",
+                        "correct": true,
+                        "feedback": "Right. The first number she heard acted as an anchor."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She checked the timetable.",
+                        "correct": false,
+                        "feedback": "She did not check anything. Her friend’s number came first and pulled her guess."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Train trips always take 9 hours.",
+                        "correct": false,
+                        "feedback": "Trip times vary. Her guess sat near the first number she heard."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The first number you hear can steer your guess."
+              },
+              {
+                "id": "anchoring-s2",
+                "title": "Even a random number pulls",
+                "claimId": "anchoring-c2",
+                "sourceRefs": [
+                  "tversky",
+                  "bias"
+                ],
+                "hook": {
+                  "stem": "People spin a wheel that lands on a random number, then guess a fact. Does the random number change their guess?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, guesses drift toward it.",
+                      "correct": true,
+                      "feedback": "Right. In a classic study, even a number from a wheel pulled guesses toward it."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, people ignore random numbers.",
+                      "correct": false,
+                      "feedback": "People try to, but in studies the random number still pulled their guesses."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only if the number is very large.",
+                      "correct": false,
+                      "feedback": "In the classic study, both a high and a low random number pulled guesses."
+                    }
+                  ]
+                },
+                "teach": "Even a random number can pull a guess. People start from it and do not move far enough away.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Typical guess of a percentage after a random number",
+                  "min": "0%",
+                  "max": "100%",
+                  "marks": [
+                    {
+                      "at": 25,
+                      "text": "Saw 10: guessed 25%"
+                    },
+                    {
+                      "at": 45,
+                      "text": "Saw 65: guessed 45%"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Arnav writes down his roll number, which ends in 90,",
+                    "then guesses that a canteen thali costs ₹90."
+                  ],
+                  "spot": "Arnav writes down his roll number, which ends in 90,",
+                  "feedback": "His roll number has nothing to do with the thali, yet it pulled his guess."
+                },
+                "guided": [
+                  {
+                    "stem": "Before a GK quiz, a screen flashes a random number, 900. Then Tara guesses a tower is 800 metres tall. Why so high?",
+                    "hint": "Did the first number have any link to the tower?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The random number pulled her guess up.",
+                        "correct": true,
+                        "feedback": "Yes. Even a number with no link can pull a guess toward it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She knew the real height.",
+                        "correct": false,
+                        "feedback": "She was guessing. The random 900 pulled her guess up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Random numbers have no effect.",
+                        "correct": false,
+                        "feedback": "In studies they did. People start from the number and move too little."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "One cricket team sees a random 12 on the board, another sees 2. Then both guess how many sixes a match will have. Who guesses higher?",
+                    "hint": "Each group starts from the number it saw.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The team that saw 12.",
+                        "correct": true,
+                        "feedback": "Right. A higher first number tends to pull guesses higher."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The team that saw 2.",
+                        "correct": false,
+                        "feedback": "A low number tends to pull guesses down, not up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Both guess the same.",
+                        "correct": false,
+                        "feedback": "In studies, groups that saw different numbers gave different guesses."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Even a made-up number can tug your guess toward it."
+              }
+            ]
           },
           {
             "id": "confirmation-bias",
@@ -2002,6 +2443,7 @@
                 "id": "confirmation-bias-1",
                 "type": "predict",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2051,6 +2493,7 @@
                 "id": "confirmation-bias-2",
                 "type": "scenario",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2100,6 +2543,7 @@
                 "id": "confirmation-bias-3",
                 "type": "estimate",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2155,6 +2599,7 @@
                 "id": "confirmation-bias-4",
                 "type": "choose",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2204,6 +2649,7 @@
                 "id": "confirmation-bias-5",
                 "type": "why",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2257,6 +2703,7 @@
                 "id": "confirmation-bias-6",
                 "type": "fill-the-step",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2306,6 +2753,7 @@
                 "id": "confirmation-bias-7",
                 "type": "true-not-quite",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1",
@@ -2359,6 +2807,7 @@
                 "id": "confirmation-bias-8",
                 "type": "explain-it-back",
                 "conceptId": "confirmation-bias",
+                "step": "confirmation-bias-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m1"
@@ -2493,7 +2942,225 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "confirmation-bias-s1",
+                "title": "We notice what fits",
+                "claimId": "confirmation-bias-c1",
+                "sourceRefs": [
+                  "bias",
+                  "wason"
+                ],
+                "hook": {
+                  "stem": "Mohit thinks his lucky pen helps in exams. Which exams does he recall best?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The ones that went well with the pen.",
+                      "correct": true,
+                      "feedback": "Right. Cases that fit a belief stand out. The others fade from view."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Every exam, good and bad, the same.",
+                      "correct": false,
+                      "feedback": "Memory is not that even. Cases that fit his belief stand out more."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The ones that went badly with the pen.",
+                      "correct": false,
+                      "feedback": "Those go against his belief, so they tend to get less notice."
+                    }
+                  ]
+                },
+                "teach": "We tend to notice and recall the clues that fit what we already believe. Clues that do not fit get skipped.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Fits the belief",
+                    "lines": [
+                      "Noticed",
+                      "Recalled"
+                    ]
+                  },
+                  "right": {
+                    "title": "Goes against it",
+                    "lines": [
+                      "Skipped",
+                      "Missed"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Zara thinks Mondays are unlucky, so",
+                    "she writes down every bad Monday and skips the good ones."
+                  ],
+                  "spot": "she writes down every bad Monday and skips the good ones.",
+                  "feedback": "She keeps only the cases that fit her belief, so it looks stronger than it is."
+                },
+                "guided": [
+                  {
+                    "stem": "Arjun thinks one shopkeeper is rude. He recalls two rude moments, not the ten polite ones. What is going on?",
+                    "hint": "Which moments fit his belief?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "He notices what fits his belief.",
+                        "correct": true,
+                        "feedback": "Yes. The rude moments fit, so they stand out."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The shopkeeper is always rude.",
+                        "correct": false,
+                        "feedback": "The ten polite moments say otherwise. He just recalls the ones that fit."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He has a weak memory.",
+                        "correct": false,
+                        "feedback": "His memory works. It just picks out the moments that fit his belief."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Sneha thinks her team plays better in white jerseys. She only looks up the matches they won in white. What is missing?",
+                    "hint": "What about the matches that do not fit?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The matches in white they did not win.",
+                        "correct": true,
+                        "feedback": "Right. Those could go against her idea, so they matter too."
+                      },
+                      {
+                        "id": "b",
+                        "text": "More wins in white.",
+                        "correct": false,
+                        "feedback": "More matches that fit will not test the idea. She needs the ones that do not fit."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing, since the wins prove it.",
+                        "correct": false,
+                        "feedback": "Wins alone show only the cases that fit. The other cases are missing."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "We see what fits our belief and skip what does not."
+              },
+              {
+                "id": "confirmation-bias-s2",
+                "title": "Test with a case that could break it",
+                "claimId": "confirmation-bias-c2",
+                "sourceRefs": [
+                  "wason",
+                  "bias"
+                ],
+                "hook": {
+                  "stem": "A friend says every crow is black. What would test that claim best?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Looking for a crow that is not black.",
+                      "correct": true,
+                      "feedback": "Right. One crow of another colour would break the claim. That is a strong test."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Counting more black crows.",
+                      "correct": false,
+                      "feedback": "Each black crow fits, but it cannot show the claim is wrong. A strong test looks for one that breaks it."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Asking friends if they agree.",
+                      "correct": false,
+                      "feedback": "Agreement is not a test. A crow of another colour would be."
+                    }
+                  ]
+                },
+                "teach": "A strong test looks for a case that could show the idea is wrong. One clear exception can break a claim that says “always.”",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Weak test",
+                    "lines": [
+                      "Look for cases that fit"
+                    ]
+                  },
+                  "right": {
+                    "title": "Strong test",
+                    "lines": [
+                      "Look for a case that breaks it"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "To test his idea that the 8 o’clock bus is always late,",
+                    "Farhan looks for a day it came on time."
+                  ],
+                  "spot": "Farhan looks for a day it came on time.",
+                  "feedback": "One on-time day would break “always late,” so it is a strong test."
+                },
+                "guided": [
+                  {
+                    "stem": "Dev says phones that cost more always have better cameras. Which phone could prove him wrong?",
+                    "hint": "Look for a case that breaks the “always.”",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A costly phone with a weak camera.",
+                        "correct": true,
+                        "feedback": "Yes. One such phone would break his claim."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A costly phone with a great camera.",
+                        "correct": false,
+                        "feedback": "That fits his claim, so it cannot prove it wrong."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A cheap phone with a weak camera.",
+                        "correct": false,
+                        "feedback": "That fits too. Only a costly phone with a weak camera would break it."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Pooja thinks music while studying always lowers her marks. What would test this best?",
+                    "hint": "Which result would go against her idea?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A test where she did well with music on.",
+                        "correct": true,
+                        "feedback": "Right. A good result with music would go against her idea."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Recalling low marks with music on.",
+                        "correct": false,
+                        "feedback": "Those fit her idea, so they cannot test it well."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Asking friends what they think.",
+                        "correct": false,
+                        "feedback": "Views are not a test. A result that goes against the idea is."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "To test an idea, look for the case that could break it."
+              }
+            ]
           },
           {
             "id": "social-proof",
@@ -2530,6 +3197,7 @@
                 "id": "social-proof-1",
                 "type": "predict",
                 "conceptId": "social-proof",
+                "step": "social-proof-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2578,6 +3246,7 @@
                 "id": "social-proof-2",
                 "type": "scenario",
                 "conceptId": "social-proof",
+                "step": "social-proof-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2623,6 +3292,7 @@
                 "id": "social-proof-3",
                 "type": "estimate",
                 "conceptId": "social-proof",
+                "step": "social-proof-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2674,6 +3344,7 @@
                 "id": "social-proof-4",
                 "type": "choose",
                 "conceptId": "social-proof",
+                "step": "social-proof-s3",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2719,6 +3390,7 @@
                 "id": "social-proof-5",
                 "type": "why",
                 "conceptId": "social-proof",
+                "step": "social-proof-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "social-proof-m1",
@@ -2769,6 +3441,7 @@
                 "id": "social-proof-6",
                 "type": "fill-the-step",
                 "conceptId": "social-proof",
+                "step": "social-proof-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2817,6 +3490,7 @@
                 "id": "social-proof-7",
                 "type": "true-not-quite",
                 "conceptId": "social-proof",
+                "step": "social-proof-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2865,6 +3539,7 @@
                 "id": "social-proof-8",
                 "type": "explain-it-back",
                 "conceptId": "social-proof",
+                "step": "social-proof-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -2992,7 +3667,327 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "social-proof-s1",
+                "title": "A crowd’s choice is a clue",
+                "claimId": "social-proof-c2",
+                "sourceRefs": [
+                  "asch",
+                  "asch-original"
+                ],
+                "hook": {
+                  "stem": "In class, everyone around you raises a hand for answer B. You thought A. What do you feel pulled to do?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Switch to B.",
+                      "correct": true,
+                      "feedback": "Right. When many people pick one answer, it pulls on our own choice."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Feel more sure of A.",
+                      "correct": false,
+                      "feedback": "Usually the pull goes the other way, toward the group’s answer."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Nothing, since others do not matter.",
+                      "correct": false,
+                      "feedback": "Others do matter. A group answer can pull our own."
+                    }
+                  ]
+                },
+                "teach": "What a crowd picks works as a clue. When many people choose one answer, our own choice can lean toward it.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Many pick B",
+                    "B seems right",
+                    "You lean to B"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "At the canteen,",
+                    "Neel sees everyone order the masala dosa,",
+                    "so he orders it too, though he came for idli."
+                  ],
+                  "spot": "Neel sees everyone order the masala dosa,",
+                  "feedback": "What everyone else ordered acted as a clue and pulled his choice."
+                },
+                "guided": [
+                  {
+                    "stem": "In a class poll, most students vote for a Sunday trip. Aisha was leaning to Saturday, but she votes Sunday. What pulled her?",
+                    "hint": "What did she see before she voted?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The class votes.",
+                        "correct": true,
+                        "feedback": "Yes. The group’s choice worked as a clue and pulled hers."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The weather report.",
+                        "correct": false,
+                        "feedback": "Nothing in the story is about weather. The votes she saw came first."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A rule that she must agree.",
+                        "correct": false,
+                        "feedback": "There is no such rule. The group’s votes pulled her choice."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "A song has 10 crore views. Before playing it, Bhavna already expects it to be good. Why?",
+                    "hint": "What does the view count tell her about other people?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Many others chose it.",
+                        "correct": true,
+                        "feedback": "Right. The crowd’s choice works as a clue about the song."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She has heard it before.",
+                        "correct": false,
+                        "feedback": "She has not played it yet. The view count is the clue."
+                      },
+                      {
+                        "id": "c",
+                        "text": "She knows the singer well.",
+                        "correct": false,
+                        "feedback": "Nothing says she does. The view count is what shaped her guess."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "What a crowd picks can pull your own pick."
+              },
+              {
+                "id": "social-proof-s2",
+                "title": "Even a wrong crowd can pull",
+                "claimId": "social-proof-c1",
+                "sourceRefs": [
+                  "asch-original",
+                  "asch"
+                ],
+                "hook": {
+                  "stem": "In a test, a group gives a plainly wrong answer about line lengths. How often did the one real person go along?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "About a third of the time.",
+                      "correct": true,
+                      "feedback": "Right. In Asch’s test, people went along with the wrong group in about 37% of answers."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Never, since the answer was so plain.",
+                      "correct": false,
+                      "feedback": "Alone, people almost never got it wrong. With a wrong group, they went along about a third of the time."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Almost every time.",
+                      "correct": false,
+                      "feedback": "Not that often. People went along in about 37% of answers, and some never did."
+                    }
+                  ]
+                },
+                "teach": "When a group gives a plainly wrong answer, some people go along. In Asch’s line test, this happened in about a third of answers.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Wrong answers in Asch’s line test",
+                  "min": "0%",
+                  "max": "100%",
+                  "marks": [
+                    {
+                      "at": 1,
+                      "text": "Alone: under 1%"
+                    },
+                    {
+                      "at": 37,
+                      "text": "With a wrong group: 37%"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Every student before Tanya calls the shorter line the longest, and",
+                    "Tanya says the same,",
+                    "though she can see it is wrong."
+                  ],
+                  "spot": "Tanya says the same,",
+                  "feedback": "She can see the right answer, yet the group’s wrong answer pulls her along."
+                },
+                "guided": [
+                  {
+                    "stem": "In a hostel quiz, five friends say Delhi is south of Chennai. Kabir knows it is not, but he nods. What is going on?",
+                    "hint": "What did the group do before Kabir answered?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The wrong group pulled him along.",
+                        "correct": true,
+                        "feedback": "Yes. A group can pull someone toward a wrong answer, even a plain one."
+                      },
+                      {
+                        "id": "b",
+                        "text": "He changed his mind about the map.",
+                        "correct": false,
+                        "feedback": "He still knows the map. The group’s pull made him nod."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He did not hear the question.",
+                        "correct": false,
+                        "feedback": "He heard it. The group’s wrong answer is what pulled him."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "In a music class, everyone calls a note higher than it is. Anu hears it clearly but agrees. Does everyone act like Anu?",
+                    "hint": "In Asch’s test, did every person go along?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "No, some stay with what they hear.",
+                        "correct": true,
+                        "feedback": "Right. In Asch’s test, about a quarter of people never went along."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, everyone always goes along.",
+                        "correct": false,
+                        "feedback": "Not everyone. In Asch’s test, about a quarter never went along."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No one ever goes along.",
+                        "correct": false,
+                        "feedback": "Some people do. In Asch’s test, wrong answers came in about a third of tries."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A group can pull us toward an answer we can see is wrong."
+              },
+              {
+                "id": "social-proof-s3",
+                "title": "Agreement is not proof",
+                "claimId": "social-proof-c2",
+                "sourceRefs": [
+                  "asch",
+                  "asch-original"
+                ],
+                "hook": {
+                  "stem": "Thirty classmates forward the same message saying the exam is moved. Does that make it true?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, they may all be sharing one message.",
+                      "correct": true,
+                      "feedback": "Right. Many people agreeing is not a fresh check of the fact."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, so many people cannot be wrong.",
+                      "correct": false,
+                      "feedback": "A group can share one mistake. In Asch’s test, groups agreed on a wrong answer."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Yes, if they are all friends.",
+                      "correct": false,
+                      "feedback": "Friends can share a mistake too. Agreement is not proof."
+                    }
+                  ]
+                },
+                "teach": "A crowd can agree on a wrong answer. Many people saying the same thing is a clue, not proof.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Crowd agrees",
+                    "lines": [
+                      "A clue",
+                      "Can be wrong"
+                    ]
+                  },
+                  "right": {
+                    "title": "A fresh check",
+                    "lines": [
+                      "Looks at the facts"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Everyone in the hostel says the mess serves paneer on Friday, but",
+                    "when Sid checks the menu, it says Thursday."
+                  ],
+                  "spot": "when Sid checks the menu, it says Thursday.",
+                  "feedback": "Everyone agreed, yet the menu was the real check, and it showed they were wrong."
+                },
+                "guided": [
+                  {
+                    "stem": "In a group project, everyone agrees the answer is 42 without working it out. What does their agreement show?",
+                    "hint": "Did anyone check the working?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Only that they agree.",
+                        "correct": true,
+                        "feedback": "Yes. Agreement is not a check. The working would be."
+                      },
+                      {
+                        "id": "b",
+                        "text": "That 42 is right.",
+                        "correct": false,
+                        "feedback": "Not yet. A group can agree on a wrong answer."
+                      },
+                      {
+                        "id": "c",
+                        "text": "That 42 is wrong.",
+                        "correct": false,
+                        "feedback": "It may be right or wrong. Agreement alone does not tell us."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "A whole cricket crowd says the ball crossed the rope. What would settle whether it was a six?",
+                    "hint": "What is a fresh check, apart from the crowd?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The replay.",
+                        "correct": true,
+                        "feedback": "Right. The replay is a real check. The crowd’s view is only a clue."
+                      },
+                      {
+                        "id": "b",
+                        "text": "How loud the crowd was.",
+                        "correct": false,
+                        "feedback": "Loud agreement is still just agreement. The replay checks the fact."
+                      },
+                      {
+                        "id": "c",
+                        "text": "How many fans posted about it.",
+                        "correct": false,
+                        "feedback": "More posts are not more proof. The replay is the real check."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Many people agreeing is a clue, not proof."
+              }
+            ]
           },
           {
             "id": "planning-fallacy",
@@ -3022,6 +4017,13 @@
                 "sourceRefs": [
                   "planning"
                 ]
+              },
+              {
+                "id": "planning-fallacy-c3",
+                "text": "In one study, linking past tasks to a new plan removed the short time guess.",
+                "sourceRefs": [
+                  "planning"
+                ]
               }
             ],
             "items": [
@@ -3029,6 +4031,7 @@
                 "id": "planning-fallacy-1",
                 "type": "predict",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3077,6 +4080,7 @@
                 "id": "planning-fallacy-2",
                 "type": "scenario",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3122,6 +4126,7 @@
                 "id": "planning-fallacy-3",
                 "type": "estimate",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s3",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3173,6 +4178,7 @@
                 "id": "planning-fallacy-4",
                 "type": "choose",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s2",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3218,6 +4224,7 @@
                 "id": "planning-fallacy-5",
                 "type": "why",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "planning-fallacy-m1",
@@ -3268,6 +4275,7 @@
                 "id": "planning-fallacy-6",
                 "type": "fill-the-step",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s3",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3316,6 +4324,7 @@
                 "id": "planning-fallacy-7",
                 "type": "true-not-quite",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "planning-fallacy-m1",
@@ -3365,6 +4374,7 @@
                 "id": "planning-fallacy-8",
                 "type": "explain-it-back",
                 "conceptId": "planning-fallacy",
+                "step": "planning-fallacy-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m1"
@@ -3482,10 +4492,336 @@
                 {
                   "claimId": "planning-fallacy-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "planning-fallacy-c3",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "planning-fallacy-s1",
+                "title": "We guess too little time",
+                "claimId": "planning-fallacy-c1",
+                "sourceRefs": [
+                  "planning"
+                ],
+                "hook": {
+                  "stem": "Students guessed when they would finish a big college project. How did their guesses compare with the real time?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "They guessed too little time.",
+                      "correct": true,
+                      "feedback": "Right. On average they guessed 34 days and took about 56."
+                    },
+                    {
+                      "id": "b",
+                      "text": "They were about right.",
+                      "correct": false,
+                      "feedback": "They were far off. They guessed 34 days on average and took about 56."
+                    },
+                    {
+                      "id": "c",
+                      "text": "They guessed too much time.",
+                      "correct": false,
+                      "feedback": "The other way round. On average, they took longer than they guessed."
+                    }
+                  ]
+                },
+                "teach": "We tend to guess too little time for our own tasks. In one study, students took about 56 days for a project they guessed would take 34.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Days to finish a thesis, in one study",
+                  "min": "0 days",
+                  "max": "60 days",
+                  "marks": [
+                    {
+                      "at": 57,
+                      "text": "Best guess: 34"
+                    },
+                    {
+                      "at": 81,
+                      "text": "Worst-case guess: 49"
+                    },
+                    {
+                      "at": 93,
+                      "text": "Real: 56"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Ishan says his science model will take one evening,",
+                    "but three evenings later he is still gluing parts."
+                  ],
+                  "spot": "but three evenings later he is still gluing parts.",
+                  "feedback": "His guess was far too short. That is the planning fallacy."
+                },
+                "guided": [
+                  {
+                    "stem": "Priya guesses her essay will take 2 hours. It takes 5. What does this show?",
+                    "hint": "Was her guess too long or too short?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "She guessed too little time.",
+                        "correct": true,
+                        "feedback": "Yes. Guessing too short for our own task is very common."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She writes slowly.",
+                        "correct": false,
+                        "feedback": "Speed is not the point. Her guess for her own task was too short."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Essays always take 5 hours.",
+                        "correct": false,
+                        "feedback": "Times vary. The point is that her own guess was too short."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Aman plans to clean his hostel room in 20 minutes. It takes an hour. Why is this common?",
+                    "hint": "Think about guesses for our own tasks.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "People often guess short for their own tasks.",
+                        "correct": true,
+                        "feedback": "Right. We tend to guess too little time for our own tasks."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Rooms get messier each minute.",
+                        "correct": false,
+                        "feedback": "The room did not grow messier. His guess was just too short."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He was not trying.",
+                        "correct": false,
+                        "feedback": "Effort is not the issue. Short guesses for our own tasks are common."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Your own tasks often take longer than you guess."
+              },
+              {
+                "id": "planning-fallacy-s2",
+                "title": "We picture a smooth path",
+                "claimId": "planning-fallacy-c2",
+                "sourceRefs": [
+                  "planning"
+                ],
+                "hook": {
+                  "stem": "Kunal plans to print his project in 10 minutes. What might his plan leave out?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The queue at the print shop.",
+                      "correct": true,
+                      "feedback": "Right. Plans often picture a smooth path and leave out delays like a queue."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Nothing, since printing is quick.",
+                      "correct": false,
+                      "feedback": "Printing is quick, but getting it done can hit delays, like a queue."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The colour of the paper.",
+                      "correct": false,
+                      "feedback": "That will not change the time much. Delays like a queue will."
+                    }
+                  ]
+                },
+                "teach": "When we plan, we picture the task going smoothly. Delays and extra steps get left out of the guess.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "The plan",
+                    "lines": [
+                      "Do the task",
+                      "Done"
+                    ]
+                  },
+                  "right": {
+                    "title": "Real life",
+                    "lines": [
+                      "Do the task",
+                      "Hit delays",
+                      "Done later"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Ritu plans her poster as draw, then colour, but",
+                    "she forgets the trip to buy chart paper."
+                  ],
+                  "spot": "she forgets the trip to buy chart paper.",
+                  "feedback": "The shop trip is a step her smooth plan left out."
+                },
+                "guided": [
+                  {
+                    "stem": "Harsh plans to reach the station in 15 minutes. He did not think about traffic. What is his plan missing?",
+                    "hint": "What could slow him on the way?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Traffic delays.",
+                        "correct": true,
+                        "feedback": "Yes. A smooth plan often leaves out delays like traffic."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A faster bike.",
+                        "correct": false,
+                        "feedback": "The gap in the plan is not the bike. It left out delays."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing, since 15 minutes is enough.",
+                        "correct": false,
+                        "feedback": "Maybe on a clear road. His plan did not count delays like traffic."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Sanya plans to cook dinner in 30 minutes. She forgets she must first buy vegetables. What did she leave out?",
+                    "hint": "Which step comes before cooking?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The trip to buy vegetables.",
+                        "correct": true,
+                        "feedback": "Right. Her plan pictured only the cooking and left out a step."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Washing up after.",
+                        "correct": false,
+                        "feedback": "That comes after dinner. The missing step comes before cooking."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Laying the table.",
+                        "correct": false,
+                        "feedback": "That takes little time. The shop trip is the big missed step."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A smooth plan leaves out the delays."
+              },
+              {
+                "id": "planning-fallacy-s3",
+                "title": "Past tasks give a better guess",
+                "claimId": "planning-fallacy-c3",
+                "sourceRefs": [
+                  "planning"
+                ],
+                "hook": {
+                  "stem": "Your last three lab reports took 2, 3 and 4 hours. A new one is due. What is a fair time guess?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "About 3 hours.",
+                      "correct": true,
+                      "feedback": "Right. Your past reports are a real guide, and they took about 3 hours."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About 1 hour, if all goes well.",
+                      "correct": false,
+                      "feedback": "That pictures a smooth path. Past reports took 2 to 4 hours."
+                    },
+                    {
+                      "id": "c",
+                      "text": "There is no way to guess.",
+                      "correct": false,
+                      "feedback": "There is. Past reports took 2 to 4 hours, so about 3 is fair."
+                    }
+                  ]
+                },
+                "teach": "How long similar tasks really took is a good guide. In one study, linking past tasks to a new plan removed the too short guess.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Recall past tasks",
+                    "Link them to the new task",
+                    "Better guess"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Before guessing,",
+                    "Yash recalls that his last two speeches took a week to prepare,",
+                    "so he plans a week again."
+                  ],
+                  "spot": "Yash recalls that his last two speeches took a week to prepare,",
+                  "feedback": "He links past tasks to the new one, which gives a better guess."
+                },
+                "guided": [
+                  {
+                    "stem": "Leela’s past sketches each took about 3 hours. Her plan for a new sketch says 1 hour. Which guess is likely closer?",
+                    "hint": "What did similar tasks really take?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "About 3 hours.",
+                        "correct": true,
+                        "feedback": "Yes. Her past sketches are a better guide than a hopeful plan."
+                      },
+                      {
+                        "id": "b",
+                        "text": "1 hour.",
+                        "correct": false,
+                        "feedback": "That is the hopeful plan. Her past sketches took about 3 hours."
+                      },
+                      {
+                        "id": "c",
+                        "text": "10 hours.",
+                        "correct": false,
+                        "feedback": "Nothing points to 10. Her past sketches took about 3 hours."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "A cricket club’s last two match teas took 2 hours to set up. This time they plan 30 minutes. What would give a better guess?",
+                    "hint": "Look at what happened before.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The 2 hours it took before.",
+                        "correct": true,
+                        "feedback": "Right. Past setups show the real time, delays and all."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Hoping it goes faster.",
+                        "correct": false,
+                        "feedback": "Hope is the smooth plan. Past setups show the real time."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Asking someone new to guess.",
+                        "correct": false,
+                        "feedback": "A new guess may also picture a smooth path. Past setups are the better guide."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Past tasks show how long the next one may take."
+              }
+            ]
           },
           {
             "id": "sleep-memory",
@@ -3519,6 +4855,13 @@
                   "sleep-review",
                   "sleep-rest"
                 ]
+              },
+              {
+                "id": "sleep-memory-c3",
+                "text": "After you learn, a new memory can get firm over time. This is called consolidation.",
+                "sourceRefs": [
+                  "sleep-review"
+                ]
               }
             ],
             "items": [
@@ -3526,6 +4869,7 @@
                 "id": "sleep-memory-1",
                 "type": "predict",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3578,6 +4922,7 @@
                 "id": "sleep-memory-2",
                 "type": "scenario",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3627,6 +4972,7 @@
                 "id": "sleep-memory-3",
                 "type": "estimate",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3683,6 +5029,7 @@
                 "id": "sleep-memory-4",
                 "type": "choose",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3732,6 +5079,7 @@
                 "id": "sleep-memory-5",
                 "type": "why",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "sleep-memory-m1",
@@ -3785,6 +5133,7 @@
                 "id": "sleep-memory-6",
                 "type": "fill-the-step",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3834,6 +5183,7 @@
                 "id": "sleep-memory-7",
                 "type": "true-not-quite",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -3886,6 +5236,7 @@
                 "id": "sleep-memory-8",
                 "type": "explain-it-back",
                 "conceptId": "sleep-memory",
+                "step": "sleep-memory-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -4027,10 +5378,330 @@
                 {
                   "claimId": "sleep-memory-8",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-memory-c3",
+                  "verdict": "supported"
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "sleep-memory-s1",
+                "title": "Learn first, then it firms up",
+                "claimId": "sleep-memory-c3",
+                "sourceRefs": [
+                  "sleep-review"
+                ],
+                "hook": {
+                  "stem": "Rohan sleeps with his textbook under his pillow but never opens it. Will he remember the chapter?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, he never learned it.",
+                      "correct": true,
+                      "feedback": "Right. Memory first needs learning. Later steps can only firm up what was learned."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, sleep will add it.",
+                      "correct": false,
+                      "feedback": "Sleep can firm up what you learned, but it cannot add a chapter you never read."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only if he sleeps long enough.",
+                      "correct": false,
+                      "feedback": "No amount of sleep adds a chapter he never read. Learning comes first."
+                    }
+                  ]
+                },
+                "teach": "You learn first, and then the new memory gets firm. That later step is called consolidation.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Learn",
+                    "New, shaky memory",
+                    "Memory firms up"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Divya reads her notes on the Mughals in the evening, and",
+                    "a week later the dates still come back easily."
+                  ],
+                  "spot": "a week later the dates still come back easily.",
+                  "feedback": "She learned first, and the memory firmed up over the next days."
+                },
+                "guided": [
+                  {
+                    "stem": "Faisal learns ten new Hindi words today. Over the next days the words feel steadier. What is that later step called?",
+                    "hint": "It is the firming up after learning.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Consolidation.",
+                        "correct": true,
+                        "feedback": "Yes. Consolidation is the firming up of a memory after learning."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Learning.",
+                        "correct": false,
+                        "feedback": "Learning came first, today. The later firming up is consolidation."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Forgetting.",
+                        "correct": false,
+                        "feedback": "The words are getting steadier, not fading. That is consolidation."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Mira skips her guitar lesson but sleeps well that night. Can sleep firm up the new chords for her?",
+                    "hint": "What must happen before a memory can firm up?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "No, she has not learned them yet.",
+                        "correct": true,
+                        "feedback": "Right. Sleep can only firm up what was learned."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, sleep does the learning.",
+                        "correct": false,
+                        "feedback": "Sleep does not supply a lesson. Learning comes first."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Yes, if she naps twice.",
+                        "correct": false,
+                        "feedback": "Extra sleep cannot add chords she never learned."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Learn first; the memory firms up later."
+              },
+              {
+                "id": "sleep-memory-s2",
+                "title": "Sleep helps memories last",
+                "claimId": "sleep-memory-c1",
+                "sourceRefs": [
+                  "sleep-review",
+                  "sleep-study"
+                ],
+                "hook": {
+                  "stem": "Two groups learn word pairs. One sleeps, the other stays awake for the same hours. Which group recalls more later?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The group that slept.",
+                      "correct": true,
+                      "feedback": "Right. In many studies, sleep after learning helps later recall."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The group that stayed awake.",
+                      "correct": false,
+                      "feedback": "Staying awake did not help more. In studies, sleep after learning helped recall."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both recall the same.",
+                      "correct": false,
+                      "feedback": "In many studies, the sleep group recalled more."
+                    }
+                  ]
+                },
+                "teach": "Sleep after learning can help you recall more later. The sleeping brain helps firm up new memories.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Slept after learning",
+                    "lines": [
+                      "Recalled more pairs"
+                    ]
+                  },
+                  "right": {
+                    "title": "Stayed awake",
+                    "lines": [
+                      "Recalled fewer pairs"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Gautam practises a new bowling action,",
+                    "sleeps,",
+                    "and the next morning his action feels smoother."
+                  ],
+                  "spot": "sleeps,",
+                  "feedback": "Sleep after practice can help a new skill stick."
+                },
+                "guided": [
+                  {
+                    "stem": "Sara learns a list of capitals at night, then sleeps. Ali learns it in the morning and stays awake all day. Who may recall more after the same gap?",
+                    "hint": "Who slept after learning?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sara.",
+                        "correct": true,
+                        "feedback": "Yes. Sleep after learning can help later recall."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Ali.",
+                        "correct": false,
+                        "feedback": "Ali stayed awake. In studies, sleep after learning tended to help recall more."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Neither can recall anything.",
+                        "correct": false,
+                        "feedback": "Both can recall some. Sleep after learning can help Sara recall more."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Tushar practises a tabla rhythm, then sleeps. The next day it comes more easily. What may have helped?",
+                    "hint": "What happened between practice and the next day?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sleep firmed up the new skill.",
+                        "correct": true,
+                        "feedback": "Right. Sleep after practice can help a new skill."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The tabla got better overnight.",
+                        "correct": false,
+                        "feedback": "The tabla did not change. His memory of the rhythm did."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Nothing, it was luck.",
+                        "correct": false,
+                        "feedback": "Studies find sleep after practice can help. It is not just luck."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Sleep after learning helps new memories stick."
+              },
+              {
+                "id": "sleep-memory-s3",
+                "title": "Quiet rest helps too",
+                "claimId": "sleep-memory-c2",
+                "sourceRefs": [
+                  "sleep-rest"
+                ],
+                "hook": {
+                  "stem": "After a lesson, Jaya sits quietly for ten minutes with her eyes closed. Can that help her memory?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, quiet rest can help.",
+                      "correct": true,
+                      "feedback": "Right. Studies find short rest after learning can help new memories."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, only sleep helps memory.",
+                      "correct": false,
+                      "feedback": "Sleep helps, but so can quiet rest while awake."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No, it is a waste of time.",
+                      "correct": false,
+                      "feedback": "Short quiet rest after learning can help new memories firm up."
+                    }
+                  ]
+                },
+                "teach": "Sleep is not the only help. A short spell of quiet rest after learning, awake and doing nothing, can also help new memories firm up.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Sleep",
+                    "lines": [
+                      "Helps new memories"
+                    ]
+                  },
+                  "right": {
+                    "title": "Quiet rest, awake",
+                    "lines": [
+                      "Can help too"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "After learning the steps of a new dance,",
+                    "Lakshmi sits quietly for a few minutes,",
+                    "and later she recalls the steps well."
+                  ],
+                  "spot": "Lakshmi sits quietly for a few minutes,",
+                  "feedback": "Quiet rest after learning can help new memories firm up."
+                },
+                "guided": [
+                  {
+                    "stem": "After maths class, Ankit can scroll reels or sit quietly for five minutes. Which is more like the rest that helps memory?",
+                    "hint": "Studies looked at rest with nothing to do.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sitting quietly.",
+                        "correct": true,
+                        "feedback": "Right. The rest in those studies was quiet, with nothing to do."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Scrolling reels.",
+                        "correct": false,
+                        "feedback": "Reels keep the mind busy. The helpful rest in studies was quiet."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Starting a new lesson right away.",
+                        "correct": false,
+                        "feedback": "A new lesson keeps the mind busy. The helpful rest was quiet."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Between two exams, Rhea naps for a bit, then rests with her eyes closed. Which can help her new memories?",
+                    "hint": "Can rest while awake help too?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Both the nap and the quiet rest.",
+                        "correct": true,
+                        "feedback": "Yes. Sleep can help, and quiet waking rest can help too."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Only the nap.",
+                        "correct": false,
+                        "feedback": "The nap can help, and so can quiet waking rest."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Neither.",
+                        "correct": false,
+                        "feedback": "Both can help new memories firm up."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Sleep helps memory, and so can quiet rest while awake."
+              }
+            ]
           },
           {
             "id": "variable-rewards",
@@ -4075,6 +5746,7 @@
                 "id": "variable-rewards-1",
                 "type": "predict",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4131,6 +5803,7 @@
                 "id": "variable-rewards-2",
                 "type": "scenario",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4187,6 +5860,7 @@
                 "id": "variable-rewards-3",
                 "type": "estimate",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4247,6 +5921,7 @@
                 "id": "variable-rewards-4",
                 "type": "choose",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4300,6 +5975,7 @@
                 "id": "variable-rewards-5",
                 "type": "why",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4356,6 +6032,7 @@
                 "id": "variable-rewards-6",
                 "type": "fill-the-step",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4409,6 +6086,7 @@
                 "id": "variable-rewards-7",
                 "type": "true-not-quite",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "variable-rewards-m1",
@@ -4466,6 +6144,7 @@
                 "id": "variable-rewards-8",
                 "type": "explain-it-back",
                 "conceptId": "variable-rewards",
+                "step": "variable-rewards-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -4614,7 +6293,325 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "variable-rewards-s1",
+                "title": "Variable means you cannot tell when",
+                "claimId": "variable-rewards-c1",
+                "sourceRefs": [
+                  "apa-learning"
+                ],
+                "hook": {
+                  "stem": "A game gives a prize after some rounds but not others, with no pattern. How would you describe these prizes?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "They come at uneven times.",
+                      "correct": true,
+                      "feedback": "Right. When a reward comes at uneven, unknown times, it is called variable."
+                    },
+                    {
+                      "id": "b",
+                      "text": "They come after every round.",
+                      "correct": false,
+                      "feedback": "Not every round pays. Some do and some do not, with no pattern."
+                    },
+                    {
+                      "id": "c",
+                      "text": "They come every fifth round.",
+                      "correct": false,
+                      "feedback": "That would be a fixed pattern. Here the prize comes at uneven times."
+                    }
+                  ]
+                },
+                "teach": "A variable reward comes after some tries but not others. You cannot tell which try will bring it.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Fixed reward",
+                    "lines": [
+                      "Every 5th try",
+                      "You know when"
+                    ]
+                  },
+                  "right": {
+                    "title": "Variable reward",
+                    "lines": [
+                      "Some tries, not others",
+                      "You cannot tell when"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Each time Zubin opens his messages,",
+                    "there might be a reply or nothing at all."
+                  ],
+                  "spot": "there might be a reply or nothing at all.",
+                  "feedback": "Sometimes a reply, sometimes nothing, with no way to tell. That is a variable reward."
+                },
+                "guided": [
+                  {
+                    "stem": "A teacher gives a gold star after every third homework. Is that a variable reward?",
+                    "hint": "Can you tell when the star comes?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "No, it is fixed.",
+                        "correct": true,
+                        "feedback": "Right. You know the star comes every third time, so it is fixed."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, stars are variable.",
+                        "correct": false,
+                        "feedback": "Here the star always comes every third time. That is fixed."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Yes, because it is a reward.",
+                        "correct": false,
+                        "feedback": "Any reward can be fixed or variable. This one comes on a set count."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "At the village pond, some of Kavya’s casts catch a fish and most do not. What kind of reward pattern is this?",
+                    "hint": "Does the catch come on a set count?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Variable.",
+                        "correct": true,
+                        "feedback": "Yes. A catch comes after some casts but not others, with no set count."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Fixed.",
+                        "correct": false,
+                        "feedback": "A fixed pattern would pay on a set count. Fishing does not."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No reward at all.",
+                        "correct": false,
+                        "feedback": "A fish is the reward. It just comes at uneven times."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Variable means the reward comes, but you cannot tell when."
+              },
+              {
+                "id": "variable-rewards-s2",
+                "title": "Not knowing keeps you checking",
+                "claimId": "variable-rewards-c1",
+                "sourceRefs": [
+                  "apa-learning",
+                  "social-reward"
+                ],
+                "hook": {
+                  "stem": "Why is it hard to stop pulling down to refresh a post for new likes?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The next refresh might bring one.",
+                      "correct": true,
+                      "feedback": "Right. When a like might come on the next try, the try seems worth it."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Each refresh always brings a like.",
+                      "correct": false,
+                      "feedback": "If it always did, there would be no surprise. The pull comes from not knowing."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The phone makes you do it.",
+                      "correct": false,
+                      "feedback": "The phone does not force it. Not knowing when a like comes pulls you back."
+                    }
+                  ]
+                },
+                "teach": "When a reward might come on the next try, that try seems worth making. So uneven rewards can keep people checking.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Try",
+                    "Maybe a reward",
+                    "Try again"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Nikita finds a funny meme only now and then,",
+                    "so she keeps swiping in case the next one is good."
+                  ],
+                  "spot": "so she keeps swiping in case the next one is good.",
+                  "feedback": "Not knowing when the next good one comes keeps her swiping."
+                },
+                "guided": [
+                  {
+                    "stem": "In a cricket card game, rare cards turn up in random packs. Omkar keeps opening packs. Why?",
+                    "hint": "Can he tell which pack has a rare card?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The next pack might have one.",
+                        "correct": true,
+                        "feedback": "Yes. Not knowing which pack pays keeps him opening."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Every pack has a rare card.",
+                        "correct": false,
+                        "feedback": "Then they would not be rare. They come at random, which pulls him on."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He has to open them all.",
+                        "correct": false,
+                        "feedback": "Nothing makes him. The chance of a rare card pulls him on."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "At a mela ring toss, some throws win a prize, with no pattern. Why do people keep trying for one more?",
+                    "hint": "Can they tell which throw will win?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The next throw might win.",
+                        "correct": true,
+                        "feedback": "Right. When a win might come next, one more try feels worth it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Every throw wins.",
+                        "correct": false,
+                        "feedback": "Then there would be no pull to try again. Wins come now and then."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The stall owner tells them to.",
+                        "correct": false,
+                        "feedback": "No one has to tell them. The chance that the next throw wins pulls them on."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Not knowing when a reward comes keeps us trying."
+              },
+              {
+                "id": "variable-rewards-s3",
+                "title": "One pull, not the whole story",
+                "claimId": "variable-rewards-c2",
+                "sourceRefs": [
+                  "social-reward",
+                  "scroll-review"
+                ],
+                "hook": {
+                  "stem": "Mansi opens a chat app many times a day. What could be the reason?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Many reasons, like friends, news or a break.",
+                      "correct": true,
+                      "feedback": "Right. Uneven rewards are one pull, but people open apps for many reasons."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Only the hope of a surprise reward.",
+                      "correct": false,
+                      "feedback": "That is one pull, but not the only one. Friends, news and breaks matter too."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Only because the app is new.",
+                      "correct": false,
+                      "feedback": "Being new is not the only reason. People open apps for many reasons."
+                    }
+                  ]
+                },
+                "teach": "Uneven rewards are one reason people keep checking feeds, not the only one. Feeds differ, and so do people.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Too strong",
+                    "lines": [
+                      "Feeds are just slot machines"
+                    ]
+                  },
+                  "right": {
+                    "title": "Fairer",
+                    "lines": [
+                      "Uneven rewards are one pull",
+                      "People have other reasons too"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Kiran opens his feed after class",
+                    "to see what his cousins posted from the wedding."
+                  ],
+                  "spot": "to see what his cousins posted from the wedding.",
+                  "feedback": "His reason is family news, not a surprise reward. People open feeds for many reasons."
+                },
+                "guided": [
+                  {
+                    "stem": "Tanmay keeps opening a cricket score app during a match. What is the most likely reason?",
+                    "hint": "What does a score app give him?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "He wants the latest score.",
+                        "correct": true,
+                        "feedback": "Right. People also open apps for news, like a match score."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Only the hope of a surprise reward.",
+                        "correct": false,
+                        "feedback": "Rewards are one pull, but here the news of the score matters most."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The app forces him.",
+                        "correct": false,
+                        "feedback": "No app forces him. He wants the news."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Two friends use the same feed. One checks it for jokes, the other to keep up with classmates. What does this show?",
+                    "hint": "Do they have the same reason?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "People use feeds for different reasons.",
+                        "correct": true,
+                        "feedback": "Yes. Uneven rewards are one pull among many reasons."
+                      },
+                      {
+                        "id": "b",
+                        "text": "They both want surprise rewards only.",
+                        "correct": false,
+                        "feedback": "Their reasons differ. One wants jokes, one wants to keep up."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Feeds pull everyone the same way.",
+                        "correct": false,
+                        "feedback": "People differ, so the same feed can pull them in different ways."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Uneven rewards are one pull, not the whole story."
+              }
+            ]
           },
           {
             "id": "if-then-plans",
@@ -4655,6 +6652,7 @@
                 "id": "if-then-plans-1",
                 "type": "predict",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "if-then-plans-m1",
@@ -4708,6 +6706,7 @@
                 "id": "if-then-plans-2",
                 "type": "scenario",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -4760,6 +6759,7 @@
                 "id": "if-then-plans-3",
                 "type": "estimate",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s3",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -4816,6 +6816,7 @@
                 "id": "if-then-plans-4",
                 "type": "choose",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -4868,6 +6869,7 @@
                 "id": "if-then-plans-5",
                 "type": "why",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -4920,6 +6922,7 @@
                 "id": "if-then-plans-6",
                 "type": "fill-the-step",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -4969,6 +6972,7 @@
                 "id": "if-then-plans-7",
                 "type": "true-not-quite",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "if-then-plans-m1",
@@ -5022,6 +7026,7 @@
                 "id": "if-then-plans-8",
                 "type": "explain-it-back",
                 "conceptId": "if-then-plans",
+                "step": "if-then-plans-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "if-then-plans-m1"
@@ -5166,7 +7171,331 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "if-then-plans-s1",
+                "title": "Link a moment to an action",
+                "claimId": "if-then-plans-c1",
+                "sourceRefs": [
+                  "konstanz-plan",
+                  "plan-study"
+                ],
+                "hook": {
+                  "stem": "Three students plan to revise. Who has a clear moment to start?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Asha: “If I finish dinner, then I open my notes.”",
+                      "correct": true,
+                      "feedback": "Right. Her plan links a clear moment, dinner ending, to one action."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Bunty: “I will revise more this week.”",
+                      "correct": false,
+                      "feedback": "That is a goal, but it names no moment to start."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Chirag: “I hope to revise sometime.”",
+                      "correct": false,
+                      "feedback": "A hope names no moment or action. An if-then plan names both."
+                    }
+                  ]
+                },
+                "teach": "An if-then plan links a moment to an action: “If this happens, then I will do that.” The moment is the cue to start.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "If: a clear moment",
+                    "Then: one action"
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Ananya decides that",
+                    "when the school bell rings at 4,",
+                    "she will walk to the library."
+                  ],
+                  "spot": "when the school bell rings at 4,",
+                  "feedback": "The bell is the if part: the clear moment that starts the action."
+                },
+                "guided": [
+                  {
+                    "stem": "Vikram’s plan: “If I get off the bus, then I call my grandmother.” What is the cue?",
+                    "hint": "The cue is the if part.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Getting off the bus.",
+                        "correct": true,
+                        "feedback": "Yes. Getting off the bus is the moment that starts the call."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Calling his grandmother.",
+                        "correct": false,
+                        "feedback": "That is the then part, the action."
+                      },
+                      {
+                        "id": "c",
+                        "text": "His grandmother’s phone.",
+                        "correct": false,
+                        "feedback": "The phone is not a moment. The cue is getting off the bus."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Tara’s plan: “If I tie my shoes after school, then I go for a run.” Which part is the action?",
+                    "hint": "The action is the then part.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Going for a run.",
+                        "correct": true,
+                        "feedback": "Right. The then part names the action."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Tying her shoes.",
+                        "correct": false,
+                        "feedback": "That is the if part, the cue."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Getting out of school.",
+                        "correct": false,
+                        "feedback": "That is when the cue happens. The action is the run."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "If this moment comes, then I do that action."
+              },
+              {
+                "id": "if-then-plans-s2",
+                "title": "Pick a moment you will notice",
+                "claimId": "if-then-plans-c1",
+                "sourceRefs": [
+                  "konstanz-plan",
+                  "plan-study"
+                ],
+                "hook": {
+                  "stem": "Which cue is easiest to notice: “when I feel like it,” “when I have time,” or “when the 7 o’clock news ends”?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "When the 7 o’clock news ends.",
+                      "correct": true,
+                      "feedback": "Right. It is a clear moment you cannot miss."
+                    },
+                    {
+                      "id": "b",
+                      "text": "When I feel like it.",
+                      "correct": false,
+                      "feedback": "That feeling may never come at a clear moment."
+                    },
+                    {
+                      "id": "c",
+                      "text": "When I have time.",
+                      "correct": false,
+                      "feedback": "Free time is hard to spot, so it may not start the action."
+                    }
+                  ]
+                },
+                "teach": "A goal like “study more” names no moment to start. A clear cue, like “after dinner,” is easy to notice.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Vague cue",
+                    "lines": [
+                      "“When I am free”",
+                      "Easy to miss"
+                    ]
+                  },
+                  "right": {
+                    "title": "Clear cue",
+                    "lines": [
+                      "“After dinner”",
+                      "Easy to notice"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Instead of planning to practise someday, Dhruv picks a moment:",
+                    "when he gets home from school,",
+                    "he plays the flute."
+                  ],
+                  "spot": "when he gets home from school,",
+                  "feedback": "Getting home is a clear moment, so it is easy to notice."
+                },
+                "guided": [
+                  {
+                    "stem": "Sonal says, “I will drink more water.” Which line turns it into an if-then plan?",
+                    "hint": "Look for a clear moment and an action.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "“If I sit down for lunch, then I drink a glass of water.”",
+                        "correct": true,
+                        "feedback": "Yes. It links a clear moment to one action."
+                      },
+                      {
+                        "id": "b",
+                        "text": "“I really want to drink more water.”",
+                        "correct": false,
+                        "feedback": "That is still a wish, with no moment to start."
+                      },
+                      {
+                        "id": "c",
+                        "text": "“I will try hard.”",
+                        "correct": false,
+                        "feedback": "Trying hard names no moment. An if-then plan needs a cue."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Which if part is clearest for starting homework?",
+                    "hint": "Which one can you notice at a set moment?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "If I finish my evening chai.",
+                        "correct": true,
+                        "feedback": "Right. Finishing chai is a clear moment you will notice."
+                      },
+                      {
+                        "id": "b",
+                        "text": "If I am in the mood.",
+                        "correct": false,
+                        "feedback": "A mood is hard to spot. It may not come at a clear moment."
+                      },
+                      {
+                        "id": "c",
+                        "text": "If I get some time.",
+                        "correct": false,
+                        "feedback": "Free time is hard to notice, so it may not start the action."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A clear moment is easy to notice; a vague one is easy to miss."
+              },
+              {
+                "id": "if-then-plans-s3",
+                "title": "It helps, but cannot promise",
+                "claimId": "if-then-plans-c2",
+                "sourceRefs": [
+                  "plan-meta",
+                  "plan-study"
+                ],
+                "hook": {
+                  "stem": "Studies compared people with only a goal to people who also made an if-then plan. What did they find?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The plans helped on average.",
+                      "correct": true,
+                      "feedback": "Right. Across 94 tests, people with if-then plans did better on average."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The plans made no difference.",
+                      "correct": false,
+                      "feedback": "They did make a difference. Across 94 tests, plans helped on average."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Everyone with a plan always acted.",
+                      "correct": false,
+                      "feedback": "Not always. Plans helped on average, but they cannot promise each act."
+                    }
+                  ]
+                },
+                "teach": "Across 94 tests, if-then plans helped people reach goals more than a goal alone. They help on average but cannot promise action.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Effect size across 94 tests",
+                  "min": "0",
+                  "max": "1",
+                  "marks": [
+                    {
+                      "at": 50,
+                      "text": "Medium: 0.5"
+                    },
+                    {
+                      "at": 65,
+                      "text": "If-then plans: 0.65"
+                    },
+                    {
+                      "at": 80,
+                      "text": "Large: 0.8"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Govind plans, “If I wake up, then I stretch,” and he stretches most days,",
+                    "but not on the day he oversleeps."
+                  ],
+                  "spot": "but not on the day he oversleeps.",
+                  "feedback": "The plan helps on most days, but it cannot promise every time."
+                },
+                "guided": [
+                  {
+                    "stem": "Kriti made an if-then plan to read after dinner. One night a cousin visits and she skips it. What does this show?",
+                    "hint": "Can a plan promise every act?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Plans help, but cannot promise.",
+                        "correct": true,
+                        "feedback": "Yes. A plan helps on average, but things can still get in the way."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Her plan was useless.",
+                        "correct": false,
+                        "feedback": "It helps on most nights. One skip does not make it useless."
+                      },
+                      {
+                        "id": "c",
+                        "text": "If-then plans never work.",
+                        "correct": false,
+                        "feedback": "Across 94 tests they helped on average. They just cannot promise each time."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Two cricket teams set a goal to practise catching. One team also adds if-then plans. Which team is likely to practise more?",
+                    "hint": "What did studies find on average?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The team with if-then plans.",
+                        "correct": true,
+                        "feedback": "Right. On average, if-then plans helped people act on goals."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The team with only the goal.",
+                        "correct": false,
+                        "feedback": "Studies found the opposite, on average."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No difference at all.",
+                        "correct": false,
+                        "feedback": "Across 94 tests, plans made a real difference on average."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "If-then plans help on average, but they cannot promise action."
+              }
+            ]
           },
           {
             "id": "spotlight-effect",
@@ -5203,6 +7532,7 @@
                 "id": "spotlight-effect-1",
                 "type": "predict",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5248,6 +7578,7 @@
                 "id": "spotlight-effect-2",
                 "type": "scenario",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "spotlight-effect-m1",
@@ -5297,6 +7628,7 @@
                 "id": "spotlight-effect-3",
                 "type": "estimate",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s1",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5348,6 +7680,7 @@
                 "id": "spotlight-effect-4",
                 "type": "choose",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5393,6 +7726,7 @@
                 "id": "spotlight-effect-5",
                 "type": "why",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5441,6 +7775,7 @@
                 "id": "spotlight-effect-6",
                 "type": "fill-the-step",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s1",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5486,6 +7821,7 @@
                 "id": "spotlight-effect-7",
                 "type": "true-not-quite",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s3",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "spotlight-effect-m1",
@@ -5535,6 +7871,7 @@
                 "id": "spotlight-effect-8",
                 "type": "explain-it-back",
                 "conceptId": "spotlight-effect",
+                "step": "spotlight-effect-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -5658,7 +7995,334 @@
                 }
               ],
               "checker": "codex-factcheck-2026-10-17e"
-            }
+            },
+            "steps": [
+              {
+                "id": "spotlight-effect-s1",
+                "title": "Fewer people notice than we think",
+                "claimId": "spotlight-effect-c1",
+                "sourceRefs": [
+                  "spotlight-paper"
+                ],
+                "hook": {
+                  "stem": "Sumit spills chai on his shirt before class. He thinks the whole class sees it. What is more likely?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Fewer people notice than he thinks.",
+                      "correct": true,
+                      "feedback": "Right. In a study, people guessed twice as many noticed their shirt as really did."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Everyone notices.",
+                      "correct": false,
+                      "feedback": "In studies, far fewer noticed than people guessed."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No one at all notices.",
+                      "correct": false,
+                      "feedback": "Some may notice, just fewer than he thinks."
+                    }
+                  ]
+                },
+                "teach": "We tend to think more people notice us than really do. In one study, wearers of an odd shirt guessed 46% noticed; about 23% did.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "People who noticed an odd T-shirt",
+                  "min": "0%",
+                  "max": "100%",
+                  "marks": [
+                    {
+                      "at": 23,
+                      "text": "Real: about 23%"
+                    },
+                    {
+                      "at": 46,
+                      "text": "Wearers guessed: 46%"
+                    }
+                  ]
+                },
+                "example": {
+                  "parts": [
+                    "Prerna gets a bad haircut and hides all day, yet",
+                    "at lunch only one friend says anything."
+                  ],
+                  "spot": "at lunch only one friend says anything.",
+                  "feedback": "Far fewer people noticed than she feared."
+                },
+                "guided": [
+                  {
+                    "stem": "Raghav wears odd socks to a wedding and thinks all the guests saw. What is more likely?",
+                    "hint": "Do people notice us as much as we think?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Only a few noticed.",
+                        "correct": true,
+                        "feedback": "Yes. We tend to think more people notice us than really do."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Every guest noticed.",
+                        "correct": false,
+                        "feedback": "Far fewer people notice than we tend to think."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The guests talk about it all night.",
+                        "correct": false,
+                        "feedback": "That is a big guess. Fewer people notice than we tend to think."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "On a train, Ayesha’s phone rings loudly with a funny ringtone. She thinks the whole coach will remember. What is going on?",
+                    "hint": "Compare her guess with what others notice.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "She guesses more noticed than really did.",
+                        "correct": true,
+                        "feedback": "Right. That gap between her guess and what others notice is the spotlight effect."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Everyone really will remember.",
+                        "correct": false,
+                        "feedback": "Fewer people notice and recall than we tend to think."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No one could hear it.",
+                        "correct": false,
+                        "feedback": "Some may hear it. The point is she guesses too many will remember."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Fewer people notice us than we think."
+              },
+              {
+                "id": "spotlight-effect-s2",
+                "title": "Our own view makes it loom large",
+                "claimId": "spotlight-effect-c2",
+                "sourceRefs": [
+                  "spotlight-paper"
+                ],
+                "hook": {
+                  "stem": "Why does a small slip in a speech feel so big to the speaker?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "They felt every second of it.",
+                      "correct": true,
+                      "feedback": "Right. The speaker’s own view is vivid, so the slip looms large."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The crowd talks about it for days.",
+                      "correct": false,
+                      "feedback": "Usually not. The slip feels bigger to the speaker than to the crowd."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Slips are always big.",
+                      "correct": false,
+                      "feedback": "Small slips are small. They just feel big from the inside."
+                    }
+                  ]
+                },
+                "teach": "We live every detail of our own slip, so it feels huge to us. We then guess others saw it just as clearly.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Your view",
+                    "lines": [
+                      "Every detail",
+                      "Feels huge"
+                    ]
+                  },
+                  "right": {
+                    "title": "Others’ view",
+                    "lines": [
+                      "A quick glance",
+                      "Feels small"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "Arush says one wrong word in his group talk,",
+                    "and he replays it all night,",
+                    "though no one mentions it."
+                  ],
+                  "spot": "and he replays it all night,",
+                  "feedback": "His own vivid view makes the slip loom larger for him than for the others."
+                },
+                "guided": [
+                  {
+                    "stem": "In a debate, Simran pauses for a second and thinks everyone saw her freeze. Why does it feel so big to her?",
+                    "hint": "Whose view is the most vivid?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "She lived every detail of it.",
+                        "correct": true,
+                        "feedback": "Yes. Her own vivid view makes the pause feel huge."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The judges wrote it down.",
+                        "correct": false,
+                        "feedback": "Nothing says they did. It feels big because of her own view."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A pause is always a big slip.",
+                        "correct": false,
+                        "feedback": "A one-second pause is small. It just feels big from the inside."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Mohan drops an easy catch in a friendly match and thinks the whole team will talk about it. What is going on?",
+                    "hint": "Compare how it feels to him and to others.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "It feels bigger to him than to them.",
+                        "correct": true,
+                        "feedback": "Right. Our own slip looms larger to us than to others."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The team will talk about it all week.",
+                        "correct": false,
+                        "feedback": "Probably much less than he thinks. It looms larger to him."
+                      },
+                      {
+                        "id": "c",
+                        "text": "He did not really drop it.",
+                        "correct": false,
+                        "feedback": "He did drop it. It just feels bigger to him than to others."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A slip feels bigger to you than to others."
+              },
+              {
+                "id": "spotlight-effect-s3",
+                "title": "Fewer notice, not zero",
+                "claimId": "spotlight-effect-c1",
+                "sourceRefs": [
+                  "spotlight-paper"
+                ],
+                "hook": {
+                  "stem": "In the odd shirt study, did anyone notice the shirt?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, about a quarter did.",
+                      "correct": true,
+                      "feedback": "Right. About 23% noticed. That is fewer than the wearers guessed, but not zero."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No one at all.",
+                      "correct": false,
+                      "feedback": "Some did notice: about 23% of the room."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Everyone did.",
+                      "correct": false,
+                      "feedback": "Not everyone. About 23% noticed, about half of what wearers guessed."
+                    }
+                  ]
+                },
+                "teach": "The spotlight effect does not mean nobody notices. Some people do; we just guess too many.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Not true",
+                    "lines": [
+                      "Everyone noticed",
+                      "No one noticed"
+                    ]
+                  },
+                  "right": {
+                    "title": "Closer to true",
+                    "lines": [
+                      "Some noticed",
+                      "Fewer than we guess"
+                    ]
+                  }
+                },
+                "example": {
+                  "parts": [
+                    "When Lavanya trips on the stage steps,",
+                    "a few people in the hall look up,",
+                    "but most keep watching the play."
+                  ],
+                  "spot": "a few people in the hall look up,",
+                  "feedback": "Some people did notice. The spotlight effect means fewer than she fears, not zero."
+                },
+                "guided": [
+                  {
+                    "stem": "Jatin wears a cap with a cartoon on it. Two classmates mention it. Does this go against the spotlight effect?",
+                    "hint": "Does the effect say nobody notices?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "No. Some notice, just fewer than we guess.",
+                        "correct": true,
+                        "feedback": "Yes. Two people noticing fits: some notice, but fewer than we fear."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, it proves the effect is false.",
+                        "correct": false,
+                        "feedback": "The effect never said nobody notices. It says we guess too many."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Yes, now everyone must have seen it.",
+                        "correct": false,
+                        "feedback": "Two people is not everyone. Some notice, fewer than we guess."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Nupur says, “Thanks to the spotlight effect, no one will ever notice if I come late.” What is wrong?",
+                    "hint": "Does the effect mean zero people notice?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Some people may still notice.",
+                        "correct": true,
+                        "feedback": "Right. The effect means fewer notice than we think, not that no one does."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Nothing, since no one notices.",
+                        "correct": false,
+                        "feedback": "Some people do notice. We just tend to guess too many."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Everyone will notice.",
+                        "correct": false,
+                        "feedback": "That goes too far the other way. Some will notice, fewer than she fears."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Some people do notice, just fewer than we guess."
+              }
+            ]
           }
         ]
       }
