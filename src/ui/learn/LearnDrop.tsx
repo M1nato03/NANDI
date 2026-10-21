@@ -16,6 +16,7 @@ import { Cast } from '../cast/Cast';
 import { dropCast } from '../cast/placement';
 import { playCastSound } from '../cast/sound';
 import { estimateFeedback, formatEstimate, sliderScale } from '../../core/learn/estimate';
+import { askFor } from '../../core/learn/ask';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -197,7 +198,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
   const inARow = longestCombo(data.ledger, drop.id);
   return <div className={`learn-drop ${!night && visibleFeedback?.correct ? 'learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{(visibleFeedback?.cursor ?? drop.cursor) + 1} / {drop.items.length}</span>{inARow >= 3 && <span className="pill">{inARow} in a row</span>}</header><div className="learn-progress" aria-hidden="true"><span style={{ width: `${((visibleFeedback?.cursor ?? drop.cursor) / drop.items.length) * 100}%` }} /></div>
-    <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><p className="eyebrow">{concept.title} · {item.type.replaceAll('-', ' ')}</p></div><h2>{item.stem}</h2>
+    <div className="cast-inline"><Cast {...dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct)} size={40} title={`${step.mode === 'review' || reviewDue ? 'Moti' : 'Chiku'} ${visibleFeedback?.correct ? 'cheering' : 'thinking'}`} /><div className="learn-ask-text"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2>{item.stem}</h2>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
     {!goldReview && item.type === 'match' && <p className="learn-hint">{matchLeft ? 'Now tap its match.' : 'Tap a term, then its match.'} {pairs.length ? `${pairs.length} paired.` : ''}</p>}
     {item.type === 'estimate' ? (() => {
@@ -214,7 +215,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         {visibleFeedback && <p className="learn-estimate-answer">Answer: {formatEstimate(item.answer.value, unit)}</p>}
       </div>;
     })() : <div className="learn-options">{ordered.map(option => <button type="button" key={option.id} disabled={!!visibleFeedback || !!pending || used.has(option.id)} className={`ui-list-row ${matchLeft === option.id || pending?.optionId === option.id ? 'selected' : ''} ${visibleFeedback && option.correct ? 'right-option' : ''} ${visibleFeedback && !visibleFeedback.correct && visibleFeedback.optionId === option.id ? 'wrong-option' : ''}`} onClick={() => choose(option.id)}>{option.text}{visibleFeedback && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>}
-    {pending && !visibleFeedback && <div className="learn-confidence">{!goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}<button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
+    {/* Spec 13 L: one question per question. "How sure?" is asked only on gold review; elsewhere the engine records fairly sure. */}
+    {pending && !visibleFeedback && <div className="learn-confidence">{goldReview && <><p>How sure are you?</p><div className="learn-confidence-chips" role="group" aria-label="Confidence">{([['certain', 'Sure'], ['fairly-sure', 'Fairly sure'], ['guess', 'Guessing']] as const).map(([value, label]) => <button type="button" key={value} className="secondary" aria-pressed={confidence === value} disabled={busy} onClick={() => { setConfidence(value); void answer(pending.value, pending.optionId, value); }}>{label}</button>)}</div></>}<button type="button" disabled={busy} onClick={() => void answer(pending.value, pending.optionId)}>Check</button></div>}
     {visibleFeedback && <div ref={feedbackRef} className={`learn-feedback ${visibleFeedback.correct ? 'right' : ''}`} role="status"><strong>{visibleFeedback.correct ? 'Exactly.' : goldReview ? 'Keep going.' : 'Good try. Here is the idea.'}</strong>{!goldReview && <><p>{visibleFeedback.text}</p><p className="learn-rule">{visibleFeedback.rule}</p></>}<button type="button" disabled={busy} onClick={() => void nextItem()}>Next</button></div>}
     {message && <p role="status">{message}</p>}{daily && !night && <button type="button" className="learn-open-link" onClick={() => go('learn')}>Open Learn</button>}</div>;
 }

@@ -45,29 +45,23 @@ test('after bedtime the night drop has only due reviews, then stops calmly when 
   await expect(page.locator('.learn-stop')).toContainText('Nothing to review tonight. Sleep is the best study.');
 });
 
-test('confidence defaults to fairly sure and a changed tap survives reload', async ({ page }) => {
+test('a daily question asks one thing: no "How sure?" step, and the answer is saved as fairly sure', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date(2026, 9, 19, 12));
   await page.goto('/?e2e#learn/drop');
   await page.getByRole('button', { name: /Money and markets/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   await expect(page.locator('.learn-options')).toBeVisible();
+  await expect(page.locator('.learn-ask')).not.toBeEmpty();
   await pickAnswer(page);
-  await expect(page.getByRole('button', { name: 'Fairly sure', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.learn-confidence-chips')).toHaveCount(0);
+  await expect(page.getByText('How sure are you?')).toHaveCount(0);
   await page.getByRole('button', { name: 'Check', exact: true }).click();
   await expect(page.locator('.learn-feedback')).toBeVisible();
   await expect(page.locator('.learn-feedback').getByRole('button', { name: 'Next' })).toBeEnabled();
   await page.reload();
   await page.waitForFunction(() => !!window.__nandiTest);
   expect(await page.evaluate(() => window.__nandiTest!.learnConfidence())).toBe('fairly-sure');
-  await page.locator('.learn-feedback').getByRole('button', { name: 'Next' }).click();
-  await pickAnswer(page);
-  await page.getByRole('button', { name: 'Sure', exact: true }).click();
-  await expect(page.locator('.learn-feedback')).toBeVisible();
-  await expect(page.locator('.learn-feedback').getByRole('button', { name: 'Next' })).toBeEnabled();
-  await page.reload();
-  await page.waitForFunction(() => !!window.__nandiTest);
-  expect(await page.evaluate(() => window.__nandiTest!.learnConfidence())).toBe('certain');
 });
 
 test('Learn shows empty learning figures', async ({ page }) => {
