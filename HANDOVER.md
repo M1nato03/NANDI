@@ -53,7 +53,7 @@ This pack hands the build of **Prime Pocket**, a standalone offline Android app,
    - franchise characters, names, logos, screenshots or look-alike silhouettes;
    - trademarked puzzle names. Use Crowns, Sun & Moon, Number Path, Calcudoku, never Queens, Tango, Zip or KenKen.
 8. **No medical claims.** Charaka lessons keep their evidence grades and an "educational, not medical advice" footer. Train shows safety guardrails and says "general fitness information, not medical advice".
-9. **Puzzles are fair.** Every generated board has exactly one solution reachable by logic without guessing. Number Path is verified unique only until its logic solver is written in Phase 3. The player's grid is checked against the **rules**, never against the stored solution.
+9. **Puzzles are fair.** Every generated board has exactly one solution reachable by logic without guessing. Number Path has its logic solver (`pathLogic` in `core/puzzles/puzzles.js`, 21 Oct): every generated board is finished by logic, and that also proves it has one answer. The player's grid is checked against the **rules**, never against the stored solution.
 10. **Measure before rewarding.** A one-week baseline logs behaviour with XP computed silently before the economy is shown.
 
 ---
@@ -186,7 +186,7 @@ Note: exact reminders and the visible economy arrive together, so the week 8–1
 - [ ] Season ladder: 500 seats, starting seed, original ghost rivals, one named rival just above him, tiers.
 - [ ] Shards and a fixed-price shop: freezes, cosmetics, handcrafted puzzle packs, themes. Nothing random.
 - [ ] Share cards for puzzles (spoiler-free; WhatsApp or plain text by default; off during wind-down).
-- [ ] Technique cards and the three-rung hint ladder driven by the logic solvers. Write the Number Path logic solver first.
+- [x] Technique cards and the three-rung hint ladder driven by the logic solvers. Write the Number Path logic solver first. (Number Path solver done 21 Oct.)
 - [ ] Hexagon stats and mastery tracks.
 - [ ] Mystery meta-arc: daily cases reveal story panels and **Sunday's case closes the chapter**; the Sunday Boss board adds a bonus panel. **Four Arcs and four shop catalogues ship bundled** and cycle if no new pack arrives.
 - [ ] Content-pack pipeline live: CI validation, `/packs/index.json`, the app's pack updater (keeps the old version until the new one passes).

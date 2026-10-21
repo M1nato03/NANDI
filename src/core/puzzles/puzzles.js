@@ -378,6 +378,82 @@ const PZ = (function(){
     })((visited[wp[0]]=1,path.push(wp[0]),wp[0]),1,2);
     return collect?{count,sols}:count;
   }
+  /* Number Path logic: decide each edge between neighbours as used or not, the way a person reasons.
+     Rules: a cell needs two line ends (the first and last number need one); no loops; no early finish;
+     the numbers along any piece of line run in order; level 2 adds a one-step look-ahead
+     ("if the line went here, a rule would break"). Never reads a stored solution. */
+  function pathLogic(R,C,wp,level,start){
+    const N=R*C, K=wp.length, num=new Int16Array(N).fill(0); wp.forEach((cell,k)=>{ num[cell]=k+1; });
+    const NB=[...Array(N).keys()].map(i=>{ const r=Math.floor(i/C), c=i%C, a=[]; if(r>0) a.push(i-C); if(r<R-1) a.push(i+C); if(c>0) a.push(i-1); if(c<C-1) a.push(i+1); return a; });
+    const need=i=>(i===wp[0]||i===wp[K-1])&&N>1?1:2;
+    const E=new Int8Array(N*N), why={};
+    const set=(e,a,b,v,reason)=>{ e[a*N+b]=v; e[b*N+a]=v; if(e===E) why[Math.min(a,b)+","+Math.max(a,b)]=reason; };
+    // walk the piece of line through `from`, returning its cells in order from one end
+    function piece(e,from){
+      const step=(cur,prev)=>NB[cur].find(j=>j!==prev&&e[cur*N+j]===1);
+      let end=from, prev=-1, guard=0;
+      for(let nx=step(end,prev);nx!==undefined;nx=step(end,prev)){ prev=end; end=nx; if(end===from||++guard>N) return null; }
+      const cells=[end]; prev=-1;
+      for(let cur=end,nx=step(cur,prev);nx!==undefined;nx=step(cur,prev)){ prev=cur; cur=nx; cells.push(cur); if(cells.length>N) return null; }
+      return cells;
+    }
+    const inOrder=cells=>{ const ks=cells.map(i=>num[i]).filter(k=>k>0); if(ks.length<2) return true; const step=ks[1]-ks[0]; if(step!==1&&step!==-1) return false; for(let q=1;q<ks.length;q++) if(ks[q]-ks[q-1]!==step) return false; return true; };
+    function propagate(e){
+      for(let changed=true;changed;){
+        changed=false;
+        for(let i=0;i<N;i++){
+          let yes=0, open=0; for(const j of NB[i]){ if(e[i*N+j]===1) yes++; else if(e[i*N+j]===0) open++; }
+          const d=need(i);
+          if(yes>d||yes+open<d) return false;
+          if(open&&yes===d){ for(const j of NB[i]) if(e[i*N+j]===0) set(e,i,j,-1,"full"); changed=true; }
+          else if(open&&yes+open===d){ for(const j of NB[i]) if(e[i*N+j]===0) set(e,i,j,1,"forced"); changed=true; }
+        }
+        if(changed) continue;
+        const pieceOf=new Int32Array(N).fill(-1), pieces=[];
+        for(let i=0;i<N;i++){ if(pieceOf[i]>=0) continue; const p=piece(e,i); if(!p) return false; if(!inOrder(p)) return false; p.forEach(c=>{ pieceOf[c]=pieces.length; }); pieces.push(p); }
+        if(pieces.length===1) return pieces[0].length===N;
+        for(let a=0;a<N&&!changed;a++) for(const b of NB[a]){
+          if(b<a||e[a*N+b]!==0) continue;
+          const pa=pieces[pieceOf[a]], pb=pieces[pieceOf[b]];
+          if(pa===pb){ set(e,a,b,-1,"loop"); changed=true; continue; }
+          const left=pa[0]===a?pa.slice().reverse():pa, right=pb[0]===b?pb:pb.slice().reverse();
+          if(left[left.length-1]!==a||right[0]!==b) continue; // not an end: the degree rule handles it
+          const joined=left.concat(right);
+          if(!inOrder(joined)){ set(e,a,b,-1,"order"); changed=true; continue; }
+          if(joined.length<N&&joined.includes(wp[0])&&joined.includes(wp[K-1])){ set(e,a,b,-1,"early"); changed=true; }
+        }
+        if(changed) continue;
+        // every cell must still be reachable along edges that are not ruled out
+        const seen=new Uint8Array(N), stack=[0]; seen[0]=1; let n=1;
+        while(stack.length){ const c=stack.pop(); for(const j of NB[c]) if(!seen[j]&&e[c*N+j]!==-1){ seen[j]=1; n++; stack.push(j); } }
+        if(n!==N) return false;
+      }
+      return true;
+    }
+    if(start&&start.length){
+      if(start[0]!==wp[0]) return {solved:false,broken:true,path:[],why};
+      for(let q=0;q+1<start.length;q++){ const a=start[q], b=start[q+1]; if(!NB[a].includes(b)||E[a*N+b]===-1) return {solved:false,broken:true,path:[],why}; set(E,a,b,1,"yours"); }
+    }
+    let ok=propagate(E);
+    while(ok&&level>=2){
+      let moved=false;
+      for(let a=0;a<N&&!moved;a++) for(const b of NB[a]){
+        if(b<a||E[a*N+b]!==0) continue;
+        for(const v of [1,-1]){
+          const t=E.slice(); t[a*N+b]=v; t[b*N+a]=v;
+          if(!propagate(t)){ set(E,a,b,-v,"ahead"); moved=true; break; }
+        }
+        if(moved) break;
+      }
+      if(!moved) break;
+      ok=propagate(E);
+    }
+    if(!ok) return {solved:false,broken:true,path:[],why};
+    // read the line from the first number while its edges are decided
+    const path=[wp[0]]; let prev=-1, cur=wp[0];
+    for(;;){ const nx=NB[cur].find(j=>j!==prev&&E[cur*N+j]===1); if(nx===undefined) break; path.push(nx); prev=cur; cur=nx; }
+    return {solved:path.length===N,broken:false,path,why};
+  }
   function numberPath(opts){
     const diff=opts.diff||"easy", R=diff==="easy"?5:6, C=R, N=R*C, r=rng(opts.seed);
     const minWp=diff==="easy"?Math.round(N/3.2):diff==="medium"?Math.round(N/4.5):Math.round(N/6);
@@ -403,7 +479,11 @@ const PZ = (function(){
         const q=rival.findIndex((v,q2)=>v!==path[q2]); idx.add(Math.min(N-2,Math.max(1,q)));
       }
       if(!ok) continue;
-      for(const q of shuf([...idx].filter(q=>q!==0&&q!==N-1),r)){ if(idx.size<=minWp) break; idx.delete(q); if(pathCount(R,C,wpOf(),2)!==1) idx.add(q); }
+      // HANDOVER rule 9: reachable by logic. Easy needs no look-ahead; add a number where the logic stalls.
+      const level=diff==="easy"?1:2;
+      for(let fix=0;fix<40;fix++){ const res=pathLogic(R,C,wpOf(),level); if(res.solved) break; idx.add(Math.min(N-2,Math.max(1,res.path.length))); }
+      if(!pathLogic(R,C,wpOf(),level).solved) continue;
+      for(const q of shuf([...idx].filter(q=>q!==0&&q!==N-1),r)){ if(idx.size<=minWp) break; idx.delete(q); if(!pathLogic(R,C,wpOf(),level).solved) idx.add(q); } // sound logic that finishes the board also proves it has one answer
       return {type:"path",diff,seed:opts.seed>>>0,R,C,waypoints:wpOf(),solution:path.slice()};
     }
     return null;
@@ -430,7 +510,7 @@ const PZ = (function(){
   };
   function generate(type,opts){ const t=TYPES[type]; return t?t.gen(opts):null; }
   return {TYPES,generate,hash,rng,
-    _test:{sdkCount,latinLogic,latinUnits:()=>SDKU||(SDKU=latinUnits(6,2,3)),crownCount,crownLogic,binCount,binLogic,pathCount,calcCount,calcLogic,cageTuples,LINES}};
+    _test:{sdkCount,latinLogic,latinUnits:()=>SDKU||(SDKU=latinUnits(6,2,3)),crownCount,crownLogic,binCount,binLogic,pathCount,pathLogic,calcCount,calcLogic,cageTuples,LINES}};
 })();
 if (typeof module !== "undefined" && !Object.getOwnPropertyDescriptor(module.exports, "default")) module.exports = PZ;
 

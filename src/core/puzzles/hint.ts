@@ -4,16 +4,19 @@ import { checkRules } from './rules';
 
 export type PuzzleHint = { state: PuzzleState; message: string; changed: boolean };
 
-/** The four available generator logic solvers provide a safe completed grid. */
+/** Each type's logic solver (never the stored solution) provides the next safe step. */
 export function nextHint(board: PuzzleBoard, state: PuzzleState): PuzzleHint {
   if (board.type === 'path') {
-    const correct = board.solution;
-    let prefix = 0;
-    while (prefix < state.path.length && state.path[prefix] === correct[prefix]) prefix++;
-    const waypointPositions = board.waypoints.map(cell => correct.indexOf(cell));
-    const target = waypointPositions.find(index => index >= Math.max(prefix, 1)) ?? correct.length - 1;
-    const path = correct.slice(0, target + 1);
-    return { state: { ...state, path }, message: `Line extended to number ${board.waypoints.indexOf(path.at(-1)!) + 1}.`, changed: path.length !== state.path.length || prefix !== state.path.length };
+    // Keep the longest part of the player's line the logic solver accepts, then let logic carry it to the next number.
+    let keep = state.path.length;
+    let logic = PZ._test.pathLogic(board.R, board.C, board.waypoints, 2, state.path.slice(0, keep));
+    while (keep > 0 && (logic.broken || checkRules(board, { ...state, path: state.path.slice(0, keep) }).conflicts.length)) logic = PZ._test.pathLogic(board.R, board.C, board.waypoints, 2, state.path.slice(0, --keep));
+    if (logic.broken) return { state, message: 'Check the open rows and groups.', changed: false };
+    const target = logic.path.findIndex((cell, index) => index >= Math.max(keep, 1) && board.waypoints.includes(cell));
+    const path = target >= 0 ? logic.path.slice(0, target + 1) : logic.path;
+    const changed = path.length !== state.path.length || keep !== state.path.length;
+    const number = board.waypoints.indexOf(path.at(-1)!) + 1;
+    return { state: { ...state, path }, message: number ? `Line extended to number ${number}.` : 'Line extended.', changed };
   }
   const conflict = checkRules(board, state).conflicts[0];
   if (conflict !== undefined) return { state, message: `Check row ${Math.floor(conflict / (board.type === 'sunmoon' ? 6 : board.N)) + 1}. The marked cells break a rule.`, changed: true };

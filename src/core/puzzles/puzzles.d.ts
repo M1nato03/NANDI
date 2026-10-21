@@ -22,6 +22,8 @@ declare const PZ: {
     binLogic: (clues: { given: number[]; hs: number[]; vs: number[] }, level: number) => { solved: boolean; grid: number[] };
     calcLogic: (n: number, cages: Array<{ cells: number[]; op: string; target: number; tuples: number[][] }>, level: number) => { solved: boolean; grid: number[] };
     cageTuples: (cage: { cells: number[]; op: string; target: number }, n: number) => number[][];
+    pathCount: (R: number, C: number, waypoints: number[], limit: number) => number;
+    pathLogic: (R: number, C: number, waypoints: number[], level: number, start?: number[]) => { solved: boolean; broken: boolean; path: number[]; why: Record<string, string> };
   };
 };
 export default PZ;
