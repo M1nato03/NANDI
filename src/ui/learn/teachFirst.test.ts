@@ -43,9 +43,10 @@ describe('teach first (spec 14)', () => {
     const pool = taughtCatalog(psychology, new Set(['habits-s1']));
     const taughtHabits = pool.find(concept => concept.id === 'habits')!;
     expect(taughtHabits.items.every(item => item.step === 'habits-s1')).toBe(true);
-    const money = catalogFor(['money-markets']);
-    expect(taughtCatalog(money, new Set())).toEqual(money);
-    expect(nextStep(money, new Set())).toBeUndefined();
+    // A concept without steps (an older pack) stays whole and never offers a lesson.
+    const quizOnly = catalogFor(['money-markets']).map(concept => ({ ...concept, steps: undefined }));
+    expect(taughtCatalog(quizOnly, new Set())).toEqual(quizOnly);
+    expect(nextStep(quizOnly, new Set())).toBeUndefined();
   });
 
   it('never starts a lesson after bedtime or in the night drop', () => {

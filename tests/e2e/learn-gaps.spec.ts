@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
+import { seedTaughtTopics } from './learn-helpers';
 
 const money = JSON.parse(readFileSync('content/topics/topic.money-markets.json', 'utf8')) as { body: { modules: { concepts: { id: string }[] }[] } };
 const conceptId = money.body.modules[0]!.concepts[0]!.id;
@@ -25,6 +26,7 @@ test('after bedtime the night drop has only due reviews, then stops calmly when 
   await page.goto('/?e2e#learn');
   await page.waitForFunction(() => !!window.__nandiTest);
   await page.evaluate(async ({ id, due }) => window.__nandiTest!.seedLearnNight(id, due), { id: conceptId, due: now - 1 });
+  await seedTaughtTopics(page, ['money-markets']);
   await openNightDrop(page);
   await expect(page.locator('.learn-drop-head')).toBeVisible();
   const modes = await page.evaluate(async () => {
@@ -49,6 +51,8 @@ test('a daily question asks one thing: no "How sure?" step, and the answer is sa
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date(2026, 9, 19, 12));
   await page.goto('/?e2e#learn/drop');
+  await seedTaughtTopics(page, ['money-markets']);
+  await page.reload();
   await page.getByRole('button', { name: /Money and markets/ }).click();
   await page.getByRole('button', { name: 'Start my first drop' }).click();
   await expect(page.locator('.learn-options')).toBeVisible();

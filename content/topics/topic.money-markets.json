@@ -28,10 +28,11 @@
               "inflation",
               "cpi"
             ],
-            "rule": "Inflation is a rise in the broad price level. If cash stays the same while prices rise, that cash buys less. A price jump for one snack alone is not the whole index.",
+            "rule": "Inflation is the yearly rise in prices across a basket of everyday goods. When prices rise faster than your money, it buys less. India's central bank aims for about 4%.",
             "ruleSourceRefs": [
               "inflation",
-              "cpi"
+              "cpi",
+              "rbi"
             ],
             "claims": [
               {
@@ -49,315 +50,391 @@
                   "inflation",
                   "cpi"
                 ]
+              },
+              {
+                "id": "inflation-c3",
+                "text": "India's inflation rate compares the price of a basket in one month with the same month a year earlier, using prices collected from over 50,000 shops.",
+                "sourceRefs": [
+                  "cpi"
+                ]
+              },
+              {
+                "id": "inflation-c4",
+                "text": "If income rises less than prices, real income falls; people on fixed incomes lose buying power.",
+                "sourceRefs": [
+                  "inflation"
+                ]
+              },
+              {
+                "id": "inflation-c5",
+                "text": "India's inflation target is 4%, with a low limit of 2% and a top limit of 6%, set until March 2031.",
+                "sourceRefs": [
+                  "rbi"
+                ]
               }
             ],
             "items": [
               {
-                "id": "inflation-1",
+                "id": "inflation-9",
                 "type": "predict",
                 "conceptId": "inflation",
+                "step": "inflation-s2",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "inflation-m1"
+                  "inflation-m3"
                 ],
                 "sourceRefs": [
-                  "inflation",
-                  "cpi"
+                  "inflation"
                 ],
-                "stem": "An idli goes from ₹20 to ₹25. A student still has ₹100. What changed for her?",
+                "stem": "Your college fee rises 10% a year, while your family's income rises 5% a year. What happens over a few years?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Her ₹100 buys fewer idlis.",
-                    "feedback": "The note has the same face value, but the higher price cuts its buying power from five idlis to four.",
+                    "text": "The fee takes a bigger share of income.",
                     "correct": true,
+                    "feedback": "The fee grows twice as fast as income, so each year it eats a larger part of it.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Her ₹100 buys the same number.",
-                    "feedback": "The note still says ₹100, but each idli now takes a larger share of it. Only four fit.",
+                    "text": "Nothing changes, since both keep rising.",
                     "correct": false,
+                    "feedback": "Both rise, but at different speeds. The faster one, the fee, takes a growing share.",
                     "misconceptionIds": [
-                      "inflation-m1"
+                      "inflation-m3"
                     ],
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   },
-                  { "id": "c", "text": "Only the seller's money changed.", "feedback": "The seller's new price reaches the buyer too. At ₹25 each, ₹100 now covers four idlis, not five.", "correct": false, "misconceptionIds": ["inflation-m2"], "sourceRefs": ["inflation", "cpi"] }
-                ]
-              },
-              {
-                "id": "inflation-2",
-                "type": "scenario",
-                "conceptId": "inflation",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "inflation-m1"
-                ],
-                "sourceRefs": [
-                  "inflation",
-                  "cpi"
-                ],
-                "stem": "In exam week, Meera's tea price doubles. Most other prices stay flat. Have prices overall doubled?",
-                "options": [
                   {
-                    "id": "a",
-                    "text": "No. Tea is only one price.",
-                    "feedback": "The index follows many items, so a sharp tea price jump need not match the broad change.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "inflation",
-                      "cpi"
-                    ]
-                  },
-                  { "id": "c", "text": "Yes. Tea is bought so often it outweighs the rest.", "feedback": "Tea is bought often, so its rise feels broad. One drink still cannot set the whole index.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
-                  {
-                    "id": "b",
-                    "text": "Yes. Tea alone sets the overall index.",
-                    "feedback": "Tea is the price Meera sees, so it can feel like the whole story. The index has many goods.",
+                    "id": "c",
+                    "text": "The fee gets easier to pay.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
+                    "feedback": "Income grows slower than the fee, so paying it gets harder each year, not easier.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   }
                 ]
               },
               {
-                "id": "inflation-3",
-                "type": "estimate",
+                "id": "inflation-10",
+                "type": "scenario",
                 "conceptId": "inflation",
-                "difficultySeed": 2,
+                "step": "inflation-s3",
+                "difficultySeed": 1,
                 "misconceptionTags": [
-                  "inflation-m1"
+                  "inflation-m2"
                 ],
                 "sourceRefs": [
                   "inflation",
                   "cpi"
                 ],
-                "stem": "After inflation, a ₹100 basket of shopping costs ₹125. About what percent of it does ₹100 buy now?",
+                "stem": "Riya can keep ₹20,000 at home or in a deposit paying 7% a year. Prices rise 5%. Which keeps its buying power?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "80%.",
-                    "feedback": "The same cash now covers four fifths of the unchanged basket, showing lower purchasing power.",
+                    "text": "The 7% deposit.",
                     "correct": true,
+                    "feedback": "It grows faster than prices, so after a year it buys a little more than today.",
                     "sourceRefs": [
-                      "inflation",
+                      "inflation"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The cash at home.",
+                    "correct": false,
+                    "feedback": "Cash at home stays at ₹20,000 while prices rise 5%, so it buys less each year.",
+                    "misconceptionIds": [
+                      "inflation-m2"
+                    ],
+                    "sourceRefs": [
+                      "inflation"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Both lose the same.",
+                    "correct": false,
+                    "feedback": "Only the cash falls behind. A 7% deposit outpaces 5% price rises.",
+                    "sourceRefs": [
+                      "inflation"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-11",
+                "type": "estimate",
+                "conceptId": "inflation",
+                "step": "inflation-s1",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "cpi"
+                ],
+                "stem": "A toy cost ₹385 last May and ₹410 this May. What is its inflation rate?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 6.5%.",
+                    "correct": true,
+                    "feedback": "The rise is ₹25. Divide 25 by last May's ₹385 and multiply by 100 to get about 6.5%.",
+                    "sourceRefs": [
                       "cpi"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "125%.",
-                    "feedback": "The new price is 125% of the old one. Fixed cash buys only 100 ÷ 125 of the basket.",
+                    "text": "About 25%.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
+                    "feedback": "₹25 is the rise in rupees, not the percent. Divide it by ₹385 to get about 6.5%.",
                     "sourceRefs": [
-                      "inflation",
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "100%.", "feedback": "That leaves out the higher price. ₹100 now buys 100 ÷ 125 of the basket, which is 80%.", "correct": false, "sourceRefs": ["inflation", "cpi"] }
+                  {
+                    "id": "c",
+                    "text": "About 0.65%.",
+                    "correct": false,
+                    "feedback": "The decimal point slipped. 25 divided by 385 is about 0.065, which is 6.5%.",
+                    "sourceRefs": [
+                      "cpi"
+                    ]
+                  }
                 ],
                 "answer": {
-                  "value": 80,
-                  "min": 79.5,
-                  "max": 80.5,
+                  "value": 6.5,
+                  "min": 6,
+                  "max": 7,
                   "unit": "percent"
                 }
               },
               {
-                "id": "inflation-4",
+                "id": "inflation-12",
                 "type": "choose",
                 "conceptId": "inflation",
+                "step": "inflation-s1",
                 "difficultySeed": 1,
-                "misconceptionTags": [
-                  "inflation-m1"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
-                  "inflation",
                   "cpi"
                 ],
-                "stem": "A bad crop pushes mango prices up. Other prices move in different ways. Does this show inflation overall?",
+                "stem": "How does India find out what prices are doing each month?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No. One price alone cannot show it.",
-                    "feedback": "One price may rise while others do not. The broad index needs the full basket.",
+                    "text": "Survey staff note prices in 50,000+ shops.",
                     "correct": true,
+                    "feedback": "Yes. Staff visit over 50,000 shops in 2,295 markets every month to record retail prices.",
                     "sourceRefs": [
-                      "inflation",
                       "cpi"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Yes. One common food shows all prices rose.",
-                    "feedback": "A common food can stand out, but other basket prices may offset its rise.",
+                    "text": "Shops send one price list a year.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
+                    "feedback": "Prices are recorded every month, not once a year, and survey staff collect them in person.",
                     "sourceRefs": [
-                      "inflation",
                       "cpi"
                     ]
                   },
-                  { "id": "c", "text": "It proves prices across India fell.", "feedback": "One rising price cannot show a broad fall either. The index needs the whole basket to say anything.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] }
+                  {
+                    "id": "c",
+                    "text": "It guesses from a few big cities.",
+                    "correct": false,
+                    "feedback": "No guessing is involved. Prices come from over 50,000 shops across 2,295 markets.",
+                    "sourceRefs": [
+                      "cpi"
+                    ]
+                  }
                 ]
               },
               {
-                "id": "inflation-5",
+                "id": "inflation-13",
                 "type": "why",
                 "conceptId": "inflation",
+                "step": "inflation-s2",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "inflation-m1"
+                  "inflation-m2"
                 ],
                 "sourceRefs": [
-                  "inflation",
-                  "cpi"
+                  "inflation"
                 ],
-                "stem": "Priya's fixed scholarship now buys fewer bus rides. Other prices stay flat. Why is this not proof of inflation?",
+                "stem": "Why do people living on a fixed pension feel rising prices the most?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Only one price changed, not all of them.",
-                    "feedback": "The ride budget shrinks, but inflation is about a broad index rather than one fare.",
+                    "text": "Their income stays put while prices climb.",
                     "correct": true,
+                    "feedback": "A pension that never grows meets higher prices each year, so it buys less and less.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   },
-                  { "id": "c", "text": "One fare rise measures prices across the country.", "feedback": "The bus bill is vivid. A broad index also checks many other costs.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
                   {
                     "id": "b",
-                    "text": "Fewer rides prove every price rose.",
-                    "feedback": "The ride is what she buys, so it feels broad. One fare does not show the whole basket.",
+                    "text": "Pensions rise faster than prices.",
                     "correct": false,
+                    "feedback": "A fixed pension does not rise at all, so it falls behind when prices go up.",
                     "misconceptionIds": [
-                      "inflation-m1"
+                      "inflation-m2"
                     ],
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Older people buy different goods.",
+                    "correct": false,
+                    "feedback": "Their shopping may differ, but the main problem is income that stays fixed while prices rise.",
+                    "sourceRefs": [
+                      "inflation"
                     ]
                   }
-                ],
-                "task": "reason"
+                ]
               },
               {
-                "id": "inflation-6",
+                "id": "inflation-14",
                 "type": "fill-the-step",
                 "conceptId": "inflation",
-                "difficultySeed": 1,
+                "step": "inflation-s2",
+                "difficultySeed": 2,
                 "misconceptionTags": [
-                  "inflation-m1"
+                  "inflation-m3"
                 ],
                 "sourceRefs": [
-                  "inflation",
-                  "cpi"
+                  "inflation"
                 ],
-                "stem": "₹100 buys one basket of shopping. Then the same basket costs ₹110. Now your ₹100 covers ___.",
+                "stem": "Pay counted in rupees is nominal pay. Pay counted by what it can buy is ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Less than one basket.",
-                    "feedback": "A higher basket price lowers what unchanged cash covers; this is the purchasing power link.",
+                    "text": "Real pay.",
                     "correct": true,
+                    "feedback": "Pay measured by what it buys is called real pay. It shows how far the money really goes.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "One full basket, since the note says ₹100.",
-                    "feedback": "The note's face value is unchanged, but the same basket now costs ₹110, so the cash covers less than one.",
+                    "text": "Rupee pay.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
+                    "feedback": "That is the nominal figure again, the rupee amount, not what the money can buy.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   },
-                  { "id": "c", "text": "More than one basket.", "feedback": "The basket now costs ₹110, more than the cash. ₹100 cannot cover even one full basket.", "correct": false, "sourceRefs": ["inflation", "cpi"] }
-                ]
-              },
-              {
-                "id": "inflation-7",
-                "type": "true-not-quite",
-                "conceptId": "inflation",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "inflation-m1"
-                ],
-                "sourceRefs": [
-                  "inflation",
-                  "cpi"
-                ],
-                "stem": "Samosas, tea and idlis cost more at one canteen. Ravi says all-India prices rose just as much. What is wrong?",
-                "options": [
                   {
-                    "id": "a",
-                    "text": "One canteen is not the whole country.",
-                    "feedback": "A few foods at one shop cannot show how prices changed across the whole country.",
-                    "correct": true,
-                    "sourceRefs": [
-                      "inflation",
-                      "cpi"
-                    ]
-                  },
-                  { "id": "c", "text": "One canteen's prices predict the national rate.", "feedback": "A local bill is easy to see. The index draws on far more prices and places.", "correct": false, "misconceptionIds": ["inflation-m1"], "sourceRefs": ["inflation", "cpi"] },
-                  {
-                    "id": "b",
-                    "text": "Three foods are enough to set the index.",
-                    "feedback": "Three foods feel like a pattern. The index also checks many other goods and places.",
+                    "id": "c",
+                    "text": "Old pay.",
                     "correct": false,
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
+                    "feedback": "Last year's pay is still counted in rupees. Adjusting pay for prices gives real pay.",
                     "sourceRefs": [
-                      "inflation",
-                      "cpi"
+                      "inflation"
                     ]
                   }
                 ]
               },
               {
-                "id": "inflation-8",
-                "type": "order",
+                "id": "inflation-15",
+                "type": "true-not-quite",
                 "conceptId": "inflation",
-                "difficultySeed": 2,
+                "step": "inflation-s3",
+                "difficultySeed": 3,
                 "misconceptionTags": [
-                  "inflation-m1"
+                  "inflation-m4"
                 ],
                 "sourceRefs": [
-                  "inflation",
+                  "rbi"
+                ],
+                "stem": "A friend says any inflation at all means the economy is in trouble. What is wrong with that?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "India even aims for about 4%.",
+                    "correct": true,
+                    "feedback": "The RBI's target is 4% inflation, with a band of 2% to 6%, so mild inflation is planned.",
+                    "sourceRefs": [
+                      "rbi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The RBI wants zero inflation.",
+                    "correct": false,
+                    "feedback": "The target is not zero. It is 4%, with a lower limit of 2%.",
+                    "misconceptionIds": [
+                      "inflation-m4"
+                    ],
+                    "sourceRefs": [
+                      "rbi"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Prices should stay fixed forever.",
+                    "correct": false,
+                    "feedback": "No target asks for fixed prices. India aims for steady rises of about 4% a year.",
+                    "sourceRefs": [
+                      "rbi"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "inflation-16",
+                "type": "order",
+                "conceptId": "inflation",
+                "step": "inflation-s1",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
                   "cpi"
                 ],
-                "stem": "Put the steps in order for fixed cash to lose buying power.",
+                "stem": "Put these in order to work out an inflation rate.",
                 "options": [
-                  { "id": "a", "text": "A student keeps ₹100 that does not grow.", "feedback": "Fixed cash is the start: the amount stays the same while prices can move.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
-                  { "id": "b", "text": "Prices of most things rise by a tenth.", "feedback": "The broad price level goes up, so each item in the basket costs more rupees.", "correct": true, "sourceRefs": ["inflation", "cpi"] },
-                  { "id": "c", "text": "The ₹100 now buys less than before.", "feedback": "The same note meets higher prices, so it buys less than it did before.", "correct": true, "sourceRefs": ["inflation", "cpi"] }
+                  {
+                    "id": "a",
+                    "text": "Find this May's price and last May's price.",
+                    "correct": true,
+                    "feedback": "You need the same item's price in the same month, one year apart, before any sum.",
+                    "sourceRefs": [
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Subtract to get the rise in rupees.",
+                    "correct": true,
+                    "feedback": "The gap between the two prices shows how many rupees more it costs now.",
+                    "sourceRefs": [
+                      "cpi"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Divide the rise by last May's price, then multiply by 100.",
+                    "correct": true,
+                    "feedback": "Dividing by the older price turns the rupee rise into a percent, the inflation rate.",
+                    "sourceRefs": [
+                      "cpi"
+                    ]
+                  }
                 ],
-                "answer": ["a", "b", "c"]
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
               }
             ],
             "misconceptions": [
@@ -378,6 +455,22 @@
                   "inflation",
                   "cpi"
                 ]
+              },
+              {
+                "id": "inflation-m3",
+                "name": "Any raise makes you better off",
+                "correction": "A raise smaller than the rise in prices still buys less than before.",
+                "sourceRefs": [
+                  "inflation"
+                ]
+              },
+              {
+                "id": "inflation-m4",
+                "name": "The goal is zero inflation",
+                "correction": "India's target is about 4%, inside a band of 2% to 6%.",
+                "sourceRefs": [
+                  "rbi"
+                ]
               }
             ],
             "sources": [
@@ -396,6 +489,14 @@
                 "year": 2019,
                 "url": "https://www.imf.org/en/publications/fandd/issues/series/back-to-basics/inflation",
                 "asOf": "2026-10-16"
+              },
+              {
+                "id": "rbi",
+                "title": "Monetary Policy: overview",
+                "publisher": "Reserve Bank of India",
+                "year": 2026,
+                "url": "https://www.rbi.org.in/Scripts/FS_Overview.aspx?fn=2752",
+                "asOf": "2026-10-21"
               }
             ],
             "factCheck": {
@@ -409,40 +510,380 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-3",
+                  "claimId": "inflation-c3",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-1",
+                  "claimId": "inflation-c4",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-2",
+                  "claimId": "inflation-c5",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-4",
+                  "claimId": "inflation-9",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-5",
+                  "claimId": "inflation-10",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-6",
+                  "claimId": "inflation-11",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-7",
+                  "claimId": "inflation-12",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-8",
+                  "claimId": "inflation-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-14",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-15",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "inflation-16",
                   "verdict": "supported"
                 }
               ],
-              "checker": "codex-factcheck-2026-10-17e"
-            }
+              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms 50,000+ shops in 2,295 markets monthly and the same-month-last-year formula; DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
+            },
+            "steps": [
+              {
+                "id": "inflation-s1",
+                "title": "Inflation is prices rising across a basket",
+                "claimId": "inflation-c3",
+                "sourceRefs": [
+                  "cpi",
+                  "inflation"
+                ],
+                "hook": {
+                  "stem": "The news says retail inflation was 3% in May. What does that mean?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Everyday prices are about 3% above last May.",
+                      "correct": true,
+                      "feedback": "Right. It compares a big basket of everyday prices with the same month a year before."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Every single price rose by exactly 3%.",
+                      "correct": false,
+                      "feedback": "Some prices jump and some barely move. The 3% is the overall change across the basket."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Prices rose 3% since April.",
+                      "correct": false,
+                      "feedback": "The figure compares this May with last May, a full year apart, not with the month before."
+                    }
+                  ]
+                },
+                "teach": "Inflation is how much prices rose in a year. India checks a basket of everyday goods each month and compares it with the same month last year.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Prices from 50,000+ shops",
+                    "One basket",
+                    "Compare with last year"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the comparison.",
+                  "parts": [
+                    "Rice, milk and bus fares in the big list",
+                    "cost 3% more than they did last May,",
+                    "so the news reports 3% inflation."
+                  ],
+                  "spot": "cost 3% more than they did last May,",
+                  "feedback": "Inflation compares the same basket with the same month a year earlier."
+                },
+                "guided": [
+                  {
+                    "stem": "Onions double in price, but most other prices barely move. What happens to inflation?",
+                    "hint": "Onions are one item in a very big basket.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "It goes up a little.",
+                        "correct": true,
+                        "feedback": "Yes. One item doubling moves the whole basket only a little when the rest stays flat."
+                      },
+                      {
+                        "id": "b",
+                        "text": "It doubles too.",
+                        "correct": false,
+                        "feedback": "Onions are a small part of the basket, so the overall rise is far smaller than double."
+                      },
+                      {
+                        "id": "c",
+                        "text": "It falls.",
+                        "correct": false,
+                        "feedback": "A price went up and the others held still, so the basket costs a bit more, not less."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "This June's inflation figure is out. Which prices does it compare?",
+                    "hint": "Look for a gap of one full year.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "This June against last June.",
+                        "correct": true,
+                        "feedback": "Right. Matching the same month a year apart is how the rate is worked out."
+                      },
+                      {
+                        "id": "b",
+                        "text": "This June against this May.",
+                        "correct": false,
+                        "feedback": "A one-month gap is not used here. The rate compares the same month a year earlier."
+                      },
+                      {
+                        "id": "c",
+                        "text": "This June against ten years ago.",
+                        "correct": false,
+                        "feedback": "Ten years is far too long a gap. The yearly rate compares with the same month last year."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Inflation is the yearly rise across a whole basket of prices."
+              },
+              {
+                "id": "inflation-s2",
+                "title": "When prices outrun your money, it buys less",
+                "claimId": "inflation-c4",
+                "sourceRefs": [
+                  "inflation",
+                  "cpi"
+                ],
+                "hook": {
+                  "stem": "Your pocket money stays at ₹2,000 while prices rise 10%. What happens?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "It buys about a tenth less.",
+                      "correct": true,
+                      "feedback": "Right. The note is the same, but each thing costs more, so the same money covers less."
+                    },
+                    {
+                      "id": "b",
+                      "text": "It buys the same, since it is still ₹2,000.",
+                      "correct": false,
+                      "feedback": "The number on the money stays put, but prices moved up, so it now covers less shopping."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It buys 10% more.",
+                      "correct": false,
+                      "feedback": "Higher prices work the other way. The same ₹2,000 now covers less, not more."
+                    }
+                  ]
+                },
+                "teach": "When prices rise, the same money buys less. If your income grows slower than prices, you can buy less than last year, even with a raise.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Pay up 4%",
+                    "lines": [
+                      "More rupees"
+                    ]
+                  },
+                  "right": {
+                    "title": "Prices up 6%",
+                    "lines": [
+                      "Each rupee buys less",
+                      "You end up behind"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap why she is behind.",
+                  "parts": [
+                    "Kavya got a 5% raise this year,",
+                    "but her rent and groceries cost 7% more,",
+                    "so her pay now buys less than before."
+                  ],
+                  "spot": "but her rent and groceries cost 7% more,",
+                  "feedback": "Her costs grew faster than her pay, so the raise did not keep up."
+                },
+                "guided": [
+                  {
+                    "stem": "A ₹100 basket of shopping now costs ₹125. How much of it does ₹100 buy?",
+                    "hint": "Work out 100 divided by 125.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Four fifths of it.",
+                        "correct": true,
+                        "feedback": "Yes. 100 divided by 125 is 0.8, so the same cash covers 80% of the basket."
+                      },
+                      {
+                        "id": "b",
+                        "text": "All of it.",
+                        "correct": false,
+                        "feedback": "The basket now costs ₹125, more than you hold, so ₹100 cannot cover all of it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "One and a quarter baskets.",
+                        "correct": false,
+                        "feedback": "That flips the sum. ₹125 is the new price, so ₹100 buys less than one basket."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Prices rise 5% this year. Whose pay keeps up?",
+                    "hint": "Pay has to grow at least as fast as prices.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Arjun's, up 6%.",
+                        "correct": true,
+                        "feedback": "Right. His pay grew faster than prices, so it buys a little more than last year."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Meena's, up 3%.",
+                        "correct": false,
+                        "feedback": "Her pay rose, but slower than prices, so it buys less than it did last year."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Ravi's, unchanged.",
+                        "correct": false,
+                        "feedback": "With no rise at all, his same pay meets higher prices and buys less."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "If prices grow faster than your money, you fall behind."
+              },
+              {
+                "id": "inflation-s3",
+                "title": "Idle cash shrinks, and the RBI aims for about 4%",
+                "claimId": "inflation-c5",
+                "sourceRefs": [
+                  "rbi",
+                  "inflation"
+                ],
+                "hook": {
+                  "stem": "What inflation rate do you think India's central bank aims for?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "About 4%.",
+                      "correct": true,
+                      "feedback": "Right. The RBI's target is 4%, with a band from 2% to 6% around it."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Zero.",
+                      "correct": false,
+                      "feedback": "The target is not zero. India aims for about 4%, inside a band of 2% to 6%."
+                    },
+                    {
+                      "id": "c",
+                      "text": "10% or more.",
+                      "correct": false,
+                      "feedback": "That would be far above the band. The upper limit is 6%, and the target is 4%."
+                    }
+                  ]
+                },
+                "teach": "Money that earns nothing loses buying power each year. India's central bank aims to keep inflation near 4%, inside a band of 2% to 6%.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "India's inflation target",
+                  "min": "0%",
+                  "max": "8%",
+                  "marks": [
+                    {
+                      "at": 25,
+                      "text": "2%: lower limit"
+                    },
+                    {
+                      "at": 50,
+                      "text": "4%: target"
+                    },
+                    {
+                      "at": 75,
+                      "text": "6%: upper limit"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap what happens to the cash.",
+                  "parts": [
+                    "Dadaji keeps ₹50,000 under his mattress for years,",
+                    "and each year it buys a little less,",
+                    "because prices keep rising around it."
+                  ],
+                  "spot": "and each year it buys a little less,",
+                  "feedback": "The cash never changes, but rising prices make it worth a little less each year."
+                },
+                "guided": [
+                  {
+                    "stem": "₹10,000 sits in a cupboard for a year while prices rise 5%. What does it buy next year?",
+                    "hint": "The cash stays still while prices move up.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "About what ₹9,500 buys today.",
+                        "correct": true,
+                        "feedback": "Yes. 10,000 divided by 1.05 is about 9,520, so it buys a bit less than now."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Exactly what ₹10,000 buys today.",
+                        "correct": false,
+                        "feedback": "Prices rose 5% while the cash stayed the same, so it buys less than it does today."
+                      },
+                      {
+                        "id": "c",
+                        "text": "About what ₹10,500 buys today.",
+                        "correct": false,
+                        "feedback": "Cash in a cupboard earns nothing. Rising prices make it buy less, not more."
+                      }
+                    ]
+                  },
+                  {
+                    "stem": "Inflation comes in at 7% this year. Where is that against the RBI's band?",
+                    "hint": "The band runs from 2% to 6%.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Above the 6% upper limit.",
+                        "correct": true,
+                        "feedback": "Right. 7% is higher than the 6% upper limit of the band."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Right on target.",
+                        "correct": false,
+                        "feedback": "The target is 4%. At 7%, inflation is above even the 6% upper limit."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Below the lower limit.",
+                        "correct": false,
+                        "feedback": "The lower limit is 2%. A rate of 7% is well above the whole band."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Idle cash shrinks; India aims for about 4% inflation."
+              }
+            ]
           },
           {
             "id": "compounding",

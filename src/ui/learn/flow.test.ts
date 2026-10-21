@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { catalogFor, chosenTopics, findItem, makeDrop, nightDropId, reviewsOnlyRemainder, topics } from './flow';
 
+// These cases test drop composition, not lessons: every Money step counts as already taught.
+const taughtSteps = catalogFor(['money-markets']).flatMap(concept => concept.steps?.map(step => step.id) ?? []);
+
 describe('live learning drop glue', () => {
   it('trims unstarted new steps on a resumed drop without losing the answered step', () => {
     const drop = { id: 'one', items: [
@@ -14,7 +17,7 @@ describe('live learning drop glue', () => {
   it('offers due reviews only after bedtime and stops at once when none are due', () => {
     const now = new Date(2026, 9, 18, 2, 0).getTime();
     const idea = catalogFor(['money-markets'])[0]!;
-    const base = { ids: ['money-markets'], items: [], now, bedtime: '01:30', daily: true, night: true,
+    const base = { ids: ['money-markets'], taughtSteps, items: [], now, bedtime: '01:30', daily: true, night: true,
       answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [] };
     const empty = makeDrop({ ...base, concepts: [] });
     expect(empty.items).toHaveLength(0);
@@ -35,7 +38,7 @@ describe('live learning drop glue', () => {
   });
 
   it('creates a five item daily drop with stable option order and a stopping screen', () => {
-    const input = { ids: ['money-markets'], concepts: [], items: [], now: new Date('2026-10-16T12:00:00').getTime(), daily: true,
+    const input = { ids: ['money-markets'], taughtSteps, concepts: [], items: [], now: new Date('2026-10-16T12:00:00').getTime(), daily: true,
       answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [] };
     const first = makeDrop(input);
     const second = makeDrop(input);
@@ -48,7 +51,7 @@ describe('live learning drop glue', () => {
 
   it('keeps a three item night drop separate from the daily drop', () => {
     const now = new Date('2026-10-17T23:30:00').getTime();
-    const input = { ids: ['money-markets'], concepts: [], items: [], now, daily: true,
+    const input = { ids: ['money-markets'], taughtSteps, concepts: [], items: [], now, daily: true,
       answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [] };
     const daily = makeDrop(input);
     const night = makeDrop({ ...input, night: true, itemCount: 3 });
@@ -61,7 +64,7 @@ describe('live learning drop glue', () => {
   it('starts due reviews and concept practice under separate practice ids', () => {
     const now = new Date('2026-10-17T12:00:00').getTime();
     const idea = catalogFor(['money-markets'])[0]!;
-    const input = { ids: ['money-markets'], concepts: [{ id: idea.id, mastery: 0.8, attempts: 2,
+    const input = { ids: ['money-markets'], taughtSteps, concepts: [{ id: idea.id, mastery: 0.8, attempts: 2,
       memory: { stability: 2, difficulty: 5, interval: 2, lastReview: now - 3 * 86_400_000, dueAt: now - 1 },
       activeMisconceptions: [], updatedAt: now, deleted: 0 as const, deviceId: 'test' }], items: [], now,
       daily: false, answeredToday: 0, newToday: 0, spentMinutes: 0, facts: [], itemCount: 3 };

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
+import { walkLesson } from './learn-helpers';
 
 type Item = { stem: string; type: string; options: { id: string; text: string; correct: boolean }[]; answer?: unknown };
 const pack = JSON.parse(readFileSync('content/topics/topic.money-markets.json', 'utf8')) as { body: { modules: { concepts: { items: Item[] }[] }[] } };
@@ -44,8 +45,9 @@ test('a fresh install reaches its first finished drop in under 90 seconds', asyn
   await expect(drop.getByRole('heading', { name: 'What do you want to get sharp at?' })).toBeVisible();
   await drop.getByRole('button', { name: /Money and markets/ }).click();
   await drop.getByRole('button', { name: 'Start my first drop' }).click();
-  await expect(drop.locator('.learn-options')).toBeVisible();
-  for (let i = 0; i < 5; i++) await answerRight(page);
+  // Spec 14: a new learner's first drop opens with a short lesson, then that idea's own questions.
+  await walkLesson(page, 'money-markets');
+  for (let i = 0; i < 6 && !(await page.locator('.learn-stop').isVisible()); i++) await answerRight(page);
   await expect(page.getByRole('heading', { name: "That's today's drop" })).toBeVisible();
   expect(Date.now() - started).toBeLessThan(90_000);
   const saved = await page.evaluate(async () => {
