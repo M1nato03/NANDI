@@ -33,6 +33,8 @@ export type LadderStep = {
   exerciseId: string;
   pattern: LadderPattern;
   rank: number;
+  /** Needs gear and a learned move first (Nordic curls: a band and a secure ankle hold). Placement never lands here, and progression only moves here once the person says they are set up. */
+  gate?: 'nordic-setup';
 };
 
 export type RoutineExercise = {

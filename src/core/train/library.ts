@@ -82,8 +82,8 @@ export const LADDERS: Record<string, LadderStep[]> = {
   'hinge': [
     { id: 'step-h-1', exerciseId: 'bw-rdl', pattern: 'hinge', rank: 1 },
     { id: 'step-h-2', exerciseId: 'sl-rdl', pattern: 'hinge', rank: 2 },
-    { id: 'step-h-3', exerciseId: 'banded-nordic', pattern: 'hinge', rank: 3 },
-    { id: 'step-h-4', exerciseId: 'nordic-curl', pattern: 'hinge', rank: 4 },
+    { id: 'step-h-3', exerciseId: 'banded-nordic', pattern: 'hinge', rank: 3, gate: 'nordic-setup' },
+    { id: 'step-h-4', exerciseId: 'nordic-curl', pattern: 'hinge', rank: 4, gate: 'nordic-setup' },
   ],
   'pull-up': [
     { id: 'step-pu-1', exerciseId: 'scapular-pull', pattern: 'pull-up', rank: 1 },

@@ -247,3 +247,19 @@ describe('03-train §9 Acceptance Tests', () => {
     expect(plates).toBeNull();
   });
 });
+
+describe('Nordic curls are gated (safety: hamstring strain risk for beginners)', () => {
+  const slRdl: SessionExercise = { exerciseId: 'sl-rdl', sets: [{ load: 0, reps: 8 }, { load: 0, reps: 8 }, { load: 0, reps: 8 }], painFlag: false, targetRepMin: 5, targetRepMax: 8 };
+  it('a new hinge placement starts on a bodyweight step and never moves onto a Nordic step', () => {
+    expect(evaluateBodyweightPlacement('hinge', []).finalStepRank).toBeLessThanOrEqual(2);
+    expect(evaluateBodyweightPlacement('hinge', [{ reps: 15, stepRank: 2 }])).toEqual({ finalStepRank: 2, complete: true });
+  });
+  it('3x8 single-leg RDL does not jump to a banded Nordic until the person says they are set up', () => {
+    expect(evaluateBodyweightLadder(slRdl, { pattern: 'hinge', stepRank: 2 }).stepRank).toBe(2);
+    expect(evaluateBodyweightLadder(slRdl, { pattern: 'hinge', stepRank: 2 }, { nordicReady: true }).stepRank).toBe(3);
+  });
+  it('other ladders still progress as before', () => {
+    const squat: SessionExercise = { ...slRdl, exerciseId: 'bw-squat' };
+    expect(evaluateBodyweightLadder(squat, { pattern: 'squat', stepRank: 2 }).stepRank).toBe(3);
+  });
+});

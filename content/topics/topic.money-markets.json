@@ -53,7 +53,7 @@
               },
               {
                 "id": "inflation-c3",
-                "text": "India's inflation rate compares the price of a basket in one month with the same month a year earlier, using prices collected from over 50,000 shops.",
+                "text": "India's inflation rate compares the price of a basket this month with the same month last year. Survey staff collect the prices in markets across India.",
                 "sourceRefs": [
                   "cpi"
                 ]
@@ -228,9 +228,9 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Survey staff note prices in 50,000+ shops.",
+                    "text": "Survey staff note prices in towns and villages.",
                     "correct": true,
-                    "feedback": "Yes. Staff visit over 50,000 shops in 2,295 markets every month to record retail prices.",
+                    "feedback": "Yes. Every month, survey staff record retail prices in markets across India, in towns and in villages.",
                     "sourceRefs": [
                       "cpi"
                     ]
@@ -248,7 +248,7 @@
                     "id": "c",
                     "text": "It guesses from a few big cities.",
                     "correct": false,
-                    "feedback": "No guessing is involved. Prices come from over 50,000 shops across 2,295 markets.",
+                    "feedback": "No guessing is involved. Survey staff record prices every month in markets across India, in villages as well as cities.",
                     "sourceRefs": [
                       "cpi"
                     ]
@@ -554,7 +554,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms 50,000+ shops in 2,295 markets monthly and the same-month-last-year formula; DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
+              "checker": "jenil-04 source check 2026-10-21 (MoSPI CPI note, IMF F&D, RBI); independent builder check 2026-10-21: MoSPI note confirms monthly price collection and the same-month-last-year formula (shop and market counts dropped 22 Oct: they described the old 2012-base series; the 2024-base series from Jan 2026 uses a different market list); DEA gazette 25 Mar 2026 confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031"
             },
             "steps": [
               {
@@ -592,7 +592,7 @@
                 "visual": {
                   "kind": "flow",
                   "nodes": [
-                    "Prices from 50,000+ shops",
+                    "Prices from many markets",
                     "One basket",
                     "Compare with last year"
                   ]

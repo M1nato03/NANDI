@@ -114,7 +114,9 @@ export type BodyweightProgressionState = {
 
 export function evaluateBodyweightLadder(
   exercise: SessionExercise,
-  state: BodyweightProgressionState
+  state: BodyweightProgressionState,
+  /** The person confirmed a band, a secure ankle hold and that they have learned the move (Nordic curls). */
+  options: { nordicReady?: boolean } = {},
 ): BodyweightProgressionState {
   if (exercise.painFlag) {
     return { ...state };
@@ -141,7 +143,9 @@ export function evaluateBodyweightLadder(
   // LADDER: 3x8 clean to advance
   const allSuccess = exercise.sets.every(set => set.reps >= RULES.train.ladder.repMax);
 
-  if (allSuccess && state.stepRank < ladder.length) {
+  // A gated next step (Nordic curls) waits until the person has said they are set up for it.
+  const nextGated = !!ladder[state.stepRank]?.gate && !options.nordicReady;
+  if (allSuccess && state.stepRank < ladder.length && !nextGated) {
     return { ...state, stepRank: state.stepRank + 1 };
   }
 
