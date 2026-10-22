@@ -1,7 +1,7 @@
 html { font-family: 'DM Sans', sans-serif; }
 body { overflow-x: hidden; }
 button, select, input, summary, .tabbar a { min-height: 44px; }
-button { min-height: 48px; border-radius: var(--radius-row); background: var(--accent); border: 0; color: var(--on-accent); padding: 12px 20px; font-weight: 600; }
+button { min-height: 48px; border-radius: var(--radius-row); background: var(--button); border: 0; color: var(--button-ink); padding: 12px 20px; font-weight: 600; }
 button.secondary { background: var(--surface-2); border: 0; color: var(--ink); }
 button.text-button { min-height: 44px; background: transparent; border: 0; color: var(--accent-ink); padding: 8px 0; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [role="button"]:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -16,7 +16,7 @@ h1, h2, h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; f
 h1 { font-size: clamp(28px, 8vw, 34px); transform: none; margin: 8px 0 24px; line-height: 36px; }
 h2 { font-size: 26px; line-height: 30px; }
 h3 { font-size: 19px; line-height: 24px; }
-.eyebrow, .pill { color: var(--accent); font: 700 12px 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: .14em; }
+.eyebrow, .pill { color: var(--accent-ink); font: 700 12px 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: .14em; }
 .pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 7px 11px; background: var(--raised); }
 .card, .hero { border: 0; border-radius: var(--radius-card); background: var(--surface-1); box-shadow: var(--shadow-1); padding: 20px; }
 .card p { color: var(--secondary-ink); }

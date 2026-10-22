@@ -29,8 +29,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Mind: not done' }).click();
     await expect(page).toHaveURL(/#mind$/);
     await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Board: not done' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Case: not done' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Board Not done' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
     await expect(page.getByRole('main').getByText("Today's drop")).toHaveCount(0);
     await tabs.filter({ hasText: 'You' }).click();

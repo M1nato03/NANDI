@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { recapCardContent, type WeeklyRecapData } from '../../core/recap';
 import { shareOrDownload } from '../../platform/files';
 import { recapPng } from './recapCard';
+import { useModalFocus } from '../shell/useModalFocus';
 
 export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; link?: boolean }) {
   const card = recapCardContent(recap);
   const [open, setOpen] = useState(false);
+  const dialog = useModalFocus<HTMLElement>(() => setOpen(false));
   const [preview, setPreview] = useState('');
   const [blob, setBlob] = useState<Blob | null>(null);
   const [busy, setBusy] = useState(false);
@@ -37,7 +39,7 @@ export function RecapShare({ recap, link = false }: { recap: WeeklyRecapData; li
   };
   return <>
     <button type="button" className={link ? 'text-button recap-link' : 'secondary recap-trigger'} onClick={() => { setMessage(''); setOpen(true); }}>{link ? 'Your week is ready to share' : 'Share my week'}</button>
-    {open && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Weekly recap preview" onClick={event => event.stopPropagation()}>
+    {open && <div className="recap-sheet-backdrop sheet-backdrop" onClick={() => setOpen(false)}><section ref={dialog} tabIndex={-1} className="recap-sheet ui-sheet" role="dialog" aria-modal="true" aria-label="Weekly recap preview" onClick={event => event.stopPropagation()}>
       <div className="ui-sheet-handle" aria-hidden="true" />
       <h2>What my week became</h2>
       {preview ? <img src={preview} width="1080" height="1350" alt={`Weekly recap, ${card.dates}: ${card.lines.join(', ')}. ${card.highlight}.`} /> : <p>Making your card…</p>}

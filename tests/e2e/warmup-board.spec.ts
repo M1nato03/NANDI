@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
 test('a solved warm-up board leads straight to today\'s board', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Board: not done' }).click();
+  await page.getByRole('button', { name: 'Board Not done' }).click();
   await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/Warm-up board · /)).toBeVisible();
   await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));

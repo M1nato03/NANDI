@@ -5,7 +5,7 @@ const openSudoku = async (page: import('@playwright/test').Page) => {
   await page.goto('/?e2e#mind');
   await page.getByRole('button', { name: 'Practice', exact: true }).click();
   await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
-  await expect(page.getByRole('grid', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
 };
 
@@ -25,7 +25,7 @@ test('a correctly used technique unlocks after solve and survives reload and bac
   await openSudoku(page);
   const deduction = await page.evaluate(() => (window as Window & { __nandiMindTest?: { nextDeduction: () => { cell: number; value: number; technique: string } } }).__nandiMindTest!.nextDeduction());
   expect(deduction).toBeTruthy();
-  await page.getByRole('grid', { name: 'Mini Sudoku board' }).locator('.mind-cell').nth(deduction.cell).click();
+  await page.getByRole('group', { name: 'Mini Sudoku board' }).locator('.mind-cell').nth(deduction.cell).click();
   await page.getByLabel('Number pad').getByRole('button', { name: String(deduction.value), exact: true }).click();
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
@@ -46,7 +46,7 @@ test('a correctly used technique unlocks after solve and survives reload and bac
 test('solving a case reveals the next story panel', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case: not done' }).click();
+  await page.getByRole('button', { name: 'Case Not done' }).click();
   await page.waitForFunction(() => Boolean((window as Window & { __nandiCaseTest?: unknown }).__nandiCaseTest));
   await page.evaluate(() => (window as Window & { __nandiCaseTest?: { solveTodaysCase: () => void } }).__nandiCaseTest!.solveTodaysCase());
   await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
@@ -59,7 +59,7 @@ test('solving a case reveals the next story panel', async ({ page }) => {
 test('share is hidden after bedtime with the clock pinned', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case: not done' }).click();
+  await page.getByRole('button', { name: 'Case Not done' }).click();
   await page.waitForFunction(() => Boolean((window as Window & { __nandiCaseTest?: unknown }).__nandiCaseTest));
   await page.clock.setFixedTime(new Date('2026-11-02T23:30:00'));
   await page.clock.runFor(1100);

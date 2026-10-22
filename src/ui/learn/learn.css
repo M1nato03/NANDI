@@ -81,7 +81,7 @@
 .learn-today-status { min-height: 56px; padding: 8px 12px; border-radius: var(--radius-chip); background: var(--surface-2); }
 .learn-today-status + .learn-today-status { padding-top: 8px; border: 0; }
 .learn-today-status strong { font-size: 14px; }
-.learn-today-status button { background: color-mix(in srgb, var(--area-learn) 20%, var(--surface-1)); color: var(--area-learn); }
+.learn-today-status button { background: color-mix(in srgb, var(--area-learn) 14%, var(--surface-1)); color: var(--area-learn); }
 .learn-today-status span { color: var(--ink-3); }
 .learn-map-heading { margin-top: 24px; }
 .learn-map-heading h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }

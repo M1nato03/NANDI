@@ -48,7 +48,7 @@ function NumberBoard({ board, state, conflicts, highlights = [], notes, notesMod
     }
   };
   return <>
-    <div className="mind-grid" role="grid" aria-label={`${board.type === 'sudoku' ? 'Mini Sudoku' : 'Calcudoku'} board`} style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
+    <div className="mind-grid" role="group" aria-label={`${board.type === 'sudoku' ? 'Mini Sudoku' : 'Calcudoku'} board`} style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
       {state.grid.map((value, i) => {
         const given = board.type === 'sudoku' && (board.givens[i] ?? 0) > 0;
         const cage = board.type === 'calc' ? board.cages[cageOf[i] ?? -1] : null;
@@ -70,13 +70,13 @@ export function MiniSudokuBoard(props: Props & { board: Extract<PuzzleBoard, { t
 export function CalcudokuBoard(props: Props & { board: Extract<PuzzleBoard, { type: 'calc' }> }) { return <NumberBoard {...props} />; }
 
 export function CrownsBoard({ board, state, conflicts, highlights = [], onGrid, done }: Props & { board: Extract<PuzzleBoard, { type: 'crowns' }> }) {
-  return <div className="mind-grid" role="grid" aria-label="Crowns board" style={{ gridTemplateColumns: `repeat(${board.N}, 1fr)` }}>
+  return <div className="mind-grid" role="group" aria-label="Crowns board" style={{ gridTemplateColumns: `repeat(${board.N}, 1fr)` }}>
     {state.grid.map((value, i) => <button type="button" key={i} className={`mind-cell region-${(board.region[i] ?? 0) % 8} ${conflicts.includes(i) ? 'conflict' : ''} ${highlights.includes(i) ? 'hint-focus' : ''}`} style={border((a, b) => board.region[a] === board.region[b], i, board.N, 3)} aria-label={`${position(i, board.N)}, region ${(board.region[i] ?? 0) + 1}: ${value === 2 ? 'crown' : value === 1 ? 'cross' : 'empty'}`} onClick={() => { const next = state.grid.slice(); next[i] = (value + 1) % 3; onGrid(next); }} disabled={done}>{value === 1 ? <span aria-hidden="true">×</span> : value === 2 ? <span aria-hidden="true">♛</span> : ''}</button>)}
   </div>;
 }
 
 export function SunMoonBoard({ board, state, conflicts, highlights = [], onGrid, done }: Props & { board: Extract<PuzzleBoard, { type: 'sunmoon' }> }) {
-  return <div className="mind-grid" role="grid" aria-label="Sun and Moon board" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
+  return <div className="mind-grid" role="group" aria-label="Sun and Moon board" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
     {state.grid.map((value, i) => {
       const given = (board.given[i] ?? -1) >= 0;
       const r = Math.floor(i / 6), c = i % 6;
@@ -114,8 +114,8 @@ export function NumberPathBoard({ board, state, onPath, done }: Props & { board:
   };
   return <>
     <div className="mind-path-wrap" onPointerDown={event => { if (done) return; drag.current = true; event.currentTarget.setPointerCapture(event.pointerId); step(fromPoint(event), true); }} onPointerMove={event => { if (drag.current && !done) step(fromPoint(event)); }} onPointerUp={() => { drag.current = false; }} onPointerCancel={() => { drag.current = false; }}>
-      <div className="mind-grid" role="grid" aria-label="Number Path board" style={{ gridTemplateColumns: `repeat(${board.C}, 1fr)` }}>
-        {Array.from({ length: board.R * board.C }, (_, i) => { const order = state.path.indexOf(i); const waypoint = board.waypoints.indexOf(i); return <button type="button" key={i} data-cell={i} className={`mind-cell ${order >= 0 ? 'on-path' : ''} ${order === state.path.length - 1 ? 'path-head' : ''}`} aria-label={`${position(i, board.C)}${waypoint >= 0 ? `, number ${waypoint + 1}` : ''}${order >= 0 ? `, path ${order + 1}` : ''}`} onClick={() => { if (!done) step(i); }} disabled={done}>{waypoint >= 0 ? waypoint + 1 : order >= 0 ? <span aria-hidden="true">·</span> : ''}</button>; })}
+      <div className="mind-grid" role="group" aria-label="Number Path board" style={{ gridTemplateColumns: `repeat(${board.C}, 1fr)` }}>
+        {Array.from({ length: board.R * board.C }, (_, i) => { const order = state.path.indexOf(i); const waypoint = board.waypoints.indexOf(i); return <button type="button" key={i} data-cell={i} className={`mind-cell ${order >= 0 ? 'on-path' : ''} ${order >= 0 && order === state.path.length - 1 ? 'path-head' : ''}`} aria-label={`${position(i, board.C)}${waypoint >= 0 ? `, number ${waypoint + 1}` : ''}${order >= 0 ? `, path ${order + 1}` : ''}`} onClick={() => { if (!done) step(i); }} disabled={done}>{waypoint >= 0 ? waypoint + 1 : order >= 0 ? <span aria-hidden="true">·</span> : ''}</button>; })}
       </div>
       <svg className="mind-path-line" viewBox={`0 0 ${board.C * 100} ${board.R * 100}`} aria-hidden="true" preserveAspectRatio="none"><polyline points={state.path.map(i => `${i % board.C * 100 + 50},${Math.floor(i / board.C) * 100 + 50}`).join(' ')} /></svg>
     </div>

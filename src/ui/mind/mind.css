@@ -33,6 +33,8 @@
 .mind-path-line polyline { fill: none; stroke: var(--mind); stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
 .mind-cell.on-path { background: color-mix(in srgb, var(--mind) 28%, var(--surface)); }
 .mind-cell.path-head { outline: 3px solid var(--mind); outline-offset: -4px; }
+/* Focus wins over path-head, conflict and hint marks, so the keyboard position is always visible. */
+.mind-grid .mind-cell:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; z-index: 2; }
 .mind-result { border-color: var(--mind); }
 @media (max-width: 380px) { .mind-cell { font-size: 18px; } }
 .mind-lesson,.mind-review { max-width: 620px; overflow-wrap: anywhere; }

@@ -10,6 +10,7 @@ import { Cast } from '../cast/Cast';
 import { recordError } from '../errorRing';
 import { go } from '../shell/router';
 import './welcome.css';
+import { useModalFocus } from '../shell/useModalFocus';
 
 const DONE_KEY = 'welcome.done';
 // Set when a friend's challenge link is the very first thing opened: the next visit still gets the first run.
@@ -59,6 +60,8 @@ export function useWelcomeNeeded(): [boolean, () => void] {
 }
 
 export function Welcome({ onDone }: { onDone: () => void }) {
+  // No Escape: the first run has no close action.
+  const dialog = useModalFocus<HTMLDivElement>();
   const [step, setStep] = useState(0);
   const [adult, setAdult] = useState(false);
   const [goal, setGoal] = useState<Goal>();
@@ -84,9 +87,9 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   };
   // Not marked done: a finished restore brings its own history, and a cancelled one shows the first run again next time.
   const restore = () => { onDone(); go('you/backup'); };
-  return <div className="welcome" role="dialog" aria-modal="true" aria-label="Welcome to NANDI">
+  return <div ref={dialog} tabIndex={-1} className="welcome" role="dialog" aria-modal="true" aria-label="Welcome to NANDI">
     <div className="welcome-inner">
-      <p className="welcome-steps" aria-label={`Step ${step + 1} of 3`}>{[0, 1, 2].map(index => <span key={index} className={index <= step ? 'on' : ''} />)}</p>
+      <p className="welcome-steps" role="img" aria-label={`Step ${step + 1} of 3`}>{[0, 1, 2].map(index => <span key={index} className={index <= step ? 'on' : ''} />)}</p>
       {step === 0 && <>
         <Cast name="Nandi" pose="cheer" size={120} title="Nandi saying hello" />
         <h1>Hi, I'm Nandi.</h1>

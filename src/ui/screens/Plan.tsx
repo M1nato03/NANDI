@@ -30,6 +30,7 @@ import { agencyAnsweredRecently } from '../../core/guard';
 import { SoftChip, SoftHome, softMoreKey, useSoftFacts } from '../soft/SoftDay';
 import { softToday, yesterdayWasSoft } from '../../core/soft/soft';
 import { isAfterBedtime } from '../../core/time';
+import { useModalFocus } from '../shell/useModalFocus';
 
 export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
@@ -37,6 +38,7 @@ export function Plan({ questId }: { questId?: string }) {
   const [detail, setDetail] = useState<TaskRow | null>(null);
   const [pickMust, setPickMust] = useState(false);
   const [respace, setRespace] = useState<{ task: TaskRow; at: number } | null>(null);
+  const respaceDialog = useModalFocus<HTMLElement>(() => setRespace(null));
   const logs = useLiveQuery(() => db.dailyLog.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const settings = useLiveQuery(() => db.settings.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const events = useLiveQuery(() => db.taskEvents.filter(row => row.deleted === 0).toArray(), []) ?? [];
@@ -109,6 +111,6 @@ export function Plan({ questId }: { questId?: string }) {
     <section className="plan-rituals" aria-label="Planning routines"><details className="plan-rituals-fold" open={logs.some(row => row.planDone || row.shutdownDone || row.reviewDone) || undefined}><summary className="ui-section-header"><span className="eyebrow">Make it easier</span><h2>Rituals</h2><span className="small">Morning plan, shutdown, weekly review</span></summary><div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}><DeckGlyph type="do" />Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}><DeckGlyph type="night" />Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}><DeckGlyph type="extra" />Weekly review<small>Sundays</small></button></div></details></section>
     {detail && <TaskDetail key={detail.id} task={board.tasks.find(row => row.id === detail.id) ?? detail} tasks={board.tasks} focus={board.focus} events={events} run={board.act} close={() => setDetail(null)} move={() => { setMoving(detail); setDetail(null); }} />}
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} />}
-    {respace && <div className="sheet-backdrop"><section className="task-sheet" role="dialog" aria-modal="true" aria-label="Re-space checkpoints"><h2>Re-space the remaining checkpoints?</h2><div className="sheet-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.respaceRemainingCheckpoints(respace.task.id, respace.at, now), 'Checkpoints updated.').then(() => setRespace(null))}>Re-space</button><button type="button" className="secondary" onClick={() => setRespace(null)}>Keep them</button></div></section></div>}
+    {respace && <div className="sheet-backdrop"><section ref={respaceDialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label="Re-space checkpoints"><h2>Re-space the remaining checkpoints?</h2><div className="sheet-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.respaceRemainingCheckpoints(respace.task.id, respace.at, now), 'Checkpoints updated.').then(() => setRespace(null))}>Re-space</button><button type="button" className="secondary" onClick={() => setRespace(null)}>Keep them</button></div></section></div>}
   </section>;
 }

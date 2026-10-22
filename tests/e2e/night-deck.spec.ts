@@ -104,7 +104,7 @@ test('hard daily offers a matching easy night practice board', async ({ page }) 
   expect(previewSeed).toBeTruthy();
   await card.getByRole('button', { name: 'Play' }).click();
   const board = page.locator('.mind-board');
-  await expect(page.getByRole('grid', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('group', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
   await expect(board.locator('.eyebrow')).toHaveText('Practice · easy');
   await expect(board).toHaveAttribute('data-board-seed', previewSeed!);
 });
@@ -124,7 +124,7 @@ test('easy unsolved daily stays on the night card', async ({ page }) => {
   expect(previewSeed).toBeTruthy();
   await card.getByRole('button', { name: 'Play' }).click();
   const board = page.locator('.mind-board');
-  await expect(page.getByRole('grid', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await expect(board.locator('.eyebrow')).toContainText('Daily board');
   await expect(board).toHaveAttribute('data-board-seed', previewSeed!);
 });

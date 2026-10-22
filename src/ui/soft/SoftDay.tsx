@@ -16,6 +16,7 @@ import { go } from '../shell/router';
 import type { TaskRepos } from '../tasks/useTaskBoard';
 import { kindCardPng } from './kindCard';
 import './soft.css';
+import { useModalFocus } from '../shell/useModalFocus';
 
 export const SOFT_KINDS = ['soft-start', 'soft'];
 export function useSoftFacts() {
@@ -29,10 +30,11 @@ const softThingNow = (picked: SoftChoice, extra: { text?: string; inStory?: bool
 /** Spec 15 A: the way in. Never asked by notification; after bedtime it opens the night routine instead. */
 export function SoftChip({ afterBedtime }: { afterBedtime: boolean }) {
   const [open, setOpen] = useState(false);
+  const dialog = useModalFocus<HTMLElement>(() => setOpen(false));
   const pick = async (state: SoftState) => { setOpen(false); await setSoftState(db, state, Date.now()); };
   return <>
     <button type="button" className="soft-chip" onClick={() => afterBedtime ? go('night') : setOpen(true)}>Low on energy today?</button>
-    {open && <div className="sheet-backdrop" onClick={() => setOpen(false)}><section className="task-sheet soft-sheet" role="dialog" aria-modal="true" aria-label="What kind of day is it?" onClick={event => event.stopPropagation()}>
+    {open && <div className="sheet-backdrop" onClick={() => setOpen(false)}><section ref={dialog} tabIndex={-1} className="task-sheet soft-sheet" role="dialog" aria-modal="true" aria-label="What kind of day is it?" onClick={event => event.stopPropagation()}>
       <h2>What kind of day is it?</h2>
       <div className="soft-sheet-choices"><button type="button" onClick={() => void pick('tired')}>Tired</button><button type="button" onClick={() => void pick('low')}>Feeling low</button><button type="button" className="secondary" onClick={() => setOpen(false)}>Not now</button></div>
     </section></div>}

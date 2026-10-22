@@ -18,6 +18,7 @@ import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
+import { useModalFocus } from './useModalFocus';
 
 /** Browser storage can be blocked (private mode, cleared site data); reveals then simply show again. */
 const store = {
@@ -32,6 +33,7 @@ export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
+  const reveal = useModalFocus<HTMLDivElement>(() => setNotice(null));
   // A badge never pops up on its own: it waits to join the next finish moment (audit 10-21).
   const noticeRef = useRef<Notice | null>(null);
   const pendingBadge = useRef<string | null>(null);
@@ -173,5 +175,5 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
-  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

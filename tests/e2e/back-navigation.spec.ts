@@ -22,7 +22,7 @@ test('tabs and Today dots navigate to feature homes at phone size', async ({ pag
 test('browser Back restores the Mind board and saved puzzle progress', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#mind');
-  await page.getByRole('button', { name: 'Board: not done' }).click();
+  await page.getByRole('button', { name: 'Board Not done' }).click();
   const board = page.locator('.mind-board');
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   const before = await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
@@ -34,7 +34,7 @@ test('browser Back restores the Mind board and saved puzzle progress', async ({ 
   expect(cells).not.toEqual(before);
   await page.goBack();
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Board: not done' }).click();
+  await page.getByRole('button', { name: 'Board Not done' }).click();
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   expect(await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(cells);
   const back = await page.getByRole('button', { name: 'Back to Mind' }).boundingBox();
