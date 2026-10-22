@@ -71,9 +71,12 @@ What exists (checked 22 Oct 2026):
   you tap the recognised time to cancel it. Users trust what they can see.
 
 So NANDI's parser is **rules + a variant lexicon + a phonetic key + abstain when unsure + show the reading**:
-1. **Normalise each word to a key:** lowercase; collapse repeated letters (`kall`→`kal`, `shaaam`→`sham`); `aa→a`,
-   `ee→i`, `oo→u`, `w→v`; drop a final `h` (`subah`→`suba`, `subha`→`subha`→`suba`), `ph→f`. Tested on a fixed list.
-2. **Tag words from a lexicon of keys**, kept in `rules.config.ts` with every real variant we collect: DAY (`aj`,
+1. **Normalise each word lightly, then look it up in explicit variant lists.** Light key: lowercase and collapse
+   repeated letters (`kall`→`kal`, `shaaam`→`sham`, `aaj`→`aj`). Every lexicon word then lists its real spellings
+   explicitly (`subah, subha, subh, subeh, subhe`; `shaam, sham, shām`; `dopahar, dopehar, dophar, dupahar`;
+   `baje, bje, baj`), collected from the gold set. A clever general phonetic rule is not used for matching, because
+   it merges real words (`bh` in `subha` vs a dropped `h`); explicit lists are predictable and testable.
+2. **Tag words from the lexicon**, kept in `rules.config.ts` with every real variant we collect: DAY (`aj`,
    `kal`, `parso`, `today`, `tmrw`, `tmr`, `kl` only next to a time word), PART (`suba`, `dopahar/dophar`, `sam`,
    `rat`), WEEKDAY (English + Hindi), CLOCK (`6pm`, `6:30`, `6.30`), NUM, BAJE (`baje/bje/baj`), HALF (`sade/saade`,
    `dhai`, `sava`, `pone/paune`), DUR (`15m`, `45 min`, `2 ghante/ghanta/hr`), KO, AT.
