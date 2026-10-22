@@ -37,21 +37,37 @@ export function taughtCatalog(concepts: readonly TopicConcept[], taught: Readonl
   });
 }
 
-/** Your-turn items for a step: the easiest first, at most two. */
-export function stepPractice(concept: TopicConcept, stepId: string, limit = 2) {
-  return concept.items.filter(item => item.step === stepId)
-    .sort((a, b) => a.difficultySeed - b.difficultySeed || a.id.localeCompare(b.id)).slice(0, limit);
+/**
+ * Spec 16 §5: never two items of one idea in a row. Keeps the given order where it can; when the
+ * next item shares the last one's idea, the first later item from another idea moves up instead.
+ */
+export function interleave<T extends { conceptId: string }>(items: readonly T[]): T[] {
+  const left = [...items];
+  const out: T[] = [];
+  while (left.length) {
+    const last = out.at(-1)?.conceptId;
+    const index = Math.max(0, left.findIndex(item => item.conceptId !== last));
+    out.push(left.splice(index, 1)[0]!);
+  }
+  return out;
 }
 
 /**
  * Spec 14 kill test: guided first tries should land at 85–95% and your-turn answers near 80%.
- * Your-turn answers are the answers in a lesson's own drop to items of that lesson's step.
+ * Your-turn answers are the first answer to each item of a taught step, in whatever later drop it
+ * came (spec 16 §5 serves a step's own items from the next day, mixed with other ideas).
  */
 export function lessonMetrics(ledger: readonly { kind: string; deleted: number; refId: string; inputs: Record<string, unknown> }[], stepOf: (itemId: string) => string | undefined) {
   const lessons = ledger.filter(row => row.kind === 'learn-lesson' && !row.deleted);
   const guided = lessons.flatMap(row => Array.isArray(row.inputs.guidedFirstTry) ? row.inputs.guidedFirstTry as boolean[] : []);
-  const own = ledger.filter(row => row.kind === 'learn-answer' && !row.deleted && lessons.some(lesson =>
-    lesson.inputs.dropId === row.inputs.dropId && stepOf(String(row.inputs.itemId)) === lesson.refId));
+  const taught = new Set(lessons.map(lesson => lesson.refId));
+  const seen = new Set<string>();
+  const own = ledger.filter(row => {
+    const itemId = String(row.inputs.itemId);
+    if (row.kind !== 'learn-answer' || row.deleted || seen.has(itemId) || !taught.has(stepOf(itemId) ?? '')) return false;
+    seen.add(itemId);
+    return true;
+  });
   const share = (values: readonly boolean[]) => values.length ? Math.round(100 * values.filter(Boolean).length / values.length) : null;
   return { lessons: lessons.length, guidedFirstTry: share(guided), guidedCount: guided.length, yourTurn: share(own.map(row => row.inputs.correct === true)), yourTurnCount: own.length };
 }

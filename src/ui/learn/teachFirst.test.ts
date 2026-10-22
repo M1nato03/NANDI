@@ -10,23 +10,45 @@ const started = (id: string): LearnConceptRow => ({ id, mastery: 0.6, attempts: 
   memory: { stability: 2, difficulty: 5, interval: 1, lastReview: now - 2 * 86_400_000, dueAt: now - 1 } });
 
 describe('teach first (spec 14)', () => {
-  it('opens a new learner on the first step: lesson, then that step’s own your-turn items, nothing untaught', () => {
+  it('opens a new learner on the first step and ends there: nothing else is taught or ready yet', () => {
     const drop = makeDrop(base);
-    expect(drop.items[0]).toMatchObject({ itemId: 'lesson:habits-s1', lesson: 'habits-s1', mode: 'new' });
-    const rest = drop.items.slice(1);
-    expect(rest.length).toBeGreaterThan(0);
-    expect(rest.every(item => habits.items.find(candidate => candidate.id === item.itemId)?.step === 'habits-s1')).toBe(true);
+    expect(drop.items).toEqual([expect.objectContaining({ itemId: 'lesson:habits-s1', lesson: 'habits-s1', mode: 'new' })]);
   });
 
-  it('teaches the next step on a later day, own items first and only taught reviews after', () => {
-    const drop = makeDrop({ ...base, taughtSteps: ['habits-s1'], concepts: [started('habits')] });
+  it('serves a step’s own questions from the next day, never straight after its lesson (spec 16 §5)', () => {
+    const today = makeDrop({ ...base, taughtSteps: ['habits-s1'], taughtOn: { 'habits-s1': '2026-10-22' }, lessonToday: true });
+    expect(today.items).toEqual([]);
+    const drop = makeDrop({ ...base, taughtSteps: ['habits-s1'], taughtOn: { 'habits-s1': '2026-10-21' }, concepts: [started('habits')] });
     expect(drop.items[0]!.lesson).toBe('habits-s2');
     const steps = drop.items.slice(1).map(item => habits.items.find(candidate => candidate.id === item.itemId)?.step);
-    const firstReview = drop.items.findIndex((item, index) => index > 0 && item.mode === 'review');
-    const lastOwn = steps.lastIndexOf('habits-s2') + 1;
-    expect(lastOwn).toBeGreaterThan(0);
-    if (firstReview >= 0) expect(firstReview).toBeGreaterThan(lastOwn);
-    expect(steps.every(step => step === 'habits-s1' || step === 'habits-s2')).toBe(true);
+    expect(steps.length).toBeGreaterThan(0);
+    expect(steps.every(step => step === 'habits-s1')).toBe(true);
+  });
+
+  it('over a simulated week, teaches one step a day and serves only steps taught on earlier days', () => {
+    const taughtOn: Record<string, string> = {};
+    for (let day = 0; day < 7; day++) {
+      const at = new Date(2026, 9, 22 + day, 12).getTime();
+      const key = new Date(at).toISOString().slice(0, 10);
+      const drop = makeDrop({ ...base, now: at, taughtSteps: Object.keys(taughtOn), taughtOn });
+      const lesson = drop.items[0]!.lesson!;
+      expect(lesson, `day ${day + 1}`).toBeTruthy();
+      expect(drop.items.filter(item => item.lesson)).toHaveLength(1);
+      const tail = drop.items.slice(1);
+      if (day > 0) expect(tail.length, `day ${day + 1}`).toBeGreaterThan(0);
+      for (const item of tail) {
+        const step = catalogFor(['psychology']).flatMap(concept => concept.items).find(candidate => candidate.id === item.itemId)?.step;
+        expect(step && taughtOn[step] && taughtOn[step]! < key, `day ${day + 1}: ${item.itemId}`).toBeTruthy();
+      }
+      taughtOn[lesson] = key;
+    }
+  });
+
+  it('never puts two questions on one idea in a row when another idea is waiting', async () => {
+    const { interleave } = await import('../../core/learn/steps');
+    const order = interleave(['a', 'a', 'a', 'b', 'c', 'b'].map((conceptId, index) => ({ conceptId, index })));
+    expect(order.map(item => item.conceptId)).toEqual(['a', 'b', 'a', 'c', 'a', 'b']);
+    expect(interleave([{ conceptId: 'a' }, { conceptId: 'a' }]).length).toBe(2);
   });
 
   it('teaches at most one new step a day, then reviews only what was taught', () => {
@@ -62,14 +84,15 @@ describe('teach first (spec 14)', () => {
 });
 
 describe('teach-first kill-test numbers', () => {
-  it('counts guided first tries and only the lesson step’s own answers as your turn', async () => {
+  it('counts guided first tries and the first answer to each item of a taught step as your turn', async () => {
     const { lessonMetrics } = await import('../../core/learn/steps');
     const row = (kind: string, refId: string, inputs: Record<string, unknown>) => ({ kind, refId, inputs, deleted: 0 });
     const ledger = [
       row('learn-lesson', 'habits-s1', { dropId: 'd1', guidedFirstTry: [true, false] }),
-      row('learn-answer', 'a', { dropId: 'd1', itemId: 'habits-1', correct: true }),
-      row('learn-answer', 'b', { dropId: 'd1', itemId: 'habits-4', correct: false }),
-      row('learn-answer', 'c', { dropId: 'd1', itemId: 'habits-2', correct: true }),
+      row('learn-answer', 'a', { dropId: 'd1', itemId: 'habits-9', correct: true }),
+      row('learn-answer', 'b', { dropId: 'd1', itemId: 'habits-12', correct: false }),
+      row('learn-answer', 'c', { dropId: 'd2', itemId: 'habits-10', correct: false }),
+      row('learn-answer', 'd', { dropId: 'd3', itemId: 'habits-9', correct: false }),
     ];
     const stepOf = (id: string) => habits.items.find(item => item.id === id)?.step;
     expect(lessonMetrics(ledger, stepOf)).toEqual({ lessons: 1, guidedFirstTry: 50, guidedCount: 2, yourTurn: 50, yourTurnCount: 2 });

@@ -99,7 +99,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
     }
     for (const module of pack.body.modules) for (const concept of module.concepts) {
       const where = concept.id;
-      if (options.editorial && concept.items.length !== 8) errors.push(`${where}: needs exactly 8 items`);
+      if (options.editorial && (concept.items.length < 6 || concept.items.length > 8)) errors.push(`${where}: needs 6 to 8 items`);
       const typeCounts = new Map<string, number>();
       for (const item of concept.items) typeCounts.set(item.type, (typeCounts.get(item.type) ?? 0) + 1);
       if (options.editorial) {

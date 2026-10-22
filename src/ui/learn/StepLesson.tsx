@@ -28,18 +28,19 @@ type Phase = { kind: 'hook' } | { kind: 'teach' } | { kind: 'show' } | { kind: '
 
 /**
  * Spec 14: show, guide, try. Hook guess → the idea in two sentences with a diagram → a worked example
- * (tap the part that shows the idea) → one or two guided tries with a hint. The your-turn items follow
- * as normal questions in the drop.
+ * (tap the part that shows the idea) → one guided try with a hint. Spec 16 §5: a claim is asked at
+ * most 3 times in a lesson (hook, spot, one guided try); questions on other ideas follow in the drop.
  */
-/** Screens in a step lesson before its own questions: hook, idea, show me, then each guided try. */
-export const lessonScreens = (step: TopicStep) => 3 + step.guided.length;
+const guidedTries = (step: TopicStep) => step.guided.slice(0, 1);
+/** Screens in a step lesson: hook, idea, show me, then the guided try. */
+export const lessonScreens = (step: TopicStep) => 3 + guidedTries(step).length;
 
-export function StepLesson({ step, conceptTitle, friend, busy, progress, onDone }: { step: TopicStep; conceptTitle: string; friend: CastName; busy: boolean; progress?: { before: number; total: number }; onDone: (result: StepLessonResult) => void }) {
+export function StepLesson({ step, conceptTitle, friend, busy, progress, more = true, onDone }: { step: TopicStep; conceptTitle: string; friend: CastName; busy: boolean; progress?: { before: number; total: number }; more?: boolean; onDone: (result: StepLessonResult) => void }) {
   const [phase, setPhase] = useState<Phase>({ kind: 'hook' });
   const [picked, setPicked] = useState<string>();
   const [hint, setHint] = useState(false);
   const [result, setResult] = useState<StepLessonResult>({ hookCorrect: false, spotCorrect: false, guidedFirstTry: [] });
-  const phases: Phase[] = [{ kind: 'hook' }, { kind: 'teach' }, { kind: 'show' }, ...step.guided.map((_, index) => ({ kind: 'guided' as const, index }))];
+  const phases: Phase[] = [{ kind: 'hook' }, { kind: 'teach' }, { kind: 'show' }, ...guidedTries(step).map((_, index) => ({ kind: 'guided' as const, index }))];
   const at = phases.findIndex(candidate => candidate.kind === phase.kind && (candidate.kind !== 'guided' || (phase.kind === 'guided' && candidate.index === phase.index)));
   const next = () => {
     setPicked(undefined); setHint(false);
@@ -57,7 +58,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, onDone 
     setResult(current => phase.kind === 'hook' ? { ...current, hookCorrect: right } : { ...current, guidedFirstTry: [...current.guidedFirstTry, right] });
   };
   const ask = phase.kind === 'hook' ? 'Guess first' : phase.kind === 'teach' ? 'The idea' : phase.kind === 'show' ? step.example.ask : 'Pick the best answer';
-  const eyebrow = phase.kind === 'guided' ? `Try it · ${phase.index + 1} of ${step.guided.length}` : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
+  const eyebrow = phase.kind === 'guided' ? 'Try it' : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
   const pose = chosen ? (chosen.correct ? 'cheer' : 'think') : phase.kind === 'show' && picked ? (picked === step.example.spot ? 'cheer' : 'think') : 'idle';
   const last = at === phases.length - 1;
   return <div className="step-lesson" data-lesson-phase={phase.kind === 'guided' ? `guided-${phase.index + 1}` : phase.kind}>
@@ -80,7 +81,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, onDone 
         <h2>{question.stem}</h2>
         {phase.kind === 'guided' && !picked && (hint ? <p className="step-hint" role="note">Hint: {step.guided[phase.index]!.hint}</p> : <button type="button" className="text-button step-hint-button" onClick={() => setHint(true)}>Show hint</button>)}
         <div className="learn-options">{shuffled(question.options, `${step.id}:${phase.kind === 'guided' ? phase.index : 'hook'}`).map(option => <button type="button" key={option.id} disabled={!!picked} className={`ui-list-row ${picked === option.id ? 'selected' : ''} ${picked && option.correct ? 'right-option' : ''} ${picked === option.id && !option.correct ? 'wrong-option' : ''}`} onClick={() => pick(option.id)}>{option.text}{picked && option.correct && <span className="learn-option-check" aria-hidden="true">✓</span>}</button>)}</div>
-        {chosen && <div className={`learn-feedback learn-sheet ${chosen.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{chosen.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{chosen.feedback}</p><button type="button" disabled={busy} onClick={next}>{last ? 'Your turn' : 'Continue'}</button></div>}
+        {chosen && <div className={`learn-feedback learn-sheet ${chosen.correct ? 'right' : 'idea'}`} role="status"><strong className="learn-sheet-title">{chosen.correct ? 'Exactly.' : 'Good try. Here is the idea.'}</strong><p>{chosen.feedback}</p><button type="button" disabled={busy} onClick={next}>{last ? (more ? 'Your turn' : 'Done') : 'Continue'}</button></div>}
       </>}
       {phase.kind === 'teach' && <button type="button" className="step-continue" disabled={busy} onClick={next}>Continue</button>}
     </div>

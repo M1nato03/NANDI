@@ -1,10 +1,10 @@
-import { composeConceptPractice, composeDrop, orderOptions, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
-import { lessonItemId, nextStep, stepPractice, taughtCatalog } from '../../core/learn/steps';
+import { composeConceptPractice, composeDrop, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
+import { interleave, lessonItemId, nextStep, taughtCatalog } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
 import type { LearnConceptRow, LearnItemRow } from '../../data/types';
-import { isAfterBedtime } from '../../core/time';
+import { dayKey, isAfterBedtime } from '../../core/time';
 import { RULES } from '../../core/rules.config';
 
 export const topics = bundledTopicPacks;
@@ -28,18 +28,20 @@ export function reviewsOnlyRemainder(drop: Drop): Drop {
   if (!remaining.some(item => item.mode === 'new')) return drop;
   return { ...drop, items: [...drop.items.slice(0, drop.cursor), ...remaining.filter(item => item.mode !== 'new')] };
 }
-export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; goldReview?: boolean; reviewDue?: boolean; bedtime?: string; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[]; taughtSteps?: readonly string[]; lessonToday?: boolean }): Drop {
+export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; items: LearnItemRow[]; now: number; daily: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; goldReview?: boolean; reviewDue?: boolean; bedtime?: string; answeredToday: number; newToday: number; spentMinutes: number; facts: import('../../core/learn/engine').AnswerFact[]; taughtSteps?: readonly string[]; taughtOn?: Readonly<Record<string, string>>; lessonToday?: boolean }): Drop {
   const conceptState = Object.fromEntries(input.concepts.filter(row => !row.deleted).map(row => [row.id, { ...row, conceptId: row.id } satisfies ConceptState]));
   const itemState = Object.fromEntries(input.items.filter(row => !row.deleted).map(row => [row.id, { ...row, itemId: row.id } satisfies ItemState]));
   const fullCatalog = catalogFor(input.ids);
   // Spec 14: items of a stepped concept are quiz material only once their step has been taught.
+  // Spec 16 §5: and only from the day after, so a step's own questions are spaced, never asked
+  // straight after its lesson (a step with no recorded day counts as taught before today).
   const taught = new Set(input.taughtSteps ?? []);
-  const catalog = taughtCatalog(fullCatalog, taught);
+  const today = dayKey(input.now);
+  const catalog = taughtCatalog(fullCatalog, new Set([...taught].filter(stepId => (input.taughtOn?.[stepId] ?? '') < today)));
   const lesson = (conceptId?: string): DropItem[] | undefined => {
     const next = nextStep(fullCatalog, taught, conceptId);
     if (!next) return undefined;
-    return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id },
-      ...stepPractice(next.concept, next.step.id).map((item, index) => ({ itemId: item.id, conceptId: next.concept.id, optionOrder: orderOptions(item, input.now % 1_000_000 + index), mode: 'new' as const }))];
+    return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id }];
   };
   if (input.goldReview && input.preferredConceptId) {
     // Gold review tests a mastered idea as a whole, so it draws from every item, taught step or not
@@ -64,11 +66,15 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
     // Practising an idea that still has an untaught step teaches that step first.
     const taughtFirst = input.preferredConceptId ? lesson(input.preferredConceptId) : input.daily && !input.lessonToday ? lesson() : undefined;
     if (taughtFirst) {
-      // Order is fixed: the lesson, then this step's own your-turn items, then reviews of earlier steps (no other new items).
-      const reviews = input.preferredConceptId ? [] : composeDrop({ ...context, requestedItems: RULES.learningTracks.lessonReviews, newToday: RULES.learningTracks.newCardsPerDay }).items.filter(item => item.mode !== 'new');
-      return { id, items: [...taughtFirst, ...reviews.filter(item => !taughtFirst.some(entry => entry.itemId === item.itemId))], cursor: 0, ending: { kind: 'stopping-screen' } };
+      // Spec 16 §5: the lesson, then your turn on OTHER ideas (earlier steps, due or not yet asked),
+      // mixed so no two in a row share an idea. A brand-new learner with nothing earlier ends after the lesson.
+      const pool = input.preferredConceptId
+        ? (catalog.some(concept => concept.id === input.preferredConceptId) ? composeConceptPractice(context, input.preferredConceptId).items : [])
+        : composeDrop(context).items;
+      const tail = interleave(pool.filter(item => !item.lesson)).slice(0, RULES.learningTracks.lessonReviews);
+      return { id, items: [...taughtFirst, ...tail], cursor: 0, ending: { kind: 'stopping-screen' } };
     }
   }
   const drop = input.preferredConceptId && !afterBedtime && catalog.some(row => row.id === input.preferredConceptId) ? composeConceptPractice(context, input.preferredConceptId) : composeDrop(context);
-  return { ...drop, id };
+  return { ...drop, items: interleave(drop.items), id };
 }
