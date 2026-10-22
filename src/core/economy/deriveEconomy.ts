@@ -250,10 +250,14 @@ export function deriveEconomy(
   facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[] = RULES_HISTORY,
   settings: readonly SettingRow[] | Record<string, unknown> = [], today: string,
 ): EconomyView {
-  const { replay, closes } = replayWithCloses(facts, history, settings, today);
+  // A phone clock that ran ahead and was set back leaves facts dated after today. They still count, so the
+  // view runs to the latest fact day (at most 120 days ahead) and XP, level and Shards never drop (cj2 test gaps 3.5).
+  const latest = facts.reduce((max, fact) => !fact.deleted && fact.dayKey > max ? fact.dayKey : max, today);
+  const end = latest > today ? (latest <= addEconomyDays(today, 120) ? latest : addEconomyDays(today, 120)) : today;
+  const { replay, closes } = replayWithCloses(facts, history, settings, end);
   if (!closes.size) return replay.view;
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
-  return { ...replay.view, shards: Math.max(replay.view.shards, shardFloors(closes, replay, [today]).get(today) ?? 0), owned };
+  return { ...replay.view, shards: Math.max(replay.view.shards, shardFloors(closes, replay, [end]).get(end) ?? 0), owned };
 }
 
 /** What each finished day (before `today`) shows now, in one replay: the candidates reconcileGamify merges into the closes. */

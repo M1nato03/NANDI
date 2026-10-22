@@ -117,3 +117,19 @@ describe('economy review 32', () => {
     expect(deriveEconomy(facts, undefined, moved, '2026-11-08').streak.paused).toBe(false);
   });
 });
+
+describe('clock moved back (cj2 test gaps 3.5)', () => {
+  it('never shows less XP, level or Shards after the phone clock is set back', () => {
+    // The clock ran ahead to 23 Oct, a task was finished there, then the clock was set back to 20 Oct.
+    const facts = [task('2026-10-20'), task('2026-10-23')];
+    const ahead = deriveEconomy(facts, undefined, v3, '2026-10-23');
+    const back = deriveEconomy(facts, undefined, v3, '2026-10-20');
+    expect(back.totalXp).toBeGreaterThanOrEqual(ahead.totalXp);
+    expect(back.level).toBeGreaterThanOrEqual(ahead.level);
+    expect(back.shards).toBeGreaterThanOrEqual(ahead.shards);
+  });
+  it('a stray fact years ahead does not make the replay walk years of days', () => {
+    const facts = [task('2026-10-20'), task('2031-01-01')];
+    expect(deriveEconomy(facts, undefined, v3, '2026-10-20').days.length).toBeLessThanOrEqual(122);
+  });
+});

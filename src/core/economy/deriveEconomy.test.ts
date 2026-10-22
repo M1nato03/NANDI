@@ -155,9 +155,11 @@ describe('economy replay', () => {
     expect(deriveEconomy([], undefined, [{ key: 'economyVisibleFrom', value: '2026-10-31', updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-01').streak)
       .toMatchObject({ restDays: 7, restDaysUsed: 1 });
     const facts = Array.from({ length: 95 }, (_, i) => task(new Date(Date.UTC(2026, 9, 1 + i)).toISOString().slice(0, 10), 'S'));
-    expect(view(facts, '2026-11-01').streak.restDays).toBe(8);
-    expect(view(facts, '2026-12-01').streak.restDays).toBe(12);
-    expect(view(facts, '2027-01-03').streak.restDays).toBe(12);
+    // Each view sees the facts up to its own day (facts dated later now count, for a clock set back).
+    const upTo = (day: string) => view(facts.filter(fact => fact.dayKey <= day), day);
+    expect(upTo('2026-11-01').streak.restDays).toBe(8);
+    expect(upTo('2026-12-01').streak.restDays).toBe(12);
+    expect(upTo('2027-01-03').streak.restDays).toBe(12);
   });
   it('uses one day without growing the streak, then leaves today untouched', () => {
     const facts = [task('2026-10-20', 'M')];
