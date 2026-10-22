@@ -87,3 +87,43 @@ an emergency; get a blood test before iron tablets; UPI fraud → call **1930** 
 After Jenil's next week of use: if he still says any idea "feels the same", pull that concept's practice items with
 their `job` tags and check which job repeated. If R1–R6 are all green and he still says it, the cause is the step shape
 itself. Then cut to 2 practice items per step and add interleaving: mix in practice items from the previous idea.
+
+## 5. Addendum, 22 Oct morning: the kill condition is met, change the shape
+
+Re-reviews after the rewrite: Money (steps-money2 dfb11bc) fresh 1.9 → **2.7**, Psychology (steps-psych c61a1d2,
+written with this spec from the start) **2.4**, History (learn-steps f4ed215) **2.6**. **0 of 28 concepts reach fresh 4**,
+while R1–R7 are all green (`docs/reviews/learner-rereview-money-psych.md` on `ideas/learner-rereview-money-psych`;
+Codex History re-review in `D:\nandi-gate-logs\idea-engine\`). The reviewers' finding: the same question comes back
+with a new name, new numbers and a new `job` label. About a third of `transfer` items stay in the same life area,
+`reverse` items swap the unknown in the same sum, and `edge` items are normal cases.
+
+That is §4's kill condition. The cause is not the writers. It is arithmetic: **one claim cannot carry 6–7 different
+questions in one sitting.** Today a learner meets each claim as hook + spot + guided 1 + guided 2 + 2–3 practice, back
+to back. The validator also demands exactly 8 items per idea, so the writers pad.
+
+### The new shape (replaces the counts in §2 and spec 14 §3)
+1. **In the lesson, one claim is asked at most 3 times:** the hook (a guess), the spot (tap the example), and **one**
+   guided try. Drop the second guided try.
+2. **Your-turn questions in the lesson come from other ideas**, not the one just taught: 2–3 due reviews of earlier
+   steps or ideas, mixed in (interleaving). For a brand-new user with nothing due, use the previous step of the same
+   idea, or end the lesson after the guided try (the finished-drop rule from qa-live already fills the Mind slot).
+3. **The step's own practice items move to later days.** Each is first served at least 1 day after the step is taught,
+   mixed with other ideas' items, never two from the same idea in a row (spacing + interleaving).
+4. **6 practice items per idea, 2 per step** (was 8, 3/3/2). The validator rule "exactly 8 items" becomes "6 to 8", and
+   new or rewritten ideas target 6. Fewer items means no padding.
+5. **A real job check for reviewers [R]:** two practice items in one idea fail if a learner could answer both with the
+   same sentence. The writer must state, per item, the one sentence that answers it. Duplicates are visible at a glance.
+
+Evidence: interleaving similar ideas helps people tell them apart and remember them (meta-analysis, Brunmair & Richter
+2019, Psychological Bulletin, overall g ≈ 0.42); spaced practice beats massed practice for retention (Cepeda et al. 2006,
+Psychological Bulletin). Massed practice of one idea feels fluent in the moment, which is exactly the "same question again"
+feeling Jenil reported.
+
+### What this means for the work in progress
+- **Engine (builder):** flow.ts/steps.ts: 1 guided try; your-turn = due reviews from other ideas; schedule the step's
+  practice from the next day; no two same-idea items in a row in any drop. Keep the Mind-slot fix from qa-live.
+- **Content:** Health, Body and How things work: rewrite to the new shape directly (2 practice per step, 6 per idea).
+  For Money, Psychology and History, cut the weakest 2 practice items per idea using the re-review's named duplicates,
+  and drop the second guided try. This is less writing, not more.
+- **Gate:** the same learner walk-through, now on a simulated week (day 1 lesson, days 2–7 drops), because freshness is
+  felt across the week, not inside one JSON idea.
