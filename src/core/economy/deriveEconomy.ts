@@ -95,8 +95,20 @@ function hostPurchases(pool: ReadonlyMap<string, ClosePurchase>, days: readonly 
  */
 export function normalizeCloses(closes: ReadonlyMap<string, DayClose>): Map<string, DayClose> {
   const days = [...closes.keys()].sort(dayOrder);
-  const hosted = hostPurchases(purchasePool(closes.values()), days);
-  return new Map(days.map(day => [day, { ...closes.get(day)!, purchases: hosted.get(day)! }]));
+  const pool = purchasePool(closes.values());
+  const hosted = hostPurchases(pool, days);
+  // A close knows every purchase hosted on or before its day. If it never listed one of them (only possible
+  // in older or merged data), its balance pays for it here, so what a close knows and what it paid always agree.
+  const listed = new Set<string>(), unlisted = new Map<string, number>();
+  const out = new Map<string, DayClose>();
+  for (const day of days) {
+    const close = closes.get(day)!;
+    for (const item of hosted.get(day)!) if (!listed.has(item.id)) unlisted.set(item.id, item.price);
+    for (const item of close.purchases) { listed.add(item.id); unlisted.delete(item.id); }
+    const unpaid = [...unlisted.values()].reduce((sum, price) => sum + price, 0);
+    out.set(day, { ...close, shards: Math.max(0, close.shards - unpaid), purchases: hosted.get(day)! });
+  }
+  return out;
 }
 /**
  * Two sets of closes (this phone's and a backup's, or the stored ones and a fresh replay's) keep the higher of
@@ -109,14 +121,17 @@ export function mergeCloseMaps(a: ReadonlyMap<string, unknown>, b: ReadonlyMap<s
   const days = [...new Set([...x.keys(), ...y.keys()])].sort(dayOrder);
   const pool = purchasePool([...x.values(), ...y.values()]);
   const hosted = hostPurchases(pool, days);
-  const knownX = new Set<string>(), knownY = new Set<string>();
-  const unpaid = (mine: Set<string>, theirs: Set<string>) => [...theirs].filter(id => !mine.has(id)).reduce((sum, id) => sum + (pool.get(id)?.price ?? 0), 0);
+  // After normalising, a side knows by day D exactly its purchases dated on or before D; the merged close knows
+  // every purchase of either side dated on or before D, and each balance pays for the ones it did not know.
+  const knownX = new Set<string>(), knownY = new Set<string>(), knownAll = new Set<string>();
+  const unpaid = (mine: Set<string>) => [...knownAll].filter(id => !mine.has(id)).reduce((sum, id) => sum + (pool.get(id)?.price ?? 0), 0);
   const out = new Map<string, DayClose>();
   for (const day of days) {
     const cx = x.get(day), cy = y.get(day);
     for (const item of cx?.purchases ?? []) knownX.add(item.id);
     for (const item of cy?.purchases ?? []) knownY.add(item.id);
-    const shards = Math.max(cx ? cx.shards - unpaid(knownX, knownY) : 0, cy ? cy.shards - unpaid(knownY, knownX) : 0, 0);
+    for (const item of hosted.get(day)!) knownAll.add(item.id);
+    const shards = Math.max(cx ? cx.shards - unpaid(knownX) : 0, cy ? cy.shards - unpaid(knownY) : 0, 0);
     const both = [cx, cy].filter((close): close is DayClose => !!close);
     const streak = Math.max(...both.map(close => close.streak));
     const top = both.filter(close => close.streak === streak);
