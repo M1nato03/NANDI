@@ -82,7 +82,7 @@
                 "conceptId": "inflation",
                 "step": "inflation-s2",
                 "job": "edge",
-                "difficultySeed": 2,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "inflation-m3"
                 ],
@@ -225,58 +225,6 @@
                 }
               },
               {
-                "id": "inflation-12",
-                "type": "choose",
-                "conceptId": "inflation",
-                "step": "inflation-s1",
-                "job": "misconception",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "inflation-m1"
-                ],
-                "sourceRefs": [
-                  "inflation",
-                  "cpi"
-                ],
-                "stem": "Tomatoes went from ₹40 to ₹60 a kilo this year. A friend says inflation must be 50%. What is the flaw?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Tomatoes are one item, and most other prices moved far less.",
-                    "correct": true,
-                    "feedback": "Right. Inflation is the rise across the whole basket, so one jump moves it only a little.",
-                    "sourceRefs": [
-                      "inflation",
-                      "cpi"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The rise is ₹20, so inflation is 20%.",
-                    "correct": false,
-                    "feedback": "The rupee gap is not a percent, and one item still is not the whole basket of prices.",
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
-                    "sourceRefs": [
-                      "inflation"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "It is right; one big price rise sets the rate.",
-                    "correct": false,
-                    "feedback": "One item is a small part of a very big basket, so it cannot set the overall rate.",
-                    "misconceptionIds": [
-                      "inflation-m1"
-                    ],
-                    "sourceRefs": [
-                      "inflation"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "inflation-13",
                 "type": "why",
                 "conceptId": "inflation",
@@ -317,53 +265,6 @@
                     "text": "They fell.",
                     "correct": false,
                     "feedback": "Falling prices would make the same pay buy more. Buying less points to prices rising faster.",
-                    "sourceRefs": [
-                      "inflation"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "inflation-14",
-                "type": "fill-the-step",
-                "conceptId": "inflation",
-                "step": "inflation-s2",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "inflation-m3"
-                ],
-                "sourceRefs": [
-                  "inflation"
-                ],
-                "stem": "A 2% raise while prices climb 9% leaves you behind, because the raise ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "is smaller than the rise in prices",
-                    "correct": true,
-                    "feedback": "Yes. Your rupees grew 2% but prices grew 9%, so your pay now buys less.",
-                    "sourceRefs": [
-                      "inflation"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "still adds more rupees to every pay slip you get",
-                    "correct": false,
-                    "feedback": "More rupees is true, but they buy less when prices grow faster than pay.",
-                    "misconceptionIds": [
-                      "inflation-m3"
-                    ],
-                    "sourceRefs": [
-                      "inflation"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "is paid once a year",
-                    "correct": false,
-                    "feedback": "How often the raise comes is not the issue. Its size against prices is what counts.",
                     "sourceRefs": [
                       "inflation"
                     ]
@@ -566,15 +467,7 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "inflation-12",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "inflation-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "inflation-14",
                   "verdict": "supported"
                 },
                 {
@@ -663,30 +556,6 @@
                         "feedback": "A price went up and the others held still, so the basket costs a bit more, not less."
                       }
                     ]
-                  },
-                  {
-                    "stem": "This June's inflation figure is out. Which prices does it compare?",
-                    "hint": "Seasons change prices, so match like with like.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "This June against last June.",
-                        "correct": true,
-                        "feedback": "Right. Matching the same month a year apart is how the rate is worked out."
-                      },
-                      {
-                        "id": "b",
-                        "text": "This June against this May.",
-                        "correct": false,
-                        "feedback": "A one-month gap is not used here. The rate compares the same month a year earlier."
-                      },
-                      {
-                        "id": "c",
-                        "text": "This June against ten years ago.",
-                        "correct": false,
-                        "feedback": "Ten years is far too long a gap. The yearly rate compares with the same month last year."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Inflation is the yearly rise across a whole basket of prices."
@@ -773,30 +642,6 @@
                         "feedback": "That flips the sum. ₹125 is the new price, so ₹100 buys less than one basket."
                       }
                     ]
-                  },
-                  {
-                    "stem": "Prices rise 5% this year. Whose pay keeps up?",
-                    "hint": "Compare each pay rise with the 5% price rise.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Arjun's, up 6%.",
-                        "correct": true,
-                        "feedback": "Right. His pay grew faster than prices, so it buys a little more than last year."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Meena's, up 3%.",
-                        "correct": false,
-                        "feedback": "Her pay rose, but slower than prices, so it buys less than it did last year."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Ravi's, unchanged.",
-                        "correct": false,
-                        "feedback": "With no rise at all, his same pay meets higher prices and buys less."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "If prices grow faster than your money, you fall behind."
@@ -864,30 +709,6 @@
                   "feedback": "When people expect lower prices later, they put off buying, and that slows the whole economy."
                 },
                 "guided": [
-                  {
-                    "stem": "Prices in a country fall a little every year. What do many buyers do?",
-                    "hint": "Think of a sale you know is coming next week.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Put off buying, hoping to pay less later.",
-                        "correct": true,
-                        "feedback": "Yes. If waiting makes things cheaper, many people wait, so shops sell less."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Buy much more right away.",
-                        "correct": false,
-                        "feedback": "Buying now makes sense when prices will rise. When they fall, waiting pays, so people hold back."
-                      },
-                      {
-                        "id": "c",
-                        "text": "They shop just as before.",
-                        "correct": false,
-                        "feedback": "Prices people expect do change behaviour. Falling prices give a reason to wait."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Inflation comes in at 7% this year. Where is that against the RBI's band?",
                     "hint": "Picture where the band starts and stops.",
@@ -1069,51 +890,6 @@
                 ]
               },
               {
-                "id": "compounding-11",
-                "type": "scenario",
-                "conceptId": "compounding",
-                "step": "compounding-s1",
-                "job": "edge",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "compound"
-                ],
-                "stem": "Your ₹7,000 deposit pays 10% a year, and you take the interest out to spend each time. What happens to your yearly gain?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "It stays at ₹700 every year.",
-                    "correct": true,
-                    "feedback": "Right. With nothing left in, the pot never grows, so there is no gain on past gains.",
-                    "sourceRefs": [
-                      "compound"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "It grows a little each year, as compound gains do.",
-                    "correct": false,
-                    "feedback": "Growth on growth needs the gain to stay in. Spent interest cannot earn anything more.",
-                    "misconceptionIds": [
-                      "compounding-m1"
-                    ],
-                    "sourceRefs": [
-                      "compound"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "It shrinks each year.",
-                    "correct": false,
-                    "feedback": "The pot stays at ₹7,000, so 10% of it stays ₹700. It neither grows nor shrinks.",
-                    "sourceRefs": [
-                      "compound"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "compounding-12",
                 "type": "scenario",
                 "conceptId": "compounding",
@@ -1160,57 +936,6 @@
                     "misconceptionIds": [
                       "compounding-m3"
                     ],
-                    "sourceRefs": [
-                      "compound",
-                      "finra"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "compounding-13",
-                "type": "why",
-                "conceptId": "compounding",
-                "step": "compounding-s2",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "compounding-m3"
-                ],
-                "sourceRefs": [
-                  "compound",
-                  "finra"
-                ],
-                "stem": "A friend says starting to save at 25 instead of 22 costs nothing, since three years is small next to thirty. What is the flaw?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Fewer years means less growth on growth, so the end pot is smaller.",
-                    "correct": true,
-                    "feedback": "Right. Every year counts, because each one lets the gains build on a bigger pot.",
-                    "sourceRefs": [
-                      "compound",
-                      "finra"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "He is right; the last few years matter most.",
-                    "correct": false,
-                    "feedback": "The last years add the most, but they can only do that on a pot built in the early years.",
-                    "misconceptionIds": [
-                      "compounding-m3"
-                    ],
-                    "sourceRefs": [
-                      "compound",
-                      "finra"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Rates are lower for people who start late.",
-                    "correct": false,
-                    "feedback": "The rate can be the same. The loss comes from having fewer years to grow.",
                     "sourceRefs": [
                       "compound",
                       "finra"
@@ -1462,15 +1187,7 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "compounding-11",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "compounding-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "compounding-13",
                   "verdict": "supported"
                 },
                 {
@@ -1540,31 +1257,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "₹500 earns 10% a year and the gain stays in. What is it worth after one year?",
-                    "hint": "Find a tenth of the starting sum, then add it on.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "₹550.",
-                        "correct": true,
-                        "feedback": "Yes. 10% of ₹500 is ₹50, so the pot is now ₹550."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹510.",
-                        "correct": false,
-                        "feedback": "That adds only ₹10. 10% of ₹500 is ₹50, which makes ₹550."
-                      },
-                      {
-                        "id": "c",
-                        "text": "₹600.",
-                        "correct": false,
-                        "feedback": "That adds ₹100, which is 20%. At 10% the gain is ₹50."
-                      }
-                    ]
-                  },
-                  {
-                    "stem": "In year two, the ₹550 earns 10% again. How big is the new gain?",
+                    "stem": "₹500 grew to ₹550 in year one, with the gain left in. In year two it earns 10% again. How big is the new gain?",
                     "hint": "Work out the rate on the new total, not on the first sum.",
                     "options": [
                       {
@@ -1653,30 +1346,6 @@
                   "feedback": "The same rate gives more when it has more years to work on past gains."
                 },
                 "guided": [
-                  {
-                    "stem": "Kabir leaves ₹1,000 at 8% for 10 years. Ben leaves ₹1,000 at 8% for 20 years. How do they compare?",
-                    "hint": "Ten more years of growth work on a bigger pot.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Ben has about twice as much.",
-                        "correct": true,
-                        "feedback": "Yes. Kabir reaches about ₹2,160; Ben reaches about ₹4,660."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Ben has just ₹800 more.",
-                        "correct": false,
-                        "feedback": "That counts ₹80 a year with no growth on growth. Ben ends with about twice as much."
-                      },
-                      {
-                        "id": "c",
-                        "text": "They have about the same.",
-                        "correct": false,
-                        "feedback": "Ben's money grows for ten more years, so he ends with far more."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Over 30 years at 5%, which five years add the most rupees?",
                     "hint": "Ask when the pot is at its biggest.",
@@ -1787,30 +1456,6 @@
                         "feedback": "Monthly payments do not stop a fund from falling in a bad year."
                       }
                     ]
-                  },
-                  {
-                    "stem": "Which of these does a ₹500 SIP set for you?",
-                    "hint": "Think of what you choose when you sign up.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The date money goes in.",
-                        "correct": true,
-                        "feedback": "Right. You pick the sum and the dates when you start."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Next year's return.",
-                        "correct": false,
-                        "feedback": "No one can set that. The market decides the return."
-                      },
-                      {
-                        "id": "c",
-                        "text": "The fund's top value.",
-                        "correct": false,
-                        "feedback": "A SIP has no say over how high or low the fund goes."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "A SIP fixes what you put in, not what you get back."
@@ -1914,48 +1559,6 @@
                 }
               },
               {
-                "id": "rule-of-72-10",
-                "type": "fill-the-step",
-                "conceptId": "rule-of-72",
-                "step": "rule-of-72-s1",
-                "job": "reverse",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "rule72"
-                ],
-                "stem": "To double money in 3 years, the shortcut says you need a steady rate of about ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "24% a year",
-                    "correct": true,
-                    "feedback": "Working backwards, 72 divided by 3 years gives a rate of about 24% a year.",
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "3% a year, the same as the years",
-                    "correct": false,
-                    "feedback": "At 3% the shortcut gives about 24 years, not 3. The rate and the years swap places.",
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "216% a year",
-                    "correct": false,
-                    "feedback": "That multiplies 72 by 3. Dividing 72 by the years gives the rate: about 24%.",
-                    "sourceRefs": [
-                      "rule72"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "rule-of-72-11",
                 "type": "predict",
                 "conceptId": "rule-of-72",
@@ -1972,7 +1575,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Roughly ten years; the shortcut is close, not exact.",
+                    "text": "About ten years; the shortcut is close, not exact.",
                     "correct": true,
                     "feedback": "Right. Worked out exactly it is about 10.2 years, near the guess but not the same.",
                     "sourceRefs": [
@@ -2149,60 +1752,6 @@
                 }
               },
               {
-                "id": "rule-of-72-15",
-                "type": "explain-it-back",
-                "conceptId": "rule-of-72",
-                "step": "rule-of-72-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "rule-of-72-m2"
-                ],
-                "sourceRefs": [
-                  "rule72",
-                  "investing"
-                ],
-                "stem": "In one line, when does the doubling shortcut work well?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "When the rate stays the same each year.",
-                    "correct": true,
-                    "feedback": "The rule turns one steady rate into a rough doubling time, so a fixed rate suits it.",
-                    "sourceRefs": [
-                      "rule72",
-                      "investing"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "For share prices, because they grow the most.",
-                    "correct": false,
-                    "feedback": "Fast growth is not the test. Share returns change each year, so the rule is only a what-if there.",
-                    "misconceptionIds": [
-                      "rule-of-72-m2"
-                    ],
-                    "sourceRefs": [
-                      "rule72",
-                      "investing"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "For any return, even a jumpy one.",
-                    "correct": false,
-                    "feedback": "A return that jumps around has no single rate to divide by.",
-                    "misconceptionIds": [
-                      "rule-of-72-m2"
-                    ],
-                    "sourceRefs": [
-                      "rule72",
-                      "investing"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "rule-of-72-16",
                 "type": "true-not-quite",
                 "conceptId": "rule-of-72",
@@ -2332,10 +1881,6 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "rule-of-72-10",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "rule-of-72-11",
                   "verdict": "supported"
                 },
@@ -2349,10 +1894,6 @@
                 },
                 {
                   "claimId": "rule-of-72-14",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "rule-of-72-15",
                   "verdict": "supported"
                 },
                 {
@@ -2413,30 +1954,6 @@
                   "feedback": "Dividing 72 by the rate gives the rough number of years to double."
                 },
                 "guided": [
-                  {
-                    "stem": "A deposit pays a steady 9%. Roughly how many years to double?",
-                    "hint": "Share 72 out by the rate.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "About 8.",
-                        "correct": true,
-                        "feedback": "Yes. 72 ÷ 9 is 8, so about eight years."
-                      },
-                      {
-                        "id": "b",
-                        "text": "About 9.",
-                        "correct": false,
-                        "feedback": "Nine is the rate. Dividing 72 by 9 gives about 8 years."
-                      },
-                      {
-                        "id": "c",
-                        "text": "About 81.",
-                        "correct": false,
-                        "feedback": "That multiplies 9 by 9. The rule divides 72 by 9."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Which rate doubles money in about 6 years?",
                     "hint": "Test each choice against the shortcut.",
@@ -2524,30 +2041,6 @@
                   "feedback": "An unpaid balance keeps gathering interest, so 36% doubles it in about two years."
                 },
                 "guided": [
-                  {
-                    "stem": "A loan app charges 24% a year on an unpaid sum. Roughly how fast does it double?",
-                    "hint": "Share 72 out by the yearly charge.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "About 3 years.",
-                        "correct": true,
-                        "feedback": "Yes. 72 ÷ 24 is 3, so the sum doubles in about three years."
-                      },
-                      {
-                        "id": "b",
-                        "text": "About 24 years.",
-                        "correct": false,
-                        "feedback": "That uses the rate as the time. 72 ÷ 24 gives about three years."
-                      },
-                      {
-                        "id": "c",
-                        "text": "About 12 years.",
-                        "correct": false,
-                        "feedback": "That would be a 6% rate. At 24% it doubles in about three."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Which grows faster: savings at 6% or a debt at 18%?",
                     "hint": "Work out the doubling time for each one.",
@@ -2656,30 +2149,6 @@
                         "text": "A fund whose return changes monthly.",
                         "correct": false,
                         "feedback": "A return that keeps changing gives the rule no steady rate."
-                      }
-                    ]
-                  },
-                  {
-                    "stem": "A friend says 72 ÷ 12 proves his share will double in six years. What is the flaw?",
-                    "hint": "Ask whether next year must match this one.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Share returns are not fixed.",
-                        "correct": true,
-                        "feedback": "Right. The sum is fine, but a share has no steady 12% to rely on."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The sum is off; it gives eight years.",
-                        "correct": false,
-                        "feedback": "The sum is right: 72 ÷ 12 is 6. The flaw is treating the rate as fixed."
-                      },
-                      {
-                        "id": "c",
-                        "text": "He is right; one good year sets the rate.",
-                        "correct": false,
-                        "feedback": "One good year does not set the next. The rule only guesses for steady rates."
                       }
                     ]
                   }
@@ -2951,7 +2420,7 @@
                 "conceptId": "risk-return",
                 "step": "risk-return-s2",
                 "job": "edge",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "risk-return-m2"
                 ],
@@ -2993,60 +2462,6 @@
                 ]
               },
               {
-                "id": "risk-return-14",
-                "type": "why",
-                "conceptId": "risk-return",
-                "step": "risk-return-s2",
-                "job": "reverse",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "risk-return-m1"
-                ],
-                "sourceRefs": [
-                  "risk",
-                  "what-risk"
-                ],
-                "stem": "A fund paid a very high return last year. What does that suggest about how it behaves?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "It probably swings a lot, up and down.",
-                    "correct": true,
-                    "feedback": "Right. High returns usually come with bigger swings, so a big gain hints at big possible falls.",
-                    "sourceRefs": [
-                      "risk",
-                      "what-risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "It is low-risk, since it clearly works.",
-                    "correct": false,
-                    "feedback": "A big gain does not show safety. Riskier things are the ones that can pay more, and lose more.",
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk",
-                      "what-risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "It will pay the same high return every year.",
-                    "correct": false,
-                    "feedback": "One year sets no promise. A high-return fund can also have bad years.",
-                    "misconceptionIds": [
-                      "risk-return-m1"
-                    ],
-                    "sourceRefs": [
-                      "risk",
-                      "what-risk"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "risk-return-15",
                 "type": "choose",
                 "conceptId": "risk-return",
@@ -3082,50 +2497,6 @@
                     "text": "Savings for both, since shares can fall at the worst time.",
                     "correct": false,
                     "feedback": "Shares can fall, but 28 years gives time to wait out dips, so the far goal can take more swing.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "risk-return-16",
-                "type": "explain-it-back",
-                "conceptId": "risk-return",
-                "step": "risk-return-s3",
-                "job": "edge",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "risk-return-m2"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "Tara saves for a goal 40 years away, but she needs ₹50,000 of it in two years for a course. Where does that part fit?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "In low-risk savings, since that part is needed soon.",
-                    "correct": true,
-                    "feedback": "Right. The long goal does not help money you need in two years, so that part needs a safe place.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "In shares, like the rest, since her goal is far off.",
-                    "correct": false,
-                    "feedback": "Only the far-off part has time to wait out dips. The course money is due soon.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "In one fast-rising share, to grow it quickly.",
-                    "correct": false,
-                    "feedback": "One share swings the most, and a drop could hit just when the course fee is due.",
                     "sourceRefs": [
                       "risk"
                     ]
@@ -3220,15 +2591,7 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "risk-return-14",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "risk-return-15",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "risk-return-16",
                   "verdict": "supported"
                 }
               ],
@@ -3309,30 +2672,6 @@
                         "feedback": "A tip is not a promise. That share can still fall."
                       }
                     ]
-                  },
-                  {
-                    "stem": "A share's price swings a lot from week to week. What does that tell you?",
-                    "hint": "Ask how easy the end point is to know.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Its result is less certain.",
-                        "correct": true,
-                        "feedback": "Right. Wide swings mean you cannot be sure where it ends."
-                      },
-                      {
-                        "id": "b",
-                        "text": "It is sure to rise.",
-                        "correct": false,
-                        "feedback": "Swings go both ways. Big swings can end in a loss too."
-                      },
-                      {
-                        "id": "c",
-                        "text": "It cannot fall below what you paid.",
-                        "correct": false,
-                        "feedback": "Nothing stops a price falling below your cost."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Risk is the chance of getting back less than you put in."
@@ -3400,30 +2739,6 @@
                   "feedback": "The extra return is paid for with bigger ups and downs."
                 },
                 "guided": [
-                  {
-                    "stem": "A scheme promises share-like returns with no risk at all. What does that tell you?",
-                    "hint": "Recall what pays for any extra gain.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The claim does not fit how risk works.",
-                        "correct": true,
-                        "feedback": "Yes. A high return with no risk is a warning sign."
-                      },
-                      {
-                        "id": "b",
-                        "text": "It is a rare safe bargain.",
-                        "correct": false,
-                        "feedback": "Higher returns come with more risk. A no-risk promise does not add up."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Shares have become safe.",
-                        "correct": false,
-                        "feedback": "Shares still swing. The promise is what is wrong."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Bonds usually swing less than shares. What do they usually give up?",
                     "hint": "Recall what a calmer ride costs.",
@@ -3510,30 +2825,6 @@
                   "feedback": "Money needed soon has no time to recover from a drop."
                 },
                 "guided": [
-                  {
-                    "stem": "Share prices fall in some years. Who is hurt most by such a drop?",
-                    "hint": "Ask who has no time to wait for a recovery.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Someone who needs the money next month.",
-                        "correct": true,
-                        "feedback": "Yes. They may have to sell at the low price."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Someone saving for 25 years from now.",
-                        "correct": false,
-                        "feedback": "They have years to wait for prices to recover."
-                      },
-                      {
-                        "id": "c",
-                        "text": "No one, since prices bounce back next day.",
-                        "correct": false,
-                        "feedback": "Recoveries can take a long time, not one day."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Raj, 22, saves for a goal 30 years away. What does the long wait give him?",
                     "hint": "Think about what thirty years allows after a bad year.",
@@ -3682,7 +2973,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Rohan's, since tea and snacks still sell.",
+                    "text": "Rohan's, as tea and snacks still sell.",
                     "correct": true,
                     "feedback": "His other goods keep earning while cold drinks slow down, so one weak line hurts less.",
                     "sourceRefs": [
@@ -3851,103 +3142,6 @@
                 ]
               },
               {
-                "id": "diversification-14",
-                "type": "match",
-                "conceptId": "diversification",
-                "step": "diversification-s2",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "diversification-m3"
-                ],
-                "sourceRefs": [
-                  "risk"
-                ],
-                "stem": "Match each mix to what it really gives you.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Five firms, one per industry",
-                    "correct": true,
-                    "feedback": "Different industries help, but five holdings are still too few to spread well.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Too few to spread well",
-                    "correct": true,
-                    "feedback": "This fits a mix with a good variety but not enough holdings, like five firms.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Twelve banks",
-                    "correct": true,
-                    "feedback": "Twelve names in one industry still move together when banking has a bad year.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "One sector's shared fate",
-                    "correct": true,
-                    "feedback": "This is what you carry when every holding sits in the same kind of business.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "e",
-                    "text": "A dozen firms across eight industries",
-                    "correct": true,
-                    "feedback": "Enough holdings in different industries make the spread real, so one slump cannot hit them all.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  },
-                  {
-                    "id": "f",
-                    "text": "A real spread",
-                    "correct": true,
-                    "feedback": "This fits a mix with enough firms and enough variety between them.",
-                    "sourceRefs": [
-                      "risk"
-                    ]
-                  }
-                ],
-                "answer": [
-                  {
-                    "left": "a",
-                    "right": "b"
-                  },
-                  {
-                    "left": "b",
-                    "right": "a"
-                  },
-                  {
-                    "left": "c",
-                    "right": "d"
-                  },
-                  {
-                    "left": "d",
-                    "right": "c"
-                  },
-                  {
-                    "left": "e",
-                    "right": "f"
-                  },
-                  {
-                    "left": "f",
-                    "right": "e"
-                  }
-                ]
-              },
-              {
                 "id": "diversification-15",
                 "type": "predict",
                 "conceptId": "diversification",
@@ -3991,57 +3185,6 @@
                     "text": "The food stalls lose sales, the rest do fine.",
                     "correct": false,
                     "feedback": "The warning cancels everything, so every kind of stall loses its buyers at once.",
-                    "sourceRefs": [
-                      "risk",
-                      "diversify"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "diversification-16",
-                "type": "why",
-                "conceptId": "diversification",
-                "step": "diversification-s3",
-                "job": "recall",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "diversification-m2"
-                ],
-                "sourceRefs": [
-                  "risk",
-                  "diversify"
-                ],
-                "stem": "What does a spread over many firms still leave you open to?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Falls that hit almost all firms at once.",
-                    "correct": true,
-                    "feedback": "A spread softens one firm's trouble, but a market-wide fall pulls most holdings down together.",
-                    "sourceRefs": [
-                      "risk",
-                      "diversify"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "No risk, once you hold enough firms.",
-                    "correct": false,
-                    "feedback": "No number of firms stops a fall that hits the whole market at the same time.",
-                    "misconceptionIds": [
-                      "diversification-m2"
-                    ],
-                    "sourceRefs": [
-                      "risk",
-                      "diversify"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The bad luck of one single firm.",
-                    "correct": false,
-                    "feedback": "One firm's bad luck is what a spread does guard against. The open risk is a fall across the market.",
                     "sourceRefs": [
                       "risk",
                       "diversify"
@@ -4146,15 +3289,7 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "diversification-14",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "diversification-15",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "diversification-16",
                   "verdict": "supported"
                 }
               ],
@@ -4239,30 +3374,6 @@
                         "text": "Both have the same left.",
                         "correct": false,
                         "feedback": "Meera keeps ₹5,000 while Om keeps ₹9,000, because only a fifth of his money fell."
-                      }
-                    ]
-                  },
-                  {
-                    "stem": "Which mix spreads the risk from one company the most?",
-                    "hint": "Count how many places the money goes.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "₹500 each in ten firms.",
-                        "correct": true,
-                        "feedback": "Right. Ten firms means one bad firm touches only a tenth of the money."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹5,000 in one firm.",
-                        "correct": false,
-                        "feedback": "All the money rides on one firm, so there is no spread at all."
-                      },
-                      {
-                        "id": "c",
-                        "text": "₹2,500 each in two firms.",
-                        "correct": false,
-                        "feedback": "Two firms is a small spread. One bad firm would still hit half the money."
                       }
                     ]
                   }
@@ -4350,30 +3461,6 @@
                         "feedback": "Holding shares is not enough. How many firms and how many industries matter."
                       }
                     ]
-                  },
-                  {
-                    "stem": "A fund holds only medicine companies. Does owning it give you a full spread?",
-                    "hint": "Check how many industries sit inside the fund.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "No, it sits in one industry.",
-                        "correct": true,
-                        "feedback": "Right. A fund focused on one industry does not give a full spread on its own."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Yes, any fund is spread out.",
-                        "correct": false,
-                        "feedback": "A fund can still bet on one industry. Then one bad patch hits the whole fund."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Yes, if it holds over fifty firms.",
-                        "correct": false,
-                        "feedback": "Fifty firms in one industry still share one fate. The industries need to differ too."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "A real spread means many firms across many different industries."
@@ -4459,30 +3546,6 @@
                         "text": "Prices rising faster than your savings earn.",
                         "correct": false,
                         "feedback": "Rising prices touch everything you own, so spreading over firms cannot block that."
-                      }
-                    ]
-                  },
-                  {
-                    "stem": "Dev says owning forty firms means he can never see a loss. Is he right?",
-                    "hint": "Think about a shock that touches all forty.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "No, they can all fall together.",
-                        "correct": true,
-                        "feedback": "Right. A spread cuts one-firm risk, but a wide shock can pull all forty down."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Yes, forty is enough to stop losses.",
-                        "correct": false,
-                        "feedback": "No number of firms stops a fall that hits the whole market."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Yes, if each holding is the same size.",
-                        "correct": false,
-                        "feedback": "Equal sizes do not help when all forty fall at the same time."
                       }
                     ]
                   }
@@ -4634,63 +3697,12 @@
                 ]
               },
               {
-                "id": "shares-11",
-                "type": "choose",
-                "conceptId": "shares",
-                "step": "shares-s1",
-                "job": "misconception",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "shares-m1",
-                  "shares-m3"
-                ],
-                "sourceRefs": [
-                  "shares"
-                ],
-                "stem": "Which of these makes you a part owner of a company?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Holding its shares.",
-                    "correct": true,
-                    "feedback": "A share is a piece of the company, so holding shares makes you a part owner.",
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Lending it money for a fixed return.",
-                    "correct": false,
-                    "feedback": "A lender gets paid back but owns nothing. Owning comes from shares.",
-                    "misconceptionIds": [
-                      "shares-m1"
-                    ],
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Buying its products often.",
-                    "correct": false,
-                    "feedback": "Customers pay for goods but get no piece of the company, however much they buy.",
-                    "misconceptionIds": [
-                      "shares-m3"
-                    ],
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "shares-12",
                 "type": "fill-the-step",
                 "conceptId": "shares",
                 "step": "shares-s2",
                 "job": "edge",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "shares"
@@ -4825,53 +3837,6 @@
                 ]
               },
               {
-                "id": "shares-14",
-                "type": "why",
-                "conceptId": "shares",
-                "step": "shares-s2",
-                "job": "misconception",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "shares-m3"
-                ],
-                "sourceRefs": [
-                  "shares"
-                ],
-                "stem": "Why does a shareholder get a vote, while a shop customer does not?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "The shareholder is a part owner.",
-                    "correct": true,
-                    "feedback": "Votes go to owners. A share is a piece of owning the company.",
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The shareholder spent more money at the firm.",
-                    "correct": false,
-                    "feedback": "A customer may spend more than a small shareholder. Owning, not spending, brings the vote.",
-                    "misconceptionIds": [
-                      "shares-m3"
-                    ],
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Customers do not care about the firm.",
-                    "correct": false,
-                    "feedback": "Caring is not the test. Only owners get a vote at the general meeting.",
-                    "sourceRefs": [
-                      "shares"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "shares-15",
                 "type": "scenario",
                 "conceptId": "shares",
@@ -4927,7 +3892,7 @@
                 "conceptId": "shares",
                 "step": "shares-s3",
                 "job": "recall",
-                "difficultySeed": 2,
+                "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "shares"
@@ -5040,19 +4005,11 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "shares-11",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "shares-12",
                   "verdict": "supported"
                 },
                 {
                   "claimId": "shares-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "shares-14",
                   "verdict": "supported"
                 },
                 {
@@ -5141,30 +4098,6 @@
                         "feedback": "They hold different numbers of shares, so their pieces are different sizes."
                       }
                     ]
-                  },
-                  {
-                    "stem": "A firm has 1,000 shares and you buy 10. What part do you own?",
-                    "hint": "Set your count over the full total.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "1%.",
-                        "correct": true,
-                        "feedback": "Right. 10 divided by 1,000 is 0.01, which is 1% of the firm."
-                      },
-                      {
-                        "id": "b",
-                        "text": "10%.",
-                        "correct": false,
-                        "feedback": "That would need 100 of the 1,000 shares. Ten shares is 1%."
-                      },
-                      {
-                        "id": "c",
-                        "text": "0.1%.",
-                        "correct": false,
-                        "feedback": "That would be just one share. Ten shares out of 1,000 is 1%."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Each share is a slice; more shares means a bigger slice."
@@ -5251,30 +4184,6 @@
                         "feedback": "Only owners vote. A customer buys products but owns no part of the firm."
                       }
                     ]
-                  },
-                  {
-                    "stem": "Where do owners of shares get to vote?",
-                    "hint": "Look back at the card for the name.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "At the general meeting.",
-                        "correct": true,
-                        "feedback": "Right. The general meeting is where shareholders vote on important decisions."
-                      },
-                      {
-                        "id": "b",
-                        "text": "At a staff meeting.",
-                        "correct": false,
-                        "feedback": "Staff meetings are for workers. Shareholders vote at the general meeting."
-                      },
-                      {
-                        "id": "c",
-                        "text": "At the board's private office.",
-                        "correct": false,
-                        "feedback": "Owners do not vote in a private office. Their vote happens at the general meeting."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Shareholders are owners, so they get a vote on big decisions."
@@ -5330,30 +4239,6 @@
                   "feedback": "Last year's payout set no rule. The company chose to keep this year's profit."
                 },
                 "guided": [
-                  {
-                    "stem": "A company paid ₹5 a share last year. What will it pay this year?",
-                    "hint": "Ask who sets this year's payout.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "No one can be sure.",
-                        "correct": true,
-                        "feedback": "Right. The amount and timing of a dividend are never promised."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹5 again, for sure.",
-                        "correct": false,
-                        "feedback": "A past payout is not a promise. The company can change it or skip it."
-                      },
-                      {
-                        "id": "c",
-                        "text": "At least ₹5.",
-                        "correct": false,
-                        "feedback": "There is no floor. The company can pay less, or nothing at all."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Last year a firm paid ₹3 a share. This year it made a loss. What can you count on?",
                     "hint": "Think about who makes the call each year.",
@@ -5486,56 +4371,12 @@
                 ]
               },
               {
-                "id": "emergency-fund-10",
-                "type": "fill-the-step",
-                "conceptId": "emergency-fund",
-                "step": "emergency-fund-s1",
-                "job": "misconception",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "emergency-fund-m2"
-                ],
-                "sourceRefs": [
-                  "rbi-emergency"
-                ],
-                "stem": "Using the fund for a phone upgrade you have wanted for months is a mistake, because the upgrade ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "was planned, not a surprise",
-                    "correct": true,
-                    "feedback": "Yes. Something wanted for months is a goal to save for, not a sudden need.",
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "costs too little to matter",
-                    "correct": false,
-                    "feedback": "The cost is not the issue. The fund is kept for sudden needs, and this one was planned.",
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "must be paid in cash",
-                    "correct": false,
-                    "feedback": "How you pay does not matter here. The upgrade was planned, so it is not a surprise.",
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "emergency-fund-11",
                 "type": "match",
                 "conceptId": "emergency-fund",
                 "step": "emergency-fund-s1",
                 "job": "transfer",
-                "difficultySeed": 2,
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "emergency-fund-m2"
                 ],
@@ -5719,53 +4560,6 @@
                 ]
               },
               {
-                "id": "emergency-fund-14",
-                "type": "why",
-                "conceptId": "emergency-fund",
-                "step": "emergency-fund-s2",
-                "job": "misconception",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "emergency-fund-m3"
-                ],
-                "sourceRefs": [
-                  "rbi-emergency"
-                ],
-                "stem": "A friend says ₹1,000 set aside is plenty, since surprises are rare. What is the flaw?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "One surprise can cost far more than that.",
-                    "correct": true,
-                    "feedback": "Right. The fund aims to cover months of costs, since a shock can last longer than a week.",
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The friend is right; surprises are rare.",
-                    "correct": false,
-                    "feedback": "Surprises are not planned, but they do happen. The fund is there so one does not knock you over.",
-                    "misconceptionIds": [
-                      "emergency-fund-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The fund should be kept in coins and notes.",
-                    "correct": false,
-                    "feedback": "Cash at home is not the point. The flaw is that ₹1,000 covers far less than a few months of costs.",
-                    "sourceRefs": [
-                      "rbi-emergency"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "emergency-fund-15",
                 "type": "true-not-quite",
                 "conceptId": "emergency-fund",
@@ -5940,10 +4734,6 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "emergency-fund-10",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "emergency-fund-11",
                   "verdict": "supported"
                 },
@@ -5953,10 +4743,6 @@
                 },
                 {
                   "claimId": "emergency-fund-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "emergency-fund-14",
                   "verdict": "supported"
                 },
                 {
@@ -6032,30 +4818,6 @@
                   "feedback": "Rent is planned. A broken laptop is a surprise, which is what the fund is for."
                 },
                 "guided": [
-                  {
-                    "stem": "Which cost is an emergency fund for?",
-                    "hint": "Look for the one nobody saw coming.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "A sudden scooter repair.",
-                        "correct": true,
-                        "feedback": "Yes. A breakdown comes without warning, which is just what the fund covers."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Diwali gifts planned for months.",
-                        "correct": false,
-                        "feedback": "Gifts planned ahead are a known cost, so they belong in your budget."
-                      },
-                      {
-                        "id": "c",
-                        "text": "The monthly electricity bill.",
-                        "correct": false,
-                        "feedback": "A bill that comes every month is planned spending, not an emergency."
-                      }
-                    ]
-                  },
                   {
                     "stem": "A sudden fever means a clinic bill this week. What helps you pay it without new debt?",
                     "hint": "Think about money kept aside for shocks.",
@@ -6142,30 +4904,6 @@
                 },
                 "guided": [
                   {
-                    "stem": "You spend ₹6,000 a month in the hostel. What is three months of costs?",
-                    "hint": "Multiply the monthly spend by three.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "₹18,000.",
-                        "correct": true,
-                        "feedback": "Yes. ₹6,000 times three months is ₹18,000."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹9,000.",
-                        "correct": false,
-                        "feedback": "That adds ₹3,000 instead of multiplying. Three months is three times ₹6,000."
-                      },
-                      {
-                        "id": "c",
-                        "text": "₹2,000.",
-                        "correct": false,
-                        "feedback": "That divides by three. Three months of ₹6,000 is ₹18,000."
-                      }
-                    ]
-                  },
-                  {
                     "stem": "You cannot save three months of costs right now. What is a good first step?",
                     "hint": "Think about what a little each month adds up to.",
                     "options": [
@@ -6242,30 +4980,6 @@
                   "feedback": "Gold has value, but turning it into cash takes time she may not have."
                 },
                 "guided": [
-                  {
-                    "stem": "Which place keeps an emergency fund easiest to reach?",
-                    "hint": "Think about how fast you can use the money.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "A separate savings account.",
-                        "correct": true,
-                        "feedback": "Yes. You can take money out of a savings account quickly when a surprise comes."
-                      },
-                      {
-                        "id": "b",
-                        "text": "A five-year fixed deposit.",
-                        "correct": false,
-                        "feedback": "A long deposit is meant to stay put. Breaking it early can cost a penalty and take time."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Land in the village.",
-                        "correct": false,
-                        "feedback": "Land must be sold first, which can take months. The fund has to be ready now."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Why keep the fund apart from your everyday account?",
                     "hint": "Think about money that sits right next to what you spend.",
@@ -6443,7 +5157,7 @@
                 "conceptId": "loan-emi",
                 "step": "loan-emi-s1",
                 "job": "edge",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "loan-emi-m2"
                 ],
@@ -6537,7 +5251,7 @@
                 "conceptId": "loan-emi",
                 "step": "loan-emi-s2",
                 "job": "combine",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "rbi-loan"
@@ -6580,53 +5294,6 @@
                 }
               },
               {
-                "id": "loan-emi-13",
-                "type": "why",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s2",
-                "job": "recall",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "loan-emi-m3"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "Why does more of each EMI go to the loan itself as the months pass?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Interest is charged on a shrinking balance.",
-                    "correct": true,
-                    "feedback": "Less is owed each month, so less interest is due, and more of the EMI cuts the loan.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The bank lowers the rate each year to reward you.",
-                    "correct": false,
-                    "feedback": "The rate can stay the same. The balance shrinks, so the interest part falls.",
-                    "misconceptionIds": [
-                      "loan-emi-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The EMI grows over time.",
-                    "correct": false,
-                    "feedback": "The EMI stays fixed. Only the split between interest and loan changes.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "loan-emi-14",
                 "type": "scenario",
                 "conceptId": "loan-emi",
@@ -6667,56 +5334,6 @@
                     "text": "It rises to make up for it.",
                     "correct": false,
                     "feedback": "Interest does not rise because you repaid. A smaller balance means less interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "loan-emi-15",
-                "type": "choose",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s3",
-                "job": "combine",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "loan-emi-m3"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "You get ₹10,000 extra. You can pay part of your loan early or keep paying as before. Which costs less interest in total?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Paying part early.",
-                    "correct": true,
-                    "feedback": "Right. A smaller balance means less interest each month, and the loan can end sooner.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Keeping on as before, since the EMI is fixed.",
-                    "correct": false,
-                    "feedback": "A fixed EMI does not fix the total. Owing less means less interest is charged.",
-                    "misconceptionIds": [
-                      "loan-emi-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Both cost the same, since the rate is the same.",
-                    "correct": false,
-                    "feedback": "The rate is the same, but it works on a smaller balance after you pay early.",
-                    "misconceptionIds": [
-                      "loan-emi-m3"
-                    ],
                     "sourceRefs": [
                       "rbi-loan"
                     ]
@@ -6852,15 +5469,7 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "loan-emi-13",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "loan-emi-14",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-15",
                   "verdict": "supported"
                 },
                 {
@@ -6921,30 +5530,6 @@
                   "feedback": "Only the part left after interest lowers what he owes."
                 },
                 "guided": [
-                  {
-                    "stem": "An EMI is ₹8,000 and this month's interest is ₹3,000. How much cuts the loan?",
-                    "hint": "Take the interest away from the EMI.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "₹5,000.",
-                        "correct": true,
-                        "feedback": "Yes. ₹8,000 minus ₹3,000 of interest leaves ₹5,000 to cut the loan."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹8,000.",
-                        "correct": false,
-                        "feedback": "Not all of it. ₹3,000 goes to interest first, leaving ₹5,000."
-                      },
-                      {
-                        "id": "c",
-                        "text": "₹11,000.",
-                        "correct": false,
-                        "feedback": "That adds the two. The interest comes out of the EMI, leaving ₹5,000."
-                      }
-                    ]
-                  },
                   {
                     "stem": "What does the word 'equated' in EMI tell you?",
                     "hint": "Look inside the word itself.",
@@ -7054,30 +5639,6 @@
                         "feedback": "That is 0.1%. One percent of ₹50,000 is ₹500."
                       }
                     ]
-                  },
-                  {
-                    "stem": "In the RBI example, which EMI has the biggest interest part?",
-                    "hint": "Look for when the most is owed.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The first one.",
-                        "correct": true,
-                        "feedback": "Right. The whole loan is owed at the start, so the first interest part is biggest."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The last one.",
-                        "correct": false,
-                        "feedback": "By the end, little is owed, so the last interest part is tiny."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Each is the same.",
-                        "correct": false,
-                        "feedback": "The EMIs are equal, but the interest inside them falls as the loan shrinks."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Interest follows what you still owe, so it shrinks over time."
@@ -7141,30 +5702,6 @@
                   "feedback": "A long term shrinks the EMI, but interest runs for more months, so the total grows."
                 },
                 "guided": [
-                  {
-                    "stem": "Your bank stretches your loan from 3 years to 5 years. What happens?",
-                    "hint": "Think about each payment, and about the whole cost.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Smaller EMIs, more interest in total.",
-                        "correct": true,
-                        "feedback": "Yes. A longer term lowers each EMI but makes the loan cost more overall."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Bigger EMIs, less interest.",
-                        "correct": false,
-                        "feedback": "It works the other way. A longer term means smaller EMIs and more interest."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Same EMIs, same interest.",
-                        "correct": false,
-                        "feedback": "Changing the term changes both. EMIs fall and total interest rises."
-                      }
-                    ]
-                  },
                   {
                     "stem": "At the same rate, which term gives the least total interest?",
                     "hint": "Count how long interest keeps running.",
@@ -7348,56 +5885,6 @@
                 ]
               },
               {
-                "id": "index-funds-11",
-                "type": "true-not-quite",
-                "conceptId": "index-funds",
-                "step": "index-funds-s1",
-                "job": "edge",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "index-funds-m4"
-                ],
-                "sourceRefs": [
-                  "sebi-index"
-                ],
-                "stem": "An index drops a firm from its list, even though that firm's sales are growing fast. What does the index fund do?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Sells it, since the list decides, not the news.",
-                    "correct": true,
-                    "feedback": "Right. The fund follows its index, so a firm that leaves the list leaves the fund.",
-                    "sourceRefs": [
-                      "sebi-index"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Keeps it, because its sales look good.",
-                    "correct": false,
-                    "feedback": "Judging a firm's news is picking, which an index fund does not do. It follows the list.",
-                    "misconceptionIds": [
-                      "index-funds-m4"
-                    ],
-                    "sourceRefs": [
-                      "sebi-index"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Buys more of it while the price is low.",
-                    "correct": false,
-                    "feedback": "Buying on a hunch is picking. An index fund only holds what is on the list.",
-                    "misconceptionIds": [
-                      "index-funds-m4"
-                    ],
-                    "sourceRefs": [
-                      "sebi-index"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "index-funds-12",
                 "type": "estimate",
                 "conceptId": "index-funds",
@@ -7500,110 +5987,6 @@
                       "sebi-index",
                       "cafemutual-spiva"
                     ]
-                  }
-                ]
-              },
-              {
-                "id": "index-funds-14",
-                "type": "match",
-                "conceptId": "index-funds",
-                "step": "index-funds-s2",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "index-funds-m4"
-                ],
-                "sourceRefs": [
-                  "sebi-index",
-                  "expense-ratio"
-                ],
-                "stem": "Match each term to what it means.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Index fund",
-                    "correct": true,
-                    "feedback": "This fund copies a list of firms, so it needs little trading or research.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Copies a list, low yearly charge",
-                    "correct": true,
-                    "feedback": "Little picking and trading keeps the yearly charge down.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Active fund",
-                    "correct": true,
-                    "feedback": "Here a paid manager chooses which shares to buy and when to sell.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "Manager chooses shares, higher charge",
-                    "correct": true,
-                    "feedback": "Paying for research and more trading pushes the yearly charge up.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  },
-                  {
-                    "id": "e",
-                    "text": "Expense ratio",
-                    "correct": true,
-                    "feedback": "This is the yearly fee, counted as a percent of the money in the fund.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  },
-                  {
-                    "id": "f",
-                    "text": "Yearly cost as a percent of your money",
-                    "correct": true,
-                    "feedback": "This is what the expense ratio measures, taken from the fund each year.",
-                    "sourceRefs": [
-                      "sebi-index",
-                      "expense-ratio"
-                    ]
-                  }
-                ],
-                "answer": [
-                  {
-                    "left": "a",
-                    "right": "b"
-                  },
-                  {
-                    "left": "b",
-                    "right": "a"
-                  },
-                  {
-                    "left": "c",
-                    "right": "d"
-                  },
-                  {
-                    "left": "d",
-                    "right": "c"
-                  },
-                  {
-                    "left": "e",
-                    "right": "f"
-                  },
-                  {
-                    "left": "f",
-                    "right": "e"
                   }
                 ]
               },
@@ -7824,19 +6207,11 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "index-funds-11",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "index-funds-12",
                   "verdict": "supported"
                 },
                 {
                   "claimId": "index-funds-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "index-funds-14",
                   "verdict": "supported"
                 },
                 {
@@ -7923,30 +6298,6 @@
                         "text": "Sells its other shares.",
                         "correct": false,
                         "feedback": "One new member does not change the rest. The fund just adds it."
-                      }
-                    ]
-                  },
-                  {
-                    "stem": "An index gives Firm A twice the proportion of Firm B. In the fund, how does A compare with B?",
-                    "hint": "Copy what the list does.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Twice as much A as B.",
-                        "correct": true,
-                        "feedback": "Right. The fund holds each firm in the same proportion as the index."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Equal amounts of each.",
-                        "correct": false,
-                        "feedback": "The fund copies the index's weights, so A gets twice as much."
-                      },
-                      {
-                        "id": "c",
-                        "text": "More B than A.",
-                        "correct": false,
-                        "feedback": "That flips the index's mix. The fund keeps A at twice B."
                       }
                     ]
                   }
@@ -8039,30 +6390,6 @@
                         "feedback": "They follow the same index, but X's bigger fee leaves less behind."
                       }
                     ]
-                  },
-                  {
-                    "stem": "What is an expense ratio?",
-                    "hint": "Think about when and why it is charged.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The share of a fund's money taken each year for costs.",
-                        "correct": true,
-                        "feedback": "Right. It is a yearly percent of the fund used to pay its running costs."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The return the fund promises.",
-                        "correct": false,
-                        "feedback": "No fund promises a return. The expense ratio is a cost, not a gain."
-                      },
-                      {
-                        "id": "c",
-                        "text": "A one-time joining fee.",
-                        "correct": false,
-                        "feedback": "It is not paid once. It is taken every year from the fund's money."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "No stock picking keeps index fund fees low."
@@ -8148,30 +6475,6 @@
                         "feedback": "No manager steps in. The fund simply follows the index down."
                       }
                     ]
-                  },
-                  {
-                    "stem": "An index rose 12% and its fund rose 11.7%. What is the 0.3% gap called?",
-                    "hint": "It is the gap between fund and index.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Tracking error.",
-                        "correct": true,
-                        "feedback": "Right. Tracking error is the slight gap left by expenses and running costs."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Expense ratio.",
-                        "correct": false,
-                        "feedback": "The expense ratio is the fee itself. The gap it leaves between fund and index is tracking error."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Index weight.",
-                        "correct": false,
-                        "feedback": "Weights set the fund's mix. The return gap has its own name: tracking error."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "An index fund matches its index, up and down, minus a small gap."
@@ -8236,59 +6539,6 @@
               }
             ],
             "items": [
-              {
-                "id": "upi-scams-9",
-                "type": "why",
-                "conceptId": "upi-scams",
-                "step": "upi-scams-s1",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "upi-scams-m2",
-                  "upi-scams-m1"
-                ],
-                "sourceRefs": [
-                  "npci-fraud",
-                  "rbi-fraud"
-                ],
-                "stem": "A message with a bank logo says 'Enter your UPI PIN to receive your refund.' Why is it a trick, however real it looks?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A PIN only sends money, so it would pay out, not in.",
-                    "correct": true,
-                    "feedback": "Right. Receiving needs no PIN, so a request for one to get paid is a payment in disguise.",
-                    "sourceRefs": [
-                      "npci-fraud",
-                      "rbi-fraud"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Refunds come by cheque, not UPI.",
-                    "correct": false,
-                    "feedback": "Refunds can come by UPI. The point is that getting money never needs your PIN.",
-                    "misconceptionIds": [
-                      "upi-scams-m1"
-                    ],
-                    "sourceRefs": [
-                      "rbi-fraud"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Real banks do not put their logos on refund messages.",
-                    "correct": false,
-                    "feedback": "Real banks use logos too. A neat logo can still sit on a false story.",
-                    "misconceptionIds": [
-                      "upi-scams-m2"
-                    ],
-                    "sourceRefs": [
-                      "rbi-fraud"
-                    ]
-                  }
-                ]
-              },
               {
                 "id": "upi-scams-10",
                 "type": "match",
@@ -8545,56 +6795,6 @@
                 ]
               },
               {
-                "id": "upi-scams-14",
-                "type": "true-not-quite",
-                "conceptId": "upi-scams",
-                "step": "upi-scams-s2",
-                "job": "misconception",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "upi-scams-m3"
-                ],
-                "sourceRefs": [
-                  "rbi-fraud"
-                ],
-                "stem": "Sam says real bank staff are allowed to ask for his UPI PIN. What is wrong?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "No one needs his PIN, not even real bank staff.",
-                    "correct": true,
-                    "feedback": "Right. A PIN is never shared, with anyone, however genuine the caller sounds.",
-                    "sourceRefs": [
-                      "rbi-fraud"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Bank staff may ask, but just on weekdays.",
-                    "correct": false,
-                    "feedback": "The day does not matter. No one at a bank ever needs his PIN.",
-                    "misconceptionIds": [
-                      "upi-scams-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-fraud"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "He is right; staff need it to fix accounts.",
-                    "correct": false,
-                    "feedback": "Banks can fix accounts without his PIN. Anyone asking for it is a warning sign.",
-                    "misconceptionIds": [
-                      "upi-scams-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-fraud"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "upi-scams-15",
                 "type": "scenario",
                 "conceptId": "upi-scams",
@@ -8648,7 +6848,7 @@
                 "conceptId": "upi-scams",
                 "step": "upi-scams-s3",
                 "job": "edge",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "rbi-fraud",
@@ -8788,10 +6988,6 @@
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "upi-scams-9",
-                  "verdict": "supported"
-                },
-                {
                   "claimId": "upi-scams-10",
                   "verdict": "supported"
                 },
@@ -8805,10 +7001,6 @@
                 },
                 {
                   "claimId": "upi-scams-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "upi-scams-14",
                   "verdict": "supported"
                 },
                 {
@@ -8906,30 +7098,6 @@
                         "feedback": "No OTP is needed to receive money. Never share one with anyone."
                       }
                     ]
-                  },
-                  {
-                    "stem": "A message says 'Scan to claim your ₹1,000 prize.' What does the scan really start?",
-                    "hint": "Receiving never needs a scan.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "A payment from you.",
-                        "correct": true,
-                        "feedback": "Right. Scanning a QR code starts a payment, so the prize story is a trick."
-                      },
-                      {
-                        "id": "b",
-                        "text": "A deposit to you.",
-                        "correct": false,
-                        "feedback": "Money coming in needs no scan. The scan sets up a payment out."
-                      },
-                      {
-                        "id": "c",
-                        "text": "A check of your balance.",
-                        "correct": false,
-                        "feedback": "A QR scan does not check balances. It starts a payment."
-                      }
-                    ]
                   }
                 ],
                 "takeaway": "Your PIN approves payments. Receiving money never needs it."
@@ -8994,30 +7162,6 @@
                   "feedback": "Sharing an OTP hands over the key to his account, so it is never shared, even with bank staff."
                 },
                 "guided": [
-                  {
-                    "stem": "Who is allowed to know your UPI PIN?",
-                    "hint": "Think about who approves your payments.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Only you.",
-                        "correct": true,
-                        "feedback": "Yes. No bank worker or helpline ever needs your PIN."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Your bank's staff.",
-                        "correct": false,
-                        "feedback": "Not even real bank officials should get your PIN."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Customer care.",
-                        "correct": false,
-                        "feedback": "Real or fake, customer care has no need for your PIN."
-                      }
-                    ]
-                  },
                   {
                     "stem": "A caller asks you to install a screen-sharing app to 'fix' your refund. What is the safe move?",
                     "hint": "Think about what he could watch on your phone.",
@@ -9096,30 +7240,6 @@
                   "feedback": "Telling the bank fast and blocking UPI can stop more money leaving, before she reports it."
                 },
                 "guided": [
-                  {
-                    "stem": "After telling your bank, where else can you report money taken by fraud?",
-                    "hint": "Think of the national number in the card.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The 1930 helpline or cybercrime.gov.in.",
-                        "correct": true,
-                        "feedback": "Yes. That is the national cyber crime helpline and its website."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The scammer's number, to ask for it back.",
-                        "correct": false,
-                        "feedback": "Calling the scammer only gives him another chance. Report to 1930 instead."
-                      },
-                      {
-                        "id": "c",
-                        "text": "No one; it is too late now.",
-                        "correct": false,
-                        "feedback": "It is not too late. Reporting fast gives the best chance to stop the money."
-                      }
-                    ]
-                  },
                   {
                     "stem": "Your friend was tricked last month and feels too ashamed to report it. What helps most?",
                     "hint": "Think about who the real wrongdoer is.",

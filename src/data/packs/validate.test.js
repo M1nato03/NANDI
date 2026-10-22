@@ -96,13 +96,13 @@ describe('topic editorial rules', () => {
     expect(validatePack(body, { editorial: true }).filter(error => !fresh.has(error))).toEqual([]);
   });
   it('requires a difficulty ladder and concept-based estimates', () => {
-    badTopic((concepts) => { concepts[0].items[3].difficultySeed = 2; }, 'needs at least 2 level-1 items');
-    badTopic((concepts) => { concepts[0].items[4].difficultySeed = 2; }, 'needs at least 2 level-3 items');
+    badTopic((concepts) => { concepts[0].items.find(item => item.difficultySeed === 1).difficultySeed = 2; }, 'needs at least 2 level-1 items');
+    badTopic((concepts) => { concepts[0].items.find(item => item.difficultySeed === 3).difficultySeed = 2; }, 'needs at least 2 level-3 items');
     badTopic((concepts) => { concepts[0].items[2].stem = 'A snack costs ₹20, then ₹25. With ₹100, how many fit?'; }, 'estimate must name its concept or mechanism');
   });
   it('requires 6 to 8 items (spec 16 §5), one estimate and two Indian scenes', () => {
     badTopic((concepts) => { concepts[0].items.splice(-3); }, 'needs 6 to 8 items');
-    badTopic((concepts) => { concepts[0].items.push(structuredClone(concepts[0].items[0])); concepts[0].items.at(-1).id += 'x'; }, 'needs 6 to 8 items');
+    badTopic((concepts) => { for (let n = 0; concepts[0].items.length < 9; n += 1) { concepts[0].items.push(structuredClone(concepts[0].items[n])); concepts[0].items.at(-1).id += 'x'; } }, 'needs 6 to 8 items');
     badTopic((concepts) => { const item = concepts[0].items[2]; item.type = 'choose'; delete item.answer; }, 'needs an estimate item');
     badTopic((concepts) => { concepts[0].items[0].stem = 'A plain case with no place. What follows?'; concepts[0].items[1].stem = 'Another plain case with no place. What follows?'; }, 'needs 2 Indian student scenarios or predictions');
   });

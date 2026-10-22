@@ -105,7 +105,8 @@ describe('lesson option order', () => {
     const steps = catalogFor(['psychology']).flatMap(concept => concept.steps ?? []);
     const questions = steps.flatMap(step => [{ seed: `${step.id}:hook`, options: step.hook.options }, ...step.guided.map((guided, index) => ({ seed: `${step.id}:${index}`, options: guided.options }))]);
     const firstRight = questions.filter(question => shuffled(question.options, question.seed)[0]!.correct).length;
-    expect(questions.length).toBeGreaterThan(60);
+    // Spec 16 §5: one hook and one guided try per step (30 steps).
+    expect(questions.length).toBeGreaterThanOrEqual(60);
     expect(firstRight / questions.length).toBeLessThan(0.5);
   });
 });
