@@ -288,8 +288,25 @@ function replayEconomy(
   for (const fact of ordered) byDay.set(fact.dayKey, [...(byDay.get(fact.dayKey) ?? []), fact]);
   // Economy fixes of 22 Oct apply from the day this build first ran, so earlier days keep the XP they showed.
   const v2Stored = value(settings, 'economy.v2From');
-  const v2From = typeof v2Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v2Stored) ? v2Stored : '0000-00-00';
+  // A missing cutoff means the old rules: reconcile writes it on first run and a restore keeps this phone's.
+  const v2From = typeof v2Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v2Stored) ? v2Stored : '9999-12-31';
   const v2 = (key: string) => key >= v2From;
+  // The 23 Oct fixes (economy review 32) count from the day this build first runs, so earlier days keep what they showed.
+  const v3Stored = value(settings, 'economy.v3From');
+  const v3From = typeof v3Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v3Stored) ? v3Stored : '9999-12-31';
+  const v3 = (key: string) => key >= v3From;
+  // Only the shop of this build marks a purchase paid, so an older build's sale on the upgrade day still counts (Codex #2).
+  const paidOnly = (key: string) => key > v3From;
+  // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
+  const restWeekdayFor = (key: string): number | undefined => {
+    const week = weekStart(key);
+    const own = value(settings, `economy.restWeekday:${week}`);
+    if (typeof own === 'number') return own;
+    const standing = value(settings, 'economy.restWeekday');
+    if (typeof standing === 'number') return standing;
+    const pick = standing && typeof standing === 'object' ? standing as { weekday?: unknown; from?: unknown } : undefined;
+    return pick && typeof pick.weekday === 'number' && typeof pick.from === 'string' && week >= pick.from ? pick.weekday : undefined;
+  };
   const visibleFrom = value(settings, 'economyVisibleFrom');
   const firstDay = typeof visibleFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(visibleFrom) && !Number.isNaN(Date.parse(`${visibleFrom}T12:00:00Z`)) && new Date(`${visibleFrom}T12:00:00Z`).toISOString().slice(0, 10) === visibleFrom && visibleFrom <= today ? visibleFrom : today;
   const start = ordered[0]?.dayKey && ordered[0].dayKey < firstDay ? ordered[0].dayKey : firstDay;
@@ -300,9 +317,11 @@ function replayEconomy(
     const tasks = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
     const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => replayFactXp(row, history));
     const bestSession = Math.max(0, ...sessions);
-    const rest = bestSession ? 0 : Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
+    const restXp = Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
+    const rest = bestSession ? 0 : restXp;
     const prs = rows.filter(row => row.mode === 'train' && row.kind === 'pr').slice(0, rules.train.prMaxPerDay).reduce((sum, row) => sum + replayFactXp(row, history), 0);
-    const train = Math.min(rules.train.dailyCapExclWeekly, bestSession + rest + prs);
+    // A short session after a walk check keeps the better of the two, never less (economy review 32, A1).
+    const train = Math.min(rules.train.dailyCapExclWeekly, (v3(key) ? Math.max(bestSession, restXp) : bestSession + rest) + prs);
     const weekly = rows.filter(row => row.mode === 'train' && row.kind === 'weekly').reduce((sum, row) => sum + replayFactXp(row, history), 0);
     const mindRows = rows.filter(row => row.mode === 'mind' && beforeBed(row));
     const paid = new Set<string>();
@@ -359,7 +378,7 @@ function replayEconomy(
   }
   // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days
   // are not misses, so walk back over them: a gap that is only the rest day gets nothing, a longer one does.
-  const isRestDay = (key: string) => (value(settings, `economy.restWeekday:${weekStart(key)}`) ?? value(settings, 'economy.restWeekday')) === new Date(atUtc(key)).getUTCDay();
+  const isRestDay = (key: string) => restWeekdayFor(key) === new Date(atUtc(key)).getUTCDay();
   let everMarked = false;
   for (let i = 0; i < days.length; i++) {
     const day = days[i]!;
@@ -420,41 +439,42 @@ function replayEconomy(
   const nextSeason = seasonFor(addEconomyDays(current.end, 1));
   const nextSeed = Math.min(sp, targetFor(nextSeason)) * RULES.season.seedPct / 100;
   let restDays = 0, restDaysUsed = 0, restUsedYesterday = false, streakDays = 0, paused = false, restored = false, gold = false;
-  let breakAt = -1, repair = 0, markedDays = 0;
+  let breakAt = -1, repair = 0, markedDays = 0, restShift = 0;
   const streakBy: { streak: number; paused: boolean }[] = [];
   for (let i = 0; i < days.length; i++) {
     const day = days[i]!;
     if (i === 0 || day.dayKey.slice(0, 7) !== days[i - 1]!.dayKey.slice(0, 7))
       restDays = Math.min(RULES.streak.restBankMax, restDays + RULES.streak.restBankMonthly);
     const weekday = new Date(atUtc(day.dayKey)).getUTCDay();
-    const restWeekday = value(settings, `economy.restWeekday:${weekStart(day.dayKey)}`) ?? value(settings, 'economy.restWeekday');
+    const restWeekday = restWeekdayFor(day.dayKey);
     const isRest = typeof restWeekday === 'number' && restWeekday === weekday;
-    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && num(row.inputs.price) > 0).length ?? 0;
+    // A2: from the 23 Oct fixes only a paid (accepted) rest-day purchase adds to the bank.
+    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && num(row.inputs.price) > 0 && (!paidOnly(day.dayKey) || row.inputs.accepted === true)).length ?? 0;
     restDays = Math.min(RULES.streak.restBankMax, restDays + purchases);
     if (day.mark) {
-      if (paused && breakAt >= 0 && i - breakAt <= 2) {
+      if (paused && breakAt >= 0 && i - breakAt - restShift <= 2) {
         if (day.hatTrick) repair++;
         // The missed day is held, not counted: only the repair days themselves add to the streak (audit 16.11).
-        if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt + (v2(day.dayKey) ? 0 : 1); if (v2(day.dayKey)) markedDays = i - breakAt; repair = 0; breakAt = -1; }
+        if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt + (v2(day.dayKey) ? 0 : 1); if (v2(day.dayKey)) markedDays = i - breakAt - restShift; repair = 0; breakAt = -1; restShift = 0; }
       } else if (paused) {
         // The 48 h earn-back window has passed: a marked day starts a fresh streak.
-        paused = false; restored = false; streakDays = 1; markedDays = 1; repair = 0; breakAt = -1;
+        paused = false; restored = false; streakDays = 1; markedDays = 1; repair = 0; breakAt = -1; restShift = 0;
       } else {
         streakDays++; markedDays++;
         if (markedDays >= RULES.streak.goldAfterDays) gold = true;
       }
-    } else if (isRest) { if (!paused) streakDays++; }
+    } else if (isRest) { if (!paused) streakDays++; else if (breakAt >= 0 && v3(day.dayKey)) restShift++; }  // B4: a rest day does not use up the 48 h repair window
     else if (i < days.length - 1) {
       if (!paused && restDays > 0) { restDays--; restDaysUsed++; restUsedYesterday = i === days.length - 2; markedDays = 0; gold = false; }
       // A break resets the Gold count like a spent rest day does, so Gold needs a fresh run (audit 16.12).
-      else if (!paused) { paused = true; breakAt = i; repair = 0; gold = false; if (v2(day.dayKey)) markedDays = 0; }
-      else if (breakAt >= 0 && i - breakAt > 2) { streakDays = 0; breakAt = -1; repair = 0; }
+      else if (!paused) { paused = true; breakAt = i; repair = 0; restShift = 0; gold = false; if (v2(day.dayKey)) markedDays = 0; }
+      else if (breakAt >= 0 && i - breakAt - restShift > 2) { streakDays = 0; breakAt = -1; repair = 0; restShift = 0; }
     }
     // A finished day never shows a shorter streak than it once closed with: the run picks up from there, and
     // only a miss after that day can pause it. A close taken while paused keeps the pause.
     const close = closes.get(day.dayKey);
     if (close && close.streak >= streakDays) {
-      if (!close.paused && (paused || close.streak > streakDays)) { streakDays = close.streak; paused = false; breakAt = -1; repair = 0; }
+      if (!close.paused && (paused || close.streak > streakDays)) { streakDays = close.streak; paused = false; breakAt = -1; repair = 0; restShift = 0; }
       else if (close.paused && paused) streakDays = close.streak;
     }
     streakBy.push({ streak: streakDays, paused });
@@ -474,6 +494,7 @@ function replayEconomy(
   for (let seasonStart = '2026-11-02'; seasonStart < current.start; seasonStart = addEconomyDays(seasonFor(seasonStart).end, 1)) {
     const season = seasonFor(seasonStart);
     if (season.end >= today) break;
+    if (season.end < start && start >= v3From) continue;
     const finalRank = rankFor(seasonSp(season) + seedFor(season), targetFor(season));
     const awardRules = rulesFor(season.end, history)?.rules ?? RULES;
     const amount = awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
@@ -495,7 +516,7 @@ function replayEconomy(
     // apply it later (49 -> 0).
     // A purchase keeps the price it was bought at: a later change to the price table never makes an owned item
     // free, or drops it while a close still keeps it owned (second opinion 28).
-    if (typeof id !== 'string' || purchasePrices[id] === undefined || !(price > 0) || (row.inputs.accepted !== true && !v2(row.dayKey) && price > balance)) continue;
+    if (typeof id !== 'string' || purchasePrices[id] === undefined || !(price > 0) || (row.inputs.accepted !== true && (paidOnly(row.dayKey) || (!v2(row.dayKey) && price > balance)))) continue;
     if (id !== 'freeze' && owned.includes(id)) continue;
     balance -= price; if (id !== 'freeze') owned.push(id);
     accepted.push({ id: row.id, itemId: id, price, dayKey: row.dayKey });
@@ -518,5 +539,5 @@ function replayEconomy(
     }
     daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: Math.max(0, earned - spentSoFar), owned: [...ownedSoFar], purchases: ofDay });
   }
-  return { daily, accepted, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 - (days.length - 1) + 1 >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
+  return { daily, accepted, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 + restShift - (days.length - 1) + 1 - (days.at(-1)?.hatTrick ? 1 : 0) >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
 }

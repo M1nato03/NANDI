@@ -13,7 +13,7 @@ export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.n
     if (!result.ok || !result.item) return { ok: false, reason: result.reason };
     const refId = `${itemId}:${now}`, id = `purchase:${refId}`;
     await db.ledger.add({ id, mode: 'economy', kind: 'purchase', refId, dayKey: day,
-      inputs: { itemId, price: result.item.price }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { itemId, price: result.item.price, accepted: true }, updatedAt: now, deleted: 0, deviceId });
     if (result.item.kind === 'theme' || result.item.kind === 'banner' || result.item.kind === 'cardBack' || result.item.kind === 'soundPack') {
       const key = `economy.${result.item.kind}`;
       await db.settings.put({ key, value: itemId, updatedAt: now, deleted: 0, deviceId });

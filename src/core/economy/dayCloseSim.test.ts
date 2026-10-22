@@ -32,9 +32,9 @@ function today(facts: LedgerRow[], day: string) {
   if (rand() < 0.5) facts.push(row(day, 'train', 'session', { plannedExercises: 2, touchedExercises: 2, plannedSets: 6, workingSets: 6 }));
   if (rand() < 0.5) facts.push(row(day, 'mind', 'board', { daily: true }));
   for (let tier = 0; tier < 3; tier++) if (rand() < 0.5) facts.push(row(day, 'gamify', 'badge-tier'));
-  if (rand() < 0.25) { const [itemId, price] = shop[Math.floor(rand() * shop.length)]!; facts.push(row(day, 'economy', 'purchase', { itemId, price })); }
+  if (rand() < 0.25) { const [itemId, price] = shop[Math.floor(rand() * shop.length)]!; facts.push(row(day, 'economy', 'purchase', { itemId, price, accepted: true })); }
   // A sync brings a late purchase or a late after-bedtime answer for an earlier day.
-  if (rand() < 0.12) facts.push(row(addEconomyDays(day, -1 - Math.floor(rand() * 3)), 'economy', 'purchase', { itemId: 'freeze', price: 50 }));
+  if (rand() < 0.12) facts.push(row(addEconomyDays(day, -1 - Math.floor(rand() * 3)), 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true }));
   if (rand() < 0.1) facts.push(row(addEconomyDays(day, -2), 'mind', 'learn-answer', { afterBedtime: true }));
 }
 const snapshot = (facts: LedgerRow[], rows: SettingRow[], day: string) => {
@@ -88,9 +88,9 @@ describe('day close v3, seeded simulation', () => {
     for (let d = 0; d < 20; d++) { today(facts, day); day = addEconomyDays(day, 1); rows = open(facts, rows, day); }
     const before = snapshot(facts, rows, day);
     // 130 days away; a late purchase from the first weeks syncs in while away.
-    facts.push(row('2026-11-05', 'economy', 'purchase', { itemId: 'banner:sky', price: 150 }));
+    facts.push(row('2026-11-05', 'economy', 'purchase', { itemId: 'banner:sky', price: 150, accepted: true }));
     // And one dated inside the skipped part of the gap (never closed, older than 120 days).
-    facts.push(row('2026-12-15', 'economy', 'purchase', { itemId: 'theme:linen', price: 400 }));
+    facts.push(row('2026-12-15', 'economy', 'purchase', { itemId: 'theme:linen', price: 400, accepted: true }));
     day = addEconomyDays(day, 130);
     rows = open(facts, rows, day);
     const after = snapshot(facts, rows, day);

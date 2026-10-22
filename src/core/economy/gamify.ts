@@ -4,7 +4,8 @@ import { isPlannedDone } from './planned';
 import { weekStart } from './deriveEconomy';
 
 export type Quest = { id: string; title: string; target: number; count: (facts: readonly LedgerRow[], day: string) => number };
-const matching = (facts: readonly LedgerRow[], day: string, mode: string, kind: string) => facts.filter(f => !f.deleted && f.dayKey === day && f.mode === mode && f.kind === kind);
+// Mind done after bedtime earns no XP, so it fills no quest either, nor does a drop finished after bedtime (economy review 32, C10).
+const matching = (facts: readonly LedgerRow[], day: string, mode: string, kind: string) => facts.filter(f => !f.deleted && f.dayKey === day && f.mode === mode && f.kind === kind && !((mode === 'mind' || mode === 'gamify') && f.inputs.afterBedtime === true));
 const count = (mode: string, kind: string): Quest['count'] => (facts, day) => matching(facts, day, mode, kind).length;
 export function longestCombo(facts: readonly LedgerRow[], dropId: string): number {
   let run = 0, best = 0;

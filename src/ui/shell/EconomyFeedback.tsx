@@ -84,12 +84,14 @@ export function EconomyFeedback() {
       const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
       if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {
         const past = deriveEconomy(source.facts, undefined, source.settings, addEconomyDays(season.start, -1));
+        // A season that ended before the first day here is not this person's: no reveal (season late entry).
+        if (!source.facts.some(row => !row.deleted && row.dayKey < season.start)) { store.set(localStorage, key, 'seen'); return; }
         const countKey = `economy.macro:${today}`;
         const count = Number(store.get(sessionStorage, countKey) ?? 0);
         if (count < RULES.juice.macroPerDayMax) {
           store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
           queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Mor',
-            detail: `${past.season.sp} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
+            detail: `${Math.round(past.season.sp)} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
             nextSeason: `Next season · Season ${season.index + 1}` }));
         }
       }
@@ -121,6 +123,8 @@ export function EconomyFeedback() {
     const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
     const afterBedtime = now >= shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
     const motionReduced = reduced();
+    // After bedtime nothing celebrates: no buzz, no count-up (economy review 32, F1).
+    if (afterBedtime) return;
     const realWorld = achievement?.mode === 'tasks' || achievement?.mode === 'train';
     const macroKind = view.level > oldView.level ? `Level ${view.level}` : view.season.rank < oldView.season.rank && view.season.tier !== oldView.season.tier ? `${view.season.tier} tier` : '';
     const key = `economy.macro:${today}`;
@@ -154,10 +158,13 @@ export function EconomyFeedback() {
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
+    // With Motion off the render shows the full number at once, so there is nothing to count.
+    if (reduced()) return;
     const start = performance.now(), duration = RULES.juice.mesoMs[1];
     let frame = 0;
     const tick = (now: number) => {
-      setShownXp(Math.round(notice.gain! * Math.min(1, (now - start) / duration)));
+      // A frame's timestamp can come from just before `start`, so the count never shows below zero.
+      setShownXp(Math.round(notice.gain! * Math.max(0, Math.min(1, (now - start) / duration))));
       if (now - start < duration) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -175,5 +182,5 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

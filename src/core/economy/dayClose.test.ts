@@ -115,7 +115,7 @@ describe('closing the books (economy second opinion 22)', () => {
     const earned = [task(day), full(day), ...answers, row(day, 'gamify', 'perfect-drop'),
       row(day, 'gamify', 'daily-quest'), row(day, 'gamify', 'daily-quest'), ...Array.from({ length: 10 }, () => row(day, 'gamify', 'badge-tier'))];
     const balance = deriveEconomy(earned, undefined, v2, day).shards;
-    const purchase = row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 100 });
+    const purchase = row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 100, accepted: true });
     expect(balance).toBeGreaterThanOrEqual(100);
     const facts = [...earned, purchase];
     // A late answer revokes the perfect drop, so the replayed balance may now be short of the price: still bought.
@@ -143,7 +143,7 @@ describe('closing the books (economy second opinion 22)', () => {
     const earned = [task(day), full(day), ...Array.from({ length: 30 }, () => row(day, 'gamify', 'badge-tier'))];
     const settings = closeDays(earned, v2, day, today);
     const before = deriveEconomy(earned, undefined, settings, today).shards;
-    const late = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 100 })];
+    const late = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 100, accepted: true })];
     const view = deriveEconomy(late, undefined, settings, today);
     expect(view.owned).toContain('banner:dawn');
     expect(view.shards).toBe(before - 100);
@@ -154,7 +154,7 @@ describe('closing the books (economy second opinion 22)', () => {
     const earned = [task(day), full(day), ...Array.from({ length: 30 }, () => row(day, 'gamify', 'badge-tier'))];
     const before = deriveEconomy(earned, undefined, v2, today).shards;
     // Bought for 80 under an older price table; today's table says 100 (second opinion 28: never free, never lost).
-    const facts = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 80 })];
+    const facts = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 80, accepted: true })];
     const settings = closeDays(facts, v2, day, today);
     for (const view of [deriveEconomy(facts, undefined, v2, today), deriveEconomy(facts, undefined, settings, today)]) {
       expect(view.owned).toContain('banner:dawn');
@@ -186,7 +186,7 @@ describe('closing the books (economy second opinion 22)', () => {
     for (let day = start; day < today; day = addEconomyDays(day, 1)) {
       facts.push(task(day), full(day), board(day), ...Array.from({ length: 3 }, () => row(day, 'gamify', 'badge-tier')));
       // The shop only sells what the balance covers, so purchases start once a month of Shards is in.
-      if (day >= '2026-02-01' && day.endsWith('5')) facts.push(row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50 }));
+      if (day >= '2026-02-01' && day.endsWith('5')) facts.push(row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true }));
     }
     const started = performance.now();
     const closes = mergeCloseMaps(new Map(), closesFor(facts, v2, today));
@@ -200,7 +200,7 @@ describe('closing the books (economy second opinion 22)', () => {
 
   it('reads older closes that kept every purchase to date the same way', () => {
     const days = ['2026-11-02', '2026-11-03', '2026-11-04'];
-    const facts = days.flatMap(day => [task(day), full(day), ...Array.from({ length: 20 }, () => row(day, 'gamify', 'badge-tier')), row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50 })]);
+    const facts = days.flatMap(day => [task(day), full(day), ...Array.from({ length: 20 }, () => row(day, 'gamify', 'badge-tier')), row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })]);
     const perDay = closeDays(facts, v2, days[0]!, '2026-11-06');
     const cumulative = perDay.map(item => {
       if (!item.key.startsWith(CLOSE_PREFIX)) return item;

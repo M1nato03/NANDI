@@ -154,3 +154,41 @@ it('a burst of writes runs one reconcile now and one more after it, with the lat
   // The trailing run used the latest clock, so the day before the 5th is closed.
   expect(await db.settings.get(closeKey('2026-11-04'))).toBeTruthy();
 });
+
+it('a drop finished after bedtime fills no Learn quest (Codex review of econ-32 #1)', async () => {
+  const { questPool } = await import('../../core/economy/gamify');
+  for (const late of [true, false]) {
+    const db = createDb(`gamify-late-drop-${++serial}`); opened.push(db);
+    const day = '2026-11-05', dropId = `drop:daily:${day}`;
+    await db.learnDrops.put({ id: dropId, drop: { id: dropId, cursor: 3, ending: { kind: 'stopping-screen' },
+      items: [1, 2, 3].map(n => ({ itemId: `i${n}`, conceptId: 'c', optionOrder: [], mode: 'review' as const })) }, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+    for (const n of [1, 2, 3]) await db.ledger.add({ id: `learn-answer:${late}:${n}`, mode: 'mind', kind: 'learn-answer', refId: `${late}:${n}`, dayKey: day,
+      inputs: { dropId, correct: true, afterBedtime: late }, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+    await reconcileGamify(db, at(day, '23:00'));
+    const facts = await db.ledger.toArray();
+    const drop = facts.find(fact => fact.kind === 'learn-drop')!;
+    expect(drop.inputs.afterBedtime === true).toBe(late);
+    expect(questPool.find(quest => quest.id === 'drop')!.count(facts, day)).toBe(late ? 0 : 1);
+    expect(questPool.find(quest => quest.id === 'learn-perfect')!.count(facts, day)).toBe(late ? 0 : 1);
+  }
+});
+
+it('a restore keeps this phone\'s economy cutoffs, else the backup\'s (Codex review of econ-32 #3)', async () => {
+  const source = createDb(`gamify-cutoff-src-${++serial}`); opened.push(source);
+  await source.settings.put({ key: 'economy.v3From', value: '2026-11-01', updatedAt: 1, deleted: 0, deviceId: 'old' });
+  const backup = await exportBackup(source, at('2026-11-02'));
+  // This phone upgraded later: its own cutoff stands, so no day here changes rules after the restore.
+  const phone = createDb(`gamify-cutoff-phone-${++serial}`); opened.push(phone);
+  await phone.settings.put({ key: 'economy.v3From', value: '2026-11-04', updatedAt: 1, deleted: 0, deviceId: 'phone' });
+  await importBackup(phone, backup);
+  expect((await phone.settings.get('economy.v3From'))?.value).toBe('2026-11-04');
+  // A phone with no cutoff yet keeps the backup's.
+  const fresh = createDb(`gamify-cutoff-fresh-${++serial}`); opened.push(fresh);
+  await importBackup(fresh, backup);
+  expect((await fresh.settings.get('economy.v3From'))?.value).toBe('2026-11-01');
+  // A backup without one restored onto a phone without one leaves it missing, which reads as the old rules.
+  const bare = await exportBackup(createDb(`gamify-cutoff-bare-${++serial}`), at('2026-11-02'));
+  const empty = createDb(`gamify-cutoff-empty-${++serial}`); opened.push(empty);
+  await importBackup(empty, bare);
+  expect(await empty.settings.get('economy.v3From')).toBeUndefined();
+});

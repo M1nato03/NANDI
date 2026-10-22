@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { RULES, type Rules } from '../rules.config';
-import type { LedgerRow } from '../../data/types';
+import type { LedgerRow, SettingRow } from '../../data/types';
 import { deriveEconomy, seasonFor, seasonIndex } from './deriveEconomy';
 import { boardSeats, seatThreshold } from './ladder';
 import { seasonRank } from './seasonRank';
@@ -14,7 +14,9 @@ const row = (dayKey: string, mode: string, kind: string, inputs: Record<string, 
 const task = (day: string, size: 'S' | 'M' | 'L', first = false) => row(day, 'tasks', 'done', { plannedSize: size, isFirstDay: first, wasPlanned: true, postpones: first ? 0 : 1 });
 const full = (day: string) => row(day, 'train', 'session', { plannedExercises: 2, touchedExercises: 2, plannedSets: 6, workingSets: 6 });
 const caseFact = (day: string) => row(day, 'mind', 'mystery', { result: 'solved', afterBedtime: false });
-const view = (facts: LedgerRow[], today = '2026-11-03') => deriveEconomy(facts, undefined, [], today);
+// The current rules: both cutoffs on record before the test days (a missing cutoff means the old rules).
+const cutoffs: SettingRow[] = ['economy.v2From', 'economy.v3From'].map(key => ({ key, value: '2026-10-01', updatedAt: 1, deleted: 0, deviceId: 'test' }));
+const view = (facts: LedgerRow[], today = '2026-11-03') => deriveEconomy(facts, undefined, cutoffs, today);
 
 describe('economy replay', () => {
   it('uses the first Monday dates and exposes the Arc index', () => {
@@ -102,7 +104,7 @@ describe('economy replay', () => {
   });
   it('holds a streak on a banked rest day and leaves the weekly rest weekday untouched', () => {
     const mon = '2026-11-02';
-    const keeping = deriveEconomy([task(mon, 'M'), row('2026-11-04', 'mind', 'board', { daily: false })], undefined, [{ key: 'economy.restWeekday', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-04');
+    const keeping = deriveEconomy([task(mon, 'M'), row('2026-11-04', 'mind', 'board', { daily: false })], undefined, [...cutoffs, { key: 'economy.restWeekday', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-04');
     expect(keeping.streak).toMatchObject({ restDays: 3, restDaysUsed: 1, restUsedYesterday: true, days: 2, paused: false });
     expect(keeping.days[2]!.mark).toBe(false);
     const paused = view([task(mon, 'M')], '2026-11-08');
@@ -163,7 +165,7 @@ describe('economy replay', () => {
     expect(view(facts, '2026-10-22').streak).toMatchObject({ days: 1, restDays: 3, restDaysUsed: 1, restUsedYesterday: true });
   });
   it('adds a purchased rest day using the legacy freeze item id', () => {
-    const facts = [task('2026-10-20', 'L'), row('2026-10-20', 'economy', 'purchase', { itemId: 'freeze', price: 50 })];
+    const facts = [task('2026-10-20', 'L'), row('2026-10-20', 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })];
     expect(view(facts, '2026-10-20').streak.restDays).toBe(5);
   });
   it('makes a Clean Week with three workouts and one rest check', () => {
