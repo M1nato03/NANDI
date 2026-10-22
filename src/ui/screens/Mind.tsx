@@ -22,6 +22,7 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
+import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { bundledPacks } from '../../data/packs/seed';
 import { getOrCreateDeviceId } from '../../data/device';
 import { answerPlan, loadLessonDraft, saveLessonDraft, seedDeckCards, type LessonDraft } from '../../data/repos/learn';
@@ -104,8 +105,12 @@ export function Mind({ entry }: { entry?: string }) {
   const caseReady = caseRun !== undefined && solvedCases !== undefined;
   const caseDiff = caseRun?.diff === 'easy' || caseRun?.diff === 'medium' || caseRun?.diff === 'hard' ? caseRun.diff : (solvedCases ?? 0) < RULES.mind.onboardingEasyCases ? 'easy' : RULES.mind.caseDiffByWeekday[new Date(`${today}T12:00:00`).getDay() as keyof typeof RULES.mind.caseDiffByWeekday];
   const caseDone = caseRun?.result === 'solved' || caseRun?.result === 'revealed';
-  const bedtime = String(settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value ?? RULES.night.defaultBedtime);
-  const shutdown = effectiveShutdown(String(settings.find(row => row.key === 'planner.shutdown' && !row.deleted)?.value ?? RULES.night.defaultShutdown), bedtime);
+  // A busy day moves the night later for routing (AppShell), so Mind's XP and wind-down follow the same clock (Night audit).
+  const todayTasks = useLiveQuery(() => db.tasks.where('dayKey').equals(today).toArray(), [today]);
+  const adaptive = adaptiveNight(settings, todayTasks ?? [], today);
+  const baseBedtime = String(settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value ?? RULES.night.defaultBedtime);
+  const bedtime = adaptive.bedtime;
+  const shutdown = shiftClock(effectiveShutdown(String(settings.find(row => row.key === 'planner.shutdown' && !row.deleted)?.value ?? RULES.night.defaultShutdown), baseBedtime), adaptive.shift);
   const night = nightWindow(now, shutdown, bedtime, log?.windDownAt);
   const windDownUsed = Number(settings.find(row => row.key === `mind.windDownMs:${today}` && !row.deleted)?.value ?? 0);
   const windDownOverride = settings.some(row => row.key === `mind.windDownOverride:${today}` && row.value === true && !row.deleted);

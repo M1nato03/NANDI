@@ -2,9 +2,9 @@ import { trackWrite } from '../../core/pendingWrites';
 import { answerConcept, updateItemRating, advanceDrop, gradeItem, itemSeedRating, type AnswerFact, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { dayKey } from '../../core/time';
 import { shutdownAt } from '../../core/tasks/planner';
-import { RULES } from '../../core/rules.config';
 import type { TopicItem } from '../packs/schemas';
 import type { NandiDb } from '../db';
+import { effectiveBedtime } from './night';
 import type { LearnConceptRow, LearnItemRow } from '../types';
 
 export async function saveDrop(db: NandiDb, drop: Drop, deviceId: string, now: number): Promise<void> {
@@ -24,8 +24,7 @@ export async function loadEngineFacts(db: NandiDb): Promise<{ facts: AnswerFact[
 export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number; goldReview?: boolean }
 /** State, drop cursor and its immutable ledger fact commit atomically. */
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
-  const bedtimeValue = (await db.settings.get('planner.bedtime'))?.value;
-  const bedtime = typeof bedtimeValue === 'string' ? bedtimeValue : RULES.night.defaultBedtime;
+  const bedtime = await effectiveBedtime(db, input.now);
   const afterBedtime = input.now >= shutdownAt(input.now, bedtime);
   await trackWrite(() => db.transaction('rw', [db.learnConcepts, db.learnItems, db.learnDrops, db.ledger], async () => {
     const factId = `learn-answer:${input.answerId}`;

@@ -73,7 +73,7 @@ export function EconomyFeedback() {
         const current = deriveEconomy(source.facts, undefined, source.settings, today);
         if (current.streak.restUsedYesterday) {
           store.set(sessionStorage, restNoticeKey, 'seen');
-          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false, character: 'Kachhua' }));
+          queueMicrotask(() => setNotice({ text: `Your rest bank covered yesterday. ${current.streak.restDays} ${current.streak.restDays === 1 ? 'day' : 'days'} ready for later.`, macro: false, character: 'Kachhua' }));
           return;
         }
       }

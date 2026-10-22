@@ -82,7 +82,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
       {step === 2 && <>
         <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" />
         <h1>When do you want to be asleep?</h1>
-        <p>Before this time NANDI turns calm: no new lessons, just a gentle wind-down.</p>
+        <p>As this time gets close, NANDI turns calm: no new lessons, just a gentle wind-down.</p>
         <label className="welcome-time">Bedtime<input type="time" required value={bedtime} onChange={event => setBedtime(event.target.value || WELCOME_BEDTIME)} /></label>
         <p className="small">You can change it any time in Settings.</p>
         <button type="button" disabled={saving} onClick={() => void finish()}>{action.label}</button>

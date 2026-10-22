@@ -59,11 +59,12 @@ test('seeded daily quests complete and a badge appears under You', async ({ page
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
   await page.goto('/#you');
   const rows = Array.from({ length: 5 }, (_, index) => fact('learn-answer', `drop:daily:${day}:${index}`, 'mind', { dropId: `drop:daily:${day}`, correct: true, afterBedtime: false }, index));
-  rows.push(fact('perfect-drop', day, 'gamify', {}, 6), fact('lightsout', day, 'bonuses', { metTarget: true }, 7));
+  // A finished drop writes its learn-drop fact; that, not a count of five answers, completes the drop quest.
+  rows.push(fact('learn-drop', day, 'gamify', {}, 5), fact('perfect-drop', day, 'gamify', {}, 6), fact('lightsout', day, 'bonuses', { metTarget: true }, 7));
   await seed(page, rows);
   const quests = page.getByRole('region', { name: 'Daily quests' });
   await expect(quests).toContainText('Daily quests');
-  await expect(quests).toContainText('5 / 5');
+  await expect(quests).toContainText("Finish today's Learn drop");
   await expect(quests).toContainText('Focus boost');
   if (testInfo.project.name === 'mobile-360x800') {
     await quests.screenshot({ path: testInfo.outputPath('quests-light-360.png') });

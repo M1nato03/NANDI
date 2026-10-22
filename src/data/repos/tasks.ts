@@ -2,6 +2,7 @@ import { nextRepeatDay, sameTimeOn } from '../../core/tasks/repeat';
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
 import { db as appDb } from '../db';
+import { effectiveBedtime } from './night';
 import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey } from '../../core/time/dayKey';
@@ -12,6 +13,7 @@ import { respaceCheckpoints } from '../../core/tasks/complete';
 import {
   postponeGate,
   type PostponeAttempt,
+  type PostponeReason,
 } from '../../core/tasks/postponeGate';
 import {
   checkDayBoundary,
@@ -80,6 +82,15 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     return new Set(rows.map((row) => row.parentId ?? row.id)).size;
   }
   const saveBudget = (value: BudgetState, now: number) => db.settings.put({ key: 'planner.budget', value, updatedAt: now, deleted: 0, deviceId });
+  /** This week's counted postpones against the budget, shared by postpone and the split choice. */
+  async function weeklyBudget(now: number) {
+    const policy = await budgetState(now);
+    const weekStart = postponeWeekKey(now);
+    const counted = await db.taskEvents
+      .filter((e) => e.kind === 'postponed' && e.budgetCounted === true && postponeWeekKey(e.at) === weekStart)
+      .count();
+    return { policy, weekStart, counted, baselineWeek: !policy.baselineComplete || weekStart < (policy.enforcementFromWeek ?? weekStart) };
+  }
   async function budgetState(now: number): Promise<BudgetState> {
     const week = postponeWeekKey(now);
     const stored = (await db.settings.get('planner.budget'))?.value as BudgetState | undefined;
@@ -163,7 +174,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const goal = typeof goalRow?.value === 'string' ? goalRow.value : RULES.night.goalBedtime;
         const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(nightAt, target), updatedAt: now, deleted: 0, deviceId };
         await db.dailyLog.put(row);
-        await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= row.bedtimeTarget! }, updatedAt: now, deleted: 0, deviceId });
+        // A busy day's later night (the bedtime the app showed) counts as on plan; the stepping target below stays the usual one.
+        const tonight = Math.max(row.bedtimeTarget!, shutdownAt(nightAt, await effectiveBedtime(db, nightAt)));
+        await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= tonight }, updatedAt: now, deleted: 0, deviceId });
         const shift = (from: string, days: number) => { const date = new Date(`${from}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
         const windowRow = await db.settings.get('planner.bedtimeWindowStart');
         let windowStart = typeof windowRow?.value === 'string' ? windowRow.value : key;
@@ -476,16 +489,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         if (row.status === 'done' || row.status === 'dropped')
           throw new Error('Task is closed');
         const task = checkDayBoundary(coreTask(row), now);
-        const policy = await budgetState(now);
-        const weekStart = postponeWeekKey(now);
-        const counted = await db.taskEvents
-          .filter(
-            (e) =>
-              e.kind === 'postponed' &&
-              e.budgetCounted === true &&
-              postponeWeekKey(e.at) === weekStart,
-          )
-          .count();
+        const { policy, weekStart, counted, baselineWeek } = await weeklyBudget(now);
         const realMoves = await db.taskEvents
           .filter(
             (e) =>
@@ -494,7 +498,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           )
           .count();
         const gate = postponeGate(
-          { ...attempt, task, now, baselineWeek: !policy.baselineComplete || weekStart < (policy.enforcementFromWeek ?? weekStart), realReasonMovesThisWeek: realMoves },
+          { ...attempt, task, now, baselineWeek, realReasonMovesThisWeek: realMoves },
           counted,
           { ...RULES, tasks: { ...RULES.tasks, postpone: { ...RULES.tasks.postpone, weeklyBudget: policy.budget } } },
         );
@@ -654,7 +658,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
             .where('taskId')
             .equals(row.id)
             .sortBy('at');
-          const lastTouched = lastEvent.at(-1)?.at ?? row.updatedAt;
+          // The 14-day clock starts when the slot was missed, not when the task was created (Tasks audit 4).
+          const missedDay = row.lastPlannedDayKey ? new Date(`${row.lastPlannedDayKey}T12:00:00`).getTime() : 0;
+          const lastTouched = Math.max(lastEvent.at(-1)?.at ?? row.updatedAt, row.scheduledStart ?? 0, Number.isFinite(missedDay) ? missedDay : 0);
           const next = check14DayRule(atBoundary, now, lastTouched);
           if (next.status === 'someday') await event(row.id, 'someday', now);
           if (next.status !== row.status || next.dayKey !== row.dayKey)
@@ -667,6 +673,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       now: number,
       numSubtasks: number,
       estimates: number[],
+      reason?: PostponeReason,
     ): Promise<TaskRow[]> {
       return mutation(async () => {
         const parent = await repos.tasks.get(taskId);
@@ -676,6 +683,11 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         if ((await db.tasks.where('parentId').equals(taskId).count()) > 0)
           throw new Error('Task already split');
         const atChoiceSheet = parent.postponeCount === 2;
+        // Splitting on the third move counts as a postpone, so a full weekly budget still asks for the quick reason (Tasks audit 2).
+        if (atChoiceSheet) {
+          const budget = await weeklyBudget(now);
+          if (!budget.baselineWeek && budget.counted >= budget.policy.budget && !reason) throw new Error('reason_required');
+        }
         const forSplit = atChoiceSheet
           ? { ...coreTask(parent), postponeCount: 3 }
           : coreTask(parent);
@@ -698,7 +710,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         }
         await event(taskId, 'split', now);
         if (atChoiceSheet)
-          await event(taskId, 'postponed', now, { budgetCounted: true });
+          await event(taskId, 'postponed', now, { reason, budgetCounted: true });
         await repos.tasks.put(
           {
             ...parent,

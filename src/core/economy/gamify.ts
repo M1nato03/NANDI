@@ -1,13 +1,23 @@
 import { RULES } from '../rules.config';
 import type { LedgerRow } from '../../data/types';
+import { isPlannedDone } from './planned';
+import { weekStart } from './deriveEconomy';
 
 export type Quest = { id: string; title: string; target: number; count: (facts: readonly LedgerRow[], day: string) => number };
 const matching = (facts: readonly LedgerRow[], day: string, mode: string, kind: string) => facts.filter(f => !f.deleted && f.dayKey === day && f.mode === mode && f.kind === kind);
 const count = (mode: string, kind: string): Quest['count'] => (facts, day) => matching(facts, day, mode, kind).length;
-const answers = (facts: readonly LedgerRow[], day: string) => matching(facts, day, 'mind', 'learn-answer').filter(f => f.inputs.dropId === `drop:daily:${day}`);
 export function longestCombo(facts: readonly LedgerRow[], dropId: string): number {
   let run = 0, best = 0;
   for (const fact of facts.filter(f => !f.deleted && f.kind === 'learn-answer' && f.inputs.dropId === dropId).sort((a, b) => Number(a.refId.split(':').at(-1)) - Number(b.refId.split(':').at(-1)))) {
+    run = fact.inputs.correct === true ? run + 1 : 0;
+    best = Math.max(best, run);
+  }
+  return best;
+}
+/** Right answers in a row across all of today's Learn answers; a teach-first drop alone can be shorter than five. */
+function dayCombo(facts: readonly LedgerRow[], day: string): number {
+  let run = 0, best = 0;
+  for (const fact of matching(facts, day, 'mind', 'learn-answer').sort((a, b) => a.updatedAt - b.updatedAt || a.id.localeCompare(b.id))) {
     run = fact.inputs.correct === true ? run + 1 : 0;
     best = Math.max(best, run);
   }
@@ -17,12 +27,13 @@ export function perfectDrop(facts: readonly LedgerRow[], dropId: string, length:
   const rows = facts.filter(f => !f.deleted && f.kind === 'learn-answer' && f.inputs.dropId === dropId);
   return length > 0 && rows.length === length && rows.every(f => f.inputs.correct === true);
 }
-const pool: Quest[] = [
-  { id: 'drop', title: "Finish today's Learn drop", target: 5, count: (f, d) => answers(f, d).length },
-  { id: 'combo', title: 'Get 5 right in a row', target: 5, count: (f, d) => longestCombo(f, `drop:daily:${d}`) },
-  { id: 'learn-three', title: 'Explore 3 Learn questions', target: 3, count: (f, d) => answers(f, d).length },
+export const questPool: Quest[] = [
+  // A teach-first drop can be the lesson and a few questions, so "finished" is the drop itself, not five answers.
+  { id: 'drop', title: "Finish today's Learn drop", target: 1, count: (f, d) => matching(f, d, 'gamify', 'learn-drop').length },
+  { id: 'combo', title: 'Get 5 right in a row', target: 5, count: dayCombo },
+  { id: 'learn-three', title: 'Explore 3 Learn questions', target: 3, count: (f, d) => matching(f, d, 'mind', 'learn-answer').length },
   { id: 'learn-perfect', title: 'Finish a drop with every answer right', target: 1, count: (f, d) => matching(f, d, 'gamify', 'perfect-drop').length },
-  { id: 'task', title: 'Finish a planned task', target: 1, count: count('tasks', 'done') },
+  { id: 'task', title: 'Finish a planned task', target: 1, count: (f, d) => matching(f, d, 'tasks', 'done').filter(isPlannedDone).length },
   { id: 'tasks-two', title: 'Finish 2 tasks', target: 2, count: count('tasks', 'done') },
   { id: 'plan', title: 'Plan tomorrow before shutdown', target: 1, count: count('gamify', 'tomorrow-plan') },
   { id: 'session', title: 'Log a workout', target: 1, count: count('train', 'session') },
@@ -30,13 +41,13 @@ const pool: Quest[] = [
   { id: 'body', title: 'Make time to move', target: 1, count: (f, d) => count('train', 'session')(f, d) + count('train', 'rest')(f, d) },
   { id: 'board', title: 'Solve the daily board', target: 1, count: (f, d) => matching(f, d, 'mind', 'board').filter(x => x.inputs.daily !== false && x.inputs.result !== 'revealed').length },
   { id: 'board-clean', title: 'Solve the daily board without a hint', target: 1, count: (f, d) => matching(f, d, 'mind', 'board').filter(x => x.inputs.daily !== false && Number(x.inputs.hintsUsed ?? 0) === 0 && x.inputs.result !== 'revealed').length },
-  { id: 'case', title: 'Settle a case', target: 1, count: count('mind', 'mystery') },
+  { id: 'case', title: 'Settle a case', target: 1, count: (f, d) => matching(f, d, 'mind', 'mystery').filter(x => x.inputs.result !== 'revealed').length },
   { id: 'night', title: 'Close the day on plan', target: 1, count: (f, d) => matching(f, d, 'bonuses', 'lightsout').filter(x => x.inputs.metTarget === true).length },
   { id: 'gold', title: 'Finish a Gold review', target: 1, count: count('gamify', 'gold-review') },
 ];
 export function dailyQuests(day: string): Quest[] {
   let seed = [...day].reduce((n, c) => (Math.imul(n, 31) + c.charCodeAt(0)) | 0, 17) >>> 0;
-  const shuffled = [...pool];
+  const shuffled = [...questPool];
   for (let i = shuffled.length - 1; i > 0; i--) { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; const j = seed % (i + 1); [shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!]; }
   return shuffled.slice(0, 3);
 }
@@ -54,7 +65,7 @@ const all = (facts: readonly LedgerRow[], mode: string, kind: string) => facts.f
 const badgeCount = (mode: string, kind: string): Badge['count'] => f => all(f, mode, kind).length;
 export const badges: Badge[] = [
   { id: 'tasks', title: 'Tasks settled', count: badgeCount('tasks', 'done') },
-  { id: 'planned', title: 'Plans kept', count: f => all(f, 'tasks', 'done').filter(x => x.inputs.planned === true || x.inputs.wasPlanned === true).length },
+  { id: 'planned', title: 'Plans kept', count: f => all(f, 'tasks', 'done').filter(isPlannedDone).length },
   { id: 'early', title: 'First-day finishes', count: f => all(f, 'tasks', 'done').filter(x => x.inputs.isFirstDay === true).length },
   { id: 'workouts', title: 'Workouts logged', count: badgeCount('train', 'session') },
   { id: 'rest', title: 'Rest days kept', count: badgeCount('train', 'rest') },
@@ -73,7 +84,8 @@ export const badges: Badge[] = [
   { id: 'focus', title: 'Focus boosts', count: badgeCount('gamify', 'focus-boost') },
   { id: 'reviews', title: 'Ideas revisited', count: badgeCount('mind', 'learn-retention') },
   { id: 'lessons', title: 'Lessons finished', count: badgeCount('mind', 'lesson') },
-  { id: 'weeks', title: 'Weekly training targets', count: badgeCount('train', 'weekly') },
+  // A 3-session week writes a one-short milestone and then a met one; count each week whose target was met, once (audit 16.17).
+  { id: 'weeks', title: 'Weekly training targets', count: f => new Set(all(f, 'train', 'weekly').filter(x => x.inputs.target == null || Number(x.inputs.milestone) >= Number(x.inputs.target)).map(x => weekStart(x.dayKey))).size },
 ];
 export const badgeTier = (badge: Badge, facts: readonly LedgerRow[]) => RULES.gamify.badgeThresholds.filter(n => badge.count(facts) >= n).length;
 export function monthlyQuestCount(facts: readonly LedgerRow[], month: string): number { return facts.filter(f => !f.deleted && f.kind === 'daily-quest' && f.dayKey.startsWith(month)).length; }
