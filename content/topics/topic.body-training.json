@@ -2253,7 +2253,7 @@
                 "sourceRefs": [
                   "cdc-heat-rate"
                 ],
-                "stem": "A builder works 8 hours outdoors in a Delhi heatwave. At the top heat sweat rate, about how many litres could he lose in the day?",
+                "stem": "A builder works 8 hours outdoors in a Delhi heatwave. If he sweats about 1 litre an hour, about how many litres could he lose in the day?",
                 "options": [
                   {
                     "id": "a",
@@ -5189,7 +5189,7 @@
                 "sourceRefs": [
                   "fssai"
                 ],
-                "stem": "On a food label, a cereal serving has 18 g total sugars, and 4 g of them come from milk. About what %RDA for added sugar should it show?",
+                "stem": "On a food label, a cereal serving has 18 g total sugars: 4 g are the milk's own, and the rest were added. About what %RDA for added sugar should it show?",
                 "options": [
                   {
                     "id": "a",
