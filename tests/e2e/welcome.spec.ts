@@ -45,7 +45,7 @@ test('a fresh install reaches its first finished drop in under 90 seconds', asyn
   await expect(drop.getByRole('heading', { name: 'What do you want to get sharp at?' })).toBeVisible();
   await drop.getByRole('button', { name: /Money and markets/ }).click();
   await drop.getByRole('button', { name: 'Start my first drop' }).click();
-  // Spec 14: a new learner's first drop opens with a short lesson, then that idea's own questions.
+  // Spec 14 + 16 §5: a new learner's first drop is a short lesson; its own questions come back from tomorrow.
   await walkLesson(page, 'money-markets');
   for (let i = 0; i < 6 && !(await page.locator('.learn-stop').isVisible()); i++) await answerRight(page);
   await expect(page.getByRole('heading', { name: "That's today's drop" })).toBeVisible();

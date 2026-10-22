@@ -15,7 +15,7 @@ export async function seedTaughtTopics(page: Page, topicIds: string[]) {
   await page.evaluate(ids => window.__nandiTest!.seedTaughtSteps(ids), stepIds);
 }
 
-/** Walks one lesson the way a learner does: hook guess, idea, show me, the guided tries, then "Your turn". */
+/** Walks one lesson the way a learner does: hook guess, idea, show me, the one guided try (spec 16 §5), then "Your turn" or "Done". */
 export async function walkLesson(page: Page, topicId: string) {
   const lesson = page.locator('.step-lesson');
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'hook');
@@ -29,11 +29,9 @@ export async function walkLesson(page: Page, topicId: string) {
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'show');
   await page.getByRole('button', { name: step.example.spot, exact: true }).click();
   await page.locator('.learn-feedback').getByRole('button', { name: 'Continue' }).click();
-  for (const [index, guided] of step.guided.entries()) {
-    await expect(lesson).toHaveAttribute('data-lesson-phase', `guided-${index + 1}`);
-    await page.getByRole('button', { name: guided.options.find(option => option.correct)!.text, exact: true }).click();
-    await page.locator('.learn-feedback').getByRole('button', { name: index === step.guided.length - 1 ? 'Your turn' : 'Continue' }).click();
-  }
+  await expect(lesson).toHaveAttribute('data-lesson-phase', 'guided-1');
+  await page.getByRole('button', { name: step.guided[0]!.options.find(option => option.correct)!.text, exact: true }).click();
+  await page.locator('.learn-feedback').getByRole('button', { name: /^(Your turn|Done)$/ }).click();
   await expect(lesson).toHaveCount(0);
   return step;
 }
