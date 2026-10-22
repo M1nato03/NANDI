@@ -46,6 +46,8 @@
 .backfill-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 8px; }
 .backfill-slots button { min-height: 44px; padding: 6px; }
 .economy-toast { position: fixed; z-index: 20; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom)); transform: translateX(-50%); pointer-events: none; background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow-2); border-radius: 16px; padding: 12px 18px; min-width: min(280px, 90vw); text-align: center; animation: economy-toast-in 500ms ease-out; }
+/* During a drop the toast sits at the top, never over the feedback sheet at the bottom (cj2 lesson walk #5). */
+.app-shell:has(.learn-active, .learn-feedback) .economy-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
 .economy-reveal { position: fixed; z-index: 30; inset: 0; background: var(--bg); display: grid; place-items: center; padding: 20px; }
 .economy-reveal-card { background: var(--surface-1); border-radius: 28px; padding: 32px; width: min(100%, 440px); box-shadow: var(--shadow-2); text-align: center; animation: economy-reveal-in 1.3s ease-out; }
 .economy-reveal-card h2 { font-size: clamp(36px, 10vw, 54px); }

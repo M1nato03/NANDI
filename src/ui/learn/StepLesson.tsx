@@ -11,15 +11,17 @@ const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches &
 /** A small diagram drawn from the step's data: a flow of chips, two columns, or a scale with marks. */
 export function StepVisual({ visual }: { visual: StepVisualData }) {
   if (visual.kind === 'flow') return <div className="step-visual step-flow" role="img" aria-label={visual.nodes.join(', then ')}>
-    {visual.nodes.map((node, index) => <Fragment key={node}>{index > 0 && <span className="step-arrow" aria-hidden="true">→</span>}<span className="step-node">{node}</span></Fragment>)}
+    {visual.nodes.map((node, index) => <Fragment key={node}>{index > 0 && <span className="step-arrow" aria-hidden="true">↓</span>}<span className="step-node">{node}</span></Fragment>)}
   </div>;
   if (visual.kind === 'compare') return <div className="step-visual step-compare" role="img" aria-label={`${visual.left.title}: ${visual.left.lines.join(', ')}. ${visual.right.title}: ${visual.right.lines.join(', ')}.`}>
     {[visual.left, visual.right].map(side => <div key={side.title} className="step-side"><strong>{side.title}</strong>{side.lines.map(line => <span key={line}>{line}</span>)}</div>)}
   </div>;
   return <div className="step-visual step-scale" role="img" aria-label={`${visual.label}: from ${visual.min} to ${visual.max}. ${visual.marks.map(mark => mark.text).join('. ')}.`}>
     <span className="step-scale-label">{visual.label}</span>
-    <div className="step-scale-bar">{visual.marks.map(mark => <span key={mark.text} className="step-scale-mark" style={{ left: `${mark.at}%` }}><i /><b>{mark.text}</b></span>)}</div>
+    {/* Numbered dots on the bar and the words in a list under it, so labels never overprint or widen the page (cj2 lesson walk #3, #4). */}
+    <div className="step-scale-bar">{visual.marks.map((mark, index) => <span key={mark.text} className="step-scale-mark" style={{ left: `${Math.min(100, Math.max(0, mark.at))}%` }} aria-hidden="true">{index + 1}</span>)}</div>
     <div className="step-scale-ends"><span>{visual.min}</span><span>{visual.max}</span></div>
+    <ol className="step-scale-list">{visual.marks.map(mark => <li key={mark.text}>{mark.text}</li>)}</ol>
   </div>;
 }
 
