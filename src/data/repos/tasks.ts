@@ -5,7 +5,7 @@ import { db as appDb } from '../db';
 import { effectiveBedtime } from './night';
 import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
-import { dayKey } from '../../core/time/dayKey';
+import { dayKey, lightsOutNightKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { baselineBudget, nextBudget, postponeWeekKey } from '../../core/tasks/budget';
 import { nextBedtimeTarget, shutdownAt, stepDownOffer } from '../../core/tasks/planner';
@@ -161,7 +161,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         // (otherwise a 04:05 lights-out is compared with tomorrow's bedtime and counts as early).
         const hour = new Date(now).getHours();
         const nightAt = hour >= 4 && hour < 12 ? now - 12 * 3_600_000 : now;
-        const key = dayKey(nightAt);
+        const key = lightsOutNightKey(now);
         const previous = await db.dailyLog.get(key);
         const factId = `lightsout:${key}`;
         if (previous?.lightsOutAt != null) {

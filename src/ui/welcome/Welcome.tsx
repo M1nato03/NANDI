@@ -17,6 +17,9 @@ const PRIVACY_NOTE = "NANDI keeps your tasks, workouts, answers and settings in 
 // The Playwright build skips the first run unless a test asks for it with ?welcome.
 const allowed = () => import.meta.env.VITE_E2E !== '1' || new URLSearchParams(location.search).has('welcome');
 
+/** Judged when the last button is tapped, not when the welcome opened. */
+const actionAt = (goal: Goal | undefined, bedtime: string) => firstAction(goal, isAfterBedtime(Date.now(), bedtime));
+
 async function markDone(extra: { key: string; value: unknown }[] = []): Promise<void> {
   const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', db.settings, async () => {
@@ -54,17 +57,21 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   const [bedtime, setBedtime] = useState(WELCOME_BEDTIME);
   const [saving, setSaving] = useState(false);
   const [openedAt] = useState(() => Date.now());
-  const action = firstAction(goal, isAfterBedtime(openedAt, bedtime));
+  // "After bedtime" follows the clock while the welcome sits open, so the last button never offers a lesson past bedtime.
+  const [clock, setClock] = useState(openedAt);
+  useEffect(() => { const timer = window.setInterval(() => setClock(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
+  const action = firstAction(goal, isAfterBedtime(clock, bedtime));
   const finish = async () => {
     setSaving(true);
+    const next = actionAt(goal, bedtime);
     try {
       const extra: { key: string; value: unknown }[] = [{ key: 'profile.goals', value: goal ? [goal] : [] }, { key: 'profile.adultConfirmedAt', value: new Date(openedAt).toISOString() }, { key: 'planner.bedtime', value: bedtime }];
       // Learn opens straight on its first lesson; topics can be changed from Learn later.
       if (goal === 'learn') extra.push({ key: 'learn.selectedTopics', value: [STARTER_TOPIC] });
       await markDone(extra);
       onDone();
-      go(action.route);
-      if (action.route === 'plan') window.setTimeout(() => document.querySelector<HTMLInputElement>('.quick-add-field input')?.focus(), 300);
+      go(next.route);
+      if (next.route === 'plan') window.setTimeout(() => document.querySelector<HTMLInputElement>('.quick-add-field input')?.focus(), 300);
     } catch (error) { recordError('promise', error); setSaving(false); }
   };
   const restore = async () => { await markDone().catch(error => recordError('promise', error)); onDone(); go('you/backup'); };

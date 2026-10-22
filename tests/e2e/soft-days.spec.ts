@@ -48,3 +48,21 @@ test('a low day: keep one good thing, or switch back when you feel okay', async 
   await card.getByRole('button', { name: 'I feel better, show me more' }).click();
   await expect(page.getByRole('region', { name: 'Planning routines' })).toBeVisible();
 });
+
+test('a tired day: the tiny task ends in the calm finish, with no reward overlay on top', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
+  await page.goto('/#plan');
+  const field = page.getByPlaceholder('Add a task, e.g. call bank 15m');
+  await field.fill('Fill water bottle 5m');
+  await page.getByRole('button', { name: 'Add task', exact: true }).click();
+  await expect(page.getByText('Fill water bottle').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Low on energy today?' }).click();
+  await page.getByRole('dialog', { name: 'What kind of day is it?' }).getByRole('button', { name: 'Tired' }).click();
+  const card = page.getByRole('region', { name: 'Soft day' });
+  await card.getByRole('button', { name: 'Do one tiny task' }).click();
+  await expect(card).toContainText('Your smallest task: Fill water bottle');
+  await card.locator('.soft-tiny').getByRole('button', { name: 'Done' }).click();
+  await expect(card).toContainText('That counts. Kachhua lit a lantern for today.');
+  await page.waitForTimeout(800);
+  await expect(page.locator('.finish-moment')).toHaveCount(0);
+});

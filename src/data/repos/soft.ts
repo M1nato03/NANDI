@@ -16,8 +16,8 @@ export async function setSoftState(db: NandiDb, state: SoftState | 'okay', now: 
 }
 
 /** The gentle thing is done: today is kept. The first one of the day is the one that counts; later ones add nothing. */
-export async function doSoftThing(db: NandiDb, choice: SoftChoice, now: number, extra: { text?: string; inStory?: boolean } = {}): Promise<void> {
-  const day = dayKey(now);
+// `day` is the soft day the choice was opened on: a breath that runs past 04:00 still belongs to it.
+export async function doSoftThing(db: NandiDb, choice: SoftChoice, now: number, extra: { text?: string; inStory?: boolean } = {}, day = dayKey(now)): Promise<void> {
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
     const id = `soft:${day}`;

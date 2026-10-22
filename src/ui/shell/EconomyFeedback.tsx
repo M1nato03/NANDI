@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time';
+import { softMoreKey, softToday } from '../../core/soft/soft';
 import { addEconomyDays, deriveEconomy, seasonFor } from '../../core/economy/deriveEconomy';
 import { RULES } from '../../core/rules.config';
 import { shutdownAt } from '../../core/tasks/planner';
@@ -109,6 +110,9 @@ export function EconomyFeedback() {
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);
+    // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.
+    const softHome = softToday(source.facts, today).state !== null && !source.settings.some(row => row.key === softMoreKey(today) && row.value === true && !row.deleted);
+    if (softHome && achievement?.mode === 'tasks') return;
     const oldView = deriveEconomy(previous.facts, undefined, previous.settings, today);
     const view = deriveEconomy(source.facts, undefined, source.settings, today);
     const gain = Math.max(0, view.totalXp - oldView.totalXp);

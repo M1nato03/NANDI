@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { softMoreKey } from '../../core/soft/soft';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -21,7 +22,9 @@ export function useSoftFacts() {
   return useLiveQuery(() => db.ledger.where('kind').anyOf(SOFT_KINDS).filter(row => row.deleted === 0).toArray(), []) ?? [];
 }
 const saveSetting = async (key: string, value: unknown) => { const at = Date.now(); await db.settings.put({ key, value, updatedAt: at, deleted: 0, deviceId: await getOrCreateDeviceId(db, at) }); };
-export const softMoreKey = (day: string) => `soft.more:${day}`;
+export { softMoreKey };
+/** Saves the gentle thing at tap time, credited to the soft day it was opened on. */
+const softThingNow = (picked: SoftChoice, extra: { text?: string; inStory?: boolean } | undefined, day: string) => doSoftThing(db, picked, Date.now(), extra, day);
 
 /** Spec 15 A: the way in. Never asked by notification; after bedtime it opens the night routine instead. */
 export function SoftChip({ afterBedtime }: { afterBedtime: boolean }) {
@@ -108,6 +111,8 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   act: (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 }) {
   const [choice, setChoice] = useState<SoftChoice | null>(null);
+  // The day a gentle thing was opened on; the Home itself can re-render with the next day after 04:00.
+  const openedOn = useRef<string | null>(null);
   const [closed, setClosed] = useState(false);
   const [careClosed, setCareClosed] = useState(false);
   const careShown = settings.find(row => row.key === 'soft.careShownAt')?.value;
@@ -118,7 +123,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   const ledger = useLiveQuery(() => done ? db.ledger.toArray() : Promise.resolve<LedgerRow[]>([]), [done]);
   const welcome = done && ledger?.length ? deriveEconomy(ledger, undefined, settings, today).days.find(day => day.dayKey === today)?.welcome ?? 0 : 0;
   const finish = async (picked: SoftChoice, extra?: { text?: string; inStory?: boolean }) => {
-    await doSoftThing(db, picked, Date.now(), extra);
+    await softThingNow(picked, extra, openedOn.current ?? today);
     void tapHaptic(true, 15);
     setChoice(null);
   };
@@ -134,7 +139,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
     {care && <CareCard close={() => setCareClosed(true)} />}
     <section className="card soft-card" aria-label="Soft day">
       <div className="soft-host"><Cast name="Kachhua" pose="rest" size={72} title="Kachhua resting" /><p className="soft-line">{SOFT_LINES[state]}</p></div>
-      {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => setChoice(item.id)}>{item.label}{item.minutes && <small> · {item.minutes} min</small>}</button></li>)}</ul>
+      {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => { openedOn.current = today; setChoice(item.id); }}>{item.label}{item.minutes && <small> · {item.minutes} min</small>}</button></li>)}</ul>
         : <div className="soft-doing"><h2>{option.label}</h2>
           {option.id === 'breathe' && <Breathe done={() => void finish('breathe')} />}
           {option.id === 'stretch' && <Stretch done={() => void finish('stretch')} />}

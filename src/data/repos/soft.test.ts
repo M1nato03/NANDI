@@ -47,3 +47,12 @@ it('two taps in the same millisecond keep tap order', async () => {
   await setSoftState(db, 'tired', now);
   expect(softToday(await db.ledger.toArray(), '2026-11-03').state).toBe('tired');
 });
+
+it('credits a breath that runs past 04:00 to the soft day it was opened on', async () => {
+  const db = fresh();
+  await setSoftState(db, 'tired', at('2026-11-03', '03:55'));
+  await doSoftThing(db, 'breathe', at('2026-11-03', '04:02'), {}, '2026-11-02');
+  const facts = await db.ledger.toArray();
+  expect(softToday(facts, '2026-11-02').done?.inputs.state).toBe('tired');
+  expect(softToday(facts, '2026-11-03').done).toBeNull();
+});

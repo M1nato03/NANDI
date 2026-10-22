@@ -39,6 +39,9 @@ const live = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(fa
 // Ties (two taps in one millisecond) fall back to the id, which is monotonic within a day.
 const latest = (facts: readonly LedgerRow[]) => [...facts].sort((a, b) => a.updatedAt - b.updatedAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).at(-1);
 
+/** Set when the person taps "I feel better, show me more" on a soft day: the usual Home comes back for that day. */
+export const softMoreKey = (day: string) => `soft.more:${day}`;
+
 export interface SoftToday { state: SoftState | null; done: LedgerRow | null }
 /** Today's soft state: the latest soft-start (unless switched back to okay) and the gentle thing, if done. */
 export function softToday(facts: readonly LedgerRow[], today: string): SoftToday {

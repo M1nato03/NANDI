@@ -216,6 +216,9 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     const dexieBlob = new Blob([JSON.stringify(restored.dexie)], { type: 'application/json' });
     await importInto(db, dexieBlob, { acceptVersionDiff: true, acceptNameDiff: true,
       clearTablesBeforeImport: true,
+      // The app keeps running during a restore: a write that lands between the clear and the re-add
+      // (say economy.v2From from reconcileGamify) must not abort it, so rows are put, not added.
+      overwriteValues: true,
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
     await db.settings.bulkPut(localSettings);
