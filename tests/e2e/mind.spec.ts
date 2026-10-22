@@ -98,7 +98,8 @@ for (const scheme of ['light', 'dark'] as const) {
     });
     expect(sizing).toEqual({ cells: true, controls: true, noScroll: true });
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-    await expect(page.getByLabel('Puzzle result')).toContainText('Board complete');
+    // A new user's first board is the warm-up (live QA, build 67).
+    await expect(page.getByLabel('Puzzle result')).toContainText('Warm-up done');
     await expect(page.getByLabel('Puzzle result')).toContainText('Best');
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();

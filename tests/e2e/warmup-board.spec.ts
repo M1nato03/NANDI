@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 // with no way on. The warm-up now says so and leads straight to today's board.
 test('a solved warm-up board leads straight to today\'s board', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/#mind');
+  await page.goto('/?e2e#mind');
   await page.getByRole('button', { name: 'Board: not done' }).click();
   await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/Warm-up board · /)).toBeVisible();
