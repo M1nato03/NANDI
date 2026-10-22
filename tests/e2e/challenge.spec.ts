@@ -51,7 +51,8 @@ test("a friend opening today's link plays today's daily board and gets the Today
   await page.getByRole('button', { name: 'Share result' }).click();
   const text = await shared(page);
   expect(text.split('\n')[0]).toMatch(/^NANDI \S+ [A-Za-z &]+ #1 · (Easy|Medium|Hard)$/);
-  const hash = text.slice(text.indexOf('#'));
+  // The 3-line result ends with the full link; the first line's "#1" is the board number, not the link.
+  const hash = text.slice(text.indexOf('#mind/'));
   expect(hash).toMatch(/^#mind\/challenge\/20261023\//);
 
   const friend = await (await browser.newContext({ viewport: { width: 360, height: 800 } })).newPage();

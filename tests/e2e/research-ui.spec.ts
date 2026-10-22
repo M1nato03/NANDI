@@ -3,7 +3,7 @@ import { seedRecapWeek } from './recap-seed';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`night plan and weekly recap in ${scheme}`, async ({ page }) => {
-    await page.clock.install({ time: new Date('2026-10-16T04:10:00') });
+    await page.clock.install({ time: new Date('2026-10-16T06:10:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.addInitScript(() => {
       Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });

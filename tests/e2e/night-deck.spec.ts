@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { seedTaughtTopics } from './learn-helpers';
 
 test('night deck hides the tab bar on a 390x844 phone', async ({ page }) => {
   test.skip(page.viewportSize()?.width !== 390);
@@ -14,7 +15,9 @@ test('night deck hides the tab bar on a 390x844 phone', async ({ page }) => {
 test('night deck is six calm cards with a three item drop and a stopping point', async ({ page }, testInfo) => {
   test.setTimeout(90_000);
   await page.clock.install({ time: new Date('2026-10-17T23:30:00') });
-  await page.goto('/#night');
+  await page.goto('/?e2e#night');
+  // The night drop reviews ideas taught on earlier days (spec 16), so this learner was taught them a week ago.
+  await seedTaughtTopics(page, ['psychology', 'money-markets', 'history-civilisations', 'health-nutrition', 'body-training', 'how-things-work']);
   const deck = page.getByRole('region', { name: 'Now deck' });
   const shot = async (number: number) => {
     if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath(`night-card-${number}-390x844.png`) });
@@ -87,6 +90,22 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await page.clock.setFixedTime(new Date('2026-10-18T04:05:00'));
   await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+});
+
+test('a new learner with nothing taught yet gets a calm empty night drop', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-17T23:30:00') });
+  await page.goto('/#night');
+  const deck = page.getByRole('region', { name: 'Now deck' });
+  await deck.getByRole('button', { name: 'Go to card 2: Night drop' }).click();
+  const card = page.getByRole('article', { name: 'Night drop card' });
+  const pick = page.locator('.learn-topic-tile').first();
+  await expect(pick.or(card.locator('.learn-stop'))).toBeVisible();
+  if (await pick.isVisible()) {
+    await pick.click();
+    await page.getByRole('button', { name: 'Start my first drop' }).click();
+  }
+  await expect(card.locator('.learn-stop')).toContainText('Nothing to review tonight. Sleep is the best study.');
+  await expect(card.getByText('Concepts touched')).toHaveCount(0);
 });
 
 test('hard daily offers a matching easy night practice board', async ({ page }) => {
