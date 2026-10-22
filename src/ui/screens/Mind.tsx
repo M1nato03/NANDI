@@ -7,16 +7,16 @@ import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
-import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { boardNumber, dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
 import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
 import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
 import { noHintClear, parMs } from '../../core/puzzles/mastery';
-import { shareText, shareTile } from '../../core/puzzles/share';
+import { isPersonalBest, resultText, shareTile } from '../../core/puzzles/share';
 import { revealedPanels, currentArcTitle } from '../../core/mysteries';
 import { unlockTechnique } from '../../data/repos/techniques';
-import { shareLink, shareOrDownload } from '../../platform/files';
-import { challengeMessage, challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
+import { challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
+import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
@@ -43,7 +43,7 @@ import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
 import { Kapi } from '../cast/Cast';
 
-type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number; challenge?: boolean };
+type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number; challenge?: boolean; linkDay?: string };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
 const diffs: PuzzleDifficulty[] = ['easy', 'medium', 'hard'];
 const lessonPacks = bundledPacks.filter((pack): pack is Extract<typeof pack, { kind: 'lessons' }> => pack.kind === 'lessons');
@@ -250,11 +250,13 @@ export function Mind({ entry }: { entry?: string }) {
     let live = true;
     const worker = new Worker(new URL('../../workers/puzzle.worker.ts', import.meta.url), { type: 'module' });
     const seed = selection.packSeed ?? (selection.night ? nightPracticeSeed(today, selection.type) : PZ.hash(`${selection.daily ? 'daily' : 'practice'}:${today}:${selection.type}:${selection.diff}${selection.daily ? '' : `:${selection.attempt ?? 0}`}`));
-    worker.onmessage = (event: MessageEvent<{ board?: PuzzleBoard | null; error?: string }>) => {
+    worker.onmessage = (event: MessageEvent<{ board?: PuzzleBoard | null; error?: string; daily?: boolean }>) => {
       if (!live) return;
       if (event.data.error || !event.data.board) { setMessage(event.data.error ?? 'Could not build this board.'); setBusy(false); return; }
       const generated = event.data.board;
-      void openPuzzleRun(db, generated, today, selection.daily, Date.now(), selection.attempt).then(async row => {
+      // Spec 19 D: a friend's link to today's generated board opens the daily run itself (resumed if already solved).
+      const asDaily = selection.daily || event.data.daily === true;
+      void openPuzzleRun(db, generated, today, asDaily, Date.now(), asDaily ? undefined : selection.attempt).then(async row => {
         if (!live) return;
         await writes.current;
         const opened = selection.intro ? { ...row, intro: true } : row;
@@ -267,7 +269,9 @@ export function Mind({ entry }: { entry?: string }) {
       }).catch(error => { setBusy(false); recordError('window', error); setMessage('Could not open the saved board.'); });
     };
     worker.onerror = event => { setBusy(false); setMessage(event.message); recordError('window', event.message); };
-    worker.postMessage(selection.daily ? { kind: 'daily', day: today } : { kind: 'practice', day: today, type: selection.type, diff: selection.diff, seed });
+    worker.postMessage(selection.daily ? { kind: 'daily', day: today }
+      : selection.challenge && selection.linkDay ? { kind: 'friend', day: today, linkDay: selection.linkDay, type: selection.type, diff: selection.diff, seed }
+        : { kind: 'practice', day: today, type: selection.type, diff: selection.diff, seed });
     return () => { live = false; worker.terminate(); };
   }, [selection, today]);
 
@@ -336,9 +340,10 @@ export function Mind({ entry }: { entry?: string }) {
       entryHandled.current = true;
       const challenge = parseChallenge(entry);
       if (challenge) {
-        // A friend's link: the same board, played as practice on this phone.
+        // A friend's link: the same board. Today's board from today's link counts as the daily (the worker checks the
+        // generated seed); old links, other days and other seeds play as practice on this phone.
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
-        setSelection({ type: challenge.type, diff: challenge.diff, daily: false, packSeed: challenge.seed, attempt: 2_000_000 + challenge.seed % 1_000_000, challenge: true });
+        setSelection({ type: challenge.type, diff: challenge.diff, daily: false, packSeed: challenge.seed, attempt: 2_000_000 + challenge.seed % 1_000_000, challenge: true, linkDay: challenge.day });
       } else if (entry === 'board' || entry.startsWith('board/')) {
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
         const [, practiceType, practiceDiff, variant] = entry.split('/');
@@ -379,6 +384,11 @@ export function Mind({ entry }: { entry?: string }) {
   const par = board ? parMs(puzzleRuns, board.type, board.diff) : undefined;
   const panels = revealedPanels(puzzleRuns, today);
   const name = board ? PZ.TYPES[board.type].name : '';
+  // Spec 19 C: one result text. Daily and challenge boards carry the number and the link; practice boards neither.
+  const shareable = !!board && !!run && run.result === 'solved' && (!!run.daily || !!selection?.challenge);
+  const result = board && run?.result === 'solved' ? resultText({ type: board.type, name, diff: board.diff, solveMs: run.solveMs, hintsUsed: run.hintsUsed,
+    number: run.daily ? boardNumber(run.dayKey ?? today) : undefined, best: isPersonalBest(run, puzzleRuns), reply: !!selection?.challenge,
+    link: shareable ? challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed), day: run.daily ? run.dayKey ?? today : selection?.linkDay }) : undefined }) : '';
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('learn')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
@@ -390,11 +400,11 @@ export function Mind({ entry }: { entry?: string }) {
       {(busy || !board || !run) && <p>{message || 'Building board…'}</p>}
     </div>}
     {busy || !board || !run ? <h1>{PZ.TYPES[selection.type].name}</h1> : <>
-      <p className="eyebrow">{selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
+      <p className="eyebrow">{run.daily ? dailyBoardLabel(run.dayKey ?? today, formatDayKey(run.dayKey ?? today)) : selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : `Practice · ${board.diff}`}</p>
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Beat their time.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <><p className="small">{shareText(run, name)}</p><button type="button" className="secondary" onClick={() => void shareTile(run, name).then(file => shareOrDownload(file, shareText(run, name))).catch(error => recordError('window', error))}>Share</button>{(run.daily || selection.challenge) && <button type="button" className="secondary" onClick={() => { void shareLink(challengeMessage(run, name, !!selection.challenge, challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed) }))).then(result => setMessage(result === 'copied' ? 'Challenge copied. Paste it into a chat.' : result === 'failed' ? 'Could not share the challenge.' : '')); }}>{selection.challenge ? 'Send your time back' : 'Challenge a friend'}</button>}</>}</div> : <>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
         <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {

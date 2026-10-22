@@ -23,6 +23,7 @@
             "id": "inflation",
             "title": "Inflation",
             "prerequisites": [],
+            "askLine": "What yearly rise in prices do you think India's central bank aims for?",
             "hook": "Five ₹20 idlis fit a ₹100 note; after each idli becomes ₹25, only four fit. The note has not changed. What did?",
             "hookSourceRefs": [
               "inflation",

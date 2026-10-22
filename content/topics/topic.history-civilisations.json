@@ -824,7 +824,8 @@
                 ],
                 "takeaway": "Indus signs are unread, so ruins carry the story."
               }
-            ]
+            ],
+            "askLine": "What can the old streets and drains of Mohenjo-daro tell us about the people who built it?"
           },
           {
             "id": "ashoka-edicts",

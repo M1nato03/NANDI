@@ -104,6 +104,8 @@ export const RULES = {
     itemIntervalsDays: [0, 21, 45, 90, 180],
     itemRetryDays: { default: 2, teaser: 3 },
     miniMysteryRetiresAfterAnswer: true,
+    // Spec 19 B: "Daily board #1" is this planning day (release day; Jenil may move it).
+    boardNumberEpoch: '2026-10-23',
   },
 
   learningTracks: {

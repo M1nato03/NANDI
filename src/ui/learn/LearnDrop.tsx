@@ -22,6 +22,8 @@ import { findStep } from '../../core/learn/steps';
 import { saveLessonDone } from '../../data/repos/learn-engine';
 import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
 import { useCountUp } from './useCountUp';
+import { askLineFor, askMessage } from '../../core/learn/askLine';
+import { shareNote, shareTextNow, useShareDay } from '../shareActions';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -57,6 +59,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [ideaAgain, setIdeaAgain] = useState(false);
   // A celebration plays only for a drop finished on this screen, never when a finished drop is reopened.
   const [answeredHere, setAnsweredHere] = useState(false);
+  // Spec 19 E: "Ask someone" sits on the daily finish screen in the day window only, and checks the clock again when tapped.
+  const shareDay = useShareDay();
+  const [askNote, setAskNote] = useState('');
   const writing = useRef(false);
   const starting = useRef(false);
   const ids = chosenTopics(data?.setting?.value);
@@ -231,12 +236,14 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const passed = right >= RULES.gamify.goldReviewPass;
     const friends = [...new Set(drop.items.map(item => dropCast(item.mode === 'review' || reviewDue, true).name))];
     const celebrate = answeredHere && !night && drop.items.length > 0 && (!goldReview || passed);
+    const askOffered = daily && !night && !goldReview && drop.items.length > 0 && shareDay;
+    const askLine = askOffered ? askLineFor(touched, data.concepts, currentTime(), taughtToday ? [taughtToday.concept.id] : []) : undefined;
     return <div className={`learn-drop learn-stop${celebrate ? ' learn-celebrate' : ''}`}>{celebrate && <FinishBurst />}<span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : goldReview ? 'Gold review complete' : "That's your practice drop"}</h2>
       {celebrate && <div className="learn-finish-friends" aria-hidden="true">{friends.map((name, index) => <span key={name} style={{ '--i': index } as CSSProperties}><Cast name={name} pose="cheer" size={64} /></span>)}</div>}
       {goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <>
         {taughtToday && <div className="step-today card"><p className="eyebrow">Today's idea · {taughtToday.step.title}</p><p className="step-takeaway">{taughtToday.step.takeaway}</p><StepVisual visual={taughtToday.step.visual} /></div>}
         {questions > 0 && <FinishStats run={celebrate} stats={[[questions, 'questions'], [right, 'right'], [touched.length, touched.length === 1 ? 'idea' : 'ideas']]} />}
-        <p>{taughtToday ? (questions ? `1 new idea · ${questions} ${questions === 1 ? 'question' : 'questions'}.` : '1 new idea.') : `${questions} questions explored.`} {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p className="learn-perfect">Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map((concept, index) => <span className="learn-chip" key={concept.id} style={{ '--i': index } as CSSProperties}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} (${progressWord(masteryMapState(data.concepts.find(row => row.id === concept.id)))})`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due && dayKey(due) > dayKey(now) ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : due ? 'later today' : 'check back tomorrow'}.</p></>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
+        <p>{taughtToday ? (questions ? `1 new idea · ${questions} ${questions === 1 ? 'question' : 'questions'}.` : '1 new idea.') : `${questions} questions explored.`} {daily || night ? 'Come back when the ideas have had time to settle.' : 'Practice is optional. Your daily drop stays finished.'}</p>{daily && perfectDrop(data.ledger, drop.id, questions) && <p className="learn-perfect">Perfect drop · +{RULES.gamify.perfectDropXp} XP</p>}<h3>Concepts touched</h3><div className="learn-chips">{touched.map((concept, index) => <span className="learn-chip" key={concept.id} style={{ '--i': index } as CSSProperties}>{concept.title}</span>)}</div><p>What improved: {improved.length ? improved.map(concept => `${concept.title} (${progressWord(masteryMapState(data.concepts.find(row => row.id === concept.id)))})`).join(', ') : 'you made a first attempt'}.</p><p>Next review: {due && dayKey(due) > dayKey(now) ? new Date(due).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : due ? 'later today' : 'check back tomorrow'}.</p></>}{askOffered && <div className="learn-ask">{askLine && <button type="button" className="text-button learn-ask-button" onClick={() => void shareTextNow(askMessage(askLine), undefined, { dialogTitle: 'Ask someone' }).then(sent => setAskNote(shareNote(sent)))}>Ask someone</button>}<p className="small">Or try it on someone at lunch.</p>{askNote && <p role="status">{askNote}</p>}</div>}<button type="button" onClick={onDone ?? (() => go('learn'))}>Continue</button></div>;
   }
   if (step.lesson) {
     const taught = findStep(concepts, step.lesson);

@@ -118,10 +118,11 @@ export function pickFile(): Promise<File | null> {
 }
 
 /** Shares a short message that carries its own link (WhatsApp and friends); falls back to copying it. */
-export async function shareLink(text: string): Promise<'shared' | 'copied' | 'cancelled' | 'failed'> {
+export async function shareLink(text: string, options: Pick<ShareOptions, 'title' | 'dialogTitle'> = {}): Promise<'shared' | 'copied' | 'cancelled' | 'failed'> {
+  const title = options.title ?? 'NANDI';
   try {
-    if (Capacitor.isNativePlatform()) { await Share.share({ title: 'NANDI challenge', text, dialogTitle: 'Challenge a friend' }); return 'shared'; }
-    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') { await navigator.share({ title: 'NANDI challenge', text }); return 'shared'; }
+    if (Capacitor.isNativePlatform()) { await Share.share({ title, text, dialogTitle: options.dialogTitle ?? 'Share result' }); return 'shared'; }
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') { await navigator.share({ title, text }); return 'shared'; }
   } catch (error) {
     if (error !== null && typeof error === 'object' && (('name' in error && error.name === 'AbortError') || ('message' in error && String(error.message).toLowerCase().includes('cancel')))) return 'cancelled';
   }

@@ -712,7 +712,8 @@
                 ],
                 "takeaway": "Healthy adults need about 0.83 g of protein per kg daily."
               }
-            ]
+            ],
+            "askLine": "Why do Indian meals so often put dal next to a grain like roti, beyond the taste?"
           },
           {
             "id": "free-sugars",

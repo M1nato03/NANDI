@@ -41,6 +41,8 @@ export const topicStepSchema = v.strictObject({
 export const topicConceptSchema = v.strictObject({
   id: text, title: text, prerequisites: strings,
   hook: v.pipe(text, v.maxLength(280)), hookSourceRefs: v.pipe(strings, v.minLength(1)),
+  // Spec 19 E: an editor-written question to send a friend after the lesson; answer-free (checked in validate.ts).
+  askLine: v.optional(v.pipe(text, v.maxLength(140), v.endsWith('?'))),
   rule: v.pipe(text, v.maxLength(280)), ruleSourceRefs: v.pipe(strings, v.minLength(1)),
   claims: v.pipe(v.array(claim), v.minLength(1)),
   items: v.pipe(v.array(topicItemSchema), v.minLength(1)),

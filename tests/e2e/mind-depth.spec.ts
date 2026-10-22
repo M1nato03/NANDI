@@ -65,5 +65,6 @@ test('share is hidden after bedtime with the clock pinned', async ({ page }) => 
   await page.clock.runFor(1100);
   await page.evaluate(() => (window as Window & { __nandiCaseTest?: { solveTodaysCase: () => void } }).__nandiCaseTest!.solveTodaysCase());
   await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Share', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Share result' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Share as image' })).toHaveCount(0);
 });

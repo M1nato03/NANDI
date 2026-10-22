@@ -71,7 +71,7 @@ test("Sharpen my mind opens today's board, and Get fit can start easy without th
   let welcome = await hello(page);
   await welcome.getByRole('button', { name: 'Sharpen my mind' }).click();
   await welcome.getByRole('button', { name: "Try today's puzzle" }).click();
-  await expect(page.getByText(/Daily board · /)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText(/Daily board (#\d+ )?· /)).toBeVisible({ timeout: 30_000 });
 
   await page.evaluate(() => indexedDB.deleteDatabase('nandi'));
   await page.goto('/?e2e&welcome');

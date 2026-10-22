@@ -155,3 +155,8 @@
 .mind-technique-locked h3 { margin: 0 0 6px; font-size: 14px; color: var(--ink-2); }
 .mind-technique-locked ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .mind-technique-locked li { padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink-3); font-size: 13px; }
+
+/* Spec 19 C: the shared result text keeps its three lines; the image share is the quieter second action. */
+.mind-share { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.mind-share-text { flex-basis: 100%; white-space: pre-line; overflow-wrap: anywhere; margin: 0; }
+.mind-share .mind-share-image { font-size: .9rem; font-weight: 500; }

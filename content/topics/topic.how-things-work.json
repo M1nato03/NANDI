@@ -23,6 +23,7 @@
             "id": "lift",
             "title": "Lift",
             "prerequisites": [],
+            "askLine": "A paper plane has no engine. So what keeps it up in the air while it glides?",
             "hook": "A paper glider has no engine, yet its wing can hold it up while air moves past. When it slows, that upward force fades.",
             "hookSourceRefs": [
               "lift"
