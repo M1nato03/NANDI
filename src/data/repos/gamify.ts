@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeClose } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeCloseMaps } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -11,11 +11,24 @@ import type { NandiDb } from '../db';
 import type { LedgerRow } from '../types';
 
 /** Reconcile derived achievements into immutable, idempotent award facts. */
-export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
+let running: Promise<void> | null = null;
+let queued: { db: NandiDb; now: number } | null = null;
+let queuedRun: Promise<void> | null = null;
+export function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
   // A restore clears and refills the tables; the app runs this again once it has finished. A restore that
   // starts while this runs waits for it (the whole run counts, from its first await).
-  if (restoreActive()) return;
-  return asReconcile(() => reconcileOnce(db, now));
+  if (restoreActive()) return Promise.resolve();
+  // A burst of writes runs one reconcile now and at most one more after it, with the latest clock (review 32).
+  if (running) {
+    queued = { db, now };
+    return queuedRun ??= running.catch(() => undefined).then(() => {
+      const next = queued!; queued = null; queuedRun = null;
+      return reconcileGamify(next.db, next.now);
+    });
+  }
+  const run = asReconcile(() => reconcileOnce(db, now)).finally(() => { if (running === run) running = null; });
+  running = run;
+  return run;
 }
 
 async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
@@ -60,11 +73,12 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // A close dated today or later came from a clock that was set ahead: that day has not ended, so drop it.
     for (const row of rows.filter(item => item.key.startsWith(CLOSE_PREFIX) && item.key.slice(CLOSE_PREFIX.length) >= today)) await db.settings.delete(row.key);
     const oldest = addEconomyDays(today, -120);
-    for (const [day, candidate] of closesFor(facts, rows, today)) {
-      const existing = rows.find(row => row.key === closeKey(day) && !row.deleted)?.value;
-      if (day < oldest && existing === undefined) continue;
-      const merged = mergeClose(existing, candidate);
-      if (merged && JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
+    const stored = new Map(rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
+    // Days older than 120 that were never closed stay unclosed; their purchases move to the next closed day.
+    const candidates = new Map([...closesFor(facts, rows, today)].filter(([day]) => day >= oldest || stored.has(day)));
+    for (const [day, merged] of mergeCloseMaps(new Map([...stored].filter(([day]) => day < today)), candidates)) {
+      const existing = stored.get(day);
+      if (JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
     }
   }));
 }
