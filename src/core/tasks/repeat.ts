@@ -15,10 +15,12 @@ export function nextRepeatDay(repeat: Repeat, taskDay: string, today: string): s
   return next;
 }
 
-/** Moves a start time to the same local clock on another day. */
+/** Moves a start time to the same local clock on another planning day. The planning day runs 04:00 to 04:00,
+ * so a 00:30 start belongs to the night after `day` and lands on the next calendar date. */
 export function sameTimeOn(start: number, day: string): number {
   const from = new Date(start);
   const to = new Date(`${day}T00:00:00`);
   to.setHours(from.getHours(), from.getMinutes(), 0, 0);
+  if (from.getHours() < 4) to.setDate(to.getDate() + 1);
   return to.getTime();
 }
