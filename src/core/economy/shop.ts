@@ -1,5 +1,5 @@
 import { RULES } from '../rules.config';
-import { deriveEconomy, seasonIndex } from './deriveEconomy';
+import { deriveEconomy, seasonIndex, type EconomyView } from './deriveEconomy';
 import type { RulesHistoryEntry } from '../rules.config';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
@@ -34,10 +34,11 @@ export function catalogue(day: string): ShopItem[] {
   const ids: readonly string[] = SHOP_CATALOGUES[seasonIndex(day) % 4]!;
   return ids.map(id => SHOP_ITEMS.find(item => item.id === id)!);
 }
-export function purchaseDecision(itemId: string, facts: readonly LedgerRow[], settings: readonly SettingRow[], today: string, history?: readonly RulesHistoryEntry[]): { ok: boolean; reason?: string; item?: ShopItem } {
+/** `derived` lets a screen that lists every item derive the economy once (item 38). */
+export function purchaseDecision(itemId: string, facts: readonly LedgerRow[], settings: readonly SettingRow[], today: string, history?: readonly RulesHistoryEntry[], derived?: EconomyView): { ok: boolean; reason?: string; item?: ShopItem } {
   const item = catalogue(today).find(row => row.id === itemId);
   if (!item) return { ok: false, reason: 'This item is not in this season.' };
-  const economy = deriveEconomy(facts, history, settings, today);
+  const economy = derived ?? deriveEconomy(facts, history, settings, today);
   if (item.kind !== 'freeze' && economy.owned.includes(itemId)) return { ok: false, reason: 'Already yours.' };
   if (item.kind === 'freeze' && economy.streak.restDays >= RULES.streak.restBankMax) return { ok: false, reason: 'Your rest bank is full.' };
   if (economy.shards < item.price) return { ok: false, reason: `You need ${item.price - economy.shards} more Shards.` };

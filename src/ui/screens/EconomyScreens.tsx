@@ -103,7 +103,7 @@ export function SeasonShop() {
     finally { setBusy(false); }
   };
   return <section className="screen economy-shop"><p className="eyebrow">Your season</p><h1>Shop</h1><p>{economy.view.shards} Shards ready</p><div className="shop-list">{catalogue(economy.today).map(item => {
-    const decision = purchaseDecision(item.id, economy.facts, economy.settings, economy.today);
+    const decision = purchaseDecision(item.id, economy.facts, economy.settings, economy.today, undefined, economy.view);
     const owned = economy.view.owned.includes(item.id);
     return <section className="card shop-item" key={item.id}><div><span className="eyebrow">{item.kind === 'freeze' ? 'Rest day' : item.kind.replace(/([A-Z])/g, ' $1')}</span><h2>{item.name}</h2><p>{item.description}</p></div><button type="button" disabled={busy || !decision.ok} onClick={() => void buy(item.id)}>{owned ? 'Owned' : `${item.price} Shards`}</button>{!decision.ok && !owned && <p className="small">{decision.reason}</p>}</section>;
   })}</div>{message && <p role="status">{message}</p>}</section>;

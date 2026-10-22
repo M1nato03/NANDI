@@ -144,6 +144,32 @@ describe('clock moved back (cj2 test gaps 3.5)', () => {
     // Once the real clock reaches the last fact day, nothing is charged twice.
     expect(deriveEconomy(bought, undefined, v3, caughtUp).shards).toBe(deriveEconomy(ahead, undefined, v3, caughtUp).shards - 50);
   });
+  it('item 38: a purchase made while the clock was ahead is charged, so the same Shards cannot buy twice', () => {
+    const today = '2026-11-20';
+    // Earn between 50 and 99 Shards by today.
+    let earned: LedgerRow[] = [];
+    for (let i = 0; i < 40; i++) {
+      earned = [...earned, ...hatTrick(new Date(Date.UTC(2026, 10, 2 + i)).toISOString().slice(0, 10))];
+      if (deriveEconomy(earned, undefined, v3, today).shards >= 50) break;
+    }
+    const shards = deriveEconomy(earned, undefined, v3, today).shards;
+    expect(shards).toBeGreaterThanOrEqual(50);
+    expect(shards).toBeLessThan(100);
+    // The clock ran ahead to the 22nd, a rest day was bought there, then the clock was set back.
+    const bought = [...earned, row('2026-11-22', 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })];
+    expect(deriveEconomy(bought, undefined, v3, today).shards).toBe(shards - 50);
+    expect(purchaseDecision('freeze', bought, v3, today).ok).toBe(false);
+  });
+
+  it('item 38: the stored peak is a floor for XP and level', () => {
+    const facts = [task('2026-11-03')];
+    const plain = deriveEconomy(facts, undefined, v3, '2026-11-03');
+    const floored = deriveEconomy(facts, undefined, [...v3, setting('economy.peak', { totalXp: plain.totalXp + 900, level: plain.level + 3 })], '2026-11-03');
+    expect(floored.totalXp).toBe(plain.totalXp + 900);
+    expect(floored.level).toBe(plain.level + 3);
+    expect(floored.nextLevelXp).toBeGreaterThan(plain.nextLevelXp);
+  });
+
   it('a stray fact years ahead does not make the replay walk years of days', () => {
     const facts = [task('2026-10-20'), task('2031-01-01')];
     const started = performance.now();

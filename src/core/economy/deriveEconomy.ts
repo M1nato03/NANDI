@@ -250,16 +250,32 @@ export function deriveEconomy(
   facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[] = RULES_HISTORY,
   settings: readonly SettingRow[] | Record<string, unknown> = [], today: string,
 ): EconomyView {
-  const view = viewUpTo(facts, history, settings, today);
+  const view = withPeak(viewUpTo(facts, history, settings, today), settings, history, today);
   // A phone clock that ran ahead and was set back leaves facts dated after today. Days, streak, quests and
-  // Hat-tricks stay on the real today, but the totals also count those facts, so XP, level and Shards never
-  // drop (cj2 test gaps 3.5). The look-ahead stops at 120 days, so a stray far-future fact costs little.
+  // Hat-tricks stay on the real today, but the totals also count those facts, so XP and level never drop
+  // (cj2 test gaps 3.5). The look-ahead stops at 120 days, so a stray far-future fact costs little.
   const latest = facts.reduce((max, fact) => !fact.deleted && fact.dayKey > max ? fact.dayKey : max, today);
   if (latest <= today) return view;
   const ahead = viewUpTo(facts, history, settings, latest <= addEconomyDays(today, 120) ? latest : addEconomyDays(today, 120));
   const top = ahead.totalXp > view.totalXp ? ahead : view;
+  // Shards shown and spendable come from the look-ahead alone: it also charges purchases dated ahead, so the
+  // same Shards can never buy twice (item 38). Owned items keep both.
   return { ...view, totalXp: top.totalXp, level: Math.max(view.level, ahead.level), nextLevelXp: top.nextLevelXp,
-    shards: Math.max(view.shards, ahead.shards), owned: [...new Set([...view.owned, ...ahead.owned])] };
+    shards: ahead.shards, owned: [...new Set([...view.owned, ...ahead.owned])] };
+}
+
+/** The highest XP and level this phone has shown (written by reconcile); a floor for anything a replay cannot see. */
+export const PEAK_KEY = 'economy.peak';
+export function readPeak(settings: readonly SettingRow[] | Record<string, unknown>): { totalXp: number; level: number } {
+  const stored = value(settings, PEAK_KEY);
+  const peak = stored && typeof stored === 'object' ? stored as { totalXp?: unknown; level?: unknown } : {};
+  return { totalXp: typeof peak.totalXp === 'number' && Number.isFinite(peak.totalXp) ? peak.totalXp : 0, level: typeof peak.level === 'number' && Number.isFinite(peak.level) ? peak.level : 1 };
+}
+function withPeak(view: EconomyView, settings: readonly SettingRow[] | Record<string, unknown>, history: readonly RulesHistoryEntry[], today: string): EconomyView {
+  const peak = readPeak(settings);
+  if (peak.totalXp <= view.totalXp && peak.level <= view.level) return view;
+  const level = Math.max(view.level, peak.level);
+  return { ...view, totalXp: Math.max(view.totalXp, peak.totalXp), level, nextLevelXp: level > view.level ? xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase) : view.nextLevelXp };
 }
 
 function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[], settings: readonly SettingRow[] | Record<string, unknown>, end: string): EconomyView {

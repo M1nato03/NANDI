@@ -213,3 +213,18 @@ it('a drop counts as late by the fact that finished it, retention checks include
     expect(questPool.find(quest => quest.id === 'drop')!.count(facts, day), entry.name).toBe(entry.flagged ? 0 : 1);
   }
 });
+
+it('reconcile raises the XP and level peak, and a restore keeps the higher peak (item 38)', async () => {
+  const { PEAK_KEY } = await import('../../core/economy/deriveEconomy');
+  const db = createDb(`gamify-peak-${++serial}`); opened.push(db);
+  await db.ledger.add({ id: 'done:a', mode: 'tasks', kind: 'done', refId: 'a', dayKey: '2026-11-03',
+    inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at('2026-11-03'), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-03', '18:00'));
+  const first = (await db.settings.get(PEAK_KEY))!.value as { totalXp: number; level: number };
+  expect(first.totalXp).toBeGreaterThan(0);
+  // An older backup with a lower peak does not lower this phone's.
+  const older = createDb(`gamify-peak-old-${++serial}`); opened.push(older);
+  await older.settings.put({ key: PEAK_KEY, value: { totalXp: 1, level: 1 }, updatedAt: 1, deleted: 0, deviceId: 'old' });
+  await importBackup(db, await exportBackup(older, at('2026-11-01')));
+  expect((await db.settings.get(PEAK_KEY))!.value).toEqual(first);
+});

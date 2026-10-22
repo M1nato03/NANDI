@@ -67,8 +67,22 @@ describe('teach first (spec 14)', () => {
     }
     expect(counts[0]).toBe(0);
     expect(counts[1]).toBeGreaterThanOrEqual(2);
-    expect(counts.slice(3).every(count => count === 3)).toBe(true);
+    // Right answers come back only once spaced (3+ days), so the tail is full from day 5.
+    expect(counts.slice(1, 4).every(count => count >= 2)).toBe(true);
+    expect(counts.slice(4).every(count => count === 3)).toBe(true);
     expect(counts.reduce((sum, count) => sum + count, 0)).toBeGreaterThanOrEqual(15);
+  });
+
+  it('item 38: a right answer waits for its spacing, and a reset idea is not practised', () => {
+    const items = catalogFor(['psychology']).flatMap(concept => concept.items);
+    const taughtOn = { 'habits-s1': '2026-10-15' };
+    const s1 = items.filter(item => item.step === 'habits-s1');
+    const yesterday = s1.map((item, index) => ({ itemId: item.id, correct: true, at: now - 86_400_000 + index, day: '2026-10-21' }));
+    expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, answers: yesterday }).items.slice(1)).toEqual([]);
+    const longAgo = s1.map((item, index) => ({ itemId: item.id, correct: true, at: now - 5 * 86_400_000 + index, day: '2026-10-17' }));
+    expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, answers: longAgo }).items.slice(1).length).toBeGreaterThan(0);
+    const reset = { ...started('habits'), deleted: 1 };
+    expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, concepts: [reset] }).items.slice(1)).toEqual([]);
   });
 
   it('a wrong answer comes back first in the next tail', () => {

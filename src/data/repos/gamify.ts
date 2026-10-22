@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -64,7 +64,11 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     }
     // Record today's welcome-back gift once shown, so a later sync can never take it away.
     const settings = await db.settings.toArray();
-    if (deriveEconomy(facts, undefined, settings, today).days.at(-1)?.welcome) await add('welcome-back', today, today);
+    const shown = deriveEconomy(facts, undefined, settings, today);
+    if (shown.days.at(-1)?.welcome) await add('welcome-back', today, today);
+    // Raise the never-lower peak of XP and level (item 38): a floor for facts the replay cannot see later.
+    const peak = readPeak(settings);
+    if (shown.totalXp > peak.totalXp || shown.level > peak.level) await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(shown.totalXp, peak.totalXp), level: Math.max(shown.level, peak.level) }, updatedAt: now, deleted: 0, deviceId });
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
     if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`))) await add('focus-boost', today, today);
     const states = await db.learnConcepts.toArray();

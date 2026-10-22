@@ -93,12 +93,19 @@ export interface TailPick { item: TopicConcept['items'][number]; conceptId: stri
  * ordered so one step (and one idea) is not back to back while another is waiting.
  */
 export function practiceTail(input: { catalog: readonly TopicConcept[]; taughtOn: Readonly<Record<string, string>>; today: string;
-  answers: readonly TailAnswer[]; started: ReadonlySet<string>; max: number }): TailPick[] {
+  answers: readonly TailAnswer[]; started: ReadonlySet<string>; max: number; due?: ReadonlySet<string>; removed?: ReadonlySet<string> }): TailPick[] {
   const last = new Map<string, TailAnswer>();
   for (const answer of input.answers) if (!last.has(answer.itemId) || last.get(answer.itemId)!.at <= answer.at) last.set(answer.itemId, answer);
   type Candidate = TailPick & { step: string; taughtOn: string; order: number; lastAt: number };
   const pool: Candidate[] = [];
+  const spacedOut = (day: string | undefined) => {
+    if (!day) return true;
+    const gap = (Date.parse(`${input.today}T12:00:00Z`) - Date.parse(`${day}T12:00:00Z`)) / 86_400_000;
+    return gap >= 3;
+  };
   for (const concept of input.catalog) {
+    // A concept whose saved state was removed (reset) is not practised from old answers.
+    if (input.removed?.has(concept.id)) continue;
     concept.items.forEach((item, order) => {
       let taughtOn = '';
       if (concept.steps?.length) {
@@ -113,7 +120,8 @@ export function practiceTail(input: { catalog: readonly TopicConcept[]; taughtOn
   const answer = (c: Candidate) => last.get(c.item.id)!;
   const wrong = pool.filter(c => c.asked && !answer(c).correct).sort((a, b) => a.lastAt - b.lastAt);
   const fresh = pool.filter(c => !c.asked).sort((a, b) => a.taughtOn.localeCompare(b.taughtOn) || a.step.localeCompare(b.step) || a.order - b.order);
-  const right = pool.filter(c => c.asked && answer(c).correct && (answer(c).day ?? '') < input.today).sort((a, b) => a.lastAt - b.lastAt);
+  // A right answer comes back only when its spacing is due: the idea's review is due, or 3+ days have passed (item 38).
+  const right = pool.filter(c => c.asked && answer(c).correct && (answer(c).day ?? '') < input.today && (input.due?.has(c.conceptId) || spacedOut(answer(c).day))).sort((a, b) => a.lastAt - b.lastAt);
   // Within one tier, take ideas in turn so the tail spreads across ideas when it can.
   const spread = (tier: Candidate[]) => {
     const queues = new Map<string, Candidate[]>();

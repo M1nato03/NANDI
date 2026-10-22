@@ -79,7 +79,9 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
         // Spec 16 §6: the daily tail draws up to 3 questions from every step taught on an earlier day,
         // wrong answers first, then never-asked items; a right answer is not asked again while one is unasked.
         const tail = practiceTail({ catalog: fullCatalog, taughtOn: Object.fromEntries([...taught].map(stepId => [stepId, input.taughtOn?.[stepId] ?? '0000-00-00'])),
-          today, answers: input.answers ?? [], started: new Set(Object.keys(conceptState)), max: RULES.learningTracks.lessonReviews })
+          today, answers: input.answers ?? [], started: new Set(Object.keys(conceptState)), max: RULES.learningTracks.lessonReviews,
+          due: new Set(Object.values(conceptState).filter(state => !!state.memory && state.memory.dueAt <= input.now).map(state => state.conceptId)),
+          removed: new Set(input.concepts.filter(row => row.deleted).map(row => row.id)) })
           .map(pick => ({ itemId: pick.item.id, conceptId: pick.conceptId, optionOrder: orderOptions(pick.item, input.now % 1_000_000), mode: pick.asked ? 'review' as const : 'new' as const }));
         return { id, items: [...taughtFirst, ...tail], cursor: 0, ending: { kind: 'stopping-screen' } };
       }

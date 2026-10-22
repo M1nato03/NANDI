@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { CLOSE_PREFIX, closeKey, mergeCloseMaps } from '../../core/economy/deriveEconomy';
+import { CLOSE_PREFIX, closeKey, mergeCloseMaps, PEAK_KEY, readPeak } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -217,6 +217,7 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
       .filter((row): row is SettingRow => row !== undefined);
     const localCutoffs = (await db.settings.bulkGet(cutoffKeys)).filter((row): row is SettingRow => row !== undefined && !row.deleted);
+    const localPeak = await db.settings.get(PEAK_KEY);
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
     const closes = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     // dexie-export-import expects its own JSON, without the NANDI envelope.
@@ -229,6 +230,12 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
     await db.settings.bulkPut([...localSettings, ...localCutoffs]);
+    // The XP and level peak keeps the higher of this phone's and the backup's (item 38).
+    const restoredPeak = await db.settings.get(PEAK_KEY);
+    if (localPeak && !localPeak.deleted) {
+      const mine = readPeak([localPeak]), theirs = restoredPeak && !restoredPeak.deleted ? readPeak([restoredPeak]) : { totalXp: 0, level: 1 };
+      await db.settings.put({ ...localPeak, value: { totalXp: Math.max(mine.totalXp, theirs.totalXp), level: Math.max(mine.level, theirs.level) } });
+    }
     const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     const template = closes[0] ?? restoredCloses[0];
