@@ -27,6 +27,7 @@ test('a solved daily board becomes a link that opens the same board for a friend
   await expect(friend.getByRole('button', { name: 'Send your time back' })).toBeVisible();
   // Their next visit still gets the first run, with its 18+ tick (spec 18).
   await friend.goto('/?e2e&welcome#plan');
+  await friend.reload(); // only the hash changed, so load the app again like a new visit
   await expect(friend.getByRole('dialog', { name: 'Welcome to NANDI' })).toBeVisible();
   await expect(friend.getByRole('button', { name: "Let's start" })).toBeDisabled();
 });
