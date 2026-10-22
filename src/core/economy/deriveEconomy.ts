@@ -140,6 +140,22 @@ export function mergeCloseMaps(a: ReadonlyMap<string, unknown>, b: ReadonlyMap<s
   }
   return out;
 }
+/**
+ * reconcileGamify's window: a day older than `oldest` that was never closed stays unclosed, and its purchases
+ * move to the next kept day, so no purchase ever leaves the closes (Codex pass 4, item 2).
+ */
+export function keptCandidates(candidates: ReadonlyMap<string, DayClose>, stored: ReadonlyMap<string, unknown>, oldest: string): Map<string, DayClose> {
+  const kept = new Map([...candidates].filter(([day]) => day >= oldest || stored.has(day)));
+  const keptDays = [...kept.keys()].sort(dayOrder);
+  for (const [day, close] of candidates) {
+    if (kept.has(day)) continue;
+    for (const item of close.purchases) {
+      const host = keptDays.find(candidate => candidate >= item.dayKey);
+      if (host) kept.set(host, { ...kept.get(host)!, purchases: [...kept.get(host)!.purchases, item] });
+    }
+  }
+  return kept;
+}
 function readCloses(settings: readonly SettingRow[] | Record<string, unknown>, today: string): Map<string, DayClose> {
   const rows: [string, unknown][] = Array.isArray(settings)
     ? (settings as SettingRow[]).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key, row.value])
