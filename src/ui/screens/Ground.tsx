@@ -123,6 +123,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
-    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
+    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><a className="secondary ui-list-row" href="privacy.html">Privacy notice</a><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
   </div>;
 }
