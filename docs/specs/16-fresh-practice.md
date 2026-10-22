@@ -127,3 +127,42 @@ feeling Jenil reported.
   and drop the second guided try. This is less writing, not more.
 - **Gate:** the same learner walk-through, now on a simulated week (day 1 lesson, days 2–7 drops), because freshness is
   felt across the week, not inside one JSON idea.
+
+## 6. Addendum, 23 Oct: the your-turn tail starves the learner (fix before Jenil's week)
+
+Measured by the cloud lesson walk on `origin/learn-steps` (`docs/reviews/cj2-lesson-walk.md` on
+`ideas/cj2-lesson-walk`, worst moments 1 and 2): a one-topic learner answers **2 questions in 8 days** (0, 1, 0 … 1).
+No topic asked anything about step 3 by day 8, and day 8 **re-asked the exact item from day 2** while 5 other taught
+items of that idea were never shown. A day takes about 108 s instead of the planned 4 minutes. The week kill test cannot
+work on 2 data points. Cause: the engine reads §5 rule 2 as "one review per earlier idea". A learner in one topic meets
+one idea every 3 days, so the tail has 0–1 candidates.
+
+### The tail rule (replaces §5 rule 2 for the count; interleaving stays the preference)
+- **Pool:** every practice item of every step taught on an **earlier** day, in any idea or topic. Today's step's own
+  items still wait until tomorrow (§5 rule 3).
+- **Size:** up to **3** questions after the lesson (setting `learn.tailMax: 3`). Day 1 stays lesson-only.
+- **Order of choice:** (1) items answered wrong whose review is due; (2) **never-asked** items, oldest taught step
+  first; (3) due spaced reviews of items answered right. An item answered right is never re-asked while a never-asked
+  taught item exists (fixes the day 2 → day 8 repeat).
+- **Mixing:** prefer different ideas back to back; if only one idea has candidates, allow it, but never two items of
+  the **same step** in a row, and at most 2 items of one step per day.
+- Expected for a one-topic learner (2 items per step): day 2 → 2 (s1), day 3 → 2–3 (s2 + review), day 4 onward → 3.
+  About **18 questions in 8 days** instead of 2, still about 3–4 minutes a day.
+
+### Lesson fixes from the same walk (content + UI, builder)
+- **Scale diagrams:** labels overprint or run off the card. **26 of 35** are flagged by the walk's static check; the 4
+  it walked were all broken, and one widened the page to 373 px on a 360 px phone. Draw marks as a short list under the
+  bar, and add a validator rule for label length vs spacing.
+- **Flows** (48 of 54 wrap with arrows at line ends): draw as a vertical list at phone width.
+- **Show me:** at least 3 tappable parts (15 of 162 have 2, a coin flip); chips flow inline like a sentence.
+- **Teach cards:** the spec says ≤ 30 words; the validator allows 40 and 116 of 162 are over 30. Set the validator to
+  30 and cut (move a second claim into the guided try).
+- **Guided tries:** about 14 of 24 walked can be answered with no lesson. Each needs one distractor that states the
+  misconception the step fixes. The History d1 try tests a detail (which part of the city), not the idea (a grid shows a
+  plan).
+- **Copy:** explain "newtons" or avoid it; "middle 66" → "half of people took more than 66 days"; keep "speed times
+  speed" everywhere; replace the cricket side-bet example (reads as match-betting) with a non-betting trade.
+
+### Kill test (unchanged in spirit)
+Jenil's week on the phone with this tail: guided first-try 85–95%, your-turn about 80%, and his own verdict on
+"same question again". If the tail still repeats or feels thin, the next step is more items per step, not more rules.
