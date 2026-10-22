@@ -817,7 +817,7 @@
                   "zulu",
                   "tug"
                 ],
-                "stem": "At a college drone club, one rotor of a four-rotor drone fails in a hover. Each rotor can give at most 30% of the weight. Predict what happens.",
+                "stem": "At a college drone club, one rotor of a four-rotor drone stops in a hover. Each rotor can give at most 30% of the weight. Predict what happens.",
                 "options": [
                   {
                     "id": "a",

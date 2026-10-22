@@ -6766,7 +6766,7 @@
                 "sourceRefs": [
                   "rbi-fraud"
                 ],
-                "stem": "Riya saw a UPI debit she never made, so she called her bank at once and blocked UPI. The scammer tried two more debits, but both failed. What made the difference?",
+                "stem": "Riya saw a UPI debit she never made, so she called her bank at once and blocked UPI. The scammer tried two more debits, but both were blocked. What made the difference?",
                 "options": [
                   {
                     "id": "a",
@@ -6790,7 +6790,7 @@
                     "id": "c",
                     "text": "The scammer gave up after one try.",
                     "correct": false,
-                    "feedback": "The scammer did try again. Those debits failed because she had already told her bank and blocked UPI.",
+                    "feedback": "The scammer did try again. Those debits were blocked because she had already told her bank and blocked UPI.",
                     "sourceRefs": [
                       "rbi-fraud"
                     ]
@@ -6967,7 +6967,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (RBI press release 28 Jan 2022: receipt of money needs no QR scan or MPIN, collect request misuse with enter UPI PIN to receive, never share PIN or OTP even with bank officials, KYC blocking threats, tell bank and block debits incl. UPI); spec 16 rewrite 2026-10-22: person-to-person collect requests ended 1 Oct 2025 (Business Today quoting the NPCI circular: \"By October 1, 2025, UPI P2P Collect shall not be allowed\"), so the collect-request step is gone; NPCI fraud page rendered and re-read (\"scanning a QR code and entering a UPI PIN is only meant for making payments, not receiving them\"); RBI page re-read (\"Do not download any unknown app\"); Sanchar Saathi Chakshu page opened (\"report at cyber crime helpline 1930 or cybercrime.gov.in\"); dead NPCI FAQ link removed; spec 16 fix-up 2026-10-22: upi-scams-15 rewritten as a reverse (work back from two failed debits to the fast block); upi-scams-16 relabelled misconception (reports are not only for money taken)"
+              "checker": "builder content agent source check 2026-10-21 (RBI press release 28 Jan 2022: receipt of money needs no QR scan or MPIN, collect request misuse with enter UPI PIN to receive, never share PIN or OTP even with bank officials, KYC blocking threats, tell bank and block debits incl. UPI); spec 16 rewrite 2026-10-22: person-to-person collect requests ended 1 Oct 2025 (Business Today quoting the NPCI circular: \"By October 1, 2025, UPI P2P Collect shall not be allowed\"), so the collect-request step is gone; NPCI fraud page rendered and re-read (\"scanning a QR code and entering a UPI PIN is only meant for making payments, not receiving them\"); RBI page re-read (\"Do not download any unknown app\"); Sanchar Saathi Chakshu page opened (\"report at cyber crime helpline 1930 or cybercrime.gov.in\"); dead NPCI FAQ link removed; spec 16 fix-up 2026-10-22: upi-scams-15 rewritten as a reverse (work back from two blocked debits to the fast block); upi-scams-16 relabelled misconception (reports are not only for money taken)"
             },
             "steps": [
               {

@@ -1534,7 +1534,7 @@
               },
               {
                 "id": "hydration-cues-c4",
-                "text": "Fluid needs rise in very hot weather and during hard or long activity, because a lot of water is lost through sweat.",
+                "text": "Fluid needs rise in very hot weather and during hard or long activity, because the body loses a lot of water through sweat.",
                 "sourceRefs": [
                   "icmr-water",
                   "water"
@@ -1900,7 +1900,7 @@
               ]
             },
             "factCheck": {
-              "checker": "content agent re-check 2026-10-22 (ICMR-NIN DGI 2024 Guideline 14: about eight glasses, about 2 litres, of water including beverages a day, more in very hot weather and vigorous activity because water is lost through sweat, the body loses water through sweat, urine and faeces, buttermilk, tender coconut water and lemon water in hot weather, coconut water to be avoided by people prone to hyperkalaemia in kidney and heart disease; NHS Water, drinks and hydration: water, lower-fat milk and lower-sugar drinks including tea and coffee count, clear pale yellow pee, more in heat or long activity; NHS Dehydration: thirst, dark yellow pee, peeing less often, tiredness, dry mouth; urgent help for dizziness on standing that does not go away, dark pee or peeing less than normal, confusion); spec 16 fix-up 2026-10-22: hydration-cues-s1 guided replaced (simulated week): the glass-count sum became an explanation of why milk counts (NHS Water, drinks and hydration, already cited)",
+              "checker": "content agent re-check 2026-10-22 (ICMR-NIN DGI 2024 Guideline 14: about eight glasses, about 2 litres, of water including beverages a day, more in very hot weather and vigorous activity because water leaves through sweat, the body loses water through sweat, urine and faeces, buttermilk, tender coconut water and lemon water in hot weather, coconut water to be avoided by people prone to hyperkalaemia in kidney and heart disease; NHS Water, drinks and hydration: water, lower-fat milk and lower-sugar drinks including tea and coffee count, clear pale yellow pee, more in heat or long activity; NHS Dehydration: thirst, dark yellow pee, peeing less often, tiredness, dry mouth; urgent help for dizziness on standing that does not go away, dark pee or peeing less than normal, confusion); spec 16 fix-up 2026-10-22: hydration-cues-s1 guided replaced (simulated week): the glass-count sum became an explanation of why milk counts (NHS Water, drinks and hydration, already cited)",
               "verdicts": [
                 {
                   "claimId": "hydration-cues-c1",
@@ -2165,7 +2165,7 @@
                   "right": {
                     "title": "Hot day, hard work",
                     "lines": [
-                      "More sweat lost",
+                      "More water out as sweat",
                       "Extra fluid, like buttermilk"
                     ]
                   }
@@ -2314,7 +2314,7 @@
                     "id": "c",
                     "text": "No change, as one short night is too small to matter.",
                     "correct": false,
-                    "feedback": "Even one lost hour can blur focus the next day, and she lost several.",
+                    "feedback": "Even one missing hour can blur focus the next day, and she missed several.",
                     "sourceRefs": [
                       "sleep"
                     ]
@@ -2527,7 +2527,7 @@
                     "id": "b",
                     "text": "About 1.5 hours.",
                     "correct": false,
-                    "feedback": "That is one night. Over five nights, the lost sleep adds up to about 7.5 hours.",
+                    "feedback": "That is one night. Over five nights, the missing sleep adds up to about 7.5 hours.",
                     "sourceRefs": [
                       "sleep",
                       "cdc-sleep"
@@ -3720,7 +3720,7 @@
               },
               {
                 "id": "iron-and-anaemia-c7",
-                "text": "Women who have periods are more at risk of low iron and anaemia, because of the blood lost each month.",
+                "text": "Women who have periods are more at risk of low iron and anaemia, because of the blood that leaves the body each month.",
                 "sourceRefs": [
                   "anaemia",
                   "medline-iron"
@@ -3801,7 +3801,7 @@
                     "id": "a",
                     "text": "About 10 mg.",
                     "correct": true,
-                    "feedback": "29 minus 19 is 10, so women need about 10 mg more, largely because of blood lost in periods.",
+                    "feedback": "29 minus 19 is 10, so women need about 10 mg more, largely because of blood that leaves the body in periods.",
                     "sourceRefs": [
                       "icmr-rda"
                     ]
@@ -5791,7 +5791,7 @@
                     }
                   ]
                 },
-                "teach": "Very fast loss often fails to last and can miss key nutrients, so slow is safer. For people who need to lose weight, about half a kilo a week is called safe. Pills and crash plans are red flags.",
+                "teach": "Very fast loss often does not last and can miss key nutrients, so slow is safer. For people who need to lose weight, about half a kilo a week is called safe. Pills and crash plans are red flags.",
                 "visual": {
                   "kind": "scale",
                   "label": "Weekly weight change",

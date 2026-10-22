@@ -1482,7 +1482,7 @@
                     "id": "a",
                     "text": "Sleep is when much repair happens, so cutting it cuts recovery.",
                     "correct": true,
-                    "feedback": "Deep sleep releases a hormone that helps build muscle and repair tissue, so a lost hour of sleep costs recovery.",
+                    "feedback": "Deep sleep releases a hormone that helps build muscle and repair tissue, so an hour less sleep costs recovery.",
                     "sourceRefs": [
                       "sleep"
                     ]
@@ -2128,7 +2128,7 @@
               },
               {
                 "id": "heat-hydration-c4",
-                "text": "In heat, the body must move heat from the core to the skin, and heart rate and temperature rise as fluid is lost. Heart, sugar and kidney conditions lower heat tolerance.",
+                "text": "In heat, the body must move heat from the core to the skin, and heart rate and temperature rise as the body loses fluid. Heart, sugar and kidney conditions lower heat tolerance.",
                 "sourceRefs": [
                   "cdc-heat-rate"
                 ]
@@ -2229,7 +2229,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "She lost her fitness in a single week.",
+                    "text": "Her fitness was gone in a single week.",
                     "correct": false,
                     "feedback": "Fitness does not vanish that fast. The heat makes the same run harder.",
                     "sourceRefs": [
@@ -3878,7 +3878,7 @@
               },
               {
                 "id": "cardio-talk-test-m3",
-                "name": "Start hard to make up for lost time",
+                "name": "Start hard to catch up on the missed weeks",
                 "correction": "After time off, start moderate and add minutes and days before effort.",
                 "sourceRefs": [
                   "guide",
@@ -4144,7 +4144,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Vigorous, to make up for lost time.",
+                      "text": "Vigorous, to catch up on the missed weeks.",
                       "correct": false,
                       "feedback": "Hard effort after time off raises injury risk. Start moderate and build up."
                     },
@@ -4245,7 +4245,7 @@
               },
               {
                 "id": "showing-up-c4",
-                "text": "In a habit study, missing the odd day did not seriously harm habit forming; gains soon resumed. Small, easy changes are advised because failure is discouraging.",
+                "text": "In a habit study, missing the odd day did not seriously harm habit forming; gains soon resumed. Small, easy changes are advised because an early setback is discouraging.",
                 "sourceRefs": [
                   "gardner"
                 ]
