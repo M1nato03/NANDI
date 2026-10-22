@@ -43,7 +43,9 @@ describe('rule history', () => {
     // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
     // this frozen copy for the old entry, and only then add a fingerprint for the new one.
     const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards'] as const;
-    const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, rules[key]]))]
+    // Display-only keys that live beside scoring values (spec 19's board number) stay out of the fingerprint.
+    const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch')) : value;
+    const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, displayOnly(key, rules[key])]))]
       .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
     expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '42e4e39a']]);
   });

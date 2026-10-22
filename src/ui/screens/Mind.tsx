@@ -7,7 +7,7 @@ import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
-import { featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
 import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
 import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
@@ -390,7 +390,7 @@ export function Mind({ entry }: { entry?: string }) {
       {(busy || !board || !run) && <p>{message || 'Building board…'}</p>}
     </div>}
     {busy || !board || !run ? <h1>{PZ.TYPES[selection.type].name}</h1> : <>
-      <p className="eyebrow">{selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
+      <p className="eyebrow">{selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : selection.daily ? dailyBoardLabel(today, formatDayKey(today)) : `Practice · ${board.diff}`}</p>
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Beat their time.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>

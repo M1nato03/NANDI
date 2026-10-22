@@ -13,6 +13,6 @@ test('a solved warm-up board leads straight to today\'s board', async ({ page })
   const result = page.getByLabel('Puzzle result');
   await expect(result).toContainText('Warm-up done');
   await result.getByRole('button', { name: "Now today's board" }).click();
-  await expect(page.getByText(/Daily board · /)).toBeVisible();
+  await expect(page.getByText(/Daily board (#\d+ )?· /)).toBeVisible();
   await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
 });

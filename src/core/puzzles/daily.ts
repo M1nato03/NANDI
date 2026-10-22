@@ -27,3 +27,20 @@ export function dailyBoard(day: string): PuzzleBoard | null {
   }
   return null;
 }
+
+const utcDay = (key: string) => Date.UTC(Number(key.slice(0, 4)), Number(key.slice(5, 7)) - 1, Number(key.slice(8, 10)));
+
+/**
+ * Spec 19 B: the daily board's public number, whole days since the epoch + 1, read from the day key's parts with
+ * Date.UTC, so it never depends on the phone's time zone. The day key itself is local and rolls at 04:00.
+ * Days before the epoch give 0 or less; callers show no number then.
+ */
+export function boardNumber(day: string, epoch: string = RULES.mind.boardNumberEpoch): number {
+  return Math.round((utcDay(day) - utcDay(epoch)) / 86_400_000) + 1;
+}
+
+/** The daily board's eyebrow: "Daily board #12 · Thu 5 Nov" (no number before the epoch). */
+export function dailyBoardLabel(day: string, formatted: string): string {
+  const number = boardNumber(day);
+  return number >= 1 ? `Daily board #${number} · ${formatted}` : `Daily board · ${formatted}`;
+}
