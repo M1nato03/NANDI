@@ -2,6 +2,7 @@ import { nextRepeatDay, sameTimeOn } from '../../core/tasks/repeat';
 import { ulid } from 'ulidx';
 import type { NandiDb } from '../db';
 import { db as appDb } from '../db';
+import { effectiveBedtime } from './night';
 import { entityRepo } from './base';
 import type { TaskRow, FocusRow, TaskEventRow } from '../types';
 import { dayKey } from '../../core/time/dayKey';
@@ -173,7 +174,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const goal = typeof goalRow?.value === 'string' ? goalRow.value : RULES.night.goalBedtime;
         const row: DailyLogRow = { ...previous, dayKey: key, lightsOutAt: now, bedtimeTarget: shutdownAt(nightAt, target), updatedAt: now, deleted: 0, deviceId };
         await db.dailyLog.put(row);
-        await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= row.bedtimeTarget! }, updatedAt: now, deleted: 0, deviceId });
+        // A busy day's later night (the bedtime the app showed) counts as on plan; the stepping target below stays the usual one.
+        const tonight = Math.max(row.bedtimeTarget!, shutdownAt(nightAt, await effectiveBedtime(db, nightAt)));
+        await db.ledger.add({ id: factId, dayKey: key, mode: 'bonuses', kind: 'lightsout', refId: key, inputs: { lightsOutAt: now, bedtimeTarget: row.bedtimeTarget, metTarget: now <= tonight }, updatedAt: now, deleted: 0, deviceId });
         const shift = (from: string, days: number) => { const date = new Date(`${from}T12:00:00`); date.setDate(date.getDate() + days); return dayKey(date); };
         const windowRow = await db.settings.get('planner.bedtimeWindowStart');
         let windowStart = typeof windowRow?.value === 'string' ? windowRow.value : key;

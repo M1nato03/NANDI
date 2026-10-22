@@ -5,6 +5,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
+import { effectiveBedtime } from '../../data/repos/night';
 import { getOrCreateDeviceId } from '../../data/device';
 import { loadEngineFacts, saveDrop, saveEngineAnswer } from '../../data/repos/learn-engine';
 import { tapHaptic } from '../../platform/haptics';
@@ -32,7 +33,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [busy, setBusy] = useState(false);
   const data = useLiveQuery(async () => ({
     setting: await db.settings.get(selectedTopicKey),
-    bedtime: await db.settings.get('planner.bedtime'),
+    // The busy-day bedtime, so the drop, its answers and Mind all switch to night at the same time.
+    bedtime: { value: await effectiveBedtime(db, now) },
     sound: await db.settings.get('economy.soundOn'),
     dailyDrop: await db.learnDrops.get(dailyDropId(now)),
     nightDrop: night ? await db.learnDrops.get(nightDropId(now)) : undefined,

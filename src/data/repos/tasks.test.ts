@@ -45,6 +45,15 @@ describe('Tasks repository transactions', () => {
     expect(await db.ledger.get(`lightsout:${key}`)).toMatchObject({ dayKey: key, mode: 'bonuses', kind: 'lightsout', inputs: { metTarget: true } });
     expect(await db.ledger.count()).toBe(1);
   });
+  it('judges lights-out against the busy-day bedtime the app showed (Night audit)', async () => {
+    // Lights out at 02:00 against the default 01:30 bedtime: late on a normal day...
+    await repos.recordLightsOut(at(6, 2));
+    expect((await db.ledger.get(`lightsout:${dayKey(at(6, 2))}`))?.inputs.metTarget).toBe(false);
+    // ...but on time when 6 h were planned that day, which moved tonight 60 min later.
+    for (const hour of [9, 11, 13, 15]) await task(at(7, hour));
+    await repos.recordLightsOut(at(8, 2));
+    expect((await db.ledger.get(`lightsout:${dayKey(at(8, 2))}`))?.inputs.metTarget).toBe(true);
+  });
   it('rolls back the lights-out log if its award fact fails', async () => {
     db.ledger.hook('creating', () => { throw new Error('ledger failed'); });
     await expect(repos.recordLightsOut(at(5, 1))).rejects.toThrow('ledger failed');
