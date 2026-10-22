@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeCloseMaps, type DayClose } from './deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, type DayClose } from './deriveEconomy';
 
 // Seeded simulation of day close v3 (economy review 32, Codex pass 4): every open closes the finished days the
 // way reconcileGamify does; late facts, restores of older backups (in the older, cumulative close shape) and a
@@ -18,7 +18,7 @@ const withCloses = (rows: SettingRow[], closes: Map<string, unknown>) => [...row
 function open(facts: LedgerRow[], rows: SettingRow[], today: string): SettingRow[] {
   const stored = closesOf(rows);
   const oldest = addEconomyDays(today, -120);
-  const candidates = new Map([...closesFor(facts, rows, today)].filter(([day]) => day >= oldest || stored.has(day)));
+  const candidates = keptCandidates(closesFor(facts, rows, today), stored, oldest);
   return withCloses(rows, mergeCloseMaps(stored, candidates));
 }
 /** The older close shape: every purchase to date in every close. */
@@ -66,7 +66,9 @@ describe('day close v3, seeded simulation', () => {
           // Restore a backup taken 3 opens earlier, written in the older cumulative shape, onto this phone.
           const backup = backups[backups.length - 4]!;
           facts = [...backup.facts];
-          rows = withCloses(rows, mergeCloseMaps(cumulative(closesOf(backup.rows)), closesOf(rows)));
+          // The backup is sparse (some of its days have no close) and in the older cumulative shape.
+          const sparse = new Map([...cumulative(closesOf(backup.rows))].filter(() => rand() < 0.6));
+          rows = withCloses(rows, mergeCloseMaps(sparse, closesOf(rows)));
           expectNoFall(before, snapshot(facts, rows, day), `trial ${trial} restore on ${day}`);
         }
         if (d === 25) {
@@ -87,16 +89,34 @@ describe('day close v3, seeded simulation', () => {
     const before = snapshot(facts, rows, day);
     // 130 days away; a late purchase from the first weeks syncs in while away.
     facts.push(row('2026-11-05', 'economy', 'purchase', { itemId: 'banner:sky', price: 150 }));
+    // And one dated inside the skipped part of the gap (never closed, older than 120 days).
+    facts.push(row('2026-12-15', 'economy', 'purchase', { itemId: 'theme:linen', price: 400 }));
     day = addEconomyDays(day, 130);
     rows = open(facts, rows, day);
     const after = snapshot(facts, rows, day);
     for (const [closed, total] of before.totals) expect(after.totals.get(closed)).toBeGreaterThanOrEqual(total);
     for (const id of before.owned) expect(after.owned).toContain(id);
     expect(after.owned).toContain('banner:sky');
+    // The skipped-window purchase was re-hosted in the first kept close, so it survives a restore that drops it.
+    const hosted = [...closesOf(rows).values()].flatMap(close => (close as DayClose).purchases.map(item => item.itemId));
+    expect(hosted).toContain('theme:linen');
+    const lost = facts.filter(fact => fact.inputs.itemId !== 'theme:linen');
+    expect(deriveEconomy(lost, undefined, rows, day).owned).toContain('theme:linen');
     // The gap days older than 120 stay unclosed; the recent ones close.
     const keys = [...closesOf(rows).keys()];
     expect(keys.some(key => key > '2026-11-21' && key < addEconomyDays(day, -120))).toBe(false);
     expect(keys).toContain(addEconomyDays(day, -1));
+  });
+
+  it('Codex pass 4 #1: a sparse restore that re-hosts a purchase also charges for it', () => {
+    const close = (shards: number, purchases: { id: string; price: number; dayKey: string }[] = []) => ({ total: 10, sp: 0, streak: 1, paused: false, shards, owned: [],
+      purchases: purchases.map(item => ({ ...item, itemId: 'freeze' })) });
+    const phone = new Map([['2026-11-03', close(100)]]);
+    const backup = new Map([['2026-11-05', close(50, [{ id: 'p', price: 50, dayKey: '2026-11-02' }])]]);
+    for (const merged of [mergeCloseMaps(phone, backup), mergeCloseMaps(backup, phone)]) {
+      expect(merged.get('2026-11-03')).toMatchObject({ shards: 50, purchases: [{ id: 'p' }] });
+      expect(merged.get('2026-11-05')).toMatchObject({ shards: 50, purchases: [] });
+    }
   });
 
   it('merging closes is order-free: commutative and associative on random close sets', () => {
