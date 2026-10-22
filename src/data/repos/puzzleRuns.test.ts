@@ -33,6 +33,24 @@ describe('puzzle runs', () => {
     expect(again).toMatchObject({ id: solved.id, solveMs: 5000, finishedAt: 6000 });
     expect(await store.puzzleRuns.count()).toBe(1);
   });
+
+  it('a friend who already solved today opens the shared link as the same run, with no second XP (spec 19 D)', async () => {
+    const { dailyBoard, friendBoard } = await import('../../core/puzzles/daily');
+    const store = createDb(`mind-test-${crypto.randomUUID()}`); stores.push(store);
+    const day = '2026-11-05';
+    const board = dailyBoard(day)!;
+    const row = await openPuzzleRun(store, board, day, true, 1000);
+    await savePuzzleRun(store, { ...row, result: 'solved', solveMs: 5000, finishedAt: 6000 }, 6000);
+    const facts = () => store.ledger.where('kind').equals('board').count();
+    const before = await facts();
+    const link = friendBoard({ day, type: board.type, diff: board.diff, seed: Number(board.seed) }, day);
+    expect(link.daily).toBe(true);
+    const resumed = await openPuzzleRun(store, link.board!, day, link.daily, 9000);
+    expect(resumed).toMatchObject({ id: row.id, result: 'solved', solveMs: 5000 });
+    await savePuzzleRun(store, { ...resumed, result: 'solved', solveMs: 3000 }, 9500);
+    expect(await facts()).toBe(before);
+    expect(await store.puzzleRuns.count()).toBe(1);
+  });
 });
 
 const opened: NandiDb[] = [];

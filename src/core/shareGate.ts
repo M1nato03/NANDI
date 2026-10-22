@@ -8,7 +8,12 @@ import type { SettingRow, TaskRow } from '../data/types';
  * Spec 19: shares exist only in the day window. The same clock Mind uses (busy-day bedtime, shutdown and
  * an early wind-down), so a share button and the handler behind it agree with the rest of the app.
  */
+/** The planning day rolls at 04:00, but someone still awake then is not in a new day: shares wait until 06:00. */
+export const SHARE_OPENS_AT = '06:00';
 export function shareWindow(now: number, settings: readonly SettingRow[], todayTasks: readonly TaskRow[], windDownAt?: number): 'day' | 'windDown' | 'lightsOut' {
+  const clock = new Date(now);
+  const [openH, openM] = SHARE_OPENS_AT.split(':').map(Number) as [number, number];
+  if (clock.getHours() * 60 + clock.getMinutes() < openH * 60 + openM) return 'lightsOut';
   const today = dayKey(now);
   const adaptive = adaptiveNight(settings, todayTasks, today);
   const setting = (key: string) => settings.find(row => row.key === key && !row.deleted)?.value;

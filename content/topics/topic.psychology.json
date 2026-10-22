@@ -761,7 +761,7 @@
                 "takeaway": "Give it weeks, and do not worry about one missed day."
               }
             ],
-            "askLine": "If you miss one day of a new daily routine, do you have to start over from zero?"
+            "askLine": "If you miss one day of a new habit, what happens to it?"
           },
           {
             "id": "loss-aversion",

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { softMoreKey } from '../../core/soft/soft';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
+import { canShareNow } from '../../data/repos/night';
 import { getOrCreateDeviceId } from '../../data/device';
 import { doSoftThing, setSoftState } from '../../data/repos/soft';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
@@ -85,6 +86,8 @@ export function KindWord({ done }: { done: () => void }) {
   const send = async () => {
     setBusy(true); setMessage('');
     try {
+      // Spec 19: every share waits for the day window, checked again at the tap.
+      if (!await canShareNow(db)) { setMessage('Sharing waits for the morning.'); return; }
       const blob = await kindCardPng(text, friend.current?.querySelector('svg') ?? null, WEB_APP);
       const result = await shareOrDownload(new File([blob], 'kind-word.png', { type: 'image/png' }), text, { title: 'A kind word', dialogTitle: 'Send a kind word', cancelledIfClosed: true });
       if (result !== 'cancelled') done();
