@@ -42,12 +42,14 @@ describe('Day and night nudge controls', () => {
     });
   });
   it('explains missing permission and asks once', async () => {
-    mock.checkPermission.mockResolvedValueOnce('denied');
+    // The phone keeps saying no: the screen check and the in-context ask both read it.
+    mock.checkPermission.mockResolvedValue('denied');
     mock.requestPermission.mockResolvedValueOnce('denied');
     render(<Ground theme="system" motion="system" setTheme={async () => {}} setMotion={async () => {}} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Allow notifications' }));
     await waitFor(() => expect(mock.requestPermission).toHaveBeenCalledTimes(1));
     expect(await screen.findByText(/Allow NANDI notifications in Android app settings/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Allow notifications' })).toBeNull();
+    mock.checkPermission.mockResolvedValue('granted');
   });
 });

@@ -108,7 +108,12 @@ public class NightPauseService extends Service {
             quiet.setShowBadge(false);
             quiet.setSound(null, null);
             notifications.createNotificationChannel(quiet);
-            notifications.createNotificationChannel(new NotificationChannel("night_pause", "App pause", NotificationManager.IMPORTANCE_HIGH));
+            // The pause shows as a heads-up without a sound (Android notifications audit, F11). Sound cannot be
+            // removed from an existing channel, so the old one is replaced.
+            notifications.deleteNotificationChannel("night_pause");
+            NotificationChannel pause = new NotificationChannel("night_pause_quiet", "App pause", NotificationManager.IMPORTANCE_HIGH);
+            pause.setSound(null, null);
+            notifications.createNotificationChannel(pause);
         }
         Notification.Builder ongoingBuilder = Build.VERSION.SDK_INT >= 26
             ? new Notification.Builder(this, "night_watch_quiet") : new Notification.Builder(this).setPriority(Notification.PRIORITY_MIN);
@@ -208,7 +213,7 @@ public class NightPauseService extends Service {
         }
         PendingIntent intent = PendingIntent.getActivity(this, NOTICE_ID, launch, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification.Builder pauseBuilder = Build.VERSION.SDK_INT >= 26
-            ? new Notification.Builder(this, "night_pause") : new Notification.Builder(this);
+            ? new Notification.Builder(this, "night_pause_quiet") : new Notification.Builder(this);
         Notification notice = pauseBuilder
             .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("Take one breath")
             .setContentText("Tap to open NANDI.")

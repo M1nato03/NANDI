@@ -9,6 +9,7 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { validReward } from '../../core/tasks/complete';
 import { getOrCreateDeviceId } from '../../data/device';
 import { createSettingsRepos } from '../../data/repos/settings';
+import { askNotificationsOnce } from '../../platform/notifyPermission';
 import { go } from '../shell/router';
 import { ErrorRing } from './ErrorRing';
 import type { Appearance } from '../shell/useAppearance';
@@ -77,9 +78,9 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   async function askPermission() {
     if (asked || requestingPermission.current || !Capacitor.isNativePlatform()) return;
     requestingPermission.current = true;
-    await save(NUDGE_PERMISSION_ASKED, true);
     try {
-      const result = await notifier.requestPermission();
+      const result = await askNotificationsOnce();
+      if (result === 'skipped') return;
       setPermission(result);
       setMessage(result === 'granted' ? 'Notifications are allowed.' : 'Notifications are off. You can allow them in Android app settings.');
     } catch { setMessage('Could not check notification permission.'); }
@@ -123,6 +124,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
-    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
+    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><a className="secondary ui-list-row" href="privacy.html">Privacy notice</a><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
   </div>;
 }

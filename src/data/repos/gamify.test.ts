@@ -140,3 +140,17 @@ it('a restore waits for a reconcile that is already running', async () => {
   await Promise.all([work, restore]);
   expect(restored).toBe(true);
 });
+
+it('a burst of writes runs one reconcile now and one more after it, with the latest clock (review 32)', async () => {
+  const db = createDb(`gamify-burst-${++serial}`); opened.push(db);
+  await db.ledger.add({ id: 'done:2026-11-02', mode: 'tasks', kind: 'done', refId: '2026-11-02', dayKey: '2026-11-02',
+    inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at('2026-11-02'), deleted: 0, deviceId: 'test' });
+  const original = db.transaction.bind(db);
+  let runs = 0;
+  // Count the reconcile's own five-table transaction only (the device id has its own small one).
+  (db as unknown as { transaction: unknown }).transaction = (...args: unknown[]) => { if (Array.isArray(args[1]) && args[1].length === 5) runs++; return (original as (...rest: unknown[]) => unknown)(...args); };
+  await Promise.all([1, 2, 3, 4, 5].map(hour => reconcileGamify(db, at('2026-11-05', `0${hour}:00`))));
+  expect(runs).toBe(2);
+  // The trailing run used the latest clock, so the day before the 5th is closed.
+  expect(await db.settings.get(closeKey('2026-11-04'))).toBeTruthy();
+});
