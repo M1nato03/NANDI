@@ -73,6 +73,9 @@ describe('economy replay', () => {
     expect(view([...answers, finished]).days[0]).toMatchObject({ mind: 15, mindSlot: true });
     for (const answer of answers) answer.inputs.afterBedtime = true;
     expect(view([...answers, finished]).days[0]).toMatchObject({ mind: 0, mindSlot: false });
+    // A brand-new learner's drop can be the lesson alone.
+    expect(view([row(day, 'learn', 'learn-lesson'), finished]).days[0]).toMatchObject({ mind: 15, mindSlot: true });
+    expect(view([row(day, 'learn', 'learn-lesson')]).days[0]).toMatchObject({ mindSlot: false });
   });
   it('holds a streak on a banked rest day and leaves the weekly rest weekday untouched', () => {
     const mon = '2026-11-02';

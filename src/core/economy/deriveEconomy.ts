@@ -85,9 +85,11 @@ export function deriveEconomy(
     const dailyBoard = mindRows.some(row => row.kind === 'board' && row.inputs.daily !== false);
     const cards = mindRows.filter(row => row.kind === 'card');
     const learnAnswers = new Set(mindRows.filter(row => row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`).map(row => row.refId));
-    // A teach-first drop can end after 2 scored answers (lesson + its practice, no reviews due), so a
-    // finished daily drop counts too, as long as one of its answers came before bedtime.
-    const dropFinished = rows.some(row => row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key) && learnAnswers.size > 0;
+    // A teach-first drop can end after a few scored answers, or after the lesson alone (spec 16 §5, a new
+    // learner with nothing earlier to practise), so a finished daily drop counts too, as long as one of
+    // its answers or its lesson came before bedtime.
+    const lessonDone = rows.some(row => row.kind === 'learn-lesson' && !row.deleted && beforeBed(row));
+    const dropFinished = rows.some(row => row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key) && (learnAnswers.size > 0 || lessonDone);
     const learnDrop = mindRows.some(row => row.kind === 'learn-drop') || learnAnswers.size >= 5 || dropFinished;
     const mind = Math.min(rules.mind.dailyCap,
       (caseSolved ? rules.mind.mysteryXp : 0) + (dailyBoard ? rules.mind.dropBoardXp : 0) +
