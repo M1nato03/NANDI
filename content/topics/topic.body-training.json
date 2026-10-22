@@ -427,7 +427,7 @@
               ]
             },
             "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22 (ACSM 2026 position stand abstract via NCBI E-utilities: progressive RT for healthy adults; US Physical Activity Guidelines 2nd ed. PDF text: p.33 overload and small progressive changes minimise injury risk, p.60 overload and push-ups as body-weight strength work, p.71 gradual increases in weight, sets, reps or days, p.89 relative weekly rise linked to injury risk with the 200 vs 40 minute jogging example; ICMR-NIN DGI 2024 p.70: increase gradually, breathlessness, pain, nausea, vomiting, headache are warning signs to rest)",
+              "checker": "spec 16 rewrite re-check 2026-10-22 (ACSM 2026 position stand abstract via NCBI E-utilities: progressive RT for healthy adults; US Physical Activity Guidelines 2nd ed. PDF text: p.33 overload and small progressive changes minimise injury risk, p.60 overload and push-ups as body-weight strength work, p.71 gradual increases in weight, sets, reps or days, p.89 relative weekly rise linked to injury risk with the 200 vs 40 minute jogging example; ICMR-NIN DGI 2024 p.70: increase gradually, breathlessness, pain, nausea, vomiting, headache are warning signs to rest); spec 16 fix-up 2026-10-22: progressive-overload-s2 hook replaced (simulated week): it now opens the reps and days choices instead of replaying \"easy now\"",
               "verdicts": [
                 {
                   "claimId": "progressive-overload-c1",
@@ -562,25 +562,25 @@
                   "acsm"
                 ],
                 "hook": {
-                  "stem": "Your 10 squats feel easy now. What could make them a fresh challenge?",
+                  "stem": "You can already do 15 clean squats and own no weights. What else can you change?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "Add a few clean reps, or hold a light weight.",
+                      "text": "Add a few clean reps, or one more training day.",
                       "correct": true,
-                      "feedback": "Right. More clean reps or a little weight gives the muscle a new task to adapt to."
+                      "feedback": "Right. More clean reps or an extra day a week grows the work, with no weights needed."
                     },
                     {
                       "id": "b",
-                      "text": "Do the same 10 daily for a few more weeks.",
+                      "text": "Nothing; without weights the work cannot grow.",
                       "correct": false,
-                      "feedback": "The same 10 is work your legs already know, so more weeks of it add little."
+                      "feedback": "Weights are one way, not the only way. Clean extra reps or an extra day also grow the work."
                     },
                     {
                       "id": "c",
                       "text": "Do them faster, even if your form slips.",
                       "correct": false,
-                      "feedback": "Sloppy reps do not add useful work. Clean extra reps or a little weight do."
+                      "feedback": "Sloppy reps do not add useful work. Clean extra reps or one more day a week do."
                     }
                   ]
                 },
@@ -781,44 +781,49 @@
                 "id": "muscle-protein-rest-9",
                 "type": "scenario",
                 "conceptId": "muscle-protein-rest",
-                "step": "muscle-protein-rest-s1",
+                "step": "muscle-protein-rest-s3",
                 "job": "reverse",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "issn",
-                  "nin"
+                "misconceptionTags": [
+                  "muscle-protein-rest-m3"
                 ],
-                "stem": "In the hostel, Kabir trains hard four days a week but eats very little dal, egg or paneer. What is he short of?",
+                "sourceRefs": [
+                  "mps",
+                  "issn"
+                ],
+                "stem": "In the hostel, Kabir trains his legs hard on Monday, eats well, and by Thursday they feel ready again. Working back, when did most of the building happen?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The material his muscles build with.",
+                    "text": "In the days after, while he rested and ate.",
                     "correct": true,
-                    "feedback": "His training gives the signal, but protein from food is the material, and he eats very little of it.",
+                    "feedback": "Right. Building stays switched on for up to two days after a session, and his meals fed it.",
                     "sourceRefs": [
-                      "issn",
-                      "nin"
+                      "mps",
+                      "issn"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The signal that tells muscles to build.",
+                    "text": "During the Monday session itself.",
                     "correct": false,
-                    "feedback": "Hard training four days a week is the signal. What he lacks is protein to build with.",
+                    "feedback": "The session gives the signal. Building carries on for up to two days afterwards, fed by meals.",
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m3"
+                    ],
                     "sourceRefs": [
-                      "issn",
-                      "nin"
+                      "mps",
+                      "issn"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "More training days to make up for it.",
+                    "text": "On Thursday, once his legs felt ready.",
                     "correct": false,
-                    "feedback": "More days add more signal, not more material. He needs protein from food.",
+                    "feedback": "Feeling ready came after the work was done. Building ran in the days straight after Monday.",
                     "sourceRefs": [
-                      "issn",
-                      "nin"
+                      "mps",
+                      "issn"
                     ]
                   }
                 ]
@@ -881,31 +886,31 @@
                 "sourceRefs": [
                   "nin"
                 ],
-                "stem": "Why should someone with kidney disease take care with a high-protein diet?",
+                "stem": "Ravi has kidney disease and plans a very high-protein diet to build muscle. What does this step say about his plan?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "High protein can make weak kidneys worse.",
+                    "text": "Take care: high protein needs caution with kidney disease.",
                     "correct": true,
-                    "feedback": "In people who already have kidney disease, high protein may worsen kidney function, so they check with a doctor first.",
+                    "feedback": "Right. The step flags high protein as something people with kidney disease need to take care with.",
                     "sourceRefs": [
                       "nin"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Their muscles cannot use protein from food.",
+                    "text": "Go ahead, since more protein means more muscle.",
                     "correct": false,
-                    "feedback": "Their muscles still use protein. The worry is the extra load on kidneys that are already weak.",
+                    "feedback": "Extra protein past about 1.6 g per kilo added no muscle, and with kidney disease high protein needs care.",
                     "sourceRefs": [
                       "nin"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Protein turns into fat faster in their body.",
+                    "text": "Nothing changes, since kidneys do not affect protein.",
                     "correct": false,
-                    "feedback": "That is not the concern. High protein may worsen kidneys that are already damaged.",
+                    "feedback": "The step names kidney disease as a reason to take care with high protein, so it does matter here.",
                     "sourceRefs": [
                       "nin"
                     ]
@@ -964,44 +969,44 @@
                 "id": "muscle-protein-rest-13",
                 "type": "scenario",
                 "conceptId": "muscle-protein-rest",
-                "step": "muscle-protein-rest-s3",
+                "step": "muscle-protein-rest-s1",
                 "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
-                  "mps",
-                  "issn"
+                  "issn",
+                  "nin"
                 ],
-                "stem": "After a hard leg session at the college gym on Monday, Zoya skips meals on Tuesday to stay light. What does that cost her?",
+                "stem": "At college, Zoya has eaten dal and curd daily for years. This term she adds squats three times a week. What changes for her muscles?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The building process is on, but meals bring it nothing to build with.",
+                    "text": "The protein she eats now has a signal to build.",
                     "correct": true,
-                    "feedback": "Building stays switched on after training, and food gives it the material, so skipped meals waste that time.",
+                    "feedback": "Right. Her food gave the parts all along, and the new training gives the signal, so now both work together.",
                     "sourceRefs": [
-                      "mps",
-                      "issn"
+                      "issn",
+                      "nin"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Very little, since the building already happened in the gym.",
+                    "text": "Nothing, since her food already built muscle.",
                     "correct": false,
-                    "feedback": "Building goes on after the session for up to two days, and it needs protein from meals.",
+                    "feedback": "Without training, the body does not use that protein for muscle. The squats add the missing signal.",
                     "sourceRefs": [
-                      "mps",
-                      "issn"
+                      "issn",
+                      "nin"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Her legs build faster, since an empty stomach helps.",
+                    "text": "She must now stop eating dal on squat days.",
                     "correct": false,
-                    "feedback": "Building needs material from food. An empty day gives the switched-on process nothing to use.",
+                    "feedback": "Training does not replace food. The squats give the signal, and her dal and curd give the parts.",
                     "sourceRefs": [
-                      "mps",
-                      "issn"
+                      "issn",
+                      "nin"
                     ]
                   }
                 ]
@@ -1116,7 +1121,7 @@
               ]
             },
             "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22 (ICMR-NIN DGI 2024 PDF text pp.58-59: RDA 0.83 g/kg/day for healthy men and women regardless of activity; without resistance exercise protein is not used for muscle; above ~1.6 g/kg/day no further RET gains; most athletes get enough from food without supplements; high protein to be taken with care with renal disease; ISSN 2017 position stand on PMC: exercise and protein are synergistic for MPS; Davies et al. 2024 Transl Sports Med abstract via NCBI E-utilities: raised postabsorptive MPS up to 48 h, smaller rise over 50 y. Per-meal dose rule and the 1.4-2.0 g/kg range taken off screen)",
+              "checker": "spec 16 rewrite re-check 2026-10-22 (ICMR-NIN DGI 2024 PDF text pp.58-59: RDA 0.83 g/kg/day for healthy men and women regardless of activity; without resistance exercise protein is not used for muscle; above ~1.6 g/kg/day no further RET gains; most athletes get enough from food without supplements; high protein to be taken with care with renal disease; ISSN 2017 position stand on PMC: exercise and protein are synergistic for MPS; Davies et al. 2024 Transl Sports Med abstract via NCBI E-utilities: raised postabsorptive MPS up to 48 h, smaller rise over 50 y. Per-meal dose rule and the 1.4-2.0 g/kg range taken off screen); spec 16 fix-up 2026-10-22: muscle-protein-rest-9 moved to step 3 as a reverse (when the building happened); muscle-protein-rest-13 moved to step 1 as the combine (training plus food); muscle-protein-rest-11 now asks only what step 2 teaches (take care with high protein), not why",
               "verdicts": [
                 {
                   "claimId": "muscle-protein-rest-c1",

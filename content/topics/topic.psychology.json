@@ -23,7 +23,7 @@
             "id": "habits",
             "title": "Habits",
             "prerequisites": [],
-            "hook": "Missing one day did not undo a new habit in Lally's study. Habits took anywhere from 18 to 254 days to settle in.",
+            "hook": "Missing one day did not undo a new habit in Lally's 12-week study. Habits were estimated to take from 18 to 254 days to settle in.",
             "hookSourceRefs": [
               "lally"
             ],
@@ -43,14 +43,14 @@
               },
               {
                 "id": "habits-c2",
-                "text": "In Lally's study, the time to near full habit strength ranged from 18 to 254 days, and one missed chance did not undo habit growth.",
+                "text": "In Lally's 84-day study, the estimated time to near full habit strength ranged from 18 to 254 days, and one missed chance did not undo habit growth.",
                 "sourceRefs": [
                   "lally"
                 ]
               },
               {
                 "id": "habits-c3",
-                "text": "In that study, the middle time to near full habit strength was 66 days, among the 39 people whose data fit the curve well.",
+                "text": "In that study, the middle estimated time to near full habit strength was 66 days, among the 39 people whose data fit the curve well.",
                 "sourceRefs": [
                   "lally"
                 ]
@@ -249,45 +249,47 @@
                 "type": "scenario",
                 "conceptId": "habits",
                 "step": "habits-s2",
-                "job": "edge",
+                "job": "reverse",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "habits-m3"
+                  "habits-m4"
                 ],
                 "sourceRefs": [
-                  "lally",
-                  "wood"
+                  "lally"
                 ],
-                "stem": "Mehul practises his speech daily, but in a new spot each day: hostel room, library, bus. Pia practises daily in one room. Whose practice is likely to feel automatic sooner?",
+                "stem": "In the hostel, Pia's new push-up habit still gets easier each day. Raj's push-ups barely change any more. Working back from that, whose habit is likely older?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Mehul's, because more places mean more practice.",
-                    "correct": false,
-                    "feedback": "Both practise daily. Changing places each day leaves Mehul without a steady cue.",
+                    "text": "Raj's, since gains level off later on.",
+                    "correct": true,
+                    "feedback": "Right. Early repeats bring big jumps and later ones add little, so a habit that barely changes is further along.",
                     "sourceRefs": [
-                      "lally",
-                      "wood"
+                      "lally"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Both the same, since the days match.",
+                    "text": "Pia's, since big daily gains mean a long run.",
                     "correct": false,
-                    "feedback": "The count of days matches, but only Pia repeats the act in one setting.",
+                    "feedback": "Big daily gains come early. A habit that still jumps each day is most likely the newer one.",
+                    "misconceptionIds": [
+                      "habits-m4"
+                    ],
                     "sourceRefs": [
-                      "lally",
-                      "wood"
+                      "lally"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Pia's, because her setting stays the same.",
-                    "correct": true,
-                    "feedback": "Repeats build a habit in a steady setting, so the same room gives Pia a cue each day.",
+                    "text": "Neither; gains look the same at any age.",
+                    "correct": false,
+                    "feedback": "Repeats add the most early and less later, so the size of the daily gain hints at a habit's age.",
+                    "misconceptionIds": [
+                      "habits-m4"
+                    ],
                     "sourceRefs": [
-                      "lally",
-                      "wood"
+                      "lally"
                     ]
                   }
                 ]
@@ -297,7 +299,7 @@
                 "type": "estimate",
                 "conceptId": "habits",
                 "step": "habits-s3",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "habits-m1"
@@ -305,22 +307,22 @@
                 "sourceRefs": [
                   "lally"
                 ],
-                "stem": "In Lally's habit study, the middle time for an act to feel automatic was about 66 days. About how many weeks is that?",
+                "stem": "In Lally's 12-week habit study, about what was the middle estimated time, in days, for an act to feel automatic?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 9 or 10 weeks.",
+                    "text": "About 66 days.",
                     "correct": true,
-                    "feedback": "Sixty-six days divided by seven is a little over nine weeks, so roughly two months.",
+                    "feedback": "Right. The middle estimate was about 66 days, though single people ranged from 18 to 254.",
                     "sourceRefs": [
                       "lally"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 3 weeks.",
+                    "text": "About 30 days.",
                     "correct": false,
-                    "feedback": "Three weeks is about 21 days, far short of the middle time in the study.",
+                    "feedback": "Thirty days is too short. The middle estimate in the study was about 66 days, over two months.",
                     "misconceptionIds": [
                       "habits-m1"
                     ],
@@ -330,19 +332,19 @@
                   },
                   {
                     "id": "c",
-                    "text": "About 20 weeks.",
+                    "text": "About 254 days.",
                     "correct": false,
-                    "feedback": "Twenty weeks is about 140 days, more than double the middle time.",
+                    "feedback": "That was the longest estimate, not the middle one. The middle was about 66 days.",
                     "sourceRefs": [
                       "lally"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 9.5,
-                  "min": 9,
-                  "max": 10,
-                  "unit": "weeks"
+                  "value": 66,
+                  "min": 60,
+                  "max": 72,
+                  "unit": "days"
                 }
               },
               {
@@ -512,7 +514,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Lally et al. 2010 PDF; Wood and Neal 2007 and Wood, Tam and Guerrero Witt 2005 PubMed abstracts)"
+              "checker": "builder content agent source check 2026-10-21 (Lally et al. 2010 PDF; Wood and Neal 2007 and Wood, Tam and Guerrero Witt 2005 PubMed abstracts); spec 16 fix-up 2026-10-22: habits-s2 guided now asks whether a second, new habit starts automatic (simulated-week rewrite); habits-14 rewritten as a reverse (work back from a flat curve to an older habit); habits-15 relabelled recall (it retrieves the 66-day middle), so each job appears once; cloud fact-review fixes 2026-10-22: Lally et al. 2010 re-read: participants tried the behaviour \"every day for 84 days\"; curves were fitted \"over the 84 days\", so 18-254 and 66 are estimates (hook, claims c2-c3, s3 teach and visual now say so); habits-15 is now a plain recall of the 66-day middle estimate"
             },
             "steps": [
               {
@@ -652,26 +654,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Asha has skipped rope in her yard daily for months. It feels as automatic as it gets. What will more weeks add?",
-                    "hint": "Picture the flat end of the curve.",
+                    "stem": "Asha's rope routine now starts without effort. She wants a new stretching habit. Should she expect that one to begin fully automatic?",
+                    "hint": "Ask where a brand-new act sits on the curve.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Very little extra.",
+                        "text": "No, it needs its own early repeats.",
                         "correct": true,
-                        "feedback": "Yes. Near the plateau, more repeats add very little."
+                        "feedback": "Right. Each act climbs its own curve, so the stretching starts at the steep early part, not at the top."
                       },
                       {
                         "id": "b",
-                        "text": "A big new jump.",
+                        "text": "Yes, her rope habit carries over to it.",
                         "correct": false,
-                        "feedback": "Big jumps come early. Near the plateau the gains are small."
+                        "feedback": "Her rope routine got easy through its own repeats. A new act has had none yet, so it starts low."
                       },
                       {
                         "id": "c",
-                        "text": "They will undo it.",
+                        "text": "Yes, once she has one habit, new ones start easy.",
                         "correct": false,
-                        "feedback": "More practice does not undo a habit. It just adds very little now."
+                        "feedback": "The curve is built by repeats of that act in its setting. A new act starts near the bottom."
                       }
                     ]
                   }
@@ -708,10 +710,10 @@
                     }
                   ]
                 },
-                "teach": "In one study, habits took 18 to 254 days to feel automatic, with a middle of 66. One missed day did not undo the growth, so a slip is fine. A whole week off can set it back.",
+                "teach": "In one 12-week study, habits were estimated to take 18 to 254 days to feel automatic, middle 66. One missed day did no harm, so a slip is fine, but a week off can set it back.",
                 "visual": {
                   "kind": "scale",
-                  "label": "Days until a habit felt automatic, in one study",
+                  "label": "Estimated days until a habit felt automatic, in one 12-week study",
                   "min": "18 days",
                   "max": "254 days",
                   "marks": [
@@ -766,11 +768,11 @@
             "prerequisites": [
               "habits"
             ],
-            "hook": "In choice studies, losing ₹100 often feels worse than winning ₹100 feels good.",
+            "hook": "In choice studies, people often act as if losing ₹100 counts for more than winning ₹100.",
             "hookSourceRefs": [
               "prospect"
             ],
-            "rule": "Loss aversion is a pattern where a loss feels stronger than a same-size gain, about twice on average. It depends on the start point, and it is a tendency, not a law for every person.",
+            "rule": "Loss aversion is a pattern in choices: people act as if a loss counts for more than a same-size gain, about twice on average. It depends on the start point, and it is a tendency, not a law for every person.",
             "ruleSourceRefs": [
               "prospect",
               "loss-meta"
@@ -812,37 +814,34 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Tanmay's maths marks rise by 8 in one exam and fall by 8 in the next. Which change is he likely to dwell on at home?",
+                "stem": "Tanmay can swap his ₹500 match ticket for a friend's ticket to another match he would enjoy just as much. He refuses, in case the swap turns out worse. What is pulling on him?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The rise of 8.",
-                    "correct": false,
-                    "feedback": "Gains of the same size tend to feel smaller, so the rise fades sooner.",
-                    "misconceptionIds": [
-                      "loss-aversion-m1"
-                    ],
+                    "text": "A possible loss counts for more than the same gain.",
+                    "correct": true,
+                    "feedback": "Right. In choices, the chance of ending up worse counts for more than the chance of ending up better, so he refuses an even swap.",
                     "sourceRefs": [
                       "prospect"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Both the same, as the sizes match.",
+                    "text": "The new match is sure to be worse.",
                     "correct": false,
-                    "feedback": "The sizes match, but losses tend to weigh more than equal gains.",
-                    "misconceptionIds": [
-                      "loss-aversion-m1"
-                    ],
+                    "feedback": "He would enjoy both just as much. What holds him back is how a possible loss feels, not the match.",
                     "sourceRefs": [
                       "prospect"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "The fall of 8.",
-                    "correct": true,
-                    "feedback": "A drop tends to weigh more than a rise of the same size, so the fall stays with him.",
+                    "text": "A loss and a gain of one size count the same for him.",
+                    "correct": false,
+                    "feedback": "If they counted the same, an even swap would not bother him. In choices, a possible loss usually weighs more.",
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
+                    ],
                     "sourceRefs": [
                       "prospect"
                     ]
@@ -948,7 +947,8 @@
                   "loss-aversion-m3"
                 ],
                 "sourceRefs": [
-                  "prospect"
+                  "prospect",
+                  "framing-field"
                 ],
                 "stem": "A college fest has two notices: “Register early and save ₹100” and “Register late and pay ₹100 more.” The price gap is the same. Which notice likely pushes more students to sign up early?",
                 "options": [
@@ -958,7 +958,8 @@
                     "correct": true,
                     "feedback": "The same ₹100 framed as a loss from the early price tends to weigh more than a saving.",
                     "sourceRefs": [
-                      "prospect"
+                      "prospect",
+                      "framing-field"
                     ]
                   },
                   {
@@ -970,7 +971,8 @@
                       "loss-aversion-m3"
                     ],
                     "sourceRefs": [
-                      "prospect"
+                      "prospect",
+                      "framing-field"
                     ]
                   },
                   {
@@ -982,7 +984,8 @@
                       "loss-aversion-m3"
                     ],
                     "sourceRefs": [
-                      "prospect"
+                      "prospect",
+                      "framing-field"
                     ]
                   }
                 ]
@@ -992,7 +995,7 @@
                 "type": "estimate",
                 "conceptId": "loss-aversion",
                 "step": "loss-aversion-s3",
-                "job": "reverse",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "loss-aversion-m1"
@@ -1000,13 +1003,22 @@
                 "sourceRefs": [
                   "loss-meta"
                 ],
-                "stem": "Say a loss weighs about twice a same-size gain for Mohit. He might lose ₹300 on a bet. About what win would just balance it for him?",
+                "stem": "Across hundreds of studies, about how many times as much as a same-size gain did a loss weigh, on average?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About ₹300.",
+                    "text": "About 2 times.",
+                    "correct": true,
+                    "feedback": "Right. Pooled across studies, a loss weighed about twice a gain of the same size, on average.",
+                    "sourceRefs": [
+                      "loss-meta"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 1 time, the same.",
                     "correct": false,
-                    "feedback": "That treats the loss and gain as equal, but here the loss counts double.",
+                    "feedback": "If they weighed the same, people would take fair bets happily. On average a loss weighed about twice as much.",
                     "misconceptionIds": [
                       "loss-aversion-m1"
                     ],
@@ -1015,29 +1027,20 @@
                     ]
                   },
                   {
-                    "id": "b",
-                    "text": "About ₹600.",
-                    "correct": true,
-                    "feedback": "If the loss counts double, he needs a gain about twice as big, so roughly ₹600.",
-                    "sourceRefs": [
-                      "loss-meta"
-                    ]
-                  },
-                  {
                     "id": "c",
-                    "text": "About ₹150.",
+                    "text": "About 10 times.",
                     "correct": false,
-                    "feedback": "That halves the loss. A heavier loss needs a bigger gain to balance it.",
+                    "feedback": "That is far too high. The pooled average was about twice, though single studies differed.",
                     "sourceRefs": [
                       "loss-meta"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 600,
-                  "min": 550,
-                  "max": 650,
-                  "unit": "rupees"
+                  "value": 2,
+                  "min": 1.7,
+                  "max": 2.3,
+                  "unit": "times"
                 }
               },
               {
@@ -1129,6 +1132,14 @@
                 "year": 2024,
                 "url": "https://doi.org/10.1257/jel.20221698",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "framing-field",
+                "title": "Are experimental economists prone to framing effects? A natural field experiment",
+                "publisher": "CeDEx Discussion Paper 2007-01, University of Nottingham (Gächter, Orzen, Renner & Starmer)",
+                "year": 2007,
+                "url": "https://www.nottingham.ac.uk/cedex/documents/papers/2007-01.pdf",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -1177,7 +1188,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Kahneman and Tversky 1979 PDF; Brown, Imai, Vieider and Camerer 2024 abstract and working paper)"
+              "checker": "builder content agent source check 2026-10-21 (Kahneman and Tversky 1979 PDF; Brown, Imai, Vieider and Camerer 2024 abstract and working paper); spec 16 fix-up 2026-10-22: loss-aversion-9 replaced: an even ticket swap refused for fear it turns out worse (the old equal rise/fall of marks repeated the guided try); loss-aversion-15 is now the recall of the pooled average (about twice), so reverse appears once; cloud fact-review fixes 2026-10-22: Kermer et al. 2006 re-read (\"when people actually gambled, losses did not have as much of an emotional impact as they predicted\"), so the hook, rule, s1 teach, example and guided now speak of choices, not lasting feelings; loss-aversion-9 options reworded the same way. loss-aversion-14 now also cites Gachter et al. CeDEx DP 2007-01: a \"penalty\" vs a \"discount\" of $50 for registration, where junior economists were \"affected by the description of the decision task\" and senior ones were not; the item keeps \"likely\""
             },
             "steps": [
               {
@@ -1210,54 +1221,54 @@
                     }
                   ]
                 },
-                "teach": "A loss usually stings more than a gain of the same size pleases. That is why most people turn down a fair coin toss for money, and more say no as the stake grows.",
+                "teach": "In choices, a loss usually counts for more than a gain of the same size. That is why most people turn down a fair coin toss for money, and more say no as the stake grows.",
                 "visual": {
                   "kind": "compare",
                   "left": {
                     "title": "Win ₹100",
                     "lines": [
-                      "Feels good"
+                      "Counts in the choice"
                     ]
                   },
                   "right": {
                     "title": "Pay ₹100",
                     "lines": [
-                      "Feels bad",
-                      "Weighs more"
+                      "Counts for more",
+                      "So the bet is refused"
                     ]
                   }
                 },
                 "example": {
-                  "ask": "Tap how the drop felt.",
+                  "ask": "Tap the choice the loss shaped.",
                   "parts": [
-                    "Sahil finds ₹50 on the bus and smiles for a minute, but when ₹50 falls out of his pocket,",
-                    "he is upset all evening."
+                    "Sahil is offered a coin toss: win ₹50 or lose ₹50,",
+                    "and though the odds are even, he says no."
                   ],
-                  "spot": "he is upset all evening.",
-                  "feedback": "The same ₹50 upsets him far longer than it pleased him, because a loss weighs more."
+                  "spot": "and though the odds are even, he says no.",
+                  "feedback": "The odds are even, yet he turns it down, because the possible ₹50 loss counts for more in his choice."
                 },
                 "guided": [
                   {
-                    "stem": "In a cricket match, Anjali's team gets 5 lucky runs, then gives away 5 runs from a bad throw. Which moment stays with her longer?",
-                    "hint": "Which feels stronger: a gain or a drop of the same size?",
+                    "stem": "Before a friendly cricket match, Anjali's captain offers a side bet on a coin toss: win 5 bonus runs or lose 5 runs. Will she likely take it?",
+                    "hint": "Think about how people treat fair bets.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "The 5 runs given away.",
+                        "text": "Probably not; a loss of 5 weighs more.",
                         "correct": true,
-                        "feedback": "Right. The runs given away weigh more than the same runs gained."
+                        "feedback": "Right. In choices, losing 5 runs counts for more than gaining 5, so most people turn the bet down."
                       },
                       {
                         "id": "b",
-                        "text": "The 5 lucky runs.",
+                        "text": "Yes, since the bet is fair.",
                         "correct": false,
-                        "feedback": "Gains of the same size tend to feel smaller than losses."
+                        "feedback": "It is fair on paper, but most people still refuse even bets, because the loss counts for more."
                       },
                       {
                         "id": "c",
-                        "text": "Both stay with her the same.",
+                        "text": "Yes, as gains count for more.",
                         "correct": false,
-                        "feedback": "Same size, but the runs given away tend to weigh more."
+                        "feedback": "It runs the other way. A loss of one size usually counts for more than the same gain."
                       }
                     ]
                   }
@@ -1590,11 +1601,11 @@
                 "sourceRefs": [
                   "philosophy"
                 ],
-                "stem": "In one anchor study, people who saw a random 10 gave a middle guess of about 25. Those who saw a random 65 gave what middle guess?",
+                "stem": "In one anchor study, people guessing a count of nations who saw a random 10 gave a middle guess of about 25. Those who saw a random 65 gave what middle guess?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 45%.",
+                    "text": "About 45.",
                     "correct": true,
                     "feedback": "The high random number pulled the middle guess up to about 45, short of 65.",
                     "sourceRefs": [
@@ -1603,7 +1614,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "About 65%.",
+                    "text": "About 65.",
                     "correct": false,
                     "feedback": "People adjusted away from 65, just not far enough, so the guess was lower.",
                     "sourceRefs": [
@@ -1612,7 +1623,7 @@
                   },
                   {
                     "id": "c",
-                    "text": "About 25%.",
+                    "text": "About 25.",
                     "correct": false,
                     "feedback": "That was the guess after the low number. The high number pulled guesses up.",
                     "sourceRefs": [
@@ -1624,7 +1635,7 @@
                   "value": 45,
                   "min": 40,
                   "max": 50,
-                  "unit": "percent"
+                  "unit": "nations"
                 }
               },
               {
@@ -1679,7 +1690,7 @@
                 "type": "choose",
                 "conceptId": "anchoring",
                 "step": "anchoring-s3",
-                "job": "transfer",
+                "job": "combine",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "anchoring-m1"
@@ -1884,7 +1895,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (OpenStax Introduction to Philosophy 2.2; Tversky and Kahneman 1974, Englich, Mussweiler and Strack 2006 PubMed abstracts; Mussweiler, Strack and Pfeiffer 2000 abstract)"
+              "checker": "builder content agent source check 2026-10-21 (OpenStax Introduction to Philosophy 2.2; Tversky and Kahneman 1974, Englich, Mussweiler and Strack 2006 PubMed abstracts; Mussweiler, Strack and Pfeiffer 2000 abstract); spec 16 fix-up 2026-10-22: anchoring-s1 guided now compares two tags for the same price, one with a \"was\" price (simulated-week rewrite); anchoring-15 relabelled combine (the anchor plus the list-reasons trick); cloud fact-review fixes 2026-10-22: OpenStax Introduction to Philosophy 2.2 re-read: \"the median estimate of nations was 25 ... the median estimate was 45\" after \"Subjects were asked whether the number of nations was higher or lower than the random number\", so the s2 visual and anchoring-12 give a count of nations, not a percentage, and the s2 hook and guided now include the higher-or-lower step"
             },
             "steps": [
               {
@@ -1938,26 +1949,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Before guessing how long a train trip takes, Kavya's friend says “maybe 10 hours.” Kavya guesses 9. Why so close to 10?",
-                    "hint": "Which number did she hear first?",
+                    "stem": "Two shops sell the same shoes for ₹1,500. One tag says “was ₹2,500”; the other shows just ₹1,500. Why might the first feel like the better deal?",
+                    "hint": "Ask which number the eye meets first on each tag.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Her friend's figure pulled her guess.",
+                        "text": "The old price sets a high starting point.",
                         "correct": true,
-                        "feedback": "Right. She started from 10 and moved only a little."
+                        "feedback": "Right. The ₹2,500 acts as an anchor, so ₹1,500 seems low beside it, though both shops charge the same."
                       },
                       {
                         "id": "b",
-                        "text": "She checked the timetable.",
+                        "text": "Its shoes must be better made.",
                         "correct": false,
-                        "feedback": "She did not check anything. She started from her friend's figure."
+                        "feedback": "The shoes are the same. Only the tag differs, and its old price is what pulls on the buyer."
                       },
                       {
                         "id": "c",
-                        "text": "Train trips usually take 9 hours.",
+                        "text": "It costs less than the other shop.",
                         "correct": false,
-                        "feedback": "Nothing says that. Her guess stayed near the first number she heard."
+                        "feedback": "Both cost ₹1,500. The higher first number just makes the same price feel cheaper."
                       }
                     ]
                   }
@@ -1974,7 +1985,7 @@
                   "tversky"
                 ],
                 "hook": {
-                  "stem": "People spin a wheel that lands on a random number, then guess a fact. Does the random number change their guess?",
+                  "stem": "People spin a wheel to get a random number, say whether a fact is higher or lower, then guess it. Does the random number change their guess?",
                   "options": [
                     {
                       "id": "a",
@@ -1999,17 +2010,17 @@
                 "teach": "Even a random number can pull a guess, because people start from it and stop too soon. In one study, seeing 10 led to guesses near 25, and seeing 65 to guesses near 45.",
                 "visual": {
                   "kind": "scale",
-                  "label": "Middle guess of a percentage after a random number",
-                  "min": "0%",
-                  "max": "100%",
+                  "label": "Middle guess of a count of nations after a random number",
+                  "min": "0",
+                  "max": "100",
                   "marks": [
                     {
                       "at": 25,
-                      "text": "Saw 10: guessed 25%"
+                      "text": "Saw 10: guessed 25"
                     },
                     {
                       "at": 45,
-                      "text": "Saw 65: guessed 45%"
+                      "text": "Saw 65: guessed 45"
                     }
                   ]
                 },
@@ -2025,12 +2036,12 @@
                 },
                 "guided": [
                   {
-                    "stem": "Before a GK quiz, a screen flashes a random number, 900. Then Tara guesses a tower is 800 metres tall. Why so high?",
+                    "stem": "Before a GK quiz, a screen asks if a tower is taller or shorter than a random 900 metres. Then Tara guesses 800 metres. Why so high?",
                     "hint": "Did the first number have any link to the tower?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "The flashed figure pulled her guess up.",
+                        "text": "The random figure pulled her guess up.",
                         "correct": true,
                         "feedback": "Yes. It had no link to the tower, yet it pulled her guess."
                       },
@@ -2038,7 +2049,7 @@
                         "id": "b",
                         "text": "She knew the real height.",
                         "correct": false,
-                        "feedback": "Nothing says she knew it. The flashed figure set her start."
+                        "feedback": "Nothing says she knew it. The random figure she compared against set her start."
                       },
                       {
                         "id": "c",
@@ -2321,7 +2332,7 @@
                 "type": "estimate",
                 "conceptId": "confirmation-bias",
                 "step": "confirmation-bias-s2",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "confirmation-bias-m3"
@@ -2329,22 +2340,25 @@
                 "sourceRefs": [
                   "wason-246"
                 ],
-                "stem": "In Wason's number test, 6 of 29 people found the rule without naming a wrong one first. About what percent is that?",
+                "stem": "In Wason's number test, about what percent of people found the rule without first naming a wrong one?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 50%.",
-                    "correct": false,
-                    "feedback": "That would be about half. Six of 29 is closer to one in five.",
+                    "text": "About 21%.",
+                    "correct": true,
+                    "feedback": "Right. Only 6 of 29 found it without a wrong guess first, about one in five.",
                     "sourceRefs": [
                       "wason-246"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 21%.",
-                    "correct": true,
-                    "feedback": "Six divided by twenty-nine is about one in five, or roughly 21 percent.",
+                    "text": "About 50%.",
+                    "correct": false,
+                    "feedback": "Far fewer than half managed it. Only 6 of 29 found the rule without a wrong guess first.",
+                    "misconceptionIds": [
+                      "confirmation-bias-m3"
+                    ],
                     "sourceRefs": [
                       "wason-246"
                     ]
@@ -2353,7 +2367,7 @@
                     "id": "c",
                     "text": "About 79%.",
                     "correct": false,
-                    "feedback": "That is the share who did not find it first time, not the share who did.",
+                    "feedback": "That is the share who named a wrong rule first. Only about 21% found it straight away.",
                     "sourceRefs": [
                       "wason-246"
                     ]
@@ -2417,10 +2431,10 @@
               },
               {
                 "id": "confirmation-bias-15",
-                "type": "choose",
+                "type": "true-not-quite",
                 "conceptId": "confirmation-bias",
                 "step": "confirmation-bias-s3",
-                "job": "transfer",
+                "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "confirmation-bias-m2"
@@ -2429,13 +2443,13 @@
                   "wason",
                   "bias"
                 ],
-                "stem": "A shop owner thinks her newspaper ads bring in the crowds. Which week would test that claim hardest?",
+                "stem": "Kavya runs a shop and thinks her newspaper ads bring in the crowds. To test it, she plans to count crowds only in weeks with an ad. What is she missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A busy week with an ad running.",
-                    "correct": false,
-                    "feedback": "A busy week with an ad fits her claim, so it cannot show that it is wrong.",
+                    "text": "A week with no ad could show her wrong.",
+                    "correct": true,
+                    "feedback": "Right. Crowds in ad weeks fit many reasons. A week without an ad is the test that could say no.",
                     "sourceRefs": [
                       "wason",
                       "bias"
@@ -2443,9 +2457,12 @@
                   },
                   {
                     "id": "b",
-                    "text": "A week with no ad, to see if crowds still come.",
-                    "correct": true,
-                    "feedback": "If crowds come with no ad, her claim is in trouble, so this week could prove it wrong.",
+                    "text": "No gap; ad weeks are the right test.",
+                    "correct": false,
+                    "feedback": "Ad weeks can only agree with her. A test needs a case that could prove the idea wrong.",
+                    "misconceptionIds": [
+                      "confirmation-bias-m2"
+                    ],
                     "sourceRefs": [
                       "wason",
                       "bias"
@@ -2453,9 +2470,9 @@
                   },
                   {
                     "id": "c",
-                    "text": "A week when a friend said the ad looked good and drew people.",
+                    "text": "She should count her busiest weeks instead.",
                     "correct": false,
-                    "feedback": "Praise is not a test. It cannot show whether the ads bring crowds.",
+                    "feedback": "Best weeks fit her belief even more. A strong test looks for a case that could break it.",
                     "misconceptionIds": [
                       "confirmation-bias-m2"
                     ],
@@ -2614,7 +2631,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 7.3; Dawson, Gilovich and Regan 2002 PDF; Wason 1960 PDF)"
+              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 7.3; Dawson, Gilovich and Regan 2002 PDF; Wason 1960 PDF); spec 16 fix-up 2026-10-22: confirmation-bias-12 relabelled recall and reworded to ask for the share (6 of 29); confirmation-bias-15 rewritten as the misconception (testing only weeks with an ad), so transfer appears once"
             },
             "steps": [
               {
@@ -2876,7 +2893,7 @@
               "asch",
               "asch-original"
             ],
-            "rule": "A crowd choice can act as a clue and pull a person’s choice. But a crowd can be wrong; group agreement is not proof.",
+            "rule": "When we are unsure, a crowd's choice can act as a clue and pull our own. Even when we are sure, a group can pull us to fit in. Group agreement is not proof.",
             "ruleSourceRefs": [
               "asch",
               "asch-original"
@@ -2891,10 +2908,9 @@
               },
               {
                 "id": "social-proof-c3",
-                "text": "Seeing what many others choose can lean a person's own choice toward it, partly because people take the group as a guide to what is right.",
+                "text": "When people are unsure, they may follow a group because they believe it has the right information.",
                 "sourceRefs": [
-                  "asch",
-                  "asch-original"
+                  "asch"
                 ]
               },
               {
@@ -2909,6 +2925,14 @@
                 "id": "social-proof-c5",
                 "text": "People differed a lot: about a quarter of Asch's subjects never went along with the wrong group.",
                 "sourceRefs": [
+                  "asch-original"
+                ]
+              },
+              {
+                "id": "social-proof-c6",
+                "text": "In Asch's test the right answer was plain, so people who went along mostly did it to fit in and avoid ridicule; some decided they must be wrong.",
+                "sourceRefs": [
+                  "asch",
                   "asch-original"
                 ]
               }
@@ -2960,47 +2984,44 @@
               },
               {
                 "id": "social-proof-10",
-                "type": "true-not-quite",
+                "type": "why",
                 "conceptId": "social-proof",
                 "step": "social-proof-s1",
-                "job": "misconception",
+                "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "social-proof-m3"
+                  "social-proof-m1"
                 ],
                 "sourceRefs": [
                   "asch"
                 ],
-                "stem": "Kartik says just shy students follow the crowd. What is not quite right?",
+                "stem": "A new snack stall's owner asks friends to stand in a queue on opening day. What is she counting on?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Shy students follow crowds less than the bold ones do.",
-                    "correct": false,
-                    "feedback": "Shyness is not the key. Anyone can take a crowd's choice as a clue.",
-                    "misconceptionIds": [
-                      "social-proof-m3"
-                    ],
+                    "text": "Passers-by reading the queue as a sign the food is good.",
+                    "correct": true,
+                    "feedback": "Right. Many people choosing something is taken as a clue it is good, so a queue draws more people in.",
                     "sourceRefs": [
                       "asch"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Anyone can lean on a crowd's pick as a clue.",
-                    "correct": true,
-                    "feedback": "A crowd's choice works as a clue for people in general, not just for shy ones.",
+                    "text": "Her friends buying most of the food.",
+                    "correct": false,
+                    "feedback": "A few friends cannot buy much. The queue is there to be seen, as a sign that others chose it.",
                     "sourceRefs": [
                       "asch"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Crowds have no pull on anybody.",
+                    "text": "A queue that puts other buyers off.",
                     "correct": false,
-                    "feedback": "Crowds do pull choices. The point is that the pull works on most of us.",
+                    "feedback": "A queue tends to pull people in, because many others choosing a stall reads as a sign it is good.",
                     "misconceptionIds": [
-                      "social-proof-m2"
+                      "social-proof-m1"
                     ],
                     "sourceRefs": [
                       "asch"
@@ -3013,7 +3034,7 @@
                 "type": "estimate",
                 "conceptId": "social-proof",
                 "step": "social-proof-s2",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m2"
@@ -3021,41 +3042,44 @@
                 "sourceRefs": [
                   "asch-original"
                 ],
-                "stem": "Asch's group gave a wrong answer on 12 key trials. If someone went along at the overall rate of about 37%, on about how many of the 12 would they go along?",
+                "stem": "In Asch's line test, when the group gave a plainly wrong answer, about what percent of answers went along with it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 4 or 5.",
+                    "text": "About 37%.",
                     "correct": true,
-                    "feedback": "Thirty-seven percent of 12 is about 4.4, so roughly 4 or 5 trials.",
+                    "feedback": "Right. About a third of answers went along with the wrong group, though about a quarter of people never did.",
                     "sourceRefs": [
                       "asch-original"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 1.",
+                    "text": "About 5%.",
                     "correct": false,
-                    "feedback": "One trial would be under 10 percent, far below the overall rate.",
+                    "feedback": "Far more went along than that. About a third of answers followed the group's wrong call.",
+                    "misconceptionIds": [
+                      "social-proof-m2"
+                    ],
                     "sourceRefs": [
                       "asch-original"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 9.",
+                    "text": "About 95%.",
                     "correct": false,
-                    "feedback": "Nine of 12 is 75 percent, about double the overall rate.",
+                    "feedback": "Most answers stayed right. About a third went along, and about a quarter of people never gave in.",
                     "sourceRefs": [
                       "asch-original"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 4.4,
-                  "min": 4,
-                  "max": 5,
-                  "unit": "trials"
+                  "value": 37,
+                  "min": 32,
+                  "max": 40,
+                  "unit": "percent"
                 }
               },
               {
@@ -3110,7 +3134,7 @@
                 "type": "match",
                 "conceptId": "social-proof",
                 "step": "social-proof-s3",
-                "job": "transfer",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "social-proof-m1"
@@ -3340,9 +3364,13 @@
                 {
                   "claimId": "social-proof-16",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "social-proof-c6",
+                  "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 12.4; Asch 1955 Scientific American PDF)"
+              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 12.4; Asch 1955 Scientific American PDF); spec 16 fix-up 2026-10-22: social-proof-10 rewritten as a reverse (a staged queue: what is the owner counting on?); social-proof-12 is now the recall of the Asch rate (36.8%, about a third); social-proof-15 relabelled combine (crowd claim plus a fresh check); cloud fact-review fixes 2026-10-22: OpenStax Psychology 2e 12.4 re-read: \"Since the line judgment task was unambiguous, participants did not need to rely on the group for information. Instead, participants complied to fit in and avoid ridicule, an instance of normative social influence\", and informational influence is when \"people conform because they believe the group is competent and has the correct information\"; Asch 1955: \"I am wrong, they are right\" and others yielded \"not to spoil your results\". Step 1 (crowd as a clue when unsure) now rests on the informational-influence passage only; step 2 says Asch's people mostly went along to fit in (new claim c6); the rule names both pulls"
             },
             "steps": [
               {
@@ -3350,8 +3378,7 @@
                 "title": "A crowd’s choice is a clue",
                 "claimId": "social-proof-c3",
                 "sourceRefs": [
-                  "asch",
-                  "asch-original"
+                  "asch"
                 ],
                 "hook": {
                   "stem": "In class, everyone around you raises a hand for answer B. You thought A. What do you feel pulled to do?",
@@ -3376,7 +3403,7 @@
                     }
                   ]
                 },
-                "teach": "When many people pick something, we take it as a sign it is right, so our own choice leans toward theirs. This pull is called social proof.",
+                "teach": "When we are unsure and many people pick something, we take it as a sign it is right, so our own choice leans toward theirs. This pull is called social proof.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -3454,7 +3481,7 @@
                     }
                   ]
                 },
-                "teach": "In Asch's line test, a group gave a plainly wrong answer, and people went along in about a third of answers, so a clear view can still bend. People differed: about a quarter never gave in.",
+                "teach": "In Asch's line test, a group gave a plainly wrong answer, and people went along in about a third of answers. The answer was plain, so most did it to fit in. A quarter never gave in.",
                 "visual": {
                   "kind": "scale",
                   "label": "Wrong answers in Asch’s line test",
@@ -3479,7 +3506,7 @@
                     "though she can see it is wrong."
                   ],
                   "spot": "Tanya says the same,",
-                  "feedback": "She can see the right answer, yet the group’s wrong answer pulls her along."
+                  "feedback": "She can see the right answer, yet she goes along with the group, most likely to fit in."
                 },
                 "guided": [
                   {
@@ -3490,7 +3517,7 @@
                         "id": "a",
                         "text": "No, some stay with what they hear.",
                         "correct": true,
-                        "feedback": "Right. People differed, and about a quarter in Asch's test never went along."
+                        "feedback": "Right. People differed: some went along to fit in, but about a quarter in Asch's test never did."
                       },
                       {
                         "id": "b",
@@ -3843,7 +3870,7 @@
                 "type": "estimate",
                 "conceptId": "planning-fallacy",
                 "step": "planning-fallacy-s3",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "planning-fallacy-m2"
@@ -4034,7 +4061,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Buehler, Griffin and Ross 1994 abstract via DOI record)"
+              "checker": "builder content agent source check 2026-10-21 (Buehler, Griffin and Ross 1994 abstract via DOI record); spec 16 fix-up 2026-10-22: planning-fallacy-15 relabelled recall (it retrieves the step-3 rule: base the guess on past tasks), so transfer appears once; cloud fact-review fixes 2026-10-22: Buehler et al. 1994 abstract re-read via OpenAlex (\"predictions of their completion times were too optimistic for a variety of academic and nonacademic tasks\"); the 34- and 56-day figures are not in it, so the s1 hook feedback no longer gives them"
             },
             "steps": [
               {
@@ -4051,13 +4078,13 @@
                       "id": "a",
                       "text": "They guessed too little time.",
                       "correct": true,
-                      "feedback": "Right. On average they guessed 34 days and took about 56."
+                      "feedback": "Right. In the studies, people's guesses for their own tasks were too optimistic."
                     },
                     {
                       "id": "b",
                       "text": "They were about right.",
                       "correct": false,
-                      "feedback": "They were far off. They guessed 34 days on average and took about 56."
+                      "feedback": "They were off. People guessed too little time for their own academic and other tasks."
                     },
                     {
                       "id": "c",
@@ -4329,6 +4356,13 @@
                 "sourceRefs": [
                   "sleep-study"
                 ]
+              },
+              {
+                "id": "sleep-memory-c5",
+                "text": "Across 177 papers, people who slept after learning recalled more than people who stayed awake for the same time.",
+                "sourceRefs": [
+                  "sleep-meta"
+                ]
               }
             ],
             "items": [
@@ -4382,7 +4416,7 @@
                 "type": "predict",
                 "conceptId": "sleep-memory",
                 "step": "sleep-memory-s1",
-                "job": "transfer",
+                "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "sleep-memory-m1"
@@ -4434,41 +4468,44 @@
                 "sourceRefs": [
                   "sleep-study"
                 ],
-                "stem": "In a small sleep pilot of 8 people, recall was about 20.4 word pairs after sleep and 12.6 after staying awake. About what percent higher was the sleep score?",
+                "stem": "In a small sleep pilot, recall after sleep was about 60% higher than after the same hours awake. If that gap held in a chemistry class and the awake group recalled 10 new terms, about how many might the sleepers recall?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 38% higher.",
-                    "correct": false,
-                    "feedback": "That divides the gap by the sleep score. Compare the gap with the awake score instead.",
+                    "text": "About 16 terms.",
+                    "correct": true,
+                    "feedback": "Right. 60% more than 10 is 6 more, so about 16, if the pilot's gap held for chemistry terms.",
                     "sourceRefs": [
                       "sleep-study"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 8% higher.",
+                    "text": "About 10 terms.",
                     "correct": false,
-                    "feedback": "The gap of nearly 8 pairs is far more than 8 percent of 12.6.",
+                    "feedback": "That leaves out the gap. In the pilot, sleepers recalled about 60% more than people who stayed awake.",
+                    "misconceptionIds": [
+                      "sleep-memory-m1"
+                    ],
                     "sourceRefs": [
                       "sleep-study"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 60% higher.",
-                    "correct": true,
-                    "feedback": "20.4 divided by 12.6 is about 1.6, so the sleep score was about 60 percent higher.",
+                    "text": "About 70 terms.",
+                    "correct": false,
+                    "feedback": "That adds 60 terms, not 60%. Six tenths of 10 is 6, so about 16 terms.",
                     "sourceRefs": [
                       "sleep-study"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 61,
-                  "min": 55,
-                  "max": 67,
-                  "unit": "percent"
+                  "value": 16,
+                  "min": 15,
+                  "max": 17,
+                  "unit": "terms"
                 }
               },
               {
@@ -4630,7 +4667,7 @@
                 "type": "explain-it-back",
                 "conceptId": "sleep-memory",
                 "step": "sleep-memory-s3",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4709,6 +4746,22 @@
                 "publisher": "Atherton et al., Cortex",
                 "year": 2014,
                 "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4007033/"
+              },
+              {
+                "id": "sleep-meta",
+                "title": "The sleep benefit in episodic memory: An integrative review and a meta-analysis",
+                "publisher": "Psychological Bulletin (Berres & Erdfelder)",
+                "year": 2021,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/35404637/",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "sleep-motor",
+                "title": "Sleep and motor learning: Is there room for consolidation?",
+                "publisher": "Psychological Bulletin (Pan & Rickard)",
+                "year": 2015,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/25822130/",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -4760,9 +4813,13 @@
                 {
                   "claimId": "sleep-memory-16",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "sleep-memory-c5",
+                  "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Rasch and Born 2013 PMC, Wamsley 2019 PMC, Atherton et al. 2014 PMC pilot)"
+              "checker": "builder content agent source check 2026-10-21 (Rasch and Born 2013 PMC, Wamsley 2019 PMC, Atherton et al. 2014 PMC pilot); spec 16 fix-up 2026-10-22: sleep-memory-11 relabelled edge (cramming to 3 a.m. leaves no time to firm up); sleep-memory-12 rewritten as a transfer of the pilot gap (20.4 vs 12.6, about 60%) to a dance class; sleep-memory-16 relabelled recall; cloud fact-review fixes 2026-10-22: Pan & Rickard 2015 (PubMed 25822130): \"We conclude that sleep does not enhance motor learning\", so the s2 example (bowling action \"feels smoother\"), the s3 dance example and the sleep-memory-12 dance transfer now use facts and words; Berres & Erdfelder 2021 (PubMed 35404637): \"a moderate overall sleep benefit in episodic memory (g = 0.44)\" now carries s2 teach instead of the 8-person pilot (new claim c5)"
             },
             "steps": [
               {
@@ -4847,6 +4904,7 @@
                 "claimId": "sleep-memory-c1",
                 "sourceRefs": [
                   "sleep-review",
+                  "sleep-meta",
                   "sleep-study"
                 ],
                 "hook": {
@@ -4872,7 +4930,7 @@
                     }
                   ]
                 },
-                "teach": "Sleep after learning cuts forgetting compared with the same hours awake, since the sleeping brain helps firm up new memories. In a small pilot of 8 people, recall was clearly higher after sleep.",
+                "teach": "Sleep after learning cuts forgetting compared with the same hours awake, since the sleeping brain helps firm up new memories. A big review found a moderate gain for facts and words.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4889,14 +4947,14 @@
                   }
                 },
                 "example": {
-                  "ask": "Tap what came between practice and morning.",
+                  "ask": "Tap what came between learning and morning.",
                   "parts": [
-                    "Gautam practises a new bowling action,",
+                    "Gautam learns the names of ten ragas in the evening,",
                     "sleeps,",
-                    "and the next morning his action feels smoother."
+                    "and the next morning he still recalls most of them."
                   ],
                   "spot": "sleeps,",
-                  "feedback": "Sleep after practice can help a new skill stick."
+                  "feedback": "Sleep after learning can cut how much of new facts and names is forgotten."
                 },
                 "guided": [
                   {
@@ -4975,9 +5033,9 @@
                 "example": {
                   "ask": "Tap the quiet rest.",
                   "parts": [
-                    "After learning the steps of a new dance,",
+                    "After learning a list of new biology terms,",
                     "Lakshmi sits quietly for a few minutes,",
-                    "and later she recalls the steps well."
+                    "and later she recalls the terms well."
                   ],
                   "spot": "Lakshmi sits quietly for a few minutes,",
                   "feedback": "Quiet rest after learning can help new memories firm up."
@@ -5157,7 +5215,7 @@
                 "type": "estimate",
                 "conceptId": "variable-rewards",
                 "step": "variable-rewards-s2",
-                "job": "transfer",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "variable-rewards-m1"
@@ -5207,7 +5265,7 @@
                 "type": "predict",
                 "conceptId": "variable-rewards",
                 "step": "variable-rewards-s2",
-                "job": "edge",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -5248,49 +5306,49 @@
                 "id": "variable-rewards-14",
                 "type": "scenario",
                 "conceptId": "variable-rewards",
-                "step": "variable-rewards-s2",
-                "job": "misconception",
+                "step": "variable-rewards-s3",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "variable-rewards-m3"
+                  "variable-rewards-m2"
                 ],
                 "sourceRefs": [
-                  "operant",
-                  "social-reward"
+                  "social-reward",
+                  "scroll-review"
                 ],
-                "stem": "Zoya, a college student, keeps refreshing for likes and blames her own weak willpower. What else is at work?",
+                "stem": "Zoya, a college student, turns off all like alerts, yet she still opens her chat app many times a day. Working back, what does that suggest?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Likes arrive on a fixed timer that she has already learned.",
-                    "correct": false,
-                    "feedback": "Likes come at random times. If she knew the timer, she would not need to keep checking.",
+                    "text": "Other pulls, like news from friends, keep her opening it.",
+                    "correct": true,
+                    "feedback": "Right. Surprise likes are one pull, but people also open apps for friends and news, so many things keep them coming back.",
                     "sourceRefs": [
-                      "operant",
-                      "social-reward"
+                      "social-reward",
+                      "scroll-review"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Willpower is the whole story here.",
+                    "text": "Her alerts must still be on.",
                     "correct": false,
-                    "feedback": "Willpower plays a part, but rewards at unknown times pull on most people.",
-                    "misconceptionIds": [
-                      "variable-rewards-m3"
-                    ],
+                    "feedback": "She turned them off. Opening the app anyway points to other pulls, such as wanting news from friends.",
                     "sourceRefs": [
-                      "operant",
-                      "social-reward"
+                      "social-reward",
+                      "scroll-review"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Likes come at unknown times, which keeps checks going.",
-                    "correct": true,
-                    "feedback": "When the next check might pay, it seems worth making, so this pull works on most people.",
+                    "text": "Surprise likes are the one reason people open apps.",
+                    "correct": false,
+                    "feedback": "If likes were the whole story, turning off alerts would end it. Friends, news and design also pull people back.",
+                    "misconceptionIds": [
+                      "variable-rewards-m2"
+                    ],
                     "sourceRefs": [
-                      "operant",
-                      "social-reward"
+                      "social-reward",
+                      "scroll-review"
                     ]
                   }
                 ]
@@ -5452,7 +5510,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 6.3; Lindstrom et al. 2021 PMC; Montag et al. 2019 PMC)"
+              "checker": "builder content agent source check 2026-10-21 (OpenStax Psychology 2e 6.3; Lindstrom et al. 2021 PMC; Montag et al. 2019 PMC); spec 16 fix-up 2026-10-22: variable-rewards-14 rewritten for step 3 as a reverse (alerts off, still opening the app: other pulls) so each step holds 2; variable-rewards-12 relabelled combine and variable-rewards-13 recall (the hardest habit to fade); cloud fact-review fixes 2026-10-22: OpenStax 6.3 re-read: the variable ratio schedule \"yields high and steady response rates\" and \"the point of extinction comes very slowly\", while the variable interval schedule \"produces a moderate, steady response rate\"; likes come over time, so the s2 hook no longer uses refreshing for likes; it uses a scratch card (a pure chance per try)"
             },
             "steps": [
               {
@@ -5549,29 +5607,29 @@
                   "social-reward"
                 ],
                 "hook": {
-                  "stem": "Why is it hard to stop pulling down to refresh a post for new likes?",
+                  "stem": "A scratch-card game pays out on some cards but not others, with no pattern. Why do people keep buying cards?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "The next refresh might bring one.",
+                      "text": "The next card might win.",
                       "correct": true,
-                      "feedback": "Right. You cannot tell which refresh will pay, so each one seems worth a try."
+                      "feedback": "Right. No one can tell which card will pay, so each new one seems worth a try."
                     },
                     {
                       "id": "b",
-                      "text": "Each refresh brings a like.",
+                      "text": "Each card wins something.",
                       "correct": false,
-                      "feedback": "Most refreshes bring nothing new. The pull is that the next one might."
+                      "feedback": "Most cards win nothing. The pull is that the next one might."
                     },
                     {
                       "id": "c",
-                      "text": "The phone makes you do it.",
+                      "text": "The seller makes them buy.",
                       "correct": false,
-                      "feedback": "The phone does not force you. Not knowing when a like comes keeps you trying."
+                      "feedback": "Nobody forces them. Not knowing which card pays keeps people buying."
                     }
                   ]
                 },
-                "teach": "When the next try might pay, it seems worth making, so people keep going. Gambling runs on this kind of reward, and it is the hardest kind of habit to fade.",
+                "teach": "When the next try might pay, it seems worth making, so people keep going. Gambling runs on this kind of reward, which is why such habits are slow to fade.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5748,6 +5806,13 @@
                 "text": "When a plan worked by sharpening the cue, other cues were more often passed over.",
                 "sourceRefs": [
                   "plan-study"
+                ]
+              },
+              {
+                "id": "if-then-plans-c5",
+                "text": "A 2025 review of 642 tests found if-then plans helped thinking, feelings and actions, with effects from small to medium-large.",
+                "sourceRefs": [
+                  "plan-meta-2025"
                 ]
               }
             ],
@@ -5952,7 +6017,7 @@
                 "sourceRefs": [
                   "plan-meta"
                 ],
-                "stem": "Across 94 tests of if-then plans, effects are scored where 0.2 is small, 0.5 medium and 0.8 large. About what was the average effect?",
+                "stem": "In an older review of 94 tests of if-then plans, effects are scored where 0.2 is small, 0.5 medium and 0.8 large. About what was the average effect?",
                 "options": [
                   {
                     "id": "a",
@@ -6078,6 +6143,14 @@
                 "year": 2006,
                 "url": "https://doi.org/10.1016/S0065-2601(06)38002-1",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "plan-meta-2025",
+                "title": "The when and how of planning: Meta-analysis of the scope and components of implementation intentions in 642 tests",
+                "publisher": "European Review of Social Psychology (Sheeran, Listrom & Gollwitzer)",
+                "year": 2025,
+                "url": "https://kops.uni-konstanz.de/handle/123456789/69905",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -6128,9 +6201,13 @@
                 {
                   "claimId": "if-then-plans-16",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "if-then-plans-c5",
+                  "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Parks-Stamm, Gollwitzer and Oettingen 2007 abstract; Gollwitzer and Sheeran 2006 abstract)"
+              "checker": "builder content agent source check 2026-10-21 (Parks-Stamm, Gollwitzer and Oettingen 2007 abstract; Gollwitzer and Sheeran 2006 abstract); cloud fact-review fixes 2026-10-22: Sheeran, Listrom & Gollwitzer 2025 (KOPS record) re-read: \"Across 642 independent tests, forming implementation intentions proved effective for cognitive, affective, and behavioural outcomes (.27 <= d <= .66)\"; s3 teach and if-then-plans-15 now mark 0.65 as the older 94-test review (new claim c5)"
             },
             "steps": [
               {
@@ -6301,7 +6378,8 @@
                 "title": "It helps, but cannot promise",
                 "claimId": "if-then-plans-c2",
                 "sourceRefs": [
-                  "plan-meta"
+                  "plan-meta",
+                  "plan-meta-2025"
                 ],
                 "hook": {
                   "stem": "Studies compared people with only a goal to people who also made an if-then plan. What did they find?",
@@ -6326,10 +6404,10 @@
                     }
                   ]
                 },
-                "teach": "Across 94 tests, people who made if-then plans reached goals more often than those with a goal alone. The effect was medium to large on average, so plans help but cannot promise action.",
+                "teach": "In an older review of 94 tests, people with if-then plans reached goals more often than those with a goal alone. A 2025 review of 642 tests agreed, so plans help but cannot promise action.",
                 "visual": {
                   "kind": "scale",
-                  "label": "How much if-then plans helped, across 94 tests",
+                  "label": "How much if-then plans helped, in an older review of 94 tests",
                   "min": "0",
                   "max": "1",
                   "marks": [
@@ -6542,7 +6620,7 @@
                 "type": "scenario",
                 "conceptId": "spotlight-effect",
                 "step": "spotlight-effect-s2",
-                "job": "transfer",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "spotlight-effect-m1"
@@ -6550,34 +6628,34 @@
                 "sourceRefs": [
                   "spotlight-paper"
                 ],
-                "stem": "In an online college class, Varsha's video freezes on a funny face for a few seconds. She replays it in her head all night. Why does it feel so big to her?",
+                "stem": "In an online college class, Varsha's video freezes on a funny face for a few seconds. Because it felt huge to her, she says the whole class must have noticed. What is not quite right?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "She lived it from the inside, in full detail.",
+                    "text": "It felt huge because she lived it in full detail.",
                     "correct": true,
-                    "feedback": "Her own vivid view makes the moment loom large, even if others barely saw it.",
+                    "feedback": "Right. She saw every second from the inside. Classmates caught a brief moment, so far fewer noticed than she thinks.",
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Her classmates saved and shared the frame.",
+                    "text": "No slip; a big feeling means many noticed.",
                     "correct": false,
-                    "feedback": "Nothing says anyone saved it. It feels big because she lived it in detail.",
+                    "feedback": "How big a moment feels to us says little about others. We live our own moments in close-up.",
+                    "misconceptionIds": [
+                      "spotlight-effect-m1"
+                    ],
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Frozen screens are rare, so the class noticed.",
+                    "text": "Online classes hide frozen screens from view.",
                     "correct": false,
-                    "feedback": "Screens freeze often in online class, and others notice less than we think.",
-                    "misconceptionIds": [
-                      "spotlight-effect-m1"
-                    ],
+                    "feedback": "Some classmates may have seen it. The slip is guessing that all of them did, because it felt so big.",
                     "sourceRefs": [
                       "spotlight-paper"
                     ]
@@ -6683,41 +6761,48 @@
                 "type": "fill-the-step",
                 "conceptId": "spotlight-effect",
                 "step": "spotlight-effect-s3",
-                "job": "transfer",
+                "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "spotlight-effect-m3"
                 ],
                 "sourceRefs": [
-                  "harsh"
+                  "harsh",
+                  "spotlight-paper"
                 ],
-                "stem": "Yash drops his tray in the canteen and fears everyone thinks he is clumsy. Onlookers more likely think the floor is wet. His fear came from focusing on ___.",
+                "stem": "Yash drops his tray on the wet canteen floor. He replays it all night and fears everyone thinks he is clumsy. Both errors come from ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "His own mishap, not the scene around it.",
+                    "text": "living the slip up close and missing the wet floor",
                     "correct": true,
-                    "feedback": "Dwelling on the slip itself made him forget what onlookers take into account, like a wet floor.",
+                    "feedback": "Right. Seen from the inside, the slip looms large, and fixing on it hides the wet floor that onlookers saw.",
                     "sourceRefs": [
-                      "harsh"
+                      "harsh",
+                      "spotlight-paper"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The faces of the other students, who were staring.",
+                    "text": "other students staring at him all night",
                     "correct": false,
-                    "feedback": "Watching faces would show him their real view. His fear came from looking inward.",
+                    "feedback": "Onlookers glance and move on. The night of replays comes from his own close-up view of the slip.",
+                    "misconceptionIds": [
+                      "spotlight-effect-m1"
+                    ],
                     "sourceRefs": [
-                      "harsh"
+                      "harsh",
+                      "spotlight-paper"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "How strong the tray was.",
+                    "text": "how heavy the tray was",
                     "correct": false,
-                    "feedback": "The tray is beside the point. He focused on his own slip, not the scene.",
+                    "feedback": "The tray's weight explains nothing about his fears. He lived the slip up close and forgot the wet floor.",
                     "sourceRefs": [
-                      "harsh"
+                      "harsh",
+                      "spotlight-paper"
                     ]
                   }
                 ]
@@ -6829,7 +6914,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Gilovich, Medvec and Savitsky 2000 and Savitsky, Epley and Gilovich 2001 PubMed abstracts)"
+              "checker": "builder content agent source check 2026-10-21 (Gilovich, Medvec and Savitsky 2000 and Savitsky, Epley and Gilovich 2001 PubMed abstracts); spec 16 fix-up 2026-10-22: spotlight-effect-13 rewritten as the misconception (a big feeling means everyone noticed); spotlight-effect-16 rewritten as the combine (inside view plus missing the scene), so transfer appears once"
             },
             "steps": [
               {

@@ -109,7 +109,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Nothing; meat is the one real source.",
+                    "text": "No; meat is the one real source.",
                     "correct": false,
                     "feedback": "Meat is one source, but pulses, milk, nuts and seeds are good protein foods as well.",
                     "misconceptionIds": [
@@ -260,7 +260,7 @@
               },
               {
                 "id": "protein-foods-13",
-                "type": "estimate",
+                "type": "scenario",
                 "conceptId": "protein-foods",
                 "step": "protein-foods-s3",
                 "job": "transfer",
@@ -269,46 +269,40 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "A hostel cook plans a day's menu for ten healthy adults of about 60 kg each. Using 0.83 g of protein per kg, estimate the protein the menu should give in total.",
+                "stem": "A hostel cook plans the day's protein for ten adults from the healthy-adult figure per kg. Two of them are pregnant. Why is that plan incomplete?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 500 g.",
+                    "text": "Pregnant women need more than that figure.",
                     "correct": true,
-                    "feedback": "Each person needs about 60 times 0.83, close to 50 g, and ten people need about ten times that.",
+                    "feedback": "Right. The per-kg figure is for healthy adults. Pregnant women need more, so their share of the menu has to grow.",
                     "sourceRefs": [
                       "protein"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 600 g.",
+                    "text": "Pregnant women need less protein than others.",
                     "correct": false,
-                    "feedback": "That uses 1 g per kg. At 0.83 g per kg, ten people of 60 kg need about 500 g.",
+                    "feedback": "It runs the other way. Pregnancy raises the need above the healthy-adult figure.",
                     "sourceRefs": [
                       "protein"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 5,000 g.",
+                    "text": "No; the figure fits each adult alike.",
                     "correct": false,
-                    "feedback": "That is ten times too much. Ten adults of 60 kg need about 500 g in all.",
+                    "feedback": "The figure fits healthy adults. Teens, pregnant women and people who are ill need more than it gives.",
                     "sourceRefs": [
                       "protein"
                     ]
                   }
-                ],
-                "answer": {
-                  "value": 500,
-                  "min": 470,
-                  "max": 530,
-                  "unit": "grams"
-                }
+                ]
               },
               {
                 "id": "protein-foods-14",
-                "type": "scenario",
+                "type": "estimate",
                 "conceptId": "protein-foods",
                 "step": "protein-foods-s3",
                 "job": "recall",
@@ -319,22 +313,22 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "At a school health talk, which of these people needs more protein for their weight than a healthy adult?",
+                "stem": "About how many grams of protein per kg of body weight does a healthy adult need each day?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A woman who is pregnant.",
+                    "text": "About 0.83 g per kg.",
                     "correct": true,
-                    "feedback": "India's food guide says pregnant women need more protein, along with growing teens and people who are ill.",
+                    "feedback": "Right. India's food guide sets about 0.83 g per kg a day for healthy adults, whether or not they exercise.",
                     "sourceRefs": [
                       "protein"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "A healthy man who runs daily.",
+                    "text": "About 2 g per kg.",
                     "correct": false,
-                    "feedback": "Healthy adults have the same need per kg, however much they run or move.",
+                    "feedback": "That is well above the figure. Healthy adults need about 0.83 g per kg a day.",
                     "misconceptionIds": [
                       "protein-foods-m3"
                     ],
@@ -344,14 +338,20 @@
                   },
                   {
                     "id": "c",
-                    "text": "A healthy office worker.",
+                    "text": "About 0.1 g per kg.",
                     "correct": false,
-                    "feedback": "A healthy adult at a desk job needs the usual figure of about 0.83 g per kg.",
+                    "feedback": "That is far too low. The guide's figure for healthy adults is about 0.83 g per kg a day.",
                     "sourceRefs": [
                       "protein"
                     ]
                   }
-                ]
+                ],
+                "answer": {
+                  "value": 0.83,
+                  "min": 0.78,
+                  "max": 0.88,
+                  "unit": "g per kg"
+                }
               }
             ],
             "misconceptions": [
@@ -398,7 +398,7 @@
               ]
             },
             "factCheck": {
-              "checker": "content agent re-check 2026-10-22 against the DGI 2024 PDF text (Guideline 8 and p.4: milk, meat, fish, eggs and pulses are rich protein sources, nuts and seeds hold substantial protein; 20 amino acids with nine essential; animal proteins give all EAA; cereals and pulses complement each other, 3:1 raw; RDA 0.83 g/kg/day for healthy men and women, 54 g at 65 kg, regardless of physical activity; more needed by growing children, adolescents, pregnant women and during illness or physical stress; nuts and oilseeds rich in fat; pulses low-fat and high-fibre)",
+              "checker": "content agent re-check 2026-10-22 against the DGI 2024 PDF text (Guideline 8 and p.4: milk, meat, fish, eggs and pulses are rich protein sources, nuts and seeds hold substantial protein; 20 amino acids with nine essential; animal proteins give all EAA; cereals and pulses complement each other, 3:1 raw; RDA 0.83 g/kg/day for healthy men and women, 54 g at 65 kg, regardless of physical activity; more needed by growing children, adolescents, pregnant women and during illness or physical stress; nuts and oilseeds rich in fat; pulses low-fat and high-fibre); spec 16 fix-up 2026-10-22: protein-foods-13 replaced (simulated week: it repeated 0.83 x body weight): the cook's plan misses that pregnant women need more (DGI 2024, already cited); protein-foods-14 is now the recall estimate of the per-kg figure, so one sentence no longer answers 13 and 14",
               "verdicts": [
                 {
                   "claimId": "protein-foods-c1",
@@ -778,37 +778,41 @@
                   "free-sugars-m2"
                 ],
                 "sourceRefs": [
+                  "sugar",
                   "who-sugars"
                 ],
-                "stem": "In the hostel, Riya stops eating whole bananas because she thinks fruit sugar counts against her limit. What is she mixing up?",
+                "stem": "In the hostel, Riya swaps a whole banana for a glass of banana juice labelled 'no added sugar'. Which one goes in her free-sugar count?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Whole fruit sugar is left out; juice is what counts.",
+                    "text": "The juice, even with no sugar added.",
                     "correct": true,
-                    "feedback": "Sugar inside whole fresh fruit is not free sugar. It counts once the fruit becomes juice.",
+                    "feedback": "Right. Fruit juice counts as free sugar whatever the label says, while sugar inside a whole banana is left out.",
                     "sourceRefs": [
+                      "sugar",
                       "who-sugars"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Bananas hold no sugar of any kind.",
+                    "text": "The whole banana, since fruit sugar counts.",
                     "correct": false,
-                    "feedback": "Bananas do hold sugar. It is left out of the count because it sits inside whole fruit.",
+                    "feedback": "Sugar inside whole fruit is left out of the count. It is the juice that counts as free sugar.",
+                    "misconceptionIds": [
+                      "free-sugars-m2"
+                    ],
                     "sourceRefs": [
+                      "sugar",
                       "who-sugars"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Fruit sugar counts twice as much as table sugar.",
+                    "text": "Neither, since no sugar was added.",
                     "correct": false,
-                    "feedback": "Whole fruit sugar is not counted at all, so it cannot count double.",
-                    "misconceptionIds": [
-                      "free-sugars-m2"
-                    ],
+                    "feedback": "Fruit juice counts as free sugar even when nothing is added, so the juice goes in her count.",
                     "sourceRefs": [
+                      "sugar",
                       "who-sugars"
                     ]
                   }
@@ -1177,7 +1181,7 @@
               ]
             },
             "factCheck": {
-              "checker": "content agent re-check 2026-10-22 (WHO Healthy diet fact sheet: free sugars defined, under 10% of energy is 50 g or 12 level teaspoons at 2,000 kcal, 5% or less may add benefit; WHO sugars release 2015: fresh fruit, vegetable and milk sugars left out because there is no reported evidence of adverse effects, under 10% reduces overweight, obesity and tooth decay, 5% is about 25 g or 6 teaspoons, a can of soda up to 40 g, a tablespoon of ketchup about 4 g; ICMR-NIN DGI 2024: sugar under 5% of energy for adults, jaggery and honey listed as sugars)",
+              "checker": "content agent re-check 2026-10-22 (WHO Healthy diet fact sheet: free sugars defined, under 10% of energy is 50 g or 12 level teaspoons at 2,000 kcal, 5% or less may add benefit; WHO sugars release 2015: fresh fruit, vegetable and milk sugars left out because there is no reported evidence of adverse effects, under 10% reduces overweight, obesity and tooth decay, 5% is about 25 g or 6 teaspoons, a can of soda up to 40 g, a tablespoon of ketchup about 4 g; ICMR-NIN DGI 2024: sugar under 5% of energy for adults, jaggery and honey listed as sugars); spec 16 fix-up 2026-10-22: free-sugars-9 replaced (simulated week): a whole banana vs banana juice labelled \"no added sugar\" is now a decision; WHO Healthy diet fact sheet lists fruit juices among free sugars",
               "verdicts": [
                 {
                   "claimId": "free-sugars-c1",
@@ -1896,7 +1900,7 @@
               ]
             },
             "factCheck": {
-              "checker": "content agent re-check 2026-10-22 (ICMR-NIN DGI 2024 Guideline 14: about eight glasses, about 2 litres, of water including beverages a day, more in very hot weather and vigorous activity because water is lost through sweat, the body loses water through sweat, urine and faeces, buttermilk, tender coconut water and lemon water in hot weather, coconut water to be avoided by people prone to hyperkalaemia in kidney and heart disease; NHS Water, drinks and hydration: water, lower-fat milk and lower-sugar drinks including tea and coffee count, clear pale yellow pee, more in heat or long activity; NHS Dehydration: thirst, dark yellow pee, peeing less often, tiredness, dry mouth; urgent help for dizziness on standing that does not go away, dark pee or peeing less than normal, confusion)",
+              "checker": "content agent re-check 2026-10-22 (ICMR-NIN DGI 2024 Guideline 14: about eight glasses, about 2 litres, of water including beverages a day, more in very hot weather and vigorous activity because water is lost through sweat, the body loses water through sweat, urine and faeces, buttermilk, tender coconut water and lemon water in hot weather, coconut water to be avoided by people prone to hyperkalaemia in kidney and heart disease; NHS Water, drinks and hydration: water, lower-fat milk and lower-sugar drinks including tea and coffee count, clear pale yellow pee, more in heat or long activity; NHS Dehydration: thirst, dark yellow pee, peeing less often, tiredness, dry mouth; urgent help for dizziness on standing that does not go away, dark pee or peeing less than normal, confusion); spec 16 fix-up 2026-10-22: hydration-cues-s1 guided replaced (simulated week): the glass-count sum became an explanation of why milk counts (NHS Water, drinks and hydration, already cited)",
               "verdicts": [
                 {
                   "claimId": "hydration-cues-c1",
@@ -2005,26 +2009,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Priya has three glasses of water, two cups of tea and one glass of milk. How many of them count?",
-                    "hint": "Ask which of these drinks are fluid.",
+                    "stem": "A friend says her cup of milk must be ignored when she checks her daily fluid. How would you correct her?",
+                    "hint": "Think about which drinks the body can use as liquid.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "All six of them.",
+                        "text": "Milk counts towards her fluid, like water.",
                         "correct": true,
-                        "feedback": "Yes. Water, tea and milk all count towards her daily fluid."
+                        "feedback": "Right. Milk, like water and lower-sugar tea, adds to the day's fluid."
                       },
                       {
                         "id": "b",
-                        "text": "The three of water.",
+                        "text": "She is right; plain water is the one drink that counts.",
                         "correct": false,
-                        "feedback": "Tea and milk count too, so all six add to her fluid."
+                        "feedback": "Plain water is not the one drink. Milk and lower-sugar tea or coffee count as well."
                       },
                       {
                         "id": "c",
-                        "text": "Five, leaving out the tea.",
+                        "text": "Milk counts when it is served cold.",
                         "correct": false,
-                        "feedback": "Tea is not left out. Water, tea and milk all count, which makes six."
+                        "feedback": "Temperature does not matter. Milk counts towards daily fluid, hot or cold."
                       }
                     ]
                   }
@@ -3051,7 +3055,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sitting up straight in every lecture.",
+                    "text": "Sitting up straight in each lecture.",
                     "correct": false,
                     "feedback": "Good posture is not activity. Brisk moves like walking and stair climbing are what count.",
                     "sourceRefs": [

@@ -229,7 +229,7 @@
                 "type": "why",
                 "conceptId": "inflation",
                 "step": "inflation-s2",
-                "job": "reverse",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "inflation-m3"
@@ -479,7 +479,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "jenil-04 source check 2026-10-21 (IMF F&D, RBI); spec 16 rewrite 2026-10-22: MoSPI July 2026 CPI release (base 2024=100) confirms the same-month-last-year comparison and price collection by field staff in markets in all States/UTs; old shop and market counts dropped; RBI overview confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031; IMF confirms falling prices can make consumers delay purchases"
+              "checker": "jenil-04 source check 2026-10-21 (IMF F&D, RBI); spec 16 rewrite 2026-10-22: MoSPI July 2026 CPI release (base 2024=100) confirms the same-month-last-year comparison and price collection by field staff in markets in all States/UTs; old shop and market counts dropped; RBI overview confirms 4% (2-6%) for 1 Apr 2026 to 31 Mar 2031; IMF confirms falling prices can make consumers delay purchases; spec 16 fix-up 2026-10-22: inflation-13 relabelled recall (it restates the s2 teach line), so each job appears once"
             },
             "steps": [
               {
@@ -794,7 +794,7 @@
                 "type": "estimate",
                 "conceptId": "compounding",
                 "step": "compounding-s1",
-                "job": "reverse",
+                "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "compounding-m1"
@@ -802,22 +802,22 @@
                 "sourceRefs": [
                   "compound"
                 ],
-                "stem": "₹4,000 grew to ₹4,840 in two years of compound interest, with gains left in. About what yearly rate did it earn?",
+                "stem": "A club's page has 2,000 followers and grows 10% a month. Each month's gain is worked on the new total, like compound interest. About how many followers after two months?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 10%.",
+                    "text": "About 2,420.",
                     "correct": true,
-                    "feedback": "Yes. ₹4,000 grows to ₹4,400 in year one, and 10% of ₹4,400 adds ₹440 to make ₹4,840.",
+                    "feedback": "Month one adds a tenth to make 2,200. Month two adds a tenth of 2,200, so the page ends near 2,420.",
                     "sourceRefs": [
                       "compound"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 10.5%, the ₹840 gain split over two years.",
+                    "text": "About 2,400.",
                     "correct": false,
-                    "feedback": "Splitting the gain evenly ignores growth on growth. Year two earned on the bigger pot, so the rate is 10%.",
+                    "feedback": "That adds the same gain twice. Month two works on the bigger total, so it adds more than month one.",
                     "misconceptionIds": [
                       "compounding-m1"
                     ],
@@ -827,19 +827,19 @@
                   },
                   {
                     "id": "c",
-                    "text": "About 21%.",
+                    "text": "About 4,000.",
                     "correct": false,
-                    "feedback": "That is the whole two-year gain as one percent. Per year, with gains kept in, the rate is 10%.",
+                    "feedback": "That doubles the page. Two months at 10% add only about a fifth, so it ends near 2,420.",
                     "sourceRefs": [
                       "compound"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 10,
-                  "min": 9.6,
-                  "max": 10.4,
-                  "unit": "percent"
+                  "value": 2420,
+                  "min": 2410,
+                  "max": 2430,
+                  "unit": "followers"
                 }
               },
               {
@@ -948,43 +948,43 @@
                 "type": "choose",
                 "conceptId": "compounding",
                 "step": "compounding-s2",
-                "job": "combine",
-                "difficultySeed": 3,
+                "job": "edge",
+                "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "compound",
-                  "finra"
+                  "investing"
                 ],
-                "stem": "Which ends with more at 9% a year: ₹10,000 left for 24 years, or ₹20,000 left for 12 years?",
+                "stem": "Kunal keeps ₹8,000 in a locker at home for 25 years, where it earns nothing. What does all that time add to it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The ₹10,000 left for 24 years.",
+                    "text": "Nothing, as there is no gain to build on.",
                     "correct": true,
-                    "feedback": "It grows to about ₹79,100. The ₹20,000 grows to about ₹56,300, as it has half the time.",
+                    "feedback": "Right. Compounding needs a gain to grow on. At 0% the ₹8,000 stays ₹8,000, and rising prices make it buy less.",
                     "sourceRefs": [
                       "compound",
-                      "finra"
+                      "investing"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The ₹20,000 left for 12 years.",
+                    "text": "A lot, since long spans do most of the work.",
                     "correct": false,
-                    "feedback": "Starting bigger helps, but twelve extra years of growth on growth help more here.",
+                    "feedback": "Time only helps when the money earns something. With no gain each year, there is nothing to compound.",
                     "sourceRefs": [
                       "compound",
-                      "finra"
+                      "investing"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "They tie, as sum times years matches.",
+                    "text": "It doubles, as 25 years is a long wait.",
                     "correct": false,
-                    "feedback": "Growth is not sum times years. Each extra year multiplies the pot, so the longer one ends higher.",
+                    "feedback": "Doubling needs a yearly gain. Money that earns 0% stays the same size, however long it waits.",
                     "sourceRefs": [
                       "compound",
-                      "finra"
+                      "investing"
                     ]
                   }
                 ]
@@ -1158,6 +1158,14 @@
                 "year": 2025,
                 "url": "https://syndication.finra.org/content/financial-education-kids-creating-path-financial-fluency",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "sip-units",
+                "title": "How rupee cost averaging works in SIP investments",
+                "publisher": "Bajaj Finserv Asset Management",
+                "year": 2026,
+                "url": "https://www.bajajamc.com/knowledge-centre/articles/how-rupee-cost-averaging-works-in-sip-investments",
+                "asOf": "2026-10-22"
               }
             ],
             "factCheck": {
@@ -1203,7 +1211,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Investor.gov Small Savings Add Up: 365 at 5% is 465.84 after 5 years and 1,577.50 after 30; FINRA: sooner saving, more compound interest; SEBI SIP page; Investor.gov intro); spec 16 rewrite 2026-10-22: Investor.gov intro re-read (\"Regular investing means that you put a set dollar amount...\"; \"Markets fluctuate over time, and individual investments may lose value\"); new item sums recomputed"
+              "checker": "builder content agent source check 2026-10-21 (Investor.gov Small Savings Add Up: 365 at 5% is 465.84 after 5 years and 1,577.50 after 30; FINRA: sooner saving, more compound interest; SEBI SIP page; Investor.gov intro); spec 16 rewrite 2026-10-22: Investor.gov intro re-read (\"Regular investing means that you put a set dollar amount...\"; \"Markets fluctuate over time, and individual investments may lose value\"); new item sums recomputed; spec 16 fix-up 2026-10-22: compounding-s1 spot now reads the changing base (₹1,000 to ₹1,100 to ₹1,210); compounding-s3 guided asks which part of a SIP stayed fixed when the same ₹500 bought fewer units (Bajaj Finserv AMC: \"A lower NAV buys more units, while a higher NAV buys fewer units.\"); compounding-9 rewritten as a transfer (page followers) and compounding-14 as an edge (0% earns nothing), so each job appears once"
             },
             "steps": [
               {
@@ -1246,14 +1254,14 @@
                   ]
                 },
                 "example": {
-                  "ask": "Tap the interest on interest.",
+                  "ask": "Tap the balance on which year two's interest is worked out.",
                   "parts": [
-                    "Meera's ₹1,000 earned ₹100 in year one.",
-                    "In year two, that ₹100 earned ₹10 of its own,",
-                    "so her gain grew from ₹100 to ₹110."
+                    "Meera saved ₹1,000, and it earned ₹100 in year one.",
+                    "Year two's interest was worked out on ₹1,100,",
+                    "so her balance grew to ₹1,210."
                   ],
-                  "spot": "In year two, that ₹100 earned ₹10 of its own,",
-                  "feedback": "The ₹10 came from last year's gain, not from her first ₹1,000."
+                  "spot": "Year two's interest was worked out on ₹1,100,",
+                  "feedback": "Year two's 10% worked on ₹1,100: her first ₹1,000 plus the ₹100 gain she left in."
                 },
                 "guided": [
                   {
@@ -1379,7 +1387,8 @@
                 "claimId": "compounding-c2",
                 "sourceRefs": [
                   "sip",
-                  "investing"
+                  "investing",
+                  "sip-units"
                 ],
                 "hook": {
                   "stem": "A SIP takes ₹500 from your account every month. What does it fix?",
@@ -1434,26 +1443,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "A friend says a SIP fund is safe because money goes in every month. What is mixed up?",
-                    "hint": "Ask what the regular part controls.",
+                    "stem": "Your SIP buys fewer fund units this month than last month, though you paid the same ₹500. Which part stayed fixed?",
+                    "hint": "Ask what you chose when you set it up.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Paying often does not fix returns.",
+                        "text": "The ₹500 and the date.",
                         "correct": true,
-                        "feedback": "Yes. Regular payments set a habit. The fund can still fall."
+                        "feedback": "Right. You set the sum and the date. The unit price rose, so the same ₹500 bought fewer units."
                       },
                       {
                         "id": "b",
-                        "text": "SIPs take money just once.",
+                        "text": "The price of each fund unit.",
                         "correct": false,
-                        "feedback": "A SIP takes money again and again. The mix-up is about returns."
+                        "feedback": "The unit price moved. A higher price is why the same ₹500 bought fewer units this month."
                       },
                       {
                         "id": "c",
-                        "text": "The friend is right; monthly payments make it safe.",
+                        "text": "The return the fund will earn.",
                         "correct": false,
-                        "feedback": "Monthly payments do not stop a fund from falling in a bad year."
+                        "feedback": "A SIP never fixes the return. Only the sum you put in and the date stay set."
                       }
                     ]
                   }
@@ -1707,40 +1716,49 @@
                 "id": "rule-of-72-14",
                 "type": "estimate",
                 "conceptId": "rule-of-72",
-                "step": "rule-of-72-s2",
+                "step": "rule-of-72-s3",
                 "job": "reverse",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "rule72"
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "rule-of-72-m2"
                 ],
-                "stem": "An unpaid loan doubled in about 8 years. Using the doubling shortcut backwards, roughly what yearly rate was it charged?",
+                "sourceRefs": [
+                  "rule72",
+                  "investing"
+                ],
+                "stem": "A fund doubled in about 8 years, though its return went up and down each year. Using the doubling shortcut backwards, about what steady rate would have done the same?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 9%.",
+                    "text": "About 9% a year.",
                     "correct": true,
-                    "feedback": "Going backwards, 72 divided by 8 years gives a yearly rate of about 9%.",
+                    "feedback": "Right. 72 divided by 8 gives about 9%. It is the steady rate that matches, not what the fund earned each year.",
                     "sourceRefs": [
-                      "rule72"
+                      "rule72",
+                      "investing"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 8%.",
+                    "text": "Exactly 9% in each of the eight years.",
                     "correct": false,
-                    "feedback": "Eight is the number of years. Dividing 72 by 8 gives the rate, about 9%.",
+                    "feedback": "Its return went up and down, so no single year had to be 9%. The 9% is only a steady stand-in.",
+                    "misconceptionIds": [
+                      "rule-of-72-m2"
+                    ],
                     "sourceRefs": [
-                      "rule72"
+                      "rule72",
+                      "investing"
                     ]
                   },
                   {
                     "id": "c",
                     "text": "About 64%.",
                     "correct": false,
-                    "feedback": "That multiplies 8 by 8. The shortcut divides 72 by the years, giving about 9%.",
+                    "feedback": "That multiplies 8 by 8. Going backwards, the shortcut divides 72 by the years, giving about 9%.",
                     "sourceRefs": [
-                      "rule72"
+                      "rule72",
+                      "investing"
                     ]
                   }
                 ],
@@ -1753,11 +1771,11 @@
               },
               {
                 "id": "rule-of-72-16",
-                "type": "true-not-quite",
+                "type": "fill-the-step",
                 "conceptId": "rule-of-72",
                 "step": "rule-of-72-s3",
-                "job": "misconception",
-                "difficultySeed": 3,
+                "job": "recall",
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "rule-of-72-m2"
                 ],
@@ -1765,13 +1783,13 @@
                   "rule72",
                   "investing"
                 ],
-                "stem": "A fund went up 25%, down 8%, then up 16%. Can the shortcut give its doubling date?",
+                "stem": "The doubling shortcut gives a fair answer only when ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "No; the rate keeps changing, so it is only a what-if.",
+                    "text": "the rate stays the same each year",
                     "correct": true,
-                    "feedback": "Right. The rule needs one steady rate, and this fund's return moved every year.",
+                    "feedback": "Right. Dividing 72 by a rate assumes that rate holds every year, as with a fixed deposit.",
                     "sourceRefs": [
                       "rule72",
                       "investing"
@@ -1779,12 +1797,9 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes; use its best year, 25%, for about three years.",
+                    "text": "the sum is bigger than ₹1 lakh at the start",
                     "correct": false,
-                    "feedback": "One good year does not set the next. A jumpy return gives the rule no steady rate.",
-                    "misconceptionIds": [
-                      "rule-of-72-m2"
-                    ],
+                    "feedback": "The size of the sum does not matter. What matters is whether the rate holds still year after year.",
                     "sourceRefs": [
                       "rule72",
                       "investing"
@@ -1792,9 +1807,9 @@
                   },
                   {
                     "id": "c",
-                    "text": "Yes; add the three returns and divide by them.",
+                    "text": "the money sits in shares",
                     "correct": false,
-                    "feedback": "Adding returns does not make them steady. The rule only fits a rate that holds.",
+                    "feedback": "Share returns jump around from year to year, so for them the shortcut is only a what-if.",
                     "misconceptionIds": [
                       "rule-of-72-m2"
                     ],
@@ -1901,7 +1916,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (FINRA kids page: divide 72 by the rate, 4% doubles in 18 years, 18% card debt doubles in four years, unpaid balances gather compound interest; Investor.gov intro); spec 16 rewrite 2026-10-22: SBI Card MITC page opened (\"upto 3.75% per month [45% per annum]\"); rule values recomputed against ln 2 / ln(1+r): 3% gives 23.4 years, 36% gives 2.3 years (2.0 at 3% a month), 45% gives 1.9 years"
+              "checker": "builder content agent source check 2026-10-21 (FINRA kids page: divide 72 by the rate, 4% doubles in 18 years, 18% card debt doubles in four years, unpaid balances gather compound interest; Investor.gov intro); spec 16 rewrite 2026-10-22: SBI Card MITC page opened (\"upto 3.75% per month [45% per annum]\"); rule values recomputed against ln 2 / ln(1+r): 3% gives 23.4 years, 36% gives 2.3 years (2.0 at 3% a month), 45% gives 1.9 years; spec 16 fix-up 2026-10-22: rule-of-72-s1 guided now asks for two doublings in 18 years (the old reverse division repeated the hook and spot; the suggested steady-rate question would repeat step 3); rule-of-72-14 rewritten for step 3 as the backwards rule on a jumpy fund; rule-of-72-16 is now the one recall"
             },
             "steps": [
               {
@@ -1955,26 +1970,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Which rate doubles money in about 6 years?",
-                    "hint": "Test each choice against the shortcut.",
+                    "stem": "At 8% a year, money doubles in about 9 years. About what is ₹5,000 worth after 18 years?",
+                    "hint": "Count how many 9-year spans fit in 18 years.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "12%.",
+                        "text": "About ₹20,000.",
                         "correct": true,
-                        "feedback": "Right. 72 ÷ 12 is 6."
+                        "feedback": "Right. In 18 years it doubles twice: ₹5,000 to ₹10,000, then ₹10,000 to ₹20,000."
                       },
                       {
                         "id": "b",
-                        "text": "6%.",
+                        "text": "About ₹10,000, as it doubles once.",
                         "correct": false,
-                        "feedback": "At 6%, 72 ÷ 6 gives 12 years, not 6."
+                        "feedback": "That is one doubling, which takes 9 years. The next 9 years double it again, to ₹20,000."
                       },
                       {
                         "id": "c",
-                        "text": "72%.",
+                        "text": "About ₹15,000.",
                         "correct": false,
-                        "feedback": "At 72%, money would double in about one year by the rule."
+                        "feedback": "That adds the same ₹5,000 gain twice. The second doubling works on ₹10,000, so it ends near ₹20,000."
                       }
                     ]
                   }
@@ -2261,48 +2276,40 @@
               },
               {
                 "id": "risk-return-10",
-                "type": "true-not-quite",
+                "type": "fill-the-step",
                 "conceptId": "risk-return",
-                "step": "risk-return-s1",
-                "job": "misconception",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "risk-return-m3"
-                ],
+                "step": "risk-return-s3",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Om says shares of a big, famous company cannot go down. What is wrong?",
+                "stem": "Money you need in a few months fits low-risk savings, because ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Big-company shares can drop too.",
+                    "text": "a drop could hit just when you need it",
                     "correct": true,
-                    "feedback": "Right. Any share price can fall, and even large companies' shares as a group have had many losing years.",
+                    "feedback": "Right. Short-term money has no time to wait for a fall to recover, so a low-risk place fits it.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "They can drop, but bounce back within a week.",
+                    "text": "savings earn more than shares over time",
                     "correct": false,
-                    "feedback": "Nothing sets how fast a price recovers. A drop can last a long time, or not recover.",
-                    "misconceptionIds": [
-                      "risk-return-m3"
-                    ],
+                    "feedback": "Over long spans, shares have usually earned more. Savings fit here because they swing less, not because they earn more.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "He is right; famous names hold their price.",
+                    "text": "shares cannot move much in a few months",
                     "correct": false,
-                    "feedback": "Fame does not hold a price up. Large-company shares can and do fall in value.",
-                    "misconceptionIds": [
-                      "risk-return-m3"
-                    ],
+                    "feedback": "Share prices can move a lot in a few months. That is why money needed soon suits low-risk savings.",
                     "sourceRefs": [
                       "risk"
                     ]
@@ -2366,7 +2373,7 @@
                 "conceptId": "risk-return",
                 "step": "risk-return-s2",
                 "job": "misconception",
-                "difficultySeed": 2,
+                "difficultySeed": 3,
                 "misconceptionTags": [
                   "risk-return-m1"
                 ],
@@ -2595,7 +2602,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Investor.gov Beginners Guide to Asset Allocation: you could lose some or all, stocks greatest risk and highest returns, cash safest and lowest, large company stocks had a losing year about one year in three, time horizon); spec 16 rewrite 2026-10-22: guide re-read (cash: \"The principal concern ... is inflation risk\"); Investor.gov What is Risk? opened (\"degree of uncertainty and/or potential financial loss\"; \"as investment risks rise, investors seek higher returns\"; \"With a bond, you are loaning money to a company\")"
+              "checker": "builder content agent source check 2026-10-21 (Investor.gov Beginners Guide to Asset Allocation: you could lose some or all, stocks greatest risk and highest returns, cash safest and lowest, large company stocks had a losing year about one year in three, time horizon); spec 16 rewrite 2026-10-22: guide re-read (cash: \"The principal concern ... is inflation risk\"); Investor.gov What is Risk? opened (\"degree of uncertainty and/or potential financial loss\"; \"as investment risks rise, investors seek higher returns\"; \"With a bond, you are loaning money to a company\"); spec 16 fix-up 2026-10-22: risk-return-10 rewritten for step 3 as its recall (step 1 held 3 items, step 3 held 1); risk-return-12 raised to level 3 to keep two level-3 items"
             },
             "steps": [
               {
@@ -2960,45 +2967,49 @@
                 "id": "diversification-10",
                 "type": "scenario",
                 "conceptId": "diversification",
-                "step": "diversification-s1",
-                "job": "transfer",
-                "difficultySeed": 1,
+                "step": "diversification-s3",
+                "job": "combine",
+                "difficultySeed": 2,
                 "misconceptionTags": [
-                  "diversification-m1"
+                  "diversification-m2"
                 ],
                 "sourceRefs": [
-                  "risk"
+                  "risk",
+                  "diversify"
                 ],
-                "stem": "At the college canteen, Tanvi's stall sells only cold drinks, while Rohan sells cold drinks, tea and snacks. A cold week cuts cold-drink sales. Whose sales hold up better?",
+                "stem": "At the college canteen, Rohan's stall sells cold drinks, tea and snacks. Which trouble does his mix of goods soften: a cold week, or a strike that shuts the canteen?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Rohan's, as tea and snacks still sell.",
+                    "text": "The cold week, since tea and snacks still sell.",
                     "correct": true,
-                    "feedback": "His other goods keep earning while cold drinks slow down, so one weak line hurts less.",
+                    "feedback": "Right. A mix helps when one line slumps. A shutdown stops every line at once, so the mix cannot help there.",
                     "sourceRefs": [
-                      "risk"
+                      "risk",
+                      "diversify"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Tanvi's, since she knows one drink well.",
+                    "text": "The strike, since he has three kinds of goods.",
                     "correct": false,
-                    "feedback": "Knowing one drink well does not help when buyers stop wanting it. She has nothing else to sell.",
-                    "misconceptionIds": [
-                      "diversification-m1"
-                    ],
+                    "feedback": "A shutdown stops all sales together. Having three kinds of goods only helps when one of them slumps alone.",
                     "sourceRefs": [
-                      "risk"
+                      "risk",
+                      "diversify"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Both drop by the same amount.",
+                    "text": "Both, as a mix guards against any kind of loss.",
                     "correct": false,
-                    "feedback": "Only Tanvi depends on cold drinks alone. Rohan has other things buyers still want.",
+                    "feedback": "A mix softens one weak line, not a shock that hits everything at once, like the whole canteen closing.",
+                    "misconceptionIds": [
+                      "diversification-m2"
+                    ],
                     "sourceRefs": [
-                      "risk"
+                      "risk",
+                      "diversify"
                     ]
                   }
                 ]
@@ -3049,42 +3060,45 @@
               },
               {
                 "id": "diversification-12",
-                "type": "choose",
+                "type": "fill-the-step",
                 "conceptId": "diversification",
                 "step": "diversification-s2",
-                "job": "reverse",
-                "difficultySeed": 2,
+                "job": "recall",
+                "difficultySeed": 1,
                 "misconceptionTags": [
                   "diversification-m3"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Your friend's mix fell sharply in a year when only IT firms did badly. What does that tell you about the mix?",
+                "stem": "Fifteen shares, all in steel firms, make a weak spread, because ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Much of it was in IT firms.",
+                    "text": "firms in one industry rise and fall together",
                     "correct": true,
-                    "feedback": "Right. A slump in one industry can only hit hard if a big part of the money sits there.",
+                    "feedback": "Right. One industry's slump hits every firm in it, so many names in one industry still share one fate.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "It held too many industries.",
+                    "text": "fifteen is far too many shares for one person to hold",
                     "correct": false,
-                    "feedback": "More industries would soften an IT slump, not deepen it. The sharp fall points to too much in IT.",
+                    "feedback": "A dozen or more firms is a good count. The trouble is that all fifteen sit in one industry.",
+                    "misconceptionIds": [
+                      "diversification-m3"
+                    ],
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "It was hit by a fall across the whole market.",
+                    "text": "steel firms cannot fall in price",
                     "correct": false,
-                    "feedback": "Only IT did badly that year, so the drop came from holding a lot in that one industry.",
+                    "feedback": "Steel firms can fall like any others. The weak spot is that they tend to fall together.",
                     "sourceRefs": [
                       "risk"
                     ]
@@ -3293,7 +3307,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Investor.gov Beginners Guide: eggs in one basket, at least a dozen stocks across industries, one-sector funds not diversified, extra holdings add fees); spec 16 rewrite 2026-10-22: guide re-read; Investor.gov Diversify Your Investments opened (\"Diversification can't guarantee that your investments won't suffer if the market drops\"); s2 scale axis set to 0-20 so the marks sit at 5 and 12"
+              "checker": "builder content agent source check 2026-10-21 (Investor.gov Beginners Guide: eggs in one basket, at least a dozen stocks across industries, one-sector funds not diversified, extra holdings add fees); spec 16 rewrite 2026-10-22: guide re-read; Investor.gov Diversify Your Investments opened (\"Diversification can't guarantee that your investments won't suffer if the market drops\"); s2 scale axis set to 0-20 so the marks sit at 5 and 12; spec 16 fix-up 2026-10-22: diversification-10 rewritten for step 3 (a mix softens one slump, not a shutdown) as the combine; diversification-12 is now the recall, so each job appears once and each step holds 2"
             },
             "steps": [
               {
@@ -3654,7 +3668,7 @@
                 "type": "predict",
                 "conceptId": "shares",
                 "step": "shares-s1",
-                "job": "edge",
+                "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
                   "shares-m4"
@@ -4021,7 +4035,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (SEBI Understanding Shares: piece of the company, more shares bigger piece, vote at general meeting, dividend amount and timing not guaranteed); spec 16 rewrite 2026-10-22: SEBI page re-read (\"can benefit from the future growth of the company\"; 1,000 shares and 50 bought is 5%); dilution and new ownership sums recomputed; dividend feedback no longer says a payout can only come from this year's profit"
+              "checker": "builder content agent source check 2026-10-21 (SEBI Understanding Shares: piece of the company, more shares bigger piece, vote at general meeting, dividend amount and timing not guaranteed); spec 16 rewrite 2026-10-22: SEBI page re-read (\"can benefit from the future growth of the company\"; 1,000 shares and 50 bought is 5%); dilution and new ownership sums recomputed; dividend feedback no longer says a payout can only come from this year's profit; spec 16 fix-up 2026-10-22: shares-10 relabelled misconception (its distractor is shares-m4, count alone sets the slice)"
             },
             "steps": [
               {
@@ -4612,43 +4626,40 @@
               },
               {
                 "id": "emergency-fund-16",
-                "type": "choose",
+                "type": "fill-the-step",
                 "conceptId": "emergency-fund",
                 "step": "emergency-fund-s3",
-                "job": "combine",
-                "difficultySeed": 2,
+                "job": "recall",
+                "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
-                "stem": "Your emergency fund just paid for a laptop repair. What is the next step?",
+                "stem": "Gold or land makes a slow emergency fund, because ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Refill it bit by bit from each pay.",
+                    "text": "each needs a buyer before it turns into cash",
                     "correct": true,
-                    "feedback": "Yes. Build it back the same way you started, a little at a time, in its separate account.",
+                    "feedback": "Right. Gold and land hold value, but selling them takes time, and a sudden bill may not wait.",
                     "sourceRefs": [
                       "rbi-emergency"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Leave it empty until the next surprise.",
+                    "text": "they tend to lose most of their value very quickly",
                     "correct": false,
-                    "feedback": "An empty fund cannot help with the next surprise. Refill it steadily instead.",
+                    "feedback": "Gold and land usually keep their value. The problem is speed: they must be sold before you can pay.",
                     "sourceRefs": [
                       "rbi-emergency"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Move what is left into shares to grow it back faster.",
+                    "text": "banks will not keep them for you",
                     "correct": false,
-                    "feedback": "Shares may be down when the next bill comes. The fund needs to stay easy to reach.",
-                    "misconceptionIds": [
-                      "emergency-fund-m4"
-                    ],
+                    "feedback": "Where they are kept is not the issue. Turning them into cash needs a buyer, and that takes time.",
                     "sourceRefs": [
                       "rbi-emergency"
                     ]
@@ -4754,7 +4765,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (RBI I Can Do: rainy day cash reserve, at least three months of living expenses or six months or more if less secure or self-employed, separate easily accessible savings account, start small from each paycheck); spec 16 rewrite 2026-10-22: PDF re-read (first published 2010; \"It is a good way to reduce your risk to income; loss in income or a sudden dip\"); student-scale sums recomputed"
+              "checker": "builder content agent source check 2026-10-21 (RBI I Can Do: rainy day cash reserve, at least three months of living expenses or six months or more if less secure or self-employed, separate easily accessible savings account, start small from each paycheck); spec 16 rewrite 2026-10-22: PDF re-read (first published 2010; \"It is a good way to reduce your risk to income; loss in income or a sudden dip\"); student-scale sums recomputed; spec 16 fix-up 2026-10-22: emergency-fund-16 is now the recall (gold or land needs a buyer), so combine no longer repeats"
             },
             "steps": [
               {
@@ -5056,98 +5067,48 @@
             "items": [
               {
                 "id": "loan-emi-9",
-                "type": "match",
+                "type": "fill-the-step",
                 "conceptId": "loan-emi",
-                "step": "loan-emi-s1",
-                "job": "transfer",
+                "step": "loan-emi-s3",
+                "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "loan-emi-m1"
+                  "loan-emi-m2"
                 ],
                 "sourceRefs": [
                   "rbi-loan"
                 ],
-                "stem": "Your phone is on a 12-month loan with a fixed EMI. Match each part to its job.",
+                "stem": "Stretching a loan over more months raises its total cost, because ___.",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Interest part",
+                    "text": "interest keeps running for longer",
                     "correct": true,
-                    "feedback": "This is the lender's charge for the money you still owe each month.",
+                    "feedback": "Right. Each EMI is smaller, but interest is charged for more months, so the total paid goes up.",
                     "sourceRefs": [
                       "rbi-loan"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Lender's charge for money still owed",
-                    "correct": true,
-                    "feedback": "The charge for lending is the interest part of each EMI.",
+                    "text": "the rate goes up each extra month",
+                    "correct": false,
+                    "feedback": "The rate can stay the same. The total rises because interest is charged for more months.",
                     "sourceRefs": [
                       "rbi-loan"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Principal part",
-                    "correct": true,
-                    "feedback": "This is the rest of the EMI, the part that lowers your loan.",
+                    "text": "smaller EMIs carry a late fee",
+                    "correct": false,
+                    "feedback": "Smaller EMIs are not late payments. The extra cost is interest charged over more months.",
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
                     "sourceRefs": [
                       "rbi-loan"
                     ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "Brings down the borrowed sum",
-                    "correct": true,
-                    "feedback": "Only the principal part reduces what you borrowed.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "e",
-                    "text": "EMI",
-                    "correct": true,
-                    "feedback": "An equated monthly instalment is one payment of the same size every month.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "f",
-                    "text": "One fixed payment each month",
-                    "correct": true,
-                    "feedback": "On a fixed-rate loan, this is what the EMI is: the same sum every month.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ],
-                "answer": [
-                  {
-                    "left": "a",
-                    "right": "b"
-                  },
-                  {
-                    "left": "b",
-                    "right": "a"
-                  },
-                  {
-                    "left": "c",
-                    "right": "d"
-                  },
-                  {
-                    "left": "d",
-                    "right": "c"
-                  },
-                  {
-                    "left": "e",
-                    "right": "f"
-                  },
-                  {
-                    "left": "f",
-                    "right": "e"
                   }
                 ]
               },
@@ -5477,7 +5438,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (RBI housing loan FAQ: EMI is principal plus interest, monthly reducing balance, longer tenure lowers EMI but costs more, annex Rs 10 lakh at 15% for 120 months EMI 16,133.50 with first interest 12,500 and last 199.18; 12% EMI sums computed); spec 16 rewrite 2026-10-22: source moved to the live RBI page (rbi.org.in FS_FAQs Id=77), re-read: \"In case of a pure fixed loan, the EMI due to the bank remains constant\"; \"most banks allow you to repay the loan ahead of schedule by making lump sum payments\""
+              "checker": "builder content agent source check 2026-10-21 (RBI housing loan FAQ: EMI is principal plus interest, monthly reducing balance, longer tenure lowers EMI but costs more, annex Rs 10 lakh at 15% for 120 months EMI 16,133.50 with first interest 12,500 and last 199.18; 12% EMI sums computed); spec 16 rewrite 2026-10-22: source moved to the live RBI page (rbi.org.in FS_FAQs Id=77), re-read: \"In case of a pure fixed loan, the EMI due to the bank remains constant\"; \"most banks allow you to repay the loan ahead of schedule by making lump sum payments\"; spec 16 fix-up 2026-10-22: loan-emi-9 rewritten for step 3 as its recall (step 1 held 3 items, step 3 held 1), so transfer no longer repeats"
             },
             "steps": [
               {
@@ -5941,7 +5902,7 @@
                 "type": "why",
                 "conceptId": "index-funds",
                 "step": "index-funds-s2",
-                "job": "misconception",
+                "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "index-funds-m2"
@@ -6046,7 +6007,7 @@
                 "type": "true-not-quite",
                 "conceptId": "index-funds",
                 "step": "index-funds-s3",
-                "job": "misconception",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "index-funds-m3"
@@ -6223,7 +6184,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (SEBI Index Mutual Funds: same proportions, passive, lower expense ratios, tracking error from expenses; NSE Nifty 50 is a 50 stock index; Investor.gov expense ratio is a yearly percent of assets); spec 16 rewrite 2026-10-22: SEBI page re-read (\"Instead of relying on fund managers to actively select\"; \"Tracking Error: The slight difference between the fund's performance and the index\"); SPIVA page still blocked for bots, so the active-fund claim is backed by Cafemutual (2 Oct 2025): 73% of large-cap funds underperformed over 10 years; no percentage is shown in the lesson"
+              "checker": "builder content agent source check 2026-10-21 (SEBI Index Mutual Funds: same proportions, passive, lower expense ratios, tracking error from expenses; NSE Nifty 50 is a 50 stock index; Investor.gov expense ratio is a yearly percent of assets); spec 16 rewrite 2026-10-22: SEBI page re-read (\"Instead of relying on fund managers to actively select\"; \"Tracking Error: The slight difference between the fund's performance and the index\"); SPIVA page still blocked for bots, so the active-fund claim is backed by Cafemutual (2 Oct 2025): 73% of large-cap funds underperformed over 10 years; no percentage is shown in the lesson; spec 16 fix-up 2026-10-22: index-funds-13 relabelled edge (one active fund did beat its index) and index-funds-16 relabelled recall (tracking error), so misconception appears once"
             },
             "steps": [
               {
@@ -6799,45 +6760,39 @@
                 "type": "scenario",
                 "conceptId": "upi-scams",
                 "step": "upi-scams-s3",
-                "job": "combine",
+                "job": "reverse",
                 "difficultySeed": 3,
-                "misconceptionTags": [
-                  "upi-scams-m3"
-                ],
+                "misconceptionTags": [],
                 "sourceRefs": [
-                  "rbi-fraud",
-                  "sanchar-chakshu"
+                  "rbi-fraud"
                 ],
-                "stem": "In the hostel, you shared an OTP with a fake 'bank' caller and ₹4,000 left your account. What now?",
+                "stem": "Riya saw a UPI debit she never made, so she called her bank at once and blocked UPI. The scammer tried two more debits, but both failed. What made the difference?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Tell your bank, block UPI, then report it.",
+                    "text": "Telling the bank fast, before more could leave.",
                     "correct": true,
-                    "feedback": "Right. Fast action can stop more money leaving, and the report starts the follow-up.",
+                    "feedback": "Right. Blocking UPI quickly shut the door, so the later debits could not go through.",
                     "sourceRefs": [
-                      "rbi-fraud",
-                      "sanchar-chakshu"
+                      "rbi-fraud"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Wait for the caller to send it back.",
+                    "text": "Her bank returns any stolen money by itself, at once.",
                     "correct": false,
-                    "feedback": "A scammer will not return it. Waiting only gives him time to take more.",
+                    "feedback": "Banks cannot promise to return money. What stopped the later debits was how fast she blocked UPI.",
                     "sourceRefs": [
-                      "rbi-fraud",
-                      "sanchar-chakshu"
+                      "rbi-fraud"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Keep quiet, since you shared the OTP yourself.",
+                    "text": "The scammer gave up after one try.",
                     "correct": false,
-                    "feedback": "Being tricked is common and not shameful. Reporting fast is what helps.",
+                    "feedback": "The scammer did try again. Those debits failed because she had already told her bank and blocked UPI.",
                     "sourceRefs": [
-                      "rbi-fraud",
-                      "sanchar-chakshu"
+                      "rbi-fraud"
                     ]
                   }
                 ]
@@ -6847,7 +6802,7 @@
                 "type": "explain-it-back",
                 "conceptId": "upi-scams",
                 "step": "upi-scams-s3",
-                "job": "edge",
+                "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -7012,7 +6967,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (RBI press release 28 Jan 2022: receipt of money needs no QR scan or MPIN, collect request misuse with enter UPI PIN to receive, never share PIN or OTP even with bank officials, KYC blocking threats, tell bank and block debits incl. UPI); spec 16 rewrite 2026-10-22: person-to-person collect requests ended 1 Oct 2025 (Business Today quoting the NPCI circular: \"By October 1, 2025, UPI P2P Collect shall not be allowed\"), so the collect-request step is gone; NPCI fraud page rendered and re-read (\"scanning a QR code and entering a UPI PIN is only meant for making payments, not receiving them\"); RBI page re-read (\"Do not download any unknown app\"); Sanchar Saathi Chakshu page opened (\"report at cyber crime helpline 1930 or cybercrime.gov.in\"); dead NPCI FAQ link removed"
+              "checker": "builder content agent source check 2026-10-21 (RBI press release 28 Jan 2022: receipt of money needs no QR scan or MPIN, collect request misuse with enter UPI PIN to receive, never share PIN or OTP even with bank officials, KYC blocking threats, tell bank and block debits incl. UPI); spec 16 rewrite 2026-10-22: person-to-person collect requests ended 1 Oct 2025 (Business Today quoting the NPCI circular: \"By October 1, 2025, UPI P2P Collect shall not be allowed\"), so the collect-request step is gone; NPCI fraud page rendered and re-read (\"scanning a QR code and entering a UPI PIN is only meant for making payments, not receiving them\"); RBI page re-read (\"Do not download any unknown app\"); Sanchar Saathi Chakshu page opened (\"report at cyber crime helpline 1930 or cybercrime.gov.in\"); dead NPCI FAQ link removed; spec 16 fix-up 2026-10-22: upi-scams-15 rewritten as a reverse (work back from two failed debits to the fast block); upi-scams-16 relabelled misconception (reports are not only for money taken)"
             },
             "steps": [
               {

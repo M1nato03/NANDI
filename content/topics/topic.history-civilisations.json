@@ -38,9 +38,11 @@
             "claims": [
               {
                 "id": "indus-cities-c1",
-                "text": "In Mohenjo-daro's lower town, buildings line streets that cross at right angles. This shows an early kind of town planning.",
+                "text": "In Mohenjo-daro's lower town, in Sindh in today's Pakistan, buildings line streets that cross at right angles. This shows an early kind of town planning.",
                 "sourceRefs": [
-                  "unesco-indus"
+                  "unesco-indus",
+                  "unesco-eval",
+                  "ncert-indus"
                 ]
               },
               {
@@ -69,6 +71,14 @@
                 "text": "The ruins cover about 240 hectares, and only about a third has been dug since digging began in 1922.",
                 "sourceRefs": [
                   "unesco-indus"
+                ]
+              },
+              {
+                "id": "indus-cities-c6",
+                "text": "Long drains had sumps at intervals where solid matter settled, and their covers could be lifted so the drains could be cleaned.",
+                "sourceRefs": [
+                  "ncert-indus",
+                  "indus"
                 ]
               }
             ],
@@ -125,39 +135,43 @@
                 "type": "scenario",
                 "conceptId": "indus-cities",
                 "step": "indus-cities-s2",
-                "job": "transfer",
-                "difficultySeed": 2,
+                "job": "recall",
+                "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
-                  "indus"
+                  "indus",
+                  "ncert-indus"
                 ],
-                "stem": "During the monsoon, a Mumbai street floods because its drain is choked with silt. Which Mohenjo-daro feature dealt with silt?",
+                "stem": "After monsoon rain, a Mumbai street drain chokes with silt and must be dug out. How did Mohenjo-daro's builders make that job easier?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Pools in the drains that let mud sink.",
+                    "text": "Small pits caught the silt where it could be cleared.",
                     "correct": true,
-                    "feedback": "Settling pools let mud collect, so the water could keep flowing.",
+                    "feedback": "Right. Silt settled in pits along the drains, and workers cleared them out, so the channels kept flowing.",
                     "sourceRefs": [
-                      "indus"
+                      "indus",
+                      "ncert-indus"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Drains left open to the sky with no covers.",
+                    "text": "They left the drains open to the sky.",
                     "correct": false,
-                    "feedback": "Most Mohenjo-daro drains were covered. The pools are what caught the mud.",
+                    "feedback": "Most drains had brick covers. The silt was caught in small pits that could be cleared.",
                     "sourceRefs": [
-                      "indus"
+                      "indus",
+                      "ncert-indus"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A well beside each house.",
+                    "text": "They dug a well beside each house.",
                     "correct": false,
-                    "feedback": "Wells gave water for use. They did nothing to stop mud in the drains.",
+                    "feedback": "Wells gave water; they did not clear drains. Small pits along the drains caught the silt.",
                     "sourceRefs": [
-                      "indus"
+                      "indus",
+                      "ncert-indus"
                     ]
                   }
                 ]
@@ -210,44 +224,44 @@
                 "id": "indus-cities-14",
                 "type": "choose",
                 "conceptId": "indus-cities",
-                "step": "indus-cities-s2",
-                "job": "combine",
-                "difficultySeed": 1,
+                "step": "indus-cities-s1",
+                "job": "edge",
+                "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "unesco-indus",
-                  "indus"
+                  "unesco-eval"
                 ],
-                "stem": "Which pair of finds best shows the city followed a shared plan?",
+                "stem": "Mohenjo-daro's right-angle streets show that the lower town was planned. Do they also tell us who the planners were?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Grid streets and a drain on every street.",
+                    "text": "No; a grid shows a plan, not who made it.",
                     "correct": true,
-                    "feedback": "A street grid plus drains on every street means many people worked to one plan.",
+                    "feedback": "Right. The street grid proves planning, but it carries no names, so who planned it stays unknown.",
                     "sourceRefs": [
                       "unesco-indus",
-                      "indus"
+                      "unesco-eval"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "One big pool and a single carved seal.",
+                    "text": "Yes; a grid names the ruler who drew it.",
                     "correct": false,
-                    "feedback": "One pool and one seal could come from a few people. They do not show a citywide plan.",
+                    "feedback": "Streets carry no names or titles. A grid shows that someone planned, not who that was.",
                     "sourceRefs": [
                       "unesco-indus",
-                      "indus"
+                      "unesco-eval"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A few fine pots and some beads.",
+                    "text": "Yes; right angles were the mark of priests.",
                     "correct": false,
-                    "feedback": "Pots and beads show craft skill, not a plan for the whole city.",
+                    "feedback": "Nothing in the streets points to priests. The grid shows a plan, and the planners stay unknown.",
                     "sourceRefs": [
                       "unesco-indus",
-                      "indus"
+                      "unesco-eval"
                     ]
                   }
                 ]
@@ -374,7 +388,7 @@
                   },
                   {
                     "id": "f",
-                    "text": "Waste kept out of sight",
+                    "text": "Used water led away from homes",
                     "correct": true,
                     "feedback": "This is what the covered brick drains did.",
                     "sourceRefs": [
@@ -416,7 +430,7 @@
               {
                 "id": "indus-cities-m1",
                 "name": "A bath proves a palace",
-                "correction": "The Great Bath is a big public pool. No writing tells us its exact use.",
+                "correction": "The Great Bath is a large brick tank on the Citadel. No writing tells us its exact use.",
                 "sourceRefs": [
                   "harappa-bath",
                   "isaw"
@@ -477,6 +491,22 @@
                 "year": 2017,
                 "url": "https://isaw.nyu.edu/events/archive/2017/revisiting-harappan-iconography",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "ncert-indus",
+                "title": "Bricks, Beads and Bones: The Harappan Civilisation (Themes in Indian History I, Theme 1)",
+                "publisher": "NCERT",
+                "year": 2026,
+                "url": "https://ncert.nic.in/textbook/pdf/lehs101.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "unesco-eval",
+                "title": "Advisory body evaluation: Moenjodaro (No. 138)",
+                "publisher": "UNESCO World Heritage Centre / ICOMOS",
+                "year": 1979,
+                "url": "https://whc.unesco.org/archive/advisory_body_evaluation/138.pdf",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -531,9 +561,13 @@
                 {
                   "claimId": "indus-cities-16",
                   "verdict": "supported"
+                },
+                {
+                  "claimId": "indus-cities-c6",
+                  "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (UNESCO WHC Moenjodaro, Harappa.com drains and Great Bath pages, NYU ISAW)"
+              "checker": "builder content agent source check 2026-10-21 (UNESCO WHC Moenjodaro, Harappa.com drains and Great Bath pages, NYU ISAW); spec 16 fix-up 2026-10-22: re-read Harappa.com drains page by curl (\"All the streets and lanes across neighbourhoods in Mohenjo-daro had drains\"; \"Small settling pools and traps were built into the system of drainage ... These would be cleaned out periodically\"), NCERT lehs101 Source 2 (\"covered with loose bricks that could be removed for cleaning\"; \"Very long drainage channels were provided at intervals with sumps for cleaning\"; Great Bath: \"some kind of a special ritual bath\" on the Citadel), UNESCO 1979 evaluation (\"Location: Sind\", \"State party: Pakistan\", \"240 hectares\", \"only about one-third has been excavated\"), Harappa.com Great Bath page (\"some 39 feet long\"). s2 teach now teaches the silt pits; s2 guided asks what a dig of a back lane should expect; indus-cities-12 is the recall of the pits; indus-cities-14 rewritten for step 1 as an edge (a grid shows a plan, not who planned it); m1 no longer calls the bath a public pool"
             },
             "steps": [
               {
@@ -541,7 +575,8 @@
                 "title": "Streets laid out on a plan",
                 "claimId": "indus-cities-c1",
                 "sourceRefs": [
-                  "unesco-indus"
+                  "unesco-indus",
+                  "unesco-eval"
                 ],
                 "hook": {
                   "stem": "Streets that cross each other at neat right angles usually point to what?",
@@ -566,7 +601,7 @@
                     }
                   ]
                 },
-                "teach": "In Mohenjo-daro's lower town, streets cross at right angles in neat blocks. A grid like this does not grow by chance, so it shows the town was planned.",
+                "teach": "In Mohenjo-daro, now in Sindh, Pakistan, the lower town's streets cross at right angles in neat blocks. A grid like this does not grow by chance, so it shows the town was planned.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -627,7 +662,8 @@
                 "title": "Drains ran along every street",
                 "claimId": "indus-cities-c2",
                 "sourceRefs": [
-                  "indus"
+                  "indus",
+                  "ncert-indus"
                 ],
                 "hook": {
                   "stem": "Where do you think used water from Mohenjo-daro's homes went?",
@@ -652,7 +688,7 @@
                     }
                   ]
                 },
-                "teach": "Every street and lane had a drain. Pipes and chutes carried used water from homes into them. Most drains had brick covers, so the waste stayed out of sight.",
+                "teach": "Every street and lane had a drain. Pipes and chutes carried used water from homes into them. Most drains had brick covers, and small pits caught silt so it could be cleared.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -673,26 +709,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Small pools were built into the drains. What did they catch?",
-                    "hint": "Heavy bits sink when water slows down.",
+                    "stem": "Diggers clear a narrow back lane in Mohenjo-daro but have not reached its drain yet. What should they expect to find?",
+                    "hint": "Was any part of the city left without one?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Mud and waste that settled out.",
+                        "text": "A drain, since every street and lane had one.",
                         "correct": true,
-                        "feedback": "Right. Settling pools let mud collect while the water flowed on."
+                        "feedback": "Right. Drains ran along every street and lane, so even a small back lane should have one."
                       },
                       {
                         "id": "b",
-                        "text": "Rain kept for drinking later.",
+                        "text": "No drain, since only main roads had them.",
                         "correct": false,
-                        "feedback": "These pools sat inside the waste drains, so they held sludge, not drinking water."
+                        "feedback": "Drains were not kept for main roads. Every street and lane in the city had one."
                       },
                       {
                         "id": "c",
-                        "text": "Fish for food.",
+                        "text": "A well, since lanes held water, not drains.",
                         "correct": false,
-                        "feedback": "The pools were part of the drain system. They trapped mud and waste."
+                        "feedback": "Wells stood in houses. The lanes themselves carried drains, like every other street."
                       }
                     ]
                   }
@@ -706,7 +742,8 @@
                 "sourceRefs": [
                   "isaw",
                   "harappa-bath",
-                  "unesco-indus"
+                  "unesco-indus",
+                  "unesco-eval"
                 ],
                 "hook": {
                   "stem": "Indus seals carry short rows of signs. Can experts read them today?",
@@ -798,9 +835,10 @@
             "hook": "Ashoka had messages carved on rocks and polished pillars across his empire. One pillar still stands about 32 feet high. Why carve words into stone?",
             "hookSourceRefs": [
               "ashoka",
-              "ncert-kings"
+              "ncert-kings",
+              "bihar-pillar"
             ],
-            "rule": "Ashoka carved messages on rocks, then on pillars, across his empire. The language and script changed by region. His message, dhamma, asked for respect and kindness.",
+            "rule": "Ashoka carved messages on rocks and pillars across his empire. The language and script changed by region. His message, dhamma, asked for respect and kindness.",
             "ruleSourceRefs": [
               "ashoka",
               "ncert-kings"
@@ -808,17 +846,16 @@
             "claims": [
               {
                 "id": "ashoka-edicts-c1",
-                "text": "Ashoka had edicts carved on rocks and later on pillars across his empire.",
+                "text": "Ashoka had edicts cut on rocks and on smooth stone pillars across his empire.",
                 "sourceRefs": [
-                  "ashoka",
                   "ncert-kings"
                 ]
               },
               {
                 "id": "ashoka-edicts-c2",
-                "text": "A stone pillar at Lauriya Nandagarh in Bihar still stands. It is about 32 feet tall, with a seated lion on top.",
+                "text": "A stone pillar at Lauriya Nandangarh in Bihar still stands. It is about 32 feet tall, with a lion on top.",
                 "sourceRefs": [
-                  "ashoka"
+                  "bihar-pillar"
                 ]
               },
               {
@@ -837,7 +874,7 @@
               },
               {
                 "id": "ashoka-edicts-c5",
-                "text": "Most people then could probably not read, so special officers were sent to spread the message of dhamma.",
+                "text": "Most people then could probably not read. Special officers were sent to spread the message of dhamma.",
                 "sourceRefs": [
                   "ncert-kings"
                 ]
@@ -892,95 +929,94 @@
               },
               {
                 "id": "ashoka-edicts-10",
-                "type": "estimate",
+                "type": "choose",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s1",
-                "job": "reverse",
+                "job": "edge",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "ashoka"
+                "misconceptionTags": [
+                  "ashoka-edicts-m2"
                 ],
-                "stem": "Ashoka's pillar at Lauriya Nandagarh is close to 10 metres tall. With a foot at about 0.3 metres, about how many feet is that?",
+                "sourceRefs": [
+                  "ncert-kings"
+                ],
+                "stem": "A farmer lives in a village far from any town or busy route. Would one of Ashoka's carved rocks be likely to reach him?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 33 feet.",
+                    "text": "Not easily; the stones stood near towns and routes.",
                     "correct": true,
-                    "feedback": "Ten divided by 0.3 is about 33, which fits the pillar's height of about 32 feet.",
+                    "feedback": "Right. The stones were placed where people passed, so someone far from towns and routes might never see one.",
                     "sourceRefs": [
-                      "ashoka"
+                      "ncert-kings"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 3 feet.",
+                    "text": "Yes; each village had its own stone.",
                     "correct": false,
-                    "feedback": "That multiplies instead of dividing. Ten metres is far taller than a child.",
+                    "feedback": "The stones stood near towns and routes, not in each village, so a far-off farmer might never pass one.",
                     "sourceRefs": [
-                      "ashoka"
+                      "ncert-kings"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 300 feet.",
+                    "text": "Yes; the stones were carried from village to village.",
                     "correct": false,
-                    "feedback": "That is far too tall. Ten divided by 0.3 is about 33.",
+                    "feedback": "Rocks and great pillars stayed where they were carved. They stood near towns and routes.",
                     "sourceRefs": [
-                      "ashoka"
+                      "ncert-kings"
                     ]
                   }
-                ],
-                "answer": {
-                  "value": 33,
-                  "min": 30,
-                  "max": 35,
-                  "unit": "feet"
-                }
+                ]
               },
               {
                 "id": "ashoka-edicts-11",
                 "type": "true-not-quite",
                 "conceptId": "ashoka-edicts",
-                "step": "ashoka-edicts-s1",
-                "job": "misconception",
+                "step": "ashoka-edicts-s3",
+                "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "ashoka-edicts-m1"
+                  "ashoka-edicts-m1",
+                  "ashoka-edicts-m2"
                 ],
                 "sourceRefs": [
-                  "ashoka",
                   "ncert-kings"
                 ],
-                "stem": "A quiz answer says Ashoka kept his edicts inside his palace for his court to read. What is not quite right?",
+                "stem": "A quiz answer says Ashoka's edicts were meant only for his court, who could read them. What is not quite right?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "They were carved in public places across the empire.",
+                    "text": "They stood in public places, and officers took dhamma to people.",
                     "correct": true,
-                    "feedback": "Rock edicts stood near towns and routes, and pillars rose across the empire.",
+                    "feedback": "Right. The stones stood near towns and routes, and special officers carried the message to people who could not read.",
                     "sourceRefs": [
-                      "ashoka",
                       "ncert-kings"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "He wrote them on paper scrolls.",
+                    "text": "They were written on paper for the court alone.",
                     "correct": false,
-                    "feedback": "They were carved in stone, on rocks and pillars, not on paper.",
+                    "feedback": "The edicts were cut into rocks and pillars in public places, not kept on paper at court.",
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
+                    ],
                     "sourceRefs": [
-                      "ashoka",
                       "ncert-kings"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "He had no court.",
+                    "text": "Nobody at court could read them.",
                     "correct": false,
-                    "feedback": "He did have a court. The point is that the edicts stood in public places.",
+                    "feedback": "The mix-up is about who they were for. They stood in public, and officers spread them further.",
+                    "misconceptionIds": [
+                      "ashoka-edicts-m2"
+                    ],
                     "sourceRefs": [
-                      "ashoka",
                       "ncert-kings"
                     ]
                   }
@@ -988,52 +1024,63 @@
               },
               {
                 "id": "ashoka-edicts-12",
-                "type": "choose",
+                "type": "estimate",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s2",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "ashoka-edicts-m3"
+                ],
                 "sourceRefs": [
                   "ncert-kings"
                 ],
-                "stem": "Which language did most of Ashoka's edicts use?",
+                "stem": "Ashoka's edicts used Brahmi in most of the empire. Counting the scripts of the northwest and Afghanistan too, about how many scripts were used in all?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Prakrit.",
+                    "text": "About 4 scripts.",
                     "correct": true,
-                    "feedback": "Most Ashokan edicts were in Prakrit, a language people spoke at the time.",
+                    "feedback": "Right. Brahmi for most, Kharosthi in the northwest, and Greek and Aramaic in Afghanistan make four.",
                     "sourceRefs": [
                       "ncert-kings"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Sanskrit, the language of later court poems.",
+                    "text": "About 1 script.",
                     "correct": false,
-                    "feedback": "Early scholars guessed Sanskrit, but the earliest inscriptions were in fact in Prakrit.",
+                    "feedback": "One script did not fit the whole empire. Kharosthi, Greek and Aramaic were used as well as Brahmi.",
+                    "misconceptionIds": [
+                      "ashoka-edicts-m3"
+                    ],
                     "sourceRefs": [
                       "ncert-kings"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Greek.",
+                    "text": "About 10 scripts.",
                     "correct": false,
-                    "feedback": "Just a few edicts in Afghanistan use Greek. Most are in Prakrit.",
+                    "feedback": "That is too many. Brahmi, Kharosthi, Greek and Aramaic make four scripts in all.",
                     "sourceRefs": [
                       "ncert-kings"
                     ]
                   }
-                ]
+                ],
+                "answer": {
+                  "value": 4,
+                  "min": 3.6,
+                  "max": 4.4,
+                  "unit": "scripts"
+                }
               },
               {
                 "id": "ashoka-edicts-13",
                 "type": "scenario",
                 "conceptId": "ashoka-edicts",
                 "step": "ashoka-edicts-s2",
-                "job": "misconception",
+                "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [
                   "ashoka-edicts-m3"
@@ -1133,7 +1180,7 @@
               {
                 "id": "ashoka-edicts-m2",
                 "name": "Every subject read the text",
-                "correction": "Most people then could probably not read, so officers took the message to them.",
+                "correction": "Most people then could probably not read. Officers were also sent to spread the message.",
                 "sourceRefs": [
                   "ncert-kings"
                 ]
@@ -1161,7 +1208,7 @@
                 "title": "Mauryan Empire",
                 "publisher": "The Metropolitan Museum of Art",
                 "year": 2000,
-                "url": "https://www.metmuseum.org/de/essays/mauryan-empire-ca-323-185-b-c"
+                "url": "https://www.metmuseum.org/essays/mauryan-empire-ca-323-185-b-c"
               },
               {
                 "id": "ncert-kings",
@@ -1170,6 +1217,14 @@
                 "year": 2026,
                 "url": "https://ncert.nic.in/textbook/pdf/lehs102.pdf",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "bihar-pillar",
+                "title": "Lauria Nandangarh",
+                "publisher": "Department of Tourism, Government of Bihar",
+                "year": 2026,
+                "url": "https://tourism.bihar.gov.in/en/destinations/west-champaran/lauria-nandangarh",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -1226,16 +1281,16 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Met Mauryan Empire essay, NCERT Kings, Farmers and Towns)"
+              "checker": "builder content agent source check 2026-10-21 (Met Mauryan Empire essay, NCERT Kings, Farmers and Towns); spec 16 fix-up 2026-10-22: NCERT lehs102 re-read (\"natural rocks as well as polished pillars\"; \"rocks near cities or important routes of communication\"; \"Most people were probably not literate\"; \"Special officers, known as the dhamma mahamatta, were appointed to spread the message of dhamma\"; inscriptions \"from the present-day North West Frontier Provinces of Pakistan, to Andhra Pradesh, Orissa\"); Bihar Tourism (\"The height of the pillar built by Emperor Ashoka is 32 feet ... the lion statue stands\"). \"Rocks first, then pillars\" dropped (no source I could open gives the order); Nandagarh spelled Nandangarh; s1 guided asks why a route, not a palace; ashoka-edicts-10 rewritten as an edge (a far village), ashoka-edicts-12 as the recall estimate (four scripts), ashoka-edicts-11 moved to step 3 as the combine"
             },
             "steps": [
               {
                 "id": "ashoka-edicts-s1",
-                "title": "Messages carved on rocks, then pillars",
+                "title": "Messages carved in stone near routes",
                 "claimId": "ashoka-edicts-c1",
                 "sourceRefs": [
-                  "ashoka",
-                  "ncert-kings"
+                  "ncert-kings",
+                  "bihar-pillar"
                 ],
                 "hook": {
                   "stem": "A ruler wants his words to reach far-off towns and last for centuries. What would work best?",
@@ -1260,52 +1315,52 @@
                     }
                   ]
                 },
-                "teach": "Ashoka carved messages on rocks near towns and routes, so passers-by could see them. Years later, he added polished pillars. Stone lasts, so some still stand.",
+                "teach": "Ashoka carved messages on natural rocks and polished pillars near towns and routes, so passers-by could see them. Stone lasts, so some still stand, like a pillar in Bihar.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
-                    "Rock edicts near routes",
-                    "Pillar edicts later",
+                    "Rocks and pillars",
+                    "Near towns and routes",
                     "Still seen today"
                   ]
                 },
                 "example": {
-                  "ask": "Tap the later kind of edict.",
+                  "ask": "Tap why the words still survive.",
                   "parts": [
-                    "Ashoka's first messages went on natural rocks,",
-                    "and years later more went on pillars,",
-                    "some of which still stand today."
+                    "Ashoka had his words cut into a big rock",
+                    "beside a road where people passed,",
+                    "and the hard stone still holds them today."
                   ],
-                  "spot": "and years later more went on pillars,",
-                  "feedback": "The pillar edicts came some years after the rock edicts began."
+                  "spot": "and the hard stone still holds them today.",
+                  "feedback": "Stone wears away very slowly, so words cut into it can last for centuries."
                 },
                 "guided": [
                   {
-                    "stem": "What sits on top of the pillar at Lauriya Nandagarh?",
-                    "hint": "Think of a big cat.",
+                    "stem": "Why put a stone message beside a travelled route instead of inside a palace?",
+                    "hint": "Think about who walks past each spot.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "A seated lion.",
+                        "text": "So passers-by could see it.",
                         "correct": true,
-                        "feedback": "Right. The pillar is capped by a seated lion."
+                        "feedback": "Right. A busy route brings many people past the stone, while a palace keeps the words for a few."
                       },
                       {
                         "id": "b",
-                        "text": "A metal flag on a pole.",
+                        "text": "So only the king could read it.",
                         "correct": false,
-                        "feedback": "The top is carved stone. The Lauriya pillar is capped by a seated lion."
+                        "feedback": "A message for the king alone could stay in the palace. Routes were chosen so many people passed it."
                       },
                       {
                         "id": "c",
-                        "text": "A bronze bell.",
+                        "text": "Because stone was cheaper beside roads.",
                         "correct": false,
-                        "feedback": "No bell sits on it. The pillar is capped by a seated lion."
+                        "feedback": "Nothing says roadside stone cost less. The point was that people travelling past could see it."
                       }
                     ]
                   }
                 ],
-                "takeaway": "Ashoka carved rocks first, then pillars, so his words lasted."
+                "takeaway": "Ashoka carved his words in stone near routes, so they lasted."
               },
               {
                 "id": "ashoka-edicts-s2",
@@ -1315,7 +1370,7 @@
                   "ncert-kings"
                 ],
                 "hook": {
-                  "stem": "Ashoka ruled from the far northwest to Bengal. Would one script fit every edict?",
+                  "stem": "Ashoka's edicts are found from Afghanistan to Odisha and Andhra Pradesh. Would one script fit them all?",
                   "options": [
                     {
                       "id": "a",
@@ -1423,7 +1478,7 @@
                     }
                   ]
                 },
-                "teach": "Dhamma meant a good way to live. It asked people to respect elders, be kind to servants and respect other faiths. Few could read, so officers spread it.",
+                "teach": "Dhamma asked people to respect elders, be kind to servants and respect other faiths. Since most people could not read, carved words alone could not reach them, and special officers spread it too.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1454,26 +1509,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Most people then could not read. How did dhamma reach them?",
-                    "hint": "Think of who travelled out to tell people.",
+                    "stem": "Few people could read the edicts. Who else carried dhamma's message out?",
+                    "hint": "Think of people the king chose for the job.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Officers spread the message.",
+                        "text": "Special officers sent by Ashoka.",
                         "correct": true,
-                        "feedback": "Right. Special officers were sent out to spread the message of dhamma."
+                        "feedback": "Right. Special officers were appointed to spread the message of dhamma to people."
                       },
                       {
                         "id": "b",
-                        "text": "Copies were handed out to homes to read.",
+                        "text": "Shopkeepers selling copies to homes.",
                         "correct": false,
-                        "feedback": "Few people could read, and copies were not handed out. Officers carried the message."
+                        "feedback": "Few could read a copy. Ashoka appointed special officers to spread the message."
                       },
                       {
                         "id": "c",
-                        "text": "Schools taught each edict.",
+                        "text": "Schools that taught each edict.",
                         "correct": false,
-                        "feedback": "Nothing says schools taught the edicts. Special officers spread the message."
+                        "feedback": "Nothing says schools taught the edicts. Special officers were sent to spread the message."
                       }
                     ]
                   }
@@ -1492,7 +1547,7 @@
             "hookSourceRefs": [
               "silk"
             ],
-            "rule": "The Silk Road was a web of sea, river and land routes. Trade wealth paid for Buddhist art in Gandhara. Monks and traders carried ideas and art styles to new places.",
+            "rule": "The Silk Road was a web of sea, river and land routes. Trade wealth paid for Buddhist art in Gandhara. Monks carried ideas and art styles to new places.",
             "ruleSourceRefs": [
               "silk"
             ],
@@ -1520,7 +1575,7 @@
               },
               {
                 "id": "silk-road-ideas-c4",
-                "text": "Monks from Gandhara moved into Afghanistan and Central Asia. Their art style then grew popular at Buddhist sites there.",
+                "text": "Hun invasions appear to have forced monks from Gandhara into Afghanistan and Central Asia. Their art style then grew popular at Buddhist sites there.",
                 "sourceRefs": [
                   "silk"
                 ]
@@ -1549,7 +1604,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Leaves China for Central Asia.",
+                    "text": "Leaves China, heading west.",
                     "correct": true,
                     "feedback": "The trip starts in China, heading west into Central Asia.",
                     "sourceRefs": [
@@ -1596,7 +1651,7 @@
                 "type": "predict",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s1",
-                "job": "transfer",
+                "job": "edge",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -1638,19 +1693,19 @@
                 "type": "estimate",
                 "conceptId": "silk-road-ideas",
                 "step": "silk-road-ideas-s2",
-                "job": "reverse",
+                "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "silk"
                 ],
-                "stem": "Along the Silk Road, Buddhism had thrived in Gandhara for 24 generations of 25 years by the fifth century. About how many years is that?",
+                "stem": "Along the Silk Road, by the fifth century, for about how many years had Buddhism thrived in Gandhara, paid for by trade?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About 600 years.",
                     "correct": true,
-                    "feedback": "Twenty-four times 25 is 600, so Buddhism had thrived there for six centuries.",
+                    "feedback": "Right. Trade through the passes paid for about six centuries of Buddhist growth in Gandhara.",
                     "sourceRefs": [
                       "silk"
                     ]
@@ -1659,7 +1714,7 @@
                     "id": "b",
                     "text": "About 50 years.",
                     "correct": false,
-                    "feedback": "That adds the numbers. Multiply 24 by 25 to get about 600.",
+                    "feedback": "Far longer than that. By the fifth century, Buddhism had thrived in Gandhara for about 600 years.",
                     "sourceRefs": [
                       "silk"
                     ]
@@ -1668,7 +1723,7 @@
                     "id": "c",
                     "text": "About 2,400 years.",
                     "correct": false,
-                    "feedback": "That uses 100 years a generation. With 25 years, it is about 600.",
+                    "feedback": "That is far too long. By the fifth century, Buddhism had thrived there for about 600 years.",
                     "sourceRefs": [
                       "silk"
                     ]
@@ -1883,7 +1938,7 @@
               {
                 "id": "silk-road-ideas-m3",
                 "name": "Art spread on its own",
-                "correction": "Styles spread as monks and traders moved from place to place.",
+                "correction": "Styles spread as monks moved from place to place.",
                 "sourceRefs": [
                   "silk"
                 ]
@@ -1952,7 +2007,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Met Buddhism along the Silk Road)"
+              "checker": "builder content agent source check 2026-10-21 (Met Buddhism along the Silk Road); spec 16 fix-up 2026-10-22: Met exhibition text re-read on the word-for-word copy at buddhistartnews.wordpress.com/2012/06/08/buddhism-along-the-silk-road-5th-8th-century/ (\"These invasions also appear to have forced Gandharan monks into Afghanistan and western Central Asia\"; \"Gandhara and the Swat Valley (northern Pakistan)\"; \"take advantage of monsoon winds to cross the Arabian Sea and reach ports along the west coast of India\"). s1 teach now teaches the monsoon winds and where Gandhara is; s1 guided asks the order of sea, river and passes; traders no longer carry the art; silk-road-ideas-10 relabelled edge, silk-road-ideas-13 is the recall of the 600 years"
             },
             "steps": [
               {
@@ -1985,7 +2040,7 @@
                     }
                   ]
                 },
-                "teach": "Ships brought goods to India's west coast. Then they went up the Indus to Gandhara and over the passes to China. So the Silk Road was many routes.",
+                "teach": "Monsoon winds carried ships to India's west coast. Goods then went up the Indus to Gandhara, now in northern Pakistan, and over the passes to China. So the Silk Road was many routes.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2006,26 +2061,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Ships crossed the Arabian Sea to reach India. What pushed them?",
-                    "hint": "Think of the rains that reach India each summer.",
+                    "stem": "In the example, in which order did the cloth travel?",
+                    "hint": "Follow the cloth from the port where it lands.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Monsoon winds.",
+                        "text": "Sea, then river, then mountain passes.",
                         "correct": true,
-                        "feedback": "Yes. Sailors used the monsoon winds to cross the Arabian Sea."
+                        "feedback": "Right. It landed by sea at a west coast port, went up the Indus, then crossed the mountains."
                       },
                       {
                         "id": "b",
-                        "text": "Strong river currents.",
+                        "text": "River, then sea, then mountain passes.",
                         "correct": false,
-                        "feedback": "Rivers do not cross the open sea. The monsoon winds pushed the ships."
+                        "feedback": "The cloth first landed at a port, so the sea came first. The river trip came next."
                       },
                       {
                         "id": "c",
-                        "text": "Steam engines.",
+                        "text": "Mountain passes, then river, then sea.",
                         "correct": false,
-                        "feedback": "Steam came many centuries later. These ships sailed on monsoon winds."
+                        "feedback": "That runs the trip backwards. It landed by sea, went up the river, then crossed the passes."
                       }
                     ]
                   }
@@ -2148,7 +2203,7 @@
                     }
                   ]
                 },
-                "teach": "Ideas move with people. Monks from Gandhara moved on to Central Asia, so their art style took root at Buddhist sites there. Many sites stood at oases where traders rested.",
+                "teach": "Ideas move with people. Hun invasions seem to have driven Gandhara's monks into Central Asia, so their art style took root at Buddhist sites there. Many sites stood at oases where traders rested.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2193,7 +2248,7 @@
                     ]
                   }
                 ],
-                "takeaway": "Monks and traders carried ideas and art along the routes."
+                "takeaway": "Monks driven from Gandhara carried its art style along the routes."
               }
             ]
           },
@@ -2431,7 +2486,7 @@
                 "type": "order",
                 "conceptId": "indian-place-value",
                 "step": "indian-place-value-s3",
-                "job": "combine",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "indian-place-value-m3"
@@ -2557,8 +2612,9 @@
                 "id": "zero",
                 "title": "Zero",
                 "publisher": "MacTutor History of Mathematics, University of St Andrews",
-                "year": 2024,
-                "url": "https://mathshistory.st-andrews.ac.uk/HistTopics/Zero/"
+                "year": 2000,
+                "url": "https://mathshistory.st-andrews.ac.uk/HistTopics/Zero/",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -2611,7 +2667,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (MacTutor Zero, University of St Andrews)"
+              "checker": "builder content agent source check 2026-10-21 (MacTutor Zero, University of St Andrews); spec 16 fix-up 2026-10-22: MacTutor re-read (\"Last Update November 2000\"; Fibonacci's digits \"not widely used for a long time after that\"), so the source year is 2000; s3 teach now says the digits caught on slowly, which item 16 tests; indian-place-value-15 relabelled recall"
             },
             "steps": [
               {
@@ -2808,7 +2864,7 @@
                     }
                   ]
                 },
-                "teach": "India's digits spread west. A scholar, al-Khwarizmi, wrote of them in Arabic. Then, around 1200, Fibonacci took them to Europe. That is why we call them Hindu-Arabic.",
+                "teach": "India's digits spread west. A scholar, al-Khwarizmi, wrote of them in Arabic. Then, around 1200, Fibonacci took them to Europe, where they caught on slowly. That is why we call them Hindu-Arabic.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2863,7 +2919,7 @@
             "prerequisites": [
               "indian-place-value"
             ],
-            "hook": "A Korean book printed with metal type came 77 years before Gutenberg's Bible. So who really invented printing?",
+            "hook": "A Korean book printed with metal type came nearly 80 years before Gutenberg's Bible. So who really invented printing?",
             "hookSourceRefs": [
               "print",
               "loc-jikji"
@@ -2884,14 +2940,14 @@
               },
               {
                 "id": "printing-and-reading-c2",
-                "text": "Because Chinese uses so many characters, block printing stayed the main method there.",
+                "text": "Because Chinese uses so many characters, and block printing cost less, block printing stayed the main method there.",
                 "sourceRefs": [
                   "loc-asia"
                 ]
               },
               {
                 "id": "printing-and-reading-c3",
-                "text": "Jikji, printed in Cheongju, Korea, in 1377, is the oldest surviving book printed from movable metal type. It came 77 years before the Gutenberg Bible.",
+                "text": "Jikji, printed in Cheongju, Korea, in 1377, is the oldest surviving book printed from movable metal type. It came nearly 80 years before the Gutenberg Bible of about 1455.",
                 "sourceRefs": [
                   "loc-jikji",
                   "loc-asia"
@@ -2992,7 +3048,7 @@
                     "id": "c",
                     "text": "Blocks printed faster than type.",
                     "correct": false,
-                    "feedback": "Speed was not the reason. The huge number of characters was.",
+                    "feedback": "No source says blocks were faster. The many characters, and the lower cost of blocks, kept them in use.",
                     "sourceRefs": [
                       "loc-asia"
                     ]
@@ -3056,50 +3112,52 @@
                 "type": "estimate",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s2",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "loc-asia",
-                  "loc-jikji"
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "printing-and-reading-m1"
                 ],
-                "stem": "In printing history, clay movable type came in the 1040s and Korean metal type in the 1200s. Roughly how many years apart are they?",
+                "sourceRefs": [
+                  "loc-jikji",
+                  "print"
+                ],
+                "stem": "Jikji was printed in Korea. In printing history, about how many years did it come before Gutenberg's Bible?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "About 180 years.",
+                    "text": "About 78 years.",
                     "correct": true,
-                    "feedback": "From the 1040s to the 1200s is between about 150 and 210 years.",
+                    "feedback": "Right. Jikji dates from 1377 and the Bible from about 1455, nearly 80 years apart.",
                     "sourceRefs": [
-                      "loc-asia",
-                      "loc-jikji"
+                      "loc-jikji",
+                      "print"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 18 years.",
+                    "text": "About 8 years.",
                     "correct": false,
-                    "feedback": "That is far too short. The gap is well over a century.",
+                    "feedback": "The gap is far wider. Jikji came from 1377, nearly 80 years before the Bible of about 1455.",
                     "sourceRefs": [
-                      "loc-asia",
-                      "loc-jikji"
+                      "loc-jikji",
+                      "print"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About 800 years, since metal came much later.",
+                    "text": "About 400 years.",
                     "correct": false,
-                    "feedback": "That is far too long. The gap is under two centuries.",
+                    "feedback": "That is far too long. Jikji was printed in 1377, nearly 80 years before Gutenberg's Bible.",
                     "sourceRefs": [
-                      "loc-asia",
-                      "loc-jikji"
+                      "loc-jikji",
+                      "print"
                     ]
                   }
                 ],
                 "answer": {
-                  "value": 180,
-                  "min": 150,
-                  "max": 220,
+                  "value": 78,
+                  "min": 74,
+                  "max": 82,
                   "unit": "years"
                 }
               },
@@ -3108,30 +3166,30 @@
                 "type": "scenario",
                 "conceptId": "printing-and-reading",
                 "step": "printing-and-reading-s3",
-                "job": "misconception",
-                "difficultySeed": 1,
+                "job": "reverse",
+                "difficultySeed": 2,
                 "misconceptionTags": [
                   "printing-and-reading-m2"
                 ],
                 "sourceRefs": [
                   "print"
                 ],
-                "stem": "A school in Delhi prints 100 copies of a reading book. Who can use them straight away?",
+                "stem": "A new library in a Delhi school fills with printed books, yet many young students still cannot use them. Working back, what is missing?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Students who already know how to read.",
+                    "text": "Lessons that teach them to read.",
                     "correct": true,
-                    "feedback": "Print gives copies to readers. Others still need to learn to read first.",
+                    "feedback": "Right. Print spreads copies to people who can read, but reading itself still has to be taught.",
                     "sourceRefs": [
                       "print"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Every student, reader or not, since print teaches.",
+                    "text": "More printed copies of each book.",
                     "correct": false,
-                    "feedback": "A printed book does not teach reading on its own.",
+                    "feedback": "More copies will not help a child who cannot read yet. Print helps readers; it does not teach reading.",
                     "misconceptionIds": [
                       "printing-and-reading-m2"
                     ],
@@ -3141,9 +3199,9 @@
                   },
                   {
                     "id": "c",
-                    "text": "The teachers and no one else.",
+                    "text": "Books printed with metal type.",
                     "correct": false,
-                    "feedback": "Any student who can read can use the books at once.",
+                    "feedback": "How a book was printed does not matter here. The students first need to learn to read.",
                     "sourceRefs": [
                       "print"
                     ]
@@ -3365,7 +3423,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Library of Congress Gutenberg Bible, Asian printing and Jikji pages)"
+              "checker": "builder content agent source check 2026-10-21 (Library of Congress Gutenberg Bible, Asian printing and Jikji pages); spec 16 fix-up 2026-10-22: LoC pages re-read: Jikji \"preceding the Gutenberg Bible by 77 years\" while the Bible is \"about the year 1455\" (1455 - 1377 = 78), so the text now says nearly 80 years; loc-asia \"Due to considerable number of characters used in the Chinese language and the relatively lower cost of the technology, wood- or metal- block printing remained the dominant technology\", \"invented by Bi Sheng ... using earthenware type\"; LoC Gutenberg \"uniform and interchangeable metal types\", so \"all the same size\" became \"matching\". \"Speed was not the reason\" removed. s1 teach now names Bi Sheng's clay; s1 guided asks which choice needs least carving; printing-and-reading-14 is the recall of the gap to Gutenberg; printing-and-reading-15 rewritten as a reverse"
             },
             "steps": [
               {
@@ -3398,7 +3456,7 @@
                     }
                   ]
                 },
-                "teach": "A woodblock holds one whole page. Movable type uses small pieces you can reset, so one set prints many pages. But China's many characters kept blocks common.",
+                "teach": "A woodblock holds one page. Bi Sheng in China first made movable type from baked clay. Its small pieces can be reset, so one set prints many pages. But many characters and cheap blocks kept blocks common in China.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3428,26 +3486,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Bi Sheng made movable type in China in the 1040s. What were his pieces made of?",
-                    "hint": "Think of a pot fired in a kiln.",
+                    "stem": "A printer must make 20 different pages. Which choice needs the least carving?",
+                    "hint": "Count how often something must be carved.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Baked clay.",
+                        "text": "One set of movable type, reset for each page.",
                         "correct": true,
-                        "feedback": "Yes. Bi Sheng made his type from earthenware, a kind of baked clay."
+                        "feedback": "Right. The same pieces are rearranged for every page, so nothing new has to be carved."
                       },
                       {
                         "id": "b",
-                        "text": "Steel cast in moulds.",
+                        "text": "A new woodblock carved for each page.",
                         "correct": false,
-                        "feedback": "Steel type did not come from Bi Sheng. His pieces were baked clay."
+                        "feedback": "That means carving 20 whole blocks. Movable type is reset instead of carved again."
                       },
                       {
                         "id": "c",
-                        "text": "Ivory.",
+                        "text": "One woodblock for all 20 pages.",
                         "correct": false,
-                        "feedback": "His type was earthenware, not ivory."
+                        "feedback": "A woodblock holds one fixed page, so it cannot print 20 different ones."
                       }
                     ]
                   }
@@ -3475,7 +3533,7 @@
                       "id": "b",
                       "text": "Gutenberg's Bible from Mainz.",
                       "correct": false,
-                      "feedback": "Gutenberg's Bible came 77 years after Jikji."
+                      "feedback": "Gutenberg's Bible came nearly 80 years after Jikji."
                     },
                     {
                       "id": "c",
@@ -3510,10 +3568,10 @@
                   "ask": "Tap the oldest metal-type book.",
                   "parts": [
                     "Gutenberg's Bible came from Mainz,",
-                    "Jikji came from Cheongju 77 years earlier,",
+                    "Jikji came from Cheongju nearly 80 years earlier,",
                     "and both used movable metal type."
                   ],
-                  "spot": "Jikji came from Cheongju 77 years earlier,",
+                  "spot": "Jikji came from Cheongju nearly 80 years earlier,",
                   "feedback": "Jikji is older, so it holds the record for movable metal type."
                 },
                 "guided": [
@@ -3574,7 +3632,7 @@
                     }
                   ]
                 },
-                "teach": "Gutenberg made metal letters all the same size, so any piece could swap in. His Bible was probably done in 1455. Print helps readers, but it does not teach reading.",
+                "teach": "Gutenberg cast matching metal letters, so any piece could swap in. His Bible was probably done in 1455. Print helps readers, but it does not teach reading.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -3689,13 +3747,13 @@
                 "sourceRefs": [
                   "ncert-mughals"
                 ],
-                "stem": "Your college gives each club head a level number that sets their budget and how many members they must lead. Which Mughal idea is that most like?",
+                "stem": "Your college gives each club head a level number that sets their rank and their budget. Which Mughal idea is that most like?",
                 "options": [
                   {
                     "id": "a",
                     "text": "The zat number of a mansabdar.",
                     "correct": true,
-                    "feedback": "Zat set a noble's rank and pay and the horsemen he kept, much like this level number.",
+                    "feedback": "Zat set a noble's rank and pay, much like this level number. His horsemen came with a separate army duty.",
                     "sourceRefs": [
                       "ncert-mughals"
                     ]
@@ -3770,40 +3828,45 @@
               },
               {
                 "id": "mughal-revenue-13",
-                "type": "scenario",
+                "type": "true-not-quite",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s2",
-                "job": "transfer",
+                "job": "misconception",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "mughal-revenue-m3"
+                ],
                 "sourceRefs": [
                   "ncert-mughals"
                 ],
-                "stem": "Your uncle in a Pune family business gets the right to collect a shop's rent for a few years, but he does not own the shop. Which Mughal setup is that like?",
+                "stem": "Your cousin's notes say a jagir made a Mughal noble the owner of that land. What is not quite right?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "A jagir: rights to income, not ownership.",
+                    "text": "It gave rights to the area's revenue, not the land.",
                     "correct": true,
-                    "feedback": "Like a jagir, he collects the income but does not own the place.",
+                    "feedback": "Right. A jagir let a noble take an area's revenue as pay. He did not own the land, and most never lived there.",
                     "sourceRefs": [
                       "ncert-mughals"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "A mansab: a numbered rank at court with a salary.",
+                    "text": "Jagirs were paid in coins from the treasury.",
                     "correct": false,
-                    "feedback": "A mansab is a rank. Collecting income without owning is like a jagir.",
+                    "feedback": "Cash pay was the other method. A jagir was a right to an area's revenue, not coins or land.",
                     "sourceRefs": [
                       "ncert-mughals"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A royal charter.",
+                    "text": "Nobles owned the land and lived on it.",
                     "correct": false,
-                    "feedback": "A charter grants trade rights. This setup is like a jagir.",
+                    "feedback": "Most nobles did not live in or run their jagirs. Servants collected the revenue for them.",
+                    "misconceptionIds": [
+                      "mughal-revenue-m3"
+                    ],
                     "sourceRefs": [
                       "ncert-mughals"
                     ]
@@ -3815,7 +3878,7 @@
                 "type": "match",
                 "conceptId": "mughal-revenue",
                 "step": "mughal-revenue-s2",
-                "job": "combine",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4105,7 +4168,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (NCERT Peasants, Zamindars and the State; NCERT The Mughals)"
+              "checker": "builder content agent source check 2026-10-21 (NCERT Peasants, Zamindars and the State; NCERT The Mughals); spec 16 fix-up 2026-10-22: NCERT gess104 re-read: zat set \"rank and salary\"; the cavalry came from separate \"military responsibilities ... a specified number of sawar\"; lehs204 \"the attempt of the state was to maximise its claims\", so \"fair\" became \"steady\". mughal-revenue-9 no longer says zat set the horsemen; mughal-revenue-13 rewritten as the misconception (a jagir was not land to own); mughal-revenue-14 relabelled recall"
             },
             "steps": [
               {
@@ -4287,7 +4350,7 @@
                   "ncert-mughals"
                 ],
                 "hook": {
-                  "stem": "How would you set a fair crop tax for a whole province?",
+                  "stem": "How would you set a steady crop tax for a whole province?",
                   "options": [
                     {
                       "id": "a",
@@ -4305,7 +4368,7 @@
                       "id": "c",
                       "text": "Set the tax by the ruler's needs that year.",
                       "correct": false,
-                      "feedback": "A fair rate comes from the land's own yields, so zabt used years of records."
+                      "feedback": "A steady rate comes from the land's own yields, so zabt used years of records."
                     }
                   ]
                 },
@@ -4614,40 +4677,40 @@
                 "id": "company-trade-rule-14",
                 "type": "choose",
                 "conceptId": "company-trade-rule",
-                "step": "company-trade-rule-s2",
+                "step": "company-trade-rule-s3",
                 "job": "reverse",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
-                  "ncert-trade"
+                  "ncert-revolt"
                 ],
-                "stem": "Gold shipments from Britain for buying Indian goods dried up after one grant. Which grant was it?",
+                "stem": "An old letter is addressed to 'the Viceroy, who stands for the Queen'. Working back, what must already have happened?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The diwani.",
+                    "text": "An Act had moved the Company's powers to the Crown.",
                     "correct": true,
-                    "feedback": "After the diwani, revenue from India paid the costs, so gold from Britain stopped.",
+                    "feedback": "Right. Only after that Act did the Governor-General become the Viceroy, standing for the Crown.",
                     "sourceRefs": [
-                      "ncert-trade"
+                      "ncert-revolt"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The royal charter that let the Company trade East.",
+                    "text": "The Company had just won its royal charter.",
                     "correct": false,
-                    "feedback": "The charter came first and did not end gold shipments. The diwani did.",
+                    "feedback": "The charter came at the very start, when the Company only traded. A Viceroy came much later.",
                     "sourceRefs": [
-                      "ncert-trade"
+                      "ncert-revolt"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A new law of Parliament.",
+                    "text": "The Mughal emperor had made him diwan.",
                     "correct": false,
-                    "feedback": "The change came with the diwani, which brought in Indian revenue.",
+                    "feedback": "The diwani gave the Company tax rights. The Viceroy title came when the Crown took over.",
                     "sourceRefs": [
-                      "ncert-trade"
+                      "ncert-revolt"
                     ]
                   }
                 ]
@@ -4657,7 +4720,7 @@
                 "type": "match",
                 "conceptId": "company-trade-rule",
                 "step": "company-trade-rule-s3",
-                "job": "combine",
+                "job": "recall",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
                 "sourceRefs": [
@@ -4874,7 +4937,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (British Library IOR/G context, NCERT From Trade to Territory, NCERT When People Revolt)"
+              "checker": "builder content agent source check 2026-10-21 (British Library IOR/G context, NCERT From Trade to Territory, NCERT When People Revolt); spec 16 fix-up 2026-10-22: NCERT hess202 re-read (\"the forces led by Mir Jafar, one of Sirajuddaulah's commanders, never fought the battle\"; \"The outflow of gold from Britain ... entirely stopped after the assumption of Diwani. Now revenues from India could finance Company expenses\"); British Library IOR/G (\"the Company's trading function finally came to an end under the Charter Act of 1813 when its monopoly rights on trade to India were withdrawn\"). s2 teach now says revenue replaced British gold, so the s2 guided is taught; company-trade-rule-14 rewritten for step 3 as a reverse; company-trade-rule-15 relabelled recall"
             },
             "steps": [
               {
@@ -4995,7 +5058,7 @@
                     }
                   ]
                 },
-                "teach": "The Company won at Plassey in 1757 and at Buxar in 1764. Then, in 1765, the Mughal emperor gave it the diwani. So now it could collect tax in Bengal.",
+                "teach": "The Company won at Plassey in 1757 and at Buxar in 1764. In 1765 the Mughal emperor gave it the diwani, the right to collect Bengal's tax. So Indian revenue, not British gold, now paid for its trade.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5007,11 +5070,11 @@
                 "example": {
                   "ask": "Tap the step that gave tax rights.",
                   "parts": [
-                    "The Company won at Plassey,",
-                    "then won again at Buxar,",
-                    "and next received the diwani of Bengal."
+                    "At Plassey, Mir Jafar's men did not fight,",
+                    "the Company won again at Buxar,",
+                    "and next it got the diwani of Bengal."
                   ],
-                  "spot": "and next received the diwani of Bengal.",
+                  "spot": "and next it got the diwani of Bengal.",
                   "feedback": "The diwani, not the battles, gave the right to collect revenue."
                 },
                 "guided": [
@@ -5047,7 +5110,8 @@
                 "title": "1858: the Crown takes over",
                 "claimId": "company-trade-rule-c6",
                 "sourceRefs": [
-                  "ncert-revolt"
+                  "ncert-revolt",
+                  "company"
                 ],
                 "hook": {
                   "stem": "After 1858, who held the powers the East India Company once had?",
@@ -5085,7 +5149,7 @@
                     },
                     {
                       "at": 83,
-                      "text": "1813: sole trade right ends"
+                      "text": "1813: India trade monopoly ends"
                     },
                     {
                       "at": 100,
@@ -5168,7 +5232,7 @@
               },
               {
                 "id": "independence-constitution-c3",
-                "text": "While debating the draft, the Assembly took up and settled 2,473 of the 7,635 changes put forward.",
+                "text": "While debating the draft, the Assembly discussed and decided 2,473 of the 7,635 changes put forward.",
                 "sourceRefs": [
                   "pib-nis"
                 ]
@@ -5305,7 +5369,7 @@
                 "type": "why",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s2",
-                "job": "combine",
+                "job": "reverse",
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "independence-constitution-m3"
@@ -5314,13 +5378,13 @@
                   "assembly",
                   "pib-nis"
                 ],
-                "stem": "The Assembly had members from many provinces and states, and it debated every part of the draft. Why did that take almost three years?",
+                "stem": "The Assembly needed almost three years to finish its work. Working back from that long time, what most likely filled it?",
                 "options": [
                   {
                     "id": "a",
                     "text": "Many voices debated thousands of proposed changes.",
                     "correct": true,
-                    "feedback": "With members from across India and over 7,000 changes proposed, debate took a long time.",
+                    "feedback": "Right. Members from many regions debated the draft and thousands of proposed changes, and that took almost three years.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5330,7 +5394,7 @@
                     "id": "b",
                     "text": "It met once a year.",
                     "correct": false,
-                    "feedback": "It held eleven sessions in under three years, so it met often.",
+                    "feedback": "It met in eleven sessions over 165 days. The time went on debating the draft and its changes.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5340,7 +5404,7 @@
                     "id": "c",
                     "text": "It had to wait for British approval of each line.",
                     "correct": false,
-                    "feedback": "No British approval was needed. Long debate took the time.",
+                    "feedback": "The time went on the Assembly's own long debate over the draft and thousands of proposed changes.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5353,20 +5417,20 @@
                 "type": "scenario",
                 "conceptId": "independence-constitution",
                 "step": "independence-constitution-s2",
-                "job": "transfer",
+                "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
                 "sourceRefs": [
                   "assembly",
                   "pib-nis"
                 ],
-                "stem": "Your college union makes new rules: a small team writes them, then all members debate and vote. Which part is like the Drafting Committee?",
+                "stem": "In a school quiz, Meera must name who chaired the team that wrote the Constitution's first draft. What is the right answer?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The small team writing the draft.",
+                    "text": "Dr B.R. Ambedkar.",
                     "correct": true,
-                    "feedback": "Like the Drafting Committee, the small team prepares a draft for everyone to debate.",
+                    "feedback": "Right. Dr B.R. Ambedkar chaired the Drafting Committee, which wrote the draft the Assembly then debated.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5374,9 +5438,12 @@
                   },
                   {
                     "id": "b",
-                    "text": "The members voting on the final rules.",
+                    "text": "The whole Assembly at once.",
                     "correct": false,
-                    "feedback": "That is like the full Assembly, which debated and adopted the text.",
+                    "feedback": "The whole Assembly debated the draft later. A small committee chaired by Dr B.R. Ambedkar wrote it first.",
+                    "misconceptionIds": [
+                      "independence-constitution-m1"
+                    ],
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5384,9 +5451,12 @@
                   },
                   {
                     "id": "c",
-                    "text": "The printed rulebook.",
+                    "text": "A British official in London.",
                     "correct": false,
-                    "feedback": "That is the end result, not the group that drafted it.",
+                    "feedback": "India's own Assembly made it. Its Drafting Committee was chaired by Dr B.R. Ambedkar.",
+                    "misconceptionIds": [
+                      "independence-constitution-m4"
+                    ],
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
@@ -5532,7 +5602,7 @@
               {
                 "id": "independence-constitution-m3",
                 "name": "The draft was passed unchanged",
-                "correction": "The Assembly debated the draft and took up 2,473 changes.",
+                "correction": "The Assembly debated the draft and decided 2,473 changes.",
                 "sourceRefs": [
                   "pib-nis"
                 ]
@@ -5577,6 +5647,14 @@
                 "year": 2026,
                 "url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jan/doc2026125767901.pdf",
                 "asOf": "2026-10-21"
+              },
+              {
+                "id": "samvidhan-sadan",
+                "title": "Lok Sabha Secretariat issues notification for designating old Parliament building as Samvidhan Sadan",
+                "publisher": "All India Radio News",
+                "year": 2023,
+                "url": "https://www.newsonair.gov.in/tag/lok-sabha-secretariat",
+                "asOf": "2026-10-22"
               }
             ],
             "quest": {
@@ -5641,7 +5719,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Lok Sabha Constituent Assembly page, PIB New India Samachar pages 11-12, PIB Republic Day note)"
+              "checker": "builder content agent source check 2026-10-21 (Lok Sabha Constituent Assembly page, PIB New India Samachar pages 11-12, PIB Republic Day note); spec 16 fix-up 2026-10-22: pib-nis re-read (\"moved, discussed and disposed of as many as 2,473 amendments out of a total of 7,635 tabled\"), so \"taken up\" became \"debated and decided\"; AIR News 19 Sep 2023 (\"designating the old Parliament building as Samvidhan Sadan\"); s3 visual re-plotted on a 1 Nov to 1 Feb axis (26 Nov at 27, 24 and 26 Jan at 92); s3 guided now asks why 26 January was picked (taught) instead of naming Republic Day (not taught); independence-constitution-12 reworded as a reverse, independence-constitution-14 rewritten as the recall (who chaired the Drafting Committee)"
             },
             "steps": [
               {
@@ -5650,7 +5728,8 @@
                 "claimId": "independence-constitution-c1",
                 "sourceRefs": [
                   "assembly",
-                  "pib-nis"
+                  "pib-nis",
+                  "samvidhan-sadan"
                 ],
                 "hook": {
                   "stem": "Who do you think wrote India's Constitution?",
@@ -5699,7 +5778,7 @@
                     "for the very first sitting."
                   ],
                   "spot": "in the Constitution Hall in New Delhi,",
-                  "feedback": "The first sitting was in the Constitution Hall, now the Central Hall of Parliament."
+                  "feedback": "The first sitting was in the Constitution Hall, in the old Parliament House now called Samvidhan Sadan."
                 },
                 "guided": [
                   {
@@ -5744,7 +5823,7 @@
                       "id": "a",
                       "text": "No, the Assembly debated and changed it.",
                       "correct": true,
-                      "feedback": "Right. The full Assembly debated the draft and took up thousands of changes."
+                      "feedback": "Right. The full Assembly debated the draft and decided thousands of changes."
                     },
                     {
                       "id": "b",
@@ -5781,7 +5860,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Of 7,635 changes put forward, 2,473 were taken up. About what share is that?",
+                    "stem": "Of 7,635 changes put forward, 2,473 were debated and decided. About what share is that?",
                     "hint": "Round both numbers first.",
                     "options": [
                       {
@@ -5800,7 +5879,7 @@
                         "id": "c",
                         "text": "About nine in ten.",
                         "correct": false,
-                        "feedback": "Far fewer were taken up: about a third."
+                        "feedback": "Far fewer were decided: about a third."
                       }
                     ]
                   }
@@ -5844,20 +5923,16 @@
                 "visual": {
                   "kind": "scale",
                   "label": "From adoption to start",
-                  "min": "Nov 1949",
-                  "max": "Feb 1950",
+                  "min": "1 Nov 1949",
+                  "max": "1 Feb 1950",
                   "marks": [
                     {
-                      "at": 25,
+                      "at": 27,
                       "text": "26 Nov 1949: adopted"
                     },
                     {
-                      "at": 65,
-                      "text": "24 Jan 1950: signed"
-                    },
-                    {
-                      "at": 82,
-                      "text": "26 Jan 1950: in force"
+                      "at": 92,
+                      "text": "24 Jan: signed; 26 Jan 1950: in force"
                     }
                   ]
                 },
@@ -5873,26 +5948,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "What does India celebrate each year on the day the Constitution came into force?",
-                    "hint": "Think of the big parade on Kartavya Path.",
+                    "stem": "Why was 26 January picked as the day the Constitution came into force?",
+                    "hint": "Think back to a call made two decades before.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Republic Day.",
+                        "text": "Congress had asked people to mark it since 1929.",
                         "correct": true,
-                        "feedback": "Right. Republic Day marks the Constitution coming into force in 1950."
+                        "feedback": "Right. In 1929 Congress asked people to mark 26 January each year, so the Constitution started on that day."
                       },
                       {
                         "id": "b",
-                        "text": "Independence Day, in the middle of August.",
+                        "text": "It was the day the Assembly first met.",
                         "correct": false,
-                        "feedback": "Independence Day is in August. The day in January is Republic Day."
+                        "feedback": "The Assembly first met in December 1946. The January date came from Congress's call of 1929."
                       },
                       {
                         "id": "c",
-                        "text": "Teachers' Day.",
+                        "text": "It was the day the text was adopted.",
                         "correct": false,
-                        "feedback": "That is another day. The January day is Republic Day."
+                        "feedback": "The text was adopted in November 1949. The start was set for 26 January because of the 1929 call."
                       }
                     ]
                   }
@@ -5905,5 +5980,5 @@
       }
     ]
   },
-  "changelog": "W3 review rewrite, 2026-10-20: all 64 items revised with specific distractor feedback, sourced quantities and checked source fields."
+  "changelog": "W3 review rewrite, 2026-10-20: items revised with specific distractor feedback, sourced quantities and checked source fields. Spec 16 fix-up, 2026-10-22: 48 items (6 per idea, 2 per step, one of each job), taught-only History items, and the cloud fact-review fixes."
 }
