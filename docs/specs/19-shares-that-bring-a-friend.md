@@ -1,6 +1,7 @@
 # 19 · Shares that bring a friend in
 
-Status: idea engine (jenil-8c), 22 Oct 2026. Small (about a day of build). Evidence: cloud jobs 5, 6 and 7 of batch 1
+Status: idea engine (jenil-8c), 22 Oct 2026; revised after a Codex review against ship-27. Small (about a day of build,
+plus 6 askLines from the editors). Evidence: cloud jobs 5, 6 and 7 of batch 1
 (`docs/reviews/cj-competitors-india.md`, `cj-word-of-mouth.md`, `cj-puzzle-share.md` on `ideas/cj-*`), all checked
 against `origin/main` 78d1a28 and `origin/ship-27`. Needs Jenil's yes before it is built.
 
@@ -11,8 +12,10 @@ against `origin/main` 78d1a28 and `origin/ship-27`. Needs Jenil's yes before it 
 - Only the second button ("Challenge a friend") carries a link, as 150+ characters of prose.
 - Pasting our link in WhatsApp shows a bare URL: `index.html` has only `<title>NANDI</title>`, no preview tags.
 - Two people posting the same day can't tell they played the same board: there is no board number.
-- A friend who already has NANDI and opens today's challenge link plays it as **practice**: their Today chip still says
-  "Not done" and they must solve the identical board again (`Mind.tsx` challenge branch, `daily: false`).
+- A friend who has not yet solved today's board and opens today's challenge link plays it as **practice**
+  (`Mind.tsx:337-341`, `daily: false`); to get today's credit they must solve the identical board again.
+- The Sunday week card share has **no bedtime gate** (`RecapShare.tsx:39-44`, `WeekEndShare.tsx`), unlike the board
+  and Case buttons.
 
 Why it matters: in India this age group recommends things in small 1:1 WhatsApp chats, to look useful, not for a
 reward (Berger 2025; Barasch & Berger 2014; paid referrals make the receiver suspect the sender, Verlegh et al. 2013).
@@ -25,7 +28,8 @@ Free, no sign-up, works offline.", `og:url`, and `og:image` (1200×630 PNG under
 the app background; no faces, no stock art). Crawlers never see the `#…` part, so every link gets this same preview.
 
 **B. A daily board number.** `boardNumber(day)` = days since `RULES.mind.boardNumberEpoch` + 1, computed from the
-dayKey parts with `Date.UTC` so it is the same in every time zone. Epoch = the first public release day (Jenil picks;
+dayKey parts with `Date.UTC` (no time-zone arithmetic). The board is the same for the same local day key, which rolls
+at 04:00 local time; friends in one country see the same number on the same day. Epoch = the first public release day (Jenil picks;
 the builder may default it to the release date). Shown in the daily eyebrow: "Daily board #12 · Thu 5 Nov".
 
 **C. One result, one button, with the link.** On a daily or challenge result, the main button **Share result** sends
@@ -43,21 +47,29 @@ Same board, your turn: https://nandi.nandi11.workers.dev/#mind/challenge/crowns/
 - The image tile stays as a smaller "Share as image" for Status. The week card passes one line + the link as text.
 - The friend's reply uses the same text with line 3 "My time on your board: <link>". `challengeMessage` goes away.
 
-**D. A friend's link to today's board counts as their daily.** If the link's type, difficulty and seed match today's
-featured board (the seed rule in `src/core/puzzles/daily.ts`; export its step so the two can't drift), open it as the
-daily board, so their XP, Today chip and story page all work. Old or other boards stay practice.
+**D. A friend's link to today's board counts as their daily (web app only for now).** New links carry the day:
+`#mind/challenge/<dayKey>/<type>/<diff>/<seed>`. If `dayKey` is today's planning day AND the seed equals
+`dailyBoard(dayKey).seed` (the generated board, including its retries in `daily.ts:21-29`), open it as the daily
+board, so XP, the Today chip and the story page work. A friend who already solved today's board resumes their run (the
+run id and ledger already stop double XP, `puzzleRuns.ts`). Old links without a day, other days and other boards stay
+practice. Limit: on Android the link opens the browser, which has its own storage, so an app user's daily is not
+credited until App Links exist (a separate job). Say nothing in the UI that promises otherwise.
 
 **E. "Ask someone" after a lesson.** The Learn finish screen gets one quiet text button, *Ask someone*, for the first
-idea met today. It sends the idea's hook as a question, without the answer:
-"Quick one: [hook] Guess, then ask me. I learned it on NANDI today. nandi.nandi11.workers.dev". Under it, plain text:
-"Or try it on someone at lunch." Explaining to someone else also helps the sender remember (Nestojko et al. 2014,
-short-term recall). Content rule for the editors: a hook must make sense alone and must not give the answer away.
+idea met today **that has an `askLine`**. Hooks cannot be reused: a Codex sample found that most hooks state or give away
+the answer, and hooks have two shapes (string vs object with `stem`). So each idea gets a new optional content field
+`askLine`: one question, at most 140 characters, that makes sense alone and does not contain the answer, written and
+checked by the content editors (not generated in bulk). Message:
+"Quick one: [askLine] Guess, then ask me. I learned it on NANDI today. nandi.nandi11.workers.dev". Under the button,
+plain text: "Or try it on someone at lunch." No askLine → no button, only the plain line. Start with the 6 first ideas
+(one per topic). Explaining to someone also helps the sender remember (Nestojko et al. 2014, short-term recall).
 
 ## Rules for every share
 - The user taps to send. Nothing is sent automatically; no contacts are read; links carry no tracking.
 - **0 XP, 0 Shards, no badge for sharing.** No share count is ever shown to the user.
-- Hidden after bedtime (the existing `night === 'day'` gate). Shown on stopping screens only, never as a pop-up or a
-  repeated nudge.
+- Hidden after bedtime: the existing `night === 'day'` gate on every share button, **including the week card**, and
+  checked again inside each share handler (a screen left open past bedtime must not send). Shown on stopping screens
+  only, never as a pop-up or a repeated nudge.
 
 ## Not doing (and why)
 Refer-and-earn, invite-only, friend streaks, a leaderboard of friends, "your friend is waiting" nudges, contact import,
@@ -74,6 +86,7 @@ pact. Opening links in the installed Android app (App Links) is a separate, bigg
   the kill test runs on asking people alone.
 
 ## Tests
-Unit: `boardNumber` gives the same number under `TZ=Asia/Kolkata` and `TZ=America/New_York`; result text for daily,
-practice, hints 0/1/5+, best time; the friend-link daily match (today's seed → daily, yesterday's → practice).
+Unit: `boardNumber` for a given day key is the same under `TZ=Asia/Kolkata` and `TZ=America/New_York`; 03:59 vs 04:00; result text for daily,
+practice, hints 0/1/5+, best time; the friend-link daily match (today's day + generated seed → daily; yesterday's day, wrong seed, or an old link without
+a day → practice; a board that needed seed retries still matches).
 E2E: update `challenge.spec.ts` for the new button name and text; a friend opening today's link marks the Today chip.
