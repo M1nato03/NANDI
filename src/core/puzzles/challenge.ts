@@ -2,7 +2,7 @@ import type { PuzzleDifficulty, PuzzleType } from '.';
 
 /**
  * Challenge a friend without accounts (audit 10-21): the link carries the board's seed, so the friend's
- * phone builds the identical board. The message gives time and hints only, never the answer.
+ * phone builds the identical board. The shared text (share.ts resultText) gives time and hints only, never the answer.
  */
 export const WEB_APP = 'https://nandi.nandi11.workers.dev';
 const TYPES: readonly PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
@@ -18,12 +18,4 @@ export function parseChallenge(entry: string | undefined): Challenge | null {
   if (head !== 'challenge' || !TYPES.includes(type as PuzzleType) || !DIFFS.includes(diff as PuzzleDifficulty) || !/^\d{1,10}$/.test(seed ?? '')) return null;
   const value = Number(seed);
   return value <= 0xffffffff ? { type: type as PuzzleType, diff: diff as PuzzleDifficulty, seed: value } : null;
-}
-
-export function challengeMessage(run: { solveMs?: number; hintsUsed?: number }, name: string, reply: boolean, url: string): string {
-  const seconds = Math.round((run.solveMs ?? 0) / 1000);
-  const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
-  const hints = run.hintsUsed ?? 0;
-  const how = `in ${time} with ${hints ? `${hints} hint${hints === 1 ? '' : 's'}` : 'no hints'}`;
-  return reply ? `I took your ${name} challenge on NANDI and solved it ${how}. Same board: ${url}` : `I solved today's ${name} on NANDI ${how}. Same board, your turn (no sign-up): ${url}`;
 }

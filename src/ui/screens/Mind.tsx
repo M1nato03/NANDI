@@ -7,16 +7,16 @@ import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
-import { dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { boardNumber, dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
 import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
 import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
 import { noHintClear, parMs } from '../../core/puzzles/mastery';
-import { shareText, shareTile } from '../../core/puzzles/share';
+import { isPersonalBest, resultText, shareTile } from '../../core/puzzles/share';
 import { revealedPanels, currentArcTitle } from '../../core/mysteries';
 import { unlockTechnique } from '../../data/repos/techniques';
-import { shareLink, shareOrDownload } from '../../platform/files';
-import { challengeMessage, challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
+import { challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
+import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
@@ -379,6 +379,11 @@ export function Mind({ entry }: { entry?: string }) {
   const par = board ? parMs(puzzleRuns, board.type, board.diff) : undefined;
   const panels = revealedPanels(puzzleRuns, today);
   const name = board ? PZ.TYPES[board.type].name : '';
+  // Spec 19 C: one result text. Daily and challenge boards carry the number and the link; practice boards neither.
+  const shareable = !!board && !!run && run.result === 'solved' && (!!run.daily || !!selection?.challenge);
+  const result = board && run?.result === 'solved' ? resultText({ type: board.type, name, diff: board.diff, solveMs: run.solveMs, hintsUsed: run.hintsUsed,
+    number: run.daily ? boardNumber(run.dayKey ?? today) : undefined, best: isPersonalBest(run, puzzleRuns), reply: !!selection?.challenge,
+    link: shareable ? challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed) }) : undefined }) : '';
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('learn')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
@@ -394,7 +399,7 @@ export function Mind({ entry }: { entry?: string }) {
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Beat their time.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <><p className="small">{shareText(run, name)}</p><button type="button" className="secondary" onClick={() => void shareTile(run, name).then(file => shareOrDownload(file, shareText(run, name))).catch(error => recordError('window', error))}>Share</button>{(run.daily || selection.challenge) && <button type="button" className="secondary" onClick={() => { void shareLink(challengeMessage(run, name, !!selection.challenge, challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed) }))).then(result => setMessage(result === 'copied' ? 'Challenge copied. Paste it into a chat.' : result === 'failed' ? 'Could not share the challenge.' : '')); }}>{selection.challenge ? 'Send your time back' : 'Challenge a friend'}</button>}</>}</div> : <>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
         <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {

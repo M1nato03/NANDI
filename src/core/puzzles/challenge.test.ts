@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import PZ from '.';
 import { dailyBoard } from './daily';
-import { challengeMessage, challengeRoute, challengeUrl, parseChallenge } from './challenge';
+import { challengeRoute, challengeUrl, parseChallenge } from './challenge';
 
 describe('challenge a friend', () => {
   it('rebuilds the identical daily board from the link', () => {
@@ -20,8 +20,5 @@ describe('challenge a friend', () => {
     expect(parseChallenge('challenge/chess/easy/7')).toBeNull();
     expect(parseChallenge('challenge/calc/easy/99999999999')).toBeNull();
     expect(parseChallenge('board/calc/easy')).toBeNull();
-  });
-  it('shares time and hints only', () => {
-    expect(challengeMessage({ solveMs: 83_000, hintsUsed: 1 }, 'Crowns', false, 'URL')).toBe("I solved today's Crowns on NANDI in 1:23 with 1 hint. Same board, your turn (no sign-up): URL");
   });
 });

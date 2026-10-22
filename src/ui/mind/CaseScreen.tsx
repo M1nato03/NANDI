@@ -5,8 +5,8 @@ import { revealedPanels } from '../../core/mysteries';
 import { nextCaseDeduction, availableCaseDeductions, caseNudge } from '../../core/mysteries/deduction';
 import { techniqueCard } from '../../core/puzzles/techniques';
 import { unlockTechnique } from '../../data/repos/techniques';
-import { shareText, shareTile } from '../../core/puzzles/share';
-import { shareOrDownload } from '../../platform/files';
+import { caseResultText, shareTile } from '../../core/puzzles/share';
+import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { RULES } from '../../core/rules.config';
 import {
   accusationIsCorrect,
@@ -425,7 +425,7 @@ export function CaseScreen({
                   ))}
                 </ol>
               </details>
-              {run.result === 'solved' && <>{revealedPanels(runs, day).filter(panel => panel.dayKey === day && !panel.bonus).map(panel => <div className="mind-story-panel" key={panel.id}><h3>{panel.chapterTitle}</h3><p>{panel.text}</p></div>)}{newCard && <p role="status">New technique card</p>}{canShare && <><p className="small">{shareText(run, 'Case')}</p><button type="button" className="secondary" onClick={() => void shareTile(run, 'Case').then(file => shareOrDownload(file, shareText(run, 'Case'))).catch(error => recordError('window', error))}>Share</button></>}</>}
+              {run.result === 'solved' && <>{revealedPanels(runs, day).filter(panel => panel.dayKey === day && !panel.bonus).map(panel => <div className="mind-story-panel" key={panel.id}><h3>{panel.chapterTitle}</h3><p>{panel.text}</p></div>)}{newCard && <p role="status">New technique card</p>}{canShare && (() => { const result = caseResultText(run, day, diff, runs); return <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, 'Case'), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>; })()}</>}
             </div>
           ) : (
             <div className="card">
