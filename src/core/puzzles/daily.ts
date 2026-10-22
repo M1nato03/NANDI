@@ -1,5 +1,6 @@
 import { RULES } from '../rules.config';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from './index';
+import type { Challenge } from './challenge';
 
 /** Intro is extra; it never changes the shared date seed or the daily slot. */
 export function needsIntro(type: PuzzleType, runs: readonly { type: string; result?: string; deleted?: number }[]): boolean {
@@ -43,4 +44,18 @@ export function boardNumber(day: string, epoch: string = RULES.mind.boardNumberE
 export function dailyBoardLabel(day: string, formatted: string): string {
   const number = boardNumber(day);
   return number >= 1 ? `Daily board #${number} · ${formatted}` : `Daily board · ${formatted}`;
+}
+
+/**
+ * Spec 19 D: a friend's link opens as today's daily board only when it names today's planning day AND its seed
+ * is the seed of the board dailyBoard() really generated (after any retries). Old links without a day, other
+ * days and other seeds open the same board as practice. A link can be written by hand, but it still has to be solved.
+ */
+export function friendBoard(link: Challenge, today: string): { board: PuzzleBoard | null; daily: boolean } {
+  const spec = featuredSpec(today);
+  if (link.day === today && spec.type === link.type && spec.diff === link.diff) {
+    const board = dailyBoard(today);
+    if (board && Number(board.seed) === link.seed) return { board, daily: true };
+  }
+  return { board: PZ.generate(link.type, { seed: link.seed, diff: link.diff }), daily: false };
 }
