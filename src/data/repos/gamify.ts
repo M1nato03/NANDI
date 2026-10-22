@@ -15,7 +15,7 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
   // A restore clears and refills the tables; the app runs this again once it has finished. A restore that
   // starts while this runs waits for it (the whole run counts, from its first await).
   if (restoreActive()) return;
-  return asReconcile(reconcileOnce(db, now));
+  return asReconcile(() => reconcileOnce(db, now));
 }
 
 async function reconcileOnce(db: NandiDb, now: number): Promise<void> {

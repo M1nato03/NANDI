@@ -59,7 +59,10 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   if (!x || !y) return x ?? y;
   const onlyIn = (a: DayClose, b: DayClose) => a.purchases.filter(item => !b.purchases.some(other => other.id === item.id));
   const cost = (items: ClosePurchase[]) => items.reduce((sum, item) => sum + item.price, 0);
-  const purchases = [...x.purchases, ...onlyIn(y, x)];
+  const purchases = [...x.purchases.map(item => {
+    const other = y.purchases.find(entry => entry.id === item.id);
+    return other && other.price > item.price ? other : item;
+  }), ...onlyIn(y, x)];
   // The merged close knows every purchase from both, so each balance first pays for the ones only the other knew;
   // otherwise a late purchase's spend would vanish under the older, higher balance (second opinion 26).
   const shards = Math.max(x.shards - cost(onlyIn(y, x)), y.shards - cost(onlyIn(x, y)), 0);
@@ -108,13 +111,13 @@ interface Replay { view: EconomyView; daily: Map<string, DaySnapshot>; accepted:
 /** Purchases kept in closes join the ledger (a restore may have dropped them) and count as accepted once. */
 function withClosedPurchases(facts: readonly LedgerRow[], closes: ReadonlyMap<string, DayClose>): LedgerRow[] {
   const kept = new Map<string, ClosePurchase>();
-  for (const close of closes.values()) for (const item of close.purchases) kept.set(item.id, item);
+  for (const close of closes.values()) for (const item of close.purchases) if (!(item.price <= (kept.get(item.id)?.price ?? 0))) kept.set(item.id, item);
   if (!kept.size) return [...facts];
   const present = new Set<string>();
   const out = facts.map(fact => {
     if (!kept.has(fact.id) || fact.deleted) return fact;
     present.add(fact.id);
-    return { ...fact, inputs: { ...fact.inputs, accepted: true } };
+    return { ...fact, inputs: { ...fact.inputs, price: Math.max(num(fact.inputs.price), kept.get(fact.id)!.price), accepted: true } };
   });
   for (const item of kept.values()) if (!present.has(item.id)) out.push({ id: item.id, mode: 'economy', kind: 'purchase', refId: item.id,
     dayKey: item.dayKey, inputs: { itemId: item.itemId, price: item.price, accepted: true }, updatedAt: 0, deleted: 0, deviceId: 'close' });
@@ -326,7 +329,7 @@ function replayEconomy(
     const weekday = new Date(atUtc(day.dayKey)).getUTCDay();
     const restWeekday = value(settings, `economy.restWeekday:${weekStart(day.dayKey)}`) ?? value(settings, 'economy.restWeekday');
     const isRest = typeof restWeekday === 'number' && restWeekday === weekday;
-    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && row.inputs.price === purchasePrices.freeze).length ?? 0;
+    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && num(row.inputs.price) > 0).length ?? 0;
     restDays = Math.min(RULES.streak.restBankMax, restDays + purchases);
     if (day.mark) {
       if (paused && breakAt >= 0 && i - breakAt <= 2) {
@@ -390,7 +393,9 @@ function replayEconomy(
     // The shop writes a purchase only when it is affordable, so from the 22 Oct fixes on (and whenever a close
     // has kept it) it is accepted once, as an outcome: a re-count of earlier earnings cannot skip it now and
     // apply it later (49 -> 0).
-    if (typeof id !== 'string' || price !== purchasePrices[id] || (row.inputs.accepted !== true && !v2(row.dayKey) && price > balance)) continue;
+    // A purchase keeps the price it was bought at: a later change to the price table never makes an owned item
+    // free, or drops it while a close still keeps it owned (second opinion 28).
+    if (typeof id !== 'string' || purchasePrices[id] === undefined || !(price > 0) || (row.inputs.accepted !== true && !v2(row.dayKey) && price > balance)) continue;
     if (id !== 'freeze' && owned.includes(id)) continue;
     balance -= price; if (id !== 'freeze') owned.push(id);
     accepted.push({ id: row.id, itemId: id, price, dayKey: row.dayKey });

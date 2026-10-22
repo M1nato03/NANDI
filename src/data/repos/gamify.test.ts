@@ -131,7 +131,7 @@ it('a late purchase dated on a closed day is still charged after reconcile raise
 
 it('a restore waits for a reconcile that is already running', async () => {
   let release!: () => void;
-  const work = asReconcile(new Promise<void>(resolve => { release = resolve; }));
+  const work = asReconcile(() => new Promise<void>(resolve => { release = resolve; }));
   let restored = false;
   const restore = duringRestore(async () => { restored = true; });
   await new Promise(resolve => setTimeout(resolve, 20));

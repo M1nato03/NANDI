@@ -151,6 +151,26 @@ describe('closing the books (economy second opinion 22)', () => {
     expect(view.shards).toBe(before - 100);
   });
 
+  it('a purchase keeps the price it was bought at after the price table changes', () => {
+    const day = '2026-11-03', today = '2026-11-05';
+    const earned = [task(day), full(day), ...Array.from({ length: 30 }, () => row(day, 'gamify', 'badge-tier'))];
+    const before = deriveEconomy(earned, undefined, v2, today).shards;
+    // Bought for 80 under an older price table; today's table says 100 (second opinion 28: never free, never lost).
+    const facts = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 80 })];
+    const settings = closeDays(facts, v2, day, today);
+    for (const view of [deriveEconomy(facts, undefined, v2, today), deriveEconomy(facts, undefined, settings, today)]) {
+      expect(view.owned).toContain('banner:dawn');
+      expect(view.shards).toBe(before - 80);
+    }
+  });
+
+  it('one purchase stored at two prices (bad data) counts the higher one', () => {
+    const close = (price: number) => ({ total: 0, sp: 0, streak: 0, paused: false, shards: 200, owned: ['banner:dawn'],
+      purchases: [{ id: 'purchase:p', itemId: 'banner:dawn', price, dayKey: '2026-11-03' }] });
+    expect(mergeClose(close(100), close(150))!.purchases.map(item => item.price)).toEqual([150]);
+    expect(mergeClose(close(150), close(100))!.purchases.map(item => item.price)).toEqual([150]);
+  });
+
   it('keeps Season SP when a closed day is later re-scored lower', () => {
     const day = '2026-11-03', today = '2026-11-05';
     const answers = Array.from({ length: 5 }, () => row(day, 'mind', 'learn-answer', { dropId: `drop:daily:${day}`, afterBedtime: false, correct: true }));
