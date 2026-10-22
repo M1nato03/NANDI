@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, closeKey, closesFor, deriveEconomy, mergeClose } from './deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeClose, mergeCloseMaps } from './deriveEconomy';
 
 let serial = 0;
 const row = (dayKey: string, mode: string, kind: string, inputs: Record<string, unknown> = {}): LedgerRow => ({
@@ -14,11 +14,9 @@ const board = (day: string) => row(day, 'mind', 'board', { daily: true });
 function closeDays(facts: LedgerRow[], settings: SettingRow[], from: string, today: string): SettingRow[] {
   let rows = [...settings];
   for (let open = addEconomyDays(from, 1); open <= today; open = addEconomyDays(open, 1)) {
-    for (const [day, candidate] of closesFor(facts, rows, open)) {
-      if (day < from) continue;
-      const existing = rows.find(row => row.key === closeKey(day))?.value;
-      rows = [...rows.filter(row => row.key !== closeKey(day)), setting(closeKey(day), mergeClose(existing, candidate))];
-    }
+    const stored = new Map(rows.filter(row => row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
+    const candidates = new Map([...closesFor(facts, rows, open)].filter(([day]) => day >= from));
+    for (const [day, merged] of mergeCloseMaps(stored, candidates)) rows = [...rows.filter(row => row.key !== closeKey(day)), setting(closeKey(day), merged)];
   }
   return rows;
 }
@@ -181,4 +179,49 @@ describe('closing the books (economy second opinion 22)', () => {
     expect(deriveEconomy(late, undefined, v2, today).season.sp).toBeLessThan(sp);
     expect(deriveEconomy(late, undefined, settings, today).season.sp).toBe(sp);
   });
+
+  it('each close keeps only its own day purchases, so a year of closes stays small (review 32)', () => {
+    const start = '2026-01-05', today = '2027-01-05';
+    const facts: LedgerRow[] = [];
+    for (let day = start; day < today; day = addEconomyDays(day, 1)) {
+      facts.push(task(day), full(day), board(day), ...Array.from({ length: 3 }, () => row(day, 'gamify', 'badge-tier')));
+      // The shop only sells what the balance covers, so purchases start once a month of Shards is in.
+      if (day >= '2026-02-01' && day.endsWith('5')) facts.push(row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50 }));
+    }
+    const started = performance.now();
+    const closes = mergeCloseMaps(new Map(), closesFor(facts, v2, today));
+    expect(performance.now() - started).toBeLessThan(5_000);
+    for (const [day, close] of closes) expect(close.purchases.every(item => item.dayKey === day)).toBe(true);
+    expect(JSON.stringify([...closes]).length).toBeLessThan(150_000);
+    // The year still charges every purchase once.
+    const settings = [...v2, ...[...closes].map(([day, value]) => setting(closeKey(day), value))];
+    expect(deriveEconomy(facts, undefined, settings, today).shards).toBe(deriveEconomy(facts, undefined, v2, today).shards);
+  });
+
+  it('reads older closes that kept every purchase to date the same way', () => {
+    const days = ['2026-11-02', '2026-11-03', '2026-11-04'];
+    const facts = days.flatMap(day => [task(day), full(day), ...Array.from({ length: 20 }, () => row(day, 'gamify', 'badge-tier')), row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50 })]);
+    const perDay = closeDays(facts, v2, days[0]!, '2026-11-06');
+    const cumulative = perDay.map(item => {
+      if (!item.key.startsWith(CLOSE_PREFIX)) return item;
+      const day = item.key.slice(CLOSE_PREFIX.length);
+      const all = perDay.filter(other => other.key.startsWith(CLOSE_PREFIX) && other.key.slice(CLOSE_PREFIX.length) <= day).flatMap(other => (other.value as { purchases: unknown[] }).purchases);
+      return { ...item, value: { ...(item.value as object), purchases: all } };
+    });
+    const late = [...facts, row('2026-11-03', 'mind', 'learn-answer', { afterBedtime: true })];
+    expect(deriveEconomy(late, undefined, cumulative, '2026-11-06')).toEqual(deriveEconomy(late, undefined, perDay, '2026-11-06'));
+  });
+
+  it('a merge charges a later day for an earlier purchase only the other side knew', () => {
+    const close = (shards: number, purchases: { id: string; dayKey: string }[] = []) => ({ total: 0, sp: 0, streak: 1, paused: false, shards, owned: [],
+      purchases: purchases.map(item => ({ ...item, itemId: 'freeze', price: 50 })) });
+    // The phone never saw the purchase on the 3rd; the backup did, and its later balance is lower by its price.
+    const phone = new Map([['2026-11-03', close(200)], ['2026-11-05', close(260)]]);
+    const backup = new Map([['2026-11-03', close(150, [{ id: 'p', dayKey: '2026-11-03' }])], ['2026-11-05', close(210)]]);
+    const merged = mergeCloseMaps(phone, backup);
+    expect(merged.get('2026-11-03')).toMatchObject({ shards: 150, purchases: [{ id: 'p' }] });
+    expect(merged.get('2026-11-05')).toMatchObject({ shards: 210, purchases: [] });
+    expect(mergeCloseMaps(backup, phone).get('2026-11-05')!.shards).toBe(210);
+  });
 });
+

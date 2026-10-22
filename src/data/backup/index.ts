@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { CLOSE_PREFIX, mergeClose } from '../../core/economy/deriveEconomy';
+import { CLOSE_PREFIX, closeKey, mergeCloseMaps } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -226,9 +226,9 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
     await db.settings.bulkPut(localSettings);
-    for (const row of closes) {
-      const restored = await db.settings.get(row.key);
-      await db.settings.put({ ...row, value: mergeClose(restored && !restored.deleted ? restored.value : undefined, row.value) });
-    }
+    const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
+    const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
+    const template = closes[0] ?? restoredCloses[0];
+    if (template) for (const [day, value] of mergeCloseMaps(asMap(restoredCloses), asMap(closes))) await db.settings.put({ ...template, key: closeKey(day), value });
   }));
 }
