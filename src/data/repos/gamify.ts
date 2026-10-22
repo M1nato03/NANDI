@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { deriveEconomy } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, dayCloseOf, deriveEconomy } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -44,6 +44,17 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     for (const badge of badges) for (let tier = 1; tier <= badgeTier(badge, facts); tier++) await add('badge-tier', `${badge.id}:${tier}`, today);
     const month = today.slice(0, 7);
     if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
+    // Close the books: each day that is over keeps what it showed, once, so no later replay can lower it
+    // (economy second opinion 22). The first run closes up to 120 past days with activity behind them.
+    const rows = await db.settings.toArray();
+    const closed = rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => row.key.slice(CLOSE_PREFIX.length)).sort();
+    const first = facts.map(fact => fact.dayKey).filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key)).sort()[0];
+    let day = closed.at(-1) ? addEconomyDays(closed.at(-1)!, 1) : first;
+    if (day && day < addEconomyDays(today, -120)) day = addEconomyDays(today, -120);
+    for (; day && day < today; day = addEconomyDays(day, 1)) {
+      const row = { key: closeKey(day), value: dayCloseOf(facts, rows, day), updatedAt: now, deleted: 0 as const, deviceId };
+      await db.settings.put(row); rows.push(row);
+    }
   }));
 }
 
