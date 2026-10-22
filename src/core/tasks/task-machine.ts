@@ -98,6 +98,7 @@ export function postponeTask(
     ...task,
     status: 'planned',
     scheduledStart: newStart,
+    scheduledEnd: movedEnd(task, newStart),
     dayKey: nextDay,
     postponeCount: count,
     firstScheduledDayKey: task.firstScheduledDayKey ?? nextDay,
@@ -156,12 +157,18 @@ export function canAddMust(
   return existingMusts < rules.tasks.maxMustsPerDay;
 }
 
+/** A moved block keeps its length; an end left behind would corrupt the day's occupied slots (Tasks audit 6). */
+function movedEnd(task: CoreTask, newStart: number): number | null {
+  return task.scheduledStart != null && task.scheduledEnd != null ? newStart + (task.scheduledEnd - task.scheduledStart) : null;
+}
+
 export function doRealReasonMove(task: CoreTask, newStart: number): CoreTask {
   const nextDay = dayKey(newStart);
   return {
     ...task,
     status: 'planned',
     scheduledStart: newStart,
+    scheduledEnd: movedEnd(task, newStart),
     dayKey: nextDay,
     firstScheduledDayKey: nextDay,
     lastPlannedDayKey: nextDay,

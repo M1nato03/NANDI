@@ -188,6 +188,11 @@ describe('Tasks repository transactions', () => {
     await repos.reconcile(at(19, 4));
     expect((await db.tasks.get(old.id))?.status).toBe('someday');
     expect((await db.tasks.get(future.id))?.status).toBe('planned');
+    // Made on the 4th for the 25th and missed: one day overdue is not 14 untouched days (Tasks audit 4).
+    await repos.reconcile(at(26, 4));
+    expect((await db.tasks.get(future.id))?.status).toBe('unplaced');
+    await repos.reconcile(at(27, 4));
+    expect((await db.tasks.get(future.id))?.status).toBe('unplaced');
   });
 
   it('split children conserve the parent pool, inherit its first day and complete the container', async () => {
