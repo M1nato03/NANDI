@@ -81,7 +81,7 @@ describe('teach first (spec 14)', () => {
     expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, answers: yesterday }).items.slice(1)).toEqual([]);
     const longAgo = s1.map((item, index) => ({ itemId: item.id, correct: true, at: now - 5 * 86_400_000 + index, day: '2026-10-17' }));
     expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, answers: longAgo }).items.slice(1).length).toBeGreaterThan(0);
-    const reset = { ...started('habits'), deleted: 1 };
+    const reset: LearnConceptRow = { ...started('habits'), deleted: 1 };
     expect(makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, concepts: [reset] }).items.slice(1)).toEqual([]);
   });
 
