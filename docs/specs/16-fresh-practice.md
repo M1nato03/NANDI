@@ -144,8 +144,9 @@ one idea every 3 days, so the tail has 0–1 candidates.
 - **Order of choice:** (1) items answered wrong whose review is due; (2) **never-asked** items, oldest taught step
   first; (3) due spaced reviews of items answered right. An item answered right is never re-asked while a never-asked
   taught item exists (fixes the day 2 → day 8 repeat).
-- **Mixing:** prefer different ideas back to back; if only one idea has candidates, allow it, but never two items of
-  the **same step** in a row, and at most 2 items of one step per day.
+- **Mixing:** prefer different ideas back to back; if only one idea has candidates, allow it. Never two items of the
+  **same step** in a row while another step has an item; when the pool holds only that step (day 2), its 2 items may
+  run back to back. At most 2 items of one step per day. (Built as `practiceTail` in core/learn/steps.ts, ship-32.)
 - Expected for a one-topic learner (2 items per step): day 2 → 2 (s1), day 3 → 2–3 (s2 + review), day 4 onward → 3.
   About **18 questions in 8 days** instead of 2, still about 3–4 minutes a day.
 
