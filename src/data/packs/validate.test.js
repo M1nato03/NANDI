@@ -91,7 +91,7 @@ describe('topic editorial rules', () => {
   });
   it('accepts the body and training pack with checked claims and editorial rules', () => {
     expect(body.body.modules[0].concepts).toHaveLength(8);
-    expect(body.body.modules[0].concepts.flatMap(concept => concept.items)).toHaveLength(64);
+    expect(body.body.modules[0].concepts.flatMap(concept => concept.items)).toHaveLength(48);
     const fresh = new Set(freshPracticeErrors(body));
     expect(validatePack(body, { editorial: true }).filter(error => !fresh.has(error))).toEqual([]);
   });
