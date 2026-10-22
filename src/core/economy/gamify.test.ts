@@ -59,4 +59,17 @@ describe('daily invitations and awards', () => {
     expect(monthlyQuestCount(rows, '2026-10')).toBe(1);
     expect(monthlyQuestCount(rows, '2026-11')).toBe(1);
   });
+  it('counts quests and badges by what they name (audit 16.14-18)', async () => {
+    const { questPool } = await import('./gamify');
+    const quest = (id: string) => questPool.find(q => q.id === id)!;
+    // A teach-first drop is finished when the drop is, however few questions it had.
+    expect(questProgress(quest('drop'), [fact('learn-drop', day, {}, noon, 'gamify')], day)).toBe(1);
+    // An unplanned quick win is not a planned task; a time slot is.
+    expect(questProgress(quest('task'), [fact('done', 'quick', {}, noon, 'tasks')], day)).toBe(0);
+    expect(questProgress(quest('task'), [fact('done', 'slot', { hadTimeSlot: true }, noon, 'tasks')], day)).toBe(1);
+    expect(questProgress(quest('case'), [fact('mystery', 'shown', { result: 'revealed' })], day)).toBe(0);
+    const weeks = badges.find(row => row.id === 'weeks')!;
+    expect(weeks.count([fact('weekly', 'two', { target: 3, milestone: 2 }, noon, 'train'), fact('weekly', 'three', { target: 3, milestone: 3 }, noon, 'train')])).toBe(1);
+    expect(badges.find(row => row.id === 'planned')!.count([fact('done', 'slot', { hadTimeSlot: true }, noon, 'tasks')])).toBe(1);
+  });
 });

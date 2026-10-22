@@ -88,6 +88,38 @@ describe('economy replay', () => {
       task('2026-11-09', 'M'), full('2026-11-09'), caseFact('2026-11-09')], '2026-11-09');
     expect(repaired.streak.restored).toBe(true);
     expect(repaired.streak.paused).toBe(false);
+    // The missed day is held, not counted: 1 marked day + 2 repair days (audit 16.11).
+    expect(repaired.streak.days).toBe(3);
+  });
+  it('offers repair only while two Hat-trick days can still fit in the window', () => {
+    const mon = '2026-11-02'; // 4 rest days cover 3-6 Nov, so 7 Nov pauses the streak.
+    expect(view([task(mon, 'M')], '2026-11-08').streak).toMatchObject({ paused: true, canRepair: true });
+    expect(view([task(mon, 'M')], '2026-11-09').streak).toMatchObject({ paused: true, canRepair: false });
+    const halfway = [task(mon, 'M'), task('2026-11-08', 'M'), full('2026-11-08'), caseFact('2026-11-08')];
+    expect(view(halfway, '2026-11-09').streak).toMatchObject({ paused: true, canRepair: true });
+  });
+  it('needs a fresh run for Gold after a break', () => {
+    const hat = (day: string) => [task(day, 'M'), full(day), caseFact(day)];
+    // 2 Nov marked, 3-6 Nov empty the rest bank, 7-12 Nov marked (6 days), 13 Nov breaks,
+    // 14-15 Nov repair, 16 Nov marked: 7 marked days in all but only 3 since the break.
+    const marked = ['2026-11-02', '2026-11-07', '2026-11-08', '2026-11-09', '2026-11-10', '2026-11-11', '2026-11-12'];
+    const facts = [...marked.map(day => task(day, 'M')), ...['2026-11-14', '2026-11-15'].flatMap(hat), task('2026-11-16', 'M')];
+    const result = view(facts, '2026-11-16').streak;
+    expect(result).toMatchObject({ restored: true, gold: false });
+    expect(view([...marked.map(day => task(day, 'M'))], '2026-11-08').streak.gold).toBe(false);
+  });
+  it('pays a perfect drop only when its answers came before bedtime', () => {
+    const day = '2026-11-03';
+    const answers = Array.from({ length: 5 }, () => row(day, 'mind', 'learn-answer', { dropId: `drop:daily:${day}`, afterBedtime: true, correct: true }));
+    expect(view([...answers, row(day, 'gamify', 'perfect-drop')]).days[0]!.mind).toBe(0);
+  });
+  it('boosts only what the boosted minutes earned after caps', () => {
+    const day = '2026-11-03';
+    const boost = row(day, 'gamify', 'focus-boost');
+    const [one, two] = [full(day), full(day)];
+    const result = view([boost, one, two]).days[0]!;
+    // Train pays the best session once, so Focus adds one session's worth, not two.
+    expect(result.focus).toBe(result.train * (RULES.gamify.focusMultiplier - 1));
   });
   it('starts a fresh streak once the earn-back window has passed', () => {
     const facts = [task('2026-11-02', 'M'), task('2026-11-11', 'M'), task('2026-11-12', 'M'), task('2026-11-13', 'M')];
