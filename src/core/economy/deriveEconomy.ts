@@ -62,6 +62,10 @@ export function deriveEconomy(
   });
   const byDay = new Map<string, LedgerRow[]>();
   for (const fact of ordered) byDay.set(fact.dayKey, [...(byDay.get(fact.dayKey) ?? []), fact]);
+  // Economy fixes of 22 Oct apply from the day this build first ran, so earlier days keep the XP they showed.
+  const v2Stored = value(settings, 'economy.v2From');
+  const v2From = typeof v2Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v2Stored) ? v2Stored : '0000-00-00';
+  const v2 = (key: string) => key >= v2From;
   const visibleFrom = value(settings, 'economyVisibleFrom');
   const firstDay = typeof visibleFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(visibleFrom) && !Number.isNaN(Date.parse(`${visibleFrom}T12:00:00Z`)) && new Date(`${visibleFrom}T12:00:00Z`).toISOString().slice(0, 10) === visibleFrom && visibleFrom <= today ? visibleFrom : today;
   const start = ordered[0]?.dayKey && ordered[0].dayKey < firstDay ? ordered[0].dayKey : firstDay;
@@ -89,12 +93,12 @@ export function deriveEconomy(
     // A teach-first drop can end after a few scored answers, or after the lesson alone (spec 16 §5, a new
     // learner with nothing earlier to practise), so a finished daily drop counts too, as long as one of
     // its answers or its lesson came before bedtime.
-    const lessonDone = rows.some(row => row.kind === 'learn-lesson' && !row.deleted && beforeBed(row));
+    const lessonDone = rows.some(row => row.kind === 'learn-lesson' && !row.deleted && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row));
     const dropFinished = rows.some(row => row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key) && (learnAnswers.size > 0 || lessonDone);
     const learnDrop = mindRows.some(row => row.kind === 'learn-drop') || learnAnswers.size >= 5 || dropFinished;
     // Mind earns nothing after bedtime, so a perfect drop pays only when every one of its answers came before it (audit 16.3).
     const dropAnswers = rows.filter(row => row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`);
-    const perfectBeforeBed = dropAnswers.length > 0 && dropAnswers.every(beforeBed);
+    const perfectBeforeBed = !v2(key) || (dropAnswers.length > 0 && dropAnswers.every(beforeBed));
     const mind = Math.min(rules.mind.dailyCap,
       (caseSolved ? rules.mind.mysteryXp : 0) + (dailyBoard ? rules.mind.dropBoardXp : 0) +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
@@ -122,7 +126,7 @@ export function deriveEconomy(
       if (row.mode === 'gamify' && row.kind === 'perfect-drop' && !perfectBeforeBed) award = 0;
       boosted[area(row)] = (boosted[area(row)] ?? 0) + award;
     }
-    const focus = Object.entries(boosted).reduce((sum, [name, amount]) => sum + Math.min(amount, earnedBy[name] ?? 0), 0) * (rules.gamify.focusMultiplier - 1);
+    const focus = Object.entries(boosted).reduce((sum, [name, amount]) => sum + (v2(key) ? Math.min(amount, earnedBy[name] ?? 0) : amount), 0) * (rules.gamify.focusMultiplier - 1);
     // Spec 15: one gentle thing on a tired or low day keeps the day. It is never a Hat-trick slot.
     const soft = rows.some(row => row.kind === 'soft') ? rules.soft.dayXp : 0;
     days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, welcome: 0,
@@ -136,7 +140,11 @@ export function deriveEconomy(
   for (let i = 0; i < days.length; i++) {
     const day = days[i]!;
     const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
-    if (day.mark && everMarked && day.dayKey >= rules.soft.from) {
+    // A gift once recorded stays, even if a missed day before it later gains a fact from a sync or an
+    // import (forward-only; economy second opinion 1). The recorded fact is written by reconcileGamify.
+    const recorded = (byDay.get(day.dayKey) ?? []).some(row => row.mode === 'gamify' && row.kind === 'welcome-back');
+    if (recorded && day.dayKey >= rules.soft.from) { day.welcome = rules.soft.welcomeBackXp; day.total += day.welcome; }
+    else if (day.mark && everMarked && day.dayKey >= rules.soft.from) {
       let j = i - 1;
       while (j >= 0 && !days[j]!.mark && isRestDay(days[j]!.dayKey)) j--;
       if (j >= 0 && !days[j]!.mark) { day.welcome = rules.soft.welcomeBackXp; day.total += day.welcome; }
@@ -194,7 +202,7 @@ export function deriveEconomy(
       if (paused && breakAt >= 0 && i - breakAt <= 2) {
         if (day.hatTrick) repair++;
         // The missed day is held, not counted: only the repair days themselves add to the streak (audit 16.11).
-        if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt; markedDays = i - breakAt; repair = 0; breakAt = -1; }
+        if (repair >= RULES.streak.repairHatTricks) { paused = false; restored = true; streakDays += i - breakAt + (v2(day.dayKey) ? 0 : 1); if (v2(day.dayKey)) markedDays = i - breakAt; repair = 0; breakAt = -1; }
       } else if (paused) {
         // The 48 h earn-back window has passed: a marked day starts a fresh streak.
         paused = false; restored = false; streakDays = 1; markedDays = 1; repair = 0; breakAt = -1;
@@ -206,7 +214,7 @@ export function deriveEconomy(
     else if (i < days.length - 1) {
       if (!paused && restDays > 0) { restDays--; restDaysUsed++; restUsedYesterday = i === days.length - 2; markedDays = 0; gold = false; }
       // A break resets the Gold count like a spent rest day does, so Gold needs a fresh run (audit 16.12).
-      else if (!paused) { paused = true; breakAt = i; repair = 0; gold = false; markedDays = 0; }
+      else if (!paused) { paused = true; breakAt = i; repair = 0; gold = false; if (v2(day.dayKey)) markedDays = 0; }
       else if (breakAt >= 0 && i - breakAt > 2) { streakDays = 0; breakAt = -1; repair = 0; }
     }
   }
