@@ -1,6 +1,7 @@
 import type { Rules } from '../rules.config';
 import { creationSplitPool } from '../economy/creationSplit';
 import type { CoreTask, TaskSize } from './task-machine';
+import { dayKey } from '../time';
 
 /** Largest-remainder allocation keeps the exact pool while respecting estimate proportions. */
 export function splitTask(
@@ -39,6 +40,9 @@ export function splitTask(
     .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
   for (const { index } of order.slice(0, remainder))
     shares[index] = (shares[index] ?? 0) + 1;
+  // Steps of a placed task run back to back inside its block, never all at its start time (Tasks audit 5).
+  const keepSlot = parent.postponeCount !== 3 && parent.scheduledStart != null;
+  const offsets = estimates.map((_, index) => estimates.slice(0, index).reduce((sum, est) => sum + est, 0) * 60_000);
   return estimates.map((estimateMin, index) => {
     const size: TaskSize =
       estimateMin <= rules.tasks.sizeMinutes.S[1]
@@ -54,13 +58,14 @@ export function splitTask(
           : parent.status === 'planned'
             ? 'planned'
             : 'unplaced',
-      dayKey: parent.dayKey,
+      // A step that starts after 04:00 belongs to the new planning day (second opinion 4).
+      dayKey: keepSlot ? dayKey(parent.scheduledStart! + offsets[index]!) : parent.dayKey,
       size,
       estimateMin,
       plannedSize: size,
       parentId: parent.id,
-      scheduledStart: parent.postponeCount === 3 ? null : parent.scheduledStart,
-      scheduledEnd: parent.postponeCount === 3 ? null : parent.scheduledEnd,
+      scheduledStart: keepSlot ? parent.scheduledStart! + offsets[index]! : parent.postponeCount === 3 ? null : parent.scheduledStart,
+      scheduledEnd: keepSlot ? parent.scheduledStart! + offsets[index]! + estimateMin * 60_000 : parent.postponeCount === 3 ? null : parent.scheduledEnd,
       firstScheduledDayKey: parent.firstScheduledDayKey,
       category: parent.category,
       mustOrCould: parent.mustOrCould,

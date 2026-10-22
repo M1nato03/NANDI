@@ -1,0 +1,45 @@
+/* Spec 15, soft days: quiet, roomy, one thing at a time. */
+.soft-chip { align-self: flex-start; margin: 4px 0 12px; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: var(--surface-2, var(--surface)); color: var(--ink); border: 1px solid var(--line); font-weight: 600; box-shadow: none; }
+.soft-sheet h2 { margin-bottom: 12px; }
+.soft-sheet-choices { display: grid; gap: 10px; }
+.soft-card { display: grid; gap: 14px; }
+.soft-host { display: flex; align-items: center; gap: 12px; }
+.soft-line { font-size: 1.05rem; font-weight: 600; margin: 0; }
+.soft-options { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.soft-option { width: 100%; min-height: 52px; text-align: left; justify-content: flex-start; }
+.soft-option small { font-weight: 400; opacity: .75; }
+.soft-doing { display: grid; gap: 12px; }
+.soft-doing h2 { margin: 0; }
+.soft-task { display: grid; gap: 12px; }
+.soft-okay { justify-self: center; }
+.soft-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; font-weight: 600; }
+.soft-field input { width: 100%; min-height: 44px; }
+.soft-check { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.soft-check input { width: 22px; height: 22px; }
+.soft-tiny { display: grid; gap: 8px; }
+.soft-tiny p { margin: 0; }
+.soft-breath { width: 160px; height: 160px; margin: 8px auto; display: grid; place-items: center; }
+.soft-breath span { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, #ffd59a 0%, #f2a65a 70%); box-shadow: 0 0 40px rgba(242, 166, 90, .45); animation: soft-breath 10s ease-in-out infinite; }
+@keyframes soft-breath { 0%, 100% { transform: scale(1); } 45%, 55% { transform: scale(2.1); } }
+.soft-breath-text { text-align: center; margin: 0; }
+.soft-stretches { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.soft-stretches li { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: center; }
+.soft-stretches .exercise-figure { width: 110px; height: auto; }
+.soft-stretches p { margin: 2px 0 0; }
+.soft-kind-friend { justify-self: center; }
+.soft-kind-lines { display: grid; gap: 8px; }
+.soft-kind-line { width: 100%; min-height: 44px; text-align: left; justify-content: flex-start; font-weight: 500; }
+.soft-kind-line.selected { outline: 2px solid var(--accent); font-weight: 700; }
+.soft-kind-preview { font-size: 1.1rem; font-weight: 600; text-align: center; margin: 4px 0; }
+.soft-finish { justify-items: center; text-align: center; }
+.soft-finish h2 { margin: 0; }
+.soft-finish p { margin: 0; }
+.soft-lantern { width: 26px; height: 34px; border-radius: 8px 8px 12px 12px; background: linear-gradient(#ffcf7a, #f08c3c); box-shadow: 0 0 22px rgba(255, 176, 82, .75); position: relative; }
+.soft-lantern::before { content: ''; position: absolute; top: -8px; left: 9px; width: 8px; height: 8px; border: 2px solid var(--ink); border-bottom: 0; border-radius: 6px 6px 0 0; }
+.soft-care .sheet-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.soft-care .button-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 12px; background: var(--button); color: var(--button-ink); font-weight: 700; text-decoration: none; }
+.soft-note { margin: 0; }
+/* Reduced motion: no growing circle; a still ring that only fades, and the words lead the breath. */
+@keyframes soft-breath-fade { 0%, 100% { opacity: .45; } 45%, 55% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .soft-breath span { width: 140px; height: 140px; animation-name: soft-breath-fade; } }
+:root[data-motion="reduce"] .soft-breath span { width: 140px; height: 140px; animation-name: soft-breath-fade; }

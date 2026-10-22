@@ -171,6 +171,16 @@ function Rest({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   </g>;
 }
 
+/** Spec 15: one lantern on Kachhua's string for each soft day (up to 12 drawn); they never go away. */
+function Lanterns({ count, glowLayer }: { count: number; glowLayer?: boolean }) {
+  const shown = Math.min(count, 12);
+  if (!shown) return null;
+  const xs = Array.from({ length: shown }, (_, index) => 16 + index * 9);
+  if (glowLayer) return <g className="courtyard-flicker">{xs.map(x => <circle key={x} cx={x} cy="147" r="7" fill={C.glow} opacity=".35" />)}</g>;
+  return <g className="courtyard-lanterns" data-lanterns={count}><path d={`M10 137H${xs.at(-1)! + 6}`} stroke="#6b4a2c" strokeWidth="1" />
+    {xs.map(x => <g key={x}><path d={`M${x} 137v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={x - 3.6} y="140" width="7.2" height="10" rx="2.4" fill="#f6a640" /><rect x={x - 2.2} y="142" width="4.4" height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
+}
+
 /** Chiku looks after Learn: a book, a stack, a low shelf, a lamp and a globe. */
 function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   if (glowLayer) return stage >= 4 ? <g className="courtyard-flicker"><circle cx="248" cy="168" r="14" fill={C.glow} opacity=".32" /></g> : null;
@@ -186,7 +196,7 @@ function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   </g>;
 }
 
-export function CourtyardScene({ phase, stages, treeStage, title }: { phase: Phase; stages: Stages; treeStage: number; title: string }) {
+export function CourtyardScene({ phase, stages, treeStage, title, lanterns = 0 }: { phase: Phase; stages: Stages; treeStage: number; title: string; lanterns?: number }) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '');
   const tint = TINT[phase];
   const lit = phase === 'evening' || phase === 'night';
@@ -200,10 +210,11 @@ export function CourtyardScene({ phase, stages, treeStage, title }: { phase: Pha
     <Tree stage={treeStage} />
     <Puzzles stage={stages.mind} />
     <Rest stage={stages.sleep} />
+    <Lanterns count={lanterns} />
     <Books stage={stages.learn} />
     {tint && <rect width={SCENE_W} height={SCENE_H} fill={tint} />}
     {lit && <g>
-      <Tree stage={treeStage} glowLayer /><Keepsakes stage={stages.remember} glowLayer /><Rest stage={stages.sleep} glowLayer /><Books stage={stages.learn} glowLayer />
+      <Tree stage={treeStage} glowLayer /><Keepsakes stage={stages.remember} glowLayer /><Rest stage={stages.sleep} glowLayer /><Lanterns count={lanterns} glowLayer /><Books stage={stages.learn} glowLayer />
     </g>}
   </svg>;
 }

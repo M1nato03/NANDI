@@ -76,7 +76,7 @@ for (const scheme of ['light', 'dark'] as const) {
     }
     await expect(page.getByRole('heading', { name: "That's enough for today" })).toBeVisible();
     await page.getByRole('button', { name: 'Finish reviews' }).click();
-    await page.getByRole('button', { name: 'Board: not done' }).click();
+    await page.getByRole('button', { name: 'Board Not done' }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
@@ -84,9 +84,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
     // The first board can be the intro; if the daily board is still open, solve it too.
-    await expect(page.getByRole('button', { name: /^Board: / })).toBeVisible();
-    if (await page.getByRole('button', { name: 'Board: not done' }).isVisible()) {
-      await page.getByRole('button', { name: 'Board: not done' }).click();
+    await expect(page.getByRole('button', { name: /^Board (Not done|Done)$/ })).toBeVisible();
+    if (await page.getByRole('button', { name: 'Board Not done' }).isVisible()) {
+      await page.getByRole('button', { name: 'Board Not done' }).click();
       await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
       await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
       await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
@@ -94,8 +94,8 @@ for (const scheme of ['light', 'dark'] as const) {
       await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
       await page.getByRole('button', { name: 'Back to Mind' }).click();
     }
-    await expect(page.getByRole('button', { name: 'Case: not done' })).toBeVisible();
-    await page.getByRole('button', { name: 'Case: not done' }).click();
+    await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
+    await page.getByRole('button', { name: 'Case Not done' }).click();
     await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
     await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
@@ -104,8 +104,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
     await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
     await page.getByRole('button', { name: 'Back to Mind' }).click();
-    await expect(page.getByRole('button', { name: 'Case: done' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Board: done' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Case Done' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Board Done' })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`practice-status-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });

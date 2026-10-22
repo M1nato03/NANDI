@@ -3,8 +3,9 @@ import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { AUTO_BACKUP_FOLDER, autoBackupFilesToPrune } from '../core/autoBackup';
 
+export interface ShareOptions { title?: string; dialogTitle?: string; /** A closed native sheet means nothing was sent (the file stays in Documents). */ cancelledIfClosed?: boolean }
 /** Shares a backup from a user gesture, downloading it when file sharing is unavailable. */
-export async function shareOrDownload(file: File, text?: string): Promise<'shared' | 'downloaded' | 'cancelled'> {
+export async function shareOrDownload(file: File, text?: string, options: ShareOptions = {}): Promise<'shared' | 'downloaded' | 'cancelled'> {
   if (Capacitor.isNativePlatform()) {
     const image = file.type === 'image/png';
     const data = image ? await new Promise<string>((resolve, reject) => {
@@ -15,10 +16,10 @@ export async function shareOrDownload(file: File, text?: string): Promise<'share
     }) : await file.text();
     const saved = await Filesystem.writeFile({ path: file.name, data, directory: Directory.Documents, ...(!image ? { encoding: Encoding.UTF8 } : {}) });
     try {
-      await Share.share({ title: image ? text ? 'NANDI Mind' : 'What my week became' : 'NANDI backup', ...(text ? { text } : {}), files: [saved.uri], dialogTitle: image ? text ? 'Share my solve' : 'Share my week' : 'Save a copy of your NANDI backup' });
+      await Share.share({ title: options.title ?? (image ? text ? 'NANDI Mind' : 'What my week became' : 'NANDI backup'), ...(text ? { text } : {}), files: [saved.uri], dialogTitle: options.dialogTitle ?? (image ? text ? 'Share my solve' : 'Share my week' : 'Save a copy of your NANDI backup') });
       return 'shared';
     } catch (error) {
-      if (error !== null && typeof error === 'object' && 'message' in error && String(error.message).toLowerCase().includes('cancel')) return 'downloaded';
+      if (error !== null && typeof error === 'object' && 'message' in error && String(error.message).toLowerCase().includes('cancel')) return options.cancelledIfClosed ? 'cancelled' : 'downloaded';
       throw error;
     }
   }

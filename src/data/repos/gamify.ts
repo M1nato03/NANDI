@@ -2,17 +2,30 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeClose } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
+import { asReconcile, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { LedgerRow } from '../types';
 
 /** Reconcile derived achievements into immutable, idempotent award facts. */
 export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
+  // A restore clears and refills the tables; the app runs this again once it has finished. A restore that
+  // starts while this runs waits for it (the whole run counts, from its first await).
+  if (restoreActive()) return;
+  return asReconcile(() => reconcileOnce(db, now));
+}
+
+async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
-  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog], async () => {
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {
+    // Checked again inside the transaction: a restore may have started while this one waited for its lock.
+    if (restoreActive()) return;
+    // The 22 Oct economy fixes count from the first day this build ran (earlier days keep what they showed).
+    if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
     const known = new Set(facts.map(f => f.id));
     const add = async (kind: string, refId: string, day: string, inputs: Record<string, unknown> = {}, at = now) => {
@@ -26,8 +39,13 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     const drop = await db.learnDrops.get(`drop:daily:${today}`);
     if (drop && drop.drop.items.length > 0 && drop.drop.cursor >= drop.drop.items.length) {
       await add('learn-drop', today, today);
-      if (perfectDrop(facts, drop.id, drop.drop.items.filter(item => !item.lesson).length)) await add('perfect-drop', today, today);
+      // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
+      const scored = drop.drop.items.filter(item => !item.lesson).length;
+      if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today);
     }
+    // Record today's welcome-back gift once shown, so a later sync can never take it away.
+    const settings = await db.settings.toArray();
+    if (deriveEconomy(facts, undefined, settings, today).days.at(-1)?.welcome) await add('welcome-back', today, today);
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
     if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`))) await add('focus-boost', today, today);
     const states = await db.learnConcepts.toArray();
@@ -36,6 +54,18 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     for (const badge of badges) for (let tier = 1; tier <= badgeTier(badge, facts); tier++) await add('badge-tier', `${badge.id}:${tier}`, today);
     const month = today.slice(0, 7);
     if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
+    // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each
+    // run, never lowered), so no later sync, import, restore or rule fix can lower it (second opinions 22, 25).
+    const rows = await db.settings.toArray();
+    // A close dated today or later came from a clock that was set ahead: that day has not ended, so drop it.
+    for (const row of rows.filter(item => item.key.startsWith(CLOSE_PREFIX) && item.key.slice(CLOSE_PREFIX.length) >= today)) await db.settings.delete(row.key);
+    const oldest = addEconomyDays(today, -120);
+    for (const [day, candidate] of closesFor(facts, rows, today)) {
+      const existing = rows.find(row => row.key === closeKey(day) && !row.deleted)?.value;
+      if (day < oldest && existing === undefined) continue;
+      const merged = mergeClose(existing, candidate);
+      if (merged && JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
+    }
   }));
 }
 

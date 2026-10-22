@@ -95,3 +95,12 @@ describe('storybook', () => {
     expect(recentWeeks('2026-10-21', 3)).toEqual(['2026-10-19', '2026-10-12', '2026-10-05']);
   });
 });
+
+describe('soft days in the courtyard', () => {
+  it('a soft-only day lights a lantern and counts as an active day for the tree', () => {
+    const facts = days('2026-11-02', 3).map(day => fact(day, 'soft', 'soft', { choice: 'breathe', state: 'tired' }));
+    const state = deriveCourtyard(facts, '2026-11-04');
+    expect(state.lanterns).toBe(3);
+    expect(state.activeDays).toBe(3);
+  });
+});

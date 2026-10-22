@@ -319,7 +319,7 @@ export function CaseScreen({
         <>
           <h1>{mystery.title}</h1>
           <p>{mystery.setup}</p>
-          <p className="small" aria-label="Active time">
+          <p className="small">
             Time{' '}
             {timeText(
               run.result

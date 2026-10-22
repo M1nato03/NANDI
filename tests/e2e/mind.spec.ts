@@ -5,7 +5,7 @@ test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/#mind');
-  await page.getByRole('button', { name: 'Case: not done' }).click();
+  await page.getByRole('button', { name: 'Case Not done' }).click();
   const grid = page.locator('.case-grid').first();
   await expect(grid).toBeVisible({ timeout: 30_000 });
   const blank = grid.locator('.case-blank').first();
@@ -32,7 +32,7 @@ test('Practice hub shows daily status, destinations and fits a phone', async ({ 
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.goto('/#mind');
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible();
-  for (const name of ['Case: not done', 'Board: not done']) await expect(page.getByRole('button', { name })).toBeVisible();
+  for (const name of ['Case Not done', 'Board Not done']) await expect(page.getByRole('button', { name })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toHaveCount(0);
@@ -59,7 +59,7 @@ for (const scheme of ['light', 'dark'] as const) {
     ];
     for (const board of boards) {
       await page.getByRole('heading', { name: board.name }).locator('..').getByRole('button', { name: board.difficulty }).click();
-      const grid = page.getByRole('grid', { name: board.grid });
+      const grid = page.getByRole('group', { name: board.grid });
       await expect(grid).toBeVisible({ timeout: 30_000 });
       if (board.slug === 'crowns') {
         const first = grid.locator('.mind-cell').first();
@@ -79,7 +79,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/?e2e#mind');
-    await page.getByRole('button', { name: 'Board: not done' }).click();
+    await page.getByRole('button', { name: 'Board Not done' }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
     await expect(page.locator('html')).toHaveCSS('color-scheme', scheme);
@@ -98,13 +98,14 @@ for (const scheme of ['light', 'dark'] as const) {
     });
     expect(sizing).toEqual({ cells: true, controls: true, noScroll: true });
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-    await expect(page.getByLabel('Puzzle result')).toContainText('Board complete');
+    // A new user's first board is the warm-up (live QA, build 67).
+    await expect(page.getByLabel('Puzzle result')).toContainText('Warm-up done');
     await expect(page.getByLabel('Puzzle result')).toContainText('Best');
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
     await expect(page.getByText('Best times')).toBeVisible();
     await expect(page.locator('.mind-best-times')).toContainText('0:');
-    await page.getByRole('button', { name: /^Board: / }).click();
+    await page.getByRole('button', { name: /^Board (Not done|Done)$/ }).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
@@ -117,22 +118,22 @@ for (const scheme of ['light', 'dark'] as const) {
 
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
-    const empty = page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first();
+    const empty = page.getByRole('group', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first();
     await expect(empty).toBeVisible({ timeout: 30_000 });
     const label = await empty.getAttribute('aria-label');
     await empty.click();
     await page.getByLabel('Number pad').getByRole('button', { name: '1', exact: true }).click();
-    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: `${label!.replace(': empty', ': 1')}` })).toBeVisible();
+    await expect(page.getByRole('group', { name: 'Mini Sudoku board' }).getByRole('button', { name: `${label!.replace(': empty', ': 1')}` })).toBeVisible();
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.reload();
     // The bookmarked board route now resumes directly after reload.
-    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('group', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
 
     await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), undefined, { timeout: 60_000 });
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.context().setOffline(true);
     await page.reload();
-    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('group', { name: 'Mini Sudoku board' }).getByRole('button', { name: label!.replace(': empty', ': 1') })).toBeVisible({ timeout: 30_000 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.context().setOffline(false);
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
@@ -140,6 +141,6 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByLabel('Puzzle result')).toBeVisible();
     await page.getByRole('button', { name: 'Back to Mind' }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
-    await expect(page.getByRole('grid', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first()).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('group', { name: 'Mini Sudoku board' }).getByRole('button', { name: /empty/ }).first()).toBeVisible({ timeout: 30_000 });
   });
 }

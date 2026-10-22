@@ -5,7 +5,9 @@ import { LadderPattern, LadderStep } from './types';
 export function getBodyweightPlacementStartStep(pattern: LadderPattern): LadderStep {
   const ladder = LADDERS[pattern];
   if (!ladder || ladder.length === 0) throw new Error(`Ladder not found for pattern ${pattern}`);
-  const middleIndex = Math.floor(ladder.length / 2);
+  // Start in the middle, but never on a gated step (a new hinge test is a bodyweight RDL, never a Nordic curl).
+  let middleIndex = Math.floor(ladder.length / 2);
+  while (middleIndex > 0 && ladder[middleIndex]!.gate) middleIndex--;
   const step = ladder[middleIndex];
   if (!step) throw new Error(`Middle step not found for pattern ${pattern}`);
   return step;
@@ -43,9 +45,9 @@ export function evaluateBodyweightPlacement(
     return { finalStepRank: bestRank, complete: true };
   }
 
-  // If >= 12, move up
+  // If >= 12, move up (but a placement test never moves onto a gated step)
   if (lastResult.reps >= moveUp) {
-    if (lastResult.stepRank < ladder.length) {
+    if (lastResult.stepRank < ladder.length && !ladder[lastResult.stepRank]?.gate) {
       return { finalStepRank: lastResult.stepRank + 1, complete: false };
     } else {
       return { finalStepRank: lastResult.stepRank, complete: true };

@@ -72,7 +72,7 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
   }
   return <section className="card side-quests deck-area-extra" aria-label="Side quests">
     <div className="quest-heading"><div className="ui-section-header"><p className="eyebrow">This week</p><h2>{selectedId ? 'Side quest' : 'Side quests'}</h2><span className="quest-count">{visible.filter(row => row.status === 'done').length} of {visible.length || 3} done</span></div>
-      {!selectedId && <div className="quest-heading-actions"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} aria-label="Swap one suggestion" onClick={() => void run(() => repo.swap(Date.now()))}>Swap</button><button type="button" className="secondary" aria-label="Add custom quest" onClick={() => setShowForm(value => !value)}>Add your own</button></div>}</div>
+      {!selectedId && <div className="quest-heading-actions"><button type="button" className="secondary" disabled={busy || rows.some(row => row.status === 'swapped')} aria-label="Swap one suggestion" onClick={() => void run(() => repo.swap(Date.now()))}>Swap</button><button type="button" className="secondary" onClick={() => setShowForm(value => !value)}>Add your own</button></div>}</div>
     <div className="quest-list">{shown.map(row => {
       const hint = hints[categories.get(row.sourceId) ?? ''] ?? { why: 'Make space for something you chose.', time: 'Your pace' };
       const expanded = expandedId?.toLowerCase() === row.id.toLowerCase();

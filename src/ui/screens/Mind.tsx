@@ -22,6 +22,7 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
+import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { bundledPacks } from '../../data/packs/seed';
 import { getOrCreateDeviceId } from '../../data/device';
 import { answerPlan, loadLessonDraft, saveLessonDraft, seedDeckCards, type LessonDraft } from '../../data/repos/learn';
@@ -104,8 +105,12 @@ export function Mind({ entry }: { entry?: string }) {
   const caseReady = caseRun !== undefined && solvedCases !== undefined;
   const caseDiff = caseRun?.diff === 'easy' || caseRun?.diff === 'medium' || caseRun?.diff === 'hard' ? caseRun.diff : (solvedCases ?? 0) < RULES.mind.onboardingEasyCases ? 'easy' : RULES.mind.caseDiffByWeekday[new Date(`${today}T12:00:00`).getDay() as keyof typeof RULES.mind.caseDiffByWeekday];
   const caseDone = caseRun?.result === 'solved' || caseRun?.result === 'revealed';
-  const bedtime = String(settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value ?? RULES.night.defaultBedtime);
-  const shutdown = effectiveShutdown(String(settings.find(row => row.key === 'planner.shutdown' && !row.deleted)?.value ?? RULES.night.defaultShutdown), bedtime);
+  // A busy day moves the night later for routing (AppShell), so Mind's XP and wind-down follow the same clock (Night audit).
+  const todayTasks = useLiveQuery(() => db.tasks.where('dayKey').equals(today).toArray(), [today]);
+  const adaptive = adaptiveNight(settings, todayTasks ?? [], today);
+  const baseBedtime = String(settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value ?? RULES.night.defaultBedtime);
+  const bedtime = adaptive.bedtime;
+  const shutdown = shiftClock(effectiveShutdown(String(settings.find(row => row.key === 'planner.shutdown' && !row.deleted)?.value ?? RULES.night.defaultShutdown), baseBedtime), adaptive.shift);
   const night = nightWindow(now, shutdown, bedtime, log?.windDownAt);
   const windDownUsed = Number(settings.find(row => row.key === `mind.windDownMs:${today}` && !row.deleted)?.value ?? 0);
   const windDownOverride = settings.some(row => row.key === `mind.windDownOverride:${today}` && row.value === true && !row.deleted);
@@ -385,12 +390,12 @@ export function Mind({ entry }: { entry?: string }) {
       {(busy || !board || !run) && <p>{message || 'Building board…'}</p>}
     </div>}
     {busy || !board || !run ? <h1>{PZ.TYPES[selection.type].name}</h1> : <>
-      <p className="eyebrow">{selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Intro board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
+      <p className="eyebrow">{selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : selection.daily ? `Daily board · ${formatDayKey(today)}` : `Practice · ${board.diff}`}</p>
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Beat their time.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>Board complete</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} hints · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <><p className="small">{shareText(run, name)}</p><button type="button" className="secondary" onClick={() => void shareTile(run, name).then(file => shareOrDownload(file, shareText(run, name))).catch(error => recordError('window', error))}>Share</button>{(run.daily || selection.challenge) && <button type="button" className="secondary" onClick={() => { void shareLink(challengeMessage(run, name, !!selection.challenge, challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed) }))).then(result => setMessage(result === 'copied' ? 'Challenge copied. Paste it into a chat.' : result === 'failed' ? 'Could not share the challenge.' : '')); }}>{selection.challenge ? 'Send your time back' : 'Challenge a friend'}</button>}</>}</div> : <>
-        <p className="small mind-timer pill" aria-label="Active time">Time {timeText(elapsed)}</p>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <><p className="small">{shareText(run, name)}</p><button type="button" className="secondary" onClick={() => void shareTile(run, name).then(file => shareOrDownload(file, shareText(run, name))).catch(error => recordError('window', error))}>Share</button>{(run.daily || selection.challenge) && <button type="button" className="secondary" onClick={() => { void shareLink(challengeMessage(run, name, !!selection.challenge, challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed) }))).then(result => setMessage(result === 'copied' ? 'Challenge copied. Paste it into a chat.' : result === 'failed' ? 'Could not share the challenge.' : '')); }}>{selection.challenge ? 'Send your time back' : 'Challenge a friend'}</button>}</>}</div> : <>
+        <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
           const deduction = availableDeductions(board, state)[0];
@@ -412,8 +417,8 @@ export function Mind({ entry }: { entry?: string }) {
     {entry !== 'courses' && entry !== 'unit' && <><p className="eyebrow">Practice</p><h1>Mind</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">
-      <button type="button" className="mind-today-chip" disabled={!caseReady} onClick={() => go('mind/case')} aria-label={`Case: ${caseDone ? 'done' : 'not done'}`}><strong>Case</strong><span>{caseDone ? 'Done' : 'Not done'}</span></button>
-      <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })} aria-label={`Board: ${dailyDone || dailySolvedLive ? 'done' : 'not done'}`}><strong>Board</strong><span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
+      <button type="button" className="mind-today-chip" disabled={!caseReady} onClick={() => go('mind/case')}><strong>Case</strong> <span>{caseDone ? 'Done' : 'Not done'}</span></button>
+      <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })}><strong>Board</strong> <span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
     </div></section>
     <section className="card mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('mind') : go('mind/practice')} aria-expanded={practice}>Practice</button>
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}

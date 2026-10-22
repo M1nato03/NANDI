@@ -14,3 +14,9 @@ export function dayKey(at: Date | number): string {
   const date = String(local.getDate()).padStart(2, '0');
   return `${year}-${month}-${date}`;
 }
+
+/** A lights-out check-in between 04:00 and noon belongs to the night just gone, not to the new planning day. */
+export function lightsOutNightKey(at: number): string {
+  const hour = new Date(at).getHours();
+  return dayKey(hour >= 4 && hour < 12 ? at - 12 * 3_600_000 : at);
+}

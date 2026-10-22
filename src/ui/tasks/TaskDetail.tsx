@@ -2,10 +2,12 @@ import { useState } from 'react';
 import type { FocusRow, TaskEventRow, TaskRow } from '../../data/types';
 import { calibration, calibratedMinutes, proposeCheckpoints } from '../../core/tasks/complete';
 import type { TaskRepos } from './useTaskBoard';
+import { useModalFocus } from '../shell/useModalFocus';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 const categories = ['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'];
 export function TaskDetail({ task, tasks, focus, events, run, close, move }: { task: TaskRow; tasks: TaskRow[]; focus: FocusRow[]; events: TaskEventRow[]; run: Run; close: () => void; move: () => void }) {
+  const dialog = useModalFocus<HTMLElement>(close);
   const [title, setTitle] = useState(task.title);
   const [estimate, setEstimate] = useState(task.estimateMin ?? 30);
   const [priority, setPriority] = useState(task.mustOrCould ?? 'could');
@@ -25,7 +27,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move }: { t
     const ok = await run((repos, now) => repos.editTask(task.id, { title, estimateMin: estimate, mustOrCould: priority, category, place, firstStep }, now), 'Task saved.');
     if (ok) close(); else setError(priority === 'must' ? 'If this makes four Musts, make it a Could.' : 'Check the task details.');
   }
-  return <div className="sheet-backdrop" onClick={close}><section className="task-sheet" role="dialog" aria-modal="true" aria-label={`Task detail ${task.title}`} onClick={event => event.stopPropagation()}>
+  return <div className="sheet-backdrop" onClick={close}><section ref={dialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label={`Task detail ${task.title}`} onClick={event => event.stopPropagation()}>
     <div className="sheet-heading"><h2>Task detail</h2><button type="button" className="secondary" onClick={close}>Close</button></div>
     <label>Title <input value={title} maxLength={160} onChange={event => setTitle(event.target.value)} /></label>
     <label>Estimate in minutes <input type="number" min="1" max="90" value={estimate} onChange={event => setEstimate(Number(event.target.value))} /></label>

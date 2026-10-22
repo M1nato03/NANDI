@@ -38,9 +38,9 @@ export function useCourtyard() {
 export const stagesOf = (state: CourtyardState): Stages => Object.fromEntries(state.areas.map(area => [area.id, area.stage])) as Stages;
 
 export function CourtyardView({ state, phase, onFriend, selected, forcePose }: { state: CourtyardState; phase: Phase; onFriend?: (id: AreaId) => void; selected?: AreaId; forcePose?: 'idle' }) {
-  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}`;
+  const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${state.lanterns === 1 ? 'One lantern glows' : `${state.lanterns} lanterns glow`} in Kachhua's corner.` : ''}`;
   return <div className={`courtyard courtyard-${phase}`} style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}` }}>
-    <CourtyardScene phase={phase} stages={stagesOf(state)} treeStage={state.treeStage} title={title} />
+    <CourtyardScene phase={phase} stages={stagesOf(state)} treeStage={state.treeStage} title={title} lanterns={state.lanterns} />
     {state.areas.map(area => {
       const [x, feet, size] = SPOTS[area.id](area.stage);
       const style = { left: `${(x - size / 2) / SCENE_W * 100}%`, top: `${(feet - size * 0.95) / SCENE_H * 100}%`, width: `${size / SCENE_W * 100}%` };

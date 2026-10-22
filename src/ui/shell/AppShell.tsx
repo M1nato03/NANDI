@@ -42,6 +42,7 @@ import { CourtyardScreen } from '../courtyard/Courtyard';
 import { StorybookList, StorybookScreen, weekFromRoute } from '../courtyard/Storybook';
 import { useWelcomeNeeded, Welcome } from '../welcome/Welcome';
 
+const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(module => ({ default: module.NightPlanSetting })));
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
@@ -164,6 +165,8 @@ export function AppShell() {
   else if (/^you\/story\/\d{8}$/.test(path)) screen = <StorybookScreen key={path} weekStart={weekFromRoute(path.slice(10))} />;
   else if (path === 'you/owner') screen = <OwnerPanel />;
   else if (path === 'you/night') screen = <Night />;
+  // Spec 18: "Sleep earlier" starts on tonight's plan.
+  else if (path === 'you/tonight') screen = <section className="screen"><p className="eyebrow">Sleep earlier</p><h1>Tonight</h1><NightPlanSetting firstRun /></section>;
   else if (path === 'you/settings') screen = <section className="screen"><p className="eyebrow">You</p><h1>Settings</h1>{nativeUpdater.available && <section className="card"><h2>App updates</h2>
     <p>Current version: {nativeUpdater.installed ? `${nativeUpdater.installed.versionName} (${nativeUpdater.installed.versionCode})` : 'Checking…'}</p>
     <button type="button" className="secondary" onClick={() => void nativeUpdater.check(true)}>Check for updates</button>

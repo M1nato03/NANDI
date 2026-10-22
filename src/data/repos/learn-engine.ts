@@ -2,9 +2,9 @@ import { trackWrite } from '../../core/pendingWrites';
 import { answerConcept, updateItemRating, advanceDrop, gradeItem, itemSeedRating, type AnswerFact, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { dayKey } from '../../core/time';
 import { shutdownAt } from '../../core/tasks/planner';
-import { RULES } from '../../core/rules.config';
 import type { TopicItem } from '../packs/schemas';
 import type { NandiDb } from '../db';
+import { effectiveBedtime } from './night';
 import type { LearnConceptRow, LearnItemRow } from '../types';
 
 export async function saveDrop(db: NandiDb, drop: Drop, deviceId: string, now: number): Promise<void> {
@@ -24,8 +24,7 @@ export async function loadEngineFacts(db: NandiDb): Promise<{ facts: AnswerFact[
 export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number; goldReview?: boolean }
 /** State, drop cursor and its immutable ledger fact commit atomically. */
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
-  const bedtimeValue = (await db.settings.get('planner.bedtime'))?.value;
-  const bedtime = typeof bedtimeValue === 'string' ? bedtimeValue : RULES.night.defaultBedtime;
+  const bedtime = await effectiveBedtime(db, input.now);
   const afterBedtime = input.now >= shutdownAt(input.now, bedtime);
   await trackWrite(() => db.transaction('rw', [db.learnConcepts, db.learnItems, db.learnDrops, db.ledger], async () => {
     const factId = `learn-answer:${input.answerId}`;
@@ -60,9 +59,11 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
 export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; spotCorrect: boolean; guidedFirstTry: boolean[] }
 export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResult, deviceId: string, now: number): Promise<void> {
   const id = `learn-lesson:${result.stepId}`;
+  // Mind earns nothing after bedtime, so the lesson fact says when it was finished (economy second opinion 3).
+  const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
   await trackWrite(() => db.transaction('rw', db.ledger, db.learnDrops, async () => {
     if (!await db.ledger.get(id)) await db.ledger.add({ id, mode: 'learn', kind: 'learn-lesson', refId: result.stepId, dayKey: dayKey(now),
-      inputs: { conceptId: result.conceptId, dropId: result.dropId, hookCorrect: result.hookCorrect, spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
     await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }

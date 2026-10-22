@@ -6,6 +6,8 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
+import { CLOSE_PREFIX, mergeClose } from '../../core/economy/deriveEconomy';
+import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
 export function detectRestoreKind(json: unknown): 'backup' | 'legacy' | 'unknown' {
@@ -208,16 +210,25 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
   if (fileTables.size !== dbTables.size || [...dbTables].some(name => !fileTables.has(name))) {
     throw new Error('Backup tables do not match this app database');
   }
-  await trackWrite(async () => {
+  await trackWrite(() => duringRestore(async () => {
     await getOrCreateDeviceId(db, Date.now());
     const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
       .filter((row): row is SettingRow => row !== undefined);
+    // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
+    const closes = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     // dexie-export-import expects its own JSON, without the NANDI envelope.
     const dexieBlob = new Blob([JSON.stringify(restored.dexie)], { type: 'application/json' });
     await importInto(db, dexieBlob, { acceptVersionDiff: true, acceptNameDiff: true,
       clearTablesBeforeImport: true,
+      // The app keeps running during a restore: a write that lands between the clear and the re-add
+      // (say economy.v2From from reconcileGamify) must not abort it, so rows are put, not added.
+      overwriteValues: true,
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
     await db.settings.bulkPut(localSettings);
-  });
+    for (const row of closes) {
+      const restored = await db.settings.get(row.key);
+      await db.settings.put({ ...row, value: mergeClose(restored && !restored.deleted ? restored.value : undefined, row.value) });
+    }
+  }));
 }

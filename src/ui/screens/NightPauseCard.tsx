@@ -10,8 +10,11 @@ import { RULES } from '../../core/rules.config';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
 import { go } from '../shell/router';
 import { Kachhua } from '../cast/Cast';
+import { useModalFocus } from '../shell/useModalFocus';
 
 export function NightPauseCard({ packageName, reason = 'night', minutes = 0, close }: { packageName: string; reason?: string; minutes?: number; close: () => void }) {
+  // No Escape: the pause has its own one-tap choices.
+  const dialog = useModalFocus<HTMLDivElement>();
   const rows = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const [seconds, setSeconds] = useState<number>(RULES.night.pauseBreathSeconds);
   const [message, setMessage] = useState('');
@@ -50,7 +53,7 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
       close();
     } catch { acting.current = false; setMessage('Could not open that app. You can leave NANDI normally.'); }
   }
-  return <div className="night-pause-overlay" role="dialog" aria-modal="true" aria-label="Night pause">
+  return <div ref={dialog} tabIndex={-1} className="night-pause-overlay" role="dialog" aria-modal="true" aria-label="Night pause">
     <section className="card night-pause-card">
       <Kachhua pose="rest" size={48} /><p className="eyebrow">A small pause</p><h1>Take one breath</h1>
       <p role="timer">{seconds > 0 ? `Breathe for ${seconds} more seconds` : 'The breath is yours.'}</p>

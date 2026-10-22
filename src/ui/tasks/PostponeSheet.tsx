@@ -3,12 +3,14 @@ import type { TaskRow } from '../../data/types';
 import type { PostponeReason, RealReason } from '../../core/tasks/postponeGate';
 import { defaultSlot, splitEstimates } from './model';
 import type { TaskRepos } from './useTaskBoard';
+import { useModalFocus } from '../shell/useModalFocus';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 const reasons: PostponeReason[] = ['underestimated', 'blocked', 'low energy', 'avoided it'];
 const realReasons: RealReason[] = ['class moved', 'illness', 'travel'];
 
 export function PostponeSheet({ task, run, close, onMoved }: { task: TaskRow; run: Run; close: () => void; onMoved?: (newStart: number) => void }) {
+  const dialog = useModalFocus<HTMLElement>(close);
   const [slot, setSlot] = useState(() => defaultSlot(Math.max(Date.now(), task.scheduledStart ?? Date.now()) + 86_400_000));
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
   const [reason, setReason] = useState<PostponeReason | ''>('');
@@ -37,10 +39,10 @@ export function PostponeSheet({ task, run, close, onMoved }: { task: TaskRow; ru
     if (parts.length < 2 || parts.some((part) => part < 25 || part > 60) || parts.reduce((sum, part) => sum + part, 0) !== task.estimateMin) {
       setError('Use 2 or more steps of 25 to 60 minutes that add up to the estimate.'); return;
     }
-    if (await run((repos, now) => repos.split(task.id, now, parts.length, parts), 'Split into smaller steps.')) close();
+    if (await run((repos, now) => repos.split(task.id, now, parts.length, parts, reason || undefined), 'Split into smaller steps.')) close();
   }
   return <div className="sheet-backdrop" onClick={close}>
-    <section className="task-sheet" role="dialog" aria-modal="true" aria-label={`Move ${task.title}`} onClick={(event) => event.stopPropagation()}>
+    <section ref={dialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label={`Move ${task.title}`} onClick={(event) => event.stopPropagation()}>
       <div className="sheet-heading"><h2>{choice ? 'This one keeps slipping' : count === 1 ? 'Make it smaller' : 'Move task'}</h2><button type="button" className="secondary" onClick={close} aria-label="Close move task">Close</button></div>
       <p className="sheet-task-title">{task.title}</p>
       <p>{choice ? 'Split it, do 10 minutes now, or park it in Someday. All fine.' : count === 1 ? 'First 10 minutes?' : 'When will you do it? Pick a time.'}</p>
@@ -51,7 +53,7 @@ export function PostponeSheet({ task, run, close, onMoved }: { task: TaskRow; ru
         <details><summary>Schedule changed for a real reason?</summary><fieldset><legend>What changed?</legend>{realReasons.map((item) => <label key={item}><input type="radio" name="real-reason" checked={realReason === item} onChange={() => setRealReason(item)} /> {item}</label>)}</fieldset><button type="button" className="secondary" onClick={() => void move('real')}>Move with reason</button></details>
         {!choice && <button type="button" className="text-button" onClick={() => setSplit(true)}>Split task</button>}
       </>}
-      {split && <div><h3>Split into steps</h3>{parts.length ? parts.map((part, index) => <label key={index}>Step {index + 1} minutes <input type="number" min="25" max="60" value={part} onChange={(event) => setParts(parts.map((value, position) => position === index ? Number(event.target.value) : value))} /></label>) : <p>This estimate is too small to split into 25 minute steps.</p>}<div className="sheet-actions"><button type="button" disabled={!parts.length} onClick={() => void saveSplit()}>Save split</button><button type="button" className="secondary" onClick={() => setSplit(false)}>Previous step</button></div></div>}
+      {split && <div><h3>Split into steps</h3><fieldset><legend>Quick reason <span className="small">Needed only when this week's moves are used up</span></legend>{reasons.map((item) => <label key={item}><input type="radio" name="split-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>{parts.length ? parts.map((part, index) => <label key={index}>Step {index + 1} minutes <input type="number" min="25" max="60" value={part} onChange={(event) => setParts(parts.map((value, position) => position === index ? Number(event.target.value) : value))} /></label>) : <p>This estimate is too small to split into 25 minute steps.</p>}<div className="sheet-actions"><button type="button" disabled={!parts.length} onClick={() => void saveSplit()}>Save split</button><button type="button" className="secondary" onClick={() => setSplit(false)}>Previous step</button></div></div>}
       {error && <p role="alert">{error}</p>}
     </section>
   </div>;

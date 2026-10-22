@@ -11,6 +11,8 @@ export function nudgeFor(board: PuzzleBoard, state: PuzzleState, deduction?: Ded
   const conflict = checkRules(board, state).conflicts[0];
   const width = board.type === 'path' ? board.C : board.type === 'sunmoon' ? 6 : board.N;
   if (conflict !== undefined) return { message: `Check row ${Math.floor(conflict / width) + 1}. The marked cells break a rule.`, cells: checkRules(board, state).conflicts, conflict: true };
+  // A generated path board is solvable by logic from any correct line, so no next step means the line has gone wrong.
+  if (!deduction && board.type === 'path' && state.path.length) return { message: "This line can't reach every square from here. Undo a few steps.", cells: state.path.slice(-1), conflict: false };
   if (!deduction) return { message: 'Look at an open row or group.', cells: [], conflict: false };
   return { message: `Look at row ${Math.floor(deduction.cell / width) + 1}.`, cells: deduction.cells, conflict: false };
 }
@@ -27,35 +29,19 @@ export function availableDeductions(board: PuzzleBoard, state: PuzzleState): Ded
       if (board.waypoints[0] !== undefined) add('Waypoint order', board.waypoints[0], 1, [board.waypoints[0]]);
       return out;
     }
+    // The Number Path logic solver (puzzles.js pathLogic) decides edges from the clues and the line so far.
+    const head = state.path.at(-1)!;
+    const logic = PZ._test.pathLogic(board.R, board.C, board.waypoints, 2, state.path);
+    if (logic.broken || logic.path.length <= state.path.length || logic.path.slice(0, state.path.length).some((cell, index) => cell !== state.path[index])) return out;
+    const next = logic.path[state.path.length]!;
     const used = new Set(state.path);
-    const head = state.path.at(-1) ?? board.waypoints[0];
-    if (head === undefined) return out;
-    const neighbours = (from: number) => [from - board.C, from + board.C, from - 1, from + 1]
-      .filter(cell => cell >= 0 && cell < board.R * board.C && Math.abs(Math.floor(cell / board.C) - Math.floor(from / board.C)) + Math.abs(cell % board.C - from % board.C) === 1);
-    const adjacent = neighbours(head).filter(cell => !used.has(cell));
-    const nextWaypoint = board.waypoints.find(cell => !used.has(cell));
-    const legal = adjacent.filter(cell => !board.waypoints.includes(cell) || cell === nextWaypoint && (cell !== board.waypoints.at(-1) || state.path.length === board.R * board.C - 1));
-    if (legal.length === 1) add(adjacent.length > 1 ? 'Waypoint order' : 'Forced move', legal[0]!, state.path.length + 1, [head, ...adjacent]);
-    if (legal.length > 1) {
-      const end = board.waypoints.at(-1);
-      const viable = legal.filter(cell => {
-        const remaining = new Set(Array.from({ length: board.R * board.C }, (_, i) => i).filter(i => !used.has(i) && i !== cell));
-        if (!remaining.size) return cell === end;
-        if (!neighbours(cell).some(other => remaining.has(other))) return false;
-        // Every unvisited square must remain reachable and keep enough exits for a path.
-        const visited = new Set<number>();
-        const stack = neighbours(cell).filter(other => remaining.has(other));
-        while (stack.length) {
-          const next = stack.pop()!;
-          if (visited.has(next)) continue;
-          visited.add(next);
-          stack.push(...neighbours(next).filter(other => remaining.has(other) && !visited.has(other)));
-        }
-        if (visited.size !== remaining.size) return false;
-        return [...remaining].every(other => neighbours(other).filter(next => remaining.has(next) || next === cell).length >= (other === end ? 1 : 2));
-      });
-      if (viable.length === 1) add('Dead-end avoidance', viable[0]!, state.path.length + 1, [head, ...adjacent]);
-    }
+    const adjacent = [head - board.C, head + board.C, head - 1, head + 1]
+      .filter(cell => cell >= 0 && cell < board.R * board.C && !used.has(cell) && Math.abs(Math.floor(cell / board.C) - Math.floor(head / board.C)) + Math.abs(cell % board.C - head % board.C) === 1);
+    const reason = (other: number) => logic.why[`${Math.min(head, other)},${Math.max(head, other)}`];
+    const others = adjacent.filter(cell => cell !== next).map(reason);
+    const technique = reason(next) === 'ahead' || others.some(why => why === 'loop' || why === 'early' || why === 'ahead') ? 'Dead-end avoidance'
+      : others.includes('order') ? 'Waypoint order' : 'Forced move';
+    add(technique, next, state.path.length + 1, [head, ...adjacent]);
     return out;
   }
   const n = board.type === 'sunmoon' ? 6 : board.N;

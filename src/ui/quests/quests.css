@@ -32,7 +32,7 @@
 .quest-disclosure { min-height: 56px; }
 .quest-disclosure strong { color: var(--ink); font: 600 16px/24px 'DM Sans', sans-serif; }
 .quest-why, .quest-time { color: var(--ink-3); font-size: 12px; }
-.quest-actions button { background: color-mix(in srgb, var(--area-extra) 20%, var(--surface-1)); color: var(--area-extra); }
+.quest-actions button { background: color-mix(in srgb, var(--area-extra) 20%, var(--surface-1)); color: var(--area-extra-ink, var(--area-extra)); }
 .quest-check { color: var(--area-extra); }
 .quest-done { opacity: 1; }
 .quest-done .quest-disclosure strong { color: var(--ink-2); }

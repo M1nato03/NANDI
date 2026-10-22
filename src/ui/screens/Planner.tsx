@@ -34,6 +34,8 @@ function TriageRow({ task, board, onMove, onDetail }: { task: TaskRow; board: Re
   const [priority, setPriority] = useState<'must' | 'could'>(task.mustOrCould ?? 'could');
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
   async function place() {
+    // A third move goes through the move sheet's choices and reason, never around them (Tasks audit 1).
+    if ((task.postponeCount ?? 0) >= 2) { onMove(task); return; }
     await board.act(async (repos, now) => {
       const start = new Date(slot).getTime();
       if (!Number.isFinite(start) || dayKey(start) !== dayKey(now)) throw new Error('Pick a time today.');

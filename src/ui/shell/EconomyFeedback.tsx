@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time';
+import { softMoreKey, softToday } from '../../core/soft/soft';
 import { addEconomyDays, deriveEconomy, seasonFor } from '../../core/economy/deriveEconomy';
 import { RULES } from '../../core/rules.config';
 import { shutdownAt } from '../../core/tasks/planner';
@@ -17,6 +18,7 @@ import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { Cast } from '../cast/Cast';
 import { playCastSound } from '../cast/sound';
 import '../screens/economy.css';
+import { useModalFocus } from './useModalFocus';
 
 /** Browser storage can be blocked (private mode, cleared site data); reveals then simply show again. */
 const store = {
@@ -31,6 +33,7 @@ export function EconomyFeedback() {
   const source = useLiveQuery(async () => { const now = Date.now(); await db.learnConcepts.toArray(); return { facts: await db.ledger.toArray(), settings: await db.settings.toArray(), tasks: await db.tasks.toArray(), sessions: await db.sessions.toArray(), runs: await db.puzzleRuns.toArray(), drop: await db.learnDrops.get(dailyDropId(now)), log: await db.dailyLog.get(dayKey(now)) }; }, []);
   const prior = useRef<Source | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
+  const reveal = useModalFocus<HTMLDivElement>(() => setNotice(null));
   // A badge never pops up on its own: it waits to join the next finish moment (audit 10-21).
   const noticeRef = useRef<Notice | null>(null);
   const pendingBadge = useRef<string | null>(null);
@@ -41,8 +44,16 @@ export function EconomyFeedback() {
   const [shownXp, setShownXp] = useState(0);
   const lastLine = useRef<string | undefined>(store.get(sessionStorage, 'finish.lastLine') ?? undefined);
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
+  // The finish listener is set up once, so it reads the latest bedtime through a ref.
+  const bedtimeRef = useRef<string>(RULES.night.defaultBedtime);
+  useEffect(() => {
+    const value = source?.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
+    bedtimeRef.current = typeof value === 'string' ? value : RULES.night.defaultBedtime;
+  }, [source]);
   useEffect(() => {
     const onFinish = (event: Event) => {
+      // After bedtime nothing celebrates: no buzz, no toast (night audit 10-22).
+      if (isAfterBedtime(Date.now(), bedtimeRef.current)) return;
       const activity = (event as CustomEvent<FinishActivity>).detail;
       const line = pickFinishLine(activity, lastLine.current);
       lastLine.current = line;
@@ -65,7 +76,7 @@ export function EconomyFeedback() {
         const current = deriveEconomy(source.facts, undefined, source.settings, today);
         if (current.streak.restUsedYesterday) {
           store.set(sessionStorage, restNoticeKey, 'seen');
-          queueMicrotask(() => setNotice({ text: `Rest day used. ${current.streak.restDays} left.`, macro: false, character: 'Kachhua' }));
+          queueMicrotask(() => setNotice({ text: `Your rest bank covered yesterday. ${current.streak.restDays} ${current.streak.restDays === 1 ? 'day' : 'days'} ready for later.`, macro: false, character: 'Kachhua' }));
           return;
         }
       }
@@ -78,7 +89,7 @@ export function EconomyFeedback() {
         if (count < RULES.juice.macroPerDayMax) {
           store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
           queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Mor',
-            detail: `${past.season.sp} SP · ${past.totalXp.toLocaleString()} XP · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
+            detail: `${past.season.sp} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
             nextSeason: `Next season · Season ${season.index + 1}` }));
         }
       }
@@ -101,6 +112,9 @@ export function EconomyFeedback() {
     const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);
+    // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.
+    const softHome = softToday(source.facts, today).state !== null && !source.settings.some(row => row.key === softMoreKey(today) && row.value === true && !row.deleted);
+    if (softHome && achievement?.mode === 'tasks') return;
     const oldView = deriveEconomy(previous.facts, undefined, previous.settings, today);
     const view = deriveEconomy(source.facts, undefined, source.settings, today);
     const gain = Math.max(0, view.totalXp - oldView.totalXp);
@@ -112,6 +126,14 @@ export function EconomyFeedback() {
     const key = `economy.macro:${today}`;
     const count = Number(store.get(sessionStorage, key) ?? 0);
     const justCompleted = shouldShowDoneForToday({ wasComplete: complete(previous, now), isComplete: complete(source, now), seen: !!store.get(localStorage, `finish.done:${today}`), afterBedtime: isAfterBedtime(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime), macroCount: count });
+    // Spec 15 D: the first marked day after a miss brings a fixed, announced gift (a soft day counts too).
+    const welcomed = (view.days.at(-1)?.welcome ?? 0) > 0 && !(oldView.days.at(-1)?.welcome);
+    const welcomeLine = 'Welcome back. Here is a small gift for coming back.';
+    if (welcomed && !achievement && !dropFinished && !justCompleted) {
+      // On a soft day the gift line sits inside the calm soft finish, with no count-up overlay.
+      if ((view.days.at(-1)?.soft ?? 0) > 0) return;
+      void tapHaptic(true, 20); setNotice({ text: welcomeLine, gain, macro: false, character: 'Kachhua' }); return;
+    }
     if (!achievement && !dropFinished && !justCompleted) return;
     const macro = !justCompleted && !!macroKind && realWorld && !afterBedtime && count < RULES.juice.macroPerDayMax;
     if (macro || justCompleted) store.set(sessionStorage, key, String(count + 1));
@@ -128,7 +150,7 @@ export function EconomyFeedback() {
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);
-    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined }));
+    setNotice(withBadge({ text: macro ? `${macroKind} · ${view.totalXp.toLocaleString()} XP` : welcomed ? welcomeLine : line, detail: macro ? line : undefined, gain, macro, activity, character: macro ? 'Mor' : undefined }));
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
@@ -153,5 +175,5 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
-  return notice.macro ? <div className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

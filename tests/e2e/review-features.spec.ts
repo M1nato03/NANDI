@@ -20,7 +20,7 @@ test('daily case progress and completion survive reload', async ({ page }) => {
   test.setTimeout(90_000);
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case: not done' }).click();
+  await page.getByRole('button', { name: 'Case Not done' }).click();
   await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
   const cell = page.getByRole('region', { name: 'Who was where?' }).getByRole('button').first();
   const original = await cell.getAttribute('aria-label');
@@ -36,7 +36,7 @@ test('daily case progress and completion survive reload', async ({ page }) => {
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
   await page.getByRole('button', { name: 'Back to Mind' }).click();
-  await expect(page.getByRole('button', { name: 'Case: done' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Case Done' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

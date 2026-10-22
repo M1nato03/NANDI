@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import PZ from '../../core/puzzles';
 import { featuredSpec } from '../../core/puzzles/daily';
 import { nightPuzzleBoard, selectNightPuzzle } from '../../core/puzzles/night';
-import { dayKey } from '../../core/time/dayKey';
+import { dayKey, lightsOutNightKey } from '../../core/time/dayKey';
 import { nightPlanText, nightsBackOnPlan, readNightPlan } from '../../core/nightPlan';
 import { selectWinddownMove } from '../../core/winddown';
 import { weekKey } from '../../core/quests';
@@ -60,7 +60,9 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   useEffect(() => { void createQuestRepo(db).ensureWeek(Date.now()).catch(() => setMessage('Side quests could not load.')); }, []);
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const logs = useLiveQuery(() => db.dailyLog.toArray(), []) ?? [];
-  const log = logs.find(row => row.dayKey === today && !row.deleted);
+  // The check-in is filed under the night it closes (see recordLightsOut), so read that night's row.
+  const nightKey = lightsOutNightKey(now);
+  const log = logs.find(row => row.dayKey === nightKey && !row.deleted);
   const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []);
   const runs = puzzleRuns ?? [];
   const sessions = useLiveQuery(() => db.sessions.filter(row => !row.deleted).toArray(), []) ?? [];

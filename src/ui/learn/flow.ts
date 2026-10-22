@@ -1,5 +1,5 @@
 import { composeConceptPractice, composeDrop, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
-import { goldItems, interleave, lessonItemId, nextStep, taughtCatalog } from '../../core/learn/steps';
+import { findStep, goldItems, interleave, lessonItemId, nextStep, taughtCatalog } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -23,6 +23,12 @@ export function findItem(concepts: readonly TopicConcept[], id: string): { item:
   }
 }
 /** Preserve answered steps and feedback, but remove unsolved new ideas at bedtime. */
+/** A saved drop can outlive a content update (the inflation rebuild removed old ids): drop the unanswered steps that no longer exist. */
+export function withoutMissing(drop: Drop, concepts: readonly TopicConcept[]): Drop {
+  if (drop.pendingFeedback) return drop;
+  const items = drop.items.filter((entry, index) => index < drop.cursor || (entry.lesson ? !!findStep(concepts, entry.lesson) : !!findItem(concepts, entry.itemId)));
+  return items.length === drop.items.length ? drop : { ...drop, items };
+}
 export function reviewsOnlyRemainder(drop: Drop): Drop {
   const remaining = drop.items.slice(drop.cursor);
   if (!remaining.some(item => item.mode === 'new')) return drop;

@@ -6,6 +6,7 @@ import { calibration, calibratedMinutes } from '../../core/tasks/complete';
 import { dayKey } from '../../core/time/dayKey';
 import { defaultSlot, splitEstimates, splitPreview, type SplitPlacement } from './model';
 import type { TaskRepos } from './useTaskBoard';
+import { useModalFocus } from '../shell/useModalFocus';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 
@@ -22,6 +23,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [preview, setPreview] = useState<{ title: string; total: number; priority: 'must' | 'could'; placement: SplitPlacement; scheduledStart?: number; count: number; names: string[] } | null>(null);
+  const dialog = useModalFocus<HTMLElement>(() => setPreview(null));
   const parsed = title.trim().match(/^(.*?)\s+(\d+)(m|h)$/i);
   const taskTitle = parsed ? (parsed[1] ?? '').trim() : title.trim();
   const taskMinutes = parsed ? Number(parsed[2]) * (parsed[3]?.toLowerCase() === 'h' ? 60 : 1) : Number(estimate);
@@ -65,7 +67,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
   const counts = preview ? Array.from({ length: Math.floor(preview.total / 25) - 1 }, (_, index) => index + 2).filter((count) => splitEstimates(preview.total, count)) : [];
   const previewParts = preview ? splitEstimates(preview.total, preview.count) : null;
   return <div className="quick-add">
-    <label className="quick-add-field">Add a task<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => setTitle(event.target.value)} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" aria-expanded={open} /></label>
+    <label className="quick-add-field">Add a task<input form="plan-add-form" required maxLength={160} value={title} onFocus={() => setOpen(true)} onChange={(event) => { setTitle(event.target.value); setOpen(true); }} onBlur={() => { if (parsed) { setTitle(taskTitle); setEstimate(String(taskMinutes)); } }} placeholder="Add a task, e.g. call bank 15m" /></label>
     {open && <form id="plan-add-form" className="card task-form" onSubmit={(event) => void submit(event)}>
       <h2>Task details</h2>
       {parsed && <p className="small">{taskMinutes} minutes picked up from your task.</p>}
@@ -79,7 +81,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
       {schedule === 'today' && <label>Start time <input type="datetime-local" required value={slot} onChange={(event) => setSlot(event.target.value)} /></label>}
       <button type="submit" disabled={submitting}>{submitting ? 'Adding task…' : 'Add task'}</button>{feedback && <p role="alert">{feedback}</p>}
     </form>}
-    {preview && previewParts && <div className="sheet-backdrop"><section className="task-sheet" role="dialog" aria-modal="true" aria-label="Split preview">
+    {preview && previewParts && <div className="sheet-backdrop"><section ref={dialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label="Split preview">
       <h2>Split preview</h2><p>This is big. It will be saved as {preview.count} steps of about {Math.round(preview.total / preview.count)} min.</p>
       <label>Number of steps <select value={preview.count} onChange={(event) => {
         const count = Number(event.target.value);
