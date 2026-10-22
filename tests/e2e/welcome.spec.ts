@@ -92,8 +92,8 @@ test("Sleep earlier opens tonight's plan; a cancelled restore brings the first r
   await expect(page).toHaveURL(/#you\/backup$/);
   await page.goto('/?e2e&welcome#plan');
   await page.reload(); // only the hash changed, so load the app again like a new visit
-  welcome = await hello(page);
   await expect(page.getByRole('link', { name: 'Privacy notice' })).toHaveAttribute('href', 'privacy.html');
+  welcome = await hello(page);
   await welcome.getByRole('button', { name: 'Sleep earlier' }).click();
   await welcome.getByRole('button', { name: 'Plan tonight' }).click();
   await expect(page).toHaveURL(/#you\/tonight$/);
