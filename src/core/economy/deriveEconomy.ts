@@ -35,7 +35,16 @@ export interface EconomyDay {
 export interface DayClose { total: number; sp: number; streak: number; shards: number; owned: string[] }
 export const CLOSE_PREFIX = 'economy.close:';
 export const closeKey = (day: string) => `${CLOSE_PREFIX}${day}`;
-const num = (input: unknown) => typeof input === 'number' && Number.isFinite(input) ? input : 0;
+/** Two closes for one day (this phone's and a backup's) keep the higher of each number and every owned item. */
+export function mergeClose(a: unknown, b: unknown): unknown {
+  const ok = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
+  if (!ok(a)) return b;
+  if (!ok(b)) return a;
+  const owned = [...new Set([...(Array.isArray(a.owned) ? a.owned : []), ...(Array.isArray(b.owned) ? b.owned : [])])];
+  return { total: Math.max(num(a.total), num(b.total)), sp: Math.max(num(a.sp), num(b.sp)), streak: Math.max(num(a.streak), num(b.streak)),
+    shards: Math.max(num(a.shards), num(b.shards)), owned };
+}
+function num(input: unknown): number { return typeof input === 'number' && Number.isFinite(input) ? input : 0; }
 function readCloses(settings: readonly SettingRow[] | Record<string, unknown>, today: string): Map<string, DayClose> {
   const rows: [string, unknown][] = Array.isArray(settings)
     ? (settings as SettingRow[]).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key, row.value])

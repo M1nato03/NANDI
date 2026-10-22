@@ -6,11 +6,14 @@ import { addEconomyDays, CLOSE_PREFIX, closeKey, dayCloseOf, deriveEconomy } fro
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
+import { restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { LedgerRow } from '../types';
 
 /** Reconcile derived achievements into immutable, idempotent award facts. */
 export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
+  // A restore clears and refills the tables; the app runs this again once it has finished.
+  if (restoreActive()) return;
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {
@@ -47,7 +50,9 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     // Close the books: each day that is over keeps what it showed, once, so no later replay can lower it
     // (economy second opinion 22). The first run closes up to 120 past days with activity behind them.
     const rows = await db.settings.toArray();
-    const closed = rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => row.key.slice(CLOSE_PREFIX.length)).sort();
+    // A close dated today or later came from a clock that was set ahead: that day has not ended, so drop it.
+    for (const row of rows.filter(item => item.key.startsWith(CLOSE_PREFIX) && item.key.slice(CLOSE_PREFIX.length) >= today)) await db.settings.delete(row.key);
+    const closed = rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX) && row.key.slice(CLOSE_PREFIX.length) < today).map(row => row.key.slice(CLOSE_PREFIX.length)).sort();
     const first = facts.map(fact => fact.dayKey).filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key)).sort()[0];
     let day = closed.at(-1) ? addEconomyDays(closed.at(-1)!, 1) : first;
     if (day && day < addEconomyDays(today, -120)) day = addEconomyDays(today, -120);
