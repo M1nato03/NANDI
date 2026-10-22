@@ -35,6 +35,7 @@ export function freshPracticeErrors(pack: Pack): string[] {
     if (!concept.steps) continue;
     const titleWords = contentWords(concept.title);
     let recalls = 0;
+    const ideaJobs = new Set<string>();
     concept.steps.forEach((step, stepIndex) => {
       const at = `${concept.id}.step.${step.id}`;
       // R7: a teach card gives the reason and keeps the authority in the source panel.
@@ -55,13 +56,17 @@ export function freshPracticeErrors(pack: Pack): string[] {
       const known = new Set([step.teach, step.takeaway, concept.title, concept.rule, concept.hook, ...concept.claims.map(claim => claim.text)].flatMap(capitals));
       const lessonNames = new Set([...names(lesson)].filter(name => !known.has(name) && !COMMON_NAMES.has(name)));
       const jobs = new Set<string>();
-      for (const item of concept.items.filter(candidate => candidate.step === step.id)) {
+      const own = concept.items.filter(candidate => candidate.step === step.id);
+      // Spec 16 §5: two practice items per step, so an idea's six cover the six jobs once each.
+      if (own.length !== 2) errors.push(`${at}: ${own.length} practice items; each step needs exactly 2`);
+      for (const item of own) {
         const text = [item.stem, ...item.options.map(option => option.text)].join(' ');
         // R1: each practice item does its own job; recall at most once per idea and never in step 1.
         if (!item.job) errors.push(`${item.id}: needs a practice job (${PRACTICE_JOBS.join(', ')})`);
         else {
           if (jobs.has(item.job)) errors.push(`${item.id}: job ${item.job} repeats in ${step.id}`);
-          jobs.add(item.job);
+          else if (ideaJobs.has(item.job)) errors.push(`${item.id}: job ${item.job} repeats in ${concept.id}`);
+          jobs.add(item.job); ideaJobs.add(item.job);
           if (item.job === 'recall') { recalls += 1; if (stepIndex === 0) errors.push(`${item.id}: no plain recall in the first step`); }
         }
         // R2: no number or named person carried over from this step's lesson.

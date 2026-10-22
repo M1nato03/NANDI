@@ -1003,7 +1003,7 @@
                 "sourceRefs": [
                   "loss-meta"
                 ],
-                "stem": "Across hundreds of studies, about how many times as much as a same-size gain did a loss weigh, on average?",
+                "stem": "Pooled across many papers, about how many times as much as a same-size gain did a loss weigh, on average?",
                 "options": [
                   {
                     "id": "a",
@@ -1389,7 +1389,7 @@
                     }
                   ]
                 },
-                "teach": "Across hundreds of studies, a loss weighed about twice a same-size gain, on average. Estimates vary from study to study, so no one person is fixed at exactly two.",
+                "teach": "Across many studies, a loss weighed about twice a same-size gain, on average. Estimates vary from study to study, so no one person is fixed at exactly two.",
                 "visual": {
                   "kind": "scale",
                   "label": "How much a loss weighs, compared with a gain",

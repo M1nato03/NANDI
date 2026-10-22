@@ -29,8 +29,13 @@ describe('spec 16 fresh-practice rules', () => {
   it('R1: each practice item has its own job; one recall per idea, never in step 1', () => {
     expect(errors(c => { delete c.items[0].job; })).toContain('i1: needs a practice job');
     expect(errors(c => { c.items[1].job = 'transfer'; })).toContain('i2: job transfer repeats in s1');
+    expect(errors(c => { c.items[2].job = 'transfer'; })).toContain('i3: job transfer repeats in inflation');
     expect(errors(c => { c.items[0].job = 'recall'; })).toContain('i1: no plain recall in the first step');
     expect(errors(c => { c.items[2].job = 'recall'; c.items.push(item('i5', 's2', 'recall')); })).toContain('inflation: at most one plain recall item per idea');
+  });
+  it('each step has exactly 2 practice items (spec 16 §5)', () => {
+    expect(errors(c => { c.items.push(item('i5', 's2', 'combine')); })).toContain('inflation.step.s2: 3 practice items; each step needs exactly 2');
+    expect(errors(c => { c.items.splice(0, 1); })).toContain('inflation.step.s1: 1 practice items; each step needs exactly 2');
   });
   it('R2: no number or named person from the step lesson', () => {
     expect(errors(c => { c.items[0].stem = 'Prices rise 6% again. What follows?'; })).toContain('i1: reuses 6 from');
