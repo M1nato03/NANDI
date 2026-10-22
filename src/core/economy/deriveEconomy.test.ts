@@ -163,7 +163,7 @@ describe('economy replay', () => {
     expect(view(facts, '2026-10-22').streak).toMatchObject({ days: 1, restDays: 3, restDaysUsed: 1, restUsedYesterday: true });
   });
   it('adds a purchased rest day using the legacy freeze item id', () => {
-    const facts = [task('2026-10-20', 'L'), row('2026-10-20', 'economy', 'purchase', { itemId: 'freeze', price: 50 })];
+    const facts = [task('2026-10-20', 'L'), row('2026-10-20', 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })];
     expect(view(facts, '2026-10-20').streak.restDays).toBe(5);
   });
   it('makes a Clean Week with three workouts and one rest check', () => {

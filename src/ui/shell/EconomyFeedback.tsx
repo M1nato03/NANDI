@@ -84,12 +84,14 @@ export function EconomyFeedback() {
       const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
       if (season.index > 0 && !store.get(localStorage, key) && now < shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime)) {
         const past = deriveEconomy(source.facts, undefined, source.settings, addEconomyDays(season.start, -1));
+        // A season that ended before the first day here is not this person's: no reveal (season late entry).
+        if (!source.facts.some(row => !row.deleted && row.dayKey < season.start)) { store.set(localStorage, key, 'seen'); return; }
         const countKey = `economy.macro:${today}`;
         const count = Number(store.get(sessionStorage, countKey) ?? 0);
         if (count < RULES.juice.macroPerDayMax) {
           store.set(sessionStorage, countKey, String(count + 1)); store.set(localStorage, key, 'seen');
           queueMicrotask(() => setNotice({ text: `Season ${season.index} · ${past.season.tier}`, macro: true, character: 'Mor',
-            detail: `${past.season.sp} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
+            detail: `${Math.round(past.season.sp)} SP this season · +${RULES.shards.seasonEnd[past.season.tier as keyof typeof RULES.shards.seasonEnd]} Shards`,
             nextSeason: `Next season · Season ${season.index + 1}` }));
         }
       }
@@ -121,6 +123,8 @@ export function EconomyFeedback() {
     const bedtime = source.settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
     const afterBedtime = now >= shutdownAt(now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
     const motionReduced = reduced();
+    // After bedtime nothing celebrates: no buzz, no count-up (economy review 32, F1).
+    if (afterBedtime) return;
     const realWorld = achievement?.mode === 'tasks' || achievement?.mode === 'train';
     const macroKind = view.level > oldView.level ? `Level ${view.level}` : view.season.rank < oldView.season.rank && view.season.tier !== oldView.season.tier ? `${view.season.tier} tier` : '';
     const key = `economy.macro:${today}`;
@@ -154,6 +158,7 @@ export function EconomyFeedback() {
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
+    if (reduced()) { const gain = notice.gain; const frame = requestAnimationFrame(() => setShownXp(gain)); return () => cancelAnimationFrame(frame); }
     const start = performance.now(), duration = RULES.juice.mesoMs[1];
     let frame = 0;
     const tick = (now: number) => {
