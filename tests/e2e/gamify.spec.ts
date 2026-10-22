@@ -113,7 +113,9 @@ test('combo appears in a drop and the topic trail opens practice', async ({ page
 
 test('a missed Gold review has five items and keeps Mastered state', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
-  await page.goto('/#learn');
+  await page.goto('/?e2e#learn');
+  // Gold review waits until every step of the idea was taught on an earlier day.
+  await seedTaughtTopics(page, ['money-markets']);
   await page.evaluate(async at => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);

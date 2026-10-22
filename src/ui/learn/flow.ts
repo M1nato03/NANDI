@@ -1,5 +1,5 @@
 import { composeConceptPractice, composeDrop, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
-import { interleave, lessonItemId, nextStep, taughtCatalog } from '../../core/learn/steps';
+import { goldItems, interleave, lessonItemId, nextStep, taughtCatalog } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -44,11 +44,12 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
     return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id }];
   };
   if (input.goldReview && input.preferredConceptId) {
-    // Gold review tests a mastered idea as a whole, so it draws from every item, taught step or not
-    // (an idea mastered before it gained steps still gets its five hardest questions).
+    // Gold review tests a mastered idea as a whole, once every step was taught on an earlier day;
+    // until then the idea's practice below teaches the next step first.
     const concept = fullCatalog.find(row => row.id === input.preferredConceptId);
-    if (concept) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
-      items: [...concept.items].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
+    const pool = concept && goldItems(concept, input.taughtOn ?? {}, today);
+    if (concept && pool) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
+      items: [...pool].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
         .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: item.options.map(option => option.id), mode: 'review' as const })) };
   }
   const afterBedtime = isAfterBedtime(input.now, input.bedtime ?? RULES.night.defaultBedtime);
@@ -71,7 +72,12 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
       const pool = input.preferredConceptId
         ? (catalog.some(concept => concept.id === input.preferredConceptId) ? composeConceptPractice(context, input.preferredConceptId).items : [])
         : composeDrop(context).items;
-      const tail = interleave(pool.filter(item => !item.lesson)).slice(0, RULES.learningTracks.lessonReviews);
+      // Only ideas met on an earlier day (a stepped idea with a step taught before today, or an unstepped
+      // one already started), at most one question per idea, so a brand-new learner ends on "Done".
+      const earlier = new Set(catalog.filter(concept => concept.steps?.length || conceptState[concept.id]).map(concept => concept.id));
+      const seen = new Set<string>();
+      const tail = interleave(pool.filter(item => !item.lesson && earlier.has(item.conceptId)))
+        .filter(item => !seen.has(item.conceptId) && !!seen.add(item.conceptId)).slice(0, RULES.learningTracks.lessonReviews);
       return { id, items: [...taughtFirst, ...tail], cursor: 0, ending: { kind: 'stopping-screen' } };
     }
   }

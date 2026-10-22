@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { catalogFor, makeDrop } from './flow';
-import { nextStep, taughtCatalog } from '../../core/learn/steps';
+import { goldItems, nextStep, taughtCatalog } from '../../core/learn/steps';
 import type { LearnConceptRow } from '../../data/types';
 
 const now = new Date('2026-10-22T12:00:00').getTime();
@@ -42,6 +42,35 @@ describe('teach first (spec 14)', () => {
       }
       taughtOn[lesson] = key;
     }
+  });
+
+  it('gives a brand-new learner the lesson alone, whatever else is selected', () => {
+    const drop = makeDrop({ ...base, ids: ['psychology', 'money-markets', 'body-training', 'how-things-work'] });
+    expect(drop.items).toHaveLength(1);
+    expect(drop.items[0]!.lesson).toBeTruthy();
+  });
+
+  it('keeps the lesson tail to three questions, one per idea, from ideas taught on earlier days', () => {
+    const steps = catalogFor(['psychology']).flatMap(concept => (concept.steps ?? []).map(step => step.id));
+    const taughtOn = Object.fromEntries(steps.slice(0, -1).map(id => [id, '2026-10-15']));
+    const drop = makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, concepts: catalogFor(['psychology']).map(concept => started(concept.id)) });
+    const tail = drop.items.slice(1);
+    expect(drop.items[0]!.lesson).toBe(steps.at(-1));
+    expect(tail.length).toBeGreaterThan(0);
+    expect(tail.length).toBeLessThanOrEqual(3);
+    expect(new Set(tail.map(item => item.conceptId)).size).toBe(tail.length);
+  });
+
+  it('holds Gold review until every step was taught on an earlier day, and teaches first until then', () => {
+    const ids = (habits.steps ?? []).map(step => step.id);
+    const yesterday = Object.fromEntries(ids.map(id => [id, '2026-10-21']));
+    expect(goldItems(habits, yesterday, '2026-10-22')).toHaveLength(habits.items.length);
+    expect(goldItems(habits, { ...yesterday, [ids.at(-1)!]: '2026-10-22' }, '2026-10-22')).toBeUndefined();
+    const gold = makeDrop({ ...base, daily: false, goldReview: true, preferredConceptId: 'habits', taughtSteps: ids, taughtOn: yesterday, concepts: [started('habits')] });
+    expect(gold.items).toHaveLength(5);
+    expect(gold.items.every(item => !item.lesson)).toBe(true);
+    const early = makeDrop({ ...base, daily: false, goldReview: true, preferredConceptId: 'habits', taughtSteps: ids.slice(0, 1), taughtOn: { [ids[0]!]: '2026-10-21' }, concepts: [started('habits')] });
+    expect(early.items[0]!.lesson).toBe(ids[1]);
   });
 
   it('never puts two questions on one idea in a row when another idea is waiting', async () => {

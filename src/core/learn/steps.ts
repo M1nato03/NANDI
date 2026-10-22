@@ -38,6 +38,17 @@ export function taughtCatalog(concepts: readonly TopicConcept[], taught: Readonl
 }
 
 /**
+ * Gold review tests a whole idea, so it waits until every step was taught on an earlier day (spec 16 §5:
+ * a step's own questions are never asked on the day it is taught). Ideas without steps use all their items.
+ * Returns undefined while a step is still untaught or was taught today.
+ */
+export function goldItems(concept: TopicConcept, taughtOn: Readonly<Record<string, string>>, today: string): TopicConcept['items'] | undefined {
+  if (!concept.steps?.length) return concept.items;
+  if (concept.steps.some(step => !taughtOn[step.id] || taughtOn[step.id]! >= today)) return undefined;
+  return concept.items;
+}
+
+/**
  * Spec 16 §5: never two items of one idea in a row. Keeps the given order where it can; when the
  * next item shares the last one's idea, the first later item from another idea moves up instead.
  */

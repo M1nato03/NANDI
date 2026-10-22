@@ -111,7 +111,7 @@ export const RULES = {
     unitCheckMin: 3, moduleTestMin: 10, dueReviewMin: 1,
     newCardsPerDay: 5, backlogBrakeDue: 30, busyDayCards: 1,
     // Spec 14: a lesson day is one new step plus up to this many reviews of earlier steps.
-    lessonReviews: 4,
+    lessonReviews: 3,
     checkMinQuestions: 3, modulePassPercent: 70,
   },
 
