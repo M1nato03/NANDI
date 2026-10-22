@@ -23,6 +23,7 @@
             "id": "indus-cities",
             "title": "Indus Valley cities",
             "prerequisites": [],
+            "askLine": "What can the old streets and drains of Mohenjo-daro tell us about the people who built it?",
             "hook": "At Mohenjo-daro, streets crossed at right angles while drains linked homes to a wider network.",
             "hookSourceRefs": [
               "indus",

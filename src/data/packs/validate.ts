@@ -1,6 +1,7 @@
 import * as v from 'valibot';
 import { packSchema, type Pack } from './schemas';
 import { RULES } from '../../core/rules.config';
+import { askLineProblems } from '../../core/learn/askLine';
 
 /** Flesch reading ease. A 0.5 point tolerance covers syllable heuristic rounding. */
 export function fleschReadingEase(value: string): number {
@@ -117,6 +118,10 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       refs(`${where}.hook`, concept.hookSourceRefs);
       refs(`${where}.rule`, concept.ruleSourceRefs);
       checkText(`${where}.hook`, concept.hook);
+      if (concept.askLine !== undefined) {
+        checkText(`${where}.askLine`, concept.askLine);
+        for (const problem of askLineProblems(concept)) errors.push(`${where}.askLine: ${problem}`);
+      }
       checkText(`${where}.rule`, concept.rule);
       const claimIds = new Set<string>();
       for (const claim of concept.claims) {

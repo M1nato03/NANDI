@@ -23,6 +23,7 @@
             "id": "protein-foods",
             "title": "Protein in everyday food",
             "prerequisites": [],
+            "askLine": "Why do Indian meals so often put dal next to a grain like roti, beyond the taste?",
             "hook": "India's food guide (ICMR-NIN) says cereals and pulses fill gaps in each other's protein, which is why dal and rice work well together.",
             "hookSourceRefs": [
               "protein"

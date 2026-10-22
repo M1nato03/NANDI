@@ -278,3 +278,7 @@
 .app-shell:has(.learn-drop.learn-active:not(.learn-night)) .tabbar { display: none; }
 .app-shell:has(.learn-drop.learn-active:not(.learn-night)) .content { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 .learn-drop.learn-active:not(.learn-night) .learn-sheet { position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 5; scroll-margin-bottom: 0; }
+
+/* Spec 19 E: one quiet way to talk about today's idea; no card, no badge, no count. */
+.learn-ask { display: grid; justify-items: start; gap: 2px; margin-block: var(--space-2) var(--space-3); }
+.learn-ask p { margin: 0; color: var(--ink-2); }

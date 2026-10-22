@@ -23,6 +23,7 @@
             "id": "habits",
             "title": "Habits",
             "prerequisites": [],
+            "askLine": "If you miss one day of a new daily routine, do you have to start over from zero?",
             "hook": "Missing one day did not undo a new habit in Lally's study. Habits took anywhere from 18 to 254 days to settle in.",
             "hookSourceRefs": [
               "lally",

@@ -16,6 +16,7 @@
       "concepts": [
         {
           "id": "progressive-overload", "title": "Progressive overload", "prerequisites": [],
+          "askLine": "Ten push-ups felt hard a month ago and feel easy now. What is the smartest next step to keep getting stronger?",
           "hook": "Ten clean push-ups may feel hard at first and easier after weeks of practice. What changed?", "hookSourceRefs": ["acsm"],
           "rule": "Muscles adapt to repeated resistance work. For more long-term progress, the work can grow in a measured way, such as more clean reps or a harder load.", "ruleSourceRefs": ["acsm"],
           "claims": [{ "id": "progressive-overload-c1", "text": "Resistance work can build strength; a rising challenge can support further progress over time.", "sourceRefs": ["acsm"] }],
