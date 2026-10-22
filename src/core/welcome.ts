@@ -20,7 +20,7 @@ const ACTIONS: Record<Goal, FirstAction> = {
   mind: { route: 'mind/board/daily', label: "Try today's puzzle" },
   train: { route: 'train/easy', label: 'Start an easy first workout' },
   plan: { route: 'plan', label: 'Add your first task' },
-  sleep: { route: 'you/night', label: 'Plan tonight' },
+  sleep: { route: 'you/tonight', label: 'Plan tonight' },
 };
 
 /** After bedtime nothing new is offered (a drop would only say there is nothing tonight), so the first action is the night routine. */

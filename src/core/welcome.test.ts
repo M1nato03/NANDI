@@ -7,7 +7,7 @@ describe('first run (spec 18)', () => {
     expect(firstAction('mind').route).toBe('mind/board/daily');
     expect(firstAction('train').route).toBe('train/easy');
     expect(firstAction('plan').route).toBe('plan');
-    expect(firstAction('sleep').route).toBe('you/night');
+    expect(firstAction('sleep').route).toBe('you/tonight');
     expect(firstAction(undefined).route).toBe('learn/drop');
   });
   it('offers the night routine after bedtime, whatever was picked', () => {

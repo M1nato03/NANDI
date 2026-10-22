@@ -12,13 +12,18 @@ import { go } from '../shell/router';
 import './welcome.css';
 
 const DONE_KEY = 'welcome.done';
-// Placeholder until Jenil and a lawyer finalise the notice (before 13 May 2027).
-const PRIVACY_NOTE = "NANDI keeps your tasks, workouts, answers and settings in this phone's storage. They are not sent to us. The app checks our server for updates, and that check carries none of your activity. A backup or a share leaves the phone only when you choose to make one. Removing the app or clearing its data erases it. This notice is a draft and will be finalised before launch.";
+// Set when a friend's challenge link is the very first thing opened: the next visit still gets the first run.
+const DEFERRED_KEY = 'welcome.deferred';
 // The Playwright build skips the first run unless a test asks for it with ?welcome.
 const allowed = () => import.meta.env.VITE_E2E !== '1' || new URLSearchParams(location.search).has('welcome');
 
 /** Judged when the last button is tapped, not when the welcome opened. */
 const actionAt = (goal: Goal | undefined, bedtime: string) => firstAction(goal, isAfterBedtime(Date.now(), bedtime));
+
+async function putSetting(key: string, value: unknown): Promise<void> {
+  const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.settings.put({ key, value, updatedAt: now, deleted: 0, deviceId }));
+}
 
 async function markDone(extra: { key: string; value: unknown }[] = []): Promise<void> {
   const now = Date.now(), deviceId = await getOrCreateDeviceId(db, now);
@@ -36,13 +41,16 @@ async function hasHistory(): Promise<boolean> {
 export function useWelcomeNeeded(): [boolean, () => void] {
   const [needed, setNeeded] = useState(false);
   useEffect(() => {
-    // A friend's challenge link opens straight onto the board; the first run waits for the next visit.
-    if (!allowed() || location.hash.startsWith('#mind/challenge/')) return;
+    if (!allowed()) return;
+    const challenge = location.hash.startsWith('#mind/challenge/');
     let live = true;
     void (async () => {
       const done = await db.settings.get(DONE_KEY);
       if (done && !done.deleted) return;
-      if (await hasHistory()) { await markDone(); return; }
+      const deferred = await db.settings.get(DEFERRED_KEY);
+      // A friend's challenge link opens straight onto the board; the first run (and its 18+ tick) waits for the next visit.
+      if (challenge) { if (!deferred && !(await hasHistory())) await putSetting(DEFERRED_KEY, true); return; }
+      if (!(deferred && !deferred.deleted) && await hasHistory()) { await markDone(); return; }
       if (live) setNeeded(true);
     })().catch(error => recordError('promise', error));
     return () => { live = false; };
@@ -74,7 +82,8 @@ export function Welcome({ onDone }: { onDone: () => void }) {
       if (next.route === 'plan') window.setTimeout(() => document.querySelector<HTMLInputElement>('.quick-add-field input')?.focus(), 300);
     } catch (error) { recordError('promise', error); setSaving(false); }
   };
-  const restore = async () => { await markDone().catch(error => recordError('promise', error)); onDone(); go('you/backup'); };
+  // Not marked done: a finished restore brings its own history, and a cancelled one shows the first run again next time.
+  const restore = () => { onDone(); go('you/backup'); };
   return <div className="welcome" role="dialog" aria-modal="true" aria-label="Welcome to NANDI">
     <div className="welcome-inner">
       <p className="welcome-steps" aria-label={`Step ${step + 1} of 3`}>{[0, 1, 2].map(index => <span key={index} className={index <= step ? 'on' : ''} />)}</p>
@@ -83,10 +92,11 @@ export function Welcome({ onDone }: { onDone: () => void }) {
         <h1>Hi, I'm Nandi.</h1>
         <p>Swap a little scrolling for things you'll be glad you did.</p>
         <p className="small">Your activity is saved on this phone. It leaves only when you back it up or share it.</p>
-        <details className="welcome-privacy"><summary>Privacy</summary><p className="small">{PRIVACY_NOTE}</p></details>
+        {/* A one-page placeholder notice; Jenil and a lawyer finalise it before 13 May 2027. */}
+        <p className="small welcome-privacy"><a href="privacy.html">Privacy notice</a></p>
         <label className="welcome-adult"><input type="checkbox" checked={adult} onChange={event => setAdult(event.target.checked)} /> I'm 18 or older.</label>
         <button type="button" disabled={!adult} onClick={() => setStep(1)}>Let's start</button>
-        <button type="button" className="text-button" onClick={() => void restore()}>I have a backup to restore</button>
+        <button type="button" className="text-button" onClick={restore}>I have a backup to restore</button>
       </>}
       {step === 1 && <>
         <h1>Pick one to try first</h1>

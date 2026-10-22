@@ -25,4 +25,8 @@ test('a solved daily board becomes a link that opens the same board for a friend
   expect(theirs).toEqual(mine);
   await friend.evaluate(() => (window as Window & { __nandiMindTest?: Hook }).__nandiMindTest!.solveKnownSolution());
   await expect(friend.getByRole('button', { name: 'Send your time back' })).toBeVisible();
+  // Their next visit still gets the first run, with its 18+ tick (spec 18).
+  await friend.goto('/?e2e&welcome#plan');
+  await expect(friend.getByRole('dialog', { name: 'Welcome to NANDI' })).toBeVisible();
+  await expect(friend.getByRole('button', { name: "Let's start" })).toBeDisabled();
 });

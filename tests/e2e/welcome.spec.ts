@@ -79,7 +79,24 @@ test("Sharpen my mind opens today's board, and Get fit can start easy without th
   await welcome.getByRole('button', { name: 'Get fit' }).click();
   await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
   await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
-  await expect(page.getByText('Assessment saved. Your first session is ready.')).toBeVisible();
+  // Straight into the first workout, on the easiest step of each move.
+  await expect(page).toHaveURL(/#train\/workout$/);
+  await expect(page.getByText('Current exercise')).toBeVisible();
+});
+
+test("Sleep earlier opens tonight's plan; a cancelled restore brings the first run back", async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
+  await page.goto('/?e2e&welcome');
+  let welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
+  await welcome.getByRole('button', { name: 'I have a backup to restore' }).click();
+  await expect(page).toHaveURL(/#you\/backup$/);
+  await page.goto('/?e2e&welcome#plan');
+  welcome = await hello(page);
+  await expect(page.getByRole('link', { name: 'Privacy notice' })).toHaveAttribute('href', 'privacy.html');
+  await welcome.getByRole('button', { name: 'Sleep earlier' }).click();
+  await welcome.getByRole('button', { name: 'Plan tonight' }).click();
+  await expect(page).toHaveURL(/#you\/tonight$/);
+  await expect(page.getByRole('region', { name: 'Night plan setting' })).toBeVisible();
 });
 
 test('after bedtime the first run ends on the night routine, whatever was picked', async ({ page }) => {
