@@ -21,4 +21,10 @@ describe('Tasks audit fixes (idea engine, 22 Oct)', () => {
       [nine, nine + hour / 2], [nine + hour / 2, nine + hour], [nine + hour, nine + 1.5 * hour],
     ]);
   });
+
+  it('a split step that starts after 04:00 lands on the new planning day', () => {
+    const late = new Date(2026, 9, 23, 3, 30).getTime();
+    const block = createTask('t', late - hour, 'L', 90, { scheduledStart: late, scheduledEnd: late + 1.5 * hour });
+    expect(splitTask(block, 3, [30, 30, 30], RULES, late - hour).map(step => step.dayKey)).toEqual(['2026-10-22', '2026-10-23', '2026-10-23']);
+  });
 });

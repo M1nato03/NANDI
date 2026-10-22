@@ -1,6 +1,7 @@
 import type { Rules } from '../rules.config';
 import { creationSplitPool } from '../economy/creationSplit';
 import type { CoreTask, TaskSize } from './task-machine';
+import { dayKey } from '../time';
 
 /** Largest-remainder allocation keeps the exact pool while respecting estimate proportions. */
 export function splitTask(
@@ -57,7 +58,8 @@ export function splitTask(
           : parent.status === 'planned'
             ? 'planned'
             : 'unplaced',
-      dayKey: parent.dayKey,
+      // A step that starts after 04:00 belongs to the new planning day (second opinion 4).
+      dayKey: keepSlot ? dayKey(parent.scheduledStart! + offsets[index]!) : parent.dayKey,
       size,
       estimateMin,
       plannedSize: size,
