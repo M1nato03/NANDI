@@ -192,3 +192,24 @@ it('a restore keeps this phone\'s economy cutoffs, else the backup\'s (Codex rev
   await importBackup(empty, bare);
   expect(await empty.settings.get('economy.v3From')).toBeUndefined();
 });
+
+it('a drop counts as late by the fact that finished it, retention checks included (econ-32 re-review, item 37)', async () => {
+  const { questPool } = await import('../../core/economy/gamify');
+  const cases: { name: string; kinds: string[]; late: boolean[]; flagged: boolean }[] = [
+    { name: 'started before bedtime, finished after', kinds: ['learn-answer', 'learn-answer', 'learn-answer'], late: [false, false, true], flagged: true },
+    { name: 'started after bedtime, finished before (clock oddity)', kinds: ['learn-answer', 'learn-answer', 'learn-answer'], late: [true, true, false], flagged: false },
+    { name: 'retention checks only, after bedtime', kinds: ['learn-retention', 'learn-retention', 'learn-retention'], late: [true, true, true], flagged: true },
+  ];
+  for (const entry of cases) {
+    const db = createDb(`gamify-late-by-last-${++serial}`); opened.push(db);
+    const day = '2026-11-05', dropId = `drop:daily:${day}`;
+    await db.learnDrops.put({ id: dropId, drop: { id: dropId, cursor: 3, ending: { kind: 'stopping-screen' },
+      items: [1, 2, 3].map(n => ({ itemId: `i${n}`, conceptId: 'c', optionOrder: [], mode: 'review' as const })) }, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+    for (const [n, kind] of entry.kinds.entries()) await db.ledger.add({ id: `${kind}:${n}`, mode: 'mind', kind, refId: String(n), dayKey: day,
+      inputs: { dropId, correct: true, afterBedtime: entry.late[n] }, updatedAt: at(day, `2${n}:00`), deleted: 0, deviceId: 'test' });
+    await reconcileGamify(db, at(day, '23:30'));
+    const facts = await db.ledger.toArray();
+    expect(facts.find(fact => fact.kind === 'learn-drop')!.inputs.afterBedtime === true, entry.name).toBe(entry.flagged);
+    expect(questPool.find(quest => quest.id === 'drop')!.count(facts, day), entry.name).toBe(entry.flagged ? 0 : 1);
+  }
+});

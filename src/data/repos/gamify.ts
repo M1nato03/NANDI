@@ -52,8 +52,11 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (log?.planDone && log.shutdownDone) await add('tomorrow-plan', today, today);
     const drop = await db.learnDrops.get(`drop:daily:${today}`);
     if (drop && drop.drop.items.length > 0 && drop.drop.cursor >= drop.drop.items.length) {
-      const own = facts.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-lesson') && fact.inputs.dropId === drop.id);
-      const late = own.length > 0 && own.every(fact => fact.inputs.afterBedtime === true) ? { afterBedtime: true } : {};
+      // The drop counts as finished after bedtime when the fact that completed it (its last answer, retention
+      // check or lesson) came after bedtime, even if it was started before (econ-32 re-review, item 37).
+      const own = facts.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-retention' || fact.kind === 'learn-lesson') && fact.inputs.dropId === drop.id);
+      const completing = own.reduce<typeof own[number] | undefined>((latest, fact) => !latest || fact.updatedAt >= latest.updatedAt ? fact : latest, undefined);
+      const late = completing?.inputs.afterBedtime === true ? { afterBedtime: true } : {};
       await add('learn-drop', today, today, late);
       // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
       const scored = drop.drop.items.filter(item => !item.lesson).length;

@@ -82,6 +82,11 @@ describe('economy review 32', () => {
     // Someone already here on an older build (first day before the cutoff) keeps the Shards they were shown (Codex #4).
     const upgraded = [setting('economy.v2From', '2026-10-01'), setting('economy.v3From', '2027-01-01')];
     expect(deriveEconomy(facts, undefined, upgraded, '2026-12-12').shards).toBeGreaterThan(view.shards);
+    // Item 37: before the first reconcile writes the cutoff, a fresh install (first day = today) is already skipped,
+    // and someone with earlier days still keeps the award.
+    const cutoffOnlyV2 = [setting('economy.v2From', '2026-10-01')];
+    expect(deriveEconomy([task('2026-12-12')], undefined, cutoffOnlyV2, '2026-12-12').shards).toBe(deriveEconomy([task('2026-12-12')], undefined, v3, '2026-12-12').shards);
+    expect(deriveEconomy(facts, undefined, cutoffOnlyV2, '2026-12-12').shards).toBeGreaterThan(view.shards);
   });
 
   it('Codex #2: a rest day an older build sold on the upgrade day still counts; from the next day only paid ones do', () => {

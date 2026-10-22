@@ -494,7 +494,9 @@ function replayEconomy(
   for (let seasonStart = '2026-11-02'; seasonStart < current.start; seasonStart = addEconomyDays(seasonFor(seasonStart).end, 1)) {
     const season = seasonFor(seasonStart);
     if (season.end >= today) break;
-    if (season.end < start && start >= v3From) continue;
+    // A fresh install has no cutoff until its first reconcile; for this skip only that reads as today, so the
+    // award never shows on the first frame and then vanishes (econ-32 re-review, item 37).
+    if (season.end < start && start >= (typeof v3Stored === 'string' ? v3From : today)) continue;
     const finalRank = rankFor(seasonSp(season) + seedFor(season), targetFor(season));
     const awardRules = rulesFor(season.end, history)?.rules ?? RULES;
     const amount = awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
