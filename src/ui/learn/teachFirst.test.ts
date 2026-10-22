@@ -44,13 +44,48 @@ describe('teach first (spec 14)', () => {
     }
   });
 
+  it('spec 16 §6: a one-topic learner gets a real tail every day after the first, and no right answer comes back while a taught item is unasked', () => {
+    const items = catalogFor(['psychology']).flatMap(concept => concept.items);
+    const taughtOn: Record<string, string> = {};
+    const answers: { itemId: string; correct: boolean; at: number }[] = [];
+    const counts: number[] = [];
+    for (let day = 0; day < 8; day++) {
+      const at = new Date(2026, 9, 22 + day, 12).getTime();
+      const key = new Date(at).toISOString().slice(0, 10);
+      const drop = makeDrop({ ...base, now: at, taughtSteps: Object.keys(taughtOn), taughtOn, answers });
+      const tail = drop.items.slice(1);
+      counts.push(tail.length);
+      const unasked = items.filter(item => item.step && taughtOn[item.step] && taughtOn[item.step]! < key && !answers.some(answer => answer.itemId === item.id));
+      for (const [index, entry] of tail.entries()) {
+        const repeat = answers.some(answer => answer.itemId === entry.itemId);
+        if (unasked.some(item => !tail.some(other => other.itemId === item.id))) expect(repeat, `day ${day + 1}: ${entry.itemId} asked again`).toBe(false);
+        const step = items.find(item => item.id === entry.itemId)!.step;
+        expect(tail.filter(other => items.find(item => item.id === other.itemId)!.step === step).length, `day ${day + 1}: 3 of one step`).toBeLessThanOrEqual(2);
+        answers.push({ itemId: entry.itemId, correct: true, at: at + index, day: key });
+      }
+      taughtOn[drop.items[0]!.lesson!] = key;
+    }
+    expect(counts[0]).toBe(0);
+    expect(counts[1]).toBeGreaterThanOrEqual(2);
+    expect(counts.slice(3).every(count => count === 3)).toBe(true);
+    expect(counts.reduce((sum, count) => sum + count, 0)).toBeGreaterThanOrEqual(15);
+  });
+
+  it('a wrong answer comes back first in the next tail', () => {
+    const items = catalogFor(['psychology']).flatMap(concept => concept.items);
+    const taughtOn = { 'habits-s1': '2026-10-20', 'habits-s2': '2026-10-21' };
+    const missed = items.find(item => item.step === 'habits-s2')!;
+    const drop = makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, answers: [{ itemId: missed.id, correct: false, at: now - 3_600_000 }] });
+    expect(drop.items[1]!.itemId).toBe(missed.id);
+  });
+
   it('gives a brand-new learner the lesson alone, whatever else is selected', () => {
     const drop = makeDrop({ ...base, ids: ['psychology', 'money-markets', 'body-training', 'how-things-work'] });
     expect(drop.items).toHaveLength(1);
     expect(drop.items[0]!.lesson).toBeTruthy();
   });
 
-  it('keeps the lesson tail to three questions, one per idea, from ideas taught on earlier days', () => {
+  it('keeps the lesson tail to three questions, from different ideas when it can, all taught on earlier days', () => {
     const steps = catalogFor(['psychology']).flatMap(concept => (concept.steps ?? []).map(step => step.id));
     const taughtOn = Object.fromEntries(steps.slice(0, -1).map(id => [id, '2026-10-15']));
     const drop = makeDrop({ ...base, taughtSteps: Object.keys(taughtOn), taughtOn, concepts: catalogFor(['psychology']).map(concept => started(concept.id)) });

@@ -121,7 +121,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         spentMinutes: answered.length * 0.7, facts,
         taughtSteps: data.ledger.filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId),
         taughtOn: Object.fromEntries(data.ledger.filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => [fact.refId, fact.dayKey])),
-        lessonToday: data.ledger.some(fact => fact.kind === 'learn-lesson' && !fact.deleted && fact.dayKey === today) });
+        lessonToday: data.ledger.some(fact => fact.kind === 'learn-lesson' && !fact.deleted && fact.dayKey === today),
+        answers: data.ledger.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-retention') && !fact.deleted && typeof fact.inputs.itemId === 'string').map(fact => ({ itemId: String(fact.inputs.itemId), correct: fact.inputs.correct === true, at: fact.updatedAt, day: fact.dayKey })) });
       if (isDaily || night) {
         if (!await db.learnDrops.get(created.id)) await saveDrop(db, created, deviceId, at);
       } else {
