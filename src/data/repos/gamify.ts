@@ -6,14 +6,19 @@ import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, merge
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
-import { restoreActive } from '../restoreLock';
+import { asReconcile, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { LedgerRow } from '../types';
 
 /** Reconcile derived achievements into immutable, idempotent award facts. */
 export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
-  // A restore clears and refills the tables; the app runs this again once it has finished.
+  // A restore clears and refills the tables; the app runs this again once it has finished. A restore that
+  // starts while this runs waits for it (the whole run counts, from its first await).
   if (restoreActive()) return;
+  return asReconcile(reconcileOnce(db, now));
+}
+
+async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {

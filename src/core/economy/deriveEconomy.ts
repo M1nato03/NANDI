@@ -57,10 +57,15 @@ function asClose(raw: unknown): DayClose | undefined {
 export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const x = asClose(a), y = asClose(b);
   if (!x || !y) return x ?? y;
-  const purchases = [...x.purchases, ...y.purchases.filter(item => !x.purchases.some(other => other.id === item.id))];
+  const onlyIn = (a: DayClose, b: DayClose) => a.purchases.filter(item => !b.purchases.some(other => other.id === item.id));
+  const cost = (items: ClosePurchase[]) => items.reduce((sum, item) => sum + item.price, 0);
+  const purchases = [...x.purchases, ...onlyIn(y, x)];
+  // The merged close knows every purchase from both, so each balance first pays for the ones only the other knew;
+  // otherwise a late purchase's spend would vanish under the older, higher balance (second opinion 26).
+  const shards = Math.max(x.shards - cost(onlyIn(y, x)), y.shards - cost(onlyIn(x, y)), 0);
   return { total: Math.max(x.total, y.total), sp: Math.max(x.sp, y.sp), streak: Math.max(x.streak, y.streak),
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
-    shards: Math.max(x.shards, y.shards), owned: [...new Set([...x.owned, ...y.owned])], purchases };
+    shards, owned: [...new Set([...x.owned, ...y.owned])], purchases };
 }
 function readCloses(settings: readonly SettingRow[] | Record<string, unknown>, today: string): Map<string, DayClose> {
   const rows: [string, unknown][] = Array.isArray(settings)

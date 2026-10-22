@@ -4,7 +4,7 @@ import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
 import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeClose } from '../../core/economy/deriveEconomy';
 import { exportBackup, importBackup } from '../backup';
-import { duringRestore } from '../restoreLock';
+import { asReconcile, duringRestore } from '../restoreLock';
 import { reconcileGamify } from './gamify';
 
 let serial = 0;
@@ -112,4 +112,31 @@ it('a restore that drops a purchase keeps both the item and its spend', async ()
   const after = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-04');
   expect(after.owned).toContain('banner:dawn');
   expect(after.shards).toBe(before.shards);
+});
+
+it('a late purchase dated on a closed day is still charged after reconcile raises the close', async () => {
+  const db = createDb(`gamify-close-${++serial}`); opened.push(db);
+  const day = '2026-11-03';
+  await db.settings.put({ key: 'economy.v2From', value: '2026-10-01', updatedAt: 1, deleted: 0, deviceId: 'test' });
+  for (let index = 0; index < 30; index++) await db.ledger.add({ id: `badge:${index}`, mode: 'gamify', kind: 'badge-tier', refId: `b${index}`, dayKey: day, inputs: {}, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-04'));
+  const before = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-05').shards;
+  // A synced purchase dated on the closed day arrives, then the next reconcile merges it into the close.
+  await db.ledger.add({ id: 'purchase:late', mode: 'economy', kind: 'purchase', refId: 'late', dayKey: day, inputs: { itemId: 'banner:dawn', price: 100 }, updatedAt: at(day, '23:00'), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-05'));
+  const after = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-05');
+  expect(after.owned).toContain('banner:dawn');
+  expect(after.shards).toBe(before - 100);
+});
+
+it('a restore waits for a reconcile that is already running', async () => {
+  let release!: () => void;
+  const work = asReconcile(new Promise<void>(resolve => { release = resolve; }));
+  let restored = false;
+  const restore = duringRestore(async () => { restored = true; });
+  await new Promise(resolve => setTimeout(resolve, 20));
+  expect(restored).toBe(false);
+  release();
+  await Promise.all([work, restore]);
+  expect(restored).toBe(true);
 });
