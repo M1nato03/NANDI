@@ -79,5 +79,36 @@ describe('economy review 32', () => {
     const facts = [task('2026-12-10')];
     const view = deriveEconomy(facts, undefined, v3, '2026-12-12');
     expect(view.shards).toBeLessThan(50);
+    // Someone already here on an older build (first day before the cutoff) keeps the Shards they were shown (Codex #4).
+    const upgraded = [setting('economy.v2From', '2026-10-01'), setting('economy.v3From', '2027-01-01')];
+    expect(deriveEconomy(facts, undefined, upgraded, '2026-12-12').shards).toBeGreaterThan(view.shards);
+  });
+
+  it('Codex #2: a rest day an older build sold on the upgrade day still counts; from the next day only paid ones do', () => {
+    const upgrade = [setting('economy.v2From', '2026-10-01'), setting('economy.v3From', '2026-11-03')];
+    const base = [...hatTrick('2026-11-03'), ...hatTrick('2026-11-04')];
+    const plain = deriveEconomy(base, undefined, upgrade, '2026-11-04').streak.restDays;
+    const sale = (day: string) => row(day, 'economy', 'purchase', { itemId: 'freeze', price: 50 });
+    expect(deriveEconomy([...base, sale('2026-11-03')], undefined, upgrade, '2026-11-04').streak.restDays).toBe(plain + 1);
+    expect(deriveEconomy([...base, sale('2026-11-04')], undefined, upgrade, '2026-11-04').streak.restDays).toBe(plain);
+  });
+
+  it('Codex #3: with no cutoff on record every day keeps the old rules', () => {
+    const day = '2026-11-03';
+    const walk = row(day, 'train', 'rest', { minutes: 15 });
+    const oneSet = row(day, 'train', 'session', { plannedExercises: 5, touchedExercises: 1, plannedSets: 15, workingSets: 1 });
+    const later = [setting('economy.v2From', '2026-10-01'), setting('economy.v3From', '2026-12-01')];
+    expect(deriveEconomy([task(day), walk, oneSet], undefined, [setting('economy.v2From', '2026-10-01')], day).days.at(-1)!.train)
+      .toBe(deriveEconomy([task(day), walk, oneSet], undefined, later, day).days.at(-1)!.train);
+  });
+
+  it('B6: a pick for one week wins over the standing pick', () => {
+    const standing = setting('economy.restWeekday', { weekday: 0, from: '2026-11-02' });
+    // Bank spent on 3-6 Nov; Saturday the 7th unmarked; a Hat-trick on Sunday the 8th.
+    const facts = [...spentBank(), ...hatTrick('2026-11-08')];
+    expect(deriveEconomy(facts, undefined, [...v3, standing], '2026-11-08').streak.paused).toBe(true);
+    // That week moved its rest day to Saturday: the 7th is the rest day and the run holds.
+    const moved = [...v3, standing, setting('economy.restWeekday:2026-11-02', 6)];
+    expect(deriveEconomy(facts, undefined, moved, '2026-11-08').streak.paused).toBe(false);
   });
 });

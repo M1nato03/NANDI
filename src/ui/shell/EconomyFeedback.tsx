@@ -158,11 +158,13 @@ export function EconomyFeedback() {
   }, [source]);
   useEffect(() => {
     if (!notice?.gain || notice.macro) return;
-    if (reduced()) { const gain = notice.gain; const frame = requestAnimationFrame(() => setShownXp(gain)); return () => cancelAnimationFrame(frame); }
+    // With Motion off the render shows the full number at once, so there is nothing to count.
+    if (reduced()) return;
     const start = performance.now(), duration = RULES.juice.mesoMs[1];
     let frame = 0;
     const tick = (now: number) => {
-      setShownXp(Math.round(notice.gain! * Math.min(1, (now - start) / duration)));
+      // A frame's timestamp can come from just before `start`, so the count never shows below zero.
+      setShownXp(Math.round(notice.gain! * Math.max(0, Math.min(1, (now - start) / duration))));
       if (now - start < duration) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -180,5 +182,5 @@ export function EconomyFeedback() {
   }, [pendingDone]);
   if (doneCard) return <DoneForToday close={() => setDoneCard(false)} reduced={reduced()} suggestion={boundedSuggestion(readInterests(source?.settings ?? []), dayKey(Date.now()), false)} />; // eslint-disable-line react-hooks/purity
   if (!notice) return null;
-  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
+  return notice.macro ? <div ref={reveal} tabIndex={-1} className="economy-reveal" role="dialog" aria-modal="true" aria-label="Season progress"><div className="economy-reveal-card"><Cast name="Mor" pose="cheer" size={80} /><span className="eyebrow">Your season</span><h2>{notice.text}</h2><p>{notice.detail ?? 'Your work is adding up.'}</p>{notice.nextSeason && <div className="card">{notice.nextSeason}</div>}<button type="button" onClick={() => setNotice(null)}>Continue</button><button type="button" className="secondary" onClick={() => setNotice(null)}>Skip reveal</button></div></div> : <FinishMoment line={notice.text} gain={notice.gain} shownXp={reduced() ? notice.gain : shownXp} reduced={reduced()} activity={notice.activity ?? (notice.character === 'Kachhua' ? 'night' : 'task')} />;
 }

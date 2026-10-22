@@ -199,6 +199,8 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
 
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
   'autoBackup.saved', 'autoBackup.failure']);
+/** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
+const cutoffKeys = ['economy.v2From', 'economy.v3From'];
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {
@@ -214,6 +216,7 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     await getOrCreateDeviceId(db, Date.now());
     const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
       .filter((row): row is SettingRow => row !== undefined);
+    const localCutoffs = (await db.settings.bulkGet(cutoffKeys)).filter((row): row is SettingRow => row !== undefined && !row.deleted);
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
     const closes = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     // dexie-export-import expects its own JSON, without the NANDI envelope.
@@ -225,7 +228,7 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
       overwriteValues: true,
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
-    await db.settings.bulkPut(localSettings);
+    await db.settings.bulkPut([...localSettings, ...localCutoffs]);
     const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     const template = closes[0] ?? restoredCloses[0];

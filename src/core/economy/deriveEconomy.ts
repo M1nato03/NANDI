@@ -288,12 +288,15 @@ function replayEconomy(
   for (const fact of ordered) byDay.set(fact.dayKey, [...(byDay.get(fact.dayKey) ?? []), fact]);
   // Economy fixes of 22 Oct apply from the day this build first ran, so earlier days keep the XP they showed.
   const v2Stored = value(settings, 'economy.v2From');
-  const v2From = typeof v2Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v2Stored) ? v2Stored : '0000-00-00';
+  // A missing cutoff means the old rules: reconcile writes it on first run and a restore keeps this phone's.
+  const v2From = typeof v2Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v2Stored) ? v2Stored : '9999-12-31';
   const v2 = (key: string) => key >= v2From;
   // The 23 Oct fixes (economy review 32) count from the day this build first runs, so earlier days keep what they showed.
   const v3Stored = value(settings, 'economy.v3From');
-  const v3From = typeof v3Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v3Stored) ? v3Stored : '0000-00-00';
+  const v3From = typeof v3Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v3Stored) ? v3Stored : '9999-12-31';
   const v3 = (key: string) => key >= v3From;
+  // Only the shop of this build marks a purchase paid, so an older build's sale on the upgrade day still counts (Codex #2).
+  const paidOnly = (key: string) => key > v3From;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
     const week = weekStart(key);
@@ -446,7 +449,7 @@ function replayEconomy(
     const restWeekday = restWeekdayFor(day.dayKey);
     const isRest = typeof restWeekday === 'number' && restWeekday === weekday;
     // A2: from the 23 Oct fixes only a paid (accepted) rest-day purchase adds to the bank.
-    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && num(row.inputs.price) > 0 && (!v3(day.dayKey) || row.inputs.accepted === true)).length ?? 0;
+    const purchases = byDay.get(day.dayKey)?.filter(row => row.kind === 'purchase' && row.inputs.itemId === 'freeze' && num(row.inputs.price) > 0 && (!paidOnly(day.dayKey) || row.inputs.accepted === true)).length ?? 0;
     restDays = Math.min(RULES.streak.restBankMax, restDays + purchases);
     if (day.mark) {
       if (paused && breakAt >= 0 && i - breakAt - restShift <= 2) {
@@ -491,7 +494,7 @@ function replayEconomy(
   for (let seasonStart = '2026-11-02'; seasonStart < current.start; seasonStart = addEconomyDays(seasonFor(seasonStart).end, 1)) {
     const season = seasonFor(seasonStart);
     if (season.end >= today) break;
-    if (season.end < start) continue;
+    if (season.end < start && start >= v3From) continue;
     const finalRank = rankFor(seasonSp(season) + seedFor(season), targetFor(season));
     const awardRules = rulesFor(season.end, history)?.rules ?? RULES;
     const amount = awardRules.shards.seasonEnd[tierFor(finalRank) as keyof typeof RULES.shards.seasonEnd];
@@ -513,7 +516,7 @@ function replayEconomy(
     // apply it later (49 -> 0).
     // A purchase keeps the price it was bought at: a later change to the price table never makes an owned item
     // free, or drops it while a close still keeps it owned (second opinion 28).
-    if (typeof id !== 'string' || purchasePrices[id] === undefined || !(price > 0) || (row.inputs.accepted !== true && (v3(row.dayKey) || (!v2(row.dayKey) && price > balance)))) continue;
+    if (typeof id !== 'string' || purchasePrices[id] === undefined || !(price > 0) || (row.inputs.accepted !== true && (paidOnly(row.dayKey) || (!v2(row.dayKey) && price > balance)))) continue;
     if (id !== 'freeze' && owned.includes(id)) continue;
     balance -= price; if (id !== 'freeze') owned.push(id);
     accepted.push({ id: row.id, itemId: id, price, dayKey: row.dayKey });

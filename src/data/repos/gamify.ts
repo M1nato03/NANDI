@@ -52,10 +52,12 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (log?.planDone && log.shutdownDone) await add('tomorrow-plan', today, today);
     const drop = await db.learnDrops.get(`drop:daily:${today}`);
     if (drop && drop.drop.items.length > 0 && drop.drop.cursor >= drop.drop.items.length) {
-      await add('learn-drop', today, today);
+      const own = facts.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-lesson') && fact.inputs.dropId === drop.id);
+      const late = own.length > 0 && own.every(fact => fact.inputs.afterBedtime === true) ? { afterBedtime: true } : {};
+      await add('learn-drop', today, today, late);
       // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
       const scored = drop.drop.items.filter(item => !item.lesson).length;
-      if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today);
+      if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today, late);
     }
     // Record today's welcome-back gift once shown, so a later sync can never take it away.
     const settings = await db.settings.toArray();
