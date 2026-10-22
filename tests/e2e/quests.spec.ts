@@ -26,7 +26,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(section.getByRole('status')).toHaveText('Quest saved.');
     await expect(section.locator('.quest-row')).toHaveCount(3);
     await expect(section.getByRole('button', { name: 'Swap one suggestion' })).toBeDisabled();
-    await section.getByRole('button', { name: 'Add custom quest' }).click();
+    await section.getByRole('button', { name: 'Add your own' }).click();
     await section.getByLabel('Quest title').fill('Read two chapters');
     await section.getByLabel('Kind').selectOption('total');
     await section.getByLabel('Target').fill('2');
