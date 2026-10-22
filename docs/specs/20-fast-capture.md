@@ -3,7 +3,9 @@
 Status: idea engine (jenil-8c), 22 Oct 2026; revised after a Codex review against ship-27. Medium (about 1–2 days). Evidence: cloud job 8 of batch 1
 (`docs/reviews/cj-planner-speed.md` on `ideas/cj-planner-speed`, which holds the full parser rules, a 23-row table of
 real prototype outputs and the competitor quotes). The dropped-task bug it found is already fixed in ship-27
-(`tests/e2e/quick-add.spec.ts`). Needs Jenil's yes.
+(`tests/e2e/quick-add.spec.ts`). Jenil (22 Oct): "a good idea, but it needs insane accuracy; learn from how Hinglish
+understanding systems work". The accuracy section below answers that and is now the core of the spec. Build starts
+only after the gold test set exists and Jenil says yes to this version.
 
 ## Today (measured)
 - Capturing 6 ordinary tasks ("gym 6pm", "kal subah call mom", "physics assignment fri 11pm", …) took about
@@ -50,10 +52,59 @@ in `DECISIONS.md`. The rules (full table in the cloud report):
   for single and pasted adds alike.
 - `kal` meaning "yesterday" is ignored: tasks are never in the past, and the chip shows the reading.
 
+## Accuracy: how Hinglish systems do it, and what we take
+What exists (checked 22 Oct 2026):
+- **No off-the-shelf parser reads romanized Hinglish dates with a licence we can use.** Python `dateparser`'s Hindi data
+  is Devanagari only (`कल`, `आज`; no `kal`, `subah`, `baje`). Duckling has a Hindi locale for numbers and durations,
+  but no clear Hindi time rules. Microsoft Recognizers-Text lists Hindi for numbers, not DateTime.
+- **Haptik's chatbot_ner** (an Indian chatbot company's production entity finder) does handle `kal subah 5 baje` and
+  `agle somvar`. Its method is plain: per-language word lists in CSV files with every spelling variant, plus small
+  patterns. It is GPL-3.0, so we copy the method only, never its code or data.
+- **Amazon Alexa (Hindi/Hinglish):** 60% of requests from Hindi-setting users mix languages; Amazon credits much of a
+  30% understanding gain to adding "hundreds of new words" and mapping many spellings/pronunciations of one word.
+  Coverage of real variants matters more than clever models.
+- **Research on spelling variation** (Yadav et al., ICON 2022; the `dhvani` tool): map variants through a phonetic key
+  so `subah/subha/subh/subeh` or `bahut/bohot/boht` become one form before matching.
+- **Big models** (Google MuRIL, about 238M parameters, trained on transliterated text) understand Hinglish well, but
+  are far too large for an offline phone app, and dates and times are a small closed vocabulary that rules cover.
+- **Todoist** highlights each recognised piece in the text as you type and removes it from the title; TickTick lets
+  you tap the recognised time to cancel it. Users trust what they can see.
+
+So NANDI's parser is **rules + a variant lexicon + a phonetic key + abstain when unsure + show the reading**:
+1. **Normalise each word to a key:** lowercase; collapse repeated letters (`kall`→`kal`, `shaaam`→`sham`); `aa→a`,
+   `ee→i`, `oo→u`, `w→v`; drop a final `h` (`subah`→`suba`, `subha`→`subha`→`suba`), `ph→f`. Tested on a fixed list.
+2. **Tag words from a lexicon of keys**, kept in `rules.config.ts` with every real variant we collect: DAY (`aj`,
+   `kal`, `parso`, `today`, `tmrw`, `tmr`, `kl` only next to a time word), PART (`suba`, `dopahar/dophar`, `sam`,
+   `rat`), WEEKDAY (English + Hindi), CLOCK (`6pm`, `6:30`, `6.30`), NUM, BAJE (`baje/bje/baj`), HALF (`sade/saade`,
+   `dhai`, `sava`, `pone/paune`), DUR (`15m`, `45 min`, `2 ghante/ghanta/hr`), KO, AT.
+3. **Match a small set of slot patterns over the tags** (for example `DAY? PART? (KO)? NUM BAJE`, `WEEKDAY CLOCK`,
+   `CLOCK DUR`), never free regex over the raw text. Whatever the pattern did not use stays in the title, word for word.
+4. **Abstain when unsure (precision first).** No chip, words kept as text, when: two date words conflict; a time word
+   could be a name (a capitalised `Sham`/`Shyam` mid-line, or `sham` with no number or `ko` next to it); a bare number
+   has no time cue; the result would be in the past with an explicit day; a word is all caps (`SAT`). A missing chip
+   costs one tap on the picker; a wrong chip costs trust.
+5. **Show the reading where it was found.** The recognised words are highlighted in the line (Todoist's pattern) and the
+   chip says the result in plain words (`Fri 23 Oct · 8:00 am`). ✕ or tapping the highlight undoes it.
+6. **Learn on the phone, only from the user.** When someone ✕'s a reading, that word-in-context is saved in a local
+   "don't read this" list (Settings → Typing, visible and clearable; in backup). Nothing is sent anywhere.
+
+**The gold test set comes before the code.** Collect at least **500 real task lines** typed by Jenil and 15–20 friends
+(18–25, mixed cities), the way they would type them, through a simple form with the prompt "Write 10 things you need to
+do this week, like you'd text a friend." Two people label the expected title/day/time/duration for each line and agree
+on disagreements. Split 70/30: rules are written against the 70%; the 30% is locked and never read while building.
+A larger set of made-up hard cases (generated, then checked by hand) is allowed for extra tests, never as the gate.
+
+**Release gate (on the locked 30%):**
+- **Wrong reading rate under 1%** of lines where a chip appears (a wrong day, time or duration that the user would have
+  to fix). This is the "insane accuracy" number.
+- **At least 85%** of lines that contain a time or day get a chip (the rest abstain safely).
+- Zero cases where a title word disappears without being shown in the chip.
+If the gate fails, cut the vocabulary back (fewer words, higher precision) rather than loosen the rules.
+
 ## Not doing
 No AI or server parsing (offline rule). No reminders added automatically. No points, streaks or randomness for
-capturing. No logging of typed text anywhere. Growing the word list from text that failed to parse would need a
-device-only list the user can see and clear; not in this spec.
+capturing. No logging of typed text anywhere. No copying of GPL code or data (chatbot_ner). New words get into the
+lexicon only through the gold-set process, not by guessing.
 
 ## Open questions for Jenil
 1. A task with no time: **Unplaced** (my recommendation) or today at the next hour, as now?
@@ -61,8 +112,9 @@ device-only list the user can see and clear; not in this spec.
 
 ## Kill test
 - Before release: Jenil types the 6 test tasks on his phone. Target ≤ 10 touches and every chip right.
-- Test group, 2 weeks: count wrong chips that people had to ✕ or edit (asked, not logged). If more than 1 in 10 parsed
-  lines is wrong, cut the Hindi words back to the 10 most common and retest. If people still use the old pickers
+- Release gate above, on the locked gold set, before any phone test.
+- Test group, 2 weeks: each person reports any wrong chip (asked, not logged) and how many ✕ they used. If more than
+  1 in 50 chips was wrong, cut the vocabulary back and re-run the gate. If people still use the old pickers
   more than the line, revert to the form.
 
 ## Tests
