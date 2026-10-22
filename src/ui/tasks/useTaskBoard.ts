@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -15,10 +15,18 @@ export function useTaskBoard() {
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  // The clock re-renders every screen that uses the board, so it ticks each second only while a focus
+  // timer runs, and otherwise once a minute (cj2 heavy data #2: idle Plan at a year of data used the whole CPU).
+  const timing = useRef(false);
+  useEffect(() => { timing.current = !!focus?.some(row => row.endedAt == null); }, [focus]);
   useEffect(() => {
     let lastDay = dayKey(Date.now());
-    const refresh = () => {
+    let lastMinute = Math.floor(Date.now() / 60_000);
+    const refresh = (event?: Event) => {
       const at = Date.now();
+      const minute = Math.floor(at / 60_000);
+      if (!event && !timing.current && minute === lastMinute) return;
+      lastMinute = minute;
       setNow(at);
       const currentDay = dayKey(at);
       if (currentDay !== lastDay) {
@@ -26,7 +34,7 @@ export function useTaskBoard() {
         void reposPromise.then((repos) => repos.reconcile(at)).catch((error) => setMessage(errorMessage(error)));
       }
     };
-    const interval = window.setInterval(refresh, 1000);
+    const interval = window.setInterval(() => refresh(), 1000);
     document.addEventListener('visibilitychange', refresh);
     window.addEventListener('pageshow', refresh);
     void reposPromise.then((repos) => repos.reconcile(Date.now())).catch((error) => setMessage(errorMessage(error)));

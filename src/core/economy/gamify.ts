@@ -88,7 +88,7 @@ export const badges: Badge[] = [
   // A 3-session week writes a one-short milestone and then a met one; count each week whose target was met, once (audit 16.17).
   { id: 'weeks', title: 'Weekly training targets', count: f => new Set(all(f, 'train', 'weekly').filter(x => x.inputs.target == null || Number(x.inputs.milestone) >= Number(x.inputs.target)).map(x => weekStart(x.dayKey))).size },
 ];
-export const badgeTier = (badge: Badge, facts: readonly LedgerRow[]) => RULES.gamify.badgeThresholds.filter(n => badge.count(facts) >= n).length;
+export const badgeTier = (badge: Badge, facts: readonly LedgerRow[]) => { const count = badge.count(facts); return RULES.gamify.badgeThresholds.filter(n => count >= n).length; };
 export function monthlyQuestCount(facts: readonly LedgerRow[], month: string): number { return facts.filter(f => !f.deleted && f.kind === 'daily-quest' && f.dayKey.startsWith(month)).length; }
 export function chestReady(conceptIds: readonly string[], mastered: ReadonlySet<string>): boolean { return conceptIds.length > 0 && conceptIds.every(id => mastered.has(id)); }
 export function goldReviewPassed(correct: number, total: number): boolean { return total === RULES.gamify.goldReviewItems && correct >= RULES.gamify.goldReviewPass; }

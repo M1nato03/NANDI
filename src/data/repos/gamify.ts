@@ -70,7 +70,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     const states = await db.learnConcepts.toArray();
     const mastered = new Set(states.filter(row => masteryMapState(row) === 'Mastered' || known.has(`gold-review:${row.id}`)).map(row => row.id));
     for (const pack of topics) for (const module of pack.body.modules) if (chestReady(module.concepts.map(c => c.id), mastered)) await add('unit-chest', module.id, today);
-    for (const badge of badges) for (let tier = 1; tier <= badgeTier(badge, facts); tier++) await add('badge-tier', `${badge.id}:${tier}`, today);
+    // The tier is worked out once per badge (the loop condition used to re-count the whole ledger each pass; cj2 heavy data #4).
+    for (const badge of badges) { const reached = badgeTier(badge, facts); for (let tier = 1; tier <= reached; tier++) await add('badge-tier', `${badge.id}:${tier}`, today); }
     const month = today.slice(0, 7);
     if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
     // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each

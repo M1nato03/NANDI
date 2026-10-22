@@ -40,8 +40,11 @@ test('time on screen is written as app minutes, and a running focus timer is lef
   await page.clock.install({ time: new Date('2026-10-22T12:00:00') });
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+  // Minutes are written in fives (and on leaving the app), so each write wakes the screens less often.
   await page.clock.runFor(2 * 60_000 + 20_000);
-  await expect.poll(async () => (await readLog(page, '2026-10-22'))?.appMinutes).toBe(2);
+  expect((await readLog(page, '2026-10-22'))?.appMinutes ?? 0).toBe(0);
+  await page.clock.runFor(3 * 60_000);
+  await expect.poll(async () => (await readLog(page, '2026-10-22'))?.appMinutes).toBe(5);
   await page.evaluate(async () => {
     const database = await new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
@@ -53,6 +56,6 @@ test('time on screen is written as app minutes, and a running focus timer is lef
     });
     database.close();
   });
-  await page.clock.runFor(3 * 60_000);
-  expect((await readLog(page, '2026-10-22'))?.appMinutes).toBe(2);
+  await page.clock.runFor(6 * 60_000);
+  expect((await readLog(page, '2026-10-22'))?.appMinutes).toBe(5);
 });

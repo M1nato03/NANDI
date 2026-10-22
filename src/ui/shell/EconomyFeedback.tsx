@@ -66,8 +66,10 @@ export function EconomyFeedback() {
   }, []);
   useEffect(() => {
     if (!source) return;
-    void reconcileGamify(db).catch(() => { /* Later writes retry reconciliation. */ });
     const previous = prior.current;
+    // Reconcile only when facts or the drop changed, not on every settings or app-minute write (cj2 heavy data #3, #5).
+    const signature = (from: Source) => `${from.facts.length}:${from.facts.reduce((max, row) => Math.max(max, row.updatedAt), 0)}:${from.drop?.updatedAt ?? 0}`;
+    if (!previous || signature(previous) !== signature(source)) void reconcileGamify(db).catch(() => { /* Later writes retry reconciliation. */ });
     prior.current = source;
     if (!previous) {
       const now = Date.now(), today = dayKey(now), season = seasonFor(today);
@@ -117,6 +119,8 @@ export function EconomyFeedback() {
     // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.
     const softHome = softToday(source.facts, today).state !== null && !source.settings.some(row => row.key === softMoreKey(today) && row.value === true && !row.deleted);
     if (softHome && achievement?.mode === 'tasks') return;
+    // Nothing new to celebrate: return before deriving the economy twice (cj2 heavy data #3).
+    if (!added.length && !dropFinished && !(complete(source, now) && !complete(previous, now))) return;
     const oldView = deriveEconomy(previous.facts, undefined, previous.settings, today);
     const view = deriveEconomy(source.facts, undefined, source.settings, today);
     const gain = Math.max(0, view.totalXp - oldView.totalXp);

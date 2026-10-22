@@ -12,11 +12,15 @@ export function needsFreshStart(tasks: TaskRow[], logs: DailyLogRow[], today: st
 }
 
 export function chooseNowTask(tasks: TaskRow[], focus: FocusRow[], now: number): TaskRow | undefined {
-  const open = tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !tasks.some(child => !child.deleted && child.parentId === task.id));
-  const live = open.filter(task => task.status === 'planned' && task.dayKey === dayKey(now));
+  // One pass for the parents (this ran for every open task against every task: quadratic, about 27 ms a call
+  // at a year of tasks, re-run on each Plan render; cj2 heavy data #1).
+  const parents = new Set(tasks.filter(child => !child.deleted && child.parentId).map(child => child.parentId));
+  const today = dayKey(now);
+  const open = tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !parents.has(task.id));
+  const live = open.filter(task => task.status === 'planned' && task.dayKey === today);
   const active = focus.filter(row => !row.deleted && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt);
   const focused = active.map(row => open.find(task => task.id === row.taskId)).find(Boolean);
-  return focused ?? live.sort((a, b) => (a.scheduledStart ?? 0) - (b.scheduledStart ?? 0))[0] ?? open.find(task => task.status === 'unplaced' && task.mustOrCould === 'must' && task.dayKey === dayKey(now));
+  return focused ?? live.sort((a, b) => (a.scheduledStart ?? 0) - (b.scheduledStart ?? 0))[0] ?? open.find(task => task.status === 'unplaced' && task.mustOrCould === 'must' && task.dayKey === today);
 }
 
 export function calibration(tasks: TaskRow[], focus: FocusRow[], category: string): { ratio: number; samples: number } | null {

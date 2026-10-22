@@ -15,9 +15,11 @@ export function useForegroundMinutes() {
     let day = dayKey(last);
     let pending = 0;
     let busy = false;
-    const flush = () => {
+    // Written every 5 minutes, on leaving the app and at the day roll: each write wakes every screen's
+    // live queries, and a write a minute kept a year-old phone busy while idle (cj2 heavy data #5).
+    const flush = (force = false) => {
       const whole = Math.floor(pending / 60_000);
-      if (whole <= 0) return;
+      if (whole <= 0 || (!force && whole < 5)) return;
       pending -= whole * 60_000;
       void addAppMinutes(db, day, whole, Date.now()).catch(error => recordError('promise', error));
     };
@@ -31,9 +33,9 @@ export function useForegroundMinutes() {
       try {
         if (await anyTimerRunning(db, now)) return;
         const today = dayKey(now);
-        if (today !== day) { flush(); pending = 0; day = today; }
+        if (today !== day) { flush(true); pending = 0; day = today; }
         pending += slice;
-        flush();
+        flush(document.visibilityState === 'hidden');
       } catch (error) { recordError('promise', error); } finally { busy = false; }
     };
     const tick = () => { if (document.visibilityState === 'visible') void count(); };

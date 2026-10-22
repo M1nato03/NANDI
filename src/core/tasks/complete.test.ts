@@ -21,6 +21,15 @@ describe('planner completion helpers', () => {
     expect(chooseNowTask([a, b], [focus('b', '2026-10-19T08:00:00', 10, { endedAt: undefined })], now)?.id).toBe('b');
     expect(chooseNowTask([{ ...a, status: 'unplaced', mustOrCould: 'must' }], [], now)?.id).toBe('a');
   });
+  it('picks the Now task in linear time: a year of tasks stays fast, and a parent with steps is never picked (cj2 heavy data #1)', () => {
+    const now = at('2026-10-19T09:00:00');
+    const year = Array.from({ length: 6000 }, (_, i) => task(`t${i}`, '2026-10-19T10:00:00', { status: i % 3 ? 'done' : 'planned', scheduledStart: at('2026-10-19T10:00:00') + i }));
+    const parent = task('parent', '2026-10-19T09:30:00');
+    const child = task('child', '2026-10-19T09:45:00', { parentId: 'parent' });
+    const started = performance.now();
+    expect(chooseNowTask([parent, child, ...year], [], now)?.id).toBe('child');
+    expect(performance.now() - started).toBeLessThan(50);
+  });
   it('calibrates only after five finished timed tasks in a category', () => {
     const rows = Array.from({ length: 5 }, (_, i) => task(String(i), '2026-10-19T10:00:00', { status: 'done', category: 'study' }));
     const timed = rows.map(row => focus(row.id, '2026-10-19T10:00:00', 42));
