@@ -11,7 +11,8 @@ tables where useful, no praise.
 NANDI = offline learning + habits app for Indian adults 18+ (React 19 + Vite + TS + Dexie, Android via Capacitor 8).
 Hard rules: no dark patterns, guilt, loss states, random rewards, endless feeds; no firearm content; offline-first;
 nothing leaves the phone unless the user backs up or shares. The forward-only promise: past XP, level and Shards shown
-for a finished day never drop. Release candidate: origin/ship-31 (93f711f). Batch 2 reports are on ideas/cj2-* branches
+for a finished day never drop. Newest build: origin/ship-32 (efdcb58 or later; ship-31 + economy fixes, the spec 16 §6 practice tail, a clock fix,
+lesson UI fixes and perf fixes 1-5). Use origin/ship-32 wherever a job below says ship-31. Batch 2 reports are on ideas/cj2-* branches
 (read the matching one before starting where a job says so). At the end, list each job's branch + commit + 3-line summary.
 
 ## Job 1 · Every lesson visual at phone width (branch ideas/cj3-visual-audit)
@@ -77,8 +78,10 @@ numbers that are not times, SAT/May/June, emoji, mixed scripts), each labelled w
 CSV. Mark the list clearly as synthetic: it is for extra tests, never the release gate. Report
 docs/reviews/cj3-capture-gold.md plus docs/reviews/cj3-capture-gold/synthetic-hard-cases.csv.
 
-## Job 8 · Slow phone with a year of data, after day-close (branch ideas/cj3-heavy-data)
-Repeat ideas/cj2-heavy-data exactly (same generator, sizes 30/180/365 days, 6x CPU, 360x780) on origin/ship-31, which
-adds day-close (each close stores only its own day's purchases; reconcile is coalesced). Report the same table side by
+## Job 8 · Slow phone with a year of data, after day-close and perf fixes (branch ideas/cj3-heavy-data)
+Repeat ideas/cj2-heavy-data exactly (same generator, sizes 30/180/365 days, 6x CPU, 360x780) on origin/ship-32, which
+adds day-close (each close stores only its own day's purchases; reconcile is coalesced) and perf fixes 1-5 from the cj2
+report (Set in chooseNowTask, board clock 1 s only during focus, EconomyFeedback early return, badge counts once, app
+minutes written in fives). Say for each of cj2's causes 1-8 whether it is fixed and by how much. Report the same table side by
 side with the cj2 numbers (ship-27), say what got better or worse, profile the 3 slowest steps at 365 days, and confirm
 or update each of the cj2 causes with file:line on ship-31. Report docs/reviews/cj3-heavy-data.md.
