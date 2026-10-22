@@ -16,13 +16,15 @@ describe('Capacitor notifier', () => {
   it('keeps a stable Android integer ID and schedules exact idle-safe alarms', async () => {
     const notifier = new CapacitorNotifier();
     await notifier.createChannels();
-    expect(mock.createChannel.mock.calls.map(call => call[0].name)).toEqual(['Task blocks', 'Rest timer', 'Planning']);
+    expect(mock.createChannel.mock.calls.map(call => call[0].name)).toEqual(['Task blocks', 'Rest timer', 'Planning', 'Quiet reminders']);
     expect(await notifier.requestPermission()).toBe('granted');
     const at = Date.now() + 90_000;
     await notifier.schedule({ id: 'rest:session-1', at, title: 'Rest is over', body: 'Next set', channel: 'rest' });
     expect(mock.schedule).toHaveBeenCalledWith({ notifications: [expect.objectContaining({
       id: notifId('rest:session-1'), channelId: 'rest', extra: { reminderId: 'rest:session-1' },
       schedule: { at: new Date(at), allowWhileIdle: true },
+      // Never ask for an exact alarm before the phone allows one: that opens Android's settings screen (audit F5).
+      isExactNotification: false,
     })] });
     mock.getPending.mockResolvedValueOnce({ notifications: [{ id: notifId('rest:session-1'), extra: { reminderId: 'rest:session-1' } }] });
     expect(await notifier.listPending()).toEqual(['rest:session-1']);

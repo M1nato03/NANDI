@@ -56,7 +56,7 @@ export interface ReminderRow extends EntityRow {
   refId: string;
   at: number;
   notifId?: number;
-  channel?: 'tasks' | 'rest' | 'planning';
+  channel?: 'tasks' | 'rest' | 'planning' | 'quiet';
   title?: string;
   body?: string;
   status?: 'scheduled' | 'fired' | 'cancelled';

@@ -1,7 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
-export type Reminder = { id: string; at: number; title: string; body: string; channel: 'tasks' | 'rest' | 'planning' };
+export type Reminder = { id: string; at: number; title: string; body: string; channel: 'tasks' | 'rest' | 'planning' | 'quiet' };
 export interface Notifier {
   checkPermission(): Promise<'granted' | 'denied' | 'prompt'>;
   requestPermission(): Promise<'granted' | 'denied' | 'prompt'>;
@@ -40,11 +40,16 @@ export class WebNotifier implements Notifier {
 }
 
 export class CapacitorNotifier implements Notifier {
+  /** Read once per reconcile. Asking for an exact alarm without the grant opens Android's settings screen (audit F5). */
+  private exact = false;
+  async refreshExact(): Promise<void> { try { this.exact = await this.exactAlarmGranted(); } catch { this.exact = false; } }
   async createChannels(): Promise<void> {
     await Promise.all([
       LocalNotifications.createChannel({ id: 'tasks', name: 'Task blocks', importance: 4 }),
       LocalNotifications.createChannel({ id: 'rest', name: 'Rest timer', importance: 4 }),
       LocalNotifications.createChannel({ id: 'planning', name: 'Planning', importance: 3 }),
+      // Wind-down and lights-out reminders: shown without sound or vibration (audit F4).
+      LocalNotifications.createChannel({ id: 'quiet', name: 'Quiet reminders', importance: 2, vibration: false }),
     ]);
   }
   async requestPermission(): Promise<'granted' | 'denied' | 'prompt'> {
@@ -60,6 +65,7 @@ export class CapacitorNotifier implements Notifier {
       id: notifId(reminder.id), title: reminder.title, body: reminder.body, channelId: reminder.channel,
       extra: { reminderId: reminder.id },
       schedule: { at: new Date(reminder.at), allowWhileIdle: true },
+      isExactNotification: this.exact && reminder.channel !== 'planning',
     }] });
     if (result.warning) console.warn(result.warning.message);
   }

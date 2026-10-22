@@ -2,35 +2,45 @@ import { Capacitor } from '@capacitor/core';
 import { liveQuery } from 'dexie';
 import { db } from '../data/db';
 import { getOrCreateDeviceId } from '../data/device';
-import type { ReminderRow, SessionRow, TaskRow } from '../data/types';
-import { mayScheduleReminder } from '../core/notificationBudget';
+import type { ReminderRow, SessionRow, SettingRow, TaskRow } from '../data/types';
+import { reminderPlacement } from '../core/notificationBudget';
+import { RULES } from '../core/rules.config';
 import { CapacitorNotifier, notifId, notifier, type Reminder } from './notifier';
 import { ulid } from 'ulidx';
 import { reconcileNudges } from './nudgeSync';
 
-export function wantedReminders(tasks: TaskRow[], sessions: SessionRow[], now: number): Reminder[] {
-  const common = { now, optIn: true, scheduledEngagement: [], bedtime: '01:30', shutdown: '23:15' };
-  return [
-    ...tasks.filter(row => row.deleted === 0 && row.status === 'planned' && row.scheduledStart != null &&
-      mayScheduleReminder({ ...common, kind: 'task', at: row.scheduledStart! })).map(row => ({
-      id: `task:${row.id}`, at: row.scheduledStart!, title: 'Task block starts', body: row.title, channel: 'tasks' as const,
-    })),
-    ...sessions.filter(row => row.deleted === 0 && row.status === 'active' && row.restEndsAt != null &&
-      mayScheduleReminder({ ...common, kind: 'rest', at: row.restEndsAt! })).map(row => ({
-      id: `rest:${row.id}`, at: row.restEndsAt!, title: 'Rest is over', body: 'Your next set is ready.', channel: 'rest' as const,
-    })),
-  ];
+const clock = (value: unknown, fallback: string) => typeof value === 'string' && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value) ? value : fallback;
+const setting = (rows: readonly SettingRow[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
+
+/** The same bedtime and shutdown reading as the nudges, so reminders follow the user's own night (audit F2). */
+export function wantedReminders(tasks: TaskRow[], sessions: SessionRow[], now: number, settings: readonly SettingRow[] = []): Reminder[] {
+  const bedtime = clock(setting(settings, 'planner.bedtime'), RULES.night.defaultBedtime);
+  const shutdown = clock(setting(settings, 'planner.shutdown'), RULES.night.defaultShutdown);
+  const common = { now, optIn: true, scheduledEngagement: [], bedtime, shutdown };
+  const reminders: Reminder[] = [];
+  for (const row of tasks) {
+    if (row.deleted !== 0 || row.status !== 'planned' || row.scheduledStart == null) continue;
+    const placement = reminderPlacement({ ...common, kind: 'task', at: row.scheduledStart });
+    if (placement !== 'skip') reminders.push({ id: `task:${row.id}`, at: row.scheduledStart, title: 'Task block starts', body: row.title, channel: placement === 'quiet' ? 'quiet' : 'tasks' });
+  }
+  for (const row of sessions) {
+    if (row.deleted !== 0 || row.status !== 'active' || row.restEndsAt == null) continue;
+    const placement = reminderPlacement({ ...common, kind: 'rest', at: row.restEndsAt });
+    if (placement !== 'skip') reminders.push({ id: `rest:${row.id}`, at: row.restEndsAt, title: 'Rest is over', body: 'Your next set is ready.', channel: placement === 'quiet' ? 'quiet' : 'rest' });
+  }
+  return reminders;
 }
 
 /** Reconciles persisted reminders after edits, resume, and cold start. */
 export async function reconcileReminders(now = Date.now()): Promise<void> {
-  const [tasks, sessions, stored, pending] = await Promise.all([
-    db.tasks.toArray(), db.sessions.toArray(), db.reminders.toArray(), notifier.listPending(),
+  const [tasks, sessions, stored, pending, settings] = await Promise.all([
+    db.tasks.toArray(), db.sessions.toArray(), db.reminders.toArray(), notifier.listPending(), db.settings.toArray(),
   ]);
-  const desired = wantedReminders(tasks, sessions, now);
+  const desired = wantedReminders(tasks, sessions, now, settings);
   const byRef = new Map(desired.map(row => [row.id, row]));
   const pendingIds = new Set(pending);
   for (const row of stored.filter(row => row.status === 'scheduled' && (row.refType === 'task' || row.refType === 'session'))) {
+    if (row.at <= now) { await db.reminders.put({ ...row, status: 'fired', updatedAt: now }); continue; }
     const next = byRef.get(`${row.refType === 'session' ? 'rest' : 'task'}:${row.refId}`);
     if (!next || next.at !== row.at) {
       await notifier.cancel(row.id);
@@ -42,8 +52,9 @@ export async function reconcileReminders(now = Date.now()): Promise<void> {
     if (await notifier.checkPermission() !== 'granted') return;
   } else if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
   const deviceId = await getOrCreateDeviceId(db, now);
+  if (notifier instanceof CapacitorNotifier) await notifier.refreshExact();
   for (const reminder of desired) {
-    const refType = reminder.channel === 'rest' ? 'session' : 'task';
+    const refType = reminder.id.startsWith('rest:') ? 'session' : 'task';
     const refId = reminder.id.split(':').slice(1).join(':');
     const previous = stored.find(row => row.refType === refType && row.refId === refId);
     const id = previous?.id ?? ulid(now);

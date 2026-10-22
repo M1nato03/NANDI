@@ -7,6 +7,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { defaultSlot, splitEstimates, splitPreview, type SplitPlacement } from './model';
 import type { TaskRepos } from './useTaskBoard';
 import { useModalFocus } from '../shell/useModalFocus';
+import { askNotificationsOnce } from '../../platform/notifyPermission';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 
@@ -49,7 +50,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
           const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now), ...(repeat && schedule === 'today' ? { repeat } : {}) }, now);
           if (schedule === 'someday') await repos.postpone(task.id, now + 1, { newStart: null, choice: 'someday', baselineWeek: true });
         }, 'Task added.');
-      if (ok) { setTitle(''); setRepeat(''); setOpen(false); setFeedback(''); }
+      if (ok) { setTitle(''); setRepeat(''); setOpen(false); setFeedback(''); if (scheduledStart !== undefined) void askNotificationsOnce().catch(() => undefined); }
     } finally {
       setSubmitting(false);
     }
@@ -61,7 +62,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [] }: { run: Run; tasks?
     setSubmitting(true);
     try {
       const ok = await run((repos, now) => repos.createSplitTask(preview.title, parts, now, preview.scheduledStart, { titles: preview.names, priority: preview.priority, placement: preview.placement, category }), 'Split task saved.');
-      if (ok) { setPreview(null); setTitle(''); setOpen(false); setFeedback(''); }
+      if (ok) { setPreview(null); setTitle(''); setOpen(false); setFeedback(''); if (preview.scheduledStart !== undefined) void askNotificationsOnce().catch(() => undefined); }
     } finally { setSubmitting(false); }
   }
   const counts = preview ? Array.from({ length: Math.floor(preview.total / 25) - 1 }, (_, index) => index + 2).filter((count) => splitEstimates(preview.total, count)) : [];
