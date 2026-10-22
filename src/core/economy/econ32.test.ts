@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
 import { deriveEconomy } from './deriveEconomy';
 import { questPool } from './gamify';
+import { purchaseDecision } from './shop';
 
 // Economy review 32 (cj2 economy simulation), fixes that need no rule decision. Each counts from economy.v3From.
 let serial = 0;
@@ -129,6 +130,19 @@ describe('clock moved back (cj2 test gaps 3.5)', () => {
     expect(back.shards).toBeGreaterThanOrEqual(ahead.shards);
     // The day list, streak and "today" stay on the real today (the 20th), not the later fact day.
     expect(back.days.at(-1)!.dayKey).toBe('2026-10-20');
+  });
+  it('Shards earned on later-dated days can be spent once, and the same balance shows when the clock catches up', () => {
+    const ahead = Array.from({ length: 10 }, (_, i) => hatTrick(new Date(Date.UTC(2026, 10, 3 + i)).toISOString().slice(0, 10))).flat();
+    const today = '2026-11-02', caughtUp = '2026-11-12';
+    const before = deriveEconomy(ahead, undefined, v3, today);
+    expect(before.shards).toBeGreaterThanOrEqual(50);
+    const decision = purchaseDecision('freeze', ahead, v3, today);
+    expect(decision.ok).toBe(true);
+    const bought = [...ahead, row(today, 'economy', 'purchase', { itemId: 'freeze', price: 50, accepted: true })];
+    const now = deriveEconomy(bought, undefined, v3, today);
+    expect(now.shards).toBe(before.shards - 50);
+    // Once the real clock reaches the last fact day, nothing is charged twice.
+    expect(deriveEconomy(bought, undefined, v3, caughtUp).shards).toBe(deriveEconomy(ahead, undefined, v3, caughtUp).shards - 50);
   });
   it('a stray fact years ahead does not make the replay walk years of days', () => {
     const facts = [task('2026-10-20'), task('2031-01-01')];
