@@ -127,9 +127,13 @@ describe('clock moved back (cj2 test gaps 3.5)', () => {
     expect(back.totalXp).toBeGreaterThanOrEqual(ahead.totalXp);
     expect(back.level).toBeGreaterThanOrEqual(ahead.level);
     expect(back.shards).toBeGreaterThanOrEqual(ahead.shards);
+    // The day list, streak and "today" stay on the real today (the 20th), not the later fact day.
+    expect(back.days.at(-1)!.dayKey).toBe('2026-10-20');
   });
   it('a stray fact years ahead does not make the replay walk years of days', () => {
     const facts = [task('2026-10-20'), task('2031-01-01')];
-    expect(deriveEconomy(facts, undefined, v3, '2026-10-20').days.length).toBeLessThanOrEqual(122);
+    const started = performance.now();
+    expect(deriveEconomy(facts, undefined, v3, '2026-10-20').days.at(-1)!.dayKey).toBe('2026-10-20');
+    expect(performance.now() - started).toBeLessThan(500);
   });
 });

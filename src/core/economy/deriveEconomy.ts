@@ -250,10 +250,19 @@ export function deriveEconomy(
   facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[] = RULES_HISTORY,
   settings: readonly SettingRow[] | Record<string, unknown> = [], today: string,
 ): EconomyView {
-  // A phone clock that ran ahead and was set back leaves facts dated after today. They still count, so the
-  // view runs to the latest fact day (at most 120 days ahead) and XP, level and Shards never drop (cj2 test gaps 3.5).
+  const view = viewUpTo(facts, history, settings, today);
+  // A phone clock that ran ahead and was set back leaves facts dated after today. Days, streak, quests and
+  // Hat-tricks stay on the real today, but the totals also count those facts, so XP, level and Shards never
+  // drop (cj2 test gaps 3.5). The look-ahead stops at 120 days, so a stray far-future fact costs little.
   const latest = facts.reduce((max, fact) => !fact.deleted && fact.dayKey > max ? fact.dayKey : max, today);
-  const end = latest > today ? (latest <= addEconomyDays(today, 120) ? latest : addEconomyDays(today, 120)) : today;
+  if (latest <= today) return view;
+  const ahead = viewUpTo(facts, history, settings, latest <= addEconomyDays(today, 120) ? latest : addEconomyDays(today, 120));
+  const top = ahead.totalXp > view.totalXp ? ahead : view;
+  return { ...view, totalXp: top.totalXp, level: Math.max(view.level, ahead.level), nextLevelXp: top.nextLevelXp,
+    shards: Math.max(view.shards, ahead.shards), owned: [...new Set([...view.owned, ...ahead.owned])] };
+}
+
+function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[], settings: readonly SettingRow[] | Record<string, unknown>, end: string): EconomyView {
   const { replay, closes } = replayWithCloses(facts, history, settings, end);
   if (!closes.size) return replay.view;
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
