@@ -66,11 +66,50 @@ it('a restore keeps the higher close for each day, field by field', async () => 
   // This phone later shows more for that day than the backup holds.
   await db.settings.put({ key: closeKey('2026-11-02'), value: { total: 90, sp: 30, streak: 3, shards: 1, owned: ['theme:linen'] }, updatedAt: 2, deleted: 0, deviceId: 'test' });
   await importBackup(db, backup);
-  expect((await db.settings.get(closeKey('2026-11-02')))!.value).toEqual({ total: 90, sp: 40, streak: 3, shards: 2, owned: ['banner:dawn', 'theme:linen'] });
+  expect((await db.settings.get(closeKey('2026-11-02')))!.value).toMatchObject({ total: 90, sp: 40, streak: 3, shards: 2, owned: ['banner:dawn', 'theme:linen'] });
 });
 
 it('merges two closes for one day by keeping the higher of each number', () => {
   expect(mergeClose({ total: 5, sp: 9, streak: 1, shards: 0, owned: ['a'] }, { total: 7, sp: 2, streak: 4, shards: 3, owned: ['b', 'a'] }))
-    .toEqual({ total: 7, sp: 9, streak: 4, shards: 3, owned: ['a', 'b'] });
-  expect(mergeClose(undefined, { total: 1 })).toEqual({ total: 1 });
+    .toMatchObject({ total: 7, sp: 9, streak: 4, shards: 3, owned: ['a', 'b'] });
+  expect(mergeClose(undefined, { total: 1 })).toMatchObject({ total: 1, purchases: [] });
+  // The pause belongs to whichever close has the longer streak; purchases are a union by id.
+  expect(mergeClose({ streak: 5, paused: true, purchases: [{ id: 'p1', itemId: 'freeze', price: 50, dayKey: '2026-11-02' }] },
+    { streak: 3, paused: false, purchases: [{ id: 'p2', itemId: 'banner:dawn', price: 100, dayKey: '2026-11-03' }] }))
+    .toMatchObject({ streak: 5, paused: true, purchases: [{ id: 'p1' }, { id: 'p2' }] });
+});
+
+it('raises a close when a late fact lifts the day, and keeps it when a later fact would revoke it (high-water)', async () => {
+  const db = createDb(`gamify-close-${++serial}`); opened.push(db);
+  const day = '2026-11-03';
+  await db.ledger.add(done(day));
+  await reconcileGamify(db, at('2026-11-04'));
+  const first = (await db.settings.get(closeKey(day)))!.value as { total: number };
+  // A sync brings a workout for that day: the close rises with it.
+  await db.ledger.add({ id: 'session:late', mode: 'train', kind: 'session', refId: 'late', dayKey: day,
+    inputs: { plannedExercises: 2, touchedExercises: 2, plannedSets: 6, workingSets: 6 }, updatedAt: at(day, '20:00'), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-05'));
+  const raised = (await db.settings.get(closeKey(day)))!.value as { total: number };
+  expect(raised.total).toBeGreaterThan(first.total);
+  // Taking that workout away again (a revoking fact) cannot pull the day back down.
+  await db.ledger.update('session:late', { deleted: 1 });
+  await reconcileGamify(db, at('2026-11-06'));
+  expect(((await db.settings.get(closeKey(day)))!.value as { total: number }).total).toBe(raised.total);
+  const view = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-06');
+  expect(view.days.find(item => item.dayKey === day)!.total).toBe(raised.total);
+});
+
+it('a restore that drops a purchase keeps both the item and its spend', async () => {
+  const db = createDb(`gamify-close-${++serial}`); opened.push(db);
+  const day = '2026-11-03';
+  await db.settings.put({ key: 'economy.v2From', value: '2026-10-01', updatedAt: 1, deleted: 0, deviceId: 'test' });
+  for (let index = 0; index < 30; index++) await db.ledger.add({ id: `badge:${index}`, mode: 'gamify', kind: 'badge-tier', refId: `b${index}`, dayKey: day, inputs: {}, updatedAt: at(day), deleted: 0, deviceId: 'test' });
+  await db.ledger.add({ id: 'purchase:banner', mode: 'economy', kind: 'purchase', refId: 'banner', dayKey: day, inputs: { itemId: 'banner:dawn', price: 100 }, updatedAt: at(day, '13:00'), deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-04'));
+  const before = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-04');
+  // The restored ledger lost the purchase fact; the close still knows it.
+  await db.ledger.delete('purchase:banner');
+  const after = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-04');
+  expect(after.owned).toContain('banner:dawn');
+  expect(after.shards).toBe(before.shards);
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, closeKey, dayCloseOf, deriveEconomy } from './deriveEconomy';
+import { addEconomyDays, closeKey, closesFor, deriveEconomy, mergeClose } from './deriveEconomy';
 
 let serial = 0;
 const row = (dayKey: string, mode: string, kind: string, inputs: Record<string, unknown> = {}): LedgerRow => ({
@@ -10,10 +10,16 @@ const setting = (key: string, value: unknown): SettingRow => ({ key, value, upda
 const task = (day: string) => row(day, 'tasks', 'done', { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 });
 const full = (day: string) => row(day, 'train', 'session', { plannedExercises: 2, touchedExercises: 2, plannedSets: 6, workingSets: 6 });
 const board = (day: string) => row(day, 'mind', 'board', { daily: true });
-/** Closes every day from `from` up to (not including) `today`, the way reconcileGamify does at each first open. */
+/** Runs the close step of reconcileGamify once on each first open from the day after `from` to `today`. */
 function closeDays(facts: LedgerRow[], settings: SettingRow[], from: string, today: string): SettingRow[] {
-  const rows = [...settings];
-  for (let day = from; day < today; day = addEconomyDays(day, 1)) rows.push(setting(closeKey(day), dayCloseOf(facts, rows, day)));
+  let rows = [...settings];
+  for (let open = addEconomyDays(from, 1); open <= today; open = addEconomyDays(open, 1)) {
+    for (const [day, candidate] of closesFor(facts, rows, open)) {
+      if (day < from) continue;
+      const existing = rows.find(row => row.key === closeKey(day))?.value;
+      rows = [...rows.filter(row => row.key !== closeKey(day)), setting(closeKey(day), mergeClose(existing, candidate))];
+    }
+  }
   return rows;
 }
 const v2 = [setting('economy.v2From', '2026-10-01')];
@@ -121,5 +127,38 @@ describe('closing the books (economy second opinion 22)', () => {
     const view = deriveEconomy(late, undefined, v2, '2026-11-04');
     expect(view.owned).toContain('banner:dawn');
     expect(view.shards).toBe(Math.max(0, deriveEconomy(late.filter(item => item !== purchase), undefined, v2, '2026-11-04').shards - 100));
+  });
+
+  it('a close taken while the streak was paused never restarts the old streak', () => {
+    const facts = ['2026-11-02', '2026-11-03', '2026-11-04'].flatMap(day => [task(day), full(day), board(day)]);
+    // 4 rest days arrive on 1 Nov; spend them with four empty days, then miss once more so the streak pauses.
+    const settings = closeDays(facts, v2, '2026-11-02', '2026-11-11');
+    const paused = settings.find(row => row.key === closeKey('2026-11-09'))!.value as { paused: boolean; streak: number };
+    expect(paused.paused).toBe(true);
+    // A day long after the pause: the old run does not come back just because the close held its count.
+    const later = [...facts, task('2026-11-12'), full('2026-11-12'), board('2026-11-12')];
+    expect(deriveEconomy(later, undefined, settings, '2026-11-13').streak.days).toBe(deriveEconomy(later, undefined, v2, '2026-11-13').streak.days);
+  });
+
+  it('a late purchase dated on or before a closed day is still charged', () => {
+    const day = '2026-11-03', today = '2026-11-05';
+    const earned = [task(day), full(day), ...Array.from({ length: 30 }, () => row(day, 'gamify', 'badge-tier'))];
+    const settings = closeDays(earned, v2, day, today);
+    const before = deriveEconomy(earned, undefined, settings, today).shards;
+    const late = [...earned, row(day, 'economy', 'purchase', { itemId: 'banner:dawn', price: 100 })];
+    const view = deriveEconomy(late, undefined, settings, today);
+    expect(view.owned).toContain('banner:dawn');
+    expect(view.shards).toBe(before - 100);
+  });
+
+  it('keeps Season SP when a closed day is later re-scored lower', () => {
+    const day = '2026-11-03', today = '2026-11-05';
+    const answers = Array.from({ length: 5 }, () => row(day, 'mind', 'learn-answer', { dropId: `drop:daily:${day}`, afterBedtime: false, correct: true }));
+    const facts = [task(day), full(day), board(day), ...answers, row(day, 'gamify', 'perfect-drop')];
+    const settings = closeDays(facts, v2, day, today);
+    const sp = deriveEconomy(facts, undefined, settings, today).season.sp;
+    const late = [...facts, row(day, 'mind', 'learn-answer', { dropId: `drop:daily:${day}`, afterBedtime: true })];
+    expect(deriveEconomy(late, undefined, v2, today).season.sp).toBeLessThan(sp);
+    expect(deriveEconomy(late, undefined, settings, today).season.sp).toBe(sp);
   });
 });

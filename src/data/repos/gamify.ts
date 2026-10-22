@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, dayCloseOf, deriveEconomy } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeClose } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -17,6 +17,8 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
   await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {
+    // Checked again inside the transaction: a restore may have started while this one waited for its lock.
+    if (restoreActive()) return;
     // The 22 Oct economy fixes count from the first day this build ran (earlier days keep what they showed).
     if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
@@ -47,18 +49,17 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     for (const badge of badges) for (let tier = 1; tier <= badgeTier(badge, facts); tier++) await add('badge-tier', `${badge.id}:${tier}`, today);
     const month = today.slice(0, 7);
     if (monthlyQuestCount(facts, month) >= 20) await add('monthly-challenge', month, today);
-    // Close the books: each day that is over keeps what it showed, once, so no later replay can lower it
-    // (economy second opinion 22). The first run closes up to 120 past days with activity behind them.
+    // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each
+    // run, never lowered), so no later sync, import, restore or rule fix can lower it (second opinions 22, 25).
     const rows = await db.settings.toArray();
     // A close dated today or later came from a clock that was set ahead: that day has not ended, so drop it.
     for (const row of rows.filter(item => item.key.startsWith(CLOSE_PREFIX) && item.key.slice(CLOSE_PREFIX.length) >= today)) await db.settings.delete(row.key);
-    const closed = rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX) && row.key.slice(CLOSE_PREFIX.length) < today).map(row => row.key.slice(CLOSE_PREFIX.length)).sort();
-    const first = facts.map(fact => fact.dayKey).filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key)).sort()[0];
-    let day = closed.at(-1) ? addEconomyDays(closed.at(-1)!, 1) : first;
-    if (day && day < addEconomyDays(today, -120)) day = addEconomyDays(today, -120);
-    for (; day && day < today; day = addEconomyDays(day, 1)) {
-      const row = { key: closeKey(day), value: dayCloseOf(facts, rows, day), updatedAt: now, deleted: 0 as const, deviceId };
-      await db.settings.put(row); rows.push(row);
+    const oldest = addEconomyDays(today, -120);
+    for (const [day, candidate] of closesFor(facts, rows, today)) {
+      const existing = rows.find(row => row.key === closeKey(day) && !row.deleted)?.value;
+      if (day < oldest && existing === undefined) continue;
+      const merged = mergeClose(existing, candidate);
+      if (merged && JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
     }
   }));
 }
