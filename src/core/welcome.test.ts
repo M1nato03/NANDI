@@ -1,18 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { firstAction, toggleGoal } from './welcome';
+import { firstAction } from './welcome';
 
-describe('first run', () => {
-  it('opens on the quickest finish among the picks', () => {
-    expect(firstAction(['plan', 'learn']).route).toBe('learn/drop');
-    expect(firstAction(['sleep', 'mind']).route).toBe('mind/board');
-    expect(firstAction(['sleep', 'train']).route).toBe('train');
-    expect(firstAction(['sleep', 'plan']).route).toBe('plan');
-    expect(firstAction(['sleep']).route).toBe('you/night');
-    expect(firstAction([]).route).toBe('learn/drop');
+describe('first run (spec 18)', () => {
+  it('sends each single pick straight to its first win', () => {
+    expect(firstAction('learn').route).toBe('learn/drop');
+    expect(firstAction('mind').route).toBe('mind/board/daily');
+    expect(firstAction('train').route).toBe('train/easy');
+    expect(firstAction('plan').route).toBe('plan');
+    expect(firstAction('sleep').route).toBe('you/night');
+    expect(firstAction(undefined).route).toBe('learn/drop');
   });
-  it('keeps at most two picks, dropping the oldest', () => {
-    expect(toggleGoal([], 'learn')).toEqual(['learn']);
-    expect(toggleGoal(['learn', 'train'], 'sleep')).toEqual(['train', 'sleep']);
-    expect(toggleGoal(['learn', 'train'], 'learn')).toEqual(['train']);
+  it('offers the night routine after bedtime, whatever was picked', () => {
+    expect(firstAction('mind', true)).toEqual({ route: 'night', label: 'Start my night routine' });
   });
 });

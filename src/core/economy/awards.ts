@@ -16,8 +16,7 @@ export function calculateTasksDayXp(
   rules: Rules = RULES,
   history: readonly RulesHistoryEntry[] = RULES_HISTORY,
 ): number {
-  let total = 0;
-  let doneCount = 0;
+  const awards: { xp: number; overflow: number }[] = [];
   let clutchGiven = 0;
   let quickWinsGiven = 0;
   let dayRules = rules;
@@ -71,11 +70,12 @@ export function calculateTasksDayXp(
       );
       clutchGiven++;
     }
-    if (doneCount >= effective.tasks.fullRateTasksPerDay)
-      xp *= effective.tasks.overflowMultiplier;
-    total += xp;
-    doneCount++;
+    awards.push({ xp, overflow: effective.tasks.overflowMultiplier });
   }
+  // The day's largest awards take the full-rate places, so a task imported or synced later can only
+  // add XP, never push an earlier task to half rate (forward-only; economy audit 16.1).
+  const fullRate = dayRules.tasks.fullRateTasksPerDay;
+  const total = [...awards].sort((a, b) => b.xp - a.xp).reduce((sum, award, index) => sum + (index < fullRate ? award.xp : award.xp * award.overflow), 0);
   return Math.min(total, dayRules.tasks.dailyCap);
 }
 

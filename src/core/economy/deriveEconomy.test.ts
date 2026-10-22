@@ -74,8 +74,31 @@ describe('economy replay', () => {
     for (const answer of answers) answer.inputs.afterBedtime = true;
     expect(view([...answers, finished]).days[0]).toMatchObject({ mind: 0, mindSlot: false });
     // A brand-new learner's drop can be the lesson alone.
-    expect(view([row(day, 'learn', 'learn-lesson'), finished]).days[0]).toMatchObject({ mind: 15, mindSlot: true });
-    expect(view([row(day, 'learn', 'learn-lesson')]).days[0]).toMatchObject({ mindSlot: false });
+    const lesson = (afterBedtime: boolean) => row(day, 'learn', 'learn-lesson', { dropId: `drop:daily:${day}`, afterBedtime });
+    expect(view([lesson(false), finished]).days[0]).toMatchObject({ mind: 15, mindSlot: true });
+    expect(view([lesson(false)]).days[0]).toMatchObject({ mindSlot: false });
+    // A lesson finished after bedtime earns nothing (second opinion 3).
+    expect(view([lesson(true), finished]).days[0]).toMatchObject({ mind: 0, mindSlot: false });
+  });
+  it('never lowers past XP when an earlier fact arrives later (forward-only)', () => {
+    const day = '2026-11-03';
+    // Seven S tasks, then an L task: an S imported with an earlier time must not push the L to half rate.
+    const base = [...Array.from({ length: 7 }, () => task(day, 'S')), task(day, 'L')];
+    const before = view(base).days[0]!.total;
+    const imported = { ...task(day, 'S'), updatedAt: -1 };
+    expect(view([imported, ...base]).days[0]!.total).toBeGreaterThanOrEqual(before);
+    // A recorded welcome-back gift stays when the missed day before it later gains a fact.
+    const gift = (mon: string) => [task('2026-11-02', 'M'), task(mon, 'M'), { ...row(mon, 'gamify', 'welcome-back'), refId: mon }];
+    const shown = view(gift('2026-11-04'), '2026-11-04').totalXp;
+    expect(view([...gift('2026-11-04'), task('2026-11-03', 'S')], '2026-11-04').totalXp).toBeGreaterThanOrEqual(shown);
+  });
+  it('keeps the old streak and Focus maths on days before this build first ran', () => {
+    const mon = '2026-11-02';
+    const facts = [task(mon, 'M'), task('2026-11-08', 'M'), full('2026-11-08'), caseFact('2026-11-08'), task('2026-11-09', 'M'), full('2026-11-09'), caseFact('2026-11-09')];
+    const after = deriveEconomy(facts, undefined, [{ key: 'economy.v2From', value: '2026-11-01', updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-09');
+    const before = deriveEconomy(facts, undefined, [{ key: 'economy.v2From', value: '2026-11-20', updatedAt: 1, deleted: 0, deviceId: 'test' }], '2026-11-09');
+    expect(after.streak.days).toBe(3);
+    expect(before.streak.days).toBe(4);
   });
   it('holds a streak on a banked rest day and leaves the weekly rest weekday untouched', () => {
     const mon = '2026-11-02';

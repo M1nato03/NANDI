@@ -2,6 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
+import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -12,7 +13,9 @@ import type { LedgerRow } from '../types';
 export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
-  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog], async () => {
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {
+    // The 22 Oct economy fixes count from the first day this build ran (earlier days keep what they showed).
+    if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
     const known = new Set(facts.map(f => f.id));
     const add = async (kind: string, refId: string, day: string, inputs: Record<string, unknown> = {}, at = now) => {
@@ -26,8 +29,13 @@ export async function reconcileGamify(db: NandiDb, now = Date.now()): Promise<vo
     const drop = await db.learnDrops.get(`drop:daily:${today}`);
     if (drop && drop.drop.items.length > 0 && drop.drop.cursor >= drop.drop.items.length) {
       await add('learn-drop', today, today);
-      if (perfectDrop(facts, drop.id, drop.drop.items.filter(item => !item.lesson).length)) await add('perfect-drop', today, today);
+      // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
+      const scored = drop.drop.items.filter(item => !item.lesson).length;
+      if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today);
     }
+    // Record today's welcome-back gift once shown, so a later sync can never take it away.
+    const settings = await db.settings.toArray();
+    if (deriveEconomy(facts, undefined, settings, today).days.at(-1)?.welcome) await add('welcome-back', today, today);
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
     if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`))) await add('focus-boost', today, today);
     const states = await db.learnConcepts.toArray();

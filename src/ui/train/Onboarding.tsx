@@ -43,6 +43,9 @@ export function Onboarding({ save, busy }: { save: (result: OnboardingResult) =>
   }
   return <section className="train-onboarding"><p className="eyebrow">Rank assessment · about 10 minutes</p><h1>Train</h1>
     {stage === 'setup' ? <>
+      {/* Spec 18: a new person can start without the 10-minute test; the ladders move them up as reps get easy. */}
+      <div className="card train-easy"><h2>New to training?</h2><p>Skip the test and start on the easiest step of every move. Each move steps up once your reps get easy.</p>
+        <button type="button" disabled={busy} onClick={() => save({ ...result, track: 'bodyweight', equipment: initialEquipment, placement: Object.fromEntries(patterns.map(name => [name, 1])) })}>Start easy, skip the test</button></div>
       <div className="card"><h2>Set your starting line</h2><p>General fitness information, not medical advice. Start easy. Clean reps count.</p>
         <label>Track <select aria-label="Training track" value={track} onChange={event => setTrack(event.target.value as Track)}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
         {track === 'gym' && <p>Your first session is a light load check. Start very light. Find a load for 12 clean reps, adding only your smallest available step. Use that load for the first two sessions.</p>}

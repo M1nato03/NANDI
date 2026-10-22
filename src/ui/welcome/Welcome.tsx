@@ -4,7 +4,7 @@ import { getOrCreateDeviceId } from '../../data/device';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time/dayKey';
 import { logHasActivity } from '../../core/guard';
-import { firstAction, GOALS, toggleGoal, WELCOME_BEDTIME, type Goal } from '../../core/welcome';
+import { firstAction, GOALS, STARTER_TOPIC, WELCOME_BEDTIME, type Goal } from '../../core/welcome';
 import { isAfterBedtime } from '../../core/time/nightTimeline';
 import { Cast } from '../cast/Cast';
 import { recordError } from '../errorRing';
@@ -12,6 +12,8 @@ import { go } from '../shell/router';
 import './welcome.css';
 
 const DONE_KEY = 'welcome.done';
+// Placeholder until Jenil and a lawyer finalise the notice (before 13 May 2027).
+const PRIVACY_NOTE = "NANDI keeps your tasks, workouts, answers and settings in this phone's storage. They are not sent to us. The app checks our server for updates, and that check carries none of your activity. A backup or a share leaves the phone only when you choose to make one. Removing the app or clearing its data erases it. This notice is a draft and will be finalised before launch.";
 // The Playwright build skips the first run unless a test asks for it with ?welcome.
 const allowed = () => import.meta.env.VITE_E2E !== '1' || new URLSearchParams(location.search).has('welcome');
 
@@ -47,15 +49,19 @@ export function useWelcomeNeeded(): [boolean, () => void] {
 
 export function Welcome({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0);
-  const [goals, setGoals] = useState<Goal[]>([]);
+  const [adult, setAdult] = useState(false);
+  const [goal, setGoal] = useState<Goal>();
   const [bedtime, setBedtime] = useState(WELCOME_BEDTIME);
   const [saving, setSaving] = useState(false);
   const [openedAt] = useState(() => Date.now());
-  const action = firstAction(goals, isAfterBedtime(openedAt, bedtime));
+  const action = firstAction(goal, isAfterBedtime(openedAt, bedtime));
   const finish = async () => {
     setSaving(true);
     try {
-      await markDone([{ key: 'profile.goals', value: goals }, { key: 'planner.bedtime', value: bedtime }]);
+      const extra: { key: string; value: unknown }[] = [{ key: 'profile.goals', value: goal ? [goal] : [] }, { key: 'profile.adultConfirmedAt', value: new Date(openedAt).toISOString() }, { key: 'planner.bedtime', value: bedtime }];
+      // Learn opens straight on its first lesson; topics can be changed from Learn later.
+      if (goal === 'learn') extra.push({ key: 'learn.selectedTopics', value: [STARTER_TOPIC] });
+      await markDone(extra);
       onDone();
       go(action.route);
       if (action.route === 'plan') window.setTimeout(() => document.querySelector<HTMLInputElement>('.quick-add-field input')?.focus(), 300);
@@ -68,21 +74,22 @@ export function Welcome({ onDone }: { onDone: () => void }) {
       {step === 0 && <>
         <Cast name="Nandi" pose="cheer" size={120} title="Nandi saying hello" />
         <h1>Hi, I'm Nandi.</h1>
-        <p>Swap a little scrolling for things you'll be glad you did: sleep, learning, training, puzzles and your own plans.</p>
-        <p className="small">Everything stays on this phone. No account, no ads.</p>
-        <button type="button" onClick={() => setStep(1)}>Let's start</button>
+        <p>Swap a little scrolling for things you'll be glad you did.</p>
+        <p className="small">Your activity is saved on this phone. It leaves only when you back it up or share it.</p>
+        <details className="welcome-privacy"><summary>Privacy</summary><p className="small">{PRIVACY_NOTE}</p></details>
+        <label className="welcome-adult"><input type="checkbox" checked={adult} onChange={event => setAdult(event.target.checked)} /> I'm 18 or older.</label>
+        <button type="button" disabled={!adult} onClick={() => setStep(1)}>Let's start</button>
         <button type="button" className="text-button" onClick={() => void restore()}>I have a backup to restore</button>
       </>}
       {step === 1 && <>
-        <h1>What do you want more of?</h1>
-        <p>Pick two. You can do everything later; this is just where we start.</p>
-        <div className="welcome-goals">{GOALS.map(goal => <button type="button" key={goal.id} className={`welcome-goal${goals.includes(goal.id) ? ' picked' : ''}`} aria-pressed={goals.includes(goal.id)} onClick={() => setGoals(toggleGoal(goals, goal.id))}>{goal.label}</button>)}</div>
-        <button type="button" disabled={!goals.length} onClick={() => setStep(2)}>Next</button>
+        <h1>Pick one to try first</h1>
+        <p>Pick one to start. Everything else is one tap away later.</p>
+        <div className="welcome-goals">{GOALS.map(item => <button type="button" key={item.id} className="welcome-goal" onClick={() => { setGoal(item.id); setStep(2); }}>{item.label}</button>)}</div>
       </>}
       {step === 2 && <>
         <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" />
         <h1>When do you want to be asleep?</h1>
-        <p>As this time gets close, NANDI turns calm: no new lessons, just a gentle wind-down.</p>
+        <p>From this time, NANDI turns calm: no new lessons, just a gentle wind-down.</p>
         <label className="welcome-time">Bedtime<input type="time" required value={bedtime} onChange={event => setBedtime(event.target.value || WELCOME_BEDTIME)} /></label>
         <p className="small">You can change it any time in Settings.</p>
         <button type="button" disabled={saving} onClick={() => void finish()}>{action.label}</button>
