@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ACTIONS, CUES, NIGHT_PLAN_KEY, nightPlanText, QUICK_PLANS, readNightPlan, type NightPlan } from '../../core/nightPlan';
 import { db } from '../../data/db';
+import { RULES } from '../../core/rules.config';
 import { getOrCreateDeviceId } from '../../data/device';
 import { createSettingsRepos } from '../../data/repos/settings';
+import { askNotificationsOnce } from '../../platform/notifyPermission';
 
 const currentTime = () => Date.now();
 
 export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
   const settings = useLiveQuery(() => db.settings.toArray(), []) ?? [];
   const saved = readNightPlan(settings);
+  const bedtimeSetting = settings.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
+  const bedtime = typeof bedtimeSetting === 'string' && /^\d{2}:\d{2}$/.test(bedtimeSetting) ? bedtimeSetting : RULES.night.defaultBedtime;
   const [draft, setDraft] = useState<NightPlan | null>(null);
   const cue = draft?.cue ?? saved?.cue ?? '';
   const action = draft?.action ?? saved?.action ?? '';
@@ -27,6 +31,8 @@ export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
       await createSettingsRepos(db, deviceId).settings.put({ key: NIGHT_PLAN_KEY, value: { cue: cue.trim(), action: action.trim() } }, now);
       setDraft(null);
       setMessage('Night plan saved. Back tonight.');
+      // The first night plan is the moment a wind-down nudge makes sense, so Android asks here once (audit F1).
+      if (firstRun) void askNotificationsOnce().catch(() => undefined);
     } catch { setMessage('Could not save your night plan. Try again.'); }
   }
 
@@ -50,5 +56,6 @@ export function NightPlanSetting({ firstRun = false }: { firstRun?: boolean }) {
     <button type="button" onClick={() => void save()}>Save night plan</button>
     </>}
     {message && <p role="status">{message}</p>}
+    <p className="small">Tip: set your phone's Bedtime mode to start at {bedtime} too.</p>
   </section>;
 }
