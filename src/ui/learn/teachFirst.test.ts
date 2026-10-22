@@ -47,7 +47,7 @@ describe('teach first (spec 14)', () => {
   it('spec 16 §6: a one-topic learner gets a real tail every day after the first, and no right answer comes back while a taught item is unasked', () => {
     const items = catalogFor(['psychology']).flatMap(concept => concept.items);
     const taughtOn: Record<string, string> = {};
-    const answers: { itemId: string; correct: boolean; at: number }[] = [];
+    const answers: { itemId: string; correct: boolean; at: number; day?: string }[] = [];
     const counts: number[] = [];
     for (let day = 0; day < 8; day++) {
       const at = new Date(2026, 9, 22 + day, 12).getTime();
