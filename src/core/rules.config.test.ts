@@ -1,6 +1,5 @@
-import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { RULES, RULES_BOUNDS, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from './rules.config';
+import { RULES, RULES_BOUNDS, RULES_HISTORY, rulesFor, type Rules, type RulesHistoryEntry } from './rules.config';
 
 function numericLeaves(value: unknown, path = ''): Record<string, number> {
   if (typeof value === 'number') return { [path]: value };
@@ -44,8 +43,9 @@ describe('rule history', () => {
     // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
     // this frozen copy for the old entry, and only then add a fingerprint for the new one.
     const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards'] as const;
-    const fingerprint = (rules: typeof RULES) => createHash('sha256').update(JSON.stringify(scoring.map(key => [key, rules[key]]))).digest('hex').slice(0, 16);
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '65d0d8ffcb834e2e']]);
+    const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, rules[key]]))]
+      .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '42e4e39a']]);
   });
 
   it('starts with the current rules', () => {
