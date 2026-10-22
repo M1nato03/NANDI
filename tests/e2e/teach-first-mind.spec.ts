@@ -56,6 +56,7 @@ test('a new user finishing a teach-first drop fills the Mind slot', async ({ pag
     await page.getByRole('button', { name: guided.options.find(option => option.correct)!.text, exact: true }).click();
     await page.locator('.learn-feedback').getByRole('button', { name: index === stepOne.guided.length - 1 ? 'Your turn' : 'Continue' }).click();
   }
+  await expect(page.locator('.step-lesson')).toHaveCount(0);
   let answered = 0;
   for (; answered < 8 && !(await page.locator('.learn-stop').isVisible()); answered++) {
     await answerQuestion(page);
