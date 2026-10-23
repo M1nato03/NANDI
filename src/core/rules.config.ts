@@ -179,6 +179,9 @@ export const RULES = {
   // spec 11 W5: a busy day moves the night later (bounded) and keeps Learn small.
   adaptive: { busyMinutes: 240, busyShiftMin: 30, veryBusyMinutes: 360, veryBusyShiftMin: 60 },
 
+  // Spec 17 Nordic ready card. Not scoring, so it sits outside `train` (whose values the rules history fingerprints).
+  nordic: { notNowDays: 14, introSets: 2, introReps: 3 },
+
   night: {
     windDownCapMin: 10,
     defaultBedtime: '01:30',
@@ -282,6 +285,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
     'train.heatIndoorHumidityPct': [0, 100],
   'train.heatMode.acclimatiseDays': [1, 30], 'train.retestEveryWeeks': [1, 52],
     'train.retestVolumeCutPct': [0, 80],
+  'nordic.notNowDays': [1, 60], 'nordic.introSets': [1, 5], 'nordic.introReps': [1, 10],
   // Mind: nonnegative XP, bounded daily volume and valid rating/interval domains.
   'mind.mysteryXp': [0, 100], 'mind.dropBoardXp': [0, 100], 'mind.lessonXp': [0, 100],
   'mind.learnDropXp': [0, 100],

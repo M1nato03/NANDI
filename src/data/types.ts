@@ -96,6 +96,8 @@ export interface ProgramRow extends EntityRow {
   placement?: Record<string, number>;
   sessionsStarted?: number;
   lastRetestWeek?: number;
+  /** Spec 17: slow SL-RDL, the ready card and `nordicReady`. */
+  nordic?: import('../core/train').NordicState;
 }
 export interface ExStateRow extends StateRow {
   loadKg?: number;
