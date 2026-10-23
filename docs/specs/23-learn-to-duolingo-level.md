@@ -107,6 +107,14 @@ sound, cast reactions). Then the next spec is a feel pass, not more mechanics.
 4. The four new types (3).
 5. Volume (5), continuous. Tales (6) after.
 
+## Online later (offline-first, online-ready; Jenil 24 Oct)
+- **Item difficulty from all learners.** One person's answers cannot rate an item well; Birdbrain's edge is millions
+  of answers. v2 (with consent): upload anonymous (itemId, right/wrong, seconds) and fit item ratings across learners.
+  The ratings ship back inside content packs, and the phone keeps choosing offline with them.
+- **Lessons without an app update.** The pack updater (postponed to Phase 4) becomes worth building once other people use NANDI.
+- **Friend practice.** v2: a weekly friend quiz on concepts you both learned (fixed reward, no league pressure).
+- Learning must still work fully offline. Online only makes it better.
+
 ## Not doing
 No hearts or lives, no timers that punish, no random rewards, no endless feed, no copying Duolingo's names, art or sound
-(spec 11 §0). No server-side model: the middle band uses the Elo model already on the phone.
+(spec 11 §0). No server-side model in v1: the middle band uses the Elo model already on the phone (v2 calibrates item ratings online, above).
