@@ -36,12 +36,13 @@ export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
   const [moving, setMoving] = useState<TaskRow | null>(null);
   const [detail, setDetail] = useState<TaskRow | null>(null);
+  // Task events load only for the task whose details are open (cj2 heavy data #6: Plan read all ~4.6k a year).
+  const events = useLiveQuery(() => detail ? db.taskEvents.where('taskId').equals(detail.id).filter(row => row.deleted === 0).toArray() : [], [detail?.id]) ?? [];
   const [pickMust, setPickMust] = useState(false);
   const [respace, setRespace] = useState<{ task: TaskRow; at: number } | null>(null);
   const respaceDialog = useModalFocus<HTMLElement>(() => setRespace(null));
   const logs = useLiveQuery(() => db.dailyLog.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const settings = useLiveQuery(() => db.settings.filter(row => row.deleted === 0).toArray(), []) ?? [];
-  const events = useLiveQuery(() => db.taskEvents.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const softFacts = useSoftFacts();
   const groups = taskGroups(board.tasks).filter(group => group.placement !== 'dropped');
   const today = dayKey(board.now);

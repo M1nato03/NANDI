@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time';
@@ -20,7 +20,8 @@ import { revealMeters } from '../../core/economy/reveal';
 function useEconomy() {
   const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
-  return source ? { ...source, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined;
+  // Derived once per data change, not on every render (cj2 heavy data #7).
+  return useMemo(() => source ? { ...source, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
 }
 const activeSetting = (rows: { key: string; value: unknown; deleted: number }[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
 

@@ -18,14 +18,20 @@ export function todayDotStatus(now: number, data: { tasks: TaskRow[]; sessions: 
 }
 
 export function TodayDots({ now }: { now: number }) {
-  const data = useLiveQuery(async () => ({
-    tasks: await db.tasks.toArray(),
-    sessions: await db.sessions.toArray(),
-    ledger: await db.ledger.toArray(),
-    drop: await db.learnDrops.get(dailyDropId(now)),
-    runs: await db.puzzleRuns.toArray(),
-    log: await db.dailyLog.get(dayKey(now)),
-  }), [dayKey(now)]);
+  // Only what today's four dots need, read through the indexes (cj2 heavy data #6: this read 5 whole tables per write).
+  const data = useLiveQuery(async () => {
+    const today = dayKey(now), featured = featuredSpec(today);
+    const rest = await db.ledger.get(`train-rest:${today}`);
+    const run = await db.puzzleRuns.get(`daily:${today}:${featured.type}:${featured.diff}`);
+    return {
+      tasks: await db.tasks.where('status').equals('done').toArray(),
+      sessions: await db.sessions.where('dayKey').equals(today).toArray(),
+      ledger: rest ? [rest] : [],
+      drop: await db.learnDrops.get(dailyDropId(now)),
+      runs: run ? [run] : [],
+      log: await db.dailyLog.get(today),
+    };
+  }, [dayKey(now)]);
   const status = data && todayDotStatus(now, data);
   return <nav className="today-dots" aria-label="Today status">{(['plan', 'train', 'learn', 'mind'] as const).map(area => <button key={area} type="button" className={`today-dot deck-area-${{ plan: 'do', train: 'move', learn: 'learn', mind: 'think' }[area]}`} aria-label={`${area[0]!.toUpperCase()}${area.slice(1)}: ${status?.[area] ? 'done' : 'not done'}`} onClick={() => go(area)}><span data-done={status?.[area] ? 'true' : 'false'} /><small className="today-dot-label" aria-hidden="true">{`${area[0]!.toUpperCase()}${area.slice(1)}`}</small></button>)}</nav>;
 }
