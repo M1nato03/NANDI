@@ -4,7 +4,7 @@
 import 'fake-indexeddb/auto';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createDb, type NandiDb } from './db';
-import { reconcileGamify } from './repos/gamify';
+import { reconcileGamify, recordShown } from './repos/gamify';
 import { createTaskRepos } from './repos/tasks';
 import { createTrainRepos } from './repos/train';
 import { purchaseShopItem } from './repos/economy';
@@ -209,4 +209,42 @@ it('fuzz 2016: a late task that moves a level-up before a held close keeps the S
   set('2026-11-02T10:00:00'); await task(false);
   set('2026-11-06T10:00:00');
   expect((await shown()).shards).toBeGreaterThanOrEqual(before.shards);
+});
+
+it('C1c: a restore replaces a purchase that later closes already list as owned (Codex review, item 47)', async () => {
+  const { train } = await repos();
+  for (let day = 2; day <= 30; day++) { set(`2026-11-${String(day).padStart(2, '0')}T10:00:00`); await task(); await task(); await train.restDayCheck(now, 20); }
+  set('2026-12-07T10:00:00'); await reconcileGamify(db, now);
+  const backup = await exportBackup(db, now);
+  const before = await shown();
+  expect((await purchaseShopItem(db, 'banner:grove', now)).ok).toBe(true);
+  // The clock runs ahead and back: closes dated 7 to 9 Dec now list the banner as owned.
+  set('2026-12-10T10:00:00'); await reconcileGamify(db, now);
+  set('2026-12-07T12:00:00'); await reconcileGamify(db, now);
+  await importBackup(db, backup); await reconcileGamify(db, now);
+  const after = await shown();
+  expect(after.owned).not.toContain('banner:grove');
+  expect(after.shards).toBeGreaterThanOrEqual(before.shards);
+});
+
+it('fuzz 3180: a season award shown just before the app is shut survives the clock going back (Codex review, item 47)', async () => {
+  set('2026-11-23T12:00:00'); await task();
+  set('2026-12-07T13:00:00');
+  // The screen shows the season-end Shards; the app is shut before reconcile runs.
+  const seen = await shown();
+  expect(seen.shards).toBe(65);
+  await recordShown(db, now, seen);
+  set('2026-12-06T23:00:00');
+  expect((await shown()).shards).toBe(65);
+});
+
+it('recordShown writes only when the day or the XP rises', async () => {
+  set('2026-11-23T12:00:00'); await task();
+  const view = await shown();
+  await recordShown(db, now, view);
+  const puts = vi.spyOn(db.settings, 'put');
+  await recordShown(db, now, view);
+  expect(puts).not.toHaveBeenCalled();
+  await recordShown(db, now + 86_400_000, view);
+  expect(puts).toHaveBeenCalledTimes(1);
 });

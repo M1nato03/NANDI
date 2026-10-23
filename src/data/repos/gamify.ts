@@ -2,13 +2,13 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
-import { asReconcile, restoreActive } from '../restoreLock';
+import { asEconomyWrite, asReconcile, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
-import type { LedgerRow } from '../types';
+import type { LedgerRow, SettingRow } from '../types';
 
 /** Reconcile derived achievements into immutable, idempotent award facts. */
 let running: Promise<void> | null = null;
@@ -91,14 +91,42 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // A close dated today or later (a clock that was set ahead, a time zone to the west, a restore) stays stored:
     // the real-today view ignores it, and the look-ahead still needs it (cj3 clock fuzz A, C3).
     const oldest = addEconomyDays(today, -120);
-    const stored = new Map(rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
+    const raw = new Map(rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     // Days older than 120 that were never closed stay unclosed; their purchases move to the next kept day.
-    const candidates = keptCandidates(closesFor(facts, rows, today), stored, oldest);
+    const bonus = new Map<string, number>();
+    const candidates = keptCandidates(closesFor(facts, rows, today, undefined, bonus), raw, oldest);
+    // Older closes first say which level bonus they held, so the merge is the same in any order (item 47).
+    const stored = fillHeldBonus(raw, bonus);
     for (const [day, merged] of mergeCloseMaps(new Map([...stored].filter(([day]) => day < today)), candidates)) {
-      const existing = stored.get(day);
+      const existing = raw.get(day);
       if (JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
     }
   }));
+}
+
+/**
+ * Saves the day and the XP and level about to be shown, before reconcile has run: a phone shut at once, then a
+ * clock set back, still keeps a season award that day showed (Codex review of cj3 round 4, item 47). It reads first
+ * and writes only when something rises, so calling it on every screen update costs one read.
+ */
+export async function recordShown(db: NandiDb, now = Date.now(), view?: { totalXp: number; level: number }): Promise<void> {
+  if (restoreActive()) return;
+  const today = dayKey(now);
+  const rises = (rows: (SettingRow | undefined)[]) => {
+    const [seenRow, peakRow] = rows;
+    const seen = seenRow && !seenRow.deleted ? readSeenUpTo([seenRow]) : undefined;
+    const peak = peakRow && !peakRow.deleted ? readPeak([peakRow]) : { totalXp: 0, level: 1 };
+    return { seen: !seen || seen < today, peak: !!view && (view.totalXp > peak.totalXp || view.level > peak.level), old: peak };
+  };
+  if (!Object.values(rises(await db.settings.bulkGet([SEEN_KEY, PEAK_KEY]))).slice(0, 2).some(Boolean)) return;
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => asEconomyWrite(() => db.transaction('rw', db.settings, async () => {
+    if (restoreActive()) return;
+    // Compared again inside the lock: reconcile or another tab may have raised them meanwhile.
+    const next = rises(await db.settings.bulkGet([SEEN_KEY, PEAK_KEY]));
+    if (next.seen) await db.settings.put({ key: SEEN_KEY, value: today, updatedAt: now, deleted: 0, deviceId });
+    if (next.peak && view) await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(view.totalXp, next.old.totalXp), level: Math.max(view.level, next.old.level) }, updatedAt: now, deleted: 0, deviceId });
+  })));
 }
 
 export async function saveGoldReview(db: NandiDb, conceptId: string, correct: number, total: number, now = Date.now()): Promise<boolean> {

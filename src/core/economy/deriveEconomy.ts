@@ -76,6 +76,12 @@ export function unchargeClose(raw: unknown, drop: (item: ClosePurchase) => boole
   const gone = close.purchases.filter(drop);
   return { ...close, shards: close.shards + gone.reduce((sum, item) => sum + item.price, 0), purchases: close.purchases.filter(item => !drop(item)) };
 }
+/** Takes items out of a close's owned list (a restore that replaces a purchase the backup does not have, item 47). */
+export function disownClose(raw: unknown, itemIds: ReadonlySet<string>): unknown {
+  const close = asClose(raw);
+  if (!close || !close.owned.some(id => itemIds.has(id))) return raw;
+  return { ...close, owned: close.owned.filter(id => !itemIds.has(id)) };
+}
 /** Two closes for one day (an earlier one and a new one, or this phone's and a backup's) keep the higher of each. */
 export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const x = asClose(a), y = asClose(b);
@@ -369,8 +375,9 @@ function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEnt
 }
 
 /** What each finished day (before `today`) shows now, in one replay: the candidates reconcileGamify merges into the closes. */
-export function closesFor(facts: readonly LedgerRow[], settings: readonly SettingRow[] | Record<string, unknown>, today: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY): Map<string, DayClose> {
+export function closesFor(facts: readonly LedgerRow[], settings: readonly SettingRow[] | Record<string, unknown>, today: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY, bonusOut?: Map<string, number>): Map<string, DayClose> {
   const { replay, closes } = replayWithCloses(facts, history, settings, today);
+  if (bonusOut) for (const [day, snap] of replay.daily) bonusOut.set(day, snap.bonus);
   const out = new Map<string, DayClose>();
   const finished = replay.view.days.filter(day => day.dayKey < today);
   const floors = shardFloors(closes, replay, finished.map(day => day.dayKey));
@@ -388,6 +395,23 @@ export function closesFor(facts: readonly LedgerRow[], settings: readonly Settin
       owned: [...new Set([...snap.owned, ...ownedBefore])], purchases: snap.purchases });
   }
   return out;
+}
+
+/** The level bonus the replay has paid by the end of each day up to `end` (for closes from before 24 Oct). */
+export function replayBonus(facts: readonly LedgerRow[], settings: readonly SettingRow[] | Record<string, unknown>, end: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY): Map<string, number> {
+  const { replay } = replayWithCloses(facts, history, settings, end);
+  return new Map([...replay.daily].map(([day, snap]) => [day, snap.bonus] as const));
+}
+/**
+ * A close written before 24 Oct does not say which level bonus it held. Before any merge it is given the bonus
+ * the replay paid by its day (the same reading the Shards floor uses), so every merge sees two closes that say
+ * what they held, and merging stays the same in any order (Codex review of cj3 round 4, item 47).
+ */
+export function fillHeldBonus(closes: ReadonlyMap<string, unknown>, bonus: ReadonlyMap<string, number>): Map<string, unknown> {
+  return new Map([...closes].map(([day, raw]) => {
+    const close = asClose(raw), held = bonus.get(day);
+    return [day, close && close.bonus === undefined && held !== undefined ? { ...close, bonus: held } : raw] as const;
+  }));
 }
 
 function replayEconomy(

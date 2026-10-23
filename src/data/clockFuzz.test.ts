@@ -6,7 +6,7 @@
 import 'fake-indexeddb/auto';
 import { expect, it, vi } from 'vitest';
 import { createDb, type NandiDb } from './db';
-import { reconcileGamify } from './repos/gamify';
+import { reconcileGamify, recordShown } from './repos/gamify';
 import { createTaskRepos } from './repos/tasks';
 import { createTrainRepos } from './repos/train';
 import { purchaseShopItem } from './repos/economy';
@@ -69,12 +69,17 @@ async function runSequence(ops: Op[]): Promise<string[]> {
     const deviceId = await getOrCreateDeviceId(db, now);
     const tasks = createTaskRepos(db, deviceId), train = createTrainRepos(db, deviceId);
     const backups: BackupEnvelope[] = [];
-    let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, skipped = false, taskN = 0;
+    let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, taskN = 0;
     let owned = new Set<string>();
     const finished = new Map<string, { total: number; reopened: boolean }>();
     // The stored close of the last finished day, read just before a restore: what a restore may never lower.
     let snap: { day: string; shards: number; owned: string[] } | undefined;
-    const view = async (): Promise<EconomyView> => deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
+    // Each check is what a screen shows, and the screens save the day and the XP they show (item 47), like the app.
+    const view = async (): Promise<EconomyView> => {
+      const shown = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
+      await recordShown(db, now, shown);
+      return shown;
+    };
     const check = async (step: number, op: Op, spent: number) => {
       const v = await view(), today = dayKey(now);
       const fail = (kind: string, detail: string) => failures.push(`step ${step} ${JSON.stringify(op)}: ${kind} ${detail} (today ${today})`);
@@ -109,12 +114,10 @@ async function runSequence(ops: Op[]): Promise<string[]> {
       for (const id of v.owned) owned.add(id);
     };
     const setClock = (local: Date) => { now = local.getTime(); vi.setSystemTime(now); };
-    const reconcile = async () => { if (skip) { skip = false; skipped = true; return; } await reconcileGamify(db, now); };
+    const reconcile = async () => { if (skip) { skip = false; return; } await reconcileGamify(db, now); };
     await reconcile();
     for (let step = 0; step < ops.length; step++) {
       const op = ops[step]!;
-      const saved = { maxXp, maxLevel, lastShards };
-      skipped = false;
       let spent = 0;
       const d = new Date(now);
       if (op.t === 'day') { d.setDate(d.getDate() + 1); d.setHours(op.hour, op.min, 0, 0); setClock(d); }
@@ -158,9 +161,6 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         await reconcile();
       }
       await check(step, op.t === 'restore' ? { t: 'skipReconcile' } : op, spent);
-      // A step whose reconcile never ran (the app shut at once) showed numbers nothing could record: no close and no
-      // seen-up-to day. The next steps are held to what the app last had a chance to save (cj3 fuzz seed 3180).
-      if (skipped) ({ maxXp, maxLevel, lastShards } = saved);
       if (env.FUZZ_TRACE) {
         const v = await view();
         const closes = (await db.settings.toArray()).filter(r => r.key.startsWith('economy.close:')).map(r => `${r.key.slice(14)}=${(r.value as { shards: number }).shards}`);

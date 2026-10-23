@@ -10,7 +10,7 @@ import { isAfterBedtime } from '../../core/time';
 import { tapHaptic } from '../../platform/haptics';
 import type { LedgerRow, SettingRow, TaskRow, LearnDropRow, SessionRow, PuzzleRunRow, DailyLogRow } from '../../data/types';
 import { dailyDropId } from '../learn/dropIds';
-import { reconcileGamify } from '../../data/repos/gamify';
+import { reconcileGamify, recordShown } from '../../data/repos/gamify';
 import { todayDotStatus } from './TodayDots';
 import { finishEvent, pickFinishLine, shouldShowDoneForToday, type FinishActivity } from './finish';
 import { DoneForToday, FinishMoment } from './FinishMoment';
@@ -66,6 +66,8 @@ export function EconomyFeedback() {
   }, []);
   useEffect(() => {
     if (!source) return;
+    // Today counts as seen before reconcile runs, so a phone shut at once keeps what today showed (item 47).
+    void recordShown(db).catch(() => { /* Reconcile raises it too. */ });
     const previous = prior.current;
     // Reconcile only when facts or the drop changed, not on every settings or app-minute write (cj2 heavy data #3, #5).
     const signature = (from: Source) => `${from.facts.length}:${from.facts.reduce((max, row) => Math.max(max, row.updatedAt), 0)}:${from.drop?.updatedAt ?? 0}`;

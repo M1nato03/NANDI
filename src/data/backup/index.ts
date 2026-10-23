@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, disownClose, fillHeldBonus, keptCandidates, mergeCloseMaps, replayBonus, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -232,7 +232,10 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     // Close the books first, as reconcileGamify would: a finished day it has not closed yet (the app was shut before
     // it ran, then the clock moved on) still keeps what it showed after the restore (cj3 fuzz seeds 2003, 2065).
-    const stored = asMap(closes);
+    // Each side's older closes first say which level bonus they held, read from that side's own replay (item 47).
+    const lastDay = (map: ReadonlyMap<string, unknown>) => addEconomyDays([today, ...map.keys()].sort().at(-1)!, 1);
+    const unfilled = asMap(closes);
+    const stored = fillHeldBonus(unfilled, replayBonus(phoneFacts, before, lastDay(unfilled)));
     const pending = keptCandidates(closesFor(phoneFacts, before, today), stored, addEconomyDays(today, -120));
     const phoneMap = new Map<string, unknown>([...stored, ...mergeCloseMaps(new Map([...stored].filter(([day]) => day < today)), pending)]);
     // dexie-export-import expects its own JSON, without the NANDI envelope.
@@ -256,14 +259,27 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     if (localSeen && (!theirSeen || localSeen > theirSeen)) {
       await db.settings.put({ key: SEEN_KEY, value: localSeen, updatedAt: now, deleted: 0, deviceId });
     }
-    const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
+    const after = await db.settings.toArray();
+    const restoredFacts = (await db.ledger.toArray()).filter(row => !row.deleted);
+    const restoredRaw = asMap(after.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)));
+    const restoredCloses = fillHeldBonus(restoredRaw, replayBonus(restoredFacts, after, lastDay(restoredRaw)));
     // One write for all the closes: a put per day woke every live query once per row (batch 3 b: 212 s for a year).
     // A restore replaces today (Jenil, 24 Oct). A purchase dated today or later that the backup does not have was
     // charged to this phone's closes dated ahead (chargeClose); take it off them and refund it, or the merge would
     // rebuild it as owned (Codex review of cj3, item 44). Purchases of finished days stay, as before.
-    const restoredIds = new Set((await db.ledger.toArray()).filter(row => !row.deleted && row.kind === 'purchase').map(row => row.id));
-    const phoneCloses = new Map([...phoneMap].map(([day, raw]) => [day, unchargeClose(raw, item => item.dayKey >= today && !restoredIds.has(item.id))] as const));
-    const merged = mergeCloseMaps(asMap(restoredCloses), phoneCloses);
+    const restoredIds = new Set(restoredFacts.filter(row => row.kind === 'purchase').map(row => row.id));
+    const replaced = (item: { id: string; dayKey: string }) => item.dayKey >= today && !restoredIds.has(item.id);
+    // The item stops being owned too, on every phone close from its day on, or the merge would keep it owned while
+    // the Shards come back (Codex review of round 4, item 47).
+    const gone = [...phoneMap.values()].flatMap(raw => {
+      const value = raw as { purchases?: { id: string; itemId: string; dayKey: string }[] } | undefined;
+      return (Array.isArray(value?.purchases) ? value.purchases : []).filter(item => replaced(item) && item.itemId !== 'freeze');
+    });
+    const phoneCloses = new Map([...phoneMap].map(([day, raw]) => {
+      const disowned = new Set(gone.filter(item => item.dayKey <= day).map(item => item.itemId));
+      return [day, disownClose(unchargeClose(raw, replaced), disowned)] as const;
+    }));
+    const merged = mergeCloseMaps(restoredCloses, phoneCloses);
     if (merged.size) await db.settings.bulkPut([...merged].map(([day, value]): SettingRow => ({ key: closeKey(day), value, updatedAt: now, deleted: 0, deviceId })));
   }));
 }

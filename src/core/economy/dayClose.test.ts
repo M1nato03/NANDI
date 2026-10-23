@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, mergeClose, mergeCloseMaps } from './deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, mergeClose, mergeCloseMaps } from './deriveEconomy';
 
 let serial = 0;
 const row = (dayKey: string, mode: string, kind: string, inputs: Record<string, unknown> = {}): LedgerRow => ({
@@ -257,5 +257,16 @@ describe('level bonus held by a close (cj3 fuzz seeds 2016, 2020)', () => {
     expect(mergeClose(close(52), close(68, 20))).toMatchObject({ shards: 68, bonus: 20 });
     expect(mergeClose(close(70), close(68, 20))).toEqual(expect.objectContaining({ shards: 70 }));
     expect(mergeClose(close(70), close(68, 20))!.bonus).toBeUndefined();
+  });
+});
+
+describe('closes from before 24 Oct merge in any order once they say their bonus (Codex item 47)', () => {
+  const close = (shards: number, bonus?: number) => ({ total: 10, sp: 10, streak: 1, paused: false, shards, ...(bonus === undefined ? {} : { bonus }), owned: [], purchases: [] });
+  it('gives the counterexample the same result both ways', () => {
+    const day = '2026-11-28', one = (value: unknown) => new Map([[day, value]]);
+    const a = fillHeldBonus(one(close(10)), new Map([[day, 0]])), b = one(close(0, 0)), c = one(close(0, 100));
+    const left = mergeCloseMaps(mergeCloseMaps(a, b), c).get(day)!, right = mergeCloseMaps(a, mergeCloseMaps(b, c)).get(day)!;
+    expect([left.shards, left.bonus]).toEqual([right.shards, right.bonus]);
+    expect(left).toMatchObject({ shards: 110, bonus: 100 });
   });
 });

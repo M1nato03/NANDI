@@ -7,6 +7,7 @@ import { currentArcTitle } from '../../core/mysteries';
 import { boardSeats, rivalName, seatThreshold } from '../../core/economy/ladder';
 import { catalogue, purchaseDecision } from '../../core/economy/shop';
 import { purchaseShopItem } from '../../data/repos/economy';
+import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
 import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
 import { isAway } from '../../core/economy/away';
@@ -21,7 +22,10 @@ function useEconomy() {
   const source = useLiveQuery(async () => ({ facts: await db.ledger.toArray(), settings: await db.settings.toArray() }), []);
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   // Derived once per data change, not on every render (cj2 heavy data #7).
-  return useMemo(() => source ? { ...source, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
+  const economy = useMemo(() => source ? { ...source, today, view: deriveEconomy(source.facts, undefined, source.settings, today) } : undefined, [source, today]);
+  // The XP and level on screen are kept even if the app is shut before reconcile runs (item 47). It writes only on a rise.
+  useEffect(() => { if (economy) void recordShown(db, Date.now(), economy.view).catch(() => undefined); }, [economy]);
+  return economy;
 }
 const activeSetting = (rows: { key: string; value: unknown; deleted: number }[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
 
