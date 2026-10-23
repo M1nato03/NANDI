@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { gradeItem, masteryMapState, type Confidence, type ItemAnswer } from '../../core/learn/engine';
+import { gradeItem, masteryMapState, matchPairKeys, type Confidence, type ItemAnswer } from '../../core/learn/engine';
 import { RULES } from '../../core/rules.config';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
@@ -177,9 +177,11 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       else setSequence(next);
     } else if (item.type === 'match') {
       if (!matchLeft) { setMatchLeft(id); return; }
+      if (matchLeft === id) { setMatchLeft(undefined); return; }
       const next = [...pairs, { left: matchLeft, right: id }];
       setMatchLeft(undefined);
-      if (next.length === item.answer.length) setPending({ value: next, optionId: id });
+      // Each pair is entered once, though the pack lists it both ways.
+      if (next.length === matchPairKeys(item.answer).size) setPending({ value: next, optionId: id });
       else setPairs(next);
     } else if (item.type === 'estimate') {
       const text = item.options.find(option => option.id === id)?.text ?? '';
@@ -256,7 +258,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const { item, concept } = found;
   const itemStep = item.step ? findStep([concept], item.step) : undefined;
   const ordered = step.optionOrder.map(id => item.options.find(option => option.id === id)).filter((option): option is NonNullable<typeof option> => !!option);
-  const used = new Set(item.type === 'order' ? sequence : pairs.map(pair => pair.left));
+  // A matched term is used on both sides of its pair.
+  const used = new Set(item.type === 'order' ? sequence : pairs.flatMap(pair => [pair.left, pair.right]));
   const inARow = longestCombo(data.ledger, drop.id);
   const position = visibleFeedback?.cursor ?? drop.cursor;
   // The bar moves forward after every answer, right or not (spec 13 D: a miss never moves it back).

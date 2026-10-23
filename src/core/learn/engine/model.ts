@@ -11,6 +11,9 @@ export const INITIAL_MASTERY = 0.2;
 export const DAY_MS = 86_400_000;
 const clamp = (value: number, low: number, high: number) => Math.min(high, Math.max(low, value));
 export type ItemAnswer = string | string[] | { left: string; right: string }[] | number;
+/** Unordered pair keys, so a→b and b→a are one pair. */
+export const matchPairKeys = (pairs: readonly { left: string; right: string }[]): Set<string> =>
+  new Set(pairs.map(pair => [pair.left, pair.right].sort().join('\u0000')));
 export function gradeItem(item: TopicItem, answer: ItemAnswer): { correct: boolean; score: number } {
   if (item.type === 'estimate') {
     if (typeof answer !== 'number' || !Number.isFinite(answer)) return { correct: false, score: 0 };
@@ -25,9 +28,10 @@ export function gradeItem(item: TopicItem, answer: ItemAnswer): { correct: boole
     return { correct, score: Number(correct) };
   }
   if (item.type === 'match') {
-    const expected = new Set(item.answer.map(pair => `${pair.left}\u0000${pair.right}`));
+    // A pair has no direction: the packs list each pair both ways (a→b and b→a), and the learner enters it once.
+    const expected = matchPairKeys(item.answer);
     const actual = Array.isArray(answer) && answer.every(pair => typeof pair === 'object' && pair !== null && 'left' in pair && 'right' in pair)
-      ? new Set(answer.map(pair => `${(pair as { left: string; right: string }).left}\u0000${(pair as { left: string; right: string }).right}`)) : new Set<string>();
+      ? matchPairKeys(answer as { left: string; right: string }[]) : new Set<string>();
     const correct = Array.isArray(answer) && answer.length === expected.size && actual.size === expected.size && [...actual].every(pair => expected.has(pair));
     return { correct, score: Number(correct) };
   }
