@@ -76,16 +76,33 @@ export function unchargeClose(raw: unknown, drop: (item: ClosePurchase) => boole
   const gone = close.purchases.filter(drop);
   return { ...close, shards: close.shards + gone.reduce((sum, item) => sum + item.price, 0), purchases: close.purchases.filter(item => !drop(item)) };
 }
-/** Takes items out of a close's owned list (a restore that replaces a purchase the backup does not have, item 47). */
-export function disownClose(raw: unknown, itemIds: ReadonlySet<string>): unknown {
-  const close = asClose(raw);
-  if (!close || !close.owned.some(id => itemIds.has(id))) return raw;
-  return { ...close, owned: close.owned.filter(id => !itemIds.has(id)) };
+/**
+ * A restore replaces today (Jenil, 24 Oct): every purchase `replaced` picks is taken out of this phone's closes. Each
+ * close that knew it (by the normalised knowledge: every close from its host day on) gets its price back and stops
+ * owning the item, not only the close that still lists it (Codex review of round 5, item 48).
+ */
+/** A phone purchase the restored ledger also has: the same id, item and price (Codex review of round 5, item 48). */
+export function restoredPurchase(restored: readonly LedgerRow[]): (item: ClosePurchase) => boolean {
+  const kept = new Map(restored.filter(row => !row.deleted && row.kind === 'purchase').map(row => [row.id, `${String(row.inputs.itemId)}:${Number(row.inputs.price)}`] as const));
+  return item => kept.get(item.id) === `${item.itemId}:${item.price}`;
+}
+export function refundReplaced(closes: ReadonlyMap<string, unknown>, replaced: (item: ClosePurchase) => boolean): Map<string, DayClose> {
+  const normal = normalizeCloses(new Map([...closes].flatMap(([day, raw]) => { const close = asClose(raw); return close ? [[day, close] as const] : []; })));
+  const gone = [...purchasePool(normal.values()).values()].filter(replaced);
+  return new Map([...normal].map(([day, close]) => {
+    const here = gone.filter(item => item.dayKey <= day);
+    if (!here.length) return [day, close] as const;
+    const ids = new Set(here.map(item => item.id)), items = new Set(here.filter(item => item.itemId !== 'freeze').map(item => item.itemId));
+    return [day, { ...close, shards: close.shards + here.reduce((sum, item) => sum + item.price, 0),
+      purchases: close.purchases.filter(item => !ids.has(item.id)), owned: close.owned.filter(id => !items.has(id)) }] as const;
+  }));
 }
 /** Two closes for one day (an earlier one and a new one, or this phone's and a backup's) keep the higher of each. */
 export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const x = asClose(a), y = asClose(b);
   if (!x || !y) return x ?? y;
+  // One close that says its level bonus and one that does not have no order-free merge: fill first (fillHeldBonus).
+  if ((x.bonus === undefined) !== (y.bonus === undefined)) throw new Error('mergeClose: fill the level bonus of older closes first');
   const onlyIn = (a: DayClose, b: DayClose) => a.purchases.filter(item => !b.purchases.some(other => other.id === item.id));
   const cost = (items: ClosePurchase[]) => items.reduce((sum, item) => sum + item.price, 0);
   const purchases = [...x.purchases.map(item => {

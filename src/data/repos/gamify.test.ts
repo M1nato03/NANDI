@@ -49,7 +49,10 @@ it('keeps closes dated today or later (a clock set ahead, then back), keeps them
   await reconcileGamify(db, at('2026-11-05'));
   const keys = (await db.settings.toArray()).filter(row => row.key.startsWith(CLOSE_PREFIX)).map(row => row.key).sort();
   expect(keys).toEqual(['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-09'].map(closeKey));
-  expect((await db.settings.get(closeKey('2026-11-09')))?.value).toEqual(ahead);
+  // Kept, and an older close is saved once with the level bonus it held (Codex review, item 48).
+  const kept = (await db.settings.get(closeKey('2026-11-09')))?.value as { bonus?: number };
+  expect(kept).toMatchObject(ahead);
+  expect(typeof kept.bonus).toBe('number');
   const view = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-05');
   expect(view.days.at(-1)!.dayKey).toBe('2026-11-05');
   expect(view.days.some(day => day.dayKey > '2026-11-05')).toBe(false);

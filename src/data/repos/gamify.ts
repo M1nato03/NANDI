@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, replayBonus, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -100,6 +100,13 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     for (const [day, merged] of mergeCloseMaps(new Map([...stored].filter(([day]) => day < today)), candidates)) {
       const existing = raw.get(day);
       if (JSON.stringify(merged) !== JSON.stringify(existing)) await db.settings.put({ key: closeKey(day), value: merged, updatedAt: now, deleted: 0, deviceId });
+    }
+    // An older close dated today or later (a clock once set ahead) is given its bonus now and saved, once, so a later
+    // fact that moves a level-up cannot fill it differently next time (Codex review of round 5, item 48).
+    const ahead = new Map([...raw].filter(([day, value]) => day >= today && !!value && typeof value === 'object' && (value as { bonus?: unknown }).bonus === undefined));
+    if (ahead.size) {
+      const last = addEconomyDays([...ahead.keys()].sort().at(-1)!, 1);
+      for (const [day, value] of fillHeldBonus(ahead, replayBonus(facts, rows, last))) if (value !== ahead.get(day)) await db.settings.put({ key: closeKey(day), value, updatedAt: now, deleted: 0, deviceId });
     }
   }));
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, mergeClose, mergeCloseMaps } from './deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, mergeClose, mergeCloseMaps, refundReplaced, restoredPurchase } from './deriveEconomy';
 
 let serial = 0;
 const row = (dayKey: string, mode: string, kind: string, inputs: Record<string, unknown> = {}): LedgerRow => ({
@@ -253,10 +253,9 @@ describe('level bonus held by a close (cj3 fuzz seeds 2016, 2020)', () => {
       expect(mergeCloseMaps(new Map([['2026-11-28', a]]), new Map([['2026-11-28', b]])).get('2026-11-28')).toMatchObject({ shards: 72, bonus: 20 });
     }
   });
-  it('keeps the plain higher balance when a close from before 24 Oct does not say what it held', () => {
-    expect(mergeClose(close(52), close(68, 20))).toMatchObject({ shards: 68, bonus: 20 });
-    expect(mergeClose(close(70), close(68, 20))).toEqual(expect.objectContaining({ shards: 70 }));
-    expect(mergeClose(close(70), close(68, 20))!.bonus).toBeUndefined();
+  it('will not merge a close that says its bonus with one that does not: fill first (Codex review, item 48)', () => {
+    expect(() => mergeClose(close(52), close(68, 20))).toThrow(/fill the level bonus/);
+    expect(mergeClose(close(70), close(68))).toMatchObject({ shards: 70 });
   });
 });
 
@@ -268,5 +267,22 @@ describe('closes from before 24 Oct merge in any order once they say their bonus
     const left = mergeCloseMaps(mergeCloseMaps(a, b), c).get(day)!, right = mergeCloseMaps(a, mergeCloseMaps(b, c)).get(day)!;
     expect([left.shards, left.bonus]).toEqual([right.shards, right.bonus]);
     expect(left).toMatchObject({ shards: 110, bonus: 100 });
+  });
+});
+
+describe('a restore that replaces a purchase (Codex review of round 5, item 48)', () => {
+  const buy = { id: 'purchase:banner:grove:1', itemId: 'banner:grove', price: 150, dayKey: '2026-12-07' };
+  const close = (shards: number, purchases: typeof buy[] = [], owned: string[] = []) => ({ total: 10, sp: 10, streak: 1, paused: false, shards, bonus: 0, owned, purchases });
+  it('refunds every close from its day on, also the later ones that no longer list it', () => {
+    const closes = new Map([['2026-12-06', close(200)], ['2026-12-07', close(50, [buy], ['banner:grove'])], ['2026-12-08', close(52, [], ['banner:grove'])]]);
+    const out = refundReplaced(closes, item => item.id === buy.id);
+    expect([...out.values()].map(c => c.shards)).toEqual([200, 200, 202]);
+    expect([...out.values()].every(c => !c.owned.includes('banner:grove') && !c.purchases.length)).toBe(true);
+  });
+  it('treats a backup purchase as the same only when id, item and price all match', () => {
+    const fact = (inputs: Record<string, unknown>) => ({ id: buy.id, mode: 'economy', kind: 'purchase', refId: 'x', dayKey: buy.dayKey, inputs, updatedAt: 1, deleted: 0 as const, deviceId: 'd' });
+    expect(restoredPurchase([fact({ itemId: 'banner:grove', price: 150 })])(buy)).toBe(true);
+    expect(restoredPurchase([fact({ itemId: 'banner:grove', price: 1 })])(buy)).toBe(false);
+    expect(restoredPurchase([fact({ itemId: 'banner:sky', price: 150 })])(buy)).toBe(false);
   });
 });

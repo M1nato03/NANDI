@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, disownClose, fillHeldBonus, keptCandidates, mergeCloseMaps, replayBonus, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, fillHeldBonus, keptCandidates, mergeCloseMaps, refundReplaced, replayBonus, restoredPurchase, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -267,18 +267,12 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     // A restore replaces today (Jenil, 24 Oct). A purchase dated today or later that the backup does not have was
     // charged to this phone's closes dated ahead (chargeClose); take it off them and refund it, or the merge would
     // rebuild it as owned (Codex review of cj3, item 44). Purchases of finished days stay, as before.
-    const restoredIds = new Set(restoredFacts.filter(row => row.kind === 'purchase').map(row => row.id));
-    const replaced = (item: { id: string; dayKey: string }) => item.dayKey >= today && !restoredIds.has(item.id);
-    // The item stops being owned too, on every phone close from its day on, or the merge would keep it owned while
-    // the Shards come back (Codex review of round 4, item 47).
-    const gone = [...phoneMap.values()].flatMap(raw => {
-      const value = raw as { purchases?: { id: string; itemId: string; dayKey: string }[] } | undefined;
-      return (Array.isArray(value?.purchases) ? value.purchases : []).filter(item => replaced(item) && item.itemId !== 'freeze');
-    });
-    const phoneCloses = new Map([...phoneMap].map(([day, raw]) => {
-      const disowned = new Set(gone.filter(item => item.dayKey <= day).map(item => item.itemId));
-      return [day, disownClose(unchargeClose(raw, replaced), disowned)] as const;
-    }));
+    // A purchase the backup has only when its id, item and price all match: the same id at another price or for
+    // another item is not the phone's purchase (Codex review of round 5, item 48).
+    const inBackup = restoredPurchase(restoredFacts);
+    const replaced = (item: { id: string; itemId: string; price: number; dayKey: string }) => item.dayKey >= today && !inBackup(item);
+    // Every phone close from its day on gets the price back and stops owning the item (items 47, 48).
+    const phoneCloses = refundReplaced(phoneMap, replaced);
     const merged = mergeCloseMaps(restoredCloses, phoneCloses);
     if (merged.size) await db.settings.bulkPut([...merged].map(([day, value]): SettingRow => ({ key: closeKey(day), value, updatedAt: now, deleted: 0, deviceId })));
   }));

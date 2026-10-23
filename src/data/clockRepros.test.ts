@@ -248,3 +248,20 @@ it('recordShown writes only when the day or the XP rises', async () => {
   await recordShown(db, now + 86_400_000, view);
   expect(puts).toHaveBeenCalledTimes(1);
 });
+
+it('an older close is saved once with the level bonus it held, so a later fact cannot fill it differently (Codex review, item 48)', async () => {
+  set('2026-11-01T10:00:00'); for (let i = 0; i < 10; i++) await task(false);
+  set('2026-11-03T10:00:00'); await reconcileGamify(db, now);
+  // Make the 1 Nov close look like one written before 24 Oct (no bonus), then reconcile again.
+  const row = (await db.settings.get('economy.close:2026-11-01'))!;
+  const legacy = { ...(row.value as Record<string, unknown>) };
+  delete legacy.bonus;
+  await db.settings.put({ ...row, value: legacy });
+  await reconcileGamify(db, now);
+  expect(((await db.settings.get('economy.close:2026-11-01'))!.value as { bonus?: number }).bonus).toBe(0);
+});
+
+// Accepted for ship-34 (Codex review of round 5, item 48, finding 2): Shards shown more than 42 days past the last
+// activity (a clock set far ahead) have no high-water of their own, so a clock set back can lower them. A plain
+// Shards peak would mint. Recorded in DECISIONS; the stop rule leaves a >42-day jump plus a restore as a known edge.
+it.todo('Shards shown more than 42 days past the last activity survive the clock going back');
