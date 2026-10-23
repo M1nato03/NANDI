@@ -562,8 +562,9 @@ function replayEconomy(
     const focus = Object.entries(boosted).reduce((sum, [name, amount]) => sum + (v2(key) ? Math.min(amount, earnedBy[name] ?? 0) : amount), 0) * (rules.gamify.focusMultiplier - 1);
     // Spec 15: one gentle thing on a tired or low day keeps the day. It is never a Hat-trick slot.
     const soft = rows.some(row => row.kind === 'soft') ? rules.soft.dayXp : 0;
-    // Spec 24 #1: chhutti facts exist only from the build that writes them, so no past day is rescored.
-    const chhutti = Math.min(rules.plan.chhutti.paidPerDay, rows.filter(row => row.mode === 'tasks' && row.kind === 'chhutti' && row.inputs.kept === true).length) * rules.plan.chhutti.xp;
+    // Spec 24 #1: chhutti facts exist only from the build that writes them, so no past day is rescored. Only a window
+    // the phone's usage log measured pays; a self-reported one still grows the courtyard (self-report inflates).
+    const chhutti = Math.min(rules.plan.chhutti.paidPerDay, rows.filter(row => row.mode === 'tasks' && row.kind === 'chhutti' && row.inputs.kept === true && row.inputs.source === 'usage').length) * rules.plan.chhutti.xp;
     days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, welcome: 0, held: 0,
       total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti,
       mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });

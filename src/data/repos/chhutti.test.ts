@@ -53,6 +53,10 @@ it('with no usage log (web, no access, history gone) it writes nothing and asks 
   expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
   await answerChhutti(db, '2026-11-02', window, 'yes', at('2026-11-02', '22:05'));
   expect((await db.ledger.where('kind').equals('chhutti').first())?.inputs).toMatchObject({ source: 'self', kept: true });
+  // A self-reported chhutti hangs a marigold but pays no XP: only a measured window pays.
+  const facts = await db.ledger.toArray();
+  expect(deriveEconomy(facts, undefined, await db.settings.toArray(), '2026-11-02').days.at(-1)?.chhutti).toBe(0);
+  expect(deriveCourtyard(facts, '2026-11-02').toran).toBe(1);
   expect(await checkChhutti(db, at('2026-11-02', '22:10'), reader(() => null))).toEqual([]);
 });
 

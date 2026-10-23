@@ -1,0 +1,38 @@
+name: Android compile check
+
+# Compiles the native Java on branches before anything reaches main. It builds a debug APK only: no signing
+# secrets, no upload and no deploy, so nothing reaches the update server (that is android.yml, main only).
+on:
+  push:
+    branches-ignore: [main]
+    paths: ['android/**', 'capacitor.config.ts', 'package.json', '.github/workflows/android-compile.yml']
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx cap sync android
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - name: Install Android SDK packages
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Compile (debug, unsigned)
+        working-directory: android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
