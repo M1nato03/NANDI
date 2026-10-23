@@ -75,11 +75,29 @@ describe('closing the books (economy second opinion 22)', () => {
     expect(deriveEconomy(late, undefined, owned, today).owned).toContain('banner:dawn');
   });
 
-  it('ignores a close for today or one that is not an object', () => {
+  it('a level the peak keeps pays its unpaid level-up Shards once, never on top of a close that holds them (cj3 D)', () => {
     const day = '2026-11-03';
     const facts = [task(day)];
-    const odd = [...v2, setting(closeKey(day), { total: 999 }), setting(closeKey('2026-11-02'), 'nonsense')];
-    expect(deriveEconomy(facts, undefined, odd, day).totalXp).toBe(deriveEconomy(facts, undefined, v2, day).totalXp);
+    const plain = deriveEconomy(facts, undefined, v2, day);
+    expect(plain.level).toBe(1);
+    const peak = setting('economy.peak', { totalXp: 200, level: 2 });
+    expect(deriveEconomy(facts, undefined, [...v2, peak], day).shards).toBe(plain.shards + 20);
+    // A close that already holds more than the bonus floors the balance; the bonus is not added on top of it.
+    const held = setting(closeKey('2026-11-02'), { total: 0, sp: 0, streak: 0, paused: false, shards: 100, owned: [], purchases: [] });
+    const floored = deriveEconomy(facts, undefined, [...v2, held], day).shards;
+    expect(deriveEconomy(facts, undefined, [...v2, held, peak], day).shards).toBe(floored);
+  });
+
+  it('ignores a close that is not an object; a close for today stays out of today but its totals are kept', () => {
+    const day = '2026-11-03';
+    const facts = [task(day)];
+    const plain = deriveEconomy(facts, undefined, v2, day);
+    expect(deriveEconomy(facts, undefined, [...v2, setting(closeKey('2026-11-02'), 'nonsense')], day).totalXp).toBe(plain.totalXp);
+    // A close for today means this phone already showed the day as finished (a clock that ran ahead). The real-today
+    // day still shows its own replay, and the look-ahead keeps what was shown (cj3 clock fuzz A, C3).
+    const ahead = deriveEconomy(facts, undefined, [...v2, setting(closeKey(day), { total: 999 })], day);
+    expect(ahead.days.at(-1)!.total).toBe(plain.days.at(-1)!.total);
+    expect(ahead.totalXp).toBeGreaterThanOrEqual(999);
   });
 
   it('never lowers any number over random later syncs of earlier facts', () => {

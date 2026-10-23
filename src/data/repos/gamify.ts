@@ -2,7 +2,7 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
 import { getOrCreateDeviceId } from '../device';
@@ -62,10 +62,17 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
       const scored = drop.drop.items.filter(item => !item.lesson).length;
       if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today, late);
     }
-    // Record today's welcome-back gift once shown, so a later sync can never take it away.
+    // Record each welcome-back gift once shown, today's and every look-ahead day's (a clock set back), so filling
+    // an earlier gap day later can never take it away, nor the level its XP reached (cj3 clock fuzz D).
     const settings = await db.settings.toArray();
     const shown = deriveEconomy(facts, undefined, settings, today);
     if (shown.days.at(-1)?.welcome) await add('welcome-back', today, today);
+    const horizon = economyHorizon(facts, settings, today);
+    if (horizon > today) for (const day of deriveEconomy(facts, undefined, settings, horizon).days) if (day.dayKey > today && day.welcome) await add('welcome-back', day.dayKey, day.dayKey);
+    // The highest day this phone has shown: the look-ahead runs at least that far, so a clock set back or a
+    // time zone to the west never hides what that day showed, like a season-end award (cj3 clock fuzz A).
+    const seen = readSeenUpTo(settings);
+    if (!seen || seen < today) await db.settings.put({ key: SEEN_KEY, value: today, updatedAt: now, deleted: 0, deviceId });
     // Raise the never-lower peak of XP and level (item 38): a floor for facts the replay cannot see later.
     const peak = readPeak(settings);
     if (shown.totalXp > peak.totalXp || shown.level > peak.level) await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(shown.totalXp, peak.totalXp), level: Math.max(shown.level, peak.level) }, updatedAt: now, deleted: 0, deviceId });
@@ -81,8 +88,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // Close the books: every finished day keeps the highest it has shown (a high-water mark, raised on each
     // run, never lowered), so no later sync, import, restore or rule fix can lower it (second opinions 22, 25).
     const rows = await db.settings.toArray();
-    // A close dated today or later came from a clock that was set ahead: that day has not ended, so drop it.
-    for (const row of rows.filter(item => item.key.startsWith(CLOSE_PREFIX) && item.key.slice(CLOSE_PREFIX.length) >= today)) await db.settings.delete(row.key);
+    // A close dated today or later (a clock that was set ahead, a time zone to the west, a restore) stays stored:
+    // the real-today view ignores it, and the look-ahead still needs it (cj3 clock fuzz A, C3).
     const oldest = addEconomyDays(today, -120);
     const stored = new Map(rows.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     // Days older than 120 that were never closed stay unclosed; their purchases move to the next kept day.

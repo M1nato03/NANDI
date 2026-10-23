@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { CLOSE_PREFIX, closeKey, mergeCloseMaps, PEAK_KEY, readPeak } from '../../core/economy/deriveEconomy';
+import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -213,11 +213,18 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     throw new Error('Backup tables do not match this app database');
   }
   await trackWrite(() => duringRestore(async () => {
-    await getOrCreateDeviceId(db, Date.now());
+    const deviceId = await getOrCreateDeviceId(db, Date.now());
     const localSettings = (await db.settings.bulkGet([...deviceLocalKeys]))
       .filter((row): row is SettingRow => row !== undefined);
     const localCutoffs = (await db.settings.bulkGet(cutoffKeys)).filter((row): row is SettingRow => row !== undefined && !row.deleted);
     const localPeak = await db.settings.get(PEAK_KEY);
+    // What this phone shows now, before the clear: XP a reconcile has not recorded yet still raises the peak (cj3 C4).
+    const before = await db.settings.toArray();
+    const now = Date.now();
+    const showing = deriveEconomy(await db.ledger.toArray(), undefined, before, dayKey(now));
+    const storedPeak = localPeak && !localPeak.deleted ? readPeak([localPeak]) : { totalXp: 0, level: 1 };
+    const minePeak = { totalXp: Math.max(storedPeak.totalXp, showing.totalXp), level: Math.max(storedPeak.level, showing.level) };
+    const localSeen = readSeenUpTo(before);
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
     const closes = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     // dexie-export-import expects its own JSON, without the NANDI envelope.
@@ -232,9 +239,14 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     await db.settings.bulkPut([...localSettings, ...localCutoffs]);
     // The XP and level peak keeps the higher of this phone's and the backup's (item 38).
     const restoredPeak = await db.settings.get(PEAK_KEY);
-    if (localPeak && !localPeak.deleted) {
-      const mine = readPeak([localPeak]), theirs = restoredPeak && !restoredPeak.deleted ? readPeak([restoredPeak]) : { totalXp: 0, level: 1 };
-      await db.settings.put({ ...localPeak, value: { totalXp: Math.max(mine.totalXp, theirs.totalXp), level: Math.max(mine.level, theirs.level) } });
+    const theirs = restoredPeak && !restoredPeak.deleted ? readPeak([restoredPeak]) : { totalXp: 0, level: 1 };
+    if (minePeak.totalXp > theirs.totalXp || minePeak.level > theirs.level) {
+      await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(minePeak.totalXp, theirs.totalXp), level: Math.max(minePeak.level, theirs.level) }, updatedAt: now, deleted: 0, deviceId });
+    }
+    // The highest day either side has shown: the look-ahead keeps running at least that far (cj3 A, C3).
+    const theirSeen = readSeenUpTo([...(await db.settings.bulkGet([SEEN_KEY])).filter((row): row is SettingRow => !!row)]);
+    if (localSeen && (!theirSeen || localSeen > theirSeen)) {
+      await db.settings.put({ key: SEEN_KEY, value: localSeen, updatedAt: now, deleted: 0, deviceId });
     }
     const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));

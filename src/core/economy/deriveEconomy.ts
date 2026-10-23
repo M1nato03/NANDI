@@ -65,7 +65,8 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   }), ...onlyIn(y, x)];
   // The merged close knows every purchase from both, so each balance first pays for the ones only the other knew;
   // otherwise a late purchase's spend would vanish under the older, higher balance (second opinion 26).
-  const shards = Math.max(x.shards - cost(onlyIn(y, x)), y.shards - cost(onlyIn(x, y)), 0);
+  // Signed: a close may hold a debt from a purchase made with look-ahead Shards, and a 0 here would mint them (cj3 B).
+  const shards = Math.max(x.shards - cost(onlyIn(y, x)), y.shards - cost(onlyIn(x, y)));
   return { total: Math.max(x.total, y.total), sp: Math.max(x.sp, y.sp), streak: Math.max(x.streak, y.streak),
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
     shards, owned: [...new Set([...x.owned, ...y.owned])], purchases };
@@ -106,7 +107,7 @@ export function normalizeCloses(closes: ReadonlyMap<string, DayClose>): Map<stri
     for (const item of hosted.get(day)!) if (!listed.has(item.id)) unlisted.set(item.id, item.price);
     for (const item of close.purchases) { listed.add(item.id); unlisted.delete(item.id); }
     const unpaid = [...unlisted.values()].reduce((sum, price) => sum + price, 0);
-    out.set(day, { ...close, shards: Math.max(0, close.shards - unpaid), purchases: hosted.get(day)! });
+    out.set(day, { ...close, shards: close.shards - unpaid, purchases: hosted.get(day)! });
   }
   return out;
 }
@@ -131,7 +132,7 @@ export function mergeCloseMaps(a: ReadonlyMap<string, unknown>, b: ReadonlyMap<s
     for (const item of cx?.purchases ?? []) knownX.add(item.id);
     for (const item of cy?.purchases ?? []) knownY.add(item.id);
     for (const item of hosted.get(day)!) knownAll.add(item.id);
-    const shards = Math.max(cx ? cx.shards - unpaid(knownX) : 0, cy ? cy.shards - unpaid(knownY) : 0, 0);
+    const shards = Math.max(cx ? cx.shards - unpaid(knownX) : -Infinity, cy ? cy.shards - unpaid(knownY) : -Infinity);
     const both = [cx, cy].filter((close): close is DayClose => !!close);
     const streak = Math.max(...both.map(close => close.streak));
     const top = both.filter(close => close.streak === streak);
@@ -192,7 +193,8 @@ const purchasePrices: Record<string, number> = {
 };
 
 interface DaySnapshot { streak: number; paused: boolean; earned: number; balance: number; owned: string[]; purchases: ClosePurchase[] }
-interface Replay { view: EconomyView; daily: Map<string, DaySnapshot>; accepted: ClosePurchase[] }
+/** `balance` is the signed end balance; `view.shards` is it clamped at 0 for the screen. */
+interface Replay { view: EconomyView; daily: Map<string, DaySnapshot>; accepted: ClosePurchase[]; balance: number }
 
 /** Purchases kept in closes join the ledger (a restore may have dropped them) and count as accepted once. */
 function withClosedPurchases(facts: readonly LedgerRow[], closes: ReadonlyMap<string, DayClose>): LedgerRow[] {
@@ -231,7 +233,8 @@ function shardFloors(closes: ReadonlyMap<string, DayClose>, replay: Replay, days
     }
     while (atSpend < spends.length && spends[atSpend]!.dayKey <= day) spent += spends[atSpend++]!.price;
     const earnedAt = replay.daily.get(day)?.earned;
-    out.set(day, earnedAt === undefined || best === -Infinity ? 0 : Math.max(0, earnedAt - spent + best));
+    // Signed, and -Infinity with no close to floor it: only the shown number is clamped (cj3 B).
+    out.set(day, earnedAt === undefined || best === -Infinity ? -Infinity : earnedAt - spent + best);
   }
   return out;
 }
@@ -251,17 +254,46 @@ export function deriveEconomy(
   settings: readonly SettingRow[] | Record<string, unknown> = [], today: string,
 ): EconomyView {
   const view = withPeak(viewUpTo(facts, history, settings, today), settings, history, today);
-  // A phone clock that ran ahead and was set back leaves facts dated after today. Days, streak, quests and
-  // Hat-tricks stay on the real today, but the totals also count those facts, so XP and level never drop
-  // (cj2 test gaps 3.5). The look-ahead stops at 120 days, so a stray far-future fact costs little.
-  const latest = facts.reduce((max, fact) => !fact.deleted && fact.dayKey > max ? fact.dayKey : max, today);
-  if (latest <= today) return view;
-  const ahead = viewUpTo(facts, history, settings, latest <= addEconomyDays(today, 120) ? latest : addEconomyDays(today, 120));
+  // A phone clock that ran ahead and was set back, a time zone to the west, or a restore leaves facts or closes
+  // dated after today, or days this phone has already shown. Days, streak, quests and Hat-tricks stay on the real
+  // today, but the totals look ahead to all of them, so XP, level, Shards and owned items never drop (cj2 3.5,
+  // cj3 clock fuzz A, C3, E).
+  const horizon = economyHorizon(facts, settings, today);
+  if (horizon <= today) return view;
+  const ahead = withPeak(viewUpTo(facts, history, settings, horizon), settings, history, horizon);
   const top = ahead.totalXp > view.totalXp ? ahead : view;
   // Shards shown and spendable come from the look-ahead alone: it also charges purchases dated ahead, so the
   // same Shards can never buy twice (item 38). Owned items keep both.
   return { ...view, totalXp: top.totalXp, level: Math.max(view.level, ahead.level), nextLevelXp: top.nextLevelXp,
     shards: ahead.shards, owned: [...new Set([...view.owned, ...ahead.owned])] };
+}
+
+/** The highest day this phone's reconcile has run on (never lowered; raised by reconcile, kept by a restore). */
+export const SEEN_KEY = 'economy.seenUpTo';
+export function readSeenUpTo(settings: readonly SettingRow[] | Record<string, unknown>): string | undefined {
+  const stored = value(settings, SEEN_KEY);
+  return typeof stored === 'string' && isDay(stored) ? stored : undefined;
+}
+/**
+ * How far the look-ahead runs: the latest fact, the day after the latest close, and the highest day reconcile has
+ * seen (cj3 clock fuzz A, Codex A review). A season-end award is no fact, so only `seenUpTo` keeps it after the
+ * clock goes back; that part is capped at 42 days past the latest activity (one season), so a clock set far ahead
+ * once can add at most one season's award, and never decades of empty days. Facts and closes are never capped:
+ * a phone that lost its date still shows all of them (E).
+ */
+export function economyHorizon(facts: readonly LedgerRow[], settings: readonly SettingRow[] | Record<string, unknown>, today: string): string {
+  let activity = facts.reduce((max, fact) => valid(fact) && fact.dayKey > max ? fact.dayKey : max, '');
+  for (const day of closeDays(settings)) { const after = addEconomyDays(day, 1); if (after > activity) activity = after; }
+  const seen = readSeenUpTo(settings);
+  const seenCap = activity ? addEconomyDays(activity, 42) : today;
+  const bySeen = seen ? (seen < seenCap ? seen : seenCap) : '';
+  return [today, activity, bySeen].reduce((max, day) => day > max ? day : max, today);
+}
+function closeDays(settings: readonly SettingRow[] | Record<string, unknown>): string[] {
+  const keys = Array.isArray(settings)
+    ? (settings as SettingRow[]).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX)).map(row => row.key)
+    : Object.keys(settings as Record<string, unknown>).filter(key => key.startsWith(CLOSE_PREFIX));
+  return keys.map(key => key.slice(CLOSE_PREFIX.length)).filter(isDay);
 }
 
 /** The highest XP and level this phone has shown (written by reconcile); a floor for anything a replay cannot see. */
@@ -280,9 +312,13 @@ function withPeak(view: EconomyView, settings: readonly SettingRow[] | Record<st
 
 function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEntry[], settings: readonly SettingRow[] | Record<string, unknown>, end: string): EconomyView {
   const { replay, closes } = replayWithCloses(facts, history, settings, end);
-  if (!closes.size) return replay.view;
+  // A level the peak keeps but the replay no longer reaches keeps the Shards it paid: only the unpaid difference,
+  // added before the floor, so a close that already holds that bonus never pays it twice (cj3 D, Codex review).
+  const unpaidLevels = Math.max(0, readPeak(settings).level - replay.view.level);
+  const balance = replay.balance + unpaidLevels * (rulesFor(end, history)?.rules ?? RULES).shards.levelUpBonus;
+  if (!closes.size) return { ...replay.view, shards: Math.max(0, balance) };
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
-  return { ...replay.view, shards: Math.max(replay.view.shards, shardFloors(closes, replay, [end]).get(end) ?? 0), owned };
+  return { ...replay.view, shards: Math.max(0, balance, shardFloors(closes, replay, [end]).get(end) ?? -Infinity), owned };
 }
 
 /** What each finished day (before `today`) shows now, in one replay: the candidates reconcileGamify merges into the closes. */
@@ -298,7 +334,7 @@ export function closesFor(facts: readonly LedgerRow[], settings: readonly Settin
     while (atClose < closeDays.length && closeDays[atClose]! <= day.dayKey) for (const id of closes.get(closeDays[atClose++]!)!.owned) ownedBefore.add(id);
     const snap = replay.daily.get(day.dayKey)!;
     const sp = Math.max(0, Math.min(day.total - day.held - day.soft - day.welcome, RULES.season.spDailyCap), closes.get(day.dayKey)?.sp ?? 0);
-    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, floors.get(day.dayKey) ?? 0),
+    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, floors.get(day.dayKey) ?? -Infinity),
       owned: [...new Set([...snap.owned, ...ownedBefore])], purchases: snap.purchases });
   }
   return out;
@@ -338,7 +374,13 @@ function replayEconomy(
   };
   const visibleFrom = value(settings, 'economyVisibleFrom');
   const firstDay = typeof visibleFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(visibleFrom) && !Number.isNaN(Date.parse(`${visibleFrom}T12:00:00Z`)) && new Date(`${visibleFrom}T12:00:00Z`).toISOString().slice(0, 10) === visibleFrom && visibleFrom <= today ? visibleFrom : today;
-  const start = ordered[0]?.dayKey && ordered[0].dayKey < firstDay ? ordered[0].dayKey : firstDay;
+  const firstFact = ordered[0]?.dayKey && ordered[0].dayKey < firstDay ? ordered[0].dayKey : firstDay;
+  // A close before the first fact (a restore of an older backup) still holds its day, its XP and its Shards (cj3 C2).
+  const firstClose = [...closes.keys()].reduce((min, day) => day < min ? day : min, firstFact);
+  // A reset clock can set the visibility start decades back: never replay more than a year of empty days before
+  // the first activity (Codex review of cj3 E). Rest days bank at most 3 months, so nothing shown changes.
+  const firstActivity = [ordered[0]?.dayKey, ...closes.keys()].filter((day): day is string => !!day).sort()[0];
+  const start = firstActivity && firstClose < addEconomyDays(firstActivity, -366) ? addEconomyDays(firstActivity, -366) : firstClose;
   const days: EconomyDay[] = [];
   for (let key = start; key <= today; key = addEconomyDays(key, 1)) {
     const rows = byDay.get(key) ?? [];
@@ -568,7 +610,8 @@ function replayEconomy(
       if (item.itemId !== 'freeze') ownedSoFar.add(item.itemId);
       if (item.dayKey === key) ofDay.push(item);
     }
-    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: Math.max(0, earned - spentSoFar), owned: [...ownedSoFar], purchases: ofDay });
+    // Signed: a day that spent look-ahead Shards ends below zero, and its close must say so (cj3 B).
+    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: earned - spentSoFar, owned: [...ownedSoFar], purchases: ofDay });
   }
-  return { daily, accepted, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 + restShift - (days.length - 1) + 1 - (days.at(-1)?.hatTrick ? 1 : 0) >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
+  return { daily, accepted, balance, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 + restShift - (days.length - 1) + 1 - (days.at(-1)?.hatTrick ? 1 : 0) >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
 }

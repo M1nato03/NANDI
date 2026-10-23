@@ -1,0 +1,168 @@
+// @vitest-environment jsdom
+// Seeded clock and time-zone fuzz of the economy (cloud batch 3 job 5, idea engine item 42), kept small for CI:
+// 20 seeds x 60 steps. It drives the real repos, reconcileGamify, exportBackup and importBackup on fake-indexeddb,
+// with a fake phone clock and process.env.TZ switched at run time, and checks what deriveEconomy shows after each step.
+// A restore replaces today (Jenil, 24 Oct), so after one only finished days, XP and level must hold.
+import 'fake-indexeddb/auto';
+import { expect, it, vi } from 'vitest';
+import { createDb, type NandiDb } from '../src/data/db';
+import { reconcileGamify } from '../src/data/repos/gamify';
+import { createTaskRepos } from '../src/data/repos/tasks';
+import { createTrainRepos } from '../src/data/repos/train';
+import { purchaseShopItem } from '../src/data/repos/economy';
+import { doSoftThing, setSoftState } from '../src/data/repos/soft';
+import { putDailyBoardFact } from '../src/data/repos/learn';
+import { exportBackup, importBackup, type BackupEnvelope } from '../src/data/backup';
+import { getOrCreateDeviceId } from '../src/data/device';
+import { deriveEconomy, type EconomyView } from '../src/core/economy/deriveEconomy';
+import { catalogue } from '../src/core/economy/shop';
+import { dayKey } from '../src/core/time';
+import type { PuzzleRunRow } from '../src/data/types';
+
+const ZONES = ['Asia/Kolkata', 'Asia/Dubai', 'America/New_York'] as const;
+type Act = 'task' | 'rest' | 'board' | 'soft' | 'buy' | 'lights';
+type Op =
+  | { t: 'day'; hour: number; min: number }
+  | { t: 'fwd' | 'back'; days: number; hour: number }
+  | { t: 'tz'; zone: typeof ZONES[number] }
+  | { t: 'at'; hour: number; min: number }
+  | { t: 'act'; kind: Act; item: number; mins: number }
+  | { t: 'backup' }
+  | { t: 'restore'; pick: number }
+  | { t: 'skipReconcile' };
+
+function mulberry32(seed: number) {
+  return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+function generate(seed: number, steps: number): Op[] {
+  const r = mulberry32(seed), int = (lo: number, hi: number) => lo + Math.floor(r() * (hi - lo + 1));
+  const ops: Op[] = []; let backups = 0;
+  const acts: Act[] = ['task', 'task', 'task', 'rest', 'board', 'soft', 'buy', 'buy', 'lights'];
+  while (ops.length < steps) {
+    const x = r();
+    if (x < 0.30) ops.push({ t: 'day', hour: int(6, 23), min: int(0, 59) });
+    else if (x < 0.38) ops.push({ t: 'fwd', days: int(1, 30), hour: int(5, 23) });
+    else if (x < 0.46) ops.push({ t: 'back', days: int(1, 30), hour: int(5, 23) });
+    else if (x < 0.52) ops.push({ t: 'tz', zone: ZONES[int(0, 2)]! });
+    else if (x < 0.57) { ops.push({ t: 'at', hour: 3, min: int(40, 59) }); ops.push({ t: 'act', kind: 'task', item: int(0, 99), mins: 0 }); ops.push({ t: 'at', hour: 4, min: int(0, 20) }); }
+    else if (x < 0.62) { ops.push({ t: 'backup' }); backups++; }
+    else if (x < 0.67 && backups > 0) ops.push({ t: 'restore', pick: int(0, 99) });
+    else if (x < 0.70) ops.push({ t: 'skipReconcile' });
+    else ops.push({ t: 'act', kind: acts[int(0, acts.length - 1)]!, item: int(0, 99), mins: int(1, 90) });
+  }
+  return ops.slice(0, steps);
+}
+
+let serial = 0;
+const START = Date.UTC(2026, 9, 20, 6, 30); // 20 Oct 2026, 12:00 in Kolkata
+
+async function runSequence(ops: Op[]): Promise<string[]> {
+  process.env.TZ = 'Asia/Kolkata';
+  let now = START;
+  vi.setSystemTime(now);
+  const db: NandiDb = createDb(`clock-fuzz-${++serial}`);
+  const failures: string[] = [];
+  try {
+    const deviceId = await getOrCreateDeviceId(db, now);
+    const tasks = createTaskRepos(db, deviceId), train = createTrainRepos(db, deviceId);
+    const backups: BackupEnvelope[] = [];
+    let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, taskN = 0;
+    let owned = new Set<string>();
+    const finished = new Map<string, { total: number; reopened: boolean }>();
+    let lastCheck = { today: '', shards: 0, owned: [] as string[] }, snap = { shards: 0, owned: [] as string[] }, spentSinceSnap = 0;
+    const view = async (): Promise<EconomyView> => deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
+    const check = async (step: number, op: Op, spent: number) => {
+      const v = await view(), today = dayKey(now);
+      const fail = (kind: string, detail: string) => failures.push(`step ${step} ${JSON.stringify(op)}: ${kind} ${detail} (today ${today})`);
+      if (v.totalXp < maxXp) fail('xp-drop', `${maxXp} -> ${v.totalXp}`);
+      if (v.level < maxLevel) fail('level-drop', `${maxLevel} -> ${v.level}`);
+      if (op.t !== 'restore') {
+        if (v.shards < lastShards - spent) fail('shards-drop', `${lastShards} -> ${v.shards} (spent ${spent})`);
+        for (const id of owned) if (!v.owned.includes(id)) fail('owned-lost', id);
+      }
+      const byDay = new Map(v.days.map(d => [d.dayKey, d.total]));
+      for (const [day, rec] of finished) {
+        if (day >= today) { rec.reopened = true; continue; }
+        if ((byDay.get(day) ?? 0) < rec.total) fail('day-drop', `${day}: ${rec.total} -> ${byDay.get(day) ?? 0}`);
+      }
+      for (const d of v.days) if (d.dayKey < today) {
+        const rec = finished.get(d.dayKey);
+        if (!rec) finished.set(d.dayKey, { total: d.total, reopened: false });
+        else if (d.total >= rec.total) rec.total = d.total;
+      }
+      if (lastCheck.today && lastCheck.today < today) { snap = { shards: lastCheck.shards, owned: lastCheck.owned }; spentSinceSnap = 0; }
+      spentSinceSnap += spent;
+      if (op.t === 'restore') {
+        // What a finished day ended with survives a restore; only today is replaced.
+        if (v.shards < snap.shards - spentSinceSnap) fail('shards-drop-finished', `${snap.shards} -> ${v.shards} (spent since ${spentSinceSnap})`);
+        for (const id of snap.owned) if (!v.owned.includes(id)) fail('owned-lost-finished', id);
+        owned = new Set(v.owned);
+      }
+      lastCheck = { today, shards: v.shards, owned: [...v.owned] };
+      maxXp = Math.max(maxXp, v.totalXp); maxLevel = Math.max(maxLevel, v.level); lastShards = v.shards;
+      for (const id of v.owned) owned.add(id);
+    };
+    const setClock = (local: Date) => { now = local.getTime(); vi.setSystemTime(now); };
+    const reconcile = async () => { if (skip) { skip = false; return; } await reconcileGamify(db, now); };
+    await reconcile();
+    for (let step = 0; step < ops.length; step++) {
+      const op = ops[step]!;
+      let spent = 0;
+      const d = new Date(now);
+      if (op.t === 'day') { d.setDate(d.getDate() + 1); d.setHours(op.hour, op.min, 0, 0); setClock(d); }
+      else if (op.t === 'fwd' || op.t === 'back') { d.setDate(d.getDate() + (op.t === 'fwd' ? op.days : -op.days)); d.setHours(op.hour, 0, 0, 0); setClock(d); }
+      else if (op.t === 'tz') process.env.TZ = op.zone;
+      else if (op.t === 'at') { const next = new Date(now); next.setHours(op.hour, op.min, 0, 0); if (next.getTime() <= now) next.setDate(next.getDate() + 1); setClock(next); }
+      else if (op.t === 'skipReconcile') skip = true;
+      if (op.t === 'day' || op.t === 'fwd' || op.t === 'back' || op.t === 'tz' || op.t === 'at') {
+        await check(step, op, 0);
+        await reconcile();
+      } else if (op.t === 'act') {
+        setClock(new Date(now + op.mins * 60_000));
+        const day = dayKey(now);
+        try {
+          if (op.kind === 'task') {
+            const id = `fz-${++taskN}`;
+            await tasks.createTask({ id, title: 'Fuzz task', size: 'S', estimateMin: 15, plannedSize: 'S', dayKey: day, scheduledStart: now, mustOrCould: 'could' }, now);
+            await tasks.completeTask(id, now + 60_000);
+          } else if (op.kind === 'rest') await train.restDayCheck(now, 20);
+          else if (op.kind === 'board') {
+            const run = { id: `daily:${day}:crowns`, type: 'crowns', dayKey: day, daily: true, diff: 'easy', result: 'solved', hintsUsed: 0, updatedAt: now, deleted: 0, deviceId } as PuzzleRunRow;
+            await db.transaction('rw', db.ledger, () => putDailyBoardFact(db, run, false, now));
+          } else if (op.kind === 'soft') { await setSoftState(db, 'tired', now); await doSoftThing(db, 'breathe', now); }
+          else if (op.kind === 'lights') await tasks.recordLightsOut(now);
+          else {
+            const items = catalogue(day), item = items[op.item % items.length]!;
+            if ((await purchaseShopItem(db, item.id, now)).ok) spent = item.price;
+          }
+        } catch { /* a refused action (rest bank full, Must limit) is fine */ }
+        await check(step, op, spent);
+        spent = 0;
+        await reconcile();
+      } else if (op.t === 'backup') backups.push(await exportBackup(db, now));
+      else if (op.t === 'restore') {
+        if (backups.length) await importBackup(db, backups[op.pick % backups.length]!);
+        await check(step, op, 0);
+        await reconcile();
+      }
+      await check(step, op.t === 'restore' ? { t: 'skipReconcile' } : op, spent);
+      if (failures.length) break;
+    }
+    return failures;
+  } finally {
+    await db.delete();
+    process.env.TZ = 'Asia/Kolkata';
+  }
+}
+
+it('the economy never drops XP, level, a finished day, Shards or owned items under clock, time-zone and restore moves', async () => {
+  vi.useFakeTimers({ toFake: ['Date'] });
+  const broken: string[] = [];
+  for (let seed = 1000; seed < 1020; seed++) {
+    const failures = await runSequence(generate(seed, 60));
+    if (failures.length) broken.push(`seed ${seed}: ${failures[0]}`);
+  }
+  vi.useRealTimers();
+  expect(broken).toEqual([]);
+}, 300_000);

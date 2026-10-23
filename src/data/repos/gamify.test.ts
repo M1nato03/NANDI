@@ -40,13 +40,19 @@ it('writes no close on a fresh install with nothing done yet', async () => {
 const done = (day: string) => ({ id: `done:${day}`, mode: 'tasks', kind: 'done', refId: day, dayKey: day,
   inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at(day), deleted: 0 as const, deviceId: 'test' });
 
-it('drops closes dated today or later (a clock set ahead, then back) and keeps closing the real days', async () => {
+it('keeps closes dated today or later (a clock set ahead, then back), keeps them out of today, and keeps closing the real days', async () => {
+  // cj3 clock fuzz A and C3: deleting them lost what the phone had shown, like a season-end award or a restored day.
   const db = createDb(`gamify-close-${++serial}`); opened.push(db);
   await db.ledger.add(done('2026-11-02'));
-  await db.settings.put({ key: closeKey('2026-11-09'), value: { total: 999, sp: 0, streak: 9, shards: 0, owned: [] }, updatedAt: 1, deleted: 0, deviceId: 'test' });
+  const ahead = { total: 999, sp: 0, streak: 9, shards: 0, owned: [] };
+  await db.settings.put({ key: closeKey('2026-11-09'), value: ahead, updatedAt: 1, deleted: 0, deviceId: 'test' });
   await reconcileGamify(db, at('2026-11-05'));
   const keys = (await db.settings.toArray()).filter(row => row.key.startsWith(CLOSE_PREFIX)).map(row => row.key).sort();
-  expect(keys).toEqual(['2026-11-02', '2026-11-03', '2026-11-04'].map(closeKey));
+  expect(keys).toEqual(['2026-11-02', '2026-11-03', '2026-11-04', '2026-11-09'].map(closeKey));
+  expect((await db.settings.get(closeKey('2026-11-09')))?.value).toEqual(ahead);
+  const view = deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), '2026-11-05');
+  expect(view.days.at(-1)!.dayKey).toBe('2026-11-05');
+  expect(view.days.some(day => day.dayKey > '2026-11-05')).toBe(false);
 });
 
 it('waits while a restore runs, then closes once it has finished', async () => {
