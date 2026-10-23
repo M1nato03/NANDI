@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { boundsOn, boundWindow, chhuttiLine, isKept, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type UsageEvent } from './chhutti';
+import { appliesOn, boundsOn, boundWindow, chhuttiLine, endWindow, isKept, isLive, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type UsageEvent } from './chhutti';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
 const min = 60_000;
@@ -7,23 +7,24 @@ const from = 1_000 * min, to = 1_060 * min; // a 60-minute window
 const ev = (type: UsageEvent['type'], at: number, pkg?: string): UsageEvent => ({ type, at, ...(pkg ? { pkg } : {}) });
 const ig = 'com.instagram.android';
 
-describe('chhutti window usage (spec 24 #1, item 55)', () => {
+describe('chhutti window usage (spec 24 #1, items 55-56)', () => {
   const yt = 'com.google.android.youtube';
   const chosen = [ig, yt];
   const use = (events: UsageEvent[], logStart?: number) => windowUsage(events, from, to, chosen, logStart);
-  it('is unknown, never kept, when the log cannot say who was in front at the start', () => {
+  it('is unknown, never kept, when the set of open apps at the start cannot be built', () => {
     expect(use([])).toBeNull();
     expect(use([], from - 60 * min)).toBeNull();
-    // Only events inside the window: the app in front at the start is unknown.
+    // Only events inside the window: nothing to build the set from.
     expect(use([ev('fg', from + 5 * min, ig), ev('bg', from + 9 * min, ig)])).toBeNull();
     expect(windowUsage([ev('off', from - min)], to, from, chosen)).toBeNull();
     // The log starts after the window began (Android keeps events only a few days): unknown.
     expect(use([ev('off', from - min)], from + min)).toBeNull();
   });
-  it('a restart or shutdown inside the window is unknown; one before it is fine', () => {
+  it('a start-up or shutdown inside the window is unknown; a start-up before it empties the set', () => {
     expect(use([ev('off', from - min), ev('down', from + 10 * min), ev('boot', from + 30 * min)])).toBeNull();
     expect(use([ev('fg', from - 5 * min, 'x'), ev('boot', from + 30 * min)])).toBeNull();
-    expect(use([ev('down', from - 40 * min), ev('boot', from - 30 * min), ev('fg', from - 20 * min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
+    // Instagram was open before the restart and never sent a pause: after the start-up it is not open.
+    expect(use([ev('fg', from - 60 * min, ig), ev('down', from - 40 * min), ev('boot', from - 30 * min), ev('fg', from - 20 * min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
   });
   it('a quiet window is known when the screen went dark before it', () => {
     expect(use([ev('on', from - 60 * min), ev('off', from - 2 * min)], from - 60 * min)).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
@@ -31,17 +32,21 @@ describe('chhutti window usage (spec 24 #1, item 55)', () => {
   it('counts chosen-app time inside the window only, from an app opened before it', () => {
     expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('bg', from + 4 * min, ig), ev('fg', from + 40 * min, ig), ev('bg', to + 20 * min, ig)])).toEqual({ chosenAppMs: 24 * min, darkMs: 0 });
   });
-  it('counts one front-app timeline, not a sum per app (overlapping events)', () => {
-    // YouTube comes to the front at +5 while the Instagram pause arrives late at +10: 20 minutes in all, not 25.
+  it('counts the union of open chosen apps, not a sum per app (split screen, picture-in-picture)', () => {
+    // YouTube opens beside Instagram at +5; Instagram closes at +10, YouTube at +20: 20 minutes in all, not 25.
     expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('fg', from + 5 * min, yt), ev('bg', from + 10 * min, ig), ev('bg', from + 20 * min, yt)])?.chosenAppMs).toBe(20 * min);
-    // Another app in front ends chosen time even before the chosen app's own pause arrives.
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('fg', from + 5 * min, 'x'), ev('bg', from + 30 * min, ig)])?.chosenAppMs).toBe(5 * min);
+    // Another app opening beside Instagram does not close it: Instagram counts until its own pause.
+    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('fg', from + 5 * min, 'x'), ev('bg', from + 30 * min, ig)])?.chosenAppMs).toBe(30 * min);
   });
-  it('an app that is not chosen in front counts nothing', () => {
+  it('a dark screen pauses the count but keeps the app open; the screen coming back on counts again', () => {
+    // Off at +5 and on again at +20 with no new 'fg': 5 + 20 minutes of Instagram, 15 dark.
+    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('off', from + 5 * min), ev('on', from + 20 * min), ev('bg', from + 40 * min, ig)])).toEqual({ chosenAppMs: 25 * min, darkMs: 15 * min });
+  });
+  it('an app whose first event is a pause was open before the log began', () => {
+    expect(use([ev('on', from - 30 * min), ev('bg', from + 3 * min, ig)])?.chosenAppMs).toBe(3 * min);
+  });
+  it('an app that is not chosen counts nothing', () => {
     expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, 'x'), ev('bg', to + min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
-  });
-  it('closes app time when the screen goes dark, and counts the dark minutes', () => {
-    expect(use([ev('on', from - 60 * min), ev('fg', from - min, 'x'), ev('fg', from + 10 * min, ig), ev('off', from + 15 * min), ev('on', from + 50 * min)])).toEqual({ chosenAppMs: 5 * min, darkMs: 35 * min });
   });
   it('a screen that turns on first was dark before; no screen events at all means dark minutes are unknown', () => {
     expect(use([ev('fg', from - 5 * min, 'x'), ev('on', from + 20 * min)])?.darkMs).toBe(20 * min);
@@ -79,6 +84,18 @@ describe('chhutti bounds never rewrite a started day (item 55)', () => {
     const read = readChhutti([row])[0]!;
     expect(['2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06'].map(day => boundsOn(read, day).from)).toEqual(['21:00', '20:00', '20:00', '19:00']);
     expect(withBounds(read, { from: '19:00', to: '19:30' }, at('2026-11-06', '12:00'), '2026-11-06')).toBe(read);
+  });
+  it('a past segment keeps its weekdays; a removed window ends with its last started day (item 56)', () => {
+    // Sunday 1 Nov only, changed to every day on Monday 2 Nov: Sunday 1 Nov keeps its plan, Saturday 31 Oct was never planned.
+    const sunday = { ...window, since: '2026-10-25', weekdays: [0] };
+    const daily = withBounds(sunday, { from: '21:00', to: '21:30', weekdays: undefined }, at('2026-11-02', '12:00'), '2026-11-02');
+    expect(daily.weekdays).toBeUndefined();
+    expect(['2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03'].map(day => appliesOn(daily, day))).toEqual([false, true, true, true]);
+    expect(isLive(daily)).toBe(true);
+    // Turned off at 21:10, inside today's window: today is still read, tomorrow is not.
+    const ended = endWindow(daily, at('2026-11-03', '21:10'), '2026-11-03');
+    expect([appliesOn(ended, '2026-11-03'), appliesOn(ended, '2026-11-04'), isLive(ended)]).toEqual([true, false, false]);
+    expect(endWindow(daily, at('2026-11-03', '12:00'), '2026-11-03').until).toBe('2026-11-02');
   });
 });
 

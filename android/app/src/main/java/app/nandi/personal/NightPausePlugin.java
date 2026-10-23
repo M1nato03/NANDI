@@ -35,8 +35,8 @@ public class NightPausePlugin extends Plugin {
 
     /**
      * Spec 24 #1 (Phone ki chhutti): the usage events for one past window, read afterwards. Nothing runs during the
-     * window. Returns every app's foreground and background events, the screen on/off events (API 28+) and the phone
-     * starting up or shutting down (API 29+), from the last screen-off before the window (up to a day back), plus
+     * window, on Android 10+ only. Returns every app's foreground and background events, the screen on/off events and
+     * the phone starting up or shutting down, from the last start-up before the window (up to a day back), plus
      * logStart, the first event the log still holds, so the app can tell "quiet" from "no history".
      * No access, a locked phone (null) or an empty log returns available false, and the app then writes nothing.
      */
@@ -47,12 +47,13 @@ public class NightPausePlugin extends Plugin {
         Long to = call.getLong("to");
         UsageStatsManager stats = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
         long now = System.currentTimeMillis();
-        if (from == null || to == null || to <= from || stats == null || !usageAllowed(getContext())) {
+        // Android 10+ only: older phones have no start-up/shutdown events, so they always get the one-tap answer (item 56).
+        if (Build.VERSION.SDK_INT < 29 || from == null || to == null || to <= from || stats == null || !usageAllowed(getContext())) {
             result.put("available", false);
             call.resolve(result);
             return;
         }
-        // A day back, so a quiet morning still finds the app in front at the start (the screen going dark at night).
+        // A day back, so the set of open apps at the window's start can be built (a start-up resets it).
         UsageEvents events = stats.queryEvents(from - 24L * 60 * 60 * 1000, Math.min(to, now));
         if (events == null) {
             result.put("available", false);
@@ -72,17 +73,17 @@ public class NightPausePlugin extends Plugin {
             String kind = null;
             if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND) kind = "fg";
             else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND) kind = "bg";
-            else if (Build.VERSION.SDK_INT >= 28 && type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
-            else if (Build.VERSION.SDK_INT >= 28 && type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
-            else if (Build.VERSION.SDK_INT >= 29 && type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
-            else if (Build.VERSION.SDK_INT >= 29 && type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
+            else if (type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
+            else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
+            else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
+            else if (type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
             if (kind == null) continue;
             JSObject item = new JSObject();
             item.put("type", kind);
             item.put("at", event.getTimeStamp());
             if (kind.equals("fg") || kind.equals("bg")) item.put("pkg", name);
-            // A screen off, shutdown or start-up before the window resets who is in front, so older events are dropped.
-            if (event.getTimeStamp() <= from && (kind.equals("off") || kind.equals("down") || kind.equals("boot"))) resetAt = list.size();
+            // A start-up before the window empties the set of open apps, so older events are dropped.
+            if (event.getTimeStamp() <= from && kind.equals("boot")) resetAt = list.size();
             list.add(item);
         }
         JSArray kept = new JSArray();

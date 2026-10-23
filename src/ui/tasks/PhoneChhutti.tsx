@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { answerChhutti, checkChhutti, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
-import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { answerChhutti, checkChhutti, chhuttiInLightsOut, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
+import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, readChhutti, windowBounds } from '../../core/plan/chhutti';
 import { dayKey } from '../../core/time';
 
 /**
@@ -16,6 +16,7 @@ export function PhoneChhutti() {
   const [from, setFrom] = useState('21:00');
   const [choice, setChoice] = useState<(typeof CHHUTTI_LABELS)[number]>(CHHUTTI_LABELS[1]);
   const [message, setMessage] = useState('');
+  const [lightsOut, setLightsOut] = useState(false);
   const source = useLiveQuery(async () => ({
     settings: await db.settings.where('key').startsWith(CHHUTTI_KEY).toArray(),
     facts: await db.ledger.where('kind').equals('chhutti').toArray(),
@@ -26,6 +27,7 @@ export function PhoneChhutti() {
       if (document.visibilityState !== 'visible') return;
       const at = Date.now();
       setNow(at);
+      void chhuttiInLightsOut(db, at).then(quiet => { if (alive) setLightsOut(quiet); }).catch(() => undefined);
       void checkChhutti(db, at).then(list => { if (alive) setPending(list); }).catch(() => undefined);
     };
     check();
@@ -35,7 +37,7 @@ export function PhoneChhutti() {
   if (!source) return null;
   const today = dayKey(now);
   const windows = readChhutti(source.settings);
-  const window = windows[0];
+  const window = windows.find(isLive);
   const facts = source.facts.filter(fact => !fact.deleted);
   async function save() {
     try {
@@ -59,7 +61,7 @@ export function PhoneChhutti() {
     {message && <p role="status">{message}</p>}
   </section>;
   const ended = facts.filter(fact => fact.inputs.windowId === window.id).sort((a, b) => b.dayKey.localeCompare(a.dayKey))[0];
-  const showLast = ended && ended.dayKey >= dayKey(now - 86_400_000);
+  const showLast = !lightsOut && ended && ended.dayKey >= dayKey(now - 86_400_000);
   const { fromMs, toMs } = windowBounds(window, today);
   const skipped = source.settings.some(row => row.key === `${CHHUTTI_KEY}.skip:${today}:${window.id}` && row.value === true && !row.deleted);
   const upcoming = appliesOn(window, today) && !skipped && now < toMs;
@@ -71,7 +73,7 @@ export function PhoneChhutti() {
     {upcoming && now >= fromMs && <p className="small">This is the phone's chhutti now.</p>}
     {skipped && <p className="small">Not today. It comes back tomorrow.</p>}
     {showLast && <p className="chhutti-line" role="status">{chhuttiLine(ended, ended.inputs.label === window.label ? window.label : String(ended.inputs.label ?? window.label))}</p>}
-    {pending.map(item => <div key={`${item.day}:${item.window.id}`} className="chhutti-ask" role="group" aria-label={`${item.window.label} check-in`}>
+    {!lightsOut && pending.map(item => <div key={`${item.day}:${item.window.id}`} className="chhutti-ask" role="group" aria-label={`${item.window.label} check-in`}>
       <p>Did the phone get its chhutti ({item.window.label.toLowerCase()})?</p>
       <div className="sheet-actions"><button type="button" onClick={() => void answer(item, 'yes')}>Yes</button><button type="button" className="secondary" onClick={() => void answer(item, 'partly')}>Partly</button><button type="button" className="secondary" onClick={() => void answer(item, 'no')}>Not today</button></div>
     </div>)}

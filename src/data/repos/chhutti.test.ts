@@ -2,7 +2,7 @@
 import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { answerChhutti, checkChhutti, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
+import { answerChhutti, checkChhutti, chhuttiInLightsOut, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { deriveCourtyard } from '../../core/courtyard/courtyard';
 import { readChhutti, type UsageEvent } from '../../core/plan/chhutti';
@@ -135,4 +135,43 @@ it('with no log after days away, only today and yesterday are asked about', asyn
   const db = fresh();
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   expect((await checkChhutti(db, at('2026-11-06', '22:00'), reader(() => null))).map(item => item.day)).toEqual(['2026-11-05', '2026-11-06']);
+});
+
+// Codex A item 56.
+it('turning a window off still reads the days it ran, and asks nothing about it', async () => {
+  const db = fresh();
+  const window = await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await removeChhuttiWindow(db, window.id, at('2026-11-03', '12:00'));
+  expect(readChhutti(await db.settings.toArray())[0]).toMatchObject({ id: window.id, until: '2026-11-02' });
+  await checkChhutti(db, at('2026-11-05', '12:00'), dark);
+  expect((await db.ledger.where('kind').equals('chhutti').toArray()).map(fact => fact.dayKey)).toEqual(['2026-11-02']);
+  expect(await checkChhutti(db, at('2026-11-05', '12:00'), reader(() => null))).toEqual([]);
+  // A new window can be planned while the old one is still kept for reading.
+  await saveChhuttiWindow(db, { label: 'After class', from: '17:00' }, at('2026-11-05', '12:00'));
+  expect(readChhutti(await db.settings.toArray()).filter(item => !item.until).map(item => item.label)).toEqual(['After class']);
+});
+
+it('a shutdown moved earlier after the window does not shorten it; one recorded before it does', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  // An open at 18:00 records the day's shutdown (23:15) before the window starts.
+  await checkChhutti(db, at('2026-11-02', '18:00'), dark);
+  await db.settings.put({ key: 'planner.shutdown', value: '21:10', updatedAt: 2, deleted: 0, deviceId: 't' });
+  const asked: number[] = [];
+  await checkChhutti(db, at('2026-11-02', '22:00'), async (from, to) => { asked.push(to); return dark(from, to); });
+  expect(asked).toEqual([at('2026-11-02', '21:30')]);
+  // The next day the 21:10 shutdown is recorded before the window, so the window ends at 21:10.
+  await checkChhutti(db, at('2026-11-03', '12:00'), dark);
+  asked.length = 0;
+  await checkChhutti(db, at('2026-11-03', '22:00'), async (from, to) => { asked.push(to); return dark(from, to); });
+  expect(asked).toEqual([at('2026-11-03', '21:10')]);
+  expect((await db.ledger.get(`chhutti:2026-11-03:${readChhutti(await db.settings.toArray())[0]!.id}`))?.inputs).toMatchObject({ to: '21:10', plannedMin: 10 });
+});
+
+it('an open at 04:05 is lights-out: no result and no question', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  expect(await chhuttiInLightsOut(db, at('2026-11-03', '04:05'))).toBe(true);
+  expect(await checkChhutti(db, at('2026-11-03', '04:05'), reader(() => null))).toEqual([]);
+  expect(await chhuttiInLightsOut(db, at('2026-11-03', '06:05'))).toBe(false);
 });
