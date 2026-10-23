@@ -7,6 +7,7 @@ import { createQuestRepo } from '../../data/repos/quests';
 import pack from '../../../content/quests/quests.core.json';
 import { errorMessage } from '../shell/errorMessage';
 import { RULES } from '../../core/rules.config';
+import { customQuestPay, questCapFrom } from '../../core/economy/deriveEconomy';
 import './quests.css';
 
 const repo = createQuestRepo(db);
@@ -56,7 +57,10 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
   const visible = rows.filter(row => row.status !== 'swapped' && !row.deleted);
   // Your own quests pay XP for the first few done each week; more still count as done (item 45).
   const paidCap = RULES.quests.paidCustomPerWeek;
-  const ownDone = visible.filter(row => row.custom && row.status === 'done').length;
+  // Counted the way scoring counts them: only quests done since this build first ran (Codex review, item 47).
+  const questFacts = useLiveQuery(() => db.ledger.where('mode').equals('quests').toArray(), []) ?? [];
+  const capFrom = useLiveQuery(() => db.settings.get('economy.v4From'), []);
+  const ownDone = customQuestPay(questFacts, questCapFrom(capFrom && !capFrom.deleted ? [capFrom] : [])).paid.get(weekKey(Date.now())) ?? 0; // eslint-disable-line react-hooks/purity
   const shown = (selectedId ? visible.filter(row => row.id.toLowerCase() === selectedId) : visible)
     .sort((a, b) => Number(a.status === 'done') - Number(b.status === 'done'));
   async function run(action: () => Promise<void>) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deriveEconomy } from './deriveEconomy';
+import { customQuestPay, deriveEconomy, questCapFrom } from './deriveEconomy';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
 // cj4 item 45: your own side quests could be farmed (no limit, 20 XP each). From the day this build first runs,
@@ -28,5 +28,17 @@ describe('custom side quests (item 45)', () => {
   it('starts again each quest week', () => {
     const next = Array.from({ length: 4 }, (_, i) => quest(`01JNEXT${i}`, '2026-W45', '2026-11-02', 3000 + i, true));
     expect(deriveEconomy([...own(5), ...next], undefined, cutoff('2026-10-25'), '2026-11-03').days.reduce((sum, day) => sum + day.quests, 0)).toBe(120);
+  });
+});
+
+describe('the Side quests count matches scoring (Codex review, item 47)', () => {
+  it('counts only your own quests done since the cutoff, per quest week', () => {
+    // Updated mid-week: two quests before the cutoff, three after. Scoring pays all five; the card counts three.
+    const before = Array.from({ length: 2 }, (_, i) => quest(`01JPRE${i}`, '2026-W44', '2026-10-26', 100 + i, true));
+    const after = Array.from({ length: 3 }, (_, i) => quest(`01JPOST${i}`, '2026-W44', '2026-10-28', 200 + i, true));
+    const { paid, unpaid } = customQuestPay([...before, ...after], questCapFrom(cutoff('2026-10-27')));
+    expect(paid.get('2026-W44')).toBe(3);
+    expect(unpaid.size).toBe(0);
+    expect(questXp([...before, ...after], cutoff('2026-10-27'))).toBe(100);
   });
 });

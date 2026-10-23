@@ -70,6 +70,29 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
     shards, owned: [...new Set([...x.owned, ...y.owned])], purchases };
 }
+/**
+ * Your own side quests: only the first few done in a quest week pay XP, in the order they were done, from the day
+ * this build first ran (`economy.v4From`). `paid` counts the paying ones per quest week, for the Side quests card.
+ */
+export function customQuestPay(facts: readonly LedgerRow[], v4From: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY): { unpaid: Set<string>; paid: Map<string, number> } {
+  const unpaid = new Set<string>(), paid = new Map<string, number>(), seen = new Set<string>();
+  const rows = facts.filter(row => !row.deleted && row.mode === 'quests' && row.kind === 'quest' && row.dayKey >= v4From && isCustomQuestFact(row))
+    .sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.updatedAt - b.updatedAt || a.id.localeCompare(b.id));
+  for (const row of rows) {
+    if (seen.has(row.id)) continue;
+    seen.add(row.id);
+    const week = /\d{4}-W\d{2}$/.exec(row.id)?.[0] ?? row.dayKey;
+    const cap = (rulesFor(row.dayKey, history)?.rules ?? RULES).quests.paidCustomPerWeek;
+    if ((paid.get(week) ?? 0) >= cap) unpaid.add(row.id);
+    else paid.set(week, (paid.get(week) ?? 0) + 1);
+  }
+  return { unpaid, paid };
+}
+/** The cutoff day of the 24 Oct quest cap; none yet means the old rules. */
+export function questCapFrom(settings: readonly SettingRow[] | Record<string, unknown>): string {
+  const stored = value(settings, 'economy.v4From');
+  return typeof stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(stored) ? stored : '9999-12-31';
+}
 /** A side quest you wrote yourself (its row id has no week suffix; newer facts also say so). */
 export const isCustomQuestFact = (fact: LedgerRow) => fact.inputs.custom === true || (fact.inputs.custom !== false && !String(fact.refId).includes(':'));
 const dayOrder = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
@@ -329,18 +352,8 @@ function replayEconomy(
   // Only the shop of this build marks a purchase paid, so an older build's sale on the upgrade day still counts (Codex #2).
   const paidOnly = (key: string) => key > v3From;
   // The 24 Oct quest cap (item 45) counts from the day this build first runs, like the cutoffs above.
-  const v4Stored = value(settings, 'economy.v4From');
-  const v4From = typeof v4Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v4Stored) ? v4Stored : '9999-12-31';
-  // Your own side quests: only the first few done in a quest week pay XP (in the order they were done).
-  const unpaidQuests = new Set<string>();
-  const customDone = new Map<string, number>();
-  for (const row of ordered) {
-    if (row.mode !== 'quests' || row.kind !== 'quest' || row.dayKey < v4From || !isCustomQuestFact(row)) continue;
-    const week = /\d{4}-W\d{2}$/.exec(row.id)?.[0] ?? row.dayKey;
-    const count = (customDone.get(week) ?? 0) + 1;
-    customDone.set(week, count);
-    if (count > (rulesFor(row.dayKey, history)?.rules ?? RULES).quests.paidCustomPerWeek) unpaidQuests.add(row.id);
-  }
+  const v4From = questCapFrom(settings);
+  const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
     const week = weekStart(key);
