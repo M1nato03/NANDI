@@ -1,6 +1,6 @@
 # Spec 22 · A restore that keeps both (merge restore)
 
-Status: DRAFT for Jenil (idea engine, 24 Oct 2026). Not approved. Until it is, restore stays **replace**, with a clear
+Status: DRAFT v2 for Jenil (idea engine, 24 Oct 2026; v2 after Codex B's review, idea-engine/codex-review-spec22.md). Not approved. Until it is, restore stays **replace**, with a clear
 warning in the preview (Jenil, 23 Oct: "for now replace it is, but I would like if you found a way to keep them").
 
 ## Why
@@ -26,39 +26,60 @@ The restore preview gets two choices:
 After a merge: XP, level, Shards and owned items are never lower than this phone showed just before. Nothing the
 backup had is missing.
 
-## Merge rules (one transaction, inside `duringRestore`, under the `nandi-economy` lock)
-| Data | Rule | Why |
-|---|---|---|
-| `ledger` | **Set union by id.** An id present on both sides is the same fact; keep the phone's row. | Facts are immutable with idempotent ids, so a union never pays twice. |
-| Every other table with `id` + `updatedAt` | Per row: **newer `updatedAt` wins**. A tombstone (`deleted: 1`) is just a row, so a newer delete beats an older edit. Tie: higher `deviceId` wins (deterministic). | Last-writer-wins per record (research brief). |
-| Spaced-practice rows (`learnConcepts`, `learnItems`, `cards`, `deckProg`, `lessonProg`) | Per row: the side with the **later last review** (`lastSeen` / `last` / `updatedAt`) wins. | The later review holds the more recent schedule. At worst, one review counts once instead of twice. |
-| `dailyLog` (key `dayKey`) | Newer `updatedAt` per day. | |
-| `settings` | Newer `updatedAt` per key, **except**: device-local keys stay the phone's (as now); `economy.v2From` / `v3From` keep the phone's, else the backup's (as now); `economy.peak` = max of both; `economy.seenUpTo` = max (item 42); closes use the close rule below. | Keeps today's cutoff rules and floors. |
-| `economy.close:<day>` | As today, `mergeCloseMaps`, but see "Shards" below. | |
-| `packs` | Keep the higher `version`. | Content is shipped with the app. |
+## The promise, stated exactly
+- **Ledger facts are never lost.** Every fact from either side is in the result. Two different facts that share one id
+  are resolved by a fixed rule (below), the same whichever side came first.
+- **Shown XP, level, Shards and owned items never go below what this phone showed just before the merge.**
+- **Editable rows** (a task title, a setting) follow "the newer change wins". Where a row holds progress (quest taps, a
+  day's flags, a puzzle grid, practice state), progress from both sides is **combined, not chosen**.
+"Nothing is lost" is promised for facts and progress. A text edit made on both sides keeps the newer one. That is the one
+honest exception, and the preview says so.
 
-A merge is **idempotent**: merging the same backup twice changes nothing the second time. It is also **order-free**:
-merging A then B gives the same result as B then A. Both get property tests.
+## Before anything changes (inside `duringRestore`, under the `nandi-economy` lock)
+1. **Validate every backup row**, not only the table list (`backup/index.ts:112` checks metadata only): required fields
+   and types per table. A malformed row is skipped and counted in the result message ("3 damaged rows skipped").
+2. **Snapshot what the phone shows now:** `deriveEconomy` for today gives XP, level, Shards and owned. Raise and write
+   `economy.peak` from it before any table is touched. Today has no close, and the peak is otherwise written only by
+   reconcile (`gamify.ts:65`). This closes the gap Codex found: an after-bedtime answer from the backup can cancel a
+   perfect-drop award, and a season rank can move.
 
-## Shards after a merge (the double-spend question)
-After a union, the replay counts every earning once and every purchase once. The balance can only come out below what
-the phone showed when the two histories **diverged**: the backup holds purchases this phone never knew about (another
-phone, or this phone after an older restore), paid from Shards this phone also spent. Two honest options:
-- **Floor with a recorded grant (proposed).** If the union balance is below the phone's Shards shown just before the
-  merge, write ONE ledger fact `grant:merge:<backup deviceId>:<exportedAt>` worth the difference. The replay then shows
-  exactly what the phone showed, every purchase on both sides stays owned, and the gap is written down rather than
-  hidden in a floor. The id comes from the backup file, so merging the same file again cannot grant twice.
-  Cost: Shards are minted only in a diverged merge. Shards buy cosmetics and rest days only, never money. Repeating the
-  trick needs two phones and repeated backup swaps; record that in DECISIONS.md as accepted.
-- Carry a debt (signed balance below 0, new earnings fill it first). Rejected: the screen would show 0 while the person
-  earns. That reads as a loss state.
+## Merge rules per table
+| Data | Rule |
+|---|---|
+| `ledger` | **Union by id.** Same id and identical payload: one fact. Same id with a **different** payload (e.g. `card:<day>:<card>` answered on both phones): keep the variant whose canonical-JSON hash is lower. It is one award per card per day either way, so nothing is paid twice, and the result does not depend on order. |
+| `ledger` purchases | The same purchase id must agree on item, price and day; if not, the lower hash wins as above. **Every accepted purchase fact is charged.** Owned is deduplicated. A second purchase of an item already owned (bought on both phones) gets a recorded `refund:<purchaseId>` fact for the later-id purchase, so nobody pays twice for one item. |
+| `tasks`, `plans`, `reminders`, `exercises`, `programs`, `flags`, `ratings`, `unlocks`, `inventory` | The newer `updatedAt` wins. A tombstone is a row, so a newer delete beats an older edit. A tie is broken by the higher canonical hash, never by `deviceId` alone. |
+| `taskEvents`, `focus`, `sessions`, `sets`, `prs` | Union by id (append-style records); same-id conflicts by hash. |
+| `quests` | Per quest: **union of `tapIds`**, `progress` = taps x step (capped at target), `status` = done if either side is done, unless the newer side archived or swapped it. |
+| `dailyLog` (key = day) | **Per field.** Flags (`planDone`, `shutdownDone`, `reviewDone`, `agencyOpenedInstead`) are OR'd. The earliest `lightsOutAt`. Numbers (`appMinutes`, `wellbeingMinutes`) take the larger value. Text fields take the newer side. |
+| `puzzleRuns` | Solved beats unsolved. Between two solved runs, the faster one. Otherwise the newer one. Mind awards come from ledger facts, not this row. |
+| `learnDrops` | The drop with the **further cursor** wins (more progress). Answers live in ledger facts, so the other side's answers are not lost. |
+| `learnItems`, `learnConcepts`, `cards`, `deckProg` | v1: the row with **more attempts**, then the later `lastSeen`. v2 (a follow-up): rebuild practice state from the union of answer facts, once every answer fact carries what the scheduler needs. |
+| `lessonProg` | Per field: `doneDayKey` = the earlier one; the `*Ok` flags are OR'd; `conf` takes the newer side. |
+| `packs` | Keep the phone's (shipped with the app). The backup's pack rows are ignored. |
+| `settings` | Device-local keys stay the phone's. Cutoffs (`v2From`, `v3From`) stay the phone's: the one documented order-dependent rule, since they describe the receiving phone. `economy.peak` and `economy.seenUpTo` take the max. Away plans: the union, then checked against the rest-bank cap (a later plan that no longer fits is dropped and its days go back to the bank). Per-week rest-day picks: the newer wins. Close rows: never generic; see Shards. Everything else: the newer `updatedAt`. |
 
-Closed days: past days keep their own close as a floor, as today. The backup's purchases that this phone did not know
-about are paid by the grant, not charged against the phone's closes. That removes the §2.2 drop (99 -> 84).
+Order-free is tested with A+B against B+A on random pairs. The cutoff rule is the only allowed difference.
 
-## Owned items and shop settings
-Owned = every purchase fact in the union, so nothing bought on either side is lost. The item *in use* (for example
-`economy.banner`) follows the newer setting.
+## Shards after a merge (Codex B's rule, adopted)
+1. Replay the merged ledger with every accepted purchase charged once (including the refunds above).
+2. Walk the days in order. For each closed day, the protected balance is the higher balance recorded by **either side's
+   close** for that day. If the replay ends that day lower, add **the smallest grant dated on that day** that meets it:
+   one replayable fact `grant:merge:<day>:<hash of the two closes>`.
+3. Do the same for today, against the phone's pre-merge Shards (the snapshot).
+4. Recompute every close from this replay. Do **not** keep a higher old close as a floor as well. The grant already
+   pays that deficit, and keeping both would count it twice through `shardFloors` (`deriveEconomy.ts:225`).
+5. `awards.ts` gets a `grant` kind that adds Shards and no XP. Without that replay support, writing the fact pays nothing.
+
+The grant id is content-based: the day plus the closes it reconciles. Running the same merge again finds the closes already
+met and writes nothing. A later merge after new changes computes from the new state, and adds a new grant only if a
+new deficit exists.
+
+**Accepted cost, to record in DECISIONS.md:** Shards can be minted offline. This works on ONE phone too: back up, buy A,
+restore an older snapshot (Replace), buy B, then merge the backup, and you own both. NANDI is offline with no server, so it
+cannot tell a second phone from a rollback. Bounds: Shards buy cosmetics and rest days only, never money; the rest bank
+keeps its cap after every merge; each loop needs a real backup, a full replace and a merge. Not worth more complexity.
+For rest days in particular: if a merge would push the bank over its cap, the extra days are refunded as Shards, not kept.
 
 ## Not doing
 No cloud sync, no account and no server (offline rule). No automatic merge: the person picks the file. No merge of
@@ -76,7 +97,11 @@ device-local keys. Old builds' backups are merged with the same rules (their row
 2. Last-writer-wins: an edit on each side (the newer wins); a newer delete beats an older edit; a tie goes to the higher deviceId.
 3. Spaced practice: the later review wins per item.
 4. Idempotent: merge(file) twice gives the same database. Order-free: A+B gives the same result as B+A.
-5. Grant: diverged purchases, union balance below the phone's -> one grant, the shown Shards equal the phone's, both items owned; merge again -> no second grant.
+5. Grant: diverged purchases with the union balance below the phone's -> the smallest grant, dated on the day of the deficit; the shown Shards equal the phone's and both items are owned. Merge again -> no second grant. Codex's 3-close associativity case (A 100; B 10 with p at 10; C 10 with p at 20) gives one canonical price for p and the same result for (A+B)+C and A+(B+C).
+5b. The same item bought on both phones -> owned once, and the later-id purchase is refunded.
+5c. The same ledger id with different payloads -> the lower hash is kept, whatever the order.
+5d. An after-bedtime answer in the backup that would cancel today's perfect drop -> XP stays at the pre-merge snapshot (the peak is written first).
+5e. dailyLog: planDone on one side and shutdownDone on the other -> both true. Quests: taps from both sides are counted once each.
 6. Not diverged (backup is an older copy of this phone): no grant is written.
 7. cj3 C1 repro: banner bought at 15:00, merge the 09:00 backup -> banner still owned, Shards 210.
 8. Old-backups §2.2: closes 16-19 Nov keep the phone's values; Shards stay at least 111.
