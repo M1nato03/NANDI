@@ -8,7 +8,7 @@ const mock = vi.hoisted(() => ({ tapHaptic: vi.fn().mockResolvedValue(undefined)
 vi.mock('../../platform/haptics', () => ({ tapHaptic: mock.tapHaptic }));
 vi.mock('../cast/sound', () => ({ playCastSound: mock.playCastSound }));
 // Reconcile (badges, quests, closes) is tested on its own; here it would race the finish under test.
-vi.mock('../../data/repos/gamify', () => ({ reconcileGamify: mock.reconcileGamify }));
+vi.mock('../../data/repos/gamify', () => ({ reconcileGamify: mock.reconcileGamify, recordShown: () => Promise.resolve() }));
 import { EconomyFeedback } from './EconomyFeedback';
 
 // Economy review 32, F1 and F2: nothing celebrates after bedtime, and the count-up respects reduced motion.
