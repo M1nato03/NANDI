@@ -69,7 +69,7 @@ async function runSequence(ops: Op[]): Promise<string[]> {
     const deviceId = await getOrCreateDeviceId(db, now);
     const tasks = createTaskRepos(db, deviceId), train = createTrainRepos(db, deviceId);
     const backups: BackupEnvelope[] = [];
-    let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, taskN = 0;
+    let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, skipped = false, taskN = 0;
     let owned = new Set<string>();
     const finished = new Map<string, { total: number; reopened: boolean }>();
     // The stored close of the last finished day, read just before a restore: what a restore may never lower.
@@ -95,6 +95,9 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         else if (d.total >= rec.total) rec.total = d.total;
       }
       if (op.t === 'restore') {
+        // A day that is today or later at the restore is replaced by the backup's, even if a clock set ahead once
+        // showed it finished (Jenil, 24 Oct: a restore replaces today).
+        for (const day of [...finished.keys()]) if (day >= today) finished.delete(day);
         // What a finished day closed with survives a restore; only today is replaced (Jenil, 24 Oct).
         // Less any purchase dated after that day that the phone still keeps (a clock set back, then a restore).
         const later = snap ? (await db.ledger.toArray()).filter(f => !f.deleted && f.kind === 'purchase' && f.dayKey > snap!.day).reduce((sum, f) => sum + Number(f.inputs.price ?? 0), 0) : 0;
@@ -106,10 +109,12 @@ async function runSequence(ops: Op[]): Promise<string[]> {
       for (const id of v.owned) owned.add(id);
     };
     const setClock = (local: Date) => { now = local.getTime(); vi.setSystemTime(now); };
-    const reconcile = async () => { if (skip) { skip = false; return; } await reconcileGamify(db, now); };
+    const reconcile = async () => { if (skip) { skip = false; skipped = true; return; } await reconcileGamify(db, now); };
     await reconcile();
     for (let step = 0; step < ops.length; step++) {
       const op = ops[step]!;
+      const saved = { maxXp, maxLevel, lastShards };
+      skipped = false;
       let spent = 0;
       const d = new Date(now);
       if (op.t === 'day') { d.setDate(d.getDate() + 1); d.setHours(op.hour, op.min, 0, 0); setClock(d); }
@@ -153,6 +158,9 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         await reconcile();
       }
       await check(step, op.t === 'restore' ? { t: 'skipReconcile' } : op, spent);
+      // A step whose reconcile never ran (the app shut at once) showed numbers nothing could record: no close and no
+      // seen-up-to day. The next steps are held to what the app last had a chance to save (cj3 fuzz seed 3180).
+      if (skipped) ({ maxXp, maxLevel, lastShards } = saved);
       if (env.FUZZ_TRACE) {
         const v = await view();
         const closes = (await db.settings.toArray()).filter(r => r.key.startsWith('economy.close:')).map(r => `${r.key.slice(14)}=${(r.value as { shards: number }).shards}`);

@@ -92,15 +92,24 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const sx = x.shards - cost(onlyIn(y, x)), sy = y.shards - cost(onlyIn(x, y));
   return { total: Math.max(x.total, y.total), sp: Math.max(x.sp, y.sp), streak: Math.max(x.streak, y.streak),
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
-    shards: Math.max(sx, sy), ...bonusOf([[sx, x], [sy, y]]), owned: [...new Set([...x.owned, ...y.owned])], purchases };
+    ...combine([[sx, x], [sy, y]]), owned: [...new Set([...x.owned, ...y.owned])], purchases };
 }
 const dayOrder = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
-/** The level bonus that goes with the higher balance of two closes (the higher bonus on a tie, so none is paid twice). */
-function bonusOf(sides: readonly (readonly [number, DayClose | undefined])[]): { bonus?: number } {
+/**
+ * Two balances for one day, each with the level bonus it held. When both say what they held, the one that held less
+ * is lifted to the higher bonus first: the other close shows that bonus was paid by that day, and without the lift a
+ * merge could swap a close for one with a higher balance but a lower "balance before bonuses" (cj3 fuzz seed 2020).
+ * A close from before 24 Oct (no bonus) keeps the plain higher balance, and the bonus of that side (higher on a tie).
+ */
+function combine(sides: readonly (readonly [number, DayClose | undefined])[]): { shards: number; bonus?: number } {
   const present = sides.filter((side): side is readonly [number, DayClose] => !!side[1]);
-  const top = Math.max(...present.map(([shards]) => shards));
-  const bonuses = present.filter(([shards]) => shards === top).map(([, close]) => close.bonus);
-  return bonuses.some(bonus => bonus === undefined) ? {} : { bonus: Math.max(...bonuses as number[]) };
+  if (present.every(([, close]) => close.bonus !== undefined)) {
+    const top = Math.max(...present.map(([, close]) => close.bonus!));
+    return { shards: Math.max(...present.map(([shards, close]) => shards + top - close.bonus!)), bonus: top };
+  }
+  const shards = Math.max(...present.map(([value]) => value));
+  const bonuses = present.filter(([value]) => value === shards).map(([, close]) => close.bonus);
+  return bonuses.some(bonus => bonus === undefined) ? { shards } : { shards, bonus: Math.max(...bonuses as number[]) };
 }
 /** One purchase pool for a set of closes: each id once, at the higher price if two closes disagree (bad data only). */
 function purchasePool(closes: Iterable<DayClose>): Map<string, ClosePurchase> {
@@ -163,12 +172,11 @@ export function mergeCloseMaps(a: ReadonlyMap<string, unknown>, b: ReadonlyMap<s
     for (const item of cy?.purchases ?? []) knownY.add(item.id);
     for (const item of hosted.get(day)!) knownAll.add(item.id);
     const sx = cx ? cx.shards - unpaid(knownX) : -Infinity, sy = cy ? cy.shards - unpaid(knownY) : -Infinity;
-    const shards = Math.max(sx, sy);
     const both = [cx, cy].filter((close): close is DayClose => !!close);
     const streak = Math.max(...both.map(close => close.streak));
     const top = both.filter(close => close.streak === streak);
     out.set(day, { total: Math.max(...both.map(close => close.total)), sp: Math.max(...both.map(close => close.sp)), streak,
-      paused: top.every(close => close.paused), shards, ...bonusOf([[sx, cx], [sy, cy]]), owned: [...new Set(both.flatMap(close => close.owned))], purchases: hosted.get(day)! });
+      paused: top.every(close => close.paused), ...combine([[sx, cx], [sy, cy]]), owned: [...new Set(both.flatMap(close => close.owned))], purchases: hosted.get(day)! });
   }
   return out;
 }

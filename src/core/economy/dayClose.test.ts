@@ -243,3 +243,19 @@ describe('closing the books (economy second opinion 22)', () => {
   });
 });
 
+
+describe('level bonus held by a close (cj3 fuzz seeds 2016, 2020)', () => {
+  const close = (shards: number, bonus?: number) => ({ total: 10, sp: 10, streak: 1, paused: false, shards, ...(bonus === undefined ? {} : { bonus }), owned: [], purchases: [] });
+  it('lifts the close that held less bonus before keeping the higher balance, in either order', () => {
+    // 52 with no level bonus yet, against 68 with the 20-Shard bonus: the first is worth 72 once the bonus is paid.
+    for (const [a, b] of [[close(52, 0), close(68, 20)], [close(68, 20), close(52, 0)]]) {
+      expect(mergeClose(a, b)).toMatchObject({ shards: 72, bonus: 20 });
+      expect(mergeCloseMaps(new Map([['2026-11-28', a]]), new Map([['2026-11-28', b]])).get('2026-11-28')).toMatchObject({ shards: 72, bonus: 20 });
+    }
+  });
+  it('keeps the plain higher balance when a close from before 24 Oct does not say what it held', () => {
+    expect(mergeClose(close(52), close(68, 20))).toMatchObject({ shards: 68, bonus: 20 });
+    expect(mergeClose(close(70), close(68, 20))).toEqual(expect.objectContaining({ shards: 70 }));
+    expect(mergeClose(close(70), close(68, 20))!.bonus).toBeUndefined();
+  });
+});
