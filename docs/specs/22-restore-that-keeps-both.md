@@ -95,8 +95,18 @@ cannot tell a second phone from a rollback. Bounds: Shards buy cosmetics and res
 keeps its cap after every merge; each loop needs a real backup, a full replace and a merge. Not worth more complexity.
 For rest days in particular: if a merge would push the bank over its cap, the extra days are refunded as Shards (rule 6), not kept.
 
+## Online later: this becomes the sync merge
+NANDI is offline only until it has servers (Jenil, 24 Oct). Sync between devices is master-plan Phase 4, and it needs
+exactly this merge. So:
+- Build the merge as a **pure function** (`mergeDatabases(phone, other) -> result`, no Dexie inside), so the sync
+  service can run the same code on the phone or on a Worker.
+- "Newer" uses `updatedAt` from device clocks for file merges. For sync, use the server's order instead: a checkpoint
+  sequence, or a hybrid logical clock. The rules stay; only the clock changes.
+- The Shards grant and refund facts stay as they are. A server can audit them, because every one carries its reason
+  in its id.
+
 ## Not doing
-No cloud sync, no account and no server (offline rule). No automatic merge: the person picks the file. No merge of
+No cloud sync, no account and no server in this spec (they come in Phase 4 and reuse this merge). No automatic merge: the person picks the file. No merge of
 device-local keys. Old builds' backups are merged with the same rules (their rows already carry `updatedAt` and `deleted`).
 
 ## Kill test
