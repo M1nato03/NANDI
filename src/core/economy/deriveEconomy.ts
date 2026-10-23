@@ -70,6 +70,8 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
     shards, owned: [...new Set([...x.owned, ...y.owned])], purchases };
 }
+/** A side quest you wrote yourself (its row id has no week suffix; newer facts also say so). */
+export const isCustomQuestFact = (fact: LedgerRow) => fact.inputs.custom === true || (fact.inputs.custom !== false && !String(fact.refId).includes(':'));
 const dayOrder = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 /** One purchase pool for a set of closes: each id once, at the higher price if two closes disagree (bad data only). */
 function purchasePool(closes: Iterable<DayClose>): Map<string, ClosePurchase> {
@@ -326,6 +328,19 @@ function replayEconomy(
   const v3 = (key: string) => key >= v3From;
   // Only the shop of this build marks a purchase paid, so an older build's sale on the upgrade day still counts (Codex #2).
   const paidOnly = (key: string) => key > v3From;
+  // The 24 Oct quest cap (item 45) counts from the day this build first runs, like the cutoffs above.
+  const v4Stored = value(settings, 'economy.v4From');
+  const v4From = typeof v4Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v4Stored) ? v4Stored : '9999-12-31';
+  // Your own side quests: only the first few done in a quest week pay XP (in the order they were done).
+  const unpaidQuests = new Set<string>();
+  const customDone = new Map<string, number>();
+  for (const row of ordered) {
+    if (row.mode !== 'quests' || row.kind !== 'quest' || row.dayKey < v4From || !isCustomQuestFact(row)) continue;
+    const week = /\d{4}-W\d{2}$/.exec(row.id)?.[0] ?? row.dayKey;
+    const count = (customDone.get(week) ?? 0) + 1;
+    customDone.set(week, count);
+    if (count > (rulesFor(row.dayKey, history)?.rules ?? RULES).quests.paidCustomPerWeek) unpaidQuests.add(row.id);
+  }
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
     const week = weekStart(key);
@@ -382,7 +397,7 @@ function replayEconomy(
     const body = bestSession > 0 || rest > 0;
     const hatTrick = plannedTask && body && mindSlot;
     const lightsOut = rows.some(row => row.kind === 'lightsout' && row.inputs.metTarget === true && row.inputs.backfill !== true) ? rules.bonuses.lightsOutXp : 0;
-    const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest').reduce((sum, row) => sum + replayFactXp(row, history), 0);
+    const quests = rows.filter(row => row.mode === 'quests' && row.kind === 'quest' && !unpaidQuests.has(row.id)).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     const boost = rows.find(row => row.kind === 'focus-boost');
     // Focus doubles what the boosted half hour really earned: each area's boost is capped at that area's
     // capped day total, so caps and the eighth-task halving still hold (audit 16.4).

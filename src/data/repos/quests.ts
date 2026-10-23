@@ -13,7 +13,7 @@ export function createQuestRepo(db: NandiDb) {
     const id = completionFactId(row);
     if (await db.ledger.get(id)) return;
     await db.ledger.add({ id, mode: 'quests', kind: 'quest', refId: row.id,
-      dayKey: dayKey(now), inputs: { target: row.target, progress: row.target, questKind: row.kind }, updatedAt: now, deleted: 0, deviceId: row.deviceId });
+      dayKey: dayKey(now), inputs: { target: row.target, progress: row.target, questKind: row.kind, custom: row.custom }, updatedAt: now, deleted: 0, deviceId: row.deviceId });
   }
   return {
     async ensureWeek(now: number): Promise<void> {

@@ -40,6 +40,7 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     // The 22 Oct economy fixes count from the first day this build ran (earlier days keep what they showed).
     if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     if (!await db.settings.get('economy.v3From')) await db.settings.put({ key: 'economy.v3From', value: today, updatedAt: now, deleted: 0, deviceId });
+    if (!await db.settings.get('economy.v4From')) await db.settings.put({ key: 'economy.v4From', value: today, updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
     const known = new Set(facts.map(f => f.id));
     const add = async (kind: string, refId: string, day: string, inputs: Record<string, unknown> = {}, at = now) => {
