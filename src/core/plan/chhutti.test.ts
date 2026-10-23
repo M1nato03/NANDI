@@ -37,6 +37,9 @@ describe('chhutti window usage (spec 24 #1, items 55-57)', () => {
     // Instagram opens a second screen (Story) before the feed pauses, then the feed pause arrives: still open.
     expect(use([boot, act('fg', from - 10 * min, ig, 'Feed'), act('fg', from + 5 * min, ig, 'Story'), act('bg', from + 6 * min, ig, 'Feed'), act('bg', from + 30 * min, ig, 'Story')])?.chosenAppMs).toBe(30 * min);
   });
+  it('a pause and a later stop for the same activity close it once (Android sends STOPPED as bg, item 59)', () => {
+    expect(use([boot, act('fg', from - 10 * min, ig), act('bg', from + 5 * min, ig), act('bg', from + 6 * min, ig), act('fg', from + 30 * min, 'x')])?.chosenAppMs).toBe(5 * min);
+  });
   it('counts the union of open chosen apps, not a sum per app (split screen, picture-in-picture)', () => {
     expect(use([boot, act('fg', from - 10 * min, ig), act('fg', from + 5 * min, yt), act('bg', from + 10 * min, ig), act('bg', from + 20 * min, yt)])?.chosenAppMs).toBe(20 * min);
     expect(use([boot, act('fg', from - 10 * min, ig), act('fg', from + 5 * min, 'x'), act('bg', from + 30 * min, ig)])?.chosenAppMs).toBe(30 * min);

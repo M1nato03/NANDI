@@ -80,7 +80,8 @@ public class NightPausePlugin extends Plugin {
             int type = event.getEventType();
             String kind = null;
             if (type == UsageEvents.Event.ACTIVITY_RESUMED) kind = "fg";
-            else if (type == UsageEvents.Event.ACTIVITY_PAUSED) kind = "bg";
+            // Some builds go RESUMED -> STOPPED with no PAUSED event (AOSP 9e87948a44c1), so a stop or destroy also closes the activity (item 59).
+            else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.ACTIVITY_STOPPED || type == UsageEvents.Event.ACTIVITY_DESTROYED) kind = "bg";
             else if (type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
             else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
             else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
