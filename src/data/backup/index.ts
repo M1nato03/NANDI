@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeCloseMaps, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -252,6 +252,12 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     const template = closes[0] ?? restoredCloses[0];
     // One write for all the closes: a put per day woke every live query once per row (batch 3 b: 212 s for a year).
-    if (template) await db.settings.bulkPut([...mergeCloseMaps(asMap(restoredCloses), asMap(closes))].map(([day, value]) => ({ ...template, key: closeKey(day), value })));
+    // A restore replaces today (Jenil, 24 Oct). A purchase dated today or later that the backup does not have was
+    // charged to this phone's closes dated ahead (chargeClose); take it off them and refund it, or the merge would
+    // rebuild it as owned (Codex review of cj3, item 44). Purchases of finished days stay, as before.
+    const restoredIds = new Set((await db.ledger.toArray()).filter(row => !row.deleted && row.kind === 'purchase').map(row => row.id));
+    const today = dayKey(now);
+    const phoneCloses = new Map([...asMap(closes)].map(([day, raw]) => [day, unchargeClose(raw, item => item.dayKey >= today && !restoredIds.has(item.id))] as const));
+    if (template) await db.settings.bulkPut([...mergeCloseMaps(asMap(restoredCloses), phoneCloses)].map(([day, value]) => ({ ...template, key: closeKey(day), value })));
   }));
 }

@@ -63,6 +63,13 @@ export function chargeClose(raw: unknown, purchase: ClosePurchase): DayClose | u
   if (!close || close.purchases.some(item => item.id === purchase.id)) return close;
   return { ...close, shards: close.shards - purchase.price, purchases: [...close.purchases, purchase] };
 }
+/** The reverse of chargeClose for the purchases `drop` picks: they leave the close and their price comes back. */
+export function unchargeClose(raw: unknown, drop: (item: ClosePurchase) => boolean): unknown {
+  const close = asClose(raw);
+  if (!close || !close.purchases.some(drop)) return raw;
+  const gone = close.purchases.filter(drop);
+  return { ...close, shards: close.shards + gone.reduce((sum, item) => sum + item.price, 0), purchases: close.purchases.filter(item => !drop(item)) };
+}
 /** Two closes for one day (an earlier one and a new one, or this phone's and a backup's) keep the higher of each. */
 export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const x = asClose(a), y = asClose(b);
@@ -328,7 +335,7 @@ function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEnt
   const balance = replay.balance + unpaidLevels * (rulesFor(end, history)?.rules ?? RULES).shards.levelUpBonus;
   if (!closes.size) return { ...replay.view, shards: Math.max(0, balance) };
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
-  return { ...replay.view, shards: Math.max(0, balance, shardFloors(closes, replay, [end]).get(end) ?? -Infinity), owned };
+  return { ...replay.view, shards: Math.max(0, balance, Math.floor(shardFloors(closes, replay, [end]).get(end) ?? -Infinity)), owned };
 }
 
 /** What each finished day (before `today`) shows now, in one replay: the candidates reconcileGamify merges into the closes. */
@@ -344,7 +351,7 @@ export function closesFor(facts: readonly LedgerRow[], settings: readonly Settin
     while (atClose < closeDays.length && closeDays[atClose]! <= day.dayKey) for (const id of closes.get(closeDays[atClose++]!)!.owned) ownedBefore.add(id);
     const snap = replay.daily.get(day.dayKey)!;
     const sp = Math.max(0, Math.min(day.total - day.held - day.soft - day.welcome, RULES.season.spDailyCap), closes.get(day.dayKey)?.sp ?? 0);
-    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, floors.get(day.dayKey) ?? -Infinity),
+    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, Math.floor(floors.get(day.dayKey) ?? -Infinity)),
       owned: [...new Set([...snap.owned, ...ownedBefore])], purchases: snap.purchases });
   }
   return out;
@@ -488,7 +495,9 @@ function replayEconomy(
     earnedFromXp += day.total * rules.shards.perXp;
     const candidate = Math.floor((1 + Math.sqrt(1 + 8 * totalXp / rules.level.stepBase)) / 2);
     if (candidate > level) { levelShardBonus += (candidate - level) * rules.shards.levelUpBonus; level = candidate; }
-    earnedXpBy.push(Math.floor(earnedFromXp) + levelShardBonus);
+    // Exact, not rounded down: a late fact on an earlier day then moves a close's earnings and the end's by the same
+    // amount, so the Shards floor never loses a rounding Shard (cj3 fuzz seeds 2099, 2117). Only shown numbers round.
+    earnedXpBy.push(earnedFromXp + levelShardBonus);
   }
   const current = seasonFor(today < '2026-11-02' ? '2026-11-02' : today);
   const active = today >= '2026-11-02';
@@ -621,7 +630,7 @@ function replayEconomy(
       if (item.dayKey === key) ofDay.push(item);
     }
     // Signed: a day that spent look-ahead Shards ends below zero, and its close must say so (cj3 B).
-    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: earned - spentSoFar, owned: [...ownedSoFar], purchases: ofDay });
+    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: Math.floor(earned) - spentSoFar, owned: [...ownedSoFar], purchases: ofDay });
   }
   return { daily, accepted, balance, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 + restShift - (days.length - 1) + 1 - (days.at(-1)?.hatTrick ? 1 : 0) >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
 }

@@ -3,12 +3,14 @@ import { trackWrite } from '../../core/pendingWrites';
 import { purchaseDecision } from '../../core/economy/shop';
 import { chargeClose, CLOSE_PREFIX } from '../../core/economy/deriveEconomy';
 import { getOrCreateDeviceId } from '../device';
+import { asEconomyWrite, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 
 /** A purchase is one immutable fact. The balance and owned items are projections. */
 export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.now()): Promise<{ ok: boolean; reason?: string }> {
   const deviceId = await getOrCreateDeviceId(db, now), day = dayKey(now);
-  return trackWrite(() => db.transaction('rw', [db.ledger, db.settings], async () => {
+  if (restoreActive()) return { ok: false, reason: 'A restore is running. Try again in a moment.' };
+  return asEconomyWrite(() => trackWrite(() => db.transaction('rw', [db.ledger, db.settings], async () => {
     const facts = await db.ledger.toArray(), settings = await db.settings.toArray();
     const result = purchaseDecision(itemId, facts, settings, day);
     if (!result.ok || !result.item) return { ok: false, reason: result.reason };
@@ -27,7 +29,7 @@ export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.n
       await db.settings.put({ key, value: itemId, updatedAt: now, deleted: 0, deviceId });
     }
     return { ok: true };
-  }));
+  })));
 }
 
 export async function recordMorningBackfill(db: NandiDb, previousDay: string, time: string | undefined, bucket: string, now = Date.now()): Promise<void> {

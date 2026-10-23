@@ -27,3 +27,8 @@ export function asReconcile<T>(work: () => Promise<T>): Promise<T> {
   void done.finally(() => running.delete(done)).catch(() => undefined);
   return done;
 }
+/**
+ * A shop purchase takes the same lock and counts as running, so it never commits between a restore's first reads
+ * and its clear (Codex review of cj3, item 44: it would return ok and then vanish).
+ */
+export const asEconomyWrite = asReconcile;

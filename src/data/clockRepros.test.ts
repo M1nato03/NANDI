@@ -155,3 +155,31 @@ it('cj2 3.5 still holds: clock ahead, earn, clock corrected back, XP stays', asy
   set('2026-10-20T18:00:00'); await reconcileGamify(db, now);
   expect((await shown()).totalXp).toBe(ahead.totalXp);
 });
+
+it('C1b: a restore replaces a purchase charged to closes dated ahead (Codex review, item 44)', async () => {
+  const { train } = await repos();
+  for (let day = 2; day <= 30; day++) { set(`2026-11-${String(day).padStart(2, '0')}T10:00:00`); await task(); await task(); await train.restDayCheck(now, 20); }
+  set('2026-12-10T10:00:00'); await reconcileGamify(db, now);
+  set('2026-12-07T10:00:00'); await reconcileGamify(db, now);
+  const backup = await exportBackup(db, now);
+  const before = await shown();
+  expect((await purchaseShopItem(db, 'banner:grove', now)).ok).toBe(true);
+  await reconcileGamify(db, now);
+  expect((await shown()).owned).toContain('banner:grove');
+  await importBackup(db, backup); await reconcileGamify(db, now);
+  const after = await shown();
+  expect(after.owned).not.toContain('banner:grove');
+  expect(after.shards).toBe(before.shards);
+});
+
+it('a purchase never lands inside a restore (Codex review, item 44)', async () => {
+  const { train } = await repos();
+  for (let day = 2; day <= 30; day++) { set(`2026-11-${String(day).padStart(2, '0')}T10:00:00`); await task(); await train.restDayCheck(now, 20); }
+  set('2026-12-07T10:00:00'); await reconcileGamify(db, now);
+  const backup = await exportBackup(db, now);
+  const restoring = importBackup(db, backup);
+  const bought = await purchaseShopItem(db, 'banner:grove', now);
+  await restoring;
+  // Either refused while the restore runs, or made after it on the restored data; never made and then wiped.
+  expect(bought.ok ? (await shown()).owned.includes('banner:grove') : true).toBe(true);
+});

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LedgerRow, SettingRow } from '../../data/types';
-import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, type DayClose } from './deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, type DayClose, chargeClose } from './deriveEconomy';
 
 // Seeded simulation of day close v3 (economy review 32, Codex pass 4): every open closes the finished days the
 // way reconcileGamify does; late facts, restores of older backups (in the older, cumulative close shape) and a
@@ -121,7 +121,8 @@ describe('day close v3, seeded simulation', () => {
 
   it('merging closes is order-free: commutative and associative on random close sets', () => {
     seed = 4242;
-    const randomCloses = () => {
+    // Signed balances too: a close can hold a debt from a purchase made with look-ahead Shards (cj3 B, Codex item 44).
+    const randomCloses = (signed = false) => {
       const out = new Map<string, unknown>();
       for (let d = 0; d < 12; d++) {
         if (rand() < 0.3) continue;
@@ -133,7 +134,7 @@ describe('day close v3, seeded simulation', () => {
           return { id: `${itemId}@${dayKey}`, itemId, price, dayKey };
         });
         out.set(day, { total: Math.floor(rand() * 300), sp: Math.floor(rand() * 200), streak: Math.floor(rand() * 9), paused: rand() < 0.2,
-          shards: Math.floor(rand() * 800), owned: purchases.filter(item => item.itemId !== 'freeze').map(item => item.itemId), purchases });
+          shards: Math.floor(rand() * 800) - (signed ? 300 : 0), owned: purchases.filter(item => item.itemId !== 'freeze').map(item => item.itemId), purchases });
       }
       return out;
     };
@@ -141,6 +142,16 @@ describe('day close v3, seeded simulation', () => {
       purchases: [...close.purchases].sort((a, b) => a.id.localeCompare(b.id)) }]);
     for (let trial = 0; trial < 40; trial++) {
       const a = randomCloses(), b = randomCloses(), c = randomCloses();
+      expect(canon(mergeCloseMaps(a, b))).toEqual(canon(mergeCloseMaps(b, a)));
+      expect(canon(mergeCloseMaps(mergeCloseMaps(a, b), c))).toEqual(canon(mergeCloseMaps(a, mergeCloseMaps(b, c))));
+    }
+    for (let trial = 0; trial < 40; trial++) {
+      // Closes charged by chargeClose list a purchase from an earlier day, and their balances can go below zero.
+      const a = randomCloses(true), b = randomCloses(true), c = randomCloses(true);
+      for (const map of [a, b]) for (const [day, raw] of map) {
+        const [itemId, price] = shop[Math.floor(rand() * shop.length)]!;
+        if (rand() < 0.3) map.set(day, chargeClose(raw, { id: `charged:${itemId}`, itemId, price, dayKey: addEconomyDays('2026-11-01', 0) }));
+      }
       expect(canon(mergeCloseMaps(a, b))).toEqual(canon(mergeCloseMaps(b, a)));
       expect(canon(mergeCloseMaps(mergeCloseMaps(a, b), c))).toEqual(canon(mergeCloseMaps(a, mergeCloseMaps(b, c))));
     }
