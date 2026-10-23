@@ -1,0 +1,2578 @@
+{
+  "id": "topic.talk-to-anyone",
+  "version": "0.1.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Talk to anyone",
+  "description": "DRAFT FOR EDITORS",
+  "author": "claude",
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "talk-to-anyone",
+      "title": "Talk to anyone",
+      "description": "DRAFT FOR EDITORS. Conversation skills from published studies, set in Indian college and work life."
+    },
+    "modules": [
+      {
+        "id": "talk-to-anyone-1",
+        "title": "Conversations that go somewhere",
+        "concepts": [
+          {
+            "id": "follow-ups",
+            "title": "Follow-ups",
+            "prerequisites": [],
+            "hook": "What can help a first chat move past small talk?",
+            "hookSourceRefs": [
+              "huang-2017",
+              "kardas-2022"
+            ],
+            "askLine": "After someone tells you about their weekend, what could you ask next?",
+            "rule": "Pick up what the person said, ask for more, and share something back. A personal question can take the chat one step deeper.",
+            "ruleSourceRefs": [
+              "huang-2017",
+              "kardas-2022"
+            ],
+            "claims": [
+              {
+                "id": "follow-ups-c1",
+                "text": "People who ask more questions, mainly follow-up questions, are liked more.",
+                "sourceRefs": [
+                  "huang-2017"
+                ]
+              },
+              {
+                "id": "follow-ups-c2",
+                "text": "A follow-up question asks the other person to say more about what they just said.",
+                "sourceRefs": [
+                  "huang-2017"
+                ]
+              },
+              {
+                "id": "follow-ups-c3",
+                "text": "People do not expect this effect.",
+                "sourceRefs": [
+                  "huang-2017"
+                ]
+              },
+              {
+                "id": "follow-ups-c4",
+                "text": "Chats with strangers felt less awkward and more connecting than people expected.",
+                "sourceRefs": [
+                  "kardas-2022"
+                ]
+              },
+              {
+                "id": "follow-ups-c5",
+                "text": "People most overrate the awkwardness of deep talk.",
+                "sourceRefs": [
+                  "kardas-2022"
+                ]
+              },
+              {
+                "id": "follow-ups-c6",
+                "text": "The reason: they expect others to care less than they do.",
+                "sourceRefs": [
+                  "kardas-2022"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "follow-ups-m1",
+                "name": "A better story of my own shows interest.",
+                "correction": "A matching story moves the spotlight to you. Ask first, share after.",
+                "sourceRefs": [
+                  "huang-2017"
+                ]
+              },
+              {
+                "id": "follow-ups-m2",
+                "name": "Others won't care about deeper talk.",
+                "correction": "In the studies, partners cared more than people expected.",
+                "sourceRefs": [
+                  "kardas-2022"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "huang-2017",
+                "title": "Huang et al. (2017), study of question asking",
+                "publisher": "Journal of Personality and Social Psychology",
+                "year": 2017,
+                "url": "https://doi.org/10.1037/pspi0000097"
+              },
+              {
+                "id": "kardas-2022",
+                "title": "Kardas, Kumar and Epley (2022), study of deep conversations",
+                "publisher": "Journal of Personality and Social Psychology",
+                "year": 2022,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/34591541/"
+              }
+            ],
+            "quest": {
+              "title": "Ask and share",
+              "detail": "Ask two follow-up questions, ask one deeper question, then share one answer.",
+              "sourceRefs": [
+                "huang-2017",
+                "kardas-2022"
+              ]
+            },
+            "steps": [
+              {
+                "id": "follow-ups-s1",
+                "title": "Ask one more question",
+                "claimId": "follow-ups-c1",
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "hook": {
+                  "stem": "In a first chat, who is usually liked more?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The one with the best stories.",
+                      "correct": false,
+                      "feedback": "The study points to asking more follow-up questions."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The one who asks more follow-up questions.",
+                      "correct": true,
+                      "feedback": "In studies, people who asked more follow-ups were liked more."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The one who talks about themselves the most.",
+                      "correct": false,
+                      "feedback": "Talking mainly about yourself leaves less room for the other person."
+                    }
+                  ]
+                },
+                "teach": "Ask about the last thing your chat partner shared. This shows you heard them, so the chat can keep its thread. More follow-up questions can help people like the asker.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Topic switch",
+                    "lines": [
+                      "Did you finish the assignment?"
+                    ]
+                  },
+                  "right": {
+                    "title": "Follow-up",
+                    "lines": [
+                      "What was the busiest part?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the follow-up question.",
+                  "parts": [
+                    "Meera: \"I went home to Nashik this weekend.\"",
+                    "Arjun: \"Nice. What did you do there?\"",
+                    "Meera: \"Helped my dad at his shop. Sale week.\"",
+                    "Arjun: \"What was the busiest part?\"",
+                    "Arjun: \"My mama has a shop too. Diwali week is chaos.\""
+                  ],
+                  "spot": "Arjun: \"What was the busiest part?\"",
+                  "feedback": "Part 4 picks up 'shop' and 'sale week', so it is a follow-up. Part 5 shares something back, which keeps it from turning into an interview."
+                },
+                "guided": [
+                  {
+                    "stem": "A classmate says: \"Just got back from my cousin's wedding in Jaipur.\" Which reply is a follow-up?",
+                    "hint": "Stay with what the classmate just said.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "\"How was it? Did anything funny happen?\"",
+                        "correct": true,
+                        "feedback": "Right. It asks for more about the wedding they just mentioned."
+                      },
+                      {
+                        "id": "b",
+                        "text": "\"Cool. Did you finish the DBMS assignment?\"",
+                        "correct": false,
+                        "feedback": "This changes the topic. A follow-up stays on what they said."
+                      },
+                      {
+                        "id": "c",
+                        "text": "\"Weddings are the best. Wait till you hear about my sister's sangeet...\"",
+                        "correct": false,
+                        "feedback": "A matching story moves the spotlight to you. Ask first, share after."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Ask about what they just said, then share back."
+              },
+              {
+                "id": "follow-ups-s2",
+                "title": "Go one level deeper",
+                "claimId": "follow-ups-c4",
+                "sourceRefs": [
+                  "kardas-2022"
+                ],
+                "hook": {
+                  "stem": "Before a deep chat with someone new, most people guess it will feel...",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "More awkward than it turns out.",
+                      "correct": true,
+                      "feedback": "In studies, deep chats felt less awkward than people expected."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About as awkward as it turns out.",
+                      "correct": false,
+                      "feedback": "People in the studies expected more awkwardness than they felt."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Less awkward than it turns out.",
+                      "correct": false,
+                      "feedback": "The gap went the other way: the chats felt less awkward."
+                    }
+                  ]
+                },
+                "teach": "Deep talk may feel risky at first. Yet it can feel less odd than you fear, since the other person may care more than you think.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Small talk",
+                    "lines": [
+                      "Which branch are you in?"
+                    ]
+                  },
+                  "right": {
+                    "title": "One step deeper",
+                    "lines": [
+                      "Why did you pick it?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the first step past small talk.",
+                  "parts": [
+                    "Small talk: \"Which branch are you in?\"",
+                    "One step deeper: \"Why did you pick it?\"",
+                    "Deeper: \"What do you hope it leads to?\"",
+                    "Share back: \"Honestly, I picked mine for my parents. Still figuring out if I like it.\""
+                  ],
+                  "spot": "One step deeper: \"Why did you pick it?\"",
+                  "feedback": "Part 2 asks for a reason, not a fact. Part 4 matters too: sharing your own answer keeps it two-way."
+                },
+                "guided": [
+                  {
+                    "stem": "Priya and her new PG roommate have done the \"where are you from\" round. What is a good next step?",
+                    "hint": "Ask for something meaningful without asking for private facts.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "\"What's one thing you're looking forward to this year?\"",
+                        "correct": true,
+                        "feedback": "It is personal but easy to answer, one step deeper."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Stick to the weather. New people find personal stuff boring.",
+                        "correct": false,
+                        "feedback": "In the studies, partners cared more than people expected."
+                      },
+                      {
+                        "id": "c",
+                        "text": "\"What does your family earn?\"",
+                        "correct": false,
+                        "feedback": "That is private, not deep. Deep means meaningful, not intrusive."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Ask one meaningful question and share your answer too."
+              },
+              {
+                "id": "follow-ups-s3",
+                "title": "Stay with their last point",
+                "claimId": "follow-ups-c2",
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "hook": {
+                  "stem": "What turns a new question into a follow-up?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "It builds on the last point.",
+                      "correct": true,
+                      "feedback": "It asks for more about what came up."
+                    },
+                    {
+                      "id": "b",
+                      "text": "It brings in a fresh topic before the last one has had time to grow.",
+                      "correct": false,
+                      "feedback": "That is a topic switch, not a follow-up."
+                    }
+                  ]
+                },
+                "teach": "A follow-up stays with the last point and asks for more. It works because the other person gets room to add to the same thread.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hear a point",
+                    "Ask for more",
+                    "Leave room"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the line that asks for more.",
+                  "parts": [
+                    "A classmate tells you about a new club.",
+                    "You ask what drew them to it.",
+                    "You talk about a film you saw."
+                  ],
+                  "spot": "You ask what drew them to it.",
+                  "feedback": "This part shows the move. The other lines give the chat its shape."
+                },
+                "guided": [
+                  {
+                    "stem": "A classmate talks about a club. Which reply keeps that thread alive?",
+                    "hint": "Stay with the last topic.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "What drew you to it?",
+                        "correct": true,
+                        "feedback": "That asks for more about the club."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Did you see the new film last week?",
+                        "correct": false,
+                        "feedback": "That line starts a new topic."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Ask for more on the same thread."
+              }
+            ],
+            "items": [
+              {
+                "id": "follow-ups-1",
+                "type": "choose",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "follow-ups-m1"
+                ],
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "stem": "Meera talks about the busy week at her family shop. Which reply breaks that thread?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ask what made it so busy.",
+                    "correct": false,
+                    "feedback": "That stays with her shop news and lets her add more.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Jump to the exam date.",
+                    "correct": true,
+                    "feedback": "A new exam topic cuts off the chat about her shop.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ask which part of the week felt most busy.",
+                    "correct": false,
+                    "feedback": "This asks for more on the same week she brought up.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "follow-ups-2",
+                "type": "scenario",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s1",
+                "job": "transfer",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "follow-ups-m1"
+                ],
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "stem": "A hostel classmate mentions a cricket match. You want to show interest. What fits?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ask what stood out, then share your own match story.",
+                    "correct": true,
+                    "feedback": "The question stays with their match. Sharing later keeps the chat two-way.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Tell your match story first and keep talking.",
+                    "correct": false,
+                    "feedback": "Your story takes the spotlight before they can say more.",
+                    "misconceptionIds": [
+                      "follow-ups-m1"
+                    ],
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ask about tomorrow's exam instead.",
+                    "correct": false,
+                    "feedback": "An exam question starts a new topic. It does not follow up.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "follow-ups-3",
+                "type": "why",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s2",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "follow-ups-m2"
+                ],
+                "sourceRefs": [
+                  "kardas-2022"
+                ],
+                "stem": "Which wrong guess made people fear that deep talk would feel odd?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They expected less care.",
+                    "correct": true,
+                    "feedback": "They thought the other person would care less. That made deep talk feel hard.",
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Others did not care about their answers.",
+                    "correct": false,
+                    "feedback": "Partners cared more than people expected in the studies.",
+                    "misconceptionIds": [
+                      "follow-ups-m2"
+                    ],
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The questions were about private facts.",
+                    "correct": false,
+                    "feedback": "Deep talk in the study meant personal and meaningful talk.",
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "follow-ups-4",
+                "type": "scenario",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "follow-ups-m2"
+                ],
+                "sourceRefs": [
+                  "kardas-2022"
+                ],
+                "stem": "A new college roommate answers where she is from. Which next question goes one step deeper?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "What are you looking forward to here?",
+                    "correct": true,
+                    "feedback": "It asks what she hopes for, but does not pry.",
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "What does your family earn?",
+                    "correct": false,
+                    "feedback": "Income is a private fact. Deep talk need not be intrusive.",
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Do not ask. New people dislike personal questions.",
+                    "correct": false,
+                    "feedback": "In the studies, people expected less care than partners showed.",
+                    "misconceptionIds": [
+                      "follow-ups-m2"
+                    ],
+                    "sourceRefs": [
+                      "kardas-2022"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "follow-ups-5",
+                "type": "estimate",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s3",
+                "job": "combine",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "stem": "In this chat, how many follow-up questions does Ravi ask? A college friend says she joined a dance club. Ravi asks why she joined and what she likes best.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 2.",
+                    "correct": true,
+                    "feedback": "He asks for two new bits about the club she brought up.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 4, if each line counts as a new question.",
+                    "correct": false,
+                    "feedback": "The scene has two questions that stay with her club news.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 2,
+                  "min": 1.5,
+                  "max": 2.5,
+                  "unit": "questions"
+                }
+              },
+              {
+                "id": "follow-ups-6",
+                "type": "fill-the-step",
+                "conceptId": "follow-ups",
+                "step": "follow-ups-s3",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "huang-2017"
+                ],
+                "stem": "A classmate talks about her first day at college. Fill the next step: hear her point, then ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ask for more.",
+                    "correct": true,
+                    "feedback": "A follow-up gives her room to add to the same thread.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Move at once to a new topic that you had set up.",
+                    "correct": false,
+                    "feedback": "A topic switch leaves the first point with no room to grow.",
+                    "sourceRefs": [
+                      "huang-2017"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "listening",
+            "title": "Listening",
+            "prerequisites": [],
+            "hook": "How can you show that you heard someone, and help a new name stick?",
+            "hookSourceRefs": [
+              "weger-2014",
+              "morris-2000"
+            ],
+            "askLine": "When a friend tells you about a hard day, what could you say before offering ideas?",
+            "rule": "Say back the gist, ask about it, and stay engaged. For a new name, try to recall it later before checking.",
+            "ruleSourceRefs": [
+              "weger-2014",
+              "morris-2000"
+            ],
+            "claims": [
+              {
+                "id": "listening-c1",
+                "text": "Good listening has three parts: say back the gist, ask, and stay with the person.",
+                "sourceRefs": [
+                  "weger-2014"
+                ]
+              },
+              {
+                "id": "listening-c2",
+                "text": "Active listening made people feel more understood than advice or \"hmm\".",
+                "sourceRefs": [
+                  "weger-2014"
+                ]
+              },
+              {
+                "id": "listening-c3",
+                "text": "But it did not beat advice on satisfaction or liking; effects were small.",
+                "sourceRefs": [
+                  "weger-2014"
+                ]
+              },
+              {
+                "id": "listening-c4",
+                "text": "A paraphrase alone did not make people feel understood in an earlier study.",
+                "sourceRefs": [
+                  "weger-2010"
+                ]
+              },
+              {
+                "id": "listening-c5",
+                "text": "Warm, calm listening can help a speaker feel less tense.",
+                "sourceRefs": [
+                  "itzchakov-2018"
+                ]
+              },
+              {
+                "id": "listening-c6",
+                "text": "People who tried to recall new names knew them better months later than people who just met as usual.",
+                "sourceRefs": [
+                  "morris-2000"
+                ]
+              },
+              {
+                "id": "listening-c7",
+                "text": "The gain came from recalling, not from hearing names more often.",
+                "sourceRefs": [
+                  "morris-2000"
+                ]
+              },
+              {
+                "id": "listening-c8",
+                "text": "A short refresher later helped further.",
+                "sourceRefs": [
+                  "morris-2002"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "listening-m1",
+                "name": "Advice is the best way to show I care.",
+                "correction": "Advice is not wrong, but in the study it did not make people feel as understood.",
+                "sourceRefs": [
+                  "weger-2014"
+                ]
+              },
+              {
+                "id": "listening-m2",
+                "name": "Repeating is the same as recalling.",
+                "correction": "When repeats were matched, recalling still won.",
+                "sourceRefs": [
+                  "morris-2000"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "weger-2014",
+                "title": "Weger et al. (2014), study of active listening",
+                "publisher": "International Journal of Listening",
+                "year": 2014,
+                "url": "https://doi.org/10.1080/10904018.2013.813234"
+              },
+              {
+                "id": "weger-2010",
+                "title": "Weger, Castle and Emmett (2010), study of paraphrasing",
+                "publisher": "International Journal of Listening",
+                "year": 2010,
+                "url": "https://stars.library.ucf.edu/scopus2010/1477"
+              },
+              {
+                "id": "itzchakov-2018",
+                "title": "Itzchakov et al. (2018), study of listening",
+                "publisher": "Personality and Social Psychology Bulletin",
+                "year": 2018,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/29347879/"
+              },
+              {
+                "id": "morris-2000",
+                "title": "Morris and Fritz (2000), name game study",
+                "publisher": "Journal of Experimental Psychology: Applied",
+                "year": 2000,
+                "url": "https://eprints.lancs.ac.uk/id/eprint/18865"
+              },
+              {
+                "id": "morris-2002",
+                "title": "Morris and Fritz (2002), name game follow-up",
+                "publisher": "Memory",
+                "year": 2002,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/12097210/"
+              }
+            ],
+            "quest": {
+              "title": "Listen and recall",
+              "detail": "Say back one person's words; later, recall one new name before checking.",
+              "sourceRefs": [
+                "weger-2014",
+                "morris-2000"
+              ]
+            },
+            "steps": [
+              {
+                "id": "listening-s1",
+                "title": "Show you are listening",
+                "claimId": "listening-c2",
+                "sourceRefs": [
+                  "weger-2014",
+                  "weger-2010"
+                ],
+                "hook": {
+                  "stem": "A friend is upset about a bad viva. Which reply tends to make people feel most understood?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Quick advice on how to prepare next time.",
+                      "correct": false,
+                      "feedback": "In one study, active listening helped more with feeling understood."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Say back what you heard, then ask about it.",
+                      "correct": true,
+                      "feedback": "This uses more of the active listening package."
+                    },
+                    {
+                      "id": "c",
+                      "text": "\"Happens to everyone.\"",
+                      "correct": false,
+                      "feedback": "A brief acknowledgement gives them little room to say more."
+                    }
+                  ]
+                },
+                "teach": "A person may feel heard when you say back the gist, ask, and stay with them. This helps because you give them time to tell you more.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Quick advice",
+                    "lines": [
+                      "Apply off-campus."
+                    ]
+                  },
+                  "right": {
+                    "title": "Active listening",
+                    "lines": [
+                      "So round one didn't go your way.",
+                      "How are you feeling about round two?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the line that says it back.",
+                  "parts": [
+                    "Sana: \"My manager redid my whole deck and didn't tell me.\"",
+                    "Rohan closes his laptop and turns to her.",
+                    "Rohan: \"So he changed your work without a word to you.\"",
+                    "Rohan: \"What bugged you more, the changes or not being told?\"",
+                    "Rohan: \"Want ideas, or did you just need to vent?\""
+                  ],
+                  "spot": "Rohan: \"So he changed your work without a word to you.\"",
+                  "feedback": "Part 3 says the gist back in Rohan's words. Part 4 asks about it. Part 5 checks before giving advice."
+                },
+                "guided": [
+                  {
+                    "stem": "At a family function, Tanvi tells her cousin: \"I didn't get placed in the first round.\" Which reply fits active listening best?",
+                    "hint": "Say back the gist, then ask.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "\"Apply off-campus. That's what worked for me.\"",
+                        "correct": false,
+                        "feedback": "Advice is not wrong, but in the study it did not make people feel as understood."
+                      },
+                      {
+                        "id": "b",
+                        "text": "\"So round one didn't go your way. How are you feeling about round two?\"",
+                        "correct": true,
+                        "feedback": "It says the gist back and asks about it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "\"Hmm.\"",
+                        "correct": false,
+                        "feedback": "A bare \"hmm\" made people feel the least understood."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Say back the gist, ask, and stay with them."
+              },
+              {
+                "id": "listening-s2",
+                "title": "Keep a new name",
+                "claimId": "listening-c7",
+                "sourceRefs": [
+                  "morris-2000",
+                  "morris-2002"
+                ],
+                "hook": {
+                  "stem": "New hostel wing, 10 names in 10 minutes. What helps most to remember them next week?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Hearing each name many times.",
+                      "correct": false,
+                      "feedback": "Recall beat a task with the same number of repeats."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Trying to recall the names yourself, a little later.",
+                      "correct": true,
+                      "feedback": "The name game studies point to recall practice."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Writing them down once.",
+                      "correct": false,
+                      "feedback": "The studies tested recall against normal introductions and matched repeats."
+                    }
+                  ]
+                },
+                "teach": "Try to pull a new name from your mind before you check it. This helps because recall makes you work with the name, not just hear it again.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Hear it again",
+                    "lines": [
+                      "Look at the group list first."
+                    ]
+                  },
+                  "right": {
+                    "title": "Recall it",
+                    "lines": [
+                      "Try the name before checking."
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the step where he pulls the name from memory.",
+                  "parts": [
+                    "Orientation day. \"Hi, I'm Farhan.\"",
+                    "\"Farhan, which floor are you on?\"",
+                    "At lunch, before checking the group list: \"Farhan, Neha, Vikram...\"",
+                    "Next morning: \"Hi Farhan!\""
+                  ],
+                  "spot": "At lunch, before checking the group list: \"Farhan, Neha, Vikram...\"",
+                  "feedback": "Part 3 recalls the names with no help. That effort is what made names stick in the studies."
+                },
+                "guided": [
+                  {
+                    "stem": "Aditi joins a club meet with 8 new people. Which plan fits the research?",
+                    "hint": "Try to retrieve the names before looking.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Repeat each name in her head ten times right away.",
+                        "correct": false,
+                        "feedback": "When repeats were matched, recalling still won."
+                      },
+                      {
+                        "id": "b",
+                        "text": "After the meet, try to recall all 8, then check the list.",
+                        "correct": true,
+                        "feedback": "Recall first, then check. That is retrieval practice."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Skip it. Names stick if you care enough.",
+                        "correct": false,
+                        "feedback": "Caring helps attention, but the studies point to recall practice."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Try to recall a name before checking it."
+              },
+              {
+                "id": "listening-s3",
+                "title": "Use the full set",
+                "claimId": "listening-c1",
+                "sourceRefs": [
+                  "weger-2014"
+                ],
+                "hook": {
+                  "stem": "Is an echo alone the full way to listen?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No. Ask and stay with them too.",
+                      "correct": true,
+                      "feedback": "The full set has more than an echo."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes. One short echo does the full job on its own.",
+                      "correct": false,
+                      "feedback": "A short echo leaves out the rest."
+                    }
+                  ]
+                },
+                "teach": "An echo can show that you heard a word. Ask and stay with the person too, because the full set gives them more room to speak.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Say back the gist",
+                    "Ask",
+                    "Stay with them"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the part that adds to the echo.",
+                  "parts": [
+                    "A friend tells you a plan fell through.",
+                    "You say the plan fell through.",
+                    "You ask what part felt worst."
+                  ],
+                  "spot": "You ask what part felt worst.",
+                  "feedback": "This part shows the move. The other lines give the chat its shape."
+                },
+                "guided": [
+                  {
+                    "stem": "A friend tells you her train was late. What adds to a short echo?",
+                    "hint": "An echo is just one move.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Ask how it felt.",
+                        "correct": true,
+                        "feedback": "A question gives her room to say more."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Say the same line once more in a loud voice.",
+                        "correct": false,
+                        "feedback": "That just adds one more echo."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Say back the gist, ask, and stay with them."
+              }
+            ],
+            "items": [
+              {
+                "id": "listening-1",
+                "type": "choose",
+                "conceptId": "listening",
+                "step": "listening-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "listening-m1"
+                ],
+                "sourceRefs": [
+                  "weger-2014"
+                ],
+                "stem": "Which reply leaves out the main parts of good listening?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Say back the gist, ask, and stay.",
+                    "correct": false,
+                    "feedback": "That uses the full set and gives the person room to talk.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Say hmm, then look away.",
+                    "correct": true,
+                    "feedback": "A small sound with no care or question leaves out the full set.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "listening-2",
+                "type": "scenario",
+                "conceptId": "listening",
+                "step": "listening-s1",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "listening-m1"
+                ],
+                "sourceRefs": [
+                  "weger-2014",
+                  "weger-2010"
+                ],
+                "stem": "In the college canteen, a friend says their viva went badly. Which reply fits the full package?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "That sounds rough. Which part felt hardest?",
+                    "correct": true,
+                    "feedback": "It says back the gist and invites the friend to say more.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Use my notes next time. They worked for me.",
+                    "correct": false,
+                    "feedback": "That offers advice before checking what the friend wants.",
+                    "misconceptionIds": [
+                      "listening-m1"
+                    ],
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Your viva went badly.",
+                    "correct": false,
+                    "feedback": "A paraphrase alone did not make people feel understood in an earlier study.",
+                    "sourceRefs": [
+                      "weger-2010"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "listening-3",
+                "type": "why",
+                "conceptId": "listening",
+                "step": "listening-s2",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "listening-m2"
+                ],
+                "sourceRefs": [
+                  "morris-2000"
+                ],
+                "stem": "Why try to recall a new club member's name before looking at the list?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Recall practice helped more than matched repeats.",
+                    "correct": true,
+                    "feedback": "The name games still won when time and repeats were matched.",
+                    "sourceRefs": [
+                      "morris-2000"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Repeating and recalling are the same.",
+                    "correct": false,
+                    "feedback": "Hearing it again is not as good as trying to recall it.",
+                    "misconceptionIds": [
+                      "listening-m2"
+                    ],
+                    "sourceRefs": [
+                      "morris-2000"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Checking a list first makes the name easier to retrieve.",
+                    "correct": false,
+                    "feedback": "Looking first removes the chance to try recalling it yourself.",
+                    "sourceRefs": [
+                      "morris-2000"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "listening-4",
+                "type": "scenario",
+                "conceptId": "listening",
+                "step": "listening-s2",
+                "job": "transfer",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "listening-m2"
+                ],
+                "sourceRefs": [
+                  "morris-2000",
+                  "morris-2002"
+                ],
+                "stem": "After college orientation, Aditi wants to recall eight names. What could she try?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Recall the eight names, check the list, then try again later.",
+                    "correct": true,
+                    "feedback": "This uses recall practice and a later refresher.",
+                    "sourceRefs": [
+                      "morris-2000",
+                      "morris-2002"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Read the list eight times without testing herself.",
+                    "correct": false,
+                    "feedback": "Matched repeats did not work as well as recall in the study.",
+                    "misconceptionIds": [
+                      "listening-m2"
+                    ],
+                    "sourceRefs": [
+                      "morris-2000"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Wait for the names to return on their own.",
+                    "correct": false,
+                    "feedback": "The studies found a benefit from practising recall.",
+                    "sourceRefs": [
+                      "morris-2000"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "listening-5",
+                "type": "estimate",
+                "conceptId": "listening",
+                "step": "listening-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "weger-2014"
+                ],
+                "stem": "In active listening, about how many parts are in the full set: say back the gist, ask, and stay with the person?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 3 parts.",
+                    "correct": true,
+                    "feedback": "The full set has a gist, a question, and real care.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 6 parts, with each word counted as a part.",
+                    "correct": false,
+                    "feedback": "The claim lists three moves, not a step for each word.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 3,
+                  "min": 2.5,
+                  "max": 3.5,
+                  "unit": "parts"
+                }
+              },
+              {
+                "id": "listening-6",
+                "type": "order",
+                "conceptId": "listening",
+                "step": "listening-s3",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "weger-2014"
+                ],
+                "stem": "Put these moves in a kind order for a friend who has had a hard day.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Hear the full story first.",
+                    "correct": true,
+                    "feedback": "Let them finish so you can know what went on.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Say back the gist in your own words.",
+                    "correct": true,
+                    "feedback": "A short gist can show what you heard so far.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ask what part felt hard.",
+                    "correct": true,
+                    "feedback": "A calm question gives them room to add more.",
+                    "sourceRefs": [
+                      "weger-2014"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "disagree-and-end",
+            "title": "Chats and disagreements",
+            "prerequisites": [],
+            "hook": "How can you keep your view in a disagreement and leave a chat clearly?",
+            "hookSourceRefs": [
+              "yeomans-2020",
+              "mastroianni-2021"
+            ],
+            "askLine": "How could you leave a long chat when neither person has said they want to stop?",
+            "rule": "In a disagreement, show that you heard the other view and state yours with care. When leaving, use a warm line and a clear goodbye.",
+            "ruleSourceRefs": [
+              "yeomans-2020",
+              "mastroianni-2021"
+            ],
+            "claims": [
+              {
+                "id": "disagree-and-end-c1",
+                "text": "Receptiveness is a way of talking, and it can be measured.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c2",
+                "text": "The four-part recipe.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c3",
+                "text": "People using it were seen as better partners and were more persuasive.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c4",
+                "text": "An open tone early in a chat can help keep a fight from growing.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c5",
+                "text": "Chats rarely end when either person wants.",
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c6",
+                "text": "We cannot tell when the other person wants to stop.",
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c7",
+                "text": "Among strangers (Study 2), in almost half of chats both wanted to stop sooner.",
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ]
+              },
+              {
+                "id": "disagree-and-end-c8",
+                "text": "After chats, people underrate how much they were liked, including first-year students and their hostel-mates.",
+                "sourceRefs": [
+                  "boothby-2018"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "disagree-and-end-m1",
+                "name": "Blunt is more convincing.",
+                "correction": "Blunt lines can shut a chat down. Show what you heard, then share your view.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-m2",
+                "name": "Kind means giving in.",
+                "correction": "Receptive is not the same as agreeing. Kunal can keep his view.",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ]
+              },
+              {
+                "id": "disagree-and-end-m3",
+                "name": "I can tell they want to keep going.",
+                "correction": "People had little idea when partners wanted to stop. Often both wanted to stop sooner.",
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "yeomans-2020",
+                "title": "Yeomans et al. (2020), study of conversational receptiveness",
+                "publisher": "Organizational Behavior and Human Decision Processes",
+                "year": 2020,
+                "url": "https://doi.org/10.1016/j.obhdp.2020.03.011"
+              },
+              {
+                "id": "mastroianni-2021",
+                "title": "Mastroianni et al. (2021), study of when conversations end",
+                "publisher": "Proceedings of the National Academy of Sciences",
+                "year": 2021,
+                "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7958231/"
+              },
+              {
+                "id": "boothby-2018",
+                "title": "Boothby et al. (2018), study of the liking gap",
+                "publisher": "Psychological Science",
+                "year": 2018,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/30183512/"
+              }
+            ],
+            "quest": {
+              "title": "Speak and leave",
+              "detail": "In one disagreement, show you heard them; end one chat with a warm line and goodbye.",
+              "sourceRefs": [
+                "yeomans-2020",
+                "mastroianni-2021"
+              ]
+            },
+            "steps": [
+              {
+                "id": "disagree-and-end-s1",
+                "title": "Disagree kindly",
+                "claimId": "disagree-and-end-c3",
+                "sourceRefs": [
+                  "yeomans-2020"
+                ],
+                "hook": {
+                  "stem": "In an argument, does sounding open make you less convincing?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, it looks weak.",
+                      "correct": false,
+                      "feedback": "In one study, receptive replies were seen as more persuasive."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No. In one study, opponents rated open replies as more persuasive.",
+                      "correct": true,
+                      "feedback": "The writers kept their view while sounding open."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It makes no difference.",
+                      "correct": false,
+                      "feedback": "The study found a difference in how persuasive replies seemed."
+                    }
+                  ]
+                },
+                "teach": "Show you heard their view. Name a point you both share, then add your view with care. This can work because an open tone makes your reply easier to hear.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Blunt reply",
+                    "lines": [
+                      "That's just not true."
+                    ]
+                  },
+                  "right": {
+                    "title": "Receptive reply",
+                    "lines": [
+                      "I see why it feels safe.",
+                      "I think design can do that too."
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the line that finds common ground.",
+                  "parts": [
+                    "\"I get it, splitting by topic means everyone owns a part.\"",
+                    "\"And we both want it done before Friday.\"",
+                    "\"I think the slides might look uneven, though.\"",
+                    "\"What if we split by topic and one person does a final design pass?\""
+                  ],
+                  "spot": "\"And we both want it done before Friday.\"",
+                  "feedback": "Part 2 finds a shared goal. Neha still disagrees, but Rohan can hear it."
+                },
+                "guided": [
+                  {
+                    "stem": "At a family function, an uncle says: \"Engineering is the only safe career.\" Kunal studies design. Which reply is receptive and still keeps Kunal's view?",
+                    "hint": "Acknowledge the concern and keep your own view.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "\"That's just not true, Uncle. That's outdated.\"",
+                        "correct": false,
+                        "feedback": "Plain negation scored lower on receptiveness and persuasion."
+                      },
+                      {
+                        "id": "b",
+                        "text": "\"I see why it feels safe, Uncle. We both want me to have a steady job. I think design can do that too. Can I show you where my seniors got placed?\"",
+                        "correct": true,
+                        "feedback": "It acknowledges, agrees, softens, and offers something positive."
+                      },
+                      {
+                        "id": "c",
+                        "text": "\"Okay, Uncle.\" (and says no more)",
+                        "correct": false,
+                        "feedback": "Receptive is not the same as agreeing. Kunal can keep his view."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Show you heard them, then state your view with care."
+              },
+              {
+                "id": "disagree-and-end-s2",
+                "title": "End a chat well",
+                "claimId": "disagree-and-end-c6",
+                "sourceRefs": [
+                  "mastroianni-2021",
+                  "boothby-2018"
+                ],
+                "hook": {
+                  "stem": "In a study of chats between strangers, how often did both people want it to end sooner than it did?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Hardly ever.",
+                      "correct": false,
+                      "feedback": "In the study, this happened much more often."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About 1 in 10.",
+                      "correct": false,
+                      "feedback": "The share was closer to half."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Almost half the time.",
+                      "correct": true,
+                      "feedback": "In Study 2, both wanted an earlier end in 46.83% of chats."
+                    }
+                  ]
+                },
+                "teach": "We often miss when the other person wants to stop. A warm, clear goodbye can help, since the other person may want to go too.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Unclear hint",
+                    "lines": [
+                      "Wait for them to guess you want to go."
+                    ]
+                  },
+                  "right": {
+                    "title": "Clear exit",
+                    "lines": [
+                      "Loved hearing about your trek.",
+                      "See you, Meera!"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the clear exit.",
+                  "parts": [
+                    "\"I've got to call home before 10.\"",
+                    "\"Loved hearing about your trek.\"",
+                    "\"Canteen tomorrow?\"",
+                    "\"See you, Meera!\""
+                  ],
+                  "spot": "\"See you, Meera!\"",
+                  "feedback": "Part 4 ends it clearly. The warm line before it helps it land well. Using her name ties back to idea 4."
+                },
+                "guided": [
+                  {
+                    "stem": "At a college fest stall, Vikram has talked with a senior for 25 minutes. He wants to go. What fits the research?",
+                    "hint": "People are poor at reading when a partner wants to stop.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Stay until the senior ends it. Leaving first is rude.",
+                        "correct": false,
+                        "feedback": "People had little idea when partners wanted to stop. Often both wanted to stop sooner."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Say a warm line and a clear goodbye.",
+                        "correct": true,
+                        "feedback": "The senior may want to stop too. A clear exit helps both."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Keep checking his phone until the senior gets the hint.",
+                        "correct": false,
+                        "feedback": "Hints are hard to read. That is why chats run on."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A warm line and a clear goodbye can help end a chat."
+              },
+              {
+                "id": "disagree-and-end-s3",
+                "title": "The chat may run long",
+                "claimId": "disagree-and-end-c7",
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ],
+                "hook": {
+                  "stem": "Do both people in a chat ever want it to end sooner?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, this can happen a lot.",
+                      "correct": true,
+                      "feedback": "Many pairs had that same wish."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, both people tend to want the chat to last a lot more time.",
+                      "correct": false,
+                      "feedback": "That did not fit the study."
+                    }
+                  ]
+                },
+                "teach": "In close to half of the stranger chats, both people wished to stop sooner. We may miss that wish, so a clear end can be kind.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hidden wish",
+                    "Warm line",
+                    "Clear end"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the clear end.",
+                  "parts": [
+                    "At a college fest, two people talk by a stall.",
+                    "One says the chat was fun.",
+                    "One says goodbye and walks on."
+                  ],
+                  "spot": "One says goodbye and walks on.",
+                  "feedback": "This part shows the move. The other lines give the chat its shape."
+                },
+                "guided": [
+                  {
+                    "stem": "At a college event, a chat has run long. What ends it in a clear way?",
+                    "hint": "Look for a line that closes the chat.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Good to see you. Bye!",
+                        "correct": true,
+                        "feedback": "The line is warm and has a clear end."
+                      },
+                      {
+                        "id": "b",
+                        "text": "I will just look at my phone until you leave.",
+                        "correct": false,
+                        "feedback": "That leaves the end hard to read."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A warm, clear end can help both people."
+              }
+            ],
+            "items": [
+              {
+                "id": "disagree-and-end-1",
+                "type": "choose",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "disagree-and-end-m1"
+                ],
+                "sourceRefs": [
+                  "yeomans-2020"
+                ],
+                "stem": "Which line sounds least open when two college mates disagree?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "I think we could try a new way.",
+                    "correct": false,
+                    "feedback": "This line leaves room for the other view while you share yours.",
+                    "sourceRefs": [
+                      "yeomans-2020"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Your plan is wrong.",
+                    "correct": true,
+                    "feedback": "A blunt line skips what the other person thinks and shuts down the chat.",
+                    "sourceRefs": [
+                      "yeomans-2020"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "disagree-and-end-2",
+                "type": "scenario",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s1",
+                "job": "misconception",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "disagree-and-end-m1",
+                  "disagree-and-end-m2"
+                ],
+                "sourceRefs": [
+                  "yeomans-2020"
+                ],
+                "stem": "In a college group project, Neha dislikes the slide plan. Which reply keeps her view?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "I see why that split helps. We both want a clear deck. I think one design pass could help.",
+                    "correct": true,
+                    "feedback": "It shows understanding, finds common ground, and states a different view.",
+                    "sourceRefs": [
+                      "yeomans-2020"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "No. Your plan is wrong.",
+                    "correct": false,
+                    "feedback": "Plain negation was rated less receptive in the study.",
+                    "misconceptionIds": [
+                      "disagree-and-end-m1"
+                    ],
+                    "sourceRefs": [
+                      "yeomans-2020"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Fine. We will do it your way.",
+                    "correct": false,
+                    "feedback": "She can sound open and still keep her own view.",
+                    "misconceptionIds": [
+                      "disagree-and-end-m2"
+                    ],
+                    "sourceRefs": [
+                      "yeomans-2020"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "disagree-and-end-3",
+                "type": "predict",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s2",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "disagree-and-end-m3"
+                ],
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ],
+                "stem": "In a college canteen, two new people keep chatting. Can each tell when the other wants to stop?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "They have little idea.",
+                    "correct": true,
+                    "feedback": "That is what the study found about partners' wishes.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "They can usually tell.",
+                    "correct": false,
+                    "feedback": "People had little idea when their partners wanted to end.",
+                    "misconceptionIds": [
+                      "disagree-and-end-m3"
+                    ],
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Their wishes line up on each chat.",
+                    "correct": false,
+                    "feedback": "The study found that partners' wishes often did not match.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "disagree-and-end-4",
+                "type": "true-not-quite",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "disagree-and-end-m3"
+                ],
+                "sourceRefs": [
+                  "mastroianni-2021",
+                  "boothby-2018"
+                ],
+                "stem": "A college fest chat runs long. Which account stays closest to the evidence?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Partners often misread when to stop; a warm exit is a suggested way to be clear.",
+                    "correct": true,
+                    "feedback": "The mismatch was studied. The warm exit is an inference, not a tested line.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A warm exit line was proven to make each chat end well.",
+                    "correct": false,
+                    "feedback": "The study found that people often missed when a chat partner wished to stop.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "If the other person is smiling, you know they want to keep going.",
+                    "correct": false,
+                    "feedback": "People had little idea when partners wanted to stop.",
+                    "misconceptionIds": [
+                      "disagree-and-end-m3"
+                    ],
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "disagree-and-end-5",
+                "type": "estimate",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ],
+                "stem": "In the study of stranger chats, about what share had both people wish to end sooner?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 47%.",
+                    "correct": true,
+                    "feedback": "That is close to half of the stranger chats in the study.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 5%, or just a few of the chats in the study.",
+                    "correct": false,
+                    "feedback": "That is too low; close to half of the pairs wished to stop sooner.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 46.83,
+                  "min": 40,
+                  "max": 55,
+                  "unit": "percent"
+                }
+              },
+              {
+                "id": "disagree-and-end-6",
+                "type": "explain-it-back",
+                "conceptId": "disagree-and-end",
+                "step": "disagree-and-end-s3",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "mastroianni-2021"
+                ],
+                "stem": "A college chat has gone on for a while. Which line sums up why a clear end can help?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "We may miss their wish to stop.",
+                    "correct": true,
+                    "feedback": "People had little sense of when the other person wished to end.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The other person can read each small hint and will stop right on time.",
+                    "correct": false,
+                    "feedback": "People were poor at gauging when a chat partner wished to stop.",
+                    "sourceRefs": [
+                      "mastroianni-2021"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "reach-out",
+            "title": "Reach out",
+            "prerequisites": [],
+            "hook": "When might it help to ask someone for advice or send a short check-in?",
+            "hookSourceRefs": [
+              "brooks-2015",
+              "liu-2023"
+            ],
+            "askLine": "Who could you ask about a hard task, and what would you say you have tried?",
+            "rule": "Ask someone with expertise about a hard task. A short personal check-in may be valued more than you expect.",
+            "ruleSourceRefs": [
+              "brooks-2015",
+              "liu-2023"
+            ],
+            "claims": [
+              {
+                "id": "reach-out-c1",
+                "text": "People avoid asking for advice for fear of looking incompetent, and the fear is misplaced.",
+                "sourceRefs": [
+                  "brooks-2015"
+                ]
+              },
+              {
+                "id": "reach-out-c2",
+                "text": "Advice-seekers are seen as more competent.",
+                "sourceRefs": [
+                  "brooks-2015"
+                ]
+              },
+              {
+                "id": "reach-out-c3",
+                "text": "It depends on the ask: hard task, asked personally, asked of an expert.",
+                "sourceRefs": [
+                  "brooks-2015"
+                ]
+              },
+              {
+                "id": "reach-out-c4",
+                "text": "People underrate how much others value a short check-in or small gesture.",
+                "sourceRefs": [
+                  "liu-2023"
+                ]
+              },
+              {
+                "id": "reach-out-c5",
+                "text": "The gap is bigger with people you are less close to, and when it is a surprise.",
+                "sourceRefs": [
+                  "liu-2023"
+                ]
+              },
+              {
+                "id": "reach-out-c6",
+                "text": "In a crisis, a person is less apt to help when more people are near.",
+                "sourceRefs": [
+                  "fischer-2011"
+                ]
+              },
+              {
+                "id": "reach-out-c7",
+                "text": "But this is weaker when the others are people you know.",
+                "sourceRefs": [
+                  "fischer-2011"
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "reach-out-m1",
+                "name": "The effect works for any question.",
+                "correction": "It held most for hard tasks, not easy ones.",
+                "sourceRefs": [
+                  "brooks-2015"
+                ]
+              },
+              {
+                "id": "reach-out-m2",
+                "name": "Asking means I'm weak.",
+                "correction": "The study found this fear was misplaced.",
+                "sourceRefs": [
+                  "brooks-2015"
+                ]
+              },
+              {
+                "id": "reach-out-m3",
+                "name": "Distance makes it unwelcome.",
+                "correction": "The gap was larger with less-close people.",
+                "sourceRefs": [
+                  "liu-2023"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "brooks-2015",
+                "title": "Brooks, Gino and Schweitzer (2015), study of advice seeking",
+                "publisher": "Management Science",
+                "year": 2015,
+                "url": "https://doi.org/10.1287/mnsc.2014.2054"
+              },
+              {
+                "id": "liu-2023",
+                "title": "Liu et al. (2023), study of reaching out",
+                "publisher": "Journal of Personality and Social Psychology",
+                "year": 2023,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/35816566/"
+              },
+              {
+                "id": "fischer-2011",
+                "title": "Fischer et al. (2011), bystander effect review",
+                "publisher": "Psychological Bulletin",
+                "year": 2011,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/21534650/"
+              }
+            ],
+            "quest": {
+              "title": "Ask and check in",
+              "detail": "Ask one experienced person about a hard task; send one short check-in message.",
+              "sourceRefs": [
+                "brooks-2015",
+                "liu-2023"
+              ]
+            },
+            "steps": [
+              {
+                "id": "reach-out-s1",
+                "title": "Ask a senior for advice",
+                "claimId": "reach-out-c3",
+                "sourceRefs": [
+                  "brooks-2015"
+                ],
+                "hook": {
+                  "stem": "At your internship you are stuck on a hard task. Does asking your senior for advice make you look less capable?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, it shows you can't cope.",
+                      "correct": false,
+                      "feedback": "In the studies, this fear was misplaced."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No. In studies, people who asked for advice on hard tasks were seen as more competent.",
+                      "correct": true,
+                      "feedback": "The effect was strongest for hard tasks and expert advisers."
+                    },
+                    {
+                      "id": "c",
+                      "text": "If you ask the same person twice.",
+                      "correct": false,
+                      "feedback": "The outline does not give a finding about the number of asks."
+                    }
+                  ]
+                },
+                "teach": "Ask a person with the right skill for help on a hard task. This can look wise because the ask fits both the task and the person.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Easy task",
+                    "lines": [
+                      "An Excel setting I can look up."
+                    ]
+                  },
+                  "right": {
+                    "title": "Hard task",
+                    "lines": [
+                      "I tried two fixes.",
+                      "What would you check first?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that asks for their expertise.",
+                  "parts": [
+                    "\"I tried two fixes and both broke the dates.\"",
+                    "\"You've built these pipelines. What would you check first?\"",
+                    "She asks her team lead directly, not \"anyone know?\" in the group.",
+                    "Next day: \"Your tip worked. Thanks.\""
+                  ],
+                  "spot": "\"You've built these pipelines. What would you check first?\"",
+                  "feedback": "Part 2 asks this person, on a hard problem, about something they know well. Those are the conditions where advice-seeking looked most competent."
+                },
+                "guided": [
+                  {
+                    "stem": "First week of his internship, Rohan can't find an Excel setting he could look up in a minute. What fits the research?",
+                    "hint": "Think of how much work the task needs.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Ask for each small thing. That will make you look smart.",
+                        "correct": false,
+                        "feedback": "It held most for hard tasks, not easy ones."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Look it up first. Save advice asks for hard problems the person knows well.",
+                        "correct": true,
+                        "feedback": "That matches when advice-seeking looked most competent."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Keep each hard task to yourself so you look able.",
+                        "correct": false,
+                        "feedback": "The study found this fear was misplaced."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "For a hard task, ask someone who knows it well."
+              },
+              {
+                "id": "reach-out-s2",
+                "title": "Reach out one-to-one",
+                "claimId": "reach-out-c4",
+                "sourceRefs": [
+                  "liu-2023"
+                ],
+                "hook": {
+                  "stem": "You text an old school friend: \"Saw this and thought of you.\" How much will they value it, compared with your guess?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Less than you guess.",
+                      "correct": false,
+                      "feedback": "In the studies, people tended to guess too low."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About what you guess.",
+                      "correct": false,
+                      "feedback": "People tended to underrate how much a reach-out was valued."
+                    },
+                    {
+                      "id": "c",
+                      "text": "More than you guess.",
+                      "correct": true,
+                      "feedback": "Recipients valued the reach-out more than senders expected."
+                    }
+                  ]
+                },
+                "teach": "A short note can mean more than you think. This gap can grow when the two people are less close, since the note may come as a nice surprise.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Only react in the group",
+                    "lines": [
+                      "Tap a reaction on the old photo."
+                    ]
+                  },
+                  "right": {
+                    "title": "Send a personal note",
+                    "lines": [
+                      "Saw the farewell photo.",
+                      "How's Pune?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the move from group to one-to-one.",
+                  "parts": [
+                    "The school group shares an old farewell photo. Aditi spots Kunal in it.",
+                    "Instead of only reacting in the group, she opens a chat with Kunal.",
+                    "\"Saw the farewell photo. Remembered your mimicry of Sir. How's Pune?\"",
+                    "\"No rush to reply.\""
+                  ],
+                  "spot": "Instead of only reacting in the group, she opens a chat with Kunal.",
+                  "feedback": "Part 2 moves it to one person. Part 3 is short and specific. Part 4 takes the pressure off both sides."
+                },
+                "guided": [
+                  {
+                    "stem": "Neha wants to wish a hostel friend she hasn't spoken to in months. She thinks: \"It'll be weird after so long.\" What does the research suggest?",
+                    "hint": "Think of the gap in each guess.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "It will likely be valued more than she expects.",
+                        "correct": true,
+                        "feedback": "The surprise of hearing from her is part of why it lands well."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Skip it. The gap in value shrinks with time apart.",
+                        "correct": false,
+                        "feedback": "The gap was larger with less-close people."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Post a wish in the big group instead. It's the same.",
+                        "correct": false,
+                        "feedback": "The study looked at one-to-one reach-outs. A group post was not tested."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A short personal check-in may mean more than you expect."
+              },
+              {
+                "id": "reach-out-s3",
+                "title": "A rare note can land well",
+                "claimId": "reach-out-c5",
+                "sourceRefs": [
+                  "liu-2023"
+                ],
+                "hook": {
+                  "stem": "Can a note to an old friend be a nice surprise?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, it can mean a lot.",
+                      "correct": true,
+                      "feedback": "A rare note can land well."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, time apart makes the note of no real use to the friend.",
+                      "correct": false,
+                      "feedback": "The gap grew with less close ties."
+                    }
+                  ]
+                },
+                "teach": "An old friend may value a short note more than you guess. The gap can be large because a rare note comes as a nice surprise.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Old tie",
+                    "Short note",
+                    "Nice surprise"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the rare note.",
+                  "parts": [
+                    "A school group shares an old photo.",
+                    "One student sends a short note to an old friend.",
+                    "The friend gets a kind hello."
+                  ],
+                  "spot": "One student sends a short note to an old friend.",
+                  "feedback": "This part shows the move. The other lines give the chat its shape."
+                },
+                "guided": [
+                  {
+                    "stem": "A hostel friend you have not seen in a while posts an old photo. What could you do?",
+                    "hint": "Think about who may be glad to hear from you.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Send a short note.",
+                        "correct": true,
+                        "feedback": "A brief note may mean more than you guess."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Wait for a big group chat to do all the work for you.",
+                        "correct": false,
+                        "feedback": "That plan skips the one to one note."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A rare note may mean more than you guess."
+              }
+            ],
+            "items": [
+              {
+                "id": "reach-out-1",
+                "type": "choose",
+                "conceptId": "reach-out",
+                "step": "reach-out-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "reach-out-m1",
+                  "reach-out-m2"
+                ],
+                "sourceRefs": [
+                  "brooks-2015"
+                ],
+                "stem": "Which advice ask is least like the kind that looked wise in the study?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ask an expert about a hard fix.",
+                    "correct": false,
+                    "feedback": "The task is hard and the person has the right skill for it.",
+                    "sourceRefs": [
+                      "brooks-2015"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Ask anyone about an easy menu click.",
+                    "correct": true,
+                    "feedback": "The result was strong for hard tasks and a person with the right skill.",
+                    "sourceRefs": [
+                      "brooks-2015"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "reach-out-2",
+                "type": "scenario",
+                "conceptId": "reach-out",
+                "step": "reach-out-s1",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "reach-out-m1",
+                  "reach-out-m2"
+                ],
+                "sourceRefs": [
+                  "brooks-2015"
+                ],
+                "stem": "A college intern has a hard data fix. Which advice ask best fits the study?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Ask the team lead who built the pipeline what they would check first.",
+                    "correct": true,
+                    "feedback": "It is a hard task, and she asks someone with relevant expertise.",
+                    "sourceRefs": [
+                      "brooks-2015"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Ask the whole office where an easy menu setting is.",
+                    "correct": false,
+                    "feedback": "The finding was strongest for hard tasks and personal asks to experts.",
+                    "misconceptionIds": [
+                      "reach-out-m1"
+                    ],
+                    "sourceRefs": [
+                      "brooks-2015"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Hide the problem so no one thinks she is weak.",
+                    "correct": false,
+                    "feedback": "The fear that advice seeking looks incompetent was misplaced in the studies.",
+                    "misconceptionIds": [
+                      "reach-out-m2"
+                    ],
+                    "sourceRefs": [
+                      "brooks-2015"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "reach-out-3",
+                "type": "predict",
+                "conceptId": "reach-out",
+                "step": "reach-out-s2",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "reach-out-m3"
+                ],
+                "sourceRefs": [
+                  "liu-2023"
+                ],
+                "stem": "Neha sends an old hostel friend a short check-in. What might Neha guess too low?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "How much the friend values hearing from her.",
+                    "correct": true,
+                    "feedback": "Senders in the studies guessed too low about the joy their notes could bring.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "How unwelcome a message from a distant friend is.",
+                    "correct": false,
+                    "feedback": "The gap was larger with people who were less close.",
+                    "misconceptionIds": [
+                      "reach-out-m3"
+                    ],
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "How many messages the group will send.",
+                    "correct": false,
+                    "feedback": "The reach-out study looked at the value of a personal contact.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "reach-out-4",
+                "type": "true-not-quite",
+                "conceptId": "reach-out",
+                "step": "reach-out-s2",
+                "job": "misconception",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "reach-out-m3"
+                ],
+                "sourceRefs": [
+                  "liu-2023",
+                  "fischer-2011"
+                ],
+                "stem": "A college WhatsApp group shares an old photo. Which claim stays within the evidence?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A personal check-in may be valued more than its sender expects.",
+                    "correct": true,
+                    "feedback": "The reach-out studies support this. They did not test WhatsApp group replies.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The studies found that group posts get less care than a one to one note.",
+                    "correct": false,
+                    "feedback": "The review was about a crisis with others near, not about a chat group.",
+                    "sourceRefs": [
+                      "fischer-2011"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Less close ties had a smaller gap in value.",
+                    "correct": false,
+                    "feedback": "The appreciation gap was larger with less-close people.",
+                    "misconceptionIds": [
+                      "reach-out-m3"
+                    ],
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "reach-out-5",
+                "type": "estimate",
+                "conceptId": "reach-out",
+                "step": "reach-out-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "liu-2023"
+                ],
+                "stem": "Riya sees Anu, Dev, and Tara in a school photo. She wants to reach out to each with one short note. About how many notes is that?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 3 notes.",
+                    "correct": true,
+                    "feedback": "There are three friends here, and each gets one note from Riya.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 8 notes, since the group has more than one old friend.",
+                    "correct": false,
+                    "feedback": "The scene names three friends, and each would get one note.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 3,
+                  "min": 2.5,
+                  "max": 3.5,
+                  "unit": "notes"
+                }
+              },
+              {
+                "id": "reach-out-6",
+                "type": "match",
+                "conceptId": "reach-out",
+                "step": "reach-out-s3",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "liu-2023"
+                ],
+                "stem": "Match each reach-out cue to what the study found.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Less close tie",
+                    "correct": true,
+                    "feedback": "The gap in value was larger when people were less close.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Larger gap",
+                    "correct": true,
+                    "feedback": "People missed more of the value in a less close tie.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A note out of the blue",
+                    "correct": true,
+                    "feedback": "A note that was a surprise had a larger value gap.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Nice surprise",
+                    "correct": true,
+                    "feedback": "A rare note can mean more than the sender may guess.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "e",
+                    "text": "Sender guess",
+                    "correct": true,
+                    "feedback": "Senders thought their note would mean less than it did.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  },
+                  {
+                    "id": "f",
+                    "text": "Too low",
+                    "correct": true,
+                    "feedback": "The sender guess was low next to what the friend felt.",
+                    "sourceRefs": [
+                      "liu-2023"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  },
+                  {
+                    "left": "e",
+                    "right": "f"
+                  },
+                  {
+                    "left": "f",
+                    "right": "e"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "changelog": "DRAFT for editors from cj4-pilot-outline (idea engine, 24 Oct 2026). Not fact-checked. Not in content/."
+}
