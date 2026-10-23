@@ -14,7 +14,7 @@
 .learn-options button:disabled { opacity: .68; }
 .learn-options button.selected { border-color: var(--accent); }
 .learn-options button.right-option { border-color: var(--teal); }
-.learn-drop .eyebrow { margin-top: 8px; color: var(--accent); font-size: 12px; }
+.learn-drop .eyebrow { margin-top: 8px; color: var(--accent-ink); font-size: 12px; }
 .learn-drop .learn-hint { color: var(--muted); font-size: 13px; }
 .learn-feedback { padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: var(--raised); }
 .learn-feedback.right { border-color: var(--teal); }

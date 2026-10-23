@@ -48,7 +48,7 @@
 .sheet-actions button { min-width: 0; min-height: 44px; }
 .sheet-actions .text-button { grid-column: 1 / -1; text-align: center; padding: 10px; }
 .task-sheet details { margin: 18px 0; }
-.task-sheet summary { min-height: 44px; display: flex; align-items: center; color: var(--accent); cursor: pointer; }
+.task-sheet summary { min-height: 44px; display: flex; align-items: center; color: var(--accent-ink); cursor: pointer; }
 @media (max-width: 359px) { .task-form-grid, .sheet-actions { grid-template-columns: 1fr; } }
 .day-horizon { color: var(--muted); overflow-wrap: anywhere; }
 .planner-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 22px; }
@@ -68,7 +68,7 @@
 .planner-priority { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding: 10px 0; overflow-wrap: anywhere; }
 .planner-priority span { min-width: 0; }
 .planner-screen .card, .planner-screen section, .planner-screen details { min-width: 0; }
-.planner-screen details > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--accent); }
+.planner-screen details > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--accent-ink); }
 .planner-capacity h2 { font-size: clamp(1.25rem, 5vw, 1.7rem); }
 .planner-capacity progress { margin-top: 16px; }
 .planner-capacity p { margin-bottom: 6px; }

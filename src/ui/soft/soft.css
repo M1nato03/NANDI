@@ -7,7 +7,7 @@
 .soft-line { font-size: 1.05rem; font-weight: 600; margin: 0; }
 .soft-options { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .soft-option { width: 100%; min-height: 52px; text-align: left; justify-content: flex-start; }
-.soft-option small { font-weight: 400; opacity: .75; }
+.soft-option small { font-weight: 400; }
 .soft-doing { display: grid; gap: 12px; }
 .soft-doing h2 { margin: 0; }
 .soft-task { display: grid; gap: 12px; }
