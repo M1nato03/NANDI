@@ -7,11 +7,23 @@ export async function validateAll(contentDir?: string, options: { allowUnchecked
   const errors: string[] = [];
   const seen = new Set<string>();
   const arcIndexes = new Set<number>();
+  const learnIds = new Map<string, string>();
   for (const { path, value } of await loadPackFiles(contentDir)) {
     for (const error of validatePack(value, { ...options, editorial: true })) errors.push(`${path}: ${error}`);
     if (value && typeof value === 'object' && 'id' in value && typeof value.id === 'string') {
       if (seen.has(value.id)) errors.push(`${path}: duplicate pack id ${value.id}`);
       seen.add(value.id);
+    }
+    // Concept, step and item ids are looked up across every topic, so one id in two packs hides one of them (batch 3 c).
+    if (value && typeof value === 'object' && 'kind' in value && value.kind === 'topic' && 'body' in value) {
+      const modules = (value.body as { modules?: { concepts?: { id: string; steps?: { id: string }[]; items?: { id: string }[] }[] }[] }).modules ?? [];
+      for (const concept of modules.flatMap(module => module.concepts ?? [])) {
+        for (const [kind, id] of [['concept', concept.id] as const, ...(concept.steps ?? []).map(step => ['step', step.id] as const), ...(concept.items ?? []).map(item => ['item', item.id] as const)]) {
+          const owner = learnIds.get(`${kind}:${id}`);
+          if (owner && owner !== path) errors.push(`${path}: ${kind} id ${id} is also in ${owner}`);
+          learnIds.set(`${kind}:${id}`, path);
+        }
+      }
     }
     if (value && typeof value === 'object' && 'kind' in value && value.kind === 'mystery-arc' && 'body' in value && value.body && typeof value.body === 'object' && 'arcIndex' in value.body && typeof value.body.arcIndex === 'number') {
       if (arcIndexes.has(value.body.arcIndex)) errors.push(`${path}: duplicate arc index ${value.body.arcIndex}`);

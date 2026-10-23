@@ -2212,7 +2212,7 @@
             ]
           },
           {
-            "id": "sleep-recovery",
+            "id": "sleep-health",
             "title": "Sleep and recovery",
             "prerequisites": [],
             "hook": "Sleep is active: the brain stores the day's learning while the body carries out repair.",
@@ -2227,7 +2227,7 @@
             ],
             "claims": [
               {
-                "id": "sleep-recovery-c1",
+                "id": "sleep-health-c1",
                 "text": "CDC recommends seven or more hours of sleep for adults aged 18–60.",
                 "sourceRefs": [
                   "cdc-sleep",
@@ -2235,21 +2235,21 @@
                 ]
               },
               {
-                "id": "sleep-recovery-c2",
+                "id": "sleep-health-c2",
                 "text": "Early in the night, the body puts deep sleep first to recover. Towards morning, deep sleep gets shorter and REM sleep gets longer.",
                 "sourceRefs": [
                   "sleep"
                 ]
               },
               {
-                "id": "sleep-recovery-c3",
+                "id": "sleep-health-c3",
                 "text": "One full sleep cycle takes about 80 to 100 minutes, and most people go through four to six cycles a night. Most vivid dreams happen in REM sleep.",
                 "sourceRefs": [
                   "sleep"
                 ]
               },
               {
-                "id": "sleep-recovery-c4",
+                "id": "sleep-health-c4",
                 "text": "Habits that help sleep include the same bed and wake time each day, a quiet, cool and dark bedroom, devices off at least 30 minutes before bed, and no caffeine late in the day.",
                 "sourceRefs": [
                   "cdc-sleep",
@@ -2257,21 +2257,21 @@
                 ]
               },
               {
-                "id": "sleep-recovery-c5",
+                "id": "sleep-health-c5",
                 "text": "Caffeine can take 8 hours or more to wear off fully.",
                 "sourceRefs": [
                   "sleep"
                 ]
               },
               {
-                "id": "sleep-recovery-c6",
+                "id": "sleep-health-c6",
                 "text": "Sleep helps with learning and forming long-term memories, deep sleep boosts the repair of cells and tissues, and cutting sleep by even one hour can make it hard to focus.",
                 "sourceRefs": [
                   "sleep"
                 ]
               },
               {
-                "id": "sleep-recovery-c7",
+                "id": "sleep-health-c7",
                 "text": "Light, darkness and sleep schedules set the body clock, and if trouble sleeping goes on, it is worth seeing a doctor rather than trying sleep products alone.",
                 "sourceRefs": [
                   "sleep",
@@ -2281,10 +2281,10 @@
             ],
             "items": [
               {
-                "id": "sleep-recovery-9",
+                "id": "sleep-health-9",
                 "type": "scenario",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s1",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
@@ -2323,14 +2323,14 @@
                 ]
               },
               {
-                "id": "sleep-recovery-10",
+                "id": "sleep-health-10",
                 "type": "true-not-quite",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s1",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s1",
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "sleep-recovery-m2"
+                  "sleep-health-m2"
                 ],
                 "sourceRefs": [
                   "sleep"
@@ -2352,7 +2352,7 @@
                     "correct": false,
                     "feedback": "Sleep works on the body too. Deep sleep boosts the repair of cells and tissues.",
                     "misconceptionIds": [
-                      "sleep-recovery-m2"
+                      "sleep-health-m2"
                     ],
                     "sourceRefs": [
                       "sleep"
@@ -2370,10 +2370,10 @@
                 ]
               },
               {
-                "id": "sleep-recovery-11",
+                "id": "sleep-health-11",
                 "type": "predict",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s2",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s2",
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [],
@@ -2412,10 +2412,10 @@
                 ]
               },
               {
-                "id": "sleep-recovery-12",
+                "id": "sleep-health-12",
                 "type": "fill-the-step",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s2",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s2",
                 "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [],
@@ -2454,14 +2454,14 @@
                 ]
               },
               {
-                "id": "sleep-recovery-13",
+                "id": "sleep-health-13",
                 "type": "why",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s3",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s3",
                 "job": "reverse",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "sleep-recovery-m3"
+                  "sleep-health-m3"
                 ],
                 "sourceRefs": [
                   "sleep"
@@ -2492,7 +2492,7 @@
                     "correct": false,
                     "feedback": "The clue is the late wake-up. Shifting wake times moves the body clock.",
                     "misconceptionIds": [
-                      "sleep-recovery-m3"
+                      "sleep-health-m3"
                     ],
                     "sourceRefs": [
                       "sleep"
@@ -2501,10 +2501,10 @@
                 ]
               },
               {
-                "id": "sleep-recovery-14",
+                "id": "sleep-health-14",
                 "type": "estimate",
-                "conceptId": "sleep-recovery",
-                "step": "sleep-recovery-s3",
+                "conceptId": "sleep-health",
+                "step": "sleep-health-s3",
                 "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [],
@@ -2555,7 +2555,7 @@
             ],
             "misconceptions": [
               {
-                "id": "sleep-recovery-m1",
+                "id": "sleep-health-m1",
                 "name": "Sleep is a blank state",
                 "correction": "Sleep has stages. The brain stores learning and the body repairs itself.",
                 "sourceRefs": [
@@ -2563,7 +2563,7 @@
                 ]
               },
               {
-                "id": "sleep-recovery-m2",
+                "id": "sleep-health-m2",
                 "name": "Muscles recover without sleep",
                 "correction": "Deep sleep boosts the repair of cells and tissues, so training needs sleep.",
                 "sourceRefs": [
@@ -2571,7 +2571,7 @@
                 ]
               },
               {
-                "id": "sleep-recovery-m3",
+                "id": "sleep-health-m3",
                 "name": "Sleeping in fixes a short week",
                 "correction": "Shifting wake times moves the body clock and makes sleep harder.",
                 "sourceRefs": [
@@ -2608,64 +2608,64 @@
               "checker": "content agent re-check 2026-10-22 (NIH Healthy Sleep: sleep helps learning and long-term memory, cutting even one hour makes it hard to focus, deep sleep boosts repair of cells and tissues, cycles of 80-100 minutes with four to six a night, body prioritises deep sleep early and REM gets longer towards morning, REM about 90 minutes in with most vivid dreams, body clocks set by light, darkness and sleep schedules, same bed and wake time even at weekends, quiet, cool, dark bedroom, screen light makes the brain think it is time to be awake, caffeine 8 hours or more, see a doctor if trouble sleeping continues; CDC About Sleep: adults 18-60 7 or more hours, devices off at least 30 minutes before bed, no caffeine in the afternoon or evening, talk to a healthcare provider about sleep problems)",
               "verdicts": [
                 {
-                  "claimId": "sleep-recovery-c1",
+                  "claimId": "sleep-health-c1",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c2",
+                  "claimId": "sleep-health-c2",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c3",
+                  "claimId": "sleep-health-c3",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c4",
+                  "claimId": "sleep-health-c4",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c5",
+                  "claimId": "sleep-health-c5",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c6",
+                  "claimId": "sleep-health-c6",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-c7",
+                  "claimId": "sleep-health-c7",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-9",
+                  "claimId": "sleep-health-9",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-10",
+                  "claimId": "sleep-health-10",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-11",
+                  "claimId": "sleep-health-11",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-12",
+                  "claimId": "sleep-health-12",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-13",
+                  "claimId": "sleep-health-13",
                   "verdict": "supported"
                 },
                 {
-                  "claimId": "sleep-recovery-14",
+                  "claimId": "sleep-health-14",
                   "verdict": "supported"
                 }
               ]
             },
             "steps": [
               {
-                "id": "sleep-recovery-s1",
+                "id": "sleep-health-s1",
                 "title": "What sleep does for you",
-                "claimId": "sleep-recovery-c6",
+                "claimId": "sleep-health-c6",
                 "sourceRefs": [
                   "sleep",
                   "cdc-sleep"
@@ -2745,9 +2745,9 @@
                 "takeaway": "Sleep stores learning and repairs the body; adults need 7 or more hours."
               },
               {
-                "id": "sleep-recovery-s2",
+                "id": "sleep-health-s2",
                 "title": "Sleep comes in cycles",
-                "claimId": "sleep-recovery-c2",
+                "claimId": "sleep-health-c2",
                 "sourceRefs": [
                   "sleep"
                 ],
@@ -2823,9 +2823,9 @@
                 "takeaway": "Sleep repeats in cycles of about 90 minutes; deep sleep comes early."
               },
               {
-                "id": "sleep-recovery-s3",
+                "id": "sleep-health-s3",
                 "title": "What makes falling asleep easier",
-                "claimId": "sleep-recovery-c4",
+                "claimId": "sleep-health-c4",
                 "sourceRefs": [
                   "sleep",
                   "cdc-sleep"
