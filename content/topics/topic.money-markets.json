@@ -3134,7 +3134,7 @@
                     "id": "b",
                     "text": "Forty is too few; a spread needs hundreds of firms.",
                     "correct": false,
-                    "feedback": "A dozen or more firms can do it, if they sit in different industries. His trouble is that all are pharma.",
+                    "feedback": "The count is not his trouble. A spread needs firms in different industries, and all of his are pharma.",
                     "sourceRefs": [
                       "risk"
                     ]
