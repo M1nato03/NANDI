@@ -135,7 +135,8 @@ export const RULES = {
   bonuses: { hatTrickXp: 30, lightsOutXp: 15 },
   // Spec 15, soft days: one gentle thing keeps the day (flat XP, no Hat-trick slot); a fixed gift on the first day back.
   soft: { dayXp: 10, welcomeBackXp: 15, from: '2026-10-22', careLowDays: 4, careWindowDays: 14 },
-  quests: { sideQuestXp: 20 },
+  // Your own side quests pay XP for the first few done each week; more still count as done (cj4 item 45).
+  quests: { sideQuestXp: 20, paidCustomPerWeek: 3 },
   gamify: { dailyQuestShards: 8, badgeTierShards: 5, unitChestShards: 25, perfectDropXp: 10,
     focusMinutes: 15, focusMultiplier: 2, goldReviewItems: 5, goldReviewPass: 4,
     badgeThresholds: [1, 5, 20] },
@@ -234,7 +235,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'learningTracks.unitCheckMin': [1, 10], 'learningTracks.moduleTestMin': [5, 20], 'learningTracks.dueReviewMin': [0, 5],
   'learningTracks.backlogBrakeDue': [10, 50], 'learningTracks.busyDayCards': [1, 1],
   'learningTracks.checkMinQuestions': [3, 3], 'learningTracks.modulePassPercent': [50, 90],
-  'quests.sideQuestXp': [0, 50],
+  'quests.sideQuestXp': [0, 50], 'quests.paidCustomPerWeek': [0, 50],
   'gamify.dailyQuestShards': [0, 100], 'gamify.badgeTierShards': [0, 100],
   'gamify.unitChestShards': [0, 200], 'gamify.perfectDropXp': [0, 100],
   'gamify.focusMinutes': [1, 60], 'gamify.focusMultiplier': [1, 3],

@@ -60,3 +60,21 @@ for (const scheme of ['light', 'dark'] as const) {
     await checkLayout(page);
   });
 }
+
+test('your own quests say when their XP is full for the week (item 45)', async ({ page }) => {
+  await page.clock.install({ time: new Date(2026, 9, 26, 12) });
+  await page.goto('/#plan');
+  const section = page.getByRole('region', { name: 'Side quests' });
+  await expect(section.locator('.quest-row')).toHaveCount(3);
+  for (const title of ['Call Nani', 'Fix the shelf', 'Water the plants']) {
+    await section.getByRole('button', { name: 'Add your own' }).click();
+    await expect(section.locator('.quest-form .quest-note')).toHaveText('Your own quests earn XP for the first 3 done each week. More still count as done.');
+    await section.getByLabel('Quest title').fill(title);
+    await section.getByRole('button', { name: 'Save custom quest' }).click();
+    const row = section.locator('.quest-row').filter({ hasText: title });
+    await row.getByRole('button', { name: 'Done' }).click();
+    await expect(row.locator('.quest-check')).toBeVisible();
+  }
+  await expect(section.getByText('XP for your own quests is full this week. More still count as done.')).toBeVisible();
+  await checkLayout(page);
+});

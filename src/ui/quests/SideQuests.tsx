@@ -2,10 +2,13 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ulid } from 'ulidx';
 import { weekKey } from '../../core/quests';
+import { dayKey } from '../../core/time';
 import { db } from '../../data/db';
 import { createQuestRepo } from '../../data/repos/quests';
 import pack from '../../../content/quests/quests.core.json';
 import { errorMessage } from '../shell/errorMessage';
+import { RULES } from '../../core/rules.config';
+import { customQuestPay, questCapFrom } from '../../core/economy/deriveEconomy';
 import './quests.css';
 
 const repo = createQuestRepo(db);
@@ -53,6 +56,13 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
   const [expandedId, setExpandedId] = useState<string | null>(selectedId ?? null);
   const [kind, setKind] = useState<'once' | 'total'>('once');
   const visible = rows.filter(row => row.status !== 'swapped' && !row.deleted);
+  // Your own quests pay XP for the first few done each week; more still count as done (item 45).
+  const paidCap = RULES.quests.paidCustomPerWeek;
+  // Counted the way scoring counts them: only quests done since this build first ran (Codex review, item 47).
+  const questFacts = useLiveQuery(() => db.ledger.where('mode').equals('quests').toArray(), []) ?? [];
+  const capFrom = useLiveQuery(() => db.settings.get('economy.v4From'), []);
+  const nowMs = Date.now(); // eslint-disable-line react-hooks/purity
+  const ownDone = customQuestPay(questFacts, questCapFrom(capFrom && !capFrom.deleted ? [capFrom] : []), undefined, dayKey(nowMs)).paid.get(weekKey(nowMs)) ?? 0;
   const shown = (selectedId ? visible.filter(row => row.id.toLowerCase() === selectedId) : visible)
     .sort((a, b) => Number(a.status === 'done') - Number(b.status === 'done'));
   async function run(action: () => Promise<void>) {
@@ -84,7 +94,8 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
         {expanded && <div className="quest-detail" id={`quest-detail-${row.id}`}><span>{row.kind === 'total' ? `${row.progress} of ${row.target} ${row.unit} this week` : 'One time this week'}</span>{row.status === 'active' && row.kind === 'total' && <button type="button" className="secondary" aria-label={`Subtract ${row.step} from ${row.title}`} disabled={busy || row.progress === 0} onClick={() => void run(() => repo.tap(row.id, ulid(), -row.step, Date.now()))}>Undo last +{row.step}</button>}</div>}
       </article>;
     })}</div>
-    {showForm && <form className="quest-form" onSubmit={add}><label>Quest title<input name="title" maxLength={120} required placeholder="What will you do?" /></label><label>Kind<select value={kind} onChange={event => setKind(event.target.value as 'once' | 'total')}><option value="once">Once</option><option value="total">Total</option></select></label>
+    {!selectedId && ownDone >= paidCap && <p className="quest-note">XP for your own quests is full this week. More still count as done.</p>}
+    {showForm && <form className="quest-form" onSubmit={add}><p className="quest-note">Your own quests earn XP for the first {paidCap} done each week. More still count as done.</p><label>Quest title<input name="title" maxLength={120} required placeholder="What will you do?" /></label><label>Kind<select value={kind} onChange={event => setKind(event.target.value as 'once' | 'total')}><option value="once">Once</option><option value="total">Total</option></select></label>
       {kind === 'total' && <><label>Target<input name="target" type="number" min="1" max="10000" defaultValue="10" required /></label><label>Unit<input name="unit" maxLength={24} placeholder="pages" required /></label><label>Step<input name="step" type="number" min="1" max="1000" defaultValue="1" required /></label></>}
       <button type="submit" disabled={busy}>Save custom quest</button></form>}
     {message && <p role="status">{message}</p>}

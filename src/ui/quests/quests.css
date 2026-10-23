@@ -40,3 +40,5 @@
   .side-quests { padding: 15px; }
   .quest-heading h2 { font-size: 22px; }
 }
+.quest-note { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+.quest-form .quest-note { grid-column: 1 / -1; margin: 0; }
