@@ -14,7 +14,12 @@ way these YouTube videos do. Examples he shared:
 
 The goal: give people a real reason to pick NANDI over scrolling, improve focus, and help them in their work.
 
-How to run: one cloud session runs EVERY job below as its own subagent, at least 3 at a time, until all 5 are done.
+Jenil's second idea (24 Oct): on low-energy days, and on normal days, people need something interesting to do OFF the
+phone, like a hobby or a skill. Through side quests and Learn, NANDI could introduce people to new activities to try,
+such as drawing, singing or videography, with real-life practice. "The real-life application learning is what will make
+us stand out." Jobs 6 and 7 cover this.
+
+How to run: one cloud session runs EVERY job below as its own subagent, at least 3 at a time, until all 7 are done.
 Each job writes ONE report under docs/reviews/ and pushes it on its OWN new branch named below. Never push main or any
 existing branch, never open a PR, never change app code or content JSON. Network access is open: open real sources
 and quote them with URLs; if a page cannot be opened, say so. YouTube creators and self-help blogs are INSPIRATION,
@@ -94,3 +99,41 @@ kindly, ending a conversation well, talking to seniors or interviewers, and grou
 - one "do it today" mission
 Indian settings: college, hostel, internship, family functions, WhatsApp groups. Mark everything DRAFT FOR EDITORS;
 the content team rewrites it to NANDI's pack format. Report docs/reviews/cj4-pilot-outline.md.
+
+## Job 6 · Hobbies to try off the phone (branch ideas/cj4-hobbies)
+Which beginner hobbies and skills can NANDI introduce, so that people put the phone down and do something real?
+Evidence to find:
+- creative activity and wellbeing, for example Conner, DeYoung and Silvia 2018 (everyday creative activity and next-day mood), the WHO 2019 arts-and-health scoping review (Fancourt and Finn), and leisure and flow research
+- what helps a beginner keep going: an early first win, small steps, deliberate practice for novices, and the evidence on "talent" myths
+- low-energy fit: which activities still work on a tired or low day (restorative, low-stakes) and which need energy
+Rank 20-25 candidates for Indian 18-25s on six things:
+- cost (₹0 or close to it, with what people already have at home or in a hostel)
+- space and noise (hostel, shared room)
+- time to a first win (10 minutes or less)
+- low-energy fit
+- whether the phone is needed (camera use is fine; scrolling is not)
+- safety
+Start with drawing, singing, videography, phone photography, cooking basics, writing, origami or paper craft, calligraphy,
+juggling, beginner yoga or stretching, a cheap instrument, gardening on a windowsill, and chess or puzzles away from screens.
+For each, list a source showing beginners can make visible progress in 1-2 weeks. Flag anything that pushes buying gear or paid courses.
+Report docs/reviews/cj4-hobbies.md.
+
+## Job 7 · Try-it tracks: how the app hands people a hobby (branch ideas/cj4-try-it)
+Design how a hobby gets into the app without becoming another screen habit. Read on origin/main:
+- src/core/quests (side quests)
+- src/core/tasks (Plan)
+- src/core/learn/steps.ts (lessons)
+- docs/specs/15-soft-days.md (low days)
+Propose a "Try it" format:
+- a 2-minute Learn step teaches the one idea that makes a beginner better, for example drawing what you see rather than what you think you see, or a 3-second hold on a video shot
+- then an off-phone side quest of 10-20 minutes ("draw your water bottle from 3 angles")
+- then an optional self-check the next day ("which one looks most like the bottle?")
+Cover:
+- how a person discovers a hobby without a feed (a pick of 3, the soft-day card, interests from first run)
+- how it adapts to low-energy days
+- what is saved (photos and recordings stay in the phone's own gallery; NANDI keeps only "done" and a one-line note)
+- rewards: no random rewards, no streak pressure, no guilt
+- how it fits the side-quest and XP caps
+Draft a 7-day starter for 3 hobbies (drawing, singing, videography), each day = idea + off-phone quest + self-check, with sources. Mark it DRAFT FOR EDITORS.
+Add a kill test: do people actually leave the phone (time away, asked rather than tracked), and do they come back to the hobby on day 7?
+Report docs/reviews/cj4-try-it.md.
