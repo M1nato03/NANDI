@@ -6,7 +6,7 @@ import { entityRepo, naturalRepo } from './base';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { RULES, rulesFor } from '../../core/rules.config';
-import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
+import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, afterHingeSession, hingeSlot, nordicState, NORDIC_RANK, SLOW_RANK, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
 
 export type Onboarding = { track: Track; equipment: EquipmentSetting; days: number[]; weeklyTarget: 2 | 3; restDay: number; heatModeEnabled: boolean; placement: Record<string, number>; startingLoads?: Record<string, number> };
 const PROGRAM_ID = 'train-program';
@@ -26,7 +26,8 @@ function routineFor(program: ProgramRow, now: number): Routine {
     if (pattern === 'row' && !program.equipment?.sturdyAnchor) return { ...ex, exerciseId: program.equipment?.resistanceBand ? 'band-row' : 'backpack-row', isBodyweightLadder: undefined };
     const ladder = LADDERS[pattern]!;
     const rank = Math.max(1, Math.min(ladder.length, program.placement?.[pattern] ?? Math.ceil(ladder.length / 2)));
-    return { ...ex, exerciseId: ladder[rank - 1]!.exerciseId };
+    const slot = { ...ex, exerciseId: ladder[rank - 1]!.exerciseId };
+    return pattern === 'hinge' ? hingeSlot(slot, rank, nordicState(program.nordic, rank)) : slot;
   });
   const days = Math.floor((now - (program.heatStartedAt ?? program.startedAt ?? now)) / 86_400_000);
   return applyRetestVolume(applyHeatMode({ ...template, exercises }, !!program.heatModeEnabled, days), isRetestWeek(program.startedAt ?? now, now));
@@ -46,6 +47,23 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
     await db.prs.add({ id, exerciseId, kind, value, setId, loadKg, at: now, ...meta(now) });
     const paid = await db.ledger.where('dayKey').equals(key).filter(row => row.mode === 'train' && row.kind === 'pr').count();
     if (paid < (rulesFor(key)?.rules ?? RULES).train.prMaxPerDay) await db.ledger.add({ id: `train-pr:${id}`, mode: 'train', kind: 'pr', refId: id, dayKey: key, inputs: { prKind: kind, value }, ...meta(now) });
+  }
+
+  /** Spec 17: moves the hinge to a rank outside a session. finishSession reads the rank from that step's own state row first, so keep it in line. */
+  async function hingePlacement(program: ProgramRow, rank: number, now: number): Promise<Record<string, number>> {
+    const state = await db.exState.get(LADDERS.hinge![rank - 1]!.exerciseId);
+    if (state?.ladderStep !== undefined && state.ladderStep !== rank) await db.exState.put({ ...state, ladderStep: rank, ...meta(now) });
+    return { ...program.placement, hinge: rank };
+  }
+  /** "I'm ready" on the card, or the Train settings switch turned on: the next hinge session is the banded Nordic. No XP, no ledger fact. */
+  async function openNordic(now: number): Promise<ProgramRow> {
+    const program = await getProgram();
+    if (!program) throw new Error('Complete rank assessment first');
+    const rank = program.placement?.hinge;
+    const placement = rank === SLOW_RANK ? await hingePlacement(program, NORDIC_RANK, now) : program.placement;
+    const row: ProgramRow = { ...program, placement, nordic: { ...nordicState(program.nordic, rank), ready: true }, ...meta(now) };
+    await db.programs.put(row);
+    return row;
   }
 
   return {
@@ -79,7 +97,32 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const old = await getProgram();
         if (!old) throw new Error('Complete rank assessment first');
-        const row = { ...old, placement: { ...old.placement, ...placement }, lastRetestWeek: Math.floor((now - (old.startedAt ?? now)) / (7 * 86_400_000)), ...meta(now) };
+        // A re-test never lands on a Nordic step, so keep the pre-gate reading of someone who was on one (spec 17).
+        const nordic = nordicState(old.nordic, old.placement?.hinge);
+        const row = { ...old, placement: { ...old.placement, ...placement }, ...(old.nordic || nordic.ready ? { nordic } : {}), lastRetestWeek: Math.floor((now - (old.startedAt ?? now)) / (7 * 86_400_000)), ...meta(now) };
+        await db.programs.put(row);
+        return row;
+      });
+    },
+    async answerNordicCard(answer: 'ready' | 'not-now', now: number): Promise<ProgramRow> {
+      return mutation(async () => {
+        if (answer === 'ready') return openNordic(now);
+        const program = await getProgram();
+        if (!program) throw new Error('Complete rank assessment first');
+        const row: ProgramRow = { ...program, nordic: { ...program.nordic, notNowDay: dayKey(now) }, ...meta(now) };
+        await db.programs.put(row);
+        return row;
+      });
+    },
+    /** Train settings "Nordic curls". Off goes back to slow SL-RDL at rank 2; on skips the card, since the person already confirmed it once. */
+    async setNordicCurls(on: boolean, now: number): Promise<ProgramRow> {
+      return mutation(async () => {
+        if (on) return openNordic(now);
+        const program = await getProgram();
+        if (!program) throw new Error('Complete rank assessment first');
+        const rank = program.placement?.hinge ?? 1;
+        const placement = rank > SLOW_RANK ? await hingePlacement(program, SLOW_RANK, now) : program.placement;
+        const row: ProgramRow = { ...program, placement, nordic: { ...nordicState(program.nordic, rank), ready: false, slow: true }, ...meta(now) };
         await db.programs.put(row);
         return row;
       });
@@ -179,6 +222,8 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         if (!(await db.ledger.get(fact.id))) await db.ledger.add(fact);
         const program = await getProgram();
         const placement = { ...program?.placement };
+        const nordic = nordicState(program?.nordic, program?.placement?.hinge);
+        let nordicNext = program?.nordic || nordic.ready ? nordic : undefined;
         for (const ex of planned) {
           const logged = sets.filter(set => set.exerciseId === ex.exerciseId);
           const old = await db.exState.get(ex.exerciseId);
@@ -188,7 +233,10 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
           if (logged.length > 0 && !pain && ex.isBodyweightLadder) {
             const pattern = ex.isBodyweightLadder;
             const rank = state.ladderStep ?? program?.placement?.[pattern] ?? 1;
-            const next = evaluateBodyweightLadder(exercise, { pattern, stepRank: rank }).stepRank;
+            // Spec 17: the small first Nordic session (2x3) is a try-out. Under the ladder rules 3 reps would read as a step
+            // down, so it is not evaluated and the rank stays; the normal rules start with the next hinge session.
+            const next = ex.variant === 'nordic-intro' ? rank : evaluateBodyweightLadder(exercise, { pattern, stepRank: rank }, { nordicReady: nordic.ready }).stepRank;
+            if (pattern === 'hinge') { const before = nordicNext ?? nordic; const after = afterHingeSession(before, exercise, { rank, variant: ex.variant, day: session.dayKey }); if (after !== before) nordicNext = after; }
             update = { ...update, ladderStep: next };
             placement[pattern] = next;
             if (next > rank) await addPr(ex.exerciseId, 'ladderStep', next, logged.at(-1)!.id, now, session.dayKey);
@@ -206,7 +254,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
             for (const pr of detectSetPrs({ load: set.loadKg ?? 0, reps: set.durationS ?? set.reps ?? 0, isHold: ex.isHold }, best)) if (!pr.needsConfirmation || set.confirmedJump) await addPr(ex.exerciseId, pr.kind, pr.value, set.id, now, session.dayKey, set.loadKg);
           }
         }
-        if (program && !pain) await db.programs.put({ ...program, placement, ...meta(now) });
+        if (program && !pain) await db.programs.put({ ...program, placement, ...(nordicNext ? { nordic: nordicNext } : {}), ...meta(now) });
         if (program && xp > 0) {
           const week = trainingWeek(session.dayKey);
           const sameWeek = await db.sessions.filter(item => live(item) && item.status !== 'active' && item.status !== 'skipped' && trainingWeek(item.dayKey) === week && (item.xp ?? 0) > 0).toArray();

@@ -45,6 +45,8 @@ export type RoutineExercise = {
   isPerSide?: boolean;
   isHold?: boolean;
   isBodyweightLadder?: LadderPattern;
+  /** Spec 17: slow SL-RDL (same rank 2) or the small first Nordic session (not ladder-evaluated). */
+  variant?: 'slow' | 'nordic-intro';
 };
 
 export type Routine = {

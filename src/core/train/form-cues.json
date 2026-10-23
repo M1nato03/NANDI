@@ -34,6 +34,7 @@
   "shrimp-squat": ["Stand on one foot, other knee bent behind.", "Hold a wall at first for balance.", "Lower only as far as you can control."],
   "bw-rdl": ["Stand tall with a soft bend in your knees.", "Push your hips back with a flat back.", "Stand up by driving your hips forward."],
   "sl-rdl": ["Stand on one leg, hold a wall if needed.", "Tip forward as the free leg goes back.", "Keep hips level; return to standing slowly."],
+  "sl-rdl:slow": ["Lower for a slow count of 3.", "Pause for 1 at the bottom, hips level.", "Stand up smoothly; hold the wall if you wobble."],
   "banded-nordic": ["Kneel on a mat with ankles held secure.", "Loop a band to help you on the way down.", "Lower slowly, catch with your hands if needed."],
   "nordic-curl": ["Kneel with ankles held firmly in place.", "Keep a straight line from knees to head.", "Lower as slowly as you can, hands ready."],
   "scapular-pull": ["Hang from a bar with straight arms.", "Pull your shoulders down a little.", "Relax back to a full hang, arms stay straight."],

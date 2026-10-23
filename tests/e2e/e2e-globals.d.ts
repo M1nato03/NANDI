@@ -33,6 +33,7 @@ declare global {
       seedLearnNight(conceptId: string, dueAt: number, selectedTopic?: string): Promise<void>;
       seedTaughtSteps(stepIds: string[]): Promise<void>;
       learnConfidence(): Promise<string | undefined>;
+      seedNordicSlow(): Promise<void>;
       backupRoundTrip(): Promise<{
         exportedJson: string;
         beforeCounts: Record<string, number>;

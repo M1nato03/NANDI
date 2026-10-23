@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { dayKey } from '../../core/time';
+import { dayKey, isAfterBedtime } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
-import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, calculatePlates, isRetestWeek, type Track } from '../../core/train';
+import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, SLOW_NAME, SLOW_RANK, calculatePlates, isRetestWeek, nordicCardDue, nordicState, nordicSwitchShown, type Track } from '../../core/train';
+import { softToday } from '../../core/soft/soft';
 import type { ProgramRow, SessionRow, SetRow, PrRow, ExStateRow, LedgerRow } from '../../data/types';
 import type { createTrainRepos } from '../../data/repos/train';
 import { Reassessment } from './Reassessment';
+import { NordicCard } from './NordicCard';
 import { EmptyState } from '../EmptyState';
 import { RULES } from '../../core/rules.config';
 
 type Page = 'today' | 'history' | 'settings' | 'finish' | 'retest';
 type Repos = ReturnType<typeof createTrainRepos>;
-type Data = { program: ProgramRow; sessions: SessionRow[]; sets: SetRow[]; prs: PrRow[]; state: ExStateRow[]; ledger: LedgerRow[] };
+type Data = { program: ProgramRow; sessions: SessionRow[]; sets: SetRow[]; prs: PrRow[]; state: ExStateRow[]; ledger: LedgerRow[]; softFacts?: LedgerRow[]; bedtime?: string };
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const mondayOf = (at: number) => { const date = new Date(at); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() - ((date.getDay() + 6) % 7)); return dayKey(date.getTime()); };
 const sessionWords: Record<string, string> = { completed: 'Finished', minimum: 'Short session', partial: 'Partly finished', safety: 'Stopped for comfort' };
@@ -40,6 +42,9 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   const max = Math.max(1, ...best.map(pr => pr.value ?? 0));
   const retestWeek = Math.floor((now - (program.startedAt ?? now)) / (7 * 86_400_000));
   const retestDue = isRetestWeek(program.startedAt ?? now, now) && program.lastRetestWeek !== retestWeek;
+  // Spec 17: never on a soft day, after bedtime or in hot-day mode.
+  const nordic = nordicState(program.nordic, program.placement?.hinge);
+  const nordicDue = program.track === 'bodyweight' && nordicCardDue(nordic, { rank: program.placement?.hinge ?? 1, today: dayKey(now), softDay: !!softToday(data.softFacts ?? [], dayKey(now)).state, afterBedtime: isAfterBedtime(now, data.bedtime ?? RULES.night.defaultBedtime), heatMode: !!program.heatModeEnabled });
   if (page === 'finish') return null;
   if (page === 'retest') return <Reassessment busy={busy} save={placement => { void act((repos, at) => repos.recordRetest(placement, at), 'Steps updated.').then(ok => { if (ok) setPage('today'); }); }} />;
   if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <EmptyState area="move">Your sessions will appear here.</EmptyState> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{formatDayKey(row.dayKey)}</strong><span>{PROGRAMS[row.templateKey ?? '']?.name ?? 'Workout'} · {sessionWords[row.status] ?? 'Finished'}</span></li>)}</ol>}</div>;
@@ -49,6 +54,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     <label>Rest day <select value={program.restDay ?? 0} onChange={event => { void act((repos, now) => repos.updateProgram({ restDay: Number(event.target.value) }, now), 'Rest day saved.'); }}>{days.map((name, i) => <option key={name} value={i}>{name}</option>)}</select></label>
     <div className="train-days" aria-label="Training days">{days.map((name, i) => <button type="button" key={name} className={draftDays.includes(i) ? '' : 'secondary'} aria-pressed={draftDays.includes(i)} onClick={() => setDraftDays(old => old.includes(i) ? old.filter(day => day !== i) : old.length < target ? [...old, i].sort() : old)}>{name}</button>)}</div><button type="button" className="secondary" disabled={draftDays.length !== target} onClick={() => { void act((repos, now) => repos.updateProgram({ days: draftDays }, now), 'Training days saved.'); }}>Save days</button>
     <label className="train-switch"><input type="checkbox" checked={!!program.heatModeEnabled} onChange={event => { void act((repos, now) => repos.updateProgram({ heatModeEnabled: event.target.checked }, now), 'Hot-day mode saved.'); }} /> Hot-day mode</label>
+    {program.track === 'bodyweight' && nordicSwitchShown(nordic) && <label className="train-switch"><input type="checkbox" checked={!!nordic.ready} onChange={event => { const on = event.target.checked; void act((repos, now) => repos.setNordicCurls(on, now), on ? 'Nordic curls on.' : 'Nordic curls off. Back to slow single-leg RDL.'); }} /> Nordic curls</label>}
     <label className="train-switch"><input type="checkbox" checked={!!program.equipment?.dumbbells} onChange={event => { void act((repos, now) => repos.updateProgram({ equipment: { ...program.equipment!, dumbbells: event.target.checked } }, now), 'Equipment saved.'); }} /> Dumbbells</label>
     <label className="train-switch"><input type="checkbox" checked={!!program.equipment?.resistanceBand} onChange={event => { void act((repos, now) => repos.updateProgram({ equipment: { ...program.equipment!, resistanceBand: event.target.checked } }, now), 'Equipment saved.'); }} /> Resistance band</label>
     <label className="train-switch"><input type="checkbox" checked={!!program.equipment?.sturdyAnchor} onChange={event => { void act((repos, now) => repos.updateProgram({ equipment: { ...program.equipment!, sturdyAnchor: event.target.checked } }, now), 'Equipment saved.'); }} /> Sturdy row anchor</label>
@@ -69,6 +75,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
       <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: `${slept ?? 'unanswered'}:${sore ?? 'unanswered'}` }), 'Session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Start session</button>
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
+    {nordicDue && <NordicCard busy={busy} answer={choice => { void act((repos, at) => repos.answerNordicCard(choice, at), choice === 'ready' ? 'Your next hinge session is a banded Nordic curl.' : 'Staying on slow single-leg RDL.'); }} />}
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
     <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
       const isTrained = completed.some(row => row.dayKey === key);
@@ -76,7 +83,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
       const statusText = isTrained ? 'trained' : isRest ? 'rest' : 'no data';
       return <span key={key} className={isTrained ? 'trained' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
     })}</div></div>
-    <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}><strong>{patternWords[pattern] ?? pattern.replaceAll('-', ' ')}</strong><span>Step {actual} of {ladder?.length ?? actual} · {EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name ?? 'Your current step'}</span></li>; })}</ul>}
+    <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}><strong>{patternWords[pattern] ?? pattern.replaceAll('-', ' ')}</strong><span>Step {actual} of {ladder?.length ?? actual} · {pattern === 'hinge' && actual === SLOW_RANK && nordic.slow && !nordic.ready ? SLOW_NAME : EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name ?? 'Your current step'}</span></li>; })}</ul>}
       <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {bestWords[pr.kind] ?? 'best'} {pr.value}</li>)}</ul> : <p>Your best sets will appear as you train.</p>}
       {best.length > 1 && <div className="train-chart" role="img" aria-label={`Best-set trend for ${EXERCISE_LIBRARY[best[0]!.exerciseId]?.name ?? best[0]!.exerciseId}`}><svg viewBox="0 0 240 80" preserveAspectRatio="none"><polyline points={best.map((pr, i) => `${i * 240 / (best.length - 1)},${78 - (pr.value ?? 0) / max * 70}`).join(' ')} /></svg></div>}
     </div>

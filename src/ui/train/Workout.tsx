@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ExStateRow, SessionRow, SetRow } from '../../data/types';
-import { EXERCISE_LIBRARY, LADDERS, calculateWarmupRamp, getSmallestIncrement, remainingRestMs, heatAdvice, type EquipmentSetting } from '../../core/train';
+import { EXERCISE_LIBRARY, LADDERS, NORDIC_STOP_LINE, calculateWarmupRamp, slotName, getSmallestIncrement, remainingRestMs, heatAdvice, type EquipmentSetting } from '../../core/train';
 import { keepScreenAwake } from '../../platform/awake';
 import { tapHaptic } from '../../platform/haptics';
 import { ExerciseFigure } from './ExerciseFigure';
@@ -64,7 +64,8 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
   const goTo = (next: number) => { window.clearTimeout(advanceTimer.current); const bounded = Math.max(0, Math.min(planned.length - 1, next)); localStorage.setItem(storageKey, String(bounded)); setIndex(bounded); setCelebrate(false); };
   const ex = planned[index];
   if (!ex) return <section className="train-workout"><button type="button" onClick={finish}>Finish session</button></section>;
-  const name = EXERCISE_LIBRARY[ex.exerciseId]?.name ?? ex.exerciseId;
+  const name = slotName(ex);
+  const cues = formCues(ex.exerciseId, ex.variant);
   const logged = sets.filter(set => set.exerciseId === ex.exerciseId);
   const working = logged.filter(set => set.type === 'working');
   const stopped = session.painExerciseIds?.includes(ex.exerciseId);
@@ -97,10 +98,11 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
     {minimumMode && <div className="card" aria-label="Minimum session"><h2>Just the minimum</h2><p>One set of each movement. Ten minutes is enough to show up.</p><p role="timer">{Math.max(0, Math.ceil((600_000 - (now - (session.startedAt ?? now))) / 60_000))} min left</p><button type="button" className="secondary" onClick={() => { localStorage.setItem(fullKey, '1'); setFullSession(true); }}>Continue full session</button></div>}
     {message && <p role="status">{message} {message.includes('New best') && <span className="train-pr-badge">PR</span>}</p>}
     <article className={`card train-exercise${celebrate ? ' train-complete' : ''}`} aria-label={name}>
-      <p className="eyebrow">Current exercise</p><h1>{name}</h1><p className="train-target">{ex.sets} × {ex.repMin}–{ex.repMax} {ex.isHold ? 'seconds' : 'reps'}{ex.isPerSide ? ' per side' : ''}</p>
+      <p className="eyebrow">Current exercise</p><h1>{name}</h1><p className="train-target">{ex.sets} × {ex.repMin === ex.repMax ? ex.repMin : `${ex.repMin}–${ex.repMax}`} {ex.isHold ? 'seconds' : 'reps'}{ex.isPerSide ? ' per side' : ''}</p>
       {showLoad && <p className="train-detail">Pick a load you can lift for 12 clean reps. Start light and use your smallest available step.</p>}
       <ExerciseFigure id={ex.exerciseId} name={name} />
-      {formCues(ex.exerciseId).length > 0 && <ul className="train-cues" aria-label="Form cues">{formCues(ex.exerciseId).map(cue => <li key={cue}>{cue}</li>)}</ul>}
+      {cues.length > 0 && <ul className="train-cues" aria-label="Form cues">{cues.map(cue => <li key={cue}>{cue}</li>)}</ul>}
+      {ex.variant === 'nordic-intro' && <p className="train-safety">{NORDIC_STOP_LINE}</p>}
       {ladder && <p className="train-detail">Step {last?.ladderStep ?? ladder.find(step => step.exerciseId === ex.exerciseId)?.rank ?? 1}/{ladder.length}</p>}
       {(ex.exerciseId === 'backpack-row' || ex.exerciseId === 'band-row') && <p className="train-detail">Limited pulling. A sturdy anchor or bar widens your options.</p>}
       {logged.length > 0 && <ol className="train-done-list" aria-label="Logged sets">{slots.filter(item => !!done(item)).map(item => { const row = done(item)!; return <li key={`${item.type}-${item.slot}`}>{item.type === 'warmup' ? `Warm-up ${item.slot + 3}` : `Set ${item.slot + 1}`} · {row.durationS ?? row.reps} {ex.isHold ? 'seconds' : 'reps'}{showLoad ? ` · ${row.loadKg} kg` : ''} <span aria-label="done"><span aria-hidden="true">✓</span></span></li>; })}</ol>}
@@ -112,7 +114,7 @@ export function Workout({ session, sets, state, equipment, busy, message, log, p
     </article>
     <div className="train-nav"><button type="button" className="secondary" disabled={index === 0} onClick={() => goTo(index - 1)}>Previous</button><button type="button" className="secondary" disabled={index === planned.length - 1} onClick={() => goTo(index + 1)}>Next exercise</button></div>
     <button type="button" className="text-button train-all-toggle" aria-expanded={showAll} onClick={() => setShowAll(value => !value)}>All exercises <span aria-hidden="true">{showAll ? '−' : '+'}</span></button>
-    {showAll && <ol className="train-all-list">{planned.map((item, step) => { const count = sets.filter(set => set.exerciseId === item.exerciseId && set.type === 'working').length; return <li key={item.exerciseId}><button type="button" className={step === index ? '' : 'secondary'} aria-current={step === index ? 'step' : undefined} onClick={() => goTo(step)}><span>{EXERCISE_LIBRARY[item.exerciseId]?.name ?? item.exerciseId}</span><small>{count}/{minimumMode ? 1 : item.sets}</small></button></li>; })}</ol>}
+    {showAll && <ol className="train-all-list">{planned.map((item, step) => { const count = sets.filter(set => set.exerciseId === item.exerciseId && set.type === 'working').length; return <li key={item.exerciseId}><button type="button" className={step === index ? '' : 'secondary'} aria-current={step === index ? 'step' : undefined} onClick={() => goTo(step)}><span>{slotName(item)}</span><small>{count}/{minimumMode ? 1 : item.sets}</small></button></li>; })}</ol>}
     {session.heatMode === 'on' && <div className="card"><h2>Hot-day mode</h2>{heatAdvice({ hotMode: true, celsius: Number(temperature), humid: Number(humidity) > 75 }).map(line => <p key={line}>{line}</p>)}<label>Temperature °C <input type="number" value={temperature} onChange={event => setTemperature(event.target.value)} /></label><label>Humidity % <input type="number" value={humidity} onChange={event => setHumidity(event.target.value)} /></label><button type="button" className="secondary" onClick={() => setStopAdvice(true)}>Dizzy or confused?</button>{stopAdvice && <p className="train-safety" role="alert">{heatAdvice({ hotMode: true, dizzy: true }).join(' ')}</p>}</div>}
     {painNames.length > 0 && <p className="train-safety">Stopped: {painNames.join(', ')}. You can finish safely now.</p>}
   </section>;

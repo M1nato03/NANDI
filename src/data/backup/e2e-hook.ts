@@ -42,7 +42,7 @@ async function roundTrip(): Promise<BackupRoundTripResult> {
 
 declare global {
   interface Window {
-    __nandiTest?: { backupRoundTrip: typeof roundTrip; roundTripCurrent: typeof roundTripCurrent; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; seedTaughtSteps: typeof seedTaughtSteps; learnConfidence: typeof learnConfidence };
+    __nandiTest?: { backupRoundTrip: typeof roundTrip; roundTripCurrent: typeof roundTripCurrent; seedShell: typeof seedShell; seedPlannerComplete: typeof seedPlannerComplete; removeShellTask: typeof removeShellTask; shellCounts: typeof shellCounts; wipeData: typeof wipeData; seedLearnNight: typeof seedLearnNight; seedTaughtSteps: typeof seedTaughtSteps; learnConfidence: typeof learnConfidence; seedNordicSlow: typeof seedNordicSlow };
   }
 }
 
@@ -88,9 +88,16 @@ async function seedTaughtSteps(stepIds: string[]): Promise<void> {
   await db.ledger.bulkPut(stepIds.map(stepId => ({ id: `learn-lesson:${stepId}`, mode: 'learn' as const, kind: 'learn-lesson' as const, refId: stepId, dayKey: dayKey(at),
     inputs: { seeded: true }, updatedAt: at, deleted: 0 as const, deviceId: 'e2e-learn' })));
 }
+/** Spec 17: a bodyweight program whose hinge is on slow SL-RDL, one slow 3x8 away from the Nordic ready card. */
+async function seedNordicSlow(): Promise<void> {
+  const at = Date.now() - 2 * 86_400_000;
+  await db.programs.put({ id: 'train-program', track: 'bodyweight', days: [1, 3, 5], weeklyTarget: 3, restDay: 0, heatModeEnabled: false, startedAt: at, sessionsStarted: 2,
+    equipment: { gymAccess: false, dumbbells: false, barbell: null, smallestPlate: null, resistanceBand: true, pullUpBar: false, sturdyAnchor: true },
+    placement: { squat: 2, 'push-up': 2, hinge: 2, row: 2, 'core-anti-ext': 1, 'core-anti-rot': 1, 'core-ext': 1 }, nordic: { slow: true }, updatedAt: at, deleted: 0, deviceId: 'e2e-train' });
+}
 async function learnConfidence(): Promise<string | undefined> {
   const rows = await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention').toArray();
   return rows.at(-1)?.inputs.confidence as string | undefined;
 }
 
-window.__nandiTest = { backupRoundTrip: roundTrip, roundTripCurrent, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, seedTaughtSteps, learnConfidence };
+window.__nandiTest = { backupRoundTrip: roundTrip, roundTripCurrent, seedShell, seedPlannerComplete, removeShellTask, shellCounts, wipeData, seedLearnNight, seedTaughtSteps, learnConfidence, seedNordicSlow };
