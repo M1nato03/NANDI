@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createDb, type NandiDb } from '../db';
 import { exportBackup, importBackup, previewBackup, validateBackup, backupFileName, migrateEnvelope } from './index';
 
@@ -62,6 +62,24 @@ describe('backup and restore', () => {
     expect(await db.settings.get('deviceId')).toMatchObject({ value: 'device-b', deviceId: 'device-b' });
     expect(await db.settings.get('lastBackupAt')).toMatchObject({ value: 999, deviceId: 'device-b' });
     expect(await db.settings.get('retired')).toMatchObject({ value: true, deviceId: 'device-b' });
+  });
+
+  it('restores a long run of day closes in one settings write, keeping the higher close per day', async () => {
+    // Batch 3 (b): a put per close woke every live query once per row, so a year's restore took 212 s.
+    const db = freshDb();
+    const day = (n: number) => new Date(Date.UTC(2026, 0, 1 + n)).toISOString().slice(0, 10);
+    const close = (total: number) => ({ total, sp: total, streak: 1, paused: false, shards: 0, owned: [], purchases: [] });
+    await db.settings.bulkPut(Array.from({ length: 120 }, (_, n) => ({ key: `economy.close:${day(n)}`, value: close(10), ...stamp })));
+    const envelope = await exportBackup(db, new Date(2026, 4, 1, 12));
+    await db.settings.clear();
+    await db.settings.bulkPut(Array.from({ length: 120 }, (_, n) => ({ key: `economy.close:${day(n)}`, value: close(n % 2 ? 30 : 5), ...stamp })));
+    // Each settings.put after the import is its own commit, and so one wake-up for every live query.
+    const puts = vi.spyOn(db.settings, 'put');
+    await importBackup(db, envelope);
+    expect(puts.mock.calls.length).toBeLessThanOrEqual(1);
+    const rows = await db.settings.where('key').startsWith('economy.close:').toArray();
+    expect(rows).toHaveLength(120);
+    expect(rows.map(row => (row.value as { total: number }).total)).toEqual(Array.from({ length: 120 }, (_, n) => n % 2 ? 30 : 10));
   });
 
   it('validates the envelope and dexie content with readable failures', async () => {

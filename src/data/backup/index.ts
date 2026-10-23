@@ -239,6 +239,7 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
     const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
     const template = closes[0] ?? restoredCloses[0];
-    if (template) for (const [day, value] of mergeCloseMaps(asMap(restoredCloses), asMap(closes))) await db.settings.put({ ...template, key: closeKey(day), value });
+    // One write for all the closes: a put per day woke every live query once per row (batch 3 b: 212 s for a year).
+    if (template) await db.settings.bulkPut([...mergeCloseMaps(asMap(restoredCloses), asMap(closes))].map(([day, value]) => ({ ...template, key: closeKey(day), value })));
   }));
 }
