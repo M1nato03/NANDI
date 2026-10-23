@@ -116,12 +116,15 @@ describe('topic editorial rules', () => {
     badTopic((concepts) => { concepts[0].items[0].stem = 'On 2026-10-16, the canteen price rises. What follows?'; }, 'date in stem');
     badTopic((concepts) => { delete concepts[0].sources[0].asOf; }, 'money source needs asOf metadata');
   });
-  it('allows teach cards up to 40 words (spec 16 R7)', () => {
+  it('allows teach cards up to 30 words (spec 14, cloud lesson walk #10)', () => {
     const teach = (count) => Array.from({ length: count }, () => 'cat').join(' ') + '.';
-    badTopic((concepts) => { concepts[0].steps[0].teach = teach(41); }, 'teach card over 40 words');
+    badTopic((concepts) => { concepts[0].steps[0].teach = teach(31); }, 'teach card over 30 words');
     const copy = structuredClone(money);
-    copy.body.modules[0].concepts[0].steps[0].teach = teach(40);
+    copy.body.modules[0].concepts[0].steps[0].teach = teach(30);
     expect(validatePack(copy, { allowUnchecked: true, editorial: true }).join(' ')).not.toContain('teach card over');
+  });
+  it('needs at least 3 tappable parts in a Show me example (cloud lesson walk #13)', () => {
+    badTopic((concepts) => { const example = concepts[0].steps[0].example; example.parts = [example.spot, 'and that is all.']; }, 'example needs at least 3 parts');
   });
   it('requires explanatory feedback in fresh words', () => {
     badTopic((concepts) => { concepts[0].items[0].options[1].feedback = 'Same.'; }, 'feedback needs 8-30 words');

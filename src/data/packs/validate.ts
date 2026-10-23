@@ -163,11 +163,14 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
           stepIds.add(step.id);
           if (!claimIds.has(step.claimId)) errors.push(`${at}: claimId must name a fact-checked claim of the concept`);
           refs(`${at}.sourceRefs`, step.sourceRefs);
-          if (wordCount(step.teach) > 40) errors.push(`${at}: teach card over 40 words`);
+          // Spec 14 + cloud lesson walk (#10): a teach card fits a phone screen at 30 words or fewer.
+          if (wordCount(step.teach) > 30) errors.push(`${at}: teach card over 30 words`);
           if (fleschReadingEase(step.teach) < 69.5) errors.push(`${at}: teach card Flesch reading ease below 70`);
           if (wordCount(step.takeaway) > 15) errors.push(`${at}: takeaway over 15 words`);
           for (const [label, value] of [['teach', step.teach], ['takeaway', step.takeaway], ['hook', step.hook.stem], ['example', step.example.parts.join(' ')]] as const) checkText(`${at}.${label}`, value);
           if (step.example.parts.filter(part => part === step.example.spot).length !== 1) errors.push(`${at}: example spot must be exactly one of its parts`);
+          // Cloud lesson walk (#13): with only 2 parts, Show me is a coin flip.
+          if (step.example.parts.length < 3) errors.push(`${at}: example needs at least 3 parts`);
           oneRight(`${at}.hook`, step.hook.options);
           step.guided.forEach((guided, index) => { oneRight(`${at}.guided.${index}`, guided.options); checkText(`${at}.guided.${index}`, guided.stem); });
           if (!concept.items.some(item => item.step === step.id)) errors.push(`${at}: needs at least one practice item`);

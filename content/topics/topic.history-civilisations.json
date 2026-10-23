@@ -601,7 +601,7 @@
                     }
                   ]
                 },
-                "teach": "In Mohenjo-daro, now in Sindh, Pakistan, the lower town's streets cross at right angles in neat blocks. A grid like this does not grow by chance, so it shows the town was planned.",
+                "teach": "In Mohenjo-daro, now in Pakistan, the lower town’s streets cross at right angles. A grid like this does not grow by chance, so it shows a plan.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -631,26 +631,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "In which part of Mohenjo-daro do the right-angle streets lie?",
-                    "hint": "Look away from the high mound in the west.",
+                    "stem": "A dig finds a town with winding lanes and odd corners. What does that suggest?",
+                    "hint": "Compare it with the two sides of the picture.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "The lower town.",
+                        "text": "It likely grew bit by bit, with no set layout.",
                         "correct": true,
-                        "feedback": "Right. The grid of streets lies in the lower town, east of the high mound."
+                        "feedback": "Right. Winding lanes and odd corners fit a town that grew bit by bit. A grid of right angles is the sign of a plan."
                       },
                       {
                         "id": "b",
-                        "text": "The high mound in the west.",
+                        "text": "It was laid out on a grid, like the lower town.",
                         "correct": false,
-                        "feedback": "The high western mound is a separate area. The street grid is in the lower town."
+                        "feedback": "A grid has straight streets meeting at right angles. Winding lanes point the other way."
                       },
                       {
                         "id": "c",
-                        "text": "A village far outside the city.",
+                        "text": "It must be older than any planned town.",
                         "correct": false,
-                        "feedback": "The grid is inside the city, in its lower town."
+                        "feedback": "The layout shows how a town grew, not how old it is. Winding lanes suggest no set plan."
                       }
                     ]
                   }
@@ -688,7 +688,7 @@
                     }
                   ]
                 },
-                "teach": "Every street and lane had a drain. Pipes and chutes carried used water from homes into them. Most drains had brick covers, and small pits caught silt so it could be cleared.",
+                "teach": "Every street and lane had a drain, so pipes and chutes could carry used water from homes into them. Most drains had brick covers.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -726,9 +726,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "A well, since lanes held water, not drains.",
+                        "text": "An open ditch, as old drains had no covers.",
                         "correct": false,
-                        "feedback": "Wells stood in houses. The lanes themselves carried drains, like every other street."
+                        "feedback": "Most Mohenjo-daro drains were baked-brick channels with covers, and small pits caught silt so they could be cleared."
                       }
                     ]
                   }
@@ -809,9 +809,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Kings bathed there each morning.",
+                        "text": "Seals found near it name it a temple bath.",
                         "correct": false,
-                        "feedback": "Nothing we can read says who used it. That is a guess."
+                        "feedback": "No one can read the seals yet, so no text names its use. The steps only show people could walk in."
                       },
                       {
                         "id": "c",
@@ -1348,9 +1348,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "So only the king could read it.",
+                        "text": "So rulers of other lands would see his power.",
                         "correct": false,
-                        "feedback": "A message for the king alone could stay in the palace. Routes were chosen so many people passed it."
+                        "feedback": "The edicts stood near towns and routes so the many people passing by could see them, not to impress far-off kings."
                       },
                       {
                         "id": "c",
@@ -1479,7 +1479,7 @@
                     }
                   ]
                 },
-                "teach": "Dhamma asked people to respect elders, be kind to servants and respect other faiths. Since most people could not read, carved words alone could not reach them, and special officers spread it too.",
+                "teach": "Dhamma asked people to respect elders, be kind to servants and respect other faiths. Since most people could not read, special officers spread it too.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2041,7 +2041,7 @@
                     }
                   ]
                 },
-                "teach": "Monsoon winds carried ships to India's west coast. Goods then went up the Indus to Gandhara, now in northern Pakistan, and over the passes to China. So the Silk Road was many routes.",
+                "teach": "Monsoon winds carried ships to India’s west coast. Goods then went up the Indus to Gandhara and over the passes to China, so the Silk Road was many routes.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2079,9 +2079,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Mountain passes, then river, then sea.",
+                        "text": "One straight road, so there was no order.",
                         "correct": false,
-                        "feedback": "That runs the trip backwards. It landed by sea, went up the river, then crossed the passes."
+                        "feedback": "The Silk Road was not one road. The cloth landed by sea, went up the Indus, then crossed the passes."
                       }
                     ]
                   }
@@ -2165,9 +2165,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No change.",
+                        "text": "No change, since rulers alone paid for the art.",
                         "correct": false,
-                        "feedback": "The art depended on trade money, so a slump would be felt."
+                        "feedback": "In Gandhara, trade wealth paid for the art for about 600 years, so a slump would be felt."
                       }
                     ]
                   }
@@ -2204,7 +2204,7 @@
                     }
                   ]
                 },
-                "teach": "Ideas move with people. Hun invasions seem to have driven Gandhara's monks into Central Asia, so their art style took root at Buddhist sites there. Many sites stood at oases where traders rested.",
+                "teach": "Ideas move with people. Hun invasions seem to have driven Gandhara’s monks into Central Asia, so their art style took root at Buddhist sites there.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2236,9 +2236,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Oases were empty and far from any visitors.",
+                        "text": "Monks wanted to live far from traders.",
                         "correct": false,
-                        "feedback": "Oases were busy rest stops on trade routes, not empty places."
+                        "feedback": "The centres grew where traders stopped, at busy oases, not away from them."
                       },
                       {
                         "id": "c",
@@ -2826,9 +2826,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "450.",
+                        "text": "No real answer; zero is just an empty place.",
                         "correct": false,
-                        "feedback": "That is 45 times 10. Times zero gives zero."
+                        "feedback": "Zero is a number too, with its own rules. Any number times zero is zero."
                       }
                     ]
                   }
@@ -2865,7 +2865,7 @@
                     }
                   ]
                 },
-                "teach": "India's digits spread west. A scholar, al-Khwarizmi, wrote of them in Arabic. Then, around 1200, Fibonacci took them to Europe, where they caught on slowly. That is why we call them Hindu-Arabic.",
+                "teach": "India’s digits spread west. A scholar wrote of them in Arabic. Then, around 1200, Fibonacci took them to Europe. So we call them Hindu-Arabic.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -3457,7 +3457,7 @@
                     }
                   ]
                 },
-                "teach": "A woodblock holds one page. Bi Sheng in China first made movable type from baked clay. Its small pieces can be reset, so one set prints many pages. But many characters and cheap blocks kept blocks common in China.",
+                "teach": "A woodblock holds one page. Bi Sheng in China made the first movable type from baked clay, and its small pieces can be reset, so one set prints many pages.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3494,7 +3494,7 @@
                         "id": "a",
                         "text": "One set of movable type, reset for each page.",
                         "correct": true,
-                        "feedback": "Right. The same pieces are rearranged for every page, so nothing new has to be carved."
+                        "feedback": "Right. The same pieces are rearranged for every page. In China, though, many characters and cheap blocks kept woodblocks common."
                       },
                       {
                         "id": "b",
@@ -3665,9 +3665,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Everyone in the town can read by the next morning.",
+                        "text": "Most townsfolk soon read, since print teaches reading.",
                         "correct": false,
-                        "feedback": "Books do not teach reading by themselves. Readers gain at once."
+                        "feedback": "Print spreads copies; it does not teach reading. Only the readers gain at once."
                       },
                       {
                         "id": "c",
@@ -4248,9 +4248,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Freedom from duties.",
+                        "text": "No more than an honour; a mansab was a title.",
                         "correct": false,
-                        "feedback": "It brought duties, including keeping horsemen for the army."
+                        "feedback": "A mansab tied rank to pay and to an army duty: keeping a set number of horsemen."
                       }
                     ]
                   }
@@ -4317,26 +4317,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Some nobles were paid in cash. Which group was larger?",
-                    "hint": "Look at the two boxes in the picture.",
+                    "stem": "A mansabdar holds a jagir in Bengal but serves with the army in the Deccan. What does the jagir give him?",
+                    "hint": "Think about who collected the money while he was away.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Those paid through jagirs.",
+                        "text": "The right to that area’s revenue.",
                         "correct": true,
-                        "feedback": "Right. Most mansabdars were paid through jagirs, and a few in cash."
+                        "feedback": "Right. A jagir was a right to an area’s revenue, and his servants collected it while he served far away."
                       },
                       {
                         "id": "b",
-                        "text": "Those paid in cash.",
+                        "text": "The land itself, to keep for his family.",
                         "correct": false,
-                        "feedback": "Cash pay went to some. The larger group was paid through jagirs."
+                        "feedback": "A jagir was not land to own, and holders were moved from one jagir to another."
                       },
                       {
                         "id": "c",
-                        "text": "Both groups were the same size.",
+                        "text": "A duty to farm the land himself.",
                         "correct": false,
-                        "feedback": "They were not equal. Most were paid through jagirs."
+                        "feedback": "He did not farm it. Most mansabdars did not even live in their jagirs."
                       }
                     ]
                   }
@@ -4394,26 +4394,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "How many years did Todar Mal's survey cover?",
-                    "hint": "Think of a decade.",
+                    "stem": "Officials in one province keep no land surveys or careful accounts. Would zabt work well there?",
+                    "hint": "What did Todar Mal’s method rest on?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ten.",
+                        "text": "Not well; it needed surveys and records.",
                         "correct": true,
-                        "feedback": "Right. The survey covered a ten-year period."
+                        "feedback": "Right. Zabt set rates from ten years of surveys and records, so it did not work where those were missing."
                       },
                       {
                         "id": "b",
-                        "text": "One single season.",
+                        "text": "Yes; one tax method fits every province.",
                         "correct": false,
-                        "feedback": "It covered ten years, not one season."
+                        "feedback": "Zabt needed land surveys and careful accounts, which some provinces, such as Gujarat and Bengal, did not have."
                       },
                       {
                         "id": "c",
-                        "text": "A hundred.",
+                        "text": "Yes, if the ruler sets a high rate.",
                         "correct": false,
-                        "feedback": "It covered ten years, not a century."
+                        "feedback": "A high rate does not replace records. Zabt rates came from years of surveys of yields and prices."
                       }
                     ]
                   }
@@ -5059,7 +5059,7 @@
                     }
                   ]
                 },
-                "teach": "The Company won at Plassey in 1757 and at Buxar in 1764. In 1765 the Mughal emperor gave it the diwani, the right to collect Bengal's tax. So Indian revenue, not British gold, now paid for its trade.",
+                "teach": "The Company won at Plassey in 1757 and Buxar in 1764. In 1765 it got the diwani, the right to collect Bengal’s tax, so Indian revenue paid its costs.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5932,8 +5932,12 @@
                       "text": "26 Nov 1949: adopted"
                     },
                     {
-                      "at": 92,
-                      "text": "24 Jan: signed; 26 Jan 1950: in force"
+                      "at": 91,
+                      "text": "24 Jan 1950: signed"
+                    },
+                    {
+                      "at": 93,
+                      "text": "26 Jan 1950: in force"
                     }
                   ]
                 },

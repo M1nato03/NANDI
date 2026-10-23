@@ -28,7 +28,7 @@
             "hookSourceRefs": [
               "lift"
             ],
-            "rule": "A wing makes lift when air flows past it and is turned down. The air pushes the wing up. If nothing else changes, lift grows with speed squared, and in steady level flight it equals weight.",
+            "rule": "A wing makes lift when air flows past it and is turned down. The air pushes the wing up. If nothing else changes, lift grows with speed times speed, and in steady level flight it equals weight.",
             "ruleSourceRefs": [
               "lift",
               "velocity",
@@ -284,7 +284,7 @@
                     "id": "a",
                     "text": "About 1.4 times as fast.",
                     "correct": true,
-                    "feedback": "Lift grows with speed squared, and 1.4 times 1.4 is about 2, so 1.4 times the speed doubles the lift.",
+                    "feedback": "Lift grows with speed times speed, and 1.4 times 1.4 is about 2, so 1.4 times the speed doubles the lift.",
                     "sourceRefs": [
                       "velocity",
                       "cruise"
@@ -530,7 +530,7 @@
                     }
                   ]
                 },
-                "teach": "A wing lifts only when air flows past it, because lift is the air pushing on the wing. Move the wing, or let wind blow over it. No moving air means no lift.",
+                "teach": "A wing lifts only when air flows past it, because lift is a push from that air. Move the wing or let wind blow; no moving air, no lift.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -542,7 +542,7 @@
                 "example": {
                   "ask": "Tap what makes the lift.",
                   "parts": [
-                    "Riya runs across the school ground,",
+                    "Harpreet runs across the school ground,",
                     "so air rushes over her paper glider's wings,",
                     "and it floats up out of her hand."
                   ],
@@ -551,26 +551,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "A plane sits parked in calm air with its engines off. How much lift do its wings make?",
-                    "hint": "Is anything moving past the wings?",
+                    "stem": "A parked plane, engines off, faces a strong wind blowing at its nose. Can its wings make some lift?",
+                    "hint": "Does it matter whether the plane or the air is moving?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "None, or almost none.",
+                        "text": "Yes, some, from the wind blowing over them.",
                         "correct": true,
-                        "feedback": "Yes. With no air moving past, the wings make no real lift."
+                        "feedback": "Right. Lift needs air moving past the wing. It does not matter whether the plane or the air is moving."
                       },
                       {
                         "id": "b",
-                        "text": "Full lift, just like in flight.",
+                        "text": "No, a plane must roll forward to lift.",
                         "correct": false,
-                        "feedback": "Lift needs moving air. A parked plane in calm air has almost none."
+                        "feedback": "Moving air is what counts. Wind past a still wing can make lift too."
                       },
                       {
                         "id": "c",
-                        "text": "About half of its weight.",
+                        "text": "No, the engines must run to make lift.",
                         "correct": false,
-                        "feedback": "Nothing is flowing past the wings, so they make almost no lift."
+                        "feedback": "Engines only push the plane along. Air flowing past the wings makes the lift."
                       }
                     ]
                   }
@@ -607,7 +607,7 @@
                     }
                   ]
                 },
-                "teach": "A tilted wing bends the passing air downward. Push air one way and it pushes back the other way, so the wing is pushed up. That push is lift. The 'air on top must catch up' story is wrong.",
+                "teach": "A tilted wing bends the passing air downward. Push air one way and it pushes back the other way, so the wing is pushed up. That push is lift.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -652,9 +652,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No force on the wing.",
+                        "text": "Upward, since air over the top speeds up to catch up.",
                         "correct": false,
-                        "feedback": "Turning air makes a push back, and here it points down."
+                        "feedback": "The ‘air on top must catch up’ story is wrong. The push on the wing is opposite to the turned air, so here it points down."
                       }
                     ]
                   }
@@ -692,7 +692,7 @@
                     }
                   ]
                 },
-                "teach": "Faster air hits the wing more often and harder, so lift grows with speed times speed. Twice the speed gives four times the lift, at the same tilt. A plane must go fast before lift can carry its weight.",
+                "teach": "Faster air hits the wing more often and harder, so lift grows with speed times speed. Twice the speed gives four times the lift, at the same tilt.",
                 "visual": {
                   "kind": "scale",
                   "label": "Lift as speed grows",
@@ -717,7 +717,7 @@
                     "and its wings now make four times the lift."
                   ],
                   "spot": "then it reaches twice that speed,",
-                  "feedback": "Doubling the speed is the cause. Lift grows with speed squared, so it becomes four times bigger."
+                  "feedback": "Doubling the speed is the cause. Lift grows with speed times speed, so it becomes four times bigger. That is why a plane must go fast to lift its weight."
                 },
                 "guided": [
                   {
@@ -734,13 +734,13 @@
                         "id": "b",
                         "text": "Three times.",
                         "correct": false,
-                        "feedback": "Lift grows with speed squared, so triple speed gives nine times."
+                        "feedback": "Lift grows with speed times speed, so triple speed gives nine times."
                       },
                       {
                         "id": "c",
                         "text": "Six times.",
                         "correct": false,
-                        "feedback": "Square the speed change: three times three is nine, not six."
+                        "feedback": "Multiply the speed change by itself: three times three is nine, not six."
                       }
                     ]
                   }
@@ -1175,6 +1175,14 @@
                 "year": 2023,
                 "url": "https://vnav.mit.edu/labs_2023/lab3/exercises.html",
                 "asOf": "2026-10-22"
+              },
+              {
+                "id": "newton-unit",
+                "title": "Newton (unit): examples",
+                "publisher": "Wikipedia",
+                "year": 2026,
+                "url": "https://en.wikipedia.org/wiki/Newton_(unit)",
+                "asOf": "2026-10-23"
               }
             ],
             "quest": {
@@ -1240,10 +1248,11 @@
                 "claimId": "multirotor-turns-c4",
                 "sourceRefs": [
                   "zulu",
-                  "tug"
+                  "tug",
+                  "newton-unit"
                 ],
                 "hook": {
-                  "stem": "A drone that weighs 2 newtons hovers on four equal rotors. How hard does each rotor push up?",
+                  "stem": "One newton is about the weight of a small apple. A drone that weighs 2 newtons hovers on four equal rotors. How hard does each rotor push up?",
                   "options": [
                     {
                       "id": "a",
@@ -1265,7 +1274,7 @@
                     }
                   ]
                 },
-                "teach": "To hover, the four rotors together push up (thrust) as hard as the drone weighs, so each one carries about a quarter. Speed them all up equally and it climbs straight up.",
+                "teach": "To hover, the four rotors together push up (thrust) as hard as the drone weighs, so each carries about a quarter. Speed all four up equally and it climbs.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1303,9 +1312,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It spins slowly in place.",
+                        "text": "It stays put, since a hover needs little push.",
                         "correct": false,
-                        "feedback": "Spinning needs the two spinning pairs unbalanced. Equal slowing makes it sink."
+                        "feedback": "A hover needs a push equal to the weight. Less push than weight means it sinks."
                       }
                     ]
                   }
@@ -1431,7 +1440,7 @@
                     }
                   ]
                 },
-                "teach": "Each spinning rotor twists the drone's body the opposite way. Two spin each way, so the twists cancel. Speed up one pair and slow the other, and the drone turns on the spot.",
+                "teach": "Each rotor twists the body the opposite way. Two spin each way, so the twists cancel. Speed one pair, slow the other, and it turns on the spot.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1541,7 +1550,7 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "Kunal's phone battery stores about 15 watt-hours, and a game drains it at about 5 watts. Using the same energy-over-power rule as a drone battery, about how many hours can he play?",
+                "stem": "Ayaan's phone battery stores about 15 watt-hours, and a game drains it at about 5 watts. Using the same energy-over-power rule as a drone battery, about how many hours can he play?",
                 "options": [
                   {
                     "id": "a",
@@ -1692,7 +1701,7 @@
                 "sourceRefs": [
                   "battery"
                 ],
-                "stem": "Sana swaps her drone battery for one that stores twice the energy but weighs twice as much. Does it fly twice as long?",
+                "stem": "Rukhsana swaps her drone battery for one that stores twice the energy but weighs twice as much. Does it fly twice as long?",
                 "options": [
                   {
                     "id": "a",
@@ -1949,7 +1958,7 @@
                     }
                   ]
                 },
-                "teach": "A battery is a store of energy, and the motors spend it at a rate called power. So flight time is energy divided by power: spend it faster and the time shrinks.",
+                "teach": "A battery stores energy, and the motors spend it at a rate called power. So flight time is energy divided by power: spend it faster and the time shrinks.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1961,7 +1970,7 @@
                 "example": {
                   "ask": "Tap the rate of use.",
                   "parts": [
-                    "Meera's drone battery holds 60 watt-hours,",
+                    "Nandini's drone battery holds 60 watt-hours,",
                     "its motors draw 120 watts in a hover,",
                     "so it can hover for about half an hour."
                   ],
@@ -1987,9 +1996,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Halve the energy and double the power.",
+                        "text": "Double the power, so the motors push for longer.",
                         "correct": false,
-                        "feedback": "That cuts the time to a quarter. Energy goes up or power goes down to fly longer."
+                        "feedback": "Power is how fast energy is spent, so more power empties the same battery sooner."
                       }
                     ]
                   }
@@ -2026,7 +2035,7 @@
                     }
                   ]
                 },
-                "teach": "A heavier drone needs more push to hover, and in the hover model power rises faster than push. So twice the weight needs nearly three times the power, and the flight gets much shorter.",
+                "teach": "A heavier drone needs more push to hover, and in the hover model power rises faster than push. So twice the weight needs nearly three times the power.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2110,7 +2119,7 @@
                     }
                   ]
                 },
-                "teach": "Each extra bit of battery adds energy but also weight, and weight costs power. So in the simple model, flight time peaks when the battery is about two thirds of the mass, then falls.",
+                "teach": "Extra battery adds energy but also weight, and weight costs power. So in the simple model, flight time peaks when the battery is about two thirds of the mass.",
                 "visual": {
                   "kind": "scale",
                   "label": "Battery share of drone mass",
@@ -2708,7 +2717,7 @@
                     }
                   ]
                 },
-                "teach": "The drone's small computer has a gyroscope, which senses how fast it turns, and an accelerometer, which senses speed changes and helps give its tilt. Both sit on board, so they work indoors with no signal.",
+                "teach": "A gyroscope senses how fast the drone turns, and an accelerometer senses speed changes and helps give its tilt. Both sit on board, so they work with no signal.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2794,7 +2803,7 @@
                     }
                   ]
                 },
-                "teach": "GPS satellites send radio signals all the time. A receiver times how long each takes to arrive, which gives its distance to each satellite, so it finds where it is, to about 5 metres in open sky.",
+                "teach": "GPS satellites send radio signals all the time. A receiver times how long each takes to arrive, which gives its distance to each, so it finds where it is.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2823,13 +2832,13 @@
                         "id": "a",
                         "text": "It gets less accurate.",
                         "correct": true,
-                        "feedback": "Right. Blocked and bouncing signals make the position worse."
+                        "feedback": "Right. Blocked and bouncing signals make the position worse. Even in open sky, a phone fix is only good to about 5 metres."
                       },
                       {
                         "id": "b",
-                        "text": "It gets more accurate.",
+                        "text": "It stays exact, as GPS reads to the centimetre.",
                         "correct": false,
-                        "feedback": "Buildings block and bounce signals, so the fix gets worse."
+                        "feedback": "A phone GPS fix is good to about 5 metres in open sky, and buildings block and bounce signals, so it gets worse."
                       },
                       {
                         "id": "c",
@@ -2874,7 +2883,7 @@
                     }
                   ]
                 },
-                "teach": "Air pressure is the push of the air above you. Climb higher and there is less air above, so pressure drops. A barometer reads it to track height, but weather also shifts pressure a little, so the reading can drift.",
+                "teach": "Air pressure is the push of the air above you. Climb higher and there is less air above, so pressure drops. A barometer reads it to track height.",
                 "visual": {
                   "kind": "scale",
                   "label": "Air pressure and height",
@@ -2883,7 +2892,7 @@
                   "marks": [
                     {
                       "at": 30,
-                      "text": "Higher up: lower"
+                      "text": "Higher up: lower pressure"
                     },
                     {
                       "at": 90,
@@ -2920,9 +2929,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Far below the ground.",
+                        "text": "You cannot tell; pressure is the same at any height.",
                         "correct": false,
-                        "feedback": "Lower down, the pressure would read higher. The same reading means the same height."
+                        "feedback": "Pressure drops as you climb, so equal readings mean about the same height. Weather can shift it a little, so readings drift."
                       }
                     ]
                   }
@@ -3499,7 +3508,7 @@
                     }
                   ]
                 },
-                "teach": "Wings hold a plane up as air flows past them. Engines only push it forward against air drag, and at a steady speed the push equals the drag. So a glider, with no engine, still flies.",
+                "teach": "Wings hold a plane up as air flows past them. Engines only push it forward against drag, so a glider with no engine still flies.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3536,7 +3545,7 @@
                         "id": "a",
                         "text": "Keep making lift as it glides down.",
                         "correct": true,
-                        "feedback": "Right. While air flows past, the wings keep lifting, so it glides."
+                        "feedback": "Right. While air flows past, the wings keep lifting, so it glides. At a steady speed, engine push only has to equal drag."
                       },
                       {
                         "id": "b",
@@ -3585,7 +3594,7 @@
                     }
                   ]
                 },
-                "teach": "A bird has no engine, so its wings must do both jobs. By tilting each stroke it aims the push: forward and up to take off, backward to brake when it lands.",
+                "teach": "A bird has no engine, so its wings must do both jobs. By tilting each stroke it aims the push: forward and up to take off, backward to brake.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3632,9 +3641,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Feathers stop air flowing past still wings.",
+                        "text": "Flapping just keeps it up; it glides ahead on its own.",
                         "correct": false,
-                        "feedback": "Air flows past still feathers fine. The missing piece is forward push."
+                        "feedback": "A still wing gives no forward push. Tilted flaps push the bird ahead, since it has no engine."
                       }
                     ]
                   }
@@ -4258,7 +4267,7 @@
                     }
                   ]
                 },
-                "teach": "A fan's spinning blades push the room's own air along. They add no cold, because a fan only moves air that is already there. Fans that can reverse even push warm ceiling air down in winter.",
+                "teach": "A fan’s spinning blades push the room’s own air along. They add no cold, because a fan only moves air that is already there.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4275,7 +4284,7 @@
                     "so the breeze is as warm as the room."
                   ],
                   "spot": "its blades push the room's own air down,",
-                  "feedback": "The breeze is just the room's own air on the move, so it is no colder than the room."
+                  "feedback": "The breeze is just the room’s own air on the move, so it is no colder than the room. Fans that can reverse even push warm ceiling air down in winter."
                 },
                 "guided": [
                   {
@@ -4337,7 +4346,7 @@
                     }
                   ]
                 },
-                "teach": "As sweat dries off your skin, it carries heat away. A breeze makes sweat dry faster, so you feel cooler, though the air is no colder. In an empty room, a fan cools no one.",
+                "teach": "As sweat dries off your skin, it carries heat away. A breeze makes sweat dry faster, so you feel cooler, though the air is no colder.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4369,9 +4378,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Wet skin makes the fan spin faster.",
+                        "text": "The fan blows colder air onto wet skin.",
                         "correct": false,
-                        "feedback": "The fan spins the same. Wet skin just has more water to dry."
+                        "feedback": "It is the same room air. Drying water takes heat from your skin, which is why a fan in an empty room cools no one."
                       },
                       {
                         "id": "c",
@@ -4414,7 +4423,7 @@
                     }
                   ]
                 },
-                "teach": "Humid air already holds a lot of water, so sweat dries off slowly in it. On a sticky monsoon night, the same breeze takes less heat from your skin, so the fan helps less.",
+                "teach": "Humid air already holds a lot of water, so sweat dries slowly in it. On a sticky monsoon night, the same breeze takes less heat from your skin.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5055,7 +5064,7 @@
                     }
                   ]
                 },
-                "teach": "Your UPI ID works like a home address for your bank account, so people can find where to send money without your account number. The money itself stays in your bank.",
+                "teach": "Your UPI ID works like an address for your bank account, so people can send money without your account number. The money itself stays in your bank.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5093,9 +5102,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The amount you want to send her.",
+                        "text": "Bank details, since you pay into her ID’s wallet.",
                         "correct": false,
-                        "feedback": "You still type the amount. The ID replaces her account number and IFSC."
+                        "feedback": "The ID holds no money. It points to her bank account, so it stands in for her account number and IFSC."
                       }
                     ]
                   }
@@ -5133,7 +5142,7 @@
                     }
                   ]
                 },
-                "teach": "Your app only sends the request. NPCI's network carries it between banks, and your bank pays out while the other bank pays in. Since banks link through NPCI, any UPI app works, any bank, any hour.",
+                "teach": "Your app only sends the request. NPCI’s network carries it, your bank pays out and theirs pays in, so any UPI app works with any bank.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5213,7 +5222,7 @@
                     }
                   ]
                 },
-                "teach": "To pay, you approve on your own phone, usually with your UPI PIN, so a thief would need both. Some apps take a fingerprint or face for payments up to ₹5,000. Getting money needs no approval.",
+                "teach": "To pay, you approve on your own phone, usually with your UPI PIN, so a thief would need both. Getting money needs no approval at all.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5260,9 +5269,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "So your PIN can be shorter and easier.",
+                        "text": "So you can also approve money coming in.",
                         "correct": false,
-                        "feedback": "The aim is safety. Two checks make misuse much harder."
+                        "feedback": "Getting money needs no approval. The two checks guard money going out. Some apps take a fingerprint for payments up to ₹5,000."
                       }
                     ]
                   }
@@ -5752,7 +5761,7 @@
                     }
                   ]
                 },
-                "teach": "The lens aims light onto a chip covered in tiny light sensors. Each one makes an electric signal that grows with the light, so brighter parts of the scene give bigger signals.",
+                "teach": "The lens aims light onto a chip of tiny light sensors. Each makes a signal that grows with the light, so brighter parts of the scene give bigger signals.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5785,9 +5794,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "About the same, since spots match.",
+                        "text": "No change, since the lens records the picture.",
                         "correct": false,
-                        "feedback": "The spots are alike, but more light still gives a bigger signal."
+                        "feedback": "The lens only aims light. Each spot turns its light into a signal, so more light gives a bigger one."
                       },
                       {
                         "id": "c",
@@ -5830,7 +5839,7 @@
                     }
                   ]
                 },
-                "teach": "Each spot measures only brightness, so colour comes from a grid of tiny filters on top. In every 2x2 patch, two are green, one red and one blue. Software then fills in a full colour for each pixel.",
+                "teach": "Each spot measures only brightness, so colour comes from tiny filters on top. In every 2x2 patch, two are green, one red and one blue. Software fills in the rest.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5877,9 +5886,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Very little light of any colour.",
+                        "text": "All colours, since each spot sees every colour.",
                         "correct": false,
-                        "feedback": "A bright reading means plenty of light got through, and here it was red."
+                        "feedback": "A spot reads light through one filter. Under a red filter, a bright reading means lots of red light."
                       }
                     ]
                   }
@@ -5916,7 +5925,7 @@
                     }
                   ]
                 },
-                "teach": "In dim light each spot gets little light, so its signal is weak. The phone turns the signal up (ISO), but that turns up the random speckle too, so the photo looks grainy.",
+                "teach": "In dim light each spot gets little light, so its signal is weak. The phone turns it up (ISO), but that boosts the speckle too, so the photo looks grainy.",
                 "visual": {
                   "kind": "scale",
                   "label": "ISO boost in dim light",
@@ -6500,7 +6509,7 @@
                     }
                   ]
                 },
-                "teach": "White sunlight is a blend of colours, from violet to red. Each colour is a wave with its own length, so a prism can spread them apart: red waves are long, violet and blue are short.",
+                "teach": "White sunlight blends many colours, each a wave of its own length, so a prism can spread them apart. Red waves are long; violet and blue, short.",
                 "visual": {
                   "kind": "scale",
                   "label": "Wavelength of light",
@@ -6590,7 +6599,7 @@
                     }
                   ]
                 },
-                "teach": "Gas molecules in the air bounce short blue waves in all directions, so blue reaches you from all over the sky. Red waves mostly pass straight through. Big cloud droplets scatter every colour about the same, so clouds look white.",
+                "teach": "Gas molecules in the air bounce short blue waves in all directions, so blue reaches you from all over the sky. Red waves mostly pass straight through.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -6677,7 +6686,7 @@
                     }
                   ]
                 },
-                "teach": "When the Sun is low, its light crosses far more air to reach you. Along the way, most of the blue is scattered out, so mostly reds and oranges are left.",
+                "teach": "When the Sun is low, its light crosses far more air to reach you. On the way, most blue is scattered out, so mostly reds and oranges are left.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7295,7 +7304,7 @@
                     }
                   ]
                 },
-                "teach": "Air presses down on water, and the harder it presses, the hotter water must get to boil. So on hills water boils below 100°C. Once boiling, more flame only boils it off faster; it gets no hotter.",
+                "teach": "Air presses down on water, and the harder it presses, the hotter water must get to boil. So on hills, where air presses less, water boils below 100°C.",
                 "visual": {
                   "kind": "scale",
                   "label": "Where water boils",
@@ -7339,9 +7348,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "It rises past 120°C.",
+                        "text": "It climbs a few degrees with the bigger flame.",
                         "correct": false,
-                        "feedback": "An open pot cannot boil that hot. The temperature stays the same."
+                        "feedback": "While water boils, its temperature stays put. More flame only boils it off faster."
                       },
                       {
                         "id": "c",
@@ -7385,7 +7394,7 @@
                     }
                   ]
                 },
-                "teach": "A sealed cooker traps steam, so the pressure inside builds up. At about double the outside pressure, water boils near 121°C instead of 100°C. Hotter water cooks food faster.",
+                "teach": "A sealed cooker traps steam, so the pressure inside builds. At about double the outside pressure, water boils near 121°C, and hotter water cooks faster.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7472,7 +7481,7 @@
                     }
                   ]
                 },
-                "teach": "The vent weight lifts at high pressure and lets steam out, which is the whistle, so pressure stays steady. Keep the vent clear: fill rice or dried beans at most half full, since froth can block it.",
+                "teach": "The vent weight lifts at high pressure and lets steam out, which is the whistle, so the pressure stays steady. Fill swelling foods to half, since froth can block it.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -7510,9 +7519,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Tap and shake the cooker hard to free the lid.",
+                        "text": "Open it as soon as the whistling stops.",
                         "correct": false,
-                        "feedback": "Shaking a hot cooker is risky. Wait for the pressure to drop."
+                        "feedback": "A quiet cooker can still hold pressure. Wait until the pressure has fully dropped before opening the lid."
                       }
                     ]
                   }

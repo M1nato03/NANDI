@@ -220,8 +220,8 @@
                 ],
                 "answer": {
                   "value": 1000,
-                  "min": 990,
-                  "max": 1010,
+                  "min": 970,
+                  "max": 1030,
                   "unit": "rupees"
                 }
               },
@@ -514,7 +514,7 @@
                     }
                   ]
                 },
-                "teach": "Inflation is how much prices rose in a year. India tracks a big basket of everyday goods, because one item, like onions, can jump while others stay flat. Each month is compared with the same month last year.",
+                "teach": "Inflation is how much prices rose in a year. India tracks a big basket of everyday goods, because one item, like onions, can jump while others stay flat.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -542,7 +542,7 @@
                         "id": "a",
                         "text": "It goes up a little.",
                         "correct": true,
-                        "feedback": "Yes. One item doubling moves the whole basket only a little when the rest stays flat."
+                        "feedback": "Yes. One item doubling moves the whole basket only a little when the rest stays flat. Each month is compared with the same month last year."
                       },
                       {
                         "id": "b",
@@ -552,9 +552,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It falls.",
+                        "text": "It stays the same, since one item does not count.",
                         "correct": false,
-                        "feedback": "A price went up and the others held still, so the basket costs a bit more, not less."
+                        "feedback": "Onions are in the basket, so a big jump does move inflation, just a little."
                       }
                     ]
                   }
@@ -592,7 +592,7 @@
                     }
                   ]
                 },
-                "teach": "When prices rise, each rupee buys less, so the same money covers less shopping. If your income grows slower than prices, you can buy less than last year, even with a raise.",
+                "teach": "When prices rise, each rupee buys less. So if your income grows slower than prices, you can buy less than last year, even with a raise.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -678,7 +678,7 @@
                     }
                   ]
                 },
-                "teach": "A little inflation is normal. If prices fell every year, people would wait to buy and businesses would slow. So India's central bank aims for about 4%, inside a band of 2% to 6%.",
+                "teach": "A little inflation is normal, because if prices kept falling, people would wait to buy and business would slow. India aims for about 4%, in a 2% to 6% band.",
                 "visual": {
                   "kind": "scale",
                   "label": "India's inflation target",
@@ -728,9 +728,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Below the lower limit.",
+                        "text": "Inside the band, near its top.",
                         "correct": false,
-                        "feedback": "The lower limit is 2%. A rate of 7% is well above the whole band."
+                        "feedback": "The band stops at 6%. At 7%, inflation is above the upper limit."
                       }
                     ]
                   }
@@ -956,7 +956,7 @@
                   "compound",
                   "investing"
                 ],
-                "stem": "Kunal keeps ₹8,000 in a locker at home for 25 years, where it earns nothing. What does all that time add to it?",
+                "stem": "Dinesh keeps ₹8,000 in a locker at home for 25 years, where it earns nothing. What does all that time add to it?",
                 "options": [
                   {
                     "id": "a",
@@ -1223,11 +1223,11 @@
                   "compound"
                 ],
                 "hook": {
-                  "stem": "Sana and Om each save ₹1,000 at 10%. Sana leaves her interest in; Om spends his. Who has more after two years?",
+                  "stem": "Gurleen and Om each save ₹1,000 at 10%. Gurleen leaves her interest in; Om spends his. Who has more after two years?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "Sana, with ₹1,210.",
+                      "text": "Gurleen, with ₹1,210.",
                       "correct": true,
                       "feedback": "Right. Her ₹100 gain stayed in and earned ₹10 more in year two."
                     },
@@ -1235,13 +1235,13 @@
                       "id": "b",
                       "text": "Both have ₹1,200.",
                       "correct": false,
-                      "feedback": "Om has ₹1,000 plus ₹200 spent. Sana's kept gain earned extra, so she has ₹1,210."
+                      "feedback": "Om has ₹1,000 plus ₹200 spent. Gurleen's kept gain earned extra, so she has ₹1,210."
                     },
                     {
                       "id": "c",
                       "text": "Om, since he took ₹200 out.",
                       "correct": false,
-                      "feedback": "Spending the interest means it cannot earn more. Sana ends with ₹1,210 saved."
+                      "feedback": "Spending the interest means it cannot earn more. Gurleen ends with ₹1,210 saved."
                     }
                   ]
                 },
@@ -1257,7 +1257,7 @@
                 "example": {
                   "ask": "Tap the balance on which year two's interest is worked out.",
                   "parts": [
-                    "Meera saved ₹1,000, and it earned ₹100 in year one.",
+                    "Lakshmi saved ₹1,000, and it earned ₹100 in year one.",
                     "Year two's interest was worked out on ₹1,100,",
                     "so her balance grew to ₹1,210."
                   ],
@@ -1323,7 +1323,7 @@
                     }
                   ]
                 },
-                "teach": "Growth on growth is slow at first and fast later, because each year's gain is worked out on a bigger pot. Saved at 5%, ₹365 is about ₹466 after five years, but about ₹1,578 after thirty.",
+                "teach": "Growth on growth starts slow and speeds up, because each year’s gain is worked on a bigger pot. Saved at 5%, ₹365 becomes about ₹1,578 in thirty years.",
                 "visual": {
                   "kind": "scale",
                   "label": "₹365 saved at 5% a year",
@@ -1414,7 +1414,7 @@
                     }
                   ]
                 },
-                "teach": "A SIP (systematic investment plan) puts in the same sum at set times, like ₹500 each month. It gives money years to compound, but it cannot set the growth, because the fund's investments rise and fall in price.",
+                "teach": "A SIP (systematic investment plan) puts in the same sum at set times, like ₹500 each month. It cannot set the growth, because the fund’s investments rise and fall.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1435,12 +1435,12 @@
                 "example": {
                   "ask": "Tap the part a SIP cannot promise.",
                   "parts": [
-                    "Ravi sets up a ₹1,000 SIP each month,",
+                    "Anil sets up a ₹1,000 SIP each month,",
                     "the money goes in on the 5th,",
                     "and the fund's value moves with the market."
                   ],
                   "spot": "and the fund's value moves with the market.",
-                  "feedback": "Ravi controls the sum and the date. The market decides how the fund's value moves."
+                  "feedback": "Anil controls the sum and the date. The market decides how the fund's value moves."
                 },
                 "guided": [
                   {
@@ -1950,7 +1950,7 @@
                     }
                   ]
                 },
-                "teach": "To guess how long money takes to double, divide 72 by the yearly rate. At 8%, 72 ÷ 8 is 9, so about nine years. It is a quick guess, so it is close but not exact.",
+                "teach": "To guess when money doubles, divide 72 by the yearly rate. At 8%, 72 ÷ 8 is 9, so about nine years. It is a quick guess, not exact.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2028,7 +2028,7 @@
                     }
                   ]
                 },
-                "teach": "The rule works on debt too, because unpaid interest is added to what you owe and then earns interest itself. Some Indian cards charge up to 45% a year, and 72 ÷ 45 is under two years.",
+                "teach": "The rule works on debt too, because unpaid interest is added to what you owe and earns interest. At 36% a year, card debt doubles in about two years.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2065,13 +2065,13 @@
                         "id": "a",
                         "text": "The 18% debt.",
                         "correct": true,
-                        "feedback": "Right. It doubles in about 4 years; the savings take about 12."
+                        "feedback": "Right. It doubles in about 4 years; the savings take about 12. Some Indian cards charge up to 45% a year, which is faster still."
                       },
                       {
                         "id": "b",
-                        "text": "The 6% savings.",
+                        "text": "The savings; an unpaid debt does not grow by itself.",
                         "correct": false,
-                        "feedback": "Savings at 6% take about 12 years to double. The debt takes about 4."
+                        "feedback": "Unpaid interest is added to the debt and earns interest too, so at 18% it doubles in about 4 years."
                       },
                       {
                         "id": "c",
@@ -2637,7 +2637,7 @@
                     }
                   ]
                 },
-                "teach": "Risk is the chance that the result is not what you hoped. Prices of shares and funds move, so you could get back less than you put in, or even nothing.",
+                "teach": "Risk is the chance that the result is not what you hoped. Share and fund prices move, so you could get back less than you put in, or even nothing.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2675,9 +2675,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "A share a friend says will double.",
+                        "text": "Shares in India’s biggest, best-known firm.",
                         "correct": false,
-                        "feedback": "A tip is not a promise. That share can still fall."
+                        "feedback": "Even large, famous firms’ shares can drop. Cash savings are the safest of the main choices."
                       }
                     ]
                   }
@@ -2715,7 +2715,7 @@
                     }
                   ]
                 },
-                "teach": "A bond is a loan you make to a company. Shares swing most and have earned most; cash is safest and earns least; bonds sit between. People want more reward for bigger swings, so riskier things tend to pay more.",
+                "teach": "Shares swing most and earn most over time; cash is safest and earns least; bonds sit between. Bigger swings need a bigger reward, so riskier things tend to pay more.",
                 "visual": {
                   "kind": "scale",
                   "label": "Risk and return of three kinds",
@@ -2755,13 +2755,13 @@
                         "id": "a",
                         "text": "Some return.",
                         "correct": true,
-                        "feedback": "Right. Less swing usually comes with more modest returns."
+                        "feedback": "Right. A bond is a loan you make to a company. Less swing usually comes with more modest returns."
                       },
                       {
                         "id": "b",
-                        "text": "Their safety.",
+                        "text": "Some safety; they are riskier than shares.",
                         "correct": false,
-                        "feedback": "Bonds are usually safer than shares, not less safe."
+                        "feedback": "Bonds usually swing less than shares, so they are safer, not riskier."
                       },
                       {
                         "id": "c",
@@ -2804,7 +2804,7 @@
                     }
                   ]
                 },
-                "teach": "If you need money soon, a drop could hit just when you need it, so short-term money suits low-risk savings. A far-off goal gives time to wait out the dips.",
+                "teach": "Money needed soon has no time to recover from a drop, so it suits low-risk savings. A far-off goal gives time to wait out the dips.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3409,7 +3409,7 @@
                       "id": "a",
                       "text": "Not really; one bad year for banks hits all twelve.",
                       "correct": true,
-                      "feedback": "Right. Firms in one industry rise and fall together, so twelve banks act almost like one bet."
+                      "feedback": "Right. Firms in one industry rise and fall together, so twelve banks act almost like one holding."
                     },
                     {
                       "id": "b",
@@ -3425,7 +3425,7 @@
                     }
                   ]
                 },
-                "teach": "Firms in one industry rise and fall together, so a cement slump hits every cement firm. A real spread needs a dozen or more firms in different industries, though each extra holding can add fees.",
+                "teach": "Firms in one industry rise and fall together, so a cement slump hits every cement firm. A real spread needs a dozen or more firms in different industries.",
                 "visual": {
                   "kind": "scale",
                   "label": "Single shares held",
@@ -3434,11 +3434,11 @@
                   "marks": [
                     {
                       "at": 25,
-                      "text": "5: too few"
+                      "text": "5 shares: too few"
                     },
                     {
                       "at": 60,
-                      "text": "12: a dozen or more"
+                      "text": "12 shares: a dozen or more"
                     }
                   ]
                 },
@@ -3454,26 +3454,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Sana holds five tech shares. Riya holds twelve shares in banks, food, power and medicine. Whose mix is closer to a real spread?",
+                    "stem": "Sana holds twelve tech shares. Riya holds twelve shares in banks, food, power and medicine. Whose mix is closer to a real spread?",
                     "hint": "Look at both how many firms and how different they are.",
                     "options": [
                       {
                         "id": "a",
                         "text": "Riya's.",
                         "correct": true,
-                        "feedback": "Yes. She has a dozen firms spread across several industries, which is a real spread."
+                        "feedback": "Yes. She has a dozen firms across several industries, which is a real spread. Each extra holding can add fees, though."
                       },
                       {
                         "id": "b",
                         "text": "Sana's, since tech grows fastest.",
                         "correct": false,
-                        "feedback": "Fast growth is not a spread. Five firms in one industry can all fall together."
+                        "feedback": "Fast growth is not a spread. Twelve firms in one industry can all fall together."
                       },
                       {
                         "id": "c",
-                        "text": "Both are the same, since both hold shares.",
+                        "text": "Both, since each holds twelve firms.",
                         "correct": false,
-                        "feedback": "Holding shares is not enough. How many firms and how many industries matter."
+                        "feedback": "Twelve names in one industry still share one fate, so the count alone is not enough."
                       }
                     ]
                   }
@@ -3511,7 +3511,7 @@
                     }
                   ]
                 },
-                "teach": "A spread guards against one firm's bad luck, because the others carry on. It cannot stop a shock that hits nearly all firms at once, like a big market fall.",
+                "teach": "A spread guards against one firm’s bad luck, because the others carry on. It cannot stop a shock that hits nearly all firms, like a market crash.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4069,7 +4069,7 @@
                     }
                   ]
                 },
-                "teach": "A share is a small piece of a company, so owning more shares means a bigger piece. If the company makes new shares for others, your same shares become a smaller slice.",
+                "teach": "A share is a small piece of a company, so more shares mean a bigger piece. If the company makes new shares for others, yours become a smaller slice.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4102,9 +4102,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Asha, since she bought first.",
+                        "text": "You cannot tell without the share price.",
                         "correct": false,
-                        "feedback": "Buying first does not matter. The number of shares decides the size of the piece."
+                        "feedback": "The price does not set the slice. Shares held out of all 200 do: 50 is a quarter, 20 a tenth."
                       },
                       {
                         "id": "c",
@@ -4147,7 +4147,7 @@
                     }
                   ]
                 },
-                "teach": "Owning shares makes you a part owner, so you get a say: you can vote on big decisions at the company's general meeting. Buying its products gives you no vote.",
+                "teach": "Owning shares makes you a part owner, so you can vote on big decisions at the company’s general meeting. Buying its products gives you no vote.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4194,9 +4194,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Both of them.",
+                        "text": "Neither; one share is too few to vote.",
                         "correct": false,
-                        "feedback": "Only owners vote. A customer buys products but owns no part of the firm."
+                        "feedback": "Even one share makes her a part owner, and owners can vote at the general meeting."
                       }
                     ]
                   }
@@ -4233,7 +4233,7 @@
                     }
                   ]
                 },
-                "teach": "A dividend is a share of profit paid to owners. The company decides if, when and how much to pay, so it is never promised. Owners can also gain if the company grows.",
+                "teach": "A dividend is a share of profit paid to owners. The company decides if, when and how much to pay, so it is never promised.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4262,7 +4262,7 @@
                         "id": "a",
                         "text": "No set payout; it may pay less, or nothing.",
                         "correct": true,
-                        "feedback": "Right. The company decides each year, so last year's ₹3 sets no promise."
+                        "feedback": "Right. The company decides each year, so last year’s ₹3 sets no promise. Owners can also gain if the company grows."
                       },
                       {
                         "id": "b",
@@ -4887,7 +4887,7 @@
                     }
                   ]
                 },
-                "teach": "Aim for at least three months of your own living costs, because income can dip without warning. With less steady income, aim for six months or more. If that feels far off, start small and add a little each month.",
+                "teach": "Aim for at least three months of living costs, because income can dip without warning, and six or more if income is shaky. If that feels far off, start small.",
                 "visual": {
                   "kind": "scale",
                   "label": "Months of living costs",
@@ -4896,11 +4896,11 @@
                   "marks": [
                     {
                       "at": 25,
-                      "text": "3: at least this"
+                      "text": "3 months: at least this"
                     },
                     {
                       "at": 50,
-                      "text": "6+: shaky income or business"
+                      "text": "6+ months: shaky income or business"
                     }
                   ]
                 },
@@ -4933,9 +4933,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Skip it until you earn more.",
+                        "text": "Save one week of costs, then call it done.",
                         "correct": false,
-                        "feedback": "A small fund is far better than none. Start with a little and keep adding."
+                        "feedback": "A small start is good, but the aim is at least three months of costs, so keep adding."
                       }
                     ]
                   }
@@ -4972,7 +4972,7 @@
                     }
                   ]
                 },
-                "teach": "Keep the fund in a savings account you can reach fast, apart from other savings, so it is ready and not spent on everyday things. Gold or land needs a buyer first, which is slow.",
+                "teach": "Keep the fund in a separate savings account you can reach fast, so it stays whole and ready. Gold or land first needs a buyer, which is slow.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5472,7 +5472,7 @@
                     }
                   ]
                 },
-                "teach": "EMI means equated monthly instalment: on a fixed-rate loan, the same payment each month. Each EMI first pays that month's interest, so only the rest cuts the principal, the amount you borrowed.",
+                "teach": "EMI means equated monthly instalment: the same payment each month on a fixed-rate loan. Each EMI first pays that month’s interest, so only the rest cuts the loan.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5493,26 +5493,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "What does the word 'equated' in EMI tell you?",
-                    "hint": "Look inside the word itself.",
+                    "stem": "Priya pays her first ₹8,000 EMI on a fixed-rate loan, but her loan does not drop by ₹8,000. Why?",
+                    "hint": "What does each EMI pay before anything else?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Every payment is the same size.",
+                        "text": "Some of it went to that month’s interest.",
                         "correct": true,
-                        "feedback": "Right. On a fixed-rate loan the EMI stays the same each month until the loan is paid."
+                        "feedback": "Right. Each EMI pays the month’s interest first, and only the rest cuts the loan."
                       },
                       {
                         "id": "b",
-                        "text": "The loan ends early.",
+                        "text": "The first EMI is a booking fee.",
                         "correct": false,
-                        "feedback": "Equated is about equal payments, not an early end."
+                        "feedback": "An EMI is not a fee. It pays the month’s interest first, then cuts the loan."
                       },
                       {
                         "id": "c",
-                        "text": "Extra interest is added.",
+                        "text": "The loan drops later, all at once.",
                         "correct": false,
-                        "feedback": "The word says nothing about extra interest. It means equal payments."
+                        "feedback": "The loan drops a little with every EMI, by the part left after interest."
                       }
                     ]
                   }
@@ -5579,7 +5579,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "You owe ₹50,000 at 1% interest a month. What is this month's interest?",
+                    "stem": "You borrowed ₹1,00,000 and now owe ₹50,000, at 1% interest a month. What is this month’s interest?",
                     "hint": "Find 1% of what you still owe.",
                     "options": [
                       {
@@ -5596,9 +5596,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "₹50.",
+                        "text": "₹1,000, on the first amount.",
                         "correct": false,
-                        "feedback": "That is 0.1%. One percent of ₹50,000 is ₹500."
+                        "feedback": "Interest is worked out on what you still owe, ₹50,000, not on the first amount. That gives ₹500."
                       }
                     ]
                   }
@@ -5676,9 +5676,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "The longest term.",
+                        "text": "The longest term, since its EMI is smallest.",
                         "correct": false,
-                        "feedback": "The longest term has the smallest EMIs but the most interest overall."
+                        "feedback": "The longest term has the smallest EMIs but runs interest for longest, so it costs the most overall."
                       },
                       {
                         "id": "c",
@@ -6219,7 +6219,7 @@
                     }
                   ]
                 },
-                "teach": "An index is a list of companies, like the Nifty 50. An index fund holds the shares on that list, in the same proportions, so no one picks. An active fund pays a manager to pick shares instead.",
+                "teach": "An index is a list of companies, like the Nifty 50. An index fund holds the shares on that list, in the same mix, so no one picks.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -6257,9 +6257,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Sells its other shares.",
+                        "text": "Waits for its manager to judge the company.",
                         "correct": false,
-                        "feedback": "One new member does not change the rest. The fund just adds it."
+                        "feedback": "No one picks in an index fund, so the fund adds the new member. An active fund is the kind that pays a manager to pick."
                       }
                     ]
                   }
@@ -6298,7 +6298,7 @@
                     }
                   ]
                 },
-                "teach": "Index funds just follow a list, so they trade little and their yearly fee, the expense ratio, is usually lower. Over ten years, most active large-cap funds in India did worse than their index.",
+                "teach": "Index funds just follow a list, so they trade little. Their yearly fee, the expense ratio, is usually lower than an active fund’s.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -6337,13 +6337,13 @@
                         "id": "a",
                         "text": "Fund Y.",
                         "correct": true,
-                        "feedback": "Yes. Its lower fee takes less out, so more of the index's return stays with you."
+                        "feedback": "Yes. Its lower fee takes less out. Over ten years, most active large-cap funds in India did worse than their index."
                       },
                       {
                         "id": "b",
-                        "text": "Fund X.",
+                        "text": "Fund X, since a higher fee means better care.",
                         "correct": false,
-                        "feedback": "Fund X takes 1% a year, five times more than Y, so it keeps less."
+                        "feedback": "Both just follow the same list, so a higher fee buys nothing extra. X keeps less."
                       },
                       {
                         "id": "c",
@@ -6386,7 +6386,7 @@
                     }
                   ]
                 },
-                "teach": "An index fund rises and falls with its index, because it holds the same shares. Fees and running costs keep it a little behind; that small gap is called tracking error.",
+                "teach": "An index fund rises and falls with its index, because it holds the same shares. Fees and running costs keep it a little behind, a gap called tracking error.",
                 "visual": {
                   "kind": "scale",
                   "label": "Example: index up 10% in a year",
@@ -7002,7 +7002,7 @@
                     }
                   ]
                 },
-                "teach": "Getting money on UPI needs no PIN and no QR scan, because your PIN only ever approves money going out. So any message asking for it to get paid is a trick.",
+                "teach": "Getting money on UPI needs no PIN and no QR scan, because your PIN only approves money going out. So a request for it to get paid is a trick.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7088,7 +7088,7 @@
                     }
                   ]
                 },
-                "teach": "Your UPI PIN or OTP is the key that approves a payment, so whoever has it can move your money. Never share either, even with a caller claiming to be bank staff, and never install an app a caller names.",
+                "teach": "Your UPI PIN or OTP approves a payment, so whoever has it can move your money. Never share either, even with a caller claiming to be bank staff.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7176,7 +7176,7 @@
                     }
                   ]
                 },
-                "teach": "If tricked, act fast, since speed can stop more money leaving. Tell your bank and block UPI, then call 1930 or use cybercrime.gov.in. Scammers do this for a living, so there is no shame in it.",
+                "teach": "If tricked, act fast, since speed can stop more money leaving. Tell your bank and block UPI, then call 1930 or use cybercrime.gov.in.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -7208,9 +7208,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Wait until it happens again.",
+                        "text": "Report it just if a big sum was taken.",
                         "correct": false,
-                        "feedback": "Waiting helps no one. A report now is better than a second loss later."
+                        "feedback": "Any fraud is worth reporting, since reports help stop scammers. They do this for a living, so there is no shame in it."
                       },
                       {
                         "id": "c",

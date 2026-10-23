@@ -485,7 +485,7 @@
                     }
                   ]
                 },
-                "teach": "Protein repairs the body, so we need it every day. Milk, eggs, fish, meat and pulses like dal are rich in it. Nuts and seeds have some too, but they are also rich in fat.",
+                "teach": "Protein repairs the body, so we need it every day. Milk, eggs, fish, meat and pulses like dal are rich in it. Nuts and seeds have some too.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -506,7 +506,7 @@
                 "example": {
                   "ask": "Tap the protein food on her plate.",
                   "parts": [
-                    "Meera's lunch is plain rice",
+                    "Shalini's lunch is plain rice",
                     "with a katori of rajma",
                     "and a little lemon pickle."
                   ],
@@ -528,13 +528,13 @@
                         "id": "b",
                         "text": "A spoon of ghee.",
                         "correct": false,
-                        "feedback": "Ghee is a fat, not a protein food. A pulse would add protein."
+                        "feedback": "Ghee is a fat, not a protein food. Nuts and seeds carry some protein but are also rich in fat. A pulse adds protein."
                       },
                       {
                         "id": "c",
-                        "text": "A glass of cola.",
+                        "text": "No plant add-on; real protein comes from meat.",
                         "correct": false,
-                        "feedback": "Cola is a sweet drink, not a protein food. A pulse would help more."
+                        "feedback": "Pulses like chana are rich plant sources of protein, so he does not need meat to add some."
                       }
                     ]
                   }
@@ -571,7 +571,7 @@
                     }
                   ]
                 },
-                "teach": "Protein is made of building blocks, and nine must come from food. Milk, eggs and meat have all nine. Rice and dal each lack one the other has, so eaten together they fill both gaps.",
+                "teach": "Protein is built from blocks, and nine must come from food. Rice and dal each lack one block the other has, so eaten together they fill both gaps.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -601,26 +601,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Which of these dishes pairs a cereal with a pulse?",
+                    "stem": "Aakash wants a meat-free lunch that covers all nine building blocks. Which plate fits best?",
                     "hint": "Look for a grain and a pulse in one dish.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Khichdi of rice and moong dal.",
+                        "text": "Rice with moong dal.",
                         "correct": true,
-                        "feedback": "Yes. Rice is a cereal and moong dal is a pulse, so the dish fills both gaps."
+                        "feedback": "Yes. Rice and dal each cover the block the other lacks. Milk, eggs and meat carry all nine on their own."
                       },
                       {
                         "id": "b",
-                        "text": "Roti with a potato sabzi on the side.",
+                        "text": "Roti with potato sabzi.",
                         "correct": false,
-                        "feedback": "Roti is a cereal, but potato is not a pulse. A dal would complete the pair."
+                        "feedback": "Roti is a cereal, but potato is not a pulse, so the gap in the roti stays."
                       },
                       {
                         "id": "c",
-                        "text": "Bread with jam.",
+                        "text": "A big bowl of dal on its own.",
                         "correct": false,
-                        "feedback": "Bread is a cereal, but jam is fruit and sugar. There is no pulse in this pair."
+                        "feedback": "Dal is short of a block that cereals have, so it works best with a grain beside it."
                       }
                     ]
                   }
@@ -657,7 +657,7 @@
                     }
                   ]
                 },
-                "teach": "Healthy adults need about 0.83 g of protein per kg of body weight a day, so a 65 kg adult needs about 54 g. Teens, pregnant women and people who are ill need more.",
+                "teach": "Healthy adults need about 0.83 g of protein per kg a day, so a 65 kg adult needs about 54 g. Teens and pregnant women need more.",
                 "visual": {
                   "kind": "scale",
                   "label": "Daily protein for a 65 kg adult",
@@ -686,14 +686,14 @@
                 },
                 "guided": [
                   {
-                    "stem": "Ankit weighs 80 kg and is healthy. About what is his daily protein need?",
+                    "stem": "Ankit weighs 80 kg, is healthy and plays football daily. About what is his daily protein need?",
                     "hint": "Multiply his kilos by the per-kg figure.",
                     "options": [
                       {
                         "id": "a",
                         "text": "About 66 g.",
                         "correct": true,
-                        "feedback": "Yes. 80 times 0.83 is about 66 g of protein a day."
+                        "feedback": "Yes. 80 times 0.83 is about 66 g a day. People who are ill, teens and pregnant women need more."
                       },
                       {
                         "id": "b",
@@ -703,9 +703,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About 830 g.",
+                        "text": "About 100 g, since active people need extra.",
                         "correct": false,
-                        "feedback": "The decimal slipped. 80 times 0.83 is about 66, not 830."
+                        "feedback": "Healthy adults get the same 0.83 g per kg however much they move, so about 66 g."
                       }
                     ]
                   }
@@ -1263,7 +1263,7 @@
                     }
                   ]
                 },
-                "teach": "Free sugars are sugars added by a cook, a factory or you, plus honey, syrup and fruit juice. Sugar inside whole fruit, vegetables and plain milk is left out, since no harm from it has been found.",
+                "teach": "Free sugars are added sugars plus honey, syrup and fruit juice. Sugar inside whole fruit and plain milk is left out, since no harm from it has been found.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1352,7 +1352,7 @@
                     }
                   ]
                 },
-                "teach": "Free sugars should stay under a tenth of the day's energy, because more is linked to tooth decay and weight gain. On a 2,000 kcal day, that is about 50 g, or 12 teaspoons. Less is even better.",
+                "teach": "Free sugars should stay under a tenth of a day’s energy, because more is linked to tooth decay and weight gain. That is about 12 teaspoons, or 50 g.",
                 "visual": {
                   "kind": "scale",
                   "label": "Free sugar on a 2,000 kcal day",
@@ -1381,26 +1381,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Why is there a limit on free sugars at all?",
-                    "hint": "Think of a visit to the dentist.",
+                    "stem": "Pallavi has about 35 g of free sugars on a usual day. Which fits best?",
+                    "hint": "Compare her total with the 50 g mark.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "It is linked to tooth decay.",
+                        "text": "She is under the limit, and less may be even better.",
                         "correct": true,
-                        "feedback": "Yes. More free sugar is linked to tooth decay and to weight gain."
+                        "feedback": "Right. 35 g is under the 50 g ceiling, and going lower, near 5% of energy, may bring more benefit."
                       },
                       {
                         "id": "b",
-                        "text": "Sugar gives the body no energy.",
+                        "text": "She should add 10 g to reach the 50 g target.",
                         "correct": false,
-                        "feedback": "Sugar does give energy. The limit comes from its links to tooth decay and weight."
+                        "feedback": "The 50 g is a ceiling, not a target. Less free sugar may bring more benefit."
                       },
                       {
                         "id": "c",
-                        "text": "Sugar stops the body using protein.",
+                        "text": "She is over the limit.",
                         "correct": false,
-                        "feedback": "That is not the reason. The limit comes from tooth decay and weight gain."
+                        "feedback": "35 g is below the 50 g mark, about a tenth of a usual day’s energy."
                       }
                     ]
                   }
@@ -1437,7 +1437,7 @@
                     }
                   ]
                 },
-                "teach": "Much free sugar hides in drinks and sauces, so skipping sweets is not enough. One can of sweet soda can hold up to 40 g, and a spoon of ketchup about 4 g.",
+                "teach": "Much free sugar hides in drinks and sauces, so skipping sweets is not enough. A can of soda can hold up to 40 g; a spoon of ketchup, 4 g.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1467,26 +1467,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "One can holds up to 40 g of free sugar. What share of a 50 g limit is that?",
-                    "hint": "Divide the can by the limit.",
+                    "stem": "Joseph skips sweets but has one can of soda a day. How much of a 50 g daily limit can that can use?",
+                    "hint": "Recall what one can may hold.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "About 80%.",
+                        "text": "Up to about 80%.",
                         "correct": true,
-                        "feedback": "Yes. 40 divided by 50 is 0.8, so one can uses about 80% of the limit."
+                        "feedback": "Yes. One can can hold up to 40 g, and 40 out of 50 is 80% of the limit."
                       },
                       {
                         "id": "b",
-                        "text": "About 40%.",
+                        "text": "Almost none, since he skips sweets.",
                         "correct": false,
-                        "feedback": "That reads the grams as a percent. 40 out of 50 is 80%."
+                        "feedback": "Skipping sweets is not enough. One can can hold up to 40 g, about 80% of the limit."
                       },
                       {
                         "id": "c",
                         "text": "About 8%.",
                         "correct": false,
-                        "feedback": "The decimal slipped. 40 divided by 50 is 0.8, which is 80%."
+                        "feedback": "The decimal slipped. Up to 40 g out of 50 g is about 80%."
                       }
                     ]
                   }
@@ -1985,7 +1985,7 @@
                     }
                   ]
                 },
-                "teach": "Your body loses water all day through pee and sweat, so it needs about 2 litres back, about eight glasses. Milk and lower-sugar tea or coffee count, not just plain water.",
+                "teach": "Your body loses water all day through pee and sweat, so it needs about 2 litres back. Milk and lower-sugar tea or coffee count, not just plain water.",
                 "visual": {
                   "kind": "scale",
                   "label": "Glasses of fluid a day",
@@ -2067,7 +2067,7 @@
                     }
                   ]
                 },
-                "teach": "Pale yellow pee usually means you are drinking enough. Dark yellow pee, thirst, a dry mouth or peeing less often can mean the body is short of water, so drink more.",
+                "teach": "Pale yellow pee usually means you are drinking enough. Dark yellow pee, thirst, a dry mouth or peeing less can mean the body is short of water, so drink more.",
                 "visual": {
                   "kind": "scale",
                   "label": "Pee colour cue",
@@ -2088,10 +2088,10 @@
                   "ask": "Tap the colour cue.",
                   "parts": [
                     "After a long day out,",
-                    "Sana sees her pee is dark yellow,",
+                    "Bindu sees her pee is dark yellow,",
                     "and she has peed less than usual."
                   ],
-                  "spot": "Sana sees her pee is dark yellow,",
+                  "spot": "Bindu sees her pee is dark yellow,",
                   "feedback": "Dark yellow pee is one of the signs that her body is short of fluid."
                 },
                 "guided": [
@@ -2154,7 +2154,7 @@
                     }
                   ]
                 },
-                "teach": "Sweat takes water out, so heat and hard work raise the need. Buttermilk, coconut water and lemon water suit hot days. If a doctor limits your fluids, follow that. Get urgent help for confusion or dizziness that stays.",
+                "teach": "Sweat takes water out, so heat and hard work raise the need. Buttermilk, coconut water and lemon water suit hot days. Get urgent help for confusion or dizziness that stays.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2190,13 +2190,13 @@
                         "id": "a",
                         "text": "The walker.",
                         "correct": true,
-                        "feedback": "Yes. Long activity in heat means more sweat and a bigger need."
+                        "feedback": "Yes. Long activity in heat means more sweat and a bigger need. If a doctor limits your fluids, follow that limit."
                       },
                       {
                         "id": "b",
-                        "text": "The friend who stayed in.",
+                        "text": "Neither; eight glasses covers any day.",
                         "correct": false,
-                        "feedback": "Resting indoors keeps the need near the usual figure."
+                        "feedback": "Eight glasses is a rough guide. Heat and long activity raise the need, so the walker needs more."
                       },
                       {
                         "id": "c",
@@ -2693,7 +2693,7 @@
                     }
                   ]
                 },
-                "teach": "Sleep is when the brain stores the day's learning and the body repairs itself, so short nights cost you. Adults need 7 or more hours, and losing even one hour can blur focus.",
+                "teach": "Sleep is when the brain stores the day’s learning and the body repairs itself, so short nights cost you. Adults need 7 or more hours.",
                 "visual": {
                   "kind": "scale",
                   "label": "Hours of sleep a night (adults)",
@@ -2725,7 +2725,7 @@
                         "id": "a",
                         "text": "Yes, about 7 hours.",
                         "correct": true,
-                        "feedback": "Yes. From 11 pm to 6 am is 7 hours, if sleep starts right away."
+                        "feedback": "Yes. From 11 pm to 6 am is 7 hours, if sleep starts right away. Losing even one hour can blur focus."
                       },
                       {
                         "id": "b",
@@ -2774,7 +2774,7 @@
                     }
                   ]
                 },
-                "teach": "Sleep runs in cycles of light, deep and REM (dreaming) sleep, each about 90 minutes. Deep sleep fills the early night and REM grows near morning, so early hours do most body repair.",
+                "teach": "Sleep runs in cycles of light, deep and REM (dreaming) sleep, each about 90 minutes. Deep sleep fills the early night, so early hours do most body repair.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2853,7 +2853,7 @@
                     }
                   ]
                 },
-                "teach": "Light and routine set your body clock, so a fixed wake time, a dark room and screens off at least 30 minutes before bed help. Coffee can last 8 hours. Weeks of bad sleep need a doctor.",
+                "teach": "Light and routine set your body clock, so a fixed wake time, a dark room and screens off at least 30 minutes before bed help. Coffee can last 8 hours.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2892,7 +2892,7 @@
                         "id": "a",
                         "text": "Around midnight.",
                         "correct": true,
-                        "feedback": "Yes. 4 pm plus 8 hours is midnight, right when many people sleep."
+                        "feedback": "Yes. 4 pm plus 8 hours is midnight, right when many people sleep. Weeks of bad sleep are worth a doctor’s visit."
                       },
                       {
                         "id": "b",
@@ -3427,7 +3427,7 @@
                     }
                   ]
                 },
-                "teach": "Brisk activity makes your heart beat faster and your breathing deepen, so over time the heart and lungs work better. Adults can aim for 150 to 300 minutes a week, and some beats none.",
+                "teach": "Brisk activity makes your heart beat faster and breathing deepen, so over time the heart and lungs work better. Adults can aim for 150 to 300 minutes a week.",
                 "visual": {
                   "kind": "scale",
                   "label": "Moderate activity a week",
@@ -3467,9 +3467,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Well above 300 minutes.",
+                        "text": "Nothing that counts, since 20 minutes is too short.",
                         "correct": false,
-                        "feedback": "That is far too many. Seven days of 20 minutes make 140."
+                        "feedback": "Short bouts add up, and some activity beats none. Seven days of 20 minutes make 140."
                       },
                       {
                         "id": "c",
@@ -3513,7 +3513,7 @@
                     }
                   ]
                 },
-                "teach": "Breathing speeds up as effort rises, so talk is a handy gauge. If you can talk but not sing, the effort is moderate. If you get out only a few words before a breath, it is vigorous.",
+                "teach": "Breathing speeds up as effort rises, so talk is a handy gauge. Talk but not sing means moderate. Just a few words before a breath means vigorous.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3600,7 +3600,7 @@
                     }
                   ]
                 },
-                "teach": "Vigorous minutes count double, so 75 match 150 moderate ones. Add muscle work on 2 days. Build up slowly; pain, nausea or odd breathlessness means rest. With a long-term illness, see a doctor first.",
+                "teach": "Vigorous minutes count double, so 75 match 150 moderate ones. Adults also need muscle work on 2 days a week.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3636,7 +3636,7 @@
                         "id": "a",
                         "text": "It matches it.",
                         "correct": true,
-                        "feedback": "Yes. 25 times 3 is 75 vigorous minutes, which count like 150 moderate ones."
+                        "feedback": "Yes. 25 times 3 is 75 vigorous minutes, which count like 150 moderate ones. Build up slowly, and rest for pain or odd breathlessness."
                       },
                       {
                         "id": "b",
@@ -4294,7 +4294,7 @@
                     }
                   ]
                 },
-                "teach": "Iron from plants like greens and dal is harder for the body to take in. Vitamin C in guava, orange or lemon helps, while tea holds it back, so keep tea an hour away from meals.",
+                "teach": "Iron from plants like greens and dal is harder to take in. Vitamin C in guava or orange helps, while tea holds it back, so keep tea away from meals.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4336,13 +4336,13 @@
                         "id": "b",
                         "text": "A cup of tea.",
                         "correct": false,
-                        "feedback": "Tea binds iron and holds it back, so it works the other way."
+                        "feedback": "Tea binds iron and holds it back, so keep it about an hour away from meals."
                       },
                       {
                         "id": "c",
-                        "text": "A glass of cola.",
+                        "text": "Any side; plant iron goes in as easily as any other.",
                         "correct": false,
-                        "feedback": "Cola is not a vitamin C food. An orange or guava would help."
+                        "feedback": "Plant iron is harder for the body to take in. A vitamin C food like orange helps it in."
                       }
                     ]
                   }
@@ -4380,7 +4380,7 @@
                     }
                   ]
                 },
-                "teach": "Low iron is the top food cause of anaemia, but low B12, malaria, heavy periods and thalassaemia can cause it too. So only a blood test can tell. Don't start iron tablets without one.",
+                "teach": "Low iron is the top food cause of anaemia, but low B12, malaria, heavy periods and thalassaemia can cause it too. So only a blood test can tell which.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4409,7 +4409,7 @@
                         "id": "a",
                         "text": "Not always; causes differ.",
                         "correct": true,
-                        "feedback": "Right. One may have low iron, another an infection or low B12."
+                        "feedback": "Right. One may have low iron, another an infection or low B12. A test finds the cause before any iron tablets."
                       },
                       {
                         "id": "b",
@@ -4921,7 +4921,7 @@
                     }
                   ]
                 },
-                "teach": "Each brand picks its own serving size, so per-serving numbers can't be compared fairly. The per 100 g or per 100 ml line puts every pack on the same base. A pack may hold several servings.",
+                "teach": "Each brand picks its own serving size, so per-serving numbers cannot be compared fairly. The per 100 g or 100 ml line puts every pack on the same base.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4956,7 +4956,7 @@
                         "id": "a",
                         "text": "Each brand sets its own serving.",
                         "correct": true,
-                        "feedback": "Right. One brand's serving may be far bigger or smaller than another's."
+                        "feedback": "Right. One brand’s serving may be far bigger or smaller than another’s, and a pack may hold several servings."
                       },
                       {
                         "id": "b",
@@ -5084,7 +5084,7 @@
                     }
                   ]
                 },
-                "teach": "The front of a pack is there to sell, so read the back. A 'real fruit' drink can hold 10% fruit or less, and 'sugar free' snacks can still carry sweeteners like maltitol, fat or white flour.",
+                "teach": "The front of a pack sells, so read the back. A ‘real fruit’ drink can hold just 10% fruit, and ‘sugar free’ snacks can carry sweeteners like maltitol.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5115,7 +5115,7 @@
                 "guided": [
                   {
                     "stem": "A 'sugar free' cookie lists maltitol near the top. What does that tell you?",
-                    "hint": "Recall what the card said about hidden extras.",
+                    "hint": "Recall what the card said about sugar free snacks.",
                     "options": [
                       {
                         "id": "a",
@@ -5627,7 +5627,7 @@
                     }
                   ]
                 },
-                "teach": "Each food group brings different nutrients, so no one food covers them all. A good day mixes cereals, pulses, milk or eggs, nuts, and vegetables and fruit, at least 400 g a day, about half the plate.",
+                "teach": "Each food group brings different nutrients, so no one food covers them all. A good day mixes cereals, pulses, milk or eggs, and vegetables and fruit, about half the plate.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5664,7 +5664,7 @@
                         "id": "a",
                         "text": "About half.",
                         "correct": true,
-                        "feedback": "Right. Vegetables, fruits, greens and tubers make up about half the plate."
+                        "feedback": "Right. Vegetables, fruits, greens and tubers make up about half the plate, at least 400 g a day."
                       },
                       {
                         "id": "b",
@@ -5674,9 +5674,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Just a garnish on top.",
+                        "text": "Most of it, since fruit alone can cover a day.",
                         "correct": false,
-                        "feedback": "They are the largest part of the plate, about half of it."
+                        "feedback": "No one food group covers every need. Vegetables and fruit fill about half, with cereals, pulses and milk on the rest."
                       }
                     ]
                   }
@@ -5792,7 +5792,7 @@
                     }
                   ]
                 },
-                "teach": "Very fast loss often does not last and can miss key nutrients, so slow is safer. For people who need to lose weight, about half a kilo a week is called safe. Pills and crash plans are red flags.",
+                "teach": "Very fast loss does not last and can miss nutrients, so slow is safer. For people who need to lose weight, about half a kilo a week is called safe.",
                 "visual": {
                   "kind": "scale",
                   "label": "Weekly weight change",
@@ -5838,9 +5838,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About 50 weeks.",
+                        "text": "About 2 weeks; faster is better if it works.",
                         "correct": false,
-                        "feedback": "That is too long. 5 divided by 0.5 is 10 weeks."
+                        "feedback": "Very fast loss often does not last. At the safe pace, 5 kg takes about 10 weeks. Pills and crash plans are red flags."
                       }
                     ]
                   }

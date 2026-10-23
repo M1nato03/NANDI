@@ -506,7 +506,7 @@
                     }
                   ]
                 },
-                "teach": "Asked to do a bit more than usual, a muscle adapts and gets stronger, so the same work feels easier next time. That push is called overload. Your own body weight can be the load.",
+                "teach": "Asked to do a bit more than usual, a muscle adapts and gets stronger, so the same work feels easier next time. That push is called overload.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -518,7 +518,7 @@
                 "example": {
                   "ask": "Tap the extra work.",
                   "parts": [
-                    "Meera usually does 8 squats in her hostel room,",
+                    "Kavitha usually does 8 squats in her hostel room,",
                     "today she does 9 with the same good form,",
                     "and in a few weeks 9 will feel normal."
                   ],
@@ -527,7 +527,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Kunal has done the same 12 squats every day for three months, and he has stopped getting stronger. Why?",
+                    "stem": "Pradeep has done the same 12 squats every day for three months, and he has stopped getting stronger. Why?",
                     "hint": "Ask what has changed in his routine.",
                     "options": [
                       {
@@ -544,9 +544,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "He needs a few months of full rest to grow.",
+                        "text": "He needs weights; squats alone cannot overload.",
                         "correct": false,
-                        "feedback": "Rest is not the missing piece. His legs need a little more than they are used to."
+                        "feedback": "Body weight can be the load. His legs just need a little more than they are used to, like a few extra squats."
                       }
                     ]
                   }
@@ -584,7 +584,7 @@
                     }
                   ]
                 },
-                "teach": "Once work feels easy, the body has caught up, so the work has to grow. Add a little weight, a few clean reps (good form), or one more training day a week.",
+                "teach": "Easy work means the body has caught up, so the work has to grow. Add a little weight, a few clean reps (good form), or one more day a week.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -613,7 +613,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Sana can do 12 clean lunges. Which change grows the work?",
+                    "stem": "Fatima can do 12 clean lunges. Which change grows the work?",
                     "hint": "Which choice makes each lunge a bit harder?",
                     "options": [
                       {
@@ -630,9 +630,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Do 6 lunges instead, but much faster.",
+                        "text": "Do 12 again; the same work keeps building strength.",
                         "correct": false,
-                        "feedback": "Fewer reps is less work, not more, and rushing them does not add clean work."
+                        "feedback": "Once 12 feels easy, her legs have caught up, so the same work stops building. The work has to grow."
                       }
                     ]
                   }
@@ -670,7 +670,7 @@
                     }
                   ]
                 },
-                "teach": "Grow in small steps, because a jump that is big next to what you already do is linked to more injuries. Ten extra minutes is big on 40, small on 200. Pain means rest.",
+                "teach": "Grow in small steps, because a jump that is big next to what you already do is linked to injury. Ten extra minutes is big on 40, small on 200.",
                 "visual": {
                   "kind": "scale",
                   "label": "Weekly rise in jogging time, next to your usual",
@@ -699,14 +699,14 @@
                 },
                 "guided": [
                   {
-                    "stem": "Ravi runs 50 minutes a week. Which next week is the smallest jump for him?",
+                    "stem": "Mohit runs 50 minutes a week. Which next week is the smallest jump for him?",
                     "hint": "Work out each rise as a share of what he does now.",
                     "options": [
                       {
                         "id": "a",
                         "text": "55 minutes.",
                         "correct": true,
-                        "feedback": "Yes. 5 more on 50 is a 10% rise, a gentle step."
+                        "feedback": "Yes. 5 more on 50 is a 10% rise, a gentle step. If any step brings pain, that is a sign to rest."
                       },
                       {
                         "id": "b",
@@ -792,7 +792,7 @@
                   "mps",
                   "issn"
                 ],
-                "stem": "In the hostel, Kabir trains his legs hard on Monday, eats well, and by Thursday they feel ready again. Working back, when did most of the building happen?",
+                "stem": "In the hostel, Sanjay trains his legs hard on Monday, eats well, and by Thursday they feel ready again. Working back, when did most of the building happen?",
                 "options": [
                   {
                     "id": "a",
@@ -887,7 +887,7 @@
                 "sourceRefs": [
                   "nin"
                 ],
-                "stem": "Ravi has kidney disease and plans a very high-protein diet to build muscle. What does this step say about his plan?",
+                "stem": "Jatin has kidney disease and plans a very high-protein diet to build muscle. What does this step say about his plan?",
                 "options": [
                   {
                     "id": "a",
@@ -1198,7 +1198,7 @@
                     }
                   ]
                 },
-                "teach": "Strength work tells a muscle to build, and protein from food gives it the parts. Without the training, the body does not use that protein for muscle, so you need both.",
+                "teach": "Strength work tells a muscle to build, and protein from food gives it the parts. Without training, the body does not use that protein for muscle, so you need both.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1244,9 +1244,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "More rest days, so the shake can work.",
+                        "text": "A better brand of protein powder.",
                         "correct": false,
-                        "feedback": "Protein alone is not used for muscle building. Strength work gives the signal."
+                        "feedback": "Powder is not the missing piece, and food can supply the protein. Without strength work, it is not used to build muscle."
                       }
                     ]
                   }
@@ -1283,7 +1283,7 @@
                     }
                   ]
                 },
-                "teach": "Healthy adults need about 0.83 g of protein per kilo a day. Above about 1.6 g, training added no more muscle, since muscle uses only so much. With kidney disease, take care with high protein.",
+                "teach": "Healthy adults need about 0.83 g of protein per kilo a day. Above about 1.6 g, training added no more muscle, since muscle uses only so much.",
                 "visual": {
                   "kind": "scale",
                   "label": "Protein per kilo of body weight a day",
@@ -1319,7 +1319,7 @@
                         "id": "a",
                         "text": "About 112 g.",
                         "correct": true,
-                        "feedback": "Yes. 70 times 1.6 is 112, and more than that added no extra muscle."
+                        "feedback": "Yes. 70 times 1.6 is 112, and more than that added no extra muscle. People with kidney disease should take care with high protein."
                       },
                       {
                         "id": "b",
@@ -1369,7 +1369,7 @@
                     }
                   ]
                 },
-                "teach": "The muscle-building process stays switched on after a session, for up to two days. Meals in that time feed it, so rest days are part of training. The rise was smaller in adults over 50.",
+                "teach": "The muscle-building process stays switched on for up to two days after a session. Meals in that time feed it, so rest days are part of training.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1397,7 +1397,7 @@
                         "id": "a",
                         "text": "Better to rest them while the building goes on.",
                         "correct": true,
-                        "feedback": "Yes. Building can stay switched on for up to two days, so a rest or an arm day fits Tuesday."
+                        "feedback": "Yes. Building can stay switched on for up to two days, so a rest or an arm day fits Tuesday. The rise was smaller in adults over 50."
                       },
                       {
                         "id": "b",
@@ -1525,7 +1525,7 @@
                 "sourceRefs": [
                   "sleep"
                 ],
-                "stem": "After a cricket match, Ravi has a scraped knee and an exam week of 4-hour nights. What might the short nights slow?",
+                "stem": "After a cricket match, Vinod has a scraped knee and an exam week of 4-hour nights. What might the short nights slow?",
                 "options": [
                   {
                     "id": "a",
@@ -1900,7 +1900,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Rhea sleeps from 1 am to 7 am before a match. Is she in the adult range?",
+                    "stem": "Dolma sleeps from 1 am to 7 am before a match. Is she in the adult range?",
                     "hint": "Count the hours, then compare.",
                     "options": [
                       {
@@ -1956,7 +1956,7 @@
                     }
                   ]
                 },
-                "teach": "Even one short night can drag down your game. In studies of athletes, waking far too early hurt more than going to bed late, so a dawn alarm costs the most.",
+                "teach": "Even one short night can drag down your game. In studies of athletes, waking far too early hurt more than going to bed late, so a dawn alarm costs most.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -1975,7 +1975,7 @@
                 "example": {
                   "ask": "Tap what hurt most.",
                   "parts": [
-                    "Kunal went to bed at his usual time,",
+                    "Abhishek went to bed at his usual time,",
                     "but woke at 4 am for a long train trip,",
                     "and his badminton was off that evening."
                   ],
@@ -2591,7 +2591,7 @@
                     }
                   ]
                 },
-                "teach": "In heat, your body works to shed heat as well as move, so the same run is harder. Train in the cool morning or evening and start slow. A heart, kidney or sugar condition? Ask your doctor first.",
+                "teach": "In heat, your body works to shed heat as well as move, so the same run is harder. Train in the cool morning or evening, and start slow.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -2628,7 +2628,7 @@
                         "id": "a",
                         "text": "Start slower and build up over the session.",
                         "correct": true,
-                        "feedback": "Yes. When the time cannot move, a slow start that builds up gradually still cuts strain."
+                        "feedback": "Yes. When the time cannot move, a slow start that builds up still cuts strain. With a heart, kidney or sugar condition, ask a doctor first."
                       },
                       {
                         "id": "b",
@@ -2678,7 +2678,7 @@
                     }
                   ]
                 },
-                "teach": "In hot weather, sweat can reach about 1 litre an hour, and salt leaves with it. So sip water through the session, but never force down big amounts. On long sweaty days, salty food helps replace the salt.",
+                "teach": "In hot weather, sweat can reach about 1 litre an hour, and salt leaves with it. So sip water through the session, and let salty food replace the salt.",
                 "visual": {
                   "kind": "scale",
                   "label": "Sweat in one hour of hot work",
@@ -2761,7 +2761,7 @@
                     }
                   ]
                 },
-                "teach": "Dizziness, nausea, headache, cramps or feeling faint in heat mean stop, get cool and sip water, because heat illness can get worse. Throwing up, getting worse or over an hour? Get medical help. Confusion means call an ambulance.",
+                "teach": "Dizziness, nausea, headache, cramps or feeling faint in heat mean stop, get cool and sip water, because heat illness can get worse. Confusion means call an ambulance.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2778,7 +2778,7 @@
                     "so she stops and sits in the shade."
                   ],
                   "spot": "Riya suddenly feels dizzy and weak,",
-                  "feedback": "Feeling dizzy or weak in the heat is a warning sign to stop and cool down."
+                  "feedback": "Feeling dizzy or weak in the heat is a warning sign to stop and cool down. Throwing up, getting worse or lasting over an hour needs medical help."
                 },
                 "guided": [
                   {
@@ -3281,7 +3281,7 @@
                     }
                   ]
                 },
-                "teach": "A warm-up is the activity done slower or lighter, like a brisk walk before a jog, so your heart rate and breathing climb bit by bit. A cool-down does the same in reverse.",
+                "teach": "A warm-up is the activity done slower or lighter, like a brisk walk before a jog, so your heart rate and breathing climb bit by bit.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3321,9 +3321,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Ten minutes lying on the floor.",
+                        "text": "A long hold of a chest stretch.",
                         "correct": false,
-                        "feedback": "Lying down does not raise heart rate or breathing."
+                        "feedback": "A warm-up is mainly the move done lighter, not a long still stretch. A cool-down does the same at the end."
                       },
                       {
                         "id": "c",
@@ -3366,7 +3366,7 @@
                     }
                   ]
                 },
-                "teach": "A long, still stretch leaves the muscle a little slack, so it springs less for a jump or sprint soon after. Short holds cost much less, and moving again after the stretch seemed to cancel the drop.",
+                "teach": "A long, still stretch leaves the muscle a little slack, so it springs less for a jump or sprint soon after. Short holds cost much less.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3403,7 +3403,7 @@
                         "id": "a",
                         "text": "Under 60 seconds, the smaller drop.",
                         "correct": true,
-                        "feedback": "Yes. Holds under 60 seconds cut results by about 1.1% on average."
+                        "feedback": "Yes. Holds under 60 seconds cut results by about 1.1% on average, and moving again after the stretch seemed to cancel the drop."
                       },
                       {
                         "id": "b",
@@ -3453,7 +3453,7 @@
                     }
                   ]
                 },
-                "teach": "Stretching lets you move further, but the gain often fades within 30 minutes. A big review found no clear drop in injuries, so warm up anyway, since easy moves get you ready.",
+                "teach": "Stretching lets you move further, but the gain often fades within 30 minutes. A big review found no clear drop in injuries, so it is no guarantee.",
                 "visual": {
                   "kind": "scale",
                   "label": "Extra range after a stretch",
@@ -3485,7 +3485,7 @@
                         "id": "a",
                         "text": "A short-term gain in how far you can move.",
                         "correct": true,
-                        "feedback": "Right. All forms of stretching improved range of motion for a short time."
+                        "feedback": "Right. All forms of stretching improved range of motion for a short time. A warm-up that ends with active moves still gets you ready."
                       },
                       {
                         "id": "b",
@@ -3994,7 +3994,7 @@
                     }
                   ]
                 },
-                "teach": "Talking takes breath, so your voice shows your effort. If you can talk but not sing, that is moderate. If only a few words fit before a breath, that is vigorous.",
+                "teach": "Talking takes breath, so your voice shows your effort. Talk but not sing means moderate. If only a few words fit before a breath, that is vigorous.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4032,9 +4032,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Light.",
+                        "text": "Too easy, since she can still speak.",
                         "correct": false,
-                        "feedback": "Light effort leaves plenty of breath to talk. This is vigorous."
+                        "feedback": "Being able to speak is not a sign of easy work. Just a word or two before a breath is vigorous."
                       }
                     ]
                   }
@@ -4071,7 +4071,7 @@
                     }
                   ]
                 },
-                "teach": "Rate effort from 0, sitting still, to 10, your hardest. Moderate is a 5 or 6 and vigorous starts at 7 or 8. Less fit people need more effort for the same task, so the scale is your own.",
+                "teach": "Rate effort from 0, sitting still, to 10, your hardest. Moderate is 5 or 6 and vigorous starts at 7 or 8. The scale is your own, since fitness differs.",
                 "visual": {
                   "kind": "scale",
                   "label": "Effort from 0 to 10",
@@ -4117,9 +4117,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Rest.",
+                        "text": "You cannot rate it; effort comes from speed, not feel.",
                         "correct": false,
-                        "feedback": "Rest is near 0. A 6 is moderate effort."
+                        "feedback": "Effort is personal, so rating your own feel works. Less fit people need more effort for the same task. A 6 is moderate."
                       }
                     ]
                   }
@@ -4157,7 +4157,7 @@
                     }
                   ]
                 },
-                "teach": "After time off, start at a moderate effort you can talk through, because big jumps raise injury risk. Add minutes and days first, effort later. Pain, odd breathlessness, nausea or headache mean rest.",
+                "teach": "After time off, start at a moderate effort you can talk through, because big jumps raise injury risk. Add minutes and days first, effort later.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4783,9 +4783,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Sitting through a 3-hour lecture.",
+                        "text": "None of them; bouts under 10 minutes do not count.",
                         "correct": false,
-                        "feedback": "Sitting adds no activity. Even short walks would count."
+                        "feedback": "The old 10-minute rule was dropped. Brisk bouts of any length count, so three short walks add up."
                       }
                     ]
                   }
@@ -4822,7 +4822,7 @@
                     }
                   ]
                 },
-                "teach": "Do one small thing at the same time and place each day, and it starts to run on its own, because the cue sets it off. So tie it to something you already do, like after dinner.",
+                "teach": "Do one small thing at the same time and place each day, and it starts to run on its own, because the cue sets it off.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4850,7 +4850,7 @@
                         "id": "a",
                         "text": "Right after she brushes her teeth at night.",
                         "correct": true,
-                        "feedback": "Yes. A cue inside her daily routine shows up every day, so it can trigger the stretches."
+                        "feedback": "Yes. A cue inside her daily routine shows up every day, so it can trigger the stretches. Tie it to something she already does."
                       },
                       {
                         "id": "b",
@@ -4900,7 +4900,7 @@
                     }
                   ]
                 },
-                "teach": "Missing the odd day does not wreck a habit, because the gains soon pick up again once you go back. Keep the step small so it is easy to restart. New pain or symptoms as you build? See a doctor.",
+                "teach": "Missing the odd day does not wreck a habit, because the gains soon pick up again once you go back. Keep the step small so it is easy to restart.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4935,7 +4935,7 @@
                         "id": "a",
                         "text": "His usual short walk, at the usual cue.",
                         "correct": true,
-                        "feedback": "Yes. Going back to the same small step at the same cue restarts the habit."
+                        "feedback": "Yes. Going back to the same small step at the same cue restarts the habit. New pain or symptoms as he builds up need a doctor."
                       },
                       {
                         "id": "b",
@@ -5403,7 +5403,7 @@
                     }
                   ]
                 },
-                "teach": "Labels show total sugars and added sugars on separate lines. Total sugars count every sugar, even the fruit's or milk's own. Added sugars are only the ones put in, so total can be high when added is 0.",
+                "teach": "Total sugars count every sugar, even the fruit’s or milk’s own. Added sugars are only the ones put in, so total can be high when added is 0.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5488,7 +5488,7 @@
                     }
                   ]
                 },
-                "teach": "When a mixed food stresses an ingredient in words or pictures, the label must usually give its percentage, so you can see how much is there. Spices used for flavour are left out of this rule.",
+                "teach": "When a mixed food stresses an ingredient in words or pictures, the label must usually give its percentage, so you can see how much is there.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5534,9 +5534,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The brand name on the cap.",
+                        "text": "Nowhere; no rule makes them say.",
                         "correct": false,
-                        "feedback": "The brand says nothing about amounts. Look for the almond % on the label."
+                        "feedback": "When an ingredient is stressed in words or pictures, the label must usually give its %. Spices used just for flavour are left out."
                       }
                     ]
                   }
@@ -5573,7 +5573,7 @@
                     }
                   ]
                 },
-                "teach": "The %RDA column compares one serving with a reference adult day, which counts 50 g of added sugar. So 10 g of added sugar in a serving shows as 20%. Eat two servings and it doubles.",
+                "teach": "The %RDA column compares one serving with a reference adult day, which counts 50 g of added sugar. So 10 g of added sugar shows as 20%.",
                 "visual": {
                   "kind": "scale",
                   "label": "Added sugar against the 50 g reference day",
@@ -5619,9 +5619,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "50%.",
+                        "text": "It depends on how many servings the pack holds.",
                         "correct": false,
-                        "feedback": "That would be 25 g. 5 g out of 50 g is 10%."
+                        "feedback": "%RDA is per serving, so 5 g shows as 10% whatever the pack size. Eat two servings and it doubles."
                       }
                     ]
                   }

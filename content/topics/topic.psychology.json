@@ -50,7 +50,7 @@
               },
               {
                 "id": "habits-c3",
-                "text": "In that study, the middle estimated time to near full habit strength was 66 days, among the 39 people whose data fit the curve well.",
+                "text": "In that study, half of the 39 people whose data fit the curve well took more than 66 days to reach near full habit strength.",
                 "sourceRefs": [
                   "lally"
                 ]
@@ -307,13 +307,13 @@
                 "sourceRefs": [
                   "lally"
                 ],
-                "stem": "In Lally's 12-week habit study, about what was the middle estimated time, in days, for an act to feel automatic?",
+                "stem": "In Lally’s 12-week habit study, half of people took more than about how many days for an act to feel automatic?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About 66 days.",
                     "correct": true,
-                    "feedback": "Right. The middle estimate was about 66 days, though single people ranged from 18 to 254.",
+                    "feedback": "Right. Half of people took more than about 66 days, though single people ranged from 18 to 254.",
                     "sourceRefs": [
                       "lally"
                     ]
@@ -322,7 +322,7 @@
                     "id": "b",
                     "text": "About 30 days.",
                     "correct": false,
-                    "feedback": "Thirty days is too short. The middle estimate in the study was about 66 days, over two months.",
+                    "feedback": "Thirty days is too short. In the study, half of people took more than about 66 days, over two months.",
                     "misconceptionIds": [
                       "habits-m1"
                     ],
@@ -334,7 +334,7 @@
                     "id": "c",
                     "text": "About 254 days.",
                     "correct": false,
-                    "feedback": "That was the longest estimate, not the middle one. The middle was about 66 days.",
+                    "feedback": "That was the longest estimate. Half of people took more than about 66 days.",
                     "sourceRefs": [
                       "lally"
                     ]
@@ -562,7 +562,8 @@
                   "ask": "Tap the cue.",
                   "parts": [
                     "After brushing his teeth,",
-                    "Arun does ten push-ups."
+                    "Arun drops to the bedroom floor",
+                    "and does ten push-ups."
                   ],
                   "spot": "After brushing his teeth,",
                   "feedback": "Brushing his teeth comes first each time, so it is the cue for the push-ups."
@@ -586,9 +587,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "His books.",
+                        "text": "More willpower; he just tries less at home.",
                         "correct": false,
-                        "feedback": "He can carry his books home. The library desk stays behind."
+                        "feedback": "Willpower is not the gap. The library desk sets off studying with little thought, and home has no such cue."
                       }
                     ]
                   }
@@ -671,9 +672,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Yes, once she has one habit, new ones start easy.",
+                        "text": "No, and each day will add the same amount.",
                         "correct": false,
-                        "feedback": "The curve is built by repeats of that act in its setting. A new act starts near the bottom."
+                        "feedback": "It does start low, but the gains are not even. Early repeats add the most, then the gains level off."
                       }
                     ]
                   }
@@ -710,7 +711,7 @@
                     }
                   ]
                 },
-                "teach": "In one 12-week study, habits were estimated to take 18 to 254 days to feel automatic, middle 66. One missed day did no harm, so a slip is fine, but a week off can set it back.",
+                "teach": "Habits took 18 to 254 days to feel automatic in one study, and half of people took more than 66. A missed day did no harm, so slips are fine.",
                 "visual": {
                   "kind": "scale",
                   "label": "Estimated days until a habit felt automatic, in one 12-week study",
@@ -719,35 +720,36 @@
                   "marks": [
                     {
                       "at": 20,
-                      "text": "Middle: 66 days"
+                      "text": "Half took more than 66 days"
                     }
                   ]
                 },
                 "example": {
-                  "ask": "Tap what happened after the miss.",
+                  "ask": "Tap how the run felt after the miss.",
                   "parts": [
-                    "Meena missed her morning run once.",
-                    "The next day, the run still felt automatic."
+                    "Meena missed her morning run once,",
+                    "went out again the next day,",
+                    "and the run still felt automatic."
                   ],
-                  "spot": "The next day, the run still felt automatic.",
-                  "feedback": "One missed day did not wipe out weeks of practice, so her run stayed automatic."
+                  "spot": "and the run still felt automatic.",
+                  "feedback": "One missed day did not wipe out weeks of practice, so her run stayed automatic. Missing a whole week is riskier."
                 },
                 "guided": [
                   {
                     "stem": "Kiran has meditated daily for three weeks, but it still takes effort. What does this show?",
-                    "hint": "Compare three weeks with the middle time in the study.",
+                    "hint": "Compare three weeks with how long half of people took.",
                     "options": [
                       {
                         "id": "a",
                         "text": "It can take a couple of months.",
                         "correct": true,
-                        "feedback": "Right. In one study the middle time was about two months."
+                        "feedback": "Right. In one study, half of people took more than 66 days, about two months."
                       },
                       {
                         "id": "b",
-                        "text": "He is doing it wrong.",
+                        "text": "Habits take 21 days, so his should be automatic by now.",
                         "correct": false,
-                        "feedback": "Effort at three weeks is normal. Many people need longer."
+                        "feedback": "There is no fixed 21 days. In one study it took 18 to 254 days, and half of people took more than 66."
                       },
                       {
                         "id": "c",
@@ -788,7 +790,7 @@
               },
               {
                 "id": "loss-aversion-c2",
-                "text": "A loss tends to weigh more than a gain of the same size, so most people dislike a fair 50-50 bet, more so as the stake grows.",
+                "text": "A loss tends to weigh more than a gain of the same size, so most people turn down a fair 50-50 chance to win or lose the same amount, more so as the stake grows.",
                 "sourceRefs": [
                   "prospect"
                 ]
@@ -862,20 +864,20 @@
                 "sourceRefs": [
                   "prospect"
                 ],
-                "stem": "Why do more people turn down a fair coin toss for ₹10,000 than one for ₹10?",
+                "stem": "Why do more people refuse a fair, even-chance trade when ₹10,000 is at stake than when ₹10 is?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Big stakes make the fifty-fifty odds unfair to the player.",
+                    "text": "Big stakes make the fifty-fifty chances unfair.",
                     "correct": false,
-                    "feedback": "The odds stay fifty-fifty. It is the size of the possible loss that changes.",
+                    "feedback": "The chances stay fifty-fifty. It is the size of the possible loss that changes.",
                     "sourceRefs": [
                       "prospect"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Dislike of fair bets grows as the stake grows.",
+                    "text": "Dislike of fair trades grows as the stake grows.",
                     "correct": true,
                     "feedback": "The pull of a possible loss gets stronger with a bigger stake, so more people say no.",
                     "sourceRefs": [
@@ -1019,7 +1021,7 @@
                     "id": "b",
                     "text": "About 1 time, the same.",
                     "correct": false,
-                    "feedback": "If they weighed the same, people would take fair bets happily. On average a loss weighed about twice as much.",
+                    "feedback": "If they weighed the same, people would happily take fair 50/50 trades. On average a loss weighed about twice as much.",
                     "misconceptionIds": [
                       "loss-aversion-m1"
                     ],
@@ -1200,70 +1202,71 @@
                   "prospect"
                 ],
                 "hook": {
-                  "stem": "A friend offers a coin toss: heads you win ₹100, tails you pay ₹100. Do most people take it?",
+                  "stem": "You hold a ₹100 movie voucher. A friend offers to swap it for a 50/50 chance at a ₹200 voucher or nothing. Do most people swap?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "No, most say no.",
+                      "text": "No, most keep the voucher.",
                       "correct": true,
-                      "feedback": "Right. Most people turn down a fair toss like this, because the loss weighs more."
+                      "feedback": "Right. Most people keep it, because losing the ₹100 voucher weighs more than gaining ₹100 more."
                     },
                     {
                       "id": "b",
-                      "text": "Yes, since it is fair.",
+                      "text": "Yes, since the deal is fair.",
                       "correct": false,
                       "feedback": "It is fair on paper, but most people still say no to it."
                     },
                     {
                       "id": "c",
-                      "text": "Just the people who dislike games say no.",
+                      "text": "Just people who rarely watch films say no.",
                       "correct": false,
-                      "feedback": "It is not about liking games. Most people turn it down."
+                      "feedback": "It is not about films. Most people keep the voucher they already hold."
                     }
                   ]
                 },
-                "teach": "In choices, a loss usually counts for more than a gain of the same size. That is why most people turn down a fair coin toss for money, and more say no as the stake grows.",
+                "teach": "In choices, a loss tends to count more than a same-size gain, so most people turn down a fair 50/50 swap. Bigger stakes bring more refusals.",
                 "visual": {
                   "kind": "compare",
                   "left": {
-                    "title": "Win ₹100",
+                    "title": "Gain ₹100",
                     "lines": [
                       "Counts in the choice"
                     ]
                   },
                   "right": {
-                    "title": "Pay ₹100",
+                    "title": "Lose ₹100",
                     "lines": [
                       "Counts for more",
-                      "So the bet is refused"
+                      "So the swap is refused"
                     ]
                   }
                 },
                 "example": {
                   "ask": "Tap the choice the loss shaped.",
                   "parts": [
-                    "Sahil is offered a coin toss: win ₹50 or lose ₹50,",
-                    "and though the odds are even, he says no."
+                    "Sahil could trade his ₹50 food coupon",
+                    "for an even chance at ₹100 or nothing,",
+                    "but he keeps the coupon he has."
                   ],
-                  "spot": "and though the odds are even, he says no.",
-                  "feedback": "The odds are even, yet he turns it down, because the possible ₹50 loss counts for more in his choice."
+                  "spot": "but he keeps the coupon he has.",
+                  "feedback": "The chances are even, yet he keeps it, because losing his ₹50 coupon counts for more in his choice."
                 },
                 "guided": [
                   {
-                    "stem": "Before a friendly cricket match, Anjali's captain offers a side bet on a coin toss: win 5 bonus runs or lose 5 runs. Will she likely take it?",
-                    "hint": "Think about how people treat fair bets.",
+                    "stem": "Anjali can ask for her exam to be re-marked. Her score is as likely to rise 5 marks as to fall 5. Will she likely ask?",
+                    "hint": "Think about how people treat even chances of gain and loss.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Probably not; a loss of 5 weighs more.",
+                        "text": "Probably not; losing 5 marks weighs more.",
                         "correct": true,
-                        "feedback": "Right. In choices, losing 5 runs counts for more than gaining 5, so most people turn the bet down."
+                        "feedback": "Right. In choices, losing 5 marks counts for more than gaining 5, so most people would not ask."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, since the bet is fair.",
+                        "text": "Yes, since the chances are even.",
                         "correct": false,
-                        "feedback": "It is fair on paper, but most people still refuse even bets, because the loss counts for more."
+                        "feedback": "It is fair on paper, but most people still turn down even chances like this, because the loss counts for more."
                       },
                       {
                         "id": "c",
@@ -1284,13 +1287,13 @@
                   "prospect"
                 ],
                 "hook": {
-                  "stem": "Riya hoped for ₹500 from her aunt and got ₹300. Ravi hoped for nothing and got ₹300. Who feels better?",
+                  "stem": "Riya hoped for ₹500 from her aunt and got ₹300. Manoj hoped for nothing and got ₹300. Who feels better?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "Ravi.",
+                      "text": "Manoj.",
                       "correct": true,
-                      "feedback": "Right. Ravi got more than he hoped for, so ₹300 feels like a gain."
+                      "feedback": "Right. Manoj got more than he hoped for, so ₹300 feels like a gain."
                     },
                     {
                       "id": "b",
@@ -1325,7 +1328,7 @@
                 "example": {
                   "ask": "Tap where Meghna started.",
                   "parts": [
-                    "Meghna and Kunal both end the month with ₹1,000, but",
+                    "Meghna and Wasim both end the month with ₹1,000, but",
                     "Meghna started with ₹1,500,",
                     "so her month feels like a loss."
                   ],
@@ -1351,9 +1354,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The food on the menu.",
+                        "text": "No difference that could change how it feels.",
                         "correct": false,
-                        "feedback": "The food is not the point. The cost is the same, but the wording sets a different start."
+                        "feedback": "The cost matches, but the wording sets a different start, so ₹5 extra feels like a loss and ₹5 off like a gain."
                       }
                     ]
                   }
@@ -1432,9 +1435,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It should be three times.",
+                        "text": "He is right; twice is a fixed rule for everyone.",
                         "correct": false,
-                        "feedback": "The pooled figure was about two. The issue is treating an average as a rule."
+                        "feedback": "Twice is pooled over many studies, and the figures varied, so one person can sit above or below it."
                       }
                     ]
                   }
@@ -1943,7 +1946,8 @@
                   "ask": "Tap the first number.",
                   "parts": [
                     "Rohit hears “50,000” on TV,",
-                    "then guesses that 45,000 people fit in the stadium."
+                    "then guesses that 45,000 people",
+                    "fit in the new stadium."
                   ],
                   "spot": "Rohit hears “50,000” on TV,",
                   "feedback": "He heard 50,000 first, and his guess stayed close to it."
@@ -1967,9 +1971,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It costs less than the other shop.",
+                        "text": "The tag shows the fair value is ₹2,500.",
                         "correct": false,
-                        "feedback": "Both cost ₹1,500. The higher first number just makes the same price feel cheaper."
+                        "feedback": "A first number is a starting point, not proof of fair value. It just makes ₹1,500 feel cheap beside it."
                       }
                     ]
                   }
@@ -2008,7 +2012,7 @@
                     }
                   ]
                 },
-                "teach": "Even a random number can pull a guess, because people start from it and stop too soon. In one study, seeing 10 led to guesses near 25, and seeing 65 to guesses near 45.",
+                "teach": "Even a random number can pull a guess, because people start from it and stop too soon. In one study, 10 led to guesses near 25, and 65 to 45.",
                 "visual": {
                   "kind": "scale",
                   "label": "Middle guess of a count of nations after a random number",
@@ -2048,9 +2052,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "She knew the real height.",
+                        "text": "The tower must be close to 900 metres.",
                         "correct": false,
-                        "feedback": "Nothing says she knew it. The random figure she compared against set her start."
+                        "feedback": "The 900 was random, with no link to the tower. It pulled her guess toward it all the same."
                       },
                       {
                         "id": "c",
@@ -2114,26 +2118,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Meena listed reasons against an anchor. Her guess moved closer to fair, but not all the way. What does this show?",
-                    "hint": "Did the trick wipe it out, or shrink it?",
+                    "stem": "Meena plans to list reasons against a seller’s first price before she bargains. What can she expect?",
+                    "hint": "Think about what the two studies found.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "It cuts the pull but does not erase it.",
+                        "text": "A smaller pull, though some stays.",
                         "correct": true,
-                        "feedback": "Right. The trick reduced the pull; some of it stayed."
+                        "feedback": "Right. Listing reasons brings the other side to mind, which shrinks the pull without erasing it."
                       },
                       {
                         "id": "b",
-                        "text": "The trick made no difference.",
+                        "text": "No change; an anchor cannot be weakened.",
                         "correct": false,
-                        "feedback": "Her guess did move closer to fair, so it helped."
+                        "feedback": "Listing reasons did weaken the pull in two studies, so it does help."
                       },
                       {
                         "id": "c",
-                        "text": "The anchor's pull is gone for good after one try.",
+                        "text": "The pull will be wiped out for good.",
                         "correct": false,
-                        "feedback": "Her guess did not get all the way, so some pull remained."
+                        "feedback": "It shrinks the pull, but in the studies some of it stayed."
                       }
                     ]
                   }
@@ -2687,9 +2691,10 @@
                   "ask": "Tap what she skips.",
                   "parts": [
                     "Zara thinks Mondays are unlucky, so",
-                    "she writes down every bad Monday and skips the good ones."
+                    "she writes down every bad Monday",
+                    "and skips the good ones."
                   ],
-                  "spot": "she writes down every bad Monday and skips the good ones.",
+                  "spot": "and skips the good ones.",
                   "feedback": "Skipping the good Mondays leaves only the clues that fit her belief."
                 },
                 "guided": [
@@ -2750,7 +2755,7 @@
                     }
                   ]
                 },
-                "teach": "Cases that fit your guess can fit many other rules too, so they prove little. In Wason's number puzzle, only 6 of 29 people found the rule without naming a wrong one first.",
+                "teach": "Cases that fit your guess can fit other rules too, so they prove little. In one puzzle, just 6 of 29 people found the rule without a wrong guess first.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -2848,9 +2853,10 @@
                   "ask": "Tap the test that could break his idea.",
                   "parts": [
                     "To test his idea that the 8 o’clock bus is always late,",
-                    "Farhan looks for a day it came on time."
+                    "Farhan skips counting the late days",
+                    "and looks for a day it came on time."
                   ],
-                  "spot": "Farhan looks for a day it came on time.",
+                  "spot": "and looks for a day it came on time.",
                   "feedback": "One on-time day would break “always late,” so it is a strong test."
                 },
                 "guided": [
@@ -3404,7 +3410,7 @@
                     }
                   ]
                 },
-                "teach": "When we are unsure and many people pick something, we take it as a sign it is right, so our own choice leans toward theirs. This pull is called social proof.",
+                "teach": "When we are unsure and many people pick something, we take it as a sign it is right, so we lean their way. This pull is social proof.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -3442,9 +3448,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "She knows the singer well.",
+                        "text": "She is easily led, unlike most people.",
                         "correct": false,
-                        "feedback": "Nothing says she does. The view count is what shaped her guess."
+                        "feedback": "Anyone can take a crowd’s choice as a clue. It is not a sign of a weak person."
                       }
                     ]
                   }
@@ -3482,7 +3488,7 @@
                     }
                   ]
                 },
-                "teach": "In Asch's line test, a group gave a plainly wrong answer, and people went along in about a third of answers. The answer was plain, so most did it to fit in. A quarter never gave in.",
+                "teach": "In Asch’s line test, people went along with a plainly wrong group in about a third of answers. The answer was plain, so most did it to fit in.",
                 "visual": {
                   "kind": "scale",
                   "label": "Wrong answers in Asch’s line test",
@@ -3511,26 +3517,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "In a music class, everyone calls a note higher than it is. Anu hears it clearly but agrees. Does everyone act like Anu?",
-                    "hint": "In Asch’s test, did every person go along?",
+                    "stem": "In a music class, everyone calls a note higher than it is. Anu hears it clearly but agrees. What most likely pulled her?",
+                    "hint": "In Asch’s test, was the right answer hard to see?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, some stay with what they hear.",
+                        "text": "Wanting to fit in with the class.",
                         "correct": true,
-                        "feedback": "Right. People differed: some went along to fit in, but about a quarter in Asch's test never did."
+                        "feedback": "Right. In Asch’s test the answer was plain, so most who went along did it to fit in. A quarter never gave in."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, everyone goes along in the end.",
+                        "text": "She must have been unsure of the note.",
                         "correct": false,
-                        "feedback": "Not in Asch's test. Many answers stayed right, and some people never gave in."
+                        "feedback": "She heard it clearly. When the answer is plain, going along is mostly about fitting in, not doubt."
                       },
                       {
                         "id": "c",
-                        "text": "No one ever goes along.",
+                        "text": "A whole class is hardly ever wrong.",
                         "correct": false,
-                        "feedback": "Some people did go along, in about a third of answers."
+                        "feedback": "A group can be plainly wrong, as in Asch’s test. She went along to fit in, not because they were right."
                       }
                     ]
                   }
@@ -3589,14 +3595,15 @@
                   "ask": "Tap the fresh check.",
                   "parts": [
                     "Everyone in the hostel says the mess serves paneer on Friday, but",
-                    "when Sid checks the menu, it says Thursday."
+                    "when Sid checks the menu,",
+                    "it says Thursday."
                   ],
-                  "spot": "when Sid checks the menu, it says Thursday.",
+                  "spot": "when Sid checks the menu,",
                   "feedback": "Everyone agreed, yet the menu was the real check, and it showed they were wrong."
                 },
                 "guided": [
                   {
-                    "stem": "In a group project, everyone agrees the answer is 42 without working it out. What does their agreement show?",
+                    "stem": "In a group project, all five members say the answer is 42. What does their agreement show by itself?",
                     "hint": "Did anyone check the working?",
                     "options": [
                       {
@@ -3607,9 +3614,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "That 42 is right.",
+                        "text": "That 42 is right, since five people agree.",
                         "correct": false,
-                        "feedback": "Not yet. A group can agree on a wrong answer."
+                        "feedback": "Not yet. A group can agree on a wrong answer, so agreement is a clue, not proof."
                       },
                       {
                         "id": "c",
@@ -4095,7 +4102,7 @@
                     }
                   ]
                 },
-                "teach": "Our guesses for our own tasks often run short, at school and outside it. Yet people guessing a friend's task did not guess short, so the slip is about our own plans.",
+                "teach": "Our guesses for our own tasks often run short, at school and outside it. People guessing a friend’s task did not, so the slip is about our own plans.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4113,9 +4120,10 @@
                   }
                 },
                 "example": {
-                  "ask": "Tap what really happened.",
+                  "ask": "Tap how long it really took.",
                   "parts": [
                     "Ishan says his science model will take one evening,",
+                    "starts it after dinner,",
                     "but three evenings later he is still gluing parts."
                   ],
                   "spot": "but three evenings later he is still gluing parts.",
@@ -4134,9 +4142,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Rooms get messier each minute.",
+                        "text": "He is a careless planner.",
                         "correct": false,
-                        "feedback": "The room did not change. His guess was simply too short."
+                        "feedback": "Careful planners guess short too. Short guesses for our own tasks are common."
                       },
                       {
                         "id": "c",
@@ -4179,7 +4187,7 @@
                     }
                   ]
                 },
-                "teach": "When we plan, we think through how the task should go and give little thought to how past tasks really went. So delays and extra steps drop out of the guess.",
+                "teach": "When we plan, we picture how the task should go, not how past tasks really went. So delays and extra steps drop out of the guess.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4201,28 +4209,29 @@
                 "example": {
                   "ask": "Tap the step she left out.",
                   "parts": [
-                    "Ritu plans her poster as draw, then colour, but",
-                    "she forgets the trip to buy chart paper."
+                    "Ritu plans her poster as two steps,",
+                    "draw, then colour,",
+                    "but she forgets the trip to buy chart paper."
                   ],
-                  "spot": "she forgets the trip to buy chart paper.",
+                  "spot": "but she forgets the trip to buy chart paper.",
                   "feedback": "The shop trip is a step her smooth plan left out."
                 },
                 "guided": [
                   {
-                    "stem": "Harsh plans to reach the station in 15 minutes. He did not think about traffic. What is his plan missing?",
+                    "stem": "Harsh plans to reach the station in 15 minutes, the time the ride takes on an empty road. What is his plan missing?",
                     "hint": "What could slow him on the way?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Traffic delays.",
+                        "text": "Delays like traffic and signals.",
                         "correct": true,
-                        "feedback": "Yes. A smooth plan often leaves out delays like traffic."
+                        "feedback": "Yes. A smooth plan often leaves out delays like traffic and red lights."
                       },
                       {
                         "id": "b",
-                        "text": "A faster bike.",
+                        "text": "Last week’s jam, but that was a one-off.",
                         "correct": false,
-                        "feedback": "The gap in the plan is not the bike. It left out delays."
+                        "feedback": "Calling a past delay a fluke keeps it out of the next plan, so his guess stays short."
                       },
                       {
                         "id": "c",
@@ -4265,7 +4274,7 @@
                     }
                   ]
                 },
-                "teach": "How long similar tasks really took is a good guide. We tend to blame past delays on one-off bad luck, so they drop out. In one study, linking past tasks to the new plan removed the short guesses.",
+                "teach": "How long similar tasks really took is a good guide, so link them to the new plan. In one study, doing this removed the too-short guesses.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4297,9 +4306,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Hoping it goes faster.",
+                        "text": "30 minutes; last time’s delays were bad luck.",
                         "correct": false,
-                        "feedback": "Hope is the smooth plan. Past setups show the real time."
+                        "feedback": "We tend to blame past delays on one-off bad luck, so they drop out of the plan. Past setups show the real time."
                       },
                       {
                         "id": "c",
@@ -4866,7 +4875,8 @@
                   "ask": "Tap the learning step.",
                   "parts": [
                     "Divya reads her notes on the Mughals carefully,",
-                    "and a week later the dates still come back easily."
+                    "and a week later",
+                    "the dates still come back easily."
                   ],
                   "spot": "Divya reads her notes on the Mughals carefully,",
                   "feedback": "Reading carefully is the learning step. Only after it can the memory firm up and last."
@@ -4931,7 +4941,7 @@
                     }
                   ]
                 },
-                "teach": "Sleep after learning cuts forgetting compared with the same hours awake, since the sleeping brain helps firm up new memories. A big review found a moderate gain for facts and words.",
+                "teach": "Sleep after learning cuts forgetting, compared with the same hours awake. That is because the sleeping brain helps firm up new memories.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -4966,7 +4976,7 @@
                         "id": "a",
                         "text": "Sara.",
                         "correct": true,
-                        "feedback": "Yes. Sleep after learning can help later recall."
+                        "feedback": "Yes. Sleep after learning can help later recall. A big review found a moderate gain for facts and words."
                       },
                       {
                         "id": "b",
@@ -4976,9 +4986,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Neither can recall anything.",
+                        "text": "Both the same, since sleep is just a pause.",
                         "correct": false,
-                        "feedback": "Both can recall some. Sleep after learning can help Sara recall more."
+                        "feedback": "Sleep is not just a pause. The sleeping brain helps firm up new memories, so Sara may recall more."
                       }
                     ]
                   }
@@ -5015,7 +5025,7 @@
                     }
                   ]
                 },
-                "teach": "Sleep is not the only help. A few minutes of quiet rest after learning, awake with nothing to do, helped memory more than doing other tasks, so a calm break can count.",
+                "teach": "Sleep is not the only help. A few minutes of quiet, wakeful rest after learning helped memory more than other tasks did, so a calm break counts.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5544,7 +5554,7 @@
                     }
                   ]
                 },
-                "teach": "With a variable reward, the number of tries before a prize keeps changing, so you cannot tell which try will pay. A reward on every try is different: it teaches a new act fastest.",
+                "teach": "With a variable reward, the number of tries before a prize keeps changing, so you cannot tell which try will pay.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5565,7 +5575,8 @@
                 "example": {
                   "ask": "Tap the uneven reward.",
                   "parts": [
-                    "Each time Zubin opens his messages,",
+                    "Zubin keeps his phone on his desk,",
+                    "and each time he opens his messages,",
                     "there might be a reply or nothing at all."
                   ],
                   "spot": "there might be a reply or nothing at all.",
@@ -5580,7 +5591,7 @@
                         "id": "a",
                         "text": "No, it is fixed.",
                         "correct": true,
-                        "feedback": "Right. You know the star comes every third time, so it is fixed."
+                        "feedback": "Right. You know the star comes every third time, so it is fixed. A reward on every try teaches a new act fastest."
                       },
                       {
                         "id": "b",
@@ -5590,9 +5601,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Yes, because it is a reward.",
+                        "text": "Yes, since some homework gets no star.",
                         "correct": false,
-                        "feedback": "Any reward can be fixed or variable. This one comes on a set count."
+                        "feedback": "Missing some tries is not enough. The star comes every third time, so you can tell when: it is fixed."
                       }
                     ]
                   }
@@ -5608,29 +5619,29 @@
                   "social-reward"
                 ],
                 "hook": {
-                  "stem": "A scratch-card game pays out on some cards but not others, with no pattern. Why do people keep buying cards?",
+                  "stem": "A fishing spot gives a catch on some casts but not others, with no pattern. Why do people keep casting?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "The next card might win.",
+                      "text": "The next cast might bring a fish.",
                       "correct": true,
-                      "feedback": "Right. No one can tell which card will pay, so each new one seems worth a try."
+                      "feedback": "Right. No one can tell which cast will pay, so each new one seems worth a try."
                     },
                     {
                       "id": "b",
-                      "text": "Each card wins something.",
+                      "text": "Each cast brings a fish.",
                       "correct": false,
-                      "feedback": "Most cards win nothing. The pull is that the next one might."
+                      "feedback": "Most casts bring nothing. The pull is that the next one might."
                     },
                     {
                       "id": "c",
-                      "text": "The seller makes them buy.",
+                      "text": "Someone makes them keep casting.",
                       "correct": false,
-                      "feedback": "Nobody forces them. Not knowing which card pays keeps people buying."
+                      "feedback": "Nobody forces them. Not knowing which cast pays keeps people casting."
                     }
                   ]
                 },
-                "teach": "When the next try might pay, it seems worth making, so people keep going. Gambling runs on this kind of reward, which is why such habits are slow to fade.",
+                "teach": "When the next try might pay, it seems worth making, so people keep going. That is why habits built on such rewards are slow to fade.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5643,9 +5654,10 @@
                   "ask": "Tap why she keeps going.",
                   "parts": [
                     "Nikita finds a funny meme only now and then,",
-                    "so she keeps swiping in case the next one is good."
+                    "so she keeps swiping",
+                    "in case the next one is good."
                   ],
-                  "spot": "so she keeps swiping in case the next one is good.",
+                  "spot": "in case the next one is good.",
                   "feedback": "Not knowing when the next good one comes keeps her swiping."
                 },
                 "guided": [
@@ -5667,9 +5679,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "He has to open every pack.",
+                        "text": "He just has weak willpower.",
                         "correct": false,
-                        "feedback": "Nothing forces him. Not knowing which pack pays keeps him going."
+                        "feedback": "Willpower is not the main pull. Not knowing which pack pays keeps most people opening, strong-willed or not."
                       }
                     ]
                   }
@@ -5707,7 +5719,7 @@
                     }
                   ]
                 },
-                "teach": "Surprise rewards are one pull, not the whole story. Apps also use endless scroll and read ticks that turn blue, and people open them for friends or news, so many things keep us on.",
+                "teach": "Surprise rewards are one pull, not the whole story, because apps also use endless scroll and blue ticks, and people come for friends or news.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5728,7 +5740,8 @@
                 "example": {
                   "ask": "Tap his other reason.",
                   "parts": [
-                    "Kiran opens his feed after class",
+                    "Kiran opens his feed after class,",
+                    "scrolls past the ads",
                     "to see what his cousins posted from the wedding."
                   ],
                   "spot": "to see what his cousins posted from the wedding.",
@@ -6241,7 +6254,7 @@
                     }
                   ]
                 },
-                "teach": "An if-then plan links a moment to an action: “If this happens, then I will do that.” The moment is the cue to start, so the plan names when and what.",
+                "teach": "An if-then plan links a moment to an action: “If this happens, then I will do that.” The moment is the cue, so the plan names when and what.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -6261,26 +6274,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Tara’s plan: “If I tie my shoes after school, then I go for a run.” Which part is the action?",
-                    "hint": "The action is the then part.",
+                    "stem": "Tara’s plan: “If I tie my shoes after school, then I go for a run.” What job does tying her shoes do?",
+                    "hint": "Which part comes after the word if?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Going for a run.",
+                        "text": "It is the cue that starts the run.",
                         "correct": true,
-                        "feedback": "Right. The then part names the action."
+                        "feedback": "Right. The if part names the moment, and that moment cues the action."
                       },
                       {
                         "id": "b",
-                        "text": "Tying her shoes.",
+                        "text": "It is the action she plans.",
                         "correct": false,
-                        "feedback": "That is the if part, the cue."
+                        "feedback": "The action is the then part, the run. Tying her shoes is the cue."
                       },
                       {
                         "id": "c",
-                        "text": "Getting out of school.",
+                        "text": "It is extra; her wish to run is what counts.",
                         "correct": false,
-                        "feedback": "That is when the cue happens. The action is the run."
+                        "feedback": "A wish names no moment. The tied shoes are the cue that tells her when to start."
                       }
                     ]
                   }
@@ -6318,7 +6331,7 @@
                     }
                   ]
                 },
-                "teach": "A clear moment, like “after dinner,” stays on your mind, so you spot it when it comes. A vague goal names no moment. One catch: you may pass over other good chances.",
+                "teach": "A clear moment, like “after dinner,” stays on your mind, so you spot it when it comes. A vague goal names no moment to spot.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -6355,7 +6368,7 @@
                         "id": "a",
                         "text": "“If I sit down for lunch, then I drink a glass of water.”",
                         "correct": true,
-                        "feedback": "Yes. It links a clear moment to one action."
+                        "feedback": "Yes. Lunch is a clear moment, so she will spot it. One catch: a sharp cue can make other chances easier to miss."
                       },
                       {
                         "id": "b",
@@ -6365,9 +6378,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "“I will try hard.”",
+                        "text": "“If I feel thirsty at some point, then I drink.”",
                         "correct": false,
-                        "feedback": "Trying hard names no moment. An if-then plan needs a cue."
+                        "feedback": "That has an if, but “some point” is a vague moment that is easy to miss. Lunch is a clear one."
                       }
                     ]
                   }
@@ -6405,7 +6418,7 @@
                     }
                   ]
                 },
-                "teach": "In an older review of 94 tests, people with if-then plans reached goals more often than those with a goal alone. A 2025 review of 642 tests agreed, so plans help but cannot promise action.",
+                "teach": "Across 94 tests, people with if-then plans reached goals more often than those with a goal alone. A newer review agreed, so plans help but cannot promise action.",
                 "visual": {
                   "kind": "scale",
                   "label": "How much if-then plans helped, in an older review of 94 tests",
@@ -6414,7 +6427,7 @@
                   "marks": [
                     {
                       "at": 50,
-                      "text": "Medium: 0.5"
+                      "text": "Medium effect: 0.5"
                     },
                     {
                       "at": 65,
@@ -6422,14 +6435,15 @@
                     },
                     {
                       "at": 80,
-                      "text": "Large: 0.8"
+                      "text": "Large effect: 0.8"
                     }
                   ]
                 },
                 "example": {
                   "ask": "Tap where the plan did not work.",
                   "parts": [
-                    "Govind plans, “If I wake up, then I stretch,” and he stretches most days,",
+                    "Govind plans, “If I wake up, then I stretch,”",
+                    "and he stretches most days,",
                     "but not on the day he oversleeps."
                   ],
                   "spot": "but not on the day he oversleeps.",
@@ -6437,24 +6451,24 @@
                 },
                 "guided": [
                   {
-                    "stem": "Two cricket teams set a goal to practise catching. One team also adds if-then plans. Which team is likely to practise more?",
-                    "hint": "What did studies find on average?",
+                    "stem": "Two cricket teams set a goal to practise catching. One team also adds if-then plans. What should we expect?",
+                    "hint": "What did the studies find across many tests?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "The team with if-then plans.",
+                        "text": "The plan team practises more, on average.",
                         "correct": true,
                         "feedback": "Right. On average, if-then plans helped people act on goals."
                       },
                       {
                         "id": "b",
-                        "text": "The team with just the goal.",
+                        "text": "The plan team turns up for each session, no matter what.",
                         "correct": false,
-                        "feedback": "Studies found the opposite, on average."
+                        "feedback": "Plans help on average, but they cannot promise action, so some players may still skip."
                       },
                       {
                         "id": "c",
-                        "text": "No difference.",
+                        "text": "No real difference between them.",
                         "correct": false,
                         "feedback": "Across 94 tests, plans made a real difference on average."
                       }
@@ -6948,7 +6962,7 @@
                     }
                   ]
                 },
-                "teach": "We tend to think more people notice us than really do. In one study, people in an odd T-shirt guessed too high how many others could recall it, so the spotlight felt brighter than it was.",
+                "teach": "We think more people notice us than really do. In one study, people in an odd T-shirt guessed too high how many recalled it, so the spotlight felt brighter.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -6967,7 +6981,8 @@
                 "example": {
                   "ask": "Tap how many really noticed.",
                   "parts": [
-                    "Prerna gets a bad haircut and hides all day, yet",
+                    "Prerna gets a bad haircut",
+                    "and hides all day, yet",
                     "at lunch only one friend says anything."
                   ],
                   "spot": "at lunch only one friend says anything.",
@@ -7031,7 +7046,7 @@
                     }
                   ]
                 },
-                "teach": "We live every detail of our own moments, good or bad, so they feel huge to us. We start from that vivid view and do not adjust enough for how little others saw.",
+                "teach": "We live every detail of our own moments, good or bad, so they feel huge to us, and we do not adjust enough for how little others saw.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7078,9 +7093,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "He did not really drop it.",
+                        "text": "He is just more sensitive than most people.",
                         "correct": false,
-                        "feedback": "He did drop it. The point is that it feels bigger to him than to them."
+                        "feedback": "Most people do this. We live our own moments in full detail, so they loom larger for us than for others."
                       }
                     ]
                   }
@@ -7147,26 +7162,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "Why might onlookers go easy on someone who flubs a hard quiz question?",
+                    "stem": "On a quiz stage, Tina flubs a question that the other teams also missed. She fears the hall thinks she is slow. What do onlookers more likely think?",
                     "hint": "What do onlookers see that the speaker forgets?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "They see how hard the question was.",
+                        "text": "That it was a hard question.",
                         "correct": true,
-                        "feedback": "Yes. Onlookers weigh the whole situation, such as a tough question."
+                        "feedback": "Yes. Onlookers weigh the whole situation, such as a hard question, so they judge more kindly than she fears."
                       },
                       {
                         "id": "b",
-                        "text": "They did not hear the question.",
+                        "text": "That she is slow, just as she fears.",
                         "correct": false,
-                        "feedback": "They heard it. They also see how tough it was, which softens their view."
+                        "feedback": "After a slip, people expect harsher judgment than they get. Onlookers also weigh how hard the question was."
                       },
                       {
                         "id": "c",
-                        "text": "They have short memories.",
+                        "text": "That they did not catch the question.",
                         "correct": false,
-                        "feedback": "Memory is not the reason. They take the hard question into account."
+                        "feedback": "They heard it. They also see how hard it was, which softens their view."
                       }
                     ]
                   }
