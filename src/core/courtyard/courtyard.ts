@@ -19,9 +19,21 @@ export const STAGE_DAYS = [3, 7, 14, 30, 60] as const;
 
 const answerFrom = (fact: LedgerRow, prefix: string) => typeof fact.inputs.dropId === 'string' && fact.inputs.dropId.startsWith(prefix);
 
-/** Which area a ledger fact counts toward, if any. */
-export function areaOf(fact: LedgerRow): AreaId | null {
+/** The day from which a puzzle or lesson after bedtime grows nothing (batch 5); none stored means never. */
+export const COURTYARD_NIGHT_KEY = 'economy.v5From';
+export function courtyardNightFrom(settings: readonly { key: string; value: unknown; deleted?: number }[]): string {
+  const stored = settings.find(row => row.key === COURTYARD_NIGHT_KEY && !row.deleted)?.value;
+  return typeof stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(stored) ? stored : '9999-12-31';
+}
+
+/**
+ * Which area a ledger fact counts toward, if any. From `nightFrom` on, a puzzle, lesson or daily-drop answer done
+ * after bedtime grows nothing, like its XP; the night deck's own reviews still count. Earlier days keep what they
+ * grew, because the courtyard never shrinks (batch 5 ethics line 11, item 51).
+ */
+export function areaOf(fact: LedgerRow, nightFrom = '9999-12-31'): AreaId | null {
   if (fact.deleted) return null;
+  if (fact.mode === 'mind' && fact.inputs.afterBedtime === true && fact.dayKey >= nightFrom && !answerFrom(fact, 'drop:night:')) return null;
   if (fact.mode === 'train' && (fact.kind === 'session' || fact.kind === 'rest')) return 'train';
   if (fact.mode === 'tasks' && fact.kind === 'done') return 'plan';
   if (fact.kind === 'lightsout') return fact.inputs.metTarget === true ? 'sleep' : null;
@@ -42,7 +54,7 @@ export interface AreaState { id: AreaId; friend: FriendName; label: string; prac
 export interface CourtyardState { areas: AreaState[]; activeDays: number; treeStage: number; todayCount: number; lanterns: number }
 
 /** Days per area, all time and in the week starting `weekFrom` (inclusive) up to `today`. */
-export function deriveCourtyard(facts: readonly LedgerRow[], today: string, weekFrom?: string): CourtyardState {
+export function deriveCourtyard(facts: readonly LedgerRow[], today: string, weekFrom?: string, nightFrom = '9999-12-31'): CourtyardState {
   const days = new Map<AreaId, Set<string>>(AREAS.map(area => [area.id, new Set()]));
   const active = new Set<string>();
   const lanterns = new Set<string>();
@@ -50,7 +62,7 @@ export function deriveCourtyard(facts: readonly LedgerRow[], today: string, week
     if (!/^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey) || fact.dayKey > today) continue;
     // A soft day kept the day, so it is an active day for the neem tree too (it belongs to no single area).
     if (fact.kind === 'soft' && !fact.deleted) { lanterns.add(fact.dayKey); active.add(fact.dayKey); }
-    const area = areaOf(fact);
+    const area = areaOf(fact, nightFrom);
     if (!area) continue;
     days.get(area)!.add(fact.dayKey);
     active.add(fact.dayKey);

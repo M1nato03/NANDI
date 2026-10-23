@@ -9,6 +9,7 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { validReward } from '../../core/tasks/complete';
 import { getOrCreateDeviceId } from '../../data/device';
 import { createSettingsRepos } from '../../data/repos/settings';
+import { readRestWeekday, setRestWeekday } from '../../data/repos/economy';
 import { askNotificationsOnce } from '../../platform/notifyPermission';
 import { go } from '../shell/router';
 import { ErrorRing } from './ErrorRing';
@@ -51,7 +52,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const bedtime = value('planner.bedtime', RULES.night.defaultBedtime);
   const goal = value('planner.goalBedtime', RULES.night.goalBedtime);
   const morning = value(NUDGE_MORNING_TIME, MORNING_DEFAULT);
-  const restKey = `economy.restWeekday:${weekStart(dayKey(Date.now()))}`; // eslint-disable-line react-hooks/purity
+  const restWeek = weekStart(dayKey(Date.now())); // eslint-disable-line react-hooks/purity
   const reward = settings?.find(row => row.key === 'planner.reward')?.value;
   const rewardName = typeof reward === 'string' ? reward : '';
   const rewardOn = settings?.find(row => row.key === 'planner.rewardEnabled')?.value === true;
@@ -110,7 +111,7 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <p className="setting-help">Your current lights-out time. It sets tonight's reminders and check-in.</p>
       <label><input type="checkbox" checked={settings?.find(row => row.key === BUSY_SHIFT_KEY && !row.deleted)?.value !== false} onChange={event => void save(BUSY_SHIFT_KEY, event.target.checked)} /> On busy days, start my night later (up to 1 hour)</label>
       <label>Long-term bedtime goal <input type="time" value={goal} onChange={event => void save('planner.goalBedtime', event.target.value)} /></label>
-      <label>Weekly rest day <select value={String(settings?.find(row => row.key === restKey && !row.deleted)?.value ?? '')} onChange={event => { const weekday = Number(event.target.value); void save(restKey, weekday).then(ok => ok && save('economy.restWeekday', { weekday, from: restKey.slice('economy.restWeekday:'.length) })); }}><option value="" disabled>Choose a day</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></label>
+      <label>Weekly rest day <select value={String(readRestWeekday(settings ?? [], restWeek) ?? '')} onChange={event => { void setRestWeekday(db, Number(event.target.value)).then(() => setMessage('Planner settings saved.'), () => setMessage('Could not save that setting.')); }}><option value="" disabled>Choose a day</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></label>
       <p className="setting-help">The earliest target to work toward. After two on-time nights in three, your current target moves 15 minutes earlier.</p>
       <p>Shutdown nudge: {effectiveShutdown(shutdown, bedtime)}.</p>
       <label><input type="checkbox" checked={enabled(NUDGE_NIGHT_ON)} disabled={!!nudgeSaving[NUDGE_NIGHT_ON]} onChange={event => void toggleNudge(NUDGE_NIGHT_ON, event.target.checked)} /> Night deck nudge</label>

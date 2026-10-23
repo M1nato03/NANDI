@@ -67,12 +67,14 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     <div className="card train-hero"><p className="eyebrow">Today's session</p><h2>{plan.name}</h2><p>{target} days a week · {program.days?.map(day => days[day]).join(' / ')}</p><p>{plan.exercises.length} movements. Start with one set of each if today is tight.</p>
       {program.track === 'bodyweight' && !program.equipment?.sturdyAnchor && <p>Rows use a backpack or band today. Limited pulling until you have a sturdy anchor.</p>}
       <div className="train-readiness"><p>Quick readiness check (optional)</p><button type="button" className={slept === true ? '' : 'secondary'} aria-pressed={slept === true} onClick={() => setSlept(true)}>Slept OK</button><button type="button" className={slept === false ? '' : 'secondary'} aria-pressed={slept === false} onClick={() => setSlept(false)}>Not much sleep</button><button type="button" className={sore === true ? '' : 'secondary'} aria-pressed={sore === true} onClick={() => setSore(true)}>Very sore</button><button type="button" className={sore === false ? '' : 'secondary'} aria-pressed={sore === false} onClick={() => setSore(false)}>Soreness OK</button></div>
-      {(slept === false || sore === true) && <p>Try the minimum session: one set of each movement.</p>}
+      {(slept === false || sore === true) && <p>The minimum session is one set of each movement. Either choice counts.</p>}
       {program.heatModeEnabled && <p>Hot-day mode: fewer sets at first. Choose indoors or late evening.</p>}
       {isRetestWeek(program.startedAt ?? now, now) && <p>Re-test week: today's volume is lighter.</p>}
       {retestDue && program.track === 'bodyweight' && <button type="button" className="secondary" onClick={() => setPage('retest')}>Re-test ladder steps</button>}
       {retestDue && program.track === 'gym' && <p>Use a light session to check your working loads.</p>}
       <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: `${slept ?? 'unanswered'}:${sore ?? 'unanswered'}` }), 'Session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Start session</button>
+      {/* Spec 03 §4: a low readiness answer offers the minimum session (one set each); the workout reads this value. */}
+      {(slept === false || sore === true) && <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: 'minimum:10-minutes' }), 'Minimum session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Minimum session</button>}
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
     {nordicDue && <NordicCard busy={busy} answer={choice => { void act((repos, at) => repos.answerNordicCard(choice, at), choice === 'ready' ? 'Your next hinge session is a banded Nordic curl.' : 'Staying on slow single-leg RDL.'); }} />}
@@ -81,7 +83,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
       const isTrained = completed.some(row => row.dayKey === key);
       const isRest = ledger.some(row => row.id === `train-rest:${key}`);
       const statusText = isTrained ? 'trained' : isRest ? 'rest' : 'no data';
-      return <span key={key} className={isTrained ? 'trained' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
+      return <span key={key} className={isTrained ? 'trained' : isRest ? 'rest' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
     })}</div></div>
     <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}><strong>{patternWords[pattern] ?? pattern.replaceAll('-', ' ')}</strong><span>Step {actual} of {ladder?.length ?? actual} · {pattern === 'hinge' && actual === SLOW_RANK && nordic.slow && !nordic.ready ? SLOW_NAME : EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name ?? 'Your current step'}</span></li>; })}</ul>}
       <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {bestWords[pr.kind] ?? 'best'} {pr.value}</li>)}</ul> : <p>Your best sets will appear as you train.</p>}

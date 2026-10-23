@@ -200,7 +200,7 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
   'autoBackup.saved', 'autoBackup.failure']);
 /** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
-const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From'];
+const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From'];
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {

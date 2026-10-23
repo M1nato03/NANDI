@@ -5,7 +5,7 @@ import { dayKey } from '../../core/time/dayKey';
 import { RULES } from '../../core/rules.config';
 import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
-import { AREAS, COURTYARD_KINDS, courtyardLine, deriveCourtyard, phaseAt, poseFor, TREE_OBJECTS, type AreaId, type AreaState, type CourtyardState, type Phase } from '../../core/courtyard/courtyard';
+import { AREAS, COURTYARD_KINDS, courtyardLine, courtyardNightFrom, deriveCourtyard, phaseAt, poseFor, TREE_OBJECTS, type AreaId, type AreaState, type CourtyardState, type Phase } from '../../core/courtyard/courtyard';
 import { Cast } from '../cast/Cast';
 import { go } from '../shell/router';
 import { CourtyardScene, SCENE_H, SCENE_W, type Stages } from './Scene';
@@ -31,8 +31,8 @@ export function useCourtyard() {
   const read = (key: string, fallback: string) => { const value = source.settings.find(row => row.key === key)?.value; return typeof value === 'string' ? value : fallback; };
   const night = adaptiveNight(source.settings, source.tasks, today);
   const shutdown = shiftClock(effectiveShutdown(read('planner.shutdown', RULES.night.defaultShutdown), read('planner.bedtime', RULES.night.defaultBedtime)), night.shift);
-  const state = deriveCourtyard(source.facts, today);
-  return { state, phase: phaseAt(now, shutdown, night.bedtime), facts: source.facts, today };
+  const state = deriveCourtyard(source.facts, today, undefined, courtyardNightFrom(source.settings));
+  return { state, phase: phaseAt(now, shutdown, night.bedtime), facts: source.facts, today, nightFrom: courtyardNightFrom(source.settings) };
 }
 
 export const stagesOf = (state: CourtyardState): Stages => Object.fromEntries(state.areas.map(area => [area.id, area.stage])) as Stages;

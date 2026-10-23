@@ -5,6 +5,9 @@ import { masteryMapState } from '../../core/learn/engine';
 import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, economyHorizon, fillHeldBonus, keptCandidates, mergeCloseMaps, PEAK_KEY, readPeak, readSeenUpTo, replayBonus, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { topics } from '../../ui/learn/flow';
 import { trackWrite } from '../../core/pendingWrites';
+import { dayClock, shareWindow } from '../../core/shareGate';
+import { syncRestWeekday } from './economy';
+import { shutdownAt } from '../../core/tasks/planner';
 import { getOrCreateDeviceId } from '../device';
 import { asEconomyWrite, asReconcile, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
@@ -34,13 +37,16 @@ export function reconcileGamify(db: NandiDb, now = Date.now()): Promise<void> {
 async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
   const today = dayKey(now);
   const deviceId = await getOrCreateDeviceId(db, now);
-  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings], async () => {
+  await syncRestWeekday(db, now);
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops, db.learnConcepts, db.dailyLog, db.settings, db.tasks], async () => {
     // Checked again inside the transaction: a restore may have started while this one waited for its lock.
     if (restoreActive()) return;
     // The 22 Oct economy fixes count from the first day this build ran (earlier days keep what they showed).
     if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     if (!await db.settings.get('economy.v3From')) await db.settings.put({ key: 'economy.v3From', value: today, updatedAt: now, deleted: 0, deviceId });
     if (!await db.settings.get('economy.v4From')) await db.settings.put({ key: 'economy.v4From', value: today, updatedAt: now, deleted: 0, deviceId });
+    // Batch 5 (item 51): from this day on, Mind after bedtime grows no courtyard corner.
+    if (!await db.settings.get('economy.v5From')) await db.settings.put({ key: 'economy.v5From', value: today, updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
     const known = new Set(facts.map(f => f.id));
     const add = async (kind: string, refId: string, day: string, inputs: Record<string, unknown> = {}, at = now) => {
@@ -78,7 +84,12 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     const peak = readPeak(settings);
     if (shown.totalXp > peak.totalXp || shown.level > peak.level) await db.settings.put({ key: PEAK_KEY, value: { totalXp: Math.max(shown.totalXp, peak.totalXp), level: Math.max(shown.level, peak.level) }, updatedAt: now, deleted: 0, deviceId });
     for (const quest of completedQuests(facts, today)) await add('daily-quest', `${today}:${quest.id}`, today);
-    if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`))) await add('focus-boost', today, today);
+    // The Focus boost opens only in the day window and ends by shutdown: quests settled at shutdown or lights-out
+    // (the night quest, a plan made after shutdown) never start a 2x window at night (batch 5, item 51).
+    if (dailyQuests(today).every(q => known.has(`daily-quest:${today}:${q.id}`)) && !known.has(`focus-boost:${today}`)) {
+      const todayTasks = await db.tasks.where('dayKey').equals(today).toArray();
+      if (shareWindow(now, settings, todayTasks, log?.windDownAt) === 'day') await add('focus-boost', today, today, { until: shutdownAt(now, dayClock(now, settings, todayTasks).shutdown) });
+    }
     const states = await db.learnConcepts.toArray();
     const mastered = new Set(states.filter(row => masteryMapState(row) === 'Mastered' || known.has(`gold-review:${row.id}`)).map(row => row.id));
     for (const pack of topics) for (const module of pack.body.modules) if (chestReady(module.concepts.map(c => c.id), mastered)) await add('unit-chest', module.id, today);

@@ -19,11 +19,23 @@ describe('daily invitations and awards', () => {
     expect(questProgress(workout, [], day)).toBe(0);
     expect(questProgress(workout, [fact('session', 'one', {}, noon, 'train')], day)).toBe(1);
   });
-  it('unlocks fifteen minutes from the last completed invitation', () => {
+  it('runs fifteen minutes from its own boost fact, and never past the end that fact names (batch 5)', () => {
     const facts = dailyQuests(day).map((q, index) => fact('daily-quest', `${day}:${q.id}`, {}, noon + index * 1000, 'gamify'));
-    expect(focusBoost(facts.slice(0, 2), day, noon + 2000)).toBeNull();
-    expect(focusBoost(facts, day, noon + 2000)?.remainingMs).toBe(RULES.gamify.focusMinutes * 60_000);
-    expect(focusBoost(facts, day, noon + 2000 + RULES.gamify.focusMinutes * 60_000)).toBeNull();
+    // Quests settled at night write no boost fact, so no countdown shows.
+    expect(focusBoost(facts, day, noon + 2000)).toBeNull();
+    const boost = fact('focus-boost', day, {}, noon + 2000, 'gamify');
+    expect(focusBoost([...facts, boost], day, noon + 2000)?.remainingMs).toBe(RULES.gamify.focusMinutes * 60_000);
+    expect(focusBoost([...facts, boost], day, noon + 2000 + RULES.gamify.focusMinutes * 60_000)).toBeNull();
+    const bounded = fact('focus-boost', day, { until: noon + 2000 + 5 * 60_000 }, noon + 2000, 'gamify');
+    expect(focusBoost([...facts, bounded], day, noon + 2000)?.remainingMs).toBe(5 * 60_000);
+    expect(focusBoost([...facts, bounded], day, noon + 2000 + 5 * 60_000)).toBeNull();
+  });
+  it('doubles nothing past the end a new boost names; an older boost keeps its full window (batch 5, forward-only)', () => {
+    const task = fact('done', 'task-1', { plannedSize: 'M', wasPlanned: true }, noon + 10 * 60_000, 'tasks');
+    const old = fact('focus-boost', day, {}, noon, 'gamify');
+    expect(deriveEconomy([old, task], undefined, [], day).days[0]).toMatchObject({ tasks: 20, focus: 20 });
+    const ended = fact('focus-boost', day, { until: noon + 5 * 60_000 }, noon, 'gamify');
+    expect(deriveEconomy([ended, task], undefined, [], day).days[0]).toMatchObject({ tasks: 20, focus: 0 });
   });
   it('counts badge tiers and the next threshold from history', () => {
     const badge = badges.find(row => row.id === 'workouts')!;

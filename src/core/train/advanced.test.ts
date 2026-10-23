@@ -17,6 +17,14 @@ describe('Train safety and logging rules', () => {
     expect(detectSetPrs({ load: 45, reps: 9 }, best).map(pr => pr.kind)).toEqual(['load', 'repsAtLoad', 'e1rm']);
   });
 
+  it('pays no rep best for reps past the planned top (spec 03; batch 5, item 51)', () => {
+    // Bodyweight 3 x 5-8: an eighth rep is a best, a ninth past an earlier 8 is not, and the best counts as 8.
+    expect(detectSetPrs({ load: 0, reps: 9, repMax: 8 }, { repsAtLoad: 8 })).toEqual([]);
+    expect(detectSetPrs({ load: 0, reps: 9, repMax: 8 }, { repsAtLoad: 7 })).toEqual([{ kind: 'repsAtLoad', value: 8, needsConfirmation: false }]);
+    // The estimated max reads the capped reps too, so extra reps at the same load add nothing.
+    expect(detectSetPrs({ load: 40, reps: 12, repMax: 8 }, { load: 40, repsAtLoad: 8, e1rm: 40 * (1 + 8 / 30) })).toEqual([]);
+  });
+
   it('uses paired plate inventory and rejects loads below the bar', () => {
     expect(calculatePlates(15, 20, [5])).toBeNull();
     expect(calculatePlates(40, 20, [5])).toBeNull();

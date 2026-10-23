@@ -18,6 +18,17 @@ describe('courtyard areas', () => {
     expect(areaOf(fact('2026-10-20', 'mind', 'board'))).toBe('mind');
     expect(areaOf(fact('2026-10-20', 'bonuses', 'lightsout', { metTarget: true }))).toBe('sleep');
     expect(areaOf(fact('2026-10-20', 'bonuses', 'lightsout', { metTarget: false }))).toBeNull();
+  });
+  it('from the batch 5 day on, a puzzle or lesson after bedtime grows nothing; earlier days keep what they grew', () => {
+    const late = (day: string, kind: string, inputs: Record<string, unknown> = {}) => fact(day, 'mind', kind, { afterBedtime: true, ...inputs });
+    expect(areaOf(late('2026-10-20', 'board'))).toBe('mind');
+    expect(areaOf(late('2026-10-20', 'board'), '2026-10-25')).toBe('mind');
+    expect(areaOf(late('2026-10-25', 'board'), '2026-10-25')).toBeNull();
+    expect(areaOf(late('2026-10-25', 'learn-answer', { dropId: 'drop:daily:2026-10-25' }), '2026-10-25')).toBeNull();
+    // The night deck is the calm thing offered after bedtime: its reviews still count for Moti.
+    expect(areaOf(late('2026-10-25', 'learn-answer', { dropId: 'drop:night:2026-10-25' }), '2026-10-25')).toBe('remember');
+    const state = deriveCourtyard([late('2026-10-24', 'board'), late('2026-10-25', 'board')], '2026-10-25', undefined, '2026-10-25');
+    expect(state.areas.find(area => area.id === 'mind')!.days).toBe(1);
     expect(areaOf(fact('2026-10-20', 'quests', 'quest'))).toBeNull();
     expect(areaOf({ ...fact('2026-10-20', 'tasks', 'done'), deleted: 1 })).toBeNull();
   });

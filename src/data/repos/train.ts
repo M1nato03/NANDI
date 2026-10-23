@@ -3,6 +3,7 @@ import type { NandiDb } from '../db';
 import { db as appDb } from '../db';
 import type { ProgramRow, SessionRow, SetRow, ExStateRow, PrRow, LedgerRow } from '../types';
 import { entityRepo, naturalRepo } from './base';
+import { setRestWeekday } from './economy';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { RULES, rulesFor } from '../../core/rules.config';
@@ -82,7 +83,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         for (const [exerciseId, loadKg] of Object.entries(startingLoads ?? {})) if (Number.isFinite(loadKg) && loadKg > 0) await db.exState.put({ id: exerciseId, loadKg, ...meta(now) });
         await db.programs.add(row);
         return row;
-      });
+      }).then(async row => { await setRestWeekday(db, input.restDay, now); return (await getProgram()) ?? row; });
     },
     async updateProgram(changes: Partial<Pick<ProgramRow, 'track' | 'days' | 'weeklyTarget' | 'restDay' | 'heatModeEnabled' | 'equipment'>>, now: number): Promise<ProgramRow> {
       return mutation(async () => {
@@ -90,6 +91,10 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         if (!old) throw new Error('Complete rank assessment first');
         const row = { ...old, ...changes, heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
         await db.programs.put(row);
+        return row;
+      }).then(async row => {
+        // The Train rest day is the streak's rest day too (spec 03 §1.3): one writer for both.
+        if (typeof changes.restDay === 'number') { await setRestWeekday(db, changes.restDay, now); return (await getProgram()) ?? row; }
         return row;
       });
     },
@@ -166,7 +171,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
           e1rm: Math.max(0, ...prior.filter(pr => pr.kind === 'e1rm').map(pr => pr.value ?? 0), ...earlier.map(set => (set.loadKg ?? 0) * (1 + (set.reps ?? 0) / 30))),
           hold: Math.max(0, ...prior.filter(pr => pr.kind === 'hold').map(pr => pr.value ?? 0), ...earlier.map(set => set.durationS ?? 0)),
         };
-        const prs = detectSetPrs({ load: values.loadKg, reps: values.reps, type, isHold: planned.isHold }, best);
+        const prs = detectSetPrs({ load: values.loadKg, reps: values.reps, type, isHold: planned.isHold, repMax: planned.repMax }, best);
         if (prs.some(pr => pr.needsConfirmation) && !values.confirmedJump) throw new Error('This load is over 50% above your best. Confirm the number to save it.');
         const set: SetRow = { id: ulid(now), sessionId, exerciseId, slot, type, loadKg: values.loadKg, reps: planned.isHold ? undefined : values.reps, durationS: planned.isHold ? values.reps : undefined, completedAt: now, confirmedJump: values.confirmedJump, ...meta(now) };
         await db.sets.add(set);
@@ -251,7 +256,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
           for (const set of logged) {
             const prior = await db.prs.where('exerciseId').equals(ex.exerciseId).filter(live).toArray();
             const best = { load: Math.max(0, ...prior.filter(pr => pr.kind === 'load').map(pr => pr.value ?? 0)), repsAtLoad: Math.max(0, ...prior.filter(pr => pr.kind === 'repsAtLoad' && pr.loadKg === set.loadKg).map(pr => pr.value ?? 0)), e1rm: Math.max(0, ...prior.filter(pr => pr.kind === 'e1rm').map(pr => pr.value ?? 0)), hold: Math.max(0, ...prior.filter(pr => pr.kind === 'hold').map(pr => pr.value ?? 0)) };
-            for (const pr of detectSetPrs({ load: set.loadKg ?? 0, reps: set.durationS ?? set.reps ?? 0, isHold: ex.isHold }, best)) if (!pr.needsConfirmation || set.confirmedJump) await addPr(ex.exerciseId, pr.kind, pr.value, set.id, now, session.dayKey, set.loadKg);
+            for (const pr of detectSetPrs({ load: set.loadKg ?? 0, reps: set.durationS ?? set.reps ?? 0, isHold: ex.isHold, repMax: ex.repMax }, best)) if (!pr.needsConfirmation || set.confirmedJump) await addPr(ex.exerciseId, pr.kind, pr.value, set.id, now, session.dayKey, set.loadKg);
           }
         }
         if (program && !pain) await db.programs.put({ ...program, placement, ...(nordicNext ? { nordic: nordicNext } : {}), ...meta(now) });
@@ -278,7 +283,8 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       await mutation(async () => {
         if (minutes < (rulesFor(dayKey(now))?.rules ?? RULES).train.restDayCheckMinMinutes) throw new Error('Walk or move for 10 minutes first');
         const key = dayKey(now);
-        if ((await db.sessions.where('dayKey').equals(key).filter(live).count()) > 0) throw new Error('Rest check is for a non-session day');
+        // Only a session that finished and paid counts as training; a started or skipped one leaves the walk check open (batch 5).
+        if ((await db.sessions.where('dayKey').equals(key).filter(row => live(row) && row.status !== 'active' && row.status !== 'skipped' && (row.xp ?? 0) > 0).count()) > 0) throw new Error('Rest check is for a non-session day');
         const id = `train-rest:${key}`;
         if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'rest', refId: key, dayKey: key, inputs: { minutes }, ...meta(now) });
       });

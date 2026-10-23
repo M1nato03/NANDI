@@ -154,6 +154,8 @@ public class NightPauseService extends Service {
         if (stats == null) return "";
         long now = System.currentTimeMillis();
         UsageEvents events = stats.queryEvents(now - lookbackMs, now);
+        // queryEvents can return null (for example while the phone is still locked after a reboot).
+        if (events == null) return "";
         UsageEvents.Event event = new UsageEvents.Event();
         String foreground = "";
         while (events.hasNextEvent()) {
@@ -185,6 +187,7 @@ public class NightPauseService extends Service {
         start.set(Calendar.SECOND, 0);
         start.set(Calendar.MILLISECOND, 0);
         UsageEvents events = stats.queryEvents(start.getTimeInMillis(), now);
+        if (events == null) return 0;
         UsageEvents.Event event = new UsageEvents.Event();
         Map<String, Long> openSince = new HashMap<>();
         long total = 0;

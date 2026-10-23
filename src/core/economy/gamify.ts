@@ -54,10 +54,15 @@ export function dailyQuests(day: string): Quest[] {
 }
 export const questProgress = (quest: Quest, facts: readonly LedgerRow[], day: string) => Math.min(quest.target, quest.count(facts, day));
 export function completedQuests(facts: readonly LedgerRow[], day: string): Quest[] { return dailyQuests(day).filter(q => questProgress(q, facts, day) >= q.target); }
+/**
+ * The running boost: it opens only with its own fact, which reconcile writes in the day window and which says when
+ * it ends (never past shutdown). An older fact without an end keeps the full window (item 51).
+ */
 export function focusBoost(facts: readonly LedgerRow[], day: string, now: number): { endsAt: number; remainingMs: number } | null {
-  const done = dailyQuests(day).map(q => facts.find(f => !f.deleted && f.kind === 'daily-quest' && f.refId === `${day}:${q.id}`));
-  if (done.some(f => !f)) return null;
-  const endsAt = Math.max(...done.map(f => f!.updatedAt)) + RULES.gamify.focusMinutes * 60_000;
+  const boost = facts.find(f => !f.deleted && f.kind === 'focus-boost' && f.refId === day);
+  if (!boost) return null;
+  const until = typeof boost.inputs.until === 'number' ? boost.inputs.until : Infinity;
+  const endsAt = Math.min(boost.updatedAt + RULES.gamify.focusMinutes * 60_000, until);
   return now < endsAt ? { endsAt, remainingMs: Math.max(0, endsAt - now) } : null;
 }
 

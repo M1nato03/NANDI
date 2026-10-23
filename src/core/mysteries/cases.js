@@ -362,7 +362,8 @@ const CaseGen = (function(){
 
   function dailyDiff(dateStr){
     const dow=new Date(dateStr+"T00:00:00").getDay(); // 0 Sun .. 6 Sat
-    return dow===6?"hard":(dow===1||dow===2)?"easy":"medium";
+    // Same table as RULES.mind.caseDiffByWeekday (Sunday hard), which the app passes in; this is only the fallback.
+    return dow===0?"hard":(dow===1||dow===2)?"easy":"medium";
   }
   function daily(dateStr,diff){
     return generate({seed:hash("daily:"+dateStr), diff:diff||dailyDiff(dateStr)});

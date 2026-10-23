@@ -55,9 +55,9 @@ const band = (n: number): Band => n >= 5 ? 'many' : n >= 2 ? 'some' : 'one';
 const short = (key: string) => new Date(`${key}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 /** The story of one Monday–Sunday week, from the ledger alone. */
-export function buildStorybook(facts: readonly LedgerRow[], weekStart: string): Storybook {
+export function buildStorybook(facts: readonly LedgerRow[], weekStart: string, nightFrom = '9999-12-31'): Storybook {
   const weekEnd = addDays(weekStart, 6);
-  const state = deriveCourtyard(facts, weekEnd, weekStart);
+  const state = deriveCourtyard(facts, weekEnd, weekStart, nightFrom);
   const practised = state.areas.filter(area => area.week > 0).sort((a, b) => b.week - a.week);
   const pages: StoryPage[] = [{ kind: 'cover', text: `${short(weekStart)} – ${short(weekEnd)}` }];
   const hasSoft = facts.some(fact => !fact.deleted && fact.kind === 'soft' && fact.dayKey >= weekStart && fact.dayKey <= weekEnd);

@@ -551,7 +551,10 @@ function replayEconomy(
     const earnedBy: Record<string, number> = { tasks, train: train + weekly, mind, quests };
     const area = (row: LedgerRow) => row.mode === 'gamify' ? 'mind' : row.mode;
     const boosted: Record<string, number> = {};
-    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boost.updatedAt + rules.gamify.focusMinutes * 60_000 && row.kind !== 'focus-boost')) {
+    // A boost written since batch 5 says when it ends (`until`, never past shutdown), so it doubles nothing after
+    // shutdown or bedtime; an older boost fact keeps its full window, so past days keep what they showed (item 51).
+    const boostEnd = boost ? Math.min(boost.updatedAt + rules.gamify.focusMinutes * 60_000, typeof boost.inputs.until === 'number' ? boost.inputs.until : Infinity) : 0;
+    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boostEnd && row.kind !== 'focus-boost')) {
       let award = replayFactXp(row, history);
       if (row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row)) {
         const before = rows.slice(0, rows.indexOf(row) + 1).filter(candidate => candidate.mode === 'mind' && candidate.kind === 'learn-answer' && candidate.inputs.dropId === `drop:daily:${key}` && beforeBed(candidate));

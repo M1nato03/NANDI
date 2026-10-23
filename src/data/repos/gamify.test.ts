@@ -6,6 +6,7 @@ import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeClose } from '../../core/ec
 import { exportBackup, importBackup } from '../backup';
 import { asReconcile, duringRestore } from '../restoreLock';
 import { reconcileGamify } from './gamify';
+import { dailyQuests } from '../../core/economy/gamify';
 
 let serial = 0;
 const opened: NandiDb[] = [];
@@ -156,8 +157,8 @@ it('a burst of writes runs one reconcile now and one more after it, with the lat
     inputs: { plannedSize: 'M', isFirstDay: true, wasPlanned: true, postpones: 0 }, updatedAt: at('2026-11-02'), deleted: 0, deviceId: 'test' });
   const original = db.transaction.bind(db);
   let runs = 0;
-  // Count the reconcile's own five-table transaction only (the device id has its own small one).
-  (db as unknown as { transaction: unknown }).transaction = (...args: unknown[]) => { if (Array.isArray(args[1]) && args[1].length === 5) runs++; return (original as (...rest: unknown[]) => unknown)(...args); };
+  // Count the reconcile's own six-table transaction only (the device id has its own small one).
+  (db as unknown as { transaction: unknown }).transaction = (...args: unknown[]) => { if (Array.isArray(args[1]) && args[1].length === 6) runs++; return (original as (...rest: unknown[]) => unknown)(...args); };
   await Promise.all([1, 2, 3, 4, 5].map(hour => reconcileGamify(db, at('2026-11-05', `0${hour}:00`))));
   expect(runs).toBe(2);
   // The trailing run used the latest clock, so the day before the 5th is closed.
@@ -236,4 +237,40 @@ it('reconcile raises the XP and level peak, and a restore keeps the higher peak 
   await older.settings.put({ key: PEAK_KEY, value: { totalXp: 1, level: 1 }, updatedAt: 1, deleted: 0, deviceId: 'old' });
   await importBackup(db, await exportBackup(older, at('2026-11-01')));
   expect((await db.settings.get(PEAK_KEY))!.value).toEqual(first);
+});
+
+it('the Focus boost opens only in the day window and ends by shutdown (batch 5, item 51)', async () => {
+  const day = '2026-11-05';
+  const settle = async (db: NandiDb) => {
+    for (const quest of dailyQuests(day)) await db.ledger.add({ id: `daily-quest:${day}:${quest.id}`, mode: 'gamify', kind: 'daily-quest', refId: `${day}:${quest.id}`, dayKey: day, inputs: {}, updatedAt: at(day, '11:00'), deleted: 0, deviceId: 'test' });
+  };
+  // After shutdown (23:15 by default) and after bedtime, quests settled late start no 2x window.
+  for (const time of ['23:30', '02:00']) {
+    const db = createDb(`gamify-boost-night-${++serial}`); opened.push(db);
+    await settle(db);
+    const now = time < '04:00' ? at('2026-11-06', time) : at(day, time);
+    await reconcileGamify(db, now);
+    expect(await db.ledger.get(`focus-boost:${day}`)).toBeUndefined();
+  }
+  // In the day it opens, and it names its end: shutdown at 23:15 when that comes before the 15 minutes run out.
+  const db = createDb(`gamify-boost-day-${++serial}`); opened.push(db);
+  await settle(db);
+  await reconcileGamify(db, at(day, '23:05'));
+  const boost = await db.ledger.get(`focus-boost:${day}`);
+  expect(boost?.inputs.until).toBe(at(day, '23:15'));
+  // From the first run on, Mind after bedtime grows no courtyard corner.
+  expect((await db.settings.get('economy.v5From'))?.value).toBe(day);
+});
+
+it('a Train-only rest day starts covering the streak from this week, and Train shows a streak pick (batch 5, item 51)', async () => {
+  const db = createDb(`gamify-rest-sync-${++serial}`); opened.push(db);
+  const day = '2026-11-05'; // a Thursday; its week starts Monday 2 Nov
+  await db.programs.add({ id: 'train-program', track: 'bodyweight', days: [1, 3, 5], weeklyTarget: 3, restDay: 0, heatModeEnabled: false, updatedAt: 0, deleted: 0, deviceId: 'test' } as never);
+  await reconcileGamify(db, at(day));
+  expect((await db.settings.get('economy.restWeekday'))?.value).toEqual({ weekday: 0, from: '2026-11-02' });
+  expect((await db.settings.get('economy.restWeekday:2026-11-02'))?.value).toBe(0);
+  // A pick made on the streak screen wins, and Train is brought in line with it.
+  await db.settings.put({ key: 'economy.restWeekday:2026-11-02', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at(day, '13:00'));
+  expect((await db.programs.get('train-program'))?.restDay).toBe(3);
 });

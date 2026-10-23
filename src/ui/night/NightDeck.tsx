@@ -7,6 +7,7 @@ import { dayKey, lightsOutNightKey } from '../../core/time/dayKey';
 import { nightPlanText, nightsBackOnPlan, readNightPlan } from '../../core/nightPlan';
 import { selectWinddownMove } from '../../core/winddown';
 import { weekKey } from '../../core/quests';
+import { focusElapsedMs } from '../../core/tasks/focus';
 import winddown from '../../../content/winddown/winddown.core.json';
 import { db } from '../../data/db';
 import { createQuestRepo } from '../../data/repos/quests';
@@ -75,7 +76,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const featured = featuredSpec(today);
   const dailySolved = runs.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved' && !row.deleted);
   const doneTasks = board.tasks.filter(row => !row.deleted && row.doneAt && dayKey(row.doneAt) === today);
-  const focusMinutes = Math.round(board.focus.filter(row => row.endedAt && dayKey(row.endedAt) === today).reduce((sum, row) => sum + (row.endedAt! - row.startedAt), 0) / 60_000);
+  const focusMinutes = Math.round(board.focus.filter(row => row.endedAt && dayKey(row.endedAt) === today).reduce((sum, row) => sum + focusElapsedMs(row, row.endedAt!), 0) / 60_000);
   const workoutDone = sessions.some(row => row.dayKey === today && row.status !== 'active' && row.status !== 'skipped');
   const questDone = quests.filter(row => row.status === 'done' && !row.deleted);
   const summary = [

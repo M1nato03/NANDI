@@ -14,10 +14,13 @@ export function shareWindow(now: number, settings: readonly SettingRow[], todayT
   const clock = new Date(now);
   const [openH, openM] = SHARE_OPENS_AT.split(':').map(Number) as [number, number];
   if (clock.getHours() * 60 + clock.getMinutes() < openH * 60 + openM) return 'lightsOut';
-  const today = dayKey(now);
-  const adaptive = adaptiveNight(settings, todayTasks, today);
+  const night = dayClock(now, settings, todayTasks);
+  return nightWindow(now, night.shutdown, night.bedtime, windDownAt);
+}
+/** Tonight's shutdown and bedtime after a busy-day shift: the clock Mind, shares and the Focus boost share. */
+export function dayClock(now: number, settings: readonly SettingRow[], todayTasks: readonly TaskRow[]): { shutdown: string; bedtime: string } {
+  const adaptive = adaptiveNight(settings, todayTasks, dayKey(now));
   const setting = (key: string) => settings.find(row => row.key === key && !row.deleted)?.value;
   const baseBedtime = String(setting('planner.bedtime') ?? RULES.night.defaultBedtime);
-  const shutdown = shiftClock(effectiveShutdown(String(setting('planner.shutdown') ?? RULES.night.defaultShutdown), baseBedtime), adaptive.shift);
-  return nightWindow(now, shutdown, adaptive.bedtime, windDownAt);
+  return { shutdown: shiftClock(effectiveShutdown(String(setting('planner.shutdown') ?? RULES.night.defaultShutdown), baseBedtime), adaptive.shift), bedtime: adaptive.bedtime };
 }

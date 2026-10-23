@@ -85,6 +85,8 @@
 .train-metrics li, .train-history li { min-height: 56px; padding: 12px 16px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); }
 .train-heatmap span { border: 0; border-radius: 6px; background: var(--surface-3); }
 .train-heatmap span.trained { background: var(--area-move); }
+/* A rest-day check is drawn too, as a ring: rest is part of the week, not a gap (batch 5). */
+.train-heatmap span.rest { border: 2px solid var(--area-move); background: transparent; }
 .train-chart { border-radius: var(--radius-row); background: var(--surface-2); }
 .train-chart polyline { stroke: var(--area-move); }
 .train-exercise { --area-color: var(--area-move); }
