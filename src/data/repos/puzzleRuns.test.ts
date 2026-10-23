@@ -73,3 +73,11 @@ it('reconciles old solved boards once at startup', async () => {
   expect(await db.ledger.where('id').equals(`board:${solved.id}`).count()).toBe(1);
   expect((await db.ledger.get(`board:${solved.id}`))?.inputs).toMatchObject({ type: 'sudoku', diff: 'easy' });
 });
+
+it('a solved daily case is not also paid as the daily board', async () => {
+  const db = fresh();
+  const caseRun = { ...solved, id: 'mystery:2026-11-03', type: 'mystery' as const };
+  await db.puzzleRuns.add(caseRun);
+  await reconcileSolvedBoards(db);
+  expect(await db.ledger.get(`board:${caseRun.id}`)).toBeUndefined();
+});

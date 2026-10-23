@@ -21,6 +21,8 @@ export async function seedDeckCards(db: NandiDb, deck: DeckPack, now = Date.now(
 /** Caller must own a ledger write transaction. */
 export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBedtime: boolean, now: number): Promise<void> {
   if (!run.daily || run.result !== 'solved' || !run.dayKey) return;
+  // A solved daily case pays as a case, not also as the daily board (batch 3 g). Facts already written keep paying.
+  if (run.type === 'mystery') return;
   const id = `board:${run.id}`;
   if (await db.ledger.get(id)) return;
   await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily: true, afterBedtime, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
