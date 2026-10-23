@@ -15,7 +15,8 @@ async function answerQuestion(page: Page, pick: 'right' | 'wrong' = 'right') {
   if (!item) throw new Error(`Unknown item: ${stem}`);
   const tap = (id: string) => page.locator('.learn-drop').getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
   if (item.type === 'order') for (const id of item.answer as string[]) await tap(id);
-  else if (item.type === 'match') for (const pair of item.answer as { left: string; right: string }[]) { await tap(pair.left); await tap(pair.right); }
+  // Each pair once: the pack lists it both ways.
+  else if (item.type === 'match') for (const pair of (item.answer as { left: string; right: string }[]).filter((pair, index, all) => !all.slice(0, index).some(seen => seen.left === pair.right && seen.right === pair.left))) { await tap(pair.left); await tap(pair.right); }
   else if (item.type === 'estimate') await page.locator('.learn-estimate input[type=range]').fill(String((item.answer as { value: number }).value));
   else await tap(item.options.find(option => option.correct === (pick === 'right'))!.id);
   await page.getByRole('button', { name: /^Check/ }).first().click();

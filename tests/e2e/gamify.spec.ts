@@ -34,7 +34,8 @@ async function answerItem(page: Page, wrong = false) {
   const tap = async (id: string) => page.locator('.learn-drop').getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
   if (item.type === 'order') for (const id of wrong ? [...item.answer as string[]].reverse() : item.answer as string[]) await tap(id);
   else if (item.type === 'match') {
-    const pairs = item.answer as { left: string; right: string }[];
+    // Each pair once (the pack lists it both ways); a miss pairs each term with the next pair's partner.
+    const pairs = (item.answer as { left: string; right: string }[]).filter((pair, index, all) => !all.slice(0, index).some(seen => seen.left === pair.right && seen.right === pair.left));
     for (const [index, pair] of pairs.entries()) { await tap(pair.left); await tap(wrong ? pairs[(index + 1) % pairs.length]!.right : pair.right); }
   } else if (item.type === 'estimate') {
     const slider = page.locator('.learn-estimate input[type=range]');

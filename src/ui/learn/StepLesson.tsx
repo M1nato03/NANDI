@@ -1,7 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import type { StepVisual as StepVisualData, TopicStep } from '../../data/packs/schemas';
 import { Cast, type CastName } from '../cast/Cast';
 import { tapHaptic } from '../../platform/haptics';
+import { revealSheet } from './revealSheet';
 
 // Content lists the right option first; show a stable shuffle so position never gives it away.
 const hash = (value: string) => { let h = 2166136261; for (const char of value) h = Math.imul(h ^ char.charCodeAt(0), 16777619) >>> 0; return h; };
@@ -63,7 +64,10 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, more = 
   const eyebrow = phase.kind === 'guided' ? 'Try it' : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
   const pose = chosen ? (chosen.correct ? 'cheer' : 'think') : phase.kind === 'show' && picked ? (picked === step.example.spot ? 'cheer' : 'think') : 'idle';
   const last = at === phases.length - 1;
-  return <div className="step-lesson" data-lesson-phase={phase.kind === 'guided' ? `guided-${phase.index + 1}` : phase.kind}>
+  const root = useRef<HTMLDivElement>(null);
+  // The sheet opens below the options; bring it into its own place so it never sits over the right answer.
+  useEffect(() => { if (picked !== undefined) revealSheet(root.current?.querySelector('.learn-sheet')); }, [picked, at]);
+  return <div ref={root} className="step-lesson" data-lesson-phase={phase.kind === 'guided' ? `guided-${phase.index + 1}` : phase.kind}>
     {/* QA 21 Oct: one bar for the whole drop; the lesson fills its share of it, screen by screen. */}
     {progress ? <div className="learn-progress" role="progressbar" aria-label={`Lesson part ${at + 1} of ${phases.length}`} aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.before + at}><span style={{ width: `${(progress.before + at) / progress.total * 100}%` }} /></div>
       : <ol className="step-dots" aria-label={`Lesson part ${at + 1} of ${phases.length}`}>{phases.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>}

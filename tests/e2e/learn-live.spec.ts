@@ -17,8 +17,9 @@ async function answerItem(page: Page, wrong: boolean, advance = true) {
     const ids = item.answer as string[];
     for (const id of wrong ? [...ids].reverse() : ids) await tap(id);
   } else if (item.type === 'match') {
-    const pairs = item.answer as { left: string; right: string }[];
-    for (const pair of pairs) { await tap(pair.left); await tap(wrong ? pair.left : pair.right); }
+    // Each pair once (the pack lists it both ways); a miss pairs each term with the next pair's partner.
+    const pairs = (item.answer as { left: string; right: string }[]).filter((pair, index, all) => !all.slice(0, index).some(seen => seen.left === pair.right && seen.right === pair.left));
+    for (const [index, pair] of pairs.entries()) { await tap(pair.left); await tap(wrong ? pairs[(index + 1) % pairs.length]!.right : pair.right); }
   } else if (item.type === 'estimate') {
     // Drag-to-guess: the right value, or the top end of the slider for a miss.
     const slider = page.locator('.learn-estimate input[type=range]');

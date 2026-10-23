@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { gradeItem, masteryMapState, matchPairKeys, type Confidence, type ItemAnswer } from '../../core/learn/engine';
+import { revealSheet } from './revealSheet';
 import { RULES } from '../../core/rules.config';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
@@ -98,8 +99,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   useEffect(() => {
     // The explanation lands below the options; bring it on screen so nobody has to hunt for it.
     if (feedbackKey < 0) return;
-    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
-    feedbackRef.current?.querySelector('button')?.scrollIntoView?.({ block: 'end', behavior: smooth ? 'smooth' : 'auto' });
+    revealSheet(feedbackRef.current);
   }, [feedbackKey]);
 
   const start = async (selected: string[], isDaily = daily) => {

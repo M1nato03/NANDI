@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import type { TopicItem } from '../../../data/packs/schemas';
-import { gradeItem, matchPairKeys } from '.';
+import type { TopicItem } from '../src/data/packs/schemas';
+import { gradeItem, matchPairKeys } from '../src/core/learn/engine';
 
 // Batch 3 (a): the packs list every match pair both ways, and the drop marks both terms of a pair as used.
 // So a learner enters each pair once, in either direction, and must be able to get it right.
