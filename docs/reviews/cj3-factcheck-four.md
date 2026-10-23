@@ -421,7 +421,7 @@ Body problem list: B7 MED, B1–B6 LOW. That is 7 problems, 1 to fix before rele
 Injury and medical scan: no line promises a result.
 - Heat, cardio and progressive overload all tell the learner to stop for warning signs.
 - Heart, kidney and sugar conditions are told to ask a doctor.
-- The pressure-cooker style safety lines in this topic are fine.
+- Heat confusion is treated as an emergency.
 
 ---
 
