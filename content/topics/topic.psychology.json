@@ -514,7 +514,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (Lally et al. 2010 PDF; Wood and Neal 2007 and Wood, Tam and Guerrero Witt 2005 PubMed abstracts); spec 16 fix-up 2026-10-22: habits-s2 guided now asks whether a second, new habit starts automatic (simulated-week rewrite); habits-14 rewritten as a reverse (work back from a flat curve to an older habit); habits-15 relabelled recall (it retrieves the 66-day middle), so each job appears once; cloud fact-review fixes 2026-10-22: Lally et al. 2010 re-read: participants tried the behaviour \"every day for 84 days\"; curves were fitted \"over the 84 days\", so 18-254 and 66 are estimates (hook, claims c2-c3, s3 teach and visual now say so); habits-15 is now a plain recall of the 66-day middle estimate"
+              "checker": "builder content agent source check 2026-10-21 (Lally et al. 2010 PDF; Wood and Neal 2007 and Wood, Tam and Guerrero Witt 2005 PubMed abstracts); spec 16 fix-up 2026-10-22: habits-s2 guided now asks whether a second, new habit starts automatic (simulated-week rewrite); habits-14 rewritten as a reverse (work back from a flat curve to an older habit); habits-15 relabelled recall (it retrieves the 66-day middle), so each job appears once; cloud fact-review fixes 2026-10-22: Lally et al. 2010 re-read: participants tried the behaviour \"every day for 84 days\"; curves were fitted \"over the 84 days\", so 18-254 and 66 are estimates (hook, claims c2-c3, s3 teach and visual now say so); habits-15 is now a plain recall of the 66-day middle estimate; content-walk fix-up 2026-10-23: s3 teach says \"estimated\" again (modelled for the 39 well-fitting participants) and names the earlier-study week-off finding (c6) that habits-16 tests"
             },
             "steps": [
               {
@@ -570,7 +570,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Ravi studies well at the library desk, but not at home. What might be missing at home?",
+                    "stem": "Ravi wants to study at home too, but he studies well only at the library desk. What might home be missing?",
                     "hint": "Which thing is only in one place?",
                     "options": [
                       {
@@ -587,9 +587,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "More willpower; he just tries less at home.",
+                        "text": "More deciding, since habits run on fresh choices.",
                         "correct": false,
-                        "feedback": "Willpower is not the gap. The library desk sets off studying with little thought, and home has no such cue."
+                        "feedback": "With a cue, you barely decide. The library desk sets off studying, and home has no such cue."
                       }
                     ]
                   }
@@ -711,7 +711,7 @@
                     }
                   ]
                 },
-                "teach": "Habits took 18 to 254 days to feel automatic in one study, and half of people took more than 66. A missed day did no harm, so slips are fine.",
+                "teach": "Habits took an estimated 18 to 254 days to become automatic; half took over 66. One missed day did no harm, so slips are fine; a missed week can hurt.",
                 "visual": {
                   "kind": "scale",
                   "label": "Estimated days until a habit felt automatic, in one 12-week study",
@@ -1253,14 +1253,14 @@
                 },
                 "guided": [
                   {
-                    "stem": "Anjali can ask for her exam to be re-marked. Her score is as likely to rise 5 marks as to fall 5. Will she likely ask?",
+                    "stem": "Under a made-up rule, a re-marked exam is as likely to gain 5 marks as to drop 5. Will most students ask for a re-mark?",
                     "hint": "Think about how people treat even chances of gain and loss.",
                     "options": [
                       {
                         "id": "a",
                         "text": "Probably not; losing 5 marks weighs more.",
                         "correct": true,
-                        "feedback": "Right. In choices, losing 5 marks counts for more than gaining 5, so most people would not ask."
+                        "feedback": "Right. In choices, losing 5 marks counts for more than gaining 5, so most would not ask."
                       },
                       {
                         "id": "b",
@@ -1474,7 +1474,7 @@
               },
               {
                 "id": "anchoring-c2",
-                "text": "In one study, a random first number of 10 led to a middle guess of 25, and a random 65 led to a middle guess of 45.",
+                "text": "In one study, a random first number of 10 led to a median guess of 25, and a random 65 led to a median guess of 45. The median guess is the halfway value when guesses are ordered.",
                 "sourceRefs": [
                   "philosophy"
                 ]
@@ -1605,13 +1605,13 @@
                 "sourceRefs": [
                   "philosophy"
                 ],
-                "stem": "In one anchor study, people guessing a count of nations who saw a random 10 gave a middle guess of about 25. Those who saw a random 65 gave what middle guess?",
+                "stem": "In one anchor study, people guessed a count of nations. After a random 10, the median guess was 25. What was it after a random 65?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About 45.",
                     "correct": true,
-                    "feedback": "The high random number pulled the middle guess up to about 45, short of 65.",
+                    "feedback": "The high random number pulled the median guess up to about 45, short of 65.",
                     "sourceRefs": [
                       "philosophy"
                     ]
@@ -1899,7 +1899,7 @@
                   "verdict": "supported"
                 }
               ],
-              "checker": "builder content agent source check 2026-10-21 (OpenStax Introduction to Philosophy 2.2; Tversky and Kahneman 1974, Englich, Mussweiler and Strack 2006 PubMed abstracts; Mussweiler, Strack and Pfeiffer 2000 abstract); spec 16 fix-up 2026-10-22: anchoring-s1 guided now compares two tags for the same price, one with a \"was\" price (simulated-week rewrite); anchoring-15 relabelled combine (the anchor plus the list-reasons trick); cloud fact-review fixes 2026-10-22: OpenStax Introduction to Philosophy 2.2 re-read: \"the median estimate of nations was 25 ... the median estimate was 45\" after \"Subjects were asked whether the number of nations was higher or lower than the random number\", so the s2 visual and anchoring-12 give a count of nations, not a percentage, and the s2 hook and guided now include the higher-or-lower step"
+              "checker": "builder content agent source check 2026-10-21 (OpenStax Introduction to Philosophy 2.2; Tversky and Kahneman 1974, Englich, Mussweiler and Strack 2006 PubMed abstracts; Mussweiler, Strack and Pfeiffer 2000 abstract); spec 16 fix-up 2026-10-22: anchoring-s1 guided now compares two tags for the same price, one with a \"was\" price (simulated-week rewrite); anchoring-15 relabelled combine (the anchor plus the list-reasons trick); cloud fact-review fixes 2026-10-22: OpenStax Introduction to Philosophy 2.2 re-read: \"the median estimate of nations was 25 ... the median estimate was 45\" after \"Subjects were asked whether the number of nations was higher or lower than the random number\", so the s2 visual and anchoring-12 give a count of nations, not a percentage, and the s2 hook and guided now include the higher-or-lower step; content-walk fix-up 2026-10-23: \"median guess\" used throughout and defined once (the halfway value when guesses are ordered), matching OpenStax \"the median estimate\""
             },
             "steps": [
               {
@@ -2012,10 +2012,10 @@
                     }
                   ]
                 },
-                "teach": "Even a random number can pull a guess, because people start from it and stop too soon. In one study, 10 led to guesses near 25, and 65 to 45.",
+                "teach": "A random number can pull guesses, since people start from it. After a random 10, the median guess, the halfway value when guesses are ordered, was 25; after 65, 45.",
                 "visual": {
                   "kind": "scale",
-                  "label": "Middle guess of a count of nations after a random number",
+                  "label": "Median guess of a count of nations after a random number",
                   "min": "0",
                   "max": "100",
                   "marks": [
@@ -3108,7 +3108,7 @@
                     "id": "a",
                     "text": "Yes; the finding is that everyone goes along.",
                     "correct": false,
-                    "feedback": "The finding was about a third of answers, and about a quarter of people never went along.",
+                    "feedback": "The finding was about a third of answers, so most answers stayed right, just as Ira’s did.",
                     "misconceptionIds": [
                       "social-proof-m2"
                     ],
@@ -3118,9 +3118,9 @@
                   },
                   {
                     "id": "b",
-                    "text": "No; about a quarter of Asch's people never gave in.",
+                    "text": "No; people went along in only about a third of answers.",
                     "correct": true,
-                    "feedback": "People differed a lot, and many stayed with what they saw, so Ira fits the finding.",
+                    "feedback": "Going along in about a third of answers leaves most answers right, so Ira staying right fits the finding.",
                     "sourceRefs": [
                       "asch-original"
                     ]
@@ -3528,9 +3528,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "She must have been unsure of the note.",
+                        "text": "No pull; people do not go along when an answer is plain.",
                         "correct": false,
-                        "feedback": "She heard it clearly. When the answer is plain, going along is mostly about fitting in, not doubt."
+                        "feedback": "In Asch’s test the answer was plain, yet people went along in about a third of answers, mostly to fit in."
                       },
                       {
                         "id": "c",
@@ -4142,9 +4142,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "He is a careless planner.",
+                        "text": "Anyone would guess short for his room, even a friend.",
                         "correct": false,
-                        "feedback": "Careful planners guess short too. Short guesses for our own tasks are common."
+                        "feedback": "In studies, people guessing a friend’s task did not guess short. Short guesses come with our own plans."
                       },
                       {
                         "id": "c",
@@ -4229,9 +4229,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Last week’s jam, but that was a one-off.",
+                        "text": "Nothing; past trips say little about this one.",
                         "correct": false,
-                        "feedback": "Calling a past delay a fluke keeps it out of the next plan, so his guess stays short."
+                        "feedback": "Past trips show how long the ride really takes with traffic. Plans that skip them run short."
                       },
                       {
                         "id": "c",
@@ -5436,8 +5436,8 @@
               },
               {
                 "id": "variable-rewards-m3",
-                "name": "It is just weak will",
-                "correction": "Rewards that come at unknown times keep checks going for most people, not only the weak-willed.",
+                "name": "It is just willpower",
+                "correction": "Rewards that come at unknown times keep checks going for most people, whatever their willpower.",
                 "sourceRefs": [
                   "operant"
                 ]
@@ -5554,7 +5554,7 @@
                     }
                   ]
                 },
-                "teach": "With a variable reward, the number of tries before a prize keeps changing, so you cannot tell which try will pay.",
+                "teach": "With a variable reward, the tries before a prize keep changing, so you cannot tell which try will pay. A reward on every try teaches a new act fastest.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5662,26 +5662,26 @@
                 },
                 "guided": [
                   {
-                    "stem": "In a cricket card game, rare cards turn up in random packs. Omkar keeps opening packs. Why?",
-                    "hint": "Can he tell which pack has a rare card?",
+                    "stem": "At the college library, a free newspaper sits on the front desk on some days but not others, with no pattern. Why does Imran check the desk every visit?",
+                    "hint": "Can he tell ahead of time which days pay off?",
                     "options": [
                       {
                         "id": "a",
-                        "text": "The next one could be the lucky one.",
+                        "text": "Any visit might be the one with a paper.",
                         "correct": true,
-                        "feedback": "Yes. He cannot tell which pack has a rare card, so each new one is worth a try."
+                        "feedback": "Yes. He cannot tell which visit pays, so each check seems worth making."
                       },
                       {
                         "id": "b",
-                        "text": "Every pack has a rare card.",
+                        "text": "A paper is there on every visit.",
                         "correct": false,
-                        "feedback": "Rare cards turn up in random packs, not in every one."
+                        "feedback": "Papers turn up only on some days, with no pattern, so not every visit pays."
                       },
                       {
                         "id": "c",
-                        "text": "He just has weak willpower.",
+                        "text": "Visits with no paper make him stop checking.",
                         "correct": false,
-                        "feedback": "Willpower is not the main pull. Not knowing which pack pays keeps most people opening, strong-willed or not."
+                        "feedback": "Habits built on uneven rewards are slow to fade, so empty visits do not stop him."
                       }
                     ]
                   }
@@ -6331,7 +6331,7 @@
                     }
                   ]
                 },
-                "teach": "A clear moment, like “after dinner,” stays on your mind, so you spot it when it comes. A vague goal names no moment to spot.",
+                "teach": "A clear moment, like “after dinner,” stays on your mind, so you spot it. A vague goal names no moment. One catch: other good chances get easier to miss.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -6378,9 +6378,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "“If I feel thirsty at some point, then I drink.”",
+                        "text": "“Each day, I drink eight glasses of water.”",
                         "correct": false,
-                        "feedback": "That has an if, but “some point” is a vague moment that is easy to miss. Lunch is a clear one."
+                        "feedback": "That sets an amount, but it names no moment to spot, so it is not an if-then plan."
                       }
                     ]
                   }
@@ -7179,9 +7179,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "That they did not catch the question.",
+                        "text": "That she is even slower than she fears.",
                         "correct": false,
-                        "feedback": "They heard it. They also see how hard it was, which softens their view."
+                        "feedback": "It runs the other way. Others judge slips more kindly than people fear, and they see the hard question."
                       }
                     ]
                   }

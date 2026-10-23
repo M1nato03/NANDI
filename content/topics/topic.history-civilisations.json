@@ -96,7 +96,7 @@
                 "sourceRefs": [
                   "unesco-indus"
                 ],
-                "stem": "On a school trip to a new Delhi colony, Arjun sees roads meeting at square corners in neat blocks. What does that tell him?",
+                "stem": "On a school trip to a new Delhi colony, Sameer sees roads meeting at square corners in neat blocks. What does that tell him?",
                 "options": [
                   {
                     "id": "a",
@@ -688,7 +688,7 @@
                     }
                   ]
                 },
-                "teach": "Every street and lane had a drain, so pipes and chutes could carry used water from homes into them. Most drains had brick covers.",
+                "teach": "Every street and lane had a drain, fed by pipes and chutes from homes. Most drains had brick covers, and pits along them caught silt so workers could clear it.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -1348,9 +1348,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "So rulers of other lands would see his power.",
+                        "text": "So the message stayed hidden from crowds.",
                         "correct": false,
-                        "feedback": "The edicts stood near towns and routes so the many people passing by could see them, not to impress far-off kings."
+                        "feedback": "Ashoka put his words near towns and routes so passers-by could see them, not to hide them."
                       },
                       {
                         "id": "c",
@@ -2204,7 +2204,7 @@
                     }
                   ]
                 },
-                "teach": "Ideas move with people. Hun invasions seem to have driven Gandhara’s monks into Central Asia, so their art style took root at Buddhist sites there.",
+                "teach": "Ideas move with people. Hun invasions seem to have driven Gandhara’s monks into Central Asia, so their art took root at Buddhist sites there, often oases where traders rested.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [

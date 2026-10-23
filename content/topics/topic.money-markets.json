@@ -188,31 +188,31 @@
                 "sourceRefs": [
                   "cpi"
                 ],
-                "stem": "The same basket costs ₹1,080 this May, after 8% inflation. About what did it cost last May?",
+                "stem": "In a made-up example, the same basket costs ₹1,250 this May, 25% more than last May. About what did it cost last May?",
                 "options": [
                   {
                     "id": "a",
                     "text": "About ₹1,000.",
                     "correct": true,
-                    "feedback": "Yes. Last year times 1.08 gives ₹1,080, so divide 1,080 by 1.08 to get ₹1,000.",
+                    "feedback": "Yes. Last year times 1.25 gives ₹1,250, so divide 1,250 by 1.25 to get ₹1,000.",
                     "sourceRefs": [
                       "cpi"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About ₹994, which is 8% off this year's price.",
+                    "text": "About ₹938, which is 25% off today’s price.",
                     "correct": false,
-                    "feedback": "Taking 8% off the new price uses the wrong base. The 8% was added to last year's price, so divide by 1.08.",
+                    "feedback": "Taking 25% off the new price uses the wrong base. The 25% was added to last year’s price, so divide by 1.25.",
                     "sourceRefs": [
                       "cpi"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "About ₹1,166.",
+                    "text": "About ₹1,563.",
                     "correct": false,
-                    "feedback": "That adds another 8% on top. Going back a year means removing the rise, so divide by 1.08.",
+                    "feedback": "That adds another 25% on top. Going back a year means removing the rise, so divide by 1.25.",
                     "sourceRefs": [
                       "cpi"
                     ]
@@ -514,7 +514,7 @@
                     }
                   ]
                 },
-                "teach": "Inflation is how much prices rose in a year. India tracks a big basket of everyday goods, because one item, like onions, can jump while others stay flat.",
+                "teach": "Inflation compares prices with the same month last year. India tracks a big basket of everyday goods, because one item, like onions, can jump while others stay flat.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -904,7 +904,7 @@
                   "compound",
                   "finra"
                 ],
-                "stem": "Riya puts ₹10,000 away at 21. Dev starts at 26 at the same rate and wants as much as Riya at 50. What must Dev do?",
+                "stem": "Nafisa puts ₹10,000 away at 21. Bikash starts at 26 at the same rate and wants as much as Nafisa at 50. What must Bikash do?",
                 "options": [
                   {
                     "id": "a",
@@ -1345,13 +1345,13 @@
                   ]
                 },
                 "example": {
-                  "ask": "Tap why Asha ends with more.",
+                  "ask": "Tap why Gurpreet ends with more.",
                   "parts": [
-                    "Asha and Rohan both save at the same rate,",
-                    "but Asha starts ten years sooner,",
+                    "Gurpreet and Prakash both save at the same rate,",
+                    "but Gurpreet starts ten years sooner,",
                     "so her money has longer to grow."
                   ],
-                  "spot": "but Asha starts ten years sooner,",
+                  "spot": "but Gurpreet starts ten years sooner,",
                   "feedback": "The same rate gives more when it has more years to work on past gains."
                 },
                 "guided": [
@@ -3114,41 +3114,38 @@
                 "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "diversification-m4"
+                  "diversification-m3"
                 ],
                 "sourceRefs": [
                   "risk"
                 ],
-                "stem": "Aman says adding more and more funds always makes his mix better. What is he missing?",
+                "stem": "Aman says his pharma fund is a full spread on its own, since it holds 40 firms. What is not quite right?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "Each extra fund adds fees that cut returns.",
+                    "text": "All 40 are in one industry, so they tend to move together.",
                     "correct": true,
-                    "feedback": "Right. More holdings usually bring more fees and costs, which lower what you keep.",
+                    "feedback": "Right. Firms in one industry rise and fall together, so one pharma slump can hit the whole fund.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "Adding funds raises the risk.",
+                    "text": "Forty is too few; a spread needs hundreds of firms.",
                     "correct": false,
-                    "feedback": "A wider mix can lower risk. The catch is the extra fees each one adds.",
-                    "misconceptionIds": [
-                      "diversification-m4"
-                    ],
+                    "feedback": "A dozen or more firms can do it, if they sit in different industries. His trouble is that all are pharma.",
                     "sourceRefs": [
                       "risk"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "He is right; each fund adds safety.",
+                    "text": "Nothing; any fund with 40 firms is fully spread.",
                     "correct": false,
-                    "feedback": "Spreading helps up to a point, but each extra fund also adds costs that eat into returns.",
+                    "feedback": "Forty firms in one industry still share the same risk, so the fund is not a full spread.",
                     "misconceptionIds": [
-                      "diversification-m4"
+                      "diversification-m3"
                     ],
                     "sourceRefs": [
                       "risk"
@@ -6273,7 +6270,8 @@
                 "sourceRefs": [
                   "sebi-index",
                   "expense-ratio",
-                  "cafemutual-spiva"
+                  "cafemutual-spiva",
+                  "spiva-india"
                 ],
                 "hook": {
                   "stem": "Why are index funds usually cheaper to run than active funds?",
@@ -6298,7 +6296,7 @@
                     }
                   ]
                 },
-                "teach": "Index funds just follow a list, so they trade little. Their yearly fee, the expense ratio, is usually lower than an active fund’s.",
+                "teach": "Index funds follow a list and trade little, so their yearly fee, the expense ratio, is usually lower. Over ten years, most active large-cap funds trailed their index.",
                 "visual": {
                   "kind": "compare",
                   "left": {

@@ -869,7 +869,7 @@
                   "zulu",
                   "tug"
                 ],
-                "stem": "A small bag is hung under a hovering drone. Riya says hovering costs no extra push, so the rotors can stay as they are. What is not quite right?",
+                "stem": "A small bag is hung under a hovering drone. Leena says hovering costs no extra push, so the rotors can stay as they are. What is not quite right?",
                 "options": [
                   {
                     "id": "a",
@@ -1177,11 +1177,11 @@
                 "asOf": "2026-10-22"
               },
               {
-                "id": "newton-unit",
-                "title": "Newton (unit): examples",
-                "publisher": "Wikipedia",
+                "id": "ncert-laws",
+                "title": "Physics Part I, Class XI, Chapter 4: Laws of Motion",
+                "publisher": "NCERT",
                 "year": 2026,
-                "url": "https://en.wikipedia.org/wiki/Newton_(unit)",
+                "url": "https://ncert.nic.in/textbook/pdf/keph104.pdf",
                 "asOf": "2026-10-23"
               }
             ],
@@ -1193,7 +1193,7 @@
               ]
             },
             "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22. The Stanford GNC 2007 PDF could not be reached from this machine (connection refused on http and https), and the Rose-Hulman abstract was weak, so both were replaced by sources opened this session: Zulu and John 2014 review (\"A total thrust equal to the weight of the system stabilizes the system in hover\", \"To roll about the x-axis, differential thrust of rotors 2 and 4 is applied\", \"The yaw motion is achieved by the differential thrusts of the opposite rotors ... while also adjusting the constant thrusts of the remaining opposite pairs to maintain altitude\"); TU Graz Camera Drones lecture 2024 (\"Each rotor produces exactly the same thrust\" in hover, \"Torque is canceled by counter-rotating rotors\", \"Every pitch or roll induces also a horizontal acceleration\", yaw by changing the spin of pairs \"to keep the lift constant, but create imbalanced torque\"); MIT VNAV lab 3 (two CW and two CCW \"necessary so that our quadrotor will be stable in its yaw direction\", a clockwise propeller \"produces a counter-clockwise drag torque\").",
+              "checker": "spec 16 rewrite re-check 2026-10-22. The Stanford GNC 2007 PDF could not be reached from this machine (connection refused on http and https), and the Rose-Hulman abstract was weak, so both were replaced by sources opened this session: Zulu and John 2014 review (\"A total thrust equal to the weight of the system stabilizes the system in hover\", \"To roll about the x-axis, differential thrust of rotors 2 and 4 is applied\", \"The yaw motion is achieved by the differential thrusts of the opposite rotors ... while also adjusting the constant thrusts of the remaining opposite pairs to maintain altitude\"); TU Graz Camera Drones lecture 2024 (\"Each rotor produces exactly the same thrust\" in hover, \"Torque is canceled by counter-rotating rotors\", \"Every pitch or roll induces also a horizontal acceleration\", yaw by changing the spin of pairs \"to keep the lift constant, but create imbalanced torque\"); MIT VNAV lab 3 (two CW and two CCW \"necessary so that our quadrotor will be stable in its yaw direction\", a clockwise propeller \"produces a counter-clockwise drag torque\").; content-walk fix-up 2026-10-23: newton source changed from Wikipedia to NCERT Class XI Physics Part I ch. 4 (keph104: \"1 N = 1 kg m s-2\", weight mg with g = 9.8 m s-2), so 1 N is the weight of about 0.1 kg; the hook now says a 100 g mass, like a small apple",
               "verdicts": [
                 {
                   "claimId": "multirotor-turns-c1",
@@ -1249,10 +1249,10 @@
                 "sourceRefs": [
                   "zulu",
                   "tug",
-                  "newton-unit"
+                  "ncert-laws"
                 ],
                 "hook": {
-                  "stem": "One newton is about the weight of a small apple. A drone that weighs 2 newtons hovers on four equal rotors. How hard does each rotor push up?",
+                  "stem": "One newton is about the weight of a 100 g mass, like a small apple. A drone that weighs 2 newtons hovers on four equal rotors. How hard does each rotor push up?",
                   "options": [
                     {
                       "id": "a",
@@ -2803,7 +2803,7 @@
                     }
                   ]
                 },
-                "teach": "GPS satellites send radio signals all the time. A receiver times how long each takes to arrive, which gives its distance to each, so it finds where it is.",
+                "teach": "GPS satellites send radio signals. A receiver times each one's trip, so it knows its distance and place: within about 5 m in open sky, worse near buildings.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -4267,7 +4267,7 @@
                     }
                   ]
                 },
-                "teach": "A fan’s spinning blades push the room’s own air along. They add no cold, because a fan only moves air that is already there.",
+                "teach": "A fan’s blades only push the room’s own air along, so they add no cold. In winter, a reversed fan pushes warm ceiling air down.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -5102,9 +5102,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Bank details, since you pay into her ID’s wallet.",
+                        "text": "Nothing; her ID is a wallet, not a bank link.",
                         "correct": false,
-                        "feedback": "The ID holds no money. It points to her bank account, so it stands in for her account number and IFSC."
+                        "feedback": "The ID holds no money. It points to her bank account, so you skip typing her account number and IFSC."
                       }
                     ]
                   }
@@ -6599,7 +6599,7 @@
                     }
                   ]
                 },
-                "teach": "Gas molecules in the air bounce short blue waves in all directions, so blue reaches you from all over the sky. Red waves mostly pass straight through.",
+                "teach": "Air molecules scatter short blue waves all over, so blue reaches you from the whole sky; red mostly passes through. Big cloud droplets scatter all colours, so clouds look white.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -7304,7 +7304,7 @@
                     }
                   ]
                 },
-                "teach": "Air presses down on water, and the harder it presses, the hotter water must get to boil. So on hills, where air presses less, water boils below 100°C.",
+                "teach": "The harder air presses on water, the hotter it must get to boil, so on hills it boils below 100°C. Once boiling, more flame only boils it off faster.",
                 "visual": {
                   "kind": "scale",
                   "label": "Where water boils",

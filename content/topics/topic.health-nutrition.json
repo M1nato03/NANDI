@@ -69,9 +69,10 @@
               },
               {
                 "id": "protein-foods-c6",
-                "text": "Growing children and teens, pregnant women and people who are ill or under physical stress need more protein.",
+                "text": "Growing children and teens, pregnant women and people who are ill or under physical stress need more protein. Sports guidance gives people who exercise 1.4 to 2.0 g per kg a day.",
                 "sourceRefs": [
-                  "protein"
+                  "protein",
+                  "issn"
                 ]
               },
               {
@@ -141,7 +142,7 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "Rohan swaps his daily dal for a big bowl of nuts to get more protein. What is the catch?",
+                "stem": "Deepak swaps his daily dal for a big bowl of nuts to get more protein. What is the catch?",
                 "options": [
                   {
                     "id": "a",
@@ -185,7 +186,7 @@
                 "sourceRefs": [
                   "protein"
                 ],
-                "stem": "At the college canteen, Neel orders only a big bowl of rajma. Which side would fill the gap that rajma itself has?",
+                "stem": "At the college canteen, Harish orders only a big bowl of rajma. Which side would fill the gap that rajma itself has?",
                 "options": [
                   {
                     "id": "a",
@@ -319,16 +320,16 @@
                     "id": "a",
                     "text": "About 0.83 g per kg.",
                     "correct": true,
-                    "feedback": "Right. India's food guide sets about 0.83 g per kg a day for healthy adults, whether or not they exercise.",
+                    "feedback": "Right. India's food guide sets about 0.83 g per kg a day for healthy adults. Teens, pregnant women and athletes may need more.",
                     "sourceRefs": [
                       "protein"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "About 2 g per kg.",
+                    "text": "About 5 g per kg.",
                     "correct": false,
-                    "feedback": "That is well above the figure. Healthy adults need about 0.83 g per kg a day.",
+                    "feedback": "That is far above the figure. Healthy adults need about 0.83 g per kg a day.",
                     "misconceptionIds": [
                       "protein-foods-m3"
                     ],
@@ -373,8 +374,8 @@
               },
               {
                 "id": "protein-foods-m3",
-                "name": "Exercise raises the adult figure",
-                "correction": "Healthy adults get the same figure per kg, however much they move.",
+                "name": "More protein is always better",
+                "correction": "Healthy adults need about 0.83 g per kg a day. Some groups, like teens, pregnant women and athletes, may need more.",
                 "sourceRefs": [
                   "protein"
                 ]
@@ -388,6 +389,14 @@
                 "year": 2024,
                 "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
                 "asOf": "2026-10-22"
+              },
+              {
+                "id": "issn",
+                "title": "International Society of Sports Nutrition Position Stand: protein and exercise",
+                "publisher": "Journal of the International Society of Sports Nutrition",
+                "year": 2017,
+                "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5477153/",
+                "asOf": "2026-10-23"
               }
             ],
             "quest": {
@@ -398,7 +407,7 @@
               ]
             },
             "factCheck": {
-              "checker": "content agent re-check 2026-10-22 against the DGI 2024 PDF text (Guideline 8 and p.4: milk, meat, fish, eggs and pulses are rich protein sources, nuts and seeds hold substantial protein; 20 amino acids with nine essential; animal proteins give all EAA; cereals and pulses complement each other, 3:1 raw; RDA 0.83 g/kg/day for healthy men and women, 54 g at 65 kg, regardless of physical activity; more needed by growing children, adolescents, pregnant women and during illness or physical stress; nuts and oilseeds rich in fat; pulses low-fat and high-fibre); spec 16 fix-up 2026-10-22: protein-foods-13 replaced (simulated week: it repeated 0.83 x body weight): the cook's plan misses that pregnant women need more (DGI 2024, already cited); protein-foods-14 is now the recall estimate of the per-kg figure, so one sentence no longer answers 13 and 14",
+              "checker": "content agent re-check 2026-10-22 against the DGI 2024 PDF text (Guideline 8 and p.4: milk, meat, fish, eggs and pulses are rich protein sources, nuts and seeds hold substantial protein; 20 amino acids with nine essential; animal proteins give all EAA; cereals and pulses complement each other, 3:1 raw; RDA 0.83 g/kg/day for healthy men and women, 54 g at 65 kg, regardless of physical activity; more needed by growing children, adolescents, pregnant women and during illness or physical stress; nuts and oilseeds rich in fat; pulses low-fat and high-fibre); spec 16 fix-up 2026-10-22: protein-foods-13 replaced (simulated week: it repeated 0.83 x body weight): the cook's plan misses that pregnant women need more (DGI 2024, already cited); protein-foods-14 is now the recall estimate of the per-kg figure, so one sentence no longer answers 13 and 14; content-walk fix-up 2026-10-23: ISSN 2017 position stand on PMC re-read (\"overall daily protein intake in the range of 1.4-2.0 g protein/kg body weight/day ... is sufficient\" for most exercising individuals), so c6, the s3 teach and m3 now say 0.83 g/kg is the general healthy-adult figure and athletes may need more; s2 now says rice and dal are each low in one block (cereals limit lysine, pulses limit methionine), not missing it",
               "verdicts": [
                 {
                   "claimId": "protein-foods-c1",
@@ -515,7 +524,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Sahil eats no meat and wants more protein at dinner. Which add-on fits best?",
+                    "stem": "Faizan eats no meat and wants more protein at dinner. Which add-on fits best?",
                     "hint": "Think of the pulses on the list.",
                     "options": [
                       {
@@ -567,11 +576,11 @@
                       "id": "c",
                       "text": "The pair works no better than one food.",
                       "correct": false,
-                      "feedback": "The pair works better, because each food brings a building block the other lacks."
+                      "feedback": "The pair works better, because each food brings plenty of a block the other is low in."
                     }
                   ]
                 },
-                "teach": "Protein is built from blocks, and nine must come from food. Rice and dal each lack one block the other has, so eaten together they fill both gaps.",
+                "teach": "Protein is built from blocks, and nine must come from food. Rice is low in one block and dal in another, so eaten together they fill both gaps.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -592,23 +601,23 @@
                 "example": {
                   "ask": "Tap why the meal works.",
                   "parts": [
-                    "In the hostel mess, Arjun eats roti",
+                    "In the hostel mess, Varun eats roti",
                     "with a bowl of chana dal,",
-                    "so each food covers what the other lacks."
+                    "so each food makes up for what the other is low in."
                   ],
-                  "spot": "so each food covers what the other lacks.",
+                  "spot": "so each food makes up for what the other is low in.",
                   "feedback": "Roti is short of a building block that chana dal has, and the dal is short of one roti has."
                 },
                 "guided": [
                   {
-                    "stem": "Aakash wants a meat-free lunch that covers all nine building blocks. Which plate fits best?",
+                    "stem": "Aakash wants a meat-free lunch where no building block runs low. Which plate fits best?",
                     "hint": "Look for a grain and a pulse in one dish.",
                     "options": [
                       {
                         "id": "a",
                         "text": "Rice with moong dal.",
                         "correct": true,
-                        "feedback": "Yes. Rice and dal each cover the block the other lacks. Milk, eggs and meat carry all nine on their own."
+                        "feedback": "Yes. Rice and dal each bring plenty of the block the other is low in. Milk, eggs and meat carry all nine in good amounts."
                       },
                       {
                         "id": "b",
@@ -618,21 +627,22 @@
                       },
                       {
                         "id": "c",
-                        "text": "A big bowl of dal on its own.",
+                        "text": "Rice with a roti on the side.",
                         "correct": false,
-                        "feedback": "Dal is short of a block that cereals have, so it works best with a grain beside it."
+                        "feedback": "Rice and roti are both cereals, so both are low in the same block. A pulse like dal fills it."
                       }
                     ]
                   }
                 ],
-                "takeaway": "Cereal plus pulse covers the building blocks each one lacks."
+                "takeaway": "Cereal plus pulse fills the blocks each one is low in."
               },
               {
                 "id": "protein-foods-s3",
                 "title": "How much protein a day",
                 "claimId": "protein-foods-c4",
                 "sourceRefs": [
-                  "protein"
+                  "protein",
+                  "issn"
                 ],
                 "hook": {
                   "stem": "About how much protein a day does a healthy 65 kg adult need?",
@@ -657,7 +667,7 @@
                     }
                   ]
                 },
-                "teach": "Healthy adults need about 0.83 g of protein per kg a day, so a 65 kg adult needs about 54 g. Teens and pregnant women need more.",
+                "teach": "India's guide sets 0.83 g of protein per kg daily for healthy adults, so 65 kg needs about 54 g. Teens, pregnant women and athletes may need more.",
                 "visual": {
                   "kind": "scale",
                   "label": "Daily protein for a 65 kg adult",
@@ -686,14 +696,14 @@
                 },
                 "guided": [
                   {
-                    "stem": "Ankit weighs 80 kg, is healthy and plays football daily. About what is his daily protein need?",
+                    "stem": "Ankit weighs 80 kg, is healthy and works at a desk all day. About what is his daily protein need?",
                     "hint": "Multiply his kilos by the per-kg figure.",
                     "options": [
                       {
                         "id": "a",
                         "text": "About 66 g.",
                         "correct": true,
-                        "feedback": "Yes. 80 times 0.83 is about 66 g a day. People who are ill, teens and pregnant women need more."
+                        "feedback": "Yes. 80 times 0.83 is about 66 g a day. Teens, pregnant women and athletes may need more."
                       },
                       {
                         "id": "b",
@@ -703,9 +713,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About 100 g, since active people need extra.",
+                        "text": "About 160 g, using 2 g per kg.",
                         "correct": false,
-                        "feedback": "Healthy adults get the same 0.83 g per kg however much they move, so about 66 g."
+                        "feedback": "That is far above the healthy-adult figure. At 0.83 g per kg, 80 kg needs about 66 g."
                       }
                     ]
                   }
@@ -782,7 +792,7 @@
                   "sugar",
                   "who-sugars"
                 ],
-                "stem": "In the hostel, Riya swaps a whole banana for a glass of banana juice labelled 'no added sugar'. Which one goes in her free-sugar count?",
+                "stem": "In the hostel, Mitali swaps a whole banana for a glass of banana juice labelled 'no added sugar'. Which one goes in her free-sugar count?",
                 "options": [
                   {
                     "id": "a",
@@ -983,7 +993,7 @@
                   "who-sugars",
                   "sugar"
                 ],
-                "stem": "During exam week, Tara drinks a packed sweet lassi every day. Which of its sugars count as free sugar?",
+                "stem": "During exam week, Amrita drinks a packed sweet lassi every day. Which of its sugars count as free sugar?",
                 "options": [
                   {
                     "id": "a",
@@ -1285,7 +1295,7 @@
                 "example": {
                   "ask": "Tap the free sugar.",
                   "parts": [
-                    "For breakfast, Kabir has plain milk,",
+                    "For breakfast, Sourav has plain milk,",
                     "a bowl of poha,",
                     "and a glass of packed mango juice."
                   ],
@@ -1458,7 +1468,7 @@
                 "example": {
                   "ask": "Tap where most of his sugar comes from.",
                   "parts": [
-                    "After cricket practice, Dev skips sweets all day",
+                    "After cricket practice, Naveen skips sweets all day",
                     "but drinks one can of cola,",
                     "and thinks he had almost no sugar."
                   ],
@@ -1669,7 +1679,7 @@
                   "water",
                   "nhs-dehydration"
                 ],
-                "stem": "On a long train journey, Kiran drinks very little so he can skip the toilet. By evening, what will his pee likely show?",
+                "stem": "On a long train journey, Sudeep drinks very little so he can skip the toilet. By evening, what will his pee likely show?",
                 "options": [
                   {
                     "id": "a",
@@ -1716,7 +1726,7 @@
                 "sourceRefs": [
                   "water"
                 ],
-                "stem": "Meena drinks about eight cups of tea a day and little plain water, and her pee is pale yellow. Is she short of fluid?",
+                "stem": "Faria drinks about eight cups of tea a day and little plain water, and her pee is pale yellow. Is she short of fluid?",
                 "options": [
                   {
                     "id": "a",
@@ -2154,7 +2164,7 @@
                     }
                   ]
                 },
-                "teach": "Sweat takes water out, so heat and hard work raise the need. Buttermilk, coconut water and lemon water suit hot days. Get urgent help for confusion or dizziness that stays.",
+                "teach": "Sweat takes water out, so heat and hard work raise the need, but a doctor's fluid limit comes first. Get urgent help for confusion or dizziness that stays.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -3600,7 +3610,7 @@
                     }
                   ]
                 },
-                "teach": "Vigorous minutes count double, so 75 match 150 moderate ones. Adults also need muscle work on 2 days a week.",
+                "teach": "Vigorous minutes count double, so 75 match 150 moderate. Adults also need muscle work 2 days a week. After years off or with an illness, see a doctor first.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5627,7 +5637,7 @@
                     }
                   ]
                 },
-                "teach": "Each food group brings different nutrients, so no one food covers them all. A good day mixes cereals, pulses, milk or eggs, and vegetables and fruit, about half the plate.",
+                "teach": "No one food has every nutrient, so mix food groups: cereals, pulses, milk or eggs, and at least 400 g of fruit and vegetables a day.",
                 "visual": {
                   "kind": "compare",
                   "left": {
@@ -5792,7 +5802,7 @@
                     }
                   ]
                 },
-                "teach": "Very fast loss does not last and can miss nutrients, so slow is safer. For people who need to lose weight, about half a kilo a week is called safe.",
+                "teach": "Very fast loss often does not last and can miss nutrients, so slow is safer. About half a kilo a week is called safe, if you need to lose weight.",
                 "visual": {
                   "kind": "scale",
                   "label": "Weekly weight change",

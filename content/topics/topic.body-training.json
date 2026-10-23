@@ -179,7 +179,7 @@
                   "guide",
                   "acsm"
                 ],
-                "stem": "At the college gym, Dev can row 8 kg only by swinging his back. His friend says to add more weight. What is the catch?",
+                "stem": "At the college gym, Parth can row 8 kg only by swinging his back. His friend says to add more weight. What is the catch?",
                 "options": [
                   {
                     "id": "a",
@@ -506,7 +506,7 @@
                     }
                   ]
                 },
-                "teach": "Asked to do a bit more than usual, a muscle adapts and gets stronger, so the same work feels easier next time. That push is called overload.",
+                "teach": "A muscle pushed a bit past its usual work adapts, so it grows stronger. That push is overload, and body weight, as in push-ups, can be the load.",
                 "visual": {
                   "kind": "flow",
                   "nodes": [
@@ -604,7 +604,7 @@
                 "example": {
                   "ask": "Tap what grew.",
                   "parts": [
-                    "Kabir did strength work twice a week last term,",
+                    "Tanmay did strength work twice a week last term,",
                     "then added a third day this term,",
                     "and his lifts kept getting stronger."
                   ],
@@ -690,7 +690,7 @@
                 "example": {
                   "ask": "Tap the small step.",
                   "parts": [
-                    "Isha jogs 100 minutes a week,",
+                    "Navya jogs 100 minutes a week,",
                     "adds just 10 minutes the next week,",
                     "and keeps that new total for a while."
                   ],
@@ -1218,16 +1218,16 @@
                 "example": {
                   "ask": "Tap the signal to build.",
                   "parts": [
-                    "Ananya does squats and push-ups at 6 pm,",
+                    "Shreya does squats and push-ups at 6 pm,",
                     "then eats rajma, rice and curd for dinner,",
                     "and sleeps well that night."
                   ],
-                  "spot": "Ananya does squats and push-ups at 6 pm,",
+                  "spot": "Shreya does squats and push-ups at 6 pm,",
                   "feedback": "The squats and push-ups are the signal. The meal then brings the parts to build with."
                 },
                 "guided": [
                   {
-                    "stem": "Kiran drinks a protein shake daily but never trains. What is he missing?",
+                    "stem": "Vijay drinks a protein shake daily but never trains. What is he missing?",
                     "hint": "Food is one half of the pair.",
                     "options": [
                       {
@@ -1283,7 +1283,7 @@
                     }
                   ]
                 },
-                "teach": "Healthy adults need about 0.83 g of protein per kilo a day. Above about 1.6 g, training added no more muscle, since muscle uses only so much.",
+                "teach": "Healthy adults need 0.83 g protein per kilo daily. Past 1.6 g, no more muscle grew, since muscle uses only so much. Kidney disease needs care with protein.",
                 "visual": {
                   "kind": "scale",
                   "label": "Protein per kilo of body weight a day",
@@ -1303,7 +1303,7 @@
                 "example": {
                   "ask": "Tap his daily need.",
                   "parts": [
-                    "Rohit weighs 60 kg and lifts weights,",
+                    "Shivam weighs 60 kg and works at a desk,",
                     "so about 50 g of protein a day meets his need,",
                     "from dal, curd and eggs."
                   ],
@@ -1312,7 +1312,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "Meena weighs 70 kg and trains. Above about what daily amount does extra protein stop adding muscle?",
+                    "stem": "Jhuma weighs 70 kg and trains. Above about what daily amount does extra protein stop adding muscle?",
                     "hint": "Use the higher figure per kilo.",
                     "options": [
                       {
@@ -1567,7 +1567,7 @@
                 "sourceRefs": [
                   "sport"
                 ],
-                "stem": "Before a school football match, Tara goes to bed two hours late but wakes at her usual time. What did the review find for this pattern?",
+                "stem": "Before a school football match, Pema goes to bed two hours late but wakes at her usual time. What did the review find for this pattern?",
                 "options": [
                   {
                     "id": "a",
@@ -1611,7 +1611,7 @@
                 "sourceRefs": [
                   "sport"
                 ],
-                "stem": "Ishaan usually sleeps from 11 pm to 7 am. Before a bus trip, early waking cut his sleep to 6 hours. About what time did his alarm ring?",
+                "stem": "Javed usually sleeps from 11 pm to 7 am. Before a bus trip, early waking cut his sleep to 6 hours. About what time did his alarm ring?",
                 "options": [
                   {
                     "id": "a",
@@ -3321,9 +3321,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "A long hold of a chest stretch.",
+                        "text": "Five minutes of sitting still first.",
                         "correct": false,
-                        "feedback": "A warm-up is mainly the move done lighter, not a long still stretch. A cool-down does the same at the end."
+                        "feedback": "Sitting still does not lift heart rate or breathing. A warm-up is the move itself, done lighter."
                       },
                       {
                         "id": "c",
@@ -5488,7 +5488,7 @@
                     }
                   ]
                 },
-                "teach": "When a mixed food stresses an ingredient in words or pictures, the label must usually give its percentage, so you can see how much is there.",
+                "teach": "When a mixed food stresses an ingredient in words or pictures, the label must usually give its percentage, so you see how much is there. Flavouring spices are exempt.",
                 "visual": {
                   "kind": "compare",
                   "left": {
