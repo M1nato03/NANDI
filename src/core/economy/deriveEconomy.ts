@@ -74,9 +74,10 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
  * Your own side quests: only the first few done in a quest week pay XP, in the order they were done, from the day
  * this build first ran (`economy.v4From`). `paid` counts the paying ones per quest week, for the Side quests card.
  */
-export function customQuestPay(facts: readonly LedgerRow[], v4From: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY): { unpaid: Set<string>; paid: Map<string, number> } {
+export function customQuestPay(facts: readonly LedgerRow[], v4From: string, history: readonly RulesHistoryEntry[] = RULES_HISTORY, today = '9999-12-31'): { unpaid: Set<string>; paid: Map<string, number> } {
   const unpaid = new Set<string>(), paid = new Map<string, number>(), seen = new Set<string>();
-  const rows = facts.filter(row => !row.deleted && row.mode === 'quests' && row.kind === 'quest' && row.dayKey >= v4From && isCustomQuestFact(row))
+  // The same facts scoring replays: valid ones dated up to today (a clock set back hides later ones; Codex item 48).
+  const rows = facts.filter(row => valid(row) && row.dayKey <= today && row.mode === 'quests' && row.kind === 'quest' && row.dayKey >= v4From && isCustomQuestFact(row))
     .sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.updatedAt - b.updatedAt || a.id.localeCompare(b.id));
   for (const row of rows) {
     if (seen.has(row.id)) continue;

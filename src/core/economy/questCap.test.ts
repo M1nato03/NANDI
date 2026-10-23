@@ -42,3 +42,11 @@ describe('the Side quests count matches scoring (Codex review, item 47)', () => 
     expect(questXp([...before, ...after], cutoff('2026-10-27'))).toBe(100);
   });
 });
+
+describe('a clock set back (Codex review, item 48)', () => {
+  it('counts only quests dated up to today, like scoring', () => {
+    const ahead = Array.from({ length: 3 }, (_, i) => quest(`01JAHEAD${i}`, '2026-W44', '2026-10-30', 300 + i, true));
+    expect(customQuestPay(ahead, '2026-10-25', undefined, '2026-10-27').paid.get('2026-W44') ?? 0).toBe(0);
+    expect(customQuestPay(ahead, '2026-10-25', undefined, '2026-10-30').paid.get('2026-W44')).toBe(3);
+  });
+});

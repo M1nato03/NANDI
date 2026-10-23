@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ulid } from 'ulidx';
 import { weekKey } from '../../core/quests';
+import { dayKey } from '../../core/time';
 import { db } from '../../data/db';
 import { createQuestRepo } from '../../data/repos/quests';
 import pack from '../../../content/quests/quests.core.json';
@@ -60,7 +61,8 @@ export function SideQuests({ selectedId }: { selectedId?: string }) {
   // Counted the way scoring counts them: only quests done since this build first ran (Codex review, item 47).
   const questFacts = useLiveQuery(() => db.ledger.where('mode').equals('quests').toArray(), []) ?? [];
   const capFrom = useLiveQuery(() => db.settings.get('economy.v4From'), []);
-  const ownDone = customQuestPay(questFacts, questCapFrom(capFrom && !capFrom.deleted ? [capFrom] : [])).paid.get(weekKey(Date.now())) ?? 0; // eslint-disable-line react-hooks/purity
+  const nowMs = Date.now(); // eslint-disable-line react-hooks/purity
+  const ownDone = customQuestPay(questFacts, questCapFrom(capFrom && !capFrom.deleted ? [capFrom] : []), undefined, dayKey(nowMs)).paid.get(weekKey(nowMs)) ?? 0;
   const shown = (selectedId ? visible.filter(row => row.id.toLowerCase() === selectedId) : visible)
     .sort((a, b) => Number(a.status === 'done') - Number(b.status === 'done'));
   async function run(action: () => Promise<void>) {
