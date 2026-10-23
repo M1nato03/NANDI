@@ -53,6 +53,16 @@ function asClose(raw: unknown): DayClose | undefined {
   return { total: num(value.total), sp: num(value.sp), streak: num(value.streak), paused: value.paused === true, shards: num(value.shards),
     owned: Array.isArray(value.owned) ? value.owned.filter((id): id is string => typeof id === 'string') : [], purchases };
 }
+/**
+ * A purchase made while closes dated on or after its day already exist (a clock set back, cj3 fuzz seed 1000): those
+ * closes were written before it, so each one pays for it now and lists it. Otherwise a later close would read as
+ * already net of it and mint its price back on the next day.
+ */
+export function chargeClose(raw: unknown, purchase: ClosePurchase): DayClose | undefined {
+  const close = asClose(raw);
+  if (!close || close.purchases.some(item => item.id === purchase.id)) return close;
+  return { ...close, shards: close.shards - purchase.price, purchases: [...close.purchases, purchase] };
+}
 /** Two closes for one day (an earlier one and a new one, or this phone's and a backup's) keep the higher of each. */
 export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   const x = asClose(a), y = asClose(b);

@@ -1,24 +1,26 @@
 // @vitest-environment jsdom
 // Seeded clock and time-zone fuzz of the economy (cloud batch 3 job 5, idea engine item 42), kept small for CI:
 // 20 seeds x 60 steps. It drives the real repos, reconcileGamify, exportBackup and importBackup on fake-indexeddb,
-// with a fake phone clock and process.env.TZ switched at run time, and checks what deriveEconomy shows after each step.
+// with a fake phone clock and env.TZ switched at run time, and checks what deriveEconomy shows after each step.
 // A restore replaces today (Jenil, 24 Oct), so after one only finished days, XP and level must hold.
 import 'fake-indexeddb/auto';
 import { expect, it, vi } from 'vitest';
-import { createDb, type NandiDb } from '../src/data/db';
-import { reconcileGamify } from '../src/data/repos/gamify';
-import { createTaskRepos } from '../src/data/repos/tasks';
-import { createTrainRepos } from '../src/data/repos/train';
-import { purchaseShopItem } from '../src/data/repos/economy';
-import { doSoftThing, setSoftState } from '../src/data/repos/soft';
-import { putDailyBoardFact } from '../src/data/repos/learn';
-import { exportBackup, importBackup, type BackupEnvelope } from '../src/data/backup';
-import { getOrCreateDeviceId } from '../src/data/device';
-import { deriveEconomy, type EconomyView } from '../src/core/economy/deriveEconomy';
-import { catalogue } from '../src/core/economy/shop';
-import { dayKey } from '../src/core/time';
-import type { PuzzleRunRow } from '../src/data/types';
+import { createDb, type NandiDb } from './db';
+import { reconcileGamify } from './repos/gamify';
+import { createTaskRepos } from './repos/tasks';
+import { createTrainRepos } from './repos/train';
+import { purchaseShopItem } from './repos/economy';
+import { doSoftThing, setSoftState } from './repos/soft';
+import { putDailyBoardFact } from './repos/learn';
+import { exportBackup, importBackup, type BackupEnvelope } from './backup';
+import { getOrCreateDeviceId } from './device';
+import { deriveEconomy, type EconomyView } from '../core/economy/deriveEconomy';
+import { catalogue } from '../core/economy/shop';
+import { dayKey } from '../core/time';
+import type { PuzzleRunRow } from './types';
 
+// process is not typed for app files; TZ is read per call, so setting it moves dayKey().
+const env = (globalThis as unknown as { process: { env: Record<string, string | undefined> } }).process.env;
 const ZONES = ['Asia/Kolkata', 'Asia/Dubai', 'America/New_York'] as const;
 type Act = 'task' | 'rest' | 'board' | 'soft' | 'buy' | 'lights';
 type Op =
@@ -58,7 +60,7 @@ let serial = 0;
 const START = Date.UTC(2026, 9, 20, 6, 30); // 20 Oct 2026, 12:00 in Kolkata
 
 async function runSequence(ops: Op[]): Promise<string[]> {
-  process.env.TZ = 'Asia/Kolkata';
+  env.TZ = 'Asia/Kolkata';
   let now = START;
   vi.setSystemTime(now);
   const db: NandiDb = createDb(`clock-fuzz-${++serial}`);
@@ -70,7 +72,8 @@ async function runSequence(ops: Op[]): Promise<string[]> {
     let maxXp = 0, maxLevel = 1, lastShards = 0, skip = false, taskN = 0;
     let owned = new Set<string>();
     const finished = new Map<string, { total: number; reopened: boolean }>();
-    let lastCheck = { today: '', shards: 0, owned: [] as string[] }, snap = { shards: 0, owned: [] as string[] }, spentSinceSnap = 0;
+    // The stored close of the last finished day, read just before a restore: what a restore may never lower.
+    let snap: { shards: number; owned: string[] } | undefined;
     const view = async (): Promise<EconomyView> => deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
     const check = async (step: number, op: Op, spent: number) => {
       const v = await view(), today = dayKey(now);
@@ -91,15 +94,12 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         if (!rec) finished.set(d.dayKey, { total: d.total, reopened: false });
         else if (d.total >= rec.total) rec.total = d.total;
       }
-      if (lastCheck.today && lastCheck.today < today) { snap = { shards: lastCheck.shards, owned: lastCheck.owned }; spentSinceSnap = 0; }
-      spentSinceSnap += spent;
       if (op.t === 'restore') {
-        // What a finished day ended with survives a restore; only today is replaced.
-        if (v.shards < snap.shards - spentSinceSnap) fail('shards-drop-finished', `${snap.shards} -> ${v.shards} (spent since ${spentSinceSnap})`);
-        for (const id of snap.owned) if (!v.owned.includes(id)) fail('owned-lost-finished', id);
+        // What a finished day closed with survives a restore; only today is replaced (Jenil, 24 Oct).
+        if (snap && v.shards < snap.shards) fail('shards-drop-finished', `${snap.shards} -> ${v.shards}`);
+        for (const id of snap?.owned ?? []) if (!v.owned.includes(id)) fail('owned-lost-finished', id);
         owned = new Set(v.owned);
       }
-      lastCheck = { today, shards: v.shards, owned: [...v.owned] };
       maxXp = Math.max(maxXp, v.totalXp); maxLevel = Math.max(maxLevel, v.level); lastShards = v.shards;
       for (const id of v.owned) owned.add(id);
     };
@@ -112,7 +112,7 @@ async function runSequence(ops: Op[]): Promise<string[]> {
       const d = new Date(now);
       if (op.t === 'day') { d.setDate(d.getDate() + 1); d.setHours(op.hour, op.min, 0, 0); setClock(d); }
       else if (op.t === 'fwd' || op.t === 'back') { d.setDate(d.getDate() + (op.t === 'fwd' ? op.days : -op.days)); d.setHours(op.hour, 0, 0, 0); setClock(d); }
-      else if (op.t === 'tz') process.env.TZ = op.zone;
+      else if (op.t === 'tz') env.TZ = op.zone;
       else if (op.t === 'at') { const next = new Date(now); next.setHours(op.hour, op.min, 0, 0); if (next.getTime() <= now) next.setDate(next.getDate() + 1); setClock(next); }
       else if (op.t === 'skipReconcile') skip = true;
       if (op.t === 'day' || op.t === 'fwd' || op.t === 'back' || op.t === 'tz' || op.t === 'at') {
@@ -142,27 +142,39 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         await reconcile();
       } else if (op.t === 'backup') backups.push(await exportBackup(db, now));
       else if (op.t === 'restore') {
+        const today = dayKey(now);
+        const last = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith('economy.close:') && row.key.slice(14) < today).sort((a, b) => a.key < b.key ? -1 : 1).at(-1);
+        const value = last?.value as { shards?: number; owned?: string[] } | undefined;
+        snap = value ? { shards: Math.max(0, value.shards ?? 0), owned: value.owned ?? [] } : undefined;
         if (backups.length) await importBackup(db, backups[op.pick % backups.length]!);
         await check(step, op, 0);
         await reconcile();
       }
       await check(step, op.t === 'restore' ? { t: 'skipReconcile' } : op, spent);
+      if (env.FUZZ_TRACE) {
+        const v = await view();
+        const closes = (await db.settings.toArray()).filter(r => r.key.startsWith('economy.close:')).map(r => `${r.key.slice(14)}=${(r.value as { shards: number }).shards}`);
+        console.log(step, JSON.stringify(op), env.TZ, 'today', dayKey(now), 'xp', v.totalXp, 'lvl', v.level, 'sh', v.shards, 'owned', v.owned.join('|'),
+          'facts', (await db.ledger.toArray()).map(f => `${f.kind}@${f.dayKey.slice(5)}`).join(' '), 'closes', closes.join(' '));
+      }
       if (failures.length) break;
     }
     return failures;
   } finally {
     await db.delete();
-    process.env.TZ = 'Asia/Kolkata';
+    env.TZ = 'Asia/Kolkata';
   }
 }
 
 it('the economy never drops XP, level, a finished day, Shards or owned items under clock, time-zone and restore moves', async () => {
   vi.useFakeTimers({ toFake: ['Date'] });
   const broken: string[] = [];
-  for (let seed = 1000; seed < 1020; seed++) {
+  // CI runs seeds 1000-1019; FUZZ_SEED runs one seed, FUZZ_BASE and FUZZ_COUNT a longer local run.
+  const only = env.FUZZ_SEED ? [Number(env.FUZZ_SEED)] : Array.from({ length: Number(env.FUZZ_COUNT ?? 20) }, (_, i) => Number(env.FUZZ_BASE ?? 1000) + i);
+  for (const seed of only) {
     const failures = await runSequence(generate(seed, 60));
     if (failures.length) broken.push(`seed ${seed}: ${failures[0]}`);
   }
   vi.useRealTimers();
   expect(broken).toEqual([]);
-}, 300_000);
+}, 3_600_000);

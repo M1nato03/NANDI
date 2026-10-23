@@ -1,6 +1,7 @@
 import { dayKey } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
 import { purchaseDecision } from '../../core/economy/shop';
+import { chargeClose, CLOSE_PREFIX } from '../../core/economy/deriveEconomy';
 import { getOrCreateDeviceId } from '../device';
 import type { NandiDb } from '../db';
 
@@ -14,6 +15,13 @@ export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.n
     const refId = `${itemId}:${now}`, id = `purchase:${refId}`;
     await db.ledger.add({ id, mode: 'economy', kind: 'purchase', refId, dayKey: day,
       inputs: { itemId, price: result.item.price, accepted: true }, updatedAt: now, deleted: 0, deviceId });
+    // Closes already stored for this day or later (a clock set back) were written before this purchase: charge it to them.
+    const purchase = { id, itemId, price: result.item.price, dayKey: day };
+    for (const row of settings) {
+      if (row.deleted || !row.key.startsWith(CLOSE_PREFIX) || row.key.slice(CLOSE_PREFIX.length) < day) continue;
+      const charged = chargeClose(row.value, purchase);
+      if (charged) await db.settings.put({ ...row, value: charged, updatedAt: now, deviceId });
+    }
     if (result.item.kind === 'theme' || result.item.kind === 'banner' || result.item.kind === 'cardBack' || result.item.kind === 'soundPack') {
       const key = `economy.${result.item.kind}`;
       await db.settings.put({ key, value: itemId, updatedAt: now, deleted: 0, deviceId });
