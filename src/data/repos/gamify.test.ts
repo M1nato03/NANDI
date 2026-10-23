@@ -288,3 +288,10 @@ it('a restore keeps the LATER courtyard cutoff, so no corner shrinks (Codex revi
   await importBackup(later, backup);
   expect((await later.settings.get('economy.v5From'))?.value).toBe('2026-11-12');
 });
+
+it('the courtyard cutoff starts after the furthest day shown, so a clock set back on upgrade day cannot shrink a corner (item 54)', async () => {
+  const db = createDb(`gamify-v5-seen-${++serial}`); opened.push(db);
+  await db.settings.put({ key: 'economy.seenUpTo', value: '2026-11-05', updatedAt: 1, deleted: 0, deviceId: 'test' });
+  await reconcileGamify(db, at('2026-11-04'));
+  expect((await db.settings.get('economy.v5From'))?.value).toBe('2026-11-06');
+});
