@@ -6,7 +6,7 @@ signature mechanic too, so that each part of NANDI feels unique:
 - Train, Plan, and calm or meditation could take ideas from the best app in each area.
 - Or NANDI could invent a new mechanic that only NANDI has.
 
-How to run: one cloud session runs EVERY job below as its own subagent, at least 3 at a time, until all 6 are done.
+How to run: one cloud session runs EVERY job below as its own subagent, at least 3 at a time, until all 7 are done.
 - Each job writes ONE report under docs/reviews/ and pushes it on its OWN new branch, named below.
 - Never push main or any existing branch. Never open a PR. Never change app code or content JSON.
 - Network access is open. Open real sources and quote them with URLs. If a page cannot be opened, say so.
@@ -22,17 +22,26 @@ NANDI is an offline learning and habits app for Indian adults aged 18-25 (React 
 Its modes are Plan (tasks, focus timer), Train (workouts), Learn (2-minute lessons), Mind (daily puzzle boards and
 mystery cases), Night (wind-down, lights-out, App pause) and the courtyard (friends whose corners grow with practice days).
 
+**Offline now, online later (Jenil, 24 Oct).** NANDI is offline today only because there are no servers yet. It will
+go online: accounts and sync are master-plan Phase 4, and small no-personal-data features may come earlier on
+Cloudflare's free tier, where the app is already hosted. Read docs/reviews/online-ready-2026-10-24.md on branch
+ideas/online-ready. So every proposal has TWO stages:
+- **v1 offline**, which can be built now
+- **v2 online**, covering what real people, a server or many learners add: live duels, real leagues, friends, sync,
+  calibration from all learners
+v1 must store its data so that v2 needs no migration. The core loop must always work with no network.
+
 Hard rules:
 - no dark patterns, no guilt, no loss states, no random or variable rewards, no endless feeds, no punishing timers
 - no health promises, no firearm content
-- nothing leaves the phone (no accounts until 2027)
+- personal data goes online only with an account, consent and a privacy notice (DPDP, before 13 May 2027)
 - XP, level and Shards never go down
 
 Every job must test each mechanic against these rules. Rewrite it so it passes, or reject it.
 
 For every mechanic, every job fills in this table:
 
-| App | Mechanic | What the user does and sees | Why it works (evidence, quoted) | Dark-pattern risk | Works offline? | NANDI version that passes the rules | Kill test |
+| App | Mechanic | What the user does and sees | Why it works (evidence, quoted) | Dark-pattern risk | NANDI v1 (offline) | NANDI v2 (online) | Kill test |
 
 Each job ends with 3 ranked proposals for its mode, and at least one must be an ORIGINAL mechanic. Before calling
 it original, search the web and app stores for it, and say what came closest.
@@ -50,8 +59,10 @@ Evidence to cover:
 - speed vs accuracy
 - the brain-training transfer debate (e.g. Simons et al. 2016), so no "makes you smarter" copy
 Questions:
-- How can Matiks-style duels work offline? Options: a duel against your own past best (a "ghost"), or a friend's run
-  shared through the existing day-bound share link (spec 19) and raced asynchronously. No timer that punishes.
+- Matiks-style duels: v1 offline is a duel against your own past best (a "ghost"), or a friend's run shared through
+  the existing day-bound share link (spec 19), raced asynchronously. v2 online is live 1v1 duels and weekly contests
+  with real ratings. Puzzles are seeded and deterministic, so how can a server verify solutions and stop cheating?
+  No timer that punishes.
 - Is a rated speed round (Storm-like) a kind version of an endless feed, or one in disguise? Where is the hard stop?
 - Which mechanic makes NANDI's mystery cases (Mentalist or Drishyam-style deduction) unique?
 Report docs/reviews/cj5-mind.md.
@@ -109,7 +120,8 @@ grows, while staying within an offline Capacitor app's limits?
 Report docs/reviews/cj5-focus.md.
 
 ## Job 5 · Invent: mechanics only NANDI has (branch ideas/cj5-invent)
-Generate 15 original mechanic concepts that use what makes NANDI different:
+Generate 15 original mechanic concepts that use what makes NANDI different. Include at least 5 that need v2
+  (friends, real people or many learners), each with its v1 offline form:
 - one ledger across all modes
 - the courtyard and its six friends, with Indian roots
 - offline and private
@@ -142,3 +154,27 @@ Output:
 - the checklist applied to NANDI's EXISTING mechanics: streak with the rest-day bank, the season ladder, the shop,
   the Hat-trick, daily quests, combo, focus boost, badges, the courtyard. Flag any that fail, with a fix.
 Report docs/reviews/cj5-ethics.md.
+
+## Job 7 · Going online: what first, and what it costs (branch ideas/cj5-online)
+NANDI will go online, but there is no budget for rented servers yet. Research:
+- **Free tiers, checked today, with exact limits and quoted pages:**
+  - Cloudflare Workers, D1, Durable Objects (WebSockets for live duels), KV, R2
+  - Supabase and Firebase free plans (note pauses and limits)
+  - Dexie Cloud
+  - What breaks first at 100, 1,000 and 10,000 users?
+- **Accounts:** sign-in options in India (phone OTP cost vs Google sign-in vs email link), and what an 18+ check can
+  honestly be.
+- **DPDP Act 2023 and Rules:** what an app must do before collecting personal data (notice, consent, deletion, data
+  fiduciary duties, breach reporting). Cite the official text.
+- **Anti-cheat for shared scores:** the economy is computed on the phone today. For leagues and duels, compare
+  verifying seeded puzzle solutions vs replaying ledger facts on the server vs trusting the client with rate limits.
+- **Moderation:** what is needed before any user-made content (hobby photos, names, custom quests) is visible to others.
+  Cover friends-only vs public, report and block, and image moderation cost.
+- **Sync:** how docs/specs/22-restore-that-keeps-both.md (branch ideas/spec-22-merge-restore) becomes the sync merge.
+  Cover device clocks vs a server checkpoint vs hybrid logical clocks.
+Output:
+- a staged plan: what can go online first with NO personal data (async duels by share link, anonymous item-difficulty
+  calibration with consent), then with accounts, then with sync
+- a cost table per stage
+- the 5 build-now steps that make v2 cheap later
+Report docs/reviews/cj5-online.md.
