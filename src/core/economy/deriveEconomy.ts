@@ -28,6 +28,8 @@ export interface EconomyDay {
   hatTrick: boolean; lightsOut: number; focus: number; total: number; mark: boolean; body: boolean; mindSlot: boolean;
   /** Spec 15: XP from a soft day's gentle thing, and the fixed gift on the first marked day after a miss. */
   soft: number; welcome: number;
+  /** Spec 24 #1: a kept Phone ki chhutti, paid once a day at most. It is not a Hat-trick slot and marks no day. */
+  chhutti: number;
   /** XP kept from the day's close: a later replay may not show less than the day once closed with. */
   held: number;
 }
@@ -560,8 +562,10 @@ function replayEconomy(
     const focus = Object.entries(boosted).reduce((sum, [name, amount]) => sum + (v2(key) ? Math.min(amount, earnedBy[name] ?? 0) : amount), 0) * (rules.gamify.focusMultiplier - 1);
     // Spec 15: one gentle thing on a tired or low day keeps the day. It is never a Hat-trick slot.
     const soft = rows.some(row => row.kind === 'soft') ? rules.soft.dayXp : 0;
-    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, welcome: 0, held: 0,
-      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft,
+    // Spec 24 #1: chhutti facts exist only from the build that writes them, so no past day is rescored.
+    const chhutti = Math.min(rules.plan.chhutti.paidPerDay, rows.filter(row => row.mode === 'tasks' && row.kind === 'chhutti' && row.inputs.kept === true).length) * rules.plan.chhutti.xp;
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, welcome: 0, held: 0,
+      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti,
       mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
   }
   // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days

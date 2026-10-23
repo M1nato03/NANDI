@@ -42,7 +42,7 @@ describe('rule history', () => {
     // Past days are replayed with RULES_HISTORY, so editing a scoring value in place rescores the past
     // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
     // this frozen copy for the old entry, and only then add a fingerprint for the new one.
-    const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards'] as const;
+    const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards', 'plan'] as const;
     // Keys that live beside scoring values but pay nothing (spec 19's board number, spec 04's internal case rating)
     // stay out of the fingerprint.
     const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo')) : value;
@@ -52,7 +52,9 @@ describe('rule history', () => {
     // economy.v4From, the day this build first runs, so no past day is rescored (item 45).
     // 7999642 (24 Oct, batch 5): shards.prices became one per-item table (the shop's and the replay's copies moved
     // here). Every price is the same number as before, so no past day is rescored (item 51 (c)).
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '7999642']]);
+    // 81ee9fd7 (24 Oct, spec 24 #1): plan.chhutti was added and 'plan' joined the scoring keys. Chhutti facts exist only
+    // from the build that writes them, so no past day is rescored.
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '81ee9fd7']]);
   });
 
   it('starts with the current rules', () => {

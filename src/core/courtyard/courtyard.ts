@@ -37,6 +37,8 @@ export function areaOf(fact: LedgerRow, nightFrom = '9999-12-31'): AreaId | null
   if (fact.mode === 'mind' && fact.inputs.afterBedtime === true && fact.dayKey >= nightFrom && !answerFrom(fact, 'drop:night:')) return null;
   if (fact.mode === 'train' && (fact.kind === 'session' || fact.kind === 'rest')) return 'train';
   if (fact.mode === 'tasks' && fact.kind === 'done') return 'plan';
+  // Spec 24 #1: a kept Phone ki chhutti is a Plan practice day (Mor's corner).
+  if (fact.mode === 'tasks' && fact.kind === 'chhutti') return fact.inputs.kept === true ? 'plan' : null;
   if (fact.kind === 'lightsout') return fact.inputs.metTarget === true ? 'sleep' : null;
   if (fact.mode !== 'mind') return null;
   if (fact.kind === 'board' || fact.kind === 'mystery') return 'mind';
@@ -46,23 +48,26 @@ export function areaOf(fact: LedgerRow, nightFrom = '9999-12-31'): AreaId | null
   return null;
 }
 /** Ledger kinds worth reading for the courtyard (indexed query). */
-export const COURTYARD_KINDS = ['session', 'rest', 'done', 'lightsout', 'board', 'mystery', 'learn-retention', 'card', 'learn-answer', 'learn-drop', 'lesson', 'soft'];
+export const COURTYARD_KINDS = ['session', 'rest', 'done', 'chhutti', 'lightsout', 'board', 'mystery', 'learn-retention', 'card', 'learn-answer', 'learn-drop', 'lesson', 'soft'];
 
 export function stageFor(days: number): number { return STAGE_DAYS.filter(need => days >= need).length; }
 
 export interface AreaState { id: AreaId; friend: FriendName; label: string; practice: string; days: number; stage: number; today: boolean; week: number; nextAt: number | null; nextObject: string | null }
-/** `lanterns`: spec 15 soft days, one per day a gentle thing was done (Kachhua's corner); they never go away. */
-export interface CourtyardState { areas: AreaState[]; activeDays: number; treeStage: number; todayCount: number; lanterns: number }
+/** `lanterns`: spec 15 soft days, one per day a gentle thing was done (Kachhua's corner); they never go away.
+ * `toran`: spec 24 #1, one marigold over the gate per day with a kept Phone ki chhutti; flowers are never removed. */
+export interface CourtyardState { areas: AreaState[]; activeDays: number; treeStage: number; todayCount: number; lanterns: number; toran: number }
 
 /** Days per area, all time and in the week starting `weekFrom` (inclusive) up to `today`. */
 export function deriveCourtyard(facts: readonly LedgerRow[], today: string, weekFrom?: string, nightFrom = '9999-12-31'): CourtyardState {
   const days = new Map<AreaId, Set<string>>(AREAS.map(area => [area.id, new Set()]));
   const active = new Set<string>();
   const lanterns = new Set<string>();
+  const toran = new Set<string>();
   for (const fact of facts) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(fact.dayKey) || fact.dayKey > today) continue;
     // A soft day kept the day, so it is an active day for the neem tree too (it belongs to no single area).
     if (fact.kind === 'soft' && !fact.deleted) { lanterns.add(fact.dayKey); active.add(fact.dayKey); }
+    if (fact.kind === 'chhutti' && !fact.deleted && fact.inputs.kept === true) toran.add(fact.dayKey);
     const area = areaOf(fact, nightFrom);
     if (!area) continue;
     days.get(area)!.add(fact.dayKey);
@@ -75,7 +80,7 @@ export function deriveCourtyard(facts: readonly LedgerRow[], today: string, week
       week: weekFrom ? [...set].filter(day => day >= weekFrom).length : 0,
       nextAt: stage < 5 ? STAGE_DAYS[stage]! : null, nextObject: stage < 5 ? area.objects[stage]! : null };
   });
-  return { areas, activeDays: active.size, treeStage: stageFor(active.size), todayCount: areas.filter(area => area.today).length, lanterns: lanterns.size };
+  return { areas, activeDays: active.size, treeStage: stageFor(active.size), todayCount: areas.filter(area => area.today).length, lanterns: lanterns.size, toran: toran.size };
 }
 
 const minutesOf = (clock: string) => { const [hour = 0, minute = 0] = clock.split(':').map(Number); return hour * 60 + minute; };

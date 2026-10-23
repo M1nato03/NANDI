@@ -1,6 +1,8 @@
 package app.nandi.personal;
 
 import android.app.AppOpsManager;
+import android.app.usage.UsageEvents;
+import android.app.usage.UsageStatsManager;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,10 @@ import android.os.Process;
 import android.os.Build;
 import android.provider.Settings;
 import android.net.Uri;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -23,6 +29,58 @@ public class NightPausePlugin extends Plugin {
         AppOpsManager ops = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         return ops != null && ops.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
             Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
+    }
+
+    /**
+     * Spec 24 #1 (Phone ki chhutti): the usage events for one past window, read afterwards. Nothing runs during the
+     * window. Returns the chosen apps' foreground and background events and the screen on/off events (API 28+),
+     * plus logStart, the first event of any kind the log still holds, so the app can tell "quiet" from "no history".
+     * No access, a locked phone (null) or an empty log returns available false, and the app then writes nothing.
+     */
+    @PluginMethod
+    public void windowEvents(PluginCall call) {
+        JSObject result = new JSObject();
+        Long from = call.getLong("from");
+        Long to = call.getLong("to");
+        String packages = call.getString("packages", "");
+        UsageStatsManager stats = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        long now = System.currentTimeMillis();
+        if (from == null || to == null || to <= from || stats == null || !usageAllowed(getContext())) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        UsageEvents events = stats.queryEvents(from - 6L * 60 * 60 * 1000, Math.min(to, now));
+        if (events == null) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        Set<String> chosen = new HashSet<>(Arrays.asList(packages.split(",")));
+        JSArray list = new JSArray();
+        long logStart = -1;
+        UsageEvents.Event event = new UsageEvents.Event();
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event);
+            if (logStart < 0) logStart = event.getTimeStamp();
+            int type = event.getEventType();
+            String name = event.getPackageName();
+            String kind = null;
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND) kind = chosen.contains(name) ? "fg" : null;
+            else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND) kind = chosen.contains(name) ? "bg" : null;
+            else if (Build.VERSION.SDK_INT >= 28 && type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
+            else if (Build.VERSION.SDK_INT >= 28 && type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
+            if (kind == null) continue;
+            JSObject item = new JSObject();
+            item.put("type", kind);
+            item.put("at", event.getTimeStamp());
+            if (kind.equals("fg") || kind.equals("bg")) item.put("pkg", name);
+            list.put(item);
+        }
+        result.put("available", logStart >= 0);
+        if (logStart >= 0) result.put("logStart", logStart);
+        result.put("events", list);
+        call.resolve(result);
     }
 
     @PluginMethod

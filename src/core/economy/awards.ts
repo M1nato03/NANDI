@@ -100,6 +100,7 @@ export function replayFactXp(fact: LedgerRow, history: readonly RulesHistoryEntr
   if (!rules) return 0;
   const input = fact.inputs;
   if (fact.mode === 'tasks' && fact.kind === 'done') return calculateTasksDayXp([fact], rules);
+  if (fact.mode === 'tasks' && fact.kind === 'chhutti') return input.kept === true ? rules.plan.chhutti.xp : 0;
   if (fact.mode === 'quests' && fact.kind === 'quest') return rules.quests.sideQuestXp;
   if (fact.mode === 'gamify' && fact.kind === 'perfect-drop') return rules.gamify.perfectDropXp;
   if (fact.mode === 'bonuses' && fact.kind === 'lightsout') return input.metTarget === true ? rules.bonuses.lightsOutXp : 0;

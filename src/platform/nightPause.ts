@@ -1,5 +1,6 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { RULES } from '../core/rules.config';
+import type { UsageEvent } from '../core/plan/chhutti';
 
 type Status = { usageAllowed: boolean; overlayAllowed: boolean; pendingPackage: string; pendingReason?: string; pendingMinutes?: number };
 type NightPausePlugin = {
@@ -11,6 +12,7 @@ type NightPausePlugin = {
   configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number; dayMode: string; dayLimitMinutes: number }): Promise<void>;
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
+  windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[] }>;
 };
 
 const native = registerPlugin<NightPausePlugin>('NightPause');
@@ -29,4 +31,11 @@ export async function configureNightPause(enabled: boolean, bedtime: string, pac
 export async function clearNightPause(): Promise<void> { if (Capacitor.isNativePlatform()) await native.clearPending(); }
 export async function openPausedApp(packageName: string, snoozeMs: number): Promise<void> {
   if (Capacitor.isNativePlatform()) await native.openApp({ packageName, snoozeMs });
+}
+
+/** Spec 24 #1: the phone's usage events for one past window; null where there is no usage log to read (web, no access). */
+export async function readWindowEvents(from: number, to: number, packages: string[]): Promise<{ logStart?: number; events: UsageEvent[] } | null> {
+  if (!Capacitor.isNativePlatform()) return null;
+  const result = await native.windowEvents({ from, to, packages: packages.join(',') });
+  return result.available ? { logStart: result.logStart, events: Array.isArray(result.events) ? result.events : [] } : null;
 }

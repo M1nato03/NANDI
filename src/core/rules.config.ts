@@ -212,6 +212,10 @@ export const RULES = {
     planLeadMin: 30,
   },
 
+  // Spec 24 #1 (cj5-focus §5 #1): Phone ki chhutti, a planned off-phone window checked afterwards, never blocked.
+  // xp is Jenil's open decision (spec 24 decision 4: 10 or 0); nothing ships until he answers.
+  plan: { chhutti: { xp: 10, paidPerDay: 1, startMin: 30, rampStepMin: 15, maxMin: 180, graceMin: 5, rampNeedsKeptOfLast3: 2 } },
+
   // Spec 12: practice days a courtyard corner needs for stages 1–5. Days, never points.
   courtyard: { stageDays: [3, 7, 14, 30, 60] },
 
@@ -360,6 +364,8 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
   'night.pauseDayLimitChoices.0': [5, 240], 'night.pauseDayLimitChoices.1': [5, 240], 'night.pauseDayLimitChoices.2': [5, 240],
   'night.pauseDayLimitChoices.3': [5, 240], 'night.pauseDayLimitChoices.4': [5, 240], 'night.planLeadMin': [0, 180],
+  'plan.chhutti.xp': [0, 50], 'plan.chhutti.paidPerDay': [0, 3], 'plan.chhutti.startMin': [10, 120], 'plan.chhutti.rampStepMin': [0, 60],
+  'plan.chhutti.maxMin': [30, 300], 'plan.chhutti.graceMin': [0, 30], 'plan.chhutti.rampNeedsKeptOfLast3': [1, 3],
   'courtyard.stageDays.0': [1, 400], 'courtyard.stageDays.1': [1, 400], 'courtyard.stageDays.2': [1, 400], 'courtyard.stageDays.3': [1, 400], 'courtyard.stageDays.4': [1, 400],
   'adaptive.busyMinutes': [60, 720], 'adaptive.busyShiftMin': [0, 60], 'adaptive.veryBusyMinutes': [60, 900], 'adaptive.veryBusyShiftMin': [0, 60],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],

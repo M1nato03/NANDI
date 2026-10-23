@@ -11,7 +11,7 @@ Each friend looks after one area. A **practice day** is a day with at least one 
 | Friend | Area | Practice day = a ledger fact of | Corner objects, one per stage |
 |---|---|---|---|
 | **Nandi** | Train | `train` session or rest check | mat, wooden clubs (mudgar), dumbbells, pull-up bar, medal hook |
-| **Mor** | Plan | `tasks` done | marigold pot, second pot, flower bed, creeper trellis, small water bowl |
+| **Mor** | Plan | `tasks` done, or a kept Phone ki chhutti (spec 24 #1; each kept day also hangs one marigold on the door toran) | marigold pot, second pot, flower bed, creeper trellis, small water bowl |
 | **Chiku** | Learn | `mind` learn-answer from the daily drop, learn-drop, lesson | book, book stack, low shelf, reading lamp, globe |
 | **Moti** | Remember | `mind` learn-retention, card, or an answer from a night or practice drop | keepsake box, photo frame, jar shelf, trunk, photo string with lights |
 | **Kapi** | Mind | `mind` board or mystery | puzzle cube, chess stool, kite, telescope, slate of sums |

@@ -181,6 +181,18 @@ function Lanterns({ count, glowLayer }: { count: number; glowLayer?: boolean }) 
     {xs.map(x => <g key={x}><path d={`M${x} 137v3`} stroke="#6b4a2c" strokeWidth=".8" /><rect x={x - 3.6} y="140" width="7.2" height="10" rx="2.4" fill="#f6a640" /><rect x={x - 2.2} y="142" width="4.4" height="6" rx="1.4" fill="#ffd98a" /></g>)}</g>;
 }
 
+/** Spec 24 #1: a marigold toran over the door, one flower per day with a kept Phone ki chhutti (up to 15 drawn). */
+function Toran({ count }: { count: number }) {
+  const shown = Math.min(count, 15);
+  if (!shown) return null;
+  // Flowers hang along a soft curve across the door, filled from the middle outwards.
+  const slots = Array.from({ length: 15 }, (_, index) => 96 + index * (38 / 14));
+  const order = slots.map((x, index) => ({ x, index })).sort((a, b) => Math.abs(a.index - 7) - Math.abs(b.index - 7)).slice(0, shown);
+  const y = (x: number) => 84 + 4 * (1 - ((x - 115) / 19) ** 2);
+  return <g className="courtyard-toran" data-toran={count}><path d="M94 84Q115 92 136 84" stroke="#3f7a3a" strokeWidth=".9" fill="none" />
+    {order.map(({ x }) => <g key={x}><circle cx={x} cy={y(x) + 2} r="2.8" fill="#f39a1e" /><circle cx={x} cy={y(x) + 2} r="1.1" fill="#c8641a" /></g>)}</g>;
+}
+
 /** Chiku looks after Learn: a book, a stack, a low shelf, a lamp and a globe. */
 function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   if (glowLayer) return stage >= 4 ? <g className="courtyard-flicker"><circle cx="248" cy="168" r="14" fill={C.glow} opacity=".32" /></g> : null;
@@ -196,7 +208,7 @@ function Books({ stage, glowLayer }: { stage: number; glowLayer?: boolean }) {
   </g>;
 }
 
-export function CourtyardScene({ phase, stages, treeStage, title, lanterns = 0 }: { phase: Phase; stages: Stages; treeStage: number; title: string; lanterns?: number }) {
+export function CourtyardScene({ phase, stages, treeStage, title, lanterns = 0, toran = 0 }: { phase: Phase; stages: Stages; treeStage: number; title: string; lanterns?: number; toran?: number }) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '');
   const tint = TINT[phase];
   const lit = phase === 'evening' || phase === 'night';
@@ -204,6 +216,7 @@ export function CourtyardScene({ phase, stages, treeStage, title, lanterns = 0 }
     <title>{title}</title>
     <Sky phase={phase} id={id} />
     <Walls />
+    <Toran count={toran} />
     <Garden stage={stages.plan} />
     <Keepsakes stage={stages.remember} />
     <Gym stage={stages.train} />

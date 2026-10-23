@@ -7,6 +7,7 @@ import { boundedSuggestion, readInterests } from '../../core/adaptive/day';
 import { dayKey } from '../../core/time';
 import { readNightPlan, nightPlanText } from '../../core/nightPlan';
 import { RULES } from '../../core/rules.config';
+import { activeChhutti } from '../../core/plan/chhutti';
 import { clearNightPause, openPausedApp } from '../../platform/nightPause';
 import { go } from '../shell/router';
 import { Kachhua } from '../cast/Cast';
@@ -24,6 +25,9 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
   const plan = readNightPlan(rows);
   const suggestion = boundedSuggestion(readInterests(rows), dayKey(Date.now()), reason === 'night'); // eslint-disable-line react-hooks/purity
   const copy = pauseCardCopy({ reason, minutes, label, planText: plan ? nightPlanText(plan) : null, suggestion });
+  // Spec 24 #1: inside a planned Phone ki chhutti the card says so, and "Go anyway" stays one tap.
+  const chhutti = activeChhutti(rows, Date.now(), dayKey(Date.now())); // eslint-disable-line react-hooks/purity
+  const lead = chhutti ? `This is your phone's chhutti (${chhutti.label.toLowerCase()}). Back to it, or go anyway?` : copy.lead;
   useEffect(() => {
     const timer = window.setInterval(() => setSeconds(value => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);
@@ -57,7 +61,7 @@ export function NightPauseCard({ packageName, reason = 'night', minutes = 0, clo
     <section className="card night-pause-card">
       <Kachhua pose="rest" size={48} /><p className="eyebrow">A small pause</p><h1>Take one breath</h1>
       <p role="timer">{seconds > 0 ? `Breathe for ${seconds} more seconds` : 'The breath is yours.'}</p>
-      <p>{copy.lead}</p>
+      <p>{lead}</p>
       {seconds === 0 && <><h2 className="night-pause-ask">What would feel better right now?</h2>
         <div className="night-pause-swaps">{copy.swaps.map((item, index) => <button type="button" key={item.label} className={index === 0 ? undefined : 'secondary'} onClick={() => void swap(item.route)}>{item.label}</button>)}</div></>}
       <button type="button" className="text-button night-pause-anyway" onClick={() => void goAnyway()}>Go to {label} anyway</button>

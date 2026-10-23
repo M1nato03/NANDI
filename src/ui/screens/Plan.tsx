@@ -14,6 +14,7 @@ import { TaskList } from '../tasks/TaskList';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { TaskDetail } from '../tasks/TaskDetail';
 import { Reminders } from '../tasks/Reminders';
+import { PhoneChhutti } from '../tasks/PhoneChhutti';
 import { taskGroups, todayTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
@@ -101,6 +102,7 @@ export function Plan({ questId }: { questId?: string }) {
     {!awayToday && <p className="small steady-line">{steadyLine(board.tasks, board.focus, today)}</p>}
     {board.message && <p role="status">{board.message}</p>}
     <TaskList title="Today" groups={todayGroups} nextId={nextId} {...listProps} />
+    <PhoneChhutti />
     <Reminders />
     <SideQuests />
     <details className="later card"><summary><strong>Later</strong><span>Tap to see what is waiting. Nothing here is late.</span></summary>
