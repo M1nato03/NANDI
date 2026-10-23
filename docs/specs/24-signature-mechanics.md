@@ -1,6 +1,6 @@
 # Spec 24 · A signature mechanic for every mode
 
-Status: DRAFT for Jenil (idea engine, 24 Oct 2026). These are recommended picks; Jenil can change any of them. Not approved.
+Status: PICKS APPROVED by Jenil (24 Oct 2026, "yeah go ahead with them"). Decisions 2-4 (ethics fixes, calm XP and name, chhutti XP) are still open; recommended defaults are marked.
 Offline-first, online-ready: each mechanic has a v1 that works with no network and a v2 for when there are servers.
 
 Jenil (24 Oct): Learn takes from Duolingo (spec 23). Every other mode should feel unique too: Mind could take from
