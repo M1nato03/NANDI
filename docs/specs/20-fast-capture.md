@@ -128,8 +128,14 @@ had not made. Proposed answers, all precision first. The real gold set can overt
 G3 and G4 matter most: as first written they give **wrong readings**, not misses, so they would break the under-1% gate.
 Report the gate both with and without the `v1_scope=out` rows.
 
+## Online later (offline-first, online-ready; Jenil 24 Oct)
+- Parsing stays on the phone even after NANDI goes online. Task text is personal, and capture must stay instant with no network.
+- v2 option: people who opt in donate their ✕-corrections (the recognised word and two words around it, never the
+  whole line) to grow the shared variant lexicon. That is the gold-set process at scale. New words still pass the
+  locked-gold-set gate before they ship.
+
 ## Not doing
-No AI or server parsing (offline rule). No reminders added automatically. No points, streaks or randomness for
+No AI or server parsing (the line stays on the phone). No reminders added automatically. No points, streaks or randomness for
 capturing. No logging of typed text anywhere. No copying of GPL code or data (chatbot_ner). New words get into the
 lexicon only through the gold-set process, not by guessing.
 
