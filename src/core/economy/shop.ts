@@ -7,17 +7,17 @@ export type ShopKind = 'freeze' | 'cardBack' | 'banner' | 'puzzlePack' | 'soundP
 export type ShopItem = { id: string; kind: ShopKind; name: string; price: number; description: string };
 export const SHOP_ITEMS: readonly ShopItem[] = [
   { id: 'freeze', kind: 'freeze', name: 'Rest day', price: RULES.shards.prices.freeze, description: 'Adds one day to your rest bank.' },
-  { id: 'cardback:weave', kind: 'cardBack', name: 'Weave card back', price: 100, description: 'A quiet woven pattern.' },
-  { id: 'cardback:orbit', kind: 'cardBack', name: 'Orbit card back', price: 150, description: 'Small circles in motion.' },
-  { id: 'cardback:steps', kind: 'cardBack', name: 'Steps card back', price: 150, description: 'A path of gentle steps.' },
-  { id: 'banner:dawn', kind: 'banner', name: 'Dawn banner', price: 100, description: 'Warm light for your season card.' },
-  { id: 'banner:grove', kind: 'banner', name: 'Grove banner', price: 150, description: 'A green place to begin.' },
-  { id: 'banner:sky', kind: 'banner', name: 'Sky banner', price: 150, description: 'A soft blue horizon.' },
-  { id: 'puzzle:paths', kind: 'puzzlePack', name: 'Paths practice pack', price: 150, description: 'Handpicked Path boards.' },
-  { id: 'puzzle:patterns', kind: 'puzzlePack', name: 'Patterns practice pack', price: 250, description: 'Handpicked Crowns and Sudoku boards.' },
-  { id: 'sound:soft', kind: 'soundPack', name: 'Soft sounds', price: 300, description: 'Quiet sounds for check-offs.' },
-  { id: 'theme:linen', kind: 'theme', name: 'Linen theme', price: 400, description: 'Warm paper in light and dark.' },
-  { id: 'theme:lagoon', kind: 'theme', name: 'Lagoon theme', price: 800, description: 'Calm teal in light and dark.' },
+  { id: 'cardback:weave', kind: 'cardBack', name: 'Weave card back', price: RULES.shards.prices['cardback:weave'], description: 'A quiet woven pattern.' },
+  { id: 'cardback:orbit', kind: 'cardBack', name: 'Orbit card back', price: RULES.shards.prices['cardback:orbit'], description: 'Small circles in motion.' },
+  { id: 'cardback:steps', kind: 'cardBack', name: 'Steps card back', price: RULES.shards.prices['cardback:steps'], description: 'A path of gentle steps.' },
+  { id: 'banner:dawn', kind: 'banner', name: 'Dawn banner', price: RULES.shards.prices['banner:dawn'], description: 'Warm light for your season card.' },
+  { id: 'banner:grove', kind: 'banner', name: 'Grove banner', price: RULES.shards.prices['banner:grove'], description: 'A green place to begin.' },
+  { id: 'banner:sky', kind: 'banner', name: 'Sky banner', price: RULES.shards.prices['banner:sky'], description: 'A soft blue horizon.' },
+  { id: 'puzzle:paths', kind: 'puzzlePack', name: 'Paths practice pack', price: RULES.shards.prices['puzzle:paths'], description: 'Handpicked Path boards.' },
+  { id: 'puzzle:patterns', kind: 'puzzlePack', name: 'Patterns practice pack', price: RULES.shards.prices['puzzle:patterns'], description: 'Handpicked Crowns and Sudoku boards.' },
+  { id: 'sound:soft', kind: 'soundPack', name: 'Soft sounds', price: RULES.shards.prices['sound:soft'], description: 'Quiet sounds for check-offs.' },
+  { id: 'theme:linen', kind: 'theme', name: 'Linen theme', price: RULES.shards.prices['theme:linen'], description: 'Warm paper in light and dark.' },
+  { id: 'theme:lagoon', kind: 'theme', name: 'Lagoon theme', price: RULES.shards.prices['theme:lagoon'], description: 'Calm teal in light and dark.' },
 ];
 export const SHOP_CATALOGUES = [
   ['freeze', 'cardback:weave', 'banner:dawn', 'puzzle:paths', 'sound:soft', 'theme:linen', 'theme:lagoon'],

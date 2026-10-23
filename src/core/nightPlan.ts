@@ -1,5 +1,6 @@
 import type { DailyLogRow, SettingRow } from '../data/types';
 import { shutdownAt } from './tasks/planner';
+import { RULES } from './rules.config';
 
 export type NightPlan = { cue: string; action: string };
 export const NIGHT_PLAN_KEY = 'night.plan';
@@ -26,7 +27,7 @@ export function nightPlanText(plan: NightPlan): string {
 }
 
 export function planLeadsNow(now: number, bedtime: string): boolean {
-  return now >= shutdownAt(now, bedtime) - 30 * 60_000;
+  return now >= shutdownAt(now, bedtime) - RULES.night.planLeadMin * 60_000;
 }
 
 export function nightsBackOnPlan(logs: DailyLogRow[]): number {

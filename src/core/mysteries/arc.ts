@@ -4,24 +4,21 @@ import monsoon from '../../../content/mystery-arcs/mystery-arc.monsoon-map.json'
 import bell from '../../../content/mystery-arcs/mystery-arc.last-bell.json';
 import type { PuzzleRunRow } from '../../data/types';
 import { RULES } from '../rules.config';
+import { seasonFor as economySeason } from '../economy/deriveEconomy';
 
 const arcs = [lantern, measure, monsoon, bell];
 const dateOf = (key: string) => new Date(`${key}T12:00:00Z`);
-const keyOf = (date: Date) => date.toISOString().slice(0, 10);
-const firstMonday = (year: number, month: number) => {
-  const first = new Date(Date.UTC(year, month, 1, 12));
-  first.setUTCDate(1 + (8 - first.getUTCDay()) % 7);
-  return first;
-};
 
+/**
+ * The story's place in the season, numbered from the economy's seasonFor (the one the ladder and closes use):
+ * the story counts the pre-season month as 0, so its index is the economy's plus one (batch 5, item 51).
+ */
 export function seasonFor(day: string): { index: number; start: string; chapter: number; panel: number; arcIndex: number } {
+  const season = economySeason(day);
+  const index = Math.max(0, season.index + 1);
   const date = dateOf(day);
-  let year = date.getUTCFullYear(), month = date.getUTCMonth();
-  let start = firstMonday(year, month);
-  if (date < start) { month--; if (month < 0) { year--; month = 11; } start = firstMonday(year, month); }
-  const index = Math.max(0, (year - 2026) * 12 + month - 10 + 1);
-  const chapter = Math.min(RULES.mind.arcChapters - 1, Math.floor((date.getTime() - start.getTime()) / 604_800_000));
-  return { index, start: keyOf(start), chapter, panel: (date.getUTCDay() + 6) % 7, arcIndex: index % RULES.mind.arcCount };
+  const chapter = Math.min(RULES.mind.arcChapters - 1, Math.floor((date.getTime() - dateOf(season.start).getTime()) / 604_800_000));
+  return { index, start: season.start, chapter, panel: (date.getUTCDay() + 6) % 7, arcIndex: index % RULES.mind.arcCount };
 }
 
 export function currentArcTitle(dayKey: string): string {

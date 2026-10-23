@@ -1,4 +1,5 @@
 import type { LedgerRow } from '../../data/types';
+import { RULES } from '../rules.config';
 
 /** Spec 12: each friend looks after one area of life and grows with the days you practise it. */
 export type AreaId = 'train' | 'plan' | 'learn' | 'remember' | 'mind' | 'sleep';
@@ -15,7 +16,7 @@ export const AREAS: readonly { id: AreaId; friend: FriendName; label: string; pr
 ];
 export const TREE_OBJECTS = ['a neem sapling', 'a young neem', 'a leafy neem', 'a swing on the neem', 'lights in the neem'] as const;
 /** Practice days needed for stages 1–5. Days, never points, so one long sitting cannot rush it. */
-export const STAGE_DAYS = [3, 7, 14, 30, 60] as const;
+export const STAGE_DAYS = RULES.courtyard.stageDays;
 
 const answerFrom = (fact: LedgerRow, prefix: string) => typeof fact.inputs.dropId === 'string' && fact.inputs.dropId.startsWith(prefix);
 

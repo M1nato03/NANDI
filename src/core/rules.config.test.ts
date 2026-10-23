@@ -43,13 +43,16 @@ describe('rule history', () => {
     // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
     // this frozen copy for the old entry, and only then add a fingerprint for the new one.
     const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards'] as const;
-    // Display-only keys that live beside scoring values (spec 19's board number) stay out of the fingerprint.
-    const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch')) : value;
+    // Keys that live beside scoring values but pay nothing (spec 19's board number, spec 04's internal case rating)
+    // stay out of the fingerprint.
+    const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo')) : value;
     const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, displayOnly(key, rules[key])]))]
       .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
     // b8be6943 (24 Oct): quests.paidCustomPerWeek was added. It is no edit of a past value: it only applies from
     // economy.v4From, the day this build first runs, so no past day is rescored (item 45).
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'b8be6943']]);
+    // 7999642 (24 Oct, batch 5): shards.prices became one per-item table (the shop's and the replay's copies moved
+    // here). Every price is the same number as before, so no past day is rescored (item 51 (c)).
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '7999642']]);
   });
 
   it('starts with the current rules', () => {

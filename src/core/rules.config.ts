@@ -98,6 +98,8 @@ export const RULES = {
     eloK: { early: 40, later: 24, earlyAnswers: 20 },
     eloClamp: [400, 2400],
     hintScore: 0.6,
+    // Spec 04: the detective rating a daily case is scored against, by difficulty (internal, never shown or paid).
+    caseElo: { easy: 1000, medium: 1100, hard: 1200 },
     caseScore: { cleanSolve: 1, withHintsOrSecondTry: 0.7, revealed: 0 },
     cardBoxIntervalsDays: [0, 1, 3, 7, 14, 30, 60],
     reviewSession: { ramp: [5, 7, 10], bigPile: 10, resetAfterDays: 7, spreadAbove: 50, spreadPerDay: 10 },
@@ -173,7 +175,12 @@ export const RULES = {
     perXp: 0.1,
     levelUpBonus: 20,
     seasonEnd: { Bench: 50, Challenger: 100, Contender: 150, Elite: 200, Ace: 250, Apex: 300 },
-    prices: { freeze: 50, cardBack: [100, 150], banner: [100, 150], puzzlePack: [150, 250], soundPack: 300, theme: [400, 800] },
+    // One price table: the shop shows these and the replay charges them (batch 5 moved both copies here).
+    prices: {
+      freeze: 50, 'cardback:weave': 100, 'cardback:orbit': 150, 'cardback:steps': 150,
+      'banner:dawn': 100, 'banner:grove': 150, 'banner:sky': 150, 'puzzle:paths': 150, 'puzzle:patterns': 250,
+      'sound:soft': 300, 'theme:linen': 400, 'theme:lagoon': 800,
+    },
   },
 
   // 05-economy §2, night schedule. Clock bounds, if added, use the night timeline.
@@ -200,7 +207,13 @@ export const RULES = {
     pauseSnoozeMin: 10,
     pauseTestMin: 2,
     pauseDayLimitMin: 30,
+    pauseDayLimitChoices: [15, 30, 45, 60, 90],
+    // The "If I…, then I…" night plan leads the night card from this long before bedtime.
+    planLeadMin: 30,
   },
+
+  // Spec 12: practice days a courtyard corner needs for stages 1–5. Days, never points.
+  courtyard: { stageDays: [3, 7, 14, 30, 60] },
 
   // 05-economy §2, notifications, backup and animation timing.
   notifications: { engagementPerDayMax: 2, planningReminderTime: '09:00' },
@@ -297,7 +310,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.hintLadderRungs': [3, 3], 'mind.parMinSolves': [1, 10], 'mind.parWindow': [5, 20],
   'mind.arcCount': [4, 4], 'mind.arcChapters': [4, 5], 'mind.arcPanelMaxWords': [1, 60],
   'mind.eloK.earlyAnswers': [1, 100], 'mind.eloClamp.0': [0, 3000], 'mind.eloClamp.1': [100, 4000],
-  'mind.hintScore': [0, 1], 'mind.caseScore.cleanSolve': [0, 1],
+  'mind.hintScore': [0, 1], 'mind.caseElo.easy': [400, 2400], 'mind.caseElo.medium': [400, 2400], 'mind.caseElo.hard': [400, 2400], 'mind.caseScore.cleanSolve': [0, 1],
   'mind.caseScore.withHintsOrSecondTry': [0, 1], 'mind.caseScore.revealed': [0, 1],
   'mind.cardBoxIntervalsDays.0': [0, 365], 'mind.cardBoxIntervalsDays.1': [0, 365],
   'mind.cardBoxIntervalsDays.2': [0, 365], 'mind.cardBoxIntervalsDays.3': [0, 365],
@@ -335,17 +348,19 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'shards.seasonEnd.Bench': [0, 1000], 'shards.seasonEnd.Challenger': [0, 1000],
   'shards.seasonEnd.Contender': [0, 1000], 'shards.seasonEnd.Elite': [0, 1000],
   'shards.seasonEnd.Ace': [0, 1000], 'shards.seasonEnd.Apex': [0, 1000],
-  'shards.prices.freeze': [0, 2000], 'shards.prices.cardBack.0': [0, 2000],
-  'shards.prices.cardBack.1': [0, 2000], 'shards.prices.banner.0': [0, 2000],
-  'shards.prices.banner.1': [0, 2000], 'shards.prices.puzzlePack.0': [0, 2000],
-  'shards.prices.puzzlePack.1': [0, 2000], 'shards.prices.soundPack': [0, 2000],
-  'shards.prices.theme.0': [0, 2000], 'shards.prices.theme.1': [0, 2000],
+  'shards.prices.freeze': [0, 2000], 'shards.prices.cardback:weave': [0, 2000], 'shards.prices.cardback:orbit': [0, 2000],
+  'shards.prices.cardback:steps': [0, 2000], 'shards.prices.banner:dawn': [0, 2000], 'shards.prices.banner:grove': [0, 2000],
+  'shards.prices.banner:sky': [0, 2000], 'shards.prices.puzzle:paths': [0, 2000], 'shards.prices.puzzle:patterns': [0, 2000],
+  'shards.prices.sound:soft': [0, 2000], 'shards.prices.theme:linen': [0, 2000], 'shards.prices.theme:lagoon': [0, 2000],
   // Night and system limits: bounded days/minutes, notifications, backup and animation durations.
   'night.windDownCapMin': [0, 60], 'night.bedtimeStepMin': [1, 60],
   'night.bedtimeRampEveryDays': [1, 30], 'night.bedtimeRampNeedsMetOfLast3': [0, 3],
   'night.shutdownMinBeforeBedtime': [0, 180], 'night.streakReminderMinBeforeBedtime': [0, 240],
   'night.pauseLeadMin': [0, 120],
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
+  'night.pauseDayLimitChoices.0': [5, 240], 'night.pauseDayLimitChoices.1': [5, 240], 'night.pauseDayLimitChoices.2': [5, 240],
+  'night.pauseDayLimitChoices.3': [5, 240], 'night.pauseDayLimitChoices.4': [5, 240], 'night.planLeadMin': [0, 180],
+  'courtyard.stageDays.0': [1, 400], 'courtyard.stageDays.1': [1, 400], 'courtyard.stageDays.2': [1, 400], 'courtyard.stageDays.3': [1, 400], 'courtyard.stageDays.4': [1, 400],
   'adaptive.busyMinutes': [60, 720], 'adaptive.busyShiftMin': [0, 60], 'adaptive.veryBusyMinutes': [60, 900], 'adaptive.veryBusyShiftMin': [0, 60],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],
   'juice.microMs.0': [0, 1000], 'juice.microMs.1': [0, 1000],

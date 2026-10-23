@@ -37,3 +37,18 @@ it('records a revealed case once without awarding a solve', async () => {
   expect((await db.ledger.get(`mystery:${opened.id}`))?.inputs.result).toBe('revealed');
   expect(replayFactXp((await db.ledger.get(`mystery:${opened.id}`))!)).toBe(0);
 });
+
+it('the daily case moves the detective rating once: up for a clean solve, less with hints, down for a reveal (spec 04, batch 5)', async () => {
+  const rated = async (run: { result: 'solved' | 'revealed'; hintsUsed?: number }, day = '2026-10-11') => {
+    const db = fresh(), mystery = CaseGen.daily(day, 'easy')!;
+    const opened = await openDailyCase(db, mystery, day, 1000);
+    await saveDailyCase(db, { ...opened, ...run }, 2000);
+    await saveDailyCase(db, { ...opened, ...run }, 3000);
+    return db.ratings.get('detective');
+  };
+  const clean = await rated({ result: 'solved' }), hinted = await rated({ result: 'solved', hintsUsed: 1 }), revealed = await rated({ result: 'revealed' });
+  expect(clean?.n).toBe(1);
+  expect(clean!.value!).toBeGreaterThan(hinted!.value!);
+  expect(hinted!.value!).toBeGreaterThan(1000);
+  expect(revealed!.value!).toBeLessThan(1000);
+});

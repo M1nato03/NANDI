@@ -272,13 +272,7 @@ const valid = (fact: LedgerRow) => !fact.deleted && /^\d{4}-\d{2}-\d{2}$/.test(f
 const beforeBed = (fact: LedgerRow) => fact.inputs.afterBedtime !== true && fact.inputs.beforeBedtime !== false;
 const tierFor = (rank: number) => RULES.season.tiers.find(([, low, high]) => rank >= low && rank <= high)?.[0] ?? 'Bench';
 const xpToReach = (level: number, stepBase: number) => stepBase * level * (level - 1) / 2;
-const purchasePrices: Record<string, number> = {
-  freeze: RULES.shards.prices.freeze,
-  'cardback:weave': 100, 'cardback:orbit': 150, 'cardback:steps': 150,
-  'banner:dawn': 100, 'banner:grove': 150, 'banner:sky': 150,
-  'puzzle:paths': 150, 'puzzle:patterns': 250, 'sound:soft': 300,
-  'theme:linen': 400, 'theme:lagoon': 800,
-};
+const purchasePrices: Record<string, number> = RULES.shards.prices;
 
 interface DaySnapshot { streak: number; paused: boolean; earned: number; bonus: number; balance: number; owned: string[]; purchases: ClosePurchase[] }
 /** `balance` is the signed end balance; `view.shards` is it clamped at 0 for the screen. */

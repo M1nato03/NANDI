@@ -19,7 +19,7 @@ export const DAY_MODES: { value: DayMode; label: string }[] = [
   { value: 'open', label: 'Every time I open one' },
   { value: 'off', label: 'Off (night only)' },
 ];
-export const DAY_LIMIT_CHOICES = [15, 30, 45, 60, 90] as const;
+export const DAY_LIMIT_CHOICES = RULES.night.pauseDayLimitChoices;
 
 export function readDayMode(value: unknown): DayMode {
   return value === 'off' || value === 'open' || value === 'limit' ? value : 'limit';
