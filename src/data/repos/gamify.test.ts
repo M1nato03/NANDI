@@ -258,19 +258,33 @@ it('the Focus boost opens only in the day window and ends by shutdown (batch 5, 
   await reconcileGamify(db, at(day, '23:05'));
   const boost = await db.ledger.get(`focus-boost:${day}`);
   expect(boost?.inputs.until).toBe(at(day, '23:15'));
-  // From the first run on, Mind after bedtime grows no courtyard corner.
-  expect((await db.settings.get('economy.v5From'))?.value).toBe(day);
+  // From the day after the first run, Mind after bedtime grows no courtyard corner (nothing earlier today drops).
+  expect((await db.settings.get('economy.v5From'))?.value).toBe('2026-11-06');
 });
 
-it('a Train-only rest day starts covering the streak from this week, and Train shows a streak pick (batch 5, item 51)', async () => {
+it('a Train-only rest day starts covering the streak from next week, and Train shows a streak pick (batch 5, items 51 and 53)', async () => {
   const db = createDb(`gamify-rest-sync-${++serial}`); opened.push(db);
   const day = '2026-11-05'; // a Thursday; its week starts Monday 2 Nov
   await db.programs.add({ id: 'train-program', track: 'bodyweight', days: [1, 3, 5], weeklyTarget: 3, restDay: 0, heatModeEnabled: false, updatedAt: 0, deleted: 0, deviceId: 'test' } as never);
   await reconcileGamify(db, at(day));
-  expect((await db.settings.get('economy.restWeekday'))?.value).toEqual({ weekday: 0, from: '2026-11-02' });
-  expect((await db.settings.get('economy.restWeekday:2026-11-02'))?.value).toBe(0);
+  expect((await db.settings.get('economy.restWeekday'))?.value).toEqual({ weekday: 0, from: '2026-11-09' });
+  expect(await db.settings.get('economy.restWeekday:2026-11-02')).toBeUndefined();
   // A pick made on the streak screen wins, and Train is brought in line with it.
-  await db.settings.put({ key: 'economy.restWeekday:2026-11-02', value: 3, updatedAt: 1, deleted: 0, deviceId: 'test' });
+  await db.settings.put({ key: 'economy.restWeekday', value: { weekday: 3, from: '2026-11-09' }, updatedAt: 1, deleted: 0, deviceId: 'test' });
   await reconcileGamify(db, at(day, '13:00'));
   expect((await db.programs.get('train-program'))?.restDay).toBe(3);
+});
+
+it('a restore keeps the LATER courtyard cutoff, so no corner shrinks (Codex review of batch 5, item 53)', async () => {
+  const source = createDb(`gamify-v5-src-${++serial}`); opened.push(source);
+  await source.settings.put({ key: 'economy.v5From', value: '2026-11-08', updatedAt: 1, deleted: 0, deviceId: 'old' });
+  const backup = await exportBackup(source, at('2026-11-09'));
+  const earlier = createDb(`gamify-v5-early-${++serial}`); opened.push(earlier);
+  await earlier.settings.put({ key: 'economy.v5From', value: '2026-11-02', updatedAt: 1, deleted: 0, deviceId: 'phone' });
+  await importBackup(earlier, backup);
+  expect((await earlier.settings.get('economy.v5From'))?.value).toBe('2026-11-08');
+  const later = createDb(`gamify-v5-late-${++serial}`); opened.push(later);
+  await later.settings.put({ key: 'economy.v5From', value: '2026-11-12', updatedAt: 1, deleted: 0, deviceId: 'phone' });
+  await importBackup(later, backup);
+  expect((await later.settings.get('economy.v5From'))?.value).toBe('2026-11-12');
 });

@@ -247,7 +247,11 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
       overwriteValues: true,
       filter: (table, value) => table !== 'settings' || !deviceLocalKeys.has((value as SettingRow).key),
     });
-    await db.settings.bulkPut([...localSettings, ...localCutoffs]);
+    // The batch 5 courtyard cutoff takes the LATER of the two: a later day puts fewer days under the new rule,
+    // so no courtyard corner shrinks after a restore (Codex review of batch 5, item 53).
+    const theirV5 = await db.settings.get('economy.v5From');
+    const laterV5 = (row: SettingRow) => row.key !== 'economy.v5From' || !theirV5 || theirV5.deleted || typeof theirV5.value !== 'string' || String(row.value) > theirV5.value;
+    await db.settings.bulkPut([...localSettings, ...localCutoffs.filter(laterV5)]);
     // The XP and level peak keeps the higher of this phone's and the backup's (item 38).
     const restoredPeak = await db.settings.get(PEAK_KEY);
     const theirs = restoredPeak && !restoredPeak.deleted ? readPeak([restoredPeak]) : { totalXp: 0, level: 1 };

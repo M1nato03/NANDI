@@ -45,8 +45,9 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (!await db.settings.get('economy.v2From')) await db.settings.put({ key: 'economy.v2From', value: today, updatedAt: now, deleted: 0, deviceId });
     if (!await db.settings.get('economy.v3From')) await db.settings.put({ key: 'economy.v3From', value: today, updatedAt: now, deleted: 0, deviceId });
     if (!await db.settings.get('economy.v4From')) await db.settings.put({ key: 'economy.v4From', value: today, updatedAt: now, deleted: 0, deviceId });
-    // Batch 5 (item 51): from this day on, Mind after bedtime grows no courtyard corner.
-    if (!await db.settings.get('economy.v5From')) await db.settings.put({ key: 'economy.v5From', value: today, updatedAt: now, deleted: 0, deviceId });
+    // Batch 5 (item 51): from the day after this build first runs, Mind after bedtime grows no courtyard corner.
+    // Tomorrow, so nothing done earlier today stops counting; written once and never lowered (item 53).
+    if (!await db.settings.get('economy.v5From')) await db.settings.put({ key: 'economy.v5From', value: addEconomyDays(today, 1), updatedAt: now, deleted: 0, deviceId });
     const facts = (await db.ledger.toArray()).filter(f => !f.deleted);
     const known = new Set(facts.map(f => f.id));
     const add = async (kind: string, refId: string, day: string, inputs: Record<string, unknown> = {}, at = now) => {

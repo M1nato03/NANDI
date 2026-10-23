@@ -1,11 +1,11 @@
 import { dayKey } from '../../core/time';
 import { trackWrite } from '../../core/pendingWrites';
 import { purchaseDecision } from '../../core/economy/shop';
-import { addEconomyDays, chargeClose, CLOSE_PREFIX, weekStart } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, chargeClose, CLOSE_PREFIX, readSeenUpTo, weekStart } from '../../core/economy/deriveEconomy';
 import { getOrCreateDeviceId } from '../device';
 import { asEconomyWrite, restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
-import type { ProgramRow, SettingRow } from '../types';
+import type { SettingRow } from '../types';
 
 /** A purchase is one immutable fact. The balance and owned items are projections. */
 export async function purchaseShopItem(db: NandiDb, itemId: string, now = Date.now()): Promise<{ ok: boolean; reason?: string }> {
@@ -55,52 +55,60 @@ export async function recordMorningBackfill(db: NandiDb, previousDay: string, ti
 
 const REST_KEY = 'economy.restWeekday';
 const restWeekKey = (week: string) => `${REST_KEY}:${week}`;
-/** The standing weekly rest day: the economy's pick, else (an older Train-only pick) the Train program's. */
-export function readRestWeekday(settings: readonly SettingRow[], week: string, program?: ProgramRow): number | undefined {
-  const value = (key: string) => settings.find(row => row.key === key && !row.deleted)?.value;
-  const own = value(restWeekKey(week));
+type RestPick = { weekday: number; from?: string };
+function readPick(value: unknown): RestPick | undefined {
+  if (typeof value === 'number') return { weekday: value };
+  const pick = value && typeof value === 'object' ? value as { weekday?: unknown; from?: unknown } : undefined;
+  return pick && typeof pick.weekday === 'number' ? { weekday: pick.weekday, from: typeof pick.from === 'string' ? pick.from : undefined } : undefined;
+}
+/** The latest weekly rest-day pick and the week it starts from (it may be next week). */
+export function readRestPick(settings: readonly SettingRow[]): RestPick | undefined {
+  return readPick(settings.find(row => row.key === REST_KEY && !row.deleted)?.value);
+}
+/** The weekly rest day the streak uses for `week`: the same reading as the replay (its own row, else the pick from its week on). */
+export function readRestWeekday(settings: readonly SettingRow[], week: string): number | undefined {
+  const own = settings.find(row => row.key === restWeekKey(week) && !row.deleted)?.value;
   if (typeof own === 'number') return own;
-  const standing = value(REST_KEY);
-  if (typeof standing === 'number') return standing;
-  if (standing && typeof standing === 'object' && typeof (standing as { weekday?: unknown }).weekday === 'number') return (standing as { weekday: number }).weekday;
-  return program && !program.deleted && typeof program.restDay === 'number' ? program.restDay : undefined;
+  const pick = readRestPick(settings);
+  return pick && (pick.from === undefined || week >= pick.from) ? pick.weekday : undefined;
 }
 /**
- * One weekly rest day for the streak and for Train (spec 03 §1.3; batch 5, item 51). It counts from this week on.
- * Every past week the old pick covered first gets its own row, so a new pick never moves a past week's rest day.
+ * One weekly rest day for the streak and for Train (spec 03 §1.3; batch 5, item 51). A new pick counts from NEXT
+ * week: every week up to this one (or the furthest week this phone has shown, after a clock set ahead) first keeps
+ * the rest day it had in a row of its own, so a change never moves a past week or today (Codex review, item 53).
  */
 export async function setRestWeekday(db: NandiDb, weekday: number, now = Date.now()): Promise<void> {
   if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6) throw new Error('Choose a day of the week.');
   const deviceId = await getOrCreateDeviceId(db, now), thisWeek = weekStart(dayKey(now));
   await trackWrite(() => db.transaction('rw', [db.settings, db.programs, db.ledger], async () => {
     const put = (key: string, value: unknown) => db.settings.put({ key, value, updatedAt: now, deleted: 0, deviceId });
-    const live = async (key: string) => { const row = await db.settings.get(key); return row && !row.deleted ? row.value : undefined; };
-    const standing = await live(REST_KEY);
-    const old = typeof standing === 'number' ? { weekday: standing, from: undefined as string | undefined }
-      : standing && typeof standing === 'object' && typeof (standing as { weekday?: unknown }).weekday === 'number' ? standing as { weekday: number; from?: string } : undefined;
+    const settings = (await db.settings.toArray()).filter(row => !row.deleted);
+    const seen = readSeenUpTo(settings);
+    const lastShown = seen && weekStart(seen) > thisWeek ? weekStart(seen) : thisWeek;
+    const old = readRestPick(settings);
     if (old) {
-      // An old number covered every week: freeze it back to the first day with any activity.
+      // An old pick with no start covered every week: freeze it back to the first day with any activity.
       const first = old.from ?? (await db.ledger.orderBy('dayKey').first())?.dayKey;
-      if (typeof first === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(first)) for (let week = weekStart(first); week < thisWeek; week = addEconomyDays(week, 7)) {
-        if (typeof await live(restWeekKey(week)) !== 'number') await put(restWeekKey(week), old.weekday);
+      if (typeof first === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(first)) for (let week = weekStart(first); week <= lastShown; week = addEconomyDays(week, 7)) {
+        const had = readRestWeekday(settings, week);
+        if (typeof settings.find(row => row.key === restWeekKey(week))?.value !== 'number' && had !== undefined) await put(restWeekKey(week), had);
       }
     }
-    await put(restWeekKey(thisWeek), weekday);
-    await put(REST_KEY, { weekday, from: thisWeek });
+    await put(REST_KEY, { weekday, from: addEconomyDays(lastShown, 7) });
     const program = await db.programs.get('train-program');
     if (program && !program.deleted && program.restDay !== weekday) await db.programs.put({ ...program, restDay: weekday, updatedAt: now, deviceId });
   }));
 }
 /**
  * Brings the two older rest-day picks together once (batch 5, item 51): a streak pick wins and Train shows it;
- * a Train-only pick starts covering the streak from this week, never a past one.
+ * a Train-only pick starts covering the streak from next week, never this one or a past one.
  */
 export async function syncRestWeekday(db: NandiDb, now = Date.now()): Promise<void> {
   if (restoreActive()) return;
   const [standing, program] = await Promise.all([db.settings.get(REST_KEY), db.programs.get('train-program')]);
   if (!program || program.deleted) return;
   if (!standing || standing.deleted) { if (typeof program.restDay === 'number') await setRestWeekday(db, program.restDay, now); return; }
-  const weekday = readRestWeekday(await db.settings.toArray(), weekStart(dayKey(now)));
+  const weekday = readPick(standing.value)?.weekday;
   if (typeof weekday === 'number' && program.restDay !== weekday) {
     const deviceId = await getOrCreateDeviceId(db, now);
     await trackWrite(() => db.transaction('rw', db.programs, async () => {
