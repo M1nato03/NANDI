@@ -98,72 +98,60 @@ export function endWindow(window: ChhuttiWindow, now: number, today: string): Ch
 }
 
 /**
- * One event from the phone's usage log, reduced to what the count needs: an app coming to the front ('fg') or
- * leaving it ('bg'), for every app (the package is used in memory only, never stored), the screen on or off, and
- * the phone starting up or shutting down ('boot', 'down'; Android 10+).
+ * One event from the phone's usage log, reduced to what the count needs: an activity resumed ('fg') or paused
+ * ('bg'), for every app, with its package and class (used in memory only, never stored), the screen on or off,
+ * and the phone starting up or shutting down ('boot', 'down'; Android 10+).
  */
-export type UsageEvent = { type: 'fg' | 'bg' | 'on' | 'off' | 'boot' | 'down'; at: number; pkg?: string };
+export type UsageEvent = { type: 'fg' | 'bg' | 'on' | 'off' | 'boot' | 'down'; at: number; pkg?: string; cls?: string };
 export type WindowUsage = { chosenAppMs: number; darkMs: number | null };
 
 /**
  * Minutes with a chosen app open on a lit screen (and with the screen dark) inside [fromMs, toMs], from usage
- * events (Codex A items 55-56). It tracks the SET of resumed apps: 'fg' adds an app, 'bg' removes it, and a start-up
- * or shutdown empties it; split screen and picture-in-picture are simply two apps in the set. A dark screen pauses
- * the count but keeps the set, so a screen that comes back on to the same app counts again with no new 'fg'.
- * Chosen time is the union of the moments when the screen is not dark and any chosen app is in the set.
- * The log is read from the last start-up before the window, or from its first event (Android sends a day). An app
- * whose first event is a 'bg' was already open when the log began. It answers only when it can know: the log
- * reaches back before the window (`logStart`), at least one event comes before the window to build the set from,
- * and the phone did not start up or shut down inside the window. Anything else is unknown (null): the person is
- * asked instead, and an unknown window is never "kept".
+ * events (Codex A items 55-57). Resume and pause are per activity, so the count tracks the SET of resumed
+ * (package, class) pairs; a package is open while any of its activities is. 'fg' adds a pair, 'bg' removes it, and
+ * a start-up or shutdown empties the set. A dark screen pauses the count but keeps the set, so a screen that comes
+ * back on to the same app counts again with no new 'fg'. Chosen time is the union of the moments when the screen is
+ * not dark and any chosen package is open (split screen and picture-in-picture are two open apps).
+ * The set is built only from a proven empty point: the last start-up before the window. With no start-up in the log
+ * before the window (an app opened days ago leaves no trace), a log that starts after the window began, or a
+ * start-up or shutdown inside the window, the answer is unknown (null): the person is asked instead, and an unknown
+ * window is never "kept".
  */
 export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, chosen: readonly string[], logStart?: number | null): WindowUsage | null {
   if (!(toMs > fromMs)) return null;
   if (typeof logStart === 'number' && logStart > fromMs) return null;
-  let sorted = [...events].filter(event => Number.isFinite(event.at) && event.at <= toMs).sort((a, b) => a.at - b.at);
+  const sorted = [...events].filter(event => Number.isFinite(event.at) && event.at <= toMs).sort((a, b) => a.at - b.at);
   if (sorted.some(event => (event.type === 'boot' || event.type === 'down') && event.at > fromMs)) return null;
-  const lastBoot = sorted.map(event => event.type === 'boot').lastIndexOf(true);
-  const fromBoot = lastBoot >= 0;
-  if (fromBoot) sorted = sorted.slice(lastBoot);
-  if (!sorted.some(event => event.at <= fromMs)) return null;
+  const baseline = sorted.map(event => event.type === 'boot' && event.at <= fromMs).lastIndexOf(true);
+  if (baseline < 0) return null;
   const isChosen = new Set(chosen);
-  // Apps open before the log began show up first as a 'bg'; after a start-up nothing was open.
-  const open = new Set<string>();
-  if (!fromBoot) {
-    const seen = new Set<string>();
-    for (const event of sorted) {
-      if ((event.type !== 'fg' && event.type !== 'bg') || !event.pkg || seen.has(event.pkg)) continue;
-      seen.add(event.pkg);
-      if (event.type === 'bg') open.add(event.pkg);
-    }
-  }
+  const open = new Map<string, string>();
   let dark: boolean | null = null;
   const step = (event: UsageEvent) => {
-    if (event.type === 'fg' && event.pkg) open.add(event.pkg);
-    else if (event.type === 'bg' && event.pkg) open.delete(event.pkg);
+    const key = `${event.pkg ?? ''}/${event.cls ?? ''}`;
+    if (event.type === 'fg' && event.pkg) open.set(key, event.pkg);
+    else if (event.type === 'bg' && event.pkg) open.delete(key);
     else if (event.type === 'boot' || event.type === 'down') { open.clear(); dark = event.type === 'down'; }
     else if (event.type === 'off') dark = true;
     else if (event.type === 'on') dark = false;
   };
-  for (const event of sorted) if (event.at <= fromMs) step(event);
-  // A screen whose state is unknown at the start but turns on inside the window was dark until then.
-  const screenInside = sorted.filter(event => event.at > fromMs && (event.type === 'on' || event.type === 'off'));
-  if (dark === null && screenInside.length) dark = screenInside[0]!.type === 'on';
-  const sawScreen = dark !== null;
+  const after = sorted.slice(baseline);
+  for (const event of after) if (event.at <= fromMs) step(event);
+  // The screen is lit at a start-up, so from the baseline its state is always known.
   let chosenMs = 0, darkMs = 0, at = fromMs;
   const add = (until: number) => {
     const span = Math.max(0, until - at);
     if (dark) darkMs += span;
-    else if ([...open].some(pkg => isChosen.has(pkg))) chosenMs += span;
+    else if ([...open.values()].some(pkg => isChosen.has(pkg))) chosenMs += span;
     at = until;
   };
-  for (const event of sorted) {
+  for (const event of after) {
     if (event.at <= fromMs) continue;
     add(event.at);
     step(event);
   }
   add(toMs);
-  return { chosenAppMs: chosenMs, darkMs: sawScreen ? darkMs : null };
+  return { chosenAppMs: chosenMs, darkMs };
 }
 
 export const chhuttiFactId = (day: string, windowId: string) => `chhutti:${day}:${windowId}`;

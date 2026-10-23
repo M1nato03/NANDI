@@ -27,11 +27,18 @@ function readShutdowns(rows: readonly SettingRow[]): Record<string, string> {
   if (!value || typeof value !== 'object') return {};
   return Object.fromEntries(Object.entries(value as Record<string, unknown>).filter((entry): entry is [string, string] => /^\d{4}-\d{2}-\d{2}$/.test(entry[0]) && typeof entry[1] === 'string' && CLOCK.test(entry[1])));
 }
-/** A day's bounds, cut back to that day's recorded shutdown. A window cut to nothing did not happen that day. */
-function dayBounds(window: ChhuttiWindow, day: string, shutdowns: Record<string, string>): { fromMs: number; toMs: number } | null {
+/** That day's effective shutdown under the settings as they are now (busy-day shift from that day's tasks). */
+async function shutdownOn(db: NandiDb, rows: readonly SettingRow[], day: string): Promise<string> {
+  return dayClock(new Date(`${day}T12:00:00`).getTime(), rows, await db.tasks.where('dayKey').equals(day).toArray()).shutdown;
+}
+/**
+ * A day's bounds, cut back to that day's shutdown: the one recorded before its window started, or, with no record,
+ * the shutdown the settings give that day now (items 56-57). A window cut to nothing did not happen that day.
+ */
+async function dayBounds(db: NandiDb, rows: readonly SettingRow[], window: ChhuttiWindow, day: string, shutdowns: Record<string, string>): Promise<{ fromMs: number; toMs: number } | null> {
   const { fromMs, toMs } = windowBounds(window, day);
-  const shutdown = shutdowns[day];
-  const end = shutdown ? Math.min(toMs, new Date(`${day}T${shutdown}:00`).getTime()) : toMs;
+  const shutdown = shutdowns[day] ?? await shutdownOn(db, rows, day);
+  const end = Math.min(toMs, new Date(`${day}T${shutdown}:00`).getTime());
   return end > fromMs ? { fromMs, toMs: end } : null;
 }
 
@@ -39,7 +46,14 @@ async function putWindows(db: NandiDb, windows: ChhuttiWindow[], now: number): P
   const deviceId = await getOrCreateDeviceId(db, now);
   // A removed window is kept only while its days can still be read.
   const oldest = addEconomyDays(dayKey(now), -(CHHUTTI_LOOKBACK_DAYS + 1));
-  const kept = windows.filter(window => !window.until || window.until >= oldest);
+  // Bounds of days older than the read-back are dropped too (item 57 note).
+  const kept = windows.filter(window => !window.until || window.until >= oldest).map(window => {
+    if (!window.past?.some(item => item.through < oldest)) return window;
+    const past = window.past.filter(item => item.through >= oldest);
+    const trimmed: ChhuttiWindow = { ...window, past };
+    if (!past.length) delete trimmed.past;
+    return trimmed;
+  });
   await trackWrite(() => db.settings.put({ key: CHHUTTI_KEY, value: { windows: kept }, updatedAt: now, deleted: 0, deviceId }));
 }
 
@@ -105,8 +119,9 @@ export async function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEven
     const day = addEconomyDays(today, -back);
     for (const window of windows) {
       if (!appliesOn(window, day) || live(rows, skipKey(day, window.id)) === true) continue;
-      const bounds = dayBounds(window, day, shutdowns);
-      if (!bounds || bounds.toMs > now || await db.ledger.get(chhuttiFactId(day, window.id))) continue;
+      if (await db.ledger.get(chhuttiFactId(day, window.id))) continue;
+      const bounds = await dayBounds(db, rows, window, day, shutdowns);
+      if (!bounds || bounds.toMs > now) continue;
       const usageLog = await read(bounds.fromMs, bounds.toMs, packages).catch(() => null);
       const usage = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart) : null;
       // Unknown: only today and yesterday are asked about, so a week away never comes back as a list of questions.
@@ -133,7 +148,8 @@ async function snapshotShutdown(db: NandiDb, rows: readonly SettingRow[], window
 
 /** The one-tap answer where the phone has no usage log for the window: "Yes" keeps it; "Partly" and "Not today" do not. */
 export async function answerChhutti(db: NandiDb, day: string, window: ChhuttiWindow, answer: 'yes' | 'partly' | 'no', now = Date.now()): Promise<void> {
-  const bounds = dayBounds(window, day, readShutdowns(await db.settings.toArray())) ?? windowBounds(window, day);
+  const rows = await db.settings.toArray();
+  const bounds = await dayBounds(db, rows, window, day, readShutdowns(rows)) ?? windowBounds(window, day);
   await writeFact(db, day, window, bounds, { chosenAppMs: null, darkMs: null, source: 'self', kept: answer === 'yes', answer }, now);
 }
 

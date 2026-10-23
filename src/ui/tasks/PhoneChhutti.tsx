@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { answerChhutti, checkChhutti, chhuttiInLightsOut, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
+import { answerChhutti, checkChhutti, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
 import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { shareWindow } from '../../core/shareGate';
 import { dayKey } from '../../core/time';
 
 /**
@@ -16,26 +17,32 @@ export function PhoneChhutti() {
   const [from, setFrom] = useState('21:00');
   const [choice, setChoice] = useState<(typeof CHHUTTI_LABELS)[number]>(CHHUTTI_LABELS[1]);
   const [message, setMessage] = useState('');
-  const [lightsOut, setLightsOut] = useState(false);
+  const today = dayKey(now);
   const source = useLiveQuery(async () => ({
-    settings: await db.settings.where('key').startsWith(CHHUTTI_KEY).toArray(),
+    // All settings and today's tasks: lights-out uses the same clock as shares (busy-day shift, wind-down).
+    settings: await db.settings.toArray(),
+    tasks: await db.tasks.where('dayKey').equals(today).toArray(),
+    log: await db.dailyLog.get(today),
     facts: await db.ledger.where('kind').equals('chhutti').toArray(),
-  }), []);
+  }), [today]);
   useEffect(() => {
     let alive = true;
     const check = () => {
       if (document.visibilityState !== 'visible') return;
       const at = Date.now();
       setNow(at);
-      void chhuttiInLightsOut(db, at).then(quiet => { if (alive) setLightsOut(quiet); }).catch(() => undefined);
       void checkChhutti(db, at).then(list => { if (alive) setPending(list); }).catch(() => undefined);
     };
     check();
     document.addEventListener('visibilitychange', check);
-    return () => { alive = false; document.removeEventListener('visibilitychange', check); };
+    // Lights-out is worked out again every minute, so the card goes quiet at bedtime without a reopen.
+    const tick = globalThis.setInterval(() => setNow(Date.now()), 60_000);
+    return () => { alive = false; globalThis.clearInterval(tick); document.removeEventListener('visibilitychange', check); };
   }, []);
+  // Nothing is drawn until the data is read, and lights-out is worked out from the clock in the same render, so the
+  // card never shows a result for a moment at night (item 57).
   if (!source) return null;
-  const today = dayKey(now);
+  const lightsOut = shareWindow(now, source.settings, source.tasks, source.log?.windDownAt) === 'lightsOut';
   const windows = readChhutti(source.settings);
   const window = windows.find(isLive);
   const facts = source.facts.filter(fact => !fact.deleted);

@@ -14,6 +14,9 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import com.getcapacitor.JSArray;
@@ -35,8 +38,9 @@ public class NightPausePlugin extends Plugin {
 
     /**
      * Spec 24 #1 (Phone ki chhutti): the usage events for one past window, read afterwards. Nothing runs during the
-     * window, on Android 10+ only. Returns every app's foreground and background events, the screen on/off events and
-     * the phone starting up or shutting down, from the last start-up before the window (up to a day back), plus
+     * window, on Android 10+ only. Returns the state at the last start-up before the window (up to ten days back):
+     * the activities still open, the last screen change and any shutdown; then every activity resume and pause (with
+     * its package and class), screen change, start-up and shutdown inside the window. Plus
      * logStart, the first event the log still holds, so the app can tell "quiet" from "no history".
      * No access, a locked phone (null) or an empty log returns available false, and the app then writes nothing.
      */
@@ -53,45 +57,78 @@ public class NightPausePlugin extends Plugin {
             call.resolve(result);
             return;
         }
-        // A day back, so the set of open apps at the window's start can be built (a start-up resets it).
-        UsageEvents events = stats.queryEvents(from - 24L * 60 * 60 * 1000, Math.min(to, now));
+        // Ten days back, to find the last start-up before the window: the only proven point where no app is open (item 57).
+        UsageEvents events = stats.queryEvents(from - 10L * 24 * 60 * 60 * 1000, Math.min(to, now));
         if (events == null) {
             result.put("available", false);
             call.resolve(result);
             return;
         }
-        // Every app's front/back events, not only the chosen ones: the count follows which app is in front (item 55).
-        List<JSObject> list = new ArrayList<>();
-        int resetAt = 0;
-        long logStart = -1;
+        // Before the window only the state is kept: the last start-up, the activities open since then (per package
+        // and class, since resume and pause are per activity), the last screen change and a shutdown after it.
+        // From the window's start every event is sent as it is.
+        Map<String, Long> open = new HashMap<>();
+        Map<String, String> openPkg = new HashMap<>();
+        long bootAt = -1, screenAt = -1, downAt = -1, logStart = -1;
+        String screen = null;
+        JSArray inside = new JSArray();
         UsageEvents.Event event = new UsageEvents.Event();
         while (events.hasNextEvent()) {
             events.getNextEvent(event);
-            if (logStart < 0) logStart = event.getTimeStamp();
+            long at = event.getTimeStamp();
+            if (logStart < 0) logStart = at;
             int type = event.getEventType();
-            String name = event.getPackageName();
             String kind = null;
-            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND) kind = "fg";
-            else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND) kind = "bg";
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED) kind = "fg";
+            else if (type == UsageEvents.Event.ACTIVITY_PAUSED) kind = "bg";
             else if (type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
             else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
             else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
             else if (type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
             if (kind == null) continue;
-            JSObject item = new JSObject();
-            item.put("type", kind);
-            item.put("at", event.getTimeStamp());
-            if (kind.equals("fg") || kind.equals("bg")) item.put("pkg", name);
-            // A start-up before the window empties the set of open apps, so older events are dropped.
-            if (event.getTimeStamp() <= from && kind.equals("boot")) resetAt = list.size();
-            list.add(item);
+            String pkg = event.getPackageName();
+            String cls = event.getClassName() == null ? "" : event.getClassName();
+            if (at > from) {
+                JSObject item = new JSObject();
+                item.put("type", kind);
+                item.put("at", at);
+                if (kind.equals("fg") || kind.equals("bg")) { item.put("pkg", pkg); item.put("cls", cls); }
+                inside.put(item);
+                continue;
+            }
+            String key = pkg + "/" + cls;
+            if (kind.equals("boot")) { bootAt = at; open.clear(); openPkg.clear(); screen = null; screenAt = -1; downAt = -1; }
+            else if (kind.equals("down")) { downAt = at; open.clear(); openPkg.clear(); }
+            else if (kind.equals("fg")) { open.put(key, at); openPkg.put(key, pkg); }
+            else if (kind.equals("bg")) { open.remove(key); openPkg.remove(key); }
+            else { screen = kind; screenAt = at; }
         }
         JSArray kept = new JSArray();
-        for (int i = resetAt; i < list.size(); i++) kept.put(list.get(i));
+        if (bootAt >= 0) {
+            List<JSObject> state = new ArrayList<>();
+            state.add(stateEvent("boot", bootAt, null, null));
+            if (screen != null && screenAt >= bootAt) state.add(stateEvent(screen, screenAt, null, null));
+            for (Map.Entry<String, Long> entry : open.entrySet()) {
+                String pkg = openPkg.get(entry.getKey());
+                state.add(stateEvent("fg", entry.getValue(), pkg, entry.getKey().substring(pkg.length() + 1)));
+            }
+            if (downAt > bootAt) state.add(stateEvent("down", downAt, null, null));
+            Collections.sort(state, (x, y) -> Long.compare(x.optLong("at"), y.optLong("at")));
+            for (JSObject item : state) kept.put(item);
+        }
+        for (int i = 0; i < inside.length(); i++) kept.put(inside.opt(i));
         result.put("available", logStart >= 0);
         if (logStart >= 0) result.put("logStart", logStart);
         result.put("events", kept);
         call.resolve(result);
+    }
+
+    private static JSObject stateEvent(String type, long at, String pkg, String cls) {
+        JSObject item = new JSObject();
+        item.put("type", type);
+        item.put("at", at);
+        if (pkg != null) { item.put("pkg", pkg); item.put("cls", cls); }
+        return item;
     }
 
     @PluginMethod

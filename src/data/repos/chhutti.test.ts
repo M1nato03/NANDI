@@ -31,7 +31,7 @@ it('reads the window afterwards and writes one fact; an open app inside it is no
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   // Before the window ends nothing is read.
   expect(await checkChhutti(db, at('2026-11-02', '21:10'), reader(() => { throw new Error('not yet'); }))).toEqual([]);
-  const quiet = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'fg', at: from - 600_000, pkg: 'com.android.launcher' }, { type: 'off', at: from + 60_000 }, { type: 'on', at: from + 20 * 60_000 }] }));
+  const quiet = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'boot', at: from - 3_000_000 }, { type: 'fg', at: from - 600_000, pkg: 'com.android.launcher' }, { type: 'off', at: from + 60_000 }, { type: 'on', at: from + 20 * 60_000 }] }));
   expect(await checkChhutti(db, at('2026-11-02', '22:00'), quiet)).toEqual([]);
   const fact = (await db.ledger.where('kind').equals('chhutti').toArray())[0]!;
   expect(fact).toMatchObject({ dayKey: '2026-11-02', mode: 'tasks', inputs: { source: 'usage', kept: true, chosenAppMs: 0, darkMs: 19 * 60_000, plannedMin: 30, visibility: 'local' } });
@@ -39,7 +39,7 @@ it('reads the window afterwards and writes one fact; an open app inside it is no
   await checkChhutti(db, at('2026-11-02', '22:30'), quiet);
   expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(1);
   // The next day, 20 minutes of the chosen app inside the window: written, but not kept.
-  const busy = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'off', at: from - 600_000 }, { type: 'on', at: from + 5 * 60_000 }, { type: 'fg', at: from + 5 * 60_000, pkg: ig }, { type: 'bg', at: from + 25 * 60_000, pkg: ig }] }));
+  const busy = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'boot', at: from - 3_000_000 }, { type: 'off', at: from - 600_000 }, { type: 'on', at: from + 5 * 60_000 }, { type: 'fg', at: from + 5 * 60_000, pkg: ig }, { type: 'bg', at: from + 25 * 60_000, pkg: ig }] }));
   await checkChhutti(db, at('2026-11-03', '22:00'), busy);
   expect((await db.ledger.get(`chhutti:2026-11-03:${readChhutti(await db.settings.toArray())[0]!.id}`))?.inputs).toMatchObject({ kept: false, chosenAppMs: 20 * 60_000 });
 });
@@ -70,7 +70,7 @@ it('"Not today" moves today\'s window out of the way', async () => {
 it('grows by 15 minutes after 2 kept of 3, pays its XP once a day, and adds a marigold and a Plan day', async () => {
   const db = fresh();
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
-  const quiet = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'off', at: from - 60_000 }] }));
+  const quiet = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'boot', at: from - 3_000_000 }, { type: 'off', at: from - 60_000 }] }));
   for (const day of ['2026-11-02', '2026-11-03', '2026-11-04']) await checkChhutti(db, at(day, '23:00'), quiet);
   expect(readChhutti(await db.settings.toArray())[0]).toMatchObject({ from: '21:00', to: '21:45' });
   const facts = await db.ledger.toArray();
@@ -82,7 +82,7 @@ it('grows by 15 minutes after 2 kept of 3, pays its XP once a day, and adds a ma
 });
 
 // Codex A item 55: a missed week is still read, started days keep their bounds, and the night stays quiet.
-const dark = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'off', at: from - 60_000 }] }));
+const dark = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'boot', at: from - 3_000_000 }, { type: 'off', at: from - 60_000 }] }));
 
 it('reads every unrecorded day back to `since`, up to 7 days, with the bounds each day had', async () => {
   const db = fresh();
@@ -174,4 +174,24 @@ it('an open at 04:05 is lights-out: no result and no question', async () => {
   expect(await chhuttiInLightsOut(db, at('2026-11-03', '04:05'))).toBe(true);
   expect(await checkChhutti(db, at('2026-11-03', '04:05'), reader(() => null))).toEqual([]);
   expect(await chhuttiInLightsOut(db, at('2026-11-03', '06:05'))).toBe(false);
+});
+
+// Codex A item 57.
+it('with no shutdown recorded before the window, a shutdown moved earlier since still cuts that day', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  // No open before the 2nd's window, then bedtime and shutdown moved earlier: the 2nd is cut to 21:10.
+  await db.settings.put({ key: 'planner.shutdown', value: '21:10', updatedAt: 2, deleted: 0, deviceId: 't' });
+  const asked: number[] = [];
+  await checkChhutti(db, at('2026-11-03', '12:00'), async (from, to) => { asked.push(to); return dark(from, to); });
+  expect(asked).toEqual([at('2026-11-02', '21:10')]);
+});
+
+it('bounds older than the 7-day read-back are dropped when the window is saved', async () => {
+  const db = fresh();
+  const window = await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await saveChhuttiWindow(db, { id: window.id, label: 'After dinner', from: '20:00' }, at('2026-11-04', '12:00'));
+  expect(readChhutti(await db.settings.toArray())[0]!.past).toHaveLength(1);
+  await saveChhuttiWindow(db, { id: window.id, label: 'After dinner', from: '20:00', weekdays: [0] }, at('2026-11-20', '12:00'));
+  expect(readChhutti(await db.settings.toArray())[0]!.past?.map(item => item.through)).toEqual(['2026-11-19']);
 });

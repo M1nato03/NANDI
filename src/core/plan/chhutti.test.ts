@@ -7,50 +7,45 @@ const from = 1_000 * min, to = 1_060 * min; // a 60-minute window
 const ev = (type: UsageEvent['type'], at: number, pkg?: string): UsageEvent => ({ type, at, ...(pkg ? { pkg } : {}) });
 const ig = 'com.instagram.android';
 
-describe('chhutti window usage (spec 24 #1, items 55-56)', () => {
+describe('chhutti window usage (spec 24 #1, items 55-57)', () => {
   const yt = 'com.google.android.youtube';
   const chosen = [ig, yt];
+  const boot = ev('boot', from - 120 * min);
+  const act = (type: 'fg' | 'bg', at: number, pkg: string, cls = 'Main'): UsageEvent => ({ type, at, pkg, cls });
   const use = (events: UsageEvent[], logStart?: number) => windowUsage(events, from, to, chosen, logStart);
-  it('is unknown, never kept, when the set of open apps at the start cannot be built', () => {
+  it('is unknown, never kept, without a start-up before the window to build from', () => {
     expect(use([])).toBeNull();
-    expect(use([], from - 60 * min)).toBeNull();
-    // Only events inside the window: nothing to build the set from.
-    expect(use([ev('fg', from + 5 * min, ig), ev('bg', from + 9 * min, ig)])).toBeNull();
-    expect(windowUsage([ev('off', from - min)], to, from, chosen)).toBeNull();
+    // A day of events but no start-up: an app opened days ago would leave no trace, so it cannot be known.
+    expect(use([ev('on', from - 60 * min), ev('off', from - 2 * min)], from - 60 * min)).toBeNull();
+    expect(use([act('fg', from - 60 * min, 'x'), act('bg', from + 9 * min, ig)])).toBeNull();
+    expect(windowUsage([boot], to, from, chosen)).toBeNull();
     // The log starts after the window began (Android keeps events only a few days): unknown.
-    expect(use([ev('off', from - min)], from + min)).toBeNull();
+    expect(use([boot], from + min)).toBeNull();
   });
-  it('a start-up or shutdown inside the window is unknown; a start-up before it empties the set', () => {
-    expect(use([ev('off', from - min), ev('down', from + 10 * min), ev('boot', from + 30 * min)])).toBeNull();
-    expect(use([ev('fg', from - 5 * min, 'x'), ev('boot', from + 30 * min)])).toBeNull();
-    // Instagram was open before the restart and never sent a pause: after the start-up it is not open.
-    expect(use([ev('fg', from - 60 * min, ig), ev('down', from - 40 * min), ev('boot', from - 30 * min), ev('fg', from - 20 * min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
+  it('a start-up or shutdown inside the window is unknown; one before it empties the set', () => {
+    expect(use([boot, ev('down', from + 10 * min), ev('boot', from + 30 * min)])).toBeNull();
+    // Instagram open before a restart, with no pause: after the start-up it is not open.
+    expect(use([act('fg', from - 200 * min, ig), boot, act('fg', from - 20 * min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
   });
-  it('a quiet window is known when the screen went dark before it', () => {
-    expect(use([ev('on', from - 60 * min), ev('off', from - 2 * min)], from - 60 * min)).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
+  it('a quiet window: the screen went dark before it', () => {
+    expect(use([boot, ev('off', from - 2 * min)])).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
   });
   it('counts chosen-app time inside the window only, from an app opened before it', () => {
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('bg', from + 4 * min, ig), ev('fg', from + 40 * min, ig), ev('bg', to + 20 * min, ig)])).toEqual({ chosenAppMs: 24 * min, darkMs: 0 });
+    expect(use([boot, act('fg', from - 10 * min, ig), act('bg', from + 4 * min, ig), act('fg', from + 40 * min, ig), act('bg', to + 20 * min, ig)])).toEqual({ chosenAppMs: 24 * min, darkMs: 0 });
+  });
+  it('tracks activities: a package stays open while any of its activities is resumed', () => {
+    // Instagram opens a second screen (Story) before the feed pauses, then the feed pause arrives: still open.
+    expect(use([boot, act('fg', from - 10 * min, ig, 'Feed'), act('fg', from + 5 * min, ig, 'Story'), act('bg', from + 6 * min, ig, 'Feed'), act('bg', from + 30 * min, ig, 'Story')])?.chosenAppMs).toBe(30 * min);
   });
   it('counts the union of open chosen apps, not a sum per app (split screen, picture-in-picture)', () => {
-    // YouTube opens beside Instagram at +5; Instagram closes at +10, YouTube at +20: 20 minutes in all, not 25.
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('fg', from + 5 * min, yt), ev('bg', from + 10 * min, ig), ev('bg', from + 20 * min, yt)])?.chosenAppMs).toBe(20 * min);
-    // Another app opening beside Instagram does not close it: Instagram counts until its own pause.
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('fg', from + 5 * min, 'x'), ev('bg', from + 30 * min, ig)])?.chosenAppMs).toBe(30 * min);
+    expect(use([boot, act('fg', from - 10 * min, ig), act('fg', from + 5 * min, yt), act('bg', from + 10 * min, ig), act('bg', from + 20 * min, yt)])?.chosenAppMs).toBe(20 * min);
+    expect(use([boot, act('fg', from - 10 * min, ig), act('fg', from + 5 * min, 'x'), act('bg', from + 30 * min, ig)])?.chosenAppMs).toBe(30 * min);
   });
   it('a dark screen pauses the count but keeps the app open; the screen coming back on counts again', () => {
-    // Off at +5 and on again at +20 with no new 'fg': 5 + 20 minutes of Instagram, 15 dark.
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, ig), ev('off', from + 5 * min), ev('on', from + 20 * min), ev('bg', from + 40 * min, ig)])).toEqual({ chosenAppMs: 25 * min, darkMs: 15 * min });
-  });
-  it('an app whose first event is a pause was open before the log began', () => {
-    expect(use([ev('on', from - 30 * min), ev('bg', from + 3 * min, ig)])?.chosenAppMs).toBe(3 * min);
+    expect(use([boot, act('fg', from - 10 * min, ig), ev('off', from + 5 * min), ev('on', from + 20 * min), act('bg', from + 40 * min, ig)])).toEqual({ chosenAppMs: 25 * min, darkMs: 15 * min });
   });
   it('an app that is not chosen counts nothing', () => {
-    expect(use([ev('on', from - 30 * min), ev('fg', from - 10 * min, 'x'), ev('bg', to + min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
-  });
-  it('a screen that turns on first was dark before; no screen events at all means dark minutes are unknown', () => {
-    expect(use([ev('fg', from - 5 * min, 'x'), ev('on', from + 20 * min)])?.darkMs).toBe(20 * min);
-    expect(use([ev('fg', from - 5 * min, ig), ev('bg', from + min, ig)])).toEqual({ chosenAppMs: min, darkMs: null });
+    expect(use([boot, act('fg', from - 10 * min, 'x'), act('bg', to + min, 'x')])).toEqual({ chosenAppMs: 0, darkMs: 0 });
   });
   it('is kept within the grace minutes', () => {
     expect(isKept({ chosenAppMs: 5 * min, darkMs: null }, '2026-11-02')).toBe(true);
