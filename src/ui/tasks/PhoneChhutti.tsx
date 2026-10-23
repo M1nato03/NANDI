@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { answerChhutti, checkChhutti, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
-import { appliesOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, readChhutti, windowBounds } from '../../core/plan/chhutti';
 import { dayKey } from '../../core/time';
 
 /**
@@ -63,9 +63,11 @@ export function PhoneChhutti() {
   const { fromMs, toMs } = windowBounds(window, today);
   const skipped = source.settings.some(row => row.key === `${CHHUTTI_KEY}.skip:${today}:${window.id}` && row.value === true && !row.deleted);
   const upcoming = appliesOn(window, today) && !skipped && now < toMs;
+  // Today keeps the bounds it was planned with; a change or a longer window shows from the next day.
+  const shown = upcoming ? boundsOn(window, today) : window;
   return <section className="card phone-chhutti" aria-label="Phone ki chhutti">
     <h2>Phone ki chhutti</h2>
-    <p>{window.label}, the phone goes on the shelf from {window.from} until {window.to}.</p>
+    <p>{window.label}, the phone goes on the shelf from {shown.from} until {shown.to}.</p>
     {upcoming && now >= fromMs && <p className="small">This is the phone's chhutti now.</p>}
     {skipped && <p className="small">Not today. It comes back tomorrow.</p>}
     {showLast && <p className="chhutti-line" role="status">{chhuttiLine(ended, ended.inputs.label === window.label ? window.label : String(ended.inputs.label ?? window.label))}</p>}

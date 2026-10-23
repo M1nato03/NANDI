@@ -6,8 +6,12 @@ import type { LedgerRow, SettingRow } from '../../data/types';
  * runs during the window; at the next open NANDI reads the phone's own usage events for it and writes one fact.
  */
 export const CHHUTTI_KEY = 'plan.chhutti';
-/** `since`: the first planning day the window counts on (a window is planned before it starts, never after). */
-export type ChhuttiWindow = { id: string; label: string; from: string; to: string; since?: string; weekdays?: number[] };
+/**
+ * `since`: the first planning day the window counts on (a window is planned before it starts, never after).
+ * `past`: the bounds earlier days had, so a change never rewrites a day that already started (item 55).
+ */
+export type ChhuttiBounds = { from: string; to: string; through: string };
+export type ChhuttiWindow = { id: string; label: string; from: string; to: string; since?: string; weekdays?: number[]; past?: ChhuttiBounds[] };
 /** The rough labels offered for a window, taken from an ordinary day. */
 export const CHHUTTI_LABELS = [
   { label: 'After class', from: '17:00' },
@@ -27,7 +31,11 @@ export function readChhutti(settings: readonly SettingRow[]): ChhuttiWindow[] {
     if (typeof w.id !== 'string' || typeof w.label !== 'string' || typeof w.from !== 'string' || typeof w.to !== 'string' || !CLOCK.test(w.from) || !CLOCK.test(w.to) || minutesOf(w.to) <= minutesOf(w.from)) return [];
     const weekdays = Array.isArray(w.weekdays) ? w.weekdays.filter((day): day is number => Number.isInteger(day) && day >= 0 && day <= 6) : undefined;
     const since = typeof w.since === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(w.since) ? w.since : undefined;
-    return [{ id: w.id, label: w.label, from: w.from, to: w.to, ...(since ? { since } : {}), ...(weekdays?.length ? { weekdays } : {}) }];
+    const past = Array.isArray(w.past) ? w.past.flatMap(raw => {
+      const b = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {};
+      return typeof b.from === 'string' && typeof b.to === 'string' && typeof b.through === 'string' && CLOCK.test(b.from) && CLOCK.test(b.to) && /^\d{4}-\d{2}-\d{2}$/.test(b.through) ? [{ from: b.from, to: b.to, through: b.through }] : [];
+    }).sort((a, b) => a.through.localeCompare(b.through)) : [];
+    return [{ id: w.id, label: w.label, from: w.from, to: w.to, ...(since ? { since } : {}), ...(weekdays?.length ? { weekdays } : {}), ...(past.length ? { past } : {}) }];
   });
 }
 
@@ -42,49 +50,82 @@ export function boundWindow(from: string, lengthMin: number, shutdown: string): 
 }
 
 export const appliesOn = (window: ChhuttiWindow, day: string) => (!window.since || day >= window.since) && (!window.weekdays || window.weekdays.includes(new Date(`${day}T12:00:00`).getDay()));
+/** The bounds a planning day had: an earlier segment if the window was changed after that day, else the current ones. */
+export function boundsOn(window: ChhuttiWindow, day: string): { from: string; to: string } {
+  const segment = window.past?.find(item => day <= item.through);
+  return segment ? { from: segment.from, to: segment.to } : { from: window.from, to: window.to };
+}
 /** The window's clock bounds on a planning day, in local time (both after 04:00, so on the same date). */
 export function windowBounds(window: ChhuttiWindow, day: string): { fromMs: number; toMs: number } {
   const at = (clock: string) => new Date(`${day}T${clock}:00`).getTime();
-  return { fromMs: at(window.from), toMs: at(window.to) };
+  const bounds = boundsOn(window, day);
+  return { fromMs: at(bounds.from), toMs: at(bounds.to) };
+}
+/**
+ * New bounds count from the first day whose window has not started under either the old or the new bounds; every
+ * day before keeps the bounds it had (a past segment). So an edit or a ramp never rewrites a started day.
+ */
+const shiftDay = (day: string, count: number) => new Date(Date.parse(`${day}T12:00:00Z`) + count * 86_400_000).toISOString().slice(0, 10);
+export function withBounds(window: ChhuttiWindow, next: { from: string; to: string }, now: number, today: string): ChhuttiWindow {
+  if (next.from === window.from && next.to === window.to) return window;
+  const startOf = (clock: string) => new Date(`${today}T${clock}:00`).getTime();
+  const firstNew = now < Math.min(startOf(window.from), startOf(next.from)) ? today : shiftDay(today, 1);
+  const lastOld = shiftDay(firstNew, -1);
+  const past = [...(window.past ?? [])];
+  if ((!window.since || lastOld >= window.since) && !past.some(item => item.through >= lastOld)) past.push({ from: window.from, to: window.to, through: lastOld });
+  return { ...window, ...next, ...(past.length ? { past } : {}) };
 }
 
-/** One event from the phone's usage log, reduced to what the count needs. */
-export type UsageEvent = { type: 'fg' | 'bg' | 'on' | 'off'; at: number; pkg?: string };
+/**
+ * One event from the phone's usage log, reduced to what the count needs: an app coming to the front ('fg') or
+ * leaving it ('bg'), for every app (the package is used in memory only, never stored), the screen on or off, and
+ * the phone starting up or shutting down ('boot', 'down'; Android 10+).
+ */
+export type UsageEvent = { type: 'fg' | 'bg' | 'on' | 'off' | 'boot' | 'down'; at: number; pkg?: string };
 export type WindowUsage = { chosenAppMs: number; darkMs: number | null };
 
 /**
- * Minutes in the chosen apps (and with the screen dark) inside [fromMs, toMs], from usage events. It answers only
- * when the log reaches back to the window's start; otherwise the window is unknown (null), never "kept" (item 51
- * review note: missing history, revoked access or a quiet log must not read as a kept window).
+ * Minutes with a chosen app in front (and with the screen dark) inside [fromMs, toMs], from usage events. Only one
+ * app is in front at a time, so chosen time is one timeline, never a sum per app (Codex review of chhutti, item 55).
+ * It answers only when it can know: the log reaches back before the window (`logStart`), the app in front at the
+ * window's start is known from an earlier event, and the phone did not restart or shut down inside the window.
+ * Anything else is unknown (null): the person is asked instead, and an unknown window is never "kept".
  */
-export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, logStart?: number | null): WindowUsage | null {
+export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, chosen: readonly string[], logStart?: number | null): WindowUsage | null {
   if (!(toMs > fromMs)) return null;
+  if (typeof logStart === 'number' && logStart > fromMs) return null;
   const sorted = [...events].filter(event => Number.isFinite(event.at) && event.at <= toMs).sort((a, b) => a.at - b.at);
-  // The phone's log must reach back to the window's start: the first event of any kind it returned (logStart), or
-  // one of these events, at or before the start.
-  const reaches = typeof logStart === 'number' ? logStart <= fromMs : sorted.some(event => event.at <= fromMs);
-  if (!reaches) return null;
-  const overlap = (start: number, end: number) => Math.max(0, Math.min(end, toMs) - Math.max(start, fromMs));
-  // An app whose first event is a pause was already open before the log starts; the same for a screen that turns on.
-  const open = new Map<string, number>();
-  for (const pkg of new Set(sorted.filter(event => event.pkg).map(event => event.pkg!))) {
-    if (sorted.find(event => event.pkg === pkg && (event.type === 'fg' || event.type === 'bg'))?.type === 'bg') open.set(pkg, -Infinity);
-  }
-  const screen = sorted.filter(event => event.type === 'on' || event.type === 'off');
-  let darkSince: number | null = screen[0]?.type === 'on' ? -Infinity : null;
-  let chosen = 0, dark = 0;
+  if (sorted.some(event => (event.type === 'boot' || event.type === 'down') && event.at > fromMs)) return null;
+  const isChosen = new Set(chosen);
+  // Who was in front at the window's start, from the events before it. No such event means it cannot be known.
+  let front: string | null = null, frontKnown = false;
+  let dark: boolean | null = null;
+  const step = (event: UsageEvent) => {
+    if (event.type === 'fg' && event.pkg) { front = event.pkg; frontKnown = true; }
+    else if (event.type === 'bg' && event.pkg) { if (front === event.pkg) front = null; frontKnown = true; }
+    else if (event.type === 'off' || event.type === 'down' || event.type === 'boot') { front = null; frontKnown = true; dark = event.type !== 'boot'; }
+    if (event.type === 'on') dark = false;
+  };
+  for (const event of sorted) if (event.at <= fromMs) step(event);
+  if (!frontKnown) return null;
+  // A screen whose state is unknown at the start but turns on inside the window was dark until then.
+  const screenInside = sorted.filter(event => event.at > fromMs && (event.type === 'on' || event.type === 'off'));
+  if (dark === null && screenInside.length) dark = screenInside[0]!.type === 'on';
+  const sawScreen = dark !== null;
+  let chosenMs = 0, darkMs = 0, at = fromMs;
+  const add = (until: number) => {
+    const span = Math.max(0, until - at);
+    if (front && isChosen.has(front) && !dark) chosenMs += span;
+    if (dark) darkMs += span;
+    at = until;
+  };
   for (const event of sorted) {
-    if (event.type === 'fg' && event.pkg && !open.has(event.pkg)) open.set(event.pkg, event.at);
-    else if (event.type === 'bg' && event.pkg && open.has(event.pkg)) { chosen += overlap(open.get(event.pkg)!, event.at); open.delete(event.pkg); }
-    else if (event.type === 'off') {
-      // A dark screen is not app time, even if the app sends its pause a moment later.
-      for (const [pkg, since] of open) { chosen += overlap(since, event.at); open.delete(pkg); }
-      if (darkSince === null) darkSince = event.at;
-    } else if (event.type === 'on' && darkSince !== null) { dark += overlap(darkSince, event.at); darkSince = null; }
+    if (event.at <= fromMs) continue;
+    add(event.at);
+    step(event);
   }
-  for (const since of open.values()) chosen += overlap(since, toMs);
-  if (darkSince !== null) dark += overlap(darkSince, toMs);
-  return { chosenAppMs: chosen, darkMs: screen.length ? dark : null };
+  add(toMs);
+  return { chosenAppMs: chosenMs, darkMs: sawScreen ? darkMs : null };
 }
 
 export const chhuttiFactId = (day: string, windowId: string) => `chhutti:${day}:${windowId}`;
@@ -98,6 +139,7 @@ export function isKept(usage: WindowUsage, day: string): boolean {
  * up to `maxMin` and never past shutdown. A window that was not kept changes nothing.
  */
 export function rampedWindow(window: ChhuttiWindow, facts: readonly LedgerRow[], shutdown: string): ChhuttiWindow {
+  // The ramp grows the current bounds; the caller keeps earlier days' bounds with withBounds.
   const rules = RULES.plan.chhutti;
   const own = facts.filter(fact => !fact.deleted && fact.kind === 'chhutti' && fact.inputs.windowId === window.id).sort((a, b) => a.dayKey.localeCompare(b.dayKey));
   if (!own.length || own.length % 3 !== 0) return window;

@@ -132,7 +132,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       {choice.skipped.length > 0 && <p>Skipped keys: {choice.skipped.join(', ')}</p>}
       <p>{choice.kind === 'backup' ? 'This replaces current app data.' : 'This adds legacy data to this device.'}</p>
       {/* Jenil 24 Oct: a restore replaces today too (cj3 clock fuzz C1), so say so before it happens. */}
-      {choice.kind === 'backup' && <p className="restore-today">Today's activity, purchases, owned items and Shards will be replaced by the backup's.</p>}
+      {choice.kind === 'backup' && <p className="restore-today">Today's activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup's.</p>}
       <div className="actions"><button disabled={busy} onClick={() => void confirmRestore()}>Confirm restore</button><button className="secondary" onClick={() => setChoice(null)}>Cancel</button></div>
     </div>}
     <div className="card"><h2>Device storage</h2><p>Persistent storage: {persisted === null ? 'Unavailable' : persisted ? 'On' : 'Off'}</p>

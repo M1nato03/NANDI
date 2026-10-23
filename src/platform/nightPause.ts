@@ -33,7 +33,7 @@ export async function openPausedApp(packageName: string, snoozeMs: number): Prom
   if (Capacitor.isNativePlatform()) await native.openApp({ packageName, snoozeMs });
 }
 
-/** Spec 24 #1: the phone's usage events for one past window; null where there is no usage log to read (web, no access). */
+/** Spec 24 #1: the phone's usage events (every app, screen, start-up) for one past window; null where there is no usage log (web, no access). */
 export async function readWindowEvents(from: number, to: number, packages: string[]): Promise<{ logStart?: number; events: UsageEvent[] } | null> {
   if (!Capacitor.isNativePlatform()) return null;
   const result = await native.windowEvents({ from, to, packages: packages.join(',') });
