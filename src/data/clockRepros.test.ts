@@ -183,3 +183,30 @@ it('a purchase never lands inside a restore (Codex review, item 44)', async () =
   // Either refused while the restore runs, or made after it on the restored data; never made and then wiped.
   expect(bought.ok ? (await shown()).owned.includes('banner:grove') : true).toBe(true);
 });
+
+it('fuzz 2003: a restore keeps a finished day that reconcile never closed', async () => {
+  set('2026-10-20T09:00:00'); await task();
+  const backup = await exportBackup(db, now);
+  set('2026-10-21T09:00:00'); await task(false);
+  // The app is shut before reconcile runs, and opened again days later straight on the backup screen.
+  set('2026-10-25T09:00:00');
+  expect(total(await shown(), '2026-10-21')).toBe(5);
+  await importBackup(db, backup); await reconcileGamify(db, now);
+  expect(total(await shown(), '2026-10-21')).toBe(5);
+});
+
+it('fuzz 2016: a late task that moves a level-up before a held close keeps the Shards shown', async () => {
+  // 10 tasks on one day: 95 XP, one 5 XP task short of level 2 (100 XP).
+  set('2026-11-01T10:00:00'); for (let i = 0; i < 10; i++) await task(false);
+  // A close holding Shards above what the replay can see (as a restore of an older backup leaves).
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await db.settings.put({ key: 'economy.close:2026-11-02', value: { total: 0, sp: 0, streak: 0, paused: false, shards: 40, bonus: 0, owned: [], purchases: [] }, updatedAt: now, deleted: 0, deviceId });
+  set('2026-11-04T10:00:00'); await task(false);
+  set('2026-11-06T10:00:00');
+  const before = await shown();
+  expect(before.level).toBe(2);
+  // The clock goes back to the gap day and a task lands there: the level-up moves to 2 Nov, before the close.
+  set('2026-11-02T10:00:00'); await task(false);
+  set('2026-11-06T10:00:00');
+  expect((await shown()).shards).toBeGreaterThanOrEqual(before.shards);
+});

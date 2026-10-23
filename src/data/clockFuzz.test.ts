@@ -73,7 +73,7 @@ async function runSequence(ops: Op[]): Promise<string[]> {
     let owned = new Set<string>();
     const finished = new Map<string, { total: number; reopened: boolean }>();
     // The stored close of the last finished day, read just before a restore: what a restore may never lower.
-    let snap: { shards: number; owned: string[] } | undefined;
+    let snap: { day: string; shards: number; owned: string[] } | undefined;
     const view = async (): Promise<EconomyView> => deriveEconomy(await db.ledger.toArray(), undefined, await db.settings.toArray(), dayKey(now));
     const check = async (step: number, op: Op, spent: number) => {
       const v = await view(), today = dayKey(now);
@@ -96,7 +96,9 @@ async function runSequence(ops: Op[]): Promise<string[]> {
       }
       if (op.t === 'restore') {
         // What a finished day closed with survives a restore; only today is replaced (Jenil, 24 Oct).
-        if (snap && v.shards < snap.shards) fail('shards-drop-finished', `${snap.shards} -> ${v.shards}`);
+        // Less any purchase dated after that day that the phone still keeps (a clock set back, then a restore).
+        const later = snap ? (await db.ledger.toArray()).filter(f => !f.deleted && f.kind === 'purchase' && f.dayKey > snap!.day).reduce((sum, f) => sum + Number(f.inputs.price ?? 0), 0) : 0;
+        if (snap && v.shards < snap.shards - later) fail('shards-drop-finished', `${snap.shards} - ${later} later -> ${v.shards}`);
         for (const id of snap?.owned ?? []) if (!v.owned.includes(id)) fail('owned-lost-finished', id);
         owned = new Set(v.owned);
       }
@@ -145,7 +147,7 @@ async function runSequence(ops: Op[]): Promise<string[]> {
         const today = dayKey(now);
         const last = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith('economy.close:') && row.key.slice(14) < today).sort((a, b) => a.key < b.key ? -1 : 1).at(-1);
         const value = last?.value as { shards?: number; owned?: string[] } | undefined;
-        snap = value ? { shards: Math.max(0, value.shards ?? 0), owned: value.owned ?? [] } : undefined;
+        snap = value && last ? { day: last.key.slice(14), shards: Math.max(0, value.shards ?? 0), owned: value.owned ?? [] } : undefined;
         if (backups.length) await importBackup(db, backups[op.pick % backups.length]!);
         await check(step, op, 0);
         await reconcile();

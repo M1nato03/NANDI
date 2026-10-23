@@ -6,7 +6,7 @@ import type { NandiDb } from '../db';
 import { getOrCreateDeviceId } from '../device';
 import type { SettingRow } from '../types';
 import { isLegacyExport } from '../legacy-import';
-import { CLOSE_PREFIX, closeKey, deriveEconomy, mergeCloseMaps, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
+import { addEconomyDays, CLOSE_PREFIX, closeKey, closesFor, deriveEconomy, keptCandidates, mergeCloseMaps, unchargeClose, PEAK_KEY, readPeak, readSeenUpTo, SEEN_KEY } from '../../core/economy/deriveEconomy';
 import { duringRestore } from '../restoreLock';
 
 /** Classify parsed file-picker JSON before invoking the corresponding validator. */
@@ -221,12 +221,20 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
     // What this phone shows now, before the clear: XP a reconcile has not recorded yet still raises the peak (cj3 C4).
     const before = await db.settings.toArray();
     const now = Date.now();
-    const showing = deriveEconomy(await db.ledger.toArray(), undefined, before, dayKey(now));
+    const today = dayKey(now);
+    const phoneFacts = (await db.ledger.toArray()).filter(row => !row.deleted);
+    const showing = deriveEconomy(phoneFacts, undefined, before, today);
     const storedPeak = localPeak && !localPeak.deleted ? readPeak([localPeak]) : { totalXp: 0, level: 1 };
     const minePeak = { totalXp: Math.max(storedPeak.totalXp, showing.totalXp), level: Math.max(storedPeak.level, showing.level) };
     const localSeen = readSeenUpTo(before);
     // Each day's close keeps what that day showed; a restore keeps the higher of this phone's and the backup's.
-    const closes = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
+    const closes = before.filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
+    const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
+    // Close the books first, as reconcileGamify would: a finished day it has not closed yet (the app was shut before
+    // it ran, then the clock moved on) still keeps what it showed after the restore (cj3 fuzz seeds 2003, 2065).
+    const stored = asMap(closes);
+    const pending = keptCandidates(closesFor(phoneFacts, before, today), stored, addEconomyDays(today, -120));
+    const phoneMap = new Map<string, unknown>([...stored, ...mergeCloseMaps(new Map([...stored].filter(([day]) => day < today)), pending)]);
     // dexie-export-import expects its own JSON, without the NANDI envelope.
     const dexieBlob = new Blob([JSON.stringify(restored.dexie)], { type: 'application/json' });
     await importInto(db, dexieBlob, { acceptVersionDiff: true, acceptNameDiff: true,
@@ -249,15 +257,13 @@ export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promi
       await db.settings.put({ key: SEEN_KEY, value: localSeen, updatedAt: now, deleted: 0, deviceId });
     }
     const restoredCloses = (await db.settings.toArray()).filter(row => !row.deleted && row.key.startsWith(CLOSE_PREFIX));
-    const asMap = (rows: SettingRow[]) => new Map(rows.map(row => [row.key.slice(CLOSE_PREFIX.length), row.value] as const));
-    const template = closes[0] ?? restoredCloses[0];
     // One write for all the closes: a put per day woke every live query once per row (batch 3 b: 212 s for a year).
     // A restore replaces today (Jenil, 24 Oct). A purchase dated today or later that the backup does not have was
     // charged to this phone's closes dated ahead (chargeClose); take it off them and refund it, or the merge would
     // rebuild it as owned (Codex review of cj3, item 44). Purchases of finished days stay, as before.
     const restoredIds = new Set((await db.ledger.toArray()).filter(row => !row.deleted && row.kind === 'purchase').map(row => row.id));
-    const today = dayKey(now);
-    const phoneCloses = new Map([...asMap(closes)].map(([day, raw]) => [day, unchargeClose(raw, item => item.dayKey >= today && !restoredIds.has(item.id))] as const));
-    if (template) await db.settings.bulkPut([...mergeCloseMaps(asMap(restoredCloses), phoneCloses)].map(([day, value]) => ({ ...template, key: closeKey(day), value })));
+    const phoneCloses = new Map([...phoneMap].map(([day, raw]) => [day, unchargeClose(raw, item => item.dayKey >= today && !restoredIds.has(item.id))] as const));
+    const merged = mergeCloseMaps(asMap(restoredCloses), phoneCloses);
+    if (merged.size) await db.settings.bulkPut([...merged].map(([day, value]): SettingRow => ({ key: closeKey(day), value, updatedAt: now, deleted: 0, deviceId })));
   }));
 }

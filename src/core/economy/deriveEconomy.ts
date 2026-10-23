@@ -37,7 +37,12 @@ export interface ClosePurchase { id: string; itemId: string; price: number; dayK
  * What a finished day showed (economy second opinions 22 and 25). Closes are high-water marks: every reconcile
  * raises them to what the replay now shows, never lowers them, and the replay never shows less than them.
  */
-export interface DayClose { total: number; sp: number; streak: number; paused: boolean; shards: number; owned: string[]; purchases: ClosePurchase[] }
+/**
+ * `bonus` is the level-up Shards the close's balance already held (absent in closes written before 24 Oct). A late
+ * fact on an earlier day can move a level-up to before a close; the floor then adds back only the bonuses that close
+ * did not hold, so it neither drops nor pays one twice (cj3 fuzz seeds 2016, 2128).
+ */
+export interface DayClose { total: number; sp: number; streak: number; paused: boolean; shards: number; bonus?: number; owned: string[]; purchases: ClosePurchase[] }
 export const CLOSE_PREFIX = 'economy.close:';
 export const closeKey = (day: string) => `${CLOSE_PREFIX}${day}`;
 function num(input: unknown): number { return typeof input === 'number' && Number.isFinite(input) ? input : 0; }
@@ -50,7 +55,8 @@ function asClose(raw: unknown): DayClose | undefined {
     return typeof row.id === 'string' && typeof row.itemId === 'string' && typeof row.dayKey === 'string' && isDay(row.dayKey) && num(row.price) > 0
       ? [{ id: row.id, itemId: row.itemId, price: num(row.price), dayKey: row.dayKey }] : [];
   }) : [];
-  return { total: num(value.total), sp: num(value.sp), streak: num(value.streak), paused: value.paused === true, shards: num(value.shards),
+  const bonus = typeof value.bonus === 'number' && Number.isFinite(value.bonus) ? { bonus: value.bonus } : {};
+  return { total: num(value.total), sp: num(value.sp), streak: num(value.streak), paused: value.paused === true, shards: num(value.shards), ...bonus,
     owned: Array.isArray(value.owned) ? value.owned.filter((id): id is string => typeof id === 'string') : [], purchases };
 }
 /**
@@ -83,12 +89,19 @@ export function mergeClose(a: unknown, b: unknown): DayClose | undefined {
   // The merged close knows every purchase from both, so each balance first pays for the ones only the other knew;
   // otherwise a late purchase's spend would vanish under the older, higher balance (second opinion 26).
   // Signed: a close may hold a debt from a purchase made with look-ahead Shards, and a 0 here would mint them (cj3 B).
-  const shards = Math.max(x.shards - cost(onlyIn(y, x)), y.shards - cost(onlyIn(x, y)));
+  const sx = x.shards - cost(onlyIn(y, x)), sy = y.shards - cost(onlyIn(x, y));
   return { total: Math.max(x.total, y.total), sp: Math.max(x.sp, y.sp), streak: Math.max(x.streak, y.streak),
     paused: x.streak === y.streak ? x.paused && y.paused : (x.streak > y.streak ? x.paused : y.paused),
-    shards, owned: [...new Set([...x.owned, ...y.owned])], purchases };
+    shards: Math.max(sx, sy), ...bonusOf([[sx, x], [sy, y]]), owned: [...new Set([...x.owned, ...y.owned])], purchases };
 }
 const dayOrder = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+/** The level bonus that goes with the higher balance of two closes (the higher bonus on a tie, so none is paid twice). */
+function bonusOf(sides: readonly (readonly [number, DayClose | undefined])[]): { bonus?: number } {
+  const present = sides.filter((side): side is readonly [number, DayClose] => !!side[1]);
+  const top = Math.max(...present.map(([shards]) => shards));
+  const bonuses = present.filter(([shards]) => shards === top).map(([, close]) => close.bonus);
+  return bonuses.some(bonus => bonus === undefined) ? {} : { bonus: Math.max(...bonuses as number[]) };
+}
 /** One purchase pool for a set of closes: each id once, at the higher price if two closes disagree (bad data only). */
 function purchasePool(closes: Iterable<DayClose>): Map<string, ClosePurchase> {
   const pool = new Map<string, ClosePurchase>();
@@ -149,12 +162,13 @@ export function mergeCloseMaps(a: ReadonlyMap<string, unknown>, b: ReadonlyMap<s
     for (const item of cx?.purchases ?? []) knownX.add(item.id);
     for (const item of cy?.purchases ?? []) knownY.add(item.id);
     for (const item of hosted.get(day)!) knownAll.add(item.id);
-    const shards = Math.max(cx ? cx.shards - unpaid(knownX) : -Infinity, cy ? cy.shards - unpaid(knownY) : -Infinity);
+    const sx = cx ? cx.shards - unpaid(knownX) : -Infinity, sy = cy ? cy.shards - unpaid(knownY) : -Infinity;
+    const shards = Math.max(sx, sy);
     const both = [cx, cy].filter((close): close is DayClose => !!close);
     const streak = Math.max(...both.map(close => close.streak));
     const top = both.filter(close => close.streak === streak);
     out.set(day, { total: Math.max(...both.map(close => close.total)), sp: Math.max(...both.map(close => close.sp)), streak,
-      paused: top.every(close => close.paused), shards, owned: [...new Set(both.flatMap(close => close.owned))], purchases: hosted.get(day)! });
+      paused: top.every(close => close.paused), shards, ...bonusOf([[sx, cx], [sy, cy]]), owned: [...new Set(both.flatMap(close => close.owned))], purchases: hosted.get(day)! });
   }
   return out;
 }
@@ -209,7 +223,7 @@ const purchasePrices: Record<string, number> = {
   'theme:linen': 400, 'theme:lagoon': 800,
 };
 
-interface DaySnapshot { streak: number; paused: boolean; earned: number; balance: number; owned: string[]; purchases: ClosePurchase[] }
+interface DaySnapshot { streak: number; paused: boolean; earned: number; bonus: number; balance: number; owned: string[]; purchases: ClosePurchase[] }
 /** `balance` is the signed end balance; `view.shards` is it clamped at 0 for the screen. */
 interface Replay { view: EconomyView; daily: Map<string, DaySnapshot>; accepted: ClosePurchase[]; balance: number }
 
@@ -234,24 +248,32 @@ function withClosedPurchases(facts: readonly LedgerRow[], closes: ReadonlyMap<st
  * For a close on day D and a later day U that is earned(U) - spent(<= U) + [shards(D) - earned(D) + known spend(D)],
  * so one pass over the days keeps the best bracket so far (economy review 32: this was closes x days).
  */
-function shardFloors(closes: ReadonlyMap<string, DayClose>, replay: Replay, days: readonly string[]): Map<string, number> {
+function shardFloors(closes: ReadonlyMap<string, DayClose>, replay: Replay, days: readonly string[]): Map<string, { shards: number; bonus: number }> {
   const closeDays = [...closes.keys()].sort(dayOrder);
   const price = new Map(replay.accepted.map(item => [item.id, item.price]));
   const spends = [...replay.accepted].sort((a, b) => dayOrder(a.dayKey, b.dayKey));
   const known = new Set<string>();
-  let atClose = 0, atSpend = 0, spent = 0, knownSpent = 0, best = -Infinity;
-  const out = new Map<string, number>();
+  // For each close: base = its balance above the replay's bonus-free earnings by then (plus what it knew it spent);
+  // `held` = the level bonus that balance held. A floor adds back the replay's bonuses past `held`, or keeps `held`
+  // when the replay now reaches fewer levels: max over closes of base - held + max(bonus now, held), kept as two
+  // running maxima. A close written before 24 Oct holds the replay's own bonus for its day (the earlier rule).
+  let atClose = 0, atSpend = 0, spent = 0, knownSpent = 0, bestFree = -Infinity, bestHeld = -Infinity, topHeld = -Infinity;
+  const out = new Map<string, { shards: number; bonus: number }>();
   for (const day of [...days].sort(dayOrder)) {
     while (atClose < closeDays.length && closeDays[atClose]! < day) {
       const closeDay = closeDays[atClose++]!, close = closes.get(closeDay)!;
       for (const item of close.purchases) if (!known.has(item.id)) { known.add(item.id); knownSpent += price.get(item.id) ?? 0; }
-      const earnedThen = replay.daily.get(closeDay)?.earned;
-      if (earnedThen !== undefined) best = Math.max(best, close.shards - earnedThen + knownSpent);
+      const then = replay.daily.get(closeDay);
+      if (!then) continue;
+      const held = close.bonus ?? then.bonus, base = close.shards - (then.earned - then.bonus) + knownSpent;
+      bestFree = Math.max(bestFree, base - held); bestHeld = Math.max(bestHeld, base); topHeld = Math.max(topHeld, held);
     }
     while (atSpend < spends.length && spends[atSpend]!.dayKey <= day) spent += spends[atSpend++]!.price;
-    const earnedAt = replay.daily.get(day)?.earned;
+    const at = replay.daily.get(day);
     // Signed, and -Infinity with no close to floor it: only the shown number is clamped (cj3 B).
-    out.set(day, earnedAt === undefined || best === -Infinity ? -Infinity : earnedAt - spent + best);
+    if (!at || bestFree === -Infinity) { out.set(day, { shards: -Infinity, bonus: at?.bonus ?? 0 }); continue; }
+    const free = bestFree + at.bonus, held = bestHeld;
+    out.set(day, { shards: at.earned - at.bonus - spent + Math.max(free, held), bonus: free >= held ? at.bonus : Math.max(at.bonus, topHeld) });
   }
   return out;
 }
@@ -335,7 +357,7 @@ function viewUpTo(facts: readonly LedgerRow[], history: readonly RulesHistoryEnt
   const balance = replay.balance + unpaidLevels * (rulesFor(end, history)?.rules ?? RULES).shards.levelUpBonus;
   if (!closes.size) return { ...replay.view, shards: Math.max(0, balance) };
   const owned = [...new Set([...replay.view.owned, ...[...closes.values()].flatMap(close => close.owned)])];
-  return { ...replay.view, shards: Math.max(0, balance, Math.floor(shardFloors(closes, replay, [end]).get(end) ?? -Infinity)), owned };
+  return { ...replay.view, shards: Math.max(0, balance, Math.floor(shardFloors(closes, replay, [end]).get(end)?.shards ?? -Infinity)), owned };
 }
 
 /** What each finished day (before `today`) shows now, in one replay: the candidates reconcileGamify merges into the closes. */
@@ -351,7 +373,10 @@ export function closesFor(facts: readonly LedgerRow[], settings: readonly Settin
     while (atClose < closeDays.length && closeDays[atClose]! <= day.dayKey) for (const id of closes.get(closeDays[atClose++]!)!.owned) ownedBefore.add(id);
     const snap = replay.daily.get(day.dayKey)!;
     const sp = Math.max(0, Math.min(day.total - day.held - day.soft - day.welcome, RULES.season.spDailyCap), closes.get(day.dayKey)?.sp ?? 0);
-    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, Math.floor(floors.get(day.dayKey) ?? -Infinity)),
+    const floor = floors.get(day.dayKey), floorShards = Math.floor(floor?.shards ?? -Infinity);
+    // The bonus goes with whichever balance the close keeps (the higher one on a tie, so none is paid twice).
+    const bonus = floorShards > snap.balance ? floor!.bonus : floorShards === snap.balance ? Math.max(snap.bonus, floor!.bonus) : snap.bonus;
+    out.set(day.dayKey, { total: day.total, sp, streak: snap.streak, paused: snap.paused, shards: Math.max(snap.balance, floorShards), bonus,
       owned: [...new Set([...snap.owned, ...ownedBefore])], purchases: snap.purchases });
   }
   return out;
@@ -488,7 +513,7 @@ function replayEconomy(
   }
   let totalXp = 0, level = 1, earnedFromXp = 0, levelShardBonus = 0;
   // Shards earned by the end of each day, before any purchase (for closes and the Shards floor).
-  const earnedXpBy: number[] = [];
+  const earnedXpBy: number[] = [], bonusBy: number[] = [];
   for (const day of days) {
     const rules = rulesFor(day.dayKey, history)?.rules ?? RULES;
     totalXp += day.total;
@@ -497,7 +522,7 @@ function replayEconomy(
     if (candidate > level) { levelShardBonus += (candidate - level) * rules.shards.levelUpBonus; level = candidate; }
     // Exact, not rounded down: a late fact on an earlier day then moves a close's earnings and the end's by the same
     // amount, so the Shards floor never loses a rounding Shard (cj3 fuzz seeds 2099, 2117). Only shown numbers round.
-    earnedXpBy.push(earnedFromXp + levelShardBonus);
+    earnedXpBy.push(earnedFromXp + levelShardBonus); bonusBy.push(levelShardBonus);
   }
   const current = seasonFor(today < '2026-11-02' ? '2026-11-02' : today);
   const active = today >= '2026-11-02';
@@ -630,7 +655,7 @@ function replayEconomy(
       if (item.dayKey === key) ofDay.push(item);
     }
     // Signed: a day that spent look-ahead Shards ends below zero, and its close must say so (cj3 B).
-    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, balance: Math.floor(earned) - spentSoFar, owned: [...ownedSoFar], purchases: ofDay });
+    daily.set(key, { streak: streakBy[i]!.streak, paused: streakBy[i]!.paused, earned, bonus: bonusBy[i]!, balance: Math.floor(earned) - spentSoFar, owned: [...ownedSoFar], purchases: ofDay });
   }
   return { daily, accepted, balance, view: { days, totalXp, level, nextLevelXp: xpToReach(level + 1, (rulesFor(today, history)?.rules ?? RULES).level.stepBase), season: { index: current.index, start: current.start, end: current.end, active, sp, target, rank, tier: tierFor(rank), seed, nextSeed, placesThisWeek }, streak: { days: streakDays, restDays, restDaysUsed, restUsedYesterday, paused, gold, restored, canRepair: paused && breakAt >= 0 && breakAt + 2 + restShift - (days.length - 1) + 1 - (days.at(-1)?.hatTrick ? 1 : 0) >= RULES.streak.repairHatTricks - repair }, cleanWeek: { count, days: thisWeek, complete: count >= RULES.streak.cleanWeekHatTricks, streak: cleanStreak }, shards: Math.max(0, balance), owned } };
 }

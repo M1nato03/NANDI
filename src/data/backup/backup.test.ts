@@ -79,7 +79,8 @@ describe('backup and restore', () => {
     // The peak and the seen-up-to day are one put each; the closes are one bulkPut, never a put per day.
     expect(puts.mock.calls.length).toBeLessThanOrEqual(2);
     expect(puts.mock.calls.every(([row]) => !String(row.key).startsWith('economy.close:'))).toBe(true);
-    const rows = await db.settings.where('key').startsWith('economy.close:').toArray();
+    // The restore also closes the books up to today, as reconcile would; the 120 restored days are the ones checked.
+    const rows = await db.settings.where('key').between(`economy.close:${day(0)}`, `economy.close:${day(119)}`, true, true).toArray();
     expect(rows).toHaveLength(120);
     expect(rows.map(row => (row.value as { total: number }).total)).toEqual(Array.from({ length: 120 }, (_, n) => n % 2 ? 30 : 10));
   });
