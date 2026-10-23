@@ -44,8 +44,8 @@ in `DECISIONS.md`. The rules (full table in the cloud report):
 - A time already past today with no day word moves to tomorrow (the chip shows it). Hours 0–3 belong to the planning
   day before. A day with no time starts at 09:00 (matches the existing Shutdown copy).
 - Durations: `15m`, `45 min`, `1.5h`, `2 ghante`; over 90 minutes still opens the split preview automatically.
-- Ambiguity keeps words in the title: when two date words conflict ("call mom at 9 tonight about fri trip"), the first
-  wins and the other stays as text; uppercase `SAT` is never Saturday; no month names in v1 ("may meeting" stays text).
+- Ambiguity keeps words in the title: when two date words conflict ("call mom at 9 tonight about fri trip"), the
+  parser **abstains** (no chip, every word kept; see Accuracy rule 4 and gap G1); uppercase `SAT` is never Saturday; no month names in v1 ("may meeting" stays text).
 - The chip shows the **calendar** date for a start between 00:00 and 03:59 ("Sat 1:00 am"), and says "9:00 am (default)"
   when a day had no time. Starts after bedtime are allowed but the chip says "after your bedtime".
 - Repeat stays available under "More" and still needs a scheduled time. The Must cap (3) is enforced by the repository
@@ -103,6 +103,30 @@ A larger set of made-up hard cases (generated, then checked by hand) is allowed 
 - **At least 85%** of lines that contain a time or day get a chip (the rest abstain safely).
 - Zero cases where a title word disappears without being shown in the chip.
 If the gate fails, cut the vocabulary back (fewer words, higher precision) rather than loosen the rules.
+
+## Gaps the gold kit found (cloud job cj3-capture-gold, 23 Oct)
+Labelling 586 SYNTHETIC lines (`ideas/cj3-capture-gold`; extra tests only, never the gate) exposed 14 decisions the spec
+had not made. Proposed answers, all precision first. The real gold set can overturn any of them before code is written.
+
+| # | Gap | Example | Proposed rule |
+|---|---|---|---|
+| G1 | The spec said both "first date word wins" and "abstain on conflict" | `call mom at 9 tonight about fri trip` | **Abstain.** The parser section now says so. |
+| G2 | A day with no time, typed after 09:00 on that day | `aaj laundry` at 3 pm | The day chip with **no start** ("Today · no time"). Same as open question 1. |
+| G3 | A bare number right after a day word | `tmrw 10 class` | **Abstain the time** (keep the day chip, keep "10 class" in the title). Today's rule would give a confident wrong 09:00. |
+| G4 | Bare 7–11 on later days read as am | `kal 8 baje movie` | **Abstain the time** for a bare 7–11 with `baje` and no part-of-day word. Show the chip with the day only. No guessing from nouns in v1. |
+| G5 | `aaj` / `tonight` after midnight | `tonight gym` at 01:30 | Planning day, like `kal` (open question 2 covers all three). If that lands in the past, abstain. |
+| G6 | Deadlines | `kal tak`, `by fri`, `5 baje se pehle` | **Abstain.** Tasks have no due field. `tak`, `by`, `se pehle`, `before` block the reading. |
+| G7 | Repeats | `roz subah 6 baje yoga` | **Abstain.** `roz`, `daily`, `har`, `every` block the reading. Mapping to `repeat` is a later version. |
+| G8 | Short weekday forms are names or words | `Ravi`, `Guru`, `sun` (listen), `may`/`mai`, `tom` | Only full Hindi forms (`ravivar`, `guruvar`…) in the lexicon. `sun`, `tom` and `kl` count only next to a time word. |
+| G9 | `Sham ko call karna` | call Sham, or call in the evening | **Abstain** when the line starts with `sham/shyam` + `ko` + a verb and has no number. |
+| G10 | Movie and show titles | `Kal Ho Naa Ho`, `Aaj Tak` | **Abstain** inside a run of 3 or more capitalised words. |
+| G11 | Numbers that look like clocks | `ex 5.30`, `page 7.45` | The dot form needs `baje`, `pm/am` or `at`. Never read after `ex`, `page`, `ch`, `q`. |
+| G12 | Devanagari, Gujarati, Marathi | `कल`, `kale savare 7 vage`, `udya` | Out of v1 scope; abstain. Count them in the real set and add only what shows up. |
+| G13 | `12 baje` with no hint | `12 baje lunch` | **Noon.** Midnight only with `raat` or `am`. |
+| G14 | Wall times that happen twice (DST abroad) | | The first one. |
+
+G3 and G4 matter most: as first written they give **wrong readings**, not misses, so they would break the under-1% gate.
+Report the gate both with and without the `v1_scope=out` rows.
 
 ## Not doing
 No AI or server parsing (offline rule). No reminders added automatically. No points, streaks or randomness for
