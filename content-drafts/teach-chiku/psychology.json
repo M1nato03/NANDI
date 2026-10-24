@@ -1,0 +1,2009 @@
+{
+  "schema": "concept.teach.map",
+  "version": 1,
+  "topicId": "psychology",
+  "source": "content/topics/topic.psychology.json on ideas/learn-misconceptions (65ed5ef)",
+  "status": "draft, not reviewed by an editor",
+  "maps": [
+    {
+      "conceptId": "habits",
+      "nodes": [
+        {
+          "id": "cue",
+          "label": "A stable cue (same place, or an act just before)"
+        },
+        {
+          "id": "act",
+          "label": "The learned act"
+        },
+        {
+          "id": "repeats",
+          "label": "Early repeats in the same setting"
+        },
+        {
+          "id": "auto",
+          "label": "The act feels automatic"
+        },
+        {
+          "id": "missday",
+          "label": "Missing one day"
+        },
+        {
+          "id": "goal",
+          "label": "A steady goal to do it"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "cue",
+          "to": "act",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "habits-c1",
+              "quote": "Cues in a stable setting, like a place or an act just before, can bring back a learned action with little thought."
+            },
+            {
+              "claimId": "habits-c5",
+              "quote": "kept old habits mainly when parts of the old setting stayed the same"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "repeats",
+          "to": "auto",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "habits-c4",
+              "quote": "Early repeats in the same setting add the most to how automatic an act feels"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "habits-m2",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "missday",
+              "to": "auto",
+              "relation": "less-likely",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "habits-c2",
+              "quote": "one missed chance did not undo habit growth"
+            }
+          ]
+        },
+        {
+          "misconceptionId": "habits-m3",
+          "kind": "swapped-link",
+          "add": [
+            {
+              "id": "w2",
+              "from": "goal",
+              "to": "act",
+              "relation": "sets-off",
+              "support": []
+            }
+          ],
+          "remove": [
+            "l1"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "habits-c5",
+              "quote": "kept old habits mainly when parts of the old setting stayed the same"
+            },
+            {
+              "claimId": "habits-c1",
+              "quote": "Cues in a stable setting, like a place or an act just before, can bring back a learned action with little thought."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Arun misses one day of his push-up habit. Does the habit feel less automatic now?",
+          "query": {
+            "kind": "effect",
+            "from": "missday",
+            "change": "up",
+            "to": "auto"
+          },
+          "support": [
+            {
+              "claimId": "habits-c2",
+              "quote": "one missed chance did not undo habit growth"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "habits-m2": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            },
+            "habits-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Kunal's train cue is gone this week, but his goal to revise stays. Is the revising act more or less likely?",
+          "query": {
+            "kind": "effect",
+            "from": "cue",
+            "change": "down",
+            "to": "act"
+          },
+          "support": [
+            {
+              "claimId": "habits-c1",
+              "quote": "Cues in a stable setting, like a place or an act just before, can bring back a learned action with little thought."
+            },
+            {
+              "claimId": "habits-c5",
+              "quote": "kept old habits mainly when parts of the old setting stayed the same"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l1"
+                ]
+              ]
+            },
+            "habits-m2": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l1"
+                ]
+              ]
+            },
+            "habits-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "loss-aversion",
+      "nodes": [
+        {
+          "id": "ref",
+          "label": "A higher start point or expectation"
+        },
+        {
+          "id": "lossframe",
+          "label": "The same result seen as a loss"
+        },
+        {
+          "id": "extra",
+          "label": "Extra felt weight"
+        },
+        {
+          "id": "decline",
+          "label": "Turning down a fair 50-50 bet"
+        },
+        {
+          "id": "onestudy",
+          "label": "One study finding a smaller gap"
+        },
+        {
+          "id": "average",
+          "label": "Pooled average (loss about twice a gain) holds"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "ref",
+          "to": "lossframe",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "loss-aversion-c1",
+              "quote": "Gains and losses are judged from a reference point, which is often where you start or what you expected."
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "lossframe",
+          "to": "extra",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "loss-aversion-c2",
+              "quote": "A loss tends to weigh more than a gain of the same size"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "extra",
+          "to": "decline",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "loss-aversion-c2",
+              "quote": "most people turn down a fair 50-50 chance to win or lose the same amount"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "loss-aversion-m3",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l1"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "loss-aversion-c1",
+              "quote": "Gains and losses are judged from a reference point, which is often where you start or what you expected."
+            }
+          ]
+        },
+        {
+          "misconceptionId": "loss-aversion-m4",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "onestudy",
+              "to": "average",
+              "relation": "less-likely",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "loss-aversion-c3",
+              "quote": "The figures varied from study to study."
+            },
+            {
+              "claimId": "loss-aversion-c3",
+              "quote": "a loss weighed about twice a gain of the same size, on average"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Amit judges a coin-flip bet from a higher start point, so its results look like losses. Is he more likely to turn the bet down?",
+          "query": {
+            "kind": "effect",
+            "from": "ref",
+            "change": "up",
+            "to": "decline"
+          },
+          "support": [
+            {
+              "claimId": "loss-aversion-c1",
+              "quote": "Gains and losses are judged from a reference point, which is often where you start or what you expected."
+            },
+            {
+              "claimId": "loss-aversion-c2",
+              "quote": "A loss tends to weigh more than a gain of the same size"
+            },
+            {
+              "claimId": "loss-aversion-c2",
+              "quote": "most people turn down a fair 50-50 chance to win or lose the same amount"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l1",
+                  "l2",
+                  "l3"
+                ]
+              ]
+            },
+            "loss-aversion-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "loss-aversion-m4": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l1",
+                  "l2",
+                  "l3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "A new study finds a loss weighs only a little more than a gain. Does the pooled average of about twice stop holding?",
+          "query": {
+            "kind": "effect",
+            "from": "onestudy",
+            "change": "up",
+            "to": "average"
+          },
+          "support": [
+            {
+              "claimId": "loss-aversion-c3",
+              "quote": "The figures varied from study to study."
+            },
+            {
+              "claimId": "loss-aversion-c3",
+              "quote": "a loss weighed about twice a gain of the same size, on average"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "loss-aversion-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "loss-aversion-m4": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "anchoring",
+      "nodes": [
+        {
+          "id": "first",
+          "label": "A first number (the anchor)"
+        },
+        {
+          "id": "random",
+          "label": "A number known to be random"
+        },
+        {
+          "id": "pull",
+          "label": "Pull toward the anchor"
+        },
+        {
+          "id": "guess",
+          "label": "Later guess lands near the anchor"
+        },
+        {
+          "id": "reasons",
+          "label": "Listing reasons the anchor is wrong"
+        },
+        {
+          "id": "expert",
+          "label": "Years of expertise"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "first",
+          "to": "pull",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "anchoring-c1",
+              "quote": "A first number can pull a later estimate toward it"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "pull",
+          "to": "guess",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "anchoring-c1",
+              "quote": "because people adjust away from it too little"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "random",
+          "to": "first",
+          "relation": "example-of",
+          "support": [
+            {
+              "claimId": "anchoring-c2",
+              "quote": "a random first number of 10 led to a median guess of 25"
+            },
+            {
+              "claimId": "anchoring-c3",
+              "quote": "Experienced judges leaned toward a sentence demand even when they set it themselves by rolling dice."
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "from": "reasons",
+          "to": "pull",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "anchoring-c4",
+              "quote": "listing reasons why an anchor was wrong made its pull smaller"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "anchoring-m2",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l3"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "anchoring-c2",
+              "quote": "a random first number of 10 led to a median guess of 25"
+            },
+            {
+              "claimId": "anchoring-c3",
+              "quote": "Experienced judges leaned toward a sentence demand even when they set it themselves by rolling dice."
+            }
+          ]
+        },
+        {
+          "misconceptionId": "anchoring-m3",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "expert",
+              "to": "pull",
+              "relation": "less-likely",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "anchoring-c3",
+              "quote": "Experienced judges leaned toward a sentence demand even when they set it themselves by rolling dice."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "A wheel lands on 65, and everyone knows it is random. Does the later guess still move toward 65?",
+          "query": {
+            "kind": "effect",
+            "from": "random",
+            "change": "up",
+            "to": "guess"
+          },
+          "support": [
+            {
+              "claimId": "anchoring-c2",
+              "quote": "a random first number of 10 led to a median guess of 25"
+            },
+            {
+              "claimId": "anchoring-c1",
+              "quote": "A first number can pull a later estimate toward it"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3",
+                  "l1",
+                  "l2"
+                ]
+              ]
+            },
+            "anchoring-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "anchoring-m3": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3",
+                  "l1",
+                  "l2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "A judge with 20 years on the bench hears a high demand. Does her expertise make her sentence less likely to land near it?",
+          "query": {
+            "kind": "effect",
+            "from": "expert",
+            "change": "up",
+            "to": "guess"
+          },
+          "support": [
+            {
+              "claimId": "anchoring-c3",
+              "quote": "Experienced judges leaned toward a sentence demand even when they set it themselves by rolling dice."
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "anchoring-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "anchoring-m3": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "w1",
+                  "l2"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "confirmation-bias",
+      "nodes": [
+        {
+          "id": "belief",
+          "label": "Holding a belief"
+        },
+        {
+          "id": "fits",
+          "label": "Noticing cases that fit it"
+        },
+        {
+          "id": "misses",
+          "label": "Noticing cases that do not fit"
+        },
+        {
+          "id": "seekfalse",
+          "label": "Checking cases that could prove it false"
+        },
+        {
+          "id": "fair",
+          "label": "A proper test of the rule"
+        },
+        {
+          "id": "proven",
+          "label": "The rule is shown true"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "belief",
+          "to": "fits",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "confirmation-bias-c1",
+              "quote": "People tend to focus on information that fits what they already believe"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "belief",
+          "to": "misses",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "confirmation-bias-c1",
+              "quote": "and pass over what does not"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "seekfalse",
+          "to": "fair",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "confirmation-bias-c2",
+              "quote": "is tested properly by checking the cases that could prove it false"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "confirmation-bias-m3",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "fits",
+              "to": "proven",
+              "relation": "more-likely",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "confirmation-bias-c3",
+              "quote": "cases that fit a guess can fit other rules too"
+            }
+          ]
+        },
+        {
+          "misconceptionId": "confirmation-bias-m2",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l3"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "confirmation-bias-c2",
+              "quote": "is tested properly by checking the cases that could prove it false"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Meera finds ten more cases that fit her rule. Is her rule now shown true?",
+          "query": {
+            "kind": "effect",
+            "from": "fits",
+            "change": "up",
+            "to": "proven"
+          },
+          "support": [
+            {
+              "claimId": "confirmation-bias-c3",
+              "quote": "cases that fit a guess can fit other rules too"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "confirmation-bias-m3": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            },
+            "confirmation-bias-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Meera checks the cases that could prove her rule false. Is that a more proper test?",
+          "query": {
+            "kind": "effect",
+            "from": "seekfalse",
+            "change": "up",
+            "to": "fair"
+          },
+          "support": [
+            {
+              "claimId": "confirmation-bias-c2",
+              "quote": "is tested properly by checking the cases that could prove it false"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            },
+            "confirmation-bias-m3": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            },
+            "confirmation-bias-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "social-proof",
+      "nodes": [
+        {
+          "id": "crowd",
+          "label": "A group giving one answer"
+        },
+        {
+          "id": "follow",
+          "label": "Going along with the group"
+        },
+        {
+          "id": "unsure",
+          "label": "Being unsure of the answer"
+        },
+        {
+          "id": "fitin",
+          "label": "Wish to fit in and avoid ridicule"
+        },
+        {
+          "id": "right",
+          "label": "The group's answer is right"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "crowd",
+          "to": "follow",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "social-proof-c1",
+              "quote": "people went along with a wrong group in 36.8% of answers"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "unsure",
+          "to": "follow",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "social-proof-c3",
+              "quote": "When people are unsure, they may follow a group"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "fitin",
+          "to": "follow",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "social-proof-c6",
+              "quote": "people who went along mostly did it to fit in and avoid ridicule"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "social-proof-m1",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "crowd",
+              "to": "right",
+              "relation": "more-likely",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "social-proof-c4",
+              "quote": "A group can agree on a wrong answer, so agreement alone is a clue, not proof."
+            }
+          ]
+        },
+        {
+          "misconceptionId": "social-proof-m2",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l1"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "social-proof-c1",
+              "quote": "people went along with a wrong group in 36.8% of answers"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Six classmates all say line B is the match. Does that make B more likely to be right?",
+          "query": {
+            "kind": "effect",
+            "from": "crowd",
+            "change": "up",
+            "to": "right"
+          },
+          "support": [
+            {
+              "claimId": "social-proof-c4",
+              "quote": "A group can agree on a wrong answer, so agreement alone is a clue, not proof."
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "social-proof-m1": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            },
+            "social-proof-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "In Asch's test the group gives a wrong answer out loud. Does that pull people toward it?",
+          "query": {
+            "kind": "effect",
+            "from": "crowd",
+            "change": "up",
+            "to": "follow"
+          },
+          "support": [
+            {
+              "claimId": "social-proof-c1",
+              "quote": "people went along with a wrong group in 36.8% of answers"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l1"
+                ]
+              ]
+            },
+            "social-proof-m1": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l1"
+                ]
+              ]
+            },
+            "social-proof-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "planning-fallacy",
+      "nodes": [
+        {
+          "id": "own",
+          "label": "Guessing time for your own task"
+        },
+        {
+          "id": "picture",
+          "label": "Picturing how the task will go"
+        },
+        {
+          "id": "past",
+          "label": "Linking past tasks to the plan"
+        },
+        {
+          "id": "short",
+          "label": "A too-short time guess"
+        },
+        {
+          "id": "others",
+          "label": "Guessing time for someone else's task"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "own",
+          "to": "picture",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "planning-fallacy-c4",
+              "quote": "When people plan, they think about how the task will go"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "picture",
+          "to": "short",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "planning-fallacy-c4",
+              "quote": "pay little heed to how past tasks went"
+            },
+            {
+              "claimId": "planning-fallacy-c1",
+              "quote": "People's guesses of how long their own tasks would take were too short"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "past",
+          "to": "short",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "planning-fallacy-c3",
+              "quote": "asking people to link past tasks to a new plan removed the too-short bias"
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "from": "others",
+          "to": "past",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "planning-fallacy-c5",
+              "quote": "used past cases more"
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "planning-fallacy-m2",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l3"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "planning-fallacy-c3",
+              "quote": "asking people to link past tasks to a new plan removed the too-short bias"
+            }
+          ]
+        },
+        {
+          "misconceptionId": "planning-fallacy-m5",
+          "kind": "swapped-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "others",
+              "to": "short",
+              "relation": "more-likely",
+              "support": []
+            }
+          ],
+          "remove": [
+            "l4"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "planning-fallacy-c5",
+              "quote": "People guessing how long someone else's task would take guessed long, not short"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Dev looks at how long his last three essays took before he plans this one. Is his time guess less likely to be too short?",
+          "query": {
+            "kind": "effect",
+            "from": "past",
+            "change": "up",
+            "to": "short"
+          },
+          "support": [
+            {
+              "claimId": "planning-fallacy-c3",
+              "quote": "asking people to link past tasks to a new plan removed the too-short bias"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            },
+            "planning-fallacy-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "planning-fallacy-m5": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Dev guesses how long his friend's essay will take. Is that guess likely to be too short?",
+          "query": {
+            "kind": "effect",
+            "from": "others",
+            "change": "up",
+            "to": "short"
+          },
+          "support": [
+            {
+              "claimId": "planning-fallacy-c5",
+              "quote": "used past cases more"
+            },
+            {
+              "claimId": "planning-fallacy-c5",
+              "quote": "People guessing how long someone else's task would take guessed long, not short"
+            },
+            {
+              "claimId": "planning-fallacy-c3",
+              "quote": "asking people to link past tasks to a new plan removed the too-short bias"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l4",
+                  "l3"
+                ]
+              ]
+            },
+            "planning-fallacy-m2": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "planning-fallacy-m5": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "sleep-memory",
+      "nodes": [
+        {
+          "id": "study",
+          "label": "Studying the lesson"
+        },
+        {
+          "id": "memory",
+          "label": "A memory of the lesson"
+        },
+        {
+          "id": "sleep",
+          "label": "Sleep after studying"
+        },
+        {
+          "id": "stayup",
+          "label": "Staying awake for that time instead"
+        },
+        {
+          "id": "forget",
+          "label": "Forgetting by the next day"
+        },
+        {
+          "id": "quiet",
+          "label": "Quiet rest right after studying"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "study",
+          "to": "memory",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "sleep-memory-c3",
+              "quote": "After you learn, a new memory is firmed up over time."
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "sleep",
+          "to": "forget",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "stayup",
+          "to": "forget",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            },
+            {
+              "claimId": "sleep-memory-c5",
+              "quote": "people who slept after learning recalled more than people who stayed awake for the same time"
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "from": "quiet",
+          "to": "forget",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "sleep-memory-c2",
+              "quote": "A brief spell of quiet rest while awake after learning helped memory more than spending that time on other tasks."
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "sleep-memory-m2",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "sleep",
+              "to": "memory",
+              "relation": "sets-off",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "sleep-memory-c3",
+              "quote": "After you learn, a new memory is firmed up over time."
+            },
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            }
+          ]
+        },
+        {
+          "misconceptionId": "sleep-memory-m3",
+          "kind": "swapped-link",
+          "add": [
+            {
+              "id": "w2",
+              "from": "stayup",
+              "to": "forget",
+              "relation": "less-likely",
+              "support": []
+            }
+          ],
+          "remove": [
+            "l3"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            },
+            {
+              "claimId": "sleep-memory-c5",
+              "quote": "people who slept after learning recalled more than people who stayed awake for the same time"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Asha sleeps well but never opened chapter 5. Does sleep give her a memory of chapter 5?",
+          "query": {
+            "kind": "effect",
+            "from": "sleep",
+            "change": "up",
+            "to": "memory"
+          },
+          "support": [
+            {
+              "claimId": "sleep-memory-c3",
+              "quote": "After you learn, a new memory is firmed up over time."
+            },
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "sleep-memory-m2": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w1"
+                ]
+              ]
+            },
+            "sleep-memory-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Asha stays up all night instead of sleeping after she studies. Is she more likely to forget?",
+          "query": {
+            "kind": "effect",
+            "from": "stayup",
+            "change": "up",
+            "to": "forget"
+          },
+          "support": [
+            {
+              "claimId": "sleep-memory-c1",
+              "quote": "Sleep after learning reduced forgetting, compared with the same length of time awake."
+            },
+            {
+              "claimId": "sleep-memory-c5",
+              "quote": "people who slept after learning recalled more than people who stayed awake for the same time"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            },
+            "sleep-memory-m2": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l3"
+                ]
+              ]
+            },
+            "sleep-memory-m3": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "w2"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "variable-rewards",
+      "nodes": [
+        {
+          "id": "unknown",
+          "label": "Reward after an unknown number of tries"
+        },
+        {
+          "id": "checking",
+          "label": "Checking again and again"
+        },
+        {
+          "id": "fade",
+          "label": "Slow to fade when rewards stop"
+        },
+        {
+          "id": "every",
+          "label": "Reward after every try"
+        },
+        {
+          "id": "learnfast",
+          "label": "Learning a new act fast"
+        },
+        {
+          "id": "fifth",
+          "label": "Reward after every fifth try"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "unknown",
+          "to": "checking",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "variable-rewards-c1",
+              "quote": "people keep responding at a high, steady rate because they never know when the next reward is coming"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "unknown",
+          "to": "fade",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "variable-rewards-c1",
+              "quote": "the habit is slow to fade"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "every",
+          "to": "learnfast",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "variable-rewards-c4",
+              "quote": "A reward after every try is the quickest way to teach a new behaviour."
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "variable-rewards-m5",
+          "kind": "swapped-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "unknown",
+              "to": "learnfast",
+              "relation": "more-likely",
+              "support": []
+            }
+          ],
+          "remove": [
+            "l3"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "variable-rewards-c4",
+              "quote": "A reward after every try is the quickest way to teach a new behaviour."
+            }
+          ]
+        },
+        {
+          "misconceptionId": "variable-rewards-m4",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w2",
+              "from": "fifth",
+              "to": "unknown",
+              "relation": "example-of",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "variable-rewards-c3",
+              "quote": "the number of tries needed for a reward keeps changing"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Chiku, which reward plan in your map teaches a new act fastest?",
+          "query": {
+            "kind": "causes",
+            "to": "learnfast"
+          },
+          "support": [
+            {
+              "claimId": "variable-rewards-c4",
+              "quote": "A reward after every try is the quickest way to teach a new behaviour."
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "causes",
+              "nodes": [
+                "every"
+              ]
+            },
+            "variable-rewards-m5": {
+              "kind": "causes",
+              "nodes": [
+                "unknown"
+              ]
+            },
+            "variable-rewards-m4": {
+              "kind": "causes",
+              "nodes": [
+                "every"
+              ]
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "An app gives a reward after every fifth try. Does Chiku expect the high, steady checking of an unknown gap?",
+          "query": {
+            "kind": "effect",
+            "from": "fifth",
+            "change": "up",
+            "to": "checking"
+          },
+          "support": [
+            {
+              "claimId": "variable-rewards-c3",
+              "quote": "the number of tries needed for a reward keeps changing"
+            },
+            {
+              "claimId": "variable-rewards-c1",
+              "quote": "people keep responding at a high, steady rate because they never know when the next reward is coming"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "variable-rewards-m5": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "variable-rewards-m4": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w2",
+                  "l1"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "if-then-plans",
+      "nodes": [
+        {
+          "id": "wish",
+          "label": "A broad goal ('study more')"
+        },
+        {
+          "id": "plan",
+          "label": "An if-then plan (if Y comes, then I do X)"
+        },
+        {
+          "id": "spot",
+          "label": "Spotting the named moment"
+        },
+        {
+          "id": "auto",
+          "label": "Responding with little thought"
+        },
+        {
+          "id": "reach",
+          "label": "Reaching the goal"
+        },
+        {
+          "id": "other",
+          "label": "Noticing other cues"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "plan",
+          "to": "spot",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "if-then-plans-c3",
+              "quote": "make the named moment easier to spot"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "plan",
+          "to": "auto",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "if-then-plans-c3",
+              "quote": "the response to it more automatic"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "plan",
+          "to": "reach",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "if-then-plans-c2",
+              "quote": "if-then plans had a medium-to-large effect on reaching goals, on average"
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "from": "spot",
+          "to": "other",
+          "relation": "less-likely",
+          "support": [
+            {
+              "claimId": "if-then-plans-c4",
+              "quote": "When a plan worked by sharpening the cue, other cues were more often passed over."
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "if-then-plans-m1",
+          "kind": "extra-link",
+          "add": [
+            {
+              "id": "w1",
+              "from": "wish",
+              "to": "plan",
+              "relation": "example-of",
+              "support": []
+            }
+          ],
+          "remove": [],
+          "refutedBy": [
+            {
+              "claimId": "if-then-plans-c1",
+              "quote": "An if-then plan spells out the when, where and how in advance"
+            }
+          ]
+        },
+        {
+          "misconceptionId": "if-then-plans-m3",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l4"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "if-then-plans-c4",
+              "quote": "When a plan worked by sharpening the cue, other cues were more often passed over."
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Rohan's plan is 'study more'. Does that make the moment to start easier to spot?",
+          "query": {
+            "kind": "effect",
+            "from": "wish",
+            "change": "up",
+            "to": "spot"
+          },
+          "support": [
+            {
+              "claimId": "if-then-plans-c1",
+              "quote": "An if-then plan spells out the when, where and how in advance"
+            },
+            {
+              "claimId": "if-then-plans-c3",
+              "quote": "make the named moment easier to spot"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            },
+            "if-then-plans-m1": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "w1",
+                  "l1"
+                ]
+              ]
+            },
+            "if-then-plans-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Rohan's plan says 'If I sit on the 8:10 bus, then I open my notes.' Is he more likely to notice other cues, like a free period?",
+          "query": {
+            "kind": "effect",
+            "from": "plan",
+            "change": "up",
+            "to": "other"
+          },
+          "support": [
+            {
+              "claimId": "if-then-plans-c3",
+              "quote": "make the named moment easier to spot"
+            },
+            {
+              "claimId": "if-then-plans-c4",
+              "quote": "When a plan worked by sharpening the cue, other cues were more often passed over."
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l1",
+                  "l4"
+                ]
+              ]
+            },
+            "if-then-plans-m1": {
+              "kind": "effect",
+              "verdict": "less",
+              "paths": [
+                [
+                  "l1",
+                  "l4"
+                ]
+              ]
+            },
+            "if-then-plans-m3": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "conceptId": "spotlight-effect",
+      "nodes": [
+        {
+          "id": "slip",
+          "label": "A public slip"
+        },
+        {
+          "id": "good",
+          "label": "A good remark you made"
+        },
+        {
+          "id": "view",
+          "label": "Your own vivid view of the moment"
+        },
+        {
+          "id": "over",
+          "label": "Guessing more people noticed than did"
+        },
+        {
+          "id": "dwell",
+          "label": "Dwelling on your own mishap"
+        },
+        {
+          "id": "harsh",
+          "label": "Expecting harsher judgment than you get"
+        }
+      ],
+      "links": [
+        {
+          "id": "l1",
+          "from": "slip",
+          "to": "view",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "spotlight-effect-c4",
+              "quote": "People seem to start from their own rich view of a moment"
+            },
+            {
+              "claimId": "spotlight-effect-c2",
+              "quote": "speakers thought their good and bad remarks stood out more to others than they did"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "from": "good",
+          "to": "view",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "spotlight-effect-c2",
+              "quote": "speakers thought their good and bad remarks stood out more to others than they did"
+            },
+            {
+              "claimId": "spotlight-effect-c4",
+              "quote": "People seem to start from their own rich view of a moment"
+            }
+          ]
+        },
+        {
+          "id": "l3",
+          "from": "view",
+          "to": "over",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "spotlight-effect-c4",
+              "quote": "adjust too little for how others see it"
+            },
+            {
+              "claimId": "spotlight-effect-c1",
+              "quote": "guessed that more people could recall it than really could"
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "from": "slip",
+          "to": "dwell",
+          "relation": "sets-off",
+          "support": [
+            {
+              "claimId": "spotlight-effect-c5",
+              "quote": "The fear of harsh judgment came partly from people dwelling on their own mishap"
+            }
+          ]
+        },
+        {
+          "id": "l5",
+          "from": "dwell",
+          "to": "harsh",
+          "relation": "more-likely",
+          "support": [
+            {
+              "claimId": "spotlight-effect-c5",
+              "quote": "The fear of harsh judgment came partly from people dwelling on their own mishap"
+            },
+            {
+              "claimId": "spotlight-effect-c3",
+              "quote": "After a public slip, people expected others to judge them more harshly than others really did."
+            }
+          ]
+        }
+      ],
+      "wrongMaps": [
+        {
+          "misconceptionId": "spotlight-effect-m4",
+          "kind": "missing-link",
+          "add": [],
+          "remove": [
+            "l2"
+          ],
+          "refutedBy": [
+            {
+              "claimId": "spotlight-effect-c2",
+              "quote": "speakers thought their good and bad remarks stood out more to others than they did"
+            }
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "id": "q1",
+          "ask": "Neha makes a sharp point in class. Does she guess that more people noticed it than did?",
+          "query": {
+            "kind": "effect",
+            "from": "good",
+            "change": "up",
+            "to": "over"
+          },
+          "support": [
+            {
+              "claimId": "spotlight-effect-c2",
+              "quote": "speakers thought their good and bad remarks stood out more to others than they did"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l2",
+                  "l3"
+                ]
+              ]
+            },
+            "spotlight-effect-m4": {
+              "kind": "effect",
+              "verdict": "no-change",
+              "paths": []
+            }
+          }
+        },
+        {
+          "id": "q2",
+          "ask": "Neha trips on the stage steps. Does she expect harsher judgment than she will get?",
+          "query": {
+            "kind": "effect",
+            "from": "slip",
+            "change": "up",
+            "to": "harsh"
+          },
+          "support": [
+            {
+              "claimId": "spotlight-effect-c3",
+              "quote": "After a public slip, people expected others to judge them more harshly than others really did."
+            },
+            {
+              "claimId": "spotlight-effect-c5",
+              "quote": "The fear of harsh judgment came partly from people dwelling on their own mishap"
+            }
+          ],
+          "expect": {
+            "correct": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l4",
+                  "l5"
+                ]
+              ]
+            },
+            "spotlight-effect-m4": {
+              "kind": "effect",
+              "verdict": "more",
+              "paths": [
+                [
+                  "l4",
+                  "l5"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

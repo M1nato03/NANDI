@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nandi/concept.teach.map",
+  "title": "Teach Chiku map pack (draft proposal)",
+  "description": "One cause map per concept. Chiku answers test questions only by walking these links. Draft for cloud job batch 8, job 2; the app would mirror this as a Valibot schema.",
+  "type": "object",
+  "required": ["schema", "version", "topicId", "maps"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "concept.teach.map" },
+    "version": { "type": "integer", "minimum": 1 },
+    "topicId": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "status": { "type": "string" },
+    "maps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/map" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "relation": { "enum": ["sets-off", "more-likely", "less-likely", "example-of"] },
+    "support": {
+      "type": "object",
+      "required": ["claimId", "quote"],
+      "additionalProperties": false,
+      "properties": {
+        "claimId": { "$ref": "#/$defs/id", "description": "A claim id in the concept's claims[]." },
+        "quote": { "type": "string", "minLength": 3, "description": "Exact words from that claim's text." }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 60 }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["id", "from", "to", "relation", "support"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "from": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/id" },
+        "relation": { "$ref": "#/$defs/relation" },
+        "support": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/support" },
+          "description": "Required non-empty on correct links. Empty on wrong links (their evidence is wrongMap.refutedBy)."
+        }
+      }
+    },
+    "wrongMap": {
+      "type": "object",
+      "required": ["misconceptionId", "kind", "add", "remove", "refutedBy"],
+      "additionalProperties": false,
+      "properties": {
+        "misconceptionId": { "$ref": "#/$defs/id", "description": "A misconception id in the concept's misconceptions[]." },
+        "kind": { "enum": ["extra-link", "missing-link", "swapped-link"] },
+        "add": { "type": "array", "items": { "$ref": "#/$defs/link" } },
+        "remove": { "type": "array", "items": { "$ref": "#/$defs/id" }, "description": "Ids of correct links the learner leaves out." },
+        "refutedBy": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/support" } }
+      }
+    },
+    "query": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "from", "change", "to"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "effect" },
+            "from": { "$ref": "#/$defs/id" },
+            "change": { "enum": ["up", "down"] },
+            "to": { "$ref": "#/$defs/id" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "to"],
+          "additionalProperties": false,
+          "properties": { "kind": { "const": "causes" }, "to": { "$ref": "#/$defs/id" } }
+        }
+      ]
+    },
+    "answer": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "verdict", "paths"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "effect" },
+            "verdict": { "enum": ["more", "less", "no-change", "unsure"] },
+            "paths": { "type": "array", "items": { "type": "array", "items": { "$ref": "#/$defs/id" } } }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "nodes"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "const": "causes" },
+            "nodes": { "type": "array", "items": { "$ref": "#/$defs/id" } }
+          }
+        }
+      ]
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "ask", "query", "support", "expect"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "ask": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "query": { "$ref": "#/$defs/query" },
+        "support": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/support" } },
+        "expect": {
+          "type": "object",
+          "description": "Key 'correct' plus one key per wrongMap.misconceptionId.",
+          "required": ["correct"],
+          "additionalProperties": { "$ref": "#/$defs/answer" }
+        }
+      }
+    },
+    "map": {
+      "type": "object",
+      "required": ["conceptId", "nodes", "links", "wrongMaps", "questions"],
+      "additionalProperties": false,
+      "properties": {
+        "conceptId": { "$ref": "#/$defs/id" },
+        "nodes": { "type": "array", "minItems": 3, "maxItems": 6, "items": { "$ref": "#/$defs/node" } },
+        "links": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/link" } },
+        "wrongMaps": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/wrongMap" } },
+        "questions": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/question" } }
+      }
+    }
+  }
+}
