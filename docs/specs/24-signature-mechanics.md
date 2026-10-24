@@ -1,6 +1,6 @@
 # Spec 24 · A signature mechanic for every mode
 
-Status: PICKS APPROVED by Jenil (24 Oct 2026, "yeah go ahead with them"). Decisions 2-4 (ethics fixes, calm XP and name, chhutti XP) are still open; recommended defaults are marked.
+Status: PICKS APPROVED by Jenil (24 Oct 2026, "yeah go ahead with them"). Decisions 2-3 (ethics fixes, calm XP and name) are still open; recommended defaults are marked. Decision 4 settled 24 Oct.
 Offline-first, online-ready: each mechanic has a v1 that works with no network and a v2 for when there are servers.
 
 Jenil (24 Oct): Learn takes from Duolingo (spec 23). Every other mode should feel unique too: Mind could take from
@@ -74,4 +74,4 @@ feels like pressure.
 1. Are these picks right? (Mind: pace line + Prove it. Train: Taal week. Calm: breath kolam + Park it. Focus: Phone ki chhutti. Across modes: Week case.)
 2. Ethics fixes: focus token instead of the boost, the honest ladder, kind repair. Yes or no on each?
 3. Calm: 0 XP (recommended) or a flat 5 XP before bedtime? Name it "kolam", "rangoli" or "dot pattern"?
-4. Chhutti: 10 XP per kept window (proposed), or 0?
+4. Chhutti: **SETTLED 24 Oct (Jenil: "10 and option A read through phone app usage")**: 10 XP per measured kept window; self-reported windows stay 0 XP. Measurement uses app usage, with the per-phone lock self-test (log items 59-63). Jenil accepts the documented residual: an app that calls setShowWhenLocked() at runtime and stays open over the lock.
