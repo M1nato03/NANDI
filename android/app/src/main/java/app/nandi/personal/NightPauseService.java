@@ -34,8 +34,7 @@ public class NightPauseService extends Service {
     /** When the last screen-on check ran, so the next one reads every event since then. */
     private long lastCheck = 0;
     /** Today's time in the chosen apps, read from usage events at most once a minute. */
-    private long usedMs = 0;
-    private long usedAt = 0;
+    private final UsedTodayCache used = new UsedTodayCache();
     private final Runnable check = new Runnable() {
         @Override public void run() {
             SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
@@ -128,7 +127,7 @@ public class NightPauseService extends Service {
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
         handler.removeCallbacks(check);
-        usedAt = 0;
+        used.invalidate();
         handler.post(check);
         return START_STICKY;
     }
@@ -165,16 +164,20 @@ public class NightPauseService extends Service {
 
     /** Called while a chosen app is in front: the cached total plus the time since it was read. */
     private long usedToday(Set<String> selected, long now) {
-        if (usedAt == 0 || now - usedAt > 60000 || now < usedAt) {
-            long read = readUsedToday(selected, now);
-            // An unknown read (no access, phone still locked after a restart) keeps the last total and is retried
-            // on the next tick, instead of counting as 0 (idea engine item 71, B4).
-            if (read < 0) return usedAt == 0 || now < usedAt ? usedMs : usedMs + (now - usedAt);
-            usedMs = read;
-            usedAt = now;
-            return usedMs;
-        }
-        return usedMs + (now - usedAt);
+        // An unknown read keeps the day's last good total frozen (UsedTodayCache; idea engine items 71 B4, 73).
+        return used.get(now, dayStart(now), () -> readUsedToday(selected, now));
+    }
+
+    /** 04:00 of NANDI's current day: its day starts there, after the night window. */
+    private static long dayStart(long now) {
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(now);
+        if (start.get(Calendar.HOUR_OF_DAY) < 4) start.add(Calendar.DAY_OF_MONTH, -1);
+        start.set(Calendar.HOUR_OF_DAY, 4);
+        start.set(Calendar.MINUTE, 0);
+        start.set(Calendar.SECOND, 0);
+        start.set(Calendar.MILLISECOND, 0);
+        return start.getTimeInMillis();
     }
 
     /**
@@ -191,14 +194,7 @@ public class NightPauseService extends Service {
         }
         UsageStatsManager stats = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
         if (stats == null) return -1;
-        Calendar start = Calendar.getInstance();
-        start.setTimeInMillis(now);
-        if (start.get(Calendar.HOUR_OF_DAY) < 4) start.add(Calendar.DAY_OF_MONTH, -1);
-        start.set(Calendar.HOUR_OF_DAY, 4);
-        start.set(Calendar.MINUTE, 0);
-        start.set(Calendar.SECOND, 0);
-        start.set(Calendar.MILLISECOND, 0);
-        UsageEvents events = stats.queryEvents(start.getTimeInMillis(), now);
+        UsageEvents events = stats.queryEvents(dayStart(now), now);
         if (events == null) return -1;
         // From Android 10 an activity reports STOPPED when it leaves the screen; a paused one in split screen is
         // still visible, so PAUSED only closes a screen on older phones.

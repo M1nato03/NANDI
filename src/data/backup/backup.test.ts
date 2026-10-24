@@ -89,6 +89,24 @@ describe('backup and restore', () => {
     expect(await other.settings.get('plan.chhutti.lockTest')).toBeUndefined();
   });
 
+  it('keeps the Usage access disclosure across a same-phone restore and leaves it out of the backup (item 73)', async () => {
+    const db = freshDb();
+    await db.settings.bulkPut([
+      { key: 'deviceId', value: 'device-a', ...stamp, deviceId: 'device-a' },
+      { key: 'night.usageDisclosureAt', value: 123, ...stamp, deviceId: 'device-a' },
+    ]);
+    const envelope = await exportBackup(db, new Date(2026, 9, 9, 12));
+    const settings = envelope.dexie.data.data.find(table => table.tableName === 'settings')!;
+    expect(settings.rows.map(row => (row as { key: string }).key)).not.toContain('night.usageDisclosureAt');
+    await importBackup(db, envelope);
+    expect(await db.settings.get('night.usageDisclosureAt')).toMatchObject({ value: 123 });
+    // A new phone never inherits it: it shows the disclosure itself.
+    const other = freshDb();
+    await other.settings.put({ key: 'deviceId', value: 'device-c', ...stamp, deviceId: 'device-c' });
+    await importBackup(other, envelope);
+    expect(await other.settings.get('night.usageDisclosureAt')).toBeUndefined();
+  });
+
   it('restores a long run of day closes in one settings write, keeping the higher close per day', async () => {
     // Batch 3 (b): a put per close woke every live query once per row, so a year's restore took 212 s.
     const db = freshDb();

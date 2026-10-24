@@ -42,6 +42,8 @@ export function Learn({ entry }: { entry?: string }) {
   const selected = chosenTopics(data?.setting?.value);
   const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
+  // Today's lesson in a saved daily drop, so its topic card names that step (Codex A item 73).
+  const savedLesson = data?.daily && !data.daily.deleted ? data.daily.drop.items.find(item => item.lesson)?.lesson : undefined;
   const [unitScene, setUnitScene] = useState<string>();
   const learned = new Set((data?.states ?? []).filter(row => !!row.firstLearnedAt).map(row => row.id));
   const completedUnit = data && completedModuleKey(topics.flatMap(pack => pack.body.modules), learned, id => localStorage.getItem(`cast.unit:${id}`) === 'seen');
@@ -89,7 +91,7 @@ export function Learn({ entry }: { entry?: string }) {
       const open = expanded === topicId;
       // Each card leads with the next lesson's own hook guess, which that lesson answers (items 71 B3, 72); once every
       // step is taught, with the first idea not yet strong. The six topics no longer read alike (audit 10-21).
-      const hook = cardHook(concepts, new Set(Object.keys(taughtOn)), concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))));
+      const hook = cardHook(concepts, new Set(Object.keys(taughtOn)), concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))), savedLesson);
       return <section className="card learn-map-topic" key={pack.id}>
         <button type="button" className="learn-topic-expand" aria-expanded={open} aria-controls={`learn-ideas-${topicId}`} onClick={() => setExpanded(open ? undefined : topicId)}>
           <span className="learn-topic-title"><strong>{pack.title}</strong><span aria-hidden="true">{open ? '−' : '+'}</span></span>

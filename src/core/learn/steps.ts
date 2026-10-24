@@ -33,7 +33,14 @@ export function nextStep(concepts: readonly TopicConcept[], taught: ReadonlySet<
  * the card shows that next step's own hook guess, which the same lesson answers, so the card never promises what the
  * next lesson does not teach. Once every step is taught, it shows the idea's hook (`fallback` picks the idea).
  */
-export function cardHook(concepts: readonly TopicConcept[], taught: ReadonlySet<string>, fallback?: TopicConcept): { conceptId?: string; stepId?: string; text?: string } {
+export function cardHook(concepts: readonly TopicConcept[], taught: ReadonlySet<string>, fallback?: TopicConcept, savedStepId?: string): { conceptId?: string; stepId?: string; text?: string } {
+  // A saved, unfinished daily drop already holds today's lesson: the card shows that step (Codex A item 73).
+  if (savedStepId && !taught.has(savedStepId)) {
+    for (const concept of concepts) {
+      const step = concept.steps?.find(row => row.id === savedStepId);
+      if (step) return { conceptId: concept.id, stepId: step.id, text: step.hook.stem };
+    }
+  }
   const next = nextStep(concepts, taught);
   if (next) return { conceptId: next.concept.id, stepId: next.step.id, text: next.step.hook.stem };
   const concept = fallback ?? concepts[0];

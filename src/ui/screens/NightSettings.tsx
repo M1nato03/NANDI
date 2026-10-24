@@ -35,7 +35,8 @@ export function NightSettings() {
   // On the phone, only the default apps that are installed are offered (Codex A item 66): a chosen app that is not
   // installed would stop Phone ki chhutti from checking by itself, so it shows as not on this phone, to untick.
   const [installed, setInstalled] = useState<string[] | null>(null);
-  const [disclosure, setDisclosure] = useState(false);
+  // Which Usage access step waits on the disclosure: Android's Usage access screen or NANDI's App info (item 73).
+  const [disclosure, setDisclosure] = useState<'usage' | 'appInfo' | null>(null);
   useEffect(() => { void readInstalledApps(defaultPackages).then(list => { setInstalled(list); return initChosenApps(db, list); }).catch(() => setInstalled(null)); }, []);
   const enabled = rows?.find(row => row.key === 'night.pause.enabled')?.value === true;
   const storedPackages = rows?.find(row => row.key === 'night.pause.apps')?.value;
@@ -77,13 +78,15 @@ export function NightSettings() {
   }
   const disclosed = rows?.some(row => row.key === USAGE_DISCLOSURE_KEY && !row.deleted) ?? false;
   async function continueToUsage() {
-    setDisclosure(false);
+    const next = disclosure;
+    setDisclosure(null);
     try {
       const now = Date.now();
       await db.settings.put({ key: USAGE_DISCLOSURE_KEY, value: now, updatedAt: now, deleted: 0, deviceId: await getOrCreateDeviceId(db, now) });
     } catch { /* still open settings: the person chose to continue */ }
-    await openUsageSettings();
+    await (next === 'appInfo' ? openNightPauseAppInfo() : openUsageSettings());
   }
+  const usageStep = (step: 'usage' | 'appInfo') => disclosed ? void (step === 'appInfo' ? openNightPauseAppInfo() : openUsageSettings()) : setDisclosure(step);
   const toggle = (packageName: string) => void saveApps(packages.includes(packageName) ? packages.filter(item => item !== packageName) : [...packages, packageName]);
   const add = () => {
     const value = newPackage.trim();
@@ -95,7 +98,7 @@ export function NightSettings() {
     <h3>App pause</h3>
     <p>Optional. NANDI checks which app is in front, so it can offer a short pause in a chosen app. This needs Android Usage access. The check and your choices stay on this phone.</p>
     <p>Usage access: {allowed ? 'Allowed' : 'Off'}</p>
-    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openNightPauseAppInfo()}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => disclosed ? void openUsageSettings() : setDisclosure(true)}>Open Usage access settings</button></div></>}
+    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => usageStep('appInfo')}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => usageStep('usage')}>Open Usage access settings</button></div></>}
     <p>Pop-up over apps: {overlay ? 'Allowed' : 'Off'}</p>
     {!overlay && <><p>Without it, the pause comes only as a notification. Tap below, find NANDI, and turn on 'Allow display over other apps'.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Allow pop-up over apps</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> App pause on</label>
@@ -110,6 +113,6 @@ export function NightSettings() {
     <button type="button" className="secondary" onClick={add}>Add app</button>
     <p>Openings: {Number(rows?.find(row => row.key === 'night.pause.openings')?.value ?? 0)} · Went anyway: {Number(rows?.find(row => row.key === 'night.pause.dismissals')?.value ?? 0)}</p>
     {message && <p role="status">{message}</p>}
-    {disclosure && <UsageDisclosure onContinue={() => void continueToUsage()} onClose={() => setDisclosure(false)} />}
+    {disclosure && <UsageDisclosure onContinue={() => void continueToUsage()} onClose={() => setDisclosure(null)} />}
   </section>;
 }
