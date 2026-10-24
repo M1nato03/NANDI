@@ -214,7 +214,9 @@ function withoutDeviceLocal(dexie: unknown): unknown {
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
   'autoBackup.saved', 'autoBackup.failure',
   // The chhutti lock self-test describes this phone, not the person (item 59).
-  'plan.chhutti.lockTest']);
+  'plan.chhutti.lockTest',
+  // Play's Usage access disclosure is shown once per phone (item 71), so a restore onto a new phone shows it again.
+  'night.usageDisclosureAt']);
 /** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
 const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From'];
 

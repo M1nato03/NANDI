@@ -20,9 +20,7 @@ import android.os.Build;
 import android.provider.Settings;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /** Local foreground watcher. Usage events and pause counts never leave the device. */
@@ -168,17 +166,31 @@ public class NightPauseService extends Service {
     /** Called while a chosen app is in front: the cached total plus the time since it was read. */
     private long usedToday(Set<String> selected, long now) {
         if (usedAt == 0 || now - usedAt > 60000 || now < usedAt) {
-            usedMs = readUsedToday(selected, now);
+            long read = readUsedToday(selected, now);
+            // An unknown read (no access, phone still locked after a restart) keeps the last total and is retried
+            // on the next tick, instead of counting as 0 (idea engine item 71, B4).
+            if (read < 0) return usedAt == 0 || now < usedAt ? usedMs : usedMs + (now - usedAt);
+            usedMs = read;
             usedAt = now;
             return usedMs;
         }
         return usedMs + (now - usedAt);
     }
 
-    /** Time in front for the chosen apps since 04:00 (NANDI's day starts there, after the night window). */
+    /**
+     * Time with a chosen app on screen since 04:00 (NANDI's day starts there, after the night window), or -1 when it
+     * cannot be read. Each screen of an app is tracked on its own, and time counts while any chosen screen is open, so
+     * moving between screens of one app is not lost and split screen is not counted twice. Screen-off, the lock screen
+     * and a shutdown close everything; a restart drops what was open without counting the gap (idea engine item 71, B4).
+     */
     private long readUsedToday(Set<String> selected, long now) {
+        if (!NightPausePlugin.usageAllowed(this)) return -1;
+        if (Build.VERSION.SDK_INT >= 24) {
+            android.os.UserManager users = (android.os.UserManager) getSystemService(USER_SERVICE);
+            if (users != null && !users.isUserUnlocked()) return -1;
+        }
         UsageStatsManager stats = (UsageStatsManager) getSystemService(USAGE_STATS_SERVICE);
-        if (stats == null) return 0;
+        if (stats == null) return -1;
         Calendar start = Calendar.getInstance();
         start.setTimeInMillis(now);
         if (start.get(Calendar.HOUR_OF_DAY) < 4) start.add(Calendar.DAY_OF_MONTH, -1);
@@ -187,23 +199,38 @@ public class NightPauseService extends Service {
         start.set(Calendar.SECOND, 0);
         start.set(Calendar.MILLISECOND, 0);
         UsageEvents events = stats.queryEvents(start.getTimeInMillis(), now);
-        if (events == null) return 0;
+        if (events == null) return -1;
+        // From Android 10 an activity reports STOPPED when it leaves the screen; a paused one in split screen is
+        // still visible, so PAUSED only closes a screen on older phones.
+        boolean stoppedEvents = Build.VERSION.SDK_INT >= 29;
         UsageEvents.Event event = new UsageEvents.Event();
-        Map<String, Long> openSince = new HashMap<>();
+        Set<String> open = new HashSet<>();
+        long since = 0;
         long total = 0;
         while (events.hasNextEvent()) {
             events.getNextEvent(event);
-            String name = event.getPackageName();
-            if (!selected.contains(name)) continue;
             int type = event.getEventType();
-            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                if (!openSince.containsKey(name)) openSince.put(name, event.getTimeStamp());
-            } else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND) {
-                Long since = openSince.remove(name);
-                if (since != null) total += Math.max(0, event.getTimeStamp() - since);
+            long at = event.getTimeStamp();
+            if (type == UsageEvents.Event.DEVICE_STARTUP) { open.clear(); continue; }
+            if (type == UsageEvents.Event.DEVICE_SHUTDOWN || type == UsageEvents.Event.SCREEN_NON_INTERACTIVE || type == UsageEvents.Event.KEYGUARD_SHOWN) {
+                if (!open.isEmpty()) total += Math.max(0, at - since);
+                open.clear();
+                continue;
+            }
+            String name = event.getPackageName();
+            if (name == null || !selected.contains(name)) continue;
+            String screen = name + "/" + (event.getClassName() == null ? "" : event.getClassName());
+            boolean opens = type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.MOVE_TO_FOREGROUND;
+            boolean closes = stoppedEvents ? type == UsageEvents.Event.ACTIVITY_STOPPED
+                : type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.MOVE_TO_BACKGROUND;
+            if (opens) {
+                if (open.isEmpty()) since = at;
+                open.add(screen);
+            } else if (closes && open.remove(screen) && open.isEmpty()) {
+                total += Math.max(0, at - since);
             }
         }
-        for (Long since : openSince.values()) total += Math.max(0, now - since);
+        if (!open.isEmpty()) total += Math.max(0, now - since);
         return total;
     }
 

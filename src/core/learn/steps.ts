@@ -29,6 +29,18 @@ export function nextStep(concepts: readonly TopicConcept[], taught: ReadonlySet<
 }
 
 /**
+ * The hook on a topic card (idea engine items 71 B3 and 72, Jenil approved): while the topic has an untaught step,
+ * the card shows that next step's own hook guess, which the same lesson answers, so the card never promises what the
+ * next lesson does not teach. Once every step is taught, it shows the idea's hook (`fallback` picks the idea).
+ */
+export function cardHook(concepts: readonly TopicConcept[], taught: ReadonlySet<string>, fallback?: TopicConcept): { conceptId?: string; stepId?: string; text?: string } {
+  const next = nextStep(concepts, taught);
+  if (next) return { conceptId: next.concept.id, stepId: next.step.id, text: next.step.hook.stem };
+  const concept = fallback ?? concepts[0];
+  return { conceptId: concept?.id, text: concept?.hook };
+}
+
+/**
  * The daily lesson across several chosen topics (idea engine item 71, B2): take the next step of the topic whose last
  * taught step is oldest (a topic never taught counts as oldest), so one topic is not used up before the next begins.
  * Ties keep the catalog order. A step with no recorded day counts as taught long ago.

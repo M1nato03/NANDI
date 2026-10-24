@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { catalogFor, makeDrop } from './flow';
-import { goldItems, nextStep, taughtCatalog } from '../../core/learn/steps';
+import { cardHook, goldItems, nextStep, taughtCatalog } from '../../core/learn/steps';
 import type { LearnConceptRow } from '../../data/types';
 
 const now = new Date('2026-10-22T12:00:00').getTime();
@@ -205,5 +205,27 @@ describe('daily lesson across several topics (item 71, B2)', () => {
     const drop = makeDrop({ ...base, ids, now: now + 2 * 86_400_000, taughtSteps: [money, psych], taughtOn: { [money]: '2026-10-22', [psych]: '2026-10-23' } });
     const lesson = drop.items[0]!.lesson!;
     expect(catalogFor(['money-markets']).some(concept => concept.steps?.some(step => step.id === lesson))).toBe(true);
+  });
+});
+
+describe('topic card hook (items 71 B3, 72)', () => {
+  it("shows each step's own hook on days 1-3, then the idea hook, and always names the next lesson's step", () => {
+    const concepts = catalogFor(['psychology']);
+    const steps = habits.steps!;
+    expect(steps.length).toBeGreaterThanOrEqual(2);
+    const taught: string[] = [];
+    const taughtOn: Record<string, string> = {};
+    steps.forEach((step, day) => {
+      const card = cardHook(concepts, new Set(taught));
+      expect(card).toEqual({ conceptId: 'habits', stepId: step.id, text: step.hook.stem });
+      const lesson = makeDrop({ ...base, now: now + day * 86_400_000, taughtSteps: [...taught], taughtOn }).items[0]!.lesson;
+      expect(lesson).toBe(card.stepId);
+      taught.push(step.id); taughtOn[step.id] = new Date(now + day * 86_400_000).toISOString().slice(0, 10);
+    });
+    // The next lesson moves to the next idea, and so does the card.
+    expect(cardHook(concepts, new Set(taught)).stepId).toBe(nextStep(concepts, new Set(taught))!.step.id);
+    // With every step of a topic taught, the card shows the chosen idea's own hook.
+    const all = new Set(concepts.flatMap(concept => (concept.steps ?? []).map(step => step.id)));
+    expect(cardHook(concepts, all, habits)).toEqual({ conceptId: 'habits', text: habits.hook });
   });
 });

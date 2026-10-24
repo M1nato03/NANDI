@@ -7,8 +7,25 @@ import { RULES } from '../../core/rules.config';
 import { initChosenApps, saveChosenApps } from '../../data/repos/chhutti';
 import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openOverlaySettings, openUsageSettings, readInstalledApps, testNightPause } from '../../platform/nightPause';
 import { notifier } from '../../platform/notifier';
+import { useModalFocus } from '../shell/useModalFocus';
 
 const defaultPackages: string[] = DEFAULT_PAUSE_APPS.map(app => app.packageName);
+/** Seen once on this phone before Usage access is first asked for (Play's prominent disclosure; idea engine item 71). */
+export const USAGE_DISCLOSURE_KEY = 'night.usageDisclosureAt';
+
+function UsageDisclosure({ onContinue, onClose }: { onContinue: () => void; onClose: () => void }) {
+  const dialog = useModalFocus<HTMLElement>(onClose);
+  return <div className="sheet-backdrop" onClick={onClose}><section ref={dialog} tabIndex={-1} className="ui-sheet usage-disclosure" role="dialog" aria-modal="true" aria-labelledby="usage-disclosure-title" onClick={event => event.stopPropagation()}>
+    <div className="ui-sheet-handle" aria-hidden="true" />
+    <h2 id="usage-disclosure-title">Before you turn on Usage access</h2>
+    <p>With Usage access, NANDI reads on this phone which app is on screen and when, and when the screen turns off or locks.</p>
+    <p>It uses this only for App pause and Phone ki chhutti: to offer a pause in the apps you choose, and to check a phone break you planned.</p>
+    <p>It never sees what you read or type in other apps. What it reads stays on this phone. It leaves only when you back up or share, like the rest of NANDI.</p>
+    <p>You can turn Usage access off any time in Android settings.</p>
+    <div className="actions"><button type="button" onClick={onContinue}>Continue to Usage access</button><button type="button" className="secondary" onClick={onClose}>Not now</button></div>
+  </section></div>;
+}
+
 export function NightSettings() {
   const rows = useLiveQuery(() => db.settings.toArray(), []);
   const [allowed, setAllowed] = useState(false);
@@ -18,6 +35,7 @@ export function NightSettings() {
   // On the phone, only the default apps that are installed are offered (Codex A item 66): a chosen app that is not
   // installed would stop Phone ki chhutti from checking by itself, so it shows as not on this phone, to untick.
   const [installed, setInstalled] = useState<string[] | null>(null);
+  const [disclosure, setDisclosure] = useState(false);
   useEffect(() => { void readInstalledApps(defaultPackages).then(list => { setInstalled(list); return initChosenApps(db, list); }).catch(() => setInstalled(null)); }, []);
   const enabled = rows?.find(row => row.key === 'night.pause.enabled')?.value === true;
   const storedPackages = rows?.find(row => row.key === 'night.pause.apps')?.value;
@@ -57,6 +75,15 @@ export function NightSettings() {
   async function saveApps(next: string[]) {
     try { await saveChosenApps(db, next); setMessage('App pause saved.'); } catch { setMessage('Could not save App pause.'); }
   }
+  const disclosed = rows?.some(row => row.key === USAGE_DISCLOSURE_KEY && !row.deleted) ?? false;
+  async function continueToUsage() {
+    setDisclosure(false);
+    try {
+      const now = Date.now();
+      await db.settings.put({ key: USAGE_DISCLOSURE_KEY, value: now, updatedAt: now, deleted: 0, deviceId: await getOrCreateDeviceId(db, now) });
+    } catch { /* still open settings: the person chose to continue */ }
+    await openUsageSettings();
+  }
   const toggle = (packageName: string) => void saveApps(packages.includes(packageName) ? packages.filter(item => item !== packageName) : [...packages, packageName]);
   const add = () => {
     const value = newPackage.trim();
@@ -68,7 +95,7 @@ export function NightSettings() {
     <h3>App pause</h3>
     <p>Optional. NANDI checks which app is in front, so it can offer a short pause in a chosen app. This needs Android Usage access. The check and your choices stay on this phone.</p>
     <p>Usage access: {allowed ? 'Allowed' : 'Off'}</p>
-    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openNightPauseAppInfo()}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => void openUsageSettings()}>Open Usage access settings</button></div></>}
+    {!allowed && <><p>If the switch is greyed out: open NANDI's App info, tap the ⋮ menu (top right), tap 'Allow restricted settings', confirm with your PIN, then come back and turn on Usage access.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openNightPauseAppInfo()}>Open NANDI App info</button><button type="button" className="secondary" onClick={() => disclosed ? void openUsageSettings() : setDisclosure(true)}>Open Usage access settings</button></div></>}
     <p>Pop-up over apps: {overlay ? 'Allowed' : 'Off'}</p>
     {!overlay && <><p>Without it, the pause comes only as a notification. Tap below, find NANDI, and turn on 'Allow display over other apps'.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Allow pop-up over apps</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> App pause on</label>
@@ -83,5 +110,6 @@ export function NightSettings() {
     <button type="button" className="secondary" onClick={add}>Add app</button>
     <p>Openings: {Number(rows?.find(row => row.key === 'night.pause.openings')?.value ?? 0)} · Went anyway: {Number(rows?.find(row => row.key === 'night.pause.dismissals')?.value ?? 0)}</p>
     {message && <p role="status">{message}</p>}
+    {disclosure && <UsageDisclosure onContinue={() => void continueToUsage()} onClose={() => setDisclosure(false)} />}
   </section>;
 }
