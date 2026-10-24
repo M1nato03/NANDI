@@ -112,21 +112,23 @@ export type WindowUsage = { chosenAppMs: number; darkMs: number | null };
  * a start-up or shutdown empties the set. A dark screen pauses the count but keeps the set, so a screen that comes
  * back on to the same app counts again with no new 'fg'. Chosen time is the union of the moments when the screen is
  * not dark and any chosen package is open (split screen and picture-in-picture are two open apps).
- * The set is built only from a proven empty point: the last start-up before the window, or, once this phone has
- * passed the lock self-test (`lockBaseline`, Jenil's choice A, item 59), the last time the lock screen showed, which
- * then also empties the set wherever it shows. With no such point in the log
- * before the window (an app opened days ago leaves no trace), a log that starts after the window began, or a
- * start-up or shutdown inside the window, the answer is unknown (null): the person is asked instead, and an unknown
- * window is never "kept".
+ * The set is built only from a proven empty point: the last start-up before the window. Once this phone has passed
+ * the lock self-test (`trustLocksFrom`, Jenil's choice A, item 59), a lock screen shown at or after the start of that
+ * passing run and before the window also proves something: an app opened before the log began would have paused at
+ * it, so nothing unseen is open. A lock clears nothing by itself, though (Codex A item 61): every pair seen in the
+ * retained log stays open until its own pause, so an app that stays resumed over the lock screen (showWhenLocked,
+ * multi-window, picture-in-picture) still counts. With no such point in the log before the window (an app opened
+ * days ago leaves no trace), a log that starts after the window began, or a start-up or shutdown inside the window,
+ * the answer is unknown (null): the person is asked instead, and an unknown window is never "kept".
  */
-export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, chosen: readonly string[], logStart?: number | null, lockBaseline = false): WindowUsage | null {
+export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, chosen: readonly string[], logStart?: number | null, trustLocksFrom: number | null = null): WindowUsage | null {
   if (!(toMs > fromMs)) return null;
   if (typeof logStart === 'number' && logStart > fromMs) return null;
   const sorted = [...events].filter(event => Number.isFinite(event.at) && event.at <= toMs).sort((a, b) => a.at - b.at);
   if (sorted.some(event => (event.type === 'boot' || event.type === 'down') && event.at > fromMs)) return null;
-  const empties = (event: UsageEvent) => event.type === 'boot' || (lockBaseline && event.type === 'lock');
-  const baseline = sorted.map(event => empties(event) && event.at <= fromMs).lastIndexOf(true);
-  if (baseline < 0) return null;
+  const boot = sorted.map(event => event.type === 'boot' && event.at <= fromMs).lastIndexOf(true);
+  const trustedLock = trustLocksFrom !== null && sorted.some(event => event.type === 'lock' && event.at >= trustLocksFrom && event.at <= fromMs);
+  if (boot < 0 && !trustedLock) return null;
   const isChosen = new Set(chosen);
   const open = new Map<string, string>();
   let dark: boolean | null = null;
@@ -135,16 +137,11 @@ export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs:
     if (event.type === 'fg' && event.pkg) open.set(key, event.pkg);
     else if (event.type === 'bg' && event.pkg) open.delete(key);
     else if (event.type === 'boot' || event.type === 'down') { open.clear(); dark = event.type === 'down'; }
-    else if (event.type === 'lock' && lockBaseline) open.clear();
     else if (event.type === 'off') dark = true;
     else if (event.type === 'on') dark = false;
   };
-  const after = sorted.slice(baseline);
-  // The screen is lit at a start-up; at a lock baseline it is as the last screen change before it left it.
-  if (sorted[baseline]!.type === 'lock') {
-    const screen = sorted.slice(0, baseline).reverse().find(event => event.type === 'on' || event.type === 'off');
-    if (screen) dark = screen.type === 'off';
-  }
+  // From the last start-up when there is one (it empties the set); otherwise the whole retained log is replayed.
+  const after = sorted.slice(Math.max(boot, 0));
   for (const event of after) if (event.at <= fromMs) step(event);
   let chosenMs = 0, darkMs = 0, at = fromMs;
   const add = (until: number) => {
@@ -164,16 +161,21 @@ export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs:
 
 /** NANDI's own activity resumed or paused, and the lock screen shown: what the lock self-test reads (item 59). */
 export type LockEvent = { type: 'fg' | 'bg' | 'lock'; at: number; cls?: string };
-/** This phone's lock self-test so far: passes in a row since the last fail, and the last lock looked at. */
-export type LockTest = { passes: number; upTo: number };
+/**
+ * This phone's lock self-test so far (item 59; kept on this phone only): passes in a row since the last fail, when
+ * that run of passes began, the last fail, and the last lock looked at (never moves back).
+ */
+export type LockTest = { passes: number; upTo: number; streakStart: number | null; lastFailAt: number | null };
+export const NEW_LOCK_TEST: LockTest = { passes: 0, upTo: 0, streakStart: null, lastFailAt: null };
 /**
  * The lock self-test (Jenil's choice A, idea engine item 59). Android does not promise that the lock screen pauses the
  * app in front, so each phone shows it: every time the lock screen showed while NANDI itself was in front (an
  * activity of NANDI resumed `slackMs` before it), NANDI's own activities must all pause or stop within `slackMs` of
- * it. That is a pass; still resumed after that is a fail. A lock with NANDI not in front, or too recent to judge,
- * counts as neither. Returns pass or fail for each lock after `afterMs`, in order.
+ * it and still be paused `slackMs` after it. That is a pass. Still resumed with no pause is a fail. Paused and then
+ * resumed again inside `slackMs` (unlocked at once) proves nothing either way, and neither does a lock with NANDI not
+ * in front or one too recent to judge (Codex A item 61). Returns each judged lock after `afterMs`, in order.
  */
-export function lockChecks(events: readonly LockEvent[], afterMs: number, nowMs: number, slackMs = RULES.plan.chhutti.lockSlackMs): boolean[] {
+export function lockChecks(events: readonly LockEvent[], afterMs: number, nowMs: number, slackMs = RULES.plan.chhutti.lockSlackMs): { at: number; pass: boolean }[] {
   const sorted = [...events].filter(event => Number.isFinite(event.at)).sort((a, b) => a.at - b.at);
   const openAt = (until: number) => {
     const open = new Set<string>();
@@ -184,30 +186,46 @@ export function lockChecks(events: readonly LockEvent[], afterMs: number, nowMs:
     }
     return open;
   };
-  const results: boolean[] = [];
+  const results: { at: number; pass: boolean }[] = [];
   for (const lock of sorted) {
     if (lock.type !== 'lock' || lock.at <= afterMs || lock.at + slackMs > nowMs) continue;
     const open = openAt(lock.at - slackMs);
     if (!open.size) continue;
-    // Replay from the moment before: did NANDI's set reach empty at any point up to slackMs after the lock?
-    let paused = false;
+    let emptied = false, resumed = false;
     for (const event of sorted) {
       if (event.at <= lock.at - slackMs) continue;
       if (event.at > lock.at + slackMs) break;
-      if (event.type === 'fg') open.add(event.cls ?? '');
-      else if (event.type === 'bg') { open.delete(event.cls ?? ''); if (!open.size) paused = true; }
+      if (event.type === 'fg') { open.add(event.cls ?? ''); if (emptied) resumed = true; }
+      else if (event.type === 'bg') { open.delete(event.cls ?? ''); if (!open.size) emptied = true; }
     }
-    results.push(paused);
+    if (!emptied) results.push({ at: lock.at, pass: false });
+    else if (!resumed && !open.size) results.push({ at: lock.at, pass: true });
   }
   return results;
 }
-/** A fail starts the count again; a phone is trusted once it has `lockPasses` passes in a row. */
-export function nextLockTest(test: LockTest, results: readonly boolean[], upTo: number): LockTest {
-  let passes = test.passes;
-  for (const pass of results) passes = pass ? passes + 1 : 0;
-  return { passes, upTo: Math.max(test.upTo, upTo) };
+/** A fail starts the count again; a run of passes remembers where it began. `upTo` never moves back. */
+export function nextLockTest(test: LockTest, results: readonly { at: number; pass: boolean }[], upTo: number): LockTest {
+  let { passes, streakStart, lastFailAt } = test;
+  for (const result of results) {
+    if (result.pass) { if (passes === 0) streakStart = result.at; passes += 1; }
+    else { passes = 0; streakStart = null; lastFailAt = Math.max(lastFailAt ?? result.at, result.at); }
+  }
+  return { passes, upTo: Math.max(test.upTo, upTo), streakStart, lastFailAt };
 }
-export const lockTrusted = (test: LockTest | null | undefined) => !!test && test.passes >= RULES.plan.chhutti.lockPasses;
+/**
+ * Clock set back: a stored lock or a log event later than now means the timeline cannot be trusted, so the count
+ * starts again and nothing up to the latest time seen is judged again (Codex A item 61).
+ */
+export function rolledBack(test: LockTest, events: readonly LockEvent[], nowMs: number): LockTest | null {
+  const latest = Math.max(test.upTo, test.lastFailAt ?? 0, test.streakStart ?? 0, ...events.filter(event => Number.isFinite(event.at)).map(event => event.at));
+  if (latest <= nowMs) return null;
+  return { passes: 0, upTo: latest, streakStart: null, lastFailAt: latest };
+}
+/** Trusted after `lockPasses` passes in a row: locks from the start of that run on are a baseline. Null otherwise. */
+export function lockTrustFrom(test: LockTest | null | undefined): number | null {
+  if (!test || test.passes < RULES.plan.chhutti.lockPasses || test.streakStart === null) return null;
+  return test.lastFailAt !== null && test.streakStart <= test.lastFailAt ? null : test.streakStart;
+}
 
 export const chhuttiFactId = (day: string, windowId: string) => `chhutti:${day}:${windowId}`;
 export function isKept(usage: WindowUsage, day: string): boolean {

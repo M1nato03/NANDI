@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { appliesOn, boundsOn, boundWindow, chhuttiLine, endWindow, isKept, isLive, lockChecks, lockTrusted, nextLockTest, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type LockEvent, type UsageEvent } from './chhutti';
+import { appliesOn, boundsOn, boundWindow, chhuttiLine, endWindow, isKept, isLive, lockChecks, lockTrustFrom, NEW_LOCK_TEST, nextLockTest, rampedWindow, rolledBack, readChhutti, windowBounds, windowUsage, withBounds, type LockEvent, type UsageEvent } from './chhutti';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
 const min = 60_000;
@@ -124,58 +124,76 @@ describe('chhutti windows and lines', () => {
   });
 });
 
-describe('chhutti lock baseline and self-test (item 59, Jenil chose A)', () => {
+describe('chhutti lock baseline and self-test (item 59, Jenil chose A; Codex A item 61)', () => {
   const act = (type: 'fg' | 'bg', at: number, pkg: string, cls = 'Main'): UsageEvent => ({ type, at, pkg, cls });
-  // Instagram opened three days ago with no pause in the log, then the phone locked before the window.
-  const stale = [act('fg', from - 3 * 24 * 60 * min, ig), ev('on', from - 30 * min), ev('lock', from - 20 * min), ev('off', from - 20 * min)];
-  it('a lock is no baseline on a phone that has not passed the self-test', () => {
-    expect(windowUsage(stale, from, to, [ig])).toBeNull();
+  const day = 24 * 60 * min;
+  const trusted = from - 5 * day;
+  it('a lock is no baseline on a phone that has not passed the self-test, or from before its passing run', () => {
+    const quiet = [ev('on', from - 30 * min), ev('lock', from - 20 * min), ev('off', from - 20 * min)];
+    expect(windowUsage(quiet, from, to, [ig])).toBeNull();
+    expect(windowUsage(quiet, from, to, [ig], undefined, from - 10 * min)).toBeNull();
+    // Trusted from before that lock: nothing unseen is open, and nothing seen is open either.
+    expect(windowUsage(quiet, from, to, [ig], undefined, trusted)).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
   });
-  it('on a trusted phone the last lock before the window empties the set', () => {
-    expect(windowUsage(stale, from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
-    // Unlocked into Instagram inside the window: counted from its new resume.
-    expect(windowUsage([...stale, ev('on', from + 10 * min), act('fg', from + 10 * min, ig), act('bg', from + 25 * min, ig)], from, to, [ig], undefined, true))
-      .toEqual({ chosenAppMs: 15 * min, darkMs: 10 * min });
+  it('a lock clears nothing by itself: an app seen resumed and never paused still counts', () => {
+    // Instagram resumed three days ago with no pause in the log, then the lock screen: it may have stayed resumed.
+    const stale = [act('fg', from - 3 * day, ig), ev('on', from - 30 * min), ev('lock', from - 20 * min), ev('off', from - 20 * min)];
+    expect(windowUsage([...stale, ev('on', from + 10 * min)], from, to, [ig], undefined, trusted)).toEqual({ chosenAppMs: 50 * min, darkMs: 10 * min });
+    // An app shown over the lock screen (no pause at the lock) keeps counting through a lock inside the window too.
+    const overLock = [ev('lock', from - 60 * min), ev('on', from - 50 * min), act('fg', from - 10 * min, ig), ev('lock', from + 20 * min)];
+    expect(windowUsage(overLock, from, to, [ig], undefined, trusted)?.chosenAppMs).toBe(60 * min);
+    // The same app pausing at the lock stops counting there.
+    expect(windowUsage([...overLock, act('bg', from + 20 * min, ig)], from, to, [ig], undefined, trusted)?.chosenAppMs).toBe(20 * min);
   });
-  it('on a trusted phone a lock inside the window also empties the set; a restart inside is still unknown', () => {
-    const events = [ev('lock', from - 60 * min), ev('on', from - 50 * min), act('fg', from - 10 * min, ig), ev('off', from + 20 * min), ev('lock', from + 20 * min), ev('on', from + 40 * min)];
-    // Without the lock clearing Instagram at +20, the screen coming back on at +40 would count 20 more minutes.
-    expect(windowUsage(events, from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 20 * min, darkMs: 20 * min });
-    expect(windowUsage([...events, ev('boot', from + 50 * min)], from, to, [ig], undefined, true)).toBeNull();
-  });
-  it('a start-up after the last lock is the baseline', () => {
-    expect(windowUsage([ev('lock', from - 300 * min), act('fg', from - 200 * min, ig), ev('boot', from - 100 * min)], from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 0, darkMs: 0 });
+  it('a restart inside the window is still unknown; a start-up before it is still a baseline', () => {
+    expect(windowUsage([ev('lock', from - 60 * min), ev('boot', from + 50 * min)], from, to, [ig], undefined, trusted)).toBeNull();
+    expect(windowUsage([ev('lock', from - 300 * min), act('fg', from - 200 * min, ig), ev('boot', from - 100 * min)], from, to, [ig], undefined, trusted)).toEqual({ chosenAppMs: 0, darkMs: 0 });
   });
 
   const s5 = 5_000;
   const own = (type: 'fg' | 'bg', at: number, cls = 'MainActivity'): LockEvent => ({ type, at, cls });
   const lock = (at: number): LockEvent => ({ type: 'lock', at });
   const t0 = 10_000_000;
-  it('passes when NANDI in front pauses within 5 s of the lock screen, before or after it', () => {
-    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], 0, t0 + 60_000)).toEqual([true]);
-    expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 400), lock(t0)], 0, t0 + 60_000)).toEqual([true]);
+  it('passes when NANDI in front pauses within 5 s of the lock screen and stays paused', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: true }]);
+    expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 400), lock(t0)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: true }]);
   });
-  it('fails when NANDI stays resumed past 5 s of the lock screen', () => {
-    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + s5 + 1)], 0, t0 + 60_000)).toEqual([false]);
-    expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + 60_000)).toEqual([false]);
+  it('fails when NANDI never pauses within 5 s of the lock screen', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + s5 + 1)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: false }]);
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: false }]);
     // A second activity of NANDI still resumed means NANDI is still in front.
-    expect(lockChecks([own('fg', t0 - 60_000), own('fg', t0 - 30_000, 'Other'), lock(t0), own('bg', t0 + 200)], 0, t0 + 60_000)).toEqual([false]);
+    expect(lockChecks([own('fg', t0 - 60_000), own('fg', t0 - 30_000, 'Other'), lock(t0), own('bg', t0 + 200)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: false }]);
+  });
+  it('a pause and a resume inside 5 s (unlocked at once) is no pass and no fail', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300), own('fg', t0 + 2_000)], 0, t0 + 60_000)).toEqual([]);
   });
   it('counts neither a lock with NANDI not in front, nor one too recent, nor one already looked at', () => {
     expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 30_000), lock(t0)], 0, t0 + 60_000)).toEqual([]);
     expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + s5 - 1)).toEqual([]);
     expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], t0, t0 + 60_000)).toEqual([]);
   });
-  it('trust needs 3 passes in a row; any fail starts again', () => {
-    let test = { passes: 0, upTo: 0 };
-    test = nextLockTest(test, [true, true], 5);
-    expect(lockTrusted(test)).toBe(false);
-    test = nextLockTest(test, [true], 9);
-    expect(test).toEqual({ passes: 3, upTo: 9 });
-    expect(lockTrusted(test)).toBe(true);
-    test = nextLockTest(test, [false], 12);
-    expect(lockTrusted(test)).toBe(false);
-    expect(nextLockTest(test, [true, false, true], 15).passes).toBe(1);
-    expect(lockTrusted(null)).toBe(false);
+  it('trust needs 3 passes in a row, starts at the first of them, and any fail takes it away', () => {
+    const pass = (at: number) => ({ at, pass: true }), fail = (at: number) => ({ at, pass: false });
+    let test = nextLockTest(NEW_LOCK_TEST, [pass(10), pass(20)], 20);
+    expect(lockTrustFrom(test)).toBeNull();
+    test = nextLockTest(test, [pass(30)], 30);
+    expect(test).toEqual({ passes: 3, upTo: 30, streakStart: 10, lastFailAt: null });
+    expect(lockTrustFrom(test)).toBe(10);
+    test = nextLockTest(test, [fail(40)], 40);
+    expect(test).toEqual({ passes: 0, upTo: 40, streakStart: null, lastFailAt: 40 });
+    expect(lockTrustFrom(test)).toBeNull();
+    test = nextLockTest(test, [pass(50), pass(60), pass(70)], 70);
+    expect(lockTrustFrom(test)).toBe(50);
+    // upTo never moves back.
+    expect(nextLockTest(test, [], 5).upTo).toBe(70);
+    // A stored run that does not start after the last fail is not trusted.
+    expect(lockTrustFrom({ passes: 3, upTo: 70, streakStart: 40, lastFailAt: 40 })).toBeNull();
+    expect(lockTrustFrom(null)).toBeNull();
+  });
+  it('a clock set back starts the count again and never judges the old locks twice', () => {
+    const test = { passes: 3, upTo: 5_000, streakStart: 1_000, lastFailAt: null };
+    expect(rolledBack(test, [], 9_000)).toBeNull();
+    expect(rolledBack(test, [], 4_000)).toEqual({ passes: 0, upTo: 5_000, streakStart: null, lastFailAt: 5_000 });
+    expect(rolledBack(NEW_LOCK_TEST, [lock(8_000)], 4_000)).toEqual({ passes: 0, upTo: 8_000, streakStart: null, lastFailAt: 8_000 });
   });
 });

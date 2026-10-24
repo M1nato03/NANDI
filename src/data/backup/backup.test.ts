@@ -71,6 +71,11 @@ describe('backup and restore', () => {
       { key: 'plan.chhutti.lockTest', value: { passes: 3, upTo: 50 }, ...stamp },
     ]);
     const envelope = await exportBackup(db, new Date(2026, 9, 9, 12));
+    // This phone's own settings never leave it in a backup (Codex A item 61).
+    const settings = envelope.dexie.data.data.find(table => table.tableName === 'settings')!;
+    expect(settings.rows.map(row => (row as { key: string }).key)).not.toContain('plan.chhutti.lockTest');
+    expect(settings.rows.map(row => (row as { key: string }).key)).not.toContain('deviceId');
+    expect(validateBackup(envelope).success).toBe(true);
     await Promise.all(db.tables.map(table => table.clear()));
     await db.settings.bulkPut([
       { key: 'deviceId', value: 'device-b', ...stamp, deviceId: 'device-b' },

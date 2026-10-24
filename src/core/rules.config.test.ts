@@ -45,15 +45,7 @@ describe('rule history', () => {
     const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards', 'plan'] as const;
     // Keys that live beside scoring values but pay nothing (spec 19's board number, spec 04's internal case rating)
     // stay out of the fingerprint.
-    // The chhutti lock self-test's tunables (item 59) decide when the phone's log is trusted, not what a kept day pays.
-    const displayOnly = (key: string, value: unknown) => {
-      if (key === 'mind' && value && typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo'));
-      if (key === 'plan' && value && typeof value === 'object' && 'chhutti' in value) {
-        const chhutti = Object.fromEntries(Object.entries((value as { chhutti: object }).chhutti).filter(([name]) => name !== 'lockPasses' && name !== 'lockSlackMs'));
-        return { ...value, chhutti };
-      }
-      return value;
-    };
+    const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo')) : value;
     const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, displayOnly(key, rules[key])]))]
       .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
     // b8be6943 (24 Oct): quests.paidCustomPerWeek was added. It is no edit of a past value: it only applies from
@@ -62,7 +54,9 @@ describe('rule history', () => {
     // here). Every price is the same number as before, so no past day is rescored (item 51 (c)).
     // 81ee9fd7 (24 Oct, spec 24 #1): plan.chhutti was added and 'plan' joined the scoring keys. Chhutti facts exist only
     // from the build that writes them, so no past day is rescored.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '81ee9fd7']]);
+    // 24129226 (24 Oct, item 59): plan.chhutti.lockPasses and lockSlackMs decide when a chhutti can be measured (and so
+    // paid), so they count too (Codex A item 61). Chhutti is not on main yet, so no stored day has a chhutti fact.
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '24129226']]);
   });
 
   it('starts with the current rules', () => {

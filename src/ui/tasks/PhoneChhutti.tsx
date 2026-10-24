@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { answerChhutti, checkChhutti, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
-import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, lockTrusted, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, lockTrustFrom, readChhutti, windowBounds } from '../../core/plan/chhutti';
 import { RULES } from '../../core/rules.config';
 import { shareWindow } from '../../core/shareGate';
 import { dayKey } from '../../core/time';
@@ -77,7 +77,7 @@ export function PhoneChhutti() {
   const shown = upcoming ? boundsOn(window, today) : window;
   // Only a phone NANDI can read has a lock self-test; until it passes, windows without a recent restart are asked about.
   const lockTest = readLockTest(source.settings);
-  const learning = !lightsOut && lockTest && !lockTrusted(lockTest);
+  const learning = !lightsOut && lockTest && lockTrustFrom(lockTest) === null;
   return <section className="card phone-chhutti" aria-label="Phone ki chhutti">
     <h2>Phone ki chhutti</h2>
     <p>{window.label}, the phone goes on the shelf from {shown.from} until {shown.to}.</p>

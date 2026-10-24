@@ -206,7 +206,7 @@ it('the lock self-test: 3 passes make a lock a baseline, and a fail takes it awa
   // Two passes so far: not trusted, so the window is asked about.
   const two = async () => [...passAt(at('2026-11-02', '13:00')), ...passAt(at('2026-11-02', '14:00'))];
   expect(await checkChhutti(db, at('2026-11-02', '22:00'), noRestart, two)).toHaveLength(1);
-  expect(readLockTest(await db.settings.toArray())).toEqual({ passes: 2, upTo: at('2026-11-02', '14:00') });
+  expect(readLockTest(await db.settings.toArray())).toEqual({ passes: 2, upTo: at('2026-11-02', '14:00'), streakStart: at('2026-11-02', '13:00'), lastFailAt: null });
   // A third pass the next day: the 2nd is still unanswered, and now the log can answer it.
   const three = async () => [...await two(), ...passAt(at('2026-11-03', '08:00'))];
   expect(await checkChhutti(db, at('2026-11-03', '09:00'), noRestart, three)).toEqual([]);
@@ -224,4 +224,32 @@ it('no lock log (web, old Android, no access) stores no self-test', async () => 
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   await checkChhutti(db, at('2026-11-02', '22:00'), reader(() => null), async () => null);
   expect(await db.settings.get(CHHUTTI_LOCK_TEST_KEY)).toBeUndefined();
+});
+
+it('trust counts only locks from the start of the passing run on, never earlier ones (Codex A item 61)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, events: [{ type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
+  // All three passes come the next morning, so the 2nd's lock at 20:50 is from before the run: still asked.
+  const passes = async () => [...passAt(at('2026-11-03', '07:00')), ...passAt(at('2026-11-03', '07:30')), ...passAt(at('2026-11-03', '08:00'))];
+  expect((await checkChhutti(db, at('2026-11-03', '09:00'), noRestart, passes)).map(item => item.day)).toEqual(['2026-11-02']);
+  expect(readLockTest(await db.settings.toArray())).toMatchObject({ passes: 3, streakStart: at('2026-11-03', '07:00') });
+  // The 3rd's window, after the run began, is measured.
+  expect(await checkChhutti(db, at('2026-11-03', '22:00'), noRestart, passes)).toEqual([{ day: '2026-11-02', window: readChhutti(await db.settings.toArray())[0] }]);
+  expect((await db.ledger.where('kind').equals('chhutti').toArray()).map(fact => fact.dayKey)).toEqual(['2026-11-03']);
+});
+
+it('two checks at once run the self-test once, and a clock set back starts it again', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  let reads = 0;
+  const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
+  const locks = async () => { reads += 1; return [...passAt(at('2026-11-02', '13:00')), ...passAt(at('2026-11-02', '14:00')), ...passAt(at('2026-11-02', '15:00'))]; };
+  await Promise.all([checkChhutti(db, at('2026-11-02', '16:00'), reader(() => null), locks), checkChhutti(db, at('2026-11-02', '16:00'), reader(() => null), locks)]);
+  expect(reads).toBe(1);
+  expect(readLockTest(await db.settings.toArray())?.passes).toBe(3);
+  // The clock is now set back to the morning: the stored test is later than now, so it starts again.
+  await checkChhutti(db, at('2026-11-02', '09:00'), reader(() => null), locks);
+  expect(readLockTest(await db.settings.toArray())).toMatchObject({ passes: 0, streakStart: null, upTo: at('2026-11-02', '15:00') + 300 });
 });

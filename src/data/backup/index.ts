@@ -158,7 +158,7 @@ export async function exportBackup(db: NandiDb, now: Date | number): Promise<Bac
   const exportedAt = now instanceof Date ? now.getTime() : now;
   if (!Number.isSafeInteger(exportedAt) || exportedAt < 0) throw new RangeError('Invalid export time');
   const deviceId = await getOrCreateDeviceId(db, exportedAt);
-  const dexie = JSON.parse(await (await exportDB(db)).text()) as unknown;
+  const dexie = withoutDeviceLocal(JSON.parse(await (await exportDB(db)).text()) as unknown);
   const result = validateBackup({ app: 'nandi', ppFormatVersion: PP_FORMAT_VERSION,
     appVersion: APP_VERSION, exportedAt, deviceId, dexie });
   if (!result.success || !result.envelope) throw new Error(result.errors.join('; '));
@@ -195,6 +195,20 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
     }
   }
   return { counts, earliestDayKey, latestDayKey, retired };
+}
+
+/**
+ * One rule for this phone's own settings (Codex A item 61): they never leave it in a backup, and a restore keeps
+ * this phone's values. The settings table's row count is kept in step so the file still validates.
+ */
+function withoutDeviceLocal(dexie: unknown): unknown {
+  const data = (dexie as { data?: { data?: { tableName: string; rows: unknown[] }[]; tables?: { name: string; rowCount: number }[] } })?.data;
+  const settings = data?.data?.find(table => table.tableName === 'settings');
+  if (!data || !settings || !Array.isArray(settings.rows)) return dexie;
+  settings.rows = settings.rows.filter(row => !deviceLocalKeys.has((row as SettingRow | null)?.key ?? ''));
+  const meta = data.tables?.find(table => table.name === 'settings');
+  if (meta) meta.rowCount = settings.rows.length;
+  return dexie;
 }
 
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
