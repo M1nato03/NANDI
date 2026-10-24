@@ -19,8 +19,11 @@ test('the pace line is opt-in, remembered, compares with your best, and hides af
   await page.evaluate(() => window.__nandiMindTest!.solveKnownSolution());
   await expect(page.getByLabel('Puzzle result')).toBeVisible();
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-  await page.getByRole('button', { name: 'Back to Mind' }).click();
-  await openPractice(page);
+  // A second practice board of the same type and difficulty (the route picks the next attempt).
+  await page.goto('/?e2e#mind/board/sudoku/easy');
+  await page.reload();
+  await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByLabel('Puzzle result')).toHaveCount(0);
   await page.getByRole('button', { name: 'Show pace' }).click();
   await expect(page.getByText('Your best Mini Sudoku easy pace')).toBeVisible();
   await expect(page.locator('.mind-pace-track')).toBeVisible();
