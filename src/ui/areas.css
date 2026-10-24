@@ -1,0 +1,20 @@
+/* Spec 25 one look per friend (version C). The per-theme colour values come from src/ui/areas.ts (areaTokenCss). */
+[data-area='plan'] { --area: var(--plan-area); --area-tint: var(--plan-tint); --button: var(--plan-button); --button-ink: var(--plan-on); --accent-ink: var(--plan-area); --area-stage: var(--plan-stage); --area-stage-ink: var(--plan-stage-ink); }
+[data-area='train'] { --area: var(--train-area); --area-tint: var(--train-tint); --button: var(--train-button); --button-ink: var(--train-on); --accent-ink: var(--train-area); --area-stage: var(--train-stage); --area-stage-ink: var(--train-stage-ink); }
+[data-area='learn'] { --area: var(--learn-area); --area-tint: var(--learn-tint); --button: var(--learn-button); --button-ink: var(--learn-on); --accent-ink: var(--learn-area); --area-stage: var(--learn-stage); --area-stage-ink: var(--learn-stage-ink); }
+[data-area='review'] { --area: var(--review-area); --area-tint: var(--review-tint); --button: var(--review-button); --button-ink: var(--review-on); --accent-ink: var(--review-area); --area-stage: var(--review-stage); --area-stage-ink: var(--review-stage-ink); }
+[data-area='mind'] { --area: var(--mind-area); --area-tint: var(--mind-tint); --button: var(--mind-button); --button-ink: var(--mind-on); --accent-ink: var(--mind-area); --area-stage: var(--mind-stage); --area-stage-ink: var(--mind-stage-ink); }
+[data-area='night'] { --area: var(--night-area); --area-tint: var(--night-tint); --button: var(--night-button); --button-ink: var(--night-on); --accent-ink: var(--night-area); --area-stage: var(--night-stage); --area-stage-ink: var(--night-stage-ink); }
+/* The screen carries the colour gently: a tinted page behind near-neutral cards. The night deck keeps its own dark. */
+.app-shell[data-area]:not([data-area='night']) { background: var(--area-tint); }
+[data-area] .tabbar a[aria-current='page'] { color: var(--area); }
+[data-area] [role='progressbar'] > span, [data-area] .progress-fill { background: var(--area); }
+
+/* The friend stage at the top of each tab (spec 25 §2). */
+.friend-stage { display: flex; align-items: center; gap: 14px; margin: 0 0 16px; padding: 12px 16px; border-radius: var(--radius-card); background: var(--area-stage); color: var(--area-stage-ink); }
+.friend-stage svg { flex: none; }
+.friend-stage[data-rim='true'] svg { filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff); }
+.friend-stage-text { min-width: 0; }
+.friend-stage-text h1, .friend-stage-text h2 { margin: 0; color: inherit; }
+.friend-stage-text p { margin: 4px 0 0; color: inherit; }
+.friend-stage .eyebrow { color: inherit; opacity: 1; }
