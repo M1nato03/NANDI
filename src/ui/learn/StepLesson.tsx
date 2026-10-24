@@ -3,10 +3,10 @@ import type { StepVisual as StepVisualData, TopicStep } from '../../data/packs/s
 import { Cast, type CastName } from '../cast/Cast';
 import { tapHaptic } from '../../platform/haptics';
 import { revealSheet } from './revealSheet';
+import { seededShuffle } from '../../core/learn/engine/shuffle';
 
-// Content lists the right option first; show a stable shuffle so position never gives it away.
-const hash = (value: string) => { let h = 2166136261; for (const char of value) h = Math.imul(h ^ char.charCodeAt(0), 16777619) >>> 0; return h; };
-export const shuffled = <T extends { id: string }>(options: readonly T[], seed: string): T[] => [...options].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`));
+// Content lists the right option first; show a stable, even shuffle so position never gives it away (item 71, B1).
+export const shuffled = <T extends { id: string }>(options: readonly T[], seed: string): T[] => seededShuffle(options, seed);
 const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
 
 /** A small diagram drawn from the step's data: a flow of chips, two columns, or a scale with marks. */

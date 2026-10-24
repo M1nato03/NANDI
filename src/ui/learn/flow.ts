@@ -56,7 +56,7 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
     const pool = concept && goldItems(concept, input.taughtOn ?? {}, today);
     if (concept && pool) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
       items: [...pool].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
-        .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: item.options.map(option => option.id), mode: 'review' as const })) };
+        .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: orderOptions(item, input.now % 1_000_000), mode: 'review' as const })) };
   }
   const afterBedtime = isAfterBedtime(input.now, input.bedtime ?? RULES.night.defaultBedtime);
   const due = input.reviewDue || afterBedtime ? catalog.filter(concept => {
