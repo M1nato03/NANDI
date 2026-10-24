@@ -2,7 +2,7 @@
 import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { answerChhutti, checkChhutti, chhuttiInLightsOut, CHHUTTI_LOCK_TEST_KEY, initChosenApps, readLockTest, saveChosenApps, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
+import { answerChhutti, checkChhutti, CHHUTTI_APPS_KEY, chhuttiInLightsOut, CHHUTTI_LOCK_TEST_KEY, initChosenApps, readLockTest, saveChosenApps, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { deriveCourtyard } from '../../core/courtyard/courtyard';
 import { readChhutti, type UsageEvent } from '../../core/plan/chhutti';
@@ -326,4 +326,41 @@ it('the first time the phone reports its apps, only the installed defaults are s
   expect((await db.settings.get('night.pause.apps'))?.value).toEqual([ig, 'com.google.android.youtube']);
   await initChosenApps(db, [ig], at('2026-11-02', '13:00'));
   expect((await db.settings.get('night.pause.apps'))?.value).toEqual([ig, 'com.google.android.youtube']);
+});
+
+it('a day whose own list was empty never counts, even if an app is added later (Codex A item 68)', async () => {
+  const db = fresh();
+  await db.settings.put({ key: 'night.pause.apps', value: [], updatedAt: 1, deleted: 0, deviceId: 't' });
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await saveChosenApps(db, [ig], at('2026-11-03', '08:00'));
+  expect(await checkChhutti(db, at('2026-11-03', '09:00'), dark, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it('with no default app on the phone, an empty list is saved once (Codex A item 68)', async () => {
+  const db = fresh();
+  await initChosenApps(db, ['com.other.app'], at('2026-11-02', '12:00'));
+  expect((await db.settings.get('night.pause.apps'))?.value).toEqual([]);
+});
+
+it('a list change while a window is being read writes no fact; the window is asked about (Codex A item 68)', async () => {
+  const db = fresh();
+  await db.settings.put({ key: 'night.pause.apps', value: [ig], updatedAt: 1, deleted: 0, deviceId: 't' });
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  const changesMidRead = async (from: number, to: number) => {
+    await db.settings.put({ key: 'night.pause.apps', value: [ig, 'com.google.android.youtube'], updatedAt: 2, deleted: 0, deviceId: 't' });
+    return dark(from, to);
+  };
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), changesMidRead, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it("after a restore onto another phone, the old phone's days are asked about, not measured (Codex A item 68)", async () => {
+  const db = fresh();
+  await db.settings.put({ key: 'night.pause.apps', value: [ig], updatedAt: 1, deleted: 0, deviceId: 't' });
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  // The notes now carry the old phone's id, as a restored backup would.
+  await db.settings.put({ key: CHHUTTI_APPS_KEY, value: { deviceId: 'old-phone', days: { '2026-11-02': [ig] } }, updatedAt: 3, deleted: 0, deviceId: 'old-phone' });
+  expect(await checkChhutti(db, at('2026-11-03', '09:00'), dark, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
 });

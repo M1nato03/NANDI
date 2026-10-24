@@ -70,6 +70,8 @@ export async function saveChhuttiWindow(db: NandiDb, input: { id?: string; label
   const weekdays = input.weekdays?.length ? [...input.weekdays] : undefined;
   // A new window counts from today only if it was planned before it starts; otherwise from tomorrow. A changed one
   // keeps every started day's bounds and weekdays (withBounds), so no day already under way is rewritten (55, 56).
+  // The apps in force when a window is planned are noted, so its first days can be checked (Codex A item 68).
+  await recordChhuttiApps(db, [chosenApps(rows)], now);
   const window: ChhuttiWindow = old
     ? withBounds({ ...old, label }, { ...bounded, weekdays }, now, today)
     : { id: ulid(now), label, ...bounded, since: now < new Date(`${today}T${bounded.from}:00`).getTime() ? today : addEconomyDays(today, 1), ...(weekdays ? { weekdays } : {}) };
@@ -113,16 +115,19 @@ function withTimeout<T>(read: Promise<T>, ms: number): Promise<T | null> {
   });
 }
 /**
- * Checks run one after another per database (Codex A items 63, 65): the lock self-test, the window reads and the fact
- * writes of one check all finish before the next check starts, so a fail one check records is always seen by the next.
+ * Checks and App pause list changes run one after another per database (Codex A items 63, 65, 68): the lock self-test,
+ * the window reads and the fact writes of one check all finish before the next check or list change starts.
  */
-const checkRuns = new WeakMap<NandiDb, Promise<unknown>>();
-export function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEvents = readWindowEvents, readLock: ReadLock = readLockEvents, timeoutMs = 10_000): Promise<ChhuttiPending[]> {
-  const before = checkRuns.get(db) ?? Promise.resolve();
-  const run = before.catch(() => undefined).then(() => checkOnce(db, now, read, readLock, timeoutMs));
-  checkRuns.set(db, run);
-  void run.finally(() => { if (checkRuns.get(db) === run) checkRuns.delete(db); }).catch(() => undefined);
+const runs = new WeakMap<NandiDb, Promise<unknown>>();
+function serial<T>(db: NandiDb, task: () => Promise<T>): Promise<T> {
+  const before = runs.get(db) ?? Promise.resolve();
+  const run = before.catch(() => undefined).then(task);
+  runs.set(db, run);
+  void run.finally(() => { if (runs.get(db) === run) runs.delete(db); }).catch(() => undefined);
   return run;
+}
+export function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEvents = readWindowEvents, readLock: ReadLock = readLockEvents, timeoutMs = 10_000): Promise<ChhuttiPending[]> {
+  return serial(db, () => checkOnce(db, now, read, readLock, timeoutMs));
 }
 async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: ReadLock, timeoutMs: number): Promise<ChhuttiPending[]> {
   if (restoreActive()) return [];
@@ -134,7 +139,7 @@ async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: R
   const trustLocksFrom = lockTrustFrom(await runLockTest(db, now, since => withTimeout(readLock(since), timeoutMs)));
   const shutdowns = await snapshotShutdown(db, rows, windows, now, (await clockOf(db, rows, now)).shutdown);
   const current = chosenApps(rows);
-  const appSnapshots = await recordChhuttiApps(db, [current], now);
+  const appDays = await recordChhuttiApps(db, [current], now);
   const pending: ChhuttiPending[] = [];
   for (let back = CHHUTTI_LOOKBACK_DAYS; back >= 0; back--) {
     const day = addEconomyDays(today, -back);
@@ -143,11 +148,11 @@ async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: R
       if (await db.ledger.get(chhuttiFactId(day, window.id))) continue;
       const bounds = await dayBounds(db, rows, window, day, shutdowns);
       if (!bounds || bounds.toMs > now) continue;
-      // Each day is checked against every app chosen on it or since (Codex A item 67), never the current list alone.
-      const packages = appsFor(day, appSnapshots, current);
+      // The list in force that day decides whether the day can count at all; every app chosen on it or since is
+      // checked for use (Codex A items 67, 68). No list noted on this phone by then, or an empty one: asked, never kept.
+      const { eligible, packages } = dayApps(day, appDays, current);
       const ask = () => { if (back <= 1 && isLive(window)) pending.push({ day, window }); };
-      // No chosen app means nothing can be checked: a window is never "kept" by default.
-      if (!packages.length) { ask(); continue; }
+      if (!eligible?.length || !packages.length) { ask(); continue; }
       const usageLog = await withTimeout(read(bounds.fromMs, bounds.toMs, packages), timeoutMs);
       // A start-up baseline needs no trust; only when the lock is the baseline does the fact depend on the self-test.
       const plain = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart) : null;
@@ -155,8 +160,8 @@ async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: R
       const usage = plain ?? (usageLog && lockFrom !== null ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart, lockFrom) : null);
       // Unknown: only today and yesterday are asked about, so a week away never comes back as a list of questions.
       if (!usage) { ask(); continue; }
-      const written = await writeFact(db, day, window, bounds, { chosenAppMs: usage.chosenAppMs, darkMs: usage.darkMs, source: 'usage', kept: isKept(usage, day) }, now, plain ? null : lockFrom);
-      if (written === 'untrusted') ask();
+      const written = await writeFact(db, day, window, bounds, { chosenAppMs: usage.chosenAppMs, darkMs: usage.darkMs, source: 'usage', kept: isKept(usage, day) }, now, plain ? null : lockFrom, packages);
+      if (written === 'untrusted' || written === 'changed') ask();
     }
   }
   return pending;
@@ -204,47 +209,59 @@ export function chosenApps(rows: readonly SettingRow[]): string[] {
   return Array.isArray(saved) ? saved.filter((item): item is string => typeof item === 'string') : DEFAULT_PAUSE_APPS.map(app => app.packageName);
 }
 /**
- * Every app chosen on each day (Codex A item 67): written at each check and each time the list changes, kept for the
- * read-back. A day is checked against what it had plus every app chosen since, so unticking an app afterwards never
- * removes it from a day it was chosen on (more apps can only make a day less likely to count as kept).
+ * Every app chosen on each day (Codex A items 67, 68): noted when a window is saved, at each check and at each list
+ * change, kept for the read-back, and stamped with this phone's id, so a backup restored onto another phone never
+ * lets the new phone's log answer for the old phone's days (those are asked about instead).
  */
 export const CHHUTTI_APPS_KEY = `${CHHUTTI_KEY}.apps`;
-function readAppSnapshots(rows: readonly SettingRow[]): Record<string, string[]> {
-  const value = live(rows, CHHUTTI_APPS_KEY);
-  if (!value || typeof value !== 'object') return {};
-  return Object.fromEntries(Object.entries(value as Record<string, unknown>).filter((entry): entry is [string, string[]] => /^\d{4}-\d{2}-\d{2}$/.test(entry[0]) && Array.isArray(entry[1]) && entry[1].every(item => typeof item === 'string')));
+function readAppDays(rows: readonly SettingRow[], deviceId: string): Record<string, string[]> {
+  const value = live(rows, CHHUTTI_APPS_KEY) as { deviceId?: unknown; days?: unknown } | undefined;
+  if (!value || typeof value !== 'object' || value.deviceId !== deviceId || !value.days || typeof value.days !== 'object') return {};
+  return Object.fromEntries(Object.entries(value.days as Record<string, unknown>).filter((entry): entry is [string, string[]] => /^\d{4}-\d{2}-\d{2}$/.test(entry[0]) && Array.isArray(entry[1]) && entry[1].every(item => typeof item === 'string')));
 }
 export async function recordChhuttiApps(db: NandiDb, lists: readonly (readonly string[])[], now = Date.now()): Promise<Record<string, string[]>> {
   const today = dayKey(now);
   const oldest = addEconomyDays(today, -(CHHUTTI_LOOKBACK_DAYS + 1));
   const deviceId = await getOrCreateDeviceId(db, now);
   return trackWrite(() => db.transaction('rw', db.settings, async () => {
-    const stored = readAppSnapshots(await db.settings.toArray());
+    const rows = await db.settings.toArray();
+    const stored = readAppDays(rows, deviceId);
     const todays = [...new Set([...(stored[today] ?? []), ...lists.flat()])].sort();
-    const next = Object.fromEntries([...Object.entries(stored).filter(([day]) => day >= oldest && day !== today), [today, todays]]);
-    if (JSON.stringify(next) !== JSON.stringify(stored)) await db.settings.put({ key: CHHUTTI_APPS_KEY, value: next, updatedAt: now, deleted: 0, deviceId });
-    return next;
+    // The newest list older than the read-back stays too: it is the one in force when the read-back begins.
+    const carried = Object.keys(stored).filter(day => day < oldest).sort().at(-1);
+    const days = Object.fromEntries([...Object.entries(stored).filter(([day]) => (day >= oldest || day === carried) && day !== today), [today, todays]]);
+    const before = live(rows, CHHUTTI_APPS_KEY);
+    const value = { deviceId, days };
+    if (JSON.stringify(before) !== JSON.stringify(value)) await db.settings.put({ key: CHHUTTI_APPS_KEY, value, updatedAt: now, deleted: 0, deviceId });
+    return days;
   }));
 }
-function appsFor(day: string, snapshots: Record<string, string[]>, current: readonly string[]): string[] {
-  return [...new Set([...current, ...Object.entries(snapshots).filter(([key]) => key >= day).flatMap(([, apps]) => apps)])];
+/**
+ * For one day: `eligible` is the list in force at its window (the latest one noted on or before that day; none means
+ * the day cannot be checked), and `packages` is every app chosen on it or since, which is what its use is checked for.
+ */
+function dayApps(day: string, days: Record<string, string[]>, current: readonly string[]): { eligible: string[] | null; packages: string[] } {
+  const before = Object.keys(days).filter(key => key <= day).sort().at(-1);
+  const packages = [...new Set([...current, ...Object.entries(days).filter(([key]) => key >= day).flatMap(([, apps]) => apps)])].sort();
+  return { eligible: before ? days[before]! : null, packages };
 }
-/** Saves the App pause list, first noting the old and new lists for today's chhutti check (Codex A item 67). */
-export async function saveChosenApps(db: NandiDb, next: readonly string[], now = Date.now(), noteOld = true): Promise<void> {
-  const old = chosenApps(await db.settings.toArray());
-  await recordChhuttiApps(db, noteOld ? [old, next] : [next], now);
-  const deviceId = await getOrCreateDeviceId(db, now);
-  await trackWrite(() => db.settings.put({ key: 'night.pause.apps', value: [...next], updatedAt: now, deleted: 0, deviceId }));
+/** Saves the App pause list, first noting the old and new lists for today's chhutti check (Codex A items 67, 68). */
+export function saveChosenApps(db: NandiDb, next: readonly string[], now = Date.now(), noteOld = true): Promise<void> {
+  return serial(db, async () => {
+    const old = chosenApps(await db.settings.toArray());
+    await recordChhuttiApps(db, noteOld ? [old, next] : [next], now);
+    const deviceId = await getOrCreateDeviceId(db, now);
+    await trackWrite(() => db.settings.put({ key: 'night.pause.apps', value: [...next], updatedAt: now, deleted: 0, deviceId }));
+  });
 }
 /**
  * Until a list is saved, the defaults include apps that may not be on this phone, and an app that cannot be looked up
- * blocks the lock baseline. The first time the phone can say what is installed, the defaults on it are saved
- * (Codex A item 67). Only the installed ones are noted: this runs once, before any window is checked by lock.
+ * blocks the lock baseline. The first time the phone can say what is installed, the defaults on it are saved, even
+ * when that is none at all (Codex A items 67, 68). Only the new list is noted: this runs once, at set-up.
  */
 export async function initChosenApps(db: NandiDb, installed: readonly string[] | null, now = Date.now()): Promise<void> {
   if (!installed || live(await db.settings.toArray(), 'night.pause.apps') !== undefined) return;
-  const onPhone = DEFAULT_PAUSE_APPS.map(app => app.packageName).filter(pkg => installed.includes(pkg));
-  if (onPhone.length) await saveChosenApps(db, onPhone, now, false);
+  await saveChosenApps(db, DEFAULT_PAUSE_APPS.map(app => app.packageName).filter(pkg => installed.includes(pkg)), now, false);
 }
 
 /** Records today's effective shutdown once, while a window of today has not started yet; keeps the last 9 days. */
@@ -273,15 +290,21 @@ export async function answerChhutti(db: NandiDb, day: string, window: ChhuttiWin
  * self-test is read again inside the same transaction, and if the phone is no longer trusted from that point (a fail
  * came in meanwhile), nothing is written and the window is asked about instead (Codex A item 65).
  */
-async function writeFact(db: NandiDb, day: string, window: ChhuttiWindow, bounds: { fromMs: number; toMs: number }, result: Record<string, unknown> & { kept: boolean }, now: number, trustedFrom: number | null = null): Promise<'written' | 'exists' | 'untrusted' | 'skipped'> {
+async function writeFact(db: NandiDb, day: string, window: ChhuttiWindow, bounds: { fromMs: number; toMs: number }, result: Record<string, unknown> & { kept: boolean }, now: number, trustedFrom: number | null = null, checkedApps: readonly string[] | null = null): Promise<'written' | 'exists' | 'untrusted' | 'changed' | 'skipped'> {
   if (restoreActive()) return 'skipped';
   const deviceId = await getOrCreateDeviceId(db, now);
-  return trackWrite(() => db.transaction('rw', [db.ledger, db.settings, db.tasks], async (): Promise<'written' | 'exists' | 'untrusted'> => {
+  return trackWrite(() => db.transaction('rw', [db.ledger, db.settings, db.tasks], async (): Promise<'written' | 'exists' | 'untrusted' | 'changed'> => {
     const id = chhuttiFactId(day, window.id);
     if (await db.ledger.get(id)) return 'exists';
     if (trustedFrom !== null) {
       const fresh = lockTrustFrom(readLockTest(await db.settings.toArray()));
       if (fresh === null || fresh > trustedFrom) return 'untrusted';
+    }
+    // A measured fact stands only for the apps it was measured against: if the list changed meanwhile, ask (item 68).
+    if (checkedApps) {
+      const rows = await db.settings.toArray();
+      const inForce = dayApps(day, readAppDays(rows, deviceId), chosenApps(rows));
+      if (!inForce.eligible?.length || inForce.packages.join(',') !== [...checkedApps].sort().join(',')) return 'changed';
     }
     // The fact keeps the bounds that day really had, even if the window changed later.
     const clock = (ms: number) => { const at = new Date(ms); return `${String(at.getHours()).padStart(2, '0')}:${String(at.getMinutes()).padStart(2, '0')}`; };
