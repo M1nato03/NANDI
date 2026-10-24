@@ -1,0 +1,440 @@
+[
+  {
+    "stepId": "inflation-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "inflation-m1"
+  },
+  {
+    "stepId": "inflation-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "inflation-m1"
+  },
+  {
+    "stepId": "inflation-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "inflation-m2"
+  },
+  {
+    "stepId": "inflation-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "inflation-m2"
+  },
+  {
+    "stepId": "inflation-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "inflation-m3"
+  },
+  {
+    "stepId": "inflation-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "inflation-m4"
+  },
+  {
+    "stepId": "inflation-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "inflation-m4"
+  },
+  {
+    "stepId": "inflation-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "inflation-m4"
+  },
+  {
+    "stepId": "compounding-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "compounding-m4"
+  },
+  {
+    "stepId": "compounding-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "compounding-m1"
+  },
+  {
+    "stepId": "compounding-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "compounding-m4"
+  },
+  {
+    "stepId": "compounding-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "compounding-m4"
+  },
+  {
+    "stepId": "compounding-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "compounding-m4"
+  },
+  {
+    "stepId": "compounding-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "compounding-m2"
+  },
+  {
+    "stepId": "compounding-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "compounding-m2"
+  },
+  {
+    "stepId": "rule-of-72-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "rule-of-72-m3"
+  },
+  {
+    "stepId": "rule-of-72-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "rule-of-72-m3"
+  },
+  {
+    "stepId": "rule-of-72-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "rule-of-72-m2"
+  },
+  {
+    "stepId": "rule-of-72-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "rule-of-72-m2"
+  },
+  {
+    "stepId": "rule-of-72-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "rule-of-72-m2"
+  },
+  {
+    "stepId": "rule-of-72-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "rule-of-72-m2"
+  },
+  {
+    "stepId": "risk-return-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "risk-return-m2"
+  },
+  {
+    "stepId": "risk-return-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "risk-return-m1"
+  },
+  {
+    "stepId": "risk-return-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "risk-return-m5"
+  },
+  {
+    "stepId": "risk-return-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "risk-return-m5"
+  },
+  {
+    "stepId": "diversification-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "diversification-m1"
+  },
+  {
+    "stepId": "diversification-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "diversification-m1"
+  },
+  {
+    "stepId": "diversification-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "diversification-m1"
+  },
+  {
+    "stepId": "diversification-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "diversification-m3"
+  },
+  {
+    "stepId": "diversification-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "diversification-m3"
+  },
+  {
+    "stepId": "diversification-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "diversification-m2"
+  },
+  {
+    "stepId": "diversification-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "diversification-m2"
+  },
+  {
+    "stepId": "shares-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "shares-m4"
+  },
+  {
+    "stepId": "shares-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "shares-m4"
+  },
+  {
+    "stepId": "shares-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "shares-m6"
+  },
+  {
+    "stepId": "shares-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "shares-m6"
+  },
+  {
+    "stepId": "shares-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "shares-m3"
+  },
+  {
+    "stepId": "shares-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "shares-m2"
+  },
+  {
+    "stepId": "shares-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "shares-m1"
+  },
+  {
+    "stepId": "shares-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "shares-m2"
+  },
+  {
+    "stepId": "emergency-fund-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "emergency-fund-m2"
+  },
+  {
+    "stepId": "emergency-fund-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "emergency-fund-m2"
+  },
+  {
+    "stepId": "emergency-fund-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "emergency-fund-m3"
+  },
+  {
+    "stepId": "emergency-fund-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "emergency-fund-m3"
+  },
+  {
+    "stepId": "emergency-fund-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "emergency-fund-m1"
+  },
+  {
+    "stepId": "emergency-fund-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "emergency-fund-m4"
+  },
+  {
+    "stepId": "emergency-fund-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "emergency-fund-m4"
+  },
+  {
+    "stepId": "emergency-fund-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "emergency-fund-m1"
+  },
+  {
+    "stepId": "loan-emi-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "loan-emi-m5"
+  },
+  {
+    "stepId": "loan-emi-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "loan-emi-m1"
+  },
+  {
+    "stepId": "loan-emi-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "loan-emi-m5"
+  },
+  {
+    "stepId": "loan-emi-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "loan-emi-m3"
+  },
+  {
+    "stepId": "loan-emi-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "loan-emi-m3"
+  },
+  {
+    "stepId": "loan-emi-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "loan-emi-m3"
+  },
+  {
+    "stepId": "loan-emi-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "loan-emi-m2"
+  },
+  {
+    "stepId": "loan-emi-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "loan-emi-m4"
+  },
+  {
+    "stepId": "loan-emi-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "loan-emi-m2"
+  },
+  {
+    "stepId": "loan-emi-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "loan-emi-m4"
+  },
+  {
+    "stepId": "index-funds-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "index-funds-m4"
+  },
+  {
+    "stepId": "index-funds-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "index-funds-m4"
+  },
+  {
+    "stepId": "index-funds-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "index-funds-m2"
+  },
+  {
+    "stepId": "index-funds-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "index-funds-m3"
+  },
+  {
+    "stepId": "index-funds-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "index-funds-m3"
+  },
+  {
+    "stepId": "index-funds-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "index-funds-m4"
+  },
+  {
+    "stepId": "upi-scams-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "upi-scams-m4"
+  },
+  {
+    "stepId": "upi-scams-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "upi-scams-m1"
+  },
+  {
+    "stepId": "upi-scams-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "upi-scams-m5"
+  },
+  {
+    "stepId": "upi-scams-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "upi-scams-m5"
+  },
+  {
+    "stepId": "upi-scams-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "upi-scams-m5"
+  },
+  {
+    "stepId": "upi-scams-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "upi-scams-m3"
+  },
+  {
+    "stepId": "upi-scams-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "upi-scams-m3"
+  },
+  {
+    "stepId": "upi-scams-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "upi-scams-m3"
+  },
+  {
+    "stepId": "upi-scams-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "upi-scams-m2"
+  }
+]

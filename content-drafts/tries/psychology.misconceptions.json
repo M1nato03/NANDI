@@ -1,0 +1,500 @@
+[
+  {
+    "stepId": "habits-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "habits-m3"
+  },
+  {
+    "stepId": "habits-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "habits-m4"
+  },
+  {
+    "stepId": "habits-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "habits-m4"
+  },
+  {
+    "stepId": "habits-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "habits-m4"
+  },
+  {
+    "stepId": "habits-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "habits-m1"
+  },
+  {
+    "stepId": "habits-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "habits-m1"
+  },
+  {
+    "stepId": "habits-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "habits-m2"
+  },
+  {
+    "stepId": "loss-aversion-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "loss-aversion-m1"
+  },
+  {
+    "stepId": "loss-aversion-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "loss-aversion-m1"
+  },
+  {
+    "stepId": "loss-aversion-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "loss-aversion-m3"
+  },
+  {
+    "stepId": "loss-aversion-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "loss-aversion-m3"
+  },
+  {
+    "stepId": "loss-aversion-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "loss-aversion-m4"
+  },
+  {
+    "stepId": "loss-aversion-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "loss-aversion-m1"
+  },
+  {
+    "stepId": "loss-aversion-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "loss-aversion-m1"
+  },
+  {
+    "stepId": "anchoring-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "anchoring-m1"
+  },
+  {
+    "stepId": "anchoring-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "anchoring-m5"
+  },
+  {
+    "stepId": "anchoring-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "anchoring-m2"
+  },
+  {
+    "stepId": "anchoring-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "anchoring-m2"
+  },
+  {
+    "stepId": "anchoring-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "anchoring-m4"
+  },
+  {
+    "stepId": "anchoring-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "anchoring-m1"
+  },
+  {
+    "stepId": "confirmation-bias-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "confirmation-bias-m4"
+  },
+  {
+    "stepId": "confirmation-bias-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "confirmation-bias-m1"
+  },
+  {
+    "stepId": "confirmation-bias-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "confirmation-bias-m1"
+  },
+  {
+    "stepId": "confirmation-bias-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "confirmation-bias-m3"
+  },
+  {
+    "stepId": "confirmation-bias-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "confirmation-bias-m3"
+  },
+  {
+    "stepId": "confirmation-bias-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "confirmation-bias-m2"
+  },
+  {
+    "stepId": "confirmation-bias-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "confirmation-bias-m3"
+  },
+  {
+    "stepId": "social-proof-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "social-proof-m4"
+  },
+  {
+    "stepId": "social-proof-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "social-proof-m3"
+  },
+  {
+    "stepId": "social-proof-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "social-proof-m5"
+  },
+  {
+    "stepId": "social-proof-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "social-proof-m4"
+  },
+  {
+    "stepId": "social-proof-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "social-proof-m3"
+  },
+  {
+    "stepId": "social-proof-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "social-proof-m1"
+  },
+  {
+    "stepId": "social-proof-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "social-proof-m1"
+  },
+  {
+    "stepId": "social-proof-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "social-proof-m1"
+  },
+  {
+    "stepId": "social-proof-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "social-proof-m1"
+  },
+  {
+    "stepId": "planning-fallacy-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "planning-fallacy-m4"
+  },
+  {
+    "stepId": "planning-fallacy-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "planning-fallacy-m4"
+  },
+  {
+    "stepId": "planning-fallacy-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "planning-fallacy-m5"
+  },
+  {
+    "stepId": "planning-fallacy-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "planning-fallacy-m2"
+  },
+  {
+    "stepId": "planning-fallacy-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "planning-fallacy-m3"
+  },
+  {
+    "stepId": "planning-fallacy-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "planning-fallacy-m1"
+  },
+  {
+    "stepId": "planning-fallacy-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "planning-fallacy-m3"
+  },
+  {
+    "stepId": "sleep-memory-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "sleep-memory-m2"
+  },
+  {
+    "stepId": "sleep-memory-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "sleep-memory-m2"
+  },
+  {
+    "stepId": "sleep-memory-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sleep-memory-m2"
+  },
+  {
+    "stepId": "sleep-memory-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "sleep-memory-m4"
+  },
+  {
+    "stepId": "sleep-memory-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-memory-m1"
+  },
+  {
+    "stepId": "sleep-memory-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "sleep-memory-m3"
+  },
+  {
+    "stepId": "sleep-memory-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sleep-memory-m3"
+  },
+  {
+    "stepId": "sleep-memory-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "sleep-memory-m3"
+  },
+  {
+    "stepId": "sleep-memory-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-memory-m5"
+  },
+  {
+    "stepId": "sleep-memory-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "sleep-memory-m5"
+  },
+  {
+    "stepId": "sleep-memory-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sleep-memory-m5"
+  },
+  {
+    "stepId": "sleep-memory-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sleep-memory-m5"
+  },
+  {
+    "stepId": "variable-rewards-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "variable-rewards-m5"
+  },
+  {
+    "stepId": "variable-rewards-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "variable-rewards-m4"
+  },
+  {
+    "stepId": "variable-rewards-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "variable-rewards-m3"
+  },
+  {
+    "stepId": "variable-rewards-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "variable-rewards-m6"
+  },
+  {
+    "stepId": "variable-rewards-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "variable-rewards-m2"
+  },
+  {
+    "stepId": "variable-rewards-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "variable-rewards-m2"
+  },
+  {
+    "stepId": "variable-rewards-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "variable-rewards-m2"
+  },
+  {
+    "stepId": "variable-rewards-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "variable-rewards-m3"
+  },
+  {
+    "stepId": "if-then-plans-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "if-then-plans-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "if-then-plans-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "if-then-plans-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "if-then-plans-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "if-then-plans-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "if-then-plans-m2"
+  },
+  {
+    "stepId": "if-then-plans-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "if-then-plans-m2"
+  },
+  {
+    "stepId": "if-then-plans-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "if-then-plans-m2"
+  },
+  {
+    "stepId": "if-then-plans-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "if-then-plans-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "spotlight-effect-m2"
+  },
+  {
+    "stepId": "spotlight-effect-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "spotlight-effect-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "spotlight-effect-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "spotlight-effect-m2"
+  },
+  {
+    "stepId": "spotlight-effect-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "spotlight-effect-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "spotlight-effect-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "spotlight-effect-m1"
+  },
+  {
+    "stepId": "spotlight-effect-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "spotlight-effect-m3"
+  },
+  {
+    "stepId": "spotlight-effect-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "spotlight-effect-m3"
+  },
+  {
+    "stepId": "spotlight-effect-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "spotlight-effect-m3"
+  },
+  {
+    "stepId": "spotlight-effect-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "spotlight-effect-m2"
+  }
+]

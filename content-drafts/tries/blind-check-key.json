@@ -1,0 +1,482 @@
+[
+ {
+  "id": "habits-s1.twist",
+  "right": "Putting the kettle on was the cue, and it changed."
+ },
+ {
+  "id": "habits-s1.transfer",
+  "right": "Opening the emails at that time."
+ },
+ {
+  "id": "habits-s2.twist",
+  "right": "A small gain in ease."
+ },
+ {
+  "id": "habits-s2.transfer",
+  "right": "He is close to the point where gains level off."
+ },
+ {
+  "id": "habits-s3.twist",
+  "right": "A gap like that is normal; times varied a lot."
+ },
+ {
+  "id": "habits-s3.transfer",
+  "right": "One missed evening did not undo the growth so far."
+ },
+ {
+  "id": "loss-aversion-s1.twist",
+  "right": "A bit worse than even."
+ },
+ {
+  "id": "loss-aversion-s1.transfer",
+  "right": "With the bigger stake."
+ },
+ {
+  "id": "loss-aversion-s2.twist",
+  "right": "He now judges from the ₹14,000 high point."
+ },
+ {
+  "id": "loss-aversion-s2.transfer",
+  "right": "Rekha."
+ },
+ {
+  "id": "loss-aversion-s3.twist",
+  "right": "No; figures vary, and twice is the average."
+ },
+ {
+  "id": "loss-aversion-s3.transfer",
+  "right": "About ₹2,000."
+ },
+ {
+  "id": "anchoring-s1.twist",
+  "right": "Still a bit high."
+ },
+ {
+  "id": "anchoring-s1.transfer",
+  "right": "His ask drifts down toward ₹3 lakh."
+ },
+ {
+  "id": "anchoring-s2.twist",
+  "right": "Guesses moved off the anchor, but not far enough."
+ },
+ {
+  "id": "anchoring-s2.transfer",
+  "right": "Bids lean toward ₹8,000."
+ },
+ {
+  "id": "anchoring-s3.twist",
+  "right": "Not really; it weakens the pull, so some stays."
+ },
+ {
+  "id": "anchoring-s3.transfer",
+  "right": "Listing reasons two weeks could be wrong."
+ },
+ {
+  "id": "confirmation-bias-s1.twist",
+  "right": "She kept the jams in mind and let smooth days slip."
+ },
+ {
+  "id": "confirmation-bias-s1.transfer",
+  "right": "Good marks that came after he met them."
+ },
+ {
+  "id": "confirmation-bias-s2.twist",
+  "right": "Trying 4, 9, 13."
+ },
+ {
+  "id": "confirmation-bias-s2.transfer",
+  "right": "Hot weather could explain the rise as well."
+ },
+ {
+  "id": "confirmation-bias-s3.twist",
+  "right": "A parcel with no red sticker."
+ },
+ {
+  "id": "confirmation-bias-s3.transfer",
+  "right": "Seasons sown after the first rain that gave a poor crop."
+ },
+ {
+  "id": "social-proof-s1.twist",
+  "right": "Shalini, since she is unsure."
+ },
+ {
+  "id": "social-proof-s1.transfer",
+  "right": "He reads their choice as a sign of the right place."
+ },
+ {
+  "id": "social-proof-s2.twist",
+  "right": "The group pressure caused most of the errors."
+ },
+ {
+  "id": "social-proof-s2.transfer",
+  "right": "Not wanting to stand out from the group."
+ },
+ {
+  "id": "social-proof-s3.twist",
+  "right": "About as much as one report."
+ },
+ {
+  "id": "social-proof-s3.transfer",
+  "right": "That many people in the group say so."
+ },
+ {
+  "id": "planning-fallacy-s1.twist",
+  "right": "It takes longer than she guesses."
+ },
+ {
+  "id": "planning-fallacy-s1.transfer",
+  "right": "They may run short, like guesses for schoolwork."
+ },
+ {
+  "id": "planning-fallacy-s2.twist",
+  "right": "It pictures the ideal day, leaving out past delays."
+ },
+ {
+  "id": "planning-fallacy-s2.transfer",
+  "right": "Leaving out a step that past tasks showed."
+ },
+ {
+  "id": "planning-fallacy-s3.twist",
+  "right": "How long her last few cakes took."
+ },
+ {
+  "id": "planning-fallacy-s3.transfer",
+  "right": "His friend's real trips on that road."
+ },
+ {
+  "id": "sleep-memory-s1.twist",
+  "right": "Taking in the material while awake."
+ },
+ {
+  "id": "sleep-memory-s1.transfer",
+  "right": "Little was learned, so little can firm up."
+ },
+ {
+  "id": "sleep-memory-s2.twist",
+  "right": "Sleep cut forgetting more than the same time awake."
+ },
+ {
+  "id": "sleep-memory-s2.transfer",
+  "right": "Going to bed at his usual time after practice."
+ },
+ {
+  "id": "sleep-memory-s3.twist",
+  "right": "Sitting quietly with his eyes closed."
+ },
+ {
+  "id": "sleep-memory-s3.transfer",
+  "right": "Sitting calmly and letting her mind rest."
+ },
+ {
+  "id": "variable-rewards-s1.twist",
+  "right": "After every sit."
+ },
+ {
+  "id": "variable-rewards-s1.transfer",
+  "right": "Variable, since the tries per sale keep changing."
+ },
+ {
+  "id": "variable-rewards-s2.twist",
+  "right": "The cousin's chat."
+ },
+ {
+  "id": "variable-rewards-s2.transfer",
+  "right": "She keeps checking with the source for a long time."
+ },
+ {
+  "id": "variable-rewards-s3.twist",
+  "right": "A feed that keeps loading as you scroll."
+ },
+ {
+  "id": "variable-rewards-s3.transfer",
+  "right": "She may want news, family clips or a break."
+ },
+ {
+  "id": "if-then-plans-s1.twist",
+  "right": "The if part is not a clear moment."
+ },
+ {
+  "id": "if-then-plans-s1.transfer",
+  "right": "If my salary lands, then I move ₹2,000 to savings."
+ },
+ {
+  "id": "if-then-plans-s2.twist",
+  "right": "The plan made her response to that moment automatic."
+ },
+ {
+  "id": "if-then-plans-s2.transfer",
+  "right": "If I board the Sunday train home, then I call one."
+ },
+ {
+  "id": "if-then-plans-s3.twist",
+  "right": "No; plans help on average but cannot promise."
+ },
+ {
+  "id": "if-then-plans-s3.transfer",
+  "right": "She will likely reply more often than with a goal alone."
+ },
+ {
+  "id": "spotlight-effect-s1.twist",
+  "right": "Some noticed, but fewer than he thinks."
+ },
+ {
+  "id": "spotlight-effect-s1.transfer",
+  "right": "Fewer recall it than she guesses."
+ },
+ {
+  "id": "spotlight-effect-s2.twist",
+  "right": "She starts from her own vivid view and adjusts too little."
+ },
+ {
+  "id": "spotlight-effect-s2.transfer",
+  "right": "He lived every second of that note; they heard it once."
+ },
+ {
+  "id": "spotlight-effect-s3.twist",
+  "right": "He fixes on the slip; she takes in the whole scene."
+ },
+ {
+  "id": "spotlight-effect-s3.transfer",
+  "right": "That card machines fail at times."
+ },
+ {
+  "id": "inflation-s1.twist",
+  "right": "The base is March a year ago, not February."
+ },
+ {
+  "id": "inflation-s1.transfer",
+  "right": "No; it pools prices from all over India."
+ },
+ {
+  "id": "inflation-s2.twist",
+  "right": "It buys a bit less each year."
+ },
+ {
+  "id": "inflation-s2.transfer",
+  "right": "Just Deepak."
+ },
+ {
+  "id": "inflation-s3.twist",
+  "right": "No, it is below the 2% lower limit."
+ },
+ {
+  "id": "inflation-s3.transfer",
+  "right": "That sits inside the 2% to 6% band."
+ },
+ {
+  "id": "compounding-s1.twist",
+  "right": "₹726."
+ },
+ {
+  "id": "compounding-s1.transfer",
+  "right": "Its yearly gain gets bigger over time."
+ },
+ {
+  "id": "compounding-s2.twist",
+  "right": "About ₹1,100."
+ },
+ {
+  "id": "compounding-s2.transfer",
+  "right": "The final stretch adds the most money."
+ },
+ {
+  "id": "compounding-s3.twist",
+  "right": "SIPs fix what goes in, not what the fund earns."
+ },
+ {
+  "id": "compounding-s3.transfer",
+  "right": "What you pay and when."
+ },
+ {
+  "id": "rule-of-72-s1.twist",
+  "right": "About 12%."
+ },
+ {
+  "id": "rule-of-72-s1.transfer",
+  "right": "About 8 years."
+ },
+ {
+  "id": "rule-of-72-s2.twist",
+  "right": "About ₹48,000."
+ },
+ {
+  "id": "rule-of-72-s2.transfer",
+  "right": "About 2 years."
+ },
+ {
+  "id": "rule-of-72-s3.twist",
+  "right": "Real years swing, so it is a what-if, not a promise."
+ },
+ {
+  "id": "rule-of-72-s3.transfer",
+  "right": "The rate is not steady, so the rule does not fit."
+ },
+ {
+  "id": "risk-return-s1.twist",
+  "right": "The chance it could fall in future."
+ },
+ {
+  "id": "risk-return-s1.transfer",
+  "right": "The result is uncertain and could be lower."
+ },
+ {
+  "id": "risk-return-s2.twist",
+  "right": "Investors want a bigger reward for bigger swings."
+ },
+ {
+  "id": "risk-return-s2.transfer",
+  "right": "The startup, to make up for more risk."
+ },
+ {
+  "id": "risk-return-s3.twist",
+  "right": "Shift it toward lower-risk savings."
+ },
+ {
+  "id": "risk-return-s3.transfer",
+  "right": "A fall could hit right when the money is due."
+ },
+ {
+  "id": "diversification-s1.twist",
+  "right": "About 4%."
+ },
+ {
+  "id": "diversification-s1.transfer",
+  "right": "Ritu's."
+ },
+ {
+  "id": "diversification-s2.twist",
+  "right": "No; four or five shares is too few."
+ },
+ {
+  "id": "diversification-s2.transfer",
+  "right": "Not really; its goods share one risk."
+ },
+ {
+  "id": "diversification-s3.twist",
+  "right": "A market-wide fall can still pull most down."
+ },
+ {
+  "id": "diversification-s3.transfer",
+  "right": "A drought that hits all his fields."
+ },
+ {
+  "id": "shares-s1.twist",
+  "right": "Sita, with a fifth."
+ },
+ {
+  "id": "shares-s1.transfer",
+  "right": "A quarter."
+ },
+ {
+  "id": "shares-s2.twist",
+  "right": "No; her shares give her a vote at the meeting."
+ },
+ {
+  "id": "shares-s2.transfer",
+  "right": "Farah, who holds a few of its shares."
+ },
+ {
+  "id": "shares-s3.twist",
+  "right": "The firm, and so their slice, may be worth more."
+ },
+ {
+  "id": "shares-s3.transfer",
+  "right": "The firm decides if it pays at all."
+ },
+ {
+  "id": "emergency-fund-s1.twist",
+  "right": "A bike repair after a crash on the way to work."
+ },
+ {
+  "id": "emergency-fund-s1.transfer",
+  "right": "Covering living costs while she finds work."
+ },
+ {
+  "id": "emergency-fund-s2.twist",
+  "right": "About ₹36,000."
+ },
+ {
+  "id": "emergency-fund-s2.transfer",
+  "right": "Six months or more, about ₹1,20,000."
+ },
+ {
+  "id": "emergency-fund-s3.twist",
+  "right": "A better return, but slower to reach."
+ },
+ {
+  "id": "emergency-fund-s3.transfer",
+  "right": "It mixed with her daily spending."
+ },
+ {
+  "id": "loan-emi-s1.twist",
+  "right": "Part of each EMI also cuts the loan."
+ },
+ {
+  "id": "loan-emi-s1.transfer",
+  "right": "It stays the same each month."
+ },
+ {
+  "id": "loan-emi-s2.twist",
+  "right": "₹400."
+ },
+ {
+  "id": "loan-emi-s2.transfer",
+  "right": "Interest should be on the ₹30,000 still owed."
+ },
+ {
+  "id": "loan-emi-s3.twist",
+  "right": "Total interest goes up."
+ },
+ {
+  "id": "loan-emi-s3.transfer",
+  "right": "Each payment is smaller, but total interest is more."
+ },
+ {
+  "id": "index-funds-s1.twist",
+  "right": "About 10%."
+ },
+ {
+  "id": "index-funds-s1.transfer",
+  "right": "No; it holds what is on the list."
+ },
+ {
+  "id": "index-funds-s2.twist",
+  "right": "Doing worse than their index."
+ },
+ {
+  "id": "index-funds-s2.transfer",
+  "right": "About ₹900."
+ },
+ {
+  "id": "index-funds-s3.twist",
+  "right": "Fund B."
+ },
+ {
+  "id": "index-funds-s3.transfer",
+  "right": "A small gap from fees and costs is normal."
+ },
+ {
+  "id": "upi-scams-s1.twist",
+  "right": "It sends ₹2,000 out of your account."
+ },
+ {
+  "id": "upi-scams-s1.transfer",
+  "right": "A QR scan is for paying, not for getting paid."
+ },
+ {
+  "id": "upi-scams-s2.twist",
+  "right": "Do not share it, even with bank staff you know."
+ },
+ {
+  "id": "upi-scams-s2.transfer",
+  "right": "Refuse; whoever has it can approve actions."
+ },
+ {
+  "id": "upi-scams-s3.twist",
+  "right": "Report it on 1930 or cybercrime.gov.in."
+ },
+ {
+  "id": "upi-scams-s3.transfer",
+  "right": "Call the bank now and block debits."
+ }
+]

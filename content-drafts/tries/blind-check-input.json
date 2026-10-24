@@ -1,0 +1,3602 @@
+[
+ {
+  "id": "habits-s1.twist",
+  "round": 1,
+  "stem": "Each morning Priyanka puts the kettle on, then checks her plant pots without thinking. The kettle breaks, so she boils water in a pan. By night the plants are unchecked. Why?",
+  "options": [
+   "Putting the kettle on was the cue, and it changed.",
+   "Her wish to look after the plants faded.",
+   "She chose to skip it, as habits run on daily choice."
+  ]
+ },
+ {
+  "id": "habits-s1.twist",
+  "round": 2,
+  "stem": "Each morning Priyanka puts the kettle on, then checks her plant pots without thinking. The kettle breaks, so she boils water in a pan. By night the plants are unchecked. Why?",
+  "options": [
+   "She chose to skip it, as habits run on daily choice.",
+   "Her wish to look after the plants faded.",
+   "Putting the kettle on was the cue, and it changed."
+  ]
+ },
+ {
+  "id": "habits-s1.twist",
+  "round": 3,
+  "stem": "Each morning Priyanka puts the kettle on, then checks her plant pots without thinking. The kettle breaks, so she boils water in a pan. By night the plants are unchecked. Why?",
+  "options": [
+   "She chose to skip it, as habits run on daily choice.",
+   "Putting the kettle on was the cue, and it changed.",
+   "Her wish to look after the plants faded."
+  ]
+ },
+ {
+  "id": "habits-s1.transfer",
+  "round": 1,
+  "stem": "At her new office in Kochi, Deepa eats a biscuit each time she opens her late-morning email batch. She hardly notices doing it. What is most likely starting the snack?",
+  "options": [
+   "A fresh choice she makes each day.",
+   "Opening the emails at that time.",
+   "Hunger that builds up by late morning."
+  ]
+ },
+ {
+  "id": "habits-s1.transfer",
+  "round": 2,
+  "stem": "At her new office in Kochi, Deepa eats a biscuit each time she opens her late-morning email batch. She hardly notices doing it. What is most likely starting the snack?",
+  "options": [
+   "Hunger that builds up by late morning.",
+   "A fresh choice she makes each day.",
+   "Opening the emails at that time."
+  ]
+ },
+ {
+  "id": "habits-s1.transfer",
+  "round": 3,
+  "stem": "At her new office in Kochi, Deepa eats a biscuit each time she opens her late-morning email batch. She hardly notices doing it. What is most likely starting the snack?",
+  "options": [
+   "Hunger that builds up by late morning.",
+   "Opening the emails at that time.",
+   "A fresh choice she makes each day."
+  ]
+ },
+ {
+  "id": "habits-s2.twist",
+  "round": 1,
+  "stem": "Mitali has practised sitar after school for two months, and it now feels almost automatic. If she keeps going one more week, what will that week most likely add?",
+  "options": [
+   "A small gain in ease.",
+   "The same gain as her first week did.",
+   "The biggest jump yet, as practice piles up."
+  ]
+ },
+ {
+  "id": "habits-s2.twist",
+  "round": 2,
+  "stem": "Mitali has practised sitar after school for two months, and it now feels almost automatic. If she keeps going one more week, what will that week most likely add?",
+  "options": [
+   "A small gain in ease.",
+   "The same gain as her first week did.",
+   "The biggest jump yet, as practice piles up."
+  ]
+ },
+ {
+  "id": "habits-s2.twist",
+  "round": 3,
+  "stem": "Mitali has practised sitar after school for two months, and it now feels almost automatic. If she keeps going one more week, what will that week most likely add?",
+  "options": [
+   "A small gain in ease.",
+   "The biggest jump yet, as practice piles up.",
+   "The same gain as her first week did."
+  ]
+ },
+ {
+  "id": "habits-s2.transfer",
+  "round": 1,
+  "stem": "Joseph joins a bank in Chennai and must learn a new billing screen. In week one his speed jumped. Now, months later, it barely moves. What does the flat stretch most likely mean?",
+  "options": [
+   "He is close to the point where gains level off.",
+   "Each day should add the same, so he slipped back.",
+   "His practice has stopped helping, so it was wasted."
+  ]
+ },
+ {
+  "id": "habits-s2.transfer",
+  "round": 2,
+  "stem": "Joseph joins a bank in Chennai and must learn a new billing screen. In week one his speed jumped. Now, months later, it barely moves. What does the flat stretch most likely mean?",
+  "options": [
+   "Each day should add the same, so he slipped back.",
+   "He is close to the point where gains level off.",
+   "His practice has stopped helping, so it was wasted."
+  ]
+ },
+ {
+  "id": "habits-s2.transfer",
+  "round": 3,
+  "stem": "Joseph joins a bank in Chennai and must learn a new billing screen. In week one his speed jumped. Now, months later, it barely moves. What does the flat stretch most likely mean?",
+  "options": [
+   "He is close to the point where gains level off.",
+   "His practice has stopped helping, so it was wasted.",
+   "Each day should add the same, so he slipped back."
+  ]
+ },
+ {
+  "id": "habits-s3.twist",
+  "round": 1,
+  "stem": "Nitin and his sister start new daily habits on the same day. After a month hers feels automatic and his does not. What fits the study?",
+  "options": [
+   "A gap like that is normal; times varied a lot.",
+   "Hers cannot be a real habit so soon.",
+   "His habit has failed, as a month is the limit."
+  ]
+ },
+ {
+  "id": "habits-s3.twist",
+  "round": 2,
+  "stem": "Nitin and his sister start new daily habits on the same day. After a month hers feels automatic and his does not. What fits the study?",
+  "options": [
+   "Hers cannot be a real habit so soon.",
+   "A gap like that is normal; times varied a lot.",
+   "His habit has failed, as a month is the limit."
+  ]
+ },
+ {
+  "id": "habits-s3.twist",
+  "round": 3,
+  "stem": "Nitin and his sister start new daily habits on the same day. After a month hers feels automatic and his does not. What fits the study?",
+  "options": [
+   "Hers cannot be a real habit so soon.",
+   "His habit has failed, as a month is the limit.",
+   "A gap like that is normal; times varied a lot."
+  ]
+ },
+ {
+  "id": "habits-s3.transfer",
+  "round": 1,
+  "stem": "Hetal, a shop owner in Surat, has opened his ledger app each evening for two months. A power cut makes him miss one evening. His nephew says the habit is broken and must restart from day one. What fits the study?",
+  "options": [
+   "The nephew is right; one miss restarts the count.",
+   "The miss is harmless just because he is two months in.",
+   "One missed evening did not undo the growth so far."
+  ]
+ },
+ {
+  "id": "habits-s3.transfer",
+  "round": 2,
+  "stem": "Hetal, a shop owner in Surat, has opened his ledger app each evening for two months. A power cut makes him miss one evening. His nephew says the habit is broken and must restart from day one. What fits the study?",
+  "options": [
+   "The nephew is right; one miss restarts the count.",
+   "One missed evening did not undo the growth so far.",
+   "The miss is harmless just because he is two months in."
+  ]
+ },
+ {
+  "id": "habits-s3.transfer",
+  "round": 3,
+  "stem": "Hetal, a shop owner in Surat, has opened his ledger app each evening for two months. A power cut makes him miss one evening. His nephew says the habit is broken and must restart from day one. What fits the study?",
+  "options": [
+   "One missed evening did not undo the growth so far.",
+   "The miss is harmless just because he is two months in.",
+   "The nephew is right; one miss restarts the count."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.twist",
+  "round": 1,
+  "stem": "Aditya finds a ₹200 note on the road in the morning and loses a ₹200 note in the evening. His cash ends the day even. How does the day most likely feel?",
+  "options": [
+   "Better, since the find came first.",
+   "Just even, since the sums match.",
+   "A bit worse than even."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.twist",
+  "round": 2,
+  "stem": "Aditya finds a ₹200 note on the road in the morning and loses a ₹200 note in the evening. His cash ends the day even. How does the day most likely feel?",
+  "options": [
+   "A bit worse than even.",
+   "Better, since the find came first.",
+   "Just even, since the sums match."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.twist",
+  "round": 3,
+  "stem": "Aditya finds a ₹200 note on the road in the morning and loses a ₹200 note in the evening. His cash ends the day even. How does the day most likely feel?",
+  "options": [
+   "Just even, since the sums match.",
+   "A bit worse than even.",
+   "Better, since the find came first."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.transfer",
+  "round": 1,
+  "stem": "Kartik, a farmer near Nashik, is offered an even chance that his crop price lands ₹2,000 above or below a fixed contract. Next year the same deal is ₹20,000 either way. When is he more likely to say no?",
+  "options": [
+   "With the bigger stake.",
+   "Just as often, since the odds are even both times.",
+   "With the smaller one, as it feels less worth the bother."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.transfer",
+  "round": 2,
+  "stem": "Kartik, a farmer near Nashik, is offered an even chance that his crop price lands ₹2,000 above or below a fixed contract. Next year the same deal is ₹20,000 either way. When is he more likely to say no?",
+  "options": [
+   "With the bigger stake.",
+   "Just as often, since the odds are even both times.",
+   "With the smaller one, as it feels less worth the bother."
+  ]
+ },
+ {
+  "id": "loss-aversion-s1.transfer",
+  "round": 3,
+  "stem": "Kartik, a farmer near Nashik, is offered an even chance that his crop price lands ₹2,000 above or below a fixed contract. Next year the same deal is ₹20,000 either way. When is he more likely to say no?",
+  "options": [
+   "With the smaller one, as it feels less worth the bother.",
+   "With the bigger stake.",
+   "Just as often, since the odds are even both times."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.twist",
+  "round": 1,
+  "stem": "Jatin's shares rose from ₹10,000 to ₹14,000, then fell to ₹12,000. He is still ₹2,000 up on what he paid, yet he feels he lost money. Why?",
+  "options": [
+   "He now judges from the ₹14,000 high point.",
+   "He is below what he first put in.",
+   "Feelings follow the final total, not a start point."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.twist",
+  "round": 2,
+  "stem": "Jatin's shares rose from ₹10,000 to ₹14,000, then fell to ₹12,000. He is still ₹2,000 up on what he paid, yet he feels he lost money. Why?",
+  "options": [
+   "Feelings follow the final total, not a start point.",
+   "He now judges from the ₹14,000 high point.",
+   "He is below what he first put in."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.twist",
+  "round": 3,
+  "stem": "Jatin's shares rose from ₹10,000 to ₹14,000, then fell to ₹12,000. He is still ₹2,000 up on what he paid, yet he feels he lost money. Why?",
+  "options": [
+   "He now judges from the ₹14,000 high point.",
+   "Feelings follow the final total, not a start point.",
+   "He is below what he first put in."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.transfer",
+  "round": 1,
+  "stem": "Before appraisals at their Pune office, Rekha was told to expect a 10% raise and Faisal was told 3%. Both get 6%. Who more likely feels the raise as a loss?",
+  "options": [
+   "Rekha.",
+   "Faisal.",
+   "Neither, since 6% is the same for anyone."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.transfer",
+  "round": 2,
+  "stem": "Before appraisals at their Pune office, Rekha was told to expect a 10% raise and Faisal was told 3%. Both get 6%. Who more likely feels the raise as a loss?",
+  "options": [
+   "Faisal.",
+   "Neither, since 6% is the same for anyone.",
+   "Rekha."
+  ]
+ },
+ {
+  "id": "loss-aversion-s2.transfer",
+  "round": 3,
+  "stem": "Before appraisals at their Pune office, Rekha was told to expect a 10% raise and Faisal was told 3%. Both get 6%. Who more likely feels the raise as a loss?",
+  "options": [
+   "Rekha.",
+   "Neither, since 6% is the same for anyone.",
+   "Faisal."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.twist",
+  "round": 1,
+  "stem": "A new study finds losses weigh less than twice a same-size gain. Akash says this proves the pooled figure of about twice is wrong. Is he right?",
+  "options": [
+   "No; figures vary, and twice is the average.",
+   "Yes; it shows losses and gains weigh the same.",
+   "Yes; one study that differs breaks the average."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.twist",
+  "round": 2,
+  "stem": "A new study finds losses weigh less than twice a same-size gain. Akash says this proves the pooled figure of about twice is wrong. Is he right?",
+  "options": [
+   "Yes; one study that differs breaks the average.",
+   "No; figures vary, and twice is the average.",
+   "Yes; it shows losses and gains weigh the same."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.twist",
+  "round": 3,
+  "stem": "A new study finds losses weigh less than twice a same-size gain. Akash says this proves the pooled figure of about twice is wrong. Is he right?",
+  "options": [
+   "No; figures vary, and twice is the average.",
+   "Yes; one study that differs breaks the average.",
+   "Yes; it shows losses and gains weigh the same."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.transfer",
+  "round": 1,
+  "stem": "A shop owner in Jaipur is offered an even-chance deal: lose ₹1,000 or gain some sum. Using the average of about twice, what gain would make it feel roughly even to a typical owner?",
+  "options": [
+   "About ₹2,000.",
+   "About ₹1,000, as the odds are even.",
+   "About ₹4,000."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.transfer",
+  "round": 2,
+  "stem": "A shop owner in Jaipur is offered an even-chance deal: lose ₹1,000 or gain some sum. Using the average of about twice, what gain would make it feel roughly even to a typical owner?",
+  "options": [
+   "About ₹1,000, as the odds are even.",
+   "About ₹2,000.",
+   "About ₹4,000."
+  ]
+ },
+ {
+  "id": "loss-aversion-s3.transfer",
+  "round": 3,
+  "stem": "A shop owner in Jaipur is offered an even-chance deal: lose ₹1,000 or gain some sum. Using the average of about twice, what gain would make it feel roughly even to a typical owner?",
+  "options": [
+   "About ₹2,000.",
+   "About ₹1,000, as the odds are even.",
+   "About ₹4,000."
+  ]
+ },
+ {
+  "id": "anchoring-s1.twist",
+  "round": 1,
+  "stem": "Pallavi hears a flat's rent was once ₹40,000. She knows that is too high, so she adjusts down before making her own guess. Where does her guess likely end?",
+  "options": [
+   "Below the fair rent, since she overcorrects.",
+   "Right on the fair rent, since she knew to adjust.",
+   "Still a bit high."
+  ]
+ },
+ {
+  "id": "anchoring-s1.twist",
+  "round": 2,
+  "stem": "Pallavi hears a flat's rent was once ₹40,000. She knows that is too high, so she adjusts down before making her own guess. Where does her guess likely end?",
+  "options": [
+   "Still a bit high.",
+   "Below the fair rent, since she overcorrects.",
+   "Right on the fair rent, since she knew to adjust."
+  ]
+ },
+ {
+  "id": "anchoring-s1.twist",
+  "round": 3,
+  "stem": "Pallavi hears a flat's rent was once ₹40,000. She knows that is too high, so she adjusts down before making her own guess. Where does her guess likely end?",
+  "options": [
+   "Still a bit high.",
+   "Right on the fair rent, since she knew to adjust.",
+   "Below the fair rent, since she overcorrects."
+  ]
+ },
+ {
+  "id": "anchoring-s1.transfer",
+  "round": 1,
+  "stem": "At a job interview in Hyderabad, Naveen planned to ask for ₹4.5 lakh a year. The recruiter first says, \"Freshers here often ask for ₹3 lakh.\" What is the likely pull?",
+  "options": [
+   "His ask drifts down toward ₹3 lakh.",
+   "No pull, since he already had his own number.",
+   "His ask goes up, to stand out from the rest."
+  ]
+ },
+ {
+  "id": "anchoring-s1.transfer",
+  "round": 2,
+  "stem": "At a job interview in Hyderabad, Naveen planned to ask for ₹4.5 lakh a year. The recruiter first says, \"Freshers here often ask for ₹3 lakh.\" What is the likely pull?",
+  "options": [
+   "No pull, since he already had his own number.",
+   "His ask drifts down toward ₹3 lakh.",
+   "His ask goes up, to stand out from the rest."
+  ]
+ },
+ {
+  "id": "anchoring-s1.transfer",
+  "round": 3,
+  "stem": "At a job interview in Hyderabad, Naveen planned to ask for ₹4.5 lakh a year. The recruiter first says, \"Freshers here often ask for ₹3 lakh.\" What is the likely pull?",
+  "options": [
+   "His ask goes up, to stand out from the rest.",
+   "His ask drifts down toward ₹3 lakh.",
+   "No pull, since he already had his own number."
+  ]
+ },
+ {
+  "id": "anchoring-s2.twist",
+  "round": 1,
+  "stem": "In a wheel test, people who got a high random number gave a median guess well below it, yet above what a low-number group guessed. What does this show?",
+  "options": [
+   "The random number had no real pull.",
+   "Guesses moved off the anchor, but not far enough.",
+   "The anchor fixed each guess at its own value."
+  ]
+ },
+ {
+  "id": "anchoring-s2.twist",
+  "round": 2,
+  "stem": "In a wheel test, people who got a high random number gave a median guess well below it, yet above what a low-number group guessed. What does this show?",
+  "options": [
+   "The random number had no real pull.",
+   "Guesses moved off the anchor, but not far enough.",
+   "The anchor fixed each guess at its own value."
+  ]
+ },
+ {
+  "id": "anchoring-s2.twist",
+  "round": 3,
+  "stem": "In a wheel test, people who got a high random number gave a median guess well below it, yet above what a low-number group guessed. What does this show?",
+  "options": [
+   "The random number had no real pull.",
+   "The anchor fixed each guess at its own value.",
+   "Guesses moved off the anchor, but not far enough."
+  ]
+ },
+ {
+  "id": "anchoring-s2.transfer",
+  "round": 1,
+  "stem": "At a charity auction in Kolkata, the host spins a wheel \"just for fun\" before bidding on a painting. It lands on ₹8,000. What is likely to happen to the bids?",
+  "options": [
+   "Bids lean toward ₹8,000.",
+   "Bids drop, as people distrust the wheel.",
+   "Bids ignore it, as everyone knows it is random."
+  ]
+ },
+ {
+  "id": "anchoring-s2.transfer",
+  "round": 2,
+  "stem": "At a charity auction in Kolkata, the host spins a wheel \"just for fun\" before bidding on a painting. It lands on ₹8,000. What is likely to happen to the bids?",
+  "options": [
+   "Bids drop, as people distrust the wheel.",
+   "Bids ignore it, as everyone knows it is random.",
+   "Bids lean toward ₹8,000."
+  ]
+ },
+ {
+  "id": "anchoring-s2.transfer",
+  "round": 3,
+  "stem": "At a charity auction in Kolkata, the host spins a wheel \"just for fun\" before bidding on a painting. It lands on ₹8,000. What is likely to happen to the bids?",
+  "options": [
+   "Bids lean toward ₹8,000.",
+   "Bids ignore it, as everyone knows it is random.",
+   "Bids drop, as people distrust the wheel."
+  ]
+ },
+ {
+  "id": "anchoring-s3.twist",
+  "round": 1,
+  "stem": "Vani lists three reasons a dealer's ₹6 lakh ask is too high. She still offers ₹5.5 lakh, fairly close to it. Did the trick fail?",
+  "options": [
+   "Yes; listing reasons just adds to the pull.",
+   "Not really; it weakens the pull, so some stays.",
+   "Yes; if it had worked, she could have ignored ₹6 lakh fully."
+  ]
+ },
+ {
+  "id": "anchoring-s3.twist",
+  "round": 2,
+  "stem": "Vani lists three reasons a dealer's ₹6 lakh ask is too high. She still offers ₹5.5 lakh, fairly close to it. Did the trick fail?",
+  "options": [
+   "Not really; it weakens the pull, so some stays.",
+   "Yes; listing reasons just adds to the pull.",
+   "Yes; if it had worked, she could have ignored ₹6 lakh fully."
+  ]
+ },
+ {
+  "id": "anchoring-s3.twist",
+  "round": 3,
+  "stem": "Vani lists three reasons a dealer's ₹6 lakh ask is too high. She still offers ₹5.5 lakh, fairly close to it. Did the trick fail?",
+  "options": [
+   "Not really; it weakens the pull, so some stays.",
+   "Yes; listing reasons just adds to the pull.",
+   "Yes; if it had worked, she could have ignored ₹6 lakh fully."
+  ]
+ },
+ {
+  "id": "anchoring-s3.transfer",
+  "round": 1,
+  "stem": "A client tells Shreya, a project lead in Gurugram, \"This app should take two weeks.\" Before giving her own time estimate, what is most likely to weaken that number's pull?",
+  "options": [
+   "Waiting a day so the number fades.",
+   "Averaging the client's number with her own.",
+   "Listing reasons two weeks could be wrong."
+  ]
+ },
+ {
+  "id": "anchoring-s3.transfer",
+  "round": 2,
+  "stem": "A client tells Shreya, a project lead in Gurugram, \"This app should take two weeks.\" Before giving her own time estimate, what is most likely to weaken that number's pull?",
+  "options": [
+   "Waiting a day so the number fades.",
+   "Listing reasons two weeks could be wrong.",
+   "Averaging the client's number with her own."
+  ]
+ },
+ {
+  "id": "anchoring-s3.transfer",
+  "round": 3,
+  "stem": "A client tells Shreya, a project lead in Gurugram, \"This app should take two weeks.\" Before giving her own time estimate, what is most likely to weaken that number's pull?",
+  "options": [
+   "Waiting a day so the number fades.",
+   "Averaging the client's number with her own.",
+   "Listing reasons two weeks could be wrong."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.twist",
+  "round": 1,
+  "stem": "After a month, Lavanya feels sure her new route to college has more traffic. She can recall five jams but none of the smooth trips. What best explains her certainty?",
+  "options": [
+   "She kept the jams in mind and let smooth days slip.",
+   "Smooth trips are rare, so she had none to recall.",
+   "The new route must really be worse."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.twist",
+  "round": 2,
+  "stem": "After a month, Lavanya feels sure her new route to college has more traffic. She can recall five jams but none of the smooth trips. What best explains her certainty?",
+  "options": [
+   "She kept the jams in mind and let smooth days slip.",
+   "Smooth trips are rare, so she had none to recall.",
+   "The new route must really be worse."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.twist",
+  "round": 3,
+  "stem": "After a month, Lavanya feels sure her new route to college has more traffic. She can recall five jams but none of the smooth trips. What best explains her certainty?",
+  "options": [
+   "The new route must really be worse.",
+   "Smooth trips are rare, so she had none to recall.",
+   "She kept the jams in mind and let smooth days slip."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.transfer",
+  "round": 1,
+  "stem": "A mother in Patna believes her son's marks dropped because of his new friends. She brings up each low mark after he meets them. What is she most likely leaving out?",
+  "options": [
+   "The low marks already prove her case.",
+   "Good marks that came after he met them.",
+   "More low marks from the same weeks."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.transfer",
+  "round": 2,
+  "stem": "A mother in Patna believes her son's marks dropped because of his new friends. She brings up each low mark after he meets them. What is she most likely leaving out?",
+  "options": [
+   "More low marks from the same weeks.",
+   "The low marks already prove her case.",
+   "Good marks that came after he met them."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s1.transfer",
+  "round": 3,
+  "stem": "A mother in Patna believes her son's marks dropped because of his new friends. She brings up each low mark after he meets them. What is she most likely leaving out?",
+  "options": [
+   "The low marks already prove her case.",
+   "Good marks that came after he met them.",
+   "More low marks from the same weeks."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.twist",
+  "round": 1,
+  "stem": "Neha guesses a secret number rule is \"goes up by 5.\" Which test would best tell her guess apart from other rules?",
+  "options": [
+   "Trying 15, 20, 25.",
+   "Trying 4, 9, 13.",
+   "Trying 100, 105, 110."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.twist",
+  "round": 2,
+  "stem": "Neha guesses a secret number rule is \"goes up by 5.\" Which test would best tell her guess apart from other rules?",
+  "options": [
+   "Trying 4, 9, 13.",
+   "Trying 15, 20, 25.",
+   "Trying 100, 105, 110."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.twist",
+  "round": 3,
+  "stem": "Neha guesses a secret number rule is \"goes up by 5.\" Which test would best tell her guess apart from other rules?",
+  "options": [
+   "Trying 4, 9, 13.",
+   "Trying 100, 105, 110.",
+   "Trying 15, 20, 25."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.transfer",
+  "round": 1,
+  "stem": "A cafe owner in Shillong thinks cold-coffee sales rise because of her new sign. Sales went up each week the sign was up, all in summer. Why is that weak proof?",
+  "options": [
+   "Sales rises cannot be measured.",
+   "A few weeks are too few, so more weeks could settle it.",
+   "Hot weather could explain the rise as well."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.transfer",
+  "round": 2,
+  "stem": "A cafe owner in Shillong thinks cold-coffee sales rise because of her new sign. Sales went up each week the sign was up, all in summer. Why is that weak proof?",
+  "options": [
+   "A few weeks are too few, so more weeks could settle it.",
+   "Sales rises cannot be measured.",
+   "Hot weather could explain the rise as well."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s2.transfer",
+  "round": 3,
+  "stem": "A cafe owner in Shillong thinks cold-coffee sales rise because of her new sign. Sales went up each week the sign was up, all in summer. Why is that weak proof?",
+  "options": [
+   "Sales rises cannot be measured.",
+   "A few weeks are too few, so more weeks could settle it.",
+   "Hot weather could explain the rise as well."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.twist",
+  "round": 1,
+  "stem": "A courier office has a rule: \"If a parcel is marked Express, it has a red sticker.\" Which parcel should you check to try to break the rule?",
+  "options": [
+   "A parcel not marked Express.",
+   "A parcel with no red sticker.",
+   "A parcel with a red sticker."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.twist",
+  "round": 2,
+  "stem": "A courier office has a rule: \"If a parcel is marked Express, it has a red sticker.\" Which parcel should you check to try to break the rule?",
+  "options": [
+   "A parcel with no red sticker.",
+   "A parcel not marked Express.",
+   "A parcel with a red sticker."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.twist",
+  "round": 3,
+  "stem": "A courier office has a rule: \"If a parcel is marked Express, it has a red sticker.\" Which parcel should you check to try to break the rule?",
+  "options": [
+   "A parcel with a red sticker.",
+   "A parcel not marked Express.",
+   "A parcel with no red sticker."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.transfer",
+  "round": 1,
+  "stem": "Mahesh, a farmer in Punjab, believes his field gives more grain when he sows after the first rain. Which record would test this idea best?",
+  "options": [
+   "Seasons sown after the first rain that gave a poor crop.",
+   "His neighbour's view on the best time to sow.",
+   "More good seasons sown after the first rain."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.transfer",
+  "round": 2,
+  "stem": "Mahesh, a farmer in Punjab, believes his field gives more grain when he sows after the first rain. Which record would test this idea best?",
+  "options": [
+   "His neighbour's view on the best time to sow.",
+   "More good seasons sown after the first rain.",
+   "Seasons sown after the first rain that gave a poor crop."
+  ]
+ },
+ {
+  "id": "confirmation-bias-s3.transfer",
+  "round": 3,
+  "stem": "Mahesh, a farmer in Punjab, believes his field gives more grain when he sows after the first rain. Which record would test this idea best?",
+  "options": [
+   "Seasons sown after the first rain that gave a poor crop.",
+   "More good seasons sown after the first rain.",
+   "His neighbour's view on the best time to sow."
+  ]
+ },
+ {
+  "id": "social-proof-s1.twist",
+  "round": 1,
+  "stem": "Shalini is new to Chennai and needs a bus to a temple. A crowd waits at one stop. Her local friend Arul, who knows the routes, is with her. Who is more likely to follow the crowd?",
+  "options": [
+   "Shalini, since she is unsure.",
+   "Arul, since he lives here.",
+   "Both just the same, as crowds pull everyone equally."
+  ]
+ },
+ {
+  "id": "social-proof-s1.twist",
+  "round": 2,
+  "stem": "Shalini is new to Chennai and needs a bus to a temple. A crowd waits at one stop. Her local friend Arul, who knows the routes, is with her. Who is more likely to follow the crowd?",
+  "options": [
+   "Both just the same, as crowds pull everyone equally.",
+   "Shalini, since she is unsure.",
+   "Arul, since he lives here."
+  ]
+ },
+ {
+  "id": "social-proof-s1.twist",
+  "round": 3,
+  "stem": "Shalini is new to Chennai and needs a bus to a temple. A crowd waits at one stop. Her local friend Arul, who knows the routes, is with her. Who is more likely to follow the crowd?",
+  "options": [
+   "Shalini, since she is unsure.",
+   "Arul, since he lives here.",
+   "Both just the same, as crowds pull everyone equally."
+  ]
+ },
+ {
+  "id": "social-proof-s1.transfer",
+  "round": 1,
+  "stem": "On his first day at a Bengaluru office, Gaurav does not know where to keep his lunch box. Most people leave theirs in a cupboard by the door, so he does too. Why?",
+  "options": [
+   "He is the type of person who copies others.",
+   "He fears being told off by the boss.",
+   "He reads their choice as a sign of the right place."
+  ]
+ },
+ {
+  "id": "social-proof-s1.transfer",
+  "round": 2,
+  "stem": "On his first day at a Bengaluru office, Gaurav does not know where to keep his lunch box. Most people leave theirs in a cupboard by the door, so he does too. Why?",
+  "options": [
+   "He fears being told off by the boss.",
+   "He is the type of person who copies others.",
+   "He reads their choice as a sign of the right place."
+  ]
+ },
+ {
+  "id": "social-proof-s1.transfer",
+  "round": 3,
+  "stem": "On his first day at a Bengaluru office, Gaurav does not know where to keep his lunch box. Most people leave theirs in a cupboard by the door, so he does too. Why?",
+  "options": [
+   "He fears being told off by the boss.",
+   "He is the type of person who copies others.",
+   "He reads their choice as a sign of the right place."
+  ]
+ },
+ {
+  "id": "social-proof-s2.twist",
+  "round": 1,
+  "stem": "In Asch's line test, mistakes went from under 1% when people were alone to about a third of answers with a wrong group. What does that jump show?",
+  "options": [
+   "The lines were hard to judge.",
+   "Most people followed the group each time.",
+   "The group pressure caused most of the errors."
+  ]
+ },
+ {
+  "id": "social-proof-s2.twist",
+  "round": 2,
+  "stem": "In Asch's line test, mistakes went from under 1% when people were alone to about a third of answers with a wrong group. What does that jump show?",
+  "options": [
+   "Most people followed the group each time.",
+   "The group pressure caused most of the errors.",
+   "The lines were hard to judge."
+  ]
+ },
+ {
+  "id": "social-proof-s2.twist",
+  "round": 3,
+  "stem": "In Asch's line test, mistakes went from under 1% when people were alone to about a third of answers with a wrong group. What does that jump show?",
+  "options": [
+   "The group pressure caused most of the errors.",
+   "The lines were hard to judge.",
+   "Most people followed the group each time."
+  ]
+ },
+ {
+  "id": "social-proof-s2.transfer",
+  "round": 1,
+  "stem": "In a team meeting in Noida, the boss and four seniors praise a plan with a flaw that Sakshi spots at once. She nods along. What does Asch's test suggest is the likely reason?",
+  "options": [
+   "She is a weak person; strong people do not go along.",
+   "Not wanting to stand out from the group.",
+   "She must doubt herself, since the flaw is hard to see."
+  ]
+ },
+ {
+  "id": "social-proof-s2.transfer",
+  "round": 2,
+  "stem": "In a team meeting in Noida, the boss and four seniors praise a plan with a flaw that Sakshi spots at once. She nods along. What does Asch's test suggest is the likely reason?",
+  "options": [
+   "She must doubt herself, since the flaw is hard to see.",
+   "She is a weak person; strong people do not go along.",
+   "Not wanting to stand out from the group."
+  ]
+ },
+ {
+  "id": "social-proof-s2.transfer",
+  "round": 3,
+  "stem": "In a team meeting in Noida, the boss and four seniors praise a plan with a flaw that Sakshi spots at once. She nods along. What does Asch's test suggest is the likely reason?",
+  "options": [
+   "Not wanting to stand out from the group.",
+   "She must doubt herself, since the flaw is hard to see.",
+   "She is a weak person; strong people do not go along."
+  ]
+ },
+ {
+  "id": "social-proof-s3.twist",
+  "round": 1,
+  "stem": "Ten shopkeepers in a market tell Rahul a bridge is closed. All ten heard it from the same tea seller. How much does their agreement add?",
+  "options": [
+   "About as much as one report.",
+   "Ten times the proof of one report.",
+   "Full proof, since ten people agree."
+  ]
+ },
+ {
+  "id": "social-proof-s3.twist",
+  "round": 2,
+  "stem": "Ten shopkeepers in a market tell Rahul a bridge is closed. All ten heard it from the same tea seller. How much does their agreement add?",
+  "options": [
+   "Full proof, since ten people agree.",
+   "About as much as one report.",
+   "Ten times the proof of one report."
+  ]
+ },
+ {
+  "id": "social-proof-s3.twist",
+  "round": 3,
+  "stem": "Ten shopkeepers in a market tell Rahul a bridge is closed. All ten heard it from the same tea seller. How much does their agreement add?",
+  "options": [
+   "About as much as one report.",
+   "Full proof, since ten people agree.",
+   "Ten times the proof of one report."
+  ]
+ },
+ {
+  "id": "social-proof-s3.transfer",
+  "round": 1,
+  "stem": "Hundreds of people in a WhatsApp group say a new coin will soon double in price. What does that agreement tell Abhay by itself?",
+  "options": [
+   "That it is checked, since a big group would spot errors.",
+   "That it is likely true, as so many agree.",
+   "That many people in the group say so."
+  ]
+ },
+ {
+  "id": "social-proof-s3.transfer",
+  "round": 2,
+  "stem": "Hundreds of people in a WhatsApp group say a new coin will soon double in price. What does that agreement tell Abhay by itself?",
+  "options": [
+   "That it is checked, since a big group would spot errors.",
+   "That many people in the group say so.",
+   "That it is likely true, as so many agree."
+  ]
+ },
+ {
+  "id": "social-proof-s3.transfer",
+  "round": 3,
+  "stem": "Hundreds of people in a WhatsApp group say a new coin will soon double in price. What does that agreement tell Abhay by itself?",
+  "options": [
+   "That it is checked, since a big group would spot errors.",
+   "That it is likely true, as so many agree.",
+   "That many people in the group say so."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.twist",
+  "round": 1,
+  "stem": "Meenakshi is known as the most careful planner in her class. She guesses her thesis chapter will take two weeks. What is most likely?",
+  "options": [
+   "It takes longer than she guesses.",
+   "It finishes early, since she plans well.",
+   "It finishes on time, as careful people guess right."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.twist",
+  "round": 2,
+  "stem": "Meenakshi is known as the most careful planner in her class. She guesses her thesis chapter will take two weeks. What is most likely?",
+  "options": [
+   "It takes longer than she guesses.",
+   "It finishes early, since she plans well.",
+   "It finishes on time, as careful people guess right."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.twist",
+  "round": 3,
+  "stem": "Meenakshi is known as the most careful planner in her class. She guesses her thesis chapter will take two weeks. What is most likely?",
+  "options": [
+   "It finishes early, since she plans well.",
+   "It finishes on time, as careful people guess right.",
+   "It takes longer than she guesses."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.transfer",
+  "round": 1,
+  "stem": "Lalitha runs a small tailoring shop in Madurai and guesses how long each of her own orders will take. What do the studies suggest about her guesses?",
+  "options": [
+   "They will run long, to be on the safe side.",
+   "They will be right, since this is work, not school.",
+   "They may run short, like guesses for schoolwork."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.transfer",
+  "round": 2,
+  "stem": "Lalitha runs a small tailoring shop in Madurai and guesses how long each of her own orders will take. What do the studies suggest about her guesses?",
+  "options": [
+   "They may run short, like guesses for schoolwork.",
+   "They will run long, to be on the safe side.",
+   "They will be right, since this is work, not school."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s1.transfer",
+  "round": 3,
+  "stem": "Lalitha runs a small tailoring shop in Madurai and guesses how long each of her own orders will take. What do the studies suggest about her guesses?",
+  "options": [
+   "They will be right, since this is work, not school.",
+   "They may run short, like guesses for schoolwork.",
+   "They will run long, to be on the safe side."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.twist",
+  "round": 1,
+  "stem": "Before a three-day trek, Ishita plans each day from the walking hours on the map. Her past treks ran late with rain stops and blisters. Why does her plan look too short?",
+  "options": [
+   "Treks are random, so past ones tell her little.",
+   "She is weak at sums, so the hours are wrong.",
+   "It pictures the ideal day, leaving out past delays."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.twist",
+  "round": 2,
+  "stem": "Before a three-day trek, Ishita plans each day from the walking hours on the map. Her past treks ran late with rain stops and blisters. Why does her plan look too short?",
+  "options": [
+   "Treks are random, so past ones tell her little.",
+   "She is weak at sums, so the hours are wrong.",
+   "It pictures the ideal day, leaving out past delays."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.twist",
+  "round": 3,
+  "stem": "Before a three-day trek, Ishita plans each day from the walking hours on the map. Her past treks ran late with rain stops and blisters. Why does her plan look too short?",
+  "options": [
+   "Treks are random, so past ones tell her little.",
+   "She is weak at sums, so the hours are wrong.",
+   "It pictures the ideal day, leaving out past delays."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.transfer",
+  "round": 1,
+  "stem": "Arjun, a junior engineer in Ahmedabad, plans a report in two steps: write, then send. Past reports all needed his manager's sign-off, which took days. What kind of slip is this?",
+  "options": [
+   "Leaving out a step that past tasks showed.",
+   "Too much detail, which slows the plan down.",
+   "Bad luck, since each sign-off delay was a one-off."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.transfer",
+  "round": 2,
+  "stem": "Arjun, a junior engineer in Ahmedabad, plans a report in two steps: write, then send. Past reports all needed his manager's sign-off, which took days. What kind of slip is this?",
+  "options": [
+   "Bad luck, since each sign-off delay was a one-off.",
+   "Too much detail, which slows the plan down.",
+   "Leaving out a step that past tasks showed."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s2.transfer",
+  "round": 3,
+  "stem": "Arjun, a junior engineer in Ahmedabad, plans a report in two steps: write, then send. Past reports all needed his manager's sign-off, which took days. What kind of slip is this?",
+  "options": [
+   "Too much detail, which slows the plan down.",
+   "Bad luck, since each sign-off delay was a one-off.",
+   "Leaving out a step that past tasks showed."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.twist",
+  "round": 1,
+  "stem": "Swati plans to bake a birthday cake. Which record gives her the best guide to how long it will take?",
+  "options": [
+   "How long a TV chef took on a show.",
+   "How long her last few cakes took.",
+   "The time printed on the recipe."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.twist",
+  "round": 2,
+  "stem": "Swati plans to bake a birthday cake. Which record gives her the best guide to how long it will take?",
+  "options": [
+   "How long a TV chef took on a show.",
+   "The time printed on the recipe.",
+   "How long her last few cakes took."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.twist",
+  "round": 3,
+  "stem": "Swati plans to bake a birthday cake. Which record gives her the best guide to how long it will take?",
+  "options": [
+   "How long a TV chef took on a show.",
+   "How long her last few cakes took.",
+   "The time printed on the recipe."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.transfer",
+  "round": 1,
+  "stem": "Karan moves to a new Delhi flat. A map app says his office trip takes 25 minutes. A friend on the same road says it usually takes her 50. What gives the better guess?",
+  "options": [
+   "Splitting the two, as both are guesses.",
+   "The app, since her trips had bad luck.",
+   "His friend's real trips on that road."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.transfer",
+  "round": 2,
+  "stem": "Karan moves to a new Delhi flat. A map app says his office trip takes 25 minutes. A friend on the same road says it usually takes her 50. What gives the better guess?",
+  "options": [
+   "The app, since her trips had bad luck.",
+   "His friend's real trips on that road.",
+   "Splitting the two, as both are guesses."
+  ]
+ },
+ {
+  "id": "planning-fallacy-s3.transfer",
+  "round": 3,
+  "stem": "Karan moves to a new Delhi flat. A map app says his office trip takes 25 minutes. A friend on the same road says it usually takes her 50. What gives the better guess?",
+  "options": [
+   "The app, since her trips had bad luck.",
+   "His friend's real trips on that road.",
+   "Splitting the two, as both are guesses."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.twist",
+  "round": 1,
+  "stem": "For sleep to help a new memory, which has to happen first?",
+  "options": [
+   "Taking in the material while awake.",
+   "Sleeping long enough that night.",
+   "Hearing the lesson play during sleep."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.twist",
+  "round": 2,
+  "stem": "For sleep to help a new memory, which has to happen first?",
+  "options": [
+   "Sleeping long enough that night.",
+   "Hearing the lesson play during sleep.",
+   "Taking in the material while awake."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.twist",
+  "round": 3,
+  "stem": "For sleep to help a new memory, which has to happen first?",
+  "options": [
+   "Sleeping long enough that night.",
+   "Hearing the lesson play during sleep.",
+   "Taking in the material while awake."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.transfer",
+  "round": 1,
+  "stem": "On her first day at a bank in Mysuru, Anjali watches the cash machine steps once, takes no notes and does not try them. Her friend says a good night's sleep will lock them in. What is the flaw?",
+  "options": [
+   "Little was learned, so little can firm up.",
+   "Memories firm up the moment you see something.",
+   "None; sleep locks in anything seen that day."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.transfer",
+  "round": 2,
+  "stem": "On her first day at a bank in Mysuru, Anjali watches the cash machine steps once, takes no notes and does not try them. Her friend says a good night's sleep will lock them in. What is the flaw?",
+  "options": [
+   "None; sleep locks in anything seen that day.",
+   "Memories firm up the moment you see something.",
+   "Little was learned, so little can firm up."
+  ]
+ },
+ {
+  "id": "sleep-memory-s1.transfer",
+  "round": 3,
+  "stem": "On her first day at a bank in Mysuru, Anjali watches the cash machine steps once, takes no notes and does not try them. Her friend says a good night's sleep will lock them in. What is the flaw?",
+  "options": [
+   "Memories firm up the moment you see something.",
+   "None; sleep locks in anything seen that day.",
+   "Little was learned, so little can firm up."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.twist",
+  "round": 1,
+  "stem": "Kunal says sleep after study just pauses the brain, so it cannot help memory more than lying awake for the same hours. What do the studies suggest?",
+  "options": [
+   "Sleep cut forgetting more than the same time awake.",
+   "He is right; sleep is just a pause.",
+   "Lying awake helps more, as the brain keeps working."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.twist",
+  "round": 2,
+  "stem": "Kunal says sleep after study just pauses the brain, so it cannot help memory more than lying awake for the same hours. What do the studies suggest?",
+  "options": [
+   "He is right; sleep is just a pause.",
+   "Lying awake helps more, as the brain keeps working.",
+   "Sleep cut forgetting more than the same time awake."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.twist",
+  "round": 3,
+  "stem": "Kunal says sleep after study just pauses the brain, so it cannot help memory more than lying awake for the same hours. What do the studies suggest?",
+  "options": [
+   "He is right; sleep is just a pause.",
+   "Sleep cut forgetting more than the same time awake.",
+   "Lying awake helps more, as the brain keeps working."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.transfer",
+  "round": 1,
+  "stem": "Rohan, a tabla student, learns a new rhythm at his evening class. Which plan gives it the best chance of sticking by tomorrow's class?",
+  "options": [
+   "Staying up late to replay it again and again.",
+   "Going to bed at his usual time after practice.",
+   "Watching films late into the night to rest."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.transfer",
+  "round": 2,
+  "stem": "Rohan, a tabla student, learns a new rhythm at his evening class. Which plan gives it the best chance of sticking by tomorrow's class?",
+  "options": [
+   "Going to bed at his usual time after practice.",
+   "Staying up late to replay it again and again.",
+   "Watching films late into the night to rest."
+  ]
+ },
+ {
+  "id": "sleep-memory-s2.transfer",
+  "round": 3,
+  "stem": "Rohan, a tabla student, learns a new rhythm at his evening class. Which plan gives it the best chance of sticking by tomorrow's class?",
+  "options": [
+   "Going to bed at his usual time after practice.",
+   "Staying up late to replay it again and again.",
+   "Watching films late into the night to rest."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.twist",
+  "round": 1,
+  "stem": "After a coding lesson, Sid has a short break. Which use of it is most likely to help him recall the lesson later?",
+  "options": [
+   "Starting the next new lesson at once.",
+   "Playing a fast game on his phone.",
+   "Sitting quietly with his eyes closed."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.twist",
+  "round": 2,
+  "stem": "After a coding lesson, Sid has a short break. Which use of it is most likely to help him recall the lesson later?",
+  "options": [
+   "Starting the next new lesson at once.",
+   "Playing a fast game on his phone.",
+   "Sitting quietly with his eyes closed."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.twist",
+  "round": 3,
+  "stem": "After a coding lesson, Sid has a short break. Which use of it is most likely to help him recall the lesson later?",
+  "options": [
+   "Starting the next new lesson at once.",
+   "Playing a fast game on his phone.",
+   "Sitting quietly with his eyes closed."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.transfer",
+  "round": 1,
+  "stem": "After a training session on new billing software at her office in Coimbatore, Malini has a gap before her shift. What use of it best fits the rest finding?",
+  "options": [
+   "Scrolling the news to relax.",
+   "Answering emails, since any break helps the same.",
+   "Sitting calmly and letting her mind rest."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.transfer",
+  "round": 2,
+  "stem": "After a training session on new billing software at her office in Coimbatore, Malini has a gap before her shift. What use of it best fits the rest finding?",
+  "options": [
+   "Answering emails, since any break helps the same.",
+   "Sitting calmly and letting her mind rest.",
+   "Scrolling the news to relax."
+  ]
+ },
+ {
+  "id": "sleep-memory-s3.transfer",
+  "round": 3,
+  "stem": "After a training session on new billing software at her office in Coimbatore, Malini has a gap before her shift. What use of it best fits the rest finding?",
+  "options": [
+   "Sitting calmly and letting her mind rest.",
+   "Answering emails, since any break helps the same.",
+   "Scrolling the news to relax."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.twist",
+  "round": 1,
+  "stem": "Arjun is teaching his new puppy to sit. In the first week, when should a treat come to teach the act fastest?",
+  "options": [
+   "After every sit.",
+   "After a random number of sits, for suspense.",
+   "After each fifth sit."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.twist",
+  "round": 2,
+  "stem": "Arjun is teaching his new puppy to sit. In the first week, when should a treat come to teach the act fastest?",
+  "options": [
+   "After a random number of sits, for suspense.",
+   "After every sit.",
+   "After each fifth sit."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.twist",
+  "round": 3,
+  "stem": "Arjun is teaching his new puppy to sit. In the first week, when should a treat come to teach the act fastest?",
+  "options": [
+   "After a random number of sits, for suspense.",
+   "After each fifth sit.",
+   "After every sit."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.transfer",
+  "round": 1,
+  "stem": "Pradeep, a salesman in Rajkot, makes calls all day. Some calls end in a sale, with no pattern to which ones. How is his reward best described?",
+  "options": [
+   "Variable, since the tries per sale keep changing.",
+   "Fixed, since his salary comes each month.",
+   "Fixed, since a sale comes after a set number of calls."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.transfer",
+  "round": 2,
+  "stem": "Pradeep, a salesman in Rajkot, makes calls all day. Some calls end in a sale, with no pattern to which ones. How is his reward best described?",
+  "options": [
+   "Fixed, since his salary comes each month.",
+   "Fixed, since a sale comes after a set number of calls.",
+   "Variable, since the tries per sale keep changing."
+  ]
+ },
+ {
+  "id": "variable-rewards-s1.transfer",
+  "round": 3,
+  "stem": "Pradeep, a salesman in Rajkot, makes calls all day. Some calls end in a sale, with no pattern to which ones. How is his reward best described?",
+  "options": [
+   "Variable, since the tries per sale keep changing.",
+   "Fixed, since a sale comes after a set number of calls.",
+   "Fixed, since his salary comes each month."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.twist",
+  "round": 1,
+  "stem": "Anil's cousin sends funny voice notes at random times. His boss sends one report at the end of each day. Which chat is Anil likely to check more often through the day?",
+  "options": [
+   "The cousin's chat.",
+   "Both the same, since he likes both.",
+   "The boss's chat, since it matters more."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.twist",
+  "round": 2,
+  "stem": "Anil's cousin sends funny voice notes at random times. His boss sends one report at the end of each day. Which chat is Anil likely to check more often through the day?",
+  "options": [
+   "The cousin's chat.",
+   "The boss's chat, since it matters more.",
+   "Both the same, since he likes both."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.twist",
+  "round": 3,
+  "stem": "Anil's cousin sends funny voice notes at random times. His boss sends one report at the end of each day. Which chat is Anil likely to check more often through the day?",
+  "options": [
+   "The cousin's chat.",
+   "The boss's chat, since it matters more.",
+   "Both the same, since he likes both."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.transfer",
+  "round": 1,
+  "stem": "A reporter in Patna gets a big story tip now and then from one source, with no pattern. The source moves away without saying so. What is most likely?",
+  "options": [
+   "She keeps checking with the source for a long time.",
+   "She stops soon, as uneven rewards build weak habits.",
+   "She stops at once, since tips were rare anyway."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.transfer",
+  "round": 2,
+  "stem": "A reporter in Patna gets a big story tip now and then from one source, with no pattern. The source moves away without saying so. What is most likely?",
+  "options": [
+   "She stops soon, as uneven rewards build weak habits.",
+   "She stops at once, since tips were rare anyway.",
+   "She keeps checking with the source for a long time."
+  ]
+ },
+ {
+  "id": "variable-rewards-s2.transfer",
+  "round": 3,
+  "stem": "A reporter in Patna gets a big story tip now and then from one source, with no pattern. The source moves away without saying so. What is most likely?",
+  "options": [
+   "She stops soon, as uneven rewards build weak habits.",
+   "She keeps checking with the source for a long time.",
+   "She stops at once, since tips were rare anyway."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.twist",
+  "round": 1,
+  "stem": "Which app feature can stretch time on an app without any surprise reward at all?",
+  "options": [
+   "A feed that keeps loading as you scroll.",
+   "A prize box that opens at random.",
+   "A like count that pops up at odd times."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.twist",
+  "round": 2,
+  "stem": "Which app feature can stretch time on an app without any surprise reward at all?",
+  "options": [
+   "A like count that pops up at odd times.",
+   "A prize box that opens at random.",
+   "A feed that keeps loading as you scroll."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.twist",
+  "round": 3,
+  "stem": "Which app feature can stretch time on an app without any surprise reward at all?",
+  "options": [
+   "A feed that keeps loading as you scroll.",
+   "A like count that pops up at odd times.",
+   "A prize box that opens at random."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.transfer",
+  "round": 1,
+  "stem": "Ankita's grandmother opens a video app each night. Ankita says she is hooked on random rewards, like a slot machine. What else could fit?",
+  "options": [
+   "She may want news, family clips or a break.",
+   "She lacks the willpower to stop.",
+   "Random rewards explain her app use by themselves."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.transfer",
+  "round": 2,
+  "stem": "Ankita's grandmother opens a video app each night. Ankita says she is hooked on random rewards, like a slot machine. What else could fit?",
+  "options": [
+   "She may want news, family clips or a break.",
+   "Random rewards explain her app use by themselves.",
+   "She lacks the willpower to stop."
+  ]
+ },
+ {
+  "id": "variable-rewards-s3.transfer",
+  "round": 3,
+  "stem": "Ankita's grandmother opens a video app each night. Ankita says she is hooked on random rewards, like a slot machine. What else could fit?",
+  "options": [
+   "Random rewards explain her app use by themselves.",
+   "She may want news, family clips or a break.",
+   "She lacks the willpower to stop."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.twist",
+  "round": 1,
+  "stem": "Kunal's plan: \"If I feel motivated, then I will study.\" What is weak about it?",
+  "options": [
+   "The if part is not a clear moment.",
+   "It has no goal in it.",
+   "The then part should come first."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.twist",
+  "round": 2,
+  "stem": "Kunal's plan: \"If I feel motivated, then I will study.\" What is weak about it?",
+  "options": [
+   "It has no goal in it.",
+   "The if part is not a clear moment.",
+   "The then part should come first."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.twist",
+  "round": 3,
+  "stem": "Kunal's plan: \"If I feel motivated, then I will study.\" What is weak about it?",
+  "options": [
+   "The if part is not a clear moment.",
+   "It has no goal in it.",
+   "The then part should come first."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.transfer",
+  "round": 1,
+  "stem": "Sneha, who works in Nagpur, wants to save more of her salary. Which line is an if-then plan?",
+  "options": [
+   "If my salary lands, then I move ₹2,000 to savings.",
+   "I will put ₹2,000 into savings each month from now on.",
+   "If I can manage it, then I will save more."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.transfer",
+  "round": 2,
+  "stem": "Sneha, who works in Nagpur, wants to save more of her salary. Which line is an if-then plan?",
+  "options": [
+   "I will put ₹2,000 into savings each month from now on.",
+   "If I can manage it, then I will save more.",
+   "If my salary lands, then I move ₹2,000 to savings."
+  ]
+ },
+ {
+  "id": "if-then-plans-s1.transfer",
+  "round": 3,
+  "stem": "Sneha, who works in Nagpur, wants to save more of her salary. Which line is an if-then plan?",
+  "options": [
+   "If I can manage it, then I will save more.",
+   "If my salary lands, then I move ₹2,000 to savings.",
+   "I will put ₹2,000 into savings each month from now on."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.twist",
+  "round": 1,
+  "stem": "For weeks Kavita's plan has been: \"If the 9 p.m. news ends, then I iron tomorrow's clothes.\" Now she reaches for the iron as the closing music plays, before she thinks. What explains this?",
+  "options": [
+   "She now enjoys ironing more than before.",
+   "The plan made her response to that moment automatic.",
+   "She reads her plan each night first."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.twist",
+  "round": 2,
+  "stem": "For weeks Kavita's plan has been: \"If the 9 p.m. news ends, then I iron tomorrow's clothes.\" Now she reaches for the iron as the closing music plays, before she thinks. What explains this?",
+  "options": [
+   "She reads her plan each night first.",
+   "The plan made her response to that moment automatic.",
+   "She now enjoys ironing more than before."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.twist",
+  "round": 3,
+  "stem": "For weeks Kavita's plan has been: \"If the 9 p.m. news ends, then I iron tomorrow's clothes.\" Now she reaches for the iron as the closing music plays, before she thinks. What explains this?",
+  "options": [
+   "She now enjoys ironing more than before.",
+   "She reads her plan each night first.",
+   "The plan made her response to that moment automatic."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.transfer",
+  "round": 1,
+  "stem": "Neeraj, a student in Bhopal, wants to call his school friends more. Which plan names a moment he is most likely to notice?",
+  "options": [
+   "If I board the Sunday train home, then I call one.",
+   "In my free time each week, I will call at least one friend.",
+   "When I miss them, I will call one of them."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.transfer",
+  "round": 2,
+  "stem": "Neeraj, a student in Bhopal, wants to call his school friends more. Which plan names a moment he is most likely to notice?",
+  "options": [
+   "If I board the Sunday train home, then I call one.",
+   "When I miss them, I will call one of them.",
+   "In my free time each week, I will call at least one friend."
+  ]
+ },
+ {
+  "id": "if-then-plans-s2.transfer",
+  "round": 3,
+  "stem": "Neeraj, a student in Bhopal, wants to call his school friends more. Which plan names a moment he is most likely to notice?",
+  "options": [
+   "When I miss them, I will call one of them.",
+   "If I board the Sunday train home, then I call one.",
+   "In my free time each week, I will call at least one friend."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.twist",
+  "round": 1,
+  "stem": "Pooja made an if-then plan to jog after work, but she missed three days this week. Does that show if-then plans do not work?",
+  "options": [
+   "Yes; a real plan would not be missed.",
+   "No; plans help on average but cannot promise.",
+   "Yes; plans may help with study goals, but not with sport."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.twist",
+  "round": 2,
+  "stem": "Pooja made an if-then plan to jog after work, but she missed three days this week. Does that show if-then plans do not work?",
+  "options": [
+   "No; plans help on average but cannot promise.",
+   "Yes; a real plan would not be missed.",
+   "Yes; plans may help with study goals, but not with sport."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.twist",
+  "round": 3,
+  "stem": "Pooja made an if-then plan to jog after work, but she missed three days this week. Does that show if-then plans do not work?",
+  "options": [
+   "No; plans help on average but cannot promise.",
+   "Yes; plans may help with study goals, but not with sport.",
+   "Yes; a real plan would not be missed."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.transfer",
+  "round": 1,
+  "stem": "A homestay owner in Kerala makes an if-then plan for replying to guest messages. What is a fair thing to expect?",
+  "options": [
+   "She will likely answer each guest message from now on, without a miss.",
+   "She will likely reply more often than with a goal alone.",
+   "No change, as a plan is just a wish written down."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.transfer",
+  "round": 2,
+  "stem": "A homestay owner in Kerala makes an if-then plan for replying to guest messages. What is a fair thing to expect?",
+  "options": [
+   "She will likely reply more often than with a goal alone.",
+   "She will likely answer each guest message from now on, without a miss.",
+   "No change, as a plan is just a wish written down."
+  ]
+ },
+ {
+  "id": "if-then-plans-s3.transfer",
+  "round": 3,
+  "stem": "A homestay owner in Kerala makes an if-then plan for replying to guest messages. What is a fair thing to expect?",
+  "options": [
+   "She will likely reply more often than with a goal alone.",
+   "No change, as a plan is just a wish written down.",
+   "She will likely answer each guest message from now on, without a miss."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.twist",
+  "round": 1,
+  "stem": "Ravi wears socks that do not match to a wedding. He thinks about 30 guests noticed. What fits the T-shirt study best?",
+  "options": [
+   "Some noticed, but fewer than he thinks.",
+   "No one noticed them.",
+   "About 30, as he guessed."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.twist",
+  "round": 2,
+  "stem": "Ravi wears socks that do not match to a wedding. He thinks about 30 guests noticed. What fits the T-shirt study best?",
+  "options": [
+   "About 30, as he guessed.",
+   "Some noticed, but fewer than he thinks.",
+   "No one noticed them."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.twist",
+  "round": 3,
+  "stem": "Ravi wears socks that do not match to a wedding. He thinks about 30 guests noticed. What fits the T-shirt study best?",
+  "options": [
+   "No one noticed them.",
+   "About 30, as he guessed.",
+   "Some noticed, but fewer than he thinks."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.transfer",
+  "round": 1,
+  "stem": "Babita wears a bright new jacket to her office in Shimla. She is sure most of her team will remember it. What is most likely?",
+  "options": [
+   "Most will recall it, as it is bright.",
+   "Fewer recall it than she guesses.",
+   "Bright clothes go unnoticed."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.transfer",
+  "round": 2,
+  "stem": "Babita wears a bright new jacket to her office in Shimla. She is sure most of her team will remember it. What is most likely?",
+  "options": [
+   "Fewer recall it than she guesses.",
+   "Most will recall it, as it is bright.",
+   "Bright clothes go unnoticed."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s1.transfer",
+  "round": 3,
+  "stem": "Babita wears a bright new jacket to her office in Shimla. She is sure most of her team will remember it. What is most likely?",
+  "options": [
+   "Most will recall it, as it is bright.",
+   "Fewer recall it than she guesses.",
+   "Bright clothes go unnoticed."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.twist",
+  "round": 1,
+  "stem": "Why does a speaker tend to overrate how much her own stumble stood out?",
+  "options": [
+   "Listeners keep track of each slip.",
+   "She starts from her own vivid view and adjusts too little.",
+   "Her memory is worse than most."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.twist",
+  "round": 2,
+  "stem": "Why does a speaker tend to overrate how much her own stumble stood out?",
+  "options": [
+   "Listeners keep track of each slip.",
+   "She starts from her own vivid view and adjusts too little.",
+   "Her memory is worse than most."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.twist",
+  "round": 3,
+  "stem": "Why does a speaker tend to overrate how much her own stumble stood out?",
+  "options": [
+   "Listeners keep track of each slip.",
+   "She starts from her own vivid view and adjusts too little.",
+   "Her memory is worse than most."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.transfer",
+  "round": 1,
+  "stem": "At a family wedding in Lucknow, Saurabh sings a song and hits one off note. He is sure the relatives will talk about it. Most just recall a fun song. What explains the gap?",
+  "options": [
+   "Relatives notice singing slips more than most.",
+   "He has a better ear, so his view is the right one.",
+   "He lived every second of that note; they heard it once."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.transfer",
+  "round": 2,
+  "stem": "At a family wedding in Lucknow, Saurabh sings a song and hits one off note. He is sure the relatives will talk about it. Most just recall a fun song. What explains the gap?",
+  "options": [
+   "He lived every second of that note; they heard it once.",
+   "Relatives notice singing slips more than most.",
+   "He has a better ear, so his view is the right one."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s2.transfer",
+  "round": 3,
+  "stem": "At a family wedding in Lucknow, Saurabh sings a song and hits one off note. He is sure the relatives will talk about it. Most just recall a fun song. What explains the gap?",
+  "options": [
+   "He has a better ear, so his view is the right one.",
+   "Relatives notice singing slips more than most.",
+   "He lived every second of that note; they heard it once."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.twist",
+  "round": 1,
+  "stem": "Arjun forgets a line in a school play and spends the night on that one moment. His mother remembers the whole show and the stuffy hall. Why does he expect a harsher view than she holds?",
+  "options": [
+   "He is right; one slip sinks a whole show.",
+   "Mothers are kind, so her view does not count.",
+   "He fixes on the slip; she takes in the whole scene."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.twist",
+  "round": 2,
+  "stem": "Arjun forgets a line in a school play and spends the night on that one moment. His mother remembers the whole show and the stuffy hall. Why does he expect a harsher view than she holds?",
+  "options": [
+   "He fixes on the slip; she takes in the whole scene.",
+   "He is right; one slip sinks a whole show.",
+   "Mothers are kind, so her view does not count."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.twist",
+  "round": 3,
+  "stem": "Arjun forgets a line in a school play and spends the night on that one moment. His mother remembers the whole show and the stuffy hall. Why does he expect a harsher view than she holds?",
+  "options": [
+   "He is right; one slip sinks a whole show.",
+   "Mothers are kind, so her view does not count.",
+   "He fixes on the slip; she takes in the whole scene."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.transfer",
+  "round": 1,
+  "stem": "Gauri's card machine fails while a queue waits at her shop in Indore. She expects buyers to think her shop is badly run. What do they more likely weigh?",
+  "options": [
+   "Nobody saw it, so it does not matter.",
+   "That card machines fail at times.",
+   "That she is badly organised, just as she fears."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.transfer",
+  "round": 2,
+  "stem": "Gauri's card machine fails while a queue waits at her shop in Indore. She expects buyers to think her shop is badly run. What do they more likely weigh?",
+  "options": [
+   "Nobody saw it, so it does not matter.",
+   "That card machines fail at times.",
+   "That she is badly organised, just as she fears."
+  ]
+ },
+ {
+  "id": "spotlight-effect-s3.transfer",
+  "round": 3,
+  "stem": "Gauri's card machine fails while a queue waits at her shop in Indore. She expects buyers to think her shop is badly run. What do they more likely weigh?",
+  "options": [
+   "Nobody saw it, so it does not matter.",
+   "That she is badly organised, just as she fears.",
+   "That card machines fail at times."
+  ]
+ },
+ {
+  "id": "inflation-s1.twist",
+  "round": 1,
+  "stem": "The news says prices in March were 5% above a set earlier point. Amit tells his flatmate that prices rose 5% since February. What is the mix-up?",
+  "options": [
+   "The base is March a year ago, not February.",
+   "The 5% counts food prices alone.",
+   "The base is January of this year."
+  ]
+ },
+ {
+  "id": "inflation-s1.twist",
+  "round": 2,
+  "stem": "The news says prices in March were 5% above a set earlier point. Amit tells his flatmate that prices rose 5% since February. What is the mix-up?",
+  "options": [
+   "The 5% counts food prices alone.",
+   "The base is January of this year.",
+   "The base is March a year ago, not February."
+  ]
+ },
+ {
+  "id": "inflation-s1.twist",
+  "round": 3,
+  "stem": "The news says prices in March were 5% above a set earlier point. Amit tells his flatmate that prices rose 5% since February. What is the mix-up?",
+  "options": [
+   "The 5% counts food prices alone.",
+   "The base is March a year ago, not February.",
+   "The base is January of this year."
+  ]
+ },
+ {
+  "id": "inflation-s1.transfer",
+  "round": 1,
+  "stem": "A news report says inflation is 5% this year. Prices at Shalu's local market in Ranchi rose 8%. Is the report wrong?",
+  "options": [
+   "No; it pools prices from all over India.",
+   "Yes; inflation should come out the same in each town.",
+   "Yes; her market shows the true figure."
+  ]
+ },
+ {
+  "id": "inflation-s1.transfer",
+  "round": 2,
+  "stem": "A news report says inflation is 5% this year. Prices at Shalu's local market in Ranchi rose 8%. Is the report wrong?",
+  "options": [
+   "Yes; inflation should come out the same in each town.",
+   "No; it pools prices from all over India.",
+   "Yes; her market shows the true figure."
+  ]
+ },
+ {
+  "id": "inflation-s1.transfer",
+  "round": 3,
+  "stem": "A news report says inflation is 5% this year. Prices at Shalu's local market in Ranchi rose 8%. Is the report wrong?",
+  "options": [
+   "No; it pools prices from all over India.",
+   "Yes; her market shows the true figure.",
+   "Yes; inflation should come out the same in each town."
+  ]
+ },
+ {
+  "id": "inflation-s2.twist",
+  "round": 1,
+  "stem": "Mr Sharma gets a fixed pension of ₹15,000 a month that does not change. Prices rise each year. What happens to his pension?",
+  "options": [
+   "It holds its value, since the amount is fixed.",
+   "It grows, since fixed sums are safe.",
+   "It buys a bit less each year."
+  ]
+ },
+ {
+  "id": "inflation-s2.twist",
+  "round": 2,
+  "stem": "Mr Sharma gets a fixed pension of ₹15,000 a month that does not change. Prices rise each year. What happens to his pension?",
+  "options": [
+   "It grows, since fixed sums are safe.",
+   "It buys a bit less each year.",
+   "It holds its value, since the amount is fixed."
+  ]
+ },
+ {
+  "id": "inflation-s2.twist",
+  "round": 3,
+  "stem": "Mr Sharma gets a fixed pension of ₹15,000 a month that does not change. Prices rise each year. What happens to his pension?",
+  "options": [
+   "It holds its value, since the amount is fixed.",
+   "It grows, since fixed sums are safe.",
+   "It buys a bit less each year."
+  ]
+ },
+ {
+  "id": "inflation-s2.transfer",
+  "round": 1,
+  "stem": "Deepak gets a 12% raise at his job in Indore, and prices rose 6%. His friend Mona gets 3%, with the same 6% price rise. Who can buy more than last year?",
+  "options": [
+   "Just Deepak.",
+   "Neither, since prices rose for both.",
+   "Both, since both got raises."
+  ]
+ },
+ {
+  "id": "inflation-s2.transfer",
+  "round": 2,
+  "stem": "Deepak gets a 12% raise at his job in Indore, and prices rose 6%. His friend Mona gets 3%, with the same 6% price rise. Who can buy more than last year?",
+  "options": [
+   "Neither, since prices rose for both.",
+   "Both, since both got raises.",
+   "Just Deepak."
+  ]
+ },
+ {
+  "id": "inflation-s2.transfer",
+  "round": 3,
+  "stem": "Deepak gets a 12% raise at his job in Indore, and prices rose 6%. His friend Mona gets 3%, with the same 6% price rise. Who can buy more than last year?",
+  "options": [
+   "Both, since both got raises.",
+   "Just Deepak.",
+   "Neither, since prices rose for both."
+  ]
+ },
+ {
+  "id": "inflation-s3.twist",
+  "round": 1,
+  "stem": "Inflation comes in at 1.5% this year. Is that inside the RBI's band?",
+  "options": [
+   "Yes, since lower inflation is better.",
+   "No, it is below the 2% lower limit.",
+   "Yes, since anything under 6% is inside."
+  ]
+ },
+ {
+  "id": "inflation-s3.twist",
+  "round": 2,
+  "stem": "Inflation comes in at 1.5% this year. Is that inside the RBI's band?",
+  "options": [
+   "Yes, since anything under 6% is inside.",
+   "No, it is below the 2% lower limit.",
+   "Yes, since lower inflation is better."
+  ]
+ },
+ {
+  "id": "inflation-s3.twist",
+  "round": 3,
+  "stem": "Inflation comes in at 1.5% this year. Is that inside the RBI's band?",
+  "options": [
+   "Yes, since anything under 6% is inside.",
+   "Yes, since lower inflation is better.",
+   "No, it is below the 2% lower limit."
+  ]
+ },
+ {
+  "id": "inflation-s3.transfer",
+  "round": 1,
+  "stem": "A shopkeeper in Varanasi hears inflation is 3.5% and worries that prices are out of control. What is a fair reply?",
+  "options": [
+   "He is right; any rise above zero means trouble.",
+   "It is far above the 1% target.",
+   "That sits inside the 2% to 6% band."
+  ]
+ },
+ {
+  "id": "inflation-s3.transfer",
+  "round": 2,
+  "stem": "A shopkeeper in Varanasi hears inflation is 3.5% and worries that prices are out of control. What is a fair reply?",
+  "options": [
+   "That sits inside the 2% to 6% band.",
+   "It is far above the 1% target.",
+   "He is right; any rise above zero means trouble."
+  ]
+ },
+ {
+  "id": "inflation-s3.transfer",
+  "round": 3,
+  "stem": "A shopkeeper in Varanasi hears inflation is 3.5% and worries that prices are out of control. What is a fair reply?",
+  "options": [
+   "It is far above the 1% target.",
+   "He is right; any rise above zero means trouble.",
+   "That sits inside the 2% to 6% band."
+  ]
+ },
+ {
+  "id": "compounding-s1.twist",
+  "round": 1,
+  "stem": "₹6,000 saved at 10% a year, with gains left in, is ₹7,260 after two years. What does year three add?",
+  "options": [
+   "₹726.",
+   "₹660.",
+   "₹600."
+  ]
+ },
+ {
+  "id": "compounding-s1.twist",
+  "round": 2,
+  "stem": "₹6,000 saved at 10% a year, with gains left in, is ₹7,260 after two years. What does year three add?",
+  "options": [
+   "₹660.",
+   "₹600.",
+   "₹726."
+  ]
+ },
+ {
+  "id": "compounding-s1.twist",
+  "round": 3,
+  "stem": "₹6,000 saved at 10% a year, with gains left in, is ₹7,260 after two years. What does year three add?",
+  "options": [
+   "₹726.",
+   "₹600.",
+   "₹660."
+  ]
+ },
+ {
+  "id": "compounding-s1.transfer",
+  "round": 1,
+  "stem": "A sari shop in Surat puts each year's profit back into stock, and the stock earns at the same rate. Compared with taking the profit out each year, what happens?",
+  "options": [
+   "Its yearly gain stays the same.",
+   "It ends with the same total either way.",
+   "Its yearly gain gets bigger over time."
+  ]
+ },
+ {
+  "id": "compounding-s1.transfer",
+  "round": 2,
+  "stem": "A sari shop in Surat puts each year's profit back into stock, and the stock earns at the same rate. Compared with taking the profit out each year, what happens?",
+  "options": [
+   "Its yearly gain stays the same.",
+   "Its yearly gain gets bigger over time.",
+   "It ends with the same total either way."
+  ]
+ },
+ {
+  "id": "compounding-s1.transfer",
+  "round": 3,
+  "stem": "A sari shop in Surat puts each year's profit back into stock, and the stock earns at the same rate. Compared with taking the profit out each year, what happens?",
+  "options": [
+   "Its yearly gain stays the same.",
+   "Its yearly gain gets bigger over time.",
+   "It ends with the same total either way."
+  ]
+ },
+ {
+  "id": "compounding-s2.twist",
+  "round": 1,
+  "stem": "Saved once at 5% a year, ₹365 is about ₹466 after 5 years and about ₹1,578 after 30. It gains about ₹100 in the first 5 years. About how much does it gain from year 5 to year 30?",
+  "options": [
+   "About ₹1,100.",
+   "About ₹500, at ₹100 for each five years.",
+   "About ₹600."
+  ]
+ },
+ {
+  "id": "compounding-s2.twist",
+  "round": 2,
+  "stem": "Saved once at 5% a year, ₹365 is about ₹466 after 5 years and about ₹1,578 after 30. It gains about ₹100 in the first 5 years. About how much does it gain from year 5 to year 30?",
+  "options": [
+   "About ₹1,100.",
+   "About ₹600.",
+   "About ₹500, at ₹100 for each five years."
+  ]
+ },
+ {
+  "id": "compounding-s2.twist",
+  "round": 3,
+  "stem": "Saved once at 5% a year, ₹365 is about ₹466 after 5 years and about ₹1,578 after 30. It gains about ₹100 in the first 5 years. About how much does it gain from year 5 to year 30?",
+  "options": [
+   "About ₹1,100.",
+   "About ₹500, at ₹100 for each five years.",
+   "About ₹600."
+  ]
+ },
+ {
+  "id": "compounding-s2.transfer",
+  "round": 1,
+  "stem": "Rafiq's father has kept one 5% deposit running for 28 years. He plans to break it two years early, thinking the last two years add little. What does the step suggest?",
+  "options": [
+   "Late years add less, as growth slows down.",
+   "Each year adds the same, so little is lost.",
+   "The final stretch adds the most money."
+  ]
+ },
+ {
+  "id": "compounding-s2.transfer",
+  "round": 2,
+  "stem": "Rafiq's father has kept one 5% deposit running for 28 years. He plans to break it two years early, thinking the last two years add little. What does the step suggest?",
+  "options": [
+   "The final stretch adds the most money.",
+   "Each year adds the same, so little is lost.",
+   "Late years add less, as growth slows down."
+  ]
+ },
+ {
+  "id": "compounding-s2.transfer",
+  "round": 3,
+  "stem": "Rafiq's father has kept one 5% deposit running for 28 years. He plans to break it two years early, thinking the last two years add little. What does the step suggest?",
+  "options": [
+   "Late years add less, as growth slows down.",
+   "The final stretch adds the most money.",
+   "Each year adds the same, so little is lost."
+  ]
+ },
+ {
+  "id": "compounding-s3.twist",
+  "round": 1,
+  "stem": "Two friends each put ₹3,000 a month into different funds through SIPs. After a year, one is up and one is down. How can that be?",
+  "options": [
+   "One of them must have missed payments.",
+   "SIPs fix what goes in, not what the fund earns.",
+   "SIPs promise the same return, so one is an error."
+  ]
+ },
+ {
+  "id": "compounding-s3.twist",
+  "round": 2,
+  "stem": "Two friends each put ₹3,000 a month into different funds through SIPs. After a year, one is up and one is down. How can that be?",
+  "options": [
+   "SIPs promise the same return, so one is an error.",
+   "SIPs fix what goes in, not what the fund earns.",
+   "One of them must have missed payments."
+  ]
+ },
+ {
+  "id": "compounding-s3.twist",
+  "round": 3,
+  "stem": "Two friends each put ₹3,000 a month into different funds through SIPs. After a year, one is up and one is down. How can that be?",
+  "options": [
+   "One of them must have missed payments.",
+   "SIPs promise the same return, so one is an error.",
+   "SIPs fix what goes in, not what the fund earns."
+  ]
+ },
+ {
+  "id": "compounding-s3.transfer",
+  "round": 1,
+  "stem": "A jeweller in Thrissur offers a monthly gold plan: ₹1,000 each month buys gold at that day's price. What does the plan fix?",
+  "options": [
+   "What you pay and when.",
+   "How much gold each payment buys.",
+   "What the gold will be worth at the end."
+  ]
+ },
+ {
+  "id": "compounding-s3.transfer",
+  "round": 2,
+  "stem": "A jeweller in Thrissur offers a monthly gold plan: ₹1,000 each month buys gold at that day's price. What does the plan fix?",
+  "options": [
+   "How much gold each payment buys.",
+   "What the gold will be worth at the end.",
+   "What you pay and when."
+  ]
+ },
+ {
+  "id": "compounding-s3.transfer",
+  "round": 3,
+  "stem": "A jeweller in Thrissur offers a monthly gold plan: ₹1,000 each month buys gold at that day's price. What does the plan fix?",
+  "options": [
+   "How much gold each payment buys.",
+   "What the gold will be worth at the end.",
+   "What you pay and when."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.twist",
+  "round": 1,
+  "stem": "You want money to double in about 6 years. Roughly what steady yearly rate would do that?",
+  "options": [
+   "About 6%.",
+   "About 18%.",
+   "About 12%."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.twist",
+  "round": 2,
+  "stem": "You want money to double in about 6 years. Roughly what steady yearly rate would do that?",
+  "options": [
+   "About 18%.",
+   "About 6%.",
+   "About 12%."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.twist",
+  "round": 3,
+  "stem": "You want money to double in about 6 years. Roughly what steady yearly rate would do that?",
+  "options": [
+   "About 12%.",
+   "About 6%.",
+   "About 18%."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.transfer",
+  "round": 1,
+  "stem": "Ganesh's family plot near Hubli rises in value at a steady 9% a year. Roughly how long until its value doubles?",
+  "options": [
+   "About 9 years, the same as the rate.",
+   "About 11 years, since 100 ÷ 9 is 11.",
+   "About 8 years."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.transfer",
+  "round": 2,
+  "stem": "Ganesh's family plot near Hubli rises in value at a steady 9% a year. Roughly how long until its value doubles?",
+  "options": [
+   "About 8 years.",
+   "About 11 years, since 100 ÷ 9 is 11.",
+   "About 9 years, the same as the rate."
+  ]
+ },
+ {
+  "id": "rule-of-72-s1.transfer",
+  "round": 3,
+  "stem": "Ganesh's family plot near Hubli rises in value at a steady 9% a year. Roughly how long until its value doubles?",
+  "options": [
+   "About 8 years.",
+   "About 11 years, since 100 ÷ 9 is 11.",
+   "About 9 years, the same as the rate."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.twist",
+  "round": 1,
+  "stem": "A ₹6,000 card balance is left unpaid at 18% a year. Roughly what does it grow to after about 12 years?",
+  "options": [
+   "About ₹24,000.",
+   "About ₹12,000.",
+   "About ₹48,000."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.twist",
+  "round": 2,
+  "stem": "A ₹6,000 card balance is left unpaid at 18% a year. Roughly what does it grow to after about 12 years?",
+  "options": [
+   "About ₹24,000.",
+   "About ₹48,000.",
+   "About ₹12,000."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.twist",
+  "round": 3,
+  "stem": "A ₹6,000 card balance is left unpaid at 18% a year. Roughly what does it grow to after about 12 years?",
+  "options": [
+   "About ₹24,000.",
+   "About ₹12,000.",
+   "About ₹48,000."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.transfer",
+  "round": 1,
+  "stem": "Raju borrows ₹7,000 from a local lender at 3% a month and repays nothing. About how long until he owes ₹14,000?",
+  "options": [
+   "It stays ₹7,000 until he starts paying.",
+   "About 2 years.",
+   "About 24 years, since 72 ÷ 3 is 24."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.transfer",
+  "round": 2,
+  "stem": "Raju borrows ₹7,000 from a local lender at 3% a month and repays nothing. About how long until he owes ₹14,000?",
+  "options": [
+   "About 2 years.",
+   "About 24 years, since 72 ÷ 3 is 24.",
+   "It stays ₹7,000 until he starts paying."
+  ]
+ },
+ {
+  "id": "rule-of-72-s2.transfer",
+  "round": 3,
+  "stem": "Raju borrows ₹7,000 from a local lender at 3% a month and repays nothing. About how long until he owes ₹14,000?",
+  "options": [
+   "About 24 years, since 72 ÷ 3 is 24.",
+   "About 2 years.",
+   "It stays ₹7,000 until he starts paying."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.twist",
+  "round": 1,
+  "stem": "A fund's ad says it averaged 12% over ten years, so \"your money doubles every 6 years.\" What is the catch?",
+  "options": [
+   "The shortcut works for debt, not savings.",
+   "None; an average rate works like a fixed one.",
+   "Real years swing, so it is a what-if, not a promise."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.twist",
+  "round": 2,
+  "stem": "A fund's ad says it averaged 12% over ten years, so \"your money doubles every 6 years.\" What is the catch?",
+  "options": [
+   "None; an average rate works like a fixed one.",
+   "The shortcut works for debt, not savings.",
+   "Real years swing, so it is a what-if, not a promise."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.twist",
+  "round": 3,
+  "stem": "A fund's ad says it averaged 12% over ten years, so \"your money doubles every 6 years.\" What is the catch?",
+  "options": [
+   "None; an average rate works like a fixed one.",
+   "Real years swing, so it is a what-if, not a promise.",
+   "The shortcut works for debt, not savings."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.transfer",
+  "round": 1,
+  "stem": "A mango farmer's income rose 30% one year and fell 20% the next. His son divides 72 by 30 to say income doubles in under 3 years. What is wrong?",
+  "options": [
+   "The rule works for any rate, steady or not.",
+   "He should divide by 20 instead.",
+   "The rate is not steady, so the rule does not fit."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.transfer",
+  "round": 2,
+  "stem": "A mango farmer's income rose 30% one year and fell 20% the next. His son divides 72 by 30 to say income doubles in under 3 years. What is wrong?",
+  "options": [
+   "The rate is not steady, so the rule does not fit.",
+   "He should divide by 20 instead.",
+   "The rule works for any rate, steady or not."
+  ]
+ },
+ {
+  "id": "rule-of-72-s3.transfer",
+  "round": 3,
+  "stem": "A mango farmer's income rose 30% one year and fell 20% the next. His son divides 72 by 30 to say income doubles in under 3 years. What is wrong?",
+  "options": [
+   "He should divide by 20 instead.",
+   "The rule works for any rate, steady or not.",
+   "The rate is not steady, so the rule does not fit."
+  ]
+ },
+ {
+  "id": "risk-return-s1.twist",
+  "round": 1,
+  "stem": "Varun says his fund is risk-free because it has not lost money in three years. What does its risk still include?",
+  "options": [
+   "Just the chance that the fund is a fraud.",
+   "The chance it could fall in future.",
+   "Three good years show it is safe."
+  ]
+ },
+ {
+  "id": "risk-return-s1.twist",
+  "round": 2,
+  "stem": "Varun says his fund is risk-free because it has not lost money in three years. What does its risk still include?",
+  "options": [
+   "Just the chance that the fund is a fraud.",
+   "Three good years show it is safe.",
+   "The chance it could fall in future."
+  ]
+ },
+ {
+  "id": "risk-return-s1.twist",
+  "round": 3,
+  "stem": "Varun says his fund is risk-free because it has not lost money in three years. What does its risk still include?",
+  "options": [
+   "The chance it could fall in future.",
+   "Just the chance that the fund is a fraud.",
+   "Three good years show it is safe."
+  ]
+ },
+ {
+  "id": "risk-return-s1.transfer",
+  "round": 1,
+  "stem": "Kavita leaves a salaried job to open a bakery in Mangaluru. Her income could end up higher or lower than before. What does risk mean here?",
+  "options": [
+   "The result is uncertain and could be lower.",
+   "She is sure to lose money.",
+   "Risk is about shares, not a business."
+  ]
+ },
+ {
+  "id": "risk-return-s1.transfer",
+  "round": 2,
+  "stem": "Kavita leaves a salaried job to open a bakery in Mangaluru. Her income could end up higher or lower than before. What does risk mean here?",
+  "options": [
+   "The result is uncertain and could be lower.",
+   "She is sure to lose money.",
+   "Risk is about shares, not a business."
+  ]
+ },
+ {
+  "id": "risk-return-s1.transfer",
+  "round": 3,
+  "stem": "Kavita leaves a salaried job to open a bakery in Mangaluru. Her income could end up higher or lower than before. What does risk mean here?",
+  "options": [
+   "The result is uncertain and could be lower.",
+   "Risk is about shares, not a business.",
+   "She is sure to lose money."
+  ]
+ },
+ {
+  "id": "risk-return-s2.twist",
+  "round": 1,
+  "stem": "Why do riskier investments tend to earn more over long spans?",
+  "options": [
+   "Investors want a bigger reward for bigger swings.",
+   "Risky firms are better run.",
+   "Higher risk means a sure higher gain."
+  ]
+ },
+ {
+  "id": "risk-return-s2.twist",
+  "round": 2,
+  "stem": "Why do riskier investments tend to earn more over long spans?",
+  "options": [
+   "Risky firms are better run.",
+   "Higher risk means a sure higher gain.",
+   "Investors want a bigger reward for bigger swings."
+  ]
+ },
+ {
+  "id": "risk-return-s2.twist",
+  "round": 3,
+  "stem": "Why do riskier investments tend to earn more over long spans?",
+  "options": [
+   "Risky firms are better run.",
+   "Investors want a bigger reward for bigger swings.",
+   "Higher risk means a sure higher gain."
+  ]
+ },
+ {
+  "id": "risk-return-s2.transfer",
+  "round": 1,
+  "stem": "Two firms ask Ramesh, a retired teacher in Mysuru, to buy their bonds. One is a steady power company; the other is a new startup. Which likely offers the higher interest?",
+  "options": [
+   "The power company, as it is bigger.",
+   "Both the same, since both are bonds.",
+   "The startup, to make up for more risk."
+  ]
+ },
+ {
+  "id": "risk-return-s2.transfer",
+  "round": 2,
+  "stem": "Two firms ask Ramesh, a retired teacher in Mysuru, to buy their bonds. One is a steady power company; the other is a new startup. Which likely offers the higher interest?",
+  "options": [
+   "The power company, as it is bigger.",
+   "Both the same, since both are bonds.",
+   "The startup, to make up for more risk."
+  ]
+ },
+ {
+  "id": "risk-return-s2.transfer",
+  "round": 3,
+  "stem": "Two firms ask Ramesh, a retired teacher in Mysuru, to buy their bonds. One is a steady power company; the other is a new startup. Which likely offers the higher interest?",
+  "options": [
+   "The startup, to make up for more risk.",
+   "The power company, as it is bigger.",
+   "Both the same, since both are bonds."
+  ]
+ },
+ {
+  "id": "risk-return-s3.twist",
+  "round": 1,
+  "stem": "Ravi kept savings in shares for 25 years for a goal. Now the goal is just a year away. What fits the step?",
+  "options": [
+   "Move it into riskier shares for a final boost.",
+   "Keep it in shares, as they did well so far.",
+   "Shift it toward lower-risk savings."
+  ]
+ },
+ {
+  "id": "risk-return-s3.twist",
+  "round": 2,
+  "stem": "Ravi kept savings in shares for 25 years for a goal. Now the goal is just a year away. What fits the step?",
+  "options": [
+   "Keep it in shares, as they did well so far.",
+   "Move it into riskier shares for a final boost.",
+   "Shift it toward lower-risk savings."
+  ]
+ },
+ {
+  "id": "risk-return-s3.twist",
+  "round": 3,
+  "stem": "Ravi kept savings in shares for 25 years for a goal. Now the goal is just a year away. What fits the step?",
+  "options": [
+   "Shift it toward lower-risk savings.",
+   "Keep it in shares, as they did well so far.",
+   "Move it into riskier shares for a final boost."
+  ]
+ },
+ {
+  "id": "risk-return-s3.transfer",
+  "round": 1,
+  "stem": "Gayatri's family in Vizag needs money for a flat down payment in four months. Her uncle suggests shares \"to grow it a bit.\" What is the concern?",
+  "options": [
+   "A fall could hit right when the money is due.",
+   "None; shares grow the most, so they fit.",
+   "Shares can dip, but they tend to recover within a few months."
+  ]
+ },
+ {
+  "id": "risk-return-s3.transfer",
+  "round": 2,
+  "stem": "Gayatri's family in Vizag needs money for a flat down payment in four months. Her uncle suggests shares \"to grow it a bit.\" What is the concern?",
+  "options": [
+   "A fall could hit right when the money is due.",
+   "None; shares grow the most, so they fit.",
+   "Shares can dip, but they tend to recover within a few months."
+  ]
+ },
+ {
+  "id": "risk-return-s3.transfer",
+  "round": 3,
+  "stem": "Gayatri's family in Vizag needs money for a flat down payment in four months. Her uncle suggests shares \"to grow it a bit.\" What is the concern?",
+  "options": [
+   "A fall could hit right when the money is due.",
+   "None; shares grow the most, so they fit.",
+   "Shares can dip, but they tend to recover within a few months."
+  ]
+ },
+ {
+  "id": "diversification-s1.twist",
+  "round": 1,
+  "stem": "Zaid holds ten firms in equal amounts. One of them falls 40%. About how much does his whole mix fall from that one drop?",
+  "options": [
+   "About 4%.",
+   "About 40%.",
+   "About 10%."
+  ]
+ },
+ {
+  "id": "diversification-s1.twist",
+  "round": 2,
+  "stem": "Zaid holds ten firms in equal amounts. One of them falls 40%. About how much does his whole mix fall from that one drop?",
+  "options": [
+   "About 4%.",
+   "About 10%.",
+   "About 40%."
+  ]
+ },
+ {
+  "id": "diversification-s1.twist",
+  "round": 3,
+  "stem": "Zaid holds ten firms in equal amounts. One of them falls 40%. About how much does his whole mix fall from that one drop?",
+  "options": [
+   "About 10%.",
+   "About 4%.",
+   "About 40%."
+  ]
+ },
+ {
+  "id": "diversification-s1.transfer",
+  "round": 1,
+  "stem": "Sunil drives for one ride app. Ritu drives for two apps and also tutors in the evenings. If one app cuts its pay, whose income takes the smaller hit?",
+  "options": [
+   "Sunil's, as one app is simpler.",
+   "Both the same, as it is one app.",
+   "Ritu's."
+  ]
+ },
+ {
+  "id": "diversification-s1.transfer",
+  "round": 2,
+  "stem": "Sunil drives for one ride app. Ritu drives for two apps and also tutors in the evenings. If one app cuts its pay, whose income takes the smaller hit?",
+  "options": [
+   "Both the same, as it is one app.",
+   "Sunil's, as one app is simpler.",
+   "Ritu's."
+  ]
+ },
+ {
+  "id": "diversification-s1.transfer",
+  "round": 3,
+  "stem": "Sunil drives for one ride app. Ritu drives for two apps and also tutors in the evenings. If one app cuts its pay, whose income takes the smaller hit?",
+  "options": [
+   "Sunil's, as one app is simpler.",
+   "Both the same, as it is one app.",
+   "Ritu's."
+  ]
+ },
+ {
+  "id": "diversification-s2.twist",
+  "round": 1,
+  "stem": "Asha holds four shares, each in a different industry. Is that a real spread?",
+  "options": [
+   "No; four or five shares is too few.",
+   "Yes; different industries are all that counts.",
+   "Yes; four firms is plenty."
+  ]
+ },
+ {
+  "id": "diversification-s2.twist",
+  "round": 2,
+  "stem": "Asha holds four shares, each in a different industry. Is that a real spread?",
+  "options": [
+   "Yes; different industries are all that counts.",
+   "No; four or five shares is too few.",
+   "Yes; four firms is plenty."
+  ]
+ },
+ {
+  "id": "diversification-s2.twist",
+  "round": 3,
+  "stem": "Asha holds four shares, each in a different industry. Is that a real spread?",
+  "options": [
+   "Yes; four firms is plenty.",
+   "No; four or five shares is too few.",
+   "Yes; different industries are all that counts."
+  ]
+ },
+ {
+  "id": "diversification-s2.transfer",
+  "round": 1,
+  "stem": "A grocery shop in Nashik stocks 30 brands, all of them biscuits. A jump in sugar prices hits biscuit makers. Is the shop spread out?",
+  "options": [
+   "Yes, as 30 brands is a lot.",
+   "Yes, as each brand is a different firm.",
+   "Not really; its goods share one risk."
+  ]
+ },
+ {
+  "id": "diversification-s2.transfer",
+  "round": 2,
+  "stem": "A grocery shop in Nashik stocks 30 brands, all of them biscuits. A jump in sugar prices hits biscuit makers. Is the shop spread out?",
+  "options": [
+   "Yes, as each brand is a different firm.",
+   "Yes, as 30 brands is a lot.",
+   "Not really; its goods share one risk."
+  ]
+ },
+ {
+  "id": "diversification-s2.transfer",
+  "round": 3,
+  "stem": "A grocery shop in Nashik stocks 30 brands, all of them biscuits. A jump in sugar prices hits biscuit makers. Is the shop spread out?",
+  "options": [
+   "Yes, as each brand is a different firm.",
+   "Not really; its goods share one risk.",
+   "Yes, as 30 brands is a lot."
+  ]
+ },
+ {
+  "id": "diversification-s3.twist",
+  "round": 1,
+  "stem": "Pranav holds 25 shares across many industries. A friend tells him he cannot lose money now. What is missing?",
+  "options": [
+   "Nothing; 25 firms make losses impossible.",
+   "He could lose a little, unless he holds 50 or more firms.",
+   "A market-wide fall can still pull most down."
+  ]
+ },
+ {
+  "id": "diversification-s3.twist",
+  "round": 2,
+  "stem": "Pranav holds 25 shares across many industries. A friend tells him he cannot lose money now. What is missing?",
+  "options": [
+   "He could lose a little, unless he holds 50 or more firms.",
+   "Nothing; 25 firms make losses impossible.",
+   "A market-wide fall can still pull most down."
+  ]
+ },
+ {
+  "id": "diversification-s3.twist",
+  "round": 3,
+  "stem": "Pranav holds 25 shares across many industries. A friend tells him he cannot lose money now. What is missing?",
+  "options": [
+   "A market-wide fall can still pull most down.",
+   "Nothing; 25 firms make losses impossible.",
+   "He could lose a little, unless he holds 50 or more firms."
+  ]
+ },
+ {
+  "id": "diversification-s3.transfer",
+  "round": 1,
+  "stem": "A farmer in Karnataka grows five crops instead of one. Which trouble does the mix help with least?",
+  "options": [
+   "A price drop for one crop.",
+   "A pest that attacks just the tomatoes.",
+   "A drought that hits all his fields."
+  ]
+ },
+ {
+  "id": "diversification-s3.transfer",
+  "round": 2,
+  "stem": "A farmer in Karnataka grows five crops instead of one. Which trouble does the mix help with least?",
+  "options": [
+   "A pest that attacks just the tomatoes.",
+   "A price drop for one crop.",
+   "A drought that hits all his fields."
+  ]
+ },
+ {
+  "id": "diversification-s3.transfer",
+  "round": 3,
+  "stem": "A farmer in Karnataka grows five crops instead of one. Which trouble does the mix help with least?",
+  "options": [
+   "A price drop for one crop.",
+   "A drought that hits all his fields.",
+   "A pest that attacks just the tomatoes."
+  ]
+ },
+ {
+  "id": "shares-s1.twist",
+  "round": 1,
+  "stem": "Raj owns 300 of Firm A's 3,000 shares. Sita owns 100 of Firm B's 500 shares. Who owns the bigger slice of their firm?",
+  "options": [
+   "Raj, as he holds more shares.",
+   "The same, as both are small owners.",
+   "Sita, with a fifth."
+  ]
+ },
+ {
+  "id": "shares-s1.twist",
+  "round": 2,
+  "stem": "Raj owns 300 of Firm A's 3,000 shares. Sita owns 100 of Firm B's 500 shares. Who owns the bigger slice of their firm?",
+  "options": [
+   "Raj, as he holds more shares.",
+   "The same, as both are small owners.",
+   "Sita, with a fifth."
+  ]
+ },
+ {
+  "id": "shares-s1.twist",
+  "round": 3,
+  "stem": "Raj owns 300 of Firm A's 3,000 shares. Sita owns 100 of Firm B's 500 shares. Who owns the bigger slice of their firm?",
+  "options": [
+   "Sita, with a fifth.",
+   "The same, as both are small owners.",
+   "Raj, as he holds more shares."
+  ]
+ },
+ {
+  "id": "shares-s1.transfer",
+  "round": 1,
+  "stem": "Three college friends in Pune split their food truck into 90 equal shares, 30 each. They then sell 30 new shares to an investor. What is each friend's slice now?",
+  "options": [
+   "A quarter.",
+   "A sixth.",
+   "A third, as each still holds 30."
+  ]
+ },
+ {
+  "id": "shares-s1.transfer",
+  "round": 2,
+  "stem": "Three college friends in Pune split their food truck into 90 equal shares, 30 each. They then sell 30 new shares to an investor. What is each friend's slice now?",
+  "options": [
+   "A quarter.",
+   "A third, as each still holds 30.",
+   "A sixth."
+  ]
+ },
+ {
+  "id": "shares-s1.transfer",
+  "round": 3,
+  "stem": "Three college friends in Pune split their food truck into 90 equal shares, 30 each. They then sell 30 new shares to an investor. What is each friend's slice now?",
+  "options": [
+   "A sixth.",
+   "A third, as each still holds 30.",
+   "A quarter."
+  ]
+ },
+ {
+  "id": "shares-s2.twist",
+  "round": 1,
+  "stem": "Meenal owns a handful of shares in a big bank. A friend says only big owners get to vote. Is that right?",
+  "options": [
+   "Yes, unless she works at the bank.",
+   "Yes; small owners have no say.",
+   "No; her shares give her a vote at the meeting."
+  ]
+ },
+ {
+  "id": "shares-s2.twist",
+  "round": 2,
+  "stem": "Meenal owns a handful of shares in a big bank. A friend says only big owners get to vote. Is that right?",
+  "options": [
+   "No; her shares give her a vote at the meeting.",
+   "Yes, unless she works at the bank.",
+   "Yes; small owners have no say."
+  ]
+ },
+ {
+  "id": "shares-s2.twist",
+  "round": 3,
+  "stem": "Meenal owns a handful of shares in a big bank. A friend says only big owners get to vote. Is that right?",
+  "options": [
+   "No; her shares give her a vote at the meeting.",
+   "Yes; small owners have no say.",
+   "Yes, unless she works at the bank."
+  ]
+ },
+ {
+  "id": "shares-s2.transfer",
+  "round": 1,
+  "stem": "At a firm's general meeting, owners vote on a plan to open a new factory. Which person there is voting as an owner?",
+  "options": [
+   "Farah, who holds a few of its shares.",
+   "Arun, a top salesman with no shares.",
+   "Kamal, a supplier who sells it steel."
+  ]
+ },
+ {
+  "id": "shares-s2.transfer",
+  "round": 2,
+  "stem": "At a firm's general meeting, owners vote on a plan to open a new factory. Which person there is voting as an owner?",
+  "options": [
+   "Kamal, a supplier who sells it steel.",
+   "Arun, a top salesman with no shares.",
+   "Farah, who holds a few of its shares."
+  ]
+ },
+ {
+  "id": "shares-s2.transfer",
+  "round": 3,
+  "stem": "At a firm's general meeting, owners vote on a plan to open a new factory. Which person there is voting as an owner?",
+  "options": [
+   "Kamal, a supplier who sells it steel.",
+   "Farah, who holds a few of its shares.",
+   "Arun, a top salesman with no shares."
+  ]
+ },
+ {
+  "id": "shares-s3.twist",
+  "round": 1,
+  "stem": "A young firm pays no dividend and puts all its profit back into growth. Why might its owners still be pleased?",
+  "options": [
+   "They get a fixed payment, like on a loan.",
+   "They may get the skipped dividend later, as a debt owed to them.",
+   "The firm, and so their slice, may be worth more."
+  ]
+ },
+ {
+  "id": "shares-s3.twist",
+  "round": 2,
+  "stem": "A young firm pays no dividend and puts all its profit back into growth. Why might its owners still be pleased?",
+  "options": [
+   "They may get the skipped dividend later, as a debt owed to them.",
+   "They get a fixed payment, like on a loan.",
+   "The firm, and so their slice, may be worth more."
+  ]
+ },
+ {
+  "id": "shares-s3.twist",
+  "round": 3,
+  "stem": "A young firm pays no dividend and puts all its profit back into growth. Why might its owners still be pleased?",
+  "options": [
+   "The firm, and so their slice, may be worth more.",
+   "They get a fixed payment, like on a loan.",
+   "They may get the skipped dividend later, as a debt owed to them."
+  ]
+ },
+ {
+  "id": "shares-s3.transfer",
+  "round": 1,
+  "stem": "Seema rents out her flat in Thane and gets the same rent each month. She buys shares, expecting the dividend to work the same way. What is different?",
+  "options": [
+   "Dividends are paid each week.",
+   "None; a dividend is a fixed rent too.",
+   "The firm decides if it pays at all."
+  ]
+ },
+ {
+  "id": "shares-s3.transfer",
+  "round": 2,
+  "stem": "Seema rents out her flat in Thane and gets the same rent each month. She buys shares, expecting the dividend to work the same way. What is different?",
+  "options": [
+   "None; a dividend is a fixed rent too.",
+   "The firm decides if it pays at all.",
+   "Dividends are paid each week."
+  ]
+ },
+ {
+  "id": "shares-s3.transfer",
+  "round": 3,
+  "stem": "Seema rents out her flat in Thane and gets the same rent each month. She buys shares, expecting the dividend to work the same way. What is different?",
+  "options": [
+   "None; a dividend is a fixed rent too.",
+   "Dividends are paid each week.",
+   "The firm decides if it pays at all."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.twist",
+  "round": 1,
+  "stem": "Which of these is a fair use of an emergency fund?",
+  "options": [
+   "A bike repair after a crash on the way to work.",
+   "A planned trip with friends to Goa.",
+   "Diwali gifts, which come each year."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.twist",
+  "round": 2,
+  "stem": "Which of these is a fair use of an emergency fund?",
+  "options": [
+   "Diwali gifts, which come each year.",
+   "A bike repair after a crash on the way to work.",
+   "A planned trip with friends to Goa."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.twist",
+  "round": 3,
+  "stem": "Which of these is a fair use of an emergency fund?",
+  "options": [
+   "A bike repair after a crash on the way to work.",
+   "A planned trip with friends to Goa.",
+   "Diwali gifts, which come each year."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.transfer",
+  "round": 1,
+  "stem": "Nikita's firm in Bengaluru shuts down with no warning, and her pay stops. What role fits her emergency fund?",
+  "options": [
+   "Buying a new phone to cheer herself up.",
+   "Covering living costs while she finds work.",
+   "Staying untouched, as it is for hospital bills."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.transfer",
+  "round": 2,
+  "stem": "Nikita's firm in Bengaluru shuts down with no warning, and her pay stops. What role fits her emergency fund?",
+  "options": [
+   "Staying untouched, as it is for hospital bills.",
+   "Covering living costs while she finds work.",
+   "Buying a new phone to cheer herself up."
+  ]
+ },
+ {
+  "id": "emergency-fund-s1.transfer",
+  "round": 3,
+  "stem": "Nikita's firm in Bengaluru shuts down with no warning, and her pay stops. What role fits her emergency fund?",
+  "options": [
+   "Covering living costs while she finds work.",
+   "Buying a new phone to cheer herself up.",
+   "Staying untouched, as it is for hospital bills."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.twist",
+  "round": 1,
+  "stem": "Arpita spends ₹12,000 a month and has a steady government job. What is the least her emergency fund should hold?",
+  "options": [
+   "About ₹36,000.",
+   "About ₹12,000.",
+   "About ₹72,000."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.twist",
+  "round": 2,
+  "stem": "Arpita spends ₹12,000 a month and has a steady government job. What is the least her emergency fund should hold?",
+  "options": [
+   "About ₹12,000.",
+   "About ₹36,000.",
+   "About ₹72,000."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.twist",
+  "round": 3,
+  "stem": "Arpita spends ₹12,000 a month and has a steady government job. What is the least her emergency fund should hold?",
+  "options": [
+   "About ₹36,000.",
+   "About ₹72,000.",
+   "About ₹12,000."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.transfer",
+  "round": 1,
+  "stem": "Salim earns from photo shoots in Jaipur, with busy months and empty ones. His costs are ₹20,000 a month. What fund target fits?",
+  "options": [
+   "One month, since he can take more shoots.",
+   "Six months or more, about ₹1,20,000.",
+   "Three months, about ₹60,000, like anyone."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.transfer",
+  "round": 2,
+  "stem": "Salim earns from photo shoots in Jaipur, with busy months and empty ones. His costs are ₹20,000 a month. What fund target fits?",
+  "options": [
+   "Six months or more, about ₹1,20,000.",
+   "One month, since he can take more shoots.",
+   "Three months, about ₹60,000, like anyone."
+  ]
+ },
+ {
+  "id": "emergency-fund-s2.transfer",
+  "round": 3,
+  "stem": "Salim earns from photo shoots in Jaipur, with busy months and empty ones. His costs are ₹20,000 a month. What fund target fits?",
+  "options": [
+   "Six months or more, about ₹1,20,000.",
+   "One month, since he can take more shoots.",
+   "Three months, about ₹60,000, like anyone."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.twist",
+  "round": 1,
+  "stem": "Tushar keeps his emergency fund in a long fixed deposit that pays more but takes time to break. What is the trade-off?",
+  "options": [
+   "None; a deposit is cash, so it is ideal.",
+   "A better return, but slower to reach.",
+   "It cannot lose, so reach does not matter."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.twist",
+  "round": 2,
+  "stem": "Tushar keeps his emergency fund in a long fixed deposit that pays more but takes time to break. What is the trade-off?",
+  "options": [
+   "None; a deposit is cash, so it is ideal.",
+   "A better return, but slower to reach.",
+   "It cannot lose, so reach does not matter."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.twist",
+  "round": 3,
+  "stem": "Tushar keeps his emergency fund in a long fixed deposit that pays more but takes time to break. What is the trade-off?",
+  "options": [
+   "A better return, but slower to reach.",
+   "It cannot lose, so reach does not matter.",
+   "None; a deposit is cash, so it is ideal."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.transfer",
+  "round": 1,
+  "stem": "Rekha keeps her emergency cash in the same account she uses for daily UPI spending. In three months it shrinks to half, with no emergency. What went wrong?",
+  "options": [
+   "It should have been kept in gold.",
+   "It mixed with her daily spending.",
+   "UPI payments carry high fees."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.transfer",
+  "round": 2,
+  "stem": "Rekha keeps her emergency cash in the same account she uses for daily UPI spending. In three months it shrinks to half, with no emergency. What went wrong?",
+  "options": [
+   "UPI payments carry high fees.",
+   "It mixed with her daily spending.",
+   "It should have been kept in gold."
+  ]
+ },
+ {
+  "id": "emergency-fund-s3.transfer",
+  "round": 3,
+  "stem": "Rekha keeps her emergency cash in the same account she uses for daily UPI spending. In three months it shrinks to half, with no emergency. What went wrong?",
+  "options": [
+   "UPI payments carry high fees.",
+   "It mixed with her daily spending.",
+   "It should have been kept in gold."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.twist",
+  "round": 1,
+  "stem": "Divya says her EMI is all interest, so her loan never shrinks. What is wrong?",
+  "options": [
+   "She is right; an EMI pays just the interest.",
+   "Part of each EMI also cuts the loan.",
+   "Her EMI is all loan, with no interest."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.twist",
+  "round": 2,
+  "stem": "Divya says her EMI is all interest, so her loan never shrinks. What is wrong?",
+  "options": [
+   "Her EMI is all loan, with no interest.",
+   "She is right; an EMI pays just the interest.",
+   "Part of each EMI also cuts the loan."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.twist",
+  "round": 3,
+  "stem": "Divya says her EMI is all interest, so her loan never shrinks. What is wrong?",
+  "options": [
+   "Part of each EMI also cuts the loan.",
+   "Her EMI is all loan, with no interest.",
+   "She is right; an EMI pays just the interest."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.transfer",
+  "round": 1,
+  "stem": "Mohan takes a fixed-rate loan for a tractor in his village near Indore. A friend says his EMI will rise as the years go by. What is right?",
+  "options": [
+   "It rises as the loan ages.",
+   "It drops each month as the loan shrinks.",
+   "It stays the same each month."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.transfer",
+  "round": 2,
+  "stem": "Mohan takes a fixed-rate loan for a tractor in his village near Indore. A friend says his EMI will rise as the years go by. What is right?",
+  "options": [
+   "It rises as the loan ages.",
+   "It drops each month as the loan shrinks.",
+   "It stays the same each month."
+  ]
+ },
+ {
+  "id": "loan-emi-s1.transfer",
+  "round": 3,
+  "stem": "Mohan takes a fixed-rate loan for a tractor in his village near Indore. A friend says his EMI will rise as the years go by. What is right?",
+  "options": [
+   "It drops each month as the loan shrinks.",
+   "It rises as the loan ages.",
+   "It stays the same each month."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.twist",
+  "round": 1,
+  "stem": "Anu still owes ₹80,000 at 1% a month. Today she pays ₹40,000 extra off the loan. What is next month's interest?",
+  "options": [
+   "₹800, on the old balance.",
+   "₹400.",
+   "₹1,000, on the first loan."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.twist",
+  "round": 2,
+  "stem": "Anu still owes ₹80,000 at 1% a month. Today she pays ₹40,000 extra off the loan. What is next month's interest?",
+  "options": [
+   "₹800, on the old balance.",
+   "₹400.",
+   "₹1,000, on the first loan."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.twist",
+  "round": 3,
+  "stem": "Anu still owes ₹80,000 at 1% a month. Today she pays ₹40,000 extra off the loan. What is next month's interest?",
+  "options": [
+   "₹1,000, on the first loan.",
+   "₹400.",
+   "₹800, on the old balance."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.transfer",
+  "round": 1,
+  "stem": "Babu borrowed ₹60,000 from his uncle at 2% a month and has repaid ₹30,000. His uncle still charges 2% on ₹60,000. What is off?",
+  "options": [
+   "He should now pay 4% a month instead.",
+   "Interest should be on the ₹30,000 still owed.",
+   "Interest stays on the first sum, so it is fair."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.transfer",
+  "round": 2,
+  "stem": "Babu borrowed ₹60,000 from his uncle at 2% a month and has repaid ₹30,000. His uncle still charges 2% on ₹60,000. What is off?",
+  "options": [
+   "Interest should be on the ₹30,000 still owed.",
+   "He should now pay 4% a month instead.",
+   "Interest stays on the first sum, so it is fair."
+  ]
+ },
+ {
+  "id": "loan-emi-s2.transfer",
+  "round": 3,
+  "stem": "Babu borrowed ₹60,000 from his uncle at 2% a month and has repaid ₹30,000. His uncle still charges 2% on ₹60,000. What is off?",
+  "options": [
+   "Interest should be on the ₹30,000 still owed.",
+   "Interest stays on the first sum, so it is fair.",
+   "He should now pay 4% a month instead."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.twist",
+  "round": 1,
+  "stem": "Vinita can shrink her EMI by stretching her loan from 3 years to 6, at the same rate. What else changes?",
+  "options": [
+   "Total interest goes down too.",
+   "Total interest goes up.",
+   "The rate goes up."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.twist",
+  "round": 2,
+  "stem": "Vinita can shrink her EMI by stretching her loan from 3 years to 6, at the same rate. What else changes?",
+  "options": [
+   "Total interest goes up.",
+   "Total interest goes down too.",
+   "The rate goes up."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.twist",
+  "round": 3,
+  "stem": "Vinita can shrink her EMI by stretching her loan from 3 years to 6, at the same rate. What else changes?",
+  "options": [
+   "Total interest goes down too.",
+   "The rate goes up.",
+   "Total interest goes up."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.transfer",
+  "round": 1,
+  "stem": "A phone shop offers Neel a choice: repay ₹40,000 over 12 months or 24, at the same rate. He picks 24 \"to save money.\" What is the catch?",
+  "options": [
+   "Each payment is smaller, but total interest is more.",
+   "The rate goes up with the longer plan.",
+   "No catch; smaller payments mean a cheaper loan."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.transfer",
+  "round": 2,
+  "stem": "A phone shop offers Neel a choice: repay ₹40,000 over 12 months or 24, at the same rate. He picks 24 \"to save money.\" What is the catch?",
+  "options": [
+   "Each payment is smaller, but total interest is more.",
+   "The rate goes up with the longer plan.",
+   "No catch; smaller payments mean a cheaper loan."
+  ]
+ },
+ {
+  "id": "loan-emi-s3.transfer",
+  "round": 3,
+  "stem": "A phone shop offers Neel a choice: repay ₹40,000 over 12 months or 24, at the same rate. He picks 24 \"to save money.\" What is the catch?",
+  "options": [
+   "The rate goes up with the longer plan.",
+   "Each payment is smaller, but total interest is more.",
+   "No catch; smaller payments mean a cheaper loan."
+  ]
+ },
+ {
+  "id": "index-funds-s1.twist",
+  "round": 1,
+  "stem": "One firm makes up 10% of an index. In a fund that follows that index, about what share of the money goes into that firm?",
+  "options": [
+   "Whatever the fund manager thinks is best.",
+   "An equal share, like each other firm.",
+   "About 10%."
+  ]
+ },
+ {
+  "id": "index-funds-s1.twist",
+  "round": 2,
+  "stem": "One firm makes up 10% of an index. In a fund that follows that index, about what share of the money goes into that firm?",
+  "options": [
+   "Whatever the fund manager thinks is best.",
+   "About 10%.",
+   "An equal share, like each other firm."
+  ]
+ },
+ {
+  "id": "index-funds-s1.twist",
+  "round": 3,
+  "stem": "One firm makes up 10% of an index. In a fund that follows that index, about what share of the money goes into that firm?",
+  "options": [
+   "About 10%.",
+   "Whatever the fund manager thinks is best.",
+   "An equal share, like each other firm."
+  ]
+ },
+ {
+  "id": "index-funds-s1.transfer",
+  "round": 1,
+  "stem": "Tarun, a shop owner in Kanpur, hears that a firm outside the Nifty 50 jumped sharply this week. Will his Nifty 50 index fund buy it?",
+  "options": [
+   "Yes, once the jump is big enough.",
+   "No; it holds what is on the list.",
+   "Yes; managers grab the week's winners."
+  ]
+ },
+ {
+  "id": "index-funds-s1.transfer",
+  "round": 2,
+  "stem": "Tarun, a shop owner in Kanpur, hears that a firm outside the Nifty 50 jumped sharply this week. Will his Nifty 50 index fund buy it?",
+  "options": [
+   "No; it holds what is on the list.",
+   "Yes, once the jump is big enough.",
+   "Yes; managers grab the week's winners."
+  ]
+ },
+ {
+  "id": "index-funds-s1.transfer",
+  "round": 3,
+  "stem": "Tarun, a shop owner in Kanpur, hears that a firm outside the Nifty 50 jumped sharply this week. Will his Nifty 50 index fund buy it?",
+  "options": [
+   "Yes; managers grab the week's winners.",
+   "Yes, once the jump is big enough.",
+   "No; it holds what is on the list."
+  ]
+ },
+ {
+  "id": "index-funds-s2.twist",
+  "round": 1,
+  "stem": "Prakash picks an active large-cap fund because its manager is called an expert. Over ten years in India, what has been the more common result for such funds?",
+  "options": [
+   "Doing worse than their index.",
+   "Doing just as well as their index.",
+   "Beating their index, thanks to expert picks."
+  ]
+ },
+ {
+  "id": "index-funds-s2.twist",
+  "round": 2,
+  "stem": "Prakash picks an active large-cap fund because its manager is called an expert. Over ten years in India, what has been the more common result for such funds?",
+  "options": [
+   "Doing worse than their index.",
+   "Doing just as well as their index.",
+   "Beating their index, thanks to expert picks."
+  ]
+ },
+ {
+  "id": "index-funds-s2.twist",
+  "round": 3,
+  "stem": "Prakash picks an active large-cap fund because its manager is called an expert. Over ten years in India, what has been the more common result for such funds?",
+  "options": [
+   "Doing just as well as their index.",
+   "Doing worse than their index.",
+   "Beating their index, thanks to expert picks."
+  ]
+ },
+ {
+  "id": "index-funds-s2.transfer",
+  "round": 1,
+  "stem": "Leena's parents hold ₹1,00,000 in each of two Nifty funds. One charges 0.1% a year and the other 1%. About how much more does the costlier fund take each year?",
+  "options": [
+   "About ₹900.",
+   "About ₹100.",
+   "About ₹1,000."
+  ]
+ },
+ {
+  "id": "index-funds-s2.transfer",
+  "round": 2,
+  "stem": "Leena's parents hold ₹1,00,000 in each of two Nifty funds. One charges 0.1% a year and the other 1%. About how much more does the costlier fund take each year?",
+  "options": [
+   "About ₹1,000.",
+   "About ₹900.",
+   "About ₹100."
+  ]
+ },
+ {
+  "id": "index-funds-s2.transfer",
+  "round": 3,
+  "stem": "Leena's parents hold ₹1,00,000 in each of two Nifty funds. One charges 0.1% a year and the other 1%. About how much more does the costlier fund take each year?",
+  "options": [
+   "About ₹100.",
+   "About ₹900.",
+   "About ₹1,000."
+  ]
+ },
+ {
+  "id": "index-funds-s3.twist",
+  "round": 1,
+  "stem": "An index rises 12% this year. Fund A returns 11.9% and Fund B returns 10.5%. Both track that index. Which has the larger tracking error?",
+  "options": [
+   "Fund A.",
+   "Neither, since both rose.",
+   "Fund B."
+  ]
+ },
+ {
+  "id": "index-funds-s3.twist",
+  "round": 2,
+  "stem": "An index rises 12% this year. Fund A returns 11.9% and Fund B returns 10.5%. Both track that index. Which has the larger tracking error?",
+  "options": [
+   "Neither, since both rose.",
+   "Fund A.",
+   "Fund B."
+  ]
+ },
+ {
+  "id": "index-funds-s3.twist",
+  "round": 3,
+  "stem": "An index rises 12% this year. Fund A returns 11.9% and Fund B returns 10.5%. Both track that index. Which has the larger tracking error?",
+  "options": [
+   "Neither, since both rose.",
+   "Fund A.",
+   "Fund B."
+  ]
+ },
+ {
+  "id": "index-funds-s3.transfer",
+  "round": 1,
+  "stem": "Komal checks her index fund's yearly statement. It is 0.3% behind its index. Her friend says the fund must be badly run. What is a fairer view?",
+  "options": [
+   "It should match the index to the paisa.",
+   "It shows the manager made bad picks.",
+   "A small gap from fees and costs is normal."
+  ]
+ },
+ {
+  "id": "index-funds-s3.transfer",
+  "round": 2,
+  "stem": "Komal checks her index fund's yearly statement. It is 0.3% behind its index. Her friend says the fund must be badly run. What is a fairer view?",
+  "options": [
+   "It shows the manager made bad picks.",
+   "A small gap from fees and costs is normal.",
+   "It should match the index to the paisa."
+  ]
+ },
+ {
+  "id": "index-funds-s3.transfer",
+  "round": 3,
+  "stem": "Komal checks her index fund's yearly statement. It is 0.3% behind its index. Her friend says the fund must be badly run. What is a fairer view?",
+  "options": [
+   "It shows the manager made bad picks.",
+   "It should match the index to the paisa.",
+   "A small gap from fees and costs is normal."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.twist",
+  "round": 1,
+  "stem": "A message link opens a UPI screen that reads: \"Enter PIN to receive your ₹2,000 prize.\" What does entering the PIN do?",
+  "options": [
+   "It just checks who you are.",
+   "It accepts the prize into your account.",
+   "It sends ₹2,000 out of your account."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.twist",
+  "round": 2,
+  "stem": "A message link opens a UPI screen that reads: \"Enter PIN to receive your ₹2,000 prize.\" What does entering the PIN do?",
+  "options": [
+   "It sends ₹2,000 out of your account.",
+   "It just checks who you are.",
+   "It accepts the prize into your account."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.twist",
+  "round": 3,
+  "stem": "A message link opens a UPI screen that reads: \"Enter PIN to receive your ₹2,000 prize.\" What does entering the PIN do?",
+  "options": [
+   "It accepts the prize into your account.",
+   "It sends ₹2,000 out of your account.",
+   "It just checks who you are."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.transfer",
+  "round": 1,
+  "stem": "Shabnam, a home tutor, is owed ₹1,200 by a parent. The parent asks her to scan a QR code to \"receive\" the fee. What should she know?",
+  "options": [
+   "A QR scan is for paying, not for getting paid.",
+   "Scanning is how tutors usually get paid.",
+   "QR codes work both ways, so it is safe."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.transfer",
+  "round": 2,
+  "stem": "Shabnam, a home tutor, is owed ₹1,200 by a parent. The parent asks her to scan a QR code to \"receive\" the fee. What should she know?",
+  "options": [
+   "A QR scan is for paying, not for getting paid.",
+   "Scanning is how tutors usually get paid.",
+   "QR codes work both ways, so it is safe."
+  ]
+ },
+ {
+  "id": "upi-scams-s1.transfer",
+  "round": 3,
+  "stem": "Shabnam, a home tutor, is owed ₹1,200 by a parent. The parent asks her to scan a QR code to \"receive\" the fee. What should she know?",
+  "options": [
+   "QR codes work both ways, so it is safe.",
+   "A QR scan is for paying, not for getting paid.",
+   "Scanning is how tutors usually get paid."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.twist",
+  "round": 1,
+  "stem": "Your cousin, who works at a bank, asks for your OTP to speed up your loan form. What fits the rule?",
+  "options": [
+   "Share it if he asks in person, not by phone.",
+   "Share it, since he is family and bank staff.",
+   "Do not share it, even with bank staff you know."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.twist",
+  "round": 2,
+  "stem": "Your cousin, who works at a bank, asks for your OTP to speed up your loan form. What fits the rule?",
+  "options": [
+   "Do not share it, even with bank staff you know.",
+   "Share it if he asks in person, not by phone.",
+   "Share it, since he is family and bank staff."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.twist",
+  "round": 3,
+  "stem": "Your cousin, who works at a bank, asks for your OTP to speed up your loan form. What fits the rule?",
+  "options": [
+   "Share it, since he is family and bank staff.",
+   "Share it if he asks in person, not by phone.",
+   "Do not share it, even with bank staff you know."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.transfer",
+  "round": 1,
+  "stem": "While job hunting, Pranali gets a call from a \"recruiter\" who asks for the OTP just sent to her phone to verify her profile. What fits the rule?",
+  "options": [
+   "Refuse; whoever has it can approve actions.",
+   "Share it, since a real job site may need to check her number.",
+   "Share half of it to be careful."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.transfer",
+  "round": 2,
+  "stem": "While job hunting, Pranali gets a call from a \"recruiter\" who asks for the OTP just sent to her phone to verify her profile. What fits the rule?",
+  "options": [
+   "Share half of it to be careful.",
+   "Share it, since a real job site may need to check her number.",
+   "Refuse; whoever has it can approve actions."
+  ]
+ },
+ {
+  "id": "upi-scams-s2.transfer",
+  "round": 3,
+  "stem": "While job hunting, Pranali gets a call from a \"recruiter\" who asks for the OTP just sent to her phone to verify her profile. What fits the rule?",
+  "options": [
+   "Share it, since a real job site may need to check her number.",
+   "Refuse; whoever has it can approve actions.",
+   "Share half of it to be careful."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.twist",
+  "round": 1,
+  "stem": "Sunaina was tricked out of money. She has told her bank and blocked UPI. What is her next step?",
+  "options": [
+   "Wait a week to see if the money comes back.",
+   "Report it on 1930 or cybercrime.gov.in.",
+   "Post the scammer's number online first."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.twist",
+  "round": 2,
+  "stem": "Sunaina was tricked out of money. She has told her bank and blocked UPI. What is her next step?",
+  "options": [
+   "Wait a week to see if the money comes back.",
+   "Report it on 1930 or cybercrime.gov.in.",
+   "Post the scammer's number online first."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.twist",
+  "round": 3,
+  "stem": "Sunaina was tricked out of money. She has told her bank and blocked UPI. What is her next step?",
+  "options": [
+   "Wait a week to see if the money comes back.",
+   "Report it on 1930 or cybercrime.gov.in.",
+   "Post the scammer's number online first."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.transfer",
+  "round": 1,
+  "stem": "Your grandfather in Kochi says a stranger took money from his account two days ago. He wants to wait till Monday to visit his branch. What is best?",
+  "options": [
+   "Call the bank now and block debits.",
+   "Wait for Monday, as the branch knows him.",
+   "Do nothing, as the money is gone anyway."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.transfer",
+  "round": 2,
+  "stem": "Your grandfather in Kochi says a stranger took money from his account two days ago. He wants to wait till Monday to visit his branch. What is best?",
+  "options": [
+   "Call the bank now and block debits.",
+   "Wait for Monday, as the branch knows him.",
+   "Do nothing, as the money is gone anyway."
+  ]
+ },
+ {
+  "id": "upi-scams-s3.transfer",
+  "round": 3,
+  "stem": "Your grandfather in Kochi says a stranger took money from his account two days ago. He wants to wait till Monday to visit his branch. What is best?",
+  "options": [
+   "Do nothing, as the money is gone anyway.",
+   "Call the bank now and block debits.",
+   "Wait for Monday, as the branch knows him."
+  ]
+ }
+]
