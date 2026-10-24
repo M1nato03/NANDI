@@ -34,6 +34,15 @@ These are the optional fields that cj4-transfer §4.2 proposes for the schema:
   - pressure cooker: "from a safe distance", and "when it is cold" for the vent weight
 - No targets and no scores ("There is no target" on the drinks and app-check tries). No guilt wording.
 
+## Review applied (24 Oct)
+Codex B flagged 24 of 54 rows (field-tries-review-codexB.md). The fixes are applied by `tools/field_tries_fix1.py`:
+- no try now asks for extra walking or stairs, or for a payment
+- the spotlight, home-reading and relative-warning tries became observation-only
+- notices stay closer to their claims
+
+The list below was written before that review. The spotlight, showing-up and sleep-memory notes have since been
+addressed by it.
+
 ## What editors should check first
 - `spotlight-effect`: "Ask a friend if they remember what you wore yesterday." It is gentle, but it is still social.
 - `sleep-memory`: "sit quietly for 5 minutes". This is the claim's own finding (quiet rest after learning), not a health promise.
