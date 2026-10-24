@@ -40,8 +40,8 @@ Codex B flagged 24 of 54 rows (field-tries-review-codexB.md). The fixes are appl
 - the spotlight, home-reading and relative-warning tries became observation-only
 - notices stay closer to their claims
 
-The list below was written before that review. The spotlight, showing-up and sleep-memory notes have since been
-addressed by it.
+The list below was written before that review. It has since addressed the spotlight and showing-up notes. Codex B passed
+sleep-memory as it was.
 
 ## What editors should check first
 - `spotlight-effect`: "Ask a friend if they remember what you wore yesterday." It is gentle, but it is still social.
