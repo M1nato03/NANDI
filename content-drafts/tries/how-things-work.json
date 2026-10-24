@@ -1,0 +1,1638 @@
+[
+  {
+    "stepId": "lift-s1",
+    "claimIds": [
+      "lift-c1"
+    ],
+    "twist": {
+      "stem": "A small plane comes in to land with a steady wind blowing from behind it. To get the same lift as on a calm day, what ground speed does it need?",
+      "hint": "Count just the air that streams over the wings.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The same one, since lift comes from the plane's own speed.",
+          "correct": false,
+          "feedback": "Lift comes from air moving past the wing, not ground speed. A wind from behind means less air passes at the same ground speed."
+        },
+        {
+          "id": "b",
+          "text": "A higher one, since the wind cuts the air flowing past.",
+          "correct": true,
+          "feedback": "Lift needs air moving past the wing. Wind from behind moves along with the plane, so less air passes and it must roll faster."
+        },
+        {
+          "id": "c",
+          "text": "A lower one, since the wind helps push it along.",
+          "correct": false,
+          "feedback": "The push from behind does not add lift. It lowers the air speed over the wings, so the plane needs more ground speed."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Gulab sells kites in a Lucknow market. In his still shop, he points a pedestal fan at a kite on the counter, and it rises with nobody running. What does this show?",
+      "hint": "Which one moved here: the toy, or the air?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A kite needs a person to pull it forward before it lifts.",
+          "correct": false,
+          "feedback": "Pulling only matters because it makes air move past the kite. Here the fan moves the air, so nobody has to run."
+        },
+        {
+          "id": "b",
+          "text": "The fan blows it up from below, which is a push, not lift.",
+          "correct": false,
+          "feedback": "Lift is that push from moving air. It makes no difference whether the kite moves or the air does."
+        },
+        {
+          "id": "c",
+          "text": "Air moving past it is enough, even when it stays put.",
+          "correct": true,
+          "feedback": "Lift needs air moving past the kite. It makes no difference whether the kite moves or the fan moves the air."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "lift-s2",
+    "claimIds": [
+      "lift-c2"
+    ],
+    "twist": {
+      "stem": "A helicopter hovers over a field. Its spinning blades fling a strong stream of air down at the grass. What holds the helicopter up?",
+      "hint": "Look at which way the blades throw the air.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Air it sends down, pushing back up on it.",
+          "correct": true,
+          "feedback": "The blades turn air downward, and the air pushes back the other way. That push up on the blades holds the helicopter."
+        },
+        {
+          "id": "b",
+          "text": "Low pressure on top, as air there races to catch up.",
+          "correct": false,
+          "feedback": "Air on top does not have to catch up with the air below. The lift comes from the air pushed down pushing back."
+        },
+        {
+          "id": "c",
+          "text": "The engine, which lifts it with no help from the air.",
+          "correct": false,
+          "feedback": "The engine only spins the blades. The lift comes from the air the blades turn down, which pushes back up."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In Asha's flat, a ceiling fan hangs from a rod. When the fan runs, its blades push air down at the room. What happens to the pull on the rod?",
+      "hint": "Air pushed down pushes the blades which way?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It gets heavier, since the spinning adds to the weight.",
+          "correct": false,
+          "feedback": "Spinning adds no weight. The blades push air down, so the air pushes them up, and the rod carries a little less."
+        },
+        {
+          "id": "b",
+          "text": "It gets a bit lighter, as the air shoves them upward.",
+          "correct": true,
+          "feedback": "Push air down and it pushes back up. That upward push on the blades takes a little of the fan's weight off the rod."
+        },
+        {
+          "id": "c",
+          "text": "It stays the same, since air is far too light to push back.",
+          "correct": false,
+          "feedback": "Air is light, but moving lots of it makes a real push back. Here that push points up, so the rod pulls less."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "lift-s3",
+    "claimIds": [
+      "lift-c4",
+      "lift-c5"
+    ],
+    "twist": {
+      "stem": "A glider flies level, so its lift just equals its weight. It speeds up to twice that speed with the same tilt. What happens?",
+      "hint": "Square the speed change, then compare with the weight.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It climbs, with about twice the lift it needs.",
+          "correct": false,
+          "feedback": "Lift does not just keep pace with speed. Twice the speed gives four times the lift, not twice."
+        },
+        {
+          "id": "b",
+          "text": "It stays level, since speed does not change lift.",
+          "correct": false,
+          "feedback": "Speed changes lift a lot. At twice the speed the wings make four times the lift, which is more than its weight."
+        },
+        {
+          "id": "c",
+          "text": "It climbs, with four times the lift.",
+          "correct": true,
+          "feedback": "Lift grows with speed times speed, so twice the speed gives four times the lift. That is far more than its weight, so it climbs."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a kite festival in Ahmedabad, Hetal's kite flies well. Then the breeze drops to half its speed, with the kite at the same tilt. How much of its lift is left?",
+      "hint": "Multiply the drop in the breeze by itself.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About a quarter.",
+          "correct": true,
+          "feedback": "Lift grows with speed times speed. Half the speed gives a half times a half, which is a quarter of the lift."
+        },
+        {
+          "id": "b",
+          "text": "About half.",
+          "correct": false,
+          "feedback": "Lift does not fall in step with speed. Half the speed leaves only a quarter of the lift, since a half times a half is a quarter."
+        },
+        {
+          "id": "c",
+          "text": "Nearly the same, as the kite has not changed.",
+          "correct": false,
+          "feedback": "The kite is the same, but less air moves past it. Half the breeze leaves only a quarter of the lift."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "multirotor-turns-s1",
+    "claimIds": [
+      "multirotor-turns-c4"
+    ],
+    "twist": {
+      "stem": "A drone hovers while carrying a parcel. It lets the parcel drop, and the rotors keep the same push as before. What happens next?",
+      "hint": "What holds it up, and what pulls it down now?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It stays put, since a hover takes no real push from the rotors.",
+          "correct": false,
+          "feedback": "A hover takes push equal to the weight. With the parcel gone, that same push is more than the weight, so it rises."
+        },
+        {
+          "id": "b",
+          "text": "It climbs, as push now beats weight.",
+          "correct": true,
+          "feedback": "In a hover, push equals weight. Once the parcel falls the drone is lighter, so the same push lifts it up."
+        },
+        {
+          "id": "c",
+          "text": "It tips over, because it is now off balance.",
+          "correct": false,
+          "feedback": "The four rotors still push evenly, so it stays level. With less weight and the same push, it climbs."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Over a sugarcane field in Maharashtra, a spraying drone hovers while its tank slowly empties. To stay at the same height, what must its rotors do?",
+      "hint": "Compare push with weight as the load shrinks.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Speed up, to keep pushing the spray out.",
+          "correct": false,
+          "feedback": "The rotors hold the drone up; they do not push the spray. As it gets lighter, the rotors need less push, not more."
+        },
+        {
+          "id": "b",
+          "text": "Keep one speed, since a hover needs a set push.",
+          "correct": false,
+          "feedback": "A hover needs push equal to the weight. The weight drops as the tank empties, so the push has to drop too."
+        },
+        {
+          "id": "c",
+          "text": "Slow down bit by bit as it gets lighter.",
+          "correct": true,
+          "feedback": "To hover, the push must equal the weight. As the tank empties the drone weighs less, so the rotors need less push."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "multirotor-turns-s2",
+    "claimIds": [
+      "multirotor-turns-c1",
+      "multirotor-turns-c5"
+    ],
+    "twist": {
+      "stem": "A hovering drone tips its nose down to fly forward but keeps the same total push as in its hover. What happens to its height?",
+      "hint": "Split the push into an up part and a forward part.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It drifts lower, with less of its thrust aimed up.",
+          "correct": true,
+          "feedback": "Tilting aims part of the push forward. With the same total push, less of it points up, so it starts to sink."
+        },
+        {
+          "id": "b",
+          "text": "It holds its height, since the total push has not changed.",
+          "correct": false,
+          "feedback": "The total is the same, but part of it now points forward. Less points up, so the drone sinks unless it adds push."
+        },
+        {
+          "id": "c",
+          "text": "It climbs, since moving forward adds to its lift.",
+          "correct": false,
+          "feedback": "A drone's rotors make its lift, not its forward motion. Tilting aims some push forward, so less is left to hold it up."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a wedding in Jaipur, Rakesh flies a camera drone in front of the procession. He needs it to fly backward, toward him. Which rotors must push harder?",
+      "hint": "Which side must rise for the push to aim backward?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The back pair, so the drone gets pushed back.",
+          "correct": false,
+          "feedback": "Harder back rotors lift the back, which tips the nose down. That aims the push forward, away from Rakesh."
+        },
+        {
+          "id": "b",
+          "text": "The front pair, so its nose tips up.",
+          "correct": true,
+          "feedback": "The side that pushes harder rises. With the front up, the drone tilts back, and part of its push aims backward."
+        },
+        {
+          "id": "c",
+          "text": "Each of the four, harder, so it floats back level.",
+          "correct": false,
+          "feedback": "Equal extra push on all four just makes it climb. To move back it must tilt, with the front side pushing harder."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "multirotor-turns-s3",
+    "claimIds": [
+      "multirotor-turns-c2",
+      "multirotor-turns-c3"
+    ],
+    "twist": {
+      "stem": "To turn its nose, a hovering drone speeds up its clockwise pair but forgets to slow the other pair. What else happens?",
+      "hint": "Add up the total push before and after.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It just turns, and stays at the same height.",
+          "correct": false,
+          "feedback": "The height stays the same only if the other pair slows down. Here the total push grew, so the drone also rises."
+        },
+        {
+          "id": "b",
+          "text": "It tilts, then slides off to one side.",
+          "correct": false,
+          "feedback": "Faster spin on one pair changes the twist, not the tilt. It turns on the spot, and the extra push makes it climb."
+        },
+        {
+          "id": "c",
+          "text": "It turns and also climbs.",
+          "correct": true,
+          "feedback": "Speeding one pair alone turns it, but it also raises the total push above the weight. Slowing the other pair keeps the height steady."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a college common room, Farah sits on a free-spinning chair and holds a bicycle wheel flat over her head. She spins the wheel hard with her hand. What does the chair do?",
+      "hint": "Think of the twist each motor puts on a drone's body.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It turns the other way from the wheel.",
+          "correct": true,
+          "feedback": "Spin something one way and it twists you the other way. That is why a drone needs two rotors spinning each way to cancel."
+        },
+        {
+          "id": "b",
+          "text": "It turns the same way, dragged by the wheel.",
+          "correct": false,
+          "feedback": "The wheel twists her the opposite way, not the same way. A drone's body feels the same opposite twist from each rotor."
+        },
+        {
+          "id": "c",
+          "text": "It stays still, as her hand and the wheel balance out.",
+          "correct": false,
+          "feedback": "Nothing cancels the twist here. A drone stays steady only because two rotors spin each way."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "battery-flight-time-s1",
+    "claimIds": [
+      "battery-flight-time-c1"
+    ],
+    "twist": {
+      "stem": "A drone's battery is half used up. From now on, its motors draw half the power they drew before. How long will what is left last?",
+      "hint": "Divide the energy left by the new rate.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Half as long, since half the energy is gone.",
+          "correct": false,
+          "feedback": "That would be true at the old power. But the power also halved, so the time is the same as a full battery at the old power."
+        },
+        {
+          "id": "b",
+          "text": "As long as a full battery at the old power.",
+          "correct": true,
+          "feedback": "Half the energy divided by half the power gives the same time as full energy at full power."
+        },
+        {
+          "id": "c",
+          "text": "A quarter as long, since both numbers halved.",
+          "correct": false,
+          "feedback": "Halving both does not shrink the time. Half the energy over half the power gives the same time as before."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a power cut in Patna, the Kumari family's inverter battery runs their fans and lights. They switch off half of the load. About how long will the battery last now?",
+      "hint": "Divide the same energy by a smaller rate.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About the same, as the stored energy has not changed.",
+          "correct": false,
+          "feedback": "The energy is the same, but it is spent at half the rate. So it lasts about twice as long."
+        },
+        {
+          "id": "b",
+          "text": "About four times as long.",
+          "correct": false,
+          "feedback": "Time is energy divided by power. Halving the power doubles the time; it does not make it four times longer."
+        },
+        {
+          "id": "c",
+          "text": "About twice as long.",
+          "correct": true,
+          "feedback": "Time is the stored energy divided by the power used. Half the power from the same energy gives about twice the time."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "battery-flight-time-s2",
+    "claimIds": [
+      "battery-flight-time-c1",
+      "battery-flight-time-c3"
+    ],
+    "twist": {
+      "stem": "A drone carries a heavy camera. With the camera taken off, the drone weighs half as much. About what share of the old hover power does it now need?",
+      "hint": "Run the nearly-three-times rule backward.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A bit over a third.",
+          "correct": true,
+          "feedback": "Twice the weight needs nearly three times the power. So half the weight needs only a bit over a third of the power."
+        },
+        {
+          "id": "b",
+          "text": "About half.",
+          "correct": false,
+          "feedback": "Hover power does not keep pace with weight. Half the weight needs only about a third of the power."
+        },
+        {
+          "id": "c",
+          "text": "About the same as before.",
+          "correct": false,
+          "feedback": "Less weight needs less push, and power falls faster than weight. Half the weight needs about a third of the power."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Over a flooded village in Assam, a relief drone hovers to lower food. Plan A: hover once with two packets, which doubles its weight. Plan B: hover twice as long in all, with one packet at a time. Which uses less battery energy?",
+      "hint": "For each, multiply the rate of use by the time spent.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Plan A, since one hover takes less time.",
+          "correct": false,
+          "feedback": "Plan A is shorter, but its power is nearly three times higher. Energy is power times time, so Plan A uses more."
+        },
+        {
+          "id": "b",
+          "text": "Plan B, the lighter and longer hover.",
+          "correct": true,
+          "feedback": "Twice the weight needs nearly three times the power. Plan B uses twice the power-time, while Plan A uses nearly three times."
+        },
+        {
+          "id": "c",
+          "text": "Both the same, as the total load is the same.",
+          "correct": false,
+          "feedback": "That would be true if power kept pace with weight. Twice the weight needs nearly three times the power, so Plan A uses more."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "battery-flight-time-s3",
+    "claimIds": [
+      "battery-flight-time-c2",
+      "battery-flight-time-c4"
+    ],
+    "twist": {
+      "stem": "A drone's battery is already about two thirds of its mass. A friend suggests a bigger battery for a longer flight. In the simple model, what happens?",
+      "hint": "Find where it sits on the rise and fall.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The time rises, since more energy is on board.",
+          "correct": false,
+          "feedback": "More energy helps only up to the peak. Past two thirds of the mass, the extra weight costs more than it gives."
+        },
+        {
+          "id": "b",
+          "text": "The time stays the same, as energy and weight cancel out.",
+          "correct": false,
+          "feedback": "They cancel only right at the peak. Adding more past it makes the weight win, so the time falls."
+        },
+        {
+          "id": "c",
+          "text": "The time drops, as it moves past the peak.",
+          "correct": true,
+          "feedback": "Flight time peaks near two thirds of the mass. Past that, the extra weight costs more power than the new energy adds."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A wildlife team in Kaziranga flies a survey drone whose battery is half its mass. They swap in a battery of the same weight that stores more energy. Does the peak rule stop this helping?",
+      "hint": "Which part of extra battery makes the motors work harder?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No, its weight is unchanged.",
+          "correct": true,
+          "feedback": "The peak comes from extra weight needing more power. Same weight with more energy means a longer flight."
+        },
+        {
+          "id": "b",
+          "text": "Yes, more energy past a point cuts the time.",
+          "correct": false,
+          "feedback": "Energy itself never cuts flight time. Weight does, and this battery weighs the same, so the flight gets longer."
+        },
+        {
+          "id": "c",
+          "text": "Yes, since a battery that stores more draws more power from it.",
+          "correct": false,
+          "feedback": "The motors draw power to carry weight, and the weight is unchanged. More stored energy simply lasts longer."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "flight-sensors-s1",
+    "claimIds": [
+      "flight-sensors-c1",
+      "flight-sensors-c2"
+    ],
+    "twist": {
+      "stem": "A drone hovers still, but it is tipped a little to one side and not turning. Which sensor helps it work out how far it is tipped?",
+      "hint": "One sensor reads turning speed; the other reads speed changes.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The gyroscope, since it feels any tip.",
+          "correct": false,
+          "feedback": "A gyroscope senses turning speed, so it notices a tip while it happens. To work out a still tilt, the drone uses the accelerometer."
+        },
+        {
+          "id": "b",
+          "text": "The accelerometer.",
+          "correct": true,
+          "feedback": "A gyroscope senses how fast the drone turns, and a still tilt is not turning. The accelerometer is used to work out tilt."
+        },
+        {
+          "id": "c",
+          "text": "The barometer, from the air around it.",
+          "correct": false,
+          "feedback": "A barometer reads air pressure, which tracks height, not tilt. The accelerometer is used to work out tilt."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "An inspection drone flies deep inside a railway tunnel in Jammu, far from any satellite signal. What can its motion sensors still tell it?",
+      "hint": "Which sensors sit on board and need no signal?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Very little, since each sensor needs a signal from space.",
+          "correct": false,
+          "feedback": "Only GPS needs signals from space. The gyroscope and accelerometer are on board and keep working in the tunnel."
+        },
+        {
+          "id": "b",
+          "text": "Its place on a map, from the gyroscope.",
+          "correct": false,
+          "feedback": "A gyroscope senses turning, not place on a map. Place comes from GPS, which needs satellite signals."
+        },
+        {
+          "id": "c",
+          "text": "How fast it turns and how its speed changes.",
+          "correct": true,
+          "feedback": "The gyroscope and accelerometer sit on board, so they work with no signal. GPS needs satellite signals, which the tunnel blocks."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "flight-sensors-s2",
+    "claimIds": [
+      "flight-sensors-c2",
+      "flight-sensors-c3"
+    ],
+    "twist": {
+      "stem": "A GPS receiver gets two satellite signals. One took a little longer to arrive than the other. What does that tell the receiver?",
+      "hint": "Think of a longer trip at the same speed.",
+      "options": [
+        {
+          "id": "a",
+          "text": "That one is farther away.",
+          "correct": true,
+          "feedback": "GPS times each signal's trip. A longer trip means a longer distance, and the distances give its place."
+        },
+        {
+          "id": "b",
+          "text": "That one's signal is weaker.",
+          "correct": false,
+          "feedback": "GPS uses the time a signal takes, not how strong it is. A longer trip means that satellite is farther away."
+        },
+        {
+          "id": "c",
+          "text": "Its place, which is written inside each signal.",
+          "correct": false,
+          "feedback": "The receiver works out its place itself, from how long each signal takes. A longer trip means a farther satellite."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At India Gate's open lawns, Asha's phone map shows her right where she stands. Later, in a narrow lane of Chandni Chowk, it puts her inside the wrong shop. What best explains this?",
+      "hint": "What is overhead in each place?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The map app has fewer details for old lanes like these.",
+          "correct": false,
+          "feedback": "The map is not the problem. In open sky GPS is close, while walls block and bounce the signals in narrow lanes."
+        },
+        {
+          "id": "b",
+          "text": "The walls block and bounce the signals.",
+          "correct": true,
+          "feedback": "GPS is close in open sky, but buildings block and bounce the satellite signals. So it gets worse in narrow lanes."
+        },
+        {
+          "id": "c",
+          "text": "Too many phones in the crowd are sharing the GPS signal.",
+          "correct": false,
+          "feedback": "Many phones can use GPS at once. In narrow lanes the walls block and bounce the signals, so the fix gets worse."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "flight-sensors-s3",
+    "claimIds": [
+      "flight-sensors-c4"
+    ],
+    "twist": {
+      "stem": "A drone sits on a table all afternoon while a storm rolls in. Its barometer reading slowly drifts lower. What could the drone wrongly think?",
+      "hint": "Weather can nudge the pressure too.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No change, since weather does not affect air pressure.",
+          "correct": false,
+          "feedback": "Weather does change air pressure a little. A drop from a storm looks like a climb to the barometer."
+        },
+        {
+          "id": "b",
+          "text": "That it has sunk below the table.",
+          "correct": false,
+          "feedback": "Lower pressure points to more height, not less. Pressure rises as you go lower, where more air sits above."
+        },
+        {
+          "id": "c",
+          "text": "That it has risen a little, though it never moved.",
+          "correct": true,
+          "feedback": "Lower pressure usually means more height. But weather can change air pressure a little, so a storm can fool the barometer."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A trek group in Ladakh walks down from a high pass to the valley below. A watch shows the air pressure. What does the reading do, and why?",
+      "hint": "Think about how much air sits over you.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It rises, as more air is now above them.",
+          "correct": true,
+          "feedback": "Air pressure is the push of the air above. Lower down there is more air above, so the reading goes up."
+        },
+        {
+          "id": "b",
+          "text": "It falls, as valleys hold warmer, thinner air.",
+          "correct": false,
+          "feedback": "Going down puts more air above you, not less. So the pressure reading goes up as they walk down."
+        },
+        {
+          "id": "c",
+          "text": "It stays the same, since pressure is set by weather.",
+          "correct": false,
+          "feedback": "Weather changes pressure a little, but height changes it more. Walking down puts more air above, so it rises."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "birds-and-planes-s1",
+    "claimIds": [
+      "birds-and-planes-c2",
+      "birds-and-planes-c3"
+    ],
+    "twist": {
+      "stem": "A plane cruises at a steady speed and height. The pilot eases the engines back a little. What happens first?",
+      "hint": "What job do the engines do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It drops at once, since the engines hold it up.",
+          "correct": false,
+          "feedback": "The wings hold a plane up, not the engines. Less engine push means the plane slows, not that it falls at once."
+        },
+        {
+          "id": "b",
+          "text": "It slows down, as drag now beats the push.",
+          "correct": true,
+          "feedback": "Engines push the plane forward against drag. With less push, drag wins and the plane slows; the wings still make lift."
+        },
+        {
+          "id": "c",
+          "text": "It holds its speed, as the wings keep it going.",
+          "correct": false,
+          "feedback": "The wings give lift, not forward push. With less engine push, drag slows the plane down."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At Bir Billing in Himachal, a paraglider pilot stays aloft for an hour with no engine at all. What does this show about a plane's engines?",
+      "hint": "What still flows past the canopy?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Paragliders need no lift, as they are so light.",
+          "correct": false,
+          "feedback": "Light or not, a paraglider needs lift to stay up for an hour. Its wing makes lift as air flows past."
+        },
+        {
+          "id": "b",
+          "text": "A plane's engines keep it up; a paraglider just falls slowly.",
+          "correct": false,
+          "feedback": "Wings make the lift for both. A plane's engines push it forward against drag; they do not hold it up."
+        },
+        {
+          "id": "c",
+          "text": "Their job is pushing forward, not holding the plane up.",
+          "correct": true,
+          "feedback": "A wing lifts as air flows past it, engine or not. A plane's engines only push it forward against drag."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "birds-and-planes-s2",
+    "claimIds": [
+      "birds-and-planes-c1",
+      "birds-and-planes-c4"
+    ],
+    "twist": {
+      "stem": "A pigeon flying along stops flapping and holds its wings out still. What happens next?",
+      "hint": "Which job did the flapping do, besides lift?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It glides, slowing down with no push ahead.",
+          "correct": true,
+          "feedback": "Still wings can make lift as air flows past, so it glides. But with no flapping, nothing pushes it ahead, so it slows."
+        },
+        {
+          "id": "b",
+          "text": "It drops at once, as still wings make no lift.",
+          "correct": false,
+          "feedback": "A still wing can lift as air flows past it, like a plane's wing. The pigeon glides, but slows with no push."
+        },
+        {
+          "id": "c",
+          "text": "It keeps its speed, since flaps just hold it up.",
+          "correct": false,
+          "feedback": "Flaps also push a bird forward, since it has no engine. Without them it slows as it glides."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "On a railway platform in Lucknow, a crow takes off as a train pulls in. Why does it beat its wings much harder at first than once it is flying along?",
+      "hint": "It has no engine and starts at rest.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Fast flaps make lift; the forward push comes later from gliding.",
+          "correct": false,
+          "feedback": "Gliding gives no forward push. The crow's own tilted strokes must push it ahead as well as lift it."
+        },
+        {
+          "id": "b",
+          "text": "Its wings must give both lift and the push to speed up.",
+          "correct": true,
+          "feedback": "A bird has no engine, so at takeoff its wing strokes must lift it and also speed it up from rest."
+        },
+        {
+          "id": "c",
+          "text": "It is warming up its wing muscles before the flight.",
+          "correct": false,
+          "feedback": "The hard strokes do real work. With no engine, its wings must give the lift and the push to speed up."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "birds-and-planes-s3",
+    "claimIds": [
+      "birds-and-planes-c5"
+    ],
+    "twist": {
+      "stem": "Suppose you could chart a small parrot's power use through one wingbeat. What would the chart look like?",
+      "hint": "Which half pushes hard on the air?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Even through the whole beat, as both halves work.",
+          "correct": false,
+          "feedback": "The two halves are very different. The downstroke uses nearly all the power, while the upstroke costs almost none."
+        },
+        {
+          "id": "b",
+          "text": "A big burst going up, since raising the heavy wings is hard.",
+          "correct": false,
+          "feedback": "Raising the wings is the light half. The downstroke, which pushes on the air, uses nearly all the power."
+        },
+        {
+          "id": "c",
+          "text": "A big burst going down, then almost none going up.",
+          "correct": true,
+          "feedback": "The downstroke pushes hard on the air and uses nearly all the power. The upstroke is a light reset that costs almost nothing."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A school robotics club in Pune builds a flapping toy bird modelled on a small parrot. Where does most of its motor power need to go?",
+      "hint": "Copy the half of the wingbeat that does the work.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Into the downward stroke of the wings.",
+          "correct": true,
+          "feedback": "In a small parrot, the downstroke uses nearly all the power, while the upstroke is a light reset that costs almost none."
+        },
+        {
+          "id": "b",
+          "text": "Into the upward stroke, to raise the wings.",
+          "correct": false,
+          "feedback": "Raising the wings is the light reset. The downstroke pushes on the air, and it needs nearly all the power."
+        },
+        {
+          "id": "c",
+          "text": "Split evenly, since both halves push air.",
+          "correct": false,
+          "feedback": "In small parrots the halves are far from even. Nearly all the power goes into the downstroke."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ceiling-fans-s1",
+    "claimIds": [
+      "ceiling-fans-c2"
+    ],
+    "twist": {
+      "stem": "A fan blows on a cold glass of nimbu pani in a warm room. What can the breeze do to the drink?",
+      "hint": "How warm is the air the fan pushes?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep it colder for longer, as a breeze cools things.",
+          "correct": false,
+          "feedback": "A fan adds no cold. Its breeze is room air, which is warmer than the drink, so it cannot keep it colder."
+        },
+        {
+          "id": "b",
+          "text": "Bring it toward room heat, never colder.",
+          "correct": true,
+          "feedback": "A fan only pushes the room's own air, which is warmer than the drink. It cannot make the drink colder than the room."
+        },
+        {
+          "id": "c",
+          "text": "Chill it a little below room heat.",
+          "correct": false,
+          "feedback": "A breeze is just the room's own air moving. It cannot take a dry drink below room heat."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a small dairy shop in Surat, the fridge breaks down on a hot day. The owner points a strong fan at the milk crates to keep the milk as cool as a fridge would. Will it work?",
+      "hint": "Where does the fan's air come from?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, if the fan runs on full speed.",
+          "correct": false,
+          "feedback": "More speed moves more of the same warm air. A fan adds no cold, so it cannot match a fridge."
+        },
+        {
+          "id": "b",
+          "text": "Partly, as the fan makes the air a few degrees colder.",
+          "correct": false,
+          "feedback": "A fan's blades just push the shop's own air along. The air is no colder, so the milk still warms."
+        },
+        {
+          "id": "c",
+          "text": "No, it blows warm shop air, so the milk warms.",
+          "correct": true,
+          "feedback": "A fan only moves the air already in the shop. That air is warm, so the milk heats up toward it."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ceiling-fans-s2",
+    "claimIds": [
+      "ceiling-fans-c3"
+    ],
+    "twist": {
+      "stem": "In a hot Nagpur office, Rohit sits under the fan and feels cooler. A colleague decides the fan must have chilled the air by a few degrees. What is the flaw?",
+      "hint": "What changed on Rohit, not in the room?",
+      "options": [
+        {
+          "id": "a",
+          "text": "His sweat dried; the air stayed as warm.",
+          "correct": true,
+          "feedback": "A breeze dries sweat faster, and drying sweat carries heat from the skin. The room air is no colder than before."
+        },
+        {
+          "id": "b",
+          "text": "None; a fan's breeze is a few degrees colder.",
+          "correct": false,
+          "feedback": "A fan only moves the room's own air. He feels cooler because his sweat dries, not because the air got colder."
+        },
+        {
+          "id": "c",
+          "text": "A fan chills the air, but just close to the blades.",
+          "correct": false,
+          "feedback": "A fan does not chill air anywhere. The breeze helps sweat dry off his skin, which takes heat away."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "On a non-AC sleeper train in summer, Sunil's berth fan runs all day. When does the fan cool him more: after hours of sitting still, or just after he climbs up with heavy bags and sweats?",
+      "hint": "What does the breeze need on skin to work?",
+      "options": [
+        {
+          "id": "a",
+          "text": "While sitting still, as a calm body takes in cool air better.",
+          "correct": false,
+          "feedback": "The fan's air is no cooler either way. The cooling comes from drying sweat, and he has more after the climb."
+        },
+        {
+          "id": "b",
+          "text": "After the climb, when there is sweat to dry.",
+          "correct": true,
+          "feedback": "A fan cools mostly by drying sweat, which takes heat from the skin. More sweat on his skin means more cooling."
+        },
+        {
+          "id": "c",
+          "text": "No difference, since the fan's air is the same.",
+          "correct": false,
+          "feedback": "The air is the same, but the cooling comes from sweat drying. After the climb there is more sweat to dry."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ceiling-fans-s3",
+    "claimIds": [
+      "ceiling-fans-c7"
+    ],
+    "twist": {
+      "stem": "Just after a monsoon shower in Pune, the room is a degree cooler than before. Yet the fan feels weaker than it did before the rain. What explains it?",
+      "hint": "Think about the water already in the air.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A fan cools best when the air is hottest.",
+          "correct": false,
+          "feedback": "Heat is not what weakens the fan here. Damp air slows the drying of sweat, so the same breeze cools less."
+        },
+        {
+          "id": "b",
+          "text": "The rain cooled the room, so the fan has less to do.",
+          "correct": false,
+          "feedback": "A fan cools people by drying sweat, not by cooling rooms. Damp air slows that drying, so it feels weaker."
+        },
+        {
+          "id": "c",
+          "text": "The damper air slows how fast sweat dries.",
+          "correct": true,
+          "feedback": "After rain the air holds more water, so sweat dries slowly. The breeze then takes less heat from the skin, even in cooler air."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Two cricket squads train in the same heat, one in dry air in Nagpur, one in sticky, humid air in Kochi. Both use the same fans at the break. Which squad gets more cooling from them?",
+      "hint": "Where can skin get rid of its water faster?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The Nagpur squad, in the drier air.",
+          "correct": true,
+          "feedback": "Sweat dries faster in dry air, and drying sweat carries heat away. In humid air it dries slowly, so the fans cool less."
+        },
+        {
+          "id": "b",
+          "text": "The Kochi squad, since moist air feels cooler.",
+          "correct": false,
+          "feedback": "Moist air slows the drying of sweat, so the same breeze takes less heat away. The drier side cools more."
+        },
+        {
+          "id": "c",
+          "text": "Both the same, as the fans and heat match.",
+          "correct": false,
+          "feedback": "The fans match, but the air does not. In humid air sweat dries slowly, so those fans cool less."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "upi-path-s1",
+    "claimIds": [
+      "upi-path-c1",
+      "upi-path-c6"
+    ],
+    "twist": {
+      "stem": "Priya deletes her UPI app from her phone. What happens to the money friends sent to her UPI ID last week?",
+      "hint": "Where does an address lead?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It goes away along with the app.",
+          "correct": false,
+          "feedback": "The app only sends requests. The money was paid into her bank account, so it stays there."
+        },
+        {
+          "id": "b",
+          "text": "It stays in her bank account.",
+          "correct": true,
+          "feedback": "A UPI ID is an address that points to a bank account. The money sits in the bank, not in the app or the ID."
+        },
+        {
+          "id": "c",
+          "text": "It waits inside her UPI ID until she reinstalls the app.",
+          "correct": false,
+          "feedback": "A UPI ID holds no money; it just points to her bank account, where the money already is."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Ramesh sells vegetables from a cart in a Bihar village. He closes his old bank account and opens a new one, but keeps his printed UPI ID board. What must happen for payments to reach the new account?",
+      "hint": "Think of an address that has to lead somewhere.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No change, since the money sits in his UPI ID anyway.",
+          "correct": false,
+          "feedback": "A UPI ID does not hold money. It points to a bank account, so it must point to the new one."
+        },
+        {
+          "id": "b",
+          "text": "Buyers must type his new account number each time.",
+          "correct": false,
+          "feedback": "The point of a UPI ID is that buyers do not need his account number. He links the ID to the new account instead."
+        },
+        {
+          "id": "c",
+          "text": "His UPI ID must point to the new account.",
+          "correct": true,
+          "feedback": "A UPI ID is an address he sets, pointing to a linked bank account. It has to point to the new account for money to land there."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "upi-path-s2",
+    "claimIds": [
+      "upi-path-c2",
+      "upi-path-c8"
+    ],
+    "twist": {
+      "stem": "Divya pays her tailor by UPI. Where does the money leave from, and where does it land?",
+      "hint": "Who holds each person's money?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bank account to bank account.",
+          "correct": true,
+          "feedback": "UPI moves money between bank accounts. Her app sends the request, NPCI's network carries it, and the two banks move the money."
+        },
+        {
+          "id": "b",
+          "text": "From her app's balance into the tailor's app.",
+          "correct": false,
+          "feedback": "The apps only send requests. The money moves between the two bank accounts."
+        },
+        {
+          "id": "c",
+          "text": "Into an NPCI account, which holds it for the tailor.",
+          "correct": false,
+          "feedback": "NPCI runs the network that carries the request. The money goes from her bank to the tailor's bank."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Manoj works in Surat and sends money home to his mother in an Odisha village. They use different banks and different UPI apps. Can the money still reach her?",
+      "hint": "Who carries the request across?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It needs them both on the same UPI app.",
+          "correct": false,
+          "feedback": "The app only starts the request. NPCI's network links the banks, so different apps work fine."
+        },
+        {
+          "id": "b",
+          "text": "Yes, the network links the two banks.",
+          "correct": true,
+          "feedback": "NPCI's network links the banks, so any UPI app works with any bank. Her bank pays the money into her account."
+        },
+        {
+          "id": "c",
+          "text": "It needs them both at the same bank.",
+          "correct": false,
+          "feedback": "UPI is built to move money between different banks. NPCI's network carries the request between them."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "upi-path-s3",
+    "claimIds": [
+      "upi-path-c4",
+      "upi-path-c5"
+    ],
+    "twist": {
+      "stem": "Tara's phone is stolen, but the thief does not know her UPI PIN. Can the thief pay from her account?",
+      "hint": "How many checks stand in the way?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, since the phone itself is the key.",
+          "correct": false,
+          "feedback": "The phone is one check, but a payment also needs an approval, usually the UPI PIN. The thief lacks that."
+        },
+        {
+          "id": "b",
+          "text": "Yes, as her bank account is linked to that phone.",
+          "correct": false,
+          "feedback": "Being linked is not enough. Each payment also needs her approval, usually her UPI PIN."
+        },
+        {
+          "id": "c",
+          "text": "No, a payment also needs her approval.",
+          "correct": true,
+          "feedback": "UPI checks two things: the registered phone and an approval, usually the PIN. With only the phone, the thief is still stuck."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Sunita teaches tuition in Nashik, and ten parents pay her fees by UPI. What does she have to do for each fee to arrive?",
+      "hint": "Who is the one paying here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing; the parents approve.",
+          "correct": true,
+          "feedback": "Paying needs the payer's phone and approval. Getting money needs nothing from the person who receives it."
+        },
+        {
+          "id": "b",
+          "text": "Enter her UPI PIN once for each fee.",
+          "correct": false,
+          "feedback": "Her PIN is for money leaving her account. Getting money never needs her PIN."
+        },
+        {
+          "id": "c",
+          "text": "Scan each parent's QR code to pull the fee in.",
+          "correct": false,
+          "feedback": "Getting money never needs a QR scan. The parents scan or type her ID and approve on their own phones."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "phone-camera-s1",
+    "claimIds": [
+      "phone-camera-c1"
+    ],
+    "twist": {
+      "stem": "Ankit photographs a room where one corner sits in deep shadow. What do the sensor spots for that corner give?",
+      "hint": "How does each reading follow the light?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Big signals, since they work harder in the dark.",
+          "correct": false,
+          "feedback": "The spots do not work harder in the dark. Less light means a smaller signal, so the corner looks dark."
+        },
+        {
+          "id": "b",
+          "text": "Small signals, so the corner looks dark.",
+          "correct": true,
+          "feedback": "Each spot's signal grows with the light on it. Little light reaches the shadow, so those signals are small and it looks dark."
+        },
+        {
+          "id": "c",
+          "text": "No reading, since the lens skips dark parts.",
+          "correct": false,
+          "feedback": "The lens just aims light; it skips nothing. The spots there get little light, so they give small signals."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a phone repair shop in Hyderabad, the owner fits a new, clean lens cover on a phone. Yet every photo stays blank black. Which part is most likely at fault?",
+      "hint": "With a clean path in, look one stage further back.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The lens, as it records the picture.",
+          "correct": false,
+          "feedback": "The lens aims light; it records nothing. The sensor chip makes the signals, so it is the likely fault."
+        },
+        {
+          "id": "b",
+          "text": "The screen, as it captures the light.",
+          "correct": false,
+          "feedback": "The screen only shows the photo. The sensor chip turns light into signals, so it is the likely fault."
+        },
+        {
+          "id": "c",
+          "text": "The sensor chip behind the lens.",
+          "correct": true,
+          "feedback": "The lens only aims light. The sensor chip turns that light into signals, so a dead chip gives a black photo."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "phone-camera-s2",
+    "claimIds": [
+      "phone-camera-c2"
+    ],
+    "twist": {
+      "stem": "Pure red light shines on a sensor spot that sits under a green filter. The spot reads almost nothing. Why?",
+      "hint": "What does a coloured cover let through?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Its green filter blocks the red light.",
+          "correct": true,
+          "feedback": "Each spot sees only through its own colour filter. A green filter keeps red light out, so that spot reads almost nothing."
+        },
+        {
+          "id": "b",
+          "text": "The spot is faulty, as each spot sees each colour.",
+          "correct": false,
+          "feedback": "Each spot reads light through one colour filter. A green filter blocks red, so a low reading is normal."
+        },
+        {
+          "id": "c",
+          "text": "Red light is too dim for any spot to read.",
+          "correct": false,
+          "feedback": "Spots under red filters read red light well. This spot is under a green filter, which blocks the red."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A Jaipur art teacher builds a big tile mosaic that copies a phone sensor's colour filter grid. What share of the tiles will be red?",
+      "hint": "Count the colours in one 2x2 patch.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A third, one share for each colour.",
+          "correct": false,
+          "feedback": "The three colours are not equal. Each 2x2 patch has two green, one red and one blue, so red is a quarter."
+        },
+        {
+          "id": "b",
+          "text": "A quarter.",
+          "correct": true,
+          "feedback": "Each 2x2 patch has two green, one red and one blue. So one tile in four is red."
+        },
+        {
+          "id": "c",
+          "text": "Half, as red is the main colour.",
+          "correct": false,
+          "feedback": "Green is the colour with half the spots. Red has one spot in each 2x2 patch, so a quarter."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "phone-camera-s3",
+    "claimIds": [
+      "phone-camera-c5"
+    ],
+    "twist": {
+      "stem": "In a dim hall, Raj turns up his phone's ISO, thinking it makes the sensor catch more light. What really happens?",
+      "hint": "Does more light arrive, or does the reading just get bigger?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The spots catch more light, so the photo gets cleaner.",
+          "correct": false,
+          "feedback": "ISO does not make the sensor more sensitive. It turns up the weak signal, and the speckle with it."
+        },
+        {
+          "id": "b",
+          "text": "The lens opens wider to let in more light.",
+          "correct": false,
+          "feedback": "Most phone lenses have a fixed opening. ISO just turns up the signal, which also turns up the speckle."
+        },
+        {
+          "id": "c",
+          "text": "It turns up the weak signal, speckle and all.",
+          "correct": true,
+          "feedback": "A higher ISO multiplies the signal but does not make the sensor catch more light. The speckle is boosted too, so it looks grainy."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "During a power cut at a family dinner in Bhopal, Imran takes a photo by candlelight. The lights come back, and he takes one more. Both look equally bright. Which has more grain?",
+      "hint": "Which one had to be turned up more?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The candlelight one, boosted from a weak signal.",
+          "correct": true,
+          "feedback": "In dim light the signal is weak, so the phone turns it up a lot. That boosts the speckle too, giving more grain."
+        },
+        {
+          "id": "b",
+          "text": "The bright one, since more light means more speckle.",
+          "correct": false,
+          "feedback": "More light gives a strong signal that needs little boost. The candlelight photo needed a big boost, so it is grainier."
+        },
+        {
+          "id": "c",
+          "text": "Both the same, since they look equally bright.",
+          "correct": false,
+          "feedback": "Same brightness can hide a big boost. The candlelight photo was turned up more, which adds grain."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sky-colours-s1",
+    "claimIds": [
+      "sky-colours-c3"
+    ],
+    "twist": {
+      "stem": "Light from a pure red bulb goes through a glass prism. What comes out the other side?",
+      "hint": "What was mixed in the light to begin with?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A full rainbow, since prisms make colours.",
+          "correct": false,
+          "feedback": "A prism adds no colours. It only spreads out what is already in the light, and here that is just red."
+        },
+        {
+          "id": "b",
+          "text": "Just red, bent but not spread into a rainbow.",
+          "correct": true,
+          "feedback": "A prism spreads apart colours that are already mixed. Pure red light holds only red, so there is nothing to spread."
+        },
+        {
+          "id": "c",
+          "text": "White light, as the glass cleans the colour out.",
+          "correct": false,
+          "feedback": "Glass does not take colour out or add any. Pure red light stays red after the prism."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In the morning sun, a glass crystal hung up for Diwali in Neha's window throws small rainbows on the wall. Her brother thinks the glass is coloured inside. What is really going on?",
+      "hint": "Was the incoming light white or coloured?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The glass holds hidden dyes that the light picks up.",
+          "correct": false,
+          "feedback": "Clear glass holds no dyes. The colours were already in the sunlight; the glass spreads them apart."
+        },
+        {
+          "id": "b",
+          "text": "The glass adds colours as the light bends through it.",
+          "correct": false,
+          "feedback": "Glass adds no colours. White sunlight is already a mix, and the glass only spreads it out."
+        },
+        {
+          "id": "c",
+          "text": "The glass spreads apart colours already in sunlight.",
+          "correct": true,
+          "feedback": "White sunlight is a mix of colours, each with its own wave length. The glass, like a prism, spreads them apart."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sky-colours-s2",
+    "claimIds": [
+      "sky-colours-c1",
+      "sky-colours-c6"
+    ],
+    "twist": {
+      "stem": "Imagine air scattered red light far more than blue. What colour would a clear daytime sky be?",
+      "hint": "The sky's colour is whatever the air throws around.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reddish, since red would reach us from all over.",
+          "correct": true,
+          "feedback": "The sky looks blue because air scatters blue all over. If red scattered most, red would come from the whole sky."
+        },
+        {
+          "id": "b",
+          "text": "Still blue, as the sky takes its colour from the sea.",
+          "correct": false,
+          "feedback": "The sea does not colour the sky. The air scatters some colours more, and that scattered light is the sky's colour."
+        },
+        {
+          "id": "c",
+          "text": "White, since the colours would mix.",
+          "correct": false,
+          "feedback": "White needs all colours scattered about the same, as in clouds. Air scattering red most would make a reddish sky."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Flying to Guwahati for work, Jaya looks out of the plane window. The sky above is blue, but the cloud tops below are bright white. Why the difference?",
+      "hint": "Compare the size of the bits that do the scattering.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Clouds reflect the white Sun, while air reflects the blue sea.",
+          "correct": false,
+          "feedback": "The sea does not colour the sky. Air scatters blue most, and big cloud drops scatter all colours, so clouds look white."
+        },
+        {
+          "id": "b",
+          "text": "Big drops scatter all colours; air, mostly blue.",
+          "correct": true,
+          "feedback": "Tiny air molecules scatter short blue waves most. Big cloud droplets scatter all colours about the same, so they look white."
+        },
+        {
+          "id": "c",
+          "text": "Sunlight up above the clouds is bluer than the light below.",
+          "correct": false,
+          "feedback": "It is the same sunlight. Air scatters its blue, while big cloud drops scatter every colour alike."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sky-colours-s3",
+    "claimIds": [
+      "sky-colours-c2"
+    ],
+    "twist": {
+      "stem": "At noon the Sun looks white-yellow; at sunset it looks orange. Is the Sun giving off different light in the evening?",
+      "hint": "What changes between the Sun and you?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, the Sun cools off in the evening, so it glows red.",
+          "correct": false,
+          "feedback": "The Sun does not change through the day. Its low light crosses more air, which scatters out the blue."
+        },
+        {
+          "id": "b",
+          "text": "Yes, evening air adds red to the sunlight.",
+          "correct": false,
+          "feedback": "Air adds no colour. It scatters away blue, and the long evening path leaves mostly red and orange."
+        },
+        {
+          "id": "c",
+          "text": "No; its light crosses far more air at sunset.",
+          "correct": true,
+          "feedback": "It is the same sunlight. When the Sun is low, its light takes a longer path through air, which scatters out most of the blue."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A fisherwoman in Puri heads out at dawn. The rising Sun looks deep red over the sea, but an hour later it looks yellow-white. Why?",
+      "hint": "How long is the trip through air at each time?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Its low light crosses more air.",
+          "correct": true,
+          "feedback": "When the Sun is low, its light takes a long path through air, which scatters out most blue. Higher up, the path is shorter."
+        },
+        {
+          "id": "b",
+          "text": "The sea reflects red onto the Sun at dawn.",
+          "correct": false,
+          "feedback": "The sea does not colour the Sun. Its low light crosses a long path of air, which scatters away the blue."
+        },
+        {
+          "id": "c",
+          "text": "The Sun is cooler at dawn and heats up as it climbs.",
+          "correct": false,
+          "feedback": "The Sun gives the same light all day. Near the horizon its light crosses more air, so mostly red gets through."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "pressure-cooker-s1",
+    "claimIds": [
+      "pressure-cooker-c1",
+      "pressure-cooker-c5"
+    ],
+    "twist": {
+      "stem": "In a hill town, a cook turns the flame to full under an open pot, hoping his rice will cook as fast as on the plains. Does it work?",
+      "hint": "What sets the boiling heat, the flame or the air?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, a big flame pushes the water back up to 100°C.",
+          "correct": false,
+          "feedback": "Boiling water stays at the same heat, however big the flame. On hills that heat is below 100°C."
+        },
+        {
+          "id": "b",
+          "text": "No, the water still boils below 100°C.",
+          "correct": true,
+          "feedback": "Thin air lets water boil below 100°C on hills. Once it boils, more flame only boils it off faster, not hotter."
+        },
+        {
+          "id": "c",
+          "text": "Yes, if he also keeps stirring the pot.",
+          "correct": false,
+          "feedback": "Stirring does not raise the boil. The air pressure sets it, and on hills it is below 100°C."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a school lab in Shimla, the students' thermometer reads a few degrees below 100°C in hard-boiling water. Ankit thinks it is broken. What is likelier?",
+      "hint": "How hard does the air press up in the hills?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The flame is too small to reach the true boil.",
+          "correct": false,
+          "feedback": "Once water boils, a bigger flame does not make it hotter. The lower air pressure sets a lower boil."
+        },
+        {
+          "id": "b",
+          "text": "Hill water boils lower because it is so pure.",
+          "correct": false,
+          "feedback": "The water is not the cause. Lower air pressure up high makes any water boil below 100°C."
+        },
+        {
+          "id": "c",
+          "text": "Lower air pressure up there.",
+          "correct": true,
+          "feedback": "The less air presses on water, the lower its boiling point. Up in the hills, water boils below 100°C."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "pressure-cooker-s2",
+    "claimIds": [
+      "pressure-cooker-c2",
+      "pressure-cooker-c3"
+    ],
+    "twist": {
+      "stem": "Halfway through cooking, the cooker's rubber seal gives way and steam leaks out freely. What happens to the heat of the boiling water?",
+      "hint": "What was keeping the boil above 100°C?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It drops back toward 100°C.",
+          "correct": true,
+          "feedback": "Trapped steam raised the pressure and the boil near 121°C. With the steam leaking, the pressure drops and so does the boil."
+        },
+        {
+          "id": "b",
+          "text": "It stays near 121°C while the flame stays high.",
+          "correct": false,
+          "feedback": "The flame does not set the boil; the pressure does. With steam leaking, the boil drops back toward 100°C."
+        },
+        {
+          "id": "c",
+          "text": "It rises, as escaping steam carries cold away.",
+          "correct": false,
+          "feedback": "Steam carries heat out, not cold. Losing the trapped steam lowers the pressure, so the water boils cooler."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A street vendor in Kolkata sells boiled chana and needs big batches soft fast. Why does his pressure cooker save him time?",
+      "hint": "Compare the boiling heat inside and in an open pot.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The pressure forces water into the chana.",
+          "correct": false,
+          "feedback": "The extra push does not drive water in. It raises the boiling point, and the hotter water cooks faster."
+        },
+        {
+          "id": "b",
+          "text": "Its water boils near 121°C.",
+          "correct": true,
+          "feedback": "Trapped steam raises the pressure to about double, so water boils near 121°C. Hotter water cooks faster."
+        },
+        {
+          "id": "c",
+          "text": "The lid keeps the flame's heat from rising off.",
+          "correct": false,
+          "feedback": "A lid alone does not make water boil hotter. The trapped pressure does, lifting the boil to about 121°C."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "pressure-cooker-s3",
+    "claimIds": [
+      "pressure-cooker-c6",
+      "pressure-cooker-c7"
+    ],
+    "twist": {
+      "stem": "A cooker on a high flame whistles again and again. Does the pressure inside climb higher with each whistle?",
+      "hint": "What leaves the cooker with each whistle?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, more whistles mean higher pressure each time.",
+          "correct": false,
+          "feedback": "Each whistle is steam escaping, which stops the pressure climbing. More whistles mean steam keeps being let out."
+        },
+        {
+          "id": "b",
+          "text": "No, it drops lower each time, so cooking stops.",
+          "correct": false,
+          "feedback": "The release only trims the pressure back to the vent level. It holds steady, so cooking goes on."
+        },
+        {
+          "id": "c",
+          "text": "No, it holds steady.",
+          "correct": true,
+          "feedback": "The vent weight lifts at high pressure and lets steam out. That release is the whistle, and it keeps the pressure steady."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a hostel mess kitchen, a cooker of sabudana khichdi has gone quiet: no whistle and no steam, though the flame is high. What is the worry?",
+      "hint": "What can swelling, frothy food do up top?",
+      "options": [
+        {
+          "id": "a",
+          "text": "That froth has blocked the vent.",
+          "correct": true,
+          "feedback": "The vent weight lets steam out to hold the pressure steady. Froth from swelling food can block it, so the steam stays trapped."
+        },
+        {
+          "id": "b",
+          "text": "No worry, since no whistle means the pressure is low.",
+          "correct": false,
+          "feedback": "Silence on a high flame can mean the vent is blocked, not that pressure is low. Froth can block it."
+        },
+        {
+          "id": "c",
+          "text": "The food is done, so the weight has stopped lifting.",
+          "correct": false,
+          "feedback": "The weight does not track when food is done. It lets steam out, and a silent cooker may have a blocked vent."
+        }
+      ]
+    }
+  }
+]

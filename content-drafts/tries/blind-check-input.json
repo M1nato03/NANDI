@@ -1,0 +1,3242 @@
+[
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 3,
+  "stem": "After a short night, which way do the two hunger hormones move?",
+  "options": [
+   "Both go up together.",
+   "Ghrelin down, leptin up.",
+   "Ghrelin up, leptin down."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.twist",
+  "round": 3,
+  "stem": "Light from a pure red bulb goes through a glass prism. What comes out the other side?",
+  "options": [
+   "A full rainbow, since prisms make colours.",
+   "White light, as the glass cleans the colour out.",
+   "Just red, bent but not spread into a rainbow."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.twist",
+  "round": 2,
+  "stem": "At noon the Sun looks white-yellow; at sunset it looks orange. Is the Sun giving off different light in the evening?",
+  "options": [
+   "Yes, the Sun cools off in the evening, so it glows red.",
+   "No; its light crosses far more air at sunset.",
+   "Yes, evening air adds red to the sunlight."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.transfer",
+  "round": 3,
+  "stem": "At a phone repair shop in Hyderabad, the owner fits a new, clean lens cover on a phone. Yet every photo stays blank black. Which part is most likely at fault?",
+  "options": [
+   "The lens, as it records the picture.",
+   "The sensor chip behind the lens.",
+   "The screen, as it captures the light."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.transfer",
+  "round": 2,
+  "stem": "In a school lab in Shimla, the students' thermometer reads a few degrees below 100°C in hard-boiling water. Ankit thinks it is broken. What is likelier?",
+  "options": [
+   "Lower air pressure up there.",
+   "The flame is too small to reach the true boil.",
+   "Hill water boils lower because it is so pure."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.twist",
+  "round": 3,
+  "stem": "Pure red light shines on a sensor spot that sits under a green filter. The spot reads almost nothing. Why?",
+  "options": [
+   "Its green filter blocks the red light.",
+   "The spot is faulty, as each spot sees each colour.",
+   "Red light is too dim for any spot to read."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.twist",
+  "round": 3,
+  "stem": "Sunil has trained for a year. His cousin has just started. Both do the same 10 push-ups. Is it overload for both of them?",
+  "options": [
+   "For both, since 10 push-ups is the same work.",
+   "Just for the cousin.",
+   "For neither, as push-ups use no added weight."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.transfer",
+  "round": 2,
+  "stem": "Over a flooded village in Assam, a relief drone hovers to lower food. Plan A: hover once with two packets, which doubles its weight. Plan B: hover twice as long in all, with one packet at a time. Which uses less battery energy?",
+  "options": [
+   "Both the same, as the total load is the same.",
+   "Plan A, since one hover takes less time.",
+   "Plan B, the lighter and longer hover."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.transfer",
+  "round": 3,
+  "stem": "At Bir Billing in Himachal, a paraglider pilot stays aloft for an hour with no engine at all. What does this show about a plane's engines?",
+  "options": [
+   "Their job is pushing forward, not holding the plane up.",
+   "Paragliders need no lift, as they are so light.",
+   "A plane's engines keep it up; a paraglider just falls slowly."
+  ]
+ },
+ {
+  "id": "lift-s2.transfer",
+  "round": 3,
+  "stem": "In Asha's flat, a ceiling fan hangs from a rod. When the fan runs, its blades push air down at the room. What happens to the pull on the rod?",
+  "options": [
+   "It gets a bit lighter, as the air shoves them upward.",
+   "It gets heavier, since the spinning adds to the weight.",
+   "It stays the same, since air is far too light to push back."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.transfer",
+  "round": 1,
+  "stem": "In a college common room, Farah sits on a free-spinning chair and holds a bicycle wheel flat over her head. She spins the wheel hard with her hand. What does the chair do?",
+  "options": [
+   "It turns the same way, dragged by the wheel.",
+   "It stays still, as her hand and the wheel balance out.",
+   "It turns the other way from the wheel."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.twist",
+  "round": 2,
+  "stem": "Babita trains and eats about 1 g of protein per kilo a day. Where does that sit next to the two figures on the card?",
+  "options": [
+   "Above the need, below the cap.",
+   "Past the point where extra protein still adds muscle.",
+   "Below the basic amount a healthy adult needs."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.transfer",
+  "round": 1,
+  "stem": "Before her Kathak audition, which has fast jumps, Rhea holds each leg stretch for 90 seconds, then waits still for her turn. Which change fits the review?",
+  "options": [
+   "Hold each stretch even longer, to loosen fully.",
+   "Shorter holds, or active moves after them.",
+   "Stretch harder, then rest still until her turn."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.twist",
+  "round": 2,
+  "stem": "A drone hovers while carrying a parcel. It lets the parcel drop, and the rotors keep the same push as before. What happens next?",
+  "options": [
+   "It climbs, as push now beats weight.",
+   "It tips over, because it is now off balance.",
+   "It stays put, since a hover takes no real push from the rotors."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.twist",
+  "round": 2,
+  "stem": "Ishita, 20, and her father, 55, do the same strength session. How does the rise in muscle building tend to compare?",
+  "options": [
+   "His rise is smaller.",
+   "Bigger, since he has more to rebuild.",
+   "It tends to be the same, as the session matched."
+  ]
+ },
+ {
+  "id": "showing-up-s2.twist",
+  "round": 3,
+  "stem": "Neha does her push-ups at random times: some days at dawn, some at night. After two months they still feel like a chore to start. What is the likely reason?",
+  "options": [
+   "Push-ups are too hard to become a habit.",
+   "No steady cue sets them off.",
+   "Two months is far too short for any habit."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.transfer",
+  "round": 3,
+  "stem": "On a long summer pilgrimage walk to Pandharpur, Ganesh sweats a lot all day. What is the easiest way to put back the salt he loses?",
+  "options": [
+   "By gulping big amounts of water at each stop.",
+   "With his meals and salty snacks.",
+   "No need, since water alone puts the salt back."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.twist",
+  "round": 1,
+  "stem": "Light from a pure red bulb goes through a glass prism. What comes out the other side?",
+  "options": [
+   "Just red, bent but not spread into a rainbow.",
+   "A full rainbow, since prisms make colours.",
+   "White light, as the glass cleans the colour out."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.twist",
+  "round": 3,
+  "stem": "A drone's battery is half used up. From now on, its motors draw half the power they drew before. How long will what is left last?",
+  "options": [
+   "As long as a full battery at the old power.",
+   "Half as long, since half the energy is gone.",
+   "A quarter as long, since both numbers halved."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.transfer",
+  "round": 3,
+  "stem": "A fisherwoman in Puri heads out at dawn. The rising Sun looks deep red over the sea, but an hour later it looks yellow-white. Why?",
+  "options": [
+   "The Sun is cooler at dawn and heats up as it climbs.",
+   "The sea reflects red onto the Sun at dawn.",
+   "Its low light crosses more air."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.transfer",
+  "round": 3,
+  "stem": "A street vendor in Kolkata sells boiled chana and needs big batches soft fast. Why does his pressure cooker save him time?",
+  "options": [
+   "The pressure forces water into the chana.",
+   "Its water boils near 121°C.",
+   "The lid keeps the flame's heat from rising off."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.twist",
+  "round": 2,
+  "stem": "After a month back, Kavya's brisk 20-minute walks feel easy. What is the next step in the build-up order?",
+  "options": [
+   "Switch to fast running right away.",
+   "Walk a few more minutes, or one more day.",
+   "Keep it the same, since any change risks injury."
+  ]
+ },
+ {
+  "id": "food-labels-s2.transfer",
+  "round": 1,
+  "stem": "Buying breakfast at a Chennai supermarket, Suresh picks a masala oats pack. The front stresses 'with real almonds' and shows turmeric and pepper. Which needs a % on the label?",
+  "options": [
+   "The almonds, but not the spices.",
+   "None, since oats are the main ingredient.",
+   "The almonds, turmeric and pepper, since each is shown."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.twist",
+  "round": 3,
+  "stem": "Before a jump test, one group holds each stretch for 90 seconds and another for 20 seconds. How did the average drops compare in the review?",
+  "options": [
+   "The short holds cost more, as they feel rushed.",
+   "About the same, since any still hold costs the same.",
+   "The long holds cost about four times as much."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.twist",
+  "round": 1,
+  "stem": "A drone sits on a table all afternoon while a storm rolls in. Its barometer reading slowly drifts lower. What could the drone wrongly think?",
+  "options": [
+   "That it has sunk below the table.",
+   "That it has risen a little, though it never moved.",
+   "No change, since weather does not affect air pressure."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.twist",
+  "round": 2,
+  "stem": "A drone's battery is half used up. From now on, its motors draw half the power they drew before. How long will what is left last?",
+  "options": [
+   "A quarter as long, since both numbers halved.",
+   "Half as long, since half the energy is gone.",
+   "As long as a full battery at the old power."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.transfer",
+  "round": 2,
+  "stem": "Before her Kathak audition, which has fast jumps, Rhea holds each leg stretch for 90 seconds, then waits still for her turn. Which change fits the review?",
+  "options": [
+   "Shorter holds, or active moves after them.",
+   "Stretch harder, then rest still until her turn.",
+   "Hold each stretch even longer, to loosen fully."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.twist",
+  "round": 1,
+  "stem": "A plane cruises at a steady speed and height. The pilot eases the engines back a little. What happens first?",
+  "options": [
+   "It drops at once, since the engines hold it up.",
+   "It slows down, as drag now beats the push.",
+   "It holds its speed, as the wings keep it going."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 1,
+  "stem": "After a week of late nights to meet office deadlines, Varun keeps snacking at his desk, though his work is no harder than usual. Which cause fits this step?",
+  "options": [
+   "It is just boredom; sleep plays no part.",
+   "His brain burns far more food when he works late.",
+   "Short sleep shifts hunger hormones."
+  ]
+ },
+ {
+  "id": "lift-s1.twist",
+  "round": 2,
+  "stem": "A small plane comes in to land with a steady wind blowing from behind it. To get the same lift as on a calm day, what ground speed does it need?",
+  "options": [
+   "The same one, since lift comes from the plane's own speed.",
+   "A lower one, since the wind helps push it along.",
+   "A higher one, since the wind cuts the air flowing past."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.twist",
+  "round": 1,
+  "stem": "After a hot match, Kunal is not thirsty, but he forces down two litres at once to catch up. What is the problem?",
+  "options": [
+   "He needed salt water instead of food.",
+   "None, since more water is the safer choice.",
+   "Forcing water when not thirsty raises risk."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 3,
+  "stem": "In harvest season, a farmer in Haryana works long days in the fields and sleeps about 5 hours a night. What do the short nights cut into?",
+  "options": [
+   "Just his energy, not any repair.",
+   "Time his body uses to fix tissue in deep sleep.",
+   "No real repair, since that matters for athletes."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.twist",
+  "round": 3,
+  "stem": "Halfway through cooking, the cooker's rubber seal gives way and steam leaks out freely. What happens to the heat of the boiling water?",
+  "options": [
+   "It drops back toward 100°C.",
+   "It rises, as escaping steam carries cold away.",
+   "It stays near 121°C while the flame stays high."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.twist",
+  "round": 2,
+  "stem": "Hari does the same strength routine each week. Which sign tells him it is time to grow the work?",
+  "options": [
+   "His usual sets feel easy.",
+   "A month has passed, however the sets feel.",
+   "His legs still ache after each workout."
+  ]
+ },
+ {
+  "id": "showing-up-s1.twist",
+  "round": 2,
+  "stem": "After work, Mohan can only manage a slow stroll, not a brisk walk. Is it worth it?",
+  "options": [
+   "Yes, but just if it lasts 10 minutes or more.",
+   "Yes, some movement beats sitting.",
+   "No, as just brisk bouts give any gain."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.transfer",
+  "round": 2,
+  "stem": "On a non-AC sleeper train in summer, Sunil's berth fan runs all day. When does the fan cool him more: after hours of sitting still, or just after he climbs up with heavy bags and sweats?",
+  "options": [
+   "After the climb, when there is sweat to dry.",
+   "No difference, since the fan's air is the same.",
+   "While sitting still, as a calm body takes in cool air better."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.twist",
+  "round": 1,
+  "stem": "A drone hovers while carrying a parcel. It lets the parcel drop, and the rotors keep the same push as before. What happens next?",
+  "options": [
+   "It stays put, since a hover takes no real push from the rotors.",
+   "It tips over, because it is now off balance.",
+   "It climbs, as push now beats weight."
+  ]
+ },
+ {
+  "id": "showing-up-s1.transfer",
+  "round": 2,
+  "stem": "Ankur works in a Pune office. Several times a day, he takes the stairs to the third floor briskly instead of the lift. A colleague thinks it is too short to matter. Does it count?",
+  "options": [
+   "No, as planned workouts are what count.",
+   "It counts if each climb lasts 10 minutes.",
+   "Yes, brisk bouts of any length add up."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.twist",
+  "round": 1,
+  "stem": "Deepa ran 150 minutes a week, then took two weeks off for exams. Now she plans to go straight back to 150. How big is that jump next to what she has been doing lately?",
+  "options": [
+   "No jump, since the body keeps the old amount.",
+   "Small, since 150 minutes was her old normal.",
+   "Big, next to almost nothing."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 3,
+  "stem": "Which of these nights falls inside the adult range?",
+  "options": [
+   "11 pm to 7 am.",
+   "12:30 am to 6 am.",
+   "2 am to 8:30 am."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.transfer",
+  "round": 1,
+  "stem": "Kiran plays a hard kabaddi match on Saturday evening. On Sunday she sits at her desk all day studying. What may be going on in her muscles on Sunday?",
+  "options": [
+   "Building waits until her soreness has faded away.",
+   "Building is still switched on.",
+   "No building, since growth happens during the match."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.transfer",
+  "round": 3,
+  "stem": "In a hostel mess kitchen, a cooker of sabudana khichdi has gone quiet: no whistle and no steam, though the flame is high. What is the worry?",
+  "options": [
+   "No worry, since no whistle means the pressure is low.",
+   "The food is done, so the weight has stopped lifting.",
+   "That froth has blocked the vent."
+  ]
+ },
+ {
+  "id": "showing-up-s3.transfer",
+  "round": 3,
+  "stem": "Each night, Kabir writes down what he spent that day. He skips one night because of a cousin's wedding. What happens to the habit?",
+  "options": [
+   "It is broken, so he has to restart the count.",
+   "It carries on if he writes again the next night.",
+   "It carries on, as long as he makes up the missed night."
+  ]
+ },
+ {
+  "id": "food-labels-s3.twist",
+  "round": 1,
+  "stem": "A serving's label shows 40% next to added sugars. About how many grams of added sugar is that serving?",
+  "options": [
+   "About 20 g.",
+   "About 25 g.",
+   "About 40 g."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.twist",
+  "round": 2,
+  "stem": "A hovering drone tips its nose down to fly forward but keeps the same total push as in its hover. What happens to its height?",
+  "options": [
+   "It holds its height, since the total push has not changed.",
+   "It climbs, since moving forward adds to its lift.",
+   "It drifts lower, with less of its thrust aimed up."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.transfer",
+  "round": 1,
+  "stem": "In a school lab in Shimla, the students' thermometer reads a few degrees below 100°C in hard-boiling water. Ankit thinks it is broken. What is likelier?",
+  "options": [
+   "Lower air pressure up there.",
+   "The flame is too small to reach the true boil.",
+   "Hill water boils lower because it is so pure."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.twist",
+  "round": 3,
+  "stem": "Just after a monsoon shower in Pune, the room is a degree cooler than before. Yet the fan feels weaker than it did before the rain. What explains it?",
+  "options": [
+   "The rain cooled the room, so the fan has less to do.",
+   "The damper air slows how fast sweat dries.",
+   "A fan cools best when the air is hottest."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.transfer",
+  "round": 1,
+  "stem": "Two cricket squads train in the same heat, one in dry air in Nagpur, one in sticky, humid air in Kochi. Both use the same fans at the break. Which squad gets more cooling from them?",
+  "options": [
+   "The Nagpur squad, in the drier air.",
+   "The Kochi squad, since moist air feels cooler.",
+   "Both the same, as the fans and heat match."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.twist",
+  "round": 3,
+  "stem": "A hovering drone tips its nose down to fly forward but keeps the same total push as in its hover. What happens to its height?",
+  "options": [
+   "It drifts lower, with less of its thrust aimed up.",
+   "It climbs, since moving forward adds to its lift.",
+   "It holds its height, since the total push has not changed."
+  ]
+ },
+ {
+  "id": "lift-s2.transfer",
+  "round": 2,
+  "stem": "In Asha's flat, a ceiling fan hangs from a rod. When the fan runs, its blades push air down at the room. What happens to the pull on the rod?",
+  "options": [
+   "It gets a bit lighter, as the air shoves them upward.",
+   "It gets heavier, since the spinning adds to the weight.",
+   "It stays the same, since air is far too light to push back."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.twist",
+  "round": 1,
+  "stem": "Babita trains and eats about 1 g of protein per kilo a day. Where does that sit next to the two figures on the card?",
+  "options": [
+   "Past the point where extra protein still adds muscle.",
+   "Above the need, below the cap.",
+   "Below the basic amount a healthy adult needs."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.twist",
+  "round": 1,
+  "stem": "A drone's battery is already about two thirds of its mass. A friend suggests a bigger battery for a longer flight. In the simple model, what happens?",
+  "options": [
+   "The time rises, since more energy is on board.",
+   "The time stays the same, as energy and weight cancel out.",
+   "The time drops, as it moves past the peak."
+  ]
+ },
+ {
+  "id": "lift-s1.transfer",
+  "round": 3,
+  "stem": "Gulab sells kites in a Lucknow market. In his still shop, he points a pedestal fan at a kite on the counter, and it rises with nobody running. What does this show?",
+  "options": [
+   "Air moving past it is enough, even when it stays put.",
+   "A kite needs a person to pull it forward before it lifts.",
+   "The fan blows it up from below, which is a push, not lift."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 1,
+  "stem": "Sports day is the morning after a family wedding. Plan A: leave the wedding at 2 am and wake at the usual 8. Plan B: sleep at the usual 10 but wake at 4 to drive back. Which tends to hurt play less?",
+  "options": [
+   "Waking at 4, since the bedtime stays normal.",
+   "Leaving late and waking at the usual time.",
+   "Both the same, as each loses sleep."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.transfer",
+  "round": 3,
+  "stem": "A wildlife team in Kaziranga flies a survey drone whose battery is half its mass. They swap in a battery of the same weight that stores more energy. Does the peak rule stop this helping?",
+  "options": [
+   "Yes, since a battery that stores more draws more power from it.",
+   "Yes, more energy past a point cuts the time.",
+   "No, its weight is unchanged."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.transfer",
+  "round": 2,
+  "stem": "In a college common room, Farah sits on a free-spinning chair and holds a bicycle wheel flat over her head. She spins the wheel hard with her hand. What does the chair do?",
+  "options": [
+   "It turns the other way from the wheel.",
+   "It stays still, as her hand and the wheel balance out.",
+   "It turns the same way, dragged by the wheel."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.twist",
+  "round": 3,
+  "stem": "At noon the Sun looks white-yellow; at sunset it looks orange. Is the Sun giving off different light in the evening?",
+  "options": [
+   "Yes, evening air adds red to the sunlight.",
+   "No; its light crosses far more air at sunset.",
+   "Yes, the Sun cools off in the evening, so it glows red."
+  ]
+ },
+ {
+  "id": "showing-up-s2.transfer",
+  "round": 2,
+  "stem": "Ishaan wants a daily habit of reading a few pages of a novel. Which plan fits this step best?",
+  "options": [
+   "A whole chapter whenever he has free time.",
+   "A big goal: twenty books by the end of the year.",
+   "Two pages right after his evening chai."
+  ]
+ },
+ {
+  "id": "showing-up-s2.transfer",
+  "round": 1,
+  "stem": "Ishaan wants a daily habit of reading a few pages of a novel. Which plan fits this step best?",
+  "options": [
+   "Two pages right after his evening chai.",
+   "A big goal: twenty books by the end of the year.",
+   "A whole chapter whenever he has free time."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.twist",
+  "round": 1,
+  "stem": "At noon the Sun looks white-yellow; at sunset it looks orange. Is the Sun giving off different light in the evening?",
+  "options": [
+   "No; its light crosses far more air at sunset.",
+   "Yes, the Sun cools off in the evening, so it glows red.",
+   "Yes, evening air adds red to the sunlight."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.transfer",
+  "round": 1,
+  "stem": "On a non-AC sleeper train in summer, Sunil's berth fan runs all day. When does the fan cool him more: after hours of sitting still, or just after he climbs up with heavy bags and sweats?",
+  "options": [
+   "After the climb, when there is sweat to dry.",
+   "No difference, since the fan's air is the same.",
+   "While sitting still, as a calm body takes in cool air better."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.twist",
+  "round": 3,
+  "stem": "Suppose you could chart a small parrot's power use through one wingbeat. What would the chart look like?",
+  "options": [
+   "A big burst going up, since raising the heavy wings is hard.",
+   "A big burst going down, then almost none going up.",
+   "Even through the whole beat, as both halves work."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.twist",
+  "round": 2,
+  "stem": "On a walk, Aditi can easily sing a full song. What effort is that?",
+  "options": [
+   "Lighter than moderate.",
+   "Vigorous, since singing takes breath.",
+   "Moderate, since she is out walking."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.transfer",
+  "round": 1,
+  "stem": "A supplement seller in a Kanpur gym pushes Arif, who weighs 80 kg and trains, to take 200 g of protein a day for faster gains. What does the step show about this?",
+  "options": [
+   "Past about 128 g, extra protein added no more muscle.",
+   "More protein, more muscle, so 200 g beats 128 g.",
+   "It is too little, as he needs 1.6 g per gram of muscle."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.transfer",
+  "round": 2,
+  "stem": "Two cricket squads train in the same heat, one in dry air in Nagpur, one in sticky, humid air in Kochi. Both use the same fans at the break. Which squad gets more cooling from them?",
+  "options": [
+   "Both the same, as the fans and heat match.",
+   "The Kochi squad, since moist air feels cooler.",
+   "The Nagpur squad, in the drier air."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 1,
+  "stem": "Before a district final, Neeraj sleeps badly for just one night. Does a single short night matter, by the review of athletes?",
+  "options": [
+   "No, it takes weeks of short sleep before play drops.",
+   "Yes, even one night lowered play.",
+   "No, match nerves tend to keep him just as sharp."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.transfer",
+  "round": 2,
+  "stem": "Flying to Guwahati for work, Jaya looks out of the plane window. The sky above is blue, but the cloud tops below are bright white. Why the difference?",
+  "options": [
+   "Clouds reflect the white Sun, while air reflects the blue sea.",
+   "Big drops scatter all colours; air, mostly blue.",
+   "Sunlight up above the clouds is bluer than the light below."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.twist",
+  "round": 2,
+  "stem": "Just after a monsoon shower in Pune, the room is a degree cooler than before. Yet the fan feels weaker than it did before the rain. What explains it?",
+  "options": [
+   "A fan cools best when the air is hottest.",
+   "The rain cooled the room, so the fan has less to do.",
+   "The damper air slows how fast sweat dries."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.transfer",
+  "round": 3,
+  "stem": "On a long tour, a Rajkot cricket academy cancels the boys' strength sessions but keeps handing out protein bars. What happens to the bars' protein, for muscle?",
+  "options": [
+   "It is not used for muscle.",
+   "It keeps building muscle, so training can wait.",
+   "It builds even more muscle while the boys rest."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.transfer",
+  "round": 2,
+  "stem": "In a hostel mess kitchen, a cooker of sabudana khichdi has gone quiet: no whistle and no steam, though the flame is high. What is the worry?",
+  "options": [
+   "The food is done, so the weight has stopped lifting.",
+   "That froth has blocked the vent.",
+   "No worry, since no whistle means the pressure is low."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.twist",
+  "round": 1,
+  "stem": "A coach reads that stretching showed no clear effect on injuries. He decides to drop stretching from warm-ups. What does the review still suggest?",
+  "options": [
+   "Drop it, since it does not cut injuries.",
+   "Make it the whole warm-up, since it stops injuries.",
+   "Keep it, followed by active moves."
+  ]
+ },
+ {
+  "id": "food-labels-s3.transfer",
+  "round": 3,
+  "stem": "A masala chai premix lists 10 g added sugar per sachet. Dadi drinks three cups a day, one sachet each. About what share of the reference day's added sugar is that?",
+  "options": [
+   "About 20%, as the label shows.",
+   "About 60%.",
+   "About 30%."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.twist",
+  "round": 1,
+  "stem": "Sunil has trained for a year. His cousin has just started. Both do the same 10 push-ups. Is it overload for both of them?",
+  "options": [
+   "For both, since 10 push-ups is the same work.",
+   "For neither, as push-ups use no added weight.",
+   "Just for the cousin."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.twist",
+  "round": 3,
+  "stem": "A plane cruises at a steady speed and height. The pilot eases the engines back a little. What happens first?",
+  "options": [
+   "It drops at once, since the engines hold it up.",
+   "It holds its speed, as the wings keep it going.",
+   "It slows down, as drag now beats the push."
+  ]
+ },
+ {
+  "id": "upi-path-s1.transfer",
+  "round": 3,
+  "stem": "Ramesh sells vegetables from a cart in a Bihar village. He closes his old bank account and opens a new one, but keeps his printed UPI ID board. What must happen for payments to reach the new account?",
+  "options": [
+   "No change, since the money sits in his UPI ID anyway.",
+   "His UPI ID must point to the new account.",
+   "Buyers must type his new account number each time."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.transfer",
+  "round": 1,
+  "stem": "In a small dairy shop in Surat, the fridge breaks down on a hot day. The owner points a strong fan at the milk crates to keep the milk as cool as a fridge would. Will it work?",
+  "options": [
+   "Partly, as the fan makes the air a few degrees colder.",
+   "Yes, if the fan runs on full speed.",
+   "No, it blows warm shop air, so the milk warms."
+  ]
+ },
+ {
+  "id": "food-labels-s1.twist",
+  "round": 1,
+  "stem": "A label lists 14 g added sugars and 8 g total sugars. What is wrong with it?",
+  "options": [
+   "The food's own sugar must be 22 g.",
+   "Added sugars cannot be more than the total.",
+   "It is fine, since added sugar is extra on top."
+  ]
+ },
+ {
+  "id": "upi-path-s3.twist",
+  "round": 3,
+  "stem": "Tara's phone is stolen, but the thief does not know her UPI PIN. Can the thief pay from her account?",
+  "options": [
+   "No, a payment also needs her approval.",
+   "Yes, as her bank account is linked to that phone.",
+   "Yes, since the phone itself is the key."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.twist",
+  "round": 1,
+  "stem": "Pure red light shines on a sensor spot that sits under a green filter. The spot reads almost nothing. Why?",
+  "options": [
+   "Its green filter blocks the red light.",
+   "The spot is faulty, as each spot sees each colour.",
+   "Red light is too dim for any spot to read."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.twist",
+  "round": 1,
+  "stem": "Neha felt sick in the heat, so she stopped and rested in the shade. Then she throws up. What now?",
+  "options": [
+   "Wait an hour to see if it passes.",
+   "Drink a lot of water fast, then carry on.",
+   "Get medical help."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.transfer",
+  "round": 2,
+  "stem": "A school robotics club in Pune builds a flapping toy bird modelled on a small parrot. Where does most of its motor power need to go?",
+  "options": [
+   "Split evenly, since both halves push air.",
+   "Into the downward stroke of the wings.",
+   "Into the upward stroke, to raise the wings."
+  ]
+ },
+ {
+  "id": "lift-s2.twist",
+  "round": 1,
+  "stem": "A helicopter hovers over a field. Its spinning blades fling a strong stream of air down at the grass. What holds the helicopter up?",
+  "options": [
+   "The engine, which lifts it with no help from the air.",
+   "Air it sends down, pushing back up on it.",
+   "Low pressure on top, as air there races to catch up."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.transfer",
+  "round": 3,
+  "stem": "An inspection drone flies deep inside a railway tunnel in Jammu, far from any satellite signal. What can its motion sensors still tell it?",
+  "options": [
+   "Its place on a map, from the gyroscope.",
+   "How fast it turns and how its speed changes.",
+   "Very little, since each sensor needs a signal from space."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.twist",
+  "round": 2,
+  "stem": "A fan blows on a cold glass of nimbu pani in a warm room. What can the breeze do to the drink?",
+  "options": [
+   "Chill it a little below room heat.",
+   "Keep it colder for longer, as a breeze cools things.",
+   "Bring it toward room heat, never colder."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.twist",
+  "round": 2,
+  "stem": "Pure red light shines on a sensor spot that sits under a green filter. The spot reads almost nothing. Why?",
+  "options": [
+   "Red light is too dim for any spot to read.",
+   "The spot is faulty, as each spot sees each colour.",
+   "Its green filter blocks the red light."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.twist",
+  "round": 2,
+  "stem": "Halfway through cooking, the cooker's rubber seal gives way and steam leaks out freely. What happens to the heat of the boiling water?",
+  "options": [
+   "It stays near 121°C while the flame stays high.",
+   "It rises, as escaping steam carries cold away.",
+   "It drops back toward 100°C."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.twist",
+  "round": 2,
+  "stem": "A drone hovers still, but it is tipped a little to one side and not turning. Which sensor helps it work out how far it is tipped?",
+  "options": [
+   "The accelerometer.",
+   "The gyroscope, since it feels any tip.",
+   "The barometer, from the air around it."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.twist",
+  "round": 1,
+  "stem": "Suppose you could chart a small parrot's power use through one wingbeat. What would the chart look like?",
+  "options": [
+   "A big burst going up, since raising the heavy wings is hard.",
+   "A big burst going down, then almost none going up.",
+   "Even through the whole beat, as both halves work."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.transfer",
+  "round": 3,
+  "stem": "A school robotics club in Pune builds a flapping toy bird modelled on a small parrot. Where does most of its motor power need to go?",
+  "options": [
+   "Into the downward stroke of the wings.",
+   "Into the upward stroke, to raise the wings.",
+   "Split evenly, since both halves push air."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.transfer",
+  "round": 1,
+  "stem": "On a long tour, a Rajkot cricket academy cancels the boys' strength sessions but keeps handing out protein bars. What happens to the bars' protein, for muscle?",
+  "options": [
+   "It keeps building muscle, so training can wait.",
+   "It is not used for muscle.",
+   "It builds even more muscle while the boys rest."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.twist",
+  "round": 1,
+  "stem": "A hovering drone tips its nose down to fly forward but keeps the same total push as in its hover. What happens to its height?",
+  "options": [
+   "It climbs, since moving forward adds to its lift.",
+   "It drifts lower, with less of its thrust aimed up.",
+   "It holds its height, since the total push has not changed."
+  ]
+ },
+ {
+  "id": "showing-up-s1.twist",
+  "round": 3,
+  "stem": "After work, Mohan can only manage a slow stroll, not a brisk walk. Is it worth it?",
+  "options": [
+   "Yes, some movement beats sitting.",
+   "Yes, but just if it lasts 10 minutes or more.",
+   "No, as just brisk bouts give any gain."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.transfer",
+  "round": 2,
+  "stem": "In a small dairy shop in Surat, the fridge breaks down on a hot day. The owner points a strong fan at the milk crates to keep the milk as cool as a fridge would. Will it work?",
+  "options": [
+   "Partly, as the fan makes the air a few degrees colder.",
+   "No, it blows warm shop air, so the milk warms.",
+   "Yes, if the fan runs on full speed."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 2,
+  "stem": "Which of these nights falls inside the adult range?",
+  "options": [
+   "2 am to 8:30 am.",
+   "12:30 am to 6 am.",
+   "11 pm to 7 am."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.twist",
+  "round": 1,
+  "stem": "A GPS receiver gets two satellite signals. One took a little longer to arrive than the other. What does that tell the receiver?",
+  "options": [
+   "That one is farther away.",
+   "Its place, which is written inside each signal.",
+   "That one's signal is weaker."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.twist",
+  "round": 1,
+  "stem": "In a hot Nagpur office, Rohit sits under the fan and feels cooler. A colleague decides the fan must have chilled the air by a few degrees. What is the flaw?",
+  "options": [
+   "None; a fan's breeze is a few degrees colder.",
+   "A fan chills the air, but just close to the blades.",
+   "His sweat dried; the air stayed as warm."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.twist",
+  "round": 2,
+  "stem": "A plane cruises at a steady speed and height. The pilot eases the engines back a little. What happens first?",
+  "options": [
+   "It holds its speed, as the wings keep it going.",
+   "It drops at once, since the engines hold it up.",
+   "It slows down, as drag now beats the push."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.transfer",
+  "round": 3,
+  "stem": "A building site foreman in Ahmedabad plans the heaviest lifting for a heatwave week. When does that work fit best?",
+  "options": [
+   "Any time, if the work is done quickly.",
+   "Early in the day, with a slow start.",
+   "Midday, to finish fast while workers are fresh."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.transfer",
+  "round": 2,
+  "stem": "On a long tour, a Rajkot cricket academy cancels the boys' strength sessions but keeps handing out protein bars. What happens to the bars' protein, for muscle?",
+  "options": [
+   "It keeps building muscle, so training can wait.",
+   "It is not used for muscle.",
+   "It builds even more muscle while the boys rest."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.twist",
+  "round": 1,
+  "stem": "After a hard run, which finish fits a cool-down?",
+  "options": [
+   "Stopping dead and sitting down at once.",
+   "Easy jogging, then walking.",
+   "A last flat-out sprint to finish strong."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 2,
+  "stem": "Sports day is the morning after a family wedding. Plan A: leave the wedding at 2 am and wake at the usual 8. Plan B: sleep at the usual 10 but wake at 4 to drive back. Which tends to hurt play less?",
+  "options": [
+   "Waking at 4, since the bedtime stays normal.",
+   "Leaving late and waking at the usual time.",
+   "Both the same, as each loses sleep."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.twist",
+  "round": 3,
+  "stem": "A GPS receiver gets two satellite signals. One took a little longer to arrive than the other. What does that tell the receiver?",
+  "options": [
+   "That one's signal is weaker.",
+   "That one is farther away.",
+   "Its place, which is written inside each signal."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.twist",
+  "round": 2,
+  "stem": "Suppose you could chart a small parrot's power use through one wingbeat. What would the chart look like?",
+  "options": [
+   "A big burst going down, then almost none going up.",
+   "Even through the whole beat, as both halves work.",
+   "A big burst going up, since raising the heavy wings is hard."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.transfer",
+  "round": 1,
+  "stem": "A building site foreman in Ahmedabad plans the heaviest lifting for a heatwave week. When does that work fit best?",
+  "options": [
+   "Any time, if the work is done quickly.",
+   "Midday, to finish fast while workers are fresh.",
+   "Early in the day, with a slow start."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.twist",
+  "round": 1,
+  "stem": "To turn its nose, a hovering drone speeds up its clockwise pair but forgets to slow the other pair. What else happens?",
+  "options": [
+   "It just turns, and stays at the same height.",
+   "It turns and also climbs.",
+   "It tilts, then slides off to one side."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.transfer",
+  "round": 3,
+  "stem": "At India Gate's open lawns, Asha's phone map shows her right where she stands. Later, in a narrow lane of Chandni Chowk, it puts her inside the wrong shop. What best explains this?",
+  "options": [
+   "Too many phones in the crowd are sharing the GPS signal.",
+   "The walls block and bounce the signals.",
+   "The map app has fewer details for old lanes like these."
+  ]
+ },
+ {
+  "id": "food-labels-s3.twist",
+  "round": 2,
+  "stem": "A serving's label shows 40% next to added sugars. About how many grams of added sugar is that serving?",
+  "options": [
+   "About 40 g.",
+   "About 20 g.",
+   "About 25 g."
+  ]
+ },
+ {
+  "id": "food-labels-s3.transfer",
+  "round": 1,
+  "stem": "A masala chai premix lists 10 g added sugar per sachet. Dadi drinks three cups a day, one sachet each. About what share of the reference day's added sugar is that?",
+  "options": [
+   "About 30%.",
+   "About 20%, as the label shows.",
+   "About 60%."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.twist",
+  "round": 2,
+  "stem": "Imagine air scattered red light far more than blue. What colour would a clear daytime sky be?",
+  "options": [
+   "Still blue, as the sky takes its colour from the sea.",
+   "White, since the colours would mix.",
+   "Reddish, since red would reach us from all over."
+  ]
+ },
+ {
+  "id": "upi-path-s3.transfer",
+  "round": 1,
+  "stem": "Sunita teaches tuition in Nashik, and ten parents pay her fees by UPI. What does she have to do for each fee to arrive?",
+  "options": [
+   "Nothing; the parents approve.",
+   "Scan each parent's QR code to pull the fee in.",
+   "Enter her UPI PIN once for each fee."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.twist",
+  "round": 3,
+  "stem": "After a hard run, which finish fits a cool-down?",
+  "options": [
+   "Stopping dead and sitting down at once.",
+   "A last flat-out sprint to finish strong.",
+   "Easy jogging, then walking."
+  ]
+ },
+ {
+  "id": "lift-s2.twist",
+  "round": 2,
+  "stem": "A helicopter hovers over a field. Its spinning blades fling a strong stream of air down at the grass. What holds the helicopter up?",
+  "options": [
+   "The engine, which lifts it with no help from the air.",
+   "Air it sends down, pushing back up on it.",
+   "Low pressure on top, as air there races to catch up."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 1,
+  "stem": "After a short night, which way do the two hunger hormones move?",
+  "options": [
+   "Both go up together.",
+   "Ghrelin down, leptin up.",
+   "Ghrelin up, leptin down."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.twist",
+  "round": 1,
+  "stem": "A fan blows on a cold glass of nimbu pani in a warm room. What can the breeze do to the drink?",
+  "options": [
+   "Bring it toward room heat, never colder.",
+   "Chill it a little below room heat.",
+   "Keep it colder for longer, as a breeze cools things."
+  ]
+ },
+ {
+  "id": "lift-s2.transfer",
+  "round": 1,
+  "stem": "In Asha's flat, a ceiling fan hangs from a rod. When the fan runs, its blades push air down at the room. What happens to the pull on the rod?",
+  "options": [
+   "It stays the same, since air is far too light to push back.",
+   "It gets heavier, since the spinning adds to the weight.",
+   "It gets a bit lighter, as the air shoves them upward."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.twist",
+  "round": 1,
+  "stem": "In a hill town, a cook turns the flame to full under an open pot, hoping his rice will cook as fast as on the plains. Does it work?",
+  "options": [
+   "Yes, if he also keeps stirring the pot.",
+   "Yes, a big flame pushes the water back up to 100°C.",
+   "No, the water still boils below 100°C."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.twist",
+  "round": 3,
+  "stem": "Neha felt sick in the heat, so she stopped and rested in the shade. Then she throws up. What now?",
+  "options": [
+   "Get medical help.",
+   "Drink a lot of water fast, then carry on.",
+   "Wait an hour to see if it passes."
+  ]
+ },
+ {
+  "id": "upi-path-s3.twist",
+  "round": 1,
+  "stem": "Tara's phone is stolen, but the thief does not know her UPI PIN. Can the thief pay from her account?",
+  "options": [
+   "Yes, as her bank account is linked to that phone.",
+   "Yes, since the phone itself is the key.",
+   "No, a payment also needs her approval."
+  ]
+ },
+ {
+  "id": "showing-up-s3.twist",
+  "round": 1,
+  "stem": "Pooja's habit plan is a 45-minute run each day. She misses one day and feels like giving up. What does the study point to instead?",
+  "options": [
+   "Start the count again from day one, fresh.",
+   "Make up the missed day with a double run tomorrow.",
+   "A smaller daily step."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.transfer",
+  "round": 2,
+  "stem": "A trek group in Ladakh walks down from a high pass to the valley below. A watch shows the air pressure. What does the reading do, and why?",
+  "options": [
+   "It stays the same, since pressure is set by weather.",
+   "It rises, as more air is now above them.",
+   "It falls, as valleys hold warmer, thinner air."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.transfer",
+  "round": 1,
+  "stem": "At a summer baraat in Jaipur, Kavita's uncle dances in the sun for an hour. Then he feels dizzy and gets a headache. What is the safe move?",
+  "options": [
+   "Gulp a big cold drink and carry on.",
+   "Stop dancing, move into shade, and sip water.",
+   "Keep dancing; it will pass once he sweats more."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.twist",
+  "round": 1,
+  "stem": "Raj rates his brisk walk a 6 today. After months of regular walks at the same speed, what might he rate it?",
+  "options": [
+   "Still 6, since the walk is the same.",
+   "Lower, as fitter people need less effort.",
+   "Higher, as tired muscles build up over months."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.twist",
+  "round": 2,
+  "stem": "A drone carries a heavy camera. With the camera taken off, the drone weighs half as much. About what share of the old hover power does it now need?",
+  "options": [
+   "A bit over a third.",
+   "About half.",
+   "About the same as before."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.transfer",
+  "round": 2,
+  "stem": "A building site foreman in Ahmedabad plans the heaviest lifting for a heatwave week. When does that work fit best?",
+  "options": [
+   "Midday, to finish fast while workers are fresh.",
+   "Early in the day, with a slow start.",
+   "Any time, if the work is done quickly."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.twist",
+  "round": 2,
+  "stem": "Raj rates his brisk walk a 6 today. After months of regular walks at the same speed, what might he rate it?",
+  "options": [
+   "Lower, as fitter people need less effort.",
+   "Higher, as tired muscles build up over months.",
+   "Still 6, since the walk is the same."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.twist",
+  "round": 2,
+  "stem": "To turn its nose, a hovering drone speeds up its clockwise pair but forgets to slow the other pair. What else happens?",
+  "options": [
+   "It just turns, and stays at the same height.",
+   "It tilts, then slides off to one side.",
+   "It turns and also climbs."
+  ]
+ },
+ {
+  "id": "food-labels-s1.transfer",
+  "round": 3,
+  "stem": "Choosing a breakfast cereal for her hostel room, Lata compares two packs. Pack A: 10 g total sugars, 0 g added. Pack B: 8 g total sugars, 8 g added. Which has more sugar put in?",
+  "options": [
+   "Both the same, since each pack has sugar in it.",
+   "Pack B, with 8 g added.",
+   "Pack A, since its total sugars line is higher."
+  ]
+ },
+ {
+  "id": "upi-path-s2.twist",
+  "round": 2,
+  "stem": "Divya pays her tailor by UPI. Where does the money leave from, and where does it land?",
+  "options": [
+   "Into an NPCI account, which holds it for the tailor.",
+   "From her app's balance into the tailor's app.",
+   "Bank account to bank account."
+  ]
+ },
+ {
+  "id": "showing-up-s3.twist",
+  "round": 2,
+  "stem": "Pooja's habit plan is a 45-minute run each day. She misses one day and feels like giving up. What does the study point to instead?",
+  "options": [
+   "A smaller daily step.",
+   "Start the count again from day one, fresh.",
+   "Make up the missed day with a double run tomorrow."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.transfer",
+  "round": 1,
+  "stem": "A fisherwoman in Puri heads out at dawn. The rising Sun looks deep red over the sea, but an hour later it looks yellow-white. Why?",
+  "options": [
+   "The sea reflects red onto the Sun at dawn.",
+   "Its low light crosses more air.",
+   "The Sun is cooler at dawn and heats up as it climbs."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.transfer",
+  "round": 3,
+  "stem": "A supplement seller in a Kanpur gym pushes Arif, who weighs 80 kg and trains, to take 200 g of protein a day for faster gains. What does the step show about this?",
+  "options": [
+   "More protein, more muscle, so 200 g beats 128 g.",
+   "Past about 128 g, extra protein added no more muscle.",
+   "It is too little, as he needs 1.6 g per gram of muscle."
+  ]
+ },
+ {
+  "id": "showing-up-s1.transfer",
+  "round": 3,
+  "stem": "Ankur works in a Pune office. Several times a day, he takes the stairs to the third floor briskly instead of the lift. A colleague thinks it is too short to matter. Does it count?",
+  "options": [
+   "Yes, brisk bouts of any length add up.",
+   "No, as planned workouts are what count.",
+   "It counts if each climb lasts 10 minutes."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.transfer",
+  "round": 2,
+  "stem": "A courier in Mumbai stretches at 8 am before his rounds, sure it will keep him free of strains all day. What does the evidence show?",
+  "options": [
+   "He is right; a morning stretch protects him until night.",
+   "Gains fade fast, and injuries showed no clear drop.",
+   "It works if he holds each stretch for two minutes."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 3,
+  "stem": "Sports day is the morning after a family wedding. Plan A: leave the wedding at 2 am and wake at the usual 8. Plan B: sleep at the usual 10 but wake at 4 to drive back. Which tends to hurt play less?",
+  "options": [
+   "Waking at 4, since the bedtime stays normal.",
+   "Both the same, as each loses sleep.",
+   "Leaving late and waking at the usual time."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.transfer",
+  "round": 1,
+  "stem": "Riya dances about 40 minutes a week. For her cousin's sangeet in a month, she plans to jump to 200 minutes next week. What fits this step better?",
+  "options": [
+   "Jump to 200, as a big start builds fitness faster.",
+   "Climb in small steps each week toward it.",
+   "Jump to 200, since dancing is fun, not training."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.transfer",
+  "round": 1,
+  "stem": "A street vendor in Kolkata sells boiled chana and needs big batches soft fast. Why does his pressure cooker save him time?",
+  "options": [
+   "The lid keeps the flame's heat from rising off.",
+   "Its water boils near 121°C.",
+   "The pressure forces water into the chana."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.twist",
+  "round": 1,
+  "stem": "A drone carries a heavy camera. With the camera taken off, the drone weighs half as much. About what share of the old hover power does it now need?",
+  "options": [
+   "A bit over a third.",
+   "About half.",
+   "About the same as before."
+  ]
+ },
+ {
+  "id": "upi-path-s3.twist",
+  "round": 2,
+  "stem": "Tara's phone is stolen, but the thief does not know her UPI PIN. Can the thief pay from her account?",
+  "options": [
+   "No, a payment also needs her approval.",
+   "Yes, as her bank account is linked to that phone.",
+   "Yes, since the phone itself is the key."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.twist",
+  "round": 2,
+  "stem": "In a dim hall, Raj turns up his phone's ISO, thinking it makes the sensor catch more light. What really happens?",
+  "options": [
+   "It turns up the weak signal, speckle and all.",
+   "The spots catch more light, so the photo gets cleaner.",
+   "The lens opens wider to let in more light."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.twist",
+  "round": 3,
+  "stem": "To turn its nose, a hovering drone speeds up its clockwise pair but forgets to slow the other pair. What else happens?",
+  "options": [
+   "It just turns, and stays at the same height.",
+   "It turns and also climbs.",
+   "It tilts, then slides off to one side."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.twist",
+  "round": 2,
+  "stem": "Before a jump test, one group holds each stretch for 90 seconds and another for 20 seconds. How did the average drops compare in the review?",
+  "options": [
+   "The long holds cost about four times as much.",
+   "The short holds cost more, as they feel rushed.",
+   "About the same, since any still hold costs the same."
+  ]
+ },
+ {
+  "id": "lift-s3.transfer",
+  "round": 3,
+  "stem": "At a kite festival in Ahmedabad, Hetal's kite flies well. Then the breeze drops to half its speed, with the kite at the same tilt. How much of its lift is left?",
+  "options": [
+   "About a quarter.",
+   "Nearly the same, as the kite has not changed.",
+   "About half."
+  ]
+ },
+ {
+  "id": "upi-path-s3.transfer",
+  "round": 2,
+  "stem": "Sunita teaches tuition in Nashik, and ten parents pay her fees by UPI. What does she have to do for each fee to arrive?",
+  "options": [
+   "Scan each parent's QR code to pull the fee in.",
+   "Nothing; the parents approve.",
+   "Enter her UPI PIN once for each fee."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.transfer",
+  "round": 1,
+  "stem": "Over a sugarcane field in Maharashtra, a spraying drone hovers while its tank slowly empties. To stay at the same height, what must its rotors do?",
+  "options": [
+   "Slow down bit by bit as it gets lighter.",
+   "Speed up, to keep pushing the spray out.",
+   "Keep one speed, since a hover needs a set push."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.twist",
+  "round": 3,
+  "stem": "A drone hovers while carrying a parcel. It lets the parcel drop, and the rotors keep the same push as before. What happens next?",
+  "options": [
+   "It climbs, as push now beats weight.",
+   "It stays put, since a hover takes no real push from the rotors.",
+   "It tips over, because it is now off balance."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.transfer",
+  "round": 1,
+  "stem": "In the morning sun, a glass crystal hung up for Diwali in Neha's window throws small rainbows on the wall. Her brother thinks the glass is coloured inside. What is really going on?",
+  "options": [
+   "The glass spreads apart colours already in sunlight.",
+   "The glass adds colours as the light bends through it.",
+   "The glass holds hidden dyes that the light picks up."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.twist",
+  "round": 2,
+  "stem": "After a hot match, Kunal is not thirsty, but he forces down two litres at once to catch up. What is the problem?",
+  "options": [
+   "Forcing water when not thirsty raises risk.",
+   "None, since more water is the safer choice.",
+   "He needed salt water instead of food."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.twist",
+  "round": 2,
+  "stem": "A GPS receiver gets two satellite signals. One took a little longer to arrive than the other. What does that tell the receiver?",
+  "options": [
+   "That one is farther away.",
+   "Its place, which is written inside each signal.",
+   "That one's signal is weaker."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.twist",
+  "round": 1,
+  "stem": "A pigeon flying along stops flapping and holds its wings out still. What happens next?",
+  "options": [
+   "It drops at once, as still wings make no lift.",
+   "It keeps its speed, since flaps just hold it up.",
+   "It glides, slowing down with no push ahead."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.transfer",
+  "round": 2,
+  "stem": "A supplement seller in a Kanpur gym pushes Arif, who weighs 80 kg and trains, to take 200 g of protein a day for faster gains. What does the step show about this?",
+  "options": [
+   "Past about 128 g, extra protein added no more muscle.",
+   "It is too little, as he needs 1.6 g per gram of muscle.",
+   "More protein, more muscle, so 200 g beats 128 g."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.transfer",
+  "round": 1,
+  "stem": "In a hostel mess kitchen, a cooker of sabudana khichdi has gone quiet: no whistle and no steam, though the flame is high. What is the worry?",
+  "options": [
+   "The food is done, so the weight has stopped lifting.",
+   "No worry, since no whistle means the pressure is low.",
+   "That froth has blocked the vent."
+  ]
+ },
+ {
+  "id": "lift-s1.transfer",
+  "round": 2,
+  "stem": "Gulab sells kites in a Lucknow market. In his still shop, he points a pedestal fan at a kite on the counter, and it rises with nobody running. What does this show?",
+  "options": [
+   "A kite needs a person to pull it forward before it lifts.",
+   "Air moving past it is enough, even when it stays put.",
+   "The fan blows it up from below, which is a push, not lift."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.transfer",
+  "round": 2,
+  "stem": "Before a Navratri garba night in Vadodara, which start fits a warm-up best?",
+  "options": [
+   "A few slow rounds of the garba steps first.",
+   "Full speed from the start, to heat up quickly.",
+   "Long toe-touch holds, then straight into fast steps."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.transfer",
+  "round": 2,
+  "stem": "On a railway platform in Lucknow, a crow takes off as a train pulls in. Why does it beat its wings much harder at first than once it is flying along?",
+  "options": [
+   "It is warming up its wing muscles before the flight.",
+   "Fast flaps make lift; the forward push comes later from gliding.",
+   "Its wings must give both lift and the push to speed up."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.transfer",
+  "round": 1,
+  "stem": "Flying to Guwahati for work, Jaya looks out of the plane window. The sky above is blue, but the cloud tops below are bright white. Why the difference?",
+  "options": [
+   "Clouds reflect the white Sun, while air reflects the blue sea.",
+   "Big drops scatter all colours; air, mostly blue.",
+   "Sunlight up above the clouds is bluer than the light below."
+  ]
+ },
+ {
+  "id": "showing-up-s1.transfer",
+  "round": 1,
+  "stem": "Ankur works in a Pune office. Several times a day, he takes the stairs to the third floor briskly instead of the lift. A colleague thinks it is too short to matter. Does it count?",
+  "options": [
+   "Yes, brisk bouts of any length add up.",
+   "No, as planned workouts are what count.",
+   "It counts if each climb lasts 10 minutes."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.twist",
+  "round": 3,
+  "stem": "Hari does the same strength routine each week. Which sign tells him it is time to grow the work?",
+  "options": [
+   "His usual sets feel easy.",
+   "A month has passed, however the sets feel.",
+   "His legs still ache after each workout."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.twist",
+  "round": 1,
+  "stem": "In a dim hall, Raj turns up his phone's ISO, thinking it makes the sensor catch more light. What really happens?",
+  "options": [
+   "The spots catch more light, so the photo gets cleaner.",
+   "It turns up the weak signal, speckle and all.",
+   "The lens opens wider to let in more light."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.transfer",
+  "round": 3,
+  "stem": "In a power cut in Patna, the Kumari family's inverter battery runs their fans and lights. They switch off half of the load. About how long will the battery last now?",
+  "options": [
+   "About twice as long.",
+   "About the same, as the stored energy has not changed.",
+   "About four times as long."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.transfer",
+  "round": 3,
+  "stem": "In a small dairy shop in Surat, the fridge breaks down on a hot day. The owner points a strong fan at the milk crates to keep the milk as cool as a fridge would. Will it work?",
+  "options": [
+   "Partly, as the fan makes the air a few degrees colder.",
+   "No, it blows warm shop air, so the milk warms.",
+   "Yes, if the fan runs on full speed."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.twist",
+  "round": 2,
+  "stem": "Pallavi does squats and push-ups four times a week but eats very little dal, eggs, milk or other protein foods. What is her muscle building short of?",
+  "options": [
+   "The parts from food that muscle is built from.",
+   "No gap, as training builds the muscle by itself.",
+   "More training days, to make up the gap."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.twist",
+  "round": 3,
+  "stem": "A drone's battery is already about two thirds of its mass. A friend suggests a bigger battery for a longer flight. In the simple model, what happens?",
+  "options": [
+   "The time stays the same, as energy and weight cancel out.",
+   "The time rises, since more energy is on board.",
+   "The time drops, as it moves past the peak."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.transfer",
+  "round": 3,
+  "stem": "Flying to Guwahati for work, Jaya looks out of the plane window. The sky above is blue, but the cloud tops below are bright white. Why the difference?",
+  "options": [
+   "Sunlight up above the clouds is bluer than the light below.",
+   "Clouds reflect the white Sun, while air reflects the blue sea.",
+   "Big drops scatter all colours; air, mostly blue."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.twist",
+  "round": 1,
+  "stem": "Halfway through cooking, the cooker's rubber seal gives way and steam leaks out freely. What happens to the heat of the boiling water?",
+  "options": [
+   "It drops back toward 100°C.",
+   "It stays near 121°C while the flame stays high.",
+   "It rises, as escaping steam carries cold away."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.transfer",
+  "round": 2,
+  "stem": "At a summer baraat in Jaipur, Kavita's uncle dances in the sun for an hour. Then he feels dizzy and gets a headache. What is the safe move?",
+  "options": [
+   "Keep dancing; it will pass once he sweats more.",
+   "Gulp a big cold drink and carry on.",
+   "Stop dancing, move into shade, and sip water."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.transfer",
+  "round": 2,
+  "stem": "At Bir Billing in Himachal, a paraglider pilot stays aloft for an hour with no engine at all. What does this show about a plane's engines?",
+  "options": [
+   "Their job is pushing forward, not holding the plane up.",
+   "A plane's engines keep it up; a paraglider just falls slowly.",
+   "Paragliders need no lift, as they are so light."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.twist",
+  "round": 3,
+  "stem": "After a hot match, Kunal is not thirsty, but he forces down two litres at once to catch up. What is the problem?",
+  "options": [
+   "He needed salt water instead of food.",
+   "None, since more water is the safer choice.",
+   "Forcing water when not thirsty raises risk."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.transfer",
+  "round": 1,
+  "stem": "At a wedding in Jaipur, Rakesh flies a camera drone in front of the procession. He needs it to fly backward, toward him. Which rotors must push harder?",
+  "options": [
+   "Each of the four, harder, so it floats back level.",
+   "The back pair, so the drone gets pushed back.",
+   "The front pair, so its nose tips up."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.transfer",
+  "round": 1,
+  "stem": "At a phone repair shop in Hyderabad, the owner fits a new, clean lens cover on a phone. Yet every photo stays blank black. Which part is most likely at fault?",
+  "options": [
+   "The sensor chip behind the lens.",
+   "The lens, as it records the picture.",
+   "The screen, as it captures the light."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.transfer",
+  "round": 1,
+  "stem": "Over a flooded village in Assam, a relief drone hovers to lower food. Plan A: hover once with two packets, which doubles its weight. Plan B: hover twice as long in all, with one packet at a time. Which uses less battery energy?",
+  "options": [
+   "Plan B, the lighter and longer hover.",
+   "Plan A, since one hover takes less time.",
+   "Both the same, as the total load is the same."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.twist",
+  "round": 3,
+  "stem": "Ankit photographs a room where one corner sits in deep shadow. What do the sensor spots for that corner give?",
+  "options": [
+   "Big signals, since they work harder in the dark.",
+   "No reading, since the lens skips dark parts.",
+   "Small signals, so the corner looks dark."
+  ]
+ },
+ {
+  "id": "food-labels-s2.twist",
+  "round": 3,
+  "stem": "A plain noodle pack shows a photo of noodles topped with vegetables and prawns, marked 'serving suggestion'. Must the label give a % of prawns?",
+  "options": [
+   "No, serving suggestions are left out.",
+   "Yes, any food shown in a picture needs a %.",
+   "Yes, but just for the vegetables, not prawns."
+  ]
+ },
+ {
+  "id": "lift-s1.twist",
+  "round": 1,
+  "stem": "A small plane comes in to land with a steady wind blowing from behind it. To get the same lift as on a calm day, what ground speed does it need?",
+  "options": [
+   "A higher one, since the wind cuts the air flowing past.",
+   "The same one, since lift comes from the plane's own speed.",
+   "A lower one, since the wind helps push it along."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.twist",
+  "round": 3,
+  "stem": "On a walk, Aditi can easily sing a full song. What effort is that?",
+  "options": [
+   "Moderate, since she is out walking.",
+   "Vigorous, since singing takes breath.",
+   "Lighter than moderate."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.transfer",
+  "round": 3,
+  "stem": "Riya dances about 40 minutes a week. For her cousin's sangeet in a month, she plans to jump to 200 minutes next week. What fits this step better?",
+  "options": [
+   "Climb in small steps each week toward it.",
+   "Jump to 200, since dancing is fun, not training.",
+   "Jump to 200, as a big start builds fitness faster."
+  ]
+ },
+ {
+  "id": "food-labels-s1.transfer",
+  "round": 1,
+  "stem": "Choosing a breakfast cereal for her hostel room, Lata compares two packs. Pack A: 10 g total sugars, 0 g added. Pack B: 8 g total sugars, 8 g added. Which has more sugar put in?",
+  "options": [
+   "Pack B, with 8 g added.",
+   "Pack A, since its total sugars line is higher.",
+   "Both the same, since each pack has sugar in it."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s1.transfer",
+  "round": 1,
+  "stem": "At Bir Billing in Himachal, a paraglider pilot stays aloft for an hour with no engine at all. What does this show about a plane's engines?",
+  "options": [
+   "A plane's engines keep it up; a paraglider just falls slowly.",
+   "Their job is pushing forward, not holding the plane up.",
+   "Paragliders need no lift, as they are so light."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.twist",
+  "round": 3,
+  "stem": "Pallavi does squats and push-ups four times a week but eats very little dal, eggs, milk or other protein foods. What is her muscle building short of?",
+  "options": [
+   "More training days, to make up the gap.",
+   "The parts from food that muscle is built from.",
+   "No gap, as training builds the muscle by itself."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.transfer",
+  "round": 3,
+  "stem": "Before a Navratri garba night in Vadodara, which start fits a warm-up best?",
+  "options": [
+   "Full speed from the start, to heat up quickly.",
+   "A few slow rounds of the garba steps first.",
+   "Long toe-touch holds, then straight into fast steps."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 2,
+  "stem": "Before a district final, Neeraj sleeps badly for just one night. Does a single short night matter, by the review of athletes?",
+  "options": [
+   "Yes, even one night lowered play.",
+   "No, it takes weeks of short sleep before play drops.",
+   "No, match nerves tend to keep him just as sharp."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.twist",
+  "round": 1,
+  "stem": "In Nagpur in May, a cricket camp can train at 6 am, 1 pm or 7 pm. Which plan fits the hot-weather plan best?",
+  "options": [
+   "6 am or 7 pm, with an easy start.",
+   "1 pm, at a hard pace, to build heat toughness.",
+   "1 pm, but with a slow start."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.transfer",
+  "round": 2,
+  "stem": "On a long summer pilgrimage walk to Pandharpur, Ganesh sweats a lot all day. What is the easiest way to put back the salt he loses?",
+  "options": [
+   "No need, since water alone puts the salt back.",
+   "By gulping big amounts of water at each stop.",
+   "With his meals and salty snacks."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.transfer",
+  "round": 2,
+  "stem": "Ravi works night shifts as a security guard and has no gym. He wants stronger legs. What can be his load?",
+  "options": [
+   "His usual walking rounds, as that is already work.",
+   "No load at all, since he has no weights.",
+   "His own body weight, in squats."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.transfer",
+  "round": 3,
+  "stem": "At a wedding in Jaipur, Rakesh flies a camera drone in front of the procession. He needs it to fly backward, toward him. Which rotors must push harder?",
+  "options": [
+   "The front pair, so its nose tips up.",
+   "The back pair, so the drone gets pushed back.",
+   "Each of the four, harder, so it floats back level."
+  ]
+ },
+ {
+  "id": "heat-hydration-s2.transfer",
+  "round": 1,
+  "stem": "On a long summer pilgrimage walk to Pandharpur, Ganesh sweats a lot all day. What is the easiest way to put back the salt he loses?",
+  "options": [
+   "With his meals and salty snacks.",
+   "By gulping big amounts of water at each stop.",
+   "No need, since water alone puts the salt back."
+  ]
+ },
+ {
+  "id": "lift-s1.twist",
+  "round": 3,
+  "stem": "A small plane comes in to land with a steady wind blowing from behind it. To get the same lift as on a calm day, what ground speed does it need?",
+  "options": [
+   "A lower one, since the wind helps push it along.",
+   "A higher one, since the wind cuts the air flowing past.",
+   "The same one, since lift comes from the plane's own speed."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.transfer",
+  "round": 1,
+  "stem": "During a power cut at a family dinner in Bhopal, Imran takes a photo by candlelight. The lights come back, and he takes one more. Both look equally bright. Which has more grain?",
+  "options": [
+   "The candlelight one, boosted from a weak signal.",
+   "Both the same, since they look equally bright.",
+   "The bright one, since more light means more speckle."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.transfer",
+  "round": 2,
+  "stem": "At India Gate's open lawns, Asha's phone map shows her right where she stands. Later, in a narrow lane of Chandni Chowk, it puts her inside the wrong shop. What best explains this?",
+  "options": [
+   "The walls block and bounce the signals.",
+   "Too many phones in the crowd are sharing the GPS signal.",
+   "The map app has fewer details for old lanes like these."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.twist",
+  "round": 3,
+  "stem": "After a month back, Kavya's brisk 20-minute walks feel easy. What is the next step in the build-up order?",
+  "options": [
+   "Keep it the same, since any change risks injury.",
+   "Switch to fast running right away.",
+   "Walk a few more minutes, or one more day."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.transfer",
+  "round": 3,
+  "stem": "A courier in Mumbai stretches at 8 am before his rounds, sure it will keep him free of strains all day. What does the evidence show?",
+  "options": [
+   "He is right; a morning stretch protects him until night.",
+   "Gains fade fast, and injuries showed no clear drop.",
+   "It works if he holds each stretch for two minutes."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.transfer",
+  "round": 1,
+  "stem": "A courier in Mumbai stretches at 8 am before his rounds, sure it will keep him free of strains all day. What does the evidence show?",
+  "options": [
+   "He is right; a morning stretch protects him until night.",
+   "Gains fade fast, and injuries showed no clear drop.",
+   "It works if he holds each stretch for two minutes."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.twist",
+  "round": 2,
+  "stem": "After a hard run, which finish fits a cool-down?",
+  "options": [
+   "Stopping dead and sitting down at once.",
+   "A last flat-out sprint to finish strong.",
+   "Easy jogging, then walking."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.transfer",
+  "round": 3,
+  "stem": "A postman in Kerala cycles his rounds. He can chat with shopkeepers as he rides, but he cannot sing along to the radio. What effort is that?",
+  "options": [
+   "Vigorous, as he works for hours.",
+   "Moderate.",
+   "Too easy to count, since he can chat."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 3,
+  "stem": "After a week of late nights to meet office deadlines, Varun keeps snacking at his desk, though his work is no harder than usual. Which cause fits this step?",
+  "options": [
+   "It is just boredom; sleep plays no part.",
+   "His brain burns far more food when he works late.",
+   "Short sleep shifts hunger hormones."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.twist",
+  "round": 3,
+  "stem": "Imagine air scattered red light far more than blue. What colour would a clear daytime sky be?",
+  "options": [
+   "Reddish, since red would reach us from all over.",
+   "Still blue, as the sky takes its colour from the sea.",
+   "White, since the colours would mix."
+  ]
+ },
+ {
+  "id": "upi-path-s1.twist",
+  "round": 1,
+  "stem": "Priya deletes her UPI app from her phone. What happens to the money friends sent to her UPI ID last week?",
+  "options": [
+   "It stays in her bank account.",
+   "It goes away along with the app.",
+   "It waits inside her UPI ID until she reinstalls the app."
+  ]
+ },
+ {
+  "id": "showing-up-s2.twist",
+  "round": 2,
+  "stem": "Neha does her push-ups at random times: some days at dawn, some at night. After two months they still feel like a chore to start. What is the likely reason?",
+  "options": [
+   "Two months is far too short for any habit.",
+   "No steady cue sets them off.",
+   "Push-ups are too hard to become a habit."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.twist",
+  "round": 1,
+  "stem": "On a walk, Aditi can easily sing a full song. What effort is that?",
+  "options": [
+   "Vigorous, since singing takes breath.",
+   "Moderate, since she is out walking.",
+   "Lighter than moderate."
+  ]
+ },
+ {
+  "id": "sky-colours-s3.transfer",
+  "round": 2,
+  "stem": "A fisherwoman in Puri heads out at dawn. The rising Sun looks deep red over the sea, but an hour later it looks yellow-white. Why?",
+  "options": [
+   "The Sun is cooler at dawn and heats up as it climbs.",
+   "The sea reflects red onto the Sun at dawn.",
+   "Its low light crosses more air."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.transfer",
+  "round": 1,
+  "stem": "In a power cut in Patna, the Kumari family's inverter battery runs their fans and lights. They switch off half of the load. About how long will the battery last now?",
+  "options": [
+   "About the same, as the stored energy has not changed.",
+   "About twice as long.",
+   "About four times as long."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s2.transfer",
+  "round": 2,
+  "stem": "At a wedding in Jaipur, Rakesh flies a camera drone in front of the procession. He needs it to fly backward, toward him. Which rotors must push harder?",
+  "options": [
+   "The front pair, so its nose tips up.",
+   "The back pair, so the drone gets pushed back.",
+   "Each of the four, harder, so it floats back level."
+  ]
+ },
+ {
+  "id": "food-labels-s3.transfer",
+  "round": 2,
+  "stem": "A masala chai premix lists 10 g added sugar per sachet. Dadi drinks three cups a day, one sachet each. About what share of the reference day's added sugar is that?",
+  "options": [
+   "About 60%.",
+   "About 30%.",
+   "About 20%, as the label shows."
+  ]
+ },
+ {
+  "id": "showing-up-s3.transfer",
+  "round": 1,
+  "stem": "Each night, Kabir writes down what he spent that day. He skips one night because of a cousin's wedding. What happens to the habit?",
+  "options": [
+   "It is broken, so he has to restart the count.",
+   "It carries on if he writes again the next night.",
+   "It carries on, as long as he makes up the missed night."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.transfer",
+  "round": 1,
+  "stem": "A postman in Kerala cycles his rounds. He can chat with shopkeepers as he rides, but he cannot sing along to the radio. What effort is that?",
+  "options": [
+   "Moderate.",
+   "Too easy to count, since he can chat.",
+   "Vigorous, as he works for hours."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.twist",
+  "round": 1,
+  "stem": "Ankit photographs a room where one corner sits in deep shadow. What do the sensor spots for that corner give?",
+  "options": [
+   "No reading, since the lens skips dark parts.",
+   "Small signals, so the corner looks dark.",
+   "Big signals, since they work harder in the dark."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.transfer",
+  "round": 2,
+  "stem": "At a phone repair shop in Hyderabad, the owner fits a new, clean lens cover on a phone. Yet every photo stays blank black. Which part is most likely at fault?",
+  "options": [
+   "The sensor chip behind the lens.",
+   "The screen, as it captures the light.",
+   "The lens, as it records the picture."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 1,
+  "stem": "In harvest season, a farmer in Haryana works long days in the fields and sleeps about 5 hours a night. What do the short nights cut into?",
+  "options": [
+   "Just his energy, not any repair.",
+   "No real repair, since that matters for athletes.",
+   "Time his body uses to fix tissue in deep sleep."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.twist",
+  "round": 2,
+  "stem": "Neha felt sick in the heat, so she stopped and rested in the shade. Then she throws up. What now?",
+  "options": [
+   "Get medical help.",
+   "Drink a lot of water fast, then carry on.",
+   "Wait an hour to see if it passes."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s1.twist",
+  "round": 3,
+  "stem": "A fan blows on a cold glass of nimbu pani in a warm room. What can the breeze do to the drink?",
+  "options": [
+   "Chill it a little below room heat.",
+   "Keep it colder for longer, as a breeze cools things.",
+   "Bring it toward room heat, never colder."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.twist",
+  "round": 1,
+  "stem": "After a month back, Kavya's brisk 20-minute walks feel easy. What is the next step in the build-up order?",
+  "options": [
+   "Keep it the same, since any change risks injury.",
+   "Switch to fast running right away.",
+   "Walk a few more minutes, or one more day."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.twist",
+  "round": 3,
+  "stem": "Ishita, 20, and her father, 55, do the same strength session. How does the rise in muscle building tend to compare?",
+  "options": [
+   "Bigger, since he has more to rebuild.",
+   "His rise is smaller.",
+   "It tends to be the same, as the session matched."
+  ]
+ },
+ {
+  "id": "upi-path-s1.twist",
+  "round": 2,
+  "stem": "Priya deletes her UPI app from her phone. What happens to the money friends sent to her UPI ID last week?",
+  "options": [
+   "It stays in her bank account.",
+   "It goes away along with the app.",
+   "It waits inside her UPI ID until she reinstalls the app."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.transfer",
+  "round": 3,
+  "stem": "In the morning sun, a glass crystal hung up for Diwali in Neha's window throws small rainbows on the wall. Her brother thinks the glass is coloured inside. What is really going on?",
+  "options": [
+   "The glass adds colours as the light bends through it.",
+   "The glass spreads apart colours already in sunlight.",
+   "The glass holds hidden dyes that the light picks up."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.transfer",
+  "round": 3,
+  "stem": "Preeti is preparing for a state police fitness test at home. She owns no weights and can only train on her three free evenings. Her 20 push-ups now feel easy. What can she change?",
+  "options": [
+   "Faster, half-depth push-ups to fit more in.",
+   "No change until she can buy weights.",
+   "Add a few more clean reps."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 2,
+  "stem": "In harvest season, a farmer in Haryana works long days in the fields and sleeps about 5 hours a night. What do the short nights cut into?",
+  "options": [
+   "No real repair, since that matters for athletes.",
+   "Just his energy, not any repair.",
+   "Time his body uses to fix tissue in deep sleep."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.transfer",
+  "round": 3,
+  "stem": "A Jaipur art teacher builds a big tile mosaic that copies a phone sensor's colour filter grid. What share of the tiles will be red?",
+  "options": [
+   "Half, as red is the main colour.",
+   "A third, one share for each colour.",
+   "A quarter."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.transfer",
+  "round": 3,
+  "stem": "During a power cut at a family dinner in Bhopal, Imran takes a photo by candlelight. The lights come back, and he takes one more. Both look equally bright. Which has more grain?",
+  "options": [
+   "The candlelight one, boosted from a weak signal.",
+   "The bright one, since more light means more speckle.",
+   "Both the same, since they look equally bright."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.transfer",
+  "round": 2,
+  "stem": "Preeti is preparing for a state police fitness test at home. She owns no weights and can only train on her three free evenings. Her 20 push-ups now feel easy. What can she change?",
+  "options": [
+   "No change until she can buy weights.",
+   "Add a few more clean reps.",
+   "Faster, half-depth push-ups to fit more in."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.transfer",
+  "round": 2,
+  "stem": "During Diwali cleaning, Asha scrubs the floors and rates the effort an 8 on the 0 to 10 scale. Which band is that?",
+  "options": [
+   "Moderate, since it is just housework.",
+   "Vigorous.",
+   "Too light to count, since it is not exercise."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.transfer",
+  "round": 3,
+  "stem": "During Diwali cleaning, Asha scrubs the floors and rates the effort an 8 on the 0 to 10 scale. Which band is that?",
+  "options": [
+   "Vigorous.",
+   "Too light to count, since it is not exercise.",
+   "Moderate, since it is just housework."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.twist",
+  "round": 2,
+  "stem": "A drone sits on a table all afternoon while a storm rolls in. Its barometer reading slowly drifts lower. What could the drone wrongly think?",
+  "options": [
+   "That it has sunk below the table.",
+   "No change, since weather does not affect air pressure.",
+   "That it has risen a little, though it never moved."
+  ]
+ },
+ {
+  "id": "food-labels-s1.twist",
+  "round": 2,
+  "stem": "A label lists 14 g added sugars and 8 g total sugars. What is wrong with it?",
+  "options": [
+   "The food's own sugar must be 22 g.",
+   "Added sugars cannot be more than the total.",
+   "It is fine, since added sugar is extra on top."
+  ]
+ },
+ {
+  "id": "upi-path-s2.transfer",
+  "round": 1,
+  "stem": "Manoj works in Surat and sends money home to his mother in an Odisha village. They use different banks and different UPI apps. Can the money still reach her?",
+  "options": [
+   "It needs them both at the same bank.",
+   "Yes, the network links the two banks.",
+   "It needs them both on the same UPI app."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.twist",
+  "round": 3,
+  "stem": "In a hill town, a cook turns the flame to full under an open pot, hoping his rice will cook as fast as on the plains. Does it work?",
+  "options": [
+   "Yes, if he also keeps stirring the pot.",
+   "No, the water still boils below 100°C.",
+   "Yes, a big flame pushes the water back up to 100°C."
+  ]
+ },
+ {
+  "id": "showing-up-s3.transfer",
+  "round": 2,
+  "stem": "Each night, Kabir writes down what he spent that day. He skips one night because of a cousin's wedding. What happens to the habit?",
+  "options": [
+   "It carries on, as long as he makes up the missed night.",
+   "It carries on if he writes again the next night.",
+   "It is broken, so he has to restart the count."
+  ]
+ },
+ {
+  "id": "phone-camera-s1.twist",
+  "round": 2,
+  "stem": "Ankit photographs a room where one corner sits in deep shadow. What do the sensor spots for that corner give?",
+  "options": [
+   "Big signals, since they work harder in the dark.",
+   "No reading, since the lens skips dark parts.",
+   "Small signals, so the corner looks dark."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.transfer",
+  "round": 3,
+  "stem": "In a school lab in Shimla, the students' thermometer reads a few degrees below 100°C in hard-boiling water. Ankit thinks it is broken. What is likelier?",
+  "options": [
+   "The flame is too small to reach the true boil.",
+   "Lower air pressure up there.",
+   "Hill water boils lower because it is so pure."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.twist",
+  "round": 2,
+  "stem": "A coach reads that stretching showed no clear effect on injuries. He decides to drop stretching from warm-ups. What does the review still suggest?",
+  "options": [
+   "Keep it, followed by active moves.",
+   "Make it the whole warm-up, since it stops injuries.",
+   "Drop it, since it does not cut injuries."
+  ]
+ },
+ {
+  "id": "heat-hydration-s3.transfer",
+  "round": 3,
+  "stem": "At a summer baraat in Jaipur, Kavita's uncle dances in the sun for an hour. Then he feels dizzy and gets a headache. What is the safe move?",
+  "options": [
+   "Keep dancing; it will pass once he sweats more.",
+   "Stop dancing, move into shade, and sip water.",
+   "Gulp a big cold drink and carry on."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.transfer",
+  "round": 2,
+  "stem": "After two years with no exercise, Meher joins a bhangra class where others dance flat out. Which plan fits her first weeks?",
+  "options": [
+   "Match the others' full effort so she can catch up quickly.",
+   "Hard bursts with long rests, since short efforts are safe.",
+   "A pace she can talk through."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 3,
+  "stem": "Before a district final, Neeraj sleeps badly for just one night. Does a single short night matter, by the review of athletes?",
+  "options": [
+   "Yes, even one night lowered play.",
+   "No, match nerves tend to keep him just as sharp.",
+   "No, it takes weeks of short sleep before play drops."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.twist",
+  "round": 2,
+  "stem": "Light from a pure red bulb goes through a glass prism. What comes out the other side?",
+  "options": [
+   "Just red, bent but not spread into a rainbow.",
+   "A full rainbow, since prisms make colours.",
+   "White light, as the glass cleans the colour out."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.twist",
+  "round": 1,
+  "stem": "A drone hovers still, but it is tipped a little to one side and not turning. Which sensor helps it work out how far it is tipped?",
+  "options": [
+   "The gyroscope, since it feels any tip.",
+   "The accelerometer.",
+   "The barometer, from the air around it."
+  ]
+ },
+ {
+  "id": "food-labels-s2.twist",
+  "round": 1,
+  "stem": "A plain noodle pack shows a photo of noodles topped with vegetables and prawns, marked 'serving suggestion'. Must the label give a % of prawns?",
+  "options": [
+   "Yes, but just for the vegetables, not prawns.",
+   "No, serving suggestions are left out.",
+   "Yes, any food shown in a picture needs a %."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.twist",
+  "round": 3,
+  "stem": "A drone sits on a table all afternoon while a storm rolls in. Its barometer reading slowly drifts lower. What could the drone wrongly think?",
+  "options": [
+   "That it has risen a little, though it never moved.",
+   "That it has sunk below the table.",
+   "No change, since weather does not affect air pressure."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.twist",
+  "round": 1,
+  "stem": "Just after a monsoon shower in Pune, the room is a degree cooler than before. Yet the fan feels weaker than it did before the rain. What explains it?",
+  "options": [
+   "The damper air slows how fast sweat dries.",
+   "A fan cools best when the air is hottest.",
+   "The rain cooled the room, so the fan has less to do."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.twist",
+  "round": 3,
+  "stem": "A pigeon flying along stops flapping and holds its wings out still. What happens next?",
+  "options": [
+   "It keeps its speed, since flaps just hold it up.",
+   "It glides, slowing down with no push ahead.",
+   "It drops at once, as still wings make no lift."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s2.twist",
+  "round": 3,
+  "stem": "Babita trains and eats about 1 g of protein per kilo a day. Where does that sit next to the two figures on the card?",
+  "options": [
+   "Below the basic amount a healthy adult needs.",
+   "Above the need, below the cap.",
+   "Past the point where extra protein still adds muscle."
+  ]
+ },
+ {
+  "id": "lift-s2.twist",
+  "round": 3,
+  "stem": "A helicopter hovers over a field. Its spinning blades fling a strong stream of air down at the grass. What holds the helicopter up?",
+  "options": [
+   "Air it sends down, pushing back up on it.",
+   "Low pressure on top, as air there races to catch up.",
+   "The engine, which lifts it with no help from the air."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.twist",
+  "round": 1,
+  "stem": "Ishita, 20, and her father, 55, do the same strength session. How does the rise in muscle building tend to compare?",
+  "options": [
+   "His rise is smaller.",
+   "Bigger, since he has more to rebuild.",
+   "It tends to be the same, as the session matched."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.transfer",
+  "round": 2,
+  "stem": "An inspection drone flies deep inside a railway tunnel in Jammu, far from any satellite signal. What can its motion sensors still tell it?",
+  "options": [
+   "Very little, since each sensor needs a signal from space.",
+   "How fast it turns and how its speed changes.",
+   "Its place on a map, from the gyroscope."
+  ]
+ },
+ {
+  "id": "lift-s3.twist",
+  "round": 3,
+  "stem": "A glider flies level, so its lift just equals its weight. It speeds up to twice that speed with the same tilt. What happens?",
+  "options": [
+   "It climbs, with about twice the lift it needs.",
+   "It stays level, since speed does not change lift.",
+   "It climbs, with four times the lift."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s1.twist",
+  "round": 1,
+  "stem": "Pallavi does squats and push-ups four times a week but eats very little dal, eggs, milk or other protein foods. What is her muscle building short of?",
+  "options": [
+   "No gap, as training builds the muscle by itself.",
+   "More training days, to make up the gap.",
+   "The parts from food that muscle is built from."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.transfer",
+  "round": 2,
+  "stem": "Riya dances about 40 minutes a week. For her cousin's sangeet in a month, she plans to jump to 200 minutes next week. What fits this step better?",
+  "options": [
+   "Jump to 200, since dancing is fun, not training.",
+   "Climb in small steps each week toward it.",
+   "Jump to 200, as a big start builds fitness faster."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.transfer",
+  "round": 3,
+  "stem": "Kiran plays a hard kabaddi match on Saturday evening. On Sunday she sits at her desk all day studying. What may be going on in her muscles on Sunday?",
+  "options": [
+   "No building, since growth happens during the match.",
+   "Building waits until her soreness has faded away.",
+   "Building is still switched on."
+  ]
+ },
+ {
+  "id": "warmup-myths-s1.transfer",
+  "round": 1,
+  "stem": "Before a Navratri garba night in Vadodara, which start fits a warm-up best?",
+  "options": [
+   "Long toe-touch holds, then straight into fast steps.",
+   "Full speed from the start, to heat up quickly.",
+   "A few slow rounds of the garba steps first."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.twist",
+  "round": 2,
+  "stem": "A cooker on a high flame whistles again and again. Does the pressure inside climb higher with each whistle?",
+  "options": [
+   "No, it drops lower each time, so cooking stops.",
+   "No, it holds steady.",
+   "Yes, more whistles mean higher pressure each time."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.twist",
+  "round": 3,
+  "stem": "A drone hovers still, but it is tipped a little to one side and not turning. Which sensor helps it work out how far it is tipped?",
+  "options": [
+   "The barometer, from the air around it.",
+   "The gyroscope, since it feels any tip.",
+   "The accelerometer."
+  ]
+ },
+ {
+  "id": "warmup-myths-s3.twist",
+  "round": 3,
+  "stem": "A coach reads that stretching showed no clear effect on injuries. He decides to drop stretching from warm-ups. What does the review still suggest?",
+  "options": [
+   "Keep it, followed by active moves.",
+   "Drop it, since it does not cut injuries.",
+   "Make it the whole warm-up, since it stops injuries."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.transfer",
+  "round": 1,
+  "stem": "After two years with no exercise, Meher joins a bhangra class where others dance flat out. Which plan fits her first weeks?",
+  "options": [
+   "A pace she can talk through.",
+   "Match the others' full effort so she can catch up quickly.",
+   "Hard bursts with long rests, since short efforts are safe."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s1.twist",
+  "round": 2,
+  "stem": "In a hill town, a cook turns the flame to full under an open pot, hoping his rice will cook as fast as on the plains. Does it work?",
+  "options": [
+   "Yes, a big flame pushes the water back up to 100°C.",
+   "Yes, if he also keeps stirring the pot.",
+   "No, the water still boils below 100°C."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.twist",
+  "round": 3,
+  "stem": "In Nagpur in May, a cricket camp can train at 6 am, 1 pm or 7 pm. Which plan fits the hot-weather plan best?",
+  "options": [
+   "1 pm, at a hard pace, to build heat toughness.",
+   "6 am or 7 pm, with an easy start.",
+   "1 pm, but with a slow start."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.transfer",
+  "round": 1,
+  "stem": "A trek group in Ladakh walks down from a high pass to the valley below. A watch shows the air pressure. What does the reading do, and why?",
+  "options": [
+   "It rises, as more air is now above them.",
+   "It stays the same, since pressure is set by weather.",
+   "It falls, as valleys hold warmer, thinner air."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.twist",
+  "round": 2,
+  "stem": "In a hot Nagpur office, Rohit sits under the fan and feels cooler. A colleague decides the fan must have chilled the air by a few degrees. What is the flaw?",
+  "options": [
+   "A fan chills the air, but just close to the blades.",
+   "None; a fan's breeze is a few degrees colder.",
+   "His sweat dried; the air stayed as warm."
+  ]
+ },
+ {
+  "id": "upi-path-s2.transfer",
+  "round": 2,
+  "stem": "Manoj works in Surat and sends money home to his mother in an Odisha village. They use different banks and different UPI apps. Can the money still reach her?",
+  "options": [
+   "Yes, the network links the two banks.",
+   "It needs them both on the same UPI app.",
+   "It needs them both at the same bank."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.transfer",
+  "round": 3,
+  "stem": "Before her Kathak audition, which has fast jumps, Rhea holds each leg stretch for 90 seconds, then waits still for her turn. Which change fits the review?",
+  "options": [
+   "Hold each stretch even longer, to loosen fully.",
+   "Stretch harder, then rest still until her turn.",
+   "Shorter holds, or active moves after them."
+  ]
+ },
+ {
+  "id": "food-labels-s3.twist",
+  "round": 3,
+  "stem": "A serving's label shows 40% next to added sugars. About how many grams of added sugar is that serving?",
+  "options": [
+   "About 25 g.",
+   "About 40 g.",
+   "About 20 g."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s3.transfer",
+  "round": 1,
+  "stem": "A school robotics club in Pune builds a flapping toy bird modelled on a small parrot. Where does most of its motor power need to go?",
+  "options": [
+   "Into the upward stroke, to raise the wings.",
+   "Split evenly, since both halves push air.",
+   "Into the downward stroke of the wings."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.twist",
+  "round": 1,
+  "stem": "A drone's battery is half used up. From now on, its motors draw half the power they drew before. How long will what is left last?",
+  "options": [
+   "As long as a full battery at the old power.",
+   "A quarter as long, since both numbers halved.",
+   "Half as long, since half the energy is gone."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.transfer",
+  "round": 2,
+  "stem": "A Jaipur art teacher builds a big tile mosaic that copies a phone sensor's colour filter grid. What share of the tiles will be red?",
+  "options": [
+   "A third, one share for each colour.",
+   "A quarter.",
+   "Half, as red is the main colour."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s3.transfer",
+  "round": 3,
+  "stem": "Two cricket squads train in the same heat, one in dry air in Nagpur, one in sticky, humid air in Kochi. Both use the same fans at the break. Which squad gets more cooling from them?",
+  "options": [
+   "The Kochi squad, since moist air feels cooler.",
+   "The Nagpur squad, in the drier air.",
+   "Both the same, as the fans and heat match."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.twist",
+  "round": 2,
+  "stem": "Sunil has trained for a year. His cousin has just started. Both do the same 10 push-ups. Is it overload for both of them?",
+  "options": [
+   "For both, since 10 push-ups is the same work.",
+   "For neither, as push-ups use no added weight.",
+   "Just for the cousin."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.transfer",
+  "round": 1,
+  "stem": "Preeti is preparing for a state police fitness test at home. She owns no weights and can only train on her three free evenings. Her 20 push-ups now feel easy. What can she change?",
+  "options": [
+   "Faster, half-depth push-ups to fit more in.",
+   "No change until she can buy weights.",
+   "Add a few more clean reps."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.transfer",
+  "round": 3,
+  "stem": "On a railway platform in Lucknow, a crow takes off as a train pulls in. Why does it beat its wings much harder at first than once it is flying along?",
+  "options": [
+   "Its wings must give both lift and the push to speed up.",
+   "Fast flaps make lift; the forward push comes later from gliding.",
+   "It is warming up its wing muscles before the flight."
+  ]
+ },
+ {
+  "id": "progressive-overload-s2.twist",
+  "round": 1,
+  "stem": "Hari does the same strength routine each week. Which sign tells him it is time to grow the work?",
+  "options": [
+   "A month has passed, however the sets feel.",
+   "His legs still ache after each workout.",
+   "His usual sets feel easy."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 2,
+  "stem": "After a week of late nights to meet office deadlines, Varun keeps snacking at his desk, though his work is no harder than usual. Which cause fits this step?",
+  "options": [
+   "His brain burns far more food when he works late.",
+   "It is just boredom; sleep plays no part.",
+   "Short sleep shifts hunger hormones."
+  ]
+ },
+ {
+  "id": "showing-up-s2.twist",
+  "round": 1,
+  "stem": "Neha does her push-ups at random times: some days at dawn, some at night. After two months they still feel like a chore to start. What is the likely reason?",
+  "options": [
+   "Two months is far too short for any habit.",
+   "Push-ups are too hard to become a habit.",
+   "No steady cue sets them off."
+  ]
+ },
+ {
+  "id": "showing-up-s1.twist",
+  "round": 1,
+  "stem": "After work, Mohan can only manage a slow stroll, not a brisk walk. Is it worth it?",
+  "options": [
+   "No, as just brisk bouts give any gain.",
+   "Yes, some movement beats sitting.",
+   "Yes, but just if it lasts 10 minutes or more."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.transfer",
+  "round": 1,
+  "stem": "A wildlife team in Kaziranga flies a survey drone whose battery is half its mass. They swap in a battery of the same weight that stores more energy. Does the peak rule stop this helping?",
+  "options": [
+   "Yes, since a battery that stores more draws more power from it.",
+   "Yes, more energy past a point cuts the time.",
+   "No, its weight is unchanged."
+  ]
+ },
+ {
+  "id": "food-labels-s1.twist",
+  "round": 3,
+  "stem": "A label lists 14 g added sugars and 8 g total sugars. What is wrong with it?",
+  "options": [
+   "The food's own sugar must be 22 g.",
+   "It is fine, since added sugar is extra on top.",
+   "Added sugars cannot be more than the total."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.twist",
+  "round": 3,
+  "stem": "Raj rates his brisk walk a 6 today. After months of regular walks at the same speed, what might he rate it?",
+  "options": [
+   "Higher, as tired muscles build up over months.",
+   "Lower, as fitter people need less effort.",
+   "Still 6, since the walk is the same."
+  ]
+ },
+ {
+  "id": "sky-colours-s1.transfer",
+  "round": 2,
+  "stem": "In the morning sun, a glass crystal hung up for Diwali in Neha's window throws small rainbows on the wall. Her brother thinks the glass is coloured inside. What is really going on?",
+  "options": [
+   "The glass spreads apart colours already in sunlight.",
+   "The glass holds hidden dyes that the light picks up.",
+   "The glass adds colours as the light bends through it."
+  ]
+ },
+ {
+  "id": "upi-path-s2.twist",
+  "round": 3,
+  "stem": "Divya pays her tailor by UPI. Where does the money leave from, and where does it land?",
+  "options": [
+   "Into an NPCI account, which holds it for the tailor.",
+   "Bank account to bank account.",
+   "From her app's balance into the tailor's app."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.transfer",
+  "round": 3,
+  "stem": "Over a sugarcane field in Maharashtra, a spraying drone hovers while its tank slowly empties. To stay at the same height, what must its rotors do?",
+  "options": [
+   "Speed up, to keep pushing the spray out.",
+   "Slow down bit by bit as it gets lighter.",
+   "Keep one speed, since a hover needs a set push."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s3.transfer",
+  "round": 3,
+  "stem": "In a college common room, Farah sits on a free-spinning chair and holds a bicycle wheel flat over her head. She spins the wheel hard with her hand. What does the chair do?",
+  "options": [
+   "It turns the other way from the wheel.",
+   "It stays still, as her hand and the wheel balance out.",
+   "It turns the same way, dragged by the wheel."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.twist",
+  "round": 3,
+  "stem": "In a hot Nagpur office, Rohit sits under the fan and feels cooler. A colleague decides the fan must have chilled the air by a few degrees. What is the flaw?",
+  "options": [
+   "A fan chills the air, but just close to the blades.",
+   "None; a fan's breeze is a few degrees colder.",
+   "His sweat dried; the air stayed as warm."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.transfer",
+  "round": 3,
+  "stem": "Ravi works night shifts as a security guard and has no gym. He wants stronger legs. What can be his load?",
+  "options": [
+   "No load at all, since he has no weights.",
+   "His own body weight, in squats.",
+   "His usual walking rounds, as that is already work."
+  ]
+ },
+ {
+  "id": "sky-colours-s2.twist",
+  "round": 1,
+  "stem": "Imagine air scattered red light far more than blue. What colour would a clear daytime sky be?",
+  "options": [
+   "Reddish, since red would reach us from all over.",
+   "Still blue, as the sky takes its colour from the sea.",
+   "White, since the colours would mix."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s1.transfer",
+  "round": 2,
+  "stem": "In a power cut in Patna, the Kumari family's inverter battery runs their fans and lights. They switch off half of the load. About how long will the battery last now?",
+  "options": [
+   "About the same, as the stored energy has not changed.",
+   "About four times as long.",
+   "About twice as long."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.twist",
+  "round": 2,
+  "stem": "Deepa ran 150 minutes a week, then took two weeks off for exams. Now she plans to go straight back to 150. How big is that jump next to what she has been doing lately?",
+  "options": [
+   "No jump, since the body keeps the old amount.",
+   "Small, since 150 minutes was her old normal.",
+   "Big, next to almost nothing."
+  ]
+ },
+ {
+  "id": "flight-sensors-s2.transfer",
+  "round": 1,
+  "stem": "At India Gate's open lawns, Asha's phone map shows her right where she stands. Later, in a narrow lane of Chandni Chowk, it puts her inside the wrong shop. What best explains this?",
+  "options": [
+   "The map app has fewer details for old lanes like these.",
+   "The walls block and bounce the signals.",
+   "Too many phones in the crowd are sharing the GPS signal."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s1.transfer",
+  "round": 2,
+  "stem": "A postman in Kerala cycles his rounds. He can chat with shopkeepers as he rides, but he cannot sing along to the radio. What effort is that?",
+  "options": [
+   "Vigorous, as he works for hours.",
+   "Too easy to count, since he can chat.",
+   "Moderate."
+  ]
+ },
+ {
+  "id": "heat-hydration-s1.twist",
+  "round": 2,
+  "stem": "In Nagpur in May, a cricket camp can train at 6 am, 1 pm or 7 pm. Which plan fits the hot-weather plan best?",
+  "options": [
+   "1 pm, at a hard pace, to build heat toughness.",
+   "1 pm, but with a slow start.",
+   "6 am or 7 pm, with an easy start."
+  ]
+ },
+ {
+  "id": "multirotor-turns-s1.transfer",
+  "round": 2,
+  "stem": "Over a sugarcane field in Maharashtra, a spraying drone hovers while its tank slowly empties. To stay at the same height, what must its rotors do?",
+  "options": [
+   "Speed up, to keep pushing the spray out.",
+   "Keep one speed, since a hover needs a set push.",
+   "Slow down bit by bit as it gets lighter."
+  ]
+ },
+ {
+  "id": "phone-camera-s2.transfer",
+  "round": 1,
+  "stem": "A Jaipur art teacher builds a big tile mosaic that copies a phone sensor's colour filter grid. What share of the tiles will be red?",
+  "options": [
+   "A quarter.",
+   "Half, as red is the main colour.",
+   "A third, one share for each colour."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.twist",
+  "round": 3,
+  "stem": "A cooker on a high flame whistles again and again. Does the pressure inside climb higher with each whistle?",
+  "options": [
+   "No, it holds steady.",
+   "No, it drops lower each time, so cooking stops.",
+   "Yes, more whistles mean higher pressure each time."
+  ]
+ },
+ {
+  "id": "progressive-overload-s1.transfer",
+  "round": 1,
+  "stem": "Ravi works night shifts as a security guard and has no gym. He wants stronger legs. What can be his load?",
+  "options": [
+   "No load at all, since he has no weights.",
+   "His own body weight, in squats.",
+   "His usual walking rounds, as that is already work."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.twist",
+  "round": 2,
+  "stem": "A drone's battery is already about two thirds of its mass. A friend suggests a bigger battery for a longer flight. In the simple model, what happens?",
+  "options": [
+   "The time drops, as it moves past the peak.",
+   "The time stays the same, as energy and weight cancel out.",
+   "The time rises, since more energy is on board."
+  ]
+ },
+ {
+  "id": "progressive-overload-s3.twist",
+  "round": 3,
+  "stem": "Deepa ran 150 minutes a week, then took two weeks off for exams. Now she plans to go straight back to 150. How big is that jump next to what she has been doing lately?",
+  "options": [
+   "Small, since 150 minutes was her old normal.",
+   "No jump, since the body keeps the old amount.",
+   "Big, next to almost nothing."
+  ]
+ },
+ {
+  "id": "food-labels-s1.transfer",
+  "round": 2,
+  "stem": "Choosing a breakfast cereal for her hostel room, Lata compares two packs. Pack A: 10 g total sugars, 0 g added. Pack B: 8 g total sugars, 8 g added. Which has more sugar put in?",
+  "options": [
+   "Pack A, since its total sugars line is higher.",
+   "Both the same, since each pack has sugar in it.",
+   "Pack B, with 8 g added."
+  ]
+ },
+ {
+  "id": "food-labels-s2.transfer",
+  "round": 3,
+  "stem": "Buying breakfast at a Chennai supermarket, Suresh picks a masala oats pack. The front stresses 'with real almonds' and shows turmeric and pepper. Which needs a % on the label?",
+  "options": [
+   "The almonds, but not the spices.",
+   "The almonds, turmeric and pepper, since each is shown.",
+   "None, since oats are the main ingredient."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s2.transfer",
+  "round": 2,
+  "stem": "A street vendor in Kolkata sells boiled chana and needs big batches soft fast. Why does his pressure cooker save him time?",
+  "options": [
+   "The lid keeps the flame's heat from rising off.",
+   "The pressure forces water into the chana.",
+   "Its water boils near 121°C."
+  ]
+ },
+ {
+  "id": "upi-path-s1.twist",
+  "round": 3,
+  "stem": "Priya deletes her UPI app from her phone. What happens to the money friends sent to her UPI ID last week?",
+  "options": [
+   "It goes away along with the app.",
+   "It stays in her bank account.",
+   "It waits inside her UPI ID until she reinstalls the app."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.twist",
+  "round": 2,
+  "stem": "A pigeon flying along stops flapping and holds its wings out still. What happens next?",
+  "options": [
+   "It glides, slowing down with no push ahead.",
+   "It drops at once, as still wings make no lift.",
+   "It keeps its speed, since flaps just hold it up."
+  ]
+ },
+ {
+  "id": "showing-up-s2.transfer",
+  "round": 3,
+  "stem": "Ishaan wants a daily habit of reading a few pages of a novel. Which plan fits this step best?",
+  "options": [
+   "A big goal: twenty books by the end of the year.",
+   "Two pages right after his evening chai.",
+   "A whole chapter whenever he has free time."
+  ]
+ },
+ {
+  "id": "pressure-cooker-s3.twist",
+  "round": 1,
+  "stem": "A cooker on a high flame whistles again and again. Does the pressure inside climb higher with each whistle?",
+  "options": [
+   "No, it holds steady.",
+   "Yes, more whistles mean higher pressure each time.",
+   "No, it drops lower each time, so cooking stops."
+  ]
+ },
+ {
+  "id": "food-labels-s2.twist",
+  "round": 2,
+  "stem": "A plain noodle pack shows a photo of noodles topped with vegetables and prawns, marked 'serving suggestion'. Must the label give a % of prawns?",
+  "options": [
+   "Yes, any food shown in a picture needs a %.",
+   "No, serving suggestions are left out.",
+   "Yes, but just for the vegetables, not prawns."
+  ]
+ },
+ {
+  "id": "birds-and-planes-s2.transfer",
+  "round": 1,
+  "stem": "On a railway platform in Lucknow, a crow takes off as a train pulls in. Why does it beat its wings much harder at first than once it is flying along?",
+  "options": [
+   "It is warming up its wing muscles before the flight.",
+   "Its wings must give both lift and the push to speed up.",
+   "Fast flaps make lift; the forward push comes later from gliding."
+  ]
+ },
+ {
+  "id": "lift-s1.transfer",
+  "round": 1,
+  "stem": "Gulab sells kites in a Lucknow market. In his still shop, he points a pedestal fan at a kite on the counter, and it rises with nobody running. What does this show?",
+  "options": [
+   "The fan blows it up from below, which is a push, not lift.",
+   "Air moving past it is enough, even when it stays put.",
+   "A kite needs a person to pull it forward before it lifts."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.transfer",
+  "round": 2,
+  "stem": "During a power cut at a family dinner in Bhopal, Imran takes a photo by candlelight. The lights come back, and he takes one more. Both look equally bright. Which has more grain?",
+  "options": [
+   "Both the same, since they look equally bright.",
+   "The candlelight one, boosted from a weak signal.",
+   "The bright one, since more light means more speckle."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 2,
+  "stem": "After a short night, which way do the two hunger hormones move?",
+  "options": [
+   "Ghrelin up, leptin down.",
+   "Both go up together.",
+   "Ghrelin down, leptin up."
+  ]
+ },
+ {
+  "id": "upi-path-s1.transfer",
+  "round": 2,
+  "stem": "Ramesh sells vegetables from a cart in a Bihar village. He closes his old bank account and opens a new one, but keeps his printed UPI ID board. What must happen for payments to reach the new account?",
+  "options": [
+   "Buyers must type his new account number each time.",
+   "His UPI ID must point to the new account.",
+   "No change, since the money sits in his UPI ID anyway."
+  ]
+ },
+ {
+  "id": "muscle-protein-rest-s3.transfer",
+  "round": 2,
+  "stem": "Kiran plays a hard kabaddi match on Saturday evening. On Sunday she sits at her desk all day studying. What may be going on in her muscles on Sunday?",
+  "options": [
+   "Building is still switched on.",
+   "No building, since growth happens during the match.",
+   "Building waits until her soreness has faded away."
+  ]
+ },
+ {
+  "id": "food-labels-s2.transfer",
+  "round": 2,
+  "stem": "Buying breakfast at a Chennai supermarket, Suresh picks a masala oats pack. The front stresses 'with real almonds' and shows turmeric and pepper. Which needs a % on the label?",
+  "options": [
+   "The almonds, turmeric and pepper, since each is shown.",
+   "The almonds, but not the spices.",
+   "None, since oats are the main ingredient."
+  ]
+ },
+ {
+  "id": "ceiling-fans-s2.transfer",
+  "round": 3,
+  "stem": "On a non-AC sleeper train in summer, Sunil's berth fan runs all day. When does the fan cool him more: after hours of sitting still, or just after he climbs up with heavy bags and sweats?",
+  "options": [
+   "After the climb, when there is sweat to dry.",
+   "While sitting still, as a calm body takes in cool air better.",
+   "No difference, since the fan's air is the same."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s3.transfer",
+  "round": 3,
+  "stem": "After two years with no exercise, Meher joins a bhangra class where others dance flat out. Which plan fits her first weeks?",
+  "options": [
+   "Hard bursts with long rests, since short efforts are safe.",
+   "A pace she can talk through.",
+   "Match the others' full effort so she can catch up quickly."
+  ]
+ },
+ {
+  "id": "lift-s3.twist",
+  "round": 2,
+  "stem": "A glider flies level, so its lift just equals its weight. It speeds up to twice that speed with the same tilt. What happens?",
+  "options": [
+   "It climbs, with about twice the lift it needs.",
+   "It climbs, with four times the lift.",
+   "It stays level, since speed does not change lift."
+  ]
+ },
+ {
+  "id": "warmup-myths-s2.twist",
+  "round": 1,
+  "stem": "Before a jump test, one group holds each stretch for 90 seconds and another for 20 seconds. How did the average drops compare in the review?",
+  "options": [
+   "The long holds cost about four times as much.",
+   "About the same, since any still hold costs the same.",
+   "The short holds cost more, as they feel rushed."
+  ]
+ },
+ {
+  "id": "upi-path-s2.transfer",
+  "round": 3,
+  "stem": "Manoj works in Surat and sends money home to his mother in an Odisha village. They use different banks and different UPI apps. Can the money still reach her?",
+  "options": [
+   "It needs them both at the same bank.",
+   "It needs them both on the same UPI app.",
+   "Yes, the network links the two banks."
+  ]
+ },
+ {
+  "id": "upi-path-s1.transfer",
+  "round": 1,
+  "stem": "Ramesh sells vegetables from a cart in a Bihar village. He closes his old bank account and opens a new one, but keeps his printed UPI ID board. What must happen for payments to reach the new account?",
+  "options": [
+   "No change, since the money sits in his UPI ID anyway.",
+   "Buyers must type his new account number each time.",
+   "His UPI ID must point to the new account."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.transfer",
+  "round": 3,
+  "stem": "Over a flooded village in Assam, a relief drone hovers to lower food. Plan A: hover once with two packets, which doubles its weight. Plan B: hover twice as long in all, with one packet at a time. Which uses less battery energy?",
+  "options": [
+   "Plan B, the lighter and longer hover.",
+   "Plan A, since one hover takes less time.",
+   "Both the same, as the total load is the same."
+  ]
+ },
+ {
+  "id": "lift-s3.transfer",
+  "round": 1,
+  "stem": "At a kite festival in Ahmedabad, Hetal's kite flies well. Then the breeze drops to half its speed, with the kite at the same tilt. How much of its lift is left?",
+  "options": [
+   "About half.",
+   "About a quarter.",
+   "Nearly the same, as the kite has not changed."
+  ]
+ },
+ {
+  "id": "lift-s3.transfer",
+  "round": 2,
+  "stem": "At a kite festival in Ahmedabad, Hetal's kite flies well. Then the breeze drops to half its speed, with the kite at the same tilt. How much of its lift is left?",
+  "options": [
+   "Nearly the same, as the kite has not changed.",
+   "About half.",
+   "About a quarter."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 1,
+  "stem": "Which of these nights falls inside the adult range?",
+  "options": [
+   "12:30 am to 6 am.",
+   "11 pm to 7 am.",
+   "2 am to 8:30 am."
+  ]
+ },
+ {
+  "id": "showing-up-s3.twist",
+  "round": 3,
+  "stem": "Pooja's habit plan is a 45-minute run each day. She misses one day and feels like giving up. What does the study point to instead?",
+  "options": [
+   "Make up the missed day with a double run tomorrow.",
+   "A smaller daily step.",
+   "Start the count again from day one, fresh."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s2.twist",
+  "round": 3,
+  "stem": "A drone carries a heavy camera. With the camera taken off, the drone weighs half as much. About what share of the old hover power does it now need?",
+  "options": [
+   "A bit over a third.",
+   "About half.",
+   "About the same as before."
+  ]
+ },
+ {
+  "id": "cardio-talk-test-s2.transfer",
+  "round": 1,
+  "stem": "During Diwali cleaning, Asha scrubs the floors and rates the effort an 8 on the 0 to 10 scale. Which band is that?",
+  "options": [
+   "Too light to count, since it is not exercise.",
+   "Vigorous.",
+   "Moderate, since it is just housework."
+  ]
+ },
+ {
+  "id": "battery-flight-time-s3.transfer",
+  "round": 2,
+  "stem": "A wildlife team in Kaziranga flies a survey drone whose battery is half its mass. They swap in a battery of the same weight that stores more energy. Does the peak rule stop this helping?",
+  "options": [
+   "No, its weight is unchanged.",
+   "Yes, more energy past a point cuts the time.",
+   "Yes, since a battery that stores more draws more power from it."
+  ]
+ },
+ {
+  "id": "flight-sensors-s3.transfer",
+  "round": 3,
+  "stem": "A trek group in Ladakh walks down from a high pass to the valley below. A watch shows the air pressure. What does the reading do, and why?",
+  "options": [
+   "It stays the same, since pressure is set by weather.",
+   "It falls, as valleys hold warmer, thinner air.",
+   "It rises, as more air is now above them."
+  ]
+ },
+ {
+  "id": "upi-path-s2.twist",
+  "round": 1,
+  "stem": "Divya pays her tailor by UPI. Where does the money leave from, and where does it land?",
+  "options": [
+   "Into an NPCI account, which holds it for the tailor.",
+   "From her app's balance into the tailor's app.",
+   "Bank account to bank account."
+  ]
+ },
+ {
+  "id": "upi-path-s3.transfer",
+  "round": 3,
+  "stem": "Sunita teaches tuition in Nashik, and ten parents pay her fees by UPI. What does she have to do for each fee to arrive?",
+  "options": [
+   "Enter her UPI PIN once for each fee.",
+   "Scan each parent's QR code to pull the fee in.",
+   "Nothing; the parents approve."
+  ]
+ },
+ {
+  "id": "phone-camera-s3.twist",
+  "round": 3,
+  "stem": "In a dim hall, Raj turns up his phone's ISO, thinking it makes the sensor catch more light. What really happens?",
+  "options": [
+   "It turns up the weak signal, speckle and all.",
+   "The lens opens wider to let in more light.",
+   "The spots catch more light, so the photo gets cleaner."
+  ]
+ },
+ {
+  "id": "lift-s3.twist",
+  "round": 1,
+  "stem": "A glider flies level, so its lift just equals its weight. It speeds up to twice that speed with the same tilt. What happens?",
+  "options": [
+   "It climbs, with four times the lift.",
+   "It stays level, since speed does not change lift.",
+   "It climbs, with about twice the lift it needs."
+  ]
+ },
+ {
+  "id": "flight-sensors-s1.transfer",
+  "round": 1,
+  "stem": "An inspection drone flies deep inside a railway tunnel in Jammu, far from any satellite signal. What can its motion sensors still tell it?",
+  "options": [
+   "How fast it turns and how its speed changes.",
+   "Very little, since each sensor needs a signal from space.",
+   "Its place on a map, from the gyroscope."
+  ]
+ }
+]

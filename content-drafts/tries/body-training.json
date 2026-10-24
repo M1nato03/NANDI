@@ -1,0 +1,1301 @@
+[
+  {
+    "stepId": "progressive-overload-s1",
+    "claimIds": [
+      "progressive-overload-c2"
+    ],
+    "twist": {
+      "stem": "Sunil has trained for a year. His cousin has just started. Both do the same 10 push-ups. Is it overload for both of them?",
+      "hint": "Compare the work with what each one does now.",
+      "options": [
+        {
+          "id": "a",
+          "text": "For both, since 10 push-ups is the same work.",
+          "correct": false,
+          "feedback": "The count is the same, but overload depends on what each body is used to. For Sunil, 10 push-ups is nothing new."
+        },
+        {
+          "id": "b",
+          "text": "Just for the cousin.",
+          "correct": true,
+          "feedback": "Overload means more work than a muscle is used to. Ten push-ups is past the cousin's usual, but it is easy work for Sunil."
+        },
+        {
+          "id": "c",
+          "text": "For neither, as push-ups use no added weight.",
+          "correct": false,
+          "feedback": "Body weight can be the load. Ten push-ups is past the cousin's usual work, so it is overload for him."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Ravi works night shifts as a security guard and has no gym. He wants stronger legs. What can be his load?",
+      "hint": "What makes a muscle work past its usual amount?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No load at all, since he has no weights.",
+          "correct": false,
+          "feedback": "Body weight is a real load, as in push-ups and squats. He can overload his legs with no gym."
+        },
+        {
+          "id": "b",
+          "text": "His usual walking rounds, as that is already work.",
+          "correct": false,
+          "feedback": "His rounds are work his legs are used to, so they ask nothing new. Overload means a bit more than usual."
+        },
+        {
+          "id": "c",
+          "text": "His own body weight, in squats.",
+          "correct": true,
+          "feedback": "Body weight can be the load. Squats ask his legs for more than they are used to, which is what overload means."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "progressive-overload-s2",
+    "claimIds": [
+      "progressive-overload-c3"
+    ],
+    "twist": {
+      "stem": "Hari does the same strength routine each week. Which sign tells him it is time to grow the work?",
+      "hint": "What does it mean when the body has caught up?",
+      "options": [
+        {
+          "id": "a",
+          "text": "His usual sets feel easy.",
+          "correct": true,
+          "feedback": "Easy work means the body has caught up with it. That is the cue to add a little weight, a few clean reps or a day."
+        },
+        {
+          "id": "b",
+          "text": "His legs still ache after each workout.",
+          "correct": false,
+          "feedback": "Soreness is not the cue to add more. When his usual sets feel easy with good form, the body has caught up."
+        },
+        {
+          "id": "c",
+          "text": "A month has passed, however the sets feel.",
+          "correct": false,
+          "feedback": "The calendar is not the cue. When the work feels easy with clean form, his body has caught up."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Preeti is preparing for a state police fitness test at home. She owns no weights and can only train on her three free evenings. Her 20 push-ups now feel easy. What can she change?",
+      "hint": "Which of the three levers is still open to her?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No change until she can buy weights.",
+          "correct": false,
+          "feedback": "Weights are only one way. A few more clean reps also grows the work, using her own body weight."
+        },
+        {
+          "id": "b",
+          "text": "Add a few more clean reps.",
+          "correct": true,
+          "feedback": "Work can grow by weight, reps or days. With no weights and no extra days free, a few more clean reps still grows the work."
+        },
+        {
+          "id": "c",
+          "text": "Faster, half-depth push-ups to fit more in.",
+          "correct": false,
+          "feedback": "Sloppy half reps are not clean work. A few more full, clean reps is how she grows it."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "progressive-overload-s3",
+    "claimIds": [
+      "progressive-overload-c4"
+    ],
+    "twist": {
+      "stem": "Deepa ran 150 minutes a week, then took two weeks off for exams. Now she plans to go straight back to 150. How big is that jump next to what she has been doing lately?",
+      "hint": "Compare it with her last two weeks, not her old best.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Small, since 150 minutes was her old normal.",
+          "correct": false,
+          "feedback": "Her old normal is not what she does now. After two weeks off, going straight to 150 is a large jump."
+        },
+        {
+          "id": "b",
+          "text": "No jump, since the body keeps the old amount.",
+          "correct": false,
+          "feedback": "Jump size compares the new amount with what she does now. Right now that is close to zero, so 150 is big."
+        },
+        {
+          "id": "c",
+          "text": "Big, next to almost nothing.",
+          "correct": true,
+          "feedback": "Jump size is judged against what you do now. After two weeks off, 150 minutes is a big rise on almost nothing."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Riya dances about 40 minutes a week. For her cousin's sangeet in a month, she plans to jump to 200 minutes next week. What fits this step better?",
+      "hint": "Compare the rise with what she does now.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Climb in small steps each week toward it.",
+          "correct": true,
+          "feedback": "A rise that is big next to what you already do is linked to injury. Going from 40 to 200 at once is a huge jump."
+        },
+        {
+          "id": "b",
+          "text": "Jump to 200, since dancing is fun, not training.",
+          "correct": false,
+          "feedback": "Fun or not, it is still work for her body. A jump that is big next to her usual 40 is linked to injury."
+        },
+        {
+          "id": "c",
+          "text": "Jump to 200, as a big start builds fitness faster.",
+          "correct": false,
+          "feedback": "Bigger jumps are not better. The size of each weekly rise, next to her usual amount, is linked to injury."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "muscle-protein-rest-s1",
+    "claimIds": [
+      "muscle-protein-rest-c2"
+    ],
+    "twist": {
+      "stem": "Pallavi does squats and push-ups four times a week but eats very little dal, eggs, milk or other protein foods. What is her muscle building short of?",
+      "hint": "Training is one half of the pair.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No gap, as training builds the muscle by itself.",
+          "correct": false,
+          "feedback": "Training gives the signal, but the muscle still needs protein from food as its building parts."
+        },
+        {
+          "id": "b",
+          "text": "The parts from food that muscle is built from.",
+          "correct": true,
+          "feedback": "Strength work tells a muscle to build, and protein from food gives it the parts. Training alone is half the pair."
+        },
+        {
+          "id": "c",
+          "text": "More training days, to make up the gap.",
+          "correct": false,
+          "feedback": "More training adds more signal, not more parts. Protein from food supplies the parts the muscle builds with."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "On a long tour, a Rajkot cricket academy cancels the boys' strength sessions but keeps handing out protein bars. What happens to the bars' protein, for muscle?",
+      "hint": "Which half of the pair has been dropped?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It keeps building muscle, so training can wait.",
+          "correct": false,
+          "feedback": "Protein alone does not build muscle. The body needs the training signal to use it for building."
+        },
+        {
+          "id": "b",
+          "text": "It builds even more muscle while the boys rest.",
+          "correct": false,
+          "feedback": "Rest after training helps, but here there is no training. Without the signal, protein is not used for muscle."
+        },
+        {
+          "id": "c",
+          "text": "It is not used for muscle.",
+          "correct": true,
+          "feedback": "Strength work is the signal to build. Without it, the body does not use protein to build muscle, however much is eaten."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "muscle-protein-rest-s2",
+    "claimIds": [
+      "muscle-protein-rest-c1"
+    ],
+    "twist": {
+      "stem": "Babita trains and eats about 1 g of protein per kilo a day. Where does that sit next to the two figures on the card?",
+      "hint": "Place 1 g between the two numbers.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Above the need, below the cap.",
+          "correct": true,
+          "feedback": "Healthy adults need 0.83 g per kilo, and gains stopped past about 1.6 g. So 1 g sits between the two."
+        },
+        {
+          "id": "b",
+          "text": "Below the basic amount a healthy adult needs.",
+          "correct": false,
+          "feedback": "The basic need is 0.83 g per kilo a day. At 1 g, she is already above it."
+        },
+        {
+          "id": "c",
+          "text": "Past the point where extra protein still adds muscle.",
+          "correct": false,
+          "feedback": "Extra protein stopped adding muscle past about 1.6 g per kilo. At 1 g, she is still below that."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A supplement seller in a Kanpur gym pushes Arif, who weighs 80 kg and trains, to take 200 g of protein a day for faster gains. What does the step show about this?",
+      "hint": "Use the higher per-kilo figure for his weight.",
+      "options": [
+        {
+          "id": "a",
+          "text": "More protein, more muscle, so 200 g beats 128 g.",
+          "correct": false,
+          "feedback": "Muscle can use only so much. Past about 1.6 g per kilo, or 128 g for him, extra added no more muscle."
+        },
+        {
+          "id": "b",
+          "text": "Past about 128 g, extra protein added no more muscle.",
+          "correct": true,
+          "feedback": "In strength training, more than about 1.6 g per kilo a day added no more muscle. For 80 kg that is about 128 g."
+        },
+        {
+          "id": "c",
+          "text": "It is too little, as he needs 1.6 g per gram of muscle.",
+          "correct": false,
+          "feedback": "The figure is 1.6 g per kilo of body weight, not per gram of muscle. For him that is about 128 g."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "muscle-protein-rest-s3",
+    "claimIds": [
+      "muscle-protein-rest-c3"
+    ],
+    "twist": {
+      "stem": "Ishita, 20, and her father, 55, do the same strength session. How does the rise in muscle building tend to compare?",
+      "hint": "The research found a difference with age.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It tends to be the same, as the session matched.",
+          "correct": false,
+          "feedback": "The same session can bring a different rise. In adults over 50, the rise in muscle building was smaller."
+        },
+        {
+          "id": "b",
+          "text": "Bigger, since he has more to rebuild.",
+          "correct": false,
+          "feedback": "The rise was smaller in adults over 50, not bigger. Age changed how much the building process rose."
+        },
+        {
+          "id": "c",
+          "text": "His rise is smaller.",
+          "correct": true,
+          "feedback": "After a session, muscle building can stay raised for up to two days. In adults over 50, the rise was smaller."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Kiran plays a hard kabaddi match on Saturday evening. On Sunday she sits at her desk all day studying. What may be going on in her muscles on Sunday?",
+      "hint": "How long can the process stay on after a session?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Building is still switched on.",
+          "correct": true,
+          "feedback": "After hard muscle work, the building process can stay switched on for up to two days. Her rest day is part of it."
+        },
+        {
+          "id": "b",
+          "text": "No building, since growth happens during the match.",
+          "correct": false,
+          "feedback": "Building does not stop when the match ends. It can stay raised for up to two days after."
+        },
+        {
+          "id": "c",
+          "text": "Building waits until her soreness has faded away.",
+          "correct": false,
+          "feedback": "Building does not wait for soreness to end. It can stay raised for up to two days right after the work."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "claimIds": [
+      "sleep-recovery-c1",
+      "sleep-recovery-c2"
+    ],
+    "twist": {
+      "stem": "Which of these nights falls inside the adult range?",
+      "hint": "Count the hours in each, then compare.",
+      "options": [
+        {
+          "id": "a",
+          "text": "12:30 am to 6 am.",
+          "correct": false,
+          "feedback": "That is only five and a half hours. Adults are advised 7 to 9 hours a night."
+        },
+        {
+          "id": "b",
+          "text": "11 pm to 7 am.",
+          "correct": true,
+          "feedback": "That is 8 hours, inside the 7 to 9 hours advised for adults. The other two nights fall short of 7."
+        },
+        {
+          "id": "c",
+          "text": "2 am to 8:30 am.",
+          "correct": false,
+          "feedback": "That is six and a half hours, which is still under 7. Adults are advised 7 to 9 hours a night."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In harvest season, a farmer in Haryana works long days in the fields and sleeps about 5 hours a night. What do the short nights cut into?",
+      "hint": "When does much of the mending happen?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No real repair, since that matters for athletes.",
+          "correct": false,
+          "feedback": "Repair in sleep happens for every adult, not just athletes. Short nights cut into it."
+        },
+        {
+          "id": "b",
+          "text": "Just his energy, not any repair.",
+          "correct": false,
+          "feedback": "Sleep is more than a break. Deep sleep helps build muscle and repair tissue, so short nights cut repair too."
+        },
+        {
+          "id": "c",
+          "text": "Time his body uses to fix tissue in deep sleep.",
+          "correct": true,
+          "feedback": "Deep sleep releases a hormone that helps build muscle and repair tissue. Short nights cut into that time."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "claimIds": [
+      "sleep-recovery-c3"
+    ],
+    "twist": {
+      "stem": "Before a district final, Neeraj sleeps badly for just one night. Does a single short night matter, by the review of athletes?",
+      "hint": "How much sleep loss did the studies look at?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, even one night lowered play.",
+          "correct": true,
+          "feedback": "In the review, short-term sleep loss, often a single night, lowered sports performance."
+        },
+        {
+          "id": "b",
+          "text": "No, it takes weeks of short sleep before play drops.",
+          "correct": false,
+          "feedback": "The review looked at short-term loss, often one night, and it still tended to lower play."
+        },
+        {
+          "id": "c",
+          "text": "No, match nerves tend to keep him just as sharp.",
+          "correct": false,
+          "feedback": "Nerves did not cancel it out. Even one short night tended to lower play in the review."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Sports day is the morning after a family wedding. Plan A: leave the wedding at 2 am and wake at the usual 8. Plan B: sleep at the usual 10 but wake at 4 to drive back. Which tends to hurt play less?",
+      "hint": "Look at which end of sleep each choice cuts.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Waking at 4, since the bedtime stays normal.",
+          "correct": false,
+          "feedback": "A normal bedtime does not save it. Losing the end of the night hurt sport most in the review."
+        },
+        {
+          "id": "b",
+          "text": "Leaving late and waking at the usual time.",
+          "correct": true,
+          "feedback": "In the review, losing the end of the night hurt sport most, and losing the start showed no clear drop."
+        },
+        {
+          "id": "c",
+          "text": "Both the same, as each loses sleep.",
+          "correct": false,
+          "feedback": "Both lose sleep, but not the same part. Losing the end of the night hurt sport more than losing the start."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s3",
+    "claimIds": [
+      "sleep-recovery-c4"
+    ],
+    "twist": {
+      "stem": "After a short night, which way do the two hunger hormones move?",
+      "hint": "One makes you hungry; the other helps you feel full.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Ghrelin down, leptin up.",
+          "correct": false,
+          "feedback": "That is the reverse. Short sleep raises the hunger hormone ghrelin and lowers the fullness hormone leptin."
+        },
+        {
+          "id": "b",
+          "text": "Both go up together.",
+          "correct": false,
+          "feedback": "They move in opposite ways. Ghrelin goes up and leptin goes down, so you feel hungrier."
+        },
+        {
+          "id": "c",
+          "text": "Ghrelin up, leptin down.",
+          "correct": true,
+          "feedback": "Short sleep raises ghrelin, which makes you hungry, and lowers leptin, which helps you feel full."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "After a week of late nights to meet office deadlines, Varun keeps snacking at his desk, though his work is no harder than usual. Which cause fits this step?",
+      "hint": "What did the late nights do inside his body?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Short sleep shifts hunger hormones.",
+          "correct": true,
+          "feedback": "Short sleep raises ghrelin, the hunger hormone, and lowers leptin, the fullness hormone. So he feels hungrier."
+        },
+        {
+          "id": "b",
+          "text": "His brain burns far more food when he works late.",
+          "correct": false,
+          "feedback": "His work is no harder than usual. Short sleep shifts his hunger hormones, which makes him want more food."
+        },
+        {
+          "id": "c",
+          "text": "It is just boredom; sleep plays no part.",
+          "correct": false,
+          "feedback": "Sleep plays a part. Too little of it raises the hunger hormone and lowers the fullness hormone."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "heat-hydration-s1",
+    "claimIds": [
+      "heat-hydration-c2"
+    ],
+    "twist": {
+      "stem": "In Nagpur in May, a cricket camp can train at 6 am, 1 pm or 7 pm. Which plan fits the hot-weather plan best?",
+      "hint": "Think about the clock and the pace.",
+      "options": [
+        {
+          "id": "a",
+          "text": "1 pm, at a hard pace, to build heat toughness.",
+          "correct": false,
+          "feedback": "Heat adds strain; it is not a bonus workout. Cooler hours and a slow start are the safer plan."
+        },
+        {
+          "id": "b",
+          "text": "6 am or 7 pm, with an easy start.",
+          "correct": true,
+          "feedback": "Hot days call for cooler hours and a slow start. Early morning or evening, eased into, fits both parts."
+        },
+        {
+          "id": "c",
+          "text": "1 pm, but with a slow start.",
+          "correct": false,
+          "feedback": "A slow start helps, but 1 pm is the hottest choice. The plan also moves training to cooler hours."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A building site foreman in Ahmedabad plans the heaviest lifting for a heatwave week. When does that work fit best?",
+      "hint": "The body has to shed heat as well as work.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Midday, to finish fast while workers are fresh.",
+          "correct": false,
+          "feedback": "Midday is the hottest time, so the same work is harder. Cooler hours and a slow start fit better."
+        },
+        {
+          "id": "b",
+          "text": "Any time, if the work is done quickly.",
+          "correct": false,
+          "feedback": "Rushing does not help in heat. Cooler hours and a slow start make the same work easier on the body."
+        },
+        {
+          "id": "c",
+          "text": "Early in the day, with a slow start.",
+          "correct": true,
+          "feedback": "In heat, the body works to shed heat as well as move. Cooler hours and a slow start make the same work easier."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "heat-hydration-s2",
+    "claimIds": [
+      "heat-hydration-c3"
+    ],
+    "twist": {
+      "stem": "After a hot match, Kunal is not thirsty, but he forces down two litres at once to catch up. What is the problem?",
+      "hint": "Does more always mean safer here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Forcing water when not thirsty raises risk.",
+          "correct": true,
+          "feedback": "Sipping through the session suits hot days. Forcing water on someone who is not thirsty raises risk."
+        },
+        {
+          "id": "b",
+          "text": "None, since more water is the safer choice.",
+          "correct": false,
+          "feedback": "More is not always safer. Forcing water when not thirsty raises risk, so sipping through the session is better."
+        },
+        {
+          "id": "c",
+          "text": "He needed salt water instead of food.",
+          "correct": false,
+          "feedback": "Food is the easiest way to put salt back. The problem here is forcing water when he is not thirsty."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "On a long summer pilgrimage walk to Pandharpur, Ganesh sweats a lot all day. What is the easiest way to put back the salt he loses?",
+      "hint": "Sweat takes more than water out.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No need, since water alone puts the salt back.",
+          "correct": false,
+          "feedback": "Water does not hold the salt that left in sweat. Salty food is the easiest way to replace it."
+        },
+        {
+          "id": "b",
+          "text": "With his meals and salty snacks.",
+          "correct": true,
+          "feedback": "Sweat takes salt as well as water. Food is the easiest way to put the salt back."
+        },
+        {
+          "id": "c",
+          "text": "By gulping big amounts of water at each stop.",
+          "correct": false,
+          "feedback": "Forcing down big amounts raises risk, and water does not bring salt back. Food does that most easily."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "heat-hydration-s3",
+    "claimIds": [
+      "heat-hydration-c5"
+    ],
+    "twist": {
+      "stem": "Neha felt sick in the heat, so she stopped and rested in the shade. Then she throws up. What now?",
+      "hint": "Which signs mean more than rest is needed?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Wait an hour to see if it passes.",
+          "correct": false,
+          "feedback": "Vomiting is a sign not to wait. Heat illness can get worse, so get medical help."
+        },
+        {
+          "id": "b",
+          "text": "Drink a lot of water fast, then carry on.",
+          "correct": false,
+          "feedback": "Gulping water and carrying on is not the step. Throwing up in the heat calls for medical help."
+        },
+        {
+          "id": "c",
+          "text": "Get medical help.",
+          "correct": true,
+          "feedback": "Stopping, cooling and sipping water come first. Throwing up is a sign to get medical help."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a summer baraat in Jaipur, Kavita's uncle dances in the sun for an hour. Then he feels dizzy and gets a headache. What is the safe move?",
+      "hint": "Think about what these signs mean in the heat.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stop dancing, move into shade, and sip water.",
+          "correct": true,
+          "feedback": "Dizziness or headache in the heat mean stop, get cool and sip water, because heat illness can get worse."
+        },
+        {
+          "id": "b",
+          "text": "Keep dancing; it will pass once he sweats more.",
+          "correct": false,
+          "feedback": "These are warning signs, not something to push through. He needs to stop, get cool and sip water."
+        },
+        {
+          "id": "c",
+          "text": "Gulp a big cold drink and carry on.",
+          "correct": false,
+          "feedback": "A drink alone, then carrying on, misses the step. Signs like these mean stop and get somewhere cool."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "warmup-myths-s1",
+    "claimIds": [
+      "warmup-myths-c2"
+    ],
+    "twist": {
+      "stem": "After a hard run, which finish fits a cool-down?",
+      "hint": "A cool-down is the warm-up's idea, at the other end.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stopping dead and sitting down at once.",
+          "correct": false,
+          "feedback": "Stopping at once skips the easing down. A cool-down is the same activity done slower, then lighter."
+        },
+        {
+          "id": "b",
+          "text": "Easy jogging, then walking.",
+          "correct": true,
+          "feedback": "A cool-down is the activity done slower or lighter, so heart rate and breathing come down bit by bit."
+        },
+        {
+          "id": "c",
+          "text": "A last flat-out sprint to finish strong.",
+          "correct": false,
+          "feedback": "A sprint raises effort, which is the opposite of cooling down. Easy jogging, then walking, brings it down."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Before a Navratri garba night in Vadodara, which start fits a warm-up best?",
+      "hint": "Same move, lighter effort.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Long toe-touch holds, then straight into fast steps.",
+          "correct": false,
+          "feedback": "A warm-up is mainly the activity done easier, not long holds. Slow rounds of the steps fit better."
+        },
+        {
+          "id": "b",
+          "text": "Full speed from the start, to heat up quickly.",
+          "correct": false,
+          "feedback": "A warm-up starts easy, not at full effort. Slow rounds let heart rate and breathing rise bit by bit."
+        },
+        {
+          "id": "c",
+          "text": "A few slow rounds of the garba steps first.",
+          "correct": true,
+          "feedback": "A warm-up is the activity done slower or lighter, so heart rate and breathing climb bit by bit."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "warmup-myths-s2",
+    "claimIds": [
+      "warmup-myths-c3"
+    ],
+    "twist": {
+      "stem": "Before a jump test, one group holds each stretch for 90 seconds and another for 20 seconds. How did the average drops compare in the review?",
+      "hint": "Find which side of the line each group sits on.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The long holds cost about four times as much.",
+          "correct": true,
+          "feedback": "Holds of 60 seconds or more cut results by about 4.6%, against about 1.1% for shorter holds. That is about four times as much."
+        },
+        {
+          "id": "b",
+          "text": "The short holds cost more, as they feel rushed.",
+          "correct": false,
+          "feedback": "It is the other way round. Long holds of 60 seconds or more cost about 4.6%, short ones about 1.1%."
+        },
+        {
+          "id": "c",
+          "text": "About the same, since any still hold costs the same.",
+          "correct": false,
+          "feedback": "Hold length matters. Shorter holds cut results by only about 1.1%, against about 4.6% for long ones."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Before her Kathak audition, which has fast jumps, Rhea holds each leg stretch for 90 seconds, then waits still for her turn. Which change fits the review?",
+      "hint": "Find what made the drop disappear.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hold each stretch even longer, to loosen fully.",
+          "correct": false,
+          "feedback": "Longer holds cost more, not less. Holds of 60 seconds or more cut results by about 4.6%."
+        },
+        {
+          "id": "b",
+          "text": "Shorter holds, or active moves after them.",
+          "correct": true,
+          "feedback": "Long still holds cut jump results soon after. Shorter holds cost much less, and with active moves after, no clear effect was seen."
+        },
+        {
+          "id": "c",
+          "text": "Stretch harder, then rest still until her turn.",
+          "correct": false,
+          "feedback": "Resting still after long holds is what was linked to the drop. Active moves after the stretch showed no clear effect."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "warmup-myths-s3",
+    "claimIds": [
+      "warmup-myths-c4"
+    ],
+    "twist": {
+      "stem": "A coach reads that stretching showed no clear effect on injuries. He decides to drop stretching from warm-ups. What does the review still suggest?",
+      "hint": "Look at what comes after the stretches.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Drop it, since it does not cut injuries.",
+          "correct": false,
+          "feedback": "No clear injury effect is not the whole story. The review still suggests stretching inside a warm-up ending in active moves."
+        },
+        {
+          "id": "b",
+          "text": "Make it the whole warm-up, since it stops injuries.",
+          "correct": false,
+          "feedback": "Stretching had no clear effect on injuries. It fits inside a warm-up that ends with active moves."
+        },
+        {
+          "id": "c",
+          "text": "Keep it, followed by active moves.",
+          "correct": true,
+          "feedback": "Stretching showed no clear effect on injuries, but the review still suggests it inside a warm-up that ends with active moves."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A courier in Mumbai stretches at 8 am before his rounds, sure it will keep him free of strains all day. What does the evidence show?",
+      "hint": "Think about how long extra reach lasts.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Gains fade fast, and injuries showed no clear drop.",
+          "correct": true,
+          "feedback": "Range gains from stretching usually last under 30 minutes. A big review also found no clear effect on overall injuries."
+        },
+        {
+          "id": "b",
+          "text": "He is right; a morning stretch protects him until night.",
+          "correct": false,
+          "feedback": "Range gains usually fade within 30 minutes, and stretching showed no clear effect on injuries."
+        },
+        {
+          "id": "c",
+          "text": "It works if he holds each stretch for two minutes.",
+          "correct": false,
+          "feedback": "Longer holds do not make the gain last all day. Range gains usually fade within 30 minutes."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "cardio-talk-test-s1",
+    "claimIds": [
+      "cardio-talk-test-c1"
+    ],
+    "twist": {
+      "stem": "On a walk, Aditi can easily sing a full song. What effort is that?",
+      "hint": "Where does easy singing sit on the voice test?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Moderate, since she is out walking.",
+          "correct": false,
+          "feedback": "Moderate is when you can talk but not sing. Singing easily means her effort is lighter than that."
+        },
+        {
+          "id": "b",
+          "text": "Lighter than moderate.",
+          "correct": true,
+          "feedback": "Talk but not sing marks moderate effort. If she can sing easily, she is working below that."
+        },
+        {
+          "id": "c",
+          "text": "Vigorous, since singing takes breath.",
+          "correct": false,
+          "feedback": "At vigorous effort only a few words fit before a breath. Singing a full song is lighter than moderate."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A postman in Kerala cycles his rounds. He can chat with shopkeepers as he rides, but he cannot sing along to the radio. What effort is that?",
+      "hint": "Check what his voice can and cannot do.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Too easy to count, since he can chat.",
+          "correct": false,
+          "feedback": "Being able to talk does not mean too easy. Talk but no singing marks moderate effort."
+        },
+        {
+          "id": "b",
+          "text": "Vigorous, as he works for hours.",
+          "correct": false,
+          "feedback": "A long day is not the test. At vigorous effort he could only say a few words before a breath."
+        },
+        {
+          "id": "c",
+          "text": "Moderate.",
+          "correct": true,
+          "feedback": "Talk but not sing marks moderate effort. Vigorous would leave him only a few words before a breath."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "cardio-talk-test-s2",
+    "claimIds": [
+      "cardio-talk-test-c2",
+      "cardio-talk-test-c3"
+    ],
+    "twist": {
+      "stem": "Raj rates his brisk walk a 6 today. After months of regular walks at the same speed, what might he rate it?",
+      "hint": "Fitness changes how hard a task feels.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Lower, as fitter people need less effort.",
+          "correct": true,
+          "feedback": "Effort is personal. As he gets fitter, the same walk takes less effort, so his rating can drop."
+        },
+        {
+          "id": "b",
+          "text": "Still 6, since the walk is the same.",
+          "correct": false,
+          "feedback": "The walk is the same, but his fitness is not. Fitter people need less effort for the same activity."
+        },
+        {
+          "id": "c",
+          "text": "Higher, as tired muscles build up over months.",
+          "correct": false,
+          "feedback": "Regular walking makes him fitter, not more tired. The same walk then takes less effort."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "During Diwali cleaning, Asha scrubs the floors and rates the effort an 8 on the 0 to 10 scale. Which band is that?",
+      "hint": "Find where the top band begins.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Moderate, since it is just housework.",
+          "correct": false,
+          "feedback": "The scale rates effort, not the kind of task. An 8 is in the vigorous band, whatever the activity."
+        },
+        {
+          "id": "b",
+          "text": "Vigorous.",
+          "correct": true,
+          "feedback": "On the 0 to 10 scale, moderate is 5 or 6, and vigorous starts at 7 or 8. So an 8 is vigorous."
+        },
+        {
+          "id": "c",
+          "text": "Too light to count, since it is not exercise.",
+          "correct": false,
+          "feedback": "Any activity can be rated by effort. An 8 marks vigorous effort on the scale."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "cardio-talk-test-s3",
+    "claimIds": [
+      "cardio-talk-test-c4"
+    ],
+    "twist": {
+      "stem": "After a month back, Kavya's brisk 20-minute walks feel easy. What is the next step in the build-up order?",
+      "hint": "Which comes first: time or intensity?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Switch to fast running right away.",
+          "correct": false,
+          "feedback": "That raises effort first. The order is minutes and days first, then effort later."
+        },
+        {
+          "id": "b",
+          "text": "Keep it the same, since any change risks injury.",
+          "correct": false,
+          "feedback": "Small additions are part of the plan. Add minutes and days first, then effort."
+        },
+        {
+          "id": "c",
+          "text": "Walk a few more minutes, or one more day.",
+          "correct": true,
+          "feedback": "After time off, add minutes and days first, and effort later. Running can come after that."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "After two years with no exercise, Meher joins a bhangra class where others dance flat out. Which plan fits her first weeks?",
+      "hint": "Use her voice as a guide to effort.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A pace she can talk through.",
+          "correct": true,
+          "feedback": "After time off, start at a moderate effort you can talk through. Add minutes and days first, effort later."
+        },
+        {
+          "id": "b",
+          "text": "Match the others' full effort so she can catch up quickly.",
+          "correct": false,
+          "feedback": "Starting hard to catch up is the risky choice. After time off, start moderate and build up."
+        },
+        {
+          "id": "c",
+          "text": "Hard bursts with long rests, since short efforts are safe.",
+          "correct": false,
+          "feedback": "Short does not make hard effort the right start. After time off, begin at a moderate effort."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "showing-up-s1",
+    "claimIds": [
+      "showing-up-c1",
+      "showing-up-c2"
+    ],
+    "twist": {
+      "stem": "After work, Mohan can only manage a slow stroll, not a brisk walk. Is it worth it?",
+      "hint": "Compare it with doing nothing on the sofa.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No, as just brisk bouts give any gain.",
+          "correct": false,
+          "feedback": "Brisk bouts count toward the weekly total, but a stroll still beats sitting. Some activity is better than none."
+        },
+        {
+          "id": "b",
+          "text": "Yes, some movement beats sitting.",
+          "correct": true,
+          "feedback": "Some activity is better than none. Brisk bouts count toward the total, and a stroll is still better than sitting."
+        },
+        {
+          "id": "c",
+          "text": "Yes, but just if it lasts 10 minutes or more.",
+          "correct": false,
+          "feedback": "The 10-minute rule was dropped. Any movement, short or long, is better than sitting."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Ankur works in a Pune office. Several times a day, he takes the stairs to the third floor briskly instead of the lift. A colleague thinks it is too short to matter. Does it count?",
+      "hint": "Was the old time rule kept or dropped?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It counts if each climb lasts 10 minutes.",
+          "correct": false,
+          "feedback": "The 10-minute minimum was dropped. Brisk bouts of any length count."
+        },
+        {
+          "id": "b",
+          "text": "No, as planned workouts are what count.",
+          "correct": false,
+          "feedback": "Brisk stairs and walks count too. Some activity is better than none, and short bouts add up."
+        },
+        {
+          "id": "c",
+          "text": "Yes, brisk bouts of any length add up.",
+          "correct": true,
+          "feedback": "The old 10-minute rule was dropped, so brisk bouts of any length count. Even a few flights of stairs counts."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "showing-up-s2",
+    "claimIds": [
+      "showing-up-c3"
+    ],
+    "twist": {
+      "stem": "Neha does her push-ups at random times: some days at dawn, some at night. After two months they still feel like a chore to start. What is the likely reason?",
+      "hint": "What starts a habit running on its own?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No steady cue sets them off.",
+          "correct": true,
+          "feedback": "A habit forms when one small thing is done at the same time each day. Random times leave no cue to set it off."
+        },
+        {
+          "id": "b",
+          "text": "Two months is far too short for any habit.",
+          "correct": false,
+          "feedback": "Time alone is not the issue. Without a steady daily cue, the push-ups never start to run on their own."
+        },
+        {
+          "id": "c",
+          "text": "Push-ups are too hard to become a habit.",
+          "correct": false,
+          "feedback": "The move is not the problem. Tied to the same daily cue, a small action can become a habit."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Ishaan wants a daily habit of reading a few pages of a novel. Which plan fits this step best?",
+      "hint": "Look for a small step tied to something daily.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A whole chapter whenever he has free time.",
+          "correct": false,
+          "feedback": "Free time comes at random, so there is no steady cue. A small step after a daily event works better."
+        },
+        {
+          "id": "b",
+          "text": "Two pages right after his evening chai.",
+          "correct": true,
+          "feedback": "One small action at the same time each day starts to run on its own, because the cue sets it off."
+        },
+        {
+          "id": "c",
+          "text": "A big goal: twenty books by the end of the year.",
+          "correct": false,
+          "feedback": "A goal is not a cue. A small action tied to a daily event is what turns into a habit."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "showing-up-s3",
+    "claimIds": [
+      "showing-up-c4"
+    ],
+    "twist": {
+      "stem": "Pooja's habit plan is a 45-minute run each day. She misses one day and feels like giving up. What does the study point to instead?",
+      "hint": "Think about how big each day's task is.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Make up the missed day with a double run tomorrow.",
+          "correct": false,
+          "feedback": "A miss does not need making up. Gains soon pick up again, and a small step keeps restarts easy."
+        },
+        {
+          "id": "b",
+          "text": "Start the count again from day one, fresh.",
+          "correct": false,
+          "feedback": "One miss did not seriously harm habit forming. There is no need to restart; a smaller step helps."
+        },
+        {
+          "id": "c",
+          "text": "A smaller daily step.",
+          "correct": true,
+          "feedback": "Missing the odd day did not seriously harm habits. Small, easy changes help, because an early setback can be discouraging."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Each night, Kabir writes down what he spent that day. He skips one night because of a cousin's wedding. What happens to the habit?",
+      "hint": "Did one miss do serious harm in the study?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It carries on if he writes again the next night.",
+          "correct": true,
+          "feedback": "Missing the odd day did not seriously harm habit forming, and gains soon picked up again."
+        },
+        {
+          "id": "b",
+          "text": "It is broken, so he has to restart the count.",
+          "correct": false,
+          "feedback": "One missed day did not seriously harm habit forming. Going back the next night keeps it going."
+        },
+        {
+          "id": "c",
+          "text": "It carries on, as long as he makes up the missed night.",
+          "correct": false,
+          "feedback": "No catching up is needed. Simply going back to the usual small step the next night keeps the habit going."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-labels-s1",
+    "claimIds": [
+      "food-labels-c3"
+    ],
+    "twist": {
+      "stem": "A label lists 14 g added sugars and 8 g total sugars. What is wrong with it?",
+      "hint": "Which line holds the other one?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It is fine, since added sugar is extra on top.",
+          "correct": false,
+          "feedback": "Added sugars are part of total sugars, not extra. So added cannot be more than the total."
+        },
+        {
+          "id": "b",
+          "text": "Added sugars cannot be more than the total.",
+          "correct": true,
+          "feedback": "Total sugars count every sugar, added ones included. So the added line can never be bigger than the total."
+        },
+        {
+          "id": "c",
+          "text": "The food's own sugar must be 22 g.",
+          "correct": false,
+          "feedback": "That adds the two lines, but added is already inside the total. A larger added line is an error."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Choosing a breakfast cereal for her hostel room, Lata compares two packs. Pack A: 10 g total sugars, 0 g added. Pack B: 8 g total sugars, 8 g added. Which has more sugar put in?",
+      "hint": "Which line counts just what was put in?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Pack A, since its total sugars line is higher.",
+          "correct": false,
+          "feedback": "Total counts every sugar, including the food's own. Pack A has 0 g added, so Pack B has more put in."
+        },
+        {
+          "id": "b",
+          "text": "Both the same, since each pack has sugar in it.",
+          "correct": false,
+          "feedback": "The added lines differ: 0 g against 8 g. Pack B has more sugar put in."
+        },
+        {
+          "id": "c",
+          "text": "Pack B, with 8 g added.",
+          "correct": true,
+          "feedback": "Added sugars are only the ones put in. Pack A's sugar is the food's own, while all of Pack B's was added."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-labels-s2",
+    "claimIds": [
+      "food-labels-c5"
+    ],
+    "twist": {
+      "stem": "A plain noodle pack shows a photo of noodles topped with vegetables and prawns, marked 'serving suggestion'. Must the label give a % of prawns?",
+      "hint": "Not every image on a pack counts.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No, serving suggestions are left out.",
+          "correct": true,
+          "feedback": "A stressed ingredient usually needs its %, but serving-suggestion pictures are left out of the rule."
+        },
+        {
+          "id": "b",
+          "text": "Yes, any food shown in a picture needs a %.",
+          "correct": false,
+          "feedback": "Not every picture counts. Serving-suggestion pictures are left out, as are spices used for flavour."
+        },
+        {
+          "id": "c",
+          "text": "Yes, but just for the vegetables, not prawns.",
+          "correct": false,
+          "feedback": "The vegetables and prawns are both part of the serving suggestion, which is left out of the rule."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Buying breakfast at a Chennai supermarket, Suresh picks a masala oats pack. The front stresses 'with real almonds' and shows turmeric and pepper. Which needs a % on the label?",
+      "hint": "Flavourings are a special case.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The almonds, turmeric and pepper, since each is shown.",
+          "correct": false,
+          "feedback": "Spices used for flavour are left out of the rule. Only the stressed almonds need a %."
+        },
+        {
+          "id": "b",
+          "text": "The almonds, but not the spices.",
+          "correct": true,
+          "feedback": "A stressed ingredient must usually show its %, but spices used for flavour are left out of the rule."
+        },
+        {
+          "id": "c",
+          "text": "None, since oats are the main ingredient.",
+          "correct": false,
+          "feedback": "Stressing an ingredient in words or pictures brings the % rule in. The almonds need a %."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-labels-s3",
+    "claimIds": [
+      "food-labels-c4"
+    ],
+    "twist": {
+      "stem": "A serving's label shows 40% next to added sugars. About how many grams of added sugar is that serving?",
+      "hint": "Take that share of the reference day's amount.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 40 g.",
+          "correct": false,
+          "feedback": "The % is a share of 50 g, not a gram count. 40% of 50 g is about 20 g."
+        },
+        {
+          "id": "b",
+          "text": "About 25 g.",
+          "correct": false,
+          "feedback": "The % compares with a 50 g reference day. 40% of 50 g is 20 g, not 25 g."
+        },
+        {
+          "id": "c",
+          "text": "About 20 g.",
+          "correct": true,
+          "feedback": "The reference day counts 50 g of added sugar. 40% of 50 g is 20 g."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A masala chai premix lists 10 g added sugar per sachet. Dadi drinks three cups a day, one sachet each. About what share of the reference day's added sugar is that?",
+      "hint": "Find one cup's share, then count the cups.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 60%.",
+          "correct": true,
+          "feedback": "One sachet's 10 g is 20% of the 50 g reference. Three cups make about 60%."
+        },
+        {
+          "id": "b",
+          "text": "About 20%, as the label shows.",
+          "correct": false,
+          "feedback": "The %RDA is per serving. Three servings make three times that, so about 60%."
+        },
+        {
+          "id": "c",
+          "text": "About 30%.",
+          "correct": false,
+          "feedback": "Each 10 g sachet is 20% of the 50 g reference. Three of them make about 60%."
+        }
+      ]
+    }
+  }
+]

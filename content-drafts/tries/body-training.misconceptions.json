@@ -1,0 +1,350 @@
+[
+  {
+    "stepId": "progressive-overload-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "progressive-overload-m3"
+  },
+  {
+    "stepId": "progressive-overload-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "progressive-overload-m3"
+  },
+  {
+    "stepId": "progressive-overload-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "progressive-overload-m1"
+  },
+  {
+    "stepId": "progressive-overload-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "progressive-overload-m3"
+  },
+  {
+    "stepId": "progressive-overload-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "progressive-overload-m2"
+  },
+  {
+    "stepId": "progressive-overload-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "progressive-overload-m2"
+  },
+  {
+    "stepId": "muscle-protein-rest-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "muscle-protein-rest-m6"
+  },
+  {
+    "stepId": "muscle-protein-rest-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "muscle-protein-rest-m6"
+  },
+  {
+    "stepId": "muscle-protein-rest-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "muscle-protein-rest-m2"
+  },
+  {
+    "stepId": "muscle-protein-rest-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "muscle-protein-rest-m2"
+  },
+  {
+    "stepId": "muscle-protein-rest-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "muscle-protein-rest-m3"
+  },
+  {
+    "stepId": "muscle-protein-rest-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "muscle-protein-rest-m4"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m2"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "sleep-recovery-m2"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m1"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sleep-recovery-m1"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "sleep-recovery-m3"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "sleep-recovery-m3"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m4"
+  },
+  {
+    "stepId": "sleep-recovery-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m6"
+  },
+  {
+    "stepId": "sleep-recovery-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "sleep-recovery-m6"
+  },
+  {
+    "stepId": "heat-hydration-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "heat-hydration-m1"
+  },
+  {
+    "stepId": "heat-hydration-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "heat-hydration-m1"
+  },
+  {
+    "stepId": "heat-hydration-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "heat-hydration-m2"
+  },
+  {
+    "stepId": "heat-hydration-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "heat-hydration-m2"
+  },
+  {
+    "stepId": "heat-hydration-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "heat-hydration-m5"
+  },
+  {
+    "stepId": "heat-hydration-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "heat-hydration-m2"
+  },
+  {
+    "stepId": "heat-hydration-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "heat-hydration-m3"
+  },
+  {
+    "stepId": "heat-hydration-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "heat-hydration-m2"
+  },
+  {
+    "stepId": "warmup-myths-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "warmup-myths-m2"
+  },
+  {
+    "stepId": "warmup-myths-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "warmup-myths-m4"
+  },
+  {
+    "stepId": "warmup-myths-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "warmup-myths-m1"
+  },
+  {
+    "stepId": "warmup-myths-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "warmup-myths-m1"
+  },
+  {
+    "stepId": "warmup-myths-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "warmup-myths-m3"
+  },
+  {
+    "stepId": "warmup-myths-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "warmup-myths-m3"
+  },
+  {
+    "stepId": "cardio-talk-test-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "cardio-talk-test-m4"
+  },
+  {
+    "stepId": "cardio-talk-test-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "cardio-talk-test-m2"
+  },
+  {
+    "stepId": "cardio-talk-test-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "cardio-talk-test-m4"
+  },
+  {
+    "stepId": "cardio-talk-test-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "cardio-talk-test-m1"
+  },
+  {
+    "stepId": "cardio-talk-test-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "cardio-talk-test-m3"
+  },
+  {
+    "stepId": "cardio-talk-test-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "cardio-talk-test-m3"
+  },
+  {
+    "stepId": "cardio-talk-test-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "cardio-talk-test-m3"
+  },
+  {
+    "stepId": "showing-up-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "showing-up-m1"
+  },
+  {
+    "stepId": "showing-up-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "showing-up-m2"
+  },
+  {
+    "stepId": "showing-up-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "showing-up-m2"
+  },
+  {
+    "stepId": "showing-up-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "showing-up-m1"
+  },
+  {
+    "stepId": "showing-up-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "showing-up-m4"
+  },
+  {
+    "stepId": "showing-up-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "showing-up-m4"
+  },
+  {
+    "stepId": "showing-up-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "showing-up-m3"
+  },
+  {
+    "stepId": "showing-up-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "showing-up-m3"
+  },
+  {
+    "stepId": "showing-up-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "showing-up-m3"
+  },
+  {
+    "stepId": "showing-up-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "showing-up-m3"
+  },
+  {
+    "stepId": "food-labels-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "food-labels-m5"
+  },
+  {
+    "stepId": "food-labels-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "food-labels-m5"
+  },
+  {
+    "stepId": "food-labels-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "food-labels-m2"
+  },
+  {
+    "stepId": "food-labels-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "food-labels-m1"
+  },
+  {
+    "stepId": "food-labels-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "food-labels-m6"
+  },
+  {
+    "stepId": "food-labels-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "food-labels-m3"
+  }
+]

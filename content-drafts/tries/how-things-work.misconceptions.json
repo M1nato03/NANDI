@@ -1,0 +1,398 @@
+[
+  {
+    "stepId": "lift-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "lift-m5"
+  },
+  {
+    "stepId": "lift-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "lift-m3"
+  },
+  {
+    "stepId": "lift-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "lift-m2"
+  },
+  {
+    "stepId": "lift-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "lift-m2"
+  },
+  {
+    "stepId": "lift-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "lift-m4"
+  },
+  {
+    "stepId": "lift-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "lift-m4"
+  },
+  {
+    "stepId": "lift-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "lift-m1"
+  },
+  {
+    "stepId": "multirotor-turns-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "multirotor-turns-m1"
+  },
+  {
+    "stepId": "multirotor-turns-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "multirotor-turns-m1"
+  },
+  {
+    "stepId": "multirotor-turns-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "multirotor-turns-m4"
+  },
+  {
+    "stepId": "multirotor-turns-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "multirotor-turns-m4"
+  },
+  {
+    "stepId": "multirotor-turns-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "multirotor-turns-m2"
+  },
+  {
+    "stepId": "multirotor-turns-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "multirotor-turns-m3"
+  },
+  {
+    "stepId": "battery-flight-time-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "battery-flight-time-m3"
+  },
+  {
+    "stepId": "battery-flight-time-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "battery-flight-time-m2"
+  },
+  {
+    "stepId": "battery-flight-time-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "battery-flight-time-m3"
+  },
+  {
+    "stepId": "battery-flight-time-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "battery-flight-time-m1"
+  },
+  {
+    "stepId": "battery-flight-time-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "battery-flight-time-m5"
+  },
+  {
+    "stepId": "battery-flight-time-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "battery-flight-time-m4"
+  },
+  {
+    "stepId": "flight-sensors-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "flight-sensors-m2"
+  },
+  {
+    "stepId": "flight-sensors-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "flight-sensors-m1"
+  },
+  {
+    "stepId": "flight-sensors-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "flight-sensors-m2"
+  },
+  {
+    "stepId": "flight-sensors-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "flight-sensors-m3"
+  },
+  {
+    "stepId": "flight-sensors-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "flight-sensors-m3"
+  },
+  {
+    "stepId": "birds-and-planes-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "birds-and-planes-m2"
+  },
+  {
+    "stepId": "birds-and-planes-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "birds-and-planes-m2"
+  },
+  {
+    "stepId": "birds-and-planes-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "birds-and-planes-m1"
+  },
+  {
+    "stepId": "birds-and-planes-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "birds-and-planes-m5"
+  },
+  {
+    "stepId": "birds-and-planes-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "birds-and-planes-m5"
+  },
+  {
+    "stepId": "ceiling-fans-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "ceiling-fans-m1"
+  },
+  {
+    "stepId": "ceiling-fans-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "ceiling-fans-m1"
+  },
+  {
+    "stepId": "ceiling-fans-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "ceiling-fans-m1"
+  },
+  {
+    "stepId": "ceiling-fans-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "ceiling-fans-m1"
+  },
+  {
+    "stepId": "ceiling-fans-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "ceiling-fans-m3"
+  },
+  {
+    "stepId": "ceiling-fans-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "ceiling-fans-m1"
+  },
+  {
+    "stepId": "ceiling-fans-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "ceiling-fans-m3"
+  },
+  {
+    "stepId": "ceiling-fans-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "ceiling-fans-m4"
+  },
+  {
+    "stepId": "ceiling-fans-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "ceiling-fans-m2"
+  },
+  {
+    "stepId": "ceiling-fans-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "ceiling-fans-m4"
+  },
+  {
+    "stepId": "ceiling-fans-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "ceiling-fans-m4"
+  },
+  {
+    "stepId": "upi-path-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "upi-path-m2"
+  },
+  {
+    "stepId": "upi-path-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "upi-path-m1"
+  },
+  {
+    "stepId": "upi-path-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "upi-path-m1"
+  },
+  {
+    "stepId": "upi-path-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "upi-path-m2"
+  },
+  {
+    "stepId": "upi-path-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "upi-path-m2"
+  },
+  {
+    "stepId": "upi-path-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "upi-path-m5"
+  },
+  {
+    "stepId": "upi-path-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "upi-path-m5"
+  },
+  {
+    "stepId": "upi-path-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "upi-path-m3"
+  },
+  {
+    "stepId": "upi-path-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "upi-path-m3"
+  },
+  {
+    "stepId": "phone-camera-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "phone-camera-m2"
+  },
+  {
+    "stepId": "phone-camera-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "phone-camera-m2"
+  },
+  {
+    "stepId": "phone-camera-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "phone-camera-m3"
+  },
+  {
+    "stepId": "phone-camera-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "phone-camera-m1"
+  },
+  {
+    "stepId": "sky-colours-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sky-colours-m3"
+  },
+  {
+    "stepId": "sky-colours-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sky-colours-m1"
+  },
+  {
+    "stepId": "sky-colours-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sky-colours-m3"
+  },
+  {
+    "stepId": "sky-colours-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "sky-colours-m1"
+  },
+  {
+    "stepId": "sky-colours-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sky-colours-m1"
+  },
+  {
+    "stepId": "sky-colours-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sky-colours-m2"
+  },
+  {
+    "stepId": "sky-colours-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "sky-colours-m2"
+  },
+  {
+    "stepId": "pressure-cooker-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "pressure-cooker-m2"
+  },
+  {
+    "stepId": "pressure-cooker-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "pressure-cooker-m2"
+  },
+  {
+    "stepId": "pressure-cooker-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "pressure-cooker-m2"
+  },
+  {
+    "stepId": "pressure-cooker-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "pressure-cooker-m1"
+  },
+  {
+    "stepId": "pressure-cooker-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "pressure-cooker-m3"
+  },
+  {
+    "stepId": "pressure-cooker-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "pressure-cooker-m3"
+  }
+]
