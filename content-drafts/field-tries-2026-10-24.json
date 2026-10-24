@@ -1,0 +1,1731 @@
+{
+ "draft": "Field try drafts for editors (idea engine, 24 Oct 2026). Spec 21 Part B. Not fact-checked by an editor.",
+ "basedOn": "origin/content-walk",
+ "count": 54,
+ "rows": [
+  {
+   "topic": "topic.body-training",
+   "conceptId": "progressive-overload",
+   "oldQuest": {
+    "title": "Spot a small step",
+    "detail": "In a made-up training log, mark the first clean rise in reps or load.",
+    "sourceRefs": [
+     "acsm"
+    ]
+   },
+   "fieldTry": {
+    "title": "Progressive overload",
+    "detail": "Count one load you already carry today, like the stairs to your floor.",
+    "smaller": "Count the stairs to one floor.",
+    "cues": [
+     "On the stairs at home",
+     "Carrying the shopping"
+    ],
+    "settings": [
+     "At college or work",
+     "With a bag you carry daily"
+    ],
+    "notice": "Strength grows when the load, the reps or the days go up bit by bit.",
+    "sourceRefs": [
+     "guide",
+     "acsm"
+    ]
+   },
+   "noticeClaim": {
+    "id": "progressive-overload-c3",
+    "text": "Strength grows over time when the weight, the sets or reps, or the days a week of training go up bit by bit."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "muscle-protein-rest",
+   "oldQuest": {
+    "title": "Name the three parts",
+    "detail": "In a made-up gym day, mark the work, the food and the time away from hard work.",
+    "sourceRefs": [
+     "issn",
+     "nin",
+     "mps"
+    ]
+   },
+   "fieldTry": {
+    "title": "Muscle, protein and rest",
+    "detail": "At one meal today, name the food on your plate that carries protein.",
+    "smaller": "Name one protein food you ate today.",
+    "cues": [
+     "At lunch",
+     "At dinner"
+    ],
+    "settings": [
+     "At a canteen or mess",
+     "At a family meal"
+    ],
+    "notice": "Most people who train can get enough protein from food alone, without powders.",
+    "sourceRefs": [
+     "nin"
+    ]
+   },
+   "noticeClaim": {
+    "id": "muscle-protein-rest-c4",
+    "text": "Most people who train can get enough protein from food alone, without powders. People with kidney disease should take care with high protein."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "sleep-recovery",
+   "oldQuest": {
+    "title": "Read a training story",
+    "detail": "In a made-up exam week, mark the sleep gap and the later match and hunger clues.",
+    "sourceRefs": [
+     "sleep",
+     "sport"
+    ]
+   },
+   "fieldTry": {
+    "title": "Sleep and recovery",
+    "detail": "Tonight, note when you put the phone down and when you wake up.",
+    "smaller": "Note just your wake-up time tomorrow.",
+    "cues": [
+     "When I set my alarm",
+     "When I plug in my phone"
+    ],
+    "settings": [
+     "On a weekend night",
+     "Before a match or exam day"
+    ],
+    "notice": "Experts advise adults to sleep 7 to 9 hours a night.",
+    "sourceRefs": [
+     "hours"
+    ]
+   },
+   "noticeClaim": {
+    "id": "sleep-recovery-c2",
+    "text": "Experts advise adults to sleep 7 to 9 hours a night."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "heat-hydration",
+   "oldQuest": {
+    "title": "Read the hot-day switch",
+    "detail": "In a made-up Train screen, mark which changes cut heat strain and which add it.",
+    "sourceRefs": [
+     "heat"
+    ]
+   },
+   "fieldTry": {
+    "title": "Heat and hydration",
+    "detail": "Check today's hottest hours in a weather app, and when it is cooler.",
+    "smaller": "Check today's top temperature.",
+    "cues": [
+     "Before stepping out",
+     "When I plan a walk or game"
+    ],
+    "settings": [
+     "On a humid day",
+     "Before a weekend game"
+    ],
+    "notice": "In hot weather, training early or late, when it is cooler, and starting slow cut heat strain.",
+    "sourceRefs": [
+     "heat"
+    ]
+   },
+   "noticeClaim": {
+    "id": "heat-hydration-c2",
+    "text": "In hot weather, train early or late when it is cooler, start slow and pick up the pace bit by bit, and drink more water than usual without waiting for thirst."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "warmup-myths",
+   "oldQuest": {
+    "title": "Spot the easy start",
+    "detail": "In a made-up cricket warm-up, mark when the work first moves from easy to hard.",
+    "sourceRefs": [
+     "guide"
+    ]
+   },
+   "fieldTry": {
+    "title": "Warm-up and injury myths",
+    "detail": "Watch people at a ground, park or gym, and spot the easy start.",
+    "smaller": "Recall how your last game began: easy or hard?",
+    "cues": [
+     "At the park",
+     "At a match"
+    ],
+    "settings": [
+     "A cricket practice",
+     "A dance or sports class"
+    ],
+    "notice": "A warm-up is usually the activity done slower or lighter, so heart rate and breathing rise bit by bit.",
+    "sourceRefs": [
+     "guide"
+    ]
+   },
+   "noticeClaim": {
+    "id": "warmup-myths-c2",
+    "text": "A warm-up is usually the activity done at a slower speed or lower effort, such as brisk walking before jogging, so heart rate and breathing rise bit by bit. A cool-down does the same at the end."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "cardio-talk-test",
+   "oldQuest": {
+    "title": "Sort the talk clues",
+    "detail": "In a made-up walk, ride and run, mark where speech is easy, short or in between.",
+    "sourceRefs": [
+     "guide",
+     "nin"
+    ]
+   },
+   "fieldTry": {
+    "title": "Cardio zones and talk test",
+    "detail": "On a walk today, say a full sentence and notice if you could sing.",
+    "smaller": "Notice your breath at the top of one flight of stairs.",
+    "cues": [
+     "Walking to class or work",
+     "Taking the stairs"
+    ],
+    "settings": [
+     "A brisk walk with a friend",
+     "Cycling"
+    ],
+    "notice": "At moderate effort you can talk but not sing; at vigorous effort only a few words come out.",
+    "sourceRefs": [
+     "guide",
+     "nin"
+    ]
+   },
+   "noticeClaim": {
+    "id": "cardio-talk-test-c1",
+    "text": "As a rule of thumb, at moderate effort you can talk but not sing; at vigorous effort you cannot say more than a few words without pausing for breath."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "showing-up",
+   "oldQuest": {
+    "title": "Find the repeat",
+    "detail": "In a made-up week, mark the small sessions tied to the same daily cue.",
+    "sourceRefs": [
+     "gardner"
+    ]
+   },
+   "fieldTry": {
+    "title": "Habit of showing up",
+    "detail": "Right after one thing you do daily, walk or take the stairs for 2 minutes.",
+    "smaller": "Take one flight of stairs after a daily act.",
+    "cues": [
+     "After brushing",
+     "After lunch"
+    ],
+    "settings": [
+     "After a class or meeting",
+     "After the evening tea"
+    ],
+    "notice": "Brisk bouts of any length count, so even a few flights of stairs counts.",
+    "sourceRefs": [
+     "guide",
+     "who2020"
+    ]
+   },
+   "noticeClaim": {
+    "id": "showing-up-c2",
+    "text": "Brisk bouts of any length count. The old rule of at least 10 minutes was dropped, so even a few flights of stairs counts."
+   }
+  },
+  {
+   "topic": "topic.body-training",
+   "conceptId": "food-labels",
+   "oldQuest": {
+    "title": "Compare two mock packs",
+    "detail": "Read the added sugars, the stressed ingredient's % and the %RDA on two made-up labels.",
+    "sourceRefs": [
+     "fssai"
+    ]
+   },
+   "fieldTry": {
+    "title": "Food labels in India",
+    "detail": "Pick up one pack at home and find its added sugars line.",
+    "smaller": "Find the ingredients list on one pack.",
+    "cues": [
+     "In the kitchen",
+     "At a shop"
+    ],
+    "settings": [
+     "On a drink bottle",
+     "On a biscuit pack"
+    ],
+    "notice": "Labels show total sugars and added sugars as separate lines; added sugars are only the sugars put in.",
+    "sourceRefs": [
+     "fssai"
+    ]
+   },
+   "noticeClaim": {
+    "id": "food-labels-c3",
+    "text": "Labels show total sugars and added sugars as separate lines; added sugars are only the sugars put into the food."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "protein-foods",
+   "oldQuest": {
+    "title": "Spot the protein",
+    "detail": "Look at one meal and name its protein foods, such as dal, milk, eggs or nuts.",
+    "sourceRefs": [
+     "protein"
+    ]
+   },
+   "fieldTry": {
+    "title": "Protein in everyday food",
+    "detail": "At one meal today, name the cereal and the pulse on your plate.",
+    "smaller": "Name one protein food at one meal.",
+    "cues": [
+     "At lunch",
+     "At dinner"
+    ],
+    "settings": [
+     "At a canteen or mess",
+     "At a wedding or party meal"
+    ],
+    "notice": "Cereals or millets and pulses can fill gaps in each other's amino acid mix.",
+    "sourceRefs": [
+     "protein"
+    ]
+   },
+   "noticeClaim": {
+    "id": "protein-foods-c2",
+    "text": "Cereals or millets and pulses can fill gaps in each other’s amino acid mix."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "free-sugars",
+   "oldQuest": {
+    "title": "Read a drink label",
+    "detail": "Find a drink label and note its sugar entry. Ask whether sugar was added or came from juice.",
+    "sourceRefs": [
+     "sugar"
+    ]
+   },
+   "fieldTry": {
+    "title": "Free sugars",
+    "detail": "Read the sugar line on one drink you see today.",
+    "smaller": "Find the word sugar in one ingredients list.",
+    "cues": [
+     "At a shop",
+     "At home"
+    ],
+    "settings": [
+     "On a juice pack",
+     "On a sauce bottle"
+    ],
+    "notice": "One can of sugar-sweetened soda can hold up to 40 g of free sugars, about 10 teaspoons.",
+    "sourceRefs": [
+     "who-sugars"
+    ]
+   },
+   "noticeClaim": {
+    "id": "free-sugars-c4",
+    "text": "One can of sugar-sweetened soda can hold up to 40 g of free sugars, about 10 teaspoons, and a tablespoon of ketchup about 4 g."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "hydration-cues",
+   "oldQuest": {
+    "title": "Notice fluids",
+    "detail": "For one day, note the drinks you have, tea and milk included, with no target to meet.",
+    "sourceRefs": [
+     "water"
+    ]
+   },
+   "fieldTry": {
+    "title": "Hydration cues",
+    "detail": "Today, count your drinks, tea and milk included. There is no target.",
+    "smaller": "Count your drinks from morning to lunch.",
+    "cues": [
+     "From breakfast",
+     "When I fill my bottle"
+    ],
+    "settings": [
+     "On a hot day",
+     "On a busy college or work day"
+    ],
+    "notice": "Water, milk and lower-sugar drinks, tea and coffee included, all count towards daily fluid.",
+    "sourceRefs": [
+     "water"
+    ]
+   },
+   "noticeClaim": {
+    "id": "hydration-cues-c2",
+    "text": "Water, lower-fat milk and lower-sugar drinks, including tea and coffee, all count towards daily fluid."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "sleep-recovery",
+   "oldQuest": {
+    "title": "Pick a wake time",
+    "detail": "Choose one wake time for the next three days and notice how falling asleep feels.",
+    "sourceRefs": [
+     "sleep"
+    ]
+   },
+   "fieldTry": {
+    "title": "Sleep and recovery",
+    "detail": "Set tomorrow's wake time tonight, and note if you woke near it.",
+    "smaller": "Note what time you woke tomorrow.",
+    "cues": [
+     "When I set my alarm",
+     "When I put my phone down"
+    ],
+    "settings": [
+     "On a weekend",
+     "Before an early day"
+    ],
+    "notice": "The same bed and wake time each day is one of the habits that help sleep.",
+    "sourceRefs": [
+     "cdc-sleep",
+     "sleep"
+    ]
+   },
+   "noticeClaim": {
+    "id": "sleep-recovery-c4",
+    "text": "Habits that help sleep include the same bed and wake time each day, a quiet, cool and dark bedroom, devices off at least 30 minutes before bed, and no caffeine late in the day."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "exercise-heart",
+   "oldQuest": {
+    "title": "Feel a pulse change",
+    "detail": "Notice your pulse and breathing at rest and after an easy walk. Treat it as a change to observe, not a score.",
+    "sourceRefs": [
+     "cdc-intensity",
+     "icmr-activity"
+    ]
+   },
+   "fieldTry": {
+    "title": "Exercise and the heart",
+    "detail": "Count your brisk minutes today, walks and stairs included.",
+    "smaller": "Count the brisk minutes of one walk.",
+    "cues": [
+     "On my way to class or work",
+     "On an evening walk"
+    ],
+    "settings": [
+     "On a college day",
+     "On a holiday"
+    ],
+    "notice": "Activity can be spread through the week in smaller chunks, and some is better than none.",
+    "sourceRefs": [
+     "cdc-adults",
+     "who-pa-facts"
+    ]
+   },
+   "noticeClaim": {
+    "id": "exercise-heart-c5",
+    "text": "Activity can be spread through the week in smaller chunks, and some is better than none."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "iron-and-anaemia",
+   "oldQuest": {
+    "title": "Find a vitamin C helper",
+    "detail": "Look at one meal with dal or greens and name a vitamin C food that could go with it.",
+    "sourceRefs": [
+     "icmr-iron"
+    ]
+   },
+   "fieldTry": {
+    "title": "Iron and anaemia basics",
+    "detail": "At a meal with dal or greens, spot a vitamin C food, like lemon or guava.",
+    "smaller": "Name one vitamin C food in your kitchen.",
+    "cues": [
+     "At lunch",
+     "At dinner"
+    ],
+    "settings": [
+     "At a canteen",
+     "At a family meal"
+    ],
+    "notice": "Vitamin C foods like guava, oranges or lemon help the body take in iron from plant foods.",
+    "sourceRefs": [
+     "medline-iron",
+     "icmr-iron"
+    ]
+   },
+   "noticeClaim": {
+    "id": "iron-and-anaemia-c1",
+    "text": "Vitamin C foods like guava, oranges or lemon help the body take in iron from plant foods, while tea and coffee get in the way."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "food-label-reading",
+   "oldQuest": {
+    "title": "Compare two labels",
+    "detail": "Look at two similar packs and find the same per-100 g or per-100 ml line on each.",
+    "sourceRefs": [
+     "label"
+    ]
+   },
+   "fieldTry": {
+    "title": "Reading a food label",
+    "detail": "At a shop, compare two similar packs on the same per-100 g line.",
+    "smaller": "Find the per-100 g column on one pack.",
+    "cues": [
+     "At a shop",
+     "In the kitchen"
+    ],
+    "settings": [
+     "Two biscuit packs",
+     "Two drinks"
+    ],
+    "notice": "Values per 100 g or 100 ml let you compare like foods; each brand sets its own serving size.",
+    "sourceRefs": [
+     "label",
+     "icmr-label"
+    ]
+   },
+   "noticeClaim": {
+    "id": "food-label-reading-c1",
+    "text": "Nutrition values are given per 100 g or 100 ml, and may also be given per serving, whose size each brand sets."
+   }
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "conceptId": "fad-diet-claims",
+   "oldQuest": {
+    "title": "Check a bold food claim",
+    "detail": "Find a food ad that says one item does everything. Ask which food groups it leaves out.",
+    "sourceRefs": [
+     "variety"
+    ]
+   },
+   "fieldTry": {
+    "title": "Fad diet claims",
+    "detail": "Spot one ad that says one food does it all, and name a food group it leaves out.",
+    "smaller": "Spot one superfood claim today.",
+    "cues": [
+     "While scrolling",
+     "At a shop"
+    ],
+    "settings": [
+     "On a supplement pack",
+     "In a reel or video"
+    ],
+    "notice": "No one food gives all the key nutrients, which is why the guide says to eat from many food groups.",
+    "sourceRefs": [
+     "variety"
+    ]
+   },
+   "noticeClaim": {
+    "id": "fad-diet-claims-c1",
+    "text": "ICMR-NIN says to eat from many food groups. No one food gives all the key nutrients."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "indus-cities",
+   "oldQuest": {
+    "title": "Trace a water path",
+    "detail": "On a walk, trace where rain or used water can leave a building and enter a public drain.",
+    "sourceRefs": [
+     "indus"
+    ]
+   },
+   "fieldTry": {
+    "title": "Indus Valley cities",
+    "detail": "On a walk, find where rain or used water leaves a building for a drain.",
+    "smaller": "Find one drain cover on your street.",
+    "cues": [
+     "Walking to class or work",
+     "On an evening walk"
+    ],
+    "settings": [
+     "In an old part of town",
+     "After rain"
+    ],
+    "notice": "All the streets and lanes of Mohenjo-daro had drains, most covered with baked bricks.",
+    "sourceRefs": [
+     "indus"
+    ]
+   },
+   "noticeClaim": {
+    "id": "indus-cities-c2",
+    "text": "All the streets and lanes of Mohenjo-daro had drains. Most were covered with baked bricks, and pipes and chutes from houses led into them."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "ashoka-edicts",
+   "oldQuest": {
+    "title": "Read a public message",
+    "detail": "Find a public notice and ask whom it can reach beyond the person who wrote it.",
+    "sourceRefs": [
+     "ashoka"
+    ]
+   },
+   "fieldTry": {
+    "title": "Ashoka's edicts",
+    "detail": "Find one public notice and ask who can read it, and who it misses.",
+    "smaller": "Spot one public sign in two languages.",
+    "cues": [
+     "At a bus stop or station",
+     "On my street"
+    ],
+    "settings": [
+     "At a government office",
+     "At a temple, mosque or church"
+    ],
+    "notice": "Most people in Ashoka's time could probably not read, so officers were sent to spread the message.",
+    "sourceRefs": [
+     "ncert-kings"
+    ]
+   },
+   "noticeClaim": {
+    "id": "ashoka-edicts-c5",
+    "text": "Most people then could probably not read. Special officers were sent to spread the message of dhamma."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "silk-road-ideas",
+   "oldQuest": {
+    "title": "Map an idea",
+    "detail": "Pick an everyday idea and trace two places or people through whom it reached you.",
+    "sourceRefs": [
+     "silk"
+    ]
+   },
+   "fieldTry": {
+    "title": "Silk Road ideas",
+    "detail": "Ask an elder where one food or word you use daily came from.",
+    "smaller": "Name one everyday thing that came from far away.",
+    "cues": [
+     "On a call home",
+     "At a family meal"
+    ],
+    "settings": [
+     "A friend from another state",
+     "A shopkeeper"
+    ],
+    "notice": "Monks forced out of Gandhara carried its art style, which then grew popular at Buddhist sites elsewhere.",
+    "sourceRefs": [
+     "silk"
+    ]
+   },
+   "noticeClaim": {
+    "id": "silk-road-ideas-c4",
+    "text": "Hun invasions appear to have forced monks from Gandhara into Afghanistan and Central Asia. Their art style then grew popular at Buddhist sites there."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "indian-place-value",
+   "oldQuest": {
+    "title": "Spot an empty place",
+    "detail": "Write 205 and 25. Point to the place that zero keeps open in the first number.",
+    "sourceRefs": [
+     "zero"
+    ]
+   },
+   "fieldTry": {
+    "title": "Indian place value and zero",
+    "detail": "Spot one price or number with a zero in the middle, and say what it holds open.",
+    "smaller": "Find one number with a zero today.",
+    "cues": [
+     "At a shop",
+     "On a bill"
+    ],
+    "settings": [
+     "On a bus or train number",
+     "On a phone number"
+    ],
+    "notice": "In the Indian base ten system, zero can mark an empty place in a number.",
+    "sourceRefs": [
+     "zero"
+    ]
+   },
+   "noticeClaim": {
+    "id": "indian-place-value-c1",
+    "text": "In the Indian base ten system, zero can mark an empty place in a number."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "printing-and-reading",
+   "oldQuest": {
+    "title": "Follow one page",
+    "detail": "Find one shared printed page and ask how many readers may see the same words.",
+    "sourceRefs": [
+     "print"
+    ]
+   },
+   "fieldTry": {
+    "title": "Printing and reading",
+    "detail": "Ask at home how many people read one shared newspaper or book.",
+    "smaller": "Notice one printed page many people see today.",
+    "cues": [
+     "At breakfast",
+     "On a call home"
+    ],
+    "settings": [
+     "At a library",
+     "At a tea stall with a paper"
+    ],
+    "notice": "Printing put knowledge within reach of every person who knew how to read.",
+    "sourceRefs": [
+     "print"
+    ]
+   },
+   "noticeClaim": {
+    "id": "printing-and-reading-c5",
+    "text": "Printing put knowledge within reach of every person who knew how to read."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "mughal-revenue",
+   "oldQuest": {
+    "title": "Trace a public service",
+    "detail": "Name one service that needs records and resources to work across many towns.",
+    "sourceRefs": [
+     "mughal"
+    ]
+   },
+   "fieldTry": {
+    "title": "Mughal administration",
+    "detail": "At a bank, post office or ration shop, spot one record they keep.",
+    "smaller": "Name one record your family keeps for a service.",
+    "cues": [
+     "When I run an errand",
+     "On the way home"
+    ],
+    "settings": [
+     "On a bill at home",
+     "At a college office"
+    ],
+    "notice": "Mughal zabt worked where officials could survey land and keep careful accounts.",
+    "sourceRefs": [
+     "ncert-mughals"
+    ]
+   },
+   "noticeClaim": {
+    "id": "mughal-revenue-c4",
+    "text": "This tax system, zabt, worked where officials could survey land and keep careful accounts. It did not work in provinces such as Gujarat and Bengal."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "company-trade-rule",
+   "oldQuest": {
+    "title": "Follow a trade route",
+    "detail": "Pick an old market or port on a map. Ask what goods moved and who set the rules.",
+    "sourceRefs": [
+     "company"
+    ]
+   },
+   "fieldTry": {
+    "title": "Company trade and rule",
+    "detail": "Find where three things at home were made, from their labels.",
+    "smaller": "Find the made-in line on one item.",
+    "cues": [
+     "In my room",
+     "In the kitchen"
+    ],
+    "settings": [
+     "At a market",
+     "On a phone or charger box"
+    ],
+    "notice": "In 1600 the East India Company got a charter giving it the sole English right to trade with the East.",
+    "sourceRefs": [
+     "ncert-trade"
+    ]
+   },
+   "noticeClaim": {
+    "id": "company-trade-rule-c1",
+    "text": "In 1600 the East India Company got a charter from Queen Elizabeth I. It gave the Company the sole English right to trade with the East."
+   }
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "conceptId": "independence-constitution",
+   "oldQuest": {
+    "title": "Read a shared rule",
+    "detail": "Find a school or local rule. Ask who made it and who it is meant to serve.",
+    "sourceRefs": [
+     "assembly"
+    ]
+   },
+   "fieldTry": {
+    "title": "Independence and Constitution",
+    "detail": "Find one rule at college, work or your building, and ask who made it.",
+    "smaller": "Read one rule on a notice board.",
+    "cues": [
+     "At college or work",
+     "In my building"
+    ],
+    "settings": [
+     "A housing society rule",
+     "A family rule, on a call home"
+    ],
+    "notice": "While debating the draft, the Assembly discussed and decided 2,473 of the 7,635 changes put forward.",
+    "sourceRefs": [
+     "pib-nis"
+    ]
+   },
+   "noticeClaim": {
+    "id": "independence-constitution-c3",
+    "text": "While debating the draft, the Assembly discussed and decided 2,473 of the 7,635 changes put forward."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "lift",
+   "oldQuest": {
+    "title": "Try a paper wing",
+    "detail": "Fold a paper glider. Watch what happens as it slows. Mark the air flow and the lift path on a sketch.",
+    "sourceRefs": [
+     "lift"
+    ]
+   },
+   "fieldTry": {
+    "title": "Lift",
+    "detail": "Fold a paper glider, throw it gently, and watch what happens as it slows.",
+    "smaller": "Watch a bird or kite glide, and notice when it slows.",
+    "cues": [
+     "After class",
+     "At home this evening"
+    ],
+    "settings": [
+     "Outdoors with a friend",
+     "A kite on a windy day"
+    ],
+    "notice": "Lift needs air moving past a wing; no air or no motion means no lift.",
+    "sourceRefs": [
+     "lift"
+    ]
+   },
+   "noticeClaim": {
+    "id": "lift-c1",
+    "text": "Lift needs air moving past a wing. No air or no motion means no lift, and it does not matter whether the wing or the air is moving."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "multirotor-turns",
+   "oldQuest": {
+    "title": "Sketch four motors",
+    "detail": "Draw a top view of a four-motor craft. Mark which side needs more push for a roll. Label yaw, pitch and roll.",
+    "sourceRefs": [
+     "zulu"
+    ]
+   },
+   "fieldTry": {
+    "title": "How a multirotor turns",
+    "detail": "Watch a drone, live or in a video, and spot it tilt before it moves.",
+    "smaller": "In one drone video, spot one tilt.",
+    "cues": [
+     "At an event",
+     "While watching videos"
+    ],
+    "settings": [
+     "A wedding with a camera drone",
+     "A drone show clip"
+    ],
+    "notice": "Every pitch or roll aims part of the push sideways, so a tilted drone starts to move.",
+    "sourceRefs": [
+     "tug"
+    ]
+   },
+   "noticeClaim": {
+    "id": "multirotor-turns-c5",
+    "text": "Every pitch or roll also aims part of the push sideways, so a tilted drone starts to move."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "battery-flight-time",
+   "oldQuest": {
+    "title": "Draw an energy trade",
+    "detail": "Sketch two made-up batteries. Add arrows for more stored energy and more mass. Say how each may change flight time.",
+    "sourceRefs": [
+     "battery"
+    ]
+   },
+   "fieldTry": {
+    "title": "Batteries and flight time",
+    "detail": "Note your phone's battery % now and in one hour, and what you used it for.",
+    "smaller": "Open the battery screen and find the top app.",
+    "cues": [
+     "When I unplug my phone",
+     "At lunch"
+    ],
+    "settings": [
+     "On a travel day",
+     "On a video-heavy evening"
+    ],
+    "notice": "Flight time depends on stored energy and the rate at which it is used.",
+    "sourceRefs": [
+     "battery"
+    ]
+   },
+   "noticeClaim": {
+    "id": "battery-flight-time-c1",
+    "text": "Flight time depends on stored energy and the rate at which it is used."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "flight-sensors",
+   "oldQuest": {
+    "title": "Make a sensor map",
+    "detail": "On paper, draw a drone and link tilt, place and height to the motion sensors, GPS and barometer. Add one limit for each.",
+    "sourceRefs": [
+     "px4",
+     "gpsaccuracy",
+     "noaa-pressure"
+    ]
+   },
+   "fieldTry": {
+    "title": "Flight sensors",
+    "detail": "Open a map app outdoors, then indoors, and compare the circle round the dot.",
+    "smaller": "Open your map app indoors and look at the circle.",
+    "cues": [
+     "On my way out",
+     "At college or work"
+    ],
+    "settings": [
+     "Between tall buildings",
+     "In a park"
+    ],
+    "notice": "GPS phones are usually within 4.9 metres under open sky, but buildings and indoor use make it worse.",
+    "sourceRefs": [
+     "gpsaccuracy"
+    ]
+   },
+   "noticeClaim": {
+    "id": "flight-sensors-c3",
+    "text": "GPS phones are usually within 4.9 metres under open sky, but buildings, trees and indoor use make it worse."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "birds-and-planes",
+   "oldQuest": {
+    "title": "Spot two pushes",
+    "detail": "Watch a bird and a plane clip. Draw an arrow for forward push and one for lift on each.",
+    "sourceRefs": [
+     "bird",
+     "nasa"
+    ]
+   },
+   "fieldTry": {
+    "title": "Why birds flap but planes do not",
+    "detail": "Watch a bird take off and notice the downstroke.",
+    "smaller": "Watch one bird flap for 10 seconds.",
+    "cues": [
+     "On a balcony",
+     "At a park"
+    ],
+    "settings": [
+     "Pigeons at a station",
+     "Crows on a wire"
+    ],
+    "notice": "In small parrots, the downstroke uses nearly all the flapping power, and the upstroke costs almost none.",
+    "sourceRefs": [
+     "bird"
+    ]
+   },
+   "noticeClaim": {
+    "id": "birds-and-planes-c5",
+    "text": "In small parrots, the downstroke uses nearly all the flapping power, while the upstroke costs almost none."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "ceiling-fans",
+   "oldQuest": {
+    "title": "Map a breeze",
+    "detail": "With the fan on, hold a light ribbon well away from the blades and sketch which way the air flows. Stay on the floor; never climb up to a moving fan.",
+    "sourceRefs": [
+     "fan",
+     "cooling"
+    ]
+   },
+   "fieldTry": {
+    "title": "How a ceiling fan moves air",
+    "detail": "Stand under a fan, then away from it. Is the room cooler, or just you?",
+    "smaller": "Notice one fan running in an empty room.",
+    "cues": [
+     "In my room",
+     "In a classroom or office"
+    ],
+    "settings": [
+     "On a humid day",
+     "On a dry day"
+    ],
+    "notice": "Moving air helps sweat dry off your skin, which is mainly how a fan makes you feel cooler.",
+    "sourceRefs": [
+     "cooling",
+     "doe-guide"
+    ]
+   },
+   "noticeClaim": {
+    "id": "ceiling-fans-c3",
+    "text": "Moving air helps sweat dry off your skin, which mainly is how a fan makes you feel cooler."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "upi-path",
+   "oldQuest": {
+    "title": "Trace a payment",
+    "detail": "In a made-up canteen payment, label the payer, payee, ID and banks.",
+    "sourceRefs": [
+     "rbi-booklet"
+    ]
+   },
+   "fieldTry": {
+    "title": "How UPI moves money",
+    "detail": "On your next UPI payment, read the payee's name and UPI ID before you approve.",
+    "smaller": "Find your own UPI ID in your app.",
+    "cues": [
+     "At a shop QR",
+     "Paying a friend"
+    ],
+    "settings": [
+     "Splitting a bill",
+     "Paying online"
+    ],
+    "notice": "A UPI ID is a payment address that points to a linked bank account.",
+    "sourceRefs": [
+     "rbi-booklet",
+     "pib-upi"
+    ]
+   },
+   "noticeClaim": {
+    "id": "upi-path-c1",
+    "text": "A UPI ID is a payment address that you set, and it points to your linked bank account."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "phone-camera",
+   "oldQuest": {
+    "title": "Trace the light",
+    "detail": "In a made-up phone diagram, label lens, sensor, colour filters and saved image.",
+    "sourceRefs": [
+     "nasa-phone"
+    ]
+   },
+   "fieldTry": {
+    "title": "How a phone camera takes a photo",
+    "detail": "Take one photo in dim light and one in daylight, then zoom in on each.",
+    "smaller": "Zoom into one photo you took at night.",
+    "cues": [
+     "This evening",
+     "In my room"
+    ],
+    "settings": [
+     "At a dim restaurant",
+     "Outdoors at dusk"
+    ],
+    "notice": "A high ISO in dim light gives a bright but grainy photo, because it multiplies the signal.",
+    "sourceRefs": [
+     "nasa-phone"
+    ]
+   },
+   "noticeClaim": {
+    "id": "phone-camera-c5",
+    "text": "Turning up ISO multiplies the signal but does not make the sensor more sensitive, so a high ISO in dim light gives a bright but grainy photo."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "sky-colours",
+   "oldQuest": {
+    "title": "Follow a ray",
+    "detail": "Draw a short noon path and a longer sunset path through clear air. Never look straight at the Sun.",
+    "sourceRefs": [
+     "nasa-sky"
+    ]
+   },
+   "fieldTry": {
+    "title": "Blue sky and red sunsets",
+    "detail": "At sunset, look at the sky away from the Sun and name its colours.",
+    "smaller": "Look up at midday and note the sky's colour.",
+    "cues": [
+     "On my way home",
+     "From a terrace or window"
+    ],
+    "settings": [
+     "On a cloudy evening",
+     "On a hazy day"
+    ],
+    "notice": "At sunset, sunlight takes a longer path through the air, so mostly yellow to red reaches us.",
+    "sourceRefs": [
+     "nasa-sky",
+     "nasa-light"
+    ]
+   },
+   "noticeClaim": {
+    "id": "sky-colours-c2",
+    "text": "At sunrise and sunset, sunlight takes a longer path through the air, so mostly the yellow-to-red part reaches us."
+   }
+  },
+  {
+   "topic": "topic.how-things-work",
+   "conceptId": "pressure-cooker",
+   "oldQuest": {
+    "title": "Compare two pots",
+    "detail": "In a made-up cooking diagram, label the pressure and boiling point in each pot. Mark where to keep hands away from the steam.",
+    "sourceRefs": [
+     "gsu-pressure",
+     "ncert-thermal"
+    ]
+   },
+   "fieldTry": {
+    "title": "Pressure cooker",
+    "detail": "On one cooker meal at home, count the whistles from a safe distance.",
+    "smaller": "When it is cold, find the weight on your cooker's vent.",
+    "cues": [
+     "At lunch time",
+     "At dinner time"
+    ],
+    "settings": [
+     "Cooking dal",
+     "At a relative's home"
+    ],
+    "notice": "A pressure cooker cooks faster because its higher pressure raises the boiling point of the water.",
+    "sourceRefs": [
+     "ncert-thermal",
+     "gsu-pressure"
+    ]
+   },
+   "noticeClaim": {
+    "id": "pressure-cooker-c2",
+    "text": "A pressure cooker cooks faster because its higher pressure raises the boiling point of the water inside."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "inflation",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "Inflation",
+    "detail": "Ask an elder what one everyday item cost when they were your age.",
+    "smaller": "Note today's price of one thing you buy often.",
+    "cues": [
+     "On a call home",
+     "At a family meal"
+    ],
+    "settings": [
+     "At a tea stall",
+     "With a grandparent"
+    ],
+    "notice": "A rise in broad prices cuts what a fixed amount of cash can buy.",
+    "sourceRefs": [
+     "inflation",
+     "cpi"
+    ]
+   },
+   "noticeClaim": {
+    "id": "inflation-c2",
+    "text": "A rise in broad prices cuts the buying power of cash if its amount stays fixed."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "compounding",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "Compounding",
+    "detail": "Find one savings interest rate, and work out a year's interest on 1,000.",
+    "smaller": "Find one savings interest rate.",
+    "cues": [
+     "When I open my bank app",
+     "On a bank's website"
+    ],
+    "settings": [
+     "A post office scheme",
+     "A fixed deposit ad"
+    ],
+    "notice": "Compound growth includes growth on past gains as well as on the starting amount.",
+    "sourceRefs": [
+     "compound",
+     "sip"
+    ]
+   },
+   "noticeClaim": {
+    "id": "compounding-c1",
+    "text": "Compound growth includes growth on past gains as well as the starting amount."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "rule-of-72",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "The rule of 72",
+    "detail": "Find one interest rate on a card, loan or deposit ad, and divide 72 by it.",
+    "smaller": "Divide 72 by one rate you see today.",
+    "cues": [
+     "While scrolling",
+     "At a bank or shop"
+    ],
+    "settings": [
+     "A credit card offer",
+     "A fixed deposit ad"
+    ],
+    "notice": "The rule works for debt too: an unpaid card balance at 18% doubles in about four years.",
+    "sourceRefs": [
+     "rule72",
+     "sbi-card"
+    ]
+   },
+   "noticeClaim": {
+    "id": "rule-of-72-c4",
+    "text": "The rule works for debt too: an unpaid card balance at 18% interest doubles in about four years. One large Indian card issuer charges up to 3.75% a month, or 45% a year."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "risk-return",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "Risk and return",
+    "detail": "Spot one ad that promises high returns, and look for its risk line.",
+    "smaller": "Spot one guaranteed-returns claim today.",
+    "cues": [
+     "While scrolling",
+     "On a hoarding"
+    ],
+    "settings": [
+     "In a reel or video",
+     "In a group chat forward"
+    ],
+    "notice": "A high possible gain may mean more risk. The gain is not sure.",
+    "sourceRefs": [
+     "risk"
+    ]
+   },
+   "noticeClaim": {
+    "id": "risk-return-c2",
+    "text": "A high possible gain may mean more risk. The gain is not sure."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "diversification",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "Diversification",
+    "detail": "Open one index fund's fact sheet and count the industries it holds.",
+    "smaller": "Name 3 industries one fund invests in.",
+    "cues": [
+     "When I have 5 minutes",
+     "On my laptop"
+    ],
+    "settings": [
+     "A sector fund's sheet",
+     "A friend's fund, if they share it"
+    ],
+    "notice": "Four or five shares are not a real spread; one guide asks for at least a dozen, across many industries.",
+    "sourceRefs": [
+     "risk"
+    ]
+   },
+   "noticeClaim": {
+    "id": "diversification-c3",
+    "text": "Four or five shares are not a real spread. One investor guide asks for at least a dozen, across many industries."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "shares",
+   "oldQuest": null,
+   "fieldTry": {
+    "title": "What a stock is",
+    "detail": "Pick one thing you used today and find the company that makes it.",
+    "smaller": "Name the company behind one thing you used.",
+    "cues": [
+     "At breakfast",
+     "At a shop"
+    ],
+    "settings": [
+     "Your phone's maker",
+     "Your favourite snack"
+    ],
+    "notice": "A share gives part ownership of a company.",
+    "sourceRefs": [
+     "shares"
+    ]
+   },
+   "noticeClaim": {
+    "id": "shares-c1",
+    "text": "A share gives part ownership of a company."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "emergency-fund",
+   "oldQuest": {
+    "title": "Sort a bill",
+    "detail": "Name a planned bill and a surprise bill in a made-up hostel budget.",
+    "sourceRefs": [
+     "rbi-emergency"
+    ]
+   },
+   "fieldTry": {
+    "title": "Emergency fund",
+    "detail": "Recall one surprise cost from the last year, like a phone repair, and its size.",
+    "smaller": "Name one surprise cost you have heard of.",
+    "cues": [
+     "On my way home",
+     "When I check my spending"
+    ],
+    "settings": [
+     "With a flatmate",
+     "On a call home"
+    ],
+    "notice": "An emergency fund is cash kept for a sudden need.",
+    "sourceRefs": [
+     "rbi-emergency"
+    ]
+   },
+   "noticeClaim": {
+    "id": "emergency-fund-c1",
+    "text": "An emergency fund is cash kept for a sudden need."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "loan-emi",
+   "oldQuest": {
+    "title": "Read a schedule",
+    "detail": "In a sample EMI table, point to the principal, interest and balance columns.",
+    "sourceRefs": [
+     "rbi-loan"
+    ]
+   },
+   "fieldTry": {
+    "title": "EMI and loan cost",
+    "detail": "Find one EMI offer and note the months and the total you would pay.",
+    "smaller": "Spot one EMI offer today.",
+    "cues": [
+     "While shopping online",
+     "At an electronics shop"
+    ],
+    "settings": [
+     "A phone EMI offer",
+     "A bike or scooter offer"
+    ],
+    "notice": "A longer loan term makes each EMI smaller but means paying more interest in total.",
+    "sourceRefs": [
+     "rbi-loan"
+    ]
+   },
+   "noticeClaim": {
+    "id": "loan-emi-c3",
+    "text": "A longer loan term makes each EMI smaller but means paying more interest in total."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "index-funds",
+   "oldQuest": {
+    "title": "Compare baskets",
+    "detail": "Compare the holdings and fees in two made-up fund fact sheets.",
+    "sourceRefs": [
+     "sebi-index"
+    ]
+   },
+   "fieldTry": {
+    "title": "Index funds and stock picking",
+    "detail": "Find the expense ratio of one index fund and one active fund.",
+    "smaller": "Find the expense ratio of one fund.",
+    "cues": [
+     "When I have 5 minutes",
+     "On my laptop"
+    ],
+    "settings": [
+     "Two large-cap funds",
+     "A fund a friend mentions"
+    ],
+    "notice": "Index funds trade little, so their expense ratios are lower than active funds'.",
+    "sourceRefs": [
+     "sebi-index",
+     "expense-ratio"
+    ]
+   },
+   "noticeClaim": {
+    "id": "index-funds-c4",
+    "text": "Index funds follow a passive plan with little trading, so their expense ratios are lower than active funds."
+   }
+  },
+  {
+   "topic": "topic.money-markets",
+   "conceptId": "upi-scams",
+   "oldQuest": {
+    "title": "Read the prompt",
+    "detail": "In a made-up payment screen, identify the payer and the direction of money.",
+    "sourceRefs": [
+     "npci-fraud",
+     "rbi-fraud"
+    ]
+   },
+   "fieldTry": {
+    "title": "UPI scams and social engineering",
+    "detail": "Tell one person at home: getting money never needs a PIN or a QR scan.",
+    "smaller": "Save 1930 in your contacts.",
+    "cues": [
+     "On a call home",
+     "In a family group chat"
+    ],
+    "settings": [
+     "An older relative",
+     "A friend new to UPI"
+    ],
+    "notice": "RBI says getting money never needs a QR scan or a PIN.",
+    "sourceRefs": [
+     "rbi-fraud"
+    ]
+   },
+   "noticeClaim": {
+    "id": "upi-scams-c3",
+    "text": "RBI says getting money never needs a QR scan or a PIN, so take care if asked for either."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "habits",
+   "oldQuest": {
+    "title": "Spot a cue",
+    "detail": "Watch one harmless daily act. Name the cue, the act, and the good result that may help it recur.",
+    "sourceRefs": [
+     "lally",
+     "wood"
+    ]
+   },
+   "fieldTry": {
+    "title": "Habits",
+    "detail": "Watch one of your daily acts and name its cue, like a place or the act before.",
+    "smaller": "Name the cue for brushing your teeth.",
+    "cues": [
+     "In the morning",
+     "When I get home"
+    ],
+    "settings": [
+     "At college or work",
+     "On a weekend"
+    ],
+    "notice": "Cues in a stable setting can bring back a learned action with little thought.",
+    "sourceRefs": [
+     "lally",
+     "wood"
+    ]
+   },
+   "noticeClaim": {
+    "id": "habits-c1",
+    "text": "Cues in a stable setting, like a place or an act just before, can bring back a learned action with little thought."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "loss-aversion",
+   "oldQuest": {
+    "title": "Frame a token",
+    "detail": "Write a made-up choice as a gain and then as a loss from a starting point. Ask how the frame may shift its feel.",
+    "sourceRefs": [
+     "prospect"
+    ]
+   },
+   "fieldTry": {
+    "title": "Loss aversion",
+    "detail": "Spot one line worded as a loss, like 'Don't miss out', and say it as a gain.",
+    "smaller": "Spot one 'Don't miss out' line today.",
+    "cues": [
+     "While scrolling",
+     "At a shop"
+    ],
+    "settings": [
+     "In a sale email",
+     "On a hoarding"
+    ],
+    "notice": "A loss tends to weigh more than a gain of the same size.",
+    "sourceRefs": [
+     "prospect"
+    ]
+   },
+   "noticeClaim": {
+    "id": "loss-aversion-c2",
+    "text": "A loss tends to weigh more than a gain of the same size, so most people turn down a fair 50-50 chance to win or lose the same amount, more so as the stake grows."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "anchoring",
+   "oldQuest": {
+    "title": "Compare tags",
+    "detail": "Pick two made-up price tags. Start a guess from each, then see how the first number may pull the guess.",
+    "sourceRefs": [
+     "philosophy"
+    ]
+   },
+   "fieldTry": {
+    "title": "Anchoring",
+    "detail": "Spot one 'was this, now that' price, and ask what the first number does.",
+    "smaller": "Spot one crossed-out price today.",
+    "cues": [
+     "While shopping online",
+     "At a shop"
+    ],
+    "settings": [
+     "A sale banner",
+     "A menu"
+    ],
+    "notice": "A first number can pull a later estimate toward it, because people adjust away from it too little.",
+    "sourceRefs": [
+     "tversky",
+     "philosophy"
+    ]
+   },
+   "noticeClaim": {
+    "id": "anchoring-c1",
+    "text": "A first number can pull a later estimate toward it, because people adjust away from it too little."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "confirmation-bias",
+   "oldQuest": {
+    "title": "Try to disprove",
+    "detail": "Pick a low-stakes belief about a game or bus. Write one clue that could show it is wrong.",
+    "sourceRefs": [
+     "bias",
+     "wason"
+    ]
+   },
+   "fieldTry": {
+    "title": "Confirmation bias",
+    "detail": "Pick one small belief, like your fastest route, and look for a clue against it.",
+    "smaller": "Name one clue that could prove a small belief wrong.",
+    "cues": [
+     "On my way to class or work",
+     "In a group chat"
+    ],
+    "settings": [
+     "A cricket or film opinion",
+     "A rumour you heard"
+    ],
+    "notice": "A rule is tested properly by checking the cases that could prove it false.",
+    "sourceRefs": [
+     "wason"
+    ]
+   },
+   "noticeClaim": {
+    "id": "confirmation-bias-c2",
+    "text": "A rule of the form 'if p then q' is tested properly by checking the cases that could prove it false."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "social-proof",
+   "oldQuest": {
+    "title": "Watch a group cue",
+    "detail": "In a harmless choice, note whether a visible group choice changes a guess. Keep the check kind.",
+    "sourceRefs": [
+     "asch"
+    ]
+   },
+   "fieldTry": {
+    "title": "Social proof",
+    "detail": "Spot one crowd cue, like '10k bought this', and ask if it is proof.",
+    "smaller": "Spot one bestseller tag today.",
+    "cues": [
+     "While shopping online",
+     "While scrolling"
+    ],
+    "settings": [
+     "A busy food stall",
+     "A trending post"
+    ],
+    "notice": "A group can agree on a wrong answer, so agreement alone is a clue, not proof.",
+    "sourceRefs": [
+     "asch",
+     "asch-original"
+    ]
+   },
+   "noticeClaim": {
+    "id": "social-proof-c4",
+    "text": "A group can agree on a wrong answer, so agreement alone is a clue, not proof."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "planning-fallacy",
+   "oldQuest": {
+    "title": "Time a small task",
+    "detail": "Before a small school task, note a time guess. Afterward, note the time and one step the guess missed.",
+    "sourceRefs": [
+     "planning"
+    ]
+   },
+   "fieldTry": {
+    "title": "The planning fallacy",
+    "detail": "Before one small task today, guess the minutes; after, note the real time.",
+    "smaller": "Guess your travel time today, then check it.",
+    "cues": [
+     "Before studying",
+     "Before a chore"
+    ],
+    "settings": [
+     "A work task",
+     "Getting ready to go out"
+    ],
+    "notice": "In one study, linking past tasks to a new plan removed the too-short bias.",
+    "sourceRefs": [
+     "planning"
+    ]
+   },
+   "noticeClaim": {
+    "id": "planning-fallacy-c3",
+    "text": "In one study, asking people to link past tasks to a new plan removed the too-short bias."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "sleep-memory",
+   "oldQuest": {
+    "title": "Trace a lesson",
+    "detail": "In a made-up study day, mark learning first and later memory processing.",
+    "sourceRefs": [
+     "sleep-review",
+     "sleep-rest"
+    ]
+   },
+   "fieldTry": {
+    "title": "Sleep and memory",
+    "detail": "After you study something today, sit quietly for 5 minutes before the next thing.",
+    "smaller": "Sit quietly for 2 minutes after one lesson.",
+    "cues": [
+     "After a class",
+     "After this lesson"
+    ],
+    "settings": [
+     "After a work training",
+     "After reading a chapter"
+    ],
+    "notice": "A brief spell of quiet rest after learning helped memory more than spending that time on other tasks.",
+    "sourceRefs": [
+     "sleep-rest"
+    ]
+   },
+   "noticeClaim": {
+    "id": "sleep-memory-c2",
+    "text": "A brief spell of quiet rest while awake after learning helped memory more than spending that time on other tasks."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "variable-rewards",
+   "oldQuest": {
+    "title": "Spot a pattern",
+    "detail": "Compare a made-up fixed reward sequence with an uneven one.",
+    "sourceRefs": [
+     "operant"
+    ]
+   },
+   "fieldTry": {
+    "title": "Variable rewards",
+    "detail": "Count how many times you check one app before noon. There is no target.",
+    "smaller": "Notice one check that found nothing new.",
+    "cues": [
+     "From waking up",
+     "From my first class"
+    ],
+    "settings": [
+     "On a weekend",
+     "On a busy day"
+    ],
+    "notice": "On a variable schedule, you cannot tell which try will bring the reward.",
+    "sourceRefs": [
+     "operant"
+    ]
+   },
+   "noticeClaim": {
+    "id": "variable-rewards-c3",
+    "text": "On a variable schedule, the number of tries needed for a reward keeps changing, so you cannot tell which try will bring it."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "if-then-plans",
+   "oldQuest": {
+    "title": "Find the cue",
+    "detail": "Mark the if part and then part in a made-up study plan.",
+    "sourceRefs": [
+     "plan-meta"
+    ]
+   },
+   "fieldTry": {
+    "title": "If-then plans",
+    "detail": "Write one plan for today: 'If [moment], then I will [act].'",
+    "smaller": "Say one if-then plan out loud.",
+    "cues": [
+     "At breakfast",
+     "When I open my planner"
+    ],
+    "settings": [
+     "For a study session",
+     "For a call you keep putting off"
+    ],
+    "notice": "An if-then plan spells out the when, where and how in advance.",
+    "sourceRefs": [
+     "plan-meta"
+    ]
+   },
+   "noticeClaim": {
+    "id": "if-then-plans-c1",
+    "text": "An if-then plan spells out the when, where and how in advance: if situation Y comes, then I will do X."
+   }
+  },
+  {
+   "topic": "topic.psychology",
+   "conceptId": "spotlight-effect",
+   "oldQuest": {
+    "title": "Compare two views",
+    "detail": "In a made-up class scene, compare the speaker’s guess with observers’ recall.",
+    "sourceRefs": [
+     "spotlight-paper"
+    ]
+   },
+   "fieldTry": {
+    "title": "The spotlight effect",
+    "detail": "Ask a friend if they remember what you wore yesterday.",
+    "smaller": "Try to recall what a friend wore yesterday.",
+    "cues": [
+     "At college or work",
+     "In a group chat"
+    ],
+    "settings": [
+     "A classmate",
+     "A flatmate or sibling"
+    ],
+    "notice": "People wearing a striking T-shirt guessed that more people could recall it than really could.",
+    "sourceRefs": [
+     "spotlight-paper"
+    ]
+   },
+   "noticeClaim": {
+    "id": "spotlight-effect-c1",
+    "text": "In two studies, people wearing a T-shirt with a striking image guessed that more people could recall it than really could."
+   }
+  }
+ ]
+}
