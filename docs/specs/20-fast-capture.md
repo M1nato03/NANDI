@@ -1,6 +1,6 @@
 # 20 · Fast capture: type it the way you'd say it
 
-Status: idea engine (jenil-8c), 22 Oct 2026; revised after a Codex review against ship-27. Medium (about 1–2 days). Evidence: cloud job 8 of batch 1
+Status: **PARKED for Phase 2/3** (Jenil, 24 Oct 2026: "keep it in phase 2/3"). Not for the builder now. When it comes back, it still needs the real gold set (500+ typed lines). Earlier: idea engine (jenil-8c), 22 Oct 2026; revised after a Codex review against ship-27. Medium (about 1–2 days). Evidence: cloud job 8 of batch 1
 (`docs/reviews/cj-planner-speed.md` on `ideas/cj-planner-speed`, which holds the full parser rules, a 23-row table of
 real prototype outputs and the competitor quotes). The dropped-task bug it found is already fixed in ship-27
 (`tests/e2e/quick-add.spec.ts`). Jenil (22 Oct): "a good idea, but it needs insane accuracy; learn from how Hinglish
