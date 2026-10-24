@@ -16,7 +16,7 @@ Files:
   `{stepId, claimIds, twist, transfer}`.
 - `content-drafts/tries/*.misconceptions.json`: sidecar, `{stepId, which, optionId, misconceptionId}`.
 - `content-drafts/tries/merged/topic.*.json`: the packs with `guided` = [guided, twist, transfer].
-- `content-drafts/tries/blind-check-input.json` and `blind-check-key.json`: input for the coordinator's blind check (see §4).
+- `content-drafts/tries/blind-check-input.json` and `blind-check-key.json`: blind-check input and key, kept for a re-run (see §4).
 
 The right option's position is rotated (a, b, c) across the tries.
 
@@ -56,12 +56,11 @@ My extra checks (not in the validator; script in the job scratchpad):
 
 ## 4. Blind check
 
-**Status: my own check is done (below). The coordinator's check is pending.** The coordinator asked to run a
-blind check from the main session. `content-drafts/tries/blind-check-input.json` holds 324 rows (108 tries x 3
-rounds, options shuffled differently in each round, only `id`, `round`, `stem`, `options`). The key is in
-`blind-check-key.json`. When those answers arrive, the rewrites follow the same rule as below.
+**Status: done.** This is the blind check for this job; no other run is planned. The files
+`content-drafts/tries/blind-check-input.json` (324 rows: 108 tries x 3 rounds, shuffled options only) and
+`blind-check-key.json` are kept so anyone can re-run it.
 
-How my check ran: three separate `claude -p` processes, each started in an empty folder holding only a quiz
+How the check ran: three separate `claude -p` processes, each started in an empty folder holding only a quiz
 file. Each process saw only the stems and the options, shuffled in its own order, and never saw the teach cards,
 hints, feedback or this repo. Each answered all 108 tries once, so each try was answered 3 times.
 
