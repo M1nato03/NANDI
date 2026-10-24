@@ -172,6 +172,17 @@ describe('chhutti lock baseline and self-test (item 59, Jenil chose A; Codex A i
     expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + s5 - 1)).toEqual([]);
     expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], t0, t0 + 60_000)).toEqual([]);
   });
+  it('one pause earns one pass: NANDI must resume again after the lock before (Codex A item 63)', () => {
+    // Three locks close together after one resume and one pause: only the first is judged.
+    expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 400), lock(t0), lock(t0 + 1_000), lock(t0 + 2_000)], 0, t0 + 60_000)).toEqual([{ at: t0, pass: true }]);
+    // A resume before an earlier lock does not make NANDI in front for a later one.
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0 - 30_000), lock(t0), own('bg', t0 + 300)], 0, t0 + 60_000)).toEqual([{ at: t0 - 30_000, pass: false }]);
+    // Resumed again after the first lock: the second lock is judged too.
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0 - 30_000), own('bg', t0 - 29_800), own('fg', t0 - 20_000), lock(t0), own('bg', t0 + 300)], 0, t0 + 60_000))
+      .toEqual([{ at: t0 - 30_000, pass: true }, { at: t0, pass: true }]);
+    // A resume from before the last lock already looked at (afterMs) does not count either.
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], t0 - 30_000, t0 + 60_000)).toEqual([]);
+  });
   it('trust needs 3 passes in a row, starts at the first of them, and any fail takes it away', () => {
     const pass = (at: number) => ({ at, pass: true }), fail = (at: number) => ({ at, pass: false });
     let test = nextLockTest(NEW_LOCK_TEST, [pass(10), pass(20)], 20);

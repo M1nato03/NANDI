@@ -119,7 +119,8 @@ export type WindowUsage = { chosenAppMs: number; darkMs: number | null };
  * retained log stays open until its own pause, so an app that stays resumed over the lock screen (showWhenLocked,
  * multi-window, picture-in-picture) still counts. With no such point in the log before the window (an app opened
  * days ago leaves no trace), a log that starts after the window began, or a start-up or shutdown inside the window,
- * the answer is unknown (null): the person is asked instead, and an unknown window is never "kept".
+ * the answer is unknown (null): the person is asked instead, and an unknown window is never "kept". The caller passes
+ * `trustLocksFrom` only when no chosen app can show over the lock screen (lockSafe, item 63).
  */
 export function windowUsage(events: readonly UsageEvent[], fromMs: number, toMs: number, chosen: readonly string[], logStart?: number | null, trustLocksFrom: number | null = null): WindowUsage | null {
   if (!(toMs > fromMs)) return null;
@@ -173,7 +174,9 @@ export const NEW_LOCK_TEST: LockTest = { passes: 0, upTo: 0, streakStart: null, 
  * activity of NANDI resumed `slackMs` before it), NANDI's own activities must all pause or stop within `slackMs` of
  * it and still be paused `slackMs` after it. That is a pass. Still resumed with no pause is a fail. Paused and then
  * resumed again inside `slackMs` (unlocked at once) proves nothing either way, and neither does a lock with NANDI not
- * in front or one too recent to judge (Codex A item 61). Returns each judged lock after `afterMs`, in order.
+ * in front or one too recent to judge (Codex A item 61). NANDI counts as in front only if it resumed after the lock
+ * before (and after `afterMs`), and each pause is credited once, so one pause can never earn several passes (item 63).
+ * Returns each judged lock after `afterMs`, in order.
  */
 export function lockChecks(events: readonly LockEvent[], afterMs: number, nowMs: number, slackMs = RULES.plan.chhutti.lockSlackMs): { at: number; pass: boolean }[] {
   const sorted = [...events].filter(event => Number.isFinite(event.at)).sort((a, b) => a.at - b.at);
@@ -187,19 +190,26 @@ export function lockChecks(events: readonly LockEvent[], afterMs: number, nowMs:
     return open;
   };
   const results: { at: number; pass: boolean }[] = [];
+  const credited = new Set<number>();
+  let previousLock = -Infinity;
   for (const lock of sorted) {
-    if (lock.type !== 'lock' || lock.at <= afterMs || lock.at + slackMs > nowMs) continue;
+    if (lock.type !== 'lock') continue;
+    const since = Math.max(previousLock, afterMs);
+    previousLock = lock.at;
+    if (lock.at <= afterMs || lock.at + slackMs > nowMs) continue;
     const open = openAt(lock.at - slackMs);
     if (!open.size) continue;
-    let emptied = false, resumed = false;
+    const lastResume = sorted.reduce((last, event) => event.type === 'fg' && event.at <= lock.at - slackMs ? Math.max(last, event.at) : last, -Infinity);
+    if (!(lastResume > since)) continue;
+    let emptiedAt: number | null = null, resumed = false;
     for (const event of sorted) {
       if (event.at <= lock.at - slackMs) continue;
       if (event.at > lock.at + slackMs) break;
-      if (event.type === 'fg') { open.add(event.cls ?? ''); if (emptied) resumed = true; }
-      else if (event.type === 'bg') { open.delete(event.cls ?? ''); if (!open.size) emptied = true; }
+      if (event.type === 'fg') { open.add(event.cls ?? ''); if (emptiedAt !== null) resumed = true; }
+      else if (event.type === 'bg') { open.delete(event.cls ?? ''); if (!open.size && emptiedAt === null) emptiedAt = event.at; }
     }
-    if (!emptied) results.push({ at: lock.at, pass: false });
-    else if (!resumed && !open.size) results.push({ at: lock.at, pass: true });
+    if (emptiedAt === null) results.push({ at: lock.at, pass: false });
+    else if (!resumed && !open.size && !credited.has(emptiedAt)) { credited.add(emptiedAt); results.push({ at: lock.at, pass: true }); }
   }
   return results;
 }

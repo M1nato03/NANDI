@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- The default App pause apps, so Phone ki chhutti can check they never show over the lock screen (item 63). -->
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.snapchat.android" />
+    </queries>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"

@@ -12,7 +12,7 @@ type NightPausePlugin = {
   configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number; dayMode: string; dayLimitMinutes: number }): Promise<void>;
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
-  windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[] }>;
+  windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[]; lockSafe?: boolean }>;
   lockEvents(options: { since: number }): Promise<{ available: boolean; events?: LockEvent[] }>;
 };
 
@@ -35,10 +35,10 @@ export async function openPausedApp(packageName: string, snoozeMs: number): Prom
 }
 
 /** Spec 24 #1: the phone's usage events (every app, screen, start-up) for one past window; null where there is no usage log (web, no access). */
-export async function readWindowEvents(from: number, to: number, packages: string[]): Promise<{ logStart?: number; events: UsageEvent[] } | null> {
+export async function readWindowEvents(from: number, to: number, packages: string[]): Promise<{ logStart?: number; events: UsageEvent[]; lockSafe?: boolean } | null> {
   if (!Capacitor.isNativePlatform()) return null;
   const result = await native.windowEvents({ from, to, packages: packages.join(',') });
-  return result.available ? { logStart: result.logStart, events: Array.isArray(result.events) ? result.events : [] } : null;
+  return result.available ? { logStart: result.logStart, events: Array.isArray(result.events) ? result.events : [], lockSafe: result.lockSafe === true } : null;
 }
 
 /** The lock self-test's events since `since`: NANDI's own activities resumed and paused, and the lock screen shown. */

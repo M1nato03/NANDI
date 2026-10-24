@@ -12,7 +12,7 @@ import { restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { LedgerRow, SettingRow } from '../types';
 
-type ReadEvents = (from: number, to: number, packages: string[]) => Promise<{ logStart?: number; events: UsageEvent[] } | null>;
+type ReadEvents = (from: number, to: number, packages: string[]) => Promise<{ logStart?: number; events: UsageEvent[]; lockSafe?: boolean } | null>;
 type ReadLock = (since: number) => Promise<LockEvent[] | null>;
 const live = (rows: readonly SettingRow[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
 /** Tonight's effective shutdown and bedtime (busy-day shift included), the clock the rest of Plan uses (item 55). */
@@ -125,7 +125,7 @@ export async function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEven
       const bounds = await dayBounds(db, rows, window, day, shutdowns);
       if (!bounds || bounds.toMs > now) continue;
       const usageLog = await read(bounds.fromMs, bounds.toMs, packages).catch(() => null);
-      const usage = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart, trustLocksFrom) : null;
+      const usage = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart, usageLog.lockSafe === true ? trustLocksFrom : null) : null;
       // Unknown: only today and yesterday are asked about, so a week away never comes back as a list of questions.
       if (!usage) { if (back <= 1 && isLive(window)) pending.push({ day, window }); continue; }
       await writeFact(db, day, window, bounds, { chosenAppMs: usage.chosenAppMs, darkMs: usage.darkMs, source: 'usage', kept: isKept(usage, day) }, now);
@@ -145,35 +145,39 @@ export function readLockTest(rows: readonly SettingRow[]): LockTest | null {
   const time = (item: unknown) => typeof item === 'number' && Number.isFinite(item) ? item : null;
   return { passes: Math.max(0, value.passes!), upTo: value.upTo!, streakStart: time(value.streakStart), lastFailAt: time(value.lastFailAt) };
 }
-/** One lock self-test at a time per database, so two opens never race (Codex A item 61). */
-const lockRuns = new WeakMap<NandiDb, Promise<LockTest | null>>();
+/**
+ * Lock self-tests run one after another per database, and each one reads the log again, so a check that starts later
+ * never takes an older run's answer (Codex A items 61, 63).
+ */
+const lockRuns = new WeakMap<NandiDb, Promise<unknown>>();
 /**
  * Reads the locks since the last one looked at and updates the count. No usage log (web, Android 9 or older, no
- * access) leaves nothing stored, so the card never says NANDI is learning a phone it cannot read. The count is read
- * again and written in one transaction, so a check that saw fewer locks can never undo a fail another one recorded.
+ * access) stores nothing new, so the card never says NANDI is learning a phone it cannot read; a stored count from a
+ * clock now set back is still reset. The count is read again and written in one transaction, so a check that saw
+ * fewer locks can never undo a fail another one recorded.
  */
 function runLockTest(db: NandiDb, now: number, readLock: ReadLock): Promise<LockTest | null> {
-  const running = lockRuns.get(db);
-  if (running) return running;
-  const run = (async () => {
+  const before = lockRuns.get(db) ?? Promise.resolve();
+  const run = before.catch(() => undefined).then(async () => {
     const since = readLockTest(await db.settings.toArray())?.upTo ?? 0;
     const events = await readLock(since).catch(() => null);
-    if (!events) return readLockTest(await db.settings.toArray());
     const deviceId = await getOrCreateDeviceId(db, now);
     return trackWrite(() => db.transaction('rw', db.settings, async () => {
       const stored = readLockTest(await db.settings.toArray());
+      if (!events && !stored) return null;
       const test = stored ?? NEW_LOCK_TEST;
       const slack = RULES.plan.chhutti.lockSlackMs;
-      const reset = rolledBack(test, events, now);
-      const next = reset ?? nextLockTest(test, lockChecks(events, test.upTo, now),
+      const reset = rolledBack(test, events ?? [], now);
+      const next = reset ?? (!events ? test : nextLockTest(test, lockChecks(events, test.upTo, now),
         // Every lock old enough to judge has now been looked at, whether NANDI was in front or not.
-        events.filter(event => event.type === 'lock' && event.at > test.upTo && event.at + slack <= now).reduce((max, event) => Math.max(max, event.at), test.upTo));
+        events.filter(event => event.type === 'lock' && event.at > test.upTo && event.at + slack <= now).reduce((max, event) => Math.max(max, event.at), test.upTo)));
       if (stored && JSON.stringify(next) === JSON.stringify(stored)) return stored;
       await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: next, updatedAt: now, deleted: 0, deviceId });
       return next;
     }));
-  })().finally(() => lockRuns.delete(db));
+  });
   lockRuns.set(db, run);
+  void run.finally(() => { if (lockRuns.get(db) === run) lockRuns.delete(db); }).catch(() => undefined);
   return run;
 }
 

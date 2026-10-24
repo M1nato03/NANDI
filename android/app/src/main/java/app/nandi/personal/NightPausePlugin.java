@@ -7,6 +7,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Process;
 import android.os.Build;
 import android.provider.Settings;
@@ -125,6 +128,7 @@ public class NightPausePlugin extends Plugin {
         result.put("available", logStart >= 0);
         if (logStart >= 0) result.put("logStart", logStart);
         result.put("events", kept);
+        result.put("lockSafe", lockSafe(call.getString("packages", "")));
         call.resolve(result);
     }
 
@@ -173,6 +177,33 @@ public class NightPausePlugin extends Plugin {
         result.put("available", true);
         result.put("events", list);
         call.resolve(result);
+    }
+
+    /** The default chosen apps, declared in the manifest's <queries> so this phone can look them up (item 63). */
+    private static final Set<String> QUERIED = new HashSet<>(Arrays.asList("com.instagram.android", "com.google.android.youtube", "com.snapchat.android"));
+
+    /**
+     * Whether a lock can serve as a baseline for these apps (Codex A item 63): none of them may declare an activity
+     * that shows over the lock screen (FLAG_SHOW_WHEN_LOCKED), and each must be one this phone can look up. A
+     * package that cannot be seen is unknown, so not safe; one declared in <queries> that is missing is not installed.
+     * An activity that turns this on at run time (setShowWhenLocked) cannot be seen here (DECISIONS, item 63).
+     */
+    private boolean lockSafe(String packages) {
+        PackageManager manager = getContext().getPackageManager();
+        for (String pkg : packages.split(",")) {
+            String name = pkg.trim();
+            if (name.isEmpty()) continue;
+            try {
+                PackageInfo info = manager.getPackageInfo(name, PackageManager.GET_ACTIVITIES);
+                if (info.activities == null) continue;
+                for (ActivityInfo activity : info.activities) {
+                    if ((activity.flags & ActivityInfo.FLAG_SHOW_WHEN_LOCKED) != 0) return false;
+                }
+            } catch (PackageManager.NameNotFoundException missing) {
+                if (!QUERIED.contains(name)) return false;
+            }
+        }
+        return true;
     }
 
     private static JSObject stateEvent(String type, long at, String pkg, String cls) {

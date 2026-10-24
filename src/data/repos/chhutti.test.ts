@@ -201,7 +201,7 @@ it('the lock self-test: 3 passes make a lock a baseline, and a fail takes it awa
   const db = fresh();
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   // No restart in the log, only a lock before the window (Instagram opened days ago, never paused).
-  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, events: [{ type: 'fg', at: from - 3 * 86_400_000, pkg: ig, cls: 'Main' }, { type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, lockSafe: true, events: [{ type: 'fg', at: from - 3 * 86_400_000, pkg: ig, cls: 'Main' }, { type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
   const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
   // Two passes so far: not trusted, so the window is asked about.
   const two = async () => [...passAt(at('2026-11-02', '13:00')), ...passAt(at('2026-11-02', '14:00'))];
@@ -229,7 +229,7 @@ it('no lock log (web, old Android, no access) stores no self-test', async () => 
 it('trust counts only locks from the start of the passing run on, never earlier ones (Codex A item 61)', async () => {
   const db = fresh();
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
-  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, events: [{ type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, lockSafe: true, events: [{ type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
   const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
   // All three passes come the next morning, so the 2nd's lock at 20:50 is from before the run: still asked.
   const passes = async () => [...passAt(at('2026-11-03', '07:00')), ...passAt(at('2026-11-03', '07:30')), ...passAt(at('2026-11-03', '08:00'))];
@@ -240,16 +240,35 @@ it('trust counts only locks from the start of the passing run on, never earlier 
   expect((await db.ledger.where('kind').equals('chhutti').toArray()).map(fact => fact.dayKey)).toEqual(['2026-11-03']);
 });
 
-it('two checks at once run the self-test once, and a clock set back starts it again', async () => {
+it('two checks at once run the self-test one after the other, and a clock set back starts it again', async () => {
   const db = fresh();
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   let reads = 0;
   const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
   const locks = async () => { reads += 1; return [...passAt(at('2026-11-02', '13:00')), ...passAt(at('2026-11-02', '14:00')), ...passAt(at('2026-11-02', '15:00'))]; };
   await Promise.all([checkChhutti(db, at('2026-11-02', '16:00'), reader(() => null), locks), checkChhutti(db, at('2026-11-02', '16:00'), reader(() => null), locks)]);
-  expect(reads).toBe(1);
+  // Each check reads the log again, one after the other (Codex A item 63).
+  expect(reads).toBe(2);
   expect(readLockTest(await db.settings.toArray())?.passes).toBe(3);
   // The clock is now set back to the morning: the stored test is later than now, so it starts again.
   await checkChhutti(db, at('2026-11-02', '09:00'), reader(() => null), locks);
   expect(readLockTest(await db.settings.toArray())).toMatchObject({ passes: 0, streakStart: null, upTo: at('2026-11-02', '15:00') + 300 });
+});
+
+it('a clock set back resets the self-test even when the lock log cannot be read (Codex A item 63)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: { passes: 3, upTo: at('2026-11-03', '12:00'), streakStart: at('2026-11-03', '10:00'), lastFailAt: null }, updatedAt: 1, deleted: 0, deviceId: 't' });
+  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, lockSafe: true, events: [{ type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), noRestart, async () => null)).toHaveLength(1);
+  expect(readLockTest(await db.settings.toArray())).toMatchObject({ passes: 0, streakStart: null });
+});
+
+it('a chosen app that can show over the lock screen gets no lock baseline (Codex A item 63)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: { passes: 3, upTo: at('2026-11-02', '15:00'), streakStart: at('2026-11-02', '13:00'), lastFailAt: null }, updatedAt: 1, deleted: 0, deviceId: 't' });
+  const unsafe = reader(from => ({ logStart: from - 5 * 86_400_000, lockSafe: false, events: [{ type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), unsafe, async () => [])).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
 });
