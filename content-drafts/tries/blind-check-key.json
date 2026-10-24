@@ -1,0 +1,1730 @@
+[
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Roasted peanuts and pumpkin seeds."
+ },
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Roasted peanuts and pumpkin seeds."
+ },
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Roasted peanuts and pumpkin seeds."
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Dal, milk, peanuts and roasted chana."
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Dal, milk, peanuts and roasted chana."
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "Dal, milk, peanuts and roasted chana."
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Yes; the rice and dal in it cover each other."
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Yes; the rice and dal in it cover each other."
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Yes; the rice and dal in it cover each other."
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Millet and pulse fill each other's gap."
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Millet and pulse fill each other's gap."
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "Millet and pulse fill each other's gap."
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "About 65 kg, using the per-kg figure."
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "About 65 kg, using the per-kg figure."
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "About 65 kg, using the per-kg figure."
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Athletes may need more."
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Athletes may need more."
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Athletes may need more."
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Just the sugar stirred in."
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Just the sugar stirred in."
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Just the sugar stirred in."
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "The whole oranges, cut into slices."
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "The whole oranges, cut into slices."
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "The whole oranges, cut into slices."
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "About half of the day's limit."
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "About half of the day's limit."
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "About half of the day's limit."
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "About at the limit of 12 teaspoons."
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "About at the limit of 12 teaspoons."
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "About at the limit of 12 teaspoons."
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "About 12 g, near three teaspoons."
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "About 12 g, near three teaspoons."
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "About 12 g, near three teaspoons."
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "They can go past the whole limit."
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "They can go past the whole limit."
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "They can go past the whole limit."
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "At the mark, since coffee and milk count."
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "At the mark, since coffee and milk count."
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "At the mark, since coffee and milk count."
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Pee and sweat still take water out each day."
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Pee and sweat still take water out each day."
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "Pee and sweat still take water out each day."
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "She may be low on fluid, thirst or not."
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "She may be low on fluid, thirst or not."
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "She may be low on fluid, thirst or not."
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "It is a sign she drinks enough."
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "It is a sign she drinks enough."
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "It is a sign she drinks enough."
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Yes; heat and sweat raise it on their own."
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Yes; heat and sweat raise it on their own."
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Yes; heat and sweat raise it on their own."
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Get urgent help now."
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Get urgent help now."
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Get urgent help now."
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "He may find it harder to focus."
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "He may find it harder to focus."
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "He may find it harder to focus."
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Sleep helps store the day's learning."
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Sleep helps store the day's learning."
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Sleep helps store the day's learning."
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "REM sleep, which grows longer near morning."
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "REM sleep, which grows longer near morning."
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "REM sleep, which grows longer near morning."
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "The early hours of his sleep, near bedtime."
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "The early hours of his sleep, near bedtime."
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "The early hours of his sleep, near bedtime."
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "By half past nine, or a bit before."
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "By half past nine, or a bit before."
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "By half past nine, or a bit before."
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Around 2 pm."
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Around 2 pm."
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Around 2 pm."
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Inside the weekly range of 150 to 300."
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Inside the weekly range of 150 to 300."
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Inside the weekly range of 150 to 300."
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "It counts, and it reaches 300 minutes."
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "It counts, and it reaches 300 minutes."
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "It counts, and it reaches 300 minutes."
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Below moderate, since she can still sing."
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Below moderate, since she can still sing."
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Below moderate, since she can still sing."
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Only a few words fit between breaths."
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "Only a few words fit between breaths."
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Only a few words fit between breaths."
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Muscle work on 2 days a week."
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Muscle work on 2 days a week."
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Muscle work on 2 days a week."
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Both reach it, Rina by counting double."
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "Both reach it, Rina by counting double."
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Both reach it, Rina by counting double."
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Women who have periods."
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Women who have periods."
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Women who have periods."
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Less haemoglobin, so less oxygen gets to the legs and arms."
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Less haemoglobin, so less oxygen gets to the legs and arms."
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Less haemoglobin, so less oxygen gets to the legs and arms."
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Palak dal with lemon, and tea an hour later."
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Palak dal with lemon, and tea an hour later."
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Palak dal with lemon, and tea an hour later."
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Add lemon to the chole and serve chai later."
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Add lemon to the chole and serve chai later."
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Add lemon to the chole and serve chai later."
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Another cause may be behind it."
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Another cause may be behind it."
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Another cause may be behind it."
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "No; malaria is one more cause."
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "No; malaria is one more cause."
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "No; malaria is one more cause."
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Not by that; check the per 100 g line."
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Not by that; check the per 100 g line."
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Not by that; check the per 100 g line."
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Bar A, which has 25 g per 100 g."
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Bar A, which has 25 g per 100 g."
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "Bar A, which has 25 g per 100 g."
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Yes, since maida comes before sugar."
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Yes, since maida comes before sugar."
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Yes, since maida comes before sugar."
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Wheat flakes, with sugar next in line."
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Wheat flakes, with sugar next in line."
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Wheat flakes, with sugar next in line."
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Water and sugar, then a little juice."
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Water and sugar, then a little juice."
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Water and sugar, then a little juice."
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Check the back list for the aloe."
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Check the back list for the aloe."
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Check the back list for the aloe."
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "No; it is half the daily aim."
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "No; it is half the daily aim."
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "No; it is half the daily aim."
+ },
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Add pulses, eggs or milk, and more fruit."
+ },
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Add pulses, eggs or milk, and more fruit."
+ },
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Add pulses, eggs or milk, and more fruit."
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "She may feel weak, faint or get a headache."
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "She may feel weak, faint or get a headache."
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "She may feel weak, faint or get a headache."
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "There is no strong proof that detox works."
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "There is no strong proof that detox works."
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "There is no strong proof that detox works."
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "About double the safe pace."
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "About double the safe pace."
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "About double the safe pace."
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "It rewards the fastest loss."
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "It rewards the fastest loss."
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "It rewards the fastest loss."
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Only the grid district shows a plan."
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Only the grid district shows a plan."
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Only the grid district shows a plan."
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "People planned the layout before building."
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "People planned the layout before building."
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "People planned the layout before building."
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Two: lanes had drains, mostly covered."
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Two: lanes had drains, mostly covered."
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Two: lanes had drains, mostly covered."
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "A pipe from the house into a covered street drain."
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "A pipe from the house into a covered street drain."
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "A pipe from the house into a covered street drain."
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "A third is dug, and the script is unread."
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "A third is dug, and the script is unread."
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "A third is dug, and the script is unread."
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "What the photos and objects themselves show."
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "What the photos and objects themselves show."
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "What the photos and objects themselves show."
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Rocks and pillars across the empire held his words."
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Rocks and pillars across the empire held his words."
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Rocks and pillars across the empire held his words."
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Painted stone boards at bus stands and markets."
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Painted stone boards at bus stands and markets."
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Painted stone boards at bus stands and markets."
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Kharosthi."
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Kharosthi."
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Kharosthi."
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Write it in each region's own script."
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Write it in each region's own script."
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "Write it in each region's own script."
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Be kind to servants and respect elders."
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "Be kind to servants and respect elders."
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Be kind to servants and respect elders."
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Respect each other's faiths and festivals."
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "Respect each other's faiths and festivals."
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Respect each other's faiths and festivals."
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Up the Indus River."
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Up the Indus River."
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Up the Indus River."
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Linked sea, land and mountain routes."
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Linked sea, land and mountain routes."
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Linked sea, land and mountain routes."
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Less trade meant less wealth to pay for art."
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Less trade meant less wealth to pay for art."
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Less trade meant less wealth to pay for art."
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Less trade wealth, less money for art."
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Less trade wealth, less money for art."
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Less trade wealth, less money for art."
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Hun invasions seem to have driven them out."
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Hun invasions seem to have driven them out."
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Hun invasions seem to have driven them out."
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "People who knew how to make it moved there."
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "People who knew how to make it moved there."
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "People who knew how to make it moved there."
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "There are no hundreds and no tens."
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "There are no hundreds and no tens."
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "There are no hundreds and no tens."
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "14 runs."
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "14 runs."
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "14 runs."
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Rules for using zero in sums."
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Rules for using zero in sums."
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Rules for using zero in sums."
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "0, since a number take away itself is 0."
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "0, since a number take away itself is 0."
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "0, since a number take away itself is 0."
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "A scholar wrote of them in Arabic."
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "A scholar wrote of them in Arabic."
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "A scholar wrote of them in Arabic."
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "They began in India, then went west."
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "They began in India, then went west."
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "They began in India, then went west."
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "His type was small pieces of baked clay."
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "His type was small pieces of baked clay."
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "His type was small pieces of baked clay."
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Number tiles he resets each week."
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Number tiles he resets each week."
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Number tiles he resets each week."
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "No; Koreans used metal type in the 1200s."
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "No; Koreans used metal type in the 1200s."
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "No; Koreans used metal type in the 1200s."
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Photos go back at least to 1965."
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Photos go back at least to 1965."
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Photos go back at least to 1965."
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Swap in any other 'e'."
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Swap in any other 'e'."
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "Swap in any other 'e'."
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "Readers gain; others need lessons."
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Readers gain; others need lessons."
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Readers gain; others need lessons."
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "The one at 3,000."
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "The one at 3,000."
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "The one at 3,000."
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 1,
+  "right": 0,
+  "rightText": "The duty to keep horsemen."
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "The duty to keep horsemen."
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "The duty to keep horsemen."
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "It was not his land to sell."
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "It was not his land to sell."
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "It was not his land to sell."
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "A jagir, income rights over a place."
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "A jagir, income rights over a place."
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "A jagir, income rights over a place."
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "No; each crop had its own rate."
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "No; each crop had its own rate."
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 3,
+  "right": 2,
+  "rightText": "No; each crop had its own rate."
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "It works only where houses are measured."
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "It works only where houses are measured."
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "It works only where houses are measured."
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "No; it gave trade rights only."
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "No; it gave trade rights only."
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "No; it gave trade rights only."
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "Sell without campus rivals, but not run the college."
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "Sell without campus rivals, but not run the college."
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "Sell without campus rivals, but not run the college."
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "Plassey, Buxar, then the diwani."
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Plassey, Buxar, then the diwani."
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Plassey, Buxar, then the diwani."
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 1,
+  "right": 2,
+  "rightText": "It is no longer needed for goods."
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "It is no longer needed for goods."
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 3,
+  "right": 1,
+  "rightText": "It is no longer needed for goods."
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "Yes; Company rule went on until 1858."
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 2,
+  "right": 2,
+  "rightText": "Yes; Company rule went on until 1858."
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 3,
+  "right": 1,
+  "rightText": "Yes; Company rule went on until 1858."
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "The 1858 move of powers to the Crown."
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 2,
+  "right": 2,
+  "rightText": "The 1858 move of powers to the Crown."
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 3,
+  "right": 2,
+  "rightText": "The 1858 move of powers to the Crown."
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 1,
+  "right": 1,
+  "rightText": "Before, in 1946."
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "Before, in 1946."
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "Before, in 1946."
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "Picked by the assemblies of the provinces."
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "Picked by the assemblies of the provinces."
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "Picked by the assemblies of the provinces."
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 1,
+  "right": 0,
+  "rightText": "His team drafted it; the Assembly changed it."
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 2,
+  "right": 1,
+  "rightText": "His team drafted it; the Assembly changed it."
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "His team drafted it; the Assembly changed it."
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "A draft, then debate and changes."
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 2,
+  "right": 1,
+  "rightText": "A draft, then debate and changes."
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "A draft, then debate and changes."
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 1,
+  "right": 2,
+  "rightText": "26 November 1949."
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 2,
+  "right": 0,
+  "rightText": "26 November 1949."
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 3,
+  "right": 0,
+  "rightText": "26 November 1949."
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 1,
+  "right": 1,
+  "rightText": "It was adopted, then in force two months on."
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 2,
+  "right": 0,
+  "rightText": "It was adopted, then in force two months on."
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 3,
+  "right": 0,
+  "rightText": "It was adopted, then in force two months on."
+ }
+]

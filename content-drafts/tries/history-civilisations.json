@@ -1,0 +1,1322 @@
+[
+  {
+    "stepId": "indus-cities-s1",
+    "claimIds": [
+      "indus-cities-c1",
+      "indus-cities-c1"
+    ],
+    "twist": {
+      "stem": "A dig finds one district with streets crossing at right angles and another with winding lanes. What is the fairest claim?",
+      "hint": "Judge each part by its own street pattern.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The whole city was planned, since part of it was.",
+          "correct": false,
+          "feedback": "A grid shows a plan only where it is found. The winding district may have grown bit by bit."
+        },
+        {
+          "id": "b",
+          "text": "Only the grid district shows a plan.",
+          "correct": true,
+          "feedback": "Yes. Right-angle streets point to a plan, so each district is judged by its own layout."
+        },
+        {
+          "id": "c",
+          "text": "Neither was planned; grids can form by chance.",
+          "correct": false,
+          "feedback": "A neat grid does not grow by chance. Right-angle streets point to a plan."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A drone survey over farmland in Haryana shows buried walls meeting at neat right angles in long straight rows. What is the fairest first claim?",
+      "hint": "A grid does not grow by chance.",
+      "options": [
+        {
+          "id": "a",
+          "text": "People planned the layout before building.",
+          "correct": true,
+          "feedback": "Right. Walls in straight rows at right angles point to a plan, just as Mohenjo-daro's grid does."
+        },
+        {
+          "id": "b",
+          "text": "Walls like that pile up by chance as houses are added.",
+          "correct": false,
+          "feedback": "Houses added bit by bit give winding lanes and odd corners. A neat grid points to a plan."
+        },
+        {
+          "id": "c",
+          "text": "It must have been a royal palace.",
+          "correct": false,
+          "feedback": "A grid shows a plan, not what the buildings were for. Who used them needs other evidence."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "indus-cities-s2",
+    "claimIds": [
+      "indus-cities-c2",
+      "indus-cities-c2"
+    ],
+    "twist": {
+      "stem": "A student draws Mohenjo-daro with open mud ditches along the main roads only. How many mistakes are in the drawing?",
+      "hint": "Check where they ran and how they were built.",
+      "options": [
+        {
+          "id": "a",
+          "text": "One: the drains were brick, but just on main roads.",
+          "correct": false,
+          "feedback": "Not only main roads: every street and lane had a drain. So the drawing has two mistakes."
+        },
+        {
+          "id": "b",
+          "text": "None; that fits what was dug up.",
+          "correct": false,
+          "feedback": "The dig found drains on every street and lane, and most were covered with brick, not open mud."
+        },
+        {
+          "id": "c",
+          "text": "Two: lanes had drains, mostly covered.",
+          "correct": true,
+          "feedback": "Yes. Every street and lane had a drain, and most were covered with baked bricks, not open ditches."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Lakshmi is building a house in a Kerala town and wants used kitchen water to leave without wetting the lane. Which Mohenjo-daro plan does she copy?",
+      "hint": "Follow the water out of the home.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Letting the water run down the open lane.",
+          "correct": false,
+          "feedback": "In Mohenjo-daro, water went from homes into covered drains, not down the open lane."
+        },
+        {
+          "id": "b",
+          "text": "A pipe from the house into a covered street drain.",
+          "correct": true,
+          "feedback": "Right. Mohenjo-daro homes sent used water through pipes and chutes into covered drains along every street."
+        },
+        {
+          "id": "c",
+          "text": "A pit in her yard, since old cities had no drains.",
+          "correct": false,
+          "feedback": "Mohenjo-daro had drains on every street and lane, fed by pipes from homes."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "indus-cities-s3",
+    "claimIds": [
+      "indus-cities-c5",
+      "indus-cities-c3"
+    ],
+    "twist": {
+      "stem": "A video claims we now know everything about Mohenjo-daro. What is the best reply?",
+      "hint": "How much has been dug, and can we read the signs?",
+      "options": [
+        {
+          "id": "a",
+          "text": "True; the whole city has been dug up.",
+          "correct": false,
+          "feedback": "Only about a third of the city has been dug, so much of it is still unknown."
+        },
+        {
+          "id": "b",
+          "text": "True, since the seals have now been read.",
+          "correct": false,
+          "feedback": "No one can read the Indus script yet, so the seals do not tell us their meaning."
+        },
+        {
+          "id": "c",
+          "text": "A third is dug, and the script is unread.",
+          "correct": true,
+          "feedback": "Yes. Most of the city is still buried, and the signs cannot be read, so much is still unknown."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Rohit finds his great-grandmother's diary in a script no one at home can read, along with old photos and a brass lamp. What can the family learn for now?",
+      "hint": "Keep what you can see apart from what you guess.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Everything, by guessing the words from the photos.",
+          "correct": false,
+          "feedback": "Guessing words from photos is not reading. Like the Indus seals, the diary's text stays unknown until it can be read."
+        },
+        {
+          "id": "b",
+          "text": "What the photos and objects themselves show.",
+          "correct": true,
+          "feedback": "Right. As with the unread Indus script, they can learn from what survives, but not from words they cannot read."
+        },
+        {
+          "id": "c",
+          "text": "Very little until the diary is read.",
+          "correct": false,
+          "feedback": "Objects and photos still tell a story, just as streets, drains and baths tell us about Mohenjo-daro."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ashoka-edicts-s1",
+    "claimIds": [
+      "ashoka-edicts-c1",
+      "ashoka-edicts-c1"
+    ],
+    "twist": {
+      "stem": "A museum label claims Ashoka's edicts survive only on his palace walls. What is wrong with it?",
+      "hint": "Think of where passers-by could see them.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rocks and pillars across the empire held his words.",
+          "correct": true,
+          "feedback": "Yes. Ashoka had his words carved on natural rocks and polished pillars near towns and routes, not only at court."
+        },
+        {
+          "id": "b",
+          "text": "They were painted on palm leaves and cloth, not walls.",
+          "correct": false,
+          "feedback": "Ashoka's edicts were carved in stone, on rocks and pillars, which is why some still stand."
+        },
+        {
+          "id": "c",
+          "text": "The label is right; the edicts stayed at court.",
+          "correct": false,
+          "feedback": "The edicts were carved on rocks and pillars near towns and routes, so passers-by could see them."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A district health team in Madhya Pradesh wants a vaccine notice seen by most villagers for years. Using Ashoka's idea, where would it go?",
+      "hint": "Think about who walks past each spot, and what lasts.",
+      "options": [
+        {
+          "id": "a",
+          "text": "One copy in the collector's office.",
+          "correct": false,
+          "feedback": "An office is seen by few people. Ashoka put his words near towns and routes, where many passed."
+        },
+        {
+          "id": "b",
+          "text": "A paper notice inside the clinic, changed each month.",
+          "correct": false,
+          "feedback": "Paper inside a room fades and reaches few. Ashoka chose lasting stone in places many people passed."
+        },
+        {
+          "id": "c",
+          "text": "Painted stone boards at bus stands and markets.",
+          "correct": true,
+          "feedback": "Right. Like Ashoka's carved stones near busy routes, it is placed where crowds pass and made to last."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ashoka-edicts-s2",
+    "claimIds": [
+      "ashoka-edicts-c3",
+      "ashoka-edicts-c3"
+    ],
+    "twist": {
+      "stem": "An edict from the northwest, outside Afghanistan, is not written in Brahmi. Which script is it most likely in?",
+      "hint": "Afghanistan used Greek and Aramaic. What about the rest of the northwest?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Greek, as in Afghanistan.",
+          "correct": false,
+          "feedback": "Greek was used in Afghanistan. Other edicts in the northwest used Kharosthi."
+        },
+        {
+          "id": "b",
+          "text": "Kharosthi.",
+          "correct": true,
+          "feedback": "Yes. Some edicts in the northwest used Kharosthi, while those in Afghanistan used Greek and Aramaic."
+        },
+        {
+          "id": "c",
+          "text": "Aramaic, as everywhere outside Bihar.",
+          "correct": false,
+          "feedback": "Aramaic was used in Afghanistan. Most of the empire used Brahmi, and parts of the northwest used Kharosthi."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "An app maker in Bengaluru wants one message read in many Indian states. Following Ashoka's way, what would she do?",
+      "hint": "Did one way of writing fit the whole empire?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Use the capital's script in each state.",
+          "correct": false,
+          "feedback": "Ashoka did not use one capital script. His edicts changed script from region to region."
+        },
+        {
+          "id": "b",
+          "text": "Use one script, as Ashoka did.",
+          "correct": false,
+          "feedback": "Ashoka did not use one script. Brahmi, Kharosthi, Greek and Aramaic were used in different regions."
+        },
+        {
+          "id": "c",
+          "text": "Write it in each region's own script.",
+          "correct": true,
+          "feedback": "Right. Ashoka's edicts changed script by region, from Brahmi to Kharosthi, Greek and Aramaic."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "ashoka-edicts-s3",
+    "claimIds": [
+      "ashoka-edicts-c4",
+      "ashoka-edicts-c4"
+    ],
+    "twist": {
+      "stem": "Which of these lines would fit in an edict about Ashoka's dhamma?",
+      "hint": "Think of how people treat each other.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Be kind to servants and respect elders.",
+          "correct": true,
+          "feedback": "Yes. Dhamma asked people to be kind to servants, respect elders and respect other faiths."
+        },
+        {
+          "id": "b",
+          "text": "Pray at the king's temple for peace.",
+          "correct": false,
+          "feedback": "Dhamma asked people to respect faiths not their own, not to pray at one royal temple."
+        },
+        {
+          "id": "c",
+          "text": "Give the king a share of your harvest each year.",
+          "correct": false,
+          "feedback": "Dhamma was about respect and kindness in daily life, not about gifts to the king."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A hostel warden in Pune writes house rules in the spirit of Ashoka's dhamma. Which rule fits best?",
+      "hint": "Dhamma was about how people treat each other.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Respect each other's faiths and festivals.",
+          "correct": true,
+          "feedback": "Right. Dhamma asked people to respect other faiths, as well as elders and those who serve them."
+        },
+        {
+          "id": "b",
+          "text": "Share one prayer each morning for all of you.",
+          "correct": false,
+          "feedback": "A shared prayer can feel kind, but dhamma asked for respect for faiths not your own, not one prayer for all."
+        },
+        {
+          "id": "c",
+          "text": "Keep quiet about faith to avoid clashes.",
+          "correct": false,
+          "feedback": "Dhamma did not ask people to hide their faith. It asked them to respect faiths not their own."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "silk-road-ideas-s1",
+    "claimIds": [
+      "silk-road-ideas-c1",
+      "silk-road-ideas-c1"
+    ],
+    "twist": {
+      "stem": "A ship lands cloth at a west coast port. What is the next leg of its trip toward Gandhara?",
+      "hint": "Follow the order in the example.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Over the high mountain passes.",
+          "correct": false,
+          "feedback": "The passes come after Gandhara, on the way to China. From the coast, goods first went up the Indus."
+        },
+        {
+          "id": "b",
+          "text": "Across the deserts of Central Asia.",
+          "correct": false,
+          "feedback": "Central Asia lies beyond the passes. From the coast, goods first went up the Indus to Gandhara."
+        },
+        {
+          "id": "c",
+          "text": "Up the Indus River.",
+          "correct": true,
+          "feedback": "Yes. From the west coast, goods went up the Indus to Gandhara, and only then over the passes."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A trader in Kochi sends spices to a hill town in Himachal by ship, then by train, then by mountain road. Which Silk Road idea does this match?",
+      "hint": "Was the Silk Road one road?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Trade needs one single road from end to end.",
+          "correct": false,
+          "feedback": "The Silk Road was not one road. Goods moved by sea, river and mountain pass in turn."
+        },
+        {
+          "id": "b",
+          "text": "Linked sea, land and mountain routes.",
+          "correct": true,
+          "feedback": "Right. The Silk Road linked sea, river and mountain routes, and this trip links three kinds of route too."
+        },
+        {
+          "id": "c",
+          "text": "Goods moved by land, not by sea.",
+          "correct": false,
+          "feedback": "Ships crossed the sea to India's west coast, so the routes mixed sea and land."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "silk-road-ideas-s2",
+    "claimIds": [
+      "silk-road-ideas-c3",
+      "silk-road-ideas-c3"
+    ],
+    "twist": {
+      "stem": "A valley far from the mountain passes saw little trade and has few Buddhist carvings. What best explains this?",
+      "hint": "Ask what paid for the art.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Less trade meant less wealth to pay for art.",
+          "correct": true,
+          "feedback": "Yes. In Gandhara, trade wealth paid for Buddhist art, so a valley with little trade had less to spend."
+        },
+        {
+          "id": "b",
+          "text": "Its people did not care for art.",
+          "correct": false,
+          "feedback": "The pattern points to money, not taste. Gandhara's art was paid for by trade through the passes."
+        },
+        {
+          "id": "c",
+          "text": "Faith alone made art, so trade did not matter.",
+          "correct": false,
+          "feedback": "Faith mattered, but the carving was paid for. In Gandhara, trade wealth paid for the art."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a mill town in Tamil Nadu, the mills close and the town's drama troupes lose their sponsors. Which Gandhara pattern does this match?",
+      "hint": "What paid for Gandhara's art?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Art lasts on faith alone, whatever the money.",
+          "correct": false,
+          "feedback": "In Gandhara, art grew because trade made the region rich. When money falls, art loses its support."
+        },
+        {
+          "id": "b",
+          "text": "Art depends on rulers, not on trade.",
+          "correct": false,
+          "feedback": "Gandhara's art was paid for by the wealth trade brought, not by rulers alone."
+        },
+        {
+          "id": "c",
+          "text": "Less trade wealth, less money for art.",
+          "correct": true,
+          "feedback": "Right. Trade wealth paid for Gandhara's art, so when the money from trade drops, art loses its support."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "silk-road-ideas-s3",
+    "claimIds": [
+      "silk-road-ideas-c4",
+      "silk-road-ideas-c4"
+    ],
+    "twist": {
+      "stem": "Why did monks from Gandhara move into Central Asia?",
+      "hint": "Think of who invaded.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Traders seem to have paid them to leave.",
+          "correct": false,
+          "feedback": "Traders were not the reason. Hun invasions seem to have driven the monks out."
+        },
+        {
+          "id": "b",
+          "text": "Their art style seems to have been banned at home.",
+          "correct": false,
+          "feedback": "Their style was not banned. Hun invasions seem to have forced the monks to move."
+        },
+        {
+          "id": "c",
+          "text": "Hun invasions seem to have driven them out.",
+          "correct": true,
+          "feedback": "Yes. Hun invasions appear to have forced the monks out, and their art took root in Central Asia."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Dosa stalls are now common in Delhi, far from where dosa began. How did that most likely happen?",
+      "hint": "Ideas need someone to take them.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The recipe spread on its own, with no one carrying it.",
+          "correct": false,
+          "feedback": "Ideas do not travel alone. Like Gandhara's art, a recipe moves when people who know it move."
+        },
+        {
+          "id": "b",
+          "text": "People who knew how to make it moved there.",
+          "correct": true,
+          "feedback": "Right. Ideas move with people, just as Gandhara's monks carried their art style to Central Asia."
+        },
+        {
+          "id": "c",
+          "text": "Delhi cooks made it up again by chance.",
+          "correct": false,
+          "feedback": "The simpler story is people moving with the skill, as Gandhara's monks took their style with them."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "indian-place-value-s1",
+    "claimIds": [
+      "indian-place-value-c1",
+      "indian-place-value-c1"
+    ],
+    "twist": {
+      "stem": "In the number 4,006, what do the two zeros tell you?",
+      "hint": "Read each spot from the left.",
+      "options": [
+        {
+          "id": "a",
+          "text": "They can be dropped without changing it.",
+          "correct": false,
+          "feedback": "Dropping them would turn 4,006 into 46. Each zero keeps an empty spot."
+        },
+        {
+          "id": "b",
+          "text": "There are no hundreds and no tens.",
+          "correct": true,
+          "feedback": "Yes. Each zero marks an empty spot, so 4,006 has 4 thousands, no hundreds, no tens and 6 ones."
+        },
+        {
+          "id": "c",
+          "text": "The number is close to zero.",
+          "correct": false,
+          "feedback": "The zeros mark empty spots, not a small number. 4,006 still has 4 thousands."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A cricket scoreboard in Indore shows 104 with one tile per place. The tens tile falls off, and the other tiles slide together. What might fans read?",
+      "hint": "What happens when an empty place is not marked?",
+      "options": [
+        {
+          "id": "a",
+          "text": "104, since the tiles keep their places.",
+          "correct": false,
+          "feedback": "The tiles slid together, so the empty tens spot vanished. Without a zero, 104 reads as 14."
+        },
+        {
+          "id": "b",
+          "text": "140, since the zero moves to the end.",
+          "correct": false,
+          "feedback": "Nothing moves to the end. Without the zero, the 1 and 4 sit side by side and read 14."
+        },
+        {
+          "id": "c",
+          "text": "14 runs.",
+          "correct": true,
+          "feedback": "Right. The zero was holding the empty tens place. Without it, the 1 slides down and 104 reads as 14."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "indian-place-value-s2",
+    "claimIds": [
+      "indian-place-value-c2",
+      "indian-place-value-c2"
+    ],
+    "twist": {
+      "stem": "Zero as a sign for an empty place came first. What did Brahmagupta add?",
+      "hint": "Placeholder came first. What came next?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The first sign for an empty place.",
+          "correct": false,
+          "feedback": "The empty-place sign came before. Brahmagupta added rules for using zero as a number in sums."
+        },
+        {
+          "id": "b",
+          "text": "Rules for using zero in sums.",
+          "correct": true,
+          "feedback": "Yes. Brahmagupta set out rules, like a number minus itself is zero, so zero could work as a number."
+        },
+        {
+          "id": "c",
+          "text": "Proof that zero is just a gap, not a number.",
+          "correct": false,
+          "feedback": "It was the other way. His rules treated zero as a number with its own results."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A shop's stock app in Nagpur shows 25 packets in and 25 sold, but leaves the 'left' box blank. Which of Brahmagupta's rules shows what it should read?",
+      "hint": "Recall his rule for minus.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Blank is right, since zero is not a real number.",
+          "correct": false,
+          "feedback": "Brahmagupta treated zero as a number. 25 minus 25 gives zero, a real answer."
+        },
+        {
+          "id": "b",
+          "text": "25, since no new stock came in.",
+          "correct": false,
+          "feedback": "All 25 were sold. A number minus itself leaves zero, not the number you started with."
+        },
+        {
+          "id": "c",
+          "text": "0, since a number take away itself is 0.",
+          "correct": true,
+          "feedback": "Right. By Brahmagupta's rule, 25 minus 25 is zero, so the box should show 0."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "indian-place-value-s3",
+    "claimIds": [
+      "indian-place-value-c3",
+      "indian-place-value-c3"
+    ],
+    "twist": {
+      "stem": "How did the digits get from India to Fibonacci?",
+      "hint": "Follow the digits west.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A scholar wrote of them in Arabic.",
+          "correct": true,
+          "feedback": "Yes. A scholar wrote of India's digits in Arabic, and later Fibonacci took them to Europe."
+        },
+        {
+          "id": "b",
+          "text": "Europe making its own 0 to 9.",
+          "correct": false,
+          "feedback": "Europe did not make its own. The digits came from India through Arabic writing."
+        },
+        {
+          "id": "c",
+          "text": "Traders from Babylon took them west.",
+          "correct": false,
+          "feedback": "The Babylonians had place value but no zero. India's digits went west through Arabic books."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a tea stall in Lucknow, a man insists the digits on his rupee notes came from Arabia. What is the best reply?",
+      "hint": "Where did the digits start?",
+      "options": [
+        {
+          "id": "a",
+          "text": "They began in India, then went west.",
+          "correct": true,
+          "feedback": "Right. The digits came from India, a scholar wrote of them in Arabic, and that is why both names stick."
+        },
+        {
+          "id": "b",
+          "text": "He is right; Arabia made them first.",
+          "correct": false,
+          "feedback": "Arabic writing carried the digits west, but they began in India. That is why they are called Hindu-Arabic."
+        },
+        {
+          "id": "c",
+          "text": "Fibonacci made them up in Europe.",
+          "correct": false,
+          "feedback": "Fibonacci took the digits to Europe much later. They first came from India."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "printing-and-reading-s1",
+    "claimIds": [
+      "printing-and-reading-c1",
+      "printing-and-reading-c1"
+    ],
+    "twist": {
+      "stem": "A museum display shows Bi Sheng's movable type as cast metal pieces. What should the fix be?",
+      "hint": "Recall the material he used.",
+      "options": [
+        {
+          "id": "a",
+          "text": "His type was small pieces of baked clay.",
+          "correct": true,
+          "feedback": "Yes. Bi Sheng made the first movable type in China from baked clay, not metal."
+        },
+        {
+          "id": "b",
+          "text": "No fix; early movable type was metal.",
+          "correct": false,
+          "feedback": "Bi Sheng's first movable type was baked clay. Metal type came later."
+        },
+        {
+          "id": "c",
+          "text": "His type was carved as whole wooden pages.",
+          "correct": false,
+          "feedback": "Whole wooden blocks are block printing. Bi Sheng's movable type was small pieces of baked clay."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A shop owner in Surat changes his price board each week. Which choice uses the movable-type idea?",
+      "hint": "Which one reuses small pieces?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Paint a new board for each week's prices.",
+          "correct": false,
+          "feedback": "A new board each week is like carving a new block. Movable type reuses small pieces."
+        },
+        {
+          "id": "b",
+          "text": "Number tiles he resets each week.",
+          "correct": true,
+          "feedback": "Right. Like movable type, a set of small pieces can be reset again and again for new prices."
+        },
+        {
+          "id": "c",
+          "text": "One carved board kept for years.",
+          "correct": false,
+          "feedback": "A fixed board is like one woodblock for one page. Movable type lets the pieces be reset."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "printing-and-reading-s2",
+    "claimIds": [
+      "printing-and-reading-c3",
+      "printing-and-reading-c3"
+    ],
+    "twist": {
+      "stem": "Jikji, from 1377, is the oldest surviving metal-type book. Does that mean metal type was first used in 1377?",
+      "hint": "Oldest surviving is not the same as first.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes; the oldest book marks the first use.",
+          "correct": false,
+          "feedback": "The oldest book still around is not always the first made. Koreans used metal type in the 1200s."
+        },
+        {
+          "id": "b",
+          "text": "No; metal type began with Gutenberg.",
+          "correct": false,
+          "feedback": "Gutenberg came later. Metal type was used in Korea long before his Bible."
+        },
+        {
+          "id": "c",
+          "text": "No; Koreans used metal type in the 1200s.",
+          "correct": true,
+          "feedback": "Yes. Metal type was in use in Korea in the 1200s. Jikji is just the oldest such book that survives."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Neha's oldest family photo left is from 1965. Her grandmother recalls older photos that were lost. What can Neha fairly say?",
+      "hint": "Oldest surviving is not the same as first.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No photos were taken before 1965.",
+          "correct": false,
+          "feedback": "The oldest one that survives is not always the first. Jikji is the oldest metal-type book left, yet metal type was used earlier."
+        },
+        {
+          "id": "b",
+          "text": "Photos go back at least to 1965.",
+          "correct": true,
+          "feedback": "Right. Like Jikji, the oldest one left only shows a latest start date. Earlier ones may simply be lost."
+        },
+        {
+          "id": "c",
+          "text": "The photo proves her grandmother is wrong.",
+          "correct": false,
+          "feedback": "A surviving photo cannot prove lost ones never existed, just as Jikji does not mark the first metal type."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "printing-and-reading-s3",
+    "claimIds": [
+      "printing-and-reading-c4",
+      "printing-and-reading-c5"
+    ],
+    "twist": {
+      "stem": "In Gutenberg's shop, a printer's letter 'e' cracks while a page is set. What can he do with this kind of type?",
+      "hint": "His letters were cast alike.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Carve the whole page again.",
+          "correct": false,
+          "feedback": "That is block printing. Gutenberg's letters matched, so one piece could replace another."
+        },
+        {
+          "id": "b",
+          "text": "Stop until a new block is cut.",
+          "correct": false,
+          "feedback": "There is no block to cut. Gutenberg's type was single matching letters, so any 'e' fits."
+        },
+        {
+          "id": "c",
+          "text": "Swap in any other 'e'.",
+          "correct": true,
+          "feedback": "Yes. Gutenberg cast matching metal letters, so any piece of the same letter could swap in."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A village gets free tablets loaded with books, but many older people there cannot read. What changes at once?",
+      "hint": "Ask who can use a book today.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Most people soon read, since books teach reading.",
+          "correct": false,
+          "feedback": "Books help readers, but they do not teach reading. Those who cannot read need lessons first."
+        },
+        {
+          "id": "b",
+          "text": "Readers gain; others need lessons.",
+          "correct": true,
+          "feedback": "Right. Print put knowledge within reach of readers. Those who cannot read still have to learn first."
+        },
+        {
+          "id": "c",
+          "text": "Nobody can use the tablets.",
+          "correct": false,
+          "feedback": "Those who can read gain right away. Only the others need lessons first."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "mughal-revenue-s1",
+    "claimIds": [
+      "mughal-revenue-c1",
+      "mughal-revenue-c1"
+    ],
+    "twist": {
+      "stem": "Two nobles serve Akbar, one at 1,000 zat and one at 3,000 zat. Who likely got more pay?",
+      "hint": "What did a higher zat bring?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The one at 1,000, since lower numbers ranked higher.",
+          "correct": false,
+          "feedback": "A higher zat meant a higher rank, not a lower one, and more pay with it."
+        },
+        {
+          "id": "b",
+          "text": "Neither; zat set rank but not pay.",
+          "correct": false,
+          "feedback": "Zat set both a noble's rank and his pay, so the two went together."
+        },
+        {
+          "id": "c",
+          "text": "The one at 3,000.",
+          "correct": true,
+          "feedback": "Yes. Zat set a noble's rank and his pay, so a higher zat meant more pay."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A cricket academy in Mohali gives each coach a grade number that sets pay. Each coach must also bring a set number of trainees. Which part of a mansab matches the trainees?",
+      "hint": "A mansab came with an army task.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The zat number, which sets rank and pay.",
+          "correct": false,
+          "feedback": "Zat set rank and pay, like the grade number. The duty to bring trainees matches the horsemen."
+        },
+        {
+          "id": "b",
+          "text": "A jagir, the right to an area's revenue.",
+          "correct": false,
+          "feedback": "A jagir was how pay came, as rights to an area's revenue. The trainee duty matches the horsemen."
+        },
+        {
+          "id": "c",
+          "text": "The duty to keep horsemen.",
+          "correct": true,
+          "feedback": "Right. A mansabdar had to keep a set number of horsemen, just as each coach must bring trainees."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "mughal-revenue-s2",
+    "claimIds": [
+      "mughal-revenue-c2",
+      "mughal-revenue-c2"
+    ],
+    "twist": {
+      "stem": "A jagirdar's son plans to sell the jagir's fields to a merchant. What is wrong with his plan?",
+      "hint": "What did the grant actually give?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No problem; a jagir was family land.",
+          "correct": false,
+          "feedback": "A jagir was a right to an area's revenue, not land the family owned."
+        },
+        {
+          "id": "b",
+          "text": "It was not his land to sell.",
+          "correct": true,
+          "feedback": "Yes. A jagir gave the right to collect an area's revenue. The land was not his to sell."
+        },
+        {
+          "id": "c",
+          "text": "The merchant must pay tax first.",
+          "correct": false,
+          "feedback": "The issue is ownership. A jagir was a right to revenue, so the fields were not the family's to sell."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A company pays its Delhi manager by letting him keep the rent from a shop in Pune, which an agent collects for him. Which Mughal idea is this most like?",
+      "hint": "Who collected the money while the noble was away?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A jagir, income rights over a place.",
+          "correct": true,
+          "feedback": "Right. Like a jagir, he gets the income of a place far away, and others collect it for him."
+        },
+        {
+          "id": "b",
+          "text": "A zat rank number.",
+          "correct": false,
+          "feedback": "Zat set rank and pay. Getting paid from a far place's income is what a jagir did."
+        },
+        {
+          "id": "c",
+          "text": "A gift of the shop for him to own outright.",
+          "correct": false,
+          "feedback": "He keeps the rent, not the shop. A jagir too was a right to income, not land to own."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "mughal-revenue-s3",
+    "claimIds": [
+      "mughal-revenue-c3",
+      "mughal-revenue-c4"
+    ],
+    "twist": {
+      "stem": "Two farmers in one zabt circle grow different crops, wheat and cotton. Do they pay the same tax rate?",
+      "hint": "Taxes were set for each what?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes; one rate covered the whole province.",
+          "correct": false,
+          "feedback": "Each province was split into circles, and each crop had its own rate."
+        },
+        {
+          "id": "b",
+          "text": "No; each crop had its own rate.",
+          "correct": true,
+          "feedback": "Yes. Under zabt, each circle had set rates for each crop, so wheat and cotton paid different rates."
+        },
+        {
+          "id": "c",
+          "text": "Yes; one rate covered each circle.",
+          "correct": false,
+          "feedback": "Circles had rates for each crop, not one rate for all, so the two farmers paid different rates."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A city plans a house tax based on measured house sizes, but half the houses have never been measured. What does zabt's story suggest?",
+      "hint": "What did Todar Mal's method rest on?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It works only where houses are measured.",
+          "correct": true,
+          "feedback": "Right. Zabt worked where officials could survey land and keep careful accounts, and failed where they could not."
+        },
+        {
+          "id": "b",
+          "text": "It works the same everywhere if the rate is high.",
+          "correct": false,
+          "feedback": "A high rate does not fix missing records. Zabt needed surveys and careful accounts to work."
+        },
+        {
+          "id": "c",
+          "text": "Records do not matter; one rule fits each area.",
+          "correct": false,
+          "feedback": "Zabt did not work in provinces without surveys and accounts, so records matter."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "company-trade-rule-s1",
+    "claimIds": [
+      "company-trade-rule-c1",
+      "company-trade-rule-c1"
+    ],
+    "twist": {
+      "stem": "Did the 1600 charter give the East India Company rule over land in India?",
+      "hint": "What did the charter actually grant?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes; it made the Company a ruler from day one.",
+          "correct": false,
+          "feedback": "The charter gave trade rights only. Land and power came much later."
+        },
+        {
+          "id": "b",
+          "text": "Yes, over the coast where it traded.",
+          "correct": false,
+          "feedback": "The charter gave no land. It gave the sole English right to trade with the East."
+        },
+        {
+          "id": "c",
+          "text": "No; it gave trade rights only.",
+          "correct": true,
+          "feedback": "Yes. The charter shut out other English traders, but it gave trade rights, not rule."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A college gives one canteen firm the sole right to sell food on campus. What can that firm now do, and what can it not do?",
+      "hint": "A sole right to trade is not a right to rule.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Run the whole college, since it holds the sole right.",
+          "correct": false,
+          "feedback": "A sole right to sell is not a right to run things. The Company's charter too gave trade, not rule."
+        },
+        {
+          "id": "b",
+          "text": "Sell without campus rivals, but not run the college.",
+          "correct": true,
+          "feedback": "Right. Like the Company's charter, it shuts out rivals in trade but gives no power to govern."
+        },
+        {
+          "id": "c",
+          "text": "No change; rivals can still sell on campus.",
+          "correct": false,
+          "feedback": "A sole right shuts out rivals, as the charter shut out other English traders."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "company-trade-rule-s2",
+    "claimIds": [
+      "company-trade-rule-c3",
+      "company-trade-rule-c5"
+    ],
+    "twist": {
+      "stem": "Which order of events is right?",
+      "hint": "Look at the years.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Plassey, Buxar, then the diwani.",
+          "correct": true,
+          "feedback": "Yes. Plassey came in 1757, Buxar in 1764, and the diwani in 1765."
+        },
+        {
+          "id": "b",
+          "text": "The diwani, Plassey, then Buxar.",
+          "correct": false,
+          "feedback": "The diwani came last, in 1765, after the wins at Plassey in 1757 and Buxar in 1764."
+        },
+        {
+          "id": "c",
+          "text": "Buxar, the diwani, then Plassey.",
+          "correct": false,
+          "feedback": "Plassey came first, in 1757. Buxar followed in 1764 and the diwani in 1765."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A foreign firm used to send money from its head office to buy goods in India. Then it gains the right to collect local rents in a district. What happens to the money from the head office?",
+      "hint": "What did Indian revenue start to pay for?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It is no longer needed for goods.",
+          "correct": true,
+          "feedback": "Right. As with the diwani, local revenue now pays for the goods, so money from abroad stops flowing in."
+        },
+        {
+          "id": "b",
+          "text": "It doubles to match the new rent.",
+          "correct": false,
+          "feedback": "After the diwani, money from India paid the Company's costs, so outside money stopped. It did not grow."
+        },
+        {
+          "id": "c",
+          "text": "It stays the same as before.",
+          "correct": false,
+          "feedback": "After the diwani, money from India paid for cloth, troops and buildings, so gold from Britain stopped."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "company-trade-rule-s3",
+    "claimIds": [
+      "company-trade-rule-c6",
+      "company-trade-rule-c6"
+    ],
+    "twist": {
+      "stem": "A letter from 1850 is signed by the Company's Governor-General in India. Does that fit the timeline?",
+      "hint": "When did the powers move?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes; Company rule went on until 1858.",
+          "correct": true,
+          "feedback": "Yes. The Company kept its powers until the law of 1858 moved them to the Crown."
+        },
+        {
+          "id": "b",
+          "text": "No; the Crown ruled from 1765.",
+          "correct": false,
+          "feedback": "1765 was the diwani, given to the Company. The Crown took over only in 1858."
+        },
+        {
+          "id": "c",
+          "text": "No; the Company lost its powers after Plassey.",
+          "correct": false,
+          "feedback": "Plassey added to the Company's power. It kept its powers until 1858."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A new state law in Karnataka moves a private bus company's routes to the state transport body, and its manager gets a new title. Which change is this most like?",
+      "hint": "A law moved control and gave a new title.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The 1765 diwani grant to the Company.",
+          "correct": false,
+          "feedback": "The diwani gave the Company a right to collect tax. Powers moving by law with a new title is 1858."
+        },
+        {
+          "id": "b",
+          "text": "The 1600 charter for trade in the East.",
+          "correct": false,
+          "feedback": "The charter gave trade rights. Powers moving by law with a new title is the change of 1858."
+        },
+        {
+          "id": "c",
+          "text": "The 1858 move of powers to the Crown.",
+          "correct": true,
+          "feedback": "Right. In 1858 a law moved the Company's powers to the Crown, and the Governor-General became the Viceroy."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "independence-constitution-s1",
+    "claimIds": [
+      "independence-constitution-c1",
+      "independence-constitution-c1"
+    ],
+    "twist": {
+      "stem": "Did the Assembly first meet before or after India became free?",
+      "hint": "Recall the month and year it first met.",
+      "options": [
+        {
+          "id": "a",
+          "text": "After, in late 1947.",
+          "correct": false,
+          "feedback": "It first met in December 1946. India became free later, in August 1947."
+        },
+        {
+          "id": "b",
+          "text": "Before, in 1946.",
+          "correct": true,
+          "feedback": "Yes. It first met in December 1946, some months before India became free."
+        },
+        {
+          "id": "c",
+          "text": "In 1950, when the Constitution began.",
+          "correct": false,
+          "feedback": "1950 is when the Constitution came into force. The Assembly first met in December 1946."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A housing society in Pune forms a committee to write its rules. Each building's own committee picks the members. Which Assembly feature is this like?",
+      "hint": "Most were not chosen at a voting booth.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Members chosen by a direct vote of the people.",
+          "correct": false,
+          "feedback": "Here residents do not vote directly. Most Assembly members were not picked by a direct vote either."
+        },
+        {
+          "id": "b",
+          "text": "Picked by the assemblies of the provinces.",
+          "correct": true,
+          "feedback": "Right. Most Assembly members were picked by provincial assemblies, just as building committees pick these members."
+        },
+        {
+          "id": "c",
+          "text": "Members chosen by the British king.",
+          "correct": false,
+          "feedback": "Most Assembly members were picked by provincial assemblies, and the rest came from princely states."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "independence-constitution-s2",
+    "claimIds": [
+      "independence-constitution-c2",
+      "independence-constitution-c3"
+    ],
+    "twist": {
+      "stem": "A classmate claims Dr B.R. Ambedkar wrote the whole Constitution alone. What is the best reply?",
+      "hint": "Who wrote the first text, and who edited it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "His team drafted it; the Assembly changed it.",
+          "correct": true,
+          "feedback": "Yes. A team led by Dr Ambedkar wrote the draft, and the whole Assembly debated and changed it."
+        },
+        {
+          "id": "b",
+          "text": "True; the Assembly passed his draft without changes.",
+          "correct": false,
+          "feedback": "The Assembly debated the draft and changed it, deciding 2,473 of the changes put forward."
+        },
+        {
+          "id": "c",
+          "text": "He had no part in writing it.",
+          "correct": false,
+          "feedback": "He led the team that wrote the draft. The whole Assembly then debated and changed it."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a Bhopal college, a small team drafts new hostel rules. Then all the student reps debate them and change many lines. Which part of the Constitution's making does this match?",
+      "hint": "A first text is not the final one.",
+      "options": [
+        {
+          "id": "a",
+          "text": "One author writing the final text alone.",
+          "correct": false,
+          "feedback": "Here a team drafts and a larger body changes it, as the Assembly did with the draft."
+        },
+        {
+          "id": "b",
+          "text": "The draft passing just as it was written.",
+          "correct": false,
+          "feedback": "The reps changed many lines, as the Assembly debated the draft and decided thousands of changes."
+        },
+        {
+          "id": "c",
+          "text": "A draft, then debate and changes.",
+          "correct": true,
+          "feedback": "Right. Dr Ambedkar's team wrote the draft, and the whole Assembly then debated and changed it."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "independence-constitution-s3",
+    "claimIds": [
+      "independence-constitution-c4",
+      "independence-constitution-c4"
+    ],
+    "twist": {
+      "stem": "On what date did the Assembly adopt the text of the Constitution?",
+      "hint": "Adoption came first, two months earlier.",
+      "options": [
+        {
+          "id": "a",
+          "text": "26 January 1950.",
+          "correct": false,
+          "feedback": "That is when it came into force. The Assembly adopted the text two months earlier, on 26 November 1949."
+        },
+        {
+          "id": "b",
+          "text": "15 August 1947, at independence.",
+          "correct": false,
+          "feedback": "That is the day of independence. The text was adopted on 26 November 1949."
+        },
+        {
+          "id": "c",
+          "text": "26 November 1949.",
+          "correct": true,
+          "feedback": "Yes. The Assembly adopted the text on 26 November 1949, and it came into force on 26 January 1950."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Sita signs a rent deal on 1 March that starts on 1 May. Which fact about the Constitution is like this?",
+      "hint": "Signed one day, starting on another.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It was adopted and came into force on one day.",
+          "correct": false,
+          "feedback": "The text was adopted on 26 November 1949 and came into force on 26 January 1950."
+        },
+        {
+          "id": "b",
+          "text": "It came into force first and was adopted later.",
+          "correct": false,
+          "feedback": "It was the other way: adopted in November 1949, then in force in January 1950."
+        },
+        {
+          "id": "c",
+          "text": "It was adopted, then in force two months on.",
+          "correct": true,
+          "feedback": "Right. Like the rent deal, it was adopted on 26 November 1949 and came into force on 26 January 1950."
+        }
+      ]
+    }
+  }
+]

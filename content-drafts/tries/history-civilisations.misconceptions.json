@@ -1,0 +1,314 @@
+[
+  {
+    "stepId": "indus-cities-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "indus-cities-m3"
+  },
+  {
+    "stepId": "indus-cities-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "indus-cities-m3"
+  },
+  {
+    "stepId": "indus-cities-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "indus-cities-m1"
+  },
+  {
+    "stepId": "indus-cities-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "indus-cities-m5"
+  },
+  {
+    "stepId": "indus-cities-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "indus-cities-m4"
+  },
+  {
+    "stepId": "indus-cities-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "indus-cities-m4"
+  },
+  {
+    "stepId": "indus-cities-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "indus-cities-m5"
+  },
+  {
+    "stepId": "indus-cities-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "indus-cities-m2"
+  },
+  {
+    "stepId": "indus-cities-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "indus-cities-m2"
+  },
+  {
+    "stepId": "ashoka-edicts-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "ashoka-edicts-m1"
+  },
+  {
+    "stepId": "ashoka-edicts-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "ashoka-edicts-m1"
+  },
+  {
+    "stepId": "ashoka-edicts-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "ashoka-edicts-m3"
+  },
+  {
+    "stepId": "ashoka-edicts-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "ashoka-edicts-m3"
+  },
+  {
+    "stepId": "ashoka-edicts-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "ashoka-edicts-m3"
+  },
+  {
+    "stepId": "ashoka-edicts-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "ashoka-edicts-m3"
+  },
+  {
+    "stepId": "ashoka-edicts-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "ashoka-edicts-m4"
+  },
+  {
+    "stepId": "silk-road-ideas-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "silk-road-ideas-m2"
+  },
+  {
+    "stepId": "silk-road-ideas-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "silk-road-ideas-m2"
+  },
+  {
+    "stepId": "silk-road-ideas-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "silk-road-ideas-m3"
+  },
+  {
+    "stepId": "silk-road-ideas-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "silk-road-ideas-m3"
+  },
+  {
+    "stepId": "indian-place-value-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "indian-place-value-m2"
+  },
+  {
+    "stepId": "indian-place-value-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "indian-place-value-m2"
+  },
+  {
+    "stepId": "indian-place-value-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "indian-place-value-m2"
+  },
+  {
+    "stepId": "indian-place-value-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "indian-place-value-m4"
+  },
+  {
+    "stepId": "indian-place-value-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "indian-place-value-m3"
+  },
+  {
+    "stepId": "indian-place-value-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "indian-place-value-m3"
+  },
+  {
+    "stepId": "indian-place-value-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "indian-place-value-m3"
+  },
+  {
+    "stepId": "printing-and-reading-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "printing-and-reading-m5"
+  },
+  {
+    "stepId": "printing-and-reading-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "printing-and-reading-m5"
+  },
+  {
+    "stepId": "printing-and-reading-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "printing-and-reading-m5"
+  },
+  {
+    "stepId": "printing-and-reading-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "printing-and-reading-m1"
+  },
+  {
+    "stepId": "printing-and-reading-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "printing-and-reading-m5"
+  },
+  {
+    "stepId": "printing-and-reading-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "printing-and-reading-m5"
+  },
+  {
+    "stepId": "printing-and-reading-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "printing-and-reading-m2"
+  },
+  {
+    "stepId": "mughal-revenue-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "mughal-revenue-m1"
+  },
+  {
+    "stepId": "mughal-revenue-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "mughal-revenue-m3"
+  },
+  {
+    "stepId": "mughal-revenue-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "mughal-revenue-m3"
+  },
+  {
+    "stepId": "mughal-revenue-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "mughal-revenue-m3"
+  },
+  {
+    "stepId": "mughal-revenue-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "mughal-revenue-m2"
+  },
+  {
+    "stepId": "mughal-revenue-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "mughal-revenue-m2"
+  },
+  {
+    "stepId": "mughal-revenue-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "mughal-revenue-m2"
+  },
+  {
+    "stepId": "company-trade-rule-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "company-trade-rule-m1"
+  },
+  {
+    "stepId": "company-trade-rule-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "company-trade-rule-m1"
+  },
+  {
+    "stepId": "company-trade-rule-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "company-trade-rule-m1"
+  },
+  {
+    "stepId": "company-trade-rule-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "company-trade-rule-m2"
+  },
+  {
+    "stepId": "company-trade-rule-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "company-trade-rule-m2"
+  },
+  {
+    "stepId": "independence-constitution-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "independence-constitution-m4"
+  },
+  {
+    "stepId": "independence-constitution-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "independence-constitution-m3"
+  },
+  {
+    "stepId": "independence-constitution-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "independence-constitution-m1"
+  },
+  {
+    "stepId": "independence-constitution-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "independence-constitution-m3"
+  },
+  {
+    "stepId": "independence-constitution-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "independence-constitution-m2"
+  },
+  {
+    "stepId": "independence-constitution-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "independence-constitution-m2"
+  }
+]

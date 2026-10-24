@@ -1,0 +1,866 @@
+{
+ "1": {
+  "id": "indus-cities-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "Two: lanes had drains, mostly covered.",
+   "B": "One: the drains were brick, but just on main roads.",
+   "C": "None; that fits what was dug up."
+  }
+ },
+ "2": {
+  "id": "protein-foods-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "No; grinding them up undoes the pairing.",
+   "B": "No; it needs an egg on the side to fill a gap.",
+   "C": "Yes; the rice and dal in it cover each other."
+  }
+ },
+ "3": {
+  "id": "iron-and-anaemia-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Add a sweet, since sugar helps iron in.",
+   "B": "Add lemon to the chole and serve chai later.",
+   "C": "Serve more chai, since warm drinks help digestion."
+  }
+ },
+ "4": {
+  "id": "fad-diet-claims-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Add a second cereal like roti.",
+   "B": "Add pulses, eggs or milk, and more fruit.",
+   "C": "No change; rice is filling, so it covers needs."
+  }
+ },
+ "5": {
+  "id": "iron-and-anaemia-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "The test may be wrong, since her diet is good.",
+   "B": "She may just need more spinach.",
+   "C": "Another cause may be behind it."
+  }
+ },
+ "6": {
+  "id": "ashoka-edicts-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Use one script, as Ashoka did.",
+   "B": "Use the capital's script in each state.",
+   "C": "Write it in each region's own script."
+  }
+ },
+ "7": {
+  "id": "company-trade-rule-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "No change; rivals can still sell on campus.",
+   "B": "Sell without campus rivals, but not run the college.",
+   "C": "Run the whole college, since it holds the sole right."
+  }
+ },
+ "8": {
+  "id": "sleep-recovery-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Around 8 pm.",
+   "B": "Around 2 pm.",
+   "C": "Any time; coffee wears off within an hour."
+  }
+ },
+ "9": {
+  "id": "protein-foods-s3:twist",
+  "right": "A",
+  "opts": {
+   "A": "About 65 kg, using the per-kg figure.",
+   "B": "About 27 kg, at two grams per kilo.",
+   "C": "About 54 kg, at one gram per kilo."
+  }
+ },
+ "10": {
+  "id": "mughal-revenue-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "It works the same everywhere if the rate is high.",
+   "B": "It works only where houses are measured.",
+   "C": "Records do not matter; one rule fits each area."
+  }
+ },
+ "11": {
+  "id": "indian-place-value-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "25, since no new stock came in.",
+   "B": "0, since a number take away itself is 0.",
+   "C": "Blank is right, since zero is not a real number."
+  }
+ },
+ "12": {
+  "id": "free-sugars-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "The carrot and milk sugar as well.",
+   "B": "Just the sugar stirred in.",
+   "C": "None of it, since it is made at home."
+  }
+ },
+ "13": {
+  "id": "independence-constitution-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "After, in late 1947.",
+   "B": "Before, in 1946.",
+   "C": "In 1950, when the Constitution began."
+  }
+ },
+ "14": {
+  "id": "independence-constitution-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Members chosen by a direct vote of the people.",
+   "B": "Picked by the assemblies of the provinces.",
+   "C": "Members chosen by the British king."
+  }
+ },
+ "15": {
+  "id": "indus-cities-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Everything, by guessing the words from the photos.",
+   "B": "What the photos and objects themselves show.",
+   "C": "Very little until the diary is read."
+  }
+ },
+ "16": {
+  "id": "printing-and-reading-s2:twist",
+  "right": "B",
+  "opts": {
+   "A": "Yes; the oldest book marks the first use.",
+   "B": "No; Koreans used metal type in the 1200s.",
+   "C": "No; metal type began with Gutenberg."
+  }
+ },
+ "17": {
+  "id": "food-label-reading-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Honey and almonds, just as the name shows.",
+   "B": "Wheat flakes, with sugar next in line.",
+   "C": "Almonds, since nuts are weighed last."
+  }
+ },
+ "18": {
+  "id": "hydration-cues-s3:twist",
+  "right": "A",
+  "opts": {
+   "A": "Yes; heat and sweat raise it on their own.",
+   "B": "No; it takes exercise to raise the need.",
+   "C": "No; eight glasses covers any day, hot or cool."
+  }
+ },
+ "19": {
+  "id": "free-sugars-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "None; ketchup is a salty sauce.",
+   "B": "About 40 g, as much as a can of soda.",
+   "C": "About 12 g, near three teaspoons."
+  }
+ },
+ "20": {
+  "id": "fad-diet-claims-s2:transfer",
+  "right": "A",
+  "opts": {
+   "A": "There is no strong proof that detox works.",
+   "B": "It works if it is drunk before sunrise.",
+   "C": "It is proven, since so many people share it."
+  }
+ },
+ "21": {
+  "id": "food-label-reading-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "No; the list order shows quality, not amount.",
+   "B": "You cannot tell from the list alone.",
+   "C": "Yes, since maida comes before sugar."
+  }
+ },
+ "22": {
+  "id": "iron-and-anaemia-s2:twist",
+  "right": "B",
+  "opts": {
+   "A": "Palak dal with a cup of tea alongside it.",
+   "B": "Palak dal with lemon, and tea an hour later.",
+   "C": "Palak dal alone, since greens give plenty of iron."
+  }
+ },
+ "23": {
+  "id": "company-trade-rule-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "Buxar, the diwani, then Plassey.",
+   "B": "The diwani, Plassey, then Buxar.",
+   "C": "Plassey, Buxar, then the diwani."
+  }
+ },
+ "24": {
+  "id": "independence-constitution-s2:transfer",
+  "right": "A",
+  "opts": {
+   "A": "A draft, then debate and changes.",
+   "B": "The draft passing just as it was written.",
+   "C": "One author writing the final text alone."
+  }
+ },
+ "25": {
+  "id": "hydration-cues-s3:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Cool him in the shade, with a drink.",
+   "B": "Give him buttermilk and let him rest.",
+   "C": "Get urgent help now."
+  }
+ },
+ "26": {
+  "id": "company-trade-rule-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "It stays the same as before.",
+   "B": "It doubles to match the new rent.",
+   "C": "It is no longer needed for goods."
+  }
+ },
+ "27": {
+  "id": "sleep-recovery-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Sleep helps store the day's learning.",
+   "B": "Practice is stored while awake, not in sleep.",
+   "C": "Sleep just rests his tired hands."
+  }
+ },
+ "28": {
+  "id": "fad-diet-claims-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "She may have more energy from a light body.",
+   "B": "She may be fine, as long as she drinks juice.",
+   "C": "She may feel weak, faint or get a headache."
+  }
+ },
+ "29": {
+  "id": "food-label-reading-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Bar A, which has 25 g per 100 g.",
+   "B": "They are equal, since each is one bar.",
+   "C": "Bar B, since 14 g is more than 12 g."
+  }
+ },
+ "30": {
+  "id": "indus-cities-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "A pit in her yard, since old cities had no drains.",
+   "B": "A pipe from the house into a covered street drain.",
+   "C": "Letting the water run down the open lane."
+  }
+ },
+ "31": {
+  "id": "indus-cities-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "People planned the layout before building.",
+   "B": "It must have been a royal palace.",
+   "C": "Walls like that pile up by chance as houses are added."
+  }
+ },
+ "32": {
+  "id": "ashoka-edicts-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "Kharosthi.",
+   "B": "Greek, as in Afghanistan.",
+   "C": "Aramaic, as everywhere outside Bihar."
+  }
+ },
+ "33": {
+  "id": "independence-constitution-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "It was adopted and came into force on one day.",
+   "B": "It was adopted, then in force two months on.",
+   "C": "It came into force first and was adopted later."
+  }
+ },
+ "34": {
+  "id": "exercise-heart-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "Moderate, since she is moving the whole time.",
+   "B": "Hard, since her legs keep turning the pedals.",
+   "C": "Below moderate, since she can still sing."
+  }
+ },
+ "35": {
+  "id": "free-sugars-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "They can go past the whole limit.",
+   "B": "About a fifth of it, since drinks are light.",
+   "C": "About half of it."
+  }
+ },
+ "36": {
+  "id": "food-label-reading-s3:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Front claims usually name the main item.",
+   "B": "It may be mostly aloe, since the front names it.",
+   "C": "Check the back list for the aloe."
+  }
+ },
+ "37": {
+  "id": "independence-constitution-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "His team drafted it; the Assembly changed it.",
+   "B": "He had no part in writing it.",
+   "C": "True; the Assembly passed his draft without changes."
+  }
+ },
+ "38": {
+  "id": "iron-and-anaemia-s1:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Less haemoglobin, but faster breathing fully makes up for it.",
+   "B": "Less haemoglobin, so more oxygen is left for the legs.",
+   "C": "Less haemoglobin, so less oxygen gets to the legs and arms."
+  }
+ },
+ "39": {
+  "id": "protein-foods-s1:twist",
+  "right": "C",
+  "opts": {
+   "A": "A plate of fruit, since fasts allow no protein.",
+   "B": "A bowl of sweet potato chaat.",
+   "C": "Roasted peanuts and pumpkin seeds."
+  }
+ },
+ "40": {
+  "id": "printing-and-reading-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Number tiles he resets each week.",
+   "B": "Paint a new board for each week's prices.",
+   "C": "One carved board kept for years."
+  }
+ },
+ "41": {
+  "id": "silk-road-ideas-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "Less trade meant less wealth to pay for art.",
+   "B": "Faith alone made art, so trade did not matter.",
+   "C": "Its people did not care for art."
+  }
+ },
+ "42": {
+  "id": "mughal-revenue-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "Yes; one rate covered each circle.",
+   "B": "Yes; one rate covered the whole province.",
+   "C": "No; each crop had its own rate."
+  }
+ },
+ "43": {
+  "id": "printing-and-reading-s2:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Photos go back at least to 1965.",
+   "B": "The photo proves her grandmother is wrong.",
+   "C": "No photos were taken before 1965."
+  }
+ },
+ "44": {
+  "id": "exercise-heart-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Both reach it, Rina by counting double.",
+   "B": "Rina, since running beats walking.",
+   "C": "The walker; Rina has just 90 minutes."
+  }
+ },
+ "45": {
+  "id": "silk-road-ideas-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Art lasts on faith alone, whatever the money.",
+   "B": "Art depends on rulers, not on trade.",
+   "C": "Less trade wealth, less money for art."
+  }
+ },
+ "46": {
+  "id": "exercise-heart-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "Past the top; 150 is the most to do.",
+   "B": "Inside the weekly range of 150 to 300.",
+   "C": "Short; the aim is at least 300 minutes."
+  }
+ },
+ "47": {
+  "id": "indian-place-value-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "They began in India, then went west.",
+   "B": "He is right; Arabia made them first.",
+   "C": "Fibonacci made them up in Europe."
+  }
+ },
+ "48": {
+  "id": "free-sugars-s1:transfer",
+  "right": "C",
+  "opts": {
+   "A": "The orange squash, since it is made from fruit.",
+   "B": "The 100% juice, since no sugar was added.",
+   "C": "The whole oranges, cut into slices."
+  }
+ },
+ "49": {
+  "id": "printing-and-reading-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Readers gain; others need lessons.",
+   "B": "Nobody can use the tablets.",
+   "C": "Most people soon read, since books teach reading."
+  }
+ },
+ "50": {
+  "id": "exercise-heart-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "It counts, and it reaches 300 minutes.",
+   "B": "It does not count, since it is part of his job.",
+   "C": "It counts, but it is still under 150 minutes."
+  }
+ },
+ "51": {
+  "id": "protein-foods-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Athletes may need more.",
+   "B": "Nothing; the per-kg figure fits each adult alike.",
+   "C": "He may need less, since training saves protein."
+  }
+ },
+ "52": {
+  "id": "iron-and-anaemia-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Yes, if they also eat more greens.",
+   "B": "No; malaria is one more cause.",
+   "C": "Yes; low blood iron is the one cause."
+  }
+ },
+ "53": {
+  "id": "sleep-recovery-s2:twist",
+  "right": "C",
+  "opts": {
+   "A": "Deep sleep, which fills the end of the night.",
+   "B": "Light sleep; dreams come as you drift off.",
+   "C": "REM sleep, which grows longer near morning."
+  }
+ },
+ "54": {
+  "id": "ashoka-edicts-s1:twist",
+  "right": "A",
+  "opts": {
+   "A": "Rocks and pillars across the empire held his words.",
+   "B": "They were painted on palm leaves and cloth, not walls.",
+   "C": "The label is right; the edicts stayed at court."
+  }
+ },
+ "55": {
+  "id": "food-label-reading-s3:twist",
+  "right": "B",
+  "opts": {
+   "A": "Equal parts juice and water.",
+   "B": "Water and sugar, then a little juice.",
+   "C": "Orange juice, just as the picture shows."
+  }
+ },
+ "56": {
+  "id": "mughal-revenue-s1:twist",
+  "right": "C",
+  "opts": {
+   "A": "Neither; zat set rank but not pay.",
+   "B": "The one at 1,000, since lower numbers ranked higher.",
+   "C": "The one at 3,000."
+  }
+ },
+ "57": {
+  "id": "indian-place-value-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "140, since the zero moves to the end.",
+   "B": "14 runs.",
+   "C": "104, since the tiles keep their places."
+  }
+ },
+ "58": {
+  "id": "indus-cities-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "True, since the seals have now been read.",
+   "B": "True; the whole city has been dug up.",
+   "C": "A third is dug, and the script is unread."
+  }
+ },
+ "59": {
+  "id": "company-trade-rule-s1:twist",
+  "right": "A",
+  "opts": {
+   "A": "No; it gave trade rights only.",
+   "B": "Yes, over the coast where it traded.",
+   "C": "Yes; it made the Company a ruler from day one."
+  }
+ },
+ "60": {
+  "id": "free-sugars-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Far past it; the limit is about 3 teaspoons.",
+   "B": "About at the limit of 12 teaspoons.",
+   "C": "Well under it, since festival sweets made at home do not count."
+  }
+ },
+ "61": {
+  "id": "mughal-revenue-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "It was not his land to sell.",
+   "B": "No problem; a jagir was family land.",
+   "C": "The merchant must pay tax first."
+  }
+ },
+ "62": {
+  "id": "sleep-recovery-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "Likely no change; one hour is too small.",
+   "B": "He may find it harder to focus.",
+   "C": "His body may repair less, but focus is fine."
+  }
+ },
+ "63": {
+  "id": "food-label-reading-s1:twist",
+  "right": "A",
+  "opts": {
+   "A": "Not by that; check the per 100 g line.",
+   "B": "Yes, since brands must cut sugar to cut servings.",
+   "C": "Yes; less sugar per serving means a less sugary biscuit."
+  }
+ },
+ "64": {
+  "id": "fad-diet-claims-s1:twist",
+  "right": "A",
+  "opts": {
+   "A": "No; it is half the daily aim.",
+   "B": "Yes; any fruit counts as enough.",
+   "C": "Yes; the aim is about 200 g."
+  }
+ },
+ "65": {
+  "id": "hydration-cues-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "Halfway; water is the one drink that counts.",
+   "B": "At the mark, since coffee and milk count.",
+   "C": "Short, since coffee takes water away."
+  }
+ },
+ "66": {
+  "id": "mughal-revenue-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "A jagir, the right to an area's revenue.",
+   "B": "The duty to keep horsemen.",
+   "C": "The zat number, which sets rank and pay."
+  }
+ },
+ "67": {
+  "id": "silk-road-ideas-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Delhi cooks made it up again by chance.",
+   "B": "People who knew how to make it moved there.",
+   "C": "The recipe spread on its own, with no one carrying it."
+  }
+ },
+ "68": {
+  "id": "iron-and-anaemia-s1:twist",
+  "right": "B",
+  "opts": {
+   "A": "Nobody; men and women need the same iron.",
+   "B": "Women who have periods.",
+   "C": "Those who sit at desks the whole day."
+  }
+ },
+ "69": {
+  "id": "sleep-recovery-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Evenly spread through the seven hours of sleep.",
+   "B": "The last hours, close to 5 am.",
+   "C": "The early hours of his sleep, near bedtime."
+  }
+ },
+ "70": {
+  "id": "exercise-heart-s3:twist",
+  "right": "B",
+  "opts": {
+   "A": "None; her 75 hard minutes cover the plan.",
+   "B": "Muscle work on 2 days a week.",
+   "C": "More jogging, to reach 150 minutes."
+  }
+ },
+ "71": {
+  "id": "fad-diet-claims-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "Safe, since it lasts a whole month.",
+   "B": "About right; a kilo a week is slow.",
+   "C": "About double the safe pace."
+  }
+ },
+ "72": {
+  "id": "sleep-recovery-s3:twist",
+  "right": "A",
+  "opts": {
+   "A": "By half past nine, or a bit before.",
+   "B": "At 9:59 pm, just before bed.",
+   "C": "Any time, as long as the screen is dim."
+  }
+ },
+ "73": {
+  "id": "silk-road-ideas-s1:twist",
+  "right": "C",
+  "opts": {
+   "A": "Across the deserts of Central Asia.",
+   "B": "Over the high mountain passes.",
+   "C": "Up the Indus River."
+  }
+ },
+ "74": {
+  "id": "ashoka-edicts-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Respect each other's faiths and festivals.",
+   "B": "Keep quiet about faith to avoid clashes.",
+   "C": "Share one prayer each morning for all of you."
+  }
+ },
+ "75": {
+  "id": "indus-cities-s1:twist",
+  "right": "C",
+  "opts": {
+   "A": "Neither was planned; grids can form by chance.",
+   "B": "The whole city was planned, since part of it was.",
+   "C": "Only the grid district shows a plan."
+  }
+ },
+ "76": {
+  "id": "independence-constitution-s3:twist",
+  "right": "A",
+  "opts": {
+   "A": "26 November 1949.",
+   "B": "26 January 1950.",
+   "C": "15 August 1947, at independence."
+  }
+ },
+ "77": {
+  "id": "silk-road-ideas-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "Their art style seems to have been banned at home.",
+   "B": "Traders seem to have paid them to leave.",
+   "C": "Hun invasions seem to have driven them out."
+  }
+ },
+ "78": {
+  "id": "indian-place-value-s3:twist",
+  "right": "B",
+  "opts": {
+   "A": "Europe making its own 0 to 9.",
+   "B": "A scholar wrote of them in Arabic.",
+   "C": "Traders from Babylon took them west."
+  }
+ },
+ "79": {
+  "id": "fad-diet-claims-s3:transfer",
+  "right": "B",
+  "opts": {
+   "A": "It is fine if people also drink detox tea.",
+   "B": "It rewards the fastest loss.",
+   "C": "It is fine, since faster loss lasts longer."
+  }
+ },
+ "80": {
+  "id": "silk-road-ideas-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Linked sea, land and mountain routes.",
+   "B": "Goods moved by land, not by sea.",
+   "C": "Trade needs one single road from end to end."
+  }
+ },
+ "81": {
+  "id": "exercise-heart-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Dancers are sweating through their clothes.",
+   "B": "Dancers can chat but not sing.",
+   "C": "Only a few words fit between breaths."
+  }
+ },
+ "82": {
+  "id": "indian-place-value-s1:twist",
+  "right": "C",
+  "opts": {
+   "A": "The number is close to zero.",
+   "B": "They can be dropped without changing it.",
+   "C": "There are no hundreds and no tens."
+  }
+ },
+ "83": {
+  "id": "protein-foods-s1:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Bunches of palak and methi.",
+   "B": "Rice, atta and poha, since grains fill you up.",
+   "C": "Dal, milk, peanuts and roasted chana."
+  }
+ },
+ "84": {
+  "id": "ashoka-edicts-s1:transfer",
+  "right": "A",
+  "opts": {
+   "A": "Painted stone boards at bus stands and markets.",
+   "B": "A paper notice inside the clinic, changed each month.",
+   "C": "One copy in the collector's office."
+  }
+ },
+ "85": {
+  "id": "company-trade-rule-s3:twist",
+  "right": "B",
+  "opts": {
+   "A": "No; the Crown ruled from 1765.",
+   "B": "Yes; Company rule went on until 1858.",
+   "C": "No; the Company lost its powers after Plassey."
+  }
+ },
+ "86": {
+  "id": "free-sugars-s2:twist",
+  "right": "B",
+  "opts": {
+   "A": "More than the whole day's limit.",
+   "B": "About half of the day's limit.",
+   "C": "About a quarter of it."
+  }
+ },
+ "87": {
+  "id": "hydration-cues-s2:twist",
+  "right": "A",
+  "opts": {
+   "A": "She may be low on fluid, thirst or not.",
+   "B": "She may be fine, since she is not thirsty.",
+   "C": "Tiredness is not a fluid cue."
+  }
+ },
+ "88": {
+  "id": "printing-and-reading-s1:twist",
+  "right": "A",
+  "opts": {
+   "A": "His type was small pieces of baked clay.",
+   "B": "His type was carved as whole wooden pages.",
+   "C": "No fix; early movable type was metal."
+  }
+ },
+ "89": {
+  "id": "ashoka-edicts-s3:twist",
+  "right": "B",
+  "opts": {
+   "A": "Give the king a share of your harvest each year.",
+   "B": "Be kind to servants and respect elders.",
+   "C": "Pray at the king's temple for peace."
+  }
+ },
+ "90": {
+  "id": "mughal-revenue-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "A gift of the shop for him to own outright.",
+   "B": "A zat rank number.",
+   "C": "A jagir, income rights over a place."
+  }
+ },
+ "91": {
+  "id": "hydration-cues-s2:transfer",
+  "right": "C",
+  "opts": {
+   "A": "Pee colour is not linked to fluid.",
+   "B": "It means she drinks too little.",
+   "C": "It is a sign she drinks enough."
+  }
+ },
+ "92": {
+  "id": "company-trade-rule-s3:transfer",
+  "right": "A",
+  "opts": {
+   "A": "The 1858 move of powers to the Crown.",
+   "B": "The 1600 charter for trade in the East.",
+   "C": "The 1765 diwani grant to the Company."
+  }
+ },
+ "93": {
+  "id": "printing-and-reading-s3:twist",
+  "right": "C",
+  "opts": {
+   "A": "Carve the whole page again.",
+   "B": "Stop until a new block is cut.",
+   "C": "Swap in any other 'e'."
+  }
+ },
+ "94": {
+  "id": "indian-place-value-s2:twist",
+  "right": "B",
+  "opts": {
+   "A": "Proof that zero is just a gap, not a number.",
+   "B": "Rules for using zero in sums.",
+   "C": "The first sign for an empty place."
+  }
+ },
+ "95": {
+  "id": "hydration-cues-s1:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Sport and hard work are what use up water.",
+   "B": "Pee and sweat still take water out each day.",
+   "C": "The body stores water, so one still week is fine."
+  }
+ },
+ "96": {
+  "id": "protein-foods-s2:transfer",
+  "right": "B",
+  "opts": {
+   "A": "Bajra by itself carries plenty of each block.",
+   "B": "Millet and pulse fill each other's gap.",
+   "C": "Any two crops fill gaps, so the pair does not matter."
+  }
+ }
+}

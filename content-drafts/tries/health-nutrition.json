@@ -1,0 +1,1322 @@
+[
+  {
+    "stepId": "protein-foods-s1",
+    "claimIds": [
+      "protein-foods-c1",
+      "protein-foods-c1"
+    ],
+    "twist": {
+      "stem": "On a fasting day, Sana eats no dal, eggs or grains. Which snack on her plate still brings some protein?",
+      "hint": "Think beyond dal, eggs and grains.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A bowl of sweet potato chaat.",
+          "correct": false,
+          "feedback": "Sweet potato is a root, not one of the protein foods. Nuts and seeds carry a good amount of protein."
+        },
+        {
+          "id": "b",
+          "text": "Roasted peanuts and pumpkin seeds.",
+          "correct": true,
+          "feedback": "Yes. Nuts and seeds hold a good amount of protein, so they help on a day without dal or eggs."
+        },
+        {
+          "id": "c",
+          "text": "A plate of fruit, since fasts allow no protein.",
+          "correct": false,
+          "feedback": "A fast can still hold protein. Nuts and seeds carry a good amount, while fruit is not a protein food."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Gita runs a kirana shop in a Bihar village. A customer who eats no meat or eggs asks for protein-rich food. Which shelf fits?",
+      "hint": "Think of the plant and dairy foods on the list.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rice, atta and poha, since grains fill you up.",
+          "correct": false,
+          "feedback": "Grains fill the stomach, but the rich protein foods are milk, eggs, fish, meat and pulses, plus nuts and seeds."
+        },
+        {
+          "id": "b",
+          "text": "Bunches of palak and methi.",
+          "correct": false,
+          "feedback": "Leafy greens are not on the protein list. Dal, milk and nuts are the plant and dairy picks for protein."
+        },
+        {
+          "id": "c",
+          "text": "Dal, milk, peanuts and roasted chana.",
+          "correct": true,
+          "feedback": "Right. Pulses and milk are rich in protein and nuts carry a good amount, so no meat or eggs are needed."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "protein-foods-s2",
+    "claimIds": [
+      "protein-foods-c2",
+      "protein-foods-c2"
+    ],
+    "twist": {
+      "stem": "Idli batter is rice and urad dal ground together. Mani eats plain idli with coconut chutney. Does the idli fill both building-block gaps?",
+      "hint": "Look at what goes into the batter.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No; grinding them up undoes the pairing.",
+          "correct": false,
+          "feedback": "Grinding them together does not undo the pairing. The cereal and the pulse still bring what the other is low in."
+        },
+        {
+          "id": "b",
+          "text": "No; it needs an egg on the side to fill a gap.",
+          "correct": false,
+          "feedback": "An egg brings all nine blocks, but it is not the only fix. A cereal with a pulse also covers the gaps."
+        },
+        {
+          "id": "c",
+          "text": "Yes; the rice and dal in it cover each other.",
+          "correct": true,
+          "feedback": "Yes. Idli holds a cereal and a pulse, so each brings plenty of the block the other is low in."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A farmer in Rajasthan grows bajra and moong to feed his family. Why is that pair a good fit for protein?",
+      "hint": "Sort the two crops into their food groups.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Any two crops fill gaps, so the pair does not matter.",
+          "correct": false,
+          "feedback": "Two cereals share the same low block. It is the millet and pulse pair that covers each other's gap."
+        },
+        {
+          "id": "b",
+          "text": "Millet and pulse fill each other's gap.",
+          "correct": true,
+          "feedback": "Right. Bajra is a millet and moong is a pulse, so each brings plenty of what the other runs short of."
+        },
+        {
+          "id": "c",
+          "text": "Bajra by itself carries plenty of each block.",
+          "correct": false,
+          "feedback": "Cereals and millets run low in one block. Moong, a pulse, brings plenty of it, which is why the pair helps."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "protein-foods-s3",
+    "claimIds": [
+      "protein-foods-c4",
+      "protein-foods-c6"
+    ],
+    "twist": {
+      "stem": "Asha is a healthy adult, and her daily protein need comes out at about 54 g. About how much does she weigh?",
+      "hint": "Work back from the per-kg number.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 54 kg, at one gram per kilo.",
+          "correct": false,
+          "feedback": "The figure is 0.83 g per kg, not 1 g. At that rate, 54 g fits a weight of about 65 kg."
+        },
+        {
+          "id": "b",
+          "text": "About 27 kg, at two grams per kilo.",
+          "correct": false,
+          "feedback": "Two grams per kilo is far above the healthy adult figure of 0.83 g. At 0.83 g, 54 g fits about 65 kg."
+        },
+        {
+          "id": "c",
+          "text": "About 65 kg, using the per-kg figure.",
+          "correct": true,
+          "feedback": "Yes. At 0.83 g for each kg, a 65 kg adult needs about 54 g a day."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Tenzin, 60 kg, trains hard each day for his state kabaddi team in Sikkim. His plan uses the healthy adult figure per kg. What is off?",
+      "hint": "Check who the per-kg number is set for.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Athletes may need more.",
+          "correct": true,
+          "feedback": "Right. The 0.83 g figure is for healthy adults in general. People who train hard may need more."
+        },
+        {
+          "id": "b",
+          "text": "Nothing; the per-kg figure fits each adult alike.",
+          "correct": false,
+          "feedback": "The figure fits healthy adults in general. Teens, pregnant women and athletes may need more than it gives."
+        },
+        {
+          "id": "c",
+          "text": "He may need less, since training saves protein.",
+          "correct": false,
+          "feedback": "Training does not lower the need. Athletes may need more protein than the healthy adult figure, not less."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "free-sugars-s1",
+    "claimIds": [
+      "free-sugars-c1",
+      "free-sugars-c1"
+    ],
+    "twist": {
+      "stem": "Gajar halwa is made from carrots, milk and added sugar. Which of its sugars go in the free-sugar count?",
+      "hint": "Split it by where each part came from.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The carrot and milk sugar as well.",
+          "correct": false,
+          "feedback": "Sugar inside vegetables and plain milk is left out of the count. Only the sugar stirred in counts."
+        },
+        {
+          "id": "b",
+          "text": "Just the sugar stirred in.",
+          "correct": true,
+          "feedback": "Yes. Added sugar counts as free sugar, while the sugar inside carrots and milk is left out."
+        },
+        {
+          "id": "c",
+          "text": "None of it, since it is made at home.",
+          "correct": false,
+          "feedback": "Home cooking does not change the count. Sugar added in any kitchen is free sugar."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "For a cricket team's drinks break in Pune, the manager can serve whole oranges, orange squash, or 100% orange juice. Which adds no free sugar?",
+      "hint": "Juice and syrup count, even when they come from fruit.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The 100% juice, since no sugar was added.",
+          "correct": false,
+          "feedback": "Fruit juice counts as free sugar even with nothing added. Only the sugar inside whole fruit is left out."
+        },
+        {
+          "id": "b",
+          "text": "The orange squash, since it is made from fruit.",
+          "correct": false,
+          "feedback": "Squash is a syrup with sugar in it, so it counts. Coming from fruit does not take it off the list."
+        },
+        {
+          "id": "c",
+          "text": "The whole oranges, cut into slices.",
+          "correct": true,
+          "feedback": "Right. Sugar inside whole fresh fruit is left out of the count, while juice and squash both count."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "free-sugars-s2",
+    "claimIds": [
+      "free-sugars-c3",
+      "free-sugars-c3"
+    ],
+    "twist": {
+      "stem": "A kheer recipe lists 25 g of added sugar in one bowl. How much of the day's free-sugar limit is one bowl?",
+      "hint": "Compare 25 g with the 50 g mark.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About a quarter of it.",
+          "correct": false,
+          "feedback": "The limit is about 50 g, so 25 g is half of it, not a quarter."
+        },
+        {
+          "id": "b",
+          "text": "About half of the day's limit.",
+          "correct": true,
+          "feedback": "Yes. The day's limit is about 50 g, or 12 teaspoons, so 25 g is about half."
+        },
+        {
+          "id": "c",
+          "text": "More than the whole day's limit.",
+          "correct": false,
+          "feedback": "The limit is about 50 g, so 25 g fits under it. It uses about half."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "On Holi, Ritu has thandai with 4 teaspoons of sugar, three laddoos with 2 teaspoons each, and chai with 2 teaspoons. Where does her day land?",
+      "hint": "Add them up and compare with the daily mark.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About at the limit of 12 teaspoons.",
+          "correct": true,
+          "feedback": "Right. 4 plus 6 plus 2 makes 12 teaspoons, which is about the 50 g mark. Less may bring more benefit."
+        },
+        {
+          "id": "b",
+          "text": "Well under it, since festival sweets made at home do not count.",
+          "correct": false,
+          "feedback": "Sugar added at home still counts as free sugar. Her 12 teaspoons reach about the day's limit."
+        },
+        {
+          "id": "c",
+          "text": "Far past it; the limit is about 3 teaspoons.",
+          "correct": false,
+          "feedback": "The limit is about 12 teaspoons, or 50 g. Her 12 teaspoons sit at about that mark."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "free-sugars-s3",
+    "claimIds": [
+      "free-sugars-c4",
+      "free-sugars-c4"
+    ],
+    "twist": {
+      "stem": "Prakash eats no sweets but adds three spoons of ketchup to his fries. About how much free sugar is that?",
+      "hint": "Recall what one spoon of ketchup holds.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 12 g, near three teaspoons.",
+          "correct": true,
+          "feedback": "Yes. One spoon of ketchup holds about 4 g, so three spoons bring about 12 g of free sugar."
+        },
+        {
+          "id": "b",
+          "text": "None; ketchup is a salty sauce.",
+          "correct": false,
+          "feedback": "Ketchup tastes salty but holds about 4 g of free sugar per spoon. Sauces can hide sugar."
+        },
+        {
+          "id": "c",
+          "text": "About 40 g, as much as a can of soda.",
+          "correct": false,
+          "feedback": "A can of soda can hold up to 40 g. Three spoons of ketchup bring about 12 g."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a Gurugram call centre, night staff get two free cans of soda each shift. How much of a 50 g daily limit can those two cans use?",
+      "hint": "Double what one can may hold.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About a fifth of it, since drinks are light.",
+          "correct": false,
+          "feedback": "One can may hold up to 40 g, so two cans can hold up to 80 g. That is past the limit."
+        },
+        {
+          "id": "b",
+          "text": "They can go past the whole limit.",
+          "correct": true,
+          "feedback": "Right. Each can may hold up to 40 g, so two can bring up to 80 g, more than 50 g."
+        },
+        {
+          "id": "c",
+          "text": "About half of it.",
+          "correct": false,
+          "feedback": "Half would be 25 g. Two cans can hold up to 80 g, which is past the whole 50 g limit."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "hydration-cues-s1",
+    "claimIds": [
+      "hydration-cues-c2",
+      "hydration-cues-c1"
+    ],
+    "twist": {
+      "stem": "Lalitha drinks four glasses of water, 2 cups of coffee with little sugar and 2 glasses of milk. How close is she to the eight-glass mark?",
+      "hint": "Ask which drinks add fluid.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Halfway; water is the one drink that counts.",
+          "correct": false,
+          "feedback": "Milk and lower-sugar coffee count towards fluid too, so her day comes to about eight."
+        },
+        {
+          "id": "b",
+          "text": "Short, since coffee takes water away.",
+          "correct": false,
+          "feedback": "Lower-sugar coffee counts towards daily fluid. With milk and water, she is close to eight glasses."
+        },
+        {
+          "id": "c",
+          "text": "At the mark, since coffee and milk count.",
+          "correct": true,
+          "feedback": "Yes. Water, milk and lower-sugar coffee all add fluid, so her eight drinks reach the mark."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "During a week of exam study at home, Rohan barely moves. He thinks his body needs almost no fluid. What fits best?",
+      "hint": "Think about how the body loses fluid.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Pee and sweat still take water out each day.",
+          "correct": true,
+          "feedback": "Right. Water leaves through pee and sweat even on a still day, so he still needs about 2 litres back."
+        },
+        {
+          "id": "b",
+          "text": "Sport and hard work are what use up water.",
+          "correct": false,
+          "feedback": "Exercise adds sweat, but pee and sweat take water out all day, even while he sits and studies."
+        },
+        {
+          "id": "c",
+          "text": "The body stores water, so one still week is fine.",
+          "correct": false,
+          "feedback": "Water leaves the body every day through pee and sweat, so it needs about 2 litres back each day."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "hydration-cues-s2",
+    "claimIds": [
+      "hydration-cues-c3",
+      "hydration-cues-c3"
+    ],
+    "twist": {
+      "stem": "By 4 pm at her shop, Usha feels tired and has peed only once since morning, but she is not thirsty. What fits best?",
+      "hint": "One cue is not the whole list.",
+      "options": [
+        {
+          "id": "a",
+          "text": "She may be fine, since she is not thirsty.",
+          "correct": false,
+          "feedback": "Thirst is one cue among several. Tiredness and peeing less can also mean the body is short of water."
+        },
+        {
+          "id": "b",
+          "text": "She may be low on fluid, thirst or not.",
+          "correct": true,
+          "feedback": "Yes. Tiredness and peeing less often are cues of low fluid, so she may need to drink more."
+        },
+        {
+          "id": "c",
+          "text": "Tiredness is not a fluid cue.",
+          "correct": false,
+          "feedback": "Tiredness is one of the cues of low fluid, along with peeing less, a dry mouth and thirst."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Pooja, a bank clerk in Patna, drinks often through the day, and her pee is clear pale yellow. A coworker thinks pale pee means something is wrong. What fits best?",
+      "hint": "Pale yellow is the aim.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It means she drinks too little.",
+          "correct": false,
+          "feedback": "It is the other way. Dark yellow pee is the cue for too little fluid, while pale yellow is the aim."
+        },
+        {
+          "id": "b",
+          "text": "Pee colour is not linked to fluid.",
+          "correct": false,
+          "feedback": "Colour is a simple cue. Pale yellow usually means enough fluid, and dark yellow means drink more."
+        },
+        {
+          "id": "c",
+          "text": "It is a sign she drinks enough.",
+          "correct": true,
+          "feedback": "Right. Clear pale yellow pee is what most people can aim for, so her colour is a good sign."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "hydration-cues-s3",
+    "claimIds": [
+      "hydration-cues-c4",
+      "hydration-cues-c6"
+    ],
+    "twist": {
+      "stem": "On a very hot day, Gauri sits at a desk in a room with no fan and sweats all day. She does no exercise. Does her fluid need rise?",
+      "hint": "What makes the body lose water?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No; it takes exercise to raise the need.",
+          "correct": false,
+          "feedback": "Heat alone makes the body sweat, and sweat takes water out, so her need rises without any sport."
+        },
+        {
+          "id": "b",
+          "text": "No; eight glasses covers any day, hot or cool.",
+          "correct": false,
+          "feedback": "Eight glasses is a rough guide. Heat and sweat take more water out, so the need goes up."
+        },
+        {
+          "id": "c",
+          "text": "Yes; heat and sweat raise it on their own.",
+          "correct": true,
+          "feedback": "Yes. Sweat takes water out, so very hot weather raises the need even on a day with no exercise."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a long Ganpati procession in the sun, Omkar's cousin turns confused and cannot stand without dizziness, even after a drink. What fits best?",
+      "hint": "Some signs need more than a drink.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Cool him in the shade, with a drink.",
+          "correct": false,
+          "feedback": "Shade and a drink help with heat, but confusion and dizziness that stays are red flags that call for urgent help."
+        },
+        {
+          "id": "b",
+          "text": "Get urgent help now.",
+          "correct": true,
+          "feedback": "Right. Confusion or dizziness that does not pass can be signs of serious dehydration, so urgent help comes first."
+        },
+        {
+          "id": "c",
+          "text": "Give him buttermilk and let him rest.",
+          "correct": false,
+          "feedback": "Buttermilk suits hot days, but confusion and dizziness that will not pass call for urgent help, not just rest."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "claimIds": [
+      "sleep-recovery-c6",
+      "sleep-recovery-c6"
+    ],
+    "twist": {
+      "stem": "Nitin usually sleeps 7 hours but stays up one hour later to watch a match. What may happen the next day?",
+      "hint": "Even a small cut can count.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Likely no change; one hour is too small.",
+          "correct": false,
+          "feedback": "Cutting sleep by even one hour can make it hard to focus the next day."
+        },
+        {
+          "id": "b",
+          "text": "His body may repair less, but focus is fine.",
+          "correct": false,
+          "feedback": "Short nights cost both. Losing even one hour of sleep can make it harder to focus."
+        },
+        {
+          "id": "c",
+          "text": "He may find it harder to focus.",
+          "correct": true,
+          "feedback": "Yes. Cutting sleep by even one hour can make it hard to focus, since sleep supports the brain."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Arjun spends the evening learning a new tabla piece. Why does a full night's sleep after practice help?",
+      "hint": "Think about what the brain does at night.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Practice is stored while awake, not in sleep.",
+          "correct": false,
+          "feedback": "Sleep is when the brain stores the day's learning, so the night after practice matters too."
+        },
+        {
+          "id": "b",
+          "text": "Sleep just rests his tired hands.",
+          "correct": false,
+          "feedback": "Sleep repairs the body, but it also helps the brain store what he learned that day."
+        },
+        {
+          "id": "c",
+          "text": "Sleep helps store the day's learning.",
+          "correct": true,
+          "feedback": "Right. Sleep helps the brain turn the day's learning into long-term memory, and that includes a new piece."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "claimIds": [
+      "sleep-recovery-c2",
+      "sleep-recovery-c2"
+    ],
+    "twist": {
+      "stem": "Gopal remembers a vivid dream from just before his alarm. Which sleep was he most likely in?",
+      "hint": "Which stage is the dreaming one?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Deep sleep, which fills the end of the night.",
+          "correct": false,
+          "feedback": "Deep sleep fills the early night. Vivid dreams come in REM sleep, which grows near morning."
+        },
+        {
+          "id": "b",
+          "text": "REM sleep, which grows longer near morning.",
+          "correct": true,
+          "feedback": "Yes. REM is the dreaming stage, and it gets longer towards morning, just before the alarm."
+        },
+        {
+          "id": "c",
+          "text": "Light sleep; dreams come as you drift off.",
+          "correct": false,
+          "feedback": "Most vivid dreams happen in REM sleep, which gets longer towards morning."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "After a long day of farm work in Bihar, Ramu sleeps from 10 pm to 5 am. In which hours does his body do the most repair?",
+      "hint": "Think of when the deepest rest comes.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The early hours of his sleep, near bedtime.",
+          "correct": true,
+          "feedback": "Right. Deep sleep fills the early night, and the body does most of its repair in those hours."
+        },
+        {
+          "id": "b",
+          "text": "The last hours, close to 5 am.",
+          "correct": false,
+          "feedback": "Deep sleep gets shorter towards morning, while REM grows. The early hours do most of the repair."
+        },
+        {
+          "id": "c",
+          "text": "Evenly spread through the seven hours of sleep.",
+          "correct": false,
+          "feedback": "Sleep is not even. Deep sleep comes first in the night, so the early hours do most repair."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "sleep-recovery-s3",
+    "claimIds": [
+      "sleep-recovery-c4",
+      "sleep-recovery-c5"
+    ],
+    "twist": {
+      "stem": "Tara wants to be asleep by 10 pm. By about what time would her phone go away?",
+      "hint": "Count back from bedtime.",
+      "options": [
+        {
+          "id": "a",
+          "text": "At 9:59 pm, just before bed.",
+          "correct": false,
+          "feedback": "Screens are best off at least half an hour before bed, so about half past nine, not a minute before."
+        },
+        {
+          "id": "b",
+          "text": "Any time, as long as the screen is dim.",
+          "correct": false,
+          "feedback": "The habit is screens off at least half an hour before bed, so about half past nine for a 10 pm bedtime."
+        },
+        {
+          "id": "c",
+          "text": "By half past nine, or a bit before.",
+          "correct": true,
+          "feedback": "Yes. Screens off at least half an hour before bed means about half past nine for a 10 pm bedtime."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Vinod works late shifts at a Bengaluru office and goes to bed at 10 pm. About what is the latest time for his last coffee?",
+      "hint": "Count back the hours coffee can last.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Around 2 pm.",
+          "correct": true,
+          "feedback": "Right. Caffeine can take 8 hours or more to wear off, so 2 pm is about the latest for a 10 pm bedtime."
+        },
+        {
+          "id": "b",
+          "text": "Around 8 pm.",
+          "correct": false,
+          "feedback": "Coffee at 8 pm could still be acting until 4 am, since caffeine can last 8 hours or more."
+        },
+        {
+          "id": "c",
+          "text": "Any time; coffee wears off within an hour.",
+          "correct": false,
+          "feedback": "Caffeine can take 8 hours or more to wear off, so a late coffee can still act at bedtime."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "exercise-heart-s1",
+    "claimIds": [
+      "exercise-heart-c1",
+      "exercise-heart-c1"
+    ],
+    "twist": {
+      "stem": "Deepa walks briskly for 40 minutes, five days a week. Where does her week land?",
+      "hint": "Add up her week, then compare.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Inside the weekly range of 150 to 300.",
+          "correct": true,
+          "feedback": "Yes. 40 times 5 is 200 minutes, which sits inside the weekly range of 150 to 300."
+        },
+        {
+          "id": "b",
+          "text": "Short; the aim is at least 300 minutes.",
+          "correct": false,
+          "feedback": "The range runs from 150 to 300 minutes. Her 200 minutes sit inside it."
+        },
+        {
+          "id": "c",
+          "text": "Past the top; 150 is the most to do.",
+          "correct": false,
+          "feedback": "150 is the low end of the range, not the top. Her 200 minutes sit inside 150 to 300."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "Gopal, a postman in a hill town, walks briskly on his round for 50 minutes, six days a week. His son thinks work walking does not count. What fits?",
+      "hint": "Brisk is brisk, wherever it happens.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It counts, but it is still under 150 minutes.",
+          "correct": false,
+          "feedback": "50 times 6 is 300 minutes, the top of the range, so it is well over 150."
+        },
+        {
+          "id": "b",
+          "text": "It counts, and it reaches 300 minutes.",
+          "correct": true,
+          "feedback": "Right. A brisk walk raises heart rate and breathing at work too, and 50 times 6 is 300 minutes."
+        },
+        {
+          "id": "c",
+          "text": "It does not count, since it is part of his job.",
+          "correct": false,
+          "feedback": "Brisk walking raises heart rate and breathing wherever it happens, so his round counts."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "exercise-heart-s2",
+    "claimIds": [
+      "exercise-heart-c3",
+      "exercise-heart-c3"
+    ],
+    "twist": {
+      "stem": "On an easy cycle ride, Rekha sings her favourite song with ease. What effort level is that?",
+      "hint": "Recall what the talk test checks.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Moderate, since she is moving the whole time.",
+          "correct": false,
+          "feedback": "Moderate effort lets you talk but not sing. If she sings with ease, she is below moderate."
+        },
+        {
+          "id": "b",
+          "text": "Hard, since her legs keep turning the pedals.",
+          "correct": false,
+          "feedback": "Vigorous effort leaves room for only a few words. Singing with ease means a light effort."
+        },
+        {
+          "id": "c",
+          "text": "Below moderate, since she can still sing.",
+          "correct": true,
+          "feedback": "Yes. Moderate effort stops you singing, so singing with ease means she is below that level."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A dance teacher in Kolkata wants her class at a vigorous effort for one song. Which check fits?",
+      "hint": "Recall the talk test for hard effort.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Dancers can chat but not sing.",
+          "correct": false,
+          "feedback": "Talk but not sing is the sign of moderate effort. Vigorous leaves room for only a few words."
+        },
+        {
+          "id": "b",
+          "text": "Only a few words fit between breaths.",
+          "correct": true,
+          "feedback": "Right. Vigorous effort leaves room for only a few words before a breath, so that is her check."
+        },
+        {
+          "id": "c",
+          "text": "Dancers are sweating through their clothes.",
+          "correct": false,
+          "feedback": "Sweat depends on heat too. The talk test is the gauge: vigorous leaves room for only a few words."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "exercise-heart-s3",
+    "claimIds": [
+      "exercise-heart-c4",
+      "exercise-heart-c4"
+    ],
+    "twist": {
+      "stem": "Shreya jogs 75 minutes a week and does no other activity. What part of the weekly plan is missing?",
+      "hint": "The plan has two parts.",
+      "options": [
+        {
+          "id": "a",
+          "text": "None; her 75 hard minutes cover the plan.",
+          "correct": false,
+          "feedback": "Her jogging matches 150 moderate minutes, but the plan also needs muscle work on 2 days."
+        },
+        {
+          "id": "b",
+          "text": "Muscle work on 2 days a week.",
+          "correct": true,
+          "feedback": "Yes. Her 75 jog minutes match 150 moderate ones, but adults also need muscle work on 2 days."
+        },
+        {
+          "id": "c",
+          "text": "More jogging, to reach 150 minutes.",
+          "correct": false,
+          "feedback": "Vigorous minutes count double, so her 75 already match 150 moderate. Muscle work is what is missing."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In an office step challenge in Hyderabad, Rina runs hard for 45 minutes twice a week. Her colleague walks briskly for 150 minutes. Whose minutes reach the weekly aim?",
+      "hint": "Count each running minute twice.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The walker; Rina has just 90 minutes.",
+          "correct": false,
+          "feedback": "Vigorous minutes count double, so Rina's 90 match 180 moderate minutes, past the aim."
+        },
+        {
+          "id": "b",
+          "text": "Rina, since running beats walking.",
+          "correct": false,
+          "feedback": "The walker's 150 moderate minutes reach the aim too. Brisk walking counts."
+        },
+        {
+          "id": "c",
+          "text": "Both reach it, Rina by counting double.",
+          "correct": true,
+          "feedback": "Right. Rina's 90 vigorous minutes count as 180 moderate, and the walker has 150, so both reach it."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "iron-and-anaemia-s1",
+    "claimIds": [
+      "iron-and-anaemia-c7",
+      "iron-and-anaemia-c3"
+    ],
+    "twist": {
+      "stem": "In a mixed office team in Chennai, which colleagues are more at risk of low iron?",
+      "hint": "Think of blood that leaves the body.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Those who sit at desks the whole day.",
+          "correct": false,
+          "feedback": "Desk work is not the link. Women with periods lose blood each month, so they are more at risk."
+        },
+        {
+          "id": "b",
+          "text": "Women who have periods.",
+          "correct": true,
+          "feedback": "Yes. Periods take blood out of the body each month, so women who have them need more iron."
+        },
+        {
+          "id": "c",
+          "text": "Nobody; men and women need the same iron.",
+          "correct": false,
+          "feedback": "Women who have periods lose blood each month, so they need more iron than men."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A water tanker service in Chennai has fewer tankers than usual, so homes get less water. Which body chain works like this?",
+      "hint": "Think of what does the carrying.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Less haemoglobin, so more oxygen is left for the legs.",
+          "correct": false,
+          "feedback": "Haemoglobin carries the oxygen. With less of it, less oxygen reaches the body, not more."
+        },
+        {
+          "id": "b",
+          "text": "Less haemoglobin, but faster breathing fully makes up for it.",
+          "correct": false,
+          "feedback": "Breathing harder does not replace the carrier. With less haemoglobin, less oxygen arrives, which is why people feel tired."
+        },
+        {
+          "id": "c",
+          "text": "Less haemoglobin, so less oxygen gets to the legs and arms.",
+          "correct": true,
+          "feedback": "Right. Like a tanker for water, it is the carrier. With fewer carriers, less oxygen gets to the body."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "iron-and-anaemia-s2",
+    "claimIds": [
+      "iron-and-anaemia-c1",
+      "iron-and-anaemia-c4"
+    ],
+    "twist": {
+      "stem": "Three lunches of palak dal and roti differ only in the side. Which one lets the body take in the most iron?",
+      "hint": "Look for the helper and the blocker.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Palak dal with lemon, and tea an hour later.",
+          "correct": true,
+          "feedback": "Yes. Lemon's vitamin C helps plant iron in, and keeping tea away from the meal stops it holding iron back."
+        },
+        {
+          "id": "b",
+          "text": "Palak dal with a cup of tea alongside it.",
+          "correct": false,
+          "feedback": "Tea holds back iron from plant foods, so drinking it with the meal lets less iron in."
+        },
+        {
+          "id": "c",
+          "text": "Palak dal alone, since greens give plenty of iron.",
+          "correct": false,
+          "feedback": "Iron from greens is harder to take in. A vitamin C side like lemon helps more of it in."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A wedding caterer in Lucknow serves chole and roti with masala chai poured during the meal. Which swap helps guests take in the most iron?",
+      "hint": "One change adds a helper; one removes a blocker.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Serve more chai, since warm drinks help digestion.",
+          "correct": false,
+          "feedback": "Tea holds back iron from plant foods, so more chai with the meal lets less iron in."
+        },
+        {
+          "id": "b",
+          "text": "Add lemon to the chole and serve chai later.",
+          "correct": true,
+          "feedback": "Right. Vitamin C in lemon helps plant iron in, and moving the chai an hour away stops it blocking."
+        },
+        {
+          "id": "c",
+          "text": "Add a sweet, since sugar helps iron in.",
+          "correct": false,
+          "feedback": "Sugar is not the helper. Vitamin C foods like lemon help, and tea is best kept away from meals."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "iron-and-anaemia-s3",
+    "claimIds": [
+      "iron-and-anaemia-c2",
+      "iron-and-anaemia-c2"
+    ],
+    "twist": {
+      "stem": "Anu eats plenty of iron-rich food, yet a test shows she has anaemia. What fits best?",
+      "hint": "Low iron is one of several.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Another cause may be behind it.",
+          "correct": true,
+          "feedback": "Yes. Anaemia has many causes, so a good diet does not rule it out. A test finds which one."
+        },
+        {
+          "id": "b",
+          "text": "She may just need more spinach.",
+          "correct": false,
+          "feedback": "Low iron is one cause, but not the only one. Low B12 or thalassaemia can cause anaemia too."
+        },
+        {
+          "id": "c",
+          "text": "The test may be wrong, since her diet is good.",
+          "correct": false,
+          "feedback": "Low iron is one cause, but not the only one. Low B12 or malaria can cause it too."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In an Odisha village where malaria is common, a health worker finds many people low in haemoglobin. Will iron tablets alone fix them all?",
+      "hint": "Check the flow of reasons again.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, if they also eat more greens.",
+          "correct": false,
+          "feedback": "Greens add iron. But if malaria is the cause, iron alone will not fix it."
+        },
+        {
+          "id": "b",
+          "text": "Yes; low blood iron is the one cause.",
+          "correct": false,
+          "feedback": "Anaemia has many causes. Malaria is one, so a test is needed to find each person's cause."
+        },
+        {
+          "id": "c",
+          "text": "No; malaria is one more cause.",
+          "correct": true,
+          "feedback": "Right. Malaria is one cause of anaemia, so each person needs a test to find the cause before treatment."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-label-reading-s1",
+    "claimIds": [
+      "food-label-reading-c1",
+      "food-label-reading-c1"
+    ],
+    "twist": {
+      "stem": "A biscuit brand cuts its serving from 30 g to 20 g, and the sugar per serving drops. Did the biscuit get less sugary?",
+      "hint": "Who chose the new serving size?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Not by that; check the per 100 g line.",
+          "correct": true,
+          "feedback": "Yes. The brand sets the serving size, so a smaller serving lowers the number without changing the food."
+        },
+        {
+          "id": "b",
+          "text": "Yes; less sugar per serving means a less sugary biscuit.",
+          "correct": false,
+          "feedback": "A smaller serving shows less sugar even if the recipe is the same. The per 100 g line shows the truth."
+        },
+        {
+          "id": "c",
+          "text": "Yes, since brands must cut sugar to cut servings.",
+          "correct": false,
+          "feedback": "Brands pick serving sizes freely. Only the per 100 g line shows whether the recipe changed."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A Kolkata gym trainer compares protein bars. Bar A has 12 g protein in a 48 g bar. Bar B has 14 g in a 70 g bar. Which has more protein per 100 g?",
+      "hint": "Put both on the per 100 g line.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bar B, since 14 g is more than 12 g.",
+          "correct": false,
+          "feedback": "Bar B is bigger. Per 100 g, Bar B has 20 g of protein and Bar A has 25 g."
+        },
+        {
+          "id": "b",
+          "text": "They are equal, since each is one bar.",
+          "correct": false,
+          "feedback": "The bars weigh different amounts. Per 100 g, Bar A has 25 g and Bar B has 20 g."
+        },
+        {
+          "id": "c",
+          "text": "Bar A, which has 25 g per 100 g.",
+          "correct": true,
+          "feedback": "Right. 12 g in 48 g is 25 g per 100 g, while 14 g in 70 g is 20 g per 100 g."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-label-reading-s2",
+    "claimIds": [
+      "food-label-reading-c2",
+      "food-label-reading-c2"
+    ],
+    "twist": {
+      "stem": "A masala oats pack lists: oats, maida, sugar, salt, spices. Is there more maida than sugar in it?",
+      "hint": "Earlier on the list means more.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No; the list order shows quality, not amount.",
+          "correct": false,
+          "feedback": "The order is by amount, most first. Maida comes before sugar, so there is more maida."
+        },
+        {
+          "id": "b",
+          "text": "Yes, since maida comes before sugar.",
+          "correct": true,
+          "feedback": "Yes. Ingredients are listed from most to least, so maida, listed second, outweighs sugar, listed third."
+        },
+        {
+          "id": "c",
+          "text": "You cannot tell from the list alone.",
+          "correct": false,
+          "feedback": "You can. The list runs from the largest amount to the smallest, so maida outweighs sugar."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "At a Hyderabad store, a 'honey almond' cereal lists: wheat flakes, sugar, honey, almonds 2%. What is it mostly made of?",
+      "hint": "Read the list, not the name.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Honey and almonds, just as the name shows.",
+          "correct": false,
+          "feedback": "The name is a sales line. The list puts wheat flakes and sugar first, so they make up most of it."
+        },
+        {
+          "id": "b",
+          "text": "Almonds, since nuts are weighed last.",
+          "correct": false,
+          "feedback": "The list runs from most to least, so almonds at the end are the smallest part, only 2%."
+        },
+        {
+          "id": "c",
+          "text": "Wheat flakes, with sugar next in line.",
+          "correct": true,
+          "feedback": "Right. Ingredients run from most to least, so wheat flakes and sugar make up most of the cereal."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "food-label-reading-s3",
+    "claimIds": [
+      "food-label-reading-c3",
+      "food-label-reading-c3"
+    ],
+    "twist": {
+      "stem": "A bottle shows a big orange and the words 'real fruit drink'. The back lists water, sugar, then orange juice 8%. What is it mostly?",
+      "hint": "The front sells; the back tells.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Water and sugar, then a little juice.",
+          "correct": true,
+          "feedback": "Yes. A 'real fruit' drink can hold 10% fruit or less, and here water and sugar come first on the list."
+        },
+        {
+          "id": "b",
+          "text": "Orange juice, just as the picture shows.",
+          "correct": false,
+          "feedback": "Pictures and front words sell the pack. The back lists just 8% juice, after water and sugar."
+        },
+        {
+          "id": "c",
+          "text": "Equal parts juice and water.",
+          "correct": false,
+          "feedback": "The back shows 8% juice. A 'real fruit' drink can hold 10% fruit or less."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "In a Jaipur chemist shop, a face cream has 'with real aloe' in big letters on the front. What fits the label idea best?",
+      "hint": "Which side of a pack sells?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It may be mostly aloe, since the front names it.",
+          "correct": false,
+          "feedback": "Front words are there to sell. Like 'real fruit' on a drink, the named item may be a small part."
+        },
+        {
+          "id": "b",
+          "text": "Check the back list for the aloe.",
+          "correct": true,
+          "feedback": "Right. Front claims sell, and a 'real fruit' drink can hold 10% fruit or less, so the back list shows how much aloe."
+        },
+        {
+          "id": "c",
+          "text": "Front claims usually name the main item.",
+          "correct": false,
+          "feedback": "A 'real fruit' drink can hold 10% fruit or less, so front claims do not show the main item."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "fad-diet-claims-s1",
+    "claimIds": [
+      "fad-diet-claims-c2",
+      "fad-diet-claims-c1"
+    ],
+    "twist": {
+      "stem": "Asif eats about 200 g of fruit and vegetables a day. Does that meet the daily aim?",
+      "hint": "Recall the grams on the card.",
+      "options": [
+        {
+          "id": "a",
+          "text": "No; it is half the daily aim.",
+          "correct": true,
+          "feedback": "Yes. The aim is at least 400 g of fruit and vegetables a day, so 200 g is half of it."
+        },
+        {
+          "id": "b",
+          "text": "Yes; any fruit counts as enough.",
+          "correct": false,
+          "feedback": "Some is better than none, but the aim is at least 400 g a day, so 200 g is half."
+        },
+        {
+          "id": "c",
+          "text": "Yes; the aim is about 200 g.",
+          "correct": false,
+          "feedback": "The aim is at least 400 g a day, twice what Asif eats."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "A hostel mess in Guwahati serves rice and potato curry every day. Which change fits the idea that no single food has it all?",
+      "hint": "Think of the food groups.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add pulses, eggs or milk, and more fruit.",
+          "correct": true,
+          "feedback": "Right. Mixing food groups covers what rice and potato lack, since no one food has every nutrient."
+        },
+        {
+          "id": "b",
+          "text": "No change; rice is filling, so it covers needs.",
+          "correct": false,
+          "feedback": "Feeling full is not the same as getting every nutrient. A mix of food groups does that."
+        },
+        {
+          "id": "c",
+          "text": "Add a second cereal like roti.",
+          "correct": false,
+          "feedback": "Roti is another cereal. Pulses, milk or eggs, and fruit and vegetables add what cereals lack."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "fad-diet-claims-s2",
+    "claimIds": [
+      "fad-diet-claims-c6",
+      "fad-diet-claims-c3"
+    ],
+    "twist": {
+      "stem": "Before a dance show in Kolkata, Riddhi plans two no-food days to feel light on stage. What might happen on show day?",
+      "hint": "Recall what no-food days can bring.",
+      "options": [
+        {
+          "id": "a",
+          "text": "She may feel weak, faint or get a headache.",
+          "correct": true,
+          "feedback": "Yes. No-food days can bring headaches, weakness and fainting, which is a risk on a show day."
+        },
+        {
+          "id": "b",
+          "text": "She may have more energy from a light body.",
+          "correct": false,
+          "feedback": "Going without food tends to bring weakness, not energy. Headaches and fainting are known risks."
+        },
+        {
+          "id": "c",
+          "text": "She may be fine, as long as she drinks juice.",
+          "correct": false,
+          "feedback": "Eating so little can still bring headaches, weakness and fainting, juice or not."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "An aunt in Kerala forwards a message: 'Detox water is proven to burn fat.' What fits best?",
+      "hint": "Ask what makes the scale drop at first.",
+      "options": [
+        {
+          "id": "a",
+          "text": "There is no strong proof that detox works.",
+          "correct": true,
+          "feedback": "Right. There is no strong proof that detox plans help weight loss. Early drops come from eating very little."
+        },
+        {
+          "id": "b",
+          "text": "It is proven, since so many people share it.",
+          "correct": false,
+          "feedback": "Many shares are not proof. There is no strong research that detox plans help weight loss."
+        },
+        {
+          "id": "c",
+          "text": "It works if it is drunk before sunrise.",
+          "correct": false,
+          "feedback": "Timing does not change it. There is no strong proof that detox plans help weight loss at all."
+        }
+      ]
+    }
+  },
+  {
+    "stepId": "fad-diet-claims-s3",
+    "claimIds": [
+      "fad-diet-claims-c4",
+      "fad-diet-claims-c4"
+    ],
+    "twist": {
+      "stem": "An app promises 4 kg off in 4 weeks. How does that compare with the pace called safe?",
+      "hint": "Half a kilo times four weeks.",
+      "options": [
+        {
+          "id": "a",
+          "text": "About right; a kilo a week is slow.",
+          "correct": false,
+          "feedback": "The safe pace is about half a kilo a week. A kilo a week is double that."
+        },
+        {
+          "id": "b",
+          "text": "About double the safe pace.",
+          "correct": true,
+          "feedback": "Yes. At half a kilo a week, 4 weeks gives about 2 kg. The app promises twice that."
+        },
+        {
+          "id": "c",
+          "text": "Safe, since it lasts a whole month.",
+          "correct": false,
+          "feedback": "The length is not the test; the pace is. Half a kilo a week gives about 2 kg in 4 weeks, not 4."
+        }
+      ]
+    },
+    "transfer": {
+      "stem": "An office in Hyderabad plans a prize for whoever loses the most weight in two weeks. Why is that a poor design?",
+      "hint": "Think about which pace wins the prize.",
+      "options": [
+        {
+          "id": "a",
+          "text": "It is fine, since faster loss lasts longer.",
+          "correct": false,
+          "feedback": "Very fast loss often does not last and can miss nutrients. Slow loss is the safer pace."
+        },
+        {
+          "id": "b",
+          "text": "It rewards the fastest loss.",
+          "correct": true,
+          "feedback": "Right. Very fast loss often does not last and can miss nutrients. About half a kilo a week is called safe."
+        },
+        {
+          "id": "c",
+          "text": "It is fine if people also drink detox tea.",
+          "correct": false,
+          "feedback": "Detox tea does not make fast loss safe. Slow loss of about half a kilo a week is the safe pace."
+        }
+      ]
+    }
+  }
+]

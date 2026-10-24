@@ -1,0 +1,356 @@
+[
+  {
+    "stepId": "protein-foods-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "protein-foods-m1"
+  },
+  {
+    "stepId": "protein-foods-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "protein-foods-m2"
+  },
+  {
+    "stepId": "protein-foods-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "protein-foods-m6"
+  },
+  {
+    "stepId": "protein-foods-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "protein-foods-m3"
+  },
+  {
+    "stepId": "protein-foods-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "protein-foods-m3"
+  },
+  {
+    "stepId": "protein-foods-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "protein-foods-m8"
+  },
+  {
+    "stepId": "free-sugars-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "free-sugars-m5"
+  },
+  {
+    "stepId": "free-sugars-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "free-sugars-m1"
+  },
+  {
+    "stepId": "free-sugars-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "free-sugars-m1"
+  },
+  {
+    "stepId": "free-sugars-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "free-sugars-m1"
+  },
+  {
+    "stepId": "free-sugars-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "free-sugars-m4"
+  },
+  {
+    "stepId": "free-sugars-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "free-sugars-m1"
+  },
+  {
+    "stepId": "free-sugars-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "free-sugars-m3"
+  },
+  {
+    "stepId": "free-sugars-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "free-sugars-m3"
+  },
+  {
+    "stepId": "hydration-cues-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "hydration-cues-m1"
+  },
+  {
+    "stepId": "hydration-cues-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "hydration-cues-m1"
+  },
+  {
+    "stepId": "hydration-cues-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "hydration-cues-m5"
+  },
+  {
+    "stepId": "hydration-cues-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "hydration-cues-m5"
+  },
+  {
+    "stepId": "hydration-cues-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "hydration-cues-m2"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m4"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "sleep-recovery-m4"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m1"
+  },
+  {
+    "stepId": "sleep-recovery-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sleep-recovery-m1"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "sleep-recovery-m5"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "sleep-recovery-m5"
+  },
+  {
+    "stepId": "sleep-recovery-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "sleep-recovery-m5"
+  },
+  {
+    "stepId": "exercise-heart-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "exercise-heart-m1"
+  },
+  {
+    "stepId": "exercise-heart-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "exercise-heart-m4"
+  },
+  {
+    "stepId": "exercise-heart-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "exercise-heart-m4"
+  },
+  {
+    "stepId": "exercise-heart-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "exercise-heart-m4"
+  },
+  {
+    "stepId": "exercise-heart-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "exercise-heart-m1"
+  },
+  {
+    "stepId": "iron-and-anaemia-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "iron-and-anaemia-m4"
+  },
+  {
+    "stepId": "iron-and-anaemia-s2",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "iron-and-anaemia-m3"
+  },
+  {
+    "stepId": "iron-and-anaemia-s2",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "iron-and-anaemia-m1"
+  },
+  {
+    "stepId": "iron-and-anaemia-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "iron-and-anaemia-m3"
+  },
+  {
+    "stepId": "iron-and-anaemia-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "iron-and-anaemia-m2"
+  },
+  {
+    "stepId": "iron-and-anaemia-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "iron-and-anaemia-m2"
+  },
+  {
+    "stepId": "iron-and-anaemia-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "iron-and-anaemia-m2"
+  },
+  {
+    "stepId": "iron-and-anaemia-s3",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "iron-and-anaemia-m2"
+  },
+  {
+    "stepId": "food-label-reading-s1",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "food-label-reading-m1"
+  },
+  {
+    "stepId": "food-label-reading-s1",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "food-label-reading-m1"
+  },
+  {
+    "stepId": "food-label-reading-s1",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "food-label-reading-m1"
+  },
+  {
+    "stepId": "food-label-reading-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "food-label-reading-m4"
+  },
+  {
+    "stepId": "food-label-reading-s2",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "food-label-reading-m2"
+  },
+  {
+    "stepId": "food-label-reading-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "food-label-reading-m3"
+  },
+  {
+    "stepId": "food-label-reading-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "food-label-reading-m2"
+  },
+  {
+    "stepId": "food-label-reading-s3",
+    "which": "twist",
+    "optionId": "b",
+    "misconceptionId": "food-label-reading-m3"
+  },
+  {
+    "stepId": "food-label-reading-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "food-label-reading-m3"
+  },
+  {
+    "stepId": "food-label-reading-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "food-label-reading-m3"
+  },
+  {
+    "stepId": "food-label-reading-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "food-label-reading-m3"
+  },
+  {
+    "stepId": "fad-diet-claims-s1",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "fad-diet-claims-m1"
+  },
+  {
+    "stepId": "fad-diet-claims-s1",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "fad-diet-claims-m1"
+  },
+  {
+    "stepId": "fad-diet-claims-s2",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "fad-diet-claims-m2"
+  },
+  {
+    "stepId": "fad-diet-claims-s2",
+    "which": "transfer",
+    "optionId": "b",
+    "misconceptionId": "fad-diet-claims-m2"
+  },
+  {
+    "stepId": "fad-diet-claims-s2",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "fad-diet-claims-m2"
+  },
+  {
+    "stepId": "fad-diet-claims-s3",
+    "which": "twist",
+    "optionId": "a",
+    "misconceptionId": "fad-diet-claims-m3"
+  },
+  {
+    "stepId": "fad-diet-claims-s3",
+    "which": "twist",
+    "optionId": "c",
+    "misconceptionId": "fad-diet-claims-m3"
+  },
+  {
+    "stepId": "fad-diet-claims-s3",
+    "which": "transfer",
+    "optionId": "a",
+    "misconceptionId": "fad-diet-claims-m3"
+  },
+  {
+    "stepId": "fad-diet-claims-s3",
+    "which": "transfer",
+    "optionId": "c",
+    "misconceptionId": "fad-diet-claims-m2"
+  }
+]

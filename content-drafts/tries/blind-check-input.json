@@ -1,0 +1,2882 @@
+[
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 1,
+  "stem": "A hostel mess in Guwahati serves rice and potato curry every day. Which change fits the idea that no single food has it all?",
+  "options": [
+   "No change; rice is filling, so it covers needs.",
+   "Add a second cereal like roti.",
+   "Add pulses, eggs or milk, and more fruit."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 3,
+  "stem": "A village gets free tablets loaded with books, but many older people there cannot read. What changes at once?",
+  "options": [
+   "Most people soon read, since books teach reading.",
+   "Readers gain; others need lessons.",
+   "Nobody can use the tablets."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 1,
+  "stem": "Dosa stalls are now common in Delhi, far from where dosa began. How did that most likely happen?",
+  "options": [
+   "Delhi cooks made it up again by chance.",
+   "People who knew how to make it moved there.",
+   "The recipe spread on its own, with no one carrying it."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 3,
+  "stem": "A bottle shows a big orange and the words 'real fruit drink'. The back lists water, sugar, then orange juice 8%. What is it mostly?",
+  "options": [
+   "Equal parts juice and water.",
+   "Orange juice, just as the picture shows.",
+   "Water and sugar, then a little juice."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 3,
+  "stem": "In an office step challenge in Hyderabad, Rina runs hard for 45 minutes twice a week. Her colleague walks briskly for 150 minutes. Whose minutes reach the weekly aim?",
+  "options": [
+   "Rina, since running beats walking.",
+   "Both reach it, Rina by counting double.",
+   "The walker; Rina has just 90 minutes."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 2,
+  "stem": "A bottle shows a big orange and the words 'real fruit drink'. The back lists water, sugar, then orange juice 8%. What is it mostly?",
+  "options": [
+   "Orange juice, just as the picture shows.",
+   "Equal parts juice and water.",
+   "Water and sugar, then a little juice."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 3,
+  "stem": "Neha's oldest family photo left is from 1965. Her grandmother recalls older photos that were lost. What can Neha fairly say?",
+  "options": [
+   "Photos go back at least to 1965.",
+   "The photo proves her grandmother is wrong.",
+   "No photos were taken before 1965."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 2,
+  "stem": "A video claims we now know everything about Mohenjo-daro. What is the best reply?",
+  "options": [
+   "True, since the seals have now been read.",
+   "True; the whole city has been dug up.",
+   "A third is dug, and the script is unread."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 3,
+  "stem": "After a long day of farm work in Bihar, Ramu sleeps from 10 pm to 5 am. In which hours does his body do the most repair?",
+  "options": [
+   "The last hours, close to 5 am.",
+   "Evenly spread through the seven hours of sleep.",
+   "The early hours of his sleep, near bedtime."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 3,
+  "stem": "Shreya jogs 75 minutes a week and does no other activity. What part of the weekly plan is missing?",
+  "options": [
+   "None; her 75 hard minutes cover the plan.",
+   "More jogging, to reach 150 minutes.",
+   "Muscle work on 2 days a week."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 2,
+  "stem": "Did the 1600 charter give the East India Company rule over land in India?",
+  "options": [
+   "No; it gave trade rights only.",
+   "Yes, over the coast where it traded.",
+   "Yes; it made the Company a ruler from day one."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 3,
+  "stem": "Did the 1600 charter give the East India Company rule over land in India?",
+  "options": [
+   "No; it gave trade rights only.",
+   "Yes, over the coast where it traded.",
+   "Yes; it made the Company a ruler from day one."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 3,
+  "stem": "A college gives one canteen firm the sole right to sell food on campus. What can that firm now do, and what can it not do?",
+  "options": [
+   "No change; rivals can still sell on campus.",
+   "Sell without campus rivals, but not run the college.",
+   "Run the whole college, since it holds the sole right."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 3,
+  "stem": "A cricket scoreboard in Indore shows 104 with one tile per place. The tens tile falls off, and the other tiles slide together. What might fans read?",
+  "options": [
+   "140, since the zero moves to the end.",
+   "104, since the tiles keep their places.",
+   "14 runs."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 3,
+  "stem": "In Gutenberg's shop, a printer's letter 'e' cracks while a page is set. What can he do with this kind of type?",
+  "options": [
+   "Carve the whole page again.",
+   "Stop until a new block is cut.",
+   "Swap in any other 'e'."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 2,
+  "stem": "A masala oats pack lists: oats, maida, sugar, salt, spices. Is there more maida than sugar in it?",
+  "options": [
+   "No; the list order shows quality, not amount.",
+   "You cannot tell from the list alone.",
+   "Yes, since maida comes before sugar."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 1,
+  "stem": "On a very hot day, Gauri sits at a desk in a room with no fan and sweats all day. She does no exercise. Does her fluid need rise?",
+  "options": [
+   "No; eight glasses covers any day, hot or cool.",
+   "Yes; heat and sweat raise it on their own.",
+   "No; it takes exercise to raise the need."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 3,
+  "stem": "Gita runs a kirana shop in a Bihar village. A customer who eats no meat or eggs asks for protein-rich food. Which shelf fits?",
+  "options": [
+   "Bunches of palak and methi.",
+   "Rice, atta and poha, since grains fill you up.",
+   "Dal, milk, peanuts and roasted chana."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 3,
+  "stem": "On a very hot day, Gauri sits at a desk in a room with no fan and sweats all day. She does no exercise. Does her fluid need rise?",
+  "options": [
+   "Yes; heat and sweat raise it on their own.",
+   "No; it takes exercise to raise the need.",
+   "No; eight glasses covers any day, hot or cool."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 2,
+  "stem": "Which order of events is right?",
+  "options": [
+   "Plassey, Buxar, then the diwani.",
+   "Buxar, the diwani, then Plassey.",
+   "The diwani, Plassey, then Buxar."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 3,
+  "stem": "A water tanker service in Chennai has fewer tankers than usual, so homes get less water. Which body chain works like this?",
+  "options": [
+   "Less haemoglobin, so less oxygen gets to the legs and arms.",
+   "Less haemoglobin, but faster breathing fully makes up for it.",
+   "Less haemoglobin, so more oxygen is left for the legs."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 3,
+  "stem": "A shop's stock app in Nagpur shows 25 packets in and 25 sold, but leaves the 'left' box blank. Which of Brahmagupta's rules shows what it should read?",
+  "options": [
+   "0, since a number take away itself is 0.",
+   "25, since no new stock came in.",
+   "Blank is right, since zero is not a real number."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 1,
+  "stem": "A dig finds one district with streets crossing at right angles and another with winding lanes. What is the fairest claim?",
+  "options": [
+   "Neither was planned; grids can form by chance.",
+   "The whole city was planned, since part of it was.",
+   "Only the grid district shows a plan."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 1,
+  "stem": "On an easy cycle ride, Rekha sings her favourite song with ease. What effort level is that?",
+  "options": [
+   "Moderate, since she is moving the whole time.",
+   "Hard, since her legs keep turning the pedals.",
+   "Below moderate, since she can still sing."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 3,
+  "stem": "A valley far from the mountain passes saw little trade and has few Buddhist carvings. What best explains this?",
+  "options": [
+   "Less trade meant less wealth to pay for art.",
+   "Faith alone made art, so trade did not matter.",
+   "Its people did not care for art."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 3,
+  "stem": "A trader in Kochi sends spices to a hill town in Himachal by ship, then by train, then by mountain road. Which Silk Road idea does this match?",
+  "options": [
+   "Trade needs one single road from end to end.",
+   "Linked sea, land and mountain routes.",
+   "Goods moved by land, not by sea."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 3,
+  "stem": "On what date did the Assembly adopt the text of the Constitution?",
+  "options": [
+   "26 November 1949.",
+   "15 August 1947, at independence.",
+   "26 January 1950."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 1,
+  "stem": "Before a dance show in Kolkata, Riddhi plans two no-food days to feel light on stage. What might happen on show day?",
+  "options": [
+   "She may have more energy from a light body.",
+   "She may be fine, as long as she drinks juice.",
+   "She may feel weak, faint or get a headache."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 2,
+  "stem": "A city plans a house tax based on measured house sizes, but half the houses have never been measured. What does zabt's story suggest?",
+  "options": [
+   "It works the same everywhere if the rate is high.",
+   "It works only where houses are measured.",
+   "Records do not matter; one rule fits each area."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 2,
+  "stem": "Before a dance show in Kolkata, Riddhi plans two no-food days to feel light on stage. What might happen on show day?",
+  "options": [
+   "She may be fine, as long as she drinks juice.",
+   "She may feel weak, faint or get a headache.",
+   "She may have more energy from a light body."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 2,
+  "stem": "On a fasting day, Sana eats no dal, eggs or grains. Which snack on her plate still brings some protein?",
+  "options": [
+   "Roasted peanuts and pumpkin seeds.",
+   "A bowl of sweet potato chaat.",
+   "A plate of fruit, since fasts allow no protein."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 2,
+  "stem": "In a Jaipur chemist shop, a face cream has 'with real aloe' in big letters on the front. What fits the label idea best?",
+  "options": [
+   "Front claims usually name the main item.",
+   "It may be mostly aloe, since the front names it.",
+   "Check the back list for the aloe."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 2,
+  "stem": "A letter from 1850 is signed by the Company's Governor-General in India. Does that fit the timeline?",
+  "options": [
+   "No; the Company lost its powers after Plassey.",
+   "No; the Crown ruled from 1765.",
+   "Yes; Company rule went on until 1858."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 2,
+  "stem": "Shreya jogs 75 minutes a week and does no other activity. What part of the weekly plan is missing?",
+  "options": [
+   "Muscle work on 2 days a week.",
+   "More jogging, to reach 150 minutes.",
+   "None; her 75 hard minutes cover the plan."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 1,
+  "stem": "A cricket scoreboard in Indore shows 104 with one tile per place. The tens tile falls off, and the other tiles slide together. What might fans read?",
+  "options": [
+   "14 runs.",
+   "104, since the tiles keep their places.",
+   "140, since the zero moves to the end."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 2,
+  "stem": "Lalitha drinks four glasses of water, 2 cups of coffee with little sugar and 2 glasses of milk. How close is she to the eight-glass mark?",
+  "options": [
+   "Halfway; water is the one drink that counts.",
+   "Short, since coffee takes water away.",
+   "At the mark, since coffee and milk count."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 2,
+  "stem": "For a cricket team's drinks break in Pune, the manager can serve whole oranges, orange squash, or 100% orange juice. Which adds no free sugar?",
+  "options": [
+   "The 100% juice, since no sugar was added.",
+   "The whole oranges, cut into slices.",
+   "The orange squash, since it is made from fruit."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 2,
+  "stem": "A dance teacher in Kolkata wants her class at a vigorous effort for one song. Which check fits?",
+  "options": [
+   "Dancers can chat but not sing.",
+   "Only a few words fit between breaths.",
+   "Dancers are sweating through their clothes."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 3,
+  "stem": "Which order of events is right?",
+  "options": [
+   "Plassey, Buxar, then the diwani.",
+   "Buxar, the diwani, then Plassey.",
+   "The diwani, Plassey, then Buxar."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 1,
+  "stem": "Idli batter is rice and urad dal ground together. Mani eats plain idli with coconut chutney. Does the idli fill both building-block gaps?",
+  "options": [
+   "No; it needs an egg on the side to fill a gap.",
+   "No; grinding them up undoes the pairing.",
+   "Yes; the rice and dal in it cover each other."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 1,
+  "stem": "Lakshmi is building a house in a Kerala town and wants used kitchen water to leave without wetting the lane. Which Mohenjo-daro plan does she copy?",
+  "options": [
+   "Letting the water run down the open lane.",
+   "A pit in her yard, since old cities had no drains.",
+   "A pipe from the house into a covered street drain."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 3,
+  "stem": "A kheer recipe lists 25 g of added sugar in one bowl. How much of the day's free-sugar limit is one bowl?",
+  "options": [
+   "More than the whole day's limit.",
+   "About half of the day's limit.",
+   "About a quarter of it."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 2,
+  "stem": "At a Bhopal college, a small team drafts new hostel rules. Then all the student reps debate them and change many lines. Which part of the Constitution's making does this match?",
+  "options": [
+   "The draft passing just as it was written.",
+   "A draft, then debate and changes.",
+   "One author writing the final text alone."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 2,
+  "stem": "A valley far from the mountain passes saw little trade and has few Buddhist carvings. What best explains this?",
+  "options": [
+   "Its people did not care for art.",
+   "Faith alone made art, so trade did not matter.",
+   "Less trade meant less wealth to pay for art."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 2,
+  "stem": "A wedding caterer in Lucknow serves chole and roti with masala chai poured during the meal. Which swap helps guests take in the most iron?",
+  "options": [
+   "Add a sweet, since sugar helps iron in.",
+   "Serve more chai, since warm drinks help digestion.",
+   "Add lemon to the chole and serve chai later."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 1,
+  "stem": "How did the digits get from India to Fibonacci?",
+  "options": [
+   "Europe making its own 0 to 9.",
+   "A scholar wrote of them in Arabic.",
+   "Traders from Babylon took them west."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 3,
+  "stem": "An edict from the northwest, outside Afghanistan, is not written in Brahmi. Which script is it most likely in?",
+  "options": [
+   "Greek, as in Afghanistan.",
+   "Kharosthi.",
+   "Aramaic, as everywhere outside Bihar."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 1,
+  "stem": "In an Odisha village where malaria is common, a health worker finds many people low in haemoglobin. Will iron tablets alone fix them all?",
+  "options": [
+   "No; malaria is one more cause.",
+   "Yes, if they also eat more greens.",
+   "Yes; low blood iron is the one cause."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 3,
+  "stem": "A city plans a house tax based on measured house sizes, but half the houses have never been measured. What does zabt's story suggest?",
+  "options": [
+   "Records do not matter; one rule fits each area.",
+   "It works the same everywhere if the rate is high.",
+   "It works only where houses are measured."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 2,
+  "stem": "At a Gurugram call centre, night staff get two free cans of soda each shift. How much of a 50 g daily limit can those two cans use?",
+  "options": [
+   "About half of it.",
+   "About a fifth of it, since drinks are light.",
+   "They can go past the whole limit."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 2,
+  "stem": "Did the Assembly first meet before or after India became free?",
+  "options": [
+   "Before, in 1946.",
+   "After, in late 1947.",
+   "In 1950, when the Constitution began."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 3,
+  "stem": "A Kolkata gym trainer compares protein bars. Bar A has 12 g protein in a 48 g bar. Bar B has 14 g in a 70 g bar. Which has more protein per 100 g?",
+  "options": [
+   "They are equal, since each is one bar.",
+   "Bar B, since 14 g is more than 12 g.",
+   "Bar A, which has 25 g per 100 g."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 1,
+  "stem": "By 4 pm at her shop, Usha feels tired and has peed only once since morning, but she is not thirsty. What fits best?",
+  "options": [
+   "Tiredness is not a fluid cue.",
+   "She may be fine, since she is not thirsty.",
+   "She may be low on fluid, thirst or not."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 1,
+  "stem": "In Gutenberg's shop, a printer's letter 'e' cracks while a page is set. What can he do with this kind of type?",
+  "options": [
+   "Carve the whole page again.",
+   "Swap in any other 'e'.",
+   "Stop until a new block is cut."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 2,
+  "stem": "Deepa walks briskly for 40 minutes, five days a week. Where does her week land?",
+  "options": [
+   "Short; the aim is at least 300 minutes.",
+   "Past the top; 150 is the most to do.",
+   "Inside the weekly range of 150 to 300."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 3,
+  "stem": "Prakash eats no sweets but adds three spoons of ketchup to his fries. About how much free sugar is that?",
+  "options": [
+   "None; ketchup is a salty sauce.",
+   "About 12 g, near three teaspoons.",
+   "About 40 g, as much as a can of soda."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 2,
+  "stem": "Gopal remembers a vivid dream from just before his alarm. Which sleep was he most likely in?",
+  "options": [
+   "Deep sleep, which fills the end of the night.",
+   "REM sleep, which grows longer near morning.",
+   "Light sleep; dreams come as you drift off."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 2,
+  "stem": "An app promises 4 kg off in 4 weeks. How does that compare with the pace called safe?",
+  "options": [
+   "About right; a kilo a week is slow.",
+   "Safe, since it lasts a whole month.",
+   "About double the safe pace."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 2,
+  "stem": "Nitin usually sleeps 7 hours but stays up one hour later to watch a match. What may happen the next day?",
+  "options": [
+   "He may find it harder to focus.",
+   "His body may repair less, but focus is fine.",
+   "Likely no change; one hour is too small."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 2,
+  "stem": "A jagirdar's son plans to sell the jagir's fields to a merchant. What is wrong with his plan?",
+  "options": [
+   "It was not his land to sell.",
+   "The merchant must pay tax first.",
+   "No problem; a jagir was family land."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 2,
+  "stem": "Jikji, from 1377, is the oldest surviving metal-type book. Does that mean metal type was first used in 1377?",
+  "options": [
+   "No; metal type began with Gutenberg.",
+   "No; Koreans used metal type in the 1200s.",
+   "Yes; the oldest book marks the first use."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 2,
+  "stem": "Gita runs a kirana shop in a Bihar village. A customer who eats no meat or eggs asks for protein-rich food. Which shelf fits?",
+  "options": [
+   "Dal, milk, peanuts and roasted chana.",
+   "Rice, atta and poha, since grains fill you up.",
+   "Bunches of palak and methi."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 2,
+  "stem": "In an Odisha village where malaria is common, a health worker finds many people low in haemoglobin. Will iron tablets alone fix them all?",
+  "options": [
+   "No; malaria is one more cause.",
+   "Yes; low blood iron is the one cause.",
+   "Yes, if they also eat more greens."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 3,
+  "stem": "An app maker in Bengaluru wants one message read in many Indian states. Following Ashoka's way, what would she do?",
+  "options": [
+   "Use one script, as Ashoka did.",
+   "Use the capital's script in each state.",
+   "Write it in each region's own script."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 1,
+  "stem": "A farmer in Rajasthan grows bajra and moong to feed his family. Why is that pair a good fit for protein?",
+  "options": [
+   "Millet and pulse fill each other's gap.",
+   "Bajra by itself carries plenty of each block.",
+   "Any two crops fill gaps, so the pair does not matter."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.transfer",
+  "round": 2,
+  "stem": "A cricket scoreboard in Indore shows 104 with one tile per place. The tens tile falls off, and the other tiles slide together. What might fans read?",
+  "options": [
+   "14 runs.",
+   "140, since the zero moves to the end.",
+   "104, since the tiles keep their places."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 2,
+  "stem": "A museum display shows Bi Sheng's movable type as cast metal pieces. What should the fix be?",
+  "options": [
+   "No fix; early movable type was metal.",
+   "His type was carved as whole wooden pages.",
+   "His type was small pieces of baked clay."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 1,
+  "stem": "Sita signs a rent deal on 1 March that starts on 1 May. Which fact about the Constitution is like this?",
+  "options": [
+   "It was adopted and came into force on one day.",
+   "It was adopted, then in force two months on.",
+   "It came into force first and was adopted later."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 1,
+  "stem": "In a Jaipur chemist shop, a face cream has 'with real aloe' in big letters on the front. What fits the label idea best?",
+  "options": [
+   "It may be mostly aloe, since the front names it.",
+   "Check the back list for the aloe.",
+   "Front claims usually name the main item."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 3,
+  "stem": "In the number 4,006, what do the two zeros tell you?",
+  "options": [
+   "The number is close to zero.",
+   "They can be dropped without changing it.",
+   "There are no hundreds and no tens."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 2,
+  "stem": "How did the digits get from India to Fibonacci?",
+  "options": [
+   "A scholar wrote of them in Arabic.",
+   "Europe making its own 0 to 9.",
+   "Traders from Babylon took them west."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 2,
+  "stem": "In the number 4,006, what do the two zeros tell you?",
+  "options": [
+   "The number is close to zero.",
+   "They can be dropped without changing it.",
+   "There are no hundreds and no tens."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 1,
+  "stem": "A company pays its Delhi manager by letting him keep the rent from a shop in Pune, which an agent collects for him. Which Mughal idea is this most like?",
+  "options": [
+   "A zat rank number.",
+   "A gift of the shop for him to own outright.",
+   "A jagir, income rights over a place."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 1,
+  "stem": "A classmate claims Dr B.R. Ambedkar wrote the whole Constitution alone. What is the best reply?",
+  "options": [
+   "His team drafted it; the Assembly changed it.",
+   "He had no part in writing it.",
+   "True; the Assembly passed his draft without changes."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 3,
+  "stem": "Sita signs a rent deal on 1 March that starts on 1 May. Which fact about the Constitution is like this?",
+  "options": [
+   "It was adopted, then in force two months on.",
+   "It came into force first and was adopted later.",
+   "It was adopted and came into force on one day."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 1,
+  "stem": "Tara wants to be asleep by 10 pm. By about what time would her phone go away?",
+  "options": [
+   "By half past nine, or a bit before.",
+   "At 9:59 pm, just before bed.",
+   "Any time, as long as the screen is dim."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 2,
+  "stem": "Two nobles serve Akbar, one at 1,000 zat and one at 3,000 zat. Who likely got more pay?",
+  "options": [
+   "Neither; zat set rank but not pay.",
+   "The one at 3,000.",
+   "The one at 1,000, since lower numbers ranked higher."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 2,
+  "stem": "A shop's stock app in Nagpur shows 25 packets in and 25 sold, but leaves the 'left' box blank. Which of Brahmagupta's rules shows what it should read?",
+  "options": [
+   "0, since a number take away itself is 0.",
+   "Blank is right, since zero is not a real number.",
+   "25, since no new stock came in."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 1,
+  "stem": "At a long Ganpati procession in the sun, Omkar's cousin turns confused and cannot stand without dizziness, even after a drink. What fits best?",
+  "options": [
+   "Give him buttermilk and let him rest.",
+   "Cool him in the shade, with a drink.",
+   "Get urgent help now."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 3,
+  "stem": "Anu eats plenty of iron-rich food, yet a test shows she has anaemia. What fits best?",
+  "options": [
+   "She may just need more spinach.",
+   "Another cause may be behind it.",
+   "The test may be wrong, since her diet is good."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 2,
+  "stem": "A hostel warden in Pune writes house rules in the spirit of Ashoka's dhamma. Which rule fits best?",
+  "options": [
+   "Keep quiet about faith to avoid clashes.",
+   "Respect each other's faiths and festivals.",
+   "Share one prayer each morning for all of you."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 2,
+  "stem": "On what date did the Assembly adopt the text of the Constitution?",
+  "options": [
+   "26 November 1949.",
+   "26 January 1950.",
+   "15 August 1947, at independence."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 2,
+  "stem": "Zero as a sign for an empty place came first. What did Brahmagupta add?",
+  "options": [
+   "Rules for using zero in sums.",
+   "Proof that zero is just a gap, not a number.",
+   "The first sign for an empty place."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 3,
+  "stem": "In a mill town in Tamil Nadu, the mills close and the town's drama troupes lose their sponsors. Which Gandhara pattern does this match?",
+  "options": [
+   "Less trade wealth, less money for art.",
+   "Art depends on rulers, not on trade.",
+   "Art lasts on faith alone, whatever the money."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.twist",
+  "round": 1,
+  "stem": "A bottle shows a big orange and the words 'real fruit drink'. The back lists water, sugar, then orange juice 8%. What is it mostly?",
+  "options": [
+   "Water and sugar, then a little juice.",
+   "Equal parts juice and water.",
+   "Orange juice, just as the picture shows."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 2,
+  "stem": "A new state law in Karnataka moves a private bus company's routes to the state transport body, and its manager gets a new title. Which change is this most like?",
+  "options": [
+   "The 1765 diwani grant to the Company.",
+   "The 1600 charter for trade in the East.",
+   "The 1858 move of powers to the Crown."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 1,
+  "stem": "At a Gurugram call centre, night staff get two free cans of soda each shift. How much of a 50 g daily limit can those two cans use?",
+  "options": [
+   "They can go past the whole limit.",
+   "About half of it.",
+   "About a fifth of it, since drinks are light."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 1,
+  "stem": "For a cricket team's drinks break in Pune, the manager can serve whole oranges, orange squash, or 100% orange juice. Which adds no free sugar?",
+  "options": [
+   "The 100% juice, since no sugar was added.",
+   "The whole oranges, cut into slices.",
+   "The orange squash, since it is made from fruit."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 2,
+  "stem": "Vinod works late shifts at a Bengaluru office and goes to bed at 10 pm. About what is the latest time for his last coffee?",
+  "options": [
+   "Around 2 pm.",
+   "Around 8 pm.",
+   "Any time; coffee wears off within an hour."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 1,
+  "stem": "Gopal remembers a vivid dream from just before his alarm. Which sleep was he most likely in?",
+  "options": [
+   "Light sleep; dreams come as you drift off.",
+   "REM sleep, which grows longer near morning.",
+   "Deep sleep, which fills the end of the night."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.twist",
+  "round": 1,
+  "stem": "Shreya jogs 75 minutes a week and does no other activity. What part of the weekly plan is missing?",
+  "options": [
+   "None; her 75 hard minutes cover the plan.",
+   "Muscle work on 2 days a week.",
+   "More jogging, to reach 150 minutes."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 1,
+  "stem": "Rohit finds his great-grandmother's diary in a script no one at home can read, along with old photos and a brass lamp. What can the family learn for now?",
+  "options": [
+   "What the photos and objects themselves show.",
+   "Very little until the diary is read.",
+   "Everything, by guessing the words from the photos."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 2,
+  "stem": "A drone survey over farmland in Haryana shows buried walls meeting at neat right angles in long straight rows. What is the fairest first claim?",
+  "options": [
+   "Walls like that pile up by chance as houses are added.",
+   "It must have been a royal palace.",
+   "People planned the layout before building."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 1,
+  "stem": "An app promises 4 kg off in 4 weeks. How does that compare with the pace called safe?",
+  "options": [
+   "About double the safe pace.",
+   "About right; a kilo a week is slow.",
+   "Safe, since it lasts a whole month."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 2,
+  "stem": "A trader in Kochi sends spices to a hill town in Himachal by ship, then by train, then by mountain road. Which Silk Road idea does this match?",
+  "options": [
+   "Trade needs one single road from end to end.",
+   "Goods moved by land, not by sea.",
+   "Linked sea, land and mountain routes."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 3,
+  "stem": "Rohit finds his great-grandmother's diary in a script no one at home can read, along with old photos and a brass lamp. What can the family learn for now?",
+  "options": [
+   "What the photos and objects themselves show.",
+   "Everything, by guessing the words from the photos.",
+   "Very little until the diary is read."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 3,
+  "stem": "A new state law in Karnataka moves a private bus company's routes to the state transport body, and its manager gets a new title. Which change is this most like?",
+  "options": [
+   "The 1765 diwani grant to the Company.",
+   "The 1600 charter for trade in the East.",
+   "The 1858 move of powers to the Crown."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 1,
+  "stem": "A village gets free tablets loaded with books, but many older people there cannot read. What changes at once?",
+  "options": [
+   "Readers gain; others need lessons.",
+   "Nobody can use the tablets.",
+   "Most people soon read, since books teach reading."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 2,
+  "stem": "A farmer in Rajasthan grows bajra and moong to feed his family. Why is that pair a good fit for protein?",
+  "options": [
+   "Bajra by itself carries plenty of each block.",
+   "Any two crops fill gaps, so the pair does not matter.",
+   "Millet and pulse fill each other's gap."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 1,
+  "stem": "Deepa walks briskly for 40 minutes, five days a week. Where does her week land?",
+  "options": [
+   "Past the top; 150 is the most to do.",
+   "Inside the weekly range of 150 to 300.",
+   "Short; the aim is at least 300 minutes."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 3,
+  "stem": "A jagirdar's son plans to sell the jagir's fields to a merchant. What is wrong with his plan?",
+  "options": [
+   "It was not his land to sell.",
+   "The merchant must pay tax first.",
+   "No problem; a jagir was family land."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 2,
+  "stem": "Idli batter is rice and urad dal ground together. Mani eats plain idli with coconut chutney. Does the idli fill both building-block gaps?",
+  "options": [
+   "No; grinding them up undoes the pairing.",
+   "No; it needs an egg on the side to fill a gap.",
+   "Yes; the rice and dal in it cover each other."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 1,
+  "stem": "Prakash eats no sweets but adds three spoons of ketchup to his fries. About how much free sugar is that?",
+  "options": [
+   "About 12 g, near three teaspoons.",
+   "None; ketchup is a salty sauce.",
+   "About 40 g, as much as a can of soda."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 2,
+  "stem": "A student draws Mohenjo-daro with open mud ditches along the main roads only. How many mistakes are in the drawing?",
+  "options": [
+   "Two: lanes had drains, mostly covered.",
+   "One: the drains were brick, but just on main roads.",
+   "None; that fits what was dug up."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 2,
+  "stem": "Anu eats plenty of iron-rich food, yet a test shows she has anaemia. What fits best?",
+  "options": [
+   "She may just need more spinach.",
+   "Another cause may be behind it.",
+   "The test may be wrong, since her diet is good."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 2,
+  "stem": "Pooja, a bank clerk in Patna, drinks often through the day, and her pee is clear pale yellow. A coworker thinks pale pee means something is wrong. What fits best?",
+  "options": [
+   "Pee colour is not linked to fluid.",
+   "It is a sign she drinks enough.",
+   "It means she drinks too little."
+  ]
+ },
+ {
+  "id": "indian-place-value-s1.twist",
+  "round": 1,
+  "stem": "In the number 4,006, what do the two zeros tell you?",
+  "options": [
+   "They can be dropped without changing it.",
+   "There are no hundreds and no tens.",
+   "The number is close to zero."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 2,
+  "stem": "In a mill town in Tamil Nadu, the mills close and the town's drama troupes lose their sponsors. Which Gandhara pattern does this match?",
+  "options": [
+   "Less trade wealth, less money for art.",
+   "Art lasts on faith alone, whatever the money.",
+   "Art depends on rulers, not on trade."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 3,
+  "stem": "Jikji, from 1377, is the oldest surviving metal-type book. Does that mean metal type was first used in 1377?",
+  "options": [
+   "No; metal type began with Gutenberg.",
+   "Yes; the oldest book marks the first use.",
+   "No; Koreans used metal type in the 1200s."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 2,
+  "stem": "Dosa stalls are now common in Delhi, far from where dosa began. How did that most likely happen?",
+  "options": [
+   "The recipe spread on its own, with no one carrying it.",
+   "Delhi cooks made it up again by chance.",
+   "People who knew how to make it moved there."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 2,
+  "stem": "Gopal, a postman in a hill town, walks briskly on his round for 50 minutes, six days a week. His son thinks work walking does not count. What fits?",
+  "options": [
+   "It counts, and it reaches 300 minutes.",
+   "It counts, but it is still under 150 minutes.",
+   "It does not count, since it is part of his job."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 3,
+  "stem": "A hostel mess in Guwahati serves rice and potato curry every day. Which change fits the idea that no single food has it all?",
+  "options": [
+   "Add pulses, eggs or milk, and more fruit.",
+   "No change; rice is filling, so it covers needs.",
+   "Add a second cereal like roti."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 1,
+  "stem": "A video claims we now know everything about Mohenjo-daro. What is the best reply?",
+  "options": [
+   "True, since the seals have now been read.",
+   "A third is dug, and the script is unread.",
+   "True; the whole city has been dug up."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 1,
+  "stem": "A wedding caterer in Lucknow serves chole and roti with masala chai poured during the meal. Which swap helps guests take in the most iron?",
+  "options": [
+   "Add a sweet, since sugar helps iron in.",
+   "Serve more chai, since warm drinks help digestion.",
+   "Add lemon to the chole and serve chai later."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 2,
+  "stem": "Why did monks from Gandhara move into Central Asia?",
+  "options": [
+   "Traders seem to have paid them to leave.",
+   "Their art style seems to have been banned at home.",
+   "Hun invasions seem to have driven them out."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.twist",
+  "round": 1,
+  "stem": "Jikji, from 1377, is the oldest surviving metal-type book. Does that mean metal type was first used in 1377?",
+  "options": [
+   "No; metal type began with Gutenberg.",
+   "Yes; the oldest book marks the first use.",
+   "No; Koreans used metal type in the 1200s."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 3,
+  "stem": "A dig finds one district with streets crossing at right angles and another with winding lanes. What is the fairest claim?",
+  "options": [
+   "The whole city was planned, since part of it was.",
+   "Only the grid district shows a plan.",
+   "Neither was planned; grids can form by chance."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 2,
+  "stem": "A college gives one canteen firm the sole right to sell food on campus. What can that firm now do, and what can it not do?",
+  "options": [
+   "No change; rivals can still sell on campus.",
+   "Run the whole college, since it holds the sole right.",
+   "Sell without campus rivals, but not run the college."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 2,
+  "stem": "Gajar halwa is made from carrots, milk and added sugar. Which of its sugars go in the free-sugar count?",
+  "options": [
+   "None of it, since it is made at home.",
+   "The carrot and milk sugar as well.",
+   "Just the sugar stirred in."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 1,
+  "stem": "A shop owner in Surat changes his price board each week. Which choice uses the movable-type idea?",
+  "options": [
+   "One carved board kept for years.",
+   "Paint a new board for each week's prices.",
+   "Number tiles he resets each week."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 3,
+  "stem": "Gopal, a postman in a hill town, walks briskly on his round for 50 minutes, six days a week. His son thinks work walking does not count. What fits?",
+  "options": [
+   "It counts, but it is still under 150 minutes.",
+   "It does not count, since it is part of his job.",
+   "It counts, and it reaches 300 minutes."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 2,
+  "stem": "A district health team in Madhya Pradesh wants a vaccine notice seen by most villagers for years. Using Ashoka's idea, where would it go?",
+  "options": [
+   "A paper notice inside the clinic, changed each month.",
+   "One copy in the collector's office.",
+   "Painted stone boards at bus stands and markets."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 1,
+  "stem": "A letter from 1850 is signed by the Company's Governor-General in India. Does that fit the timeline?",
+  "options": [
+   "Yes; Company rule went on until 1858.",
+   "No; the Company lost its powers after Plassey.",
+   "No; the Crown ruled from 1765."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.transfer",
+  "round": 3,
+  "stem": "In an Odisha village where malaria is common, a health worker finds many people low in haemoglobin. Will iron tablets alone fix them all?",
+  "options": [
+   "No; malaria is one more cause.",
+   "Yes, if they also eat more greens.",
+   "Yes; low blood iron is the one cause."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 3,
+  "stem": "Lalitha drinks four glasses of water, 2 cups of coffee with little sugar and 2 glasses of milk. How close is she to the eight-glass mark?",
+  "options": [
+   "Halfway; water is the one drink that counts.",
+   "At the mark, since coffee and milk count.",
+   "Short, since coffee takes water away."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 1,
+  "stem": "A hostel warden in Pune writes house rules in the spirit of Ashoka's dhamma. Which rule fits best?",
+  "options": [
+   "Share one prayer each morning for all of you.",
+   "Keep quiet about faith to avoid clashes.",
+   "Respect each other's faiths and festivals."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.twist",
+  "round": 3,
+  "stem": "Before a dance show in Kolkata, Riddhi plans two no-food days to feel light on stage. What might happen on show day?",
+  "options": [
+   "She may be fine, as long as she drinks juice.",
+   "She may feel weak, faint or get a headache.",
+   "She may have more energy from a light body."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 1,
+  "stem": "On Holi, Ritu has thandai with 4 teaspoons of sugar, three laddoos with 2 teaspoons each, and chai with 2 teaspoons. Where does her day land?",
+  "options": [
+   "Far past it; the limit is about 3 teaspoons.",
+   "Well under it, since festival sweets made at home do not count.",
+   "About at the limit of 12 teaspoons."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 1,
+  "stem": "Pooja, a bank clerk in Patna, drinks often through the day, and her pee is clear pale yellow. A coworker thinks pale pee means something is wrong. What fits best?",
+  "options": [
+   "Pee colour is not linked to fluid.",
+   "It is a sign she drinks enough.",
+   "It means she drinks too little."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 3,
+  "stem": "Asif eats about 200 g of fruit and vegetables a day. Does that meet the daily aim?",
+  "options": [
+   "No; it is half the daily aim.",
+   "Yes; any fruit counts as enough.",
+   "Yes; the aim is about 200 g."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 3,
+  "stem": "Did the Assembly first meet before or after India became free?",
+  "options": [
+   "Before, in 1946.",
+   "After, in late 1947.",
+   "In 1950, when the Constitution began."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 1,
+  "stem": "On a fasting day, Sana eats no dal, eggs or grains. Which snack on her plate still brings some protein?",
+  "options": [
+   "Roasted peanuts and pumpkin seeds.",
+   "A bowl of sweet potato chaat.",
+   "A plate of fruit, since fasts allow no protein."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.twist",
+  "round": 1,
+  "stem": "Did the 1600 charter give the East India Company rule over land in India?",
+  "options": [
+   "Yes, over the coast where it traded.",
+   "Yes; it made the Company a ruler from day one.",
+   "No; it gave trade rights only."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 1,
+  "stem": "A student draws Mohenjo-daro with open mud ditches along the main roads only. How many mistakes are in the drawing?",
+  "options": [
+   "Two: lanes had drains, mostly covered.",
+   "None; that fits what was dug up.",
+   "One: the drains were brick, but just on main roads."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 2,
+  "stem": "A housing society in Pune forms a committee to write its rules. Each building's own committee picks the members. Which Assembly feature is this like?",
+  "options": [
+   "Picked by the assemblies of the provinces.",
+   "Members chosen by the British king.",
+   "Members chosen by a direct vote of the people."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 2,
+  "stem": "A cricket academy in Mohali gives each coach a grade number that sets pay. Each coach must also bring a set number of trainees. Which part of a mansab matches the trainees?",
+  "options": [
+   "The zat number, which sets rank and pay.",
+   "A jagir, the right to an area's revenue.",
+   "The duty to keep horsemen."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.twist",
+  "round": 3,
+  "stem": "A student draws Mohenjo-daro with open mud ditches along the main roads only. How many mistakes are in the drawing?",
+  "options": [
+   "None; that fits what was dug up.",
+   "Two: lanes had drains, mostly covered.",
+   "One: the drains were brick, but just on main roads."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 1,
+  "stem": "In an office step challenge in Hyderabad, Rina runs hard for 45 minutes twice a week. Her colleague walks briskly for 150 minutes. Whose minutes reach the weekly aim?",
+  "options": [
+   "Rina, since running beats walking.",
+   "The walker; Rina has just 90 minutes.",
+   "Both reach it, Rina by counting double."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 2,
+  "stem": "A ship lands cloth at a west coast port. What is the next leg of its trip toward Gandhara?",
+  "options": [
+   "Up the Indus River.",
+   "Across the deserts of Central Asia.",
+   "Over the high mountain passes."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 1,
+  "stem": "Zero as a sign for an empty place came first. What did Brahmagupta add?",
+  "options": [
+   "The first sign for an empty place.",
+   "Proof that zero is just a gap, not a number.",
+   "Rules for using zero in sums."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 3,
+  "stem": "On Holi, Ritu has thandai with 4 teaspoons of sugar, three laddoos with 2 teaspoons each, and chai with 2 teaspoons. Where does her day land?",
+  "options": [
+   "Far past it; the limit is about 3 teaspoons.",
+   "About at the limit of 12 teaspoons.",
+   "Well under it, since festival sweets made at home do not count."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.twist",
+  "round": 3,
+  "stem": "On a fasting day, Sana eats no dal, eggs or grains. Which snack on her plate still brings some protein?",
+  "options": [
+   "A plate of fruit, since fasts allow no protein.",
+   "Roasted peanuts and pumpkin seeds.",
+   "A bowl of sweet potato chaat."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 3,
+  "stem": "A cricket academy in Mohali gives each coach a grade number that sets pay. Each coach must also bring a set number of trainees. Which part of a mansab matches the trainees?",
+  "options": [
+   "The zat number, which sets rank and pay.",
+   "The duty to keep horsemen.",
+   "A jagir, the right to an area's revenue."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 2,
+  "stem": "After a long day of farm work in Bihar, Ramu sleeps from 10 pm to 5 am. In which hours does his body do the most repair?",
+  "options": [
+   "Evenly spread through the seven hours of sleep.",
+   "The last hours, close to 5 am.",
+   "The early hours of his sleep, near bedtime."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 1,
+  "stem": "An aunt in Kerala forwards a message: 'Detox water is proven to burn fat.' What fits best?",
+  "options": [
+   "It works if it is drunk before sunrise.",
+   "There is no strong proof that detox works.",
+   "It is proven, since so many people share it."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 1,
+  "stem": "A housing society in Pune forms a committee to write its rules. Each building's own committee picks the members. Which Assembly feature is this like?",
+  "options": [
+   "Members chosen by the British king.",
+   "Picked by the assemblies of the provinces.",
+   "Members chosen by a direct vote of the people."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s1.transfer",
+  "round": 1,
+  "stem": "A college gives one canteen firm the sole right to sell food on campus. What can that firm now do, and what can it not do?",
+  "options": [
+   "No change; rivals can still sell on campus.",
+   "Run the whole college, since it holds the sole right.",
+   "Sell without campus rivals, but not run the college."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 3,
+  "stem": "Three lunches of palak dal and roti differ only in the side. Which one lets the body take in the most iron?",
+  "options": [
+   "Palak dal with a cup of tea alongside it.",
+   "Palak dal alone, since greens give plenty of iron.",
+   "Palak dal with lemon, and tea an hour later."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.transfer",
+  "round": 1,
+  "stem": "A new state law in Karnataka moves a private bus company's routes to the state transport body, and its manager gets a new title. Which change is this most like?",
+  "options": [
+   "The 1765 diwani grant to the Company.",
+   "The 1858 move of powers to the Crown.",
+   "The 1600 charter for trade in the East."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 1,
+  "stem": "A biscuit brand cuts its serving from 30 g to 20 g, and the sugar per serving drops. Did the biscuit get less sugary?",
+  "options": [
+   "Yes; less sugar per serving means a less sugary biscuit.",
+   "Yes, since brands must cut sugar to cut servings.",
+   "Not by that; check the per 100 g line."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 2,
+  "stem": "During a week of exam study at home, Rohan barely moves. He thinks his body needs almost no fluid. What fits best?",
+  "options": [
+   "Pee and sweat still take water out each day.",
+   "The body stores water, so one still week is fine.",
+   "Sport and hard work are what use up water."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 1,
+  "stem": "During a week of exam study at home, Rohan barely moves. He thinks his body needs almost no fluid. What fits best?",
+  "options": [
+   "Pee and sweat still take water out each day.",
+   "The body stores water, so one still week is fine.",
+   "Sport and hard work are what use up water."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.transfer",
+  "round": 2,
+  "stem": "On Holi, Ritu has thandai with 4 teaspoons of sugar, three laddoos with 2 teaspoons each, and chai with 2 teaspoons. Where does her day land?",
+  "options": [
+   "Far past it; the limit is about 3 teaspoons.",
+   "About at the limit of 12 teaspoons.",
+   "Well under it, since festival sweets made at home do not count."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.transfer",
+  "round": 2,
+  "stem": "Sita signs a rent deal on 1 March that starts on 1 May. Which fact about the Constitution is like this?",
+  "options": [
+   "It was adopted, then in force two months on.",
+   "It came into force first and was adopted later.",
+   "It was adopted and came into force on one day."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.transfer",
+  "round": 3,
+  "stem": "For a cricket team's drinks break in Pune, the manager can serve whole oranges, orange squash, or 100% orange juice. Which adds no free sugar?",
+  "options": [
+   "The orange squash, since it is made from fruit.",
+   "The 100% juice, since no sugar was added.",
+   "The whole oranges, cut into slices."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 1,
+  "stem": "Asif eats about 200 g of fruit and vegetables a day. Does that meet the daily aim?",
+  "options": [
+   "Yes; any fruit counts as enough.",
+   "Yes; the aim is about 200 g.",
+   "No; it is half the daily aim."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s1.transfer",
+  "round": 2,
+  "stem": "A hostel mess in Guwahati serves rice and potato curry every day. Which change fits the idea that no single food has it all?",
+  "options": [
+   "Add pulses, eggs or milk, and more fruit.",
+   "Add a second cereal like roti.",
+   "No change; rice is filling, so it covers needs."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 1,
+  "stem": "An edict from the northwest, outside Afghanistan, is not written in Brahmi. Which script is it most likely in?",
+  "options": [
+   "Greek, as in Afghanistan.",
+   "Kharosthi.",
+   "Aramaic, as everywhere outside Bihar."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.transfer",
+  "round": 1,
+  "stem": "In a mill town in Tamil Nadu, the mills close and the town's drama troupes lose their sponsors. Which Gandhara pattern does this match?",
+  "options": [
+   "Less trade wealth, less money for art.",
+   "Art lasts on faith alone, whatever the money.",
+   "Art depends on rulers, not on trade."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.transfer",
+  "round": 2,
+  "stem": "A village gets free tablets loaded with books, but many older people there cannot read. What changes at once?",
+  "options": [
+   "Most people soon read, since books teach reading.",
+   "Nobody can use the tablets.",
+   "Readers gain; others need lessons."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 3,
+  "stem": "A ship lands cloth at a west coast port. What is the next leg of its trip toward Gandhara?",
+  "options": [
+   "Up the Indus River.",
+   "Over the high mountain passes.",
+   "Across the deserts of Central Asia."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 1,
+  "stem": "Why did monks from Gandhara move into Central Asia?",
+  "options": [
+   "Hun invasions seem to have driven them out.",
+   "Their art style seems to have been banned at home.",
+   "Traders seem to have paid them to leave."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 2,
+  "stem": "A biscuit brand cuts its serving from 30 g to 20 g, and the sugar per serving drops. Did the biscuit get less sugary?",
+  "options": [
+   "Not by that; check the per 100 g line.",
+   "Yes, since brands must cut sugar to cut servings.",
+   "Yes; less sugar per serving means a less sugary biscuit."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 3,
+  "stem": "A drone survey over farmland in Haryana shows buried walls meeting at neat right angles in long straight rows. What is the fairest first claim?",
+  "options": [
+   "People planned the layout before building.",
+   "It must have been a royal palace.",
+   "Walls like that pile up by chance as houses are added."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 1,
+  "stem": "Two nobles serve Akbar, one at 1,000 zat and one at 3,000 zat. Who likely got more pay?",
+  "options": [
+   "The one at 1,000, since lower numbers ranked higher.",
+   "The one at 3,000.",
+   "Neither; zat set rank but not pay."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 2,
+  "stem": "A company pays its Delhi manager by letting him keep the rent from a shop in Pune, which an agent collects for him. Which Mughal idea is this most like?",
+  "options": [
+   "A jagir, income rights over a place.",
+   "A zat rank number.",
+   "A gift of the shop for him to own outright."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 3,
+  "stem": "An office in Hyderabad plans a prize for whoever loses the most weight in two weeks. Why is that a poor design?",
+  "options": [
+   "It is fine, since faster loss lasts longer.",
+   "It rewards the fastest loss.",
+   "It is fine if people also drink detox tea."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.transfer",
+  "round": 1,
+  "stem": "After a long day of farm work in Bihar, Ramu sleeps from 10 pm to 5 am. In which hours does his body do the most repair?",
+  "options": [
+   "The early hours of his sleep, near bedtime.",
+   "Evenly spread through the seven hours of sleep.",
+   "The last hours, close to 5 am."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.transfer",
+  "round": 3,
+  "stem": "At a Gurugram call centre, night staff get two free cans of soda each shift. How much of a 50 g daily limit can those two cans use?",
+  "options": [
+   "About a fifth of it, since drinks are light.",
+   "About half of it.",
+   "They can go past the whole limit."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.transfer",
+  "round": 1,
+  "stem": "A city plans a house tax based on measured house sizes, but half the houses have never been measured. What does zabt's story suggest?",
+  "options": [
+   "It works the same everywhere if the rate is high.",
+   "It works only where houses are measured.",
+   "Records do not matter; one rule fits each area."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.twist",
+  "round": 1,
+  "stem": "Lalitha drinks four glasses of water, 2 cups of coffee with little sugar and 2 glasses of milk. How close is she to the eight-glass mark?",
+  "options": [
+   "At the mark, since coffee and milk count.",
+   "Short, since coffee takes water away.",
+   "Halfway; water is the one drink that counts."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.transfer",
+  "round": 3,
+  "stem": "A company pays its Delhi manager by letting him keep the rent from a shop in Pune, which an agent collects for him. Which Mughal idea is this most like?",
+  "options": [
+   "A zat rank number.",
+   "A jagir, income rights over a place.",
+   "A gift of the shop for him to own outright."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 3,
+  "stem": "A museum label claims Ashoka's edicts survive only on his palace walls. What is wrong with it?",
+  "options": [
+   "Rocks and pillars across the empire held his words.",
+   "The label is right; the edicts stayed at court.",
+   "They were painted on palm leaves and cloth, not walls."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.twist",
+  "round": 1,
+  "stem": "Did the Assembly first meet before or after India became free?",
+  "options": [
+   "In 1950, when the Constitution began.",
+   "Before, in 1946.",
+   "After, in late 1947."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s1.twist",
+  "round": 2,
+  "stem": "Asif eats about 200 g of fruit and vegetables a day. Does that meet the daily aim?",
+  "options": [
+   "No; it is half the daily aim.",
+   "Yes; the aim is about 200 g.",
+   "Yes; any fruit counts as enough."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 3,
+  "stem": "A district health team in Madhya Pradesh wants a vaccine notice seen by most villagers for years. Using Ashoka's idea, where would it go?",
+  "options": [
+   "Painted stone boards at bus stands and markets.",
+   "A paper notice inside the clinic, changed each month.",
+   "One copy in the collector's office."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 3,
+  "stem": "Two farmers in one zabt circle grow different crops, wheat and cotton. Do they pay the same tax rate?",
+  "options": [
+   "Yes; one rate covered each circle.",
+   "Yes; one rate covered the whole province.",
+   "No; each crop had its own rate."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.transfer",
+  "round": 1,
+  "stem": "A trader in Kochi sends spices to a hill town in Himachal by ship, then by train, then by mountain road. Which Silk Road idea does this match?",
+  "options": [
+   "Goods moved by land, not by sea.",
+   "Linked sea, land and mountain routes.",
+   "Trade needs one single road from end to end."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.twist",
+  "round": 2,
+  "stem": "A dig finds one district with streets crossing at right angles and another with winding lanes. What is the fairest claim?",
+  "options": [
+   "Neither was planned; grids can form by chance.",
+   "Only the grid district shows a plan.",
+   "The whole city was planned, since part of it was."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 1,
+  "stem": "Nitin usually sleeps 7 hours but stays up one hour later to watch a match. What may happen the next day?",
+  "options": [
+   "He may find it harder to focus.",
+   "His body may repair less, but focus is fine.",
+   "Likely no change; one hour is too small."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 2,
+  "stem": "A classmate claims Dr B.R. Ambedkar wrote the whole Constitution alone. What is the best reply?",
+  "options": [
+   "True; the Assembly passed his draft without changes.",
+   "His team drafted it; the Assembly changed it.",
+   "He had no part in writing it."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.transfer",
+  "round": 1,
+  "stem": "A shop's stock app in Nagpur shows 25 packets in and 25 sold, but leaves the 'left' box blank. Which of Brahmagupta's rules shows what it should read?",
+  "options": [
+   "Blank is right, since zero is not a real number.",
+   "25, since no new stock came in.",
+   "0, since a number take away itself is 0."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s3.twist",
+  "round": 1,
+  "stem": "Anu eats plenty of iron-rich food, yet a test shows she has anaemia. What fits best?",
+  "options": [
+   "Another cause may be behind it.",
+   "She may just need more spinach.",
+   "The test may be wrong, since her diet is good."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 3,
+  "stem": "On an easy cycle ride, Rekha sings her favourite song with ease. What effort level is that?",
+  "options": [
+   "Hard, since her legs keep turning the pedals.",
+   "Moderate, since she is moving the whole time.",
+   "Below moderate, since she can still sing."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.twist",
+  "round": 3,
+  "stem": "Idli batter is rice and urad dal ground together. Mani eats plain idli with coconut chutney. Does the idli fill both building-block gaps?",
+  "options": [
+   "No; grinding them up undoes the pairing.",
+   "Yes; the rice and dal in it cover each other.",
+   "No; it needs an egg on the side to fill a gap."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 1,
+  "stem": "Neha's oldest family photo left is from 1965. Her grandmother recalls older photos that were lost. What can Neha fairly say?",
+  "options": [
+   "No photos were taken before 1965.",
+   "The photo proves her grandmother is wrong.",
+   "Photos go back at least to 1965."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 3,
+  "stem": "Asha is a healthy adult, and her daily protein need comes out at about 54 g. About how much does she weigh?",
+  "options": [
+   "About 27 kg, at two grams per kilo.",
+   "About 65 kg, using the per-kg figure.",
+   "About 54 kg, at one gram per kilo."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 3,
+  "stem": "A dance teacher in Kolkata wants her class at a vigorous effort for one song. Which check fits?",
+  "options": [
+   "Only a few words fit between breaths.",
+   "Dancers are sweating through their clothes.",
+   "Dancers can chat but not sing."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 2,
+  "stem": "Which of these lines would fit in an edict about Ashoka's dhamma?",
+  "options": [
+   "Give the king a share of your harvest each year.",
+   "Be kind to servants and respect elders.",
+   "Pray at the king's temple for peace."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.twist",
+  "round": 3,
+  "stem": "Nitin usually sleeps 7 hours but stays up one hour later to watch a match. What may happen the next day?",
+  "options": [
+   "He may find it harder to focus.",
+   "Likely no change; one hour is too small.",
+   "His body may repair less, but focus is fine."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 1,
+  "stem": "A foreign firm used to send money from its head office to buy goods in India. Then it gains the right to collect local rents in a district. What happens to the money from the head office?",
+  "options": [
+   "It stays the same as before.",
+   "It doubles to match the new rent.",
+   "It is no longer needed for goods."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 3,
+  "stem": "Which of these lines would fit in an edict about Ashoka's dhamma?",
+  "options": [
+   "Be kind to servants and respect elders.",
+   "Pray at the king's temple for peace.",
+   "Give the king a share of your harvest each year."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 2,
+  "stem": "A museum label claims Ashoka's edicts survive only on his palace walls. What is wrong with it?",
+  "options": [
+   "The label is right; the edicts stayed at court.",
+   "Rocks and pillars across the empire held his words.",
+   "They were painted on palm leaves and cloth, not walls."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 1,
+  "stem": "Vinod works late shifts at a Bengaluru office and goes to bed at 10 pm. About what is the latest time for his last coffee?",
+  "options": [
+   "Around 2 pm.",
+   "Any time; coffee wears off within an hour.",
+   "Around 8 pm."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 3,
+  "stem": "A shop owner in Surat changes his price board each week. Which choice uses the movable-type idea?",
+  "options": [
+   "Paint a new board for each week's prices.",
+   "Number tiles he resets each week.",
+   "One carved board kept for years."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 2,
+  "stem": "At a Hyderabad store, a 'honey almond' cereal lists: wheat flakes, sugar, honey, almonds 2%. What is it mostly made of?",
+  "options": [
+   "Honey and almonds, just as the name shows.",
+   "Almonds, since nuts are weighed last.",
+   "Wheat flakes, with sugar next in line."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.transfer",
+  "round": 1,
+  "stem": "A cricket academy in Mohali gives each coach a grade number that sets pay. Each coach must also bring a set number of trainees. Which part of a mansab matches the trainees?",
+  "options": [
+   "The duty to keep horsemen.",
+   "The zat number, which sets rank and pay.",
+   "A jagir, the right to an area's revenue."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s2.twist",
+  "round": 3,
+  "stem": "Gopal remembers a vivid dream from just before his alarm. Which sleep was he most likely in?",
+  "options": [
+   "Light sleep; dreams come as you drift off.",
+   "Deep sleep, which fills the end of the night.",
+   "REM sleep, which grows longer near morning."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 1,
+  "stem": "Two farmers in one zabt circle grow different crops, wheat and cotton. Do they pay the same tax rate?",
+  "options": [
+   "Yes; one rate covered each circle.",
+   "No; each crop had its own rate.",
+   "Yes; one rate covered the whole province."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 2,
+  "stem": "An aunt in Kerala forwards a message: 'Detox water is proven to burn fat.' What fits best?",
+  "options": [
+   "There is no strong proof that detox works.",
+   "It works if it is drunk before sunrise.",
+   "It is proven, since so many people share it."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 2,
+  "stem": "By 4 pm at her shop, Usha feels tired and has peed only once since morning, but she is not thirsty. What fits best?",
+  "options": [
+   "She may be fine, since she is not thirsty.",
+   "Tiredness is not a fluid cue.",
+   "She may be low on fluid, thirst or not."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 3,
+  "stem": "At a tea stall in Lucknow, a man insists the digits on his rupee notes came from Arabia. What is the best reply?",
+  "options": [
+   "He is right; Arabia made them first.",
+   "Fibonacci made them up in Europe.",
+   "They began in India, then went west."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 3,
+  "stem": "Lakshmi is building a house in a Kerala town and wants used kitchen water to leave without wetting the lane. Which Mohenjo-daro plan does she copy?",
+  "options": [
+   "A pit in her yard, since old cities had no drains.",
+   "Letting the water run down the open lane.",
+   "A pipe from the house into a covered street drain."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 1,
+  "stem": "Gajar halwa is made from carrots, milk and added sugar. Which of its sugars go in the free-sugar count?",
+  "options": [
+   "Just the sugar stirred in.",
+   "None of it, since it is made at home.",
+   "The carrot and milk sugar as well."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.transfer",
+  "round": 1,
+  "stem": "A district health team in Madhya Pradesh wants a vaccine notice seen by most villagers for years. Using Ashoka's idea, where would it go?",
+  "options": [
+   "A paper notice inside the clinic, changed each month.",
+   "One copy in the collector's office.",
+   "Painted stone boards at bus stands and markets."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 2,
+  "stem": "A foreign firm used to send money from its head office to buy goods in India. Then it gains the right to collect local rents in a district. What happens to the money from the head office?",
+  "options": [
+   "It is no longer needed for goods.",
+   "It doubles to match the new rent.",
+   "It stays the same as before."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.transfer",
+  "round": 3,
+  "stem": "A hostel warden in Pune writes house rules in the spirit of Ashoka's dhamma. Which rule fits best?",
+  "options": [
+   "Keep quiet about faith to avoid clashes.",
+   "Respect each other's faiths and festivals.",
+   "Share one prayer each morning for all of you."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 3,
+  "stem": "Tara wants to be asleep by 10 pm. By about what time would her phone go away?",
+  "options": [
+   "By half past nine, or a bit before.",
+   "Any time, as long as the screen is dim.",
+   "At 9:59 pm, just before bed."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 1,
+  "stem": "An app maker in Bengaluru wants one message read in many Indian states. Following Ashoka's way, what would she do?",
+  "options": [
+   "Write it in each region's own script.",
+   "Use the capital's script in each state.",
+   "Use one script, as Ashoka did."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 3,
+  "stem": "At a long Ganpati procession in the sun, Omkar's cousin turns confused and cannot stand without dizziness, even after a drink. What fits best?",
+  "options": [
+   "Cool him in the shade, with a drink.",
+   "Get urgent help now.",
+   "Give him buttermilk and let him rest."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 1,
+  "stem": "In a mixed office team in Chennai, which colleagues are more at risk of low iron?",
+  "options": [
+   "Nobody; men and women need the same iron.",
+   "Women who have periods.",
+   "Those who sit at desks the whole day."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 2,
+  "stem": "A water tanker service in Chennai has fewer tankers than usual, so homes get less water. Which body chain works like this?",
+  "options": [
+   "Less haemoglobin, so less oxygen gets to the legs and arms.",
+   "Less haemoglobin, so more oxygen is left for the legs.",
+   "Less haemoglobin, but faster breathing fully makes up for it."
+  ]
+ },
+ {
+  "id": "hydration-cues-s1.transfer",
+  "round": 3,
+  "stem": "During a week of exam study at home, Rohan barely moves. He thinks his body needs almost no fluid. What fits best?",
+  "options": [
+   "Sport and hard work are what use up water.",
+   "The body stores water, so one still week is fine.",
+   "Pee and sweat still take water out each day."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.transfer",
+  "round": 1,
+  "stem": "A water tanker service in Chennai has fewer tankers than usual, so homes get less water. Which body chain works like this?",
+  "options": [
+   "Less haemoglobin, so less oxygen gets to the legs and arms.",
+   "Less haemoglobin, so more oxygen is left for the legs.",
+   "Less haemoglobin, but faster breathing fully makes up for it."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 1,
+  "stem": "At a tea stall in Lucknow, a man insists the digits on his rupee notes came from Arabia. What is the best reply?",
+  "options": [
+   "Fibonacci made them up in Europe.",
+   "He is right; Arabia made them first.",
+   "They began in India, then went west."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s1.twist",
+  "round": 1,
+  "stem": "A museum label claims Ashoka's edicts survive only on his palace walls. What is wrong with it?",
+  "options": [
+   "They were painted on palm leaves and cloth, not walls.",
+   "The label is right; the edicts stayed at court.",
+   "Rocks and pillars across the empire held his words."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 3,
+  "stem": "A masala oats pack lists: oats, maida, sugar, salt, spices. Is there more maida than sugar in it?",
+  "options": [
+   "No; the list order shows quality, not amount.",
+   "You cannot tell from the list alone.",
+   "Yes, since maida comes before sugar."
+  ]
+ },
+ {
+  "id": "independence-constitution-s3.twist",
+  "round": 1,
+  "stem": "On what date did the Assembly adopt the text of the Constitution?",
+  "options": [
+   "15 August 1947, at independence.",
+   "26 January 1950.",
+   "26 November 1949."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 2,
+  "stem": "Three lunches of palak dal and roti differ only in the side. Which one lets the body take in the most iron?",
+  "options": [
+   "Palak dal with a cup of tea alongside it.",
+   "Palak dal with lemon, and tea an hour later.",
+   "Palak dal alone, since greens give plenty of iron."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 2,
+  "stem": "A kheer recipe lists 25 g of added sugar in one bowl. How much of the day's free-sugar limit is one bowl?",
+  "options": [
+   "About half of the day's limit.",
+   "About a quarter of it.",
+   "More than the whole day's limit."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 3,
+  "stem": "Arjun spends the evening learning a new tabla piece. Why does a full night's sleep after practice help?",
+  "options": [
+   "Sleep just rests his tired hands.",
+   "Sleep helps store the day's learning.",
+   "Practice is stored while awake, not in sleep."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 3,
+  "stem": "A museum display shows Bi Sheng's movable type as cast metal pieces. What should the fix be?",
+  "options": [
+   "His type was carved as whole wooden pages.",
+   "His type was small pieces of baked clay.",
+   "No fix; early movable type was metal."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s2.twist",
+  "round": 1,
+  "stem": "A jagirdar's son plans to sell the jagir's fields to a merchant. What is wrong with his plan?",
+  "options": [
+   "It was not his land to sell.",
+   "No problem; a jagir was family land.",
+   "The merchant must pay tax first."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.twist",
+  "round": 3,
+  "stem": "Deepa walks briskly for 40 minutes, five days a week. Where does her week land?",
+  "options": [
+   "Past the top; 150 is the most to do.",
+   "Short; the aim is at least 300 minutes.",
+   "Inside the weekly range of 150 to 300."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.transfer",
+  "round": 3,
+  "stem": "Dosa stalls are now common in Delhi, far from where dosa began. How did that most likely happen?",
+  "options": [
+   "Delhi cooks made it up again by chance.",
+   "People who knew how to make it moved there.",
+   "The recipe spread on its own, with no one carrying it."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 2,
+  "stem": "Arjun spends the evening learning a new tabla piece. Why does a full night's sleep after practice help?",
+  "options": [
+   "Sleep helps store the day's learning.",
+   "Practice is stored while awake, not in sleep.",
+   "Sleep just rests his tired hands."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.twist",
+  "round": 2,
+  "stem": "An edict from the northwest, outside Afghanistan, is not written in Brahmi. Which script is it most likely in?",
+  "options": [
+   "Greek, as in Afghanistan.",
+   "Kharosthi.",
+   "Aramaic, as everywhere outside Bihar."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s3.twist",
+  "round": 2,
+  "stem": "Two farmers in one zabt circle grow different crops, wheat and cotton. Do they pay the same tax rate?",
+  "options": [
+   "Yes; one rate covered the whole province.",
+   "Yes; one rate covered each circle.",
+   "No; each crop had its own rate."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 3,
+  "stem": "Tenzin, 60 kg, trains hard each day for his state kabaddi team in Sikkim. His plan uses the healthy adult figure per kg. What is off?",
+  "options": [
+   "Nothing; the per-kg figure fits each adult alike.",
+   "Athletes may need more.",
+   "He may need less, since training saves protein."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s1.twist",
+  "round": 1,
+  "stem": "A ship lands cloth at a west coast port. What is the next leg of its trip toward Gandhara?",
+  "options": [
+   "Over the high mountain passes.",
+   "Across the deserts of Central Asia.",
+   "Up the Indus River."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.twist",
+  "round": 2,
+  "stem": "On a very hot day, Gauri sits at a desk in a room with no fan and sweats all day. She does no exercise. Does her fluid need rise?",
+  "options": [
+   "No; it takes exercise to raise the need.",
+   "No; eight glasses covers any day, hot or cool.",
+   "Yes; heat and sweat raise it on their own."
+  ]
+ },
+ {
+  "id": "indus-cities-s1.transfer",
+  "round": 1,
+  "stem": "A drone survey over farmland in Haryana shows buried walls meeting at neat right angles in long straight rows. What is the fairest first claim?",
+  "options": [
+   "Walls like that pile up by chance as houses are added.",
+   "People planned the layout before building.",
+   "It must have been a royal palace."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 3,
+  "stem": "In a mixed office team in Chennai, which colleagues are more at risk of low iron?",
+  "options": [
+   "Women who have periods.",
+   "Those who sit at desks the whole day.",
+   "Nobody; men and women need the same iron."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.transfer",
+  "round": 2,
+  "stem": "A shop owner in Surat changes his price board each week. Which choice uses the movable-type idea?",
+  "options": [
+   "Number tiles he resets each week.",
+   "Paint a new board for each week's prices.",
+   "One carved board kept for years."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s2.transfer",
+  "round": 2,
+  "stem": "Neha's oldest family photo left is from 1965. Her grandmother recalls older photos that were lost. What can Neha fairly say?",
+  "options": [
+   "Photos go back at least to 1965.",
+   "No photos were taken before 1965.",
+   "The photo proves her grandmother is wrong."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.twist",
+  "round": 3,
+  "stem": "A video claims we now know everything about Mohenjo-daro. What is the best reply?",
+  "options": [
+   "True, since the seals have now been read.",
+   "True; the whole city has been dug up.",
+   "A third is dug, and the script is unread."
+  ]
+ },
+ {
+  "id": "indus-cities-s3.transfer",
+  "round": 2,
+  "stem": "Rohit finds his great-grandmother's diary in a script no one at home can read, along with old photos and a brass lamp. What can the family learn for now?",
+  "options": [
+   "What the photos and objects themselves show.",
+   "Very little until the diary is read.",
+   "Everything, by guessing the words from the photos."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.twist",
+  "round": 3,
+  "stem": "How did the digits get from India to Fibonacci?",
+  "options": [
+   "Traders from Babylon took them west.",
+   "A scholar wrote of them in Arabic.",
+   "Europe making its own 0 to 9."
+  ]
+ },
+ {
+  "id": "exercise-heart-s1.transfer",
+  "round": 1,
+  "stem": "Gopal, a postman in a hill town, walks briskly on his round for 50 minutes, six days a week. His son thinks work walking does not count. What fits?",
+  "options": [
+   "It counts, and it reaches 300 minutes.",
+   "It does not count, since it is part of his job.",
+   "It counts, but it is still under 150 minutes."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 1,
+  "stem": "An office in Hyderabad plans a prize for whoever loses the most weight in two weeks. Why is that a poor design?",
+  "options": [
+   "It rewards the fastest loss.",
+   "It is fine, since faster loss lasts longer.",
+   "It is fine if people also drink detox tea."
+  ]
+ },
+ {
+  "id": "free-sugars-s1.twist",
+  "round": 3,
+  "stem": "Gajar halwa is made from carrots, milk and added sugar. Which of its sugars go in the free-sugar count?",
+  "options": [
+   "Just the sugar stirred in.",
+   "The carrot and milk sugar as well.",
+   "None of it, since it is made at home."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.twist",
+  "round": 1,
+  "stem": "Three lunches of palak dal and roti differ only in the side. Which one lets the body take in the most iron?",
+  "options": [
+   "Palak dal with lemon, and tea an hour later.",
+   "Palak dal alone, since greens give plenty of iron.",
+   "Palak dal with a cup of tea alongside it."
+  ]
+ },
+ {
+  "id": "mughal-revenue-s1.twist",
+  "round": 3,
+  "stem": "Two nobles serve Akbar, one at 1,000 zat and one at 3,000 zat. Who likely got more pay?",
+  "options": [
+   "Neither; zat set rank but not pay.",
+   "The one at 3,000.",
+   "The one at 1,000, since lower numbers ranked higher."
+  ]
+ },
+ {
+  "id": "free-sugars-s3.twist",
+  "round": 2,
+  "stem": "Prakash eats no sweets but adds three spoons of ketchup to his fries. About how much free sugar is that?",
+  "options": [
+   "About 12 g, near three teaspoons.",
+   "None; ketchup is a salty sauce.",
+   "About 40 g, as much as a can of soda."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s2.transfer",
+  "round": 3,
+  "stem": "An aunt in Kerala forwards a message: 'Detox water is proven to burn fat.' What fits best?",
+  "options": [
+   "It works if it is drunk before sunrise.",
+   "It is proven, since so many people share it.",
+   "There is no strong proof that detox works."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 1,
+  "stem": "At a Hyderabad store, a 'honey almond' cereal lists: wheat flakes, sugar, honey, almonds 2%. What is it mostly made of?",
+  "options": [
+   "Honey and almonds, just as the name shows.",
+   "Wheat flakes, with sugar next in line.",
+   "Almonds, since nuts are weighed last."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s2.twist",
+  "round": 1,
+  "stem": "A valley far from the mountain passes saw little trade and has few Buddhist carvings. What best explains this?",
+  "options": [
+   "Less trade meant less wealth to pay for art.",
+   "Its people did not care for art.",
+   "Faith alone made art, so trade did not matter."
+  ]
+ },
+ {
+  "id": "protein-foods-s2.transfer",
+  "round": 3,
+  "stem": "A farmer in Rajasthan grows bajra and moong to feed his family. Why is that pair a good fit for protein?",
+  "options": [
+   "Any two crops fill gaps, so the pair does not matter.",
+   "Bajra by itself carries plenty of each block.",
+   "Millet and pulse fill each other's gap."
+  ]
+ },
+ {
+  "id": "indian-place-value-s2.twist",
+  "round": 3,
+  "stem": "Zero as a sign for an empty place came first. What did Brahmagupta add?",
+  "options": [
+   "Proof that zero is just a gap, not a number.",
+   "The first sign for an empty place.",
+   "Rules for using zero in sums."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.twist",
+  "round": 2,
+  "stem": "Tara wants to be asleep by 10 pm. By about what time would her phone go away?",
+  "options": [
+   "By half past nine, or a bit before.",
+   "At 9:59 pm, just before bed.",
+   "Any time, as long as the screen is dim."
+  ]
+ },
+ {
+  "id": "indus-cities-s2.transfer",
+  "round": 2,
+  "stem": "Lakshmi is building a house in a Kerala town and wants used kitchen water to leave without wetting the lane. Which Mohenjo-daro plan does she copy?",
+  "options": [
+   "A pit in her yard, since old cities had no drains.",
+   "Letting the water run down the open lane.",
+   "A pipe from the house into a covered street drain."
+  ]
+ },
+ {
+  "id": "exercise-heart-s3.transfer",
+  "round": 2,
+  "stem": "In an office step challenge in Hyderabad, Rina runs hard for 45 minutes twice a week. Her colleague walks briskly for 150 minutes. Whose minutes reach the weekly aim?",
+  "options": [
+   "Rina, since running beats walking.",
+   "Both reach it, Rina by counting double.",
+   "The walker; Rina has just 90 minutes."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.transfer",
+  "round": 3,
+  "stem": "A foreign firm used to send money from its head office to buy goods in India. Then it gains the right to collect local rents in a district. What happens to the money from the head office?",
+  "options": [
+   "It stays the same as before.",
+   "It is no longer needed for goods.",
+   "It doubles to match the new rent."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s1.twist",
+  "round": 2,
+  "stem": "In a mixed office team in Chennai, which colleagues are more at risk of low iron?",
+  "options": [
+   "Women who have periods.",
+   "Nobody; men and women need the same iron.",
+   "Those who sit at desks the whole day."
+  ]
+ },
+ {
+  "id": "free-sugars-s2.twist",
+  "round": 1,
+  "stem": "A kheer recipe lists 25 g of added sugar in one bowl. How much of the day's free-sugar limit is one bowl?",
+  "options": [
+   "More than the whole day's limit.",
+   "About a quarter of it.",
+   "About half of the day's limit."
+  ]
+ },
+ {
+  "id": "silk-road-ideas-s3.twist",
+  "round": 3,
+  "stem": "Why did monks from Gandhara move into Central Asia?",
+  "options": [
+   "Their art style seems to have been banned at home.",
+   "Hun invasions seem to have driven them out.",
+   "Traders seem to have paid them to leave."
+  ]
+ },
+ {
+  "id": "independence-constitution-s1.transfer",
+  "round": 3,
+  "stem": "A housing society in Pune forms a committee to write its rules. Each building's own committee picks the members. Which Assembly feature is this like?",
+  "options": [
+   "Picked by the assemblies of the provinces.",
+   "Members chosen by a direct vote of the people.",
+   "Members chosen by the British king."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 3,
+  "stem": "At a Bhopal college, a small team drafts new hostel rules. Then all the student reps debate them and change many lines. Which part of the Constitution's making does this match?",
+  "options": [
+   "A draft, then debate and changes.",
+   "One author writing the final text alone.",
+   "The draft passing just as it was written."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s2.transfer",
+  "round": 2,
+  "stem": "An app maker in Bengaluru wants one message read in many Indian states. Following Ashoka's way, what would she do?",
+  "options": [
+   "Use one script, as Ashoka did.",
+   "Use the capital's script in each state.",
+   "Write it in each region's own script."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.twist",
+  "round": 3,
+  "stem": "A biscuit brand cuts its serving from 30 g to 20 g, and the sugar per serving drops. Did the biscuit get less sugary?",
+  "options": [
+   "Not by that; check the per 100 g line.",
+   "Yes, since brands must cut sugar to cut servings.",
+   "Yes; less sugar per serving means a less sugary biscuit."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.twist",
+  "round": 2,
+  "stem": "On an easy cycle ride, Rekha sings her favourite song with ease. What effort level is that?",
+  "options": [
+   "Hard, since her legs keep turning the pedals.",
+   "Below moderate, since she can still sing.",
+   "Moderate, since she is moving the whole time."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s3.twist",
+  "round": 3,
+  "stem": "A letter from 1850 is signed by the Company's Governor-General in India. Does that fit the timeline?",
+  "options": [
+   "No; the Company lost its powers after Plassey.",
+   "Yes; Company rule went on until 1858.",
+   "No; the Crown ruled from 1765."
+  ]
+ },
+ {
+  "id": "ashoka-edicts-s3.twist",
+  "round": 1,
+  "stem": "Which of these lines would fit in an edict about Ashoka's dhamma?",
+  "options": [
+   "Pray at the king's temple for peace.",
+   "Give the king a share of your harvest each year.",
+   "Be kind to servants and respect elders."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.twist",
+  "round": 3,
+  "stem": "A classmate claims Dr B.R. Ambedkar wrote the whole Constitution alone. What is the best reply?",
+  "options": [
+   "His team drafted it; the Assembly changed it.",
+   "True; the Assembly passed his draft without changes.",
+   "He had no part in writing it."
+  ]
+ },
+ {
+  "id": "exercise-heart-s2.transfer",
+  "round": 1,
+  "stem": "A dance teacher in Kolkata wants her class at a vigorous effort for one song. Which check fits?",
+  "options": [
+   "Only a few words fit between breaths.",
+   "Dancers are sweating through their clothes.",
+   "Dancers can chat but not sing."
+  ]
+ },
+ {
+  "id": "protein-foods-s1.transfer",
+  "round": 1,
+  "stem": "Gita runs a kirana shop in a Bihar village. A customer who eats no meat or eggs asks for protein-rich food. Which shelf fits?",
+  "options": [
+   "Dal, milk, peanuts and roasted chana.",
+   "Rice, atta and poha, since grains fill you up.",
+   "Bunches of palak and methi."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.transfer",
+  "round": 2,
+  "stem": "An office in Hyderabad plans a prize for whoever loses the most weight in two weeks. Why is that a poor design?",
+  "options": [
+   "It is fine if people also drink detox tea.",
+   "It is fine, since faster loss lasts longer.",
+   "It rewards the fastest loss."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s3.twist",
+  "round": 2,
+  "stem": "In Gutenberg's shop, a printer's letter 'e' cracks while a page is set. What can he do with this kind of type?",
+  "options": [
+   "Swap in any other 'e'.",
+   "Stop until a new block is cut.",
+   "Carve the whole page again."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 2,
+  "stem": "A Kolkata gym trainer compares protein bars. Bar A has 12 g protein in a 48 g bar. Bar B has 14 g in a 70 g bar. Which has more protein per 100 g?",
+  "options": [
+   "Bar A, which has 25 g per 100 g.",
+   "Bar B, since 14 g is more than 12 g.",
+   "They are equal, since each is one bar."
+  ]
+ },
+ {
+  "id": "indian-place-value-s3.transfer",
+  "round": 2,
+  "stem": "At a tea stall in Lucknow, a man insists the digits on his rupee notes came from Arabia. What is the best reply?",
+  "options": [
+   "Fibonacci made them up in Europe.",
+   "He is right; Arabia made them first.",
+   "They began in India, then went west."
+  ]
+ },
+ {
+  "id": "iron-and-anaemia-s2.transfer",
+  "round": 3,
+  "stem": "A wedding caterer in Lucknow serves chole and roti with masala chai poured during the meal. Which swap helps guests take in the most iron?",
+  "options": [
+   "Serve more chai, since warm drinks help digestion.",
+   "Add lemon to the chole and serve chai later.",
+   "Add a sweet, since sugar helps iron in."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 2,
+  "stem": "Asha is a healthy adult, and her daily protein need comes out at about 54 g. About how much does she weigh?",
+  "options": [
+   "About 54 kg, at one gram per kilo.",
+   "About 27 kg, at two grams per kilo.",
+   "About 65 kg, using the per-kg figure."
+  ]
+ },
+ {
+  "id": "company-trade-rule-s2.twist",
+  "round": 1,
+  "stem": "Which order of events is right?",
+  "options": [
+   "Buxar, the diwani, then Plassey.",
+   "The diwani, Plassey, then Buxar.",
+   "Plassey, Buxar, then the diwani."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.transfer",
+  "round": 3,
+  "stem": "At a Hyderabad store, a 'honey almond' cereal lists: wheat flakes, sugar, honey, almonds 2%. What is it mostly made of?",
+  "options": [
+   "Honey and almonds, just as the name shows.",
+   "Wheat flakes, with sugar next in line.",
+   "Almonds, since nuts are weighed last."
+  ]
+ },
+ {
+  "id": "food-label-reading-s1.transfer",
+  "round": 1,
+  "stem": "A Kolkata gym trainer compares protein bars. Bar A has 12 g protein in a 48 g bar. Bar B has 14 g in a 70 g bar. Which has more protein per 100 g?",
+  "options": [
+   "They are equal, since each is one bar.",
+   "Bar B, since 14 g is more than 12 g.",
+   "Bar A, which has 25 g per 100 g."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.transfer",
+  "round": 3,
+  "stem": "Pooja, a bank clerk in Patna, drinks often through the day, and her pee is clear pale yellow. A coworker thinks pale pee means something is wrong. What fits best?",
+  "options": [
+   "Pee colour is not linked to fluid.",
+   "It means she drinks too little.",
+   "It is a sign she drinks enough."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 1,
+  "stem": "Tenzin, 60 kg, trains hard each day for his state kabaddi team in Sikkim. His plan uses the healthy adult figure per kg. What is off?",
+  "options": [
+   "He may need less, since training saves protein.",
+   "Athletes may need more.",
+   "Nothing; the per-kg figure fits each adult alike."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.transfer",
+  "round": 2,
+  "stem": "Tenzin, 60 kg, trains hard each day for his state kabaddi team in Sikkim. His plan uses the healthy adult figure per kg. What is off?",
+  "options": [
+   "He may need less, since training saves protein.",
+   "Nothing; the per-kg figure fits each adult alike.",
+   "Athletes may need more."
+  ]
+ },
+ {
+  "id": "printing-and-reading-s1.twist",
+  "round": 1,
+  "stem": "A museum display shows Bi Sheng's movable type as cast metal pieces. What should the fix be?",
+  "options": [
+   "No fix; early movable type was metal.",
+   "His type was carved as whole wooden pages.",
+   "His type was small pieces of baked clay."
+  ]
+ },
+ {
+  "id": "hydration-cues-s2.twist",
+  "round": 3,
+  "stem": "By 4 pm at her shop, Usha feels tired and has peed only once since morning, but she is not thirsty. What fits best?",
+  "options": [
+   "Tiredness is not a fluid cue.",
+   "She may be low on fluid, thirst or not.",
+   "She may be fine, since she is not thirsty."
+  ]
+ },
+ {
+  "id": "independence-constitution-s2.transfer",
+  "round": 1,
+  "stem": "At a Bhopal college, a small team drafts new hostel rules. Then all the student reps debate them and change many lines. Which part of the Constitution's making does this match?",
+  "options": [
+   "One author writing the final text alone.",
+   "A draft, then debate and changes.",
+   "The draft passing just as it was written."
+  ]
+ },
+ {
+  "id": "hydration-cues-s3.transfer",
+  "round": 2,
+  "stem": "At a long Ganpati procession in the sun, Omkar's cousin turns confused and cannot stand without dizziness, even after a drink. What fits best?",
+  "options": [
+   "Cool him in the shade, with a drink.",
+   "Give him buttermilk and let him rest.",
+   "Get urgent help now."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s3.transfer",
+  "round": 3,
+  "stem": "Vinod works late shifts at a Bengaluru office and goes to bed at 10 pm. About what is the latest time for his last coffee?",
+  "options": [
+   "Around 8 pm.",
+   "Around 2 pm.",
+   "Any time; coffee wears off within an hour."
+  ]
+ },
+ {
+  "id": "food-label-reading-s2.twist",
+  "round": 1,
+  "stem": "A masala oats pack lists: oats, maida, sugar, salt, spices. Is there more maida than sugar in it?",
+  "options": [
+   "You cannot tell from the list alone.",
+   "Yes, since maida comes before sugar.",
+   "No; the list order shows quality, not amount."
+  ]
+ },
+ {
+  "id": "food-label-reading-s3.transfer",
+  "round": 3,
+  "stem": "In a Jaipur chemist shop, a face cream has 'with real aloe' in big letters on the front. What fits the label idea best?",
+  "options": [
+   "Front claims usually name the main item.",
+   "Check the back list for the aloe.",
+   "It may be mostly aloe, since the front names it."
+  ]
+ },
+ {
+  "id": "fad-diet-claims-s3.twist",
+  "round": 3,
+  "stem": "An app promises 4 kg off in 4 weeks. How does that compare with the pace called safe?",
+  "options": [
+   "About double the safe pace.",
+   "Safe, since it lasts a whole month.",
+   "About right; a kilo a week is slow."
+  ]
+ },
+ {
+  "id": "protein-foods-s3.twist",
+  "round": 1,
+  "stem": "Asha is a healthy adult, and her daily protein need comes out at about 54 g. About how much does she weigh?",
+  "options": [
+   "About 54 kg, at one gram per kilo.",
+   "About 27 kg, at two grams per kilo.",
+   "About 65 kg, using the per-kg figure."
+  ]
+ },
+ {
+  "id": "sleep-recovery-s1.transfer",
+  "round": 1,
+  "stem": "Arjun spends the evening learning a new tabla piece. Why does a full night's sleep after practice help?",
+  "options": [
+   "Practice is stored while awake, not in sleep.",
+   "Sleep helps store the day's learning.",
+   "Sleep just rests his tired hands."
+  ]
+ }
+]
