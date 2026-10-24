@@ -1,6 +1,6 @@
 # Spec 23 · Learn at Duolingo level, measured
 
-Status: DRAFT v2 for Jenil (idea engine, 24 Oct 2026; numbers corrected after Codex A's code check). Not approved.
+Status: APPROVED by Jenil (24 Oct 2026: "23 yes"), including the rule change in §1 ("at most 3 tests of one claim *with the same situation*"). Draft v2 by the idea engine; numbers corrected after Codex A's code check. Each step in Order still gets its own gate. The scorecard baseline (step 1) must be measured on main before any spec 23 code reaches main.
 
 Jenil (24 Oct): Phase 1 says learning should be at least at Duolingo's level by now. He judges it at about 50%.
 Spec 11 built the pull mechanics: quests, badges, combo, focus boost, trail, Gold review, the cast and the owner
@@ -35,7 +35,7 @@ we can re-run.
   then a twist, then a transfer to a new Indian situation with the hint hidden) -> a **3-question** mixed recap of earlier ideas.
 - Target: **8-10 answers in 3-4 minutes**, with the first tap within 5 seconds of opening.
 - Code: `guided` max goes from 2 to 3, StepLesson sequences all tries, and the transfer try hides the hint.
-- **Rule decision needed:** spec 16's code rule allows at most 3 tests of one claim, *counting* the hook and Show me.
+- **Rule change (approved 24 Oct):** spec 16's code rule allows at most 3 tests of one claim, *counting* the hook and Show me.
   Three tries break it. Proposal: the twist and transfer tries must test a **different claim of the same step** or a new
   situation, and the rule becomes "at most 3 tests of one claim *with the same situation*".
 - The teach card stays at 30 words or fewer. Show me stays. Reading time goes down as a share of the session, not up.
