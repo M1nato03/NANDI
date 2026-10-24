@@ -11,7 +11,13 @@ import { RULES } from '../../core/rules.config';
 let serial = 0;
 const opened: NandiDb[] = [];
 afterEach(async () => { for (const db of opened.splice(0)) await db.delete(); });
-const fresh = () => { const db = createDb(`chhutti-${++serial}`); opened.push(db); return db; };
+const bare = () => { const db = createDb(`chhutti-${++serial}`); opened.push(db); return db; };
+// A saved App pause list (the defaults), as the first window on a phone saves one (Codex A item 69).
+const fresh = () => {
+  const db = bare();
+  void db.settings.put({ key: 'night.pause.apps', value: ['com.instagram.android', 'com.google.android.youtube', 'com.snapchat.android'], updatedAt: 1, deleted: 0, deviceId: 't' });
+  return db;
+};
 const at = (day: string, time: string) => new Date(`${day}T${time}:00`).getTime();
 const ig = 'com.instagram.android';
 type Log = { logStart?: number; events: UsageEvent[] } | null;
@@ -319,7 +325,7 @@ it('no chosen app means the window is asked about, never kept (Codex A item 67)'
 });
 
 it('the first time the phone reports its apps, only the installed defaults are saved, once (Codex A item 67)', async () => {
-  const db = fresh();
+  const db = bare();
   await initChosenApps(db, null);
   expect(await db.settings.get('night.pause.apps')).toBeUndefined();
   await initChosenApps(db, [ig, 'com.google.android.youtube'], at('2026-11-02', '12:00'));
@@ -338,7 +344,7 @@ it('a day whose own list was empty never counts, even if an app is added later (
 });
 
 it('with no default app on the phone, an empty list is saved once (Codex A item 68)', async () => {
-  const db = fresh();
+  const db = bare();
   await initChosenApps(db, ['com.other.app'], at('2026-11-02', '12:00'));
   expect((await db.settings.get('night.pause.apps'))?.value).toEqual([]);
 });
@@ -348,7 +354,10 @@ it('a list change while a window is being read writes no fact; the window is ask
   await db.settings.put({ key: 'night.pause.apps', value: [ig], updatedAt: 1, deleted: 0, deviceId: 't' });
   await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
   const changesMidRead = async (from: number, to: number) => {
-    await db.settings.put({ key: 'night.pause.apps', value: [ig, 'com.google.android.youtube'], updatedAt: 2, deleted: 0, deviceId: 't' });
+    // Another write lands in the list's log while this window is read (as a save from another tab would).
+    const row = await db.settings.get(CHHUTTI_APPS_KEY);
+    const log = row!.value as { deviceId: string; changes: { at: number; apps: string[] }[] };
+    await db.settings.put({ ...row!, value: { ...log, changes: [...log.changes, { at: from + 60_000, apps: [ig, 'com.google.android.youtube'] }] } });
     return dark(from, to);
   };
   expect(await checkChhutti(db, at('2026-11-02', '22:00'), changesMidRead, async () => null)).toHaveLength(1);
@@ -362,5 +371,20 @@ it("after a restore onto another phone, the old phone's days are asked about, no
   // The notes now carry the old phone's id, as a restored backup would.
   await db.settings.put({ key: CHHUTTI_APPS_KEY, value: { deviceId: 'old-phone', days: { '2026-11-02': [ig] } }, updatedAt: 3, deleted: 0, deviceId: 'old-phone' });
   expect(await checkChhutti(db, at('2026-11-03', '09:00'), dark, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it('the raw defaults are never noted: with no saved list, a window is asked about (Codex A item 69)', async () => {
+  const db = bare();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), dark, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it('an empty list saved the same day after an earlier list still makes that day ask (Codex A item 69)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await saveChosenApps(db, [], at('2026-11-02', '15:00'));
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), dark, async () => null)).toHaveLength(1);
   expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
 });
