@@ -1,6 +1,6 @@
 # Spec 21 · Useful now: life-skill tracks, the Field try and Try-it hobbies
 
-Status: DRAFT for Jenil (idea engine, 24 Oct 2026). Not approved. Offline-first, online-ready (Jenil, 24 Oct).
+Status: APPROVED by Jenil (24 Oct 2026: "21 yes"). Each step in the build order still gets its own gate. The four decisions are settled as listed under "Decisions for Jenil" (Jenil can still change any of them). Offline-first, online-ready (Jenil, 24 Oct).
 
 Jenil's asks (23-24 Oct):
 - Teach things people can use now, not school topics, so a session is worth more than scrolling.
@@ -106,8 +106,8 @@ v1 stores everything in `plans`, `quests` and `ledger` rows that are already syn
 5. Honest-hook checklist in the validator, topic renames, hook rewrites.
 6. Tracks 2-4.
 
-## Decisions for Jenil
-1. Field try: 0 XP (recommended) or a flat 10 XP?
-2. Pick the topic renames from cj4-packaging §5, or keep the current names.
-3. Is the track order right (Talk to anyone, Detective, Scam-safe earning, Focus)?
-4. Hinglish titles for the work-and-money tracks: yes or no?
+## Decisions for Jenil (settled 24 Oct with "21 yes"; the recommended option was taken where he gave no other)
+1. Field try: **0 XP**. A flat 10 XP stays the fallback if uptake is low.
+2. Topic renames: **the proposed titles in cj4-packaging §5** (e.g. "Do the maths on money", "See inside everyday things"). The health topic follows the sleep-health rename already on content-walk; its final title is set when content-walk merges.
+3. Track order: **as written** (Talk to anyone, Detective, Scam-safe earning, Focus).
+4. Hinglish titles: **not in v1.** English titles ship first. Hinglish comes with the Hinglish opt-in setting, which is still Jenil's open small decision.
