@@ -1,0 +1,2052 @@
+{
+  "id": "topic.try-drawing",
+  "version": "0.1.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Try it: drawing",
+  "description": "Seven short drawing tries off the phone: look, check and compare with your own start.",
+  "author": "claude",
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "changelog": "DRAFT FOR EDITORS, not for release. Built from docs/reviews/cj4-try-it.md section 7.1 (branch ideas/cj4-try-it). Steps dws-s1 to dpw-s7 are Try-it days 1 to 7; steps dpw-s8 and dpw-s9 are extra, added only because editorial checks need 3 steps per idea. The off-phone quests and next-day self-checks sit in each concept's quest detail, three days per quest. No fact-check verdicts yet. See docs/reviews/cj6-drawing-starter.md.",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "try-drawing",
+      "title": "Try it: drawing",
+      "description": "Seven short drawing tries off the phone: look, check and compare with your own start."
+    },
+    "modules": [
+      {
+        "id": "drawing-starter",
+        "title": "Drawing starter",
+        "concepts": [
+          {
+            "id": "draw-what-you-see",
+            "title": "Draw what you see",
+            "prerequisites": [],
+            "hook": "Think you can't draw? In lab studies, most drawing errors came from how people saw the object, not from shaky hands.",
+            "hookSourceRefs": [
+              "cb97",
+              "cw16"
+            ],
+            "rule": "Draw the thing in front of you, not your idea of it. Look up often, and check your drawing against the real thing.",
+            "ruleSourceRefs": [
+              "cw16",
+              "cohen05"
+            ],
+            "claims": [
+              {
+                "id": "dws-c1",
+                "text": "Knowing what a thing is can get in the way of drawing it. A label or a typical shape can take the place of what is really there.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dws-c2",
+                "text": "In lab tests, people who glanced between the object and the page more often drew more accurately. Changing how often they glanced changed accuracy.",
+                "sourceRefs": [
+                  "cohen05"
+                ]
+              },
+              {
+                "id": "dws-c3",
+                "text": "A later study found that people who could spot changes in both their drawing and the object went on to draw better. So misjudging your own drawing may matter more than first thought.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dws-c4",
+                "text": "In lab studies, hand control was a very small source of drawing errors. Misjudging the object was the main one.",
+                "sourceRefs": [
+                  "cb97"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "dws-1",
+                "type": "scenario",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dws-m1",
+                  "dws-m2"
+                ],
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "stem": "In the hostel mess, Tara draws a steel tumbler. She draws its rim as a round circle, though from her seat it looks like a flat oval. What went wrong?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her idea of a tumbler took over from what she saw.",
+                    "correct": true,
+                    "feedback": "Right. She knows a rim is round, so she drew a circle instead of the flat oval in front of her.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Her hand was not steady enough for the curve.",
+                    "correct": false,
+                    "feedback": "Her circle came out fine. The trouble is that she drew a shape she knows, not the oval she sees.",
+                    "misconceptionIds": [
+                      "dws-m1"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Steel is too shiny to draw.",
+                    "correct": false,
+                    "feedback": "Shine makes it harder, but the circle came from her idea of a rim, not from looking.",
+                    "misconceptionIds": [
+                      "dws-m2"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dws-2",
+                "type": "true-not-quite",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s1",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dws-m1"
+                ],
+                "sourceRefs": [
+                  "cb97"
+                ],
+                "stem": "True or not quite: with a steadier hand, your drawings would look much more like real things.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "True. Most drawing errors come from the hand.",
+                    "correct": false,
+                    "feedback": "In lab studies, hand control was a very small source of errors. Misjudging the object was the main one.",
+                    "misconceptionIds": [
+                      "dws-m1"
+                    ],
+                    "sourceRefs": [
+                      "cb97"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Not quite. Most errors come from how we see.",
+                    "correct": true,
+                    "feedback": "Right. Lab studies found the hand plays a small part. Seeing the object as it really is matters more.",
+                    "sourceRefs": [
+                      "cb97"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "True, for people who rarely draw.",
+                    "correct": false,
+                    "feedback": "These studies did not find the hand to be the big problem. Misjudging the object was the bigger one.",
+                    "misconceptionIds": [
+                      "dws-m1"
+                    ],
+                    "sourceRefs": [
+                      "cb97"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dws-3",
+                "type": "predict",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s2",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "dws-m3"
+                ],
+                "sourceRefs": [
+                  "cohen05"
+                ],
+                "stem": "At the college library, Ishaan's sketch of a desk lamp came out far off. Working back, which habit most likely caused it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "He drew most of it from memory.",
+                    "correct": true,
+                    "feedback": "Right. Few looks leave more to hold in memory, and memory bends shapes. More frequent glances went with more accurate drawings.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He looked up at the lamp for each line, as he went.",
+                    "correct": false,
+                    "feedback": "Frequent glances went with more accurate drawings in lab tests, so this habit is the least likely cause.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "He used a pencil instead of a pen.",
+                    "correct": false,
+                    "feedback": "The tool was not what the studies tested. How often he looked is the likely cause here.",
+                    "misconceptionIds": [
+                      "dws-m3"
+                    ],
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dws-4",
+                "type": "estimate",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s2",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dws-m3"
+                ],
+                "sourceRefs": [
+                  "cohen05"
+                ],
+                "stem": "In one drawing test, how often people looked up went with how well they drew. About what percent of the spread did it match?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 33%",
+                    "correct": true,
+                    "feedback": "Right. In that experiment, glance rate and accuracy shared about a third of their spread.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 5%",
+                    "correct": false,
+                    "feedback": "Too low. The link was clear: about a third of the spread in accuracy went with glance rate.",
+                    "misconceptionIds": [
+                      "dws-m3"
+                    ],
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 90%",
+                    "correct": false,
+                    "feedback": "Too high. Glance rate mattered, but it matched about a third of the spread, not nearly all of it.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 33,
+                  "min": 25,
+                  "max": 40,
+                  "unit": "%"
+                }
+              },
+              {
+                "id": "dws-5",
+                "type": "why",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s3",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dws-m4"
+                ],
+                "sourceRefs": [
+                  "cw16",
+                  "cb97"
+                ],
+                "stem": "Older lab work found that misjudging your own drawing was not a source of errors. Why does a newer review still say to check your drawing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A later study linked spotting changes to better drawings.",
+                    "correct": true,
+                    "feedback": "Right. People who noticed changes in both their drawing and the object went on to draw better, so checking may matter.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The older study used tracing, not drawing.",
+                    "correct": false,
+                    "feedback": "It used both drawing and tracing tasks. The newer review adds a later result the older work did not have.",
+                    "sourceRefs": [
+                      "cw16",
+                      "cb97"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Checking feels good, even if it does nothing.",
+                    "correct": false,
+                    "feedback": "The point is not a feeling. A later study linked spotting changes in your drawing with better drawings.",
+                    "misconceptionIds": [
+                      "dws-m4"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dws-6",
+                "type": "match",
+                "conceptId": "draw-what-you-see",
+                "step": "dws-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "cw16",
+                  "cohen05"
+                ],
+                "stem": "Match each drawing habit to the error it guards against.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Look up for each line",
+                    "correct": true,
+                    "feedback": "Each short look leaves less to hold in memory, where shapes bend.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Shapes bent by memory",
+                    "correct": true,
+                    "feedback": "Memory can bend shapes, which frequent looks up at the object may help with.",
+                    "sourceRefs": [
+                      "cohen05"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Hold the page beside the object",
+                    "correct": true,
+                    "feedback": "Side by side, the parts that are off become easier to see.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Misjudging your own drawing",
+                    "correct": true,
+                    "feedback": "We can misjudge our own work, which a side-by-side check helps catch.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "e",
+                    "text": "Draw the one in front of you",
+                    "correct": true,
+                    "feedback": "Looking at this object keeps the typical shape in your head out of it.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "f",
+                    "text": "A label replacing the real form",
+                    "correct": true,
+                    "feedback": "A label in your head swaps in a typical form, which careful looking avoids.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  },
+                  {
+                    "left": "e",
+                    "right": "f"
+                  },
+                  {
+                    "left": "f",
+                    "right": "e"
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "dws-s1",
+                "title": "Draw what you see, not what you know",
+                "claimId": "dws-c1",
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "hook": {
+                  "stem": "Your eyes and your hand both work fine. So why does a drawn bottle often look wrong?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "We draw the idea of a bottle.",
+                      "correct": true,
+                      "feedback": "Right. The idea of a bottle can take over from the bottle in front of you."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Our hands shake too much for fine lines.",
+                      "correct": false,
+                      "feedback": "Hand control turns out to be a small part. Seeing is the bigger part."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Bottles are one of the hardest shapes.",
+                      "correct": false,
+                      "feedback": "Any object works. The trouble is what we expect it to look like."
+                    }
+                  ]
+                },
+                "teach": "What you know about a thing can take over from what you see. So a bottle turns into the bottle shape in your head. Draw the one in front of you.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "What you know",
+                    "lines": [
+                      "A neat, even bottle",
+                      "Straight sides"
+                    ]
+                  },
+                  "right": {
+                    "title": "What you see",
+                    "lines": [
+                      "A tilted cap",
+                      "A dent on one side"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part drawn from memory, not from looking.",
+                  "parts": [
+                    "She looks at the dented steel bottle,",
+                    "draws a smooth, perfect tube,",
+                    "and leaves the dent out."
+                  ],
+                  "spot": "draws a smooth, perfect tube,",
+                  "feedback": "The real bottle has a dent. The smooth tube came from the idea of a bottle."
+                },
+                "guided": [
+                  {
+                    "stem": "Meera draws her hostel window as a neat square. From her bed, the real window looks narrow and slanted. Which drawing matches what she sees?",
+                    "hint": "Ask what her eyes get, not what she knows.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A narrow, slanted shape.",
+                        "correct": true,
+                        "feedback": "Right. That is what reaches her eyes from the bed."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A neat square, since windows are square.",
+                        "correct": false,
+                        "feedback": "That is what she knows about windows, not what she sees from the bed."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A square with a frame drawn round it.",
+                        "correct": false,
+                        "feedback": "A frame adds detail, but the shape still comes from her idea of a window."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Draw the thing in front of you, not the idea of it."
+              },
+              {
+                "id": "dws-s2",
+                "title": "Look little, look often",
+                "claimId": "dws-c2",
+                "sourceRefs": [
+                  "cohen05"
+                ],
+                "hook": {
+                  "stem": "Two people draw the same mug for ten minutes. Who will likely draw it more accurately?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The one who looks up more.",
+                      "correct": true,
+                      "feedback": "Right. More glances went with more accurate drawings in lab tests."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The one who studies it once, then draws.",
+                      "correct": false,
+                      "feedback": "One long look leaves a lot to hold in memory, and memory bends shapes."
+                    },
+                    {
+                      "id": "c",
+                      "text": "The one who keeps their eyes on the page.",
+                      "correct": false,
+                      "feedback": "Watching the page means drawing from memory. Looking up often helped more."
+                    }
+                  ]
+                },
+                "teach": "Glance at the object for every line or two. Short looks leave less to hold in memory, so less may get bent out of shape. More looks went with more accurate drawings.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Look at the object",
+                    "Draw one line",
+                    "Look again"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the habit that helps accuracy.",
+                  "parts": [
+                    "Arjun stares at the slipper for a minute,",
+                    "then draws for a long time without looking,",
+                    "while Sana glances up for each line."
+                  ],
+                  "spot": "while Sana glances up for each line.",
+                  "feedback": "Sana looks for each line, so she holds less in memory and her lines can stay closer to the slipper."
+                },
+                "guided": [
+                  {
+                    "stem": "Kabir draws his shoe while watching the page closely. What one change could help most?",
+                    "hint": "Think about where his eyes spend their time.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Look up at the shoe more often.",
+                        "correct": true,
+                        "feedback": "Right. Frequent glances went with more accurate drawings."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Press harder with the pencil.",
+                        "correct": false,
+                        "feedback": "Pressure changes the line, not how well it matches the shoe."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Draw faster, so it is done sooner.",
+                        "correct": false,
+                        "feedback": "Speed is not the issue. How often he looks up is."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Short looks, many times: look up for every line."
+              },
+              {
+                "id": "dws-s3",
+                "title": "Check the drawing, not only the object",
+                "claimId": "dws-c3",
+                "sourceRefs": [
+                  "cw16",
+                  "cb97"
+                ],
+                "hook": {
+                  "stem": "You finish a drawing and it looks right to you. Is it right?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Maybe not. We misjudge our own drawings too.",
+                      "correct": true,
+                      "feedback": "Right. Newer work suggests we can misjudge our own drawing, so a check helps."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes. If it looks right, it is right.",
+                      "correct": false,
+                      "feedback": "A drawing can look right up close and still be off beside the object."
+                    },
+                    {
+                      "id": "c",
+                      "text": "An art teacher has to tell you.",
+                      "correct": false,
+                      "feedback": "You can check it yourself by holding it next to the object."
+                    }
+                  ]
+                },
+                "teach": "We can misjudge our own drawing, not only the object. So hold the page next to the object, step back, and fix the one part that looks most off.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Draw",
+                    "Hold it beside the object",
+                    "Fix one part"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the step that checks the drawing.",
+                  "parts": [
+                    "Neha draws the jug,",
+                    "props her page beside it and steps back,",
+                    "then shades the background."
+                  ],
+                  "spot": "props her page beside it and steps back,",
+                  "feedback": "Putting the page next to the jug lets her compare the two side by side."
+                },
+                "guided": [
+                  {
+                    "stem": "Rohan's drawn cup looks fine up close. Beside the real cup, the handle looks too big. What next?",
+                    "hint": "Trust the side-by-side view.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Shrink the handle and check again.",
+                        "correct": true,
+                        "feedback": "Right. Fix the part that looks most off, then compare again."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Leave it, since it looked fine up close.",
+                        "correct": false,
+                        "feedback": "Up close is where we misjudge our own drawing. The side-by-side view is the check."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Start over with a different cup.",
+                        "correct": false,
+                        "feedback": "A new cup restarts the problem. Fixing one part teaches more."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Compare the drawing with the object, then fix one thing."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "dws-m1",
+                "name": "It is all in the hand",
+                "correction": "In lab studies, hand control caused few errors. Most came from how people saw the object.",
+                "sourceRefs": [
+                  "cb97"
+                ]
+              },
+              {
+                "id": "dws-m2",
+                "name": "Know it, then draw it",
+                "correction": "Knowing what a thing is can pull your drawing toward a typical shape, not the real one.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dws-m3",
+                "name": "Look once, draw a lot",
+                "correction": "Short, frequent looks went with more accurate drawings in lab tests.",
+                "sourceRefs": [
+                  "cohen05"
+                ]
+              },
+              {
+                "id": "dws-m4",
+                "name": "It looks right to me",
+                "correction": "We can misjudge our own drawing too, so compare it with the object.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "cw16",
+                "title": "The genesis of errors in drawing",
+                "publisher": "Chamberlain and Wagemans, Neuroscience and Biobehavioral Reviews",
+                "year": 2016,
+                "url": "https://research.gold.ac.uk/20010/"
+              },
+              {
+                "id": "cohen05",
+                "title": "Look little, look often: the influence of gaze frequency on drawing accuracy",
+                "publisher": "Cohen, Perception and Psychophysics",
+                "year": 2005,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/16396008/"
+              },
+              {
+                "id": "cb97",
+                "title": "Why can't most people draw what they see?",
+                "publisher": "Cohen and Bennett, Journal of Experimental Psychology: Human Perception and Performance",
+                "year": 1997,
+                "url": "https://europepmc.org/article/MED/9180037"
+              }
+            ],
+            "quest": {
+              "title": "Days 1 to 3: draw what you see",
+              "detail": "Needs: any paper and a pen or pencil. Day 1: draw your water bottle from 3 angles: standing, from above, lying down. 15 min. Small version: one angle, 5 min. Next day, ask yourself: which of the 3 looks most like the bottle? Day 2: draw a mug or a slipper. Make a small tick at the edge of the page each time you look up. Aim for 30 ticks. 10 to 15 min. Small version: 10 ticks. Next day: did looking up more feel slower, easier, or both? Day 3: redraw yesterday's object. Hold the page beside it at arm's length and fix the one part that looks most off. 15 min. Small version: just the check and the fix. Next day: what did you fix: size, angle or shape?",
+              "sourceRefs": [
+                "cw16",
+                "cohen05"
+              ]
+            }
+          },
+          {
+            "id": "draw-shapes-and-slants",
+            "title": "Drawing shapes and slants",
+            "prerequisites": [
+              "draw-what-you-see"
+            ],
+            "hook": "A famous drawing trick says to copy pictures upside down. When researchers tested it on faces, it did not make the copies more accurate.",
+            "hookSourceRefs": [
+              "ost16",
+              "cw16"
+            ],
+            "rule": "Start with the big outside shape, check slopes against something straight, and test popular tricks yourself before you trust them.",
+            "ruleSourceRefs": [
+              "cw16",
+              "ost16"
+            ],
+            "claims": [
+              {
+                "id": "dss-c1",
+                "text": "A review of drawing research describes helpful patterns that split a scene into simple parts in a set way, which helps you draw it.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dss-c2",
+                "text": "In some studies, people who misjudged angles by eye also made errors drawing the same angles. The wider link between visual tricks of the eye and drawing errors is mixed.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dss-c3",
+                "text": "In two face-drawing studies, copying from an upside-down picture did not make the copies more accurate. Both gave only one short try. A third study found a small gain when art experts judged the drawings.",
+                "sourceRefs": [
+                  "cw16",
+                  "ost16"
+                ]
+              },
+              {
+                "id": "dss-c4",
+                "text": "In one study of 126 students with no drawing training, upside-down faces came out less accurate for the gap between the eyes and the mouth.",
+                "sourceRefs": [
+                  "ost16"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "dss-1",
+                "type": "order",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s4",
+                "job": "combine",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dss-m1"
+                ],
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "stem": "Put Leela's chair drawing in a helpful order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sketch the outer outline of the chair",
+                    "correct": true,
+                    "feedback": "The big shape comes before anything else, so every part has a place to go.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Block in the seat and the back",
+                    "correct": true,
+                    "feedback": "With the outline set, the large parts go inside it next.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Add the legs and the rails",
+                    "correct": true,
+                    "feedback": "Smaller parts fit between the big ones, so they stay in place.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Draw the carving and the grain",
+                    "correct": true,
+                    "feedback": "Fine detail comes last, once the shapes around it are right.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              },
+              {
+                "id": "dss-2",
+                "type": "scenario",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s4",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dss-m1"
+                ],
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "stem": "In a college classroom, Aman starts drawing the teacher's desk with the knobs on its drawers. Soon the desk runs off the page. What would have helped?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The desk's outline before any knobs.",
+                    "correct": true,
+                    "feedback": "Right. The big outside shape fixes the size and place of the desk, so the knobs have a spot to go.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Smaller knobs, drawn more lightly at the end.",
+                    "correct": false,
+                    "feedback": "Smaller knobs would not fix it. Without the big shape first, the desk can still run off the page.",
+                    "misconceptionIds": [
+                      "dss-m1"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A smaller desk to draw.",
+                    "correct": false,
+                    "feedback": "Any desk fits once its outline is set first, so the object was not the problem.",
+                    "misconceptionIds": [
+                      "dss-m1"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dss-3",
+                "type": "choose",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s5",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "dss-m2"
+                ],
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "stem": "Which belief about drawing slopes is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "If a slope looks right to my eye, it is right.",
+                    "correct": true,
+                    "feedback": "Right, that belief is off. Eyes can misjudge slopes, and in some studies those errors showed up in the drawing.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A pen held along an edge can help me check a slant.",
+                    "correct": false,
+                    "feedback": "This is a fair check to try, so it is not the mistaken belief here.",
+                    "misconceptionIds": [
+                      "dss-m2"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Slopes are worth checking before I go on.",
+                    "correct": false,
+                    "feedback": "This one is sensible, since eyes can misjudge slopes. The mistaken belief is trusting the eye alone.",
+                    "misconceptionIds": [
+                      "dss-m2"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dss-4",
+                "type": "predict",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s5",
+                "job": "reverse",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dss-m2"
+                ],
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "stem": "Before her exam break, Riya's drawing of a ramp came out too flat. Working back, what most likely happened?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "She guessed the slope by eye.",
+                    "correct": true,
+                    "feedback": "Right. A slope judged by eye can be off, and in some studies those errors showed up in the drawing.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Her pencil was too soft for straight lines.",
+                    "correct": false,
+                    "feedback": "A soft pencil changes the line, not its angle. The slant came from how she judged the slope.",
+                    "misconceptionIds": [
+                      "dss-m2"
+                    ],
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Ramps cannot be drawn without a ruler.",
+                    "correct": false,
+                    "feedback": "A ruler is not needed. A pen held along the edge is a quick way to check the slant.",
+                    "sourceRefs": [
+                      "cw16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dss-5",
+                "type": "estimate",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s6",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dss-m3"
+                ],
+                "sourceRefs": [
+                  "ost16"
+                ],
+                "stem": "In one upside-down face drawing study, each student had a time limit for each drawing. About how many minutes?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 15 minutes",
+                    "correct": true,
+                    "feedback": "Right. Each drawing had a 15-minute limit, so longer practice upside down was not tested.",
+                    "sourceRefs": [
+                      "ost16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 2 hours",
+                    "correct": false,
+                    "feedback": "Far longer than the study. Each drawing had about 15 minutes, which is one reason the result has limits.",
+                    "sourceRefs": [
+                      "ost16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 1 minute",
+                    "correct": false,
+                    "feedback": "Much shorter than the study. Each drawing had about 15 minutes, and that was a single try.",
+                    "sourceRefs": [
+                      "ost16"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 15,
+                  "min": 10,
+                  "max": 20,
+                  "unit": "minutes"
+                }
+              },
+              {
+                "id": "dss-6",
+                "type": "explain-it-back",
+                "conceptId": "draw-shapes-and-slants",
+                "step": "dss-s6",
+                "job": "recall",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "dss-m3"
+                ],
+                "sourceRefs": [
+                  "cw16",
+                  "ost16"
+                ],
+                "stem": "Which line best explains back what the face tests found about upside-down copying?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It did not make the copies more accurate.",
+                    "correct": true,
+                    "feedback": "Right. In both face tests, copying upside down brought no gain in accuracy.",
+                    "sourceRefs": [
+                      "cw16",
+                      "ost16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It made beginners draw much better.",
+                    "correct": false,
+                    "feedback": "That is the claim the tests checked. They found no gain in accuracy for faces.",
+                    "misconceptionIds": [
+                      "dss-m3"
+                    ],
+                    "sourceRefs": [
+                      "cw16",
+                      "ost16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It helped with faces but not with objects.",
+                    "correct": false,
+                    "feedback": "Only faces were tested, so nothing is known here about objects. For faces there was no gain.",
+                    "misconceptionIds": [
+                      "dss-m3"
+                    ],
+                    "sourceRefs": [
+                      "cw16",
+                      "ost16"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "dss-s4",
+                "title": "Big shape first",
+                "claimId": "dss-c1",
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "hook": {
+                  "stem": "Drawing a chair, where is a good place to start?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The outline of the whole chair.",
+                      "correct": true,
+                      "feedback": "Right. The big shape gives every part a place to go."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The pattern on the seat.",
+                      "correct": false,
+                      "feedback": "A pattern is a detail. Without the outline, it has nowhere to sit."
+                    },
+                    {
+                      "id": "c",
+                      "text": "One leg, drawn in full detail first.",
+                      "correct": false,
+                      "feedback": "A finished leg can end up the wrong size once the rest is added."
+                    }
+                  ]
+                },
+                "teach": "Start with the outside shape, then place the parts inside it. Splitting what you see into simple shapes gives each part a place, so details do not drift.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Outside shape",
+                    "Big parts",
+                    "Small details"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the step that sets the big shape.",
+                  "parts": [
+                    "Kiran sketches a light box around the whole chair,",
+                    "adds the seat and the back,",
+                    "then draws the carving on one leg."
+                  ],
+                  "spot": "Kiran sketches a light box around the whole chair,",
+                  "feedback": "The light box around the chair is the big shape. Everything else is placed inside it."
+                },
+                "guided": [
+                  {
+                    "stem": "Pooja starts a bicycle by drawing the bell in full detail. Then the wheels do not fit on the page. What could she try next time?",
+                    "hint": "Which comes before the parts?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sketch the whole outline before any detail.",
+                        "correct": true,
+                        "feedback": "Right. With the outline set, the wheels and bell each get their place."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Draw the bell smaller.",
+                        "correct": false,
+                        "feedback": "A smaller bell helps a little, but the size of the whole is still a guess."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Use a bigger sheet of paper next time round.",
+                        "correct": false,
+                        "feedback": "More paper hides the problem. Starting with the outline fixes it."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Outside shape first, then the parts, then the details."
+              },
+              {
+                "id": "dss-s5",
+                "title": "Check every slope",
+                "claimId": "dss-c2",
+                "sourceRefs": [
+                  "cw16"
+                ],
+                "hook": {
+                  "stem": "You copy the slope of a roof by eye. How sure can you be that you got the angle right?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Not very. Eyes can misjudge slopes.",
+                      "correct": true,
+                      "feedback": "Right. A slope judged by eye can be off, so it is worth a check."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Quite sure, if you look hard.",
+                      "correct": false,
+                      "feedback": "Looking hard does not stop the eye from misjudging a slope."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Sure. Angles are the easy part.",
+                      "correct": false,
+                      "feedback": "Angles can be misjudged by eye, so they are worth checking."
+                    }
+                  ]
+                },
+                "teach": "In some studies, people who misjudged a slope by eye drew it wrong too, so check slopes. Hold a pen along the edge at arm's length and copy that slant.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hold a pen along the edge",
+                    "Keep that slant",
+                    "Copy it to the page"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the step that checks the slope.",
+                  "parts": [
+                    "Dev sketches the door frame,",
+                    "holds his pen at arm's length along the top edge,",
+                    "and copies that slant onto the page."
+                  ],
+                  "spot": "holds his pen at arm's length along the top edge,",
+                  "feedback": "Holding the pen along the edge shows the real slant before he copies it."
+                },
+                "guided": [
+                  {
+                    "stem": "Zoya's drawn staircase rail looks flatter than the real one. What quick check helps?",
+                    "hint": "Use something straight you already hold.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Line a pen up with the rail and compare.",
+                        "correct": true,
+                        "feedback": "Right. The pen shows the real slant, so she can match it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Trace over the same wrong line a few times.",
+                        "correct": false,
+                        "feedback": "Tracing over it keeps the same wrong slant."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Make the stairs taller instead.",
+                        "correct": false,
+                        "feedback": "That changes the stairs, not the slope of the rail."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Check slopes with a pen held at arm's length."
+              },
+              {
+                "id": "dss-s6",
+                "title": "Test a myth: upside down",
+                "claimId": "dss-c3",
+                "sourceRefs": [
+                  "cw16",
+                  "ost16"
+                ],
+                "hook": {
+                  "stem": "A popular trick says you draw better from an upside-down picture. What did tests on faces find?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No gain in accuracy.",
+                      "correct": true,
+                      "feedback": "Right. In two face tests, upside-down copies were not more accurate."
+                    },
+                    {
+                      "id": "b",
+                      "text": "A big gain for beginners.",
+                      "correct": false,
+                      "feedback": "The tests did not find that. Beginners drew no more accurately upside down."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Better copies for most faces.",
+                      "correct": false,
+                      "feedback": "The two face tests found no better copies. One found a part came out worse."
+                    }
+                  ]
+                },
+                "teach": "In two face tests, copying from an upside-down picture did not make drawings more accurate. Both gave only one short try, so test the trick yourself.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Upright copy",
+                    "lines": [
+                      "The usual view"
+                    ]
+                  },
+                  "right": {
+                    "title": "Upside-down copy",
+                    "lines": [
+                      "No accuracy gain in face tests",
+                      "Longer practice not tested"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that tests the trick fairly.",
+                  "parts": [
+                    "Fatima copies a line drawing the right way up,",
+                    "copies it again upside down,",
+                    "then holds both next to the real one."
+                  ],
+                  "spot": "then holds both next to the real one.",
+                  "feedback": "Holding both copies next to the real one lets her compare them fairly."
+                },
+                "guided": [
+                  {
+                    "stem": "A friend says drawing upside down always works. What could you say?",
+                    "hint": "Recall what the research showed.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Face tests found no gain. Let's try both.",
+                        "correct": true,
+                        "feedback": "Right. Testing both is fair, since the studies only tried faces."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, it is proven to help.",
+                        "correct": false,
+                        "feedback": "The face tests did not show that."
+                      },
+                      {
+                        "id": "c",
+                        "text": "It works if you draw for an hour.",
+                        "correct": false,
+                        "feedback": "Longer sessions were not tested, so nobody knows that yet."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Test popular tricks yourself before you trust them."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "dss-m1",
+                "name": "Details first",
+                "correction": "Splitting a scene into simple parts in a set way can help, so the big shape first gives each part a place.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dss-m2",
+                "name": "Slopes look how they are",
+                "correction": "Our eyes can misjudge a slope, and in some studies those who misjudged angles drew them wrong too.",
+                "sourceRefs": [
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dss-m3",
+                "name": "Upside down is proven",
+                "correction": "In two face-drawing tests, copying upside down did not make the drawings more accurate.",
+                "sourceRefs": [
+                  "cw16",
+                  "ost16"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "cw16",
+                "title": "The genesis of errors in drawing",
+                "publisher": "Chamberlain and Wagemans, Neuroscience and Biobehavioral Reviews",
+                "year": 2016,
+                "url": "https://research.gold.ac.uk/20010/"
+              },
+              {
+                "id": "ost16",
+                "title": "Face inversion impairs the ability to draw long-range, but not short-range, spatial relationships between features",
+                "publisher": "Ostrofsky, Kozbelt, Cohen, Conklin and Thomson, Empirical Studies of the Arts",
+                "year": 2016,
+                "url": "https://oudev.stockton.edu/social-behavioral-sciences/documents/ostrofsky2016inversion.pdf"
+              }
+            ],
+            "quest": {
+              "title": "Days 4 to 6: shapes, slopes and a myth",
+              "detail": "Needs: any paper and a pen or pencil. Day 4: draw a shoe or a chair 3 times, 3 to 4 min each, outline first every time. Small version: one outline. Next day, ask yourself: which of the 3 outlines is closest? Day 5: draw the corner of a door frame or a bed, checking each slope with a pen held at arm's length. 15 min. Small version: one corner. Next day: was the real angle steeper or flatter than you first drew it? Day 6: copy a simple line picture, like a textbook diagram, once upright and once upside down. 15 min. Small version: half of each. Next day: which copy is closer to the original?",
+              "sourceRefs": [
+                "cw16",
+                "ost16"
+              ]
+            }
+          },
+          {
+            "id": "draw-past-week-one",
+            "title": "Drawing past the first week",
+            "prerequisites": [
+              "draw-shapes-and-slants"
+            ],
+            "hook": "One week is a first look, not a finish line. In studies, drawing skill grew over weeks and months of practice.",
+            "hookSourceRefs": [
+              "schlegel15",
+              "vj25"
+            ],
+            "rule": "Compare day 1 with day 7, not with an expert. Keep sessions short, and draw things you like looking at.",
+            "ruleSourceRefs": [
+              "schlegel15",
+              "vj25",
+              "wf17"
+            ],
+            "claims": [
+              {
+                "id": "dpw-c1",
+                "text": "In one study, art students got better at sketching people from life over about three months of drawing and painting classes.",
+                "sourceRefs": [
+                  "schlegel15",
+                  "cw16"
+                ]
+              },
+              {
+                "id": "dpw-c2",
+                "text": "In one ten-lesson drawing course for older adults, nearly half of the course group dropped out, and time was the most common reason.",
+                "sourceRefs": [
+                  "vj25"
+                ]
+              },
+              {
+                "id": "dpw-c3",
+                "text": "In studies of long-term goals, enjoying the task now predicted sticking with it, while later rewards did not.",
+                "sourceRefs": [
+                  "wf17"
+                ]
+              },
+              {
+                "id": "dpw-c4",
+                "text": "In that course, people aged 65 to 87 who did the lessons and daily practice gained a lot in drawing skill over 5 or 10 weeks.",
+                "sourceRefs": [
+                  "vj25"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "dpw-1",
+                "type": "fill-the-step",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s7",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dpw-m1"
+                ],
+                "sourceRefs": [
+                  "schlegel15"
+                ],
+                "stem": "Fill the step: to judge your practice so far, put your newest drawing next to ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "the one you made at the start",
+                    "correct": true,
+                    "feedback": "Right. Your own start is a fair yardstick, since studies saw skill grow over months, not days.",
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "an expert's drawing of it",
+                    "correct": false,
+                    "feedback": "An expert has had years more practice. Your own start is the fair thing to compare with.",
+                    "misconceptionIds": [
+                      "dpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "a photo of the same thing from the internet",
+                    "correct": false,
+                    "feedback": "A photo shows the object, not your progress. Your own start shows how far you have come.",
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dpw-2",
+                "type": "predict",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s7",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "dpw-m1"
+                ],
+                "sourceRefs": [
+                  "schlegel15",
+                  "cw16"
+                ],
+                "stem": "A college art club notices that its members drew people far better after a few months. Working back, what best explains it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Months of classes and practice.",
+                    "correct": true,
+                    "feedback": "Right. In one study, art students improved at sketching people from life over about three months of classes.",
+                    "sourceRefs": [
+                      "schlegel15",
+                      "cw16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "They were born with more talent.",
+                    "correct": false,
+                    "feedback": "The students improved during the course, which points to the practice, not to fixed talent.",
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "One lucky drawing day.",
+                    "correct": false,
+                    "feedback": "One good day does not explain a gain that held over months of classes in the study.",
+                    "misconceptionIds": [
+                      "dpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dpw-3",
+                "type": "estimate",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s8",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dpw-m2"
+                ],
+                "sourceRefs": [
+                  "vj25"
+                ],
+                "stem": "In a ten-lesson drawing course for adults aged 65 to 87, about what percent of the course group dropped out?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 47%",
+                    "correct": true,
+                    "feedback": "Right. Nearly half of the course group dropped out, and time was the most common reason.",
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 10%",
+                    "correct": false,
+                    "feedback": "Far too low. Nearly half dropped out, which is why short sessions are worth a try.",
+                    "misconceptionIds": [
+                      "dpw-m2"
+                    ],
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 85%",
+                    "correct": false,
+                    "feedback": "Too high. Close to half dropped out, not nearly all of them.",
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 47,
+                  "min": 40,
+                  "max": 55,
+                  "unit": "%"
+                }
+              },
+              {
+                "id": "dpw-4",
+                "type": "scenario",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s8",
+                "job": "edge",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "dpw-m2"
+                ],
+                "sourceRefs": [
+                  "vj25"
+                ],
+                "stem": "During exam week in the hostel, Gauri has just a few spare minutes a day. She thinks drawing is pointless without a full hour. What fits the course finding?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A few minutes a day is a fair start.",
+                    "correct": true,
+                    "feedback": "Right. In one course, time was the top reason people quit, so short sessions are easier to keep.",
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Wait until she has a free hour.",
+                    "correct": false,
+                    "feedback": "Waiting may mean no drawing at all, and in one course time was the top reason people quit.",
+                    "misconceptionIds": [
+                      "dpw-m2"
+                    ],
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Practice needs a full hour to count.",
+                    "correct": false,
+                    "feedback": "Nothing in the course says that. Time was the most common reason people dropped out.",
+                    "misconceptionIds": [
+                      "dpw-m2"
+                    ],
+                    "sourceRefs": [
+                      "vj25"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dpw-5",
+                "type": "why",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s9",
+                "job": "misconception",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "dpw-m3"
+                ],
+                "sourceRefs": [
+                  "wf17"
+                ],
+                "stem": "Kunal draws daily because he hopes it will help his career one day. He finds it dull and keeps skipping. Why might that be?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Later rewards predicted sticking less.",
+                    "correct": true,
+                    "feedback": "Right. In studies of goals, enjoyment now predicted keeping going, while later rewards did not.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He has not found the right drawing app.",
+                    "correct": false,
+                    "feedback": "An app would add screen time. The studies point to enjoyment now as the better predictor.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Daily drawing is too much for anyone.",
+                    "correct": false,
+                    "feedback": "Many people draw daily. What predicted sticking with goals was enjoying the task now.",
+                    "misconceptionIds": [
+                      "dpw-m3"
+                    ],
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dpw-6",
+                "type": "choose",
+                "conceptId": "draw-past-week-one",
+                "step": "dpw-s9",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "dpw-m1"
+                ],
+                "sourceRefs": [
+                  "wf17",
+                  "vj25",
+                  "schlegel15"
+                ],
+                "stem": "Which plan for the next fortnight puts this track's ideas together best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Short daily sessions of things you like, compared with your start.",
+                    "correct": true,
+                    "feedback": "Right. Short sessions, things you enjoy and comparing with your own start all come from this track.",
+                    "sourceRefs": [
+                      "wf17",
+                      "vj25",
+                      "schlegel15"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One hour a day of whatever is hardest.",
+                    "correct": false,
+                    "feedback": "Long, dull sessions go against two findings: time was the top reason to quit, and enjoyment predicted sticking.",
+                    "sourceRefs": [
+                      "wf17",
+                      "vj25"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Copy expert drawings and judge yours against them.",
+                    "correct": false,
+                    "feedback": "Judging against experts hides your own progress. Comparing with your own start is fairer.",
+                    "misconceptionIds": [
+                      "dpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "schlegel15"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "dpw-s7",
+                "title": "Same bottle, one week on",
+                "claimId": "dpw-c1",
+                "sourceRefs": [
+                  "schlegel15",
+                  "cw16"
+                ],
+                "hook": {
+                  "stem": "After a week of short drawing sessions, what is fair to expect?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "A drawing to compare with day 1.",
+                      "correct": true,
+                      "feedback": "Right. A week gives you something to compare, not a finished skill."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Drawings like an art student's.",
+                      "correct": false,
+                      "feedback": "Art students in one study improved over months of classes, not a week."
+                    },
+                    {
+                      "id": "c",
+                      "text": "A clear jump in skill.",
+                      "correct": false,
+                      "feedback": "A week is short. Gains in studies took weeks or months."
+                    }
+                  ]
+                },
+                "teach": "Draw day 1's bottle again and put both side by side. Skill in studies grew over months, so a week is a first look, not a finish line.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Drawing practice",
+                  "min": "Day 1",
+                  "max": "Months",
+                  "marks": [
+                    {
+                      "at": 10,
+                      "text": "Day 7: a first look"
+                    },
+                    {
+                      "at": 90,
+                      "text": "Gains seen in studies"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the fair way to judge the week.",
+                  "parts": [
+                    "Ali sets his day 1 and day 7 bottles side by side,",
+                    "compares each with the real bottle,",
+                    "and then compares them with an artist's print."
+                  ],
+                  "spot": "compares each with the real bottle,",
+                  "feedback": "Comparing with the real bottle is fair. An artist has had years of practice."
+                },
+                "guided": [
+                  {
+                    "stem": "Simran's day 7 bottle looks only a bit better than day 1. What does that tell her?",
+                    "hint": "Think about how long the studies ran.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "It is early; the gains in research took months.",
+                        "correct": true,
+                        "feedback": "Right. A small change after a week is normal."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She has no talent for drawing.",
+                        "correct": false,
+                        "feedback": "One week cannot show talent. Skill in studies grew with months of practice."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The track did not help her.",
+                        "correct": false,
+                        "feedback": "A week is too short to judge. Gains in studies took months."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Compare with your own day 1, not with an expert."
+              },
+              {
+                "id": "dpw-s8",
+                "title": "Short sessions count",
+                "claimId": "dpw-c2",
+                "sourceRefs": [
+                  "vj25"
+                ],
+                "hook": {
+                  "stem": "In a drawing course with daily practice, what was the most common reason people dropped out?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Time.",
+                      "correct": true,
+                      "feedback": "Right. Time was the top reason people left the course."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Bad drawings.",
+                      "correct": false,
+                      "feedback": "That was not a top reason. Time was."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Boredom.",
+                      "correct": false,
+                      "feedback": "Only one person gave that reason. Time was the most common."
+                    }
+                  ]
+                },
+                "teach": "In one drawing course, time was the most common reason people quit, so keep sessions short. The small version still counts as a session.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Long sessions",
+                    "lines": [
+                      "Hard to fit in"
+                    ]
+                  },
+                  "right": {
+                    "title": "Short sessions",
+                    "lines": [
+                      "Easy to fit in",
+                      "The small version counts"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the plan easiest to keep.",
+                  "parts": [
+                    "Vikram plans a one-hour drawing every night,",
+                    "Anu plans 10 minutes after dinner,",
+                    "and Joy plans to draw when he is free."
+                  ],
+                  "spot": "Anu plans 10 minutes after dinner,",
+                  "feedback": "A short, set time is easier to fit in than an hour or a vague plan."
+                },
+                "guided": [
+                  {
+                    "stem": "Exams start Monday and Leo has no free hour. What keeps his drawing going?",
+                    "hint": "The shortest choice can still count.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Do the 5-minute small version.",
+                        "correct": true,
+                        "feedback": "Right. A small session fits a busy week."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Wait until he has a free hour.",
+                        "correct": false,
+                        "feedback": "Waiting may mean no drawing for weeks."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Draw for two hours on Sunday.",
+                        "correct": false,
+                        "feedback": "A long block is harder to fit in, and time was the top reason people quit."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Short sessions are easier to keep. Small ones count."
+              },
+              {
+                "id": "dpw-s9",
+                "title": "Draw what you enjoy",
+                "claimId": "dpw-c3",
+                "sourceRefs": [
+                  "wf17"
+                ],
+                "hook": {
+                  "stem": "In studies of goals, what predicted sticking with them?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Enjoying it now.",
+                      "correct": true,
+                      "feedback": "Right. Enjoyment now predicted sticking with goals; later rewards did not."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Its rewards later on.",
+                      "correct": false,
+                      "feedback": "Later rewards did not predict sticking with it in these studies."
+                    },
+                    {
+                      "id": "c",
+                      "text": "How hard you push.",
+                      "correct": false,
+                      "feedback": "The studies compared rewards now and later. Enjoyment now won."
+                    }
+                  ]
+                },
+                "teach": "In studies of long-term goals, enjoying the task now predicted sticking with it, while later rewards did not. So pick things you like looking at.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Fun now",
+                    "lines": [
+                      "Predicted sticking with it"
+                    ]
+                  },
+                  "right": {
+                    "title": "Rewards later",
+                    "lines": [
+                      "Did not predict it"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the choice built on enjoyment.",
+                  "parts": [
+                    "Nisha skips the dull bucket",
+                    "and draws the plant she loves on her windowsill."
+                  ],
+                  "spot": "and draws the plant she loves on her windowsill.",
+                  "feedback": "Choosing what she likes looking at makes the session more fun now."
+                },
+                "guided": [
+                  {
+                    "stem": "Omar draws only to get better marks in a design class. He keeps putting it off. What could help?",
+                    "hint": "Which choice makes it fun today?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Draw things he enjoys too, like his bike.",
+                        "correct": true,
+                        "feedback": "Right. Fun now predicted keeping going better than later rewards."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Think harder about the marks he wants to get.",
+                        "correct": false,
+                        "feedback": "Marks are a later reward, which did not predict sticking with it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Make each session longer.",
+                        "correct": false,
+                        "feedback": "That adds time, not enjoyment, and time was the top reason people quit one course."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Pick things you like drawing. Enjoying it now matters."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "dpw-m1",
+                "name": "One week shows the result",
+                "correction": "Studies saw drawing gains over weeks or months, so a week is too short to judge.",
+                "sourceRefs": [
+                  "schlegel15",
+                  "vj25"
+                ]
+              },
+              {
+                "id": "dpw-m2",
+                "name": "Only long sessions count",
+                "correction": "In one course, time was the top reason people quit, so short sessions are worth a try.",
+                "sourceRefs": [
+                  "vj25"
+                ]
+              },
+              {
+                "id": "dpw-m3",
+                "name": "Benefits keep you going",
+                "correction": "Enjoying a task now predicted sticking with goals; later rewards did not.",
+                "sourceRefs": [
+                  "wf17"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "schlegel15",
+                "title": "The artist emerges: visual art learning alters neural structure and function",
+                "publisher": "Schlegel et al., NeuroImage",
+                "year": 2015,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/25463452/"
+              },
+              {
+                "id": "cw16",
+                "title": "The genesis of errors in drawing",
+                "publisher": "Chamberlain and Wagemans, Neuroscience and Biobehavioral Reviews",
+                "year": 2016,
+                "url": "https://research.gold.ac.uk/20010/"
+              },
+              {
+                "id": "vj25",
+                "title": "Promoting successful cognitive aging through observational drawing: a feasibility study",
+                "publisher": "Vodyanyk and Jaeggi, Research on Aging",
+                "year": 2025,
+                "url": "https://europepmc.org/article/PMC/PMC12102519"
+              },
+              {
+                "id": "wf17",
+                "title": "Immediate rewards predict adherence to long-term goals",
+                "publisher": "Woolley and Fishbach, Personality and Social Psychology Bulletin",
+                "year": 2017,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/27899467/"
+              }
+            ],
+            "quest": {
+              "title": "Day 7 and two extra days: keep it going",
+              "detail": "Needs: any paper and a pen or pencil. Day 7: redraw the bottle from the angle you liked on day 1. 15 min. Small version: 5 min. Put day 1 and day 7 side by side. Next day, ask yourself: which one looks more like the bottle: day 1, day 7, or about the same? Extra day A: draw any object for 5 minutes, then stop. Small version: 2 minutes. Next day: did the short session feel easy to start? Extra day B: pick something you like looking at, such as a plant, your bike or a chai cup, and draw it for 10 to 15 min. Small version: 5 min. Next day: which was more fun, this or day 1's bottle?",
+              "sourceRefs": [
+                "schlegel15",
+                "vj25",
+                "wf17"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
