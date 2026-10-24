@@ -15,8 +15,8 @@
    },
    "fieldTry": {
     "title": "Progressive overload",
-    "detail": "Count one load you already carry today, like the stairs to your floor.",
-    "smaller": "Count the stairs to one floor.",
+    "detail": "Count how many times you carry a bag up stairs today; add no extra trips.",
+    "smaller": "Notice one bag you already carry today.",
     "cues": [
      "On the stairs at home",
      "Carrying the shopping"
@@ -83,11 +83,11 @@
    },
    "fieldTry": {
     "title": "Sleep and recovery",
-    "detail": "Tonight, note when you put the phone down and when you wake up.",
-    "smaller": "Note just your wake-up time tomorrow.",
+    "detail": "This morning, note when you put the phone down last night and when you woke.",
+    "smaller": "Note when you woke this morning.",
     "cues": [
-     "When I set my alarm",
-     "When I plug in my phone"
+     "After waking",
+     "At breakfast"
     ],
     "settings": [
      "On a weekend night",
@@ -180,8 +180,8 @@
    },
    "fieldTry": {
     "title": "Cardio zones and talk test",
-    "detail": "On a walk today, say a full sentence and notice if you could sing.",
-    "smaller": "Notice your breath at the top of one flight of stairs.",
+    "detail": "On a walk you already take, silently note if you could say a full sentence.",
+    "smaller": "After stairs you already take, notice your breath.",
     "cues": [
      "Walking to class or work",
      "Taking the stairs"
@@ -213,8 +213,8 @@
    },
    "fieldTry": {
     "title": "Habit of showing up",
-    "detail": "Right after one thing you do daily, walk or take the stairs for 2 minutes.",
-    "smaller": "Take one flight of stairs after a daily act.",
+    "detail": "After one daily act, notice if a short walk or stairs already follows it.",
+    "smaller": "Name one daily act that a walk already follows.",
     "cues": [
      "After brushing",
      "After lunch"
@@ -278,7 +278,7 @@
    },
    "fieldTry": {
     "title": "Protein in everyday food",
-    "detail": "At one meal today, name the cereal and the pulse on your plate.",
+    "detail": "At one meal today, note if it has a cereal, millet or pulse. None counts too.",
     "smaller": "Name one protein food at one meal.",
     "cues": [
      "At lunch",
@@ -352,7 +352,7 @@
      "On a hot day",
      "On a busy college or work day"
     ],
-    "notice": "Water, milk and lower-sugar drinks, tea and coffee included, all count towards daily fluid.",
+    "notice": "Water, lower-fat milk and lower-sugar drinks, including tea and coffee, all count towards daily fluid.",
     "sourceRefs": [
      "water"
     ]
@@ -374,11 +374,11 @@
    },
    "fieldTry": {
     "title": "Sleep and recovery",
-    "detail": "Set tomorrow's wake time tonight, and note if you woke near it.",
-    "smaller": "Note what time you woke tomorrow.",
+    "detail": "Today, note if you woke near your usual time. Set no new wake time.",
+    "smaller": "Note when you woke this morning.",
     "cues": [
-     "When I set my alarm",
-     "When I put my phone down"
+     "After waking",
+     "At breakfast"
     ],
     "settings": [
      "On a weekend",
@@ -474,7 +474,7 @@
    },
    "fieldTry": {
     "title": "Reading a food label",
-    "detail": "At a shop, compare two similar packs on the same per-100 g line.",
+    "detail": "Compare two similar packs on the same per-100 g or per-100 ml line.",
     "smaller": "Find the per-100 g column on one pack.",
     "cues": [
      "At a shop",
@@ -517,7 +517,7 @@
      "On a supplement pack",
      "In a reel or video"
     ],
-    "notice": "No one food gives all the key nutrients, which is why the guide says to eat from many food groups.",
+    "notice": "No one food gives all the key nutrients.",
     "sourceRefs": [
      "variety"
     ]
@@ -539,8 +539,8 @@
    },
    "fieldTry": {
     "title": "Indus Valley cities",
-    "detail": "On a walk, find where rain or used water leaves a building for a drain.",
-    "smaller": "Find one drain cover on your street.",
+    "detail": "On a usual walk, spot one drain cover from the footpath. Stay away from openings.",
+    "smaller": "Spot one drain cover from the footpath.",
     "cues": [
      "Walking to class or work",
      "On an evening walk"
@@ -611,9 +611,9 @@
     ],
     "settings": [
      "A friend from another state",
-     "A shopkeeper"
+     "A willing family member"
     ],
-    "notice": "Monks forced out of Gandhara carried its art style, which then grew popular at Buddhist sites elsewhere.",
+    "notice": "Monks who appear to have been forced out of Gandhara took its art style to Afghanistan and Central Asia.",
     "sourceRefs": [
      "silk"
     ]
@@ -635,15 +635,15 @@
    },
    "fieldTry": {
     "title": "Indian place value and zero",
-    "detail": "Spot one price or number with a zero in the middle, and say what it holds open.",
+    "detail": "Find one price with a zero inside it, and name the zero's place.",
     "smaller": "Find one number with a zero today.",
     "cues": [
      "At a shop",
      "On a bill"
     ],
     "settings": [
-     "On a bus or train number",
-     "On a phone number"
+     "On a price tag",
+     "On a receipt total"
     ],
     "notice": "In the Indian base ten system, zero can mark an empty place in a number.",
     "sourceRefs": [
@@ -667,8 +667,8 @@
    },
    "fieldTry": {
     "title": "Printing and reading",
-    "detail": "Ask at home how many people read one shared newspaper or book.",
-    "smaller": "Notice one printed page many people see today.",
+    "detail": "Spot one printed notice put up where many people can see it.",
+    "smaller": "Spot one printed notice today.",
     "cues": [
      "At breakfast",
      "On a call home"
@@ -699,8 +699,8 @@
    },
    "fieldTry": {
     "title": "Mughal administration",
-    "detail": "At a bank, post office or ration shop, spot one record they keep.",
-    "smaller": "Name one record your family keeps for a service.",
+    "detail": "On one bill or public form, find a date or record number. Keep personal details private.",
+    "smaller": "Find the date on one receipt you already have.",
     "cues": [
      "When I run an errand",
      "On the way home"
@@ -827,8 +827,8 @@
    },
    "fieldTry": {
     "title": "How a multirotor turns",
-    "detail": "Watch a drone, live or in a video, and spot it tilt before it moves.",
-    "smaller": "In one drone video, spot one tilt.",
+    "detail": "Tilt a book once, and point where a push out of its top face would go.",
+    "smaller": "Tilt a book and point where its top face points.",
     "cues": [
      "At an event",
      "While watching videos"
@@ -992,11 +992,11 @@
    },
    "fieldTry": {
     "title": "How UPI moves money",
-    "detail": "On your next UPI payment, read the payee's name and UPI ID before you approve.",
-    "smaller": "Find your own UPI ID in your app.",
+    "detail": "At a shop QR stand, read the printed payee name or UPI ID. No scan, no payment.",
+    "smaller": "Spot one shop QR stand without scanning it.",
     "cues": [
-     "At a shop QR",
-     "Paying a friend"
+     "At a shop counter",
+     "On a usual errand"
     ],
     "settings": [
      "Splitting a bill",
@@ -1025,14 +1025,14 @@
    },
    "fieldTry": {
     "title": "How a phone camera takes a photo",
-    "detail": "Take one photo in dim light and one in daylight, then zoom in on each.",
-    "smaller": "Zoom into one photo you took at night.",
+    "detail": "Photograph one plain object in bright and dim light. Keep people out.",
+    "smaller": "Take one dim-light photo of a plain object.",
     "cues": [
      "This evening",
      "In my room"
     ],
     "settings": [
-     "At a dim restaurant",
+     "A plain object on a table",
      "Outdoors at dusk"
     ],
     "notice": "A high ISO in dim light gives a bright but grainy photo, because it multiplies the signal.",
@@ -1058,7 +1058,7 @@
    "fieldTry": {
     "title": "Blue sky and red sunsets",
     "detail": "At sunset, look at the sky away from the Sun and name its colours.",
-    "smaller": "Look up at midday and note the sky's colour.",
+    "smaller": "At midday, look away from the Sun and name the sky colour.",
     "cues": [
      "On my way home",
      "From a terrace or window"
@@ -1172,8 +1172,8 @@
    "oldQuest": null,
    "fieldTry": {
     "title": "The rule of 72",
-    "detail": "Find one interest rate on a card, loan or deposit ad, and divide 72 by it.",
-    "smaller": "Divide 72 by one rate you see today.",
+    "detail": "Find one yearly interest rate in an ad, and divide 72 by it.",
+    "smaller": "Spot one yearly interest rate in an ad.",
     "cues": [
      "While scrolling",
      "At a bank or shop"
@@ -1235,7 +1235,7 @@
      "A sector fund's sheet",
      "A friend's fund, if they share it"
     ],
-    "notice": "Four or five shares are not a real spread; one guide asks for at least a dozen, across many industries.",
+    "notice": "Four or five shares are not a real spread; a spread runs across many industries.",
     "sourceRefs": [
      "risk"
     ]
@@ -1283,8 +1283,8 @@
    },
    "fieldTry": {
     "title": "Emergency fund",
-    "detail": "Recall one surprise cost from the last year, like a phone repair, and its size.",
-    "smaller": "Name one surprise cost you have heard of.",
+    "detail": "Look at one thing you use daily, and name a repair it could need without warning.",
+    "smaller": "Name one possible repair for something you use.",
     "cues": [
      "On my way home",
      "When I check my spending"
@@ -1381,15 +1381,15 @@
    },
    "fieldTry": {
     "title": "UPI scams and social engineering",
-    "detail": "Tell one person at home: getting money never needs a PIN or a QR scan.",
-    "smaller": "Save 1930 in your contacts.",
+    "detail": "At a shop, spot one UPI QR stand, and recall: getting money needs no scan.",
+    "smaller": "Spot one shop QR stand; do not scan it.",
     "cues": [
-     "On a call home",
-     "In a family group chat"
+     "At a shop counter",
+     "On a usual errand"
     ],
     "settings": [
-     "An older relative",
-     "A friend new to UPI"
+     "At a market",
+     "At a petrol pump"
     ],
     "notice": "RBI says getting money never needs a QR scan or a PIN.",
     "sourceRefs": [
@@ -1675,8 +1675,8 @@
    },
    "fieldTry": {
     "title": "If-then plans",
-    "detail": "Write one plan for today: 'If [moment], then I will [act].'",
-    "smaller": "Say one if-then plan out loud.",
+    "detail": "Pick one small task you already plan today, name its cue, then do it then.",
+    "smaller": "Say one if-then plan out loud, then do it.",
     "cues": [
      "At breakfast",
      "When I open my planner"
@@ -1707,8 +1707,8 @@
    },
    "fieldTry": {
     "title": "The spotlight effect",
-    "detail": "Ask a friend if they remember what you wore yesterday.",
-    "smaller": "Try to recall what a friend wore yesterday.",
+    "detail": "Today, notice if anyone mentions your shirt's colour without being asked.",
+    "smaller": "Name your shirt's colour to yourself, then see who notices.",
     "cues": [
      "At college or work",
      "In a group chat"
@@ -1727,5 +1727,6 @@
     "text": "In two studies, people wearing a T-shirt with a striking image guessed that more people could recall it than really could."
    }
   }
- ]
+ ],
+ "reviewed": "Codex B review 24 Oct (idea-engine/codex-review-fieldtries.md): 24 rows flagged, fixes applied as accepted by the idea engine."
 }
