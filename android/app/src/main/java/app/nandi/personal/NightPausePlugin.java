@@ -75,6 +75,7 @@ public class NightPausePlugin extends Plugin {
         long bootAt = -1, screenAt = -1, downAt = -1, lockAt = -1, logStart = -1;
         String screen = null;
         JSArray inside = new JSArray();
+        Set<String> seen = new HashSet<>();
         UsageEvents.Event event = new UsageEvents.Event();
         while (events.hasNextEvent()) {
             events.getNextEvent(event);
@@ -94,6 +95,7 @@ public class NightPausePlugin extends Plugin {
             if (kind == null) continue;
             String pkg = event.getPackageName();
             String cls = event.getClassName() == null ? "" : event.getClassName();
+            if ((kind.equals("fg") || kind.equals("bg")) && pkg != null) seen.add(pkg);
             if (at > from) {
                 JSObject item = new JSObject();
                 item.put("type", kind);
@@ -128,7 +130,7 @@ public class NightPausePlugin extends Plugin {
         result.put("available", logStart >= 0);
         if (logStart >= 0) result.put("logStart", logStart);
         result.put("events", kept);
-        result.put("lockSafe", lockSafe(call.getString("packages", "")));
+        result.put("lockSafe", lockSafe(call.getString("packages", ""), seen));
         call.resolve(result);
     }
 
@@ -182,13 +184,18 @@ public class NightPausePlugin extends Plugin {
     /** The default chosen apps, declared in the manifest's <queries> so this phone can look them up (item 63). */
     private static final Set<String> QUERIED = new HashSet<>(Arrays.asList("com.instagram.android", "com.google.android.youtube", "com.snapchat.android"));
 
+    /** ActivityInfo.FLAG_SHOW_WHEN_LOCKED (API 27) is hidden from the public SDK, so its documented bit is used. */
+    private static final int FLAG_SHOW_WHEN_LOCKED = 0x800000;
+
     /**
-     * Whether a lock can serve as a baseline for these apps (Codex A item 63): none of them may declare an activity
-     * that shows over the lock screen (FLAG_SHOW_WHEN_LOCKED), and each must be one this phone can look up. A
-     * package that cannot be seen is unknown, so not safe; one declared in <queries> that is missing is not installed.
-     * An activity that turns this on at run time (setShowWhenLocked) cannot be seen here (DECISIONS, item 63).
+     * Whether a lock can serve as a baseline for these apps (Codex A items 63, 65): none of them may declare an
+     * activity that shows over the lock screen (FLAG_SHOW_WHEN_LOCKED, read from the public flags field), and each must
+     * be one this phone can look up. A package that cannot be seen is unknown, so not safe. One of the 3 declared in
+     * <queries> that is missing counts as not installed only if it is also absent from the retained log (`seen`).
+     * An activity that turns this on at run time (setShowWhenLocked) cannot be seen here; Jenil accepted that (24 Oct).
      */
-    private boolean lockSafe(String packages) {
+    private boolean lockSafe(String packages, Set<String> seen) {
+        if (Build.VERSION.SDK_INT < 27) return false;
         PackageManager manager = getContext().getPackageManager();
         for (String pkg : packages.split(",")) {
             String name = pkg.trim();
@@ -197,10 +204,10 @@ public class NightPausePlugin extends Plugin {
                 PackageInfo info = manager.getPackageInfo(name, PackageManager.GET_ACTIVITIES);
                 if (info.activities == null) continue;
                 for (ActivityInfo activity : info.activities) {
-                    if ((activity.flags & ActivityInfo.FLAG_SHOW_WHEN_LOCKED) != 0) return false;
+                    if ((activity.flags & FLAG_SHOW_WHEN_LOCKED) != 0) return false;
                 }
             } catch (PackageManager.NameNotFoundException missing) {
-                if (!QUERIED.contains(name)) return false;
+                if (!QUERIED.contains(name) || seen.contains(name)) return false;
             }
         }
         return true;

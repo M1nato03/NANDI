@@ -1,3 +1,4 @@
+import { replayFactXp } from './economy/awards';
 import { describe, expect, it } from 'vitest';
 import { RULES, RULES_BOUNDS, RULES_HISTORY, rulesFor, type Rules, type RulesHistoryEntry } from './rules.config';
 
@@ -56,11 +57,23 @@ describe('rule history', () => {
     // from the build that writes them, so no past day is rescored.
     // 24129226 (24 Oct, item 59): plan.chhutti.lockPasses and lockSlackMs decide when a chhutti can be measured (and so
     // paid), so they count too (Codex A item 61). Chhutti is not on main yet, so no stored day has a chhutti fact.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', '24129226']]);
+    // 25 Oct (item 64): Jenil chose 10 XP for a measured chhutti. The 5 Oct entry is frozen with chhutti.xp 0 and the
+    // current rules (24129226) start on 25 Oct, so no day before it is rescored. cf7b07d1 is that frozen 5 Oct copy.
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226']]);
   });
 
-  it('starts with the current rules', () => {
-    expect(RULES_HISTORY[0]).toEqual({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
+  it('ends with the current rules, and the older entry differs only in what it froze', () => {
+    expect(RULES_HISTORY.at(-1)).toMatchObject({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
+    const frozen = RULES_HISTORY[0]!.rules;
+    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan }).toEqual(RULES);
+    expect(frozen.plan.chhutti.xp).toBe(0);
+  });
+
+  it('a measured chhutti pays 10 XP only from 25 Oct, forward-only (item 64)', () => {
+    const fact = (dayKey: string, source: 'usage' | 'self') => ({ id: `chhutti:${dayKey}:w`, mode: 'tasks' as const, kind: 'chhutti', refId: `${dayKey}:w`, dayKey, inputs: { kept: true, source }, updatedAt: 1, deleted: 0 as const, deviceId: 't' });
+    expect(replayFactXp(fact('2026-10-24', 'usage'))).toBe(0);
+    expect(replayFactXp(fact('2026-10-25', 'usage'))).toBe(10);
+    expect(replayFactXp(fact('2026-10-25', 'self'))).toBe(0);
   });
 
   it('selects the latest effective entry without mutating the history', () => {

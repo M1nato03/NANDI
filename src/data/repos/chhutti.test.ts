@@ -272,3 +272,26 @@ it('a chosen app that can show over the lock screen gets no lock baseline (Codex
   expect(await checkChhutti(db, at('2026-11-02', '22:00'), unsafe, async () => [])).toHaveLength(1);
   expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
 });
+
+it('a fail recorded while a window is being read stops a lock-based fact; the window is asked about (Codex A item 65)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: { passes: 3, upTo: at('2026-11-02', '15:00'), streakStart: at('2026-11-02', '13:00'), lastFailAt: null }, updatedAt: 1, deleted: 0, deviceId: 't' });
+  const quietAfterLock = { logStart: 0, lockSafe: true, events: [] as UsageEvent[] };
+  const failsMidRead = async (from: number) => {
+    // Another check records a fail while this window's log is being read.
+    await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: { passes: 0, upTo: at('2026-11-02', '21:50'), streakStart: null, lastFailAt: at('2026-11-02', '21:50') }, updatedAt: 2, deleted: 0, deviceId: 't' });
+    return { ...quietAfterLock, logStart: from - 5 * 86_400_000, events: [{ type: 'lock' as const, at: from - 600_000 }, { type: 'off' as const, at: from - 600_000 }] };
+  };
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), failsMidRead, async () => [])).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it('a native read that never answers times out as no log, so the window is asked about (Codex A item 65)', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  const never = () => new Promise<never>(() => undefined);
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), never, never, 50)).toHaveLength(1);
+  // The next check is not stuck behind it.
+  expect(await checkChhutti(db, at('2026-11-02', '22:05'), reader(() => null), async () => null, 50)).toHaveLength(1);
+});

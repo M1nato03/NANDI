@@ -1,7 +1,8 @@
 /** Starting defaults from 05-economy §2. Rule changes apply by dayKey, never retroactively. */
 export const RULES = {
-  version: 1,
-  effectiveFrom: '2026-10-05',
+  version: 2,
+  // 25 Oct (item 64): a measured kept Phone ki chhutti pays plan.chhutti.xp from this day on; see RULES_HISTORY.
+  effectiveFrom: '2026-10-25',
   dayBoundaryHour: 4,
 
   // 05-economy §2, Tasks; 02-tasks §6 (timers and optional pre-reminder).
@@ -213,7 +214,7 @@ export const RULES = {
   },
 
   // Spec 24 #1 (cj5-focus §5 #1): Phone ki chhutti, a planned off-phone window checked afterwards, never blocked.
-  // xp is Jenil's open decision (spec 24 decision 4: 10 or 0); nothing ships until he answers.
+  // xp: Jenil chose 10 for a MEASURED kept window on 24 Oct (item 64); a self-reported one always pays 0.
   plan: { chhutti: { xp: 10, paidPerDay: 1, startMin: 30, rampStepMin: 15, maxMin: 180, graceMin: 5, rampNeedsKeptOfLast3: 2, lockPasses: 3, lockSlackMs: 5000 } },
 
   // Spec 12: practice days a courtyard corner needs for stages 1–5. Days, never points.
@@ -377,8 +378,12 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
 
 export type RulesHistoryEntry = { effectiveFrom: string; rules: Rules; note?: string };
 
+/** The rules in force from 5 Oct: the same as now, except that a measured chhutti paid nothing (item 64). Frozen. */
+const RULES_2026_10_05: Rules = { ...RULES, version: 1, effectiveFrom: '2026-10-05', plan: { chhutti: { ...RULES.plan.chhutti, xp: 0 } } };
+
 export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES },
+  { effectiveFrom: RULES_2026_10_05.effectiveFrom, rules: RULES_2026_10_05 },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'chhutti pays 10 XP when measured (item 64)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */
