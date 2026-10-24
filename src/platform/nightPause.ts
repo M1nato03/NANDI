@@ -14,6 +14,7 @@ type NightPausePlugin = {
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
   windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[]; lockSafe?: boolean }>;
   lockEvents(options: { since: number }): Promise<{ available: boolean; events?: LockEvent[] }>;
+  installedApps(options: { packages: string }): Promise<{ installed: string[] }>;
 };
 
 const native = registerPlugin<NightPausePlugin>('NightPause');
@@ -46,4 +47,11 @@ export async function readLockEvents(since: number): Promise<LockEvent[] | null>
   if (!Capacitor.isNativePlatform()) return null;
   const result = await native.lockEvents({ since });
   return result.available ? (Array.isArray(result.events) ? result.events : []) : null;
+}
+
+/** Which of these packages this phone can see installed now (the default apps are in the manifest's <queries>). */
+export async function readInstalledApps(packages: string[]): Promise<string[] | null> {
+  if (!Capacitor.isNativePlatform()) return null;
+  const result = await native.installedApps({ packages: packages.join(',') });
+  return Array.isArray(result.installed) ? result.installed : [];
 }

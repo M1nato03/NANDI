@@ -4,7 +4,7 @@ import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { DAY_LIMIT_CHOICES, DAY_MODES, DEFAULT_PAUSE_APPS, pauseWindowTimes, readDayLimit, readDayMode } from '../../core/nightPause';
 import { RULES } from '../../core/rules.config';
-import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openOverlaySettings, openUsageSettings, testNightPause } from '../../platform/nightPause';
+import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openOverlaySettings, openUsageSettings, readInstalledApps, testNightPause } from '../../platform/nightPause';
 import { notifier } from '../../platform/notifier';
 
 const defaultPackages: string[] = DEFAULT_PAUSE_APPS.map(app => app.packageName);
@@ -14,6 +14,10 @@ export function NightSettings() {
   const [overlay, setOverlay] = useState(false);
   const [message, setMessage] = useState('');
   const [newPackage, setNewPackage] = useState('');
+  // On the phone, only the default apps that are installed are offered (Codex A item 66): a chosen app that is not
+  // installed would stop Phone ki chhutti from checking by itself, so it shows as not on this phone, to untick.
+  const [installed, setInstalled] = useState<string[] | null>(null);
+  useEffect(() => { void readInstalledApps(defaultPackages).then(setInstalled).catch(() => setInstalled(null)); }, []);
   const enabled = rows?.find(row => row.key === 'night.pause.enabled')?.value === true;
   const storedPackages = rows?.find(row => row.key === 'night.pause.apps')?.value;
   const packages = Array.isArray(storedPackages) ? storedPackages.filter((item): item is string => typeof item === 'string') : defaultPackages;
@@ -69,7 +73,7 @@ export function NightSettings() {
     {dayMode === 'limit' && <label>Daily limit <select value={dayLimit} onChange={event => void save('night.pause.dayLimitMin', readDayLimit(Number(event.target.value)))}>{DAY_LIMIT_CHOICES.map(minutes => <option key={minutes} value={minutes}>{minutes} minutes</option>)}</select></label>}
     <p>{dayMode === 'limit' ? `By day it pauses once your chosen apps reach ${dayLimit} minutes together since 04:00, then each time you open one.` : dayMode === 'open' ? 'By day it pauses every time you open a chosen app.' : 'By day it stays quiet.'} After 'Go anyway' it asks again in {RULES.night.pauseSnoozeMin} minutes. Turn it off here any time.</p>
     <button type="button" className="secondary" onClick={() => void tryNow()}>Try it now for {RULES.night.pauseTestMin} minutes</button>
-    {DEFAULT_PAUSE_APPS.map(app => <label key={app.packageName}><input type="checkbox" checked={packages.includes(app.packageName)} onChange={() => toggle(app.packageName)} /> {app.label}</label>)}
+    {DEFAULT_PAUSE_APPS.filter(app => !installed || installed.includes(app.packageName) || packages.includes(app.packageName)).map(app => <label key={app.packageName}><input type="checkbox" checked={packages.includes(app.packageName)} onChange={() => toggle(app.packageName)} /> {app.label}{installed && !installed.includes(app.packageName) ? ' (not on this phone)' : ''}</label>)}
     {extras.map(item => <label key={item}><input type="checkbox" checked onChange={() => toggle(item)} /> {item}</label>)}
     <label>Add an app package name <input value={newPackage} onChange={event => setNewPackage(event.target.value)} placeholder="com.example.app" /></label>
     <button type="button" className="secondary" onClick={add}>Add app</button>

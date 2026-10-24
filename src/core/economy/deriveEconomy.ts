@@ -550,7 +550,9 @@ function replayEconomy(
     // A boost written since batch 5 says when it ends (`until`, never past shutdown), so it doubles nothing after
     // shutdown or bedtime; an older boost fact keeps its full window, so past days keep what they showed (item 51).
     const boostEnd = boost ? Math.min(boost.updatedAt + rules.gamify.focusMinutes * 60_000, typeof boost.inputs.until === 'number' ? boost.inputs.until : Infinity) : 0;
-    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boostEnd && row.kind !== 'focus-boost')) {
+    // A chhutti is paid for time away from the phone, not for a boosted half hour, so Focus never doubles it (Codex A
+    // item 66). Chhutti facts exist only from the build that writes them, so no past day changes.
+    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boostEnd && row.kind !== 'focus-boost' && row.kind !== 'chhutti')) {
       let award = replayFactXp(row, history);
       if (row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row)) {
         const before = rows.slice(0, rows.indexOf(row) + 1).filter(candidate => candidate.mode === 'mind' && candidate.kind === 'learn-answer' && candidate.inputs.dropId === `drop:daily:${key}` && beforeBed(candidate));

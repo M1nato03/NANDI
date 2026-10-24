@@ -37,6 +37,17 @@ describe('daily invitations and awards', () => {
     const ended = fact('focus-boost', day, { until: noon + 5 * 60_000 }, noon, 'gamify');
     expect(deriveEconomy([ended, task], undefined, [], day).days[0]).toMatchObject({ tasks: 20, focus: 0 });
   });
+  it('Focus never doubles a measured chhutti written inside the boost: it pays exactly 10 (Codex A item 66)', () => {
+    const later = '2026-10-26';
+    const at = new Date(`${later}T12:00:00`).getTime();
+    const on = (row: LedgerRow): LedgerRow => ({ ...row, dayKey: later });
+    const task = on(fact('done', 'task-early', { plannedSize: 'M', wasPlanned: true }, at - 10 * 60_000, 'tasks'));
+    const boost = on(fact('focus-boost', later, {}, at, 'gamify'));
+    const chhutti = on(fact('chhutti', `${later}:w`, { kept: true, source: 'usage' }, at + 5 * 60_000, 'tasks'));
+    const day = deriveEconomy([task, boost, chhutti], undefined, [], later).days[0]!;
+    expect(day).toMatchObject({ chhutti: 10, focus: 0 });
+    expect(day.total - deriveEconomy([task, boost], undefined, [], later).days[0]!.total).toBe(10);
+  });
   it('counts badge tiers and the next threshold from history', () => {
     const badge = badges.find(row => row.id === 'workouts')!;
     expect(badgeTier(badge, [])).toBe(0);
