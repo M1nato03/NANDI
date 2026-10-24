@@ -64,6 +64,26 @@ describe('backup and restore', () => {
     expect(await db.settings.get('retired')).toMatchObject({ value: true, deviceId: 'device-b' });
   });
 
+  it("keeps this phone's chhutti lock self-test: a backup never brings another phone's result (item 59)", async () => {
+    const db = freshDb();
+    await db.settings.bulkPut([
+      { key: 'deviceId', value: 'device-a', ...stamp },
+      { key: 'plan.chhutti.lockTest', value: { passes: 3, upTo: 50 }, ...stamp },
+    ]);
+    const envelope = await exportBackup(db, new Date(2026, 9, 9, 12));
+    await Promise.all(db.tables.map(table => table.clear()));
+    await db.settings.bulkPut([
+      { key: 'deviceId', value: 'device-b', ...stamp, deviceId: 'device-b' },
+      { key: 'plan.chhutti.lockTest', value: { passes: 1, upTo: 20 }, ...stamp, deviceId: 'device-b' },
+    ]);
+    await importBackup(db, envelope);
+    expect(await db.settings.get('plan.chhutti.lockTest')).toMatchObject({ value: { passes: 1, upTo: 20 }, deviceId: 'device-b' });
+    const other = freshDb();
+    await other.settings.put({ key: 'deviceId', value: 'device-c', ...stamp, deviceId: 'device-c' });
+    await importBackup(other, envelope);
+    expect(await other.settings.get('plan.chhutti.lockTest')).toBeUndefined();
+  });
+
   it('restores a long run of day closes in one settings write, keeping the higher close per day', async () => {
     // Batch 3 (b): a put per close woke every live query once per row, so a year's restore took 212 s.
     const db = freshDb();

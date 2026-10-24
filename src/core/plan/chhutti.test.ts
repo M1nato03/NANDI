@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { appliesOn, boundsOn, boundWindow, chhuttiLine, endWindow, isKept, isLive, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type UsageEvent } from './chhutti';
+import { appliesOn, boundsOn, boundWindow, chhuttiLine, endWindow, isKept, isLive, lockChecks, lockTrusted, nextLockTest, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type LockEvent, type UsageEvent } from './chhutti';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
 const min = 60_000;
@@ -121,5 +121,61 @@ describe('chhutti windows and lines', () => {
     expect(chhuttiLine(fact({ source: 'usage', kept: true, chosenAppMs: 4 * min, darkMs: 41 * min }), 'After dinner')).toBe('After dinner: 4 min in your chosen apps, phone dark 41 min. The phone got its chhutti.');
     expect(chhuttiLine(fact({ source: 'usage', kept: false, chosenAppMs: 22 * min, darkMs: null }), 'After dinner')).toBe('After dinner: 22 min in your chosen apps. Same window tomorrow, or a shorter one?');
     expect(chhuttiLine(fact({ source: 'self', kept: true }), 'After dinner')).toBe('After dinner: the phone got its chhutti.');
+  });
+});
+
+describe('chhutti lock baseline and self-test (item 59, Jenil chose A)', () => {
+  const act = (type: 'fg' | 'bg', at: number, pkg: string, cls = 'Main'): UsageEvent => ({ type, at, pkg, cls });
+  // Instagram opened three days ago with no pause in the log, then the phone locked before the window.
+  const stale = [act('fg', from - 3 * 24 * 60 * min, ig), ev('on', from - 30 * min), ev('lock', from - 20 * min), ev('off', from - 20 * min)];
+  it('a lock is no baseline on a phone that has not passed the self-test', () => {
+    expect(windowUsage(stale, from, to, [ig])).toBeNull();
+  });
+  it('on a trusted phone the last lock before the window empties the set', () => {
+    expect(windowUsage(stale, from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 0, darkMs: 60 * min });
+    // Unlocked into Instagram inside the window: counted from its new resume.
+    expect(windowUsage([...stale, ev('on', from + 10 * min), act('fg', from + 10 * min, ig), act('bg', from + 25 * min, ig)], from, to, [ig], undefined, true))
+      .toEqual({ chosenAppMs: 15 * min, darkMs: 10 * min });
+  });
+  it('on a trusted phone a lock inside the window also empties the set; a restart inside is still unknown', () => {
+    const events = [ev('lock', from - 60 * min), ev('on', from - 50 * min), act('fg', from - 10 * min, ig), ev('off', from + 20 * min), ev('lock', from + 20 * min), ev('on', from + 40 * min)];
+    // Without the lock clearing Instagram at +20, the screen coming back on at +40 would count 20 more minutes.
+    expect(windowUsage(events, from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 20 * min, darkMs: 20 * min });
+    expect(windowUsage([...events, ev('boot', from + 50 * min)], from, to, [ig], undefined, true)).toBeNull();
+  });
+  it('a start-up after the last lock is the baseline', () => {
+    expect(windowUsage([ev('lock', from - 300 * min), act('fg', from - 200 * min, ig), ev('boot', from - 100 * min)], from, to, [ig], undefined, true)).toEqual({ chosenAppMs: 0, darkMs: 0 });
+  });
+
+  const s5 = 5_000;
+  const own = (type: 'fg' | 'bg', at: number, cls = 'MainActivity'): LockEvent => ({ type, at, cls });
+  const lock = (at: number): LockEvent => ({ type: 'lock', at });
+  const t0 = 10_000_000;
+  it('passes when NANDI in front pauses within 5 s of the lock screen, before or after it', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], 0, t0 + 60_000)).toEqual([true]);
+    expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 400), lock(t0)], 0, t0 + 60_000)).toEqual([true]);
+  });
+  it('fails when NANDI stays resumed past 5 s of the lock screen', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + s5 + 1)], 0, t0 + 60_000)).toEqual([false]);
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + 60_000)).toEqual([false]);
+    // A second activity of NANDI still resumed means NANDI is still in front.
+    expect(lockChecks([own('fg', t0 - 60_000), own('fg', t0 - 30_000, 'Other'), lock(t0), own('bg', t0 + 200)], 0, t0 + 60_000)).toEqual([false]);
+  });
+  it('counts neither a lock with NANDI not in front, nor one too recent, nor one already looked at', () => {
+    expect(lockChecks([own('fg', t0 - 60_000), own('bg', t0 - 30_000), lock(t0)], 0, t0 + 60_000)).toEqual([]);
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0)], 0, t0 + s5 - 1)).toEqual([]);
+    expect(lockChecks([own('fg', t0 - 60_000), lock(t0), own('bg', t0 + 300)], t0, t0 + 60_000)).toEqual([]);
+  });
+  it('trust needs 3 passes in a row; any fail starts again', () => {
+    let test = { passes: 0, upTo: 0 };
+    test = nextLockTest(test, [true, true], 5);
+    expect(lockTrusted(test)).toBe(false);
+    test = nextLockTest(test, [true], 9);
+    expect(test).toEqual({ passes: 3, upTo: 9 });
+    expect(lockTrusted(test)).toBe(true);
+    test = nextLockTest(test, [false], 12);
+    expect(lockTrusted(test)).toBe(false);
+    expect(nextLockTest(test, [true, false, true], 15).passes).toBe(1);
+    expect(lockTrusted(null)).toBe(false);
   });
 });

@@ -198,7 +198,9 @@ export function previewBackup(envelope: BackupEnvelope): BackupPreview {
 }
 
 const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offlineReadyShown',
-  'autoBackup.saved', 'autoBackup.failure']);
+  'autoBackup.saved', 'autoBackup.failure',
+  // The chhutti lock self-test describes this phone, not the person (item 59).
+  'plan.chhutti.lockTest']);
 /** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
 const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From'];
 

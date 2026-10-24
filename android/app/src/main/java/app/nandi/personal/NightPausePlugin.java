@@ -69,7 +69,7 @@ public class NightPausePlugin extends Plugin {
         // From the window's start every event is sent as it is.
         Map<String, Long> open = new HashMap<>();
         Map<String, String> openPkg = new HashMap<>();
-        long bootAt = -1, screenAt = -1, downAt = -1, logStart = -1;
+        long bootAt = -1, screenAt = -1, downAt = -1, lockAt = -1, logStart = -1;
         String screen = null;
         JSArray inside = new JSArray();
         UsageEvents.Event event = new UsageEvents.Event();
@@ -86,6 +86,8 @@ public class NightPausePlugin extends Plugin {
             else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
             else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
             else if (type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
+            // The lock screen: a baseline only once this phone passed the lock self-test (item 59, Jenil's choice A).
+            else if (type == UsageEvents.Event.KEYGUARD_SHOWN) kind = "lock";
             if (kind == null) continue;
             String pkg = event.getPackageName();
             String cls = event.getClassName() == null ? "" : event.getClassName();
@@ -98,16 +100,18 @@ public class NightPausePlugin extends Plugin {
                 continue;
             }
             String key = pkg + "/" + cls;
-            if (kind.equals("boot")) { bootAt = at; open.clear(); openPkg.clear(); screen = null; screenAt = -1; downAt = -1; }
+            if (kind.equals("boot")) { bootAt = at; open.clear(); openPkg.clear(); screen = null; screenAt = -1; downAt = -1; lockAt = -1; }
+            else if (kind.equals("lock")) lockAt = at;
             else if (kind.equals("down")) { downAt = at; open.clear(); openPkg.clear(); }
             else if (kind.equals("fg")) { open.put(key, at); openPkg.put(key, pkg); }
             else if (kind.equals("bg")) { open.remove(key); openPkg.remove(key); }
             else { screen = kind; screenAt = at; }
         }
         JSArray kept = new JSArray();
-        if (bootAt >= 0) {
+        if (bootAt >= 0 || lockAt >= 0) {
             List<JSObject> state = new ArrayList<>();
-            state.add(stateEvent("boot", bootAt, null, null));
+            if (bootAt >= 0) state.add(stateEvent("boot", bootAt, null, null));
+            if (lockAt >= 0) state.add(stateEvent("lock", lockAt, null, null));
             if (screen != null && screenAt >= bootAt) state.add(stateEvent(screen, screenAt, null, null));
             for (Map.Entry<String, Long> entry : open.entrySet()) {
                 String pkg = openPkg.get(entry.getKey());
@@ -121,6 +125,53 @@ public class NightPausePlugin extends Plugin {
         result.put("available", logStart >= 0);
         if (logStart >= 0) result.put("logStart", logStart);
         result.put("events", kept);
+        call.resolve(result);
+    }
+
+    /**
+     * The lock self-test (item 59): NANDI's own activities resumed ("fg") and paused or stopped ("bg"), and the lock
+     * screen shown ("lock"), from a day before `since` (so NANDI's state at the first lock is known) up to now, at most
+     * ten days back. Android 10+ with Usage access only; anything else returns available false.
+     */
+    @PluginMethod
+    public void lockEvents(PluginCall call) {
+        JSObject result = new JSObject();
+        long now = System.currentTimeMillis();
+        long since = call.getLong("since", 0L);
+        UsageStatsManager stats = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        if (Build.VERSION.SDK_INT < 29 || stats == null || !usageAllowed(getContext())) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        long start = Math.max(since - 24L * 60 * 60 * 1000, now - 10L * 24 * 60 * 60 * 1000);
+        UsageEvents events = stats.queryEvents(start, now);
+        if (events == null) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        String own = getContext().getPackageName();
+        JSArray list = new JSArray();
+        UsageEvents.Event event = new UsageEvents.Event();
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event);
+            int type = event.getEventType();
+            String kind = null;
+            if (type == UsageEvents.Event.KEYGUARD_SHOWN) kind = "lock";
+            else if (own.equals(event.getPackageName())) {
+                if (type == UsageEvents.Event.ACTIVITY_RESUMED) kind = "fg";
+                else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.ACTIVITY_STOPPED) kind = "bg";
+            }
+            if (kind == null) continue;
+            JSObject item = new JSObject();
+            item.put("type", kind);
+            item.put("at", event.getTimeStamp());
+            if (!kind.equals("lock")) item.put("cls", event.getClassName() == null ? "" : event.getClassName());
+            list.put(item);
+        }
+        result.put("available", true);
+        result.put("events", list);
         call.resolve(result);
     }
 

@@ -1,6 +1,6 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { RULES } from '../core/rules.config';
-import type { UsageEvent } from '../core/plan/chhutti';
+import type { LockEvent, UsageEvent } from '../core/plan/chhutti';
 
 type Status = { usageAllowed: boolean; overlayAllowed: boolean; pendingPackage: string; pendingReason?: string; pendingMinutes?: number };
 type NightPausePlugin = {
@@ -13,6 +13,7 @@ type NightPausePlugin = {
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
   windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[] }>;
+  lockEvents(options: { since: number }): Promise<{ available: boolean; events?: LockEvent[] }>;
 };
 
 const native = registerPlugin<NightPausePlugin>('NightPause');
@@ -38,4 +39,11 @@ export async function readWindowEvents(from: number, to: number, packages: strin
   if (!Capacitor.isNativePlatform()) return null;
   const result = await native.windowEvents({ from, to, packages: packages.join(',') });
   return result.available ? { logStart: result.logStart, events: Array.isArray(result.events) ? result.events : [] } : null;
+}
+
+/** The lock self-test's events since `since`: NANDI's own activities resumed and paused, and the lock screen shown. */
+export async function readLockEvents(since: number): Promise<LockEvent[] | null> {
+  if (!Capacitor.isNativePlatform()) return null;
+  const result = await native.lockEvents({ since });
+  return result.available ? (Array.isArray(result.events) ? result.events : []) : null;
 }

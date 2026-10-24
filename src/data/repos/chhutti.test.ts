@@ -2,7 +2,7 @@
 import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { answerChhutti, checkChhutti, chhuttiInLightsOut, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
+import { answerChhutti, checkChhutti, chhuttiInLightsOut, CHHUTTI_LOCK_TEST_KEY, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { deriveCourtyard } from '../../core/courtyard/courtyard';
 import { readChhutti, type UsageEvent } from '../../core/plan/chhutti';
@@ -194,4 +194,34 @@ it('bounds older than the 7-day read-back are dropped when the window is saved',
   expect(readChhutti(await db.settings.toArray())[0]!.past).toHaveLength(1);
   await saveChhuttiWindow(db, { id: window.id, label: 'After dinner', from: '20:00', weekdays: [0] }, at('2026-11-20', '12:00'));
   expect(readChhutti(await db.settings.toArray())[0]!.past?.map(item => item.through)).toEqual(['2026-11-19']);
+});
+
+// Item 59, Jenil chose A: a phone that passes the lock self-test measures windows with no recent restart.
+it('the lock self-test: 3 passes make a lock a baseline, and a fail takes it away again', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  // No restart in the log, only a lock before the window (Instagram opened days ago, never paused).
+  const noRestart = reader(from => ({ logStart: from - 5 * 86_400_000, events: [{ type: 'fg', at: from - 3 * 86_400_000, pkg: ig, cls: 'Main' }, { type: 'lock', at: from - 600_000 }, { type: 'off', at: from - 600_000 }] }));
+  const passAt = (t: number) => [{ type: 'fg' as const, at: t - 60_000, cls: 'Main' }, { type: 'lock' as const, at: t }, { type: 'bg' as const, at: t + 300, cls: 'Main' }];
+  // Two passes so far: not trusted, so the window is asked about.
+  const two = async () => [...passAt(at('2026-11-02', '13:00')), ...passAt(at('2026-11-02', '14:00'))];
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), noRestart, two)).toHaveLength(1);
+  expect(readLockTest(await db.settings.toArray())).toEqual({ passes: 2, upTo: at('2026-11-02', '14:00') });
+  // A third pass the next day: the 2nd is still unanswered, and now the log can answer it.
+  const three = async () => [...await two(), ...passAt(at('2026-11-03', '08:00'))];
+  expect(await checkChhutti(db, at('2026-11-03', '09:00'), noRestart, three)).toEqual([]);
+  const fact = await db.ledger.get(`chhutti:2026-11-02:${readChhutti(await db.settings.toArray())[0]!.id}`);
+  expect(fact?.inputs).toMatchObject({ source: 'usage', kept: true, chosenAppMs: 0 });
+  // A fail (NANDI still resumed after the lock) takes the trust away again.
+  const failed = async () => [...await three(), { type: 'fg' as const, at: at('2026-11-03', '09:30'), cls: 'Main' }, { type: 'lock' as const, at: at('2026-11-03', '10:00') }];
+  await checkChhutti(db, at('2026-11-03', '11:00'), noRestart, failed);
+  expect(readLockTest(await db.settings.toArray())?.passes).toBe(0);
+  expect(await checkChhutti(db, at('2026-11-03', '22:00'), noRestart, failed)).toHaveLength(1);
+});
+
+it('no lock log (web, old Android, no access) stores no self-test', async () => {
+  const db = fresh();
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  await checkChhutti(db, at('2026-11-02', '22:00'), reader(() => null), async () => null);
+  expect(await db.settings.get(CHHUTTI_LOCK_TEST_KEY)).toBeUndefined();
 });

@@ -1,18 +1,19 @@
 import { ulid } from 'ulidx';
 import { trackWrite } from '../../core/pendingWrites';
 import { addEconomyDays } from '../../core/economy/deriveEconomy';
-import { appliesOn, boundWindow, CHHUTTI_KEY, chhuttiFactId, endWindow, isKept, isLive, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type ChhuttiWindow, type UsageEvent } from '../../core/plan/chhutti';
+import { appliesOn, boundWindow, CHHUTTI_KEY, chhuttiFactId, endWindow, isKept, isLive, lockChecks, lockTrusted, nextLockTest, rampedWindow, readChhutti, windowBounds, windowUsage, withBounds, type ChhuttiWindow, type LockEvent, type LockTest, type UsageEvent } from '../../core/plan/chhutti';
 import { dayClock, shareWindow } from '../../core/shareGate';
 import { DEFAULT_PAUSE_APPS } from '../../core/nightPause';
 import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
-import { readWindowEvents } from '../../platform/nightPause';
+import { readLockEvents, readWindowEvents } from '../../platform/nightPause';
 import { getOrCreateDeviceId } from '../device';
 import { restoreActive } from '../restoreLock';
 import type { NandiDb } from '../db';
 import type { LedgerRow, SettingRow } from '../types';
 
 type ReadEvents = (from: number, to: number, packages: string[]) => Promise<{ logStart?: number; events: UsageEvent[] } | null>;
+type ReadLock = (since: number) => Promise<LockEvent[] | null>;
 const live = (rows: readonly SettingRow[], key: string) => rows.find(row => row.key === key && !row.deleted)?.value;
 /** Tonight's effective shutdown and bedtime (busy-day shift included), the clock the rest of Plan uses (item 55). */
 async function clockOf(db: NandiDb, rows: readonly SettingRow[], now: number) {
@@ -104,13 +105,14 @@ export const CHHUTTI_LOOKBACK_DAYS = 7;
  * written and the window is offered for a one-tap answer instead, for today and yesterday only (items 51-56).
  * In lights-out (after bedtime, and until 06:00) nothing is read or shown; the next open by day reads the same day.
  */
-export async function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEvents = readWindowEvents): Promise<ChhuttiPending[]> {
+export async function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEvents = readWindowEvents, readLock: ReadLock = readLockEvents): Promise<ChhuttiPending[]> {
   if (restoreActive()) return [];
   const rows = await db.settings.toArray();
   const windows = readChhutti(rows);
   if (!windows.length) return [];
   if (await chhuttiInLightsOut(db, now)) return [];
   const today = dayKey(now);
+  const trusted = lockTrusted(await runLockTest(db, rows, now, readLock));
   const shutdowns = await snapshotShutdown(db, rows, windows, now, (await clockOf(db, rows, now)).shutdown);
   const saved = live(rows, 'night.pause.apps');
   const packages = Array.isArray(saved) ? saved.filter((item): item is string => typeof item === 'string') : DEFAULT_PAUSE_APPS.map(app => app.packageName);
@@ -123,13 +125,43 @@ export async function checkChhutti(db: NandiDb, now = Date.now(), read: ReadEven
       const bounds = await dayBounds(db, rows, window, day, shutdowns);
       if (!bounds || bounds.toMs > now) continue;
       const usageLog = await read(bounds.fromMs, bounds.toMs, packages).catch(() => null);
-      const usage = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart) : null;
+      const usage = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart, trusted) : null;
       // Unknown: only today and yesterday are asked about, so a week away never comes back as a list of questions.
       if (!usage) { if (back <= 1 && isLive(window)) pending.push({ day, window }); continue; }
       await writeFact(db, day, window, bounds, { chosenAppMs: usage.chosenAppMs, darkMs: usage.darkMs, source: 'usage', kept: isKept(usage, day) }, now);
     }
   }
   return pending;
+}
+
+/**
+ * This phone's lock self-test (Jenil's choice A, item 59). It is kept on this phone only: a restore never brings
+ * another phone's result (backup deviceLocalKeys).
+ */
+export const CHHUTTI_LOCK_TEST_KEY = `${CHHUTTI_KEY}.lockTest`;
+export function readLockTest(rows: readonly SettingRow[]): LockTest | null {
+  const value = live(rows, CHHUTTI_LOCK_TEST_KEY) as Partial<LockTest> | undefined;
+  if (!value || typeof value !== 'object' || !Number.isInteger(value.passes) || !Number.isFinite(value.upTo)) return null;
+  return { passes: Math.max(0, value.passes!), upTo: value.upTo! };
+}
+/**
+ * Reads the locks since the last one looked at and updates the count. No usage log (web, Android 9 or older, no
+ * access) leaves nothing stored, so the card never says NANDI is learning a phone it cannot read.
+ */
+async function runLockTest(db: NandiDb, rows: readonly SettingRow[], now: number, readLock: ReadLock): Promise<LockTest | null> {
+  const stored = readLockTest(rows);
+  const test = stored ?? { passes: 0, upTo: 0 };
+  const events = await readLock(test.upTo).catch(() => null);
+  if (!events) return stored;
+  const results = lockChecks(events, test.upTo, now);
+  const slack = RULES.plan.chhutti.lockSlackMs;
+  // Every lock old enough to judge has now been looked at, whether NANDI was in front or not.
+  const judged = events.filter(event => event.type === 'lock' && event.at > test.upTo && event.at + slack <= now).reduce((max, event) => Math.max(max, event.at), test.upTo);
+  const next = nextLockTest(test, results, judged);
+  if (stored && next.passes === stored.passes && next.upTo === stored.upTo) return stored;
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: next, updatedAt: now, deleted: 0, deviceId }));
+  return next;
 }
 
 /** Records today's effective shutdown once, while a window of today has not started yet; keeps the last 9 days. */

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { answerChhutti, checkChhutti, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
-import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { answerChhutti, checkChhutti, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
+import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, lockTrusted, readChhutti, windowBounds } from '../../core/plan/chhutti';
+import { RULES } from '../../core/rules.config';
 import { shareWindow } from '../../core/shareGate';
 import { dayKey } from '../../core/time';
 
@@ -74,11 +75,15 @@ export function PhoneChhutti() {
   const upcoming = appliesOn(window, today) && !skipped && now < toMs;
   // Today keeps the bounds it was planned with; a change or a longer window shows from the next day.
   const shown = upcoming ? boundsOn(window, today) : window;
+  // Only a phone NANDI can read has a lock self-test; until it passes, windows without a recent restart are asked about.
+  const lockTest = readLockTest(source.settings);
+  const learning = !lightsOut && lockTest && !lockTrusted(lockTest);
   return <section className="card phone-chhutti" aria-label="Phone ki chhutti">
     <h2>Phone ki chhutti</h2>
     <p>{window.label}, the phone goes on the shelf from {shown.from} until {shown.to}.</p>
     {upcoming && now >= fromMs && <p className="small">This is the phone's chhutti now.</p>}
     {skipped && <p className="small">Not today. It comes back tomorrow.</p>}
+    {learning && <p className="small chhutti-learning">NANDI is still learning how this phone locks ({lockTest.passes} of {RULES.plan.chhutti.lockPasses}). Lock the phone once while NANDI is open to help. Until then, it may ask you.</p>}
     {showLast && <p className="chhutti-line" role="status">{chhuttiLine(ended, ended.inputs.label === window.label ? window.label : String(ended.inputs.label ?? window.label))}</p>}
     {!lightsOut && pending.map(item => <div key={`${item.day}:${item.window.id}`} className="chhutti-ask" role="group" aria-label={`${item.window.label} check-in`}>
       <p>Did the phone get its chhutti ({item.window.label.toLowerCase()})?</p>

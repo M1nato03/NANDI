@@ -45,7 +45,15 @@ describe('rule history', () => {
     const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards', 'plan'] as const;
     // Keys that live beside scoring values but pay nothing (spec 19's board number, spec 04's internal case rating)
     // stay out of the fingerprint.
-    const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo')) : value;
+    // The chhutti lock self-test's tunables (item 59) decide when the phone's log is trusted, not what a kept day pays.
+    const displayOnly = (key: string, value: unknown) => {
+      if (key === 'mind' && value && typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo'));
+      if (key === 'plan' && value && typeof value === 'object' && 'chhutti' in value) {
+        const chhutti = Object.fromEntries(Object.entries((value as { chhutti: object }).chhutti).filter(([name]) => name !== 'lockPasses' && name !== 'lockSlackMs'));
+        return { ...value, chhutti };
+      }
+      return value;
+    };
     const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, displayOnly(key, rules[key])]))]
       .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
     // b8be6943 (24 Oct): quests.paidCustomPerWeek was added. It is no edit of a past value: it only applies from
