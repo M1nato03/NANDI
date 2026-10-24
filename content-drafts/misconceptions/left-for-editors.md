@@ -1,0 +1,133 @@
+# Wrong options left untagged, for editors
+
+## Slips (83): kept as they are; the option's own feedback explains the slip
+
+- `topic.psychology:habits-15/c`: About 254 days. (It confuses the longest estimate with the halfway value.)
+- `topic.psychology:loss-aversion-13/a`: She used to get less than ₹400. (It reverses the before-and-after amounts in a cut.)
+- `topic.psychology:anchoring-11/a`: Far below ₹700, such as ₹200. (It reverses the direction of his move from the tag.)
+- `topic.psychology:confirmation-bias-12/c`: About 79%. (It swaps the reported success and wrong-rule shares.)
+- `topic.psychology:sleep-memory-12/c`: About 70 terms. (It adds 60 terms instead of 60 percent of ten.)
+- `topic.psychology:variable-rewards-12/c`: 20%, the same as one swipe. (It uses one swipe's chance for five chances.)
+- `topic.psychology:if-then-plans-10/a`: Watering the plants. (It swaps the action into the cue's place.)
+- `topic.psychology:if-then-plans-15/b`: About 0.1. (It misrecalls the effect despite the scale in the stem.)
+- `topic.psychology:spotlight-effect-10/b`: About 19. (It adds seven when the guess was seven too high.)
+- `topic.psychology:spotlight-effect-10/c`: About 12. (It repeats the guess instead of finding the lower count.)
+- `topic.money-markets:inflation-9/c`: It covers less, because rent went up. (It notices rent's rise but overlooks the equal stipend rise.)
+- `topic.money-markets:inflation-11/b`: About ₹938, which is 25% off today’s price. (It applies the percentage to the later price.)
+- `topic.money-markets:inflation-11/c`: About ₹1,563. (It adds another rise while seeking the earlier price.)
+- `topic.money-markets:inflation-13/c`: They fell. (It reverses the effect falling prices have on buying power.)
+- `topic.money-markets:rule-of-72-9/b`: About 3 years. (It mistakes the rate for the number of years.)
+- `topic.money-markets:rule-of-72-9/c`: About 216 years. (It multiplies where the shortcut divides.)
+- `topic.money-markets:rule-of-72-12/c`: It falls a little every month. (It treats an interest-only payment as reducing principal.)
+- `topic.money-markets:rule-of-72-14/c`: About 64%. (It multiplies years instead of dividing 72 by them.)
+- `topic.money-markets:risk-return-9/b`: About ₹2,970, adding 10% of ₹2,700 back. (It applies the loss percentage to the final amount.)
+- `topic.money-markets:risk-return-9/c`: About ₹2,430. (It subtracts another ten percent instead of reversing the loss.)
+- `topic.money-markets:diversification-9/b`: About 5. (It mistakes the loss percentage for a holding count.)
+- `topic.money-markets:diversification-9/c`: About 95, the share that was left. (It mistakes the remaining percentage for a holding count.)
+- `topic.money-markets:shares-9/b`: About 1,20,000. (It calculates thirty percent instead of three percent.)
+- `topic.money-markets:shares-9/c`: About 1,200. (It calculates a tenth of the requested share count.)
+- `topic.money-markets:emergency-fund-12/b`: About 3 months. (It confuses target coverage with saving time.)
+- `topic.money-markets:emergency-fund-12/c`: About 160 months. (It shifts the division result's decimal place.)
+- `topic.money-markets:emergency-fund-13/b`: About ₹63,000. (It multiplies a total that already covers three months.)
+- `topic.money-markets:emergency-fund-13/c`: About ₹21,000. (It repeats the full target as one month's cost.)
+- `topic.money-markets:loan-emi-11/b`: ₹15,500 (It adds a part to the total instead of subtracting.)
+- `topic.money-markets:loan-emi-12/b`: About ₹1.5 lakh. (It uses one year's interest for a ten-year loan.)
+- `topic.money-markets:index-funds-12/b`: About 1.5%. (It moves the expense ratio's decimal one place too far.)
+- `topic.money-markets:index-funds-12/c`: About 0.015%. (It moves the expense ratio's decimal one place too little.)
+- `topic.how-things-work:battery-flight-time-9/b`: About 75 hours. (It multiplies energy and power instead of dividing.)
+- `topic.how-things-work:battery-flight-time-9/c`: About 20 hours. (It adds the two given numbers instead of dividing.)
+- `topic.how-things-work:birds-and-planes-9/b`: About 40,000 newtons. (It doubles drag despite the stated steady speed.)
+- `topic.how-things-work:ceiling-fans-13/c`: About 51 degrees hotter. (It repeats one felt temperature instead of finding the difference.)
+- `topic.how-things-work:upi-path-12/b`: About 16 million. (It mixes millions and billions when finding the daily average.)
+- `topic.how-things-work:upi-path-12/c`: About 5 billion. (It puts the daily average in the wrong size unit.)
+- `topic.how-things-work:phone-camera-11/b`: About 16 million. (It divides spots evenly among three filters instead of reading the grid.)
+- `topic.how-things-work:phone-camera-11/c`: About 12 million. (It uses one red or blue square's share for green.)
+- `topic.how-things-work:sky-colours-10/b`: About 1,290 nm. (It multiplies where the question calls for division.)
+- `topic.how-things-work:sky-colours-10/c`: About 700 nm. (It reuses the stated red length for violet.)
+- `topic.how-things-work:pressure-cooker-10/c`: About 89°C. (It uses the given boil for twice the altitude.)
+- `topic.health-nutrition:free-sugars-11/b`: About 400 kcal. (It uses the sugar amount as the basis for an incorrect energy calculation.)
+- `topic.health-nutrition:free-sugars-11/c`: About 2,000 kcal. (It recalls the 2,000 kcal example without scaling its 50 g limit down.)
+- `topic.health-nutrition:hydration-cues-10/b`: About 4 tumblers. (Four tumblers give 800 ml, short of the stated 2,000 ml.)
+- `topic.health-nutrition:hydration-cues-10/c`: About 100 tumblers. (A place-value error turns 2,000 divided by 200 into 100.)
+- `topic.health-nutrition:sleep-recovery-14/b`: About 1.5 hours. (It counts one night's loss instead of five nights.)
+- `topic.health-nutrition:sleep-recovery-14/c`: About 30 minutes. (It overlooks the hour from 11 pm to midnight.)
+- `topic.health-nutrition:exercise-heart-13/b`: About 100 minutes. (It adds the minutes without doubling the jog minutes.)
+- `topic.health-nutrition:exercise-heart-13/c`: About 200 minutes. (It doubles the walk as well as the jog.)
+- `topic.health-nutrition:iron-and-anaemia-10/c`: About 1 mg. (It understates the difference between 29 mg and 19 mg.)
+- `topic.health-nutrition:food-label-reading-10/c`: About 15 g. (It shifts the decimal place while scaling from 100 g to 40 g.)
+- `topic.health-nutrition:fad-diet-claims-9/b`: About 400 g. (It uses one person's 400 g for the whole family.)
+- `topic.health-nutrition:fad-diet-claims-9/c`: About 16 kg. (It multiplies for four people but misplaces the kilogram decimal.)
+- `topic.body-training:progressive-overload-13/c`: About 100%. (It treats one added session as a doubling of three sessions.)
+- `topic.body-training:muscle-protein-rest-12/b`: About 55 g. (It uses 1 g per kg instead of the stated 0.83 g.)
+- `topic.body-training:muscle-protein-rest-12/c`: About 88 g. (It applies the 1.6 g training figure to someone who does not train.)
+- `topic.body-training:sleep-recovery-12/b`: About 1 am. (It adds two hours to bedtime instead of six.)
+- `topic.body-training:sleep-recovery-12/c`: About 9 am. (It moves the usual wake time later instead of two hours earlier.)
+- `topic.body-training:heat-hydration-11/b`: About 1 litre. (It counts one hour of sweat instead of eight.)
+- `topic.body-training:heat-hydration-11/c`: About 80 litres. (It makes a tenfold multiplication error.)
+- `topic.body-training:warmup-myths-12/b`: About 9 cm. (It treats 2 cm as far more than 4.6% of the jump.)
+- `topic.body-training:warmup-myths-12/c`: About 200 cm. (It treats 2 cm as 4.6% of a 200 cm jump.)
+- `topic.body-training:cardio-talk-test-12/c`: About 10. (It mistakes vigorous effort for the scale maximum.)
+- `topic.body-training:showing-up-12/b`: About 180 climbs. (It multiplies 60 by 3 instead of dividing.)
+- `topic.body-training:showing-up-12/c`: About 3 climbs. (It confuses three minutes per climb with three climbs.)
+- `topic.history-civilisations:indus-cities-15/b`: About 110 hectares. (It adds roughly one third instead of multiplying by three.)
+- `topic.history-civilisations:indus-cities-15/c`: About 27 hectares. (It divides the known third instead of finding the whole.)
+- `topic.history-civilisations:silk-road-ideas-13/b`: About 50 years. (It may confuse the 50 BCE voyage date with Gandhara's duration.)
+- `topic.history-civilisations:silk-road-ideas-14/b`: Art paying for the trade routes and their upkeep. (It reverses who funded whom in the sponsor example.)
+- `topic.history-civilisations:indian-place-value-9/b`: ₹1,500, since the 5 moves up. (It moves the 5 to a larger place after a zero is removed.)
+- `topic.history-civilisations:indian-place-value-9/c`: ₹1,005. (It swaps the positions of the remaining digits.)
+- `topic.history-civilisations:indian-place-value-10/b`: About 9 times. (It understates how much 7 thousands exceeds 79.)
+- `topic.history-civilisations:indian-place-value-10/c`: About 900 times, since three places moved. (It treats moving three places as a direct multiplier for the whole number.)
+- `topic.history-civilisations:printing-and-reading-14/b`: About 8 years. (It loses a digit when estimating the 1377-to-1455 gap.)
+- `topic.history-civilisations:printing-and-reading-14/c`: About 400 years. (It badly overstates the difference between the two dates.)
+- `topic.history-civilisations:mughal-revenue-10/b`: About 213 nobles, since it was more back then. (It multiplies 79 by 2.7 instead of dividing.)
+- `topic.history-civilisations:mughal-revenue-10/c`: About 76 nobles. (It subtracts the factor from 79 instead of dividing.)
+- `topic.history-civilisations:company-trade-rule-12/b`: About 16 years. (It drops a digit from the 1600-to-1765 gap.)
+- `topic.history-civilisations:company-trade-rule-12/c`: About 365 years, nearly four centuries. (It overstates the difference between 1600 and 1765.)
+- `topic.history-civilisations:independence-constitution-10/b`: About 24 months. (It converts the two years but drops eleven months and seventeen days.)
+- `topic.history-civilisations:independence-constitution-10/c`: About 47 months, close to four years. (It adds too many months to the stated duration.)
+
+## Rewrites rejected in review (43): still weak, need an editor's rewrite
+
+- `topic.body-training:cardio-talk-test-12/b`
+- `topic.body-training:heat-hydration-10/c`
+- `topic.body-training:heat-hydration-12/c`
+- `topic.body-training:warmup-myths-11/b`
+- `topic.health-nutrition:exercise-heart-12/b`
+- `topic.health-nutrition:exercise-heart-12/c`
+- `topic.health-nutrition:fad-diet-claims-12/c`
+- `topic.health-nutrition:iron-and-anaemia-14/c`
+- `topic.health-nutrition:iron-and-anaemia-9/c`
+- `topic.health-nutrition:sleep-recovery-12/b`
+- `topic.health-nutrition:sleep-recovery-12/c`
+- `topic.history-civilisations:ashoka-edicts-10/c`
+- `topic.history-civilisations:ashoka-edicts-9/c`
+- `topic.history-civilisations:company-trade-rule-10/c`
+- `topic.history-civilisations:company-trade-rule-13/c`
+- `topic.history-civilisations:independence-constitution-16/c`
+- `topic.history-civilisations:mughal-revenue-9/c`
+- `topic.history-civilisations:printing-and-reading-9/b`
+- `topic.history-civilisations:silk-road-ideas-13/c`
+- `topic.history-civilisations:silk-road-ideas-16/c`
+- `topic.how-things-work:flight-sensors-10/c`
+- `topic.how-things-work:flight-sensors-11/c`
+- `topic.how-things-work:flight-sensors-12/c`
+- `topic.how-things-work:lift-14/c`
+- `topic.how-things-work:sky-colours-14/c`
+- `topic.how-things-work:upi-path-10/c`
+- `topic.money-markets:compounding-9/c`
+- `topic.money-markets:index-funds-9/c`
+- `topic.money-markets:loan-emi-14/c`
+- `topic.money-markets:rule-of-72-11/c`
+- `topic.money-markets:rule-of-72-16/b`
+- `topic.money-markets:shares-12/b`
+- `topic.money-markets:upi-scams-13/c`
+- `topic.money-markets:upi-scams-16/b`
+- `topic.money-markets:upi-scams-16/c`
+- `topic.psychology:if-then-plans-10/b`
+- `topic.psychology:if-then-plans-13/a`
+- `topic.psychology:if-then-plans-15/c`
+- `topic.psychology:if-then-plans-16/a`
+- `topic.psychology:loss-aversion-15/c`
+- `topic.psychology:planning-fallacy-15/c`
+- `topic.psychology:social-proof-10/b`
+- `topic.psychology:variable-rewards-16/c`

@@ -122,11 +122,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Plants have protein, but rice has the most of all.",
+                    "text": "Plant foods cannot meet a protein need.",
                     "correct": false,
-                    "feedback": "Rice is not one of the rich protein foods. Pulses, milk, nuts and seeds are.",
+                    "feedback": "Pulses, nuts and seeds contain protein. Meat is one protein source among several.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m1"
                     ]
                   }
                 ]
@@ -138,7 +141,10 @@
                 "step": "protein-foods-s1",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "protein-foods-m1",
+                  "protein-foods-m4"
+                ],
                 "sourceRefs": [
                   "protein"
                 ],
@@ -160,6 +166,9 @@
                     "feedback": "Nuts do carry a fair amount of protein. The catch is the fat that comes with it.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m1"
                     ]
                   },
                   {
@@ -169,6 +178,9 @@
                     "feedback": "It is the other way round. Pulses are low-fat foods, while nuts are rich in fat.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m4"
                     ]
                   }
                 ]
@@ -224,7 +236,9 @@
                 "step": "protein-foods-s2",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "protein-foods-m6"
+                ],
                 "sourceRefs": [
                   "protein"
                 ],
@@ -246,6 +260,9 @@
                     "feedback": "Eggs already carry all nine building blocks, so the egg thali covers the roti's gap.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m6"
                     ]
                   },
                   {
@@ -255,6 +272,9 @@
                     "feedback": "The egg thali is covered, since eggs bring all nine blocks. The aloo thali is the one that needs dal.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m6"
                     ]
                   }
                 ]
@@ -266,7 +286,9 @@
                 "step": "protein-foods-s3",
                 "job": "transfer",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "protein-foods-m8"
+                ],
                 "sourceRefs": [
                   "protein"
                 ],
@@ -288,6 +310,9 @@
                     "feedback": "It runs the other way. Pregnancy raises the need above the healthy-adult figure.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m8"
                     ]
                   },
                   {
@@ -297,6 +322,9 @@
                     "feedback": "The figure fits healthy adults. Teens, pregnant women and people who are ill need more than it gives.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m8"
                     ]
                   }
                 ]
@@ -339,11 +367,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "About 0.1 g per kg.",
+                    "text": "About 2 g per kg; more protein is better.",
                     "correct": false,
-                    "feedback": "That is far too low. The guide's figure for healthy adults is about 0.83 g per kg a day.",
+                    "feedback": "That range is given for people who exercise. The healthy adult allowance is about 0.83 g per kg.",
                     "sourceRefs": [
                       "protein"
+                    ],
+                    "misconceptionIds": [
+                      "protein-foods-m3"
                     ]
                   }
                 ],
@@ -378,6 +409,31 @@
                 "correction": "Healthy adults need about 0.83 g per kg a day. Some groups, like teens, pregnant women and athletes, may need more.",
                 "sourceRefs": [
                   "protein"
+                ]
+              },
+              {
+                "id": "protein-foods-m4",
+                "name": "Nuts have less fat than dal",
+                "correction": "Nuts are rich in fat, while pulses such as dal are low in fat.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              },
+              {
+                "id": "protein-foods-m6",
+                "name": "Every cereal meal needs pulses",
+                "correction": "Animal foods carry all nine essential amino acids, so a meal with egg does not need a pulse for that purpose.",
+                "sourceRefs": [
+                  "protein"
+                ]
+              },
+              {
+                "id": "protein-foods-m8",
+                "name": "One protein allowance fits everyone",
+                "correction": "The healthy adult allowance does not cover the higher needs of teens, pregnant women and people who are ill.",
+                "sourceRefs": [
+                  "protein",
+                  "issn"
                 ]
               }
             ],
@@ -786,7 +842,8 @@
                 "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "free-sugars-m2"
+                  "free-sugars-m2",
+                  "free-sugars-m1"
                 ],
                 "sourceRefs": [
                   "sugar",
@@ -825,6 +882,9 @@
                     "sourceRefs": [
                       "sugar",
                       "who-sugars"
+                    ],
+                    "misconceptionIds": [
+                      "free-sugars-m1"
                     ]
                   }
                 ]
@@ -837,7 +897,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "free-sugars-m1"
+                  "free-sugars-m1",
+                  "free-sugars-m2"
                 ],
                 "sourceRefs": [
                   "sugar",
@@ -870,12 +931,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "it was bought in a shop",
+                    "text": "honey and whole fruit both count as free sugar",
                     "correct": false,
-                    "feedback": "Where it was bought does not matter. Honey counts because honey is on the list.",
+                    "feedback": "Honey counts, but sugar in whole fresh fruit does not. Honey is on the free sugar list.",
                     "sourceRefs": [
                       "sugar",
                       "icmr-sugar"
+                    ],
+                    "misconceptionIds": [
+                      "free-sugars-m2"
                     ]
                   }
                 ]
@@ -975,6 +1039,9 @@
                     "sourceRefs": [
                       "sugar",
                       "who-sugars"
+                    ],
+                    "misconceptionIds": [
+                      "free-sugars-m4"
                     ]
                   }
                 ]
@@ -987,7 +1054,9 @@
                 "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "free-sugars-m3"
+                  "free-sugars-m3",
+                  "free-sugars-m5",
+                  "free-sugars-m6"
                 ],
                 "sourceRefs": [
                   "who-sugars",
@@ -1013,6 +1082,9 @@
                     "sourceRefs": [
                       "who-sugars",
                       "sugar"
+                    ],
+                    "misconceptionIds": [
+                      "free-sugars-m5"
                     ]
                   },
                   {
@@ -1023,6 +1095,9 @@
                     "sourceRefs": [
                       "who-sugars",
                       "sugar"
+                    ],
+                    "misconceptionIds": [
+                      "free-sugars-m6"
                     ]
                   }
                 ]
@@ -1155,6 +1230,24 @@
                 "correction": "The limit is a ceiling, and less may bring more benefit.",
                 "sourceRefs": [
                   "sugar"
+                ]
+              },
+              {
+                "id": "free-sugars-m5",
+                "name": "Milk sugar is free sugar",
+                "correction": "The sugar naturally found in milk is not counted as free sugar.",
+                "sourceRefs": [
+                  "sugar",
+                  "who-sugars"
+                ]
+              },
+              {
+                "id": "free-sugars-m6",
+                "name": "Dairy drinks cannot contain free sugar",
+                "correction": "Sugar added to a dairy drink counts as free sugar.",
+                "sourceRefs": [
+                  "sugar",
+                  "who-sugars"
                 ]
               }
             ],
@@ -1494,9 +1587,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About 8%.",
+                        "text": "Little; it is a drink.",
                         "correct": false,
-                        "feedback": "The decimal slipped. Up to 40 g out of 50 g is about 80%."
+                        "feedback": "Drink sugar counts. 40 out of 50 is 80% of the limit."
                       }
                     ]
                   }
@@ -1609,12 +1702,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "The real figure is 15 glasses a day.",
+                    "text": "Tea and milk do not add to the count.",
                     "correct": false,
-                    "feedback": "The usual figure is about eight glasses, or about 2 litres, counting other drinks.",
+                    "feedback": "Milk and lower-sugar tea add fluid. Eight glasses is a rough guide that includes other drinks.",
                     "sourceRefs": [
                       "water",
                       "icmr-water"
+                    ],
+                    "misconceptionIds": [
+                      "hydration-cues-m1"
                     ]
                   }
                 ]
@@ -1674,7 +1770,9 @@
                 "step": "hydration-cues-s2",
                 "job": "transfer",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "hydration-cues-m5"
+                ],
                 "sourceRefs": [
                   "water",
                   "nhs-dehydration"
@@ -1709,6 +1807,9 @@
                     "sourceRefs": [
                       "water",
                       "nhs-dehydration"
+                    ],
+                    "misconceptionIds": [
+                      "hydration-cues-m5"
                     ]
                   }
                 ]
@@ -1721,7 +1822,8 @@
                 "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "hydration-cues-m1"
+                  "hydration-cues-m1",
+                  "hydration-cues-m5"
                 ],
                 "sourceRefs": [
                   "water"
@@ -1751,11 +1853,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Yes; pale pee means she is short of water.",
+                    "text": "Yes; low fluid leaves pee pale yellow.",
                     "correct": false,
-                    "feedback": "Pale yellow is the aim. Dark yellow pee would be the sign of low fluid.",
+                    "feedback": "Dark yellow pee can signal low fluid. Tea counts, and pale yellow pee is the usual aim.",
                     "sourceRefs": [
                       "water"
+                    ],
+                    "misconceptionIds": [
+                      "hydration-cues-m5"
                     ]
                   }
                 ]
@@ -1803,6 +1908,9 @@
                     "feedback": "India's food guide warns that people with some heart or kidney problems should avoid coconut water.",
                     "sourceRefs": [
                       "icmr-water"
+                    ],
+                    "misconceptionIds": [
+                      "hydration-cues-m3"
                     ]
                   }
                 ]
@@ -1814,7 +1922,9 @@
                 "step": "hydration-cues-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "hydration-cues-m5"
+                ],
                 "sourceRefs": [
                   "nhs-dehydration"
                 ],
@@ -1840,11 +1950,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Pee that is pale yellow.",
+                    "text": "No change in pee, even after hours in heat.",
                     "correct": false,
-                    "feedback": "Pale yellow pee is the aim. It shows the body has enough fluid.",
+                    "feedback": "Low fluid can make pee dark yellow or less frequent. Confusion or lasting dizziness needs urgent help.",
                     "sourceRefs": [
                       "nhs-dehydration"
+                    ],
+                    "misconceptionIds": [
+                      "hydration-cues-m5"
                     ]
                   }
                 ]
@@ -1874,6 +1987,15 @@
                 "correction": "Someone whose doctor limits fluids should follow that limit.",
                 "sourceRefs": [
                   "icmr-water"
+                ]
+              },
+              {
+                "id": "hydration-cues-m5",
+                "name": "Low fluid leaves pee unchanged",
+                "correction": "Dark yellow pee can be a sign that the body is short of fluid.",
+                "sourceRefs": [
+                  "water",
+                  "nhs-dehydration"
                 ]
               }
             ],
@@ -2037,9 +2159,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Milk counts when it is served cold.",
+                        "text": "Milk is a food, so it does not count as fluid.",
                         "correct": false,
-                        "feedback": "Temperature does not matter. Milk counts towards daily fluid, hot or cold."
+                        "feedback": "Milk is mostly water. Like water and lower-sugar tea, it adds to the day's fluid."
                       }
                     ]
                   }
@@ -2123,9 +2245,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Peeing more often than usual.",
+                        "text": "Sweating a lot during the day.",
                         "correct": false,
-                        "feedback": "The cue is peeing less often than usual, not more."
+                        "feedback": "Sweat is how water leaves, not a sign you are short. Thirst, a dry mouth and dark pee are."
                       }
                     ]
                   }
@@ -2210,9 +2332,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Both need the same amount.",
+                        "text": "Both; eight glasses covers anyone.",
                         "correct": false,
-                        "feedback": "The walker sweats far more, so their needs are not the same."
+                        "feedback": "Eight glasses is a rough guide. Heat and long activity raise the need."
                       }
                     ]
                   }
@@ -2297,7 +2419,10 @@
                 "step": "sleep-recovery-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-recovery-m1",
+                  "sleep-recovery-m4"
+                ],
                 "sourceRefs": [
                   "sleep"
                 ],
@@ -2319,6 +2444,9 @@
                     "feedback": "The extra hours cost her the sleep that stores learning, so recall tends to get worse.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
                     ]
                   },
                   {
@@ -2328,6 +2456,9 @@
                     "feedback": "Even one missing hour can blur focus the next day, and she missed several.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m4"
                     ]
                   }
                 ]
@@ -2375,6 +2506,9 @@
                     "feedback": "Training sets up the repair, but much of it happens in deep sleep.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m2"
                     ]
                   }
                 ]
@@ -2386,7 +2520,9 @@
                 "step": "sleep-recovery-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-recovery-m5"
+                ],
                 "sourceRefs": [
                   "sleep"
                 ],
@@ -2408,6 +2544,9 @@
                     "feedback": "Deep sleep fills the early night, so most of it is done before the last two hours.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m5"
                     ]
                   },
                   {
@@ -2417,6 +2556,9 @@
                     "feedback": "The mix changes through the night. The last hours hold more REM than deep sleep.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m5"
                     ]
                   }
                 ]
@@ -2587,6 +2729,22 @@
                 "sourceRefs": [
                   "sleep"
                 ]
+              },
+              {
+                "id": "sleep-recovery-m4",
+                "name": "One short night cannot affect focus",
+                "correction": "Losing even one hour of sleep can make it hard to focus.",
+                "sourceRefs": [
+                  "sleep"
+                ]
+              },
+              {
+                "id": "sleep-recovery-m5",
+                "name": "Deep sleep fills late night",
+                "correction": "Deep sleep is longer early in the night, while REM sleep grows longer towards morning.",
+                "sourceRefs": [
+                  "sleep"
+                ]
               }
             ],
             "sources": [
@@ -2745,7 +2903,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "No, adults need 10 or more.",
+                        "text": "No, adults need a full 8 hours.",
                         "correct": false,
                         "feedback": "Adults need 7 or more hours, and 11 pm to 6 am gives 7."
                       }
@@ -2995,7 +3153,8 @@
                 "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "exercise-heart-m2"
+                  "exercise-heart-m2",
+                  "exercise-heart-m1"
                 ],
                 "sourceRefs": [
                   "who-pa-facts",
@@ -3034,6 +3193,9 @@
                     "sourceRefs": [
                       "who-pa-facts",
                       "cdc-adults"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
                     ]
                   }
                 ]
@@ -3046,7 +3208,8 @@
                 "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "exercise-heart-m1"
+                  "exercise-heart-m1",
+                  "exercise-heart-m2"
                 ],
                 "sourceRefs": [
                   "who-pa-facts",
@@ -3066,22 +3229,28 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sitting up straight in each lecture.",
+                    "text": "A short walk cannot count toward weekly minutes.",
                     "correct": false,
-                    "feedback": "Good posture is not activity. Brisk moves like walking and stair climbing are what count.",
+                    "feedback": "Activity can count in smaller chunks. Brisk walks and stairs add to weekly minutes.",
                     "sourceRefs": [
                       "who-pa-facts",
                       "icmr-activity"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m2"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Watching a cricket match from the stands.",
+                    "text": "Hard sprints are the exercise that counts.",
                     "correct": false,
-                    "feedback": "Watching sport does not raise the heart rate the way brisk walking or stair climbing does.",
+                    "feedback": "Brisk walks and stairs can count. Moderate activity does not require a sprint.",
                     "sourceRefs": [
                       "who-pa-facts",
                       "icmr-activity"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m1"
                     ]
                   }
                 ]
@@ -3093,7 +3262,9 @@
                 "step": "exercise-heart-s2",
                 "job": "reverse",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "exercise-heart-m4"
+                ],
                 "sourceRefs": [
                   "cdc-intensity",
                   "icmr-activity"
@@ -3118,16 +3289,22 @@
                     "sourceRefs": [
                       "cdc-intensity",
                       "icmr-activity"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Slow down to save his breath.",
+                    "text": "Keep chatting; full sentences show vigorous effort.",
                     "correct": false,
-                    "feedback": "Slowing down makes the effort easier. He needs to speed up to reach vigorous.",
+                    "feedback": "Full sentences fit a lower effort. Vigorous effort leaves room for a few words before a breath.",
                     "sourceRefs": [
                       "cdc-intensity",
                       "icmr-activity"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m4"
                     ]
                   }
                 ]
@@ -3269,6 +3446,9 @@
                     "feedback": "Fewer hard runs still start too hard. A doctor's check and a slow build-up come first.",
                     "sourceRefs": [
                       "icmr-activity"
+                    ],
+                    "misconceptionIds": [
+                      "exercise-heart-m3"
                     ]
                   }
                 ]
@@ -3297,6 +3477,15 @@
                 "name": "Start hard to save time",
                 "correction": "Effort should rise slowly, with a doctor's check first after a long break or with an illness.",
                 "sourceRefs": [
+                  "icmr-activity"
+                ]
+              },
+              {
+                "id": "exercise-heart-m4",
+                "name": "Chatting signals vigorous effort",
+                "correction": "Moderate effort lets you talk; vigorous effort leaves room for only a few words.",
+                "sourceRefs": [
+                  "cdc-intensity",
                   "icmr-activity"
                 ]
               }
@@ -3483,9 +3672,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About 20 minutes in all.",
+                        "text": "Nowhere; a walk is not real exercise.",
                         "correct": false,
-                        "feedback": "That is one day. Over seven days it adds up to 140 minutes."
+                        "feedback": "A brisk walk counts. 20 minutes a day adds up to 140 a week."
                       }
                     ]
                   }
@@ -3570,9 +3759,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Skipping rope fast.",
+                        "text": "A brisk walk where you can still sing.",
                         "correct": false,
-                        "feedback": "Jumping rope is listed as vigorous, not moderate."
+                        "feedback": "If you can sing, the effort is light. Moderate lets you talk but not sing."
                       }
                     ]
                   }
@@ -3754,7 +3943,9 @@
                 "step": "iron-and-anaemia-s1",
                 "job": "reverse",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "iron-and-anaemia-m2"
+                ],
                 "sourceRefs": [
                   "anaemia",
                   "iron"
@@ -3773,12 +3964,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "She is eating too much protein.",
+                    "text": "Her signs prove low iron caused anaemia.",
                     "correct": false,
-                    "feedback": "Too much protein does not cause these signs. They point to blood carrying less oxygen.",
+                    "feedback": "Anaemia can cause these signs, but it has several causes. The blood may be carrying less oxygen.",
                     "sourceRefs": [
                       "anaemia",
                       "iron"
+                    ],
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
                     ]
                   },
                   {
@@ -3884,11 +4078,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Skip the poha and keep the chai.",
+                    "text": "Keep the chai; tea with food has no effect.",
                     "correct": false,
-                    "feedback": "That removes the food that brings the iron. Moving the tea later is the better change.",
+                    "feedback": "Tea gets in the way of iron uptake. Having chai an hour later helps iron from the poha get in.",
                     "sourceRefs": [
                       "icmr-iron"
+                    ],
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m3"
                     ]
                   }
                 ]
@@ -3934,12 +4131,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "Cooking turns the iron into fat.",
+                    "text": "Plant iron gets in as easily as other iron.",
                     "correct": false,
-                    "feedback": "Cooking does not turn iron into fat. Plant iron is simply harder for the body to take in.",
+                    "feedback": "Iron from plants is harder to take in. Vitamin C foods can help the body take it in.",
                     "sourceRefs": [
                       "icmr-iron",
                       "medline-iron"
+                    ],
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
                     ]
                   }
                 ]
@@ -3952,7 +4152,8 @@
                 "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "iron-and-anaemia-m2"
+                  "iron-and-anaemia-m2",
+                  "iron-and-anaemia-m3"
                 ],
                 "sourceRefs": [
                   "anaemia",
@@ -3991,6 +4192,9 @@
                     "sourceRefs": [
                       "anaemia",
                       "nhs-ida"
+                    ],
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m3"
                     ]
                   }
                 ]
@@ -4002,7 +4206,9 @@
                 "step": "iron-and-anaemia-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "iron-and-anaemia-m2"
+                ],
                 "sourceRefs": [
                   "anaemia"
                 ],
@@ -4019,11 +4225,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Drinking plenty of water.",
+                    "text": "There are no causes besides low iron.",
                     "correct": false,
-                    "feedback": "Water does not cause anaemia. Infections like malaria, low vitamins and blood loss can.",
+                    "feedback": "Anaemia has several causes besides low iron. Malaria is one of them.",
                     "sourceRefs": [
                       "anaemia"
+                    ],
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
                     ]
                   },
                   {
@@ -4264,9 +4473,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It stays the same.",
+                        "text": "The same; faster breathing makes up for it.",
                         "correct": false,
-                        "feedback": "Haemoglobin does the carrying, so less of it means less oxygen moved."
+                        "feedback": "Breathing harder cannot add carriers, so less oxygen gets moved."
                       }
                     ]
                   }
@@ -4429,9 +4638,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Yes, it is malaria for both.",
+                        "text": "Most likely; anaemia means low iron.",
                         "correct": false,
-                        "feedback": "Malaria is one cause. Low iron and low vitamins are others."
+                        "feedback": "Low iron is the top food cause, but B12, malaria, heavy periods and thalassaemia cause it too."
                       }
                     ]
                   }
@@ -4531,11 +4740,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The weight of the empty wrapper.",
+                    "text": "The 80 kcal covers the full pack.",
                     "correct": false,
-                    "feedback": "The wrapper tells you nothing. The number of servings changes the total.",
+                    "feedback": "The figure is per serving. Check how many servings the pack holds.",
                     "sourceRefs": [
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m4"
                     ]
                   }
                 ]
@@ -4598,7 +4810,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "food-label-reading-m1"
+                  "food-label-reading-m1",
+                  "food-label-reading-m5"
                 ],
                 "sourceRefs": [
                   "label",
@@ -4624,6 +4837,9 @@
                     "sourceRefs": [
                       "label",
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m5"
                     ]
                   },
                   {
@@ -4634,6 +4850,9 @@
                     "sourceRefs": [
                       "label",
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m5"
                     ]
                   }
                 ]
@@ -4743,6 +4962,9 @@
                     "feedback": "A claim on the front proves nothing. Read both backs and compare.",
                     "sourceRefs": [
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m3"
                     ]
                   }
                 ]
@@ -4754,7 +4976,9 @@
                 "step": "food-label-reading-s3",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "food-label-reading-m3"
+                ],
                 "sourceRefs": [
                   "icmr-label"
                 ],
@@ -4776,6 +5000,9 @@
                     "feedback": "The per 100 g lines are close, so the swap saves very little energy.",
                     "sourceRefs": [
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m3"
                     ]
                   },
                   {
@@ -4785,6 +5012,9 @@
                     "feedback": "Sugar free does not mean energy free. Fat and flour keep the energy high.",
                     "sourceRefs": [
                       "icmr-label"
+                    ],
+                    "misconceptionIds": [
+                      "food-label-reading-m3"
                     ]
                   }
                 ]
@@ -4821,6 +5051,15 @@
                 "name": "Per serving means per pack",
                 "correction": "A pack can hold more than one serving.",
                 "sourceRefs": [
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-m5",
+                "name": "Ingredient rank compares different packs",
+                "correction": "Ingredient order ranks amounts within a pack; per 100 g values let you compare packs.",
+                "sourceRefs": [
+                  "label",
                   "icmr-label"
                 ]
               }
@@ -4976,9 +5215,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The numbers are printed too small.",
+                        "text": "Each pack is one serving, and packs differ.",
                         "correct": false,
-                        "feedback": "Print size is not the trouble. Serving sizes differ between brands."
+                        "feedback": "A pack often holds several servings. The trouble is each brand picks its own serving size."
                       }
                     ]
                   }
@@ -5297,11 +5536,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Milk is fine, but just for children.",
+                    "text": "Milk gives an adult the key nutrients they need.",
                     "correct": false,
-                    "feedback": "Age is not the point. No single food, milk included, covers every nutrient.",
+                    "feedback": "No single food gives all key nutrients. Milk alone cannot cover the varied diet in the food guide.",
                     "sourceRefs": [
                       "variety"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m1"
                     ]
                   }
                 ]
@@ -5349,6 +5591,9 @@
                     "feedback": "There is no strong research on detox clearing toxins. The drop came from eating little.",
                     "sourceRefs": [
                       "nccih-detox"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
                     ]
                   }
                 ]
@@ -5360,7 +5605,9 @@
                 "step": "fad-diet-claims-s2",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "fad-diet-claims-m2"
+                ],
                 "sourceRefs": [
                   "nccih-detox"
                 ],
@@ -5377,11 +5624,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sharper focus for his exams.",
+                    "text": "No risk; detox plans are proven to work.",
                     "correct": false,
-                    "feedback": "No-food days tend to bring headaches and weakness, which make study harder, not easier.",
+                    "feedback": "Detox plans lack strong evidence for lasting loss. Fasting can cause headaches, weakness or fainting.",
                     "sourceRefs": [
                       "nccih-detox"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
                     ]
                   },
                   {
@@ -5404,7 +5654,8 @@
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "fad-diet-claims-m1",
-                  "fad-diet-claims-m3"
+                  "fad-diet-claims-m3",
+                  "fad-diet-claims-m2"
                 ],
                 "sourceRefs": [
                   "variety",
@@ -5424,22 +5675,28 @@
                   },
                   {
                     "id": "b",
-                    "text": "None, if the reel has many views.",
+                    "text": "None; a detox drink has proven results.",
                     "correct": false,
-                    "feedback": "Views do not make a claim true. One magic drink and an overnight result are both red flags.",
+                    "feedback": "Strong research does not back detox plans. One drink and an overnight result are red flags.",
                     "sourceRefs": [
                       "variety",
                       "nccih-detox"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m2"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "The drink costs too little to work.",
+                    "text": "None; overnight loss is the better pace.",
                     "correct": false,
-                    "feedback": "Price is not the clue. One magic drink and an overnight result are the red flags.",
+                    "feedback": "India's food guide calls for slow weight loss. The overnight claim is a red flag.",
                     "sourceRefs": [
                       "variety",
                       "nccih-detox"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m3"
                     ]
                   }
                 ]
@@ -5482,11 +5739,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Yes, but in summer alone.",
+                    "text": "Yes; faster weight loss is better.",
                     "correct": false,
-                    "feedback": "Season does not matter. The pace is meant for people who need to lose weight.",
+                    "feedback": "The guide calls for slow loss when weight loss is needed. Arjun is trying to gain muscle.",
                     "sourceRefs": [
                       "variety"
+                    ],
+                    "misconceptionIds": [
+                      "fad-diet-claims-m3"
                     ]
                   }
                 ]

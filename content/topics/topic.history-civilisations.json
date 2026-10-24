@@ -121,11 +121,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "One builder put up the houses.",
+                    "text": "Neat roads can grow with no plan.",
                     "correct": false,
-                    "feedback": "Who built the houses is not shown by the grid. The grid shows a plan.",
+                    "feedback": "Right-angle streets in neat blocks show planning. The grid points to a layout made first.",
                     "sourceRefs": [
                       "unesco-indus"
+                    ],
+                    "misconceptionIds": [
+                      "indus-cities-m3"
                     ]
                   }
                 ]
@@ -137,7 +140,9 @@
                 "step": "indus-cities-s2",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "indus-cities-m4"
+                ],
                 "sourceRefs": [
                   "indus",
                   "ncert-indus"
@@ -162,16 +167,22 @@
                     "sourceRefs": [
                       "indus",
                       "ncert-indus"
+                    ],
+                    "misconceptionIds": [
+                      "indus-cities-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "They dug a well beside each house.",
+                    "text": "Open ditches let workers reach the silt.",
                     "correct": false,
-                    "feedback": "Wells gave water; they did not clear drains. Small pits along the drains caught the silt.",
+                    "feedback": "Most drains were covered brick channels. Sumps caught solids, and covers could be lifted for cleaning.",
                     "sourceRefs": [
                       "indus",
                       "ncert-indus"
+                    ],
+                    "misconceptionIds": [
+                      "indus-cities-m4"
                     ]
                   }
                 ]
@@ -184,7 +195,8 @@
                 "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "indus-cities-m4"
+                  "indus-cities-m4",
+                  "indus-cities-m5"
                 ],
                 "sourceRefs": [
                   "indus"
@@ -207,15 +219,21 @@
                     "feedback": "Every street and lane had a drain, so the city was far from drainless.",
                     "sourceRefs": [
                       "indus"
+                    ],
+                    "misconceptionIds": [
+                      "indus-cities-m5"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "The drains were made of iron.",
+                    "text": "They stayed open so silt could be cleared.",
                     "correct": false,
-                    "feedback": "They were built of baked brick, not metal.",
+                    "feedback": "Most drains had brick covers that could be lifted. Sumps let workers clear settled solids.",
                     "sourceRefs": [
                       "indus"
+                    ],
+                    "misconceptionIds": [
+                      "indus-cities-m4"
                     ]
                   }
                 ]
@@ -456,6 +474,14 @@
                 "id": "indus-cities-m4",
                 "name": "Old drains were open ditches",
                 "correction": "Most Mohenjo-daro drains were channels of baked brick with covers on top.",
+                "sourceRefs": [
+                  "indus"
+                ]
+              },
+              {
+                "id": "indus-cities-m5",
+                "name": "Old cities had no drains",
+                "correction": "Every street and lane at Mohenjo-daro had a drain.",
                 "sourceRefs": [
                   "indus"
                 ]
@@ -889,7 +915,9 @@
                 "step": "ashoka-edicts-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "ashoka-edicts-m1"
+                ],
                 "sourceRefs": [
                   "ashoka",
                   "ncert-kings"
@@ -908,12 +936,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "Print it on glossy paper posters.",
+                    "text": "Keep it at court, as Ashoka kept his messages.",
                     "correct": false,
-                    "feedback": "Paper tears and fades in sun and rain within months, not centuries.",
+                    "feedback": "Ashoka had edicts carved on rocks and pillars across his empire. Stone fits the outdoor aim.",
                     "sourceRefs": [
                       "ashoka",
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
                     ]
                   },
                   {
@@ -936,7 +967,8 @@
                 "job": "edge",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "ashoka-edicts-m2"
+                  "ashoka-edicts-m2",
+                  "ashoka-edicts-m1"
                 ],
                 "sourceRefs": [
                   "ncert-kings"
@@ -954,11 +986,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes; each village had its own stone.",
+                    "text": "No; the carved edicts stayed at court.",
                     "correct": false,
-                    "feedback": "The stones stood near towns and routes, not in each village, so a far-off farmer might never pass one.",
+                    "feedback": "Edicts stood across Ashoka's empire, not at court alone. A distant farmer may not reach a stone easily.",
                     "sourceRefs": [
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m1"
                     ]
                   },
                   {
@@ -1061,11 +1096,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "About 10 scripts.",
+                    "text": "About 1 script, used across the empire.",
                     "correct": false,
-                    "feedback": "That is too many. Brahmi, Kharosthi, Greek and Aramaic make four scripts in all.",
+                    "feedback": "The edicts used Brahmi, Kharosthi, Greek and Aramaic. That makes about four scripts.",
                     "sourceRefs": [
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m3"
                     ]
                   }
                 ],
@@ -1107,6 +1145,9 @@
                     "feedback": "Both scripts were really used. Greek edicts are known from Afghanistan.",
                     "sourceRefs": [
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m3"
                     ]
                   },
                   {
@@ -1154,15 +1195,21 @@
                     "feedback": "The dhamma edicts were about how to treat others, not about taxes.",
                     "sourceRefs": [
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "They held no messages, just names.",
+                    "text": "They gave orders without advice on kindness.",
                     "correct": false,
-                    "feedback": "The edicts carry long messages about conduct, not just names.",
+                    "feedback": "The edicts also asked people to show kindness and respect. They carried more than orders.",
                     "sourceRefs": [
                       "ncert-kings"
+                    ],
+                    "misconceptionIds": [
+                      "ashoka-edicts-m4"
                     ]
                   }
                 ]
@@ -1354,9 +1401,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Because stone was cheaper beside roads.",
+                        "text": "To mark the borders of his empire.",
                         "correct": false,
-                        "feedback": "Nothing says roadside stone cost less. The point was that people travelling past could see it."
+                        "feedback": "They stood near towns and routes across the empire, not just at the edges, so many people passed them."
                       }
                     ]
                   }
@@ -1527,9 +1574,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Schools that taught each edict.",
+                        "text": "No one; the stones alone were enough.",
                         "correct": false,
-                        "feedback": "Nothing says schools taught the edicts. Special officers were sent to spread the message."
+                        "feedback": "Most people could not read, so stones alone could not reach them. Officers spread the message."
                       }
                     ]
                   }
@@ -1654,7 +1701,9 @@
                 "step": "silk-road-ideas-s1",
                 "job": "edge",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "silk-road-ideas-m2"
+                ],
                 "sourceRefs": [
                   "silk"
                 ],
@@ -1680,11 +1729,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "A new road to be built.",
+                    "text": "A road across Asia to open before sailing.",
                     "correct": false,
-                    "feedback": "This trip is by sea. The ships needed the seasonal winds.",
+                    "feedback": "This is a ship voyage. Sailors used the right season's monsoon winds to cross the sea.",
                     "sourceRefs": [
                       "silk"
+                    ],
+                    "misconceptionIds": [
+                      "silk-road-ideas-m2"
                     ]
                   }
                 ]
@@ -1744,7 +1796,9 @@
                 "step": "silk-road-ideas-s2",
                 "job": "transfer",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "silk-road-ideas-m3"
+                ],
                 "sourceRefs": [
                   "silk"
                 ],
@@ -1770,11 +1824,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Monks paying traders to travel.",
+                    "text": "Art spreading on its own, apart from trade.",
                     "correct": false,
-                    "feedback": "Nothing says monks paid traders. Trade wealth paid for the art.",
+                    "feedback": "Trade wealth supported Buddhist centres and art. The sponsors match trade paying for art.",
                     "sourceRefs": [
                       "silk"
+                    ],
+                    "misconceptionIds": [
+                      "silk-road-ideas-m3"
                     ]
                   }
                 ]
@@ -1900,11 +1957,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The art first came from China and then moved to Gandhara.",
+                    "text": "No one had to carry the style there.",
                     "correct": false,
-                    "feedback": "The style is Gandharan. It moved out from Gandhara.",
+                    "feedback": "Monks moved from Gandhara into Central Asia and took the art style with them.",
                     "sourceRefs": [
                       "silk"
+                    ],
+                    "misconceptionIds": [
+                      "silk-road-ideas-m3"
                     ]
                   },
                   {
@@ -2159,9 +2219,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "More art than ever before, to cheer people up.",
+                        "text": "About the same; monks made art for faith.",
                         "correct": false,
-                        "feedback": "Less trade means less wealth, so there would be less to spend on art."
+                        "feedback": "Faith gave the reason, but trade wealth paid the carvers. Less trade, less to spend."
                       },
                       {
                         "id": "c",
@@ -2431,6 +2491,9 @@
                     "feedback": "You can. Brahmagupta said the answer is zero.",
                     "sourceRefs": [
                       "zero"
+                    ],
+                    "misconceptionIds": [
+                      "indian-place-value-m4"
                     ]
                   }
                 ]
@@ -2466,6 +2529,9 @@
                     "feedback": "Zero can sit in the middle of a number, and it is also a number.",
                     "sourceRefs": [
                       "zero"
+                    ],
+                    "misconceptionIds": [
+                      "indian-place-value-m2"
                     ]
                   },
                   {
@@ -2538,7 +2604,9 @@
                 "step": "indian-place-value-s3",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "indian-place-value-m3"
+                ],
                 "sourceRefs": [
                   "zero"
                 ],
@@ -2564,11 +2632,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Yes, because his book was a law.",
+                    "text": "Yes; Europe already used digits from Arabia.",
                     "correct": false,
-                    "feedback": "A book is not a law. People took up the digits slowly.",
+                    "feedback": "The digits came from India. Fibonacci later brought them to Europe, where they spread slowly.",
                     "sourceRefs": [
                       "zero"
+                    ],
+                    "misconceptionIds": [
+                      "indian-place-value-m3"
                     ]
                   }
                 ]
@@ -2743,9 +2814,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "They could not count past ten.",
+                        "text": "They could not write any large numbers.",
                         "correct": false,
-                        "feedback": "Place value lets you count high. The gap was a mark for empty places."
+                        "feedback": "They wrote big numbers with place value. The trouble was telling 61 from 601."
                       },
                       {
                         "id": "c",
@@ -2903,9 +2974,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Europe dropped zero soon after.",
+                        "text": "Europe got zero late, from Arabia, where it began.",
                         "correct": false,
-                        "feedback": "It was used, though not widely for a long time after his book."
+                        "feedback": "Zero did reach Europe late, but through Arabic books from India, where it began."
                       }
                     ]
                   }
@@ -2977,7 +3048,9 @@
                 "step": "printing-and-reading-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "printing-and-reading-m5"
+                ],
                 "sourceRefs": [
                   "loc-asia"
                 ],
@@ -3008,6 +3081,9 @@
                     "feedback": "Carving a block is woodblock printing. Movable type is reset instead.",
                     "sourceRefs": [
                       "loc-asia"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m5"
                     ]
                   }
                 ]
@@ -3020,7 +3096,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "printing-and-reading-m3"
+                  "printing-and-reading-m3",
+                  "printing-and-reading-m1"
                 ],
                 "sourceRefs": [
                   "loc-asia"
@@ -3043,15 +3120,21 @@
                     "feedback": "Bi Sheng made movable type in China, so it was tried there.",
                     "sourceRefs": [
                       "loc-asia"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Blocks printed faster than type.",
+                    "text": "It did not; movable type replaced blocks there.",
                     "correct": false,
-                    "feedback": "No source says blocks were faster. The many characters, and the lower cost of blocks, kept them in use.",
+                    "feedback": "Block printing remained the main method in China. Its many characters made movable type costly.",
                     "sourceRefs": [
                       "loc-asia"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m3"
                     ]
                   }
                 ]
@@ -3086,24 +3169,30 @@
                   },
                   {
                     "id": "b",
-                    "text": "Gutenberg did not print any books himself.",
+                    "text": "Gutenberg invented printing before Bi Sheng.",
                     "correct": false,
-                    "feedback": "He did print, including his famous Bible. He just was not first.",
+                    "feedback": "Bi Sheng made movable type centuries earlier. Gutenberg's Bible came around 1455.",
                     "sourceRefs": [
                       "loc-asia",
                       "loc-jikji",
                       "print"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Movable type began in the 1800s.",
+                    "text": "Printing began with Gutenberg in Europe.",
                     "correct": false,
-                    "feedback": "It began many centuries earlier, with Bi Sheng in China.",
+                    "feedback": "Bi Sheng's movable type and Korea's Jikji came earlier. Gutenberg was not the first anywhere.",
                     "sourceRefs": [
                       "loc-asia",
                       "loc-jikji",
                       "print"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m1"
                     ]
                   }
                 ]
@@ -3205,6 +3294,9 @@
                     "feedback": "How a book was printed does not matter here. The students first need to learn to read.",
                     "sourceRefs": [
                       "print"
+                    ],
+                    "misconceptionIds": [
+                      "printing-and-reading-m2"
                     ]
                   }
                 ]
@@ -3344,6 +3436,15 @@
                 "correction": "In China, block printing stayed the main method because of the many characters.",
                 "sourceRefs": [
                   "loc-asia"
+                ]
+              },
+              {
+                "id": "printing-and-reading-m5",
+                "name": "Movable type uses carved blocks",
+                "correction": "Movable type uses separate pieces, while block printing uses blocks.",
+                "sourceRefs": [
+                  "loc-asia",
+                  "print"
                 ]
               }
             ],
@@ -3504,9 +3605,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "One woodblock for all 20 pages.",
+                        "text": "Woodblocks, as China kept using them.",
                         "correct": false,
-                        "feedback": "A woodblock holds one fixed page, so it cannot print 20 different ones."
+                        "feedback": "Blocks stayed common in China for other reasons, like the many characters. For 20 pages, reset type needs least carving."
                       }
                     ]
                   }
@@ -3744,7 +3845,9 @@
                 "step": "mughal-revenue-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "mughal-revenue-m1"
+                ],
                 "sourceRefs": [
                   "ncert-mughals"
                 ],
@@ -3761,11 +3864,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "A royal charter for overseas trade.",
+                    "text": "A mansab title with no pay tied to it.",
                     "correct": false,
-                    "feedback": "A charter is about trade rights. The level number is like zat.",
+                    "feedback": "A mansabdar's zat number set rank and pay. That matches the club's level number.",
                     "sourceRefs": [
                       "ncert-mughals"
+                    ],
+                    "misconceptionIds": [
+                      "mughal-revenue-m1"
                     ]
                   },
                   {
@@ -3835,7 +3941,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "mughal-revenue-m3"
+                  "mughal-revenue-m3",
+                  "mughal-revenue-m4"
                 ],
                 "sourceRefs": [
                   "ncert-mughals"
@@ -3858,6 +3965,9 @@
                     "feedback": "Cash pay was the other method. A jagir was a right to an area's revenue, not coins or land.",
                     "sourceRefs": [
                       "ncert-mughals"
+                    ],
+                    "misconceptionIds": [
+                      "mughal-revenue-m4"
                     ]
                   },
                   {
@@ -4023,6 +4133,9 @@
                     "sourceRefs": [
                       "ncert-mughals",
                       "mughal"
+                    ],
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
                     ]
                   }
                 ]
@@ -4034,7 +4147,9 @@
                 "step": "mughal-revenue-s3",
                 "job": "combine",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "mughal-revenue-m2"
+                ],
                 "sourceRefs": [
                   "ncert-mughals"
                 ],
@@ -4060,11 +4175,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Horseman.",
+                    "text": "Province, since one tax rate fit its crops.",
                     "correct": false,
-                    "feedback": "Horsemen were a noble's army duty. Zabt rates were set by crop.",
+                    "feedback": "Zabt set rates for each crop. The system did not work in every province.",
                     "sourceRefs": [
                       "ncert-mughals"
+                    ],
+                    "misconceptionIds": [
+                      "mughal-revenue-m2"
                     ]
                   }
                 ]
@@ -4092,6 +4210,15 @@
                 "id": "mughal-revenue-m3",
                 "name": "A jagir was land to own",
                 "correction": "A jagir was a right to collect an area's revenue, and holders were moved.",
+                "sourceRefs": [
+                  "ncert-mughals",
+                  "mughal"
+                ]
+              },
+              {
+                "id": "mughal-revenue-m4",
+                "name": "Jagirs paid treasury coins",
+                "correction": "A jagir gave a mansabdar rights to an area's revenue.",
                 "sourceRefs": [
                   "ncert-mughals",
                   "mughal"
@@ -4494,7 +4621,9 @@
                 "step": "company-trade-rule-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "company-trade-rule-m1"
+                ],
                 "sourceRefs": [
                   "ncert-trade"
                 ],
@@ -4511,11 +4640,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Lower its prices to beat rival sellers there.",
+                    "text": "Run the stadium because its charter gives control.",
                     "correct": false,
-                    "feedback": "There are no rivals to beat. Being the sole seller lets it charge more.",
+                    "feedback": "The charter gave trade rights, not ruling rights. As sole seller, the firm can charge more.",
                     "sourceRefs": [
                       "ncert-trade"
+                    ],
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
                     ]
                   },
                   {
@@ -4525,6 +4657,9 @@
                     "feedback": "Selling rights are not ruling rights, just as the charter was about trade.",
                     "sourceRefs": [
                       "ncert-trade"
+                    ],
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
                     ]
                   }
                 ]
@@ -4536,7 +4671,9 @@
                 "step": "company-trade-rule-s1",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "company-trade-rule-m1"
+                ],
                 "sourceRefs": [
                   "ncert-trade"
                 ],
@@ -4553,11 +4690,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The Dutch had bought the charter from the Company.",
+                    "text": "They could not; the charter granted rule there.",
                     "correct": false,
-                    "feedback": "Nothing like that happened. The charter just had no hold over other countries.",
+                    "feedback": "The charter gave the Company an English trade right, not rule over other countries' traders.",
                     "sourceRefs": [
                       "ncert-trade"
+                    ],
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
                     ]
                   },
                   {
@@ -4681,7 +4821,9 @@
                 "step": "company-trade-rule-s3",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "company-trade-rule-m1"
+                ],
                 "sourceRefs": [
                   "ncert-revolt"
                 ],
@@ -4698,11 +4840,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The Company had just won its royal charter.",
+                    "text": "The charter had already made the Company ruler.",
                     "correct": false,
-                    "feedback": "The charter came at the very start, when the Company only traded. A Viceroy came much later.",
+                    "feedback": "The charter gave trade rights. The Viceroy title followed the transfer of Company powers to the Crown.",
                     "sourceRefs": [
                       "ncert-revolt"
+                    ],
+                    "misconceptionIds": [
+                      "company-trade-rule-m1"
                     ]
                   },
                   {
@@ -5097,9 +5242,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Loans from France.",
+                        "text": "Profits from its new trade licence.",
                         "correct": false,
-                        "feedback": "France was a rival. Indian revenue paid the costs."
+                        "feedback": "The diwani was the right to collect Bengal's tax, not a trade licence. That tax paid for the cloth."
                       }
                     ]
                   }
@@ -5187,9 +5332,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Nawab.",
+                        "text": "Chairman of the East India Company.",
                         "correct": false,
-                        "feedback": "Nawabs were local rulers. The new title was Viceroy."
+                        "feedback": "In 1858 the Company's powers moved to the Crown, so the new title, Viceroy, stood for the Crown."
                       }
                     ]
                   }
@@ -5278,7 +5423,9 @@
                 "step": "independence-constitution-s1",
                 "job": "edge",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "independence-constitution-m4"
+                ],
                 "sourceRefs": [
                   "assembly"
                 ],
@@ -5304,11 +5451,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "A king who must approve each rule before it passes.",
+                    "text": "British officials to write its rules.",
                     "correct": false,
-                    "feedback": "No king approved it. The Assembly itself adopted the text.",
+                    "feedback": "India's own Assembly wrote the Constitution. Its members came from the provinces and the princely states.",
                     "sourceRefs": [
                       "assembly"
+                    ],
+                    "misconceptionIds": [
+                      "independence-constitution-m4"
                     ]
                   }
                 ]
@@ -5373,7 +5523,8 @@
                 "job": "reverse",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "independence-constitution-m3"
+                  "independence-constitution-m3",
+                  "independence-constitution-m4"
                 ],
                 "sourceRefs": [
                   "assembly",
@@ -5393,12 +5544,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "It met once a year.",
+                    "text": "The first draft passed with no changes.",
                     "correct": false,
-                    "feedback": "It met in eleven sessions over 165 days. The time went on debating the draft and its changes.",
+                    "feedback": "The Assembly debated the draft and decided many proposed changes. That work took almost three years.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
+                    ],
+                    "misconceptionIds": [
+                      "independence-constitution-m3"
                     ]
                   },
                   {
@@ -5409,6 +5563,9 @@
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
+                    ],
+                    "misconceptionIds": [
+                      "independence-constitution-m4"
                     ]
                   }
                 ]
@@ -5560,12 +5717,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "It was not passed by anyone.",
+                    "text": "It was signed and began on the same day.",
                     "correct": false,
-                    "feedback": "It was passed by the Assembly before it came into force.",
+                    "feedback": "The Assembly adopted it first. It came into force about two months later.",
                     "sourceRefs": [
                       "assembly",
                       "pib-nis"
+                    ],
+                    "misconceptionIds": [
+                      "independence-constitution-m2"
                     ]
                   },
                   {
@@ -5964,9 +6124,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "It was the day the Assembly first met.",
+                        "text": "It was the day India won independence.",
                         "correct": false,
-                        "feedback": "The Assembly first met in December 1946. The January date came from Congress's call of 1929."
+                        "feedback": "Independence came on 15 August 1947. The January date came from Congress's call of 1929."
                       },
                       {
                         "id": "c",

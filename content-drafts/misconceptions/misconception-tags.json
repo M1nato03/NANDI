@@ -1,0 +1,3654 @@
+{
+ "draft": "Misconception tags for every untagged wrong option (spec 23 §4). Codex A/B proposed, idea engine reviewed. For editors.",
+ "basedOn": "origin/content-walk eb4d352",
+ "topics": [
+  {
+   "topic": "topic.psychology",
+   "newMisconceptions": [
+    {
+     "conceptId": "loss-aversion",
+     "id": "loss-aversion-m4",
+     "name": "One differing study disproves the average",
+     "correction": "Some studies found less and some found more, while the pooled average was about twice a gain.",
+     "sourceRefs": [
+      "loss-meta"
+     ],
+     "claimIds": [
+      "loss-aversion-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "anchoring",
+     "id": "anchoring-m5",
+     "name": "An anchor fixes the answer",
+     "correction": "A first number pulls a guess toward it, but the guess can differ from that number.",
+     "sourceRefs": [
+      "tversky",
+      "philosophy"
+     ],
+     "claimIds": [
+      "anchoring-c1",
+      "anchoring-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "confirmation-bias",
+     "id": "confirmation-bias-m4",
+     "name": "Beliefs leave evidence balanced",
+     "correction": "People tend to notice information that fits their beliefs and pass over information that does not.",
+     "sourceRefs": [
+      "bias"
+     ],
+     "claimIds": [
+      "confirmation-bias-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "social-proof",
+     "id": "social-proof-m4",
+     "name": "Everyone follows the crowd",
+     "correction": "People differed in Asch's test; about a quarter never followed the wrong group.",
+     "sourceRefs": [
+      "asch-original"
+     ],
+     "claimIds": [
+      "social-proof-c5"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "social-proof",
+     "id": "social-proof-m5",
+     "name": "Easy tasks resist social pressure",
+     "correction": "Some people followed a wrong group even when the right answer was plain.",
+     "sourceRefs": [
+      "asch",
+      "asch-original"
+     ],
+     "claimIds": [
+      "social-proof-c6"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "planning-fallacy",
+     "id": "planning-fallacy-m5",
+     "name": "Others' tasks take less time",
+     "correction": "People in the study guessed longer times for others' tasks and used past cases more.",
+     "sourceRefs": [
+      "planning"
+     ],
+     "claimIds": [
+      "planning-fallacy-c5"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-memory",
+     "id": "sleep-memory-m3",
+     "name": "Staying up beats sleeping after study",
+     "correction": "Sleep after learning reduced forgetting compared with the same length of time awake.",
+     "sourceRefs": [
+      "sleep-review"
+     ],
+     "claimIds": [
+      "sleep-memory-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-memory",
+     "id": "sleep-memory-m4",
+     "name": "Memories firm up at once",
+     "correction": "A new memory firms up over time after learning.",
+     "sourceRefs": [
+      "sleep-review"
+     ],
+     "claimIds": [
+      "sleep-memory-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-memory",
+     "id": "sleep-memory-m5",
+     "name": "Busy breaks aid memory",
+     "correction": "Quiet rest after learning helped memory more than spending that time on other tasks.",
+     "sourceRefs": [
+      "sleep-rest"
+     ],
+     "claimIds": [
+      "sleep-memory-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "variable-rewards",
+     "id": "variable-rewards-m4",
+     "name": "A skipped reward is variable",
+     "correction": "A reward after every fifth try is fixed; on a variable schedule, the number of tries keeps changing.",
+     "sourceRefs": [
+      "operant"
+     ],
+     "claimIds": [
+      "variable-rewards-c3"
+     ],
+     "fromCj3": true
+    },
+    {
+     "conceptId": "variable-rewards",
+     "id": "variable-rewards-m5",
+     "name": "Surprise rewards teach fastest",
+     "correction": "A reward after every try is the quickest way to teach a new act.",
+     "sourceRefs": [
+      "operant"
+     ],
+     "claimIds": [
+      "variable-rewards-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "variable-rewards",
+     "id": "variable-rewards-m6",
+     "name": "Steady rewards last longer",
+     "correction": "Responses learned with uneven rewards are slower to fade when rewards stop.",
+     "sourceRefs": [
+      "operant"
+     ],
+     "claimIds": [
+      "variable-rewards-c1"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "habits-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "habits-m3"
+     ],
+     "why": "It assumes the act will continue without its usual cue."
+    },
+    {
+     "itemId": "habits-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The TV changing the value of sit-ups is arbitrary filler."
+    },
+    {
+     "itemId": "habits-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses the longest estimate with the halfway value."
+    },
+    {
+     "itemId": "habits-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Exams strengthening every habit is an unsupported absurdity."
+    },
+    {
+     "itemId": "loss-aversion-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It contradicts the stated equal enjoyment of the matches."
+    },
+    {
+     "itemId": "loss-aversion-11",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Changing stakes cannot change the stated fifty-fifty chances."
+    },
+    {
+     "itemId": "loss-aversion-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Enjoying a loss is unrelated to the choice pattern."
+    },
+    {
+     "itemId": "loss-aversion-13",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reverses the plain meaning of a cut."
+    },
+    {
+     "itemId": "loss-aversion-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Shop prices do not establish her earlier pocket money."
+    },
+    {
+     "itemId": "loss-aversion-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It is a wrong recall of the stated pooled figure."
+    },
+    {
+     "itemId": "loss-aversion-16",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "loss-aversion-m4"
+     ],
+     "why": "It treats variation between studies as proof that the average is false."
+    },
+    {
+     "itemId": "anchoring-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "anchoring-m2"
+     ],
+     "why": "It assumes different first numbers cannot change guesses."
+    },
+    {
+     "itemId": "anchoring-11",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A tag below the guess contradicts coming down from it."
+    },
+    {
+     "itemId": "anchoring-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An equal tag contradicts moving down from it."
+    },
+    {
+     "itemId": "anchoring-12",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "anchoring-m5"
+     ],
+     "why": "It assumes the final guess equals the anchor."
+    },
+    {
+     "itemId": "anchoring-12",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "anchoring-m2"
+     ],
+     "why": "It assumes the higher random anchor has no pull."
+    },
+    {
+     "itemId": "anchoring-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The buyer's honesty does not address the number's pull."
+    },
+    {
+     "itemId": "anchoring-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Repeating the anchor offers no reason its pull would shrink."
+    },
+    {
+     "itemId": "anchoring-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Waiting for another seller price does not challenge the anchor."
+    },
+    {
+     "itemId": "anchoring-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The trick lists objections; it does not enlarge a number."
+    },
+    {
+     "itemId": "confirmation-bias-9",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "confirmation-bias-m4"
+     ],
+     "why": "It assumes a strong belief leaves attention evenly balanced."
+    },
+    {
+     "itemId": "confirmation-bias-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Last term's meals do not illustrate selective attention this term."
+    },
+    {
+     "itemId": "confirmation-bias-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It swaps the two reported percentages."
+    },
+    {
+     "itemId": "confirmation-bias-14",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "confirmation-bias-m4"
+     ],
+     "why": "Notes on one side alone do not make evidence fair."
+    },
+    {
+     "itemId": "confirmation-bias-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The stem explicitly says he never checked the other side."
+    },
+    {
+     "itemId": "confirmation-bias-16",
+     "optionId": "a",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "confirmation-bias-m2"
+     ],
+     "why": "It dismisses an exception as useless evidence."
+    },
+    {
+     "itemId": "confirmation-bias-16",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "confirmation-bias-m2"
+     ],
+     "why": "It says exceptions cannot test any claim."
+    },
+    {
+     "itemId": "social-proof-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Avoiding a wait is a reasonable preference, not a misconception."
+    },
+    {
+     "itemId": "social-proof-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Disliking queues is a preference, not a mistaken belief."
+    },
+    {
+     "itemId": "social-proof-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It misses the visible queue's purpose without stating a general belief."
+    },
+    {
+     "itemId": "social-proof-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "social-proof-m4"
+     ],
+     "why": "It suggests nearly everyone followed the wrong group."
+    },
+    {
+     "itemId": "social-proof-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "social-proof-m5"
+     ],
+     "why": "It assumes an easy task prevents social pressure."
+    },
+    {
+     "itemId": "social-proof-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Whether likes are fake does not establish whether a tip is true."
+    },
+    {
+     "itemId": "planning-fallacy-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "planning-fallacy-m1"
+     ],
+     "why": "It treats the team's optimistic guess as the expected finish."
+    },
+    {
+     "itemId": "planning-fallacy-10",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "planning-fallacy-m5"
+     ],
+     "why": "It predicts the shorter guess for another person's task."
+    },
+    {
+     "itemId": "planning-fallacy-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Matching rooms do not imply matching planning biases."
+    },
+    {
+     "itemId": "planning-fallacy-14",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Leaving out the task's main work is implausible filler."
+    },
+    {
+     "itemId": "planning-fallacy-14",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "planning-fallacy-m3"
+     ],
+     "why": "It explains the delay as an isolated slow day."
+    },
+    {
+     "itemId": "planning-fallacy-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It ignores all three past times without a clear mistaken belief."
+    },
+    {
+     "itemId": "planning-fallacy-16",
+     "optionId": "a",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "planning-fallacy-m3"
+     ],
+     "why": "It dismisses a real past delay from the next plan."
+    },
+    {
+     "itemId": "planning-fallacy-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It turns a one-off delay into an implausible certainty."
+    },
+    {
+     "itemId": "sleep-memory-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reverses the necessary order of learning and memory."
+    },
+    {
+     "itemId": "sleep-memory-11",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-memory-m3"
+     ],
+     "why": "It assumes late cramming makes memories firm by morning."
+    },
+    {
+     "itemId": "sleep-memory-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-memory-m4"
+     ],
+     "why": "It says consolidation finishes at the moment of reading."
+    },
+    {
+     "itemId": "sleep-memory-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds 60 terms instead of finding 60 percent."
+    },
+    {
+     "itemId": "sleep-memory-16",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-memory-m5"
+     ],
+     "why": "It substitutes a busy task for helpful quiet rest."
+    },
+    {
+     "itemId": "sleep-memory-16",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-memory-m5"
+     ],
+     "why": "It claims breaks undo learning."
+    },
+    {
+     "itemId": "variable-rewards-9",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "variable-rewards-m4"
+     ],
+     "why": "Every fifth reward skips tries but follows a fixed count."
+    },
+    {
+     "itemId": "variable-rewards-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A discount every time plainly lacks an uncertain reward."
+    },
+    {
+     "itemId": "variable-rewards-10",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "variable-rewards-m5"
+     ],
+     "why": "It says uneven rewards teach a new act fastest."
+    },
+    {
+     "itemId": "variable-rewards-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Saying praise has no effect is an unsupported extreme."
+    },
+    {
+     "itemId": "variable-rewards-12",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "variable-rewards-m4"
+     ],
+     "why": "It treats one-in-five chance as a fixed fifth-try reward."
+    },
+    {
+     "itemId": "variable-rewards-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reuses one swipe's probability for five chances."
+    },
+    {
+     "itemId": "variable-rewards-13",
+     "optionId": "a",
+     "verdict": "new",
+     "misconceptionIds": [
+      "variable-rewards-m6"
+     ],
+     "why": "It predicts longer persistence after a steady reward stops."
+    },
+    {
+     "itemId": "variable-rewards-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "variable-rewards-m6"
+     ],
+     "why": "It assumes both reward schedules fade equally fast."
+    },
+    {
+     "itemId": "variable-rewards-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The stem explicitly says she turned the alerts off."
+    },
+    {
+     "itemId": "variable-rewards-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It denies an obvious shared feature instead of addressing other causes."
+    },
+    {
+     "itemId": "if-then-plans-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "if-then-plans-m1"
+     ],
+     "why": "Its vague cue and response leave a wish in place of a plan."
+    },
+    {
+     "itemId": "if-then-plans-10",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It merely swaps the sentence's action and cue."
+    },
+    {
+     "itemId": "if-then-plans-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses the goal with the named moment."
+    },
+    {
+     "itemId": "if-then-plans-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Nothing in the plan implies doubling study time."
+    },
+    {
+     "itemId": "if-then-plans-13",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Ride length is unrelated to the plan's cue."
+    },
+    {
+     "itemId": "if-then-plans-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It is an incorrect recall of the reported effect size."
+    },
+    {
+     "itemId": "if-then-plans-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It ignores the scale given in the stem."
+    },
+    {
+     "itemId": "if-then-plans-16",
+     "optionId": "a",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It replaces an exaggerated promise with an equally unsupported extreme."
+    },
+    {
+     "itemId": "if-then-plans-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Nothing suggests plans work only for top students."
+    },
+    {
+     "itemId": "spotlight-effect-9",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "spotlight-effect-m3"
+     ],
+     "why": "It assumes the panel will judge a minor feature harshly."
+    },
+    {
+     "itemId": "spotlight-effect-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds seven when the guess was seven too high."
+    },
+    {
+     "itemId": "spotlight-effect-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It repeats the guess instead of calculating the lower count."
+    },
+    {
+     "itemId": "spotlight-effect-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The claim about frozen screens is unsupported technical filler."
+    },
+    {
+     "itemId": "spotlight-effect-14",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "spotlight-effect-m4"
+     ],
+     "why": "It assumes memorable good remarks fall outside the effect."
+    },
+    {
+     "itemId": "spotlight-effect-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It invents how onlookers thought instead of addressing their judgment."
+    },
+    {
+     "itemId": "spotlight-effect-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Tray weight does not explain either fear in the stem."
+    }
+   ]
+  },
+  {
+   "topic": "topic.money-markets",
+   "newMisconceptions": [
+    {
+     "conceptId": "compounding",
+     "id": "compounding-m4",
+     "name": "Interest only grows the first amount",
+     "correction": "Compound growth includes gains on past gains as well as on the starting amount.",
+     "sourceRefs": [
+      "compound",
+      "sip"
+     ],
+     "claimIds": [
+      "compounding-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "compounding",
+     "id": "compounding-m5",
+     "name": "Time alone compounds idle cash",
+     "correction": "Compound growth needs gains; cash that earns nothing has no gains to build on.",
+     "sourceRefs": [
+      "compound",
+      "sip"
+     ],
+     "claimIds": [
+      "compounding-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "risk-return",
+     "id": "risk-return-m4",
+     "name": "Savings earn more than shares",
+     "correction": "Cash savings have earned less than shares over time, though shares carry more risk.",
+     "sourceRefs": [
+      "risk",
+      "what-risk"
+     ],
+     "claimIds": [
+      "risk-return-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "risk-return",
+     "id": "risk-return-m5",
+     "name": "Shares stay steady short term",
+     "correction": "Share values can fall, so money needed soon usually suits a lower-risk place.",
+     "sourceRefs": [
+      "risk",
+      "what-risk"
+     ],
+     "claimIds": [
+      "risk-return-c1",
+      "risk-return-c5"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "shares",
+     "id": "shares-m6",
+     "name": "Small owners cannot vote",
+     "correction": "Owners of shares can vote on big decisions at the firm's general meeting.",
+     "sourceRefs": [
+      "shares"
+     ],
+     "claimIds": [
+      "shares-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "loan-emi",
+     "id": "loan-emi-m4",
+     "name": "Longer terms raise the rate",
+     "correction": "A longer term can raise total interest even when the loan rate stays fixed.",
+     "sourceRefs": [
+      "rbi-loan"
+     ],
+     "claimIds": [
+      "loan-emi-c1",
+      "loan-emi-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "loan-emi",
+     "id": "loan-emi-m5",
+     "name": "Every EMI rupee is interest",
+     "correction": "An EMI can pay both interest and part of the loan sum.",
+     "sourceRefs": [
+      "rbi-loan"
+     ],
+     "claimIds": [
+      "loan-emi-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "upi-scams",
+     "id": "upi-scams-m5",
+     "name": "Scanning a QR can get you money",
+     "correction": "A QR scan and UPI PIN can make a payment; getting money needs neither.",
+     "sourceRefs": [
+      "npci-fraud",
+      "rbi-fraud"
+     ],
+     "claimIds": [
+      "upi-scams-c1",
+      "upi-scams-c3"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "inflation-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It overlooks the stipend's equal rise."
+    },
+    {
+     "itemId": "inflation-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It applies the percentage to the wrong year's price."
+    },
+    {
+     "itemId": "inflation-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds a rise while trying to find an earlier price."
+    },
+    {
+     "itemId": "inflation-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Falling prices cannot explain why higher pay buys less."
+    },
+    {
+     "itemId": "inflation-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It claims rising prices cannot hurt buying power."
+    },
+    {
+     "itemId": "compounding-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It turns two ten-percent gains into a doubling."
+    },
+    {
+     "itemId": "compounding-10",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "compounding-m4"
+     ],
+     "why": "It assumes the yearly rate stops applying after year one."
+    },
+    {
+     "itemId": "compounding-14",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "compounding-m5"
+     ],
+     "why": "It assumes waiting alone creates compound gains."
+    },
+    {
+     "itemId": "compounding-14",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "compounding-m5"
+     ],
+     "why": "It predicts doubling with no earnings to compound."
+    },
+    {
+     "itemId": "compounding-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Stopping payments does not explain a fund's falling value."
+    },
+    {
+     "itemId": "rule-of-72-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mistakes the annual rate for the number of years."
+    },
+    {
+     "itemId": "rule-of-72-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies where the stated rule divides."
+    },
+    {
+     "itemId": "rule-of-72-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It says far longer despite the given shortcut estimate."
+    },
+    {
+     "itemId": "rule-of-72-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Interest-only payments do not reduce the amount owed."
+    },
+    {
+     "itemId": "rule-of-72-13",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "rule-of-72-m3"
+     ],
+     "why": "It overlooks how fast unpaid high-interest debt grows."
+    },
+    {
+     "itemId": "rule-of-72-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It uses an unrelated multiplication instead of the shortcut."
+    },
+    {
+     "itemId": "rule-of-72-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Starting sum size is unrelated to the rate shortcut."
+    },
+    {
+     "itemId": "risk-return-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It applies the loss percentage to the final amount."
+    },
+    {
+     "itemId": "risk-return-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It subtracts again instead of reversing the loss."
+    },
+    {
+     "itemId": "risk-return-10",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "risk-return-m4"
+     ],
+     "why": "It says savings earn more than shares over time."
+    },
+    {
+     "itemId": "risk-return-10",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "risk-return-m5"
+     ],
+     "why": "It assumes shares cannot swing over a short goal period."
+    },
+    {
+     "itemId": "risk-return-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Forgone upside is not uncertainty in the fixed pay."
+    },
+    {
+     "itemId": "risk-return-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It equates the safest asset's swings with shares."
+    },
+    {
+     "itemId": "risk-return-15",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "risk-return-m1"
+     ],
+     "why": "It prioritizes possible gains as though they were assured."
+    },
+    {
+     "itemId": "risk-return-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It ignores the stated long period available to ride out dips."
+    },
+    {
+     "itemId": "diversification-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mistakes a percentage for the holding count."
+    },
+    {
+     "itemId": "diversification-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mistakes the remaining percentage for the holding count."
+    },
+    {
+     "itemId": "diversification-10",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "diversification-m2"
+     ],
+     "why": "It assumes several goods protect against a shared shutdown."
+    },
+    {
+     "itemId": "diversification-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It says adding a second firm makes the mix worse."
+    },
+    {
+     "itemId": "diversification-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Nothing makes the smaller holding certain to fall."
+    },
+    {
+     "itemId": "diversification-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It asserts steel shares cannot fall without explaining the poor spread."
+    },
+    {
+     "itemId": "diversification-13",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "diversification-m3"
+     ],
+     "why": "It treats the number of firms alone as the spread."
+    },
+    {
+     "itemId": "diversification-15",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "diversification-m2"
+     ],
+     "why": "It assumes other stall types escape a whole-fest cancellation."
+    },
+    {
+     "itemId": "shares-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It calculates thirty percent instead of three percent."
+    },
+    {
+     "itemId": "shares-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It calculates a tenth of the requested share count."
+    },
+    {
+     "itemId": "shares-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "New shares issued to others cannot increase her slice."
+    },
+    {
+     "itemId": "shares-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It gives a tiny holding control of every big plan."
+    },
+    {
+     "itemId": "shares-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "shares-m6"
+     ],
+     "why": "It denies small owners a vote."
+    },
+    {
+     "itemId": "emergency-fund-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses target coverage with time needed to save."
+    },
+    {
+     "itemId": "emergency-fund-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It moves the division result's decimal place."
+    },
+    {
+     "itemId": "emergency-fund-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies a total that already covers three months."
+    },
+    {
+     "itemId": "emergency-fund-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It repeats the three-month target as a monthly cost."
+    },
+    {
+     "itemId": "emergency-fund-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It invents rapid value loss; no claim supports a correction."
+    },
+    {
+     "itemId": "emergency-fund-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Bank storage is irrelevant; no claim supports a correction."
+    },
+    {
+     "itemId": "loan-emi-9",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "loan-emi-m4"
+     ],
+     "why": "It attributes greater total interest to a rising rate."
+    },
+    {
+     "itemId": "loan-emi-10",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "loan-emi-m2"
+     ],
+     "why": "It treats equal installments as proof the loan is free."
+    },
+    {
+     "itemId": "loan-emi-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds a part to the total instead of subtracting."
+    },
+    {
+     "itemId": "loan-emi-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It uses one year's interest for a ten-year loan."
+    },
+    {
+     "itemId": "loan-emi-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "loan-emi-m5"
+     ],
+     "why": "It counts the entire repayment, including principal, as interest."
+    },
+    {
+     "itemId": "loan-emi-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It invents a penalty to offset early repayment."
+    },
+    {
+     "itemId": "index-funds-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A deposit does not copy a list of holdings."
+    },
+    {
+     "itemId": "index-funds-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It places the expense ratio's decimal incorrectly."
+    },
+    {
+     "itemId": "index-funds-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It places the expense ratio's decimal incorrectly."
+    },
+    {
+     "itemId": "index-funds-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It assumes the lower fee creates the larger tracking gap."
+    },
+    {
+     "itemId": "upi-scams-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "upi-scams-m5"
+     ],
+     "why": "It applies a receiving-money warning to a real payment."
+    },
+    {
+     "itemId": "upi-scams-11",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "upi-scams-m1"
+     ],
+     "why": "It wrongly ties payment approval to receiving money."
+    },
+    {
+     "itemId": "upi-scams-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A name check does not explain how an OTP enables access."
+    },
+    {
+     "itemId": "upi-scams-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The one-second claim is arbitrary filler."
+    },
+    {
+     "itemId": "upi-scams-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A refund promise does not explain why later debits stopped."
+    },
+    {
+     "itemId": "upi-scams-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The stem explicitly says the scammer tried twice more."
+    },
+    {
+     "itemId": "upi-scams-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about reporting an untapped scam text."
+    },
+    {
+     "itemId": "upi-scams-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Replying to a scam text is filler; no claim supports a correction."
+    }
+   ]
+  },
+  {
+   "topic": "topic.how-things-work",
+   "newMisconceptions": [
+    {
+     "conceptId": "battery-flight-time",
+     "id": "battery-flight-time-m5",
+     "name": "Any heavier battery cuts flight",
+     "correction": "A larger battery can add flight time up to a peak, but added weight cuts time past that point.",
+     "sourceRefs": [
+      "battery"
+     ],
+     "claimIds": [
+      "battery-flight-time-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "upi-path",
+     "id": "upi-path-m5",
+     "name": "My UPI ID lets others take money",
+     "correction": "A UPI ID points to a bank account; payment also needs approval on the registered phone.",
+     "sourceRefs": [
+      "rbi-booklet",
+      "pib-upi",
+      "npci-oc226"
+     ],
+     "claimIds": [
+      "upi-path-c1",
+      "upi-path-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "pressure-cooker",
+     "id": "pressure-cooker-m5",
+     "name": "Up high, heat leaks into thin air",
+     "correction": "At high places, lower air pressure makes water boil at a lower temperature.",
+     "sourceRefs": [
+      "csu-altitude",
+      "ncert-thermal"
+     ],
+     "claimIds": [
+      "pressure-cooker-c4"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "lift-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Engine warm-up does not explain the runway's needed speed."
+    },
+    {
+     "itemId": "lift-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A runway length does not create a nose-up slope."
+    },
+    {
+     "itemId": "multirotor-turns-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Stopping a rotor does not reduce the drone's weight."
+    },
+    {
+     "itemId": "multirotor-turns-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Gravity pulling a lower nose forward is a confused direction claim."
+    },
+    {
+     "itemId": "multirotor-turns-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim directly supports a correction about a fan base's twist direction."
+    },
+    {
+     "itemId": "multirotor-turns-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A heavy fan resisting motion does not mean there is no twist."
+    },
+    {
+     "itemId": "battery-flight-time-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies energy and power instead of finding time."
+    },
+    {
+     "itemId": "battery-flight-time-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds quantities with different units."
+    },
+    {
+     "itemId": "battery-flight-time-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "battery-flight-time-m5"
+     ],
+     "why": "It assumes every larger battery shortens flight."
+    },
+    {
+     "itemId": "battery-flight-time-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The model does not claim lower energy per kilogram."
+    },
+    {
+     "itemId": "battery-flight-time-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Motor age is unrelated to battery mass in this model."
+    },
+    {
+     "itemId": "battery-flight-time-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It denies the battery-size effect without explaining the peak."
+    },
+    {
+     "itemId": "flight-sensors-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Drones plainly tilt to move, making this absurd filler."
+    },
+    {
+     "itemId": "flight-sensors-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A straight climb cannot explain a fast-turn reading."
+    },
+    {
+     "itemId": "flight-sensors-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about the app's check interval."
+    },
+    {
+     "itemId": "flight-sensors-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It is an implausibly large recall error for the given GPS figure."
+    },
+    {
+     "itemId": "birds-and-planes-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It doubles drag despite the stated steady speed."
+    },
+    {
+     "itemId": "birds-and-planes-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A paper plane floating like a balloon is implausible filler."
+    },
+    {
+     "itemId": "birds-and-planes-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Gravity pulling down does not explain muscular effort."
+    },
+    {
+     "itemId": "birds-and-planes-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A bird does not rest its whole body midflight."
+    },
+    {
+     "itemId": "ceiling-fans-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Reversing a running motor cannot rest it."
+    },
+    {
+     "itemId": "ceiling-fans-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It repeats one temperature instead of finding the gap."
+    },
+    {
+     "itemId": "upi-path-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "upi-path-m5"
+     ],
+     "why": "It treats a payment address as enough to withdraw money."
+    },
+    {
+     "itemId": "upi-path-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A wrong PIN cannot select a different payee."
+    },
+    {
+     "itemId": "upi-path-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Time of day cannot choose a payment's destination."
+    },
+    {
+     "itemId": "upi-path-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mixes millions and billions in a division problem."
+    },
+    {
+     "itemId": "upi-path-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It miscalculates the daily average by a wide margin."
+    },
+    {
+     "itemId": "upi-path-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The payee's balance is unrelated to the sender's approval."
+    },
+    {
+     "itemId": "upi-path-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An invented bank call is not one of the two stated checks."
+    },
+    {
+     "itemId": "phone-camera-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It assigns recording to the preview screen instead of the sensor."
+    },
+    {
+     "itemId": "phone-camera-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Newer sensor spots are invented to explain one bright patch."
+    },
+    {
+     "itemId": "phone-camera-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It confuses software filling in colour with creating brightness."
+    },
+    {
+     "itemId": "phone-camera-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It divides the sensor spots evenly among three filters."
+    },
+    {
+     "itemId": "phone-camera-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It uses red or blue's quarter share for green."
+    },
+    {
+     "itemId": "sky-colours-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies where the question requires division."
+    },
+    {
+     "itemId": "sky-colours-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It gives red's stated length for violet."
+    },
+    {
+     "itemId": "sky-colours-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It blames incoming blue light instead of absent air."
+    },
+    {
+     "itemId": "sky-colours-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Moon dust absorbing blue does not explain a black sky."
+    },
+    {
+     "itemId": "sky-colours-12",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "sky-colours-m1"
+     ],
+     "why": "It attributes blue colour to the material rather than scattered light."
+    },
+    {
+     "itemId": "sky-colours-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim establishes the torch's colour mix for a correction."
+    },
+    {
+     "itemId": "sky-colours-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It says the Moon glows red instead of reflecting filtered sunlight."
+    },
+    {
+     "itemId": "sky-colours-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Light passing through Earth's oceans is absurd filler."
+    },
+    {
+     "itemId": "pressure-cooker-9",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "pressure-cooker-m5"
+     ],
+     "why": "It blames thin air's heat loss instead of cooler boiling water."
+    },
+    {
+     "itemId": "pressure-cooker-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about hill water hardness."
+    },
+    {
+     "itemId": "pressure-cooker-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reuses the figure given for twice the altitude."
+    },
+    {
+     "itemId": "pressure-cooker-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Restricting the effect to beans is arbitrary filler."
+    },
+    {
+     "itemId": "pressure-cooker-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about ordinary pots cracking."
+    },
+    {
+     "itemId": "pressure-cooker-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about cooker weight."
+    }
+   ]
+  },
+  {
+   "topic": "topic.health-nutrition",
+   "newMisconceptions": [
+    {
+     "conceptId": "protein-foods",
+     "id": "protein-foods-m4",
+     "name": "Nuts have less fat than dal",
+     "correction": "Nuts are rich in fat, while pulses such as dal are low in fat.",
+     "sourceRefs": [
+      "protein"
+     ],
+     "claimIds": [
+      "protein-foods-c7"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "protein-foods",
+     "id": "protein-foods-m6",
+     "name": "Every cereal meal needs pulses",
+     "correction": "Animal foods carry all nine essential amino acids, so a meal with egg does not need a pulse for that purpose.",
+     "sourceRefs": [
+      "protein"
+     ],
+     "claimIds": [
+      "protein-foods-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "protein-foods",
+     "id": "protein-foods-m8",
+     "name": "One protein allowance fits everyone",
+     "correction": "The healthy adult allowance does not cover the higher needs of teens, pregnant women and people who are ill.",
+     "sourceRefs": [
+      "protein",
+      "issn"
+     ],
+     "claimIds": [
+      "protein-foods-c4",
+      "protein-foods-c6"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "free-sugars",
+     "id": "free-sugars-m5",
+     "name": "Milk sugar is free sugar",
+     "correction": "The sugar naturally found in milk is not counted as free sugar.",
+     "sourceRefs": [
+      "sugar",
+      "who-sugars"
+     ],
+     "claimIds": [
+      "free-sugars-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "free-sugars",
+     "id": "free-sugars-m6",
+     "name": "Dairy drinks cannot contain free sugar",
+     "correction": "Sugar added to a dairy drink counts as free sugar.",
+     "sourceRefs": [
+      "sugar",
+      "who-sugars"
+     ],
+     "claimIds": [
+      "free-sugars-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "hydration-cues",
+     "id": "hydration-cues-m5",
+     "name": "Low fluid leaves pee unchanged",
+     "correction": "Dark yellow pee can be a sign that the body is short of fluid.",
+     "sourceRefs": [
+      "water",
+      "nhs-dehydration"
+     ],
+     "claimIds": [
+      "hydration-cues-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-recovery",
+     "id": "sleep-recovery-m4",
+     "name": "One short night cannot affect focus",
+     "correction": "Losing even one hour of sleep can make it hard to focus.",
+     "sourceRefs": [
+      "sleep"
+     ],
+     "claimIds": [
+      "sleep-recovery-c6"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-recovery",
+     "id": "sleep-recovery-m5",
+     "name": "Deep sleep fills late night",
+     "correction": "Deep sleep is longer early in the night, while REM sleep grows longer towards morning.",
+     "sourceRefs": [
+      "sleep"
+     ],
+     "claimIds": [
+      "sleep-recovery-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "exercise-heart",
+     "id": "exercise-heart-m4",
+     "name": "Chatting signals vigorous effort",
+     "correction": "Moderate effort lets you talk; vigorous effort leaves room for only a few words.",
+     "sourceRefs": [
+      "cdc-intensity",
+      "icmr-activity"
+     ],
+     "claimIds": [
+      "exercise-heart-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-label-reading",
+     "id": "food-label-reading-m5",
+     "name": "Ingredient rank compares different packs",
+     "correction": "Ingredient order ranks amounts within a pack; per 100 g values let you compare packs.",
+     "sourceRefs": [
+      "label",
+      "icmr-label"
+     ],
+     "claimIds": [
+      "food-label-reading-c1",
+      "food-label-reading-c2"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "protein-foods-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about rice having the most protein."
+    },
+    {
+     "itemId": "protein-foods-10",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "protein-foods-m1"
+     ],
+     "why": "Nuts are plant foods, and the option denies their protein."
+    },
+    {
+     "itemId": "protein-foods-10",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "protein-foods-m4"
+     ],
+     "why": "It reverses the fat comparison between nuts and pulses."
+    },
+    {
+     "itemId": "protein-foods-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; More of one pulse does not fill its amino acid gap."
+    },
+    {
+     "itemId": "protein-foods-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; Another pulse is treated as the missing cereal partner."
+    },
+    {
+     "itemId": "protein-foods-12",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "protein-foods-m6"
+     ],
+     "why": "It assumes roti needs a pulse even alongside egg."
+    },
+    {
+     "itemId": "protein-foods-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "protein-foods-m6"
+     ],
+     "why": "It requires a pulse for the egg meal too."
+    },
+    {
+     "itemId": "protein-foods-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "protein-foods-m8"
+     ],
+     "why": "It says pregnancy reduces the protein need."
+    },
+    {
+     "itemId": "protein-foods-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "protein-foods-m8"
+     ],
+     "why": "It applies one adult allowance to every adult."
+    },
+    {
+     "itemId": "protein-foods-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary low figure, without a distinct belief to correct."
+    },
+    {
+     "itemId": "free-sugars-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "free-sugars-m1"
+     ],
+     "why": "It exempts juice because no sugar was added."
+    },
+    {
+     "itemId": "free-sugars-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Where honey was bought is irrelevant filler."
+    },
+    {
+     "itemId": "free-sugars-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A multiplication slip, without a distinct sugar belief."
+    },
+    {
+     "itemId": "free-sugars-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mismatches the given sugar and energy figures."
+    },
+    {
+     "itemId": "free-sugars-12",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "free-sugars-m4"
+     ],
+     "why": "It treats staying under the ceiling as a benefit of sugar."
+    },
+    {
+     "itemId": "free-sugars-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "free-sugars-m5"
+     ],
+     "why": "It counts milk's own sugar as free sugar."
+    },
+    {
+     "itemId": "free-sugars-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "free-sugars-m6"
+     ],
+     "why": "It exempts added sugar because the drink is dairy."
+    },
+    {
+     "itemId": "hydration-cues-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Fifteen glasses is an arbitrary replacement figure."
+    },
+    {
+     "itemId": "hydration-cues-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A division slip about tumbler size."
+    },
+    {
+     "itemId": "hydration-cues-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An implausibly large arithmetic answer."
+    },
+    {
+     "itemId": "hydration-cues-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It assumes sitting prevents water loss."
+    },
+    {
+     "itemId": "hydration-cues-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "hydration-cues-m5"
+     ],
+     "why": "It assumes little fluid leaves pee colour unchanged."
+    },
+    {
+     "itemId": "hydration-cues-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reverses the stated pee colour cue."
+    },
+    {
+     "itemId": "hydration-cues-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "hydration-cues-m3"
+     ],
+     "why": "It substitutes plenty of fluid despite the doctor's limit."
+    },
+    {
+     "itemId": "hydration-cues-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Mild thirst alone is an implausible emergency sign."
+    },
+    {
+     "itemId": "hydration-cues-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It selects the stated healthy pee colour as an emergency."
+    },
+    {
+     "itemId": "sleep-recovery-9",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "sleep-recovery-m1"
+     ],
+     "why": "It overlooks sleep's role in storing learning."
+    },
+    {
+     "itemId": "sleep-recovery-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-recovery-m4"
+     ],
+     "why": "It says one short night cannot matter."
+    },
+    {
+     "itemId": "sleep-recovery-10",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "sleep-recovery-m2"
+     ],
+     "why": "It puts muscle repair wholly in waking activity."
+    },
+    {
+     "itemId": "sleep-recovery-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-recovery-m5"
+     ],
+     "why": "It places most deep sleep at the end of the night."
+    },
+    {
+     "itemId": "sleep-recovery-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-recovery-m5"
+     ],
+     "why": "It assumes sleep stages keep equal shares."
+    },
+    {
+     "itemId": "sleep-recovery-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary cycle count, without a distinct belief."
+    },
+    {
+     "itemId": "sleep-recovery-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An implausible cycle count."
+    },
+    {
+     "itemId": "sleep-recovery-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A case-specific guess at the cause, without a general belief."
+    },
+    {
+     "itemId": "sleep-recovery-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It counts one night instead of five."
+    },
+    {
+     "itemId": "sleep-recovery-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arithmetic slip in adding the nightly loss."
+    },
+    {
+     "itemId": "exercise-heart-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "exercise-heart-m1"
+     ],
+     "why": "It denies that walking helps the heart."
+    },
+    {
+     "itemId": "exercise-heart-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Sitting up straight is plain filler for aerobic activity."
+    },
+    {
+     "itemId": "exercise-heart-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Watching sport is plain filler for doing activity."
+    },
+    {
+     "itemId": "exercise-heart-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "exercise-heart-m4"
+     ],
+     "why": "It calls an easy chat vigorous effort."
+    },
+    {
+     "itemId": "exercise-heart-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Slowing down plainly cannot reach a harder effort."
+    },
+    {
+     "itemId": "exercise-heart-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reverses the immediate heart-rate response to effort."
+    },
+    {
+     "itemId": "exercise-heart-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Voice loudness is unrelated to the breathing cue."
+    },
+    {
+     "itemId": "exercise-heart-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It forgets to double vigorous minutes."
+    },
+    {
+     "itemId": "exercise-heart-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It doubles walking minutes as well."
+    },
+    {
+     "itemId": "exercise-heart-14",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "exercise-heart-m3"
+     ],
+     "why": "Weekend-only hill runs still start too hard."
+    },
+    {
+     "itemId": "iron-and-anaemia-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports linking these signs to excess protein."
+    },
+    {
+     "itemId": "iron-and-anaemia-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Stairs using up iron is implausible filler."
+    },
+    {
+     "itemId": "iron-and-anaemia-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A subtraction slip, without a belief about iron."
+    },
+    {
+     "itemId": "iron-and-anaemia-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Discarding the food to keep tea is an implausible fix."
+    },
+    {
+     "itemId": "iron-and-anaemia-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Cooking iron into fat is absurd."
+    },
+    {
+     "itemId": "iron-and-anaemia-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "iron-and-anaemia-m3"
+     ],
+     "why": "It recommends more tea with meals."
+    },
+    {
+     "itemId": "iron-and-anaemia-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Water as a cause of anaemia is implausible filler."
+    },
+    {
+     "itemId": "iron-and-anaemia-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A late bedtime is filler for causes of anaemia."
+    },
+    {
+     "itemId": "food-label-reading-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Wrapper weight has no bearing on servings."
+    },
+    {
+     "itemId": "food-label-reading-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It copies the per-100-g figure to a smaller pack."
+    },
+    {
+     "itemId": "food-label-reading-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A decimal slip, without a distinct label belief."
+    },
+    {
+     "itemId": "food-label-reading-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-label-reading-m5"
+     ],
+     "why": "It assumes ingredient ranks must match across brands."
+    },
+    {
+     "itemId": "food-label-reading-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-label-reading-m5"
+     ],
+     "why": "It treats fifth place as an absolute amount across packs."
+    },
+    {
+     "itemId": "food-label-reading-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "food-label-reading-m3"
+     ],
+     "why": "It trusts a front claim without checking ingredients."
+    },
+    {
+     "itemId": "food-label-reading-14",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "food-label-reading-m3"
+     ],
+     "why": "It infers a large energy drop from the sugar-free claim."
+    },
+    {
+     "itemId": "food-label-reading-14",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "food-label-reading-m3"
+     ],
+     "why": "It treats sugar-free as the whole energy story."
+    },
+    {
+     "itemId": "fad-diet-claims-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It gives one person's amount for four people."
+    },
+    {
+     "itemId": "fad-diet-claims-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A decimal conversion slip."
+    },
+    {
+     "itemId": "fad-diet-claims-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about milk being only for children."
+    },
+    {
+     "itemId": "fad-diet-claims-11",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "fad-diet-claims-m2"
+     ],
+     "why": "It treats toxin removal as a proven explanation."
+    },
+    {
+     "itemId": "fad-diet-claims-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The claims list fasting harms but do not address exam focus."
+    },
+    {
+     "itemId": "fad-diet-claims-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports tea removing the risks of fasting."
+    },
+    {
+     "itemId": "fad-diet-claims-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about view counts."
+    },
+    {
+     "itemId": "fad-diet-claims-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about a drink's price."
+    },
+    {
+     "itemId": "fad-diet-claims-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The seasonal exception is arbitrary filler."
+    }
+   ]
+  },
+  {
+   "topic": "topic.body-training",
+   "newMisconceptions": [
+    {
+     "conceptId": "progressive-overload",
+     "id": "progressive-overload-m4",
+     "name": "Repeated work only wears muscles out",
+     "correction": "The body adapts to repeated work, so the same load can come to feel easier.",
+     "sourceRefs": [
+      "guide"
+     ],
+     "claimIds": [
+      "progressive-overload-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "muscle-protein-rest",
+     "id": "muscle-protein-rest-m4",
+     "name": "Muscle building waits until soreness ends",
+     "correction": "Muscle building can stay raised for up to two days after a strength session.",
+     "sourceRefs": [
+      "mps"
+     ],
+     "claimIds": [
+      "muscle-protein-rest-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "muscle-protein-rest",
+     "id": "muscle-protein-rest-m6",
+     "name": "Protein alone builds muscle",
+     "correction": "Strength work gives the body a signal to use protein for muscle building.",
+     "sourceRefs": [
+      "issn",
+      "nin"
+     ],
+     "claimIds": [
+      "muscle-protein-rest-c2"
+     ],
+     "fromCj3": true
+    },
+    {
+     "conceptId": "sleep-recovery",
+     "id": "sleep-recovery-m4",
+     "name": "Early sleep loss hurts sport most",
+     "correction": "In the review, losing the end of the night hurt sport most.",
+     "sourceRefs": [
+      "sport"
+     ],
+     "claimIds": [
+      "sleep-recovery-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "sleep-recovery",
+     "id": "sleep-recovery-m6",
+     "name": "Short sleep lowers hunger hormone",
+     "correction": "With too little sleep, the hunger hormone rises and the fullness hormone falls.",
+     "sourceRefs": [
+      "sleep"
+     ],
+     "claimIds": [
+      "sleep-recovery-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "heat-hydration",
+     "id": "heat-hydration-m5",
+     "name": "Heat symptoms always pass alone",
+     "correction": "Get medical help if heat symptoms last over an hour, get worse or include vomiting.",
+     "sourceRefs": [
+      "signs",
+      "heat"
+     ],
+     "claimIds": [
+      "heat-hydration-c5"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "warmup-myths",
+     "id": "warmup-myths-m4",
+     "name": "Warmups start at full effort",
+     "correction": "A warm-up starts with the activity at a slower speed or lower effort.",
+     "sourceRefs": [
+      "guide"
+     ],
+     "claimIds": [
+      "warmup-myths-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "cardio-talk-test",
+     "id": "cardio-talk-test-m4",
+     "name": "Talking means vigorous effort",
+     "correction": "A chat fits moderate effort; vigorous effort allows only a few words before a breath.",
+     "sourceRefs": [
+      "guide",
+      "nin"
+     ],
+     "claimIds": [
+      "cardio-talk-test-c1"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "showing-up",
+     "id": "showing-up-m4",
+     "name": "Habits need changing cues",
+     "correction": "Repeating a small action at the same time each day helps make it a habit.",
+     "sourceRefs": [
+      "gardner"
+     ],
+     "claimIds": [
+      "showing-up-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "showing-up",
+     "id": "showing-up-m5",
+     "name": "A gym makes the habit",
+     "correction": "Repeating a small action at a steady daily cue helps make it a habit.",
+     "sourceRefs": [
+      "gardner"
+     ],
+     "claimIds": [
+      "showing-up-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-labels",
+     "id": "food-labels-m4",
+     "name": "Labels omit added sugars",
+     "correction": "Indian labels show added sugars on a separate line from total sugars.",
+     "sourceRefs": [
+      "fssai"
+     ],
+     "claimIds": [
+      "food-labels-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-labels",
+     "id": "food-labels-m5",
+     "name": "Added sugar sits outside total sugar",
+     "correction": "Added sugars are part of total sugars, not an extra amount.",
+     "sourceRefs": [
+      "fssai"
+     ],
+     "claimIds": [
+      "food-labels-c3"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-labels",
+     "id": "food-labels-m6",
+     "name": "Only drinks need ingredient percentages",
+     "correction": "A mixed food that stresses an ingredient must usually give its percentage.",
+     "sourceRefs": [
+      "fssai"
+     ],
+     "claimIds": [
+      "food-labels-c5"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-labels",
+     "id": "food-labels-m8",
+     "name": "Total sugar sets added sugar RDA",
+     "correction": "The added sugar line is the one compared with the daily added sugar reference.",
+     "sourceRefs": [
+      "fssai"
+     ],
+     "claimIds": [
+      "food-labels-c3",
+      "food-labels-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "food-labels",
+     "id": "food-labels-m9",
+     "name": "Milk sugar counts as added",
+     "correction": "Added sugars are only sugars put into a food; its own sugars appear in the total.",
+     "sourceRefs": [
+      "fssai"
+     ],
+     "claimIds": [
+      "food-labels-c3"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "progressive-overload-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Books wearing away is an implausible explanation."
+    },
+    {
+     "itemId": "progressive-overload-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "progressive-overload-m4"
+     ],
+     "why": "It treats repeated work as wear rather than adaptation."
+    },
+    {
+     "itemId": "progressive-overload-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about fixing poor form first."
+    },
+    {
+     "itemId": "progressive-overload-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Longer rests do not add work under the question's conditions."
+    },
+    {
+     "itemId": "progressive-overload-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Faster reps are a case-specific slip about the stated work."
+    },
+    {
+     "itemId": "progressive-overload-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mistakes one extra session for a doubling."
+    },
+    {
+     "itemId": "muscle-protein-rest-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "muscle-protein-rest-m4"
+     ],
+     "why": "It delays muscle building until he feels ready."
+    },
+    {
+     "itemId": "muscle-protein-rest-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It treats training as enough without protein."
+    },
+    {
+     "itemId": "muscle-protein-rest-11",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "muscle-protein-rest-m2"
+     ],
+     "why": "It assumes more protein always brings more muscle."
+    },
+    {
+     "itemId": "muscle-protein-rest-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It dismisses the kidney disease caution."
+    },
+    {
+     "itemId": "muscle-protein-rest-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It applies a different multiplier to a stated allowance."
+    },
+    {
+     "itemId": "muscle-protein-rest-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses a muscle-gain threshold with the stated adult allowance."
+    },
+    {
+     "itemId": "muscle-protein-rest-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "muscle-protein-rest-m6"
+     ],
+     "why": "It says food protein built muscle without training."
+    },
+    {
+     "itemId": "muscle-protein-rest-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "muscle-protein-rest-m6"
+     ],
+     "why": "It treats training as a reason to stop protein food."
+    },
+    {
+     "itemId": "muscle-protein-rest-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It turns a smaller age-related rise into an arbitrary age cutoff."
+    },
+    {
+     "itemId": "sleep-recovery-10",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "sleep-recovery-m1"
+     ],
+     "why": "It denies sleep's role in tissue repair."
+    },
+    {
+     "itemId": "sleep-recovery-10",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "sleep-recovery-m1"
+     ],
+     "why": "It excludes the body's repair from sleep."
+    },
+    {
+     "itemId": "sleep-recovery-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-recovery-m4"
+     ],
+     "why": "It puts the biggest sport drop after losing early sleep."
+    },
+    {
+     "itemId": "sleep-recovery-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It claims extra waking time improves play."
+    },
+    {
+     "itemId": "sleep-recovery-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A clock calculation slip."
+    },
+    {
+     "itemId": "sleep-recovery-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A clock calculation slip."
+    },
+    {
+     "itemId": "sleep-recovery-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports skipping lunch as a way to correct hunger signals."
+    },
+    {
+     "itemId": "sleep-recovery-14",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "sleep-recovery-m6"
+     ],
+     "why": "It reverses the hunger hormone's response to short sleep."
+    },
+    {
+     "itemId": "sleep-recovery-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Stomach shrinkage is implausible filler."
+    },
+    {
+     "itemId": "heat-hydration-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about fitness vanishing in one week."
+    },
+    {
+     "itemId": "heat-hydration-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Hot air having no oxygen is absurd."
+    },
+    {
+     "itemId": "heat-hydration-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It counts one hour instead of eight."
+    },
+    {
+     "itemId": "heat-hydration-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A tenfold arithmetic slip."
+    },
+    {
+     "itemId": "heat-hydration-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It skips water during play to stay light."
+    },
+    {
+     "itemId": "heat-hydration-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "heat-hydration-m5"
+     ],
+     "why": "It assumes lasting heat symptoms will pass alone."
+    },
+    {
+     "itemId": "heat-hydration-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "heat-hydration-m3"
+     ],
+     "why": "It urges more training despite heat warning signs."
+    },
+    {
+     "itemId": "warmup-myths-9",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "warmup-myths-m4"
+     ],
+     "why": "It begins at full speed instead of warming up."
+    },
+    {
+     "itemId": "warmup-myths-10",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "warmup-myths-m4"
+     ],
+     "why": "It starts the warm-up with hard work."
+    },
+    {
+     "itemId": "warmup-myths-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A loss of half her speed is implausible exaggeration."
+    },
+    {
+     "itemId": "warmup-myths-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It assumes active drills cannot change the effect."
+    },
+    {
+     "itemId": "warmup-myths-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A percentage calculation slip."
+    },
+    {
+     "itemId": "warmup-myths-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A percentage calculation slip."
+    },
+    {
+     "itemId": "cardio-talk-test-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "cardio-talk-test-m4"
+     ],
+     "why": "It calls ordinary talking vigorous effort."
+    },
+    {
+     "itemId": "cardio-talk-test-10",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "cardio-talk-test-m2"
+     ],
+     "why": "It treats talking as evidence of very light effort."
+    },
+    {
+     "itemId": "cardio-talk-test-10",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "cardio-talk-test-m4"
+     ],
+     "why": "It calls a pace that allows chatting vigorous."
+    },
+    {
+     "itemId": "cardio-talk-test-11",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The stem gives both people the same hill."
+    },
+    {
+     "itemId": "cardio-talk-test-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary low scale rating despite the speech cue."
+    },
+    {
+     "itemId": "cardio-talk-test-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses vigorous effort with the scale's maximum."
+    },
+    {
+     "itemId": "cardio-talk-test-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "cardio-talk-test-m3"
+     ],
+     "why": "It urges harder effort after time off."
+    },
+    {
+     "itemId": "cardio-talk-test-14",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "cardio-talk-test-m3"
+     ],
+     "why": "It raises every training part at once after time off."
+    },
+    {
+     "itemId": "showing-up-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A rest day is not a belief about whether activity counts."
+    },
+    {
+     "itemId": "showing-up-10",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "showing-up-m1"
+     ],
+     "why": "It says brisk walking does not count unless he runs."
+    },
+    {
+     "itemId": "showing-up-11",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "showing-up-m5"
+     ],
+     "why": "It credits the gym instead of a steady cue."
+    },
+    {
+     "itemId": "showing-up-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "showing-up-m4"
+     ],
+     "why": "It calls for a new cue each week."
+    },
+    {
+     "itemId": "showing-up-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies instead of dividing the minutes."
+    },
+    {
+     "itemId": "showing-up-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It mistakes minutes per climb for the number of climbs."
+    },
+    {
+     "itemId": "showing-up-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "showing-up-m4"
+     ],
+     "why": "It replaces a steady daily cue with shifting times."
+    },
+    {
+     "itemId": "food-labels-9",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m4"
+     ],
+     "why": "It says Indian packs do not list added sugars."
+    },
+    {
+     "itemId": "food-labels-10",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m5"
+     ],
+     "why": "It adds the added-sugar line to the total."
+    },
+    {
+     "itemId": "food-labels-10",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m5"
+     ],
+     "why": "It doubles the total by counting added sugar twice."
+    },
+    {
+     "itemId": "food-labels-11",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The claims give an exception for spices, not a measurement threshold."
+    },
+    {
+     "itemId": "food-labels-11",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m6"
+     ],
+     "why": "It wrongly limits the percentage rule to drinks."
+    },
+    {
+     "itemId": "food-labels-12",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m6"
+     ],
+     "why": "It exempts honey because it is natural."
+    },
+    {
+     "itemId": "food-labels-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m8"
+     ],
+     "why": "It uses total rather than added sugar for the RDA."
+    },
+    {
+     "itemId": "food-labels-13",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "food-labels-m9"
+     ],
+     "why": "It counts milk's own sugar as added."
+    },
+    {
+     "itemId": "food-labels-14",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "food-labels-m3"
+     ],
+     "why": "It applies a per-serving percentage to the wrong pack amount."
+    }
+   ]
+  },
+  {
+   "topic": "topic.history-civilisations",
+   "newMisconceptions": [
+    {
+     "conceptId": "indus-cities",
+     "id": "indus-cities-m5",
+     "name": "Old cities had no drains",
+     "correction": "Every street and lane at Mohenjo-daro had a drain.",
+     "sourceRefs": [
+      "indus"
+     ],
+     "claimIds": [
+      "indus-cities-c2"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "printing-and-reading",
+     "id": "printing-and-reading-m5",
+     "name": "Movable type uses carved blocks",
+     "correction": "Movable type uses separate pieces, while block printing uses blocks.",
+     "sourceRefs": [
+      "loc-asia",
+      "print"
+     ],
+     "claimIds": [
+      "printing-and-reading-c1",
+      "printing-and-reading-c2",
+      "printing-and-reading-c4"
+     ],
+     "fromCj3": false
+    },
+    {
+     "conceptId": "mughal-revenue",
+     "id": "mughal-revenue-m4",
+     "name": "Jagirs paid treasury coins",
+     "correction": "A jagir gave a mansabdar rights to an area's revenue.",
+     "sourceRefs": [
+      "ncert-mughals",
+      "mughal"
+     ],
+     "claimIds": [
+      "mughal-revenue-c2"
+     ],
+     "fromCj3": false
+    }
+   ],
+   "tags": [
+    {
+     "itemId": "indus-cities-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "One builder is an unsupported guess about the houses."
+    },
+    {
+     "itemId": "indus-cities-12",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "indus-cities-m4"
+     ],
+     "why": "It says drains were left open."
+    },
+    {
+     "itemId": "indus-cities-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A well beside each house is unrelated to clearing silt."
+    },
+    {
+     "itemId": "indus-cities-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "indus-cities-m5"
+     ],
+     "why": "It denies that the city had drains."
+    },
+    {
+     "itemId": "indus-cities-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Iron drains are implausible historical filler."
+    },
+    {
+     "itemId": "indus-cities-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It treats a grid as naming its ruler."
+    },
+    {
+     "itemId": "indus-cities-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It treats right angles as identifying priests."
+    },
+    {
+     "itemId": "indus-cities-15",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds a third instead of finding the whole."
+    },
+    {
+     "itemId": "indus-cities-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It divides the known third again."
+    },
+    {
+     "itemId": "ashoka-edicts-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Glossy posters are anachronistic filler."
+    },
+    {
+     "itemId": "ashoka-edicts-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Cloth banners are implausible for a centuries-long message."
+    },
+    {
+     "itemId": "ashoka-edicts-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about a stone in every village."
+    },
+    {
+     "itemId": "ashoka-edicts-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Moving great stone pillars village to village is implausible."
+    },
+    {
+     "itemId": "ashoka-edicts-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary count of scripts."
+    },
+    {
+     "itemId": "ashoka-edicts-13",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "ashoka-edicts-m3"
+     ],
+     "why": "It rejects genuine regional script differences."
+    },
+    {
+     "itemId": "ashoka-edicts-15",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "ashoka-edicts-m4"
+     ],
+     "why": "It reduces dhamma edicts to administrative orders."
+    },
+    {
+     "itemId": "ashoka-edicts-15",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Names without messages is implausible filler."
+    },
+    {
+     "itemId": "silk-road-ideas-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A full moon making the sea calm is implausible filler."
+    },
+    {
+     "itemId": "silk-road-ideas-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A road is irrelevant to the ship voyage."
+    },
+    {
+     "itemId": "silk-road-ideas-13",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary low duration."
+    },
+    {
+     "itemId": "silk-road-ideas-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arbitrary high duration."
+    },
+    {
+     "itemId": "silk-road-ideas-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Reversing the payment direction is a case-specific slip."
+    },
+    {
+     "itemId": "silk-road-ideas-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Nothing supports monks paying traders; it is filler."
+    },
+    {
+     "itemId": "silk-road-ideas-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about a Chinese origin."
+    },
+    {
+     "itemId": "silk-road-ideas-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It denies Buddhist centres existed in Central Asia."
+    },
+    {
+     "itemId": "indian-place-value-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A place-value calculation slip."
+    },
+    {
+     "itemId": "indian-place-value-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It swaps two digit positions."
+    },
+    {
+     "itemId": "indian-place-value-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arithmetic estimate far below the given range."
+    },
+    {
+     "itemId": "indian-place-value-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An arithmetic estimate far above the given range."
+    },
+    {
+     "itemId": "indian-place-value-13",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "indian-place-value-m4"
+     ],
+     "why": "It denies that subtracting a number from itself gives zero."
+    },
+    {
+     "itemId": "indian-place-value-14",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "indian-place-value-m2"
+     ],
+     "why": "It denies zero's role as a number."
+    },
+    {
+     "itemId": "indian-place-value-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about adoption within two years."
+    },
+    {
+     "itemId": "indian-place-value-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Treating a scholar's book as a law is implausible filler."
+    },
+    {
+     "itemId": "printing-and-reading-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Proposed misconception dropped in review; It says type pieces are discarded after one page."
+    },
+    {
+     "itemId": "printing-and-reading-9",
+     "optionId": "c",
+     "verdict": "new",
+     "misconceptionIds": [
+      "printing-and-reading-m5"
+     ],
+     "why": "It confuses separate type with a carved block."
+    },
+    {
+     "itemId": "printing-and-reading-10",
+     "optionId": "b",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "printing-and-reading-m1"
+     ],
+     "why": "It erases China's earlier movable type."
+    },
+    {
+     "itemId": "printing-and-reading-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "No claim supports a correction about printing speed."
+    },
+    {
+     "itemId": "printing-and-reading-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It denies a stated example of Gutenberg printing."
+    },
+    {
+     "itemId": "printing-and-reading-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The 1800s date is arbitrary filler."
+    },
+    {
+     "itemId": "printing-and-reading-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A date subtraction slip."
+    },
+    {
+     "itemId": "printing-and-reading-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A date subtraction slip."
+    },
+    {
+     "itemId": "printing-and-reading-15",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "printing-and-reading-m2"
+     ],
+     "why": "It treats access to printed books as teaching literacy."
+    },
+    {
+     "itemId": "mughal-revenue-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A trade charter is unrelated to a noble's rank."
+    },
+    {
+     "itemId": "mughal-revenue-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A uniform does not set rank, pay or duties."
+    },
+    {
+     "itemId": "mughal-revenue-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It multiplies where the question calls for division."
+    },
+    {
+     "itemId": "mughal-revenue-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It subtracts the factor instead of dividing."
+    },
+    {
+     "itemId": "mughal-revenue-13",
+     "optionId": "b",
+     "verdict": "new",
+     "misconceptionIds": [
+      "mughal-revenue-m4"
+     ],
+     "why": "It mistakes revenue rights for treasury coins."
+    },
+    {
+     "itemId": "mughal-revenue-15",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "mughal-revenue-m2"
+     ],
+     "why": "It assumes zabt worked without surveyable farmland."
+    },
+    {
+     "itemId": "mughal-revenue-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "Household size is unrelated to the stated crop rates."
+    },
+    {
+     "itemId": "mughal-revenue-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses army duties with crop tax rates."
+    },
+    {
+     "itemId": "company-trade-rule-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It invokes rival sellers when the example has none."
+    },
+    {
+     "itemId": "company-trade-rule-9",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "company-trade-rule-m1"
+     ],
+     "why": "It confuses selling rights with governing rights."
+    },
+    {
+     "itemId": "company-trade-rule-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "The invented Dutch purchase is filler."
+    },
+    {
+     "itemId": "company-trade-rule-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It contradicts the premise that the English traded there."
+    },
+    {
+     "itemId": "company-trade-rule-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A date subtraction slip."
+    },
+    {
+     "itemId": "company-trade-rule-12",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A date subtraction slip."
+    },
+    {
+     "itemId": "company-trade-rule-13",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A French peace treaty is unrelated filler."
+    },
+    {
+     "itemId": "company-trade-rule-14",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It puts the original charter at the wrong event."
+    },
+    {
+     "itemId": "company-trade-rule-14",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It confuses the Viceroy title with an earlier tax grant."
+    },
+    {
+     "itemId": "independence-constitution-9",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "One city being enough is an implausible representation rule."
+    },
+    {
+     "itemId": "independence-constitution-9",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "A king approving each rule is implausible filler."
+    },
+    {
+     "itemId": "independence-constitution-10",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It drops the extra eleven months."
+    },
+    {
+     "itemId": "independence-constitution-10",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It adds too many months."
+    },
+    {
+     "itemId": "independence-constitution-12",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "An unsupported guess about meeting frequency."
+    },
+    {
+     "itemId": "independence-constitution-12",
+     "optionId": "c",
+     "verdict": "existing",
+     "misconceptionIds": [
+      "independence-constitution-m4"
+     ],
+     "why": "It gives Britain control over the Assembly's text."
+    },
+    {
+     "itemId": "independence-constitution-16",
+     "optionId": "b",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It denies the stated adoption outright."
+    },
+    {
+     "itemId": "independence-constitution-16",
+     "optionId": "c",
+     "verdict": "weak",
+     "misconceptionIds": [],
+     "why": "It reverses the stated order of passage and effect."
+    }
+   ]
+  }
+ ],
+ "reviewNotes": {
+  "heat-hydration-m4": "Dropped: its correction told people to drink during the session, which goes past claim c3 (forcing water raises risk).",
+  "muscle-protein-rest-m8": "Dropped: a medical caution, not a misconception the lesson teaches."
+ }
+}

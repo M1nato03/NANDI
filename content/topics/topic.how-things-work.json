@@ -331,7 +331,9 @@
                 "step": "lift-s3",
                 "job": "combine",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "lift-m1"
+                ],
                 "sourceRefs": [
                   "cruise",
                   "lift",
@@ -352,13 +354,16 @@
                   },
                   {
                     "id": "b",
-                    "text": "The engines need a long run to warm up before they push.",
+                    "text": "Wing shape makes lift before the air starts to move.",
                     "correct": false,
-                    "feedback": "Engines push from the start. The run is about reaching the speed where lift equals weight.",
+                    "feedback": "A still wing needs air moving past it. The runway lets the plane reach enough speed for lift to match weight.",
                     "sourceRefs": [
                       "cruise",
                       "lift",
                       "velocity"
+                    ],
+                    "misconceptionIds": [
+                      "lift-m1"
                     ]
                   },
                   {
@@ -813,7 +818,9 @@
                 "step": "multirotor-turns-s1",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "multirotor-turns-m1"
+                ],
                 "sourceRefs": [
                   "zulu",
                   "tug"
@@ -845,12 +852,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "It climbs, since less weight sits on the rotors.",
+                    "text": "It hovers, since holding still takes no upward push.",
                     "correct": false,
-                    "feedback": "The drone weighs the same. With only 90% of its weight in push, it sinks.",
+                    "feedback": "Hovering needs upward push equal to weight. Three rotors can supply at most 90% here, so it sinks.",
                     "sourceRefs": [
                       "zulu",
                       "tug"
+                    ],
+                    "misconceptionIds": [
+                      "multirotor-turns-m1"
                     ]
                   }
                 ]
@@ -970,7 +980,9 @@
                 "step": "multirotor-turns-s2",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "multirotor-turns-m4"
+                ],
                 "sourceRefs": [
                   "tug"
                 ],
@@ -999,11 +1011,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Gravity drags the lower nose ahead.",
+                    "text": "A tilted drone still pushes straight up, so it stays in place.",
                     "correct": false,
-                    "feedback": "Gravity pulls straight down. Forward motion comes from the tilted push.",
+                    "feedback": "Tilting aims part of the push forward. That is why the drone starts moving.",
                     "sourceRefs": [
                       "tug"
+                    ],
+                    "misconceptionIds": [
+                      "multirotor-turns-m4"
                     ]
                   }
                 ]
@@ -1696,7 +1711,8 @@
                 "job": "edge",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "battery-flight-time-m1"
+                  "battery-flight-time-m1",
+                  "battery-flight-time-m5"
                 ],
                 "sourceRefs": [
                   "battery"
@@ -1731,6 +1747,9 @@
                     "feedback": "A bigger battery can still help, up to a point. It just gives less than double.",
                     "sourceRefs": [
                       "battery"
+                    ],
+                    "misconceptionIds": [
+                      "battery-flight-time-m5"
                     ]
                   }
                 ]
@@ -1743,7 +1762,9 @@
                 "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "battery-flight-time-m1"
+                  "battery-flight-time-m1",
+                  "battery-flight-time-m3",
+                  "battery-flight-time-m5"
                 ],
                 "sourceRefs": [
                   "battery"
@@ -1761,20 +1782,26 @@
                   },
                   {
                     "id": "b",
-                    "text": "Big batteries hold less energy in each kilogram they weigh.",
+                    "text": "Power grows no faster than weight, so the extra load costs little.",
                     "correct": false,
-                    "feedback": "The model keeps energy per kilogram fixed. The weight cost is what wins.",
+                    "feedback": "Hover power rises faster than weight. Past the peak, the extra power cost outweighs added energy.",
                     "sourceRefs": [
                       "battery"
+                    ],
+                    "misconceptionIds": [
+                      "battery-flight-time-m3"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "The motors get weaker as they get older.",
+                    "text": "Added battery weight cuts flight time from the start.",
                     "correct": false,
-                    "feedback": "Motor age is not the cause. Extra weight costs more power than it adds.",
+                    "feedback": "More battery can extend flight up to a peak. Past about two thirds of the mass, added weight cuts time.",
                     "sourceRefs": [
                       "battery"
+                    ],
+                    "misconceptionIds": [
+                      "battery-flight-time-m5"
                     ]
                   }
                 ]
@@ -1787,7 +1814,8 @@
                 "job": "reverse",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "battery-flight-time-m1"
+                  "battery-flight-time-m1",
+                  "battery-flight-time-m3"
                 ],
                 "sourceRefs": [
                   "battery"
@@ -1817,11 +1845,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The same battery, since the size makes no difference.",
+                    "text": "Keep it; hover power rises in step with weight.",
                     "correct": false,
-                    "feedback": "Size matters a lot here. Past two thirds, the extra weight costs more than it gives.",
+                    "feedback": "Hover power rises faster than weight. At 80% battery mass, moving closer to the peak can help.",
                     "sourceRefs": [
                       "battery"
+                    ],
+                    "misconceptionIds": [
+                      "battery-flight-time-m3"
                     ]
                   }
                 ]
@@ -1856,6 +1887,14 @@
                 "id": "battery-flight-time-m4",
                 "name": "More power means longer flight",
                 "correction": "Power is how fast energy is spent, so more power empties the same battery sooner.",
+                "sourceRefs": [
+                  "battery"
+                ]
+              },
+              {
+                "id": "battery-flight-time-m5",
+                "name": "Any heavier battery cuts flight",
+                "correction": "A larger battery can add flight time up to a peak, but added weight cuts time past that point.",
                 "sourceRefs": [
                   "battery"
                 ]
@@ -2281,12 +2320,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "Drones do not tilt in flight, so they need no sensor.",
+                    "text": "GPS tracks its tilt while the gyroscope tracks its place.",
                     "correct": false,
-                    "feedback": "Drones tilt all the time to move. The gyroscope and accelerometer sense it.",
+                    "feedback": "The gyroscope senses turns, and the accelerometer helps work out tilt. GPS gives position.",
                     "sourceRefs": [
                       "px4",
                       "gps"
+                    ],
+                    "misconceptionIds": [
+                      "flight-sensors-m1"
                     ]
                   }
                 ]
@@ -2763,9 +2805,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The GPS.",
+                        "text": "The GPS, as it tracks each move.",
                         "correct": false,
-                        "feedback": "GPS gives position from satellites. The accelerometer senses the change in motion."
+                        "feedback": "GPS gives position. The on-board accelerometer feels a speed change at once."
                       }
                     ]
                   }
@@ -2842,9 +2884,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "It stays just as good.",
+                        "text": "Just as good, as GPS comes from space.",
                         "correct": false,
-                        "feedback": "Buildings block and bounce the signals, so the fix gets worse."
+                        "feedback": "Buildings block and bounce the signals from space, so the fix gets worse."
                       }
                     ]
                   }
@@ -3066,7 +3108,9 @@
                 "step": "birds-and-planes-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "birds-and-planes-m2"
+                ],
                 "sourceRefs": [
                   "nasa"
                 ],
@@ -3095,11 +3139,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The warm classroom air carries it like a balloon.",
+                    "text": "The throw keeps it up; wings need engines to make lift.",
                     "correct": false,
-                    "feedback": "Paper is far denser than air. Air flowing past its wings is what lifts it.",
+                    "feedback": "Air moving past a fixed wing can make lift. A paper plane needs no engine after the throw.",
                     "sourceRefs": [
                       "nasa"
+                    ],
+                    "misconceptionIds": [
+                      "birds-and-planes-m2"
                     ]
                   }
                 ]
@@ -3211,7 +3258,10 @@
                 "step": "birds-and-planes-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "birds-and-planes-m5",
+                  "birds-and-planes-m3"
+                ],
                 "sourceRefs": [
                   "bird"
                 ],
@@ -3228,20 +3278,26 @@
                   },
                   {
                     "id": "b",
-                    "text": "Gravity pulls the wing down, so it needs the most power.",
+                    "text": "It uses power for lift while forward push comes for free.",
                     "correct": false,
-                    "feedback": "Gravity helps a wing move down, if anything. The power goes into pushing on the air.",
+                    "feedback": "A bird's flaps can provide lift and forward push. The downstroke does most of that pushing.",
                     "sourceRefs": [
                       "bird"
+                    ],
+                    "misconceptionIds": [
+                      "birds-and-planes-m5"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "The upstroke is when the bird rests its whole body.",
+                    "text": "Its lift points straight up, so it must work harder.",
                     "correct": false,
-                    "feedback": "The upstroke is light, but the bird is still flying. The downstroke does the pushing.",
+                    "feedback": "Birds can tilt their strokes so lift points forward or back. The downstroke uses power to push on air.",
                     "sourceRefs": [
                       "bird"
+                    ],
+                    "misconceptionIds": [
+                      "birds-and-planes-m3"
                     ]
                   }
                 ]
@@ -3718,9 +3774,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Gliding between flaps.",
+                        "text": "Both halves, about equally.",
                         "correct": false,
-                        "feedback": "Gliding uses little power. The downstroke does the hard work."
+                        "feedback": "The upstroke is a light reset. The downstroke uses nearly all the power."
                       }
                     ]
                   }
@@ -3850,7 +3906,9 @@
                 "step": "ceiling-fans-s1",
                 "job": "edge",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "ceiling-fans-m1"
+                ],
                 "sourceRefs": [
                   "doe-guide"
                 ],
@@ -3879,11 +3937,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Resting its motor for the next summer.",
+                    "text": "Making new cold air as the blades turn back.",
                     "correct": false,
-                    "feedback": "Running the other way is not a rest. It moves warm ceiling air down.",
+                    "feedback": "A fan moves room air; it does not make cold air. In reverse, it moves warm air down.",
                     "sourceRefs": [
                       "doe-guide"
+                    ],
+                    "misconceptionIds": [
+                      "ceiling-fans-m1"
                     ]
                   }
                 ]
@@ -4464,9 +4525,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "The room with damper air.",
+                        "text": "The damper room, as moist air feels cooler.",
                         "correct": false,
-                        "feedback": "Damp air slows the drying of sweat, so the fan helps less there."
+                        "feedback": "Damp air slows the drying of sweat, so the breeze takes less heat."
                       },
                       {
                         "id": "c",
@@ -4581,7 +4642,9 @@
                 "step": "upi-path-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "upi-path-m5"
+                ],
                 "sourceRefs": [
                   "rbi-booklet",
                   "pib-upi"
@@ -4619,6 +4682,9 @@
                     "sourceRefs": [
                       "rbi-booklet",
                       "pib-upi"
+                    ],
+                    "misconceptionIds": [
+                      "upi-path-m5"
                     ]
                   }
                 ]
@@ -4770,7 +4836,10 @@
                 "step": "upi-path-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "upi-path-m5",
+                  "upi-path-m2"
+                ],
                 "sourceRefs": [
                   "rbi-booklet",
                   "npci-oc226"
@@ -4789,22 +4858,28 @@
                   },
                   {
                     "id": "b",
-                    "text": "the payee's bank balance.",
+                    "text": "the payee knowing your UPI ID",
                     "correct": false,
-                    "feedback": "The payee's balance is not checked. Your own phone and your approval are the two checks.",
+                    "feedback": "Knowing a UPI ID does not approve a payment. The checks are your registered phone and your approval.",
                     "sourceRefs": [
                       "rbi-booklet",
                       "npci-oc226"
+                    ],
+                    "misconceptionIds": [
+                      "upi-path-m5"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "a call from your bank.",
+                    "text": "the app moving cash without a bank check",
                     "correct": false,
-                    "feedback": "No call is needed. Your registered phone and your approval are the two checks.",
+                    "feedback": "The app starts the request; banks and the network move the money. Your registered phone is the other check.",
                     "sourceRefs": [
                       "rbi-booklet",
                       "npci-oc226"
+                    ],
+                    "misconceptionIds": [
+                      "upi-path-m2"
                     ]
                   }
                 ]
@@ -4903,6 +4978,16 @@
                 "correction": "The payee gets the money at once; only the banks settle with each other later.",
                 "sourceRefs": [
                   "rbi-booklet"
+                ]
+              },
+              {
+                "id": "upi-path-m5",
+                "name": "My UPI ID lets others take money",
+                "correction": "A UPI ID points to a bank account; payment also needs approval on the registered phone.",
+                "sourceRefs": [
+                  "rbi-booklet",
+                  "pib-upi",
+                  "npci-oc226"
                 ]
               }
             ],
@@ -5181,9 +5266,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Just for small sums, on weekdays.",
+                        "text": "Yes, as the app itself sends the money.",
                         "correct": false,
-                        "feedback": "UPI runs all week, and app choice does not depend on the bank."
+                        "feedback": "The app only sends the request. NPCI carries it, and the banks move the money."
                       }
                     ]
                   }
@@ -5375,11 +5460,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The screen records it as you look at the preview.",
+                    "text": "The lens stores the photo while the sensor aims light.",
                     "correct": false,
-                    "feedback": "The screen only shows the photo. The sensor chip recorded the light.",
+                    "feedback": "The lens directs light. Sensor spots turn that light into signals that record the image.",
                     "sourceRefs": [
                       "nasa-phone"
+                    ],
+                    "misconceptionIds": [
+                      "phone-camera-m2"
                     ]
                   }
                 ]
@@ -5391,7 +5479,9 @@
                 "step": "phone-camera-s1",
                 "job": "reverse",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "phone-camera-m2"
+                ],
                 "sourceRefs": [
                   "nasa-phone"
                 ],
@@ -5408,11 +5498,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Those spots were newer and simply worked better.",
+                    "text": "The lens made the bright patch; the spots did not record it.",
                     "correct": false,
-                    "feedback": "The spots are alike. A brighter patch means more light reached them.",
+                    "feedback": "The lens directs light, while sensor spots record signals. More light at those spots made bigger signals.",
                     "sourceRefs": [
                       "nasa-phone"
+                    ],
+                    "misconceptionIds": [
+                      "phone-camera-m2"
                     ]
                   },
                   {
@@ -5800,9 +5893,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "About half as big.",
+                        "text": "The same; the lens records it, not the spot.",
                         "correct": false,
-                        "feedback": "More light means more signal, not less."
+                        "feedback": "The lens only aims light. Each sensor spot records it, so more light gives a bigger signal."
                       }
                     ]
                   }
@@ -5971,9 +6064,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Colours swap between red and blue.",
+                        "text": "None; a longer shot is sharper.",
                         "correct": false,
-                        "feedback": "The filters stay the same. The risk of a long shot is blur from shake."
+                        "feedback": "A longer shot gathers light, but any shake while it is open smears the photo."
                       }
                     ]
                   }
@@ -6217,7 +6310,9 @@
                 "step": "sky-colours-s2",
                 "job": "transfer",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sky-colours-m1"
+                ],
                 "sourceRefs": [
                   "nasa-light"
                 ],
@@ -6239,6 +6334,9 @@
                     "feedback": "Milk is white. The bits scatter the blue part of the torch light.",
                     "sourceRefs": [
                       "nasa-light"
+                    ],
+                    "misconceptionIds": [
+                      "sky-colours-m1"
                     ]
                   },
                   {
@@ -6309,7 +6407,9 @@
                 "step": "sky-colours-s3",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sky-colours-m2"
+                ],
                 "sourceRefs": [
                   "nasa-sky"
                 ],
@@ -6326,11 +6426,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The Moon heats up and glows red in the dark.",
+                    "text": "The Sun turns red during the eclipse and lights the Moon.",
                     "correct": false,
-                    "feedback": "The Moon does not glow. It is lit by sunlight filtered through Earth's air.",
+                    "feedback": "The Sun has not changed colour. Light reaching the Moon passes through Earth's air, which filters out shorter waves.",
                     "sourceRefs": [
                       "nasa-sky"
+                    ],
+                    "misconceptionIds": [
+                      "sky-colours-m2"
                     ]
                   },
                   {
@@ -6553,9 +6656,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Blue.",
+                        "text": "Blue, as blue light travels farthest.",
                         "correct": false,
-                        "feedback": "Blue waves are short. Red has the longer wavelength."
+                        "feedback": "Blue waves are short, which is why air scatters them. Red has the longer wavelength."
                       },
                       {
                         "id": "c",
@@ -6827,7 +6930,10 @@
                 "step": "pressure-cooker-s1",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "pressure-cooker-m5",
+                  "pressure-cooker-m1"
+                ],
                 "sourceRefs": [
                   "csu-altitude",
                   "ncert-thermal"
@@ -6852,16 +6958,22 @@
                     "sourceRefs": [
                       "csu-altitude",
                       "ncert-thermal"
+                    ],
+                    "misconceptionIds": [
+                      "pressure-cooker-m5"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Hill water is harder, so the dal soaks it up slowly.",
+                    "text": "High places have less pressure to push flavour into dal.",
                     "correct": false,
-                    "feedback": "The water is not the problem. It boils at a lower temperature up high.",
+                    "feedback": "Pressure does not push flavour into food. At higher places, lower pressure makes open water boil cooler.",
                     "sourceRefs": [
                       "csu-altitude",
                       "ncert-thermal"
+                    ],
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
                     ]
                   }
                 ]
@@ -6927,7 +7039,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "pressure-cooker-m1"
+                  "pressure-cooker-m1",
+                  "pressure-cooker-m3"
                 ],
                 "sourceRefs": [
                   "gsu-pressure",
@@ -6960,12 +7073,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "Cookers are faster just for beans like rajma.",
+                    "text": "The whistle marks cooked food, while pressure leaves the boil unchanged.",
                     "correct": false,
-                    "feedback": "Any food in the hotter water cooks faster, not only beans.",
+                    "feedback": "The vent helps hold pressure steady; it does not mark doneness. Higher pressure raises the boiling point.",
                     "sourceRefs": [
                       "gsu-pressure",
                       "ncert-thermal"
+                    ],
+                    "misconceptionIds": [
+                      "pressure-cooker-m3"
                     ]
                   }
                 ]
@@ -6977,7 +7093,10 @@
                 "step": "pressure-cooker-s2",
                 "job": "transfer",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "pressure-cooker-m5",
+                  "pressure-cooker-m1"
+                ],
                 "sourceRefs": [
                   "ncert-thermal",
                   "gsu-pressure"
@@ -6996,22 +7115,28 @@
                   },
                   {
                     "id": "b",
-                    "text": "Ordinary pots crack in the cold, thin mountain air up there.",
+                    "text": "Thin mountain air lets heat leak from an open pot faster.",
                     "correct": false,
-                    "feedback": "Cracking is not the reason. Up high, open water boils too cool to cook well.",
+                    "feedback": "The key change is lower air pressure, which lowers the open boil. A cooker raises the boiling point.",
                     "sourceRefs": [
                       "ncert-thermal",
                       "gsu-pressure"
+                    ],
+                    "misconceptionIds": [
+                      "pressure-cooker-m5"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Pressure cookers weigh less, so they are easy to carry.",
+                    "text": "A cooker pushes flavour into food under more pressure.",
                     "correct": false,
-                    "feedback": "Weight is not the point. The sealed pot raises the boiling point that the thin air lowered.",
+                    "feedback": "Pressure does not push flavour in. It raises the boiling point, helping food cook in the cooler high-altitude boil.",
                     "sourceRefs": [
                       "ncert-thermal",
                       "gsu-pressure"
+                    ],
+                    "misconceptionIds": [
+                      "pressure-cooker-m1"
                     ]
                   }
                 ]
@@ -7166,6 +7291,15 @@
                 "correction": "Food that swells or froths can block the vent, so swelling foods go in at most half full.",
                 "sourceRefs": [
                   "bis-cooker"
+                ]
+              },
+              {
+                "id": "pressure-cooker-m5",
+                "name": "Up high, heat leaks into thin air",
+                "correction": "At high places, lower air pressure makes water boil at a lower temperature.",
+                "sourceRefs": [
+                  "csu-altitude",
+                  "ncert-thermal"
                 ]
               }
             ],
@@ -7435,9 +7569,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "The open pot.",
+                        "text": "The pot, on its big flame.",
                         "correct": false,
-                        "feedback": "A big flame cannot push an open boil past 100°C. The cooker is hotter."
+                        "feedback": "A big flame cannot push an open boil past 100°C. The cooker's pressure makes it hotter."
                       },
                       {
                         "id": "c",

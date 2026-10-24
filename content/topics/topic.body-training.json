@@ -80,7 +80,9 @@
                 "step": "progressive-overload-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "progressive-overload-m4"
+                ],
                 "sourceRefs": [
                   "guide"
                 ],
@@ -97,11 +99,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The bag got lighter as her books wore out.",
+                    "text": "Repeated carrying wore her muscles down.",
                     "correct": false,
-                    "feedback": "The books weigh about the same. Her body changed, because it adapted to the daily load.",
+                    "feedback": "The body adapts to work it repeats. That adaptation made the familiar load feel easier.",
                     "sourceRefs": [
                       "guide"
+                    ],
+                    "misconceptionIds": [
+                      "progressive-overload-m4"
                     ]
                   },
                   {
@@ -111,6 +116,9 @@
                     "feedback": "Repeated work made her body adapt, not wear out, which is why the same bag feels lighter.",
                     "sourceRefs": [
                       "guide"
+                    ],
+                    "misconceptionIds": [
+                      "progressive-overload-m4"
                     ]
                   }
                 ]
@@ -173,7 +181,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "progressive-overload-m1"
+                  "progressive-overload-m1",
+                  "progressive-overload-m2"
                 ],
                 "sourceRefs": [
                   "guide",
@@ -206,12 +215,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "He should add a training day before he fixes his form.",
+                    "text": "A big weight jump will make him stronger faster.",
                     "correct": false,
-                    "feedback": "An extra day of swung reps repeats the same problem. Clean form at 8 kg comes first.",
+                    "feedback": "Large jumps raise injury risk. Small, steady rises help the body adapt.",
                     "sourceRefs": [
                       "guide",
                       "acsm"
+                    ],
+                    "misconceptionIds": [
+                      "progressive-overload-m2"
                     ]
                   }
                 ]
@@ -388,6 +400,14 @@
                 "id": "progressive-overload-m3",
                 "name": "Strength work needs weights",
                 "correction": "Your own body weight can be the load, as in push-ups, pull-ups and planks.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "progressive-overload-m4",
+                "name": "Repeated work only wears muscles out",
+                "correction": "The body adapts to repeated work, so the same load can come to feel easier.",
                 "sourceRefs": [
                   "guide"
                 ]
@@ -786,7 +806,8 @@
                 "job": "reverse",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "muscle-protein-rest-m3"
+                  "muscle-protein-rest-m3",
+                  "muscle-protein-rest-m4"
                 ],
                 "sourceRefs": [
                   "mps",
@@ -825,6 +846,9 @@
                     "sourceRefs": [
                       "mps",
                       "issn"
+                    ],
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m4"
                     ]
                   }
                 ]
@@ -883,7 +907,9 @@
                 "step": "muscle-protein-rest-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "muscle-protein-rest-m2"
+                ],
                 "sourceRefs": [
                   "nin"
                 ],
@@ -905,6 +931,9 @@
                     "feedback": "Extra protein past about 1.6 g per kilo added no muscle, and with kidney disease high protein needs care.",
                     "sourceRefs": [
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m2"
                     ]
                   },
                   {
@@ -973,7 +1002,9 @@
                 "step": "muscle-protein-rest-s1",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "muscle-protein-rest-m6"
+                ],
                 "sourceRefs": [
                   "issn",
                   "nin"
@@ -998,6 +1029,9 @@
                     "sourceRefs": [
                       "issn",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m6"
                     ]
                   },
                   {
@@ -1008,6 +1042,9 @@
                     "sourceRefs": [
                       "issn",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m6"
                     ]
                   }
                 ]
@@ -1020,7 +1057,8 @@
                 "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "muscle-protein-rest-m3"
+                  "muscle-protein-rest-m3",
+                  "muscle-protein-rest-m4"
                 ],
                 "sourceRefs": [
                   "mps"
@@ -1050,11 +1088,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Time after training matters mainly for people over 50.",
+                    "text": "Muscle building starts once soreness ends.",
                     "correct": false,
-                    "feedback": "The rise was smaller in older adults, but the time after a session counts at every age.",
+                    "feedback": "Muscle building can stay raised for up to 48 hours after a session. It does not wait for soreness to end.",
                     "sourceRefs": [
                       "mps"
+                    ],
+                    "misconceptionIds": [
+                      "muscle-protein-rest-m4"
                     ]
                   }
                 ]
@@ -1083,6 +1124,23 @@
                 "correction": "The muscle-building process can stay switched on for up to two days after a session.",
                 "sourceRefs": [
                   "mps"
+                ]
+              },
+              {
+                "id": "muscle-protein-rest-m4",
+                "name": "Muscle building waits until soreness ends",
+                "correction": "Muscle building can stay raised for up to two days after a strength session.",
+                "sourceRefs": [
+                  "mps"
+                ]
+              },
+              {
+                "id": "muscle-protein-rest-m6",
+                "name": "Protein alone builds muscle",
+                "correction": "Strength work gives the body a signal to use protein for muscle building.",
+                "sourceRefs": [
+                  "issn",
+                  "nin"
                 ]
               }
             ],
@@ -1401,9 +1459,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Yes, sore legs grow faster with more work.",
+                        "text": "Yes, if she eats extra protein to recover.",
                         "correct": false,
-                        "feedback": "Hard work on top of Monday's session cuts into the time the building process needs."
+                        "feedback": "Extra protein does not speed it up. Building goes on for up to two days, so rest or train arms."
                       },
                       {
                         "id": "c",
@@ -1521,7 +1579,9 @@
                 "step": "sleep-recovery-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-recovery-m1"
+                ],
                 "sourceRefs": [
                   "sleep"
                 ],
@@ -1543,6 +1603,9 @@
                     "feedback": "Repair of cells and tissues happens a lot in deep sleep, so short nights can slow it.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
                     ]
                   },
                   {
@@ -1552,6 +1615,9 @@
                     "feedback": "His body pays too. Deep sleep is when much of the repair of tissue happens.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m1"
                     ]
                   }
                 ]
@@ -1563,7 +1629,9 @@
                 "step": "sleep-recovery-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-recovery-m4"
+                ],
                 "sourceRefs": [
                   "sport"
                 ],
@@ -1585,15 +1653,21 @@
                     "feedback": "The biggest drop came from waking far too early, not from going to bed late.",
                     "sourceRefs": [
                       "sport"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A gain in play, since she was awake longer.",
+                    "text": "Losing the start of sleep hurts play most.",
                     "correct": false,
-                    "feedback": "Being awake longer did not help. The review simply found no clear drop for this pattern.",
+                    "feedback": "The review found no clear drop after losing the start. Losing the end of the night hurt most.",
                     "sourceRefs": [
                       "sport"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m4"
                     ]
                   }
                 ]
@@ -1656,7 +1730,8 @@
                 "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "sleep-recovery-m2"
+                  "sleep-recovery-m2",
+                  "sleep-recovery-m6"
                 ],
                 "sourceRefs": [
                   "sleep",
@@ -1676,12 +1751,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "Skipping lunch to make up for the snacks.",
+                    "text": "Keep five hours of sleep to lower hunger.",
                     "correct": false,
-                    "feedback": "Skipping meals does not touch the cause. The short sleep is what shifts his hunger signals.",
+                    "feedback": "Short sleep raises the hunger hormone and lowers the fullness hormone. More sleep addresses that cause.",
                     "sourceRefs": [
                       "sleep",
                       "hours"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m6"
                     ]
                   },
                   {
@@ -1706,7 +1784,9 @@
                 "step": "sleep-recovery-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-recovery-m6"
+                ],
                 "sourceRefs": [
                   "sleep"
                 ],
@@ -1728,15 +1808,21 @@
                     "feedback": "Ghrelin goes up after short sleep, not down, which pushes hunger higher.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m6"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Her stomach has shrunk from the short night.",
+                    "text": "Short sleep lowers the hunger hormone.",
                     "correct": false,
-                    "feedback": "The stomach does not shrink. Short sleep shifts the hormones that steer hunger and fullness.",
+                    "feedback": "Short sleep raises ghrelin and lowers leptin. Low leptin helps explain why she still wants food.",
                     "sourceRefs": [
                       "sleep"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-recovery-m6"
                     ]
                   }
                 ]
@@ -1765,6 +1851,22 @@
                 "correction": "In a review of athletes, short-term sleep loss tended to lower sports performance.",
                 "sourceRefs": [
                   "sport"
+                ]
+              },
+              {
+                "id": "sleep-recovery-m4",
+                "name": "Early sleep loss hurts sport most",
+                "correction": "In the review, losing the end of the night hurt sport most.",
+                "sourceRefs": [
+                  "sport"
+                ]
+              },
+              {
+                "id": "sleep-recovery-m6",
+                "name": "Short sleep lowers hunger hormone",
+                "correction": "With too little sleep, the hunger hormone rises and the fullness hormone falls.",
+                "sourceRefs": [
+                  "sleep"
                 ]
               }
             ],
@@ -2213,7 +2315,9 @@
                 "step": "heat-hydration-s1",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "heat-hydration-m1"
+                ],
                 "sourceRefs": [
                   "cdc-heat-rate"
                 ],
@@ -2230,11 +2334,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Her fitness was gone in a single week.",
+                    "text": "The heat gives her a bonus workout.",
                     "correct": false,
-                    "feedback": "Fitness does not vanish that fast. The heat makes the same run harder.",
+                    "feedback": "Heat adds strain as the body sheds heat. That helps explain why the same run feels harder.",
                     "sourceRefs": [
                       "cdc-heat-rate"
+                    ],
+                    "misconceptionIds": [
+                      "heat-hydration-m1"
                     ]
                   },
                   {
@@ -2354,7 +2461,10 @@
                 "step": "heat-hydration-s3",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "heat-hydration-m5",
+                  "heat-hydration-m3"
+                ],
                 "sourceRefs": [
                   "signs"
                 ],
@@ -2376,6 +2486,9 @@
                     "feedback": "Signs that last over an hour are the point to get medical help, not to keep waiting.",
                     "sourceRefs": [
                       "signs"
+                    ],
+                    "misconceptionIds": [
+                      "heat-hydration-m5"
                     ]
                   },
                   {
@@ -2385,6 +2498,9 @@
                     "feedback": "Training on would add more heat strain. Signs that last this long need medical help.",
                     "sourceRefs": [
                       "signs"
+                    ],
+                    "misconceptionIds": [
+                      "heat-hydration-m3"
                     ]
                   }
                 ]
@@ -2467,6 +2583,15 @@
                 "id": "heat-hydration-m3",
                 "name": "Cramps mean push on",
                 "correction": "Cramps, dizziness or feeling faint in the heat are signs to stop and cool down.",
+                "sourceRefs": [
+                  "signs",
+                  "heat"
+                ]
+              },
+              {
+                "id": "heat-hydration-m5",
+                "name": "Heat symptoms always pass alone",
+                "correction": "Get medical help if heat symptoms last over an hour, get worse or include vomiting.",
                 "sourceRefs": [
                   "signs",
                   "heat"
@@ -2632,9 +2757,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Little, since the time cannot move.",
+                        "text": "Push harder; heat builds toughness.",
                         "correct": false,
-                        "feedback": "The pace can still change. A slow start that builds up gradually cuts heat strain."
+                        "feedback": "Heat adds strain, not a bonus. Start slow and build up."
                       },
                       {
                         "id": "c",
@@ -2720,9 +2845,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No water, so you stay light and quick.",
+                        "text": "Force down a litre at each break.",
                         "correct": false,
-                        "feedback": "Skipping water adds heat risk. Sip regularly through the match."
+                        "feedback": "Do not force big amounts. Sip at breaks, and replace salt with food."
                       }
                     ]
                   }
@@ -2864,7 +2989,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "warmup-myths-m2"
+                  "warmup-myths-m2",
+                  "warmup-myths-m4"
                 ],
                 "sourceRefs": [
                   "guide"
@@ -2887,6 +3013,9 @@
                     "feedback": "Starting at full speed skips the gradual rise that a warm-up gives.",
                     "sourceRefs": [
                       "guide"
+                    ],
+                    "misconceptionIds": [
+                      "warmup-myths-m4"
                     ]
                   },
                   {
@@ -2911,7 +3040,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "warmup-myths-m2"
+                  "warmup-myths-m2",
+                  "warmup-myths-m4"
                 ],
                 "sourceRefs": [
                   "guide"
@@ -2946,6 +3076,9 @@
                     "feedback": "A hard set is the opposite. A warm-up starts easy so effort can rise gradually.",
                     "sourceRefs": [
                       "guide"
+                    ],
+                    "misconceptionIds": [
+                      "warmup-myths-m4"
                     ]
                   }
                 ]
@@ -3177,6 +3310,14 @@
                 "correction": "Range gains from stretching usually last under 30 minutes.",
                 "sourceRefs": [
                   "review"
+                ]
+              },
+              {
+                "id": "warmup-myths-m4",
+                "name": "Warmups start at full effort",
+                "correction": "A warm-up starts with the activity at a slower speed or lower effort.",
+                "sourceRefs": [
+                  "guide"
                 ]
               }
             ],
@@ -3413,9 +3554,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Too short to count as a stretch.",
+                        "text": "Under 60 seconds, so it has no effect.",
                         "correct": false,
-                        "feedback": "A 45-second hold is still a stretch. It sits in the under-60 group."
+                        "feedback": "Short holds cost much less, but holds under 60 seconds still cut results by about 1.1% on average."
                       }
                     ]
                   }
@@ -3489,9 +3630,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Full protection from injury in sport.",
+                        "text": "Fewer injuries in sport.",
                         "correct": false,
-                        "feedback": "The review found no clear effect of static stretching on overall injuries."
+                        "feedback": "The review found no clear drop in injuries. Range gains are what showed clearly."
                       },
                       {
                         "id": "c",
@@ -3568,7 +3709,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "cardio-talk-test-m2"
+                  "cardio-talk-test-m2",
+                  "cardio-talk-test-m4"
                 ],
                 "sourceRefs": [
                   "guide",
@@ -3607,6 +3749,9 @@
                     "sourceRefs": [
                       "guide",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m4"
                     ]
                   }
                 ]
@@ -3618,7 +3763,10 @@
                 "step": "cardio-talk-test-s1",
                 "job": "transfer",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "cardio-talk-test-m2",
+                  "cardio-talk-test-m4"
+                ],
                 "sourceRefs": [
                   "guide",
                   "nin"
@@ -3643,6 +3791,9 @@
                     "sourceRefs": [
                       "guide",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m2"
                     ]
                   },
                   {
@@ -3653,6 +3804,9 @@
                     "sourceRefs": [
                       "guide",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m4"
                     ]
                   }
                 ]
@@ -3695,11 +3849,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The hill is steeper for one of them.",
+                    "text": "The same speed must feel equal to both.",
                     "correct": false,
-                    "feedback": "The hill is the same. What differs is how fit each person is.",
+                    "feedback": "Effort depends on each person's fitness. The same hill and speed can feel different.",
                     "sourceRefs": [
                       "guide"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m1"
                     ]
                   }
                 ]
@@ -3803,6 +3960,9 @@
                     "sourceRefs": [
                       "guide",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m3"
                     ]
                   }
                 ]
@@ -3854,6 +4014,9 @@
                     "sourceRefs": [
                       "guide",
                       "nin"
+                    ],
+                    "misconceptionIds": [
+                      "cardio-talk-test-m3"
                     ]
                   }
                 ]
@@ -3881,6 +4044,15 @@
                 "id": "cardio-talk-test-m3",
                 "name": "Start hard to catch up on the missed weeks",
                 "correction": "After time off, start moderate and add minutes and days before effort.",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-m4",
+                "name": "Talking means vigorous effort",
+                "correction": "You can chat at a moderate effort. At a hard effort, you get out a few words, then need a breath.",
                 "sourceRefs": [
                   "guide",
                   "nin"
@@ -4026,9 +4198,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Moderate.",
+                        "text": "Moderate, as she talks.",
                         "correct": false,
-                        "feedback": "Moderate lets you hold a chat. One or two words is vigorous."
+                        "feedback": "A word or two before a breath is vigorous. Moderate lets you hold a chat."
                       },
                       {
                         "id": "c",
@@ -4195,9 +4367,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Speed up to finish the session sooner.",
+                        "text": "Rest today, then do double tomorrow.",
                         "correct": false,
-                        "feedback": "More effort adds strain to a painful knee. Stop and rest it."
+                        "feedback": "A big jump raises injury risk. Rest, then go back at a moderate effort."
                       }
                     ]
                   }
@@ -4261,7 +4433,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "showing-up-m1"
+                  "showing-up-m1",
+                  "showing-up-m2"
                 ],
                 "sourceRefs": [
                   "guide",
@@ -4294,12 +4467,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "A zero day is fine if you rest the whole day.",
+                    "text": "Short walks and stairs do not count.",
                     "correct": false,
-                    "feedback": "Rest has its place, but brisk stairs and walks on that day still add to the week.",
+                    "feedback": "Brisk bouts of any length count. A gym-free day can include walks and stairs.",
                     "sourceRefs": [
                       "guide",
                       "who2020"
+                    ],
+                    "misconceptionIds": [
+                      "showing-up-m2"
                     ]
                   }
                 ]
@@ -4312,7 +4488,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "showing-up-m2"
+                  "showing-up-m2",
+                  "showing-up-m1"
                 ],
                 "sourceRefs": [
                   "guide",
@@ -4351,6 +4528,9 @@
                     "sourceRefs": [
                       "guide",
                       "who2020"
+                    ],
+                    "misconceptionIds": [
+                      "showing-up-m1"
                     ]
                   }
                 ]
@@ -4362,7 +4542,10 @@
                 "step": "showing-up-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "showing-up-m5",
+                  "showing-up-m4"
+                ],
                 "sourceRefs": [
                   "gardner"
                 ],
@@ -4384,6 +4567,9 @@
                     "feedback": "Place is not the issue. The cue has to happen steadily, and his stops off-season.",
                     "sourceRefs": [
                       "gardner"
+                    ],
+                    "misconceptionIds": [
+                      "showing-up-m5"
                     ]
                   },
                   {
@@ -4393,6 +4579,9 @@
                     "feedback": "A steady cue is what works. The problem is that his cue disappears off-season.",
                     "sourceRefs": [
                       "gardner"
+                    ],
+                    "misconceptionIds": [
+                      "showing-up-m4"
                     ]
                   }
                 ]
@@ -4457,7 +4646,8 @@
                 "job": "combine",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "showing-up-m3"
+                  "showing-up-m3",
+                  "showing-up-m4"
                 ],
                 "sourceRefs": [
                   "gardner"
@@ -4492,6 +4682,9 @@
                     "feedback": "A shifting time gives no steady cue. The same after-dinner slot works best.",
                     "sourceRefs": [
                       "gardner"
+                    ],
+                    "misconceptionIds": [
+                      "showing-up-m4"
                     ]
                   }
                 ]
@@ -4622,6 +4815,22 @@
                 "id": "showing-up-m3",
                 "name": "One miss ruins a habit",
                 "correction": "Missing the odd day did not seriously harm habit forming.",
+                "sourceRefs": [
+                  "gardner"
+                ]
+              },
+              {
+                "id": "showing-up-m4",
+                "name": "Habits need changing cues",
+                "correction": "Repeating a small action at the same time each day helps make it a habit.",
+                "sourceRefs": [
+                  "gardner"
+                ]
+              },
+              {
+                "id": "showing-up-m5",
+                "name": "A gym makes the habit",
+                "correction": "Repeating a small action at a steady daily cue helps make it a habit.",
                 "sourceRefs": [
                   "gardner"
                 ]
@@ -4860,9 +5069,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "On days she feels full of energy.",
+                        "text": "A goal: flexible by June.",
                         "correct": false,
-                        "feedback": "Energy changes day to day, so it is not a steady cue for a habit."
+                        "feedback": "A goal is good, but it names no moment. A daily cue like brushing does the reminding."
                       }
                     ]
                   }
@@ -4945,9 +5154,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Waiting until next month to start fresh.",
+                        "text": "Start a fresh 21-day count from zero.",
                         "correct": false,
-                        "feedback": "Waiting is not needed. The gains pick up again as soon as he goes back."
+                        "feedback": "Gains pick up again when he goes back. There is no count to restart."
                       }
                     ]
                   }
@@ -5014,7 +5223,8 @@
                 "job": "misconception",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "food-labels-m2"
+                  "food-labels-m2",
+                  "food-labels-m4"
                 ],
                 "sourceRefs": [
                   "fssai"
@@ -5037,6 +5247,9 @@
                     "feedback": "Indian labels do show added sugars, on a line of their own next to total sugars.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m4"
                     ]
                   },
                   {
@@ -5060,7 +5273,9 @@
                 "step": "food-labels-s1",
                 "job": "reverse",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "food-labels-m5"
+                ],
                 "sourceRefs": [
                   "fssai"
                 ],
@@ -5082,6 +5297,9 @@
                     "feedback": "Added sugars are part of the total, not extra. Equal lines mean all of it was added.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m5"
                     ]
                   },
                   {
@@ -5091,6 +5309,9 @@
                     "feedback": "The total is already 9 g. The added line is part of that total, not on top of it.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m5"
                     ]
                   }
                 ]
@@ -5102,7 +5323,9 @@
                 "step": "food-labels-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "food-labels-m6"
+                ],
                 "sourceRefs": [
                   "fssai"
                 ],
@@ -5119,11 +5342,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Chillies weigh too little to be measured.",
+                    "text": "Ingredient percentages apply to drinks, not chips.",
                     "correct": false,
-                    "feedback": "Weight is not the reason. Spices used for flavour are simply left out of the rule.",
+                    "feedback": "The percentage rule can apply to mixed foods. Spices used for flavour are an exception.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m6"
                     ]
                   },
                   {
@@ -5133,6 +5359,9 @@
                     "feedback": "The rule covers mixed foods of many kinds. Spices used for flavour are the exception here.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m6"
                     ]
                   }
                 ]
@@ -5145,7 +5374,8 @@
                 "job": "transfer",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "food-labels-m1"
+                  "food-labels-m1",
+                  "food-labels-m6"
                 ],
                 "sourceRefs": [
                   "fssai"
@@ -5180,6 +5410,9 @@
                     "feedback": "Being natural does not matter. A stressed ingredient must show its share as a %.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m6"
                     ]
                   }
                 ]
@@ -5191,7 +5424,10 @@
                 "step": "food-labels-s3",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "food-labels-m8",
+                  "food-labels-m9"
+                ],
                 "sourceRefs": [
                   "fssai"
                 ],
@@ -5213,6 +5449,9 @@
                     "feedback": "That uses all 18 g. Only the added part counts: 14 g out of 50 g is 28%.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m8"
                     ]
                   },
                   {
@@ -5222,6 +5461,9 @@
                     "feedback": "That uses the 4 g from milk. The added part is 14 g, which is 28% of the reference.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m9"
                     ]
                   }
                 ],
@@ -5275,6 +5517,9 @@
                     "feedback": "That is four servings. Two servings of 12% make about 24%.",
                     "sourceRefs": [
                       "fssai"
+                    ],
+                    "misconceptionIds": [
+                      "food-labels-m3"
                     ]
                   }
                 ]
@@ -5301,6 +5546,46 @@
                 "id": "food-labels-m3",
                 "name": "%RDA is for the whole pack",
                 "correction": "The %RDA is per serving, so two servings double it.",
+                "sourceRefs": [
+                  "fssai"
+                ]
+              },
+              {
+                "id": "food-labels-m4",
+                "name": "Labels omit added sugars",
+                "correction": "Indian labels show added sugars on a separate line from total sugars.",
+                "sourceRefs": [
+                  "fssai"
+                ]
+              },
+              {
+                "id": "food-labels-m5",
+                "name": "Added sugar sits outside total sugar",
+                "correction": "Added sugars are part of total sugars, not an extra amount.",
+                "sourceRefs": [
+                  "fssai"
+                ]
+              },
+              {
+                "id": "food-labels-m6",
+                "name": "Only drinks need ingredient percentages",
+                "correction": "A mixed food that stresses an ingredient must usually give its percentage.",
+                "sourceRefs": [
+                  "fssai"
+                ]
+              },
+              {
+                "id": "food-labels-m8",
+                "name": "Total sugar sets added sugar RDA",
+                "correction": "The added sugar line is the one compared with the daily added sugar reference.",
+                "sourceRefs": [
+                  "fssai"
+                ]
+              },
+              {
+                "id": "food-labels-m9",
+                "name": "Milk sugar counts as added",
+                "correction": "Added sugars are only sugars put into a food; its own sugars appear in the total.",
                 "sourceRefs": [
                   "fssai"
                 ]
@@ -5443,9 +5728,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "17 g.",
+                        "text": "None; total is added.",
                         "correct": false,
-                        "feedback": "That adds them. Added sugars are part of the total, so take 5 from 12."
+                        "feedback": "Total sugars count the food's own sugar too. 12 minus 5 leaves 7 g."
                       },
                       {
                         "id": "c",
