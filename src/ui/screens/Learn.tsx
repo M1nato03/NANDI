@@ -12,7 +12,8 @@ import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from
 import { go } from '../shell/router';
 import { chestReady } from '../../core/economy/gamify';
 import { cardHook, goldItems } from '../../core/learn/steps';
-import { dayKey } from '../../core/time';
+import { dayKey, isAfterBedtime } from '../../core/time';
+import { effectiveBedtime } from '../../data/repos/night';
 import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
 import { Cast, Moti, type CastName } from '../cast/Cast';
@@ -38,12 +39,19 @@ export function Learn({ entry }: { entry?: string }) {
     night: await db.learnDrops.get(nightDropId(openedAt)),
     facts: (await loadEngineFacts(db)).facts,
     ledger: await db.ledger.toArray(),
+    bedtime: await effectiveBedtime(db, openedAt),
   }), [openedAt]);
+  // The card follows the drop's bedtime rule, so it is checked again while the screen stays open.
+  const [now, setNow] = useState(openedAt);
+  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
+  const afterBedtime = !!data && isAfterBedtime(now, data.bedtime);
   const selected = chosenTopics(data?.setting?.value);
   const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
-  // Today's lesson in a saved daily drop, so its topic card names that step (Codex A item 73).
-  const savedLesson = data?.daily && !data.daily.deleted ? data.daily.drop.items.find(item => item.lesson)?.lesson : undefined;
+  // Today's lesson in a saved daily drop that has not reached it yet, so its topic card names the step Today opens
+  // (Codex A items 73, 74). Once the drop is past its lesson, the card follows the next untaught step.
+  const savedDrop = data?.daily && !data.daily.deleted ? data.daily.drop : undefined;
+  const savedLesson = savedDrop?.items.slice(savedDrop.cursor).find(item => item.lesson)?.lesson;
   const [unitScene, setUnitScene] = useState<string>();
   const learned = new Set((data?.states ?? []).filter(row => !!row.firstLearnedAt).map(row => row.id));
   const completedUnit = data && completedModuleKey(topics.flatMap(pack => pack.body.modules), learned, id => localStorage.getItem(`cast.unit:${id}`) === 'seen');
@@ -91,7 +99,7 @@ export function Learn({ entry }: { entry?: string }) {
       const open = expanded === topicId;
       // Each card leads with the next lesson's own hook guess, which that lesson answers (items 71 B3, 72); once every
       // step is taught, with the first idea not yet strong. The six topics no longer read alike (audit 10-21).
-      const hook = cardHook(concepts, new Set(Object.keys(taughtOn)), concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))), savedLesson);
+      const hook = cardHook(concepts, new Set(Object.keys(taughtOn)), concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))), savedLesson, afterBedtime);
       return <section className="card learn-map-topic" key={pack.id}>
         <button type="button" className="learn-topic-expand" aria-expanded={open} aria-controls={`learn-ideas-${topicId}`} onClick={() => setExpanded(open ? undefined : topicId)}>
           <span className="learn-topic-title"><strong>{pack.title}</strong><span aria-hidden="true">{open ? '−' : '+'}</span></span>

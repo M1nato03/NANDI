@@ -244,13 +244,19 @@ describe('item 73 follow-ups', () => {
   it('the card names the step in a saved daily drop, and with several topics each card names its own next step', () => {
     const second = habits.steps![1]!.id;
     expect(cardHook(psych, new Set(), undefined, second)).toMatchObject({ conceptId: 'habits', stepId: second });
-    // A saved step of another topic, or one already taught, does not move this card.
+    // A saved step of another topic does not move this card.
     expect(cardHook(psych, new Set(), undefined, nextStep(money, new Set())!.step.id).stepId).toBe(habits.steps![0]!.id);
-    expect(cardHook(psych, new Set([second]), undefined, second).stepId).toBe(habits.steps![0]!.id);
+    // Item 74: Practice taught the saved step since, but Today still opens it, so the card keeps naming it.
+    expect(cardHook(psych, new Set([second]), undefined, second).stepId).toBe(second);
     const ids = ['money-markets', 'psychology'];
     const lesson = makeDrop({ ...base, ids }).items[0]!.lesson!;
     const cards = [cardHook(money, new Set()), cardHook(psych, new Set())];
     expect(cards.map(card => card.stepId)).toContain(lesson);
+  });
+  it('after bedtime the card shows the idea hook, since the drop then teaches no new lesson (item 74)', () => {
+    const second = habits.steps![1]!.id;
+    expect(cardHook(psych, new Set(), habits, second, true)).toEqual({ conceptId: 'habits', text: habits.hook });
+    expect(cardHook(psych, new Set(), habits, undefined, true)).toEqual({ conceptId: 'habits', text: habits.hook });
   });
   it('a saved drop keeps its option order: the order is stored per item and the same drop rebuilds the same order', () => {
     const later = { ...base, ids: ['psychology'], now: now + 86_400_000, taughtSteps: [habits.steps![0]!.id], taughtOn: { [habits.steps![0]!.id]: '2026-10-22' } };
