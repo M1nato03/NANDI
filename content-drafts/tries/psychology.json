@@ -46,7 +46,7 @@
         },
         {
           "id": "c",
-          "text": "A fresh choice she makes each day.",
+          "text": "A fresh daily choice.",
           "correct": false,
           "feedback": "She hardly notices it, which points to a cue. A habit set off by a cue needs little deciding."
         }
@@ -70,7 +70,7 @@
         },
         {
           "id": "b",
-          "text": "The same gain as her first week did.",
+          "text": "Week one's gain.",
           "correct": false,
           "feedback": "The first week brought the big jump. Near the plateau, a week adds much less."
         },
@@ -94,9 +94,9 @@
         },
         {
           "id": "b",
-          "text": "His practice has stopped helping, so it was wasted.",
+          "text": "He is now fully trained, and his gains are done.",
           "correct": false,
-          "feedback": "The early practice built the skill. Later repeats add less, so a flat stretch is normal, not a sign of waste."
+          "feedback": "Gains do not stop dead. Later repeats still add a little, just less and less."
         },
         {
           "id": "c",
@@ -178,13 +178,13 @@
         },
         {
           "id": "b",
-          "text": "Just even, since the sums match.",
+          "text": "About even, since the sums match.",
           "correct": false,
           "feedback": "The sums match, but the feelings do not. A loss tends to count for more than a same-size gain."
         },
         {
           "id": "c",
-          "text": "Better, since the find came first.",
+          "text": "A bit better, since the find came first.",
           "correct": false,
           "feedback": "Order was not the point. A loss tends to weigh more than a same-size gain, so the day tilts down."
         }
@@ -196,7 +196,7 @@
       "options": [
         {
           "id": "a",
-          "text": "With the smaller one, as it feels less worth the bother.",
+          "text": "With the smaller one.",
           "correct": false,
           "feedback": "It runs the other way. Refusals of fair even-chance deals grow as the stake gets bigger."
         },
@@ -208,7 +208,7 @@
         },
         {
           "id": "c",
-          "text": "Just as often, since the odds are even both times.",
+          "text": "Equally often.",
           "correct": false,
           "feedback": "Even odds do not make the feelings even. A loss weighs more, and more so at bigger stakes."
         }
@@ -292,7 +292,7 @@
         },
         {
           "id": "c",
-          "text": "Yes; it shows losses and gains weigh the same.",
+          "text": "Yes; losses and gains weigh the same.",
           "correct": false,
           "feedback": "Less than twice is not the same as equal. Losses still weighed more than gains on average."
         }
@@ -340,13 +340,13 @@
         },
         {
           "id": "b",
-          "text": "Right on the fair rent, since she knew to adjust.",
+          "text": "About right, since she knew to adjust.",
           "correct": false,
           "feedback": "Knowing to adjust is not enough. People move too little, so the guess stays pulled toward the first number."
         },
         {
           "id": "c",
-          "text": "Below the fair rent, since she overcorrects.",
+          "text": "A bit low, since she overcorrects.",
           "correct": false,
           "feedback": "The usual slip goes the other way. People adjust too little, so the guess stays on the high side."
         }
@@ -370,7 +370,7 @@
         },
         {
           "id": "c",
-          "text": "His ask goes up, to stand out from the rest.",
+          "text": "His ask goes up, to stand out.",
           "correct": false,
           "feedback": "Anchors pull guesses toward them. Hearing ₹3 lakh more likely drags his ask down, not up."
         }
@@ -400,9 +400,9 @@
         },
         {
           "id": "c",
-          "text": "Guesses moved off the anchor, but not far enough.",
+          "text": "They adjusted, but too little.",
           "correct": true,
-          "feedback": "Right. Each group adjusted away from its random start, but too little, so the groups stayed apart."
+          "feedback": "Right. Each group moved away from its random start, but too little, so the groups stayed apart."
         }
       ]
     },
@@ -418,13 +418,13 @@
         },
         {
           "id": "b",
-          "text": "Bids ignore it, as everyone knows it is random.",
+          "text": "Bids ignore it.",
           "correct": false,
           "feedback": "Knowing a number is random does not stop its pull. Guesses after a random number still leaned toward it."
         },
         {
           "id": "c",
-          "text": "Bids drop, as people distrust the wheel.",
+          "text": "Bids drop below it.",
           "correct": false,
           "feedback": "Anchors pull toward themselves. A random ₹8,000 more likely draws bids toward it, not away."
         }
@@ -478,7 +478,7 @@
         },
         {
           "id": "c",
-          "text": "Listing reasons two weeks could be wrong.",
+          "text": "Listing reasons against two weeks.",
           "correct": true,
           "feedback": "Right. Listing reasons against a first number brings the other side to mind, so its pull shrinks."
         }
@@ -496,13 +496,13 @@
       "options": [
         {
           "id": "a",
-          "text": "She kept the jams in mind and let smooth days slip.",
+          "text": "She noticed the jams and skipped the rest.",
           "correct": true,
           "feedback": "Right. We notice and recall clues that fit a belief and skip the rest, so the belief feels proved."
         },
         {
           "id": "b",
-          "text": "The new route must really be worse.",
+          "text": "The new route must really be worse, as five jams show.",
           "correct": false,
           "feedback": "It might be, but her memory is one-sided. Smooth trips that did not fit were not counted."
         },
@@ -520,7 +520,7 @@
       "options": [
         {
           "id": "a",
-          "text": "More low marks from the same weeks.",
+          "text": "Other low marks she forgot.",
           "correct": false,
           "feedback": "More low marks would fit her belief. What tends to be skipped are the marks that go against it."
         },
@@ -532,7 +532,7 @@
         },
         {
           "id": "c",
-          "text": "The low marks already prove her case.",
+          "text": "The low marks already make her case, so there is no gap.",
           "correct": false,
           "feedback": "Low marks fit her idea, but so might other causes. Marks that do not fit are the ones she may miss."
         }
@@ -604,7 +604,7 @@
       "options": [
         {
           "id": "a",
-          "text": "A parcel with a red sticker.",
+          "text": "A parcel that has a red sticker on it.",
           "correct": false,
           "feedback": "Whatever its label, a red-sticker parcel cannot break this rule. It can only fit it."
         },
@@ -640,7 +640,7 @@
         },
         {
           "id": "c",
-          "text": "Seasons sown after the first rain that gave a poor crop.",
+          "text": "Rain-sown seasons with a poor crop.",
           "correct": true,
           "feedback": "Right. A strong test looks for cases that could break the idea. Poor seasons after rain would do that."
         }
@@ -682,19 +682,19 @@
       "options": [
         {
           "id": "a",
-          "text": "He is the type of person who copies others.",
+          "text": "He copies others as a habit, whatever the setting.",
           "correct": false,
-          "feedback": "Anyone can lean on a crowd when unsure. It is not a sign of a weak or copycat person."
+          "feedback": "Anyone can lean on a crowd when unsure. It is not a fixed copycat trait; here he simply does not know."
         },
         {
           "id": "b",
-          "text": "He reads their choice as a sign of the right place.",
+          "text": "Their choice tells him where it goes.",
           "correct": true,
           "feedback": "Right. When unsure, we take what many people do as a clue to what is right, so he copies them."
         },
         {
           "id": "c",
-          "text": "He fears being told off by the boss.",
+          "text": "He fears being told off by the boss on day one.",
           "correct": false,
           "feedback": "Nothing points to fear here. He is unsure, so he treats the crowd's choice as useful information."
         }
@@ -712,19 +712,19 @@
       "options": [
         {
           "id": "a",
-          "text": "The lines were hard to judge.",
+          "text": "The lines were hard to judge for most people.",
           "correct": false,
           "feedback": "Alone, people made mistakes under 1% of the time, so the lines were easy. The group made the difference."
         },
         {
           "id": "b",
-          "text": "Most people followed the group each time.",
+          "text": "Most people followed the group on each trial.",
           "correct": false,
-          "feedback": "Going along happened in about a third of answers, not every time. People differed a lot."
+          "feedback": "Going along happened in about a third of answers, not on each trial. People differed a lot."
         },
         {
           "id": "c",
-          "text": "The group pressure caused most of the errors.",
+          "text": "The group caused the extra errors.",
           "correct": true,
           "feedback": "Right. Alone, almost no one erred, so the extra mistakes came from going along with the group."
         }
@@ -742,15 +742,15 @@
         },
         {
           "id": "b",
-          "text": "She must doubt herself, since the flaw is hard to see.",
+          "text": "She doubts her own eyes.",
           "correct": false,
           "feedback": "She spots the flaw at once, so it is plain to her. Like Asch's subjects, the pull is mostly to fit in."
         },
         {
           "id": "c",
-          "text": "She is a weak person; strong people do not go along.",
+          "text": "She now agrees with the plan after hearing the seniors.",
           "correct": false,
-          "feedback": "Going along is not a sign of a weak person. Plenty of people in Asch's test went along at times."
+          "feedback": "She spotted the flaw at once, so she was not won over. Like many in Asch's test, she went along to fit in."
         }
       ]
     }
@@ -766,7 +766,7 @@
       "options": [
         {
           "id": "a",
-          "text": "Ten times the proof of one report.",
+          "text": "About ten times the proof of one report.",
           "correct": false,
           "feedback": "They all heard it from one person, so the ten voices do not add up to ten checks."
         },
@@ -790,7 +790,7 @@
       "options": [
         {
           "id": "a",
-          "text": "That it is likely true, as so many agree.",
+          "text": "That it is likely true.",
           "correct": false,
           "feedback": "A crowd can agree on a wrong answer. Numbers alone do not make a claim true."
         },
@@ -826,13 +826,13 @@
         },
         {
           "id": "b",
-          "text": "It finishes on time, as careful people guess right.",
+          "text": "It finishes on time.",
           "correct": false,
           "feedback": "Being careful does not remove the slip. People in general guessed too short for their own tasks."
         },
         {
           "id": "c",
-          "text": "It finishes early, since she plans well.",
+          "text": "It finishes early.",
           "correct": false,
           "feedback": "Guesses for our own tasks tend to run short, not long. Careful planners are no exception."
         }
@@ -844,7 +844,7 @@
       "options": [
         {
           "id": "a",
-          "text": "They will be right, since this is work, not school.",
+          "text": "They may be right, since this is work, not school.",
           "correct": false,
           "feedback": "The slip was found for school tasks and other tasks alike, so work tasks are not exempt."
         },
@@ -856,7 +856,7 @@
         },
         {
           "id": "c",
-          "text": "They will run long, to be on the safe side.",
+          "text": "They may run long, to be on the safe side.",
           "correct": false,
           "feedback": "Long guesses showed up for other people's tasks. For our own tasks, guesses tended to run short."
         }
@@ -880,13 +880,13 @@
         },
         {
           "id": "b",
-          "text": "She is weak at sums, so the hours are wrong.",
+          "text": "She shaved time off on purpose to feel ready.",
           "correct": false,
-          "feedback": "Her sums may be fine. The plan is short because it leaves out the delays past treks had."
+          "feedback": "Nothing points to a choice to cut time. Plans run short because they picture the smooth path."
         },
         {
           "id": "c",
-          "text": "It pictures the ideal day, leaving out past delays.",
+          "text": "It shows the trek going smoothly.",
           "correct": true,
           "feedback": "Right. Plans picture how a task should go and pay little heed to how past tasks went."
         }
@@ -904,13 +904,13 @@
         },
         {
           "id": "b",
-          "text": "Bad luck, since each sign-off delay was a one-off.",
+          "text": "Bad luck each time.",
           "correct": false,
           "feedback": "Every past report needed it, so it is not a fluke. Calling delays one-offs keeps guesses short."
         },
         {
           "id": "c",
-          "text": "Too much detail, which slows the plan down.",
+          "text": "Too much detail.",
           "correct": false,
           "feedback": "His plan had too little detail, not too much. It left out a step past tasks showed."
         }
@@ -952,9 +952,9 @@
       "options": [
         {
           "id": "a",
-          "text": "The app, since her trips had bad luck.",
+          "text": "Trust the app's figure.",
           "correct": false,
-          "feedback": "Calling her delays bad luck keeps them out of the plan, so his guess stays short."
+          "feedback": "The app shows a smooth trip. Her real trips on that road are the better guide."
         },
         {
           "id": "b",
@@ -1006,7 +1006,7 @@
       "options": [
         {
           "id": "a",
-          "text": "None; sleep locks in anything seen that day.",
+          "text": "None; sleep can lock in anything seen that day.",
           "correct": false,
           "feedback": "Sleep can help store what was learned, but it cannot supply what was never taken in."
         },
@@ -1018,7 +1018,7 @@
         },
         {
           "id": "c",
-          "text": "Memories firm up the moment you see something.",
+          "text": "Memories firm up at once.",
           "correct": false,
           "feedback": "A new memory firms up over time after learning, not at once."
         }
@@ -1060,7 +1060,7 @@
       "options": [
         {
           "id": "a",
-          "text": "Going to bed at his usual time after practice.",
+          "text": "Sleeping at his usual time.",
           "correct": true,
           "feedback": "Right. Sleep after learning cut forgetting compared with the same hours awake."
         },
@@ -1259,7 +1259,7 @@
         },
         {
           "id": "b",
-          "text": "A feed that keeps loading as you scroll.",
+          "text": "A feed with no end.",
           "correct": true,
           "feedback": "Right. Endless scrolling stretches time on an app, and it works without a surprise reward."
         },
@@ -1277,15 +1277,15 @@
       "options": [
         {
           "id": "a",
-          "text": "Random rewards explain her app use by themselves.",
+          "text": "Random rewards may explain her app use by themselves.",
           "correct": false,
           "feedback": "Apps use several hooks, and people come for many reasons. Random rewards are one part."
         },
         {
           "id": "b",
-          "text": "She lacks the willpower to stop.",
+          "text": "She may like the surprise clips.",
           "correct": false,
-          "feedback": "Willpower is not the whole story. People open apps for many motives, like news or family."
+          "feedback": "Enjoying surprises is the random-reward idea again. People also come for news, family or a break."
         },
         {
           "id": "c",
@@ -1309,17 +1309,17 @@
           "id": "a",
           "text": "The if part is not a clear moment.",
           "correct": true,
-          "feedback": "Right. An if-then plan names when and where in advance. A feeling that may never come is not a clear cue."
+          "feedback": "Right. An if-then plan names when and where in advance. A feeling that may not come is not a clear cue."
         },
         {
           "id": "b",
-          "text": "It has no goal in it.",
+          "text": "It has no goal, so it cannot work.",
           "correct": false,
           "feedback": "Studying is the goal and the action. The weak part is the if, which names no clear moment."
         },
         {
           "id": "c",
-          "text": "The then part should come first.",
+          "text": "The then part should come before the if part.",
           "correct": false,
           "feedback": "Order is fine: if a moment comes, then act. The trouble is that his moment is vague."
         }
@@ -1373,7 +1373,7 @@
         },
         {
           "id": "c",
-          "text": "The plan made her response to that moment automatic.",
+          "text": "The cue now starts the act.",
           "correct": true,
           "feedback": "Right. If-then plans make the named moment easy to spot and the response to it more automatic."
         }
@@ -1481,7 +1481,7 @@
         },
         {
           "id": "c",
-          "text": "About 30, as he guessed.",
+          "text": "About 30, since his guess comes from what he saw.",
           "correct": false,
           "feedback": "In the study, wearers guessed too high. More likely, fewer people noticed than he thinks."
         }
@@ -1523,19 +1523,19 @@
       "options": [
         {
           "id": "a",
-          "text": "Listeners keep track of each slip.",
+          "text": "Listeners keep track of each slip they hear.",
           "correct": false,
           "feedback": "Listeners noticed less than speakers thought. The gap comes from the speaker's own rich view."
         },
         {
           "id": "b",
-          "text": "Her memory is worse than most.",
+          "text": "The crowd's faces tell her it stood out.",
           "correct": false,
-          "feedback": "Memory skill was not the cause. Her own close view makes the moment loom large."
+          "feedback": "Faces were not what drove it. Her own vivid view of the moment makes it loom large."
         },
         {
           "id": "c",
-          "text": "She starts from her own vivid view and adjusts too little.",
+          "text": "Her own close-up view sets the start.",
           "correct": true,
           "feedback": "Right. We live every detail of our own moments, so we do not adjust enough for how little others saw."
         }
@@ -1543,11 +1543,11 @@
     },
     "transfer": {
       "stem": "At a family wedding in Lucknow, Saurabh sings a song and hits one off note. He is sure the relatives will talk about it. Most just recall a fun song. What explains the gap?",
-      "hint": "Compare how the moment felt to him and to them.",
+      "hint": "Who lived the moment most closely?",
       "options": [
         {
           "id": "a",
-          "text": "He lived every second of that note; they heard it once.",
+          "text": "It felt huge from the inside.",
           "correct": true,
           "feedback": "Right. Our own moments feel huge to us, so we do not adjust for how little others took in."
         },
@@ -1577,13 +1577,13 @@
       "options": [
         {
           "id": "a",
-          "text": "Mothers are kind, so her view does not count.",
+          "text": "She is being kind to spare his feelings.",
           "correct": false,
-          "feedback": "It was not only mothers. People in general judged slips more kindly than the person feared."
+          "feedback": "Kindness was not the finding. Onlookers really judged slips more kindly, because they weigh the whole scene."
         },
         {
           "id": "b",
-          "text": "He fixes on the slip; she takes in the whole scene.",
+          "text": "He dwells on one moment.",
           "correct": true,
           "feedback": "Right. Dwelling on our own slip makes us forget what else onlookers weigh, so we expect harsh judgment."
         },
@@ -1601,9 +1601,9 @@
       "options": [
         {
           "id": "a",
-          "text": "That she is badly organised, just as she fears.",
+          "text": "That the shop should have had a spare machine.",
           "correct": false,
-          "feedback": "People tend to fear harsher judgment than they get. Buyers likely see a common machine fault."
+          "feedback": "Onlookers tend to judge a slip more kindly than feared. Most see a common machine fault, not a planning failure."
         },
         {
           "id": "b",

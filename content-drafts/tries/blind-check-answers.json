@@ -1,0 +1,1802 @@
+[
+{
+"id": "habits-s1.twist",
+"round": 1,
+"chosen": "Putting the kettle on was the cue, and it changed."
+},
+{
+"id": "habits-s1.twist",
+"round": 2,
+"chosen": "Putting the kettle on was the cue, and it changed."
+},
+{
+"id": "habits-s1.twist",
+"round": 3,
+"chosen": "Putting the kettle on was the cue, and it changed."
+},
+{
+"id": "habits-s1.transfer",
+"round": 1,
+"chosen": "Opening the emails at that time."
+},
+{
+"id": "habits-s1.transfer",
+"round": 2,
+"chosen": "Opening the emails at that time."
+},
+{
+"id": "habits-s1.transfer",
+"round": 3,
+"chosen": "Opening the emails at that time."
+},
+{
+"id": "habits-s2.twist",
+"round": 1,
+"chosen": "A small gain in ease."
+},
+{
+"id": "habits-s2.twist",
+"round": 2,
+"chosen": "A small gain in ease."
+},
+{
+"id": "habits-s2.twist",
+"round": 3,
+"chosen": "A small gain in ease."
+},
+{
+"id": "habits-s2.transfer",
+"round": 1,
+"chosen": "He is close to the point where gains level off."
+},
+{
+"id": "habits-s2.transfer",
+"round": 2,
+"chosen": "He is close to the point where gains level off."
+},
+{
+"id": "habits-s2.transfer",
+"round": 3,
+"chosen": "He is close to the point where gains level off."
+},
+{
+"id": "habits-s3.twist",
+"round": 1,
+"chosen": "A gap like that is normal; times varied a lot."
+},
+{
+"id": "habits-s3.twist",
+"round": 2,
+"chosen": "A gap like that is normal; times varied a lot."
+},
+{
+"id": "habits-s3.twist",
+"round": 3,
+"chosen": "A gap like that is normal; times varied a lot."
+},
+{
+"id": "habits-s3.transfer",
+"round": 1,
+"chosen": "One missed evening did not undo the growth so far."
+},
+{
+"id": "habits-s3.transfer",
+"round": 2,
+"chosen": "One missed evening did not undo the growth so far."
+},
+{
+"id": "habits-s3.transfer",
+"round": 3,
+"chosen": "One missed evening did not undo the growth so far."
+},
+{
+"id": "loss-aversion-s1.twist",
+"round": 1,
+"chosen": "A bit worse than even."
+},
+{
+"id": "loss-aversion-s1.twist",
+"round": 2,
+"chosen": "A bit worse than even."
+},
+{
+"id": "loss-aversion-s1.twist",
+"round": 3,
+"chosen": "A bit worse than even."
+},
+{
+"id": "loss-aversion-s1.transfer",
+"round": 1,
+"chosen": "With the bigger stake."
+},
+{
+"id": "loss-aversion-s1.transfer",
+"round": 2,
+"chosen": "With the bigger stake."
+},
+{
+"id": "loss-aversion-s1.transfer",
+"round": 3,
+"chosen": "With the bigger stake."
+},
+{
+"id": "loss-aversion-s2.twist",
+"round": 1,
+"chosen": "He now judges from the \u20b914,000 high point."
+},
+{
+"id": "loss-aversion-s2.twist",
+"round": 2,
+"chosen": "He now judges from the \u20b914,000 high point."
+},
+{
+"id": "loss-aversion-s2.twist",
+"round": 3,
+"chosen": "He now judges from the \u20b914,000 high point."
+},
+{
+"id": "loss-aversion-s2.transfer",
+"round": 1,
+"chosen": "Rekha."
+},
+{
+"id": "loss-aversion-s2.transfer",
+"round": 2,
+"chosen": "Rekha."
+},
+{
+"id": "loss-aversion-s2.transfer",
+"round": 3,
+"chosen": "Rekha."
+},
+{
+"id": "loss-aversion-s3.twist",
+"round": 1,
+"chosen": "No; figures vary, and twice is the average."
+},
+{
+"id": "loss-aversion-s3.twist",
+"round": 2,
+"chosen": "No; figures vary, and twice is the average."
+},
+{
+"id": "loss-aversion-s3.twist",
+"round": 3,
+"chosen": "No; figures vary, and twice is the average."
+},
+{
+"id": "loss-aversion-s3.transfer",
+"round": 1,
+"chosen": "About \u20b92,000."
+},
+{
+"id": "loss-aversion-s3.transfer",
+"round": 2,
+"chosen": "About \u20b92,000."
+},
+{
+"id": "loss-aversion-s3.transfer",
+"round": 3,
+"chosen": "About \u20b92,000."
+},
+{
+"id": "anchoring-s1.twist",
+"round": 1,
+"chosen": "Still a bit high."
+},
+{
+"id": "anchoring-s1.twist",
+"round": 2,
+"chosen": "Still a bit high."
+},
+{
+"id": "anchoring-s1.twist",
+"round": 3,
+"chosen": "Still a bit high."
+},
+{
+"id": "anchoring-s1.transfer",
+"round": 1,
+"chosen": "His ask drifts down toward \u20b93 lakh."
+},
+{
+"id": "anchoring-s1.transfer",
+"round": 2,
+"chosen": "His ask drifts down toward \u20b93 lakh."
+},
+{
+"id": "anchoring-s1.transfer",
+"round": 3,
+"chosen": "His ask drifts down toward \u20b93 lakh."
+},
+{
+"id": "anchoring-s2.twist",
+"round": 1,
+"chosen": "Guesses moved off the anchor, but not far enough."
+},
+{
+"id": "anchoring-s2.twist",
+"round": 2,
+"chosen": "Guesses moved off the anchor, but not far enough."
+},
+{
+"id": "anchoring-s2.twist",
+"round": 3,
+"chosen": "Guesses moved off the anchor, but not far enough."
+},
+{
+"id": "anchoring-s2.transfer",
+"round": 1,
+"chosen": "Bids lean toward \u20b98,000."
+},
+{
+"id": "anchoring-s2.transfer",
+"round": 2,
+"chosen": "Bids lean toward \u20b98,000."
+},
+{
+"id": "anchoring-s2.transfer",
+"round": 3,
+"chosen": "Bids lean toward \u20b98,000."
+},
+{
+"id": "anchoring-s3.twist",
+"round": 1,
+"chosen": "Not really; it weakens the pull, so some stays."
+},
+{
+"id": "anchoring-s3.twist",
+"round": 2,
+"chosen": "Not really; it weakens the pull, so some stays."
+},
+{
+"id": "anchoring-s3.twist",
+"round": 3,
+"chosen": "Not really; it weakens the pull, so some stays."
+},
+{
+"id": "anchoring-s3.transfer",
+"round": 1,
+"chosen": "Listing reasons two weeks could be wrong."
+},
+{
+"id": "anchoring-s3.transfer",
+"round": 2,
+"chosen": "Listing reasons two weeks could be wrong."
+},
+{
+"id": "anchoring-s3.transfer",
+"round": 3,
+"chosen": "Listing reasons two weeks could be wrong."
+},
+{
+"id": "confirmation-bias-s1.twist",
+"round": 1,
+"chosen": "She kept the jams in mind and let smooth days slip."
+},
+{
+"id": "confirmation-bias-s1.twist",
+"round": 2,
+"chosen": "She kept the jams in mind and let smooth days slip."
+},
+{
+"id": "confirmation-bias-s1.twist",
+"round": 3,
+"chosen": "She kept the jams in mind and let smooth days slip."
+},
+{
+"id": "confirmation-bias-s1.transfer",
+"round": 1,
+"chosen": "Good marks that came after he met them."
+},
+{
+"id": "confirmation-bias-s1.transfer",
+"round": 2,
+"chosen": "Good marks that came after he met them."
+},
+{
+"id": "confirmation-bias-s1.transfer",
+"round": 3,
+"chosen": "Good marks that came after he met them."
+},
+{
+"id": "confirmation-bias-s2.twist",
+"round": 1,
+"chosen": "Trying 4, 9, 13."
+},
+{
+"id": "confirmation-bias-s2.twist",
+"round": 2,
+"chosen": "Trying 4, 9, 13."
+},
+{
+"id": "confirmation-bias-s2.twist",
+"round": 3,
+"chosen": "Trying 4, 9, 13."
+},
+{
+"id": "confirmation-bias-s2.transfer",
+"round": 1,
+"chosen": "Hot weather could explain the rise as well."
+},
+{
+"id": "confirmation-bias-s2.transfer",
+"round": 2,
+"chosen": "Hot weather could explain the rise as well."
+},
+{
+"id": "confirmation-bias-s2.transfer",
+"round": 3,
+"chosen": "Hot weather could explain the rise as well."
+},
+{
+"id": "confirmation-bias-s3.twist",
+"round": 1,
+"chosen": "A parcel with no red sticker."
+},
+{
+"id": "confirmation-bias-s3.twist",
+"round": 2,
+"chosen": "A parcel with no red sticker."
+},
+{
+"id": "confirmation-bias-s3.twist",
+"round": 3,
+"chosen": "A parcel with no red sticker."
+},
+{
+"id": "confirmation-bias-s3.transfer",
+"round": 1,
+"chosen": "Seasons sown after the first rain that gave a poor crop."
+},
+{
+"id": "confirmation-bias-s3.transfer",
+"round": 2,
+"chosen": "Seasons sown after the first rain that gave a poor crop."
+},
+{
+"id": "confirmation-bias-s3.transfer",
+"round": 3,
+"chosen": "Seasons sown after the first rain that gave a poor crop."
+},
+{
+"id": "social-proof-s1.twist",
+"round": 1,
+"chosen": "Shalini, since she is unsure."
+},
+{
+"id": "social-proof-s1.twist",
+"round": 2,
+"chosen": "Shalini, since she is unsure."
+},
+{
+"id": "social-proof-s1.twist",
+"round": 3,
+"chosen": "Shalini, since she is unsure."
+},
+{
+"id": "social-proof-s1.transfer",
+"round": 1,
+"chosen": "He reads their choice as a sign of the right place."
+},
+{
+"id": "social-proof-s1.transfer",
+"round": 2,
+"chosen": "He reads their choice as a sign of the right place."
+},
+{
+"id": "social-proof-s1.transfer",
+"round": 3,
+"chosen": "He reads their choice as a sign of the right place."
+},
+{
+"id": "social-proof-s2.twist",
+"round": 1,
+"chosen": "The group pressure caused most of the errors."
+},
+{
+"id": "social-proof-s2.twist",
+"round": 2,
+"chosen": "The group pressure caused most of the errors."
+},
+{
+"id": "social-proof-s2.twist",
+"round": 3,
+"chosen": "The group pressure caused most of the errors."
+},
+{
+"id": "social-proof-s2.transfer",
+"round": 1,
+"chosen": "Not wanting to stand out from the group."
+},
+{
+"id": "social-proof-s2.transfer",
+"round": 2,
+"chosen": "Not wanting to stand out from the group."
+},
+{
+"id": "social-proof-s2.transfer",
+"round": 3,
+"chosen": "Not wanting to stand out from the group."
+},
+{
+"id": "social-proof-s3.twist",
+"round": 1,
+"chosen": "About as much as one report."
+},
+{
+"id": "social-proof-s3.twist",
+"round": 2,
+"chosen": "About as much as one report."
+},
+{
+"id": "social-proof-s3.twist",
+"round": 3,
+"chosen": "About as much as one report."
+},
+{
+"id": "social-proof-s3.transfer",
+"round": 1,
+"chosen": "That many people in the group say so."
+},
+{
+"id": "social-proof-s3.transfer",
+"round": 2,
+"chosen": "That many people in the group say so."
+},
+{
+"id": "social-proof-s3.transfer",
+"round": 3,
+"chosen": "That many people in the group say so."
+},
+{
+"id": "planning-fallacy-s1.twist",
+"round": 1,
+"chosen": "It takes longer than she guesses."
+},
+{
+"id": "planning-fallacy-s1.twist",
+"round": 2,
+"chosen": "It takes longer than she guesses."
+},
+{
+"id": "planning-fallacy-s1.twist",
+"round": 3,
+"chosen": "It takes longer than she guesses."
+},
+{
+"id": "planning-fallacy-s1.transfer",
+"round": 1,
+"chosen": "They may run short, like guesses for schoolwork."
+},
+{
+"id": "planning-fallacy-s1.transfer",
+"round": 2,
+"chosen": "They may run short, like guesses for schoolwork."
+},
+{
+"id": "planning-fallacy-s1.transfer",
+"round": 3,
+"chosen": "They may run short, like guesses for schoolwork."
+},
+{
+"id": "planning-fallacy-s2.twist",
+"round": 1,
+"chosen": "It pictures the ideal day, leaving out past delays."
+},
+{
+"id": "planning-fallacy-s2.twist",
+"round": 2,
+"chosen": "It pictures the ideal day, leaving out past delays."
+},
+{
+"id": "planning-fallacy-s2.twist",
+"round": 3,
+"chosen": "It pictures the ideal day, leaving out past delays."
+},
+{
+"id": "planning-fallacy-s2.transfer",
+"round": 1,
+"chosen": "Leaving out a step that past tasks showed."
+},
+{
+"id": "planning-fallacy-s2.transfer",
+"round": 2,
+"chosen": "Leaving out a step that past tasks showed."
+},
+{
+"id": "planning-fallacy-s2.transfer",
+"round": 3,
+"chosen": "Leaving out a step that past tasks showed."
+},
+{
+"id": "planning-fallacy-s3.twist",
+"round": 1,
+"chosen": "How long her last few cakes took."
+},
+{
+"id": "planning-fallacy-s3.twist",
+"round": 2,
+"chosen": "How long her last few cakes took."
+},
+{
+"id": "planning-fallacy-s3.twist",
+"round": 3,
+"chosen": "How long her last few cakes took."
+},
+{
+"id": "planning-fallacy-s3.transfer",
+"round": 1,
+"chosen": "His friend's real trips on that road."
+},
+{
+"id": "planning-fallacy-s3.transfer",
+"round": 2,
+"chosen": "His friend's real trips on that road."
+},
+{
+"id": "planning-fallacy-s3.transfer",
+"round": 3,
+"chosen": "His friend's real trips on that road."
+},
+{
+"id": "sleep-memory-s1.twist",
+"round": 1,
+"chosen": "Taking in the material while awake."
+},
+{
+"id": "sleep-memory-s1.twist",
+"round": 2,
+"chosen": "Taking in the material while awake."
+},
+{
+"id": "sleep-memory-s1.twist",
+"round": 3,
+"chosen": "Taking in the material while awake."
+},
+{
+"id": "sleep-memory-s1.transfer",
+"round": 1,
+"chosen": "Little was learned, so little can firm up."
+},
+{
+"id": "sleep-memory-s1.transfer",
+"round": 2,
+"chosen": "Little was learned, so little can firm up."
+},
+{
+"id": "sleep-memory-s1.transfer",
+"round": 3,
+"chosen": "Little was learned, so little can firm up."
+},
+{
+"id": "sleep-memory-s2.twist",
+"round": 1,
+"chosen": "Sleep cut forgetting more than the same time awake."
+},
+{
+"id": "sleep-memory-s2.twist",
+"round": 2,
+"chosen": "Sleep cut forgetting more than the same time awake."
+},
+{
+"id": "sleep-memory-s2.twist",
+"round": 3,
+"chosen": "Sleep cut forgetting more than the same time awake."
+},
+{
+"id": "sleep-memory-s2.transfer",
+"round": 1,
+"chosen": "Going to bed at his usual time after practice."
+},
+{
+"id": "sleep-memory-s2.transfer",
+"round": 2,
+"chosen": "Going to bed at his usual time after practice."
+},
+{
+"id": "sleep-memory-s2.transfer",
+"round": 3,
+"chosen": "Going to bed at his usual time after practice."
+},
+{
+"id": "sleep-memory-s3.twist",
+"round": 1,
+"chosen": "Sitting quietly with his eyes closed."
+},
+{
+"id": "sleep-memory-s3.twist",
+"round": 2,
+"chosen": "Sitting quietly with his eyes closed."
+},
+{
+"id": "sleep-memory-s3.twist",
+"round": 3,
+"chosen": "Sitting quietly with his eyes closed."
+},
+{
+"id": "sleep-memory-s3.transfer",
+"round": 1,
+"chosen": "Sitting calmly and letting her mind rest."
+},
+{
+"id": "sleep-memory-s3.transfer",
+"round": 2,
+"chosen": "Sitting calmly and letting her mind rest."
+},
+{
+"id": "sleep-memory-s3.transfer",
+"round": 3,
+"chosen": "Sitting calmly and letting her mind rest."
+},
+{
+"id": "variable-rewards-s1.twist",
+"round": 1,
+"chosen": "After every sit."
+},
+{
+"id": "variable-rewards-s1.twist",
+"round": 2,
+"chosen": "After every sit."
+},
+{
+"id": "variable-rewards-s1.twist",
+"round": 3,
+"chosen": "After every sit."
+},
+{
+"id": "variable-rewards-s1.transfer",
+"round": 1,
+"chosen": "Variable, since the tries per sale keep changing."
+},
+{
+"id": "variable-rewards-s1.transfer",
+"round": 2,
+"chosen": "Variable, since the tries per sale keep changing."
+},
+{
+"id": "variable-rewards-s1.transfer",
+"round": 3,
+"chosen": "Variable, since the tries per sale keep changing."
+},
+{
+"id": "variable-rewards-s2.twist",
+"round": 1,
+"chosen": "The cousin's chat."
+},
+{
+"id": "variable-rewards-s2.twist",
+"round": 2,
+"chosen": "The cousin's chat."
+},
+{
+"id": "variable-rewards-s2.twist",
+"round": 3,
+"chosen": "The cousin's chat."
+},
+{
+"id": "variable-rewards-s2.transfer",
+"round": 1,
+"chosen": "She keeps checking with the source for a long time."
+},
+{
+"id": "variable-rewards-s2.transfer",
+"round": 2,
+"chosen": "She keeps checking with the source for a long time."
+},
+{
+"id": "variable-rewards-s2.transfer",
+"round": 3,
+"chosen": "She keeps checking with the source for a long time."
+},
+{
+"id": "variable-rewards-s3.twist",
+"round": 1,
+"chosen": "A feed that keeps loading as you scroll."
+},
+{
+"id": "variable-rewards-s3.twist",
+"round": 2,
+"chosen": "A feed that keeps loading as you scroll."
+},
+{
+"id": "variable-rewards-s3.twist",
+"round": 3,
+"chosen": "A feed that keeps loading as you scroll."
+},
+{
+"id": "variable-rewards-s3.transfer",
+"round": 1,
+"chosen": "She may want news, family clips or a break."
+},
+{
+"id": "variable-rewards-s3.transfer",
+"round": 2,
+"chosen": "She may want news, family clips or a break."
+},
+{
+"id": "variable-rewards-s3.transfer",
+"round": 3,
+"chosen": "She may want news, family clips or a break."
+},
+{
+"id": "if-then-plans-s1.twist",
+"round": 1,
+"chosen": "The if part is not a clear moment."
+},
+{
+"id": "if-then-plans-s1.twist",
+"round": 2,
+"chosen": "The if part is not a clear moment."
+},
+{
+"id": "if-then-plans-s1.twist",
+"round": 3,
+"chosen": "The if part is not a clear moment."
+},
+{
+"id": "if-then-plans-s1.transfer",
+"round": 1,
+"chosen": "If my salary lands, then I move \u20b92,000 to savings."
+},
+{
+"id": "if-then-plans-s1.transfer",
+"round": 2,
+"chosen": "If my salary lands, then I move \u20b92,000 to savings."
+},
+{
+"id": "if-then-plans-s1.transfer",
+"round": 3,
+"chosen": "If my salary lands, then I move \u20b92,000 to savings."
+},
+{
+"id": "if-then-plans-s2.twist",
+"round": 1,
+"chosen": "The plan made her response to that moment automatic."
+},
+{
+"id": "if-then-plans-s2.twist",
+"round": 2,
+"chosen": "The plan made her response to that moment automatic."
+},
+{
+"id": "if-then-plans-s2.twist",
+"round": 3,
+"chosen": "The plan made her response to that moment automatic."
+},
+{
+"id": "if-then-plans-s2.transfer",
+"round": 1,
+"chosen": "If I board the Sunday train home, then I call one."
+},
+{
+"id": "if-then-plans-s2.transfer",
+"round": 2,
+"chosen": "If I board the Sunday train home, then I call one."
+},
+{
+"id": "if-then-plans-s2.transfer",
+"round": 3,
+"chosen": "If I board the Sunday train home, then I call one."
+},
+{
+"id": "if-then-plans-s3.twist",
+"round": 1,
+"chosen": "No; plans help on average but cannot promise."
+},
+{
+"id": "if-then-plans-s3.twist",
+"round": 2,
+"chosen": "No; plans help on average but cannot promise."
+},
+{
+"id": "if-then-plans-s3.twist",
+"round": 3,
+"chosen": "No; plans help on average but cannot promise."
+},
+{
+"id": "if-then-plans-s3.transfer",
+"round": 1,
+"chosen": "She will likely reply more often than with a goal alone."
+},
+{
+"id": "if-then-plans-s3.transfer",
+"round": 2,
+"chosen": "She will likely reply more often than with a goal alone."
+},
+{
+"id": "if-then-plans-s3.transfer",
+"round": 3,
+"chosen": "She will likely reply more often than with a goal alone."
+},
+{
+"id": "spotlight-effect-s1.twist",
+"round": 1,
+"chosen": "Some noticed, but fewer than he thinks."
+},
+{
+"id": "spotlight-effect-s1.twist",
+"round": 2,
+"chosen": "Some noticed, but fewer than he thinks."
+},
+{
+"id": "spotlight-effect-s1.twist",
+"round": 3,
+"chosen": "Some noticed, but fewer than he thinks."
+},
+{
+"id": "spotlight-effect-s1.transfer",
+"round": 1,
+"chosen": "Fewer recall it than she guesses."
+},
+{
+"id": "spotlight-effect-s1.transfer",
+"round": 2,
+"chosen": "Fewer recall it than she guesses."
+},
+{
+"id": "spotlight-effect-s1.transfer",
+"round": 3,
+"chosen": "Fewer recall it than she guesses."
+},
+{
+"id": "spotlight-effect-s2.twist",
+"round": 1,
+"chosen": "She starts from her own vivid view and adjusts too little."
+},
+{
+"id": "spotlight-effect-s2.twist",
+"round": 2,
+"chosen": "She starts from her own vivid view and adjusts too little."
+},
+{
+"id": "spotlight-effect-s2.twist",
+"round": 3,
+"chosen": "She starts from her own vivid view and adjusts too little."
+},
+{
+"id": "spotlight-effect-s2.transfer",
+"round": 1,
+"chosen": "He lived every second of that note; they heard it once."
+},
+{
+"id": "spotlight-effect-s2.transfer",
+"round": 2,
+"chosen": "He lived every second of that note; they heard it once."
+},
+{
+"id": "spotlight-effect-s2.transfer",
+"round": 3,
+"chosen": "He lived every second of that note; they heard it once."
+},
+{
+"id": "spotlight-effect-s3.twist",
+"round": 1,
+"chosen": "He fixes on the slip; she takes in the whole scene."
+},
+{
+"id": "spotlight-effect-s3.twist",
+"round": 2,
+"chosen": "He fixes on the slip; she takes in the whole scene."
+},
+{
+"id": "spotlight-effect-s3.twist",
+"round": 3,
+"chosen": "He fixes on the slip; she takes in the whole scene."
+},
+{
+"id": "spotlight-effect-s3.transfer",
+"round": 1,
+"chosen": "That card machines fail at times."
+},
+{
+"id": "spotlight-effect-s3.transfer",
+"round": 2,
+"chosen": "That card machines fail at times."
+},
+{
+"id": "spotlight-effect-s3.transfer",
+"round": 3,
+"chosen": "That card machines fail at times."
+},
+{
+"id": "inflation-s1.twist",
+"round": 1,
+"chosen": "The base is March a year ago, not February."
+},
+{
+"id": "inflation-s1.twist",
+"round": 2,
+"chosen": "The base is March a year ago, not February."
+},
+{
+"id": "inflation-s1.twist",
+"round": 3,
+"chosen": "The base is March a year ago, not February."
+},
+{
+"id": "inflation-s1.transfer",
+"round": 1,
+"chosen": "No; it pools prices from all over India."
+},
+{
+"id": "inflation-s1.transfer",
+"round": 2,
+"chosen": "No; it pools prices from all over India."
+},
+{
+"id": "inflation-s1.transfer",
+"round": 3,
+"chosen": "No; it pools prices from all over India."
+},
+{
+"id": "inflation-s2.twist",
+"round": 1,
+"chosen": "It buys a bit less each year."
+},
+{
+"id": "inflation-s2.twist",
+"round": 2,
+"chosen": "It buys a bit less each year."
+},
+{
+"id": "inflation-s2.twist",
+"round": 3,
+"chosen": "It buys a bit less each year."
+},
+{
+"id": "inflation-s2.transfer",
+"round": 1,
+"chosen": "Just Deepak."
+},
+{
+"id": "inflation-s2.transfer",
+"round": 2,
+"chosen": "Just Deepak."
+},
+{
+"id": "inflation-s2.transfer",
+"round": 3,
+"chosen": "Just Deepak."
+},
+{
+"id": "inflation-s3.twist",
+"round": 1,
+"chosen": "No, it is below the 2% lower limit."
+},
+{
+"id": "inflation-s3.twist",
+"round": 2,
+"chosen": "No, it is below the 2% lower limit."
+},
+{
+"id": "inflation-s3.twist",
+"round": 3,
+"chosen": "No, it is below the 2% lower limit."
+},
+{
+"id": "inflation-s3.transfer",
+"round": 1,
+"chosen": "That sits inside the 2% to 6% band."
+},
+{
+"id": "inflation-s3.transfer",
+"round": 2,
+"chosen": "That sits inside the 2% to 6% band."
+},
+{
+"id": "inflation-s3.transfer",
+"round": 3,
+"chosen": "That sits inside the 2% to 6% band."
+},
+{
+"id": "compounding-s1.twist",
+"round": 1,
+"chosen": "\u20b9726."
+},
+{
+"id": "compounding-s1.twist",
+"round": 2,
+"chosen": "\u20b9726."
+},
+{
+"id": "compounding-s1.twist",
+"round": 3,
+"chosen": "\u20b9726."
+},
+{
+"id": "compounding-s1.transfer",
+"round": 1,
+"chosen": "Its yearly gain gets bigger over time."
+},
+{
+"id": "compounding-s1.transfer",
+"round": 2,
+"chosen": "Its yearly gain gets bigger over time."
+},
+{
+"id": "compounding-s1.transfer",
+"round": 3,
+"chosen": "Its yearly gain gets bigger over time."
+},
+{
+"id": "compounding-s2.twist",
+"round": 1,
+"chosen": "About \u20b91,100."
+},
+{
+"id": "compounding-s2.twist",
+"round": 2,
+"chosen": "About \u20b91,100."
+},
+{
+"id": "compounding-s2.twist",
+"round": 3,
+"chosen": "About \u20b91,100."
+},
+{
+"id": "compounding-s2.transfer",
+"round": 1,
+"chosen": "The final stretch adds the most money."
+},
+{
+"id": "compounding-s2.transfer",
+"round": 2,
+"chosen": "The final stretch adds the most money."
+},
+{
+"id": "compounding-s2.transfer",
+"round": 3,
+"chosen": "The final stretch adds the most money."
+},
+{
+"id": "compounding-s3.twist",
+"round": 1,
+"chosen": "SIPs fix what goes in, not what the fund earns."
+},
+{
+"id": "compounding-s3.twist",
+"round": 2,
+"chosen": "SIPs fix what goes in, not what the fund earns."
+},
+{
+"id": "compounding-s3.twist",
+"round": 3,
+"chosen": "SIPs fix what goes in, not what the fund earns."
+},
+{
+"id": "compounding-s3.transfer",
+"round": 1,
+"chosen": "What you pay and when."
+},
+{
+"id": "compounding-s3.transfer",
+"round": 2,
+"chosen": "What you pay and when."
+},
+{
+"id": "compounding-s3.transfer",
+"round": 3,
+"chosen": "What you pay and when."
+},
+{
+"id": "rule-of-72-s1.twist",
+"round": 1,
+"chosen": "About 12%."
+},
+{
+"id": "rule-of-72-s1.twist",
+"round": 2,
+"chosen": "About 12%."
+},
+{
+"id": "rule-of-72-s1.twist",
+"round": 3,
+"chosen": "About 12%."
+},
+{
+"id": "rule-of-72-s1.transfer",
+"round": 1,
+"chosen": "About 8 years."
+},
+{
+"id": "rule-of-72-s1.transfer",
+"round": 2,
+"chosen": "About 8 years."
+},
+{
+"id": "rule-of-72-s1.transfer",
+"round": 3,
+"chosen": "About 8 years."
+},
+{
+"id": "rule-of-72-s2.twist",
+"round": 1,
+"chosen": "About \u20b948,000."
+},
+{
+"id": "rule-of-72-s2.twist",
+"round": 2,
+"chosen": "About \u20b948,000."
+},
+{
+"id": "rule-of-72-s2.twist",
+"round": 3,
+"chosen": "About \u20b948,000."
+},
+{
+"id": "rule-of-72-s2.transfer",
+"round": 1,
+"chosen": "About 2 years."
+},
+{
+"id": "rule-of-72-s2.transfer",
+"round": 2,
+"chosen": "About 2 years."
+},
+{
+"id": "rule-of-72-s2.transfer",
+"round": 3,
+"chosen": "About 2 years."
+},
+{
+"id": "rule-of-72-s3.twist",
+"round": 1,
+"chosen": "Real years swing, so it is a what-if, not a promise."
+},
+{
+"id": "rule-of-72-s3.twist",
+"round": 2,
+"chosen": "Real years swing, so it is a what-if, not a promise."
+},
+{
+"id": "rule-of-72-s3.twist",
+"round": 3,
+"chosen": "Real years swing, so it is a what-if, not a promise."
+},
+{
+"id": "rule-of-72-s3.transfer",
+"round": 1,
+"chosen": "The rate is not steady, so the rule does not fit."
+},
+{
+"id": "rule-of-72-s3.transfer",
+"round": 2,
+"chosen": "The rate is not steady, so the rule does not fit."
+},
+{
+"id": "rule-of-72-s3.transfer",
+"round": 3,
+"chosen": "The rate is not steady, so the rule does not fit."
+},
+{
+"id": "risk-return-s1.twist",
+"round": 1,
+"chosen": "The chance it could fall in future."
+},
+{
+"id": "risk-return-s1.twist",
+"round": 2,
+"chosen": "The chance it could fall in future."
+},
+{
+"id": "risk-return-s1.twist",
+"round": 3,
+"chosen": "The chance it could fall in future."
+},
+{
+"id": "risk-return-s1.transfer",
+"round": 1,
+"chosen": "The result is uncertain and could be lower."
+},
+{
+"id": "risk-return-s1.transfer",
+"round": 2,
+"chosen": "The result is uncertain and could be lower."
+},
+{
+"id": "risk-return-s1.transfer",
+"round": 3,
+"chosen": "The result is uncertain and could be lower."
+},
+{
+"id": "risk-return-s2.twist",
+"round": 1,
+"chosen": "Investors want a bigger reward for bigger swings."
+},
+{
+"id": "risk-return-s2.twist",
+"round": 2,
+"chosen": "Investors want a bigger reward for bigger swings."
+},
+{
+"id": "risk-return-s2.twist",
+"round": 3,
+"chosen": "Investors want a bigger reward for bigger swings."
+},
+{
+"id": "risk-return-s2.transfer",
+"round": 1,
+"chosen": "The startup, to make up for more risk."
+},
+{
+"id": "risk-return-s2.transfer",
+"round": 2,
+"chosen": "The startup, to make up for more risk."
+},
+{
+"id": "risk-return-s2.transfer",
+"round": 3,
+"chosen": "The startup, to make up for more risk."
+},
+{
+"id": "risk-return-s3.twist",
+"round": 1,
+"chosen": "Shift it toward lower-risk savings."
+},
+{
+"id": "risk-return-s3.twist",
+"round": 2,
+"chosen": "Shift it toward lower-risk savings."
+},
+{
+"id": "risk-return-s3.twist",
+"round": 3,
+"chosen": "Shift it toward lower-risk savings."
+},
+{
+"id": "risk-return-s3.transfer",
+"round": 1,
+"chosen": "A fall could hit right when the money is due."
+},
+{
+"id": "risk-return-s3.transfer",
+"round": 2,
+"chosen": "A fall could hit right when the money is due."
+},
+{
+"id": "risk-return-s3.transfer",
+"round": 3,
+"chosen": "A fall could hit right when the money is due."
+},
+{
+"id": "diversification-s1.twist",
+"round": 1,
+"chosen": "About 4%."
+},
+{
+"id": "diversification-s1.twist",
+"round": 2,
+"chosen": "About 4%."
+},
+{
+"id": "diversification-s1.twist",
+"round": 3,
+"chosen": "About 4%."
+},
+{
+"id": "diversification-s1.transfer",
+"round": 1,
+"chosen": "Ritu's."
+},
+{
+"id": "diversification-s1.transfer",
+"round": 2,
+"chosen": "Ritu's."
+},
+{
+"id": "diversification-s1.transfer",
+"round": 3,
+"chosen": "Ritu's."
+},
+{
+"id": "diversification-s2.twist",
+"round": 1,
+"chosen": "No; four or five shares is too few."
+},
+{
+"id": "diversification-s2.twist",
+"round": 2,
+"chosen": "No; four or five shares is too few."
+},
+{
+"id": "diversification-s2.twist",
+"round": 3,
+"chosen": "No; four or five shares is too few."
+},
+{
+"id": "diversification-s2.transfer",
+"round": 1,
+"chosen": "Not really; its goods share one risk."
+},
+{
+"id": "diversification-s2.transfer",
+"round": 2,
+"chosen": "Not really; its goods share one risk."
+},
+{
+"id": "diversification-s2.transfer",
+"round": 3,
+"chosen": "Not really; its goods share one risk."
+},
+{
+"id": "diversification-s3.twist",
+"round": 1,
+"chosen": "A market-wide fall can still pull most down."
+},
+{
+"id": "diversification-s3.twist",
+"round": 2,
+"chosen": "A market-wide fall can still pull most down."
+},
+{
+"id": "diversification-s3.twist",
+"round": 3,
+"chosen": "A market-wide fall can still pull most down."
+},
+{
+"id": "diversification-s3.transfer",
+"round": 1,
+"chosen": "A drought that hits all his fields."
+},
+{
+"id": "diversification-s3.transfer",
+"round": 2,
+"chosen": "A drought that hits all his fields."
+},
+{
+"id": "diversification-s3.transfer",
+"round": 3,
+"chosen": "A drought that hits all his fields."
+},
+{
+"id": "shares-s1.twist",
+"round": 1,
+"chosen": "Sita, with a fifth."
+},
+{
+"id": "shares-s1.twist",
+"round": 2,
+"chosen": "Sita, with a fifth."
+},
+{
+"id": "shares-s1.twist",
+"round": 3,
+"chosen": "Sita, with a fifth."
+},
+{
+"id": "shares-s1.transfer",
+"round": 1,
+"chosen": "A quarter."
+},
+{
+"id": "shares-s1.transfer",
+"round": 2,
+"chosen": "A quarter."
+},
+{
+"id": "shares-s1.transfer",
+"round": 3,
+"chosen": "A quarter."
+},
+{
+"id": "shares-s2.twist",
+"round": 1,
+"chosen": "No; her shares give her a vote at the meeting."
+},
+{
+"id": "shares-s2.twist",
+"round": 2,
+"chosen": "No; her shares give her a vote at the meeting."
+},
+{
+"id": "shares-s2.twist",
+"round": 3,
+"chosen": "No; her shares give her a vote at the meeting."
+},
+{
+"id": "shares-s2.transfer",
+"round": 1,
+"chosen": "Farah, who holds a few of its shares."
+},
+{
+"id": "shares-s2.transfer",
+"round": 2,
+"chosen": "Farah, who holds a few of its shares."
+},
+{
+"id": "shares-s2.transfer",
+"round": 3,
+"chosen": "Farah, who holds a few of its shares."
+},
+{
+"id": "shares-s3.twist",
+"round": 1,
+"chosen": "The firm, and so their slice, may be worth more."
+},
+{
+"id": "shares-s3.twist",
+"round": 2,
+"chosen": "The firm, and so their slice, may be worth more."
+},
+{
+"id": "shares-s3.twist",
+"round": 3,
+"chosen": "The firm, and so their slice, may be worth more."
+},
+{
+"id": "shares-s3.transfer",
+"round": 1,
+"chosen": "The firm decides if it pays at all."
+},
+{
+"id": "shares-s3.transfer",
+"round": 2,
+"chosen": "The firm decides if it pays at all."
+},
+{
+"id": "shares-s3.transfer",
+"round": 3,
+"chosen": "The firm decides if it pays at all."
+},
+{
+"id": "emergency-fund-s1.twist",
+"round": 1,
+"chosen": "A bike repair after a crash on the way to work."
+},
+{
+"id": "emergency-fund-s1.twist",
+"round": 2,
+"chosen": "A bike repair after a crash on the way to work."
+},
+{
+"id": "emergency-fund-s1.twist",
+"round": 3,
+"chosen": "A bike repair after a crash on the way to work."
+},
+{
+"id": "emergency-fund-s1.transfer",
+"round": 1,
+"chosen": "Covering living costs while she finds work."
+},
+{
+"id": "emergency-fund-s1.transfer",
+"round": 2,
+"chosen": "Covering living costs while she finds work."
+},
+{
+"id": "emergency-fund-s1.transfer",
+"round": 3,
+"chosen": "Covering living costs while she finds work."
+},
+{
+"id": "emergency-fund-s2.twist",
+"round": 1,
+"chosen": "About \u20b936,000."
+},
+{
+"id": "emergency-fund-s2.twist",
+"round": 2,
+"chosen": "About \u20b936,000."
+},
+{
+"id": "emergency-fund-s2.twist",
+"round": 3,
+"chosen": "About \u20b936,000."
+},
+{
+"id": "emergency-fund-s2.transfer",
+"round": 1,
+"chosen": "Six months or more, about \u20b91,20,000."
+},
+{
+"id": "emergency-fund-s2.transfer",
+"round": 2,
+"chosen": "Six months or more, about \u20b91,20,000."
+},
+{
+"id": "emergency-fund-s2.transfer",
+"round": 3,
+"chosen": "Six months or more, about \u20b91,20,000."
+},
+{
+"id": "emergency-fund-s3.twist",
+"round": 1,
+"chosen": "A better return, but slower to reach."
+},
+{
+"id": "emergency-fund-s3.twist",
+"round": 2,
+"chosen": "A better return, but slower to reach."
+},
+{
+"id": "emergency-fund-s3.twist",
+"round": 3,
+"chosen": "A better return, but slower to reach."
+},
+{
+"id": "emergency-fund-s3.transfer",
+"round": 1,
+"chosen": "It mixed with her daily spending."
+},
+{
+"id": "emergency-fund-s3.transfer",
+"round": 2,
+"chosen": "It mixed with her daily spending."
+},
+{
+"id": "emergency-fund-s3.transfer",
+"round": 3,
+"chosen": "It mixed with her daily spending."
+},
+{
+"id": "loan-emi-s1.twist",
+"round": 1,
+"chosen": "Part of each EMI also cuts the loan."
+},
+{
+"id": "loan-emi-s1.twist",
+"round": 2,
+"chosen": "Part of each EMI also cuts the loan."
+},
+{
+"id": "loan-emi-s1.twist",
+"round": 3,
+"chosen": "Part of each EMI also cuts the loan."
+},
+{
+"id": "loan-emi-s1.transfer",
+"round": 1,
+"chosen": "It stays the same each month."
+},
+{
+"id": "loan-emi-s1.transfer",
+"round": 2,
+"chosen": "It stays the same each month."
+},
+{
+"id": "loan-emi-s1.transfer",
+"round": 3,
+"chosen": "It stays the same each month."
+},
+{
+"id": "loan-emi-s2.twist",
+"round": 1,
+"chosen": "\u20b9400."
+},
+{
+"id": "loan-emi-s2.twist",
+"round": 2,
+"chosen": "\u20b9400."
+},
+{
+"id": "loan-emi-s2.twist",
+"round": 3,
+"chosen": "\u20b9400."
+},
+{
+"id": "loan-emi-s2.transfer",
+"round": 1,
+"chosen": "Interest should be on the \u20b930,000 still owed."
+},
+{
+"id": "loan-emi-s2.transfer",
+"round": 2,
+"chosen": "Interest should be on the \u20b930,000 still owed."
+},
+{
+"id": "loan-emi-s2.transfer",
+"round": 3,
+"chosen": "Interest should be on the \u20b930,000 still owed."
+},
+{
+"id": "loan-emi-s3.twist",
+"round": 1,
+"chosen": "Total interest goes up."
+},
+{
+"id": "loan-emi-s3.twist",
+"round": 2,
+"chosen": "Total interest goes up."
+},
+{
+"id": "loan-emi-s3.twist",
+"round": 3,
+"chosen": "Total interest goes up."
+},
+{
+"id": "loan-emi-s3.transfer",
+"round": 1,
+"chosen": "Each payment is smaller, but total interest is more."
+},
+{
+"id": "loan-emi-s3.transfer",
+"round": 2,
+"chosen": "Each payment is smaller, but total interest is more."
+},
+{
+"id": "loan-emi-s3.transfer",
+"round": 3,
+"chosen": "Each payment is smaller, but total interest is more."
+},
+{
+"id": "index-funds-s1.twist",
+"round": 1,
+"chosen": "About 10%."
+},
+{
+"id": "index-funds-s1.twist",
+"round": 2,
+"chosen": "About 10%."
+},
+{
+"id": "index-funds-s1.twist",
+"round": 3,
+"chosen": "About 10%."
+},
+{
+"id": "index-funds-s1.transfer",
+"round": 1,
+"chosen": "No; it holds what is on the list."
+},
+{
+"id": "index-funds-s1.transfer",
+"round": 2,
+"chosen": "No; it holds what is on the list."
+},
+{
+"id": "index-funds-s1.transfer",
+"round": 3,
+"chosen": "No; it holds what is on the list."
+},
+{
+"id": "index-funds-s2.twist",
+"round": 1,
+"chosen": "Doing worse than their index."
+},
+{
+"id": "index-funds-s2.twist",
+"round": 2,
+"chosen": "Doing worse than their index."
+},
+{
+"id": "index-funds-s2.twist",
+"round": 3,
+"chosen": "Doing worse than their index."
+},
+{
+"id": "index-funds-s2.transfer",
+"round": 1,
+"chosen": "About \u20b9900."
+},
+{
+"id": "index-funds-s2.transfer",
+"round": 2,
+"chosen": "About \u20b9900."
+},
+{
+"id": "index-funds-s2.transfer",
+"round": 3,
+"chosen": "About \u20b9900."
+},
+{
+"id": "index-funds-s3.twist",
+"round": 1,
+"chosen": "Fund B."
+},
+{
+"id": "index-funds-s3.twist",
+"round": 2,
+"chosen": "Fund B."
+},
+{
+"id": "index-funds-s3.twist",
+"round": 3,
+"chosen": "Fund B."
+},
+{
+"id": "index-funds-s3.transfer",
+"round": 1,
+"chosen": "A small gap from fees and costs is normal."
+},
+{
+"id": "index-funds-s3.transfer",
+"round": 2,
+"chosen": "A small gap from fees and costs is normal."
+},
+{
+"id": "index-funds-s3.transfer",
+"round": 3,
+"chosen": "A small gap from fees and costs is normal."
+},
+{
+"id": "upi-scams-s1.twist",
+"round": 1,
+"chosen": "It sends \u20b92,000 out of your account."
+},
+{
+"id": "upi-scams-s1.twist",
+"round": 2,
+"chosen": "It sends \u20b92,000 out of your account."
+},
+{
+"id": "upi-scams-s1.twist",
+"round": 3,
+"chosen": "It sends \u20b92,000 out of your account."
+},
+{
+"id": "upi-scams-s1.transfer",
+"round": 1,
+"chosen": "A QR scan is for paying, not for getting paid."
+},
+{
+"id": "upi-scams-s1.transfer",
+"round": 2,
+"chosen": "A QR scan is for paying, not for getting paid."
+},
+{
+"id": "upi-scams-s1.transfer",
+"round": 3,
+"chosen": "A QR scan is for paying, not for getting paid."
+},
+{
+"id": "upi-scams-s2.twist",
+"round": 1,
+"chosen": "Do not share it, even with bank staff you know."
+},
+{
+"id": "upi-scams-s2.twist",
+"round": 2,
+"chosen": "Do not share it, even with bank staff you know."
+},
+{
+"id": "upi-scams-s2.twist",
+"round": 3,
+"chosen": "Do not share it, even with bank staff you know."
+},
+{
+"id": "upi-scams-s2.transfer",
+"round": 1,
+"chosen": "Refuse; whoever has it can approve actions."
+},
+{
+"id": "upi-scams-s2.transfer",
+"round": 2,
+"chosen": "Refuse; whoever has it can approve actions."
+},
+{
+"id": "upi-scams-s2.transfer",
+"round": 3,
+"chosen": "Refuse; whoever has it can approve actions."
+},
+{
+"id": "upi-scams-s3.twist",
+"round": 1,
+"chosen": "Report it on 1930 or cybercrime.gov.in."
+},
+{
+"id": "upi-scams-s3.twist",
+"round": 2,
+"chosen": "Report it on 1930 or cybercrime.gov.in."
+},
+{
+"id": "upi-scams-s3.twist",
+"round": 3,
+"chosen": "Report it on 1930 or cybercrime.gov.in."
+},
+{
+"id": "upi-scams-s3.transfer",
+"round": 1,
+"chosen": "Call the bank now and block debits."
+},
+{
+"id": "upi-scams-s3.transfer",
+"round": 2,
+"chosen": "Call the bank now and block debits."
+},
+{
+"id": "upi-scams-s3.transfer",
+"round": 3,
+"chosen": "Call the bank now and block debits."
+}
+]

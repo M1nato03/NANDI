@@ -567,7 +567,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "The base is March a year ago, not February.",
+                        "text": "It compares with last March.",
                         "correct": true,
                         "feedback": "Right. India's inflation rate compares prices with the same month a year earlier, not with last month."
                       },
@@ -701,13 +701,13 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "It holds its value, since the amount is fixed.",
+                        "text": "It holds its value.",
                         "correct": false,
                         "feedback": "A fixed amount is not fixed buying power. When prices rise, the same cash buys less."
                       },
                       {
                         "id": "b",
-                        "text": "It grows, since fixed sums are safe.",
+                        "text": "It grows a bit.",
                         "correct": false,
                         "feedback": "A fixed sum does not grow. With rising prices, it buys less each year."
                       },
@@ -839,7 +839,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "Yes, since lower inflation is better.",
+                        "text": "Yes, lower is better.",
                         "correct": false,
                         "feedback": "Lower is not always better. The band has a floor of 2%, because falling prices can make people wait to buy."
                       },
@@ -1643,13 +1643,13 @@
                       },
                       {
                         "id": "b",
-                        "text": "Each year adds the same, so little is lost.",
+                        "text": "Each year adds about the same, so little is lost.",
                         "correct": false,
                         "feedback": "Years do not add the same. Growth on growth means later years add more than early ones."
                       },
                       {
                         "id": "c",
-                        "text": "Late years add less, as growth slows down.",
+                        "text": "Late years add less.",
                         "correct": false,
                         "feedback": "Growth speeds up, not down, when gains stay in. The late years add the most."
                       }
@@ -1773,13 +1773,13 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "How much gold each payment buys.",
+                        "text": "The gold per payment.",
                         "correct": false,
                         "feedback": "Each payment buys at that day's price, so the amount of gold changes month to month."
                       },
                       {
                         "id": "b",
-                        "text": "What the gold will be worth at the end.",
+                        "text": "The end value.",
                         "correct": false,
                         "feedback": "The end value depends on gold prices, which rise and fall. The plan fixes only the payments."
                       },
@@ -2603,13 +2603,13 @@
                       },
                       {
                         "id": "b",
-                        "text": "Real years swing, so it is a what-if, not a promise.",
+                        "text": "Real returns swing from year to year.",
                         "correct": true,
                         "feedback": "Right. Market returns have no fixed rate, so the shortcut only says what would happen if the rate held."
                       },
                       {
                         "id": "c",
-                        "text": "The shortcut works for debt, not savings.",
+                        "text": "It is for debt, not savings.",
                         "correct": false,
                         "feedback": "It works for both savings and debt at a steady rate. The catch is that fund returns are not steady."
                       }
@@ -2623,7 +2623,7 @@
                         "id": "a",
                         "text": "He should divide by 20 instead.",
                         "correct": false,
-                        "feedback": "No single year's rate fits, up or down. The shortcut needs a rate that holds still."
+                        "feedback": "Neither year's rate fits, up or down. The shortcut needs a rate that holds still."
                       },
                       {
                         "id": "b",
@@ -2633,7 +2633,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "The rate is not steady, so the rule does not fit.",
+                        "text": "No single rate fits.",
                         "correct": true,
                         "feedback": "Right. The shortcut needs a steady rate. Income that jumps and falls has no single rate to divide by."
                       }
@@ -3204,13 +3204,13 @@
                       },
                       {
                         "id": "b",
-                        "text": "Three good years show it is safe.",
+                        "text": "Three good years show it can be called safe.",
                         "correct": false,
                         "feedback": "Good years do not make the future sure. A fund can still lose value."
                       },
                       {
                         "id": "c",
-                        "text": "Just the chance that the fund is a fraud.",
+                        "text": "Just fraud.",
                         "correct": false,
                         "feedback": "Risk is wider than fraud. It covers any chance of loss or an uncertain result."
                       }
@@ -3222,21 +3222,21 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "She is sure to lose money.",
+                        "text": "A sure loss.",
                         "correct": false,
                         "feedback": "Risk is a chance, not a sure loss. Her income could also end up higher."
                       },
                       {
                         "id": "b",
-                        "text": "The result is uncertain and could be lower.",
+                        "text": "Her income is not known in advance.",
                         "correct": true,
                         "feedback": "Right. Risk includes uncertain results and the chance of loss. Her income could rise or fall."
                       },
                       {
                         "id": "c",
-                        "text": "Risk is about shares, not a business.",
+                        "text": "Just bad luck.",
                         "correct": false,
-                        "feedback": "Risk is not just about shares. It covers any result that is not sure, like a new shop."
+                        "feedback": "Risk is not luck alone. It covers any result that is not sure, like the income from a new shop."
                       }
                     ]
                   }
@@ -3336,7 +3336,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "Risky firms are better run.",
+                        "text": "Risky firms are usually better run.",
                         "correct": false,
                         "feedback": "Risk is about swings, not good management. The extra return pays for the extra risk."
                       },
@@ -3348,7 +3348,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "Investors want a bigger reward for bigger swings.",
+                        "text": "It pays people to bear the swings.",
                         "correct": true,
                         "feedback": "Right. Investors want higher returns for taking more risk, so riskier things tend to pay more."
                       }
@@ -3360,9 +3360,9 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "The startup, to make up for more risk.",
+                        "text": "The startup.",
                         "correct": true,
-                        "feedback": "Right. A bond is a loan, and lenders want higher returns for taking more risk."
+                        "feedback": "Right. A bond is a loan, and lenders want higher returns for taking more risk, so the startup pays more."
                       },
                       {
                         "id": "b",
@@ -3482,7 +3482,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "Move it into riskier shares for a final boost.",
+                        "text": "Add riskier shares.",
                         "correct": false,
                         "feedback": "A late drop could hit just when he needs the money. Near a goal, risk should come down."
                       }
@@ -4958,13 +4958,13 @@
                       },
                       {
                         "id": "b",
-                        "text": "Raj, as he holds more shares.",
+                        "text": "Raj.",
                         "correct": false,
                         "feedback": "Your slice depends on your shares out of all the shares. Raj's 300 is a tenth of his firm."
                       },
                       {
                         "id": "c",
-                        "text": "The same, as both are small owners.",
+                        "text": "The same.",
                         "correct": false,
                         "feedback": "Their slices differ. Sita holds a fifth of her firm and Raj a tenth of his."
                       }
@@ -5086,7 +5086,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "Yes; small owners have no say.",
+                        "text": "Yes; small owners have no say at the meeting.",
                         "correct": false,
                         "feedback": "Small owners can vote too. Owning shares gives a vote at the general meeting."
                       },
@@ -5098,9 +5098,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No; her shares give her a vote at the meeting.",
+                        "text": "No; a few shares still carry a vote.",
                         "correct": true,
-                        "feedback": "Right. Owners of shares can vote on big decisions at the firm's general meeting."
+                        "feedback": "Right. Owners of shares can vote on big decisions at the firm's general meeting, whatever their size."
                       }
                     ]
                   },
@@ -5845,7 +5845,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "A bike repair after a crash on the way to work.",
+                        "text": "A repair after a bike crash.",
                         "correct": true,
                         "feedback": "Right. An emergency fund is cash kept for a sudden need, like an unplanned repair."
                       },
@@ -6014,7 +6014,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "One month, since he can take more shoots.",
+                        "text": "One month is enough.",
                         "correct": false,
                         "feedback": "A month is too thin, and shoots may not come when needed. Shaky income calls for more."
                       }
@@ -6115,7 +6115,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "It cannot lose, so reach does not matter.",
+                        "text": "None, as it cannot lose.",
                         "correct": false,
                         "feedback": "Reach matters most. An emergency may not wait while the deposit is broken."
                       }
@@ -6685,13 +6685,13 @@
                       },
                       {
                         "id": "b",
-                        "text": "Her EMI is all loan, with no interest.",
+                        "text": "It is all loan.",
                         "correct": false,
                         "feedback": "That is the other mix-up. Each EMI pays some interest first, then cuts the loan with the rest."
                       },
                       {
                         "id": "c",
-                        "text": "She is right; an EMI pays just the interest.",
+                        "text": "She is right.",
                         "correct": false,
                         "feedback": "EMIs pay both interest and part of the loan sum, so the loan does shrink."
                       }
@@ -6983,7 +6983,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "Each payment is smaller, but total interest is more.",
+                        "text": "He pays interest for longer.",
                         "correct": true,
                         "feedback": "Right. A longer term lowers each payment but means paying more interest in total."
                       }
@@ -7576,7 +7576,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "An equal share, like each other firm.",
+                        "text": "About an equal share, like each other firm.",
                         "correct": false,
                         "feedback": "The fund copies the index's mix, not equal slices. A 10% weight in the index means about 10% in the fund."
                       },
@@ -7709,13 +7709,13 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "Beating their index, thanks to expert picks.",
+                        "text": "Beating it.",
                         "correct": false,
                         "feedback": "Most did worse than their index over ten years. A good name does not change that."
                       },
                       {
                         "id": "b",
-                        "text": "Doing just as well as their index.",
+                        "text": "Matching it.",
                         "correct": false,
                         "feedback": "Active funds do not try to match the index. Over ten years, most did worse."
                       },
@@ -7878,7 +7878,7 @@
                       },
                       {
                         "id": "c",
-                        "text": "A small gap from fees and costs is normal.",
+                        "text": "Costs cause a small, normal gap.",
                         "correct": true,
                         "feedback": "Right. Expenses and running costs leave a small gap called tracking error."
                       }
@@ -8553,7 +8553,7 @@
                   },
                   {
                     "stem": "Shabnam, a home tutor, is owed ₹1,200 by a parent. The parent asks her to scan a QR code to \"receive\" the fee. What should she know?",
-                    "hint": "Does money coming in need anything from her?",
+                    "hint": "Which way do the rupees travel when she pays?",
                     "options": [
                       {
                         "id": "a",
@@ -8563,7 +8563,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "A QR scan is for paying, not for getting paid.",
+                        "text": "Getting paid needs no scan.",
                         "correct": true,
                         "feedback": "Right. Getting money never needs a QR scan or a PIN, so this request is a warning sign."
                       },
@@ -8680,9 +8680,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Do not share it, even with bank staff you know.",
+                        "text": "Keep it to yourself.",
                         "correct": true,
-                        "feedback": "Right. Never share your OTP or PIN with anyone, not even bank staff."
+                        "feedback": "Right. Never share your OTP or PIN with anyone, not even bank staff or family."
                       }
                     ]
                   },
@@ -8824,7 +8824,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Do nothing, as the money is gone anyway.",
+                        "text": "Let it go.",
                         "correct": false,
                         "feedback": "Acting fast can stop more money leaving, and the fraud can be reported on 1930."
                       },

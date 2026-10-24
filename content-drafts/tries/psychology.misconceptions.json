@@ -186,12 +186,6 @@
     "misconceptionId": "social-proof-m4"
   },
   {
-    "stepId": "social-proof-s2",
-    "which": "transfer",
-    "optionId": "c",
-    "misconceptionId": "social-proof-m3"
-  },
-  {
     "stepId": "social-proof-s3",
     "which": "twist",
     "optionId": "a",
@@ -375,7 +369,7 @@
     "stepId": "variable-rewards-s3",
     "which": "transfer",
     "optionId": "b",
-    "misconceptionId": "variable-rewards-m3"
+    "misconceptionId": "variable-rewards-m2"
   },
   {
     "stepId": "if-then-plans-s1",
