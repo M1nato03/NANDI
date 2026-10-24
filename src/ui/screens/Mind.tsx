@@ -16,8 +16,8 @@ import { isPersonalBest, resultText, shareTile } from '../../core/puzzles/share'
 import { revealedPanels, currentArcTitle } from '../../core/mysteries';
 import { unlockTechnique } from '../../data/repos/techniques';
 import { challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
-import { bestPace, fillFraction, nextPace } from '../../core/puzzles/pace';
-import { PaceLine } from '../mind/PaceLine';
+import { bestPace, fillFraction, nextPace, paceShown } from '../../core/puzzles/pace';
+import { PaceLine, ParLine } from '../mind/PaceLine';
 import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
 import { dayKey } from '../../core/time';
@@ -309,7 +309,9 @@ export function Mind({ entry }: { entry?: string }) {
     const techniquesSeen = technique && !extra.hintRungs && !row.techniquesSeen?.includes(technique) ? [...(row.techniquesSeen ?? []), technique] : row.techniquesSeen;
     const next = { ...accrueActive(row, now), grid: state.grid, path: state.path, techniquesSeen, ...extra };
     // Spec 24 pace line: the marks only rise, so a restart never takes one back.
-    next.pace = nextPace(row.pace, fillFraction(board, state), next.activeMs ?? 0, checked.solved);
+    const fill = fillFraction(board, state);
+    next.pace = nextPace(row.pace, fill, next.activeMs ?? 0, checked.solved);
+    next.paceTop = paceShown(row.paceTop ?? 0, checked.solved ? 1 : fill, next.pace);
     if (checked.solved) {
       next.result = 'solved'; next.solveMs = next.activeMs; next.finishedAt = now;
       if (next.daily) setDailyDoneKey(today);
@@ -402,8 +404,9 @@ export function Mind({ entry }: { entry?: string }) {
   const togglePace = async () => {
     const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
     await trackWrite(() => db.settings.put({ key: 'mind.paceOn', value: !paceOn, updatedAt: time, deleted: 0, deviceId }));
+    // The slim row has no room for a key, so turning it on says once which dot is which.
+    setMessage(!paceOn && paceOther ? `Filled dot: you. Ring: ${paceOther.caption.replace(/^Your/, 'your')}.` : '');
   };
-  const beatPar = par !== undefined && run?.solveMs !== undefined && run.solveMs < par;
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('learn')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
@@ -419,12 +422,15 @@ export function Mind({ entry }: { entry?: string }) {
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Take it at your own pace.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{paceOn && night === 'day' && selection.friendPace && <p>Your friend took {timeText(selection.friendPace.at(-1)!)} on this board.</p>}{par !== undefined && (beatPar ? <p className="mind-par-beaten"><strong>Par {timeText(par)} (your median of the last 10)</strong></p> : <p>Par {timeText(par)} (your median of the last 10)</p>)}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
-        <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
-        {night === 'day' && paceOther && <div className="mind-pace-box">
-          {paceOn && <><p className="small mind-pace-caption">{paceOther.caption}</p><PaceLine mine={fillFraction(board, state)} marks={paceOther.marks} elapsed={elapsed} who={paceOther.who} totalMs={paceOther.totalMs} /></>}
-          <button type="button" className="text-button mind-pace-toggle" aria-pressed={paceOn} onClick={() => void togglePace().catch(error => recordError('window', error))}>{paceOn ? 'Hide pace' : 'Show pace'}</button>
-        </div>}
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{paceOn && night === 'day' && selection.friendPace && <p>Your friend took {timeText(selection.friendPace.at(-1)!)} on this board.</p>}{par !== undefined && <ParLine par={par} solveMs={run.solveMs} />}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
+        {/* Spec 24 pace line: one slim row with the timer, so the board does not move down (Codex A item 77). */}
+        <div className="mind-timer-row">
+          <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
+          {night === 'day' && paceOther && <div className="mind-pace-box">
+            {paceOn && <PaceLine mine={paceShown(run.paceTop ?? 0, fillFraction(board, state), run.pace)} marks={paceOther.marks} elapsed={elapsed} who={paceOther.who} caption={paceOther.caption} totalMs={paceOther.totalMs} />}
+            <button type="button" className="text-button mind-pace-toggle" aria-pressed={paceOn} aria-label={paceOn ? 'Hide pace' : 'Show pace'} onClick={() => void togglePace().catch(error => recordError('window', error))}>{paceOn ? 'Hide' : 'Pace'}</button>
+          </div>}
+        </div>
         <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
           const deduction = availableDeductions(board, state)[0];

@@ -175,6 +175,8 @@ export interface PuzzleRunRow extends EntityRow {
   accusation?: { s: number; i: number; p: number };
   /** Spec 24 pace line: active ms at 10%, 20% … 100% filled (rise-only, not indexed). */
   pace?: number[];
+  /** The highest fill this run reached, 0 to 1, so your pace dot never moves back (Codex A item 77). */
+  paceTop?: number;
   /** Spec 24 Prove it: the clue indexes (generated order) the player showed prove a solved case. */
   proof?: number[];
 }

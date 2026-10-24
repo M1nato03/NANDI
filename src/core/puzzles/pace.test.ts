@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import PZ from '.';
-import { bestPace, completePace, decodePace, encodePace, fillFraction, nextPace, paceAt, PACE_MARKS } from './pace';
+import { bestPace, completePace, decodePace, encodePace, fillFraction, nextPace, paceAt, paceShown, PACE_MARKS } from './pace';
 import { challengeRoute, parseChallenge } from './challenge';
 import { canonicalRoute } from '../../ui/shell/router';
 import { initialGrid } from '../../data/repos/puzzleRuns';
@@ -55,6 +55,35 @@ describe('pace line (spec 24, cj5-mind §7.1)', () => {
     expect(parseChallenge('challenge/crowns/medium/7/pzz')).toEqual({ type: 'crowns', diff: 'medium', seed: 7 });
     expect(decodePace(`p${'0'.repeat(27)}zzz`.replace(/^p.{3}/, 'pzzz'))).toBeUndefined();
     expect(encodePace([1, 2, 3])).toBeUndefined();
+  });
+  it('your dot never moves back: clearing cells or Restart keeps the highest point reached (Codex A item 77)', () => {
+    let shown = 0;
+    let pace: number[] = [];
+    for (const live of [0.1, 0.37, 0.2, 0, 0.35, 0.5, 0]) {
+      pace = nextPace(pace, live, 1000);
+      const next = paceShown(shown, live, pace);
+      expect(next).toBeGreaterThanOrEqual(shown);
+      shown = next;
+    }
+    expect(shown).toBe(0.5);
+    // After a reload the stored top is the floor; the saved marks alone already hold the reached decile.
+    expect(paceShown(0, 0, [1, 2, 3])).toBeCloseTo(0.3);
+    expect(paceShown(0.9, 1.2, undefined)).toBe(1);
+  });
+  it('a link segment is dropped when it has the wrong length, a non-base-36 digit, or falls in the wrong order', () => {
+    const good = encodePace(marks)!;
+    expect(decodePace(good.slice(0, -1))).toBeUndefined();
+    expect(decodePace(`${good}0`)).toBeUndefined();
+    expect(decodePace(`${good.slice(0, -1)}!`)).toBeUndefined();
+    expect(decodePace(good.toUpperCase())).toBeUndefined();
+    expect(decodePace(`q${good.slice(1)}`)).toBeUndefined();
+    // Marks must not go down: a later mark smaller than an earlier one is refused.
+    expect(decodePace(`p${'00a'.repeat(5)}${'005'.repeat(5)}`)).toBeUndefined();
+  });
+  it('the largest mark is 46,655 s, both ways: longer runs are capped when sent, and zzz reads back as that cap', () => {
+    const long = [...marks.slice(0, 9), 99_999_000];
+    expect(encodePace(long)!.slice(-3)).toBe('zzz');
+    expect(decodePace(`p${'000'.repeat(9)}zzz`)!.at(-1)).toBe(46_655_000);
   });
   it('picks your fastest solved run of the same type and difficulty that has marks', () => {
     const run = (id: string, solveMs: number, pace?: number[], extra: Partial<PuzzleRunRow> = {}): PuzzleRunRow => ({ id, type: 'crowns', diff: 'medium', result: 'solved', solveMs, pace, updatedAt: 1, deleted: 0, deviceId: 'd', ...extra });

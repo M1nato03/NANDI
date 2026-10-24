@@ -3,6 +3,7 @@ import { generateCheck } from './generator';
 import { dailyBoard, friendBoard } from '../core/puzzles/daily';
 import type { PuzzleDifficulty, PuzzleType } from '../core/puzzles';
 import CaseGen from '../core/mysteries';
+import { shortestProof } from '../core/mysteries/proof';
 
 const pathRuns = 20;
 const pathBudgetMs = 300;
@@ -11,7 +12,8 @@ self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice' | 'c
   try {
     if (typeof event.data !== 'string') {
       const request = event.data;
-      if (request.kind === 'case') { self.postMessage({ kind: 'case', mystery: CaseGen.daily(request.day, request.caseDiff) }); return; }
+      // Spec 24 Prove it: the shortest-proof search runs here, once, off the main thread (Codex A item 77).
+      if (request.kind === 'case') { const mystery = CaseGen.daily(request.day, request.caseDiff); self.postMessage({ kind: 'case', mystery, shortest: mystery ? shortestProof(mystery) : undefined }); return; }
       // Spec 19 D: today's link with today's generated seed is the daily board; anything else is practice.
       if (request.kind === 'friend') { self.postMessage({ kind: 'friend', ...friendBoard({ type: request.type!, diff: request.diff!, seed: request.seed!, day: request.linkDay }, request.day) }); return; }
       const board = request.kind === 'daily' ? dailyBoard(request.day)

@@ -24,16 +24,45 @@ test('the pace line is opt-in, remembered, compares with your best, and hides af
   await page.reload();
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByLabel('Puzzle result')).toHaveCount(0);
+  const boardTop = async () => (await page.getByRole('group', { name: 'Mini Sudoku board' }).boundingBox())!.y;
+  const before = await boardTop();
   await page.getByRole('button', { name: 'Show pace' }).click();
-  await expect(page.getByText('Your best Mini Sudoku easy pace')).toBeVisible();
-  await expect(page.locator('.mind-pace-track')).toBeVisible();
+  await expect(page.getByRole('img', { name: /^Your best Mini Sudoku easy pace\./ })).toBeVisible();
+  // One slim row with the timer: the board does not move down (Codex A item 77).
+  expect(Math.abs((await boardTop()) - before)).toBeLessThanOrEqual(2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // Your dot never moves back: fill one cell, then Restart.
+  const deduction = await page.evaluate(() => (window as Window & { __nandiMindTest?: { nextDeduction: () => { cell: number; value: number } } }).__nandiMindTest!.nextDeduction());
+  await page.getByRole('group', { name: 'Mini Sudoku board' }).locator('.mind-cell').nth(deduction.cell).click();
+  await page.getByLabel('Number pad').getByRole('button', { name: String(deduction.value), exact: true }).click();
+  const left = () => page.locator('.mind-pace-you').evaluate(node => parseFloat((node as HTMLElement).style.left));
+  await expect.poll(left).toBeGreaterThan(0);
+  const reached = await left();
+  await page.getByRole('button', { name: 'Restart' }).click();
+  await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
+  expect(await left()).toBe(reached);
   await page.reload();
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByRole('button', { name: 'Hide pace' })).toBeVisible();
+  // After a reload the dot starts where it got to, not at zero.
+  expect(await left()).toBe(reached);
+  // Hidden in wind-down (from 23:15) and after bedtime (01:30).
   await page.clock.setFixedTime(new Date('2026-11-02T23:30:00'));
   await page.clock.runFor(1100);
   await expect(page.locator('.mind-pace-box')).toHaveCount(0);
+  await page.clock.setFixedTime(new Date('2026-11-03T02:00:00'));
+  await page.clock.runFor(1100);
+  await expect(page.locator('.mind-pace-box')).toHaveCount(0);
+});
+
+test('under reduced motion the pace line is one still line of text', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
+  await page.goto(`/?e2e#mind/challenge/sudoku/easy/12345/${marks}`);
+  await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
+  await page.getByRole('button', { name: 'Show pace' }).click();
+  await expect(page.locator('.mind-pace-still')).toHaveText('Your friend: 0:50');
+  await expect(page.locator('.mind-pace-dot')).toHaveCount(0);
 });
 
 test("a friend's link carries their pace; the finish shows their time and the reply link carries yours", async ({ page }) => {
@@ -42,7 +71,7 @@ test("a friend's link carries their pace; the finish shows their time and the re
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(() => Boolean(window.__nandiMindTest));
   await page.getByRole('button', { name: 'Show pace' }).click();
-  await expect(page.getByText('Your friend on this board')).toBeVisible();
+  await expect(page.getByRole('img', { name: /^Your friend on this board\./ })).toBeVisible();
   await page.evaluate(() => window.__nandiMindTest!.solveKnownSolution());
   const result = page.getByLabel('Puzzle result');
   await expect(result).toContainText('Your friend took 0:50 on this board.');
@@ -61,6 +90,12 @@ test('Prove it: a short pick shows what still fits, a real proof earns the stamp
   if (shortest.length === clues) { await expect(card).toHaveCount(0); return; }
   const clue = card.locator('.case-prove-clue');
   await expect(clue).toHaveCount(clues);
+  // The finish toast moves clear of the card while it is open (Codex A item 77).
+  const toast = page.locator('.economy-toast');
+  if (await toast.count()) {
+    const [toastBox, cardBox] = [await toast.first().boundingBox(), await card.boundingBox()];
+    if (toastBox && cardBox) expect(toastBox.y + toastBox.height <= cardBox.y || toastBox.y >= cardBox.y + cardBox.height).toBe(true);
+  }
   await clue.nth(shortest[0]!).click();
   if (shortest.length > 1) {
     await card.getByRole('button', { name: 'Check' }).click();

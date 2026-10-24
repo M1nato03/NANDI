@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { MysteryCase } from '../../core/mysteries';
-import { checkProof, shortestProof, stillAllows } from '../../core/mysteries/proof';
+import { checkProof, stillAllows } from '../../core/mysteries/proof';
 import { saveCaseProof } from '../../data/repos/mysteries';
 import { db } from '../../data/db';
 import type { PuzzleRunRow } from '../../data/types';
@@ -11,8 +11,7 @@ import { recordError } from '../errorRing';
  * Check. Tries are unlimited, nothing is lost, Skip is always there, and it pays 0 XP. The phone checks the pick by
  * logic; a pick that falls short shows a case those clues still allow.
  */
-export function ProveIt({ mystery, run }: { mystery: MysteryCase; run: PuzzleRunRow }) {
-  const shortest = useMemo(() => shortestProof(mystery), [mystery]);
+export function ProveIt({ mystery, run, shortest }: { mystery: MysteryCase; run: PuzzleRunRow; shortest: number[] }) {
   const [picked, setPicked] = useState<number[]>([]);
   const [note, setNote] = useState('');
   const [skipped, setSkipped] = useState(false);

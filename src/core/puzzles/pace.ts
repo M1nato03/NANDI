@@ -35,6 +35,14 @@ export function nextPace(marks: readonly number[] | undefined, fraction: number,
 export const completePace = (marks: readonly number[] | undefined): marks is number[] =>
   !!marks && marks.length === PACE_MARKS && marks.every((value, index) => Number.isFinite(value) && value >= 0 && (index === 0 || value >= marks[index - 1]!));
 
+/**
+ * Where your own dot sits: the highest of what it showed before, the decile your saved marks reached, and the live fill.
+ * Clearing a cell or Restart never moves it back (Codex A item 77).
+ */
+export function paceShown(previous: number, live: number, marks: readonly number[] | undefined): number {
+  return Math.min(1, Math.max(previous, live, (marks?.length ?? 0) / PACE_MARKS));
+}
+
 /** How far a run with these marks had got after `ms` of active time, 0 to 1, read straight between marks. */
 export function paceAt(marks: readonly number[], ms: number): number {
   if (!completePace(marks) || ms <= 0) return 0;
