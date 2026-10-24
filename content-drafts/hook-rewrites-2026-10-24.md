@@ -1,6 +1,6 @@
 DRAFT FOR EDITORS, idea engine, 24 Oct 2026. Updated with cj6-hooks (batch 6 job 2, branch ideas/cj6-hooks): keep 20, fix 16, replace 7; the "proposed hook" column now holds the cj6 text for every fix and replace.
 
-Open product question (cj6-hooks §4): the topic card shows an idea hook from day 1, but 29 of these 43 hooks are answered by step 2 or 3 (day 2 or 3). Recommended: show the NEXT STEP's own hook (step.hook.stem) on the card while an idea has untaught steps, and this idea hook once all its steps are taught. Needs Jenil's yes.
+Open product question (cj6-hooks §4): the topic card shows an idea hook from day 1, but 29 of these 43 hooks are answered by step 2 or 3 (day 2 or 3). Recommended: show the NEXT STEP's own hook (step.hook.stem) on the card while an idea has untaught steps, and this idea hook once all its steps are taught. APPROVED by Jenil, 24 Oct ("no need for new writing, this way is perfect, to give the answer along with the hook"). These 43 idea hooks are shown only once all of an idea's steps are taught.
 
 | # | topic | concept | current hook | proposed hook | claim it sets up (claim id) | note | cj6 verdict |
 |---:|---|---|---|---|---|---|---|

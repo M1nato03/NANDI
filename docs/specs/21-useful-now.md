@@ -42,6 +42,7 @@ additions from the evidence:
 Also:
 - Rename the 6 current topics to outcome-first names. Jenil picks from cj4-packaging §5, e.g. "Do the maths on money" and "See inside everyday things".
 - Rewrite the 43 hooks that state the answer before the lesson.
+- **Hook on the topic card (Jenil, 24 Oct: approved).** While an idea has untaught steps, the card shows the NEXT step's own hook (`step.hook.stem`), which that same lesson answers. Once all its steps are taught, the card shows the idea hook (the 43 rewrites). The card's idea must be the one `nextStep` will teach, not the mastery-based `nextIdea` (cj6-hooks §4). No new copy.
 - Hinglish titles for the work-and-money tracks are optional. Seekho works in Hinglish.
 
 ## Part B · The Field try (cj4-transfer §4, adopted as written)
