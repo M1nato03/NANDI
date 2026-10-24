@@ -173,6 +173,10 @@ export interface PuzzleRunRow extends EntityRow {
   practiceAttempt?: number;
   caseGrid?: { A: number[]; B: number[]; C: number[]; struck: number[] };
   accusation?: { s: number; i: number; p: number };
+  /** Spec 24 pace line: active ms at 10%, 20% … 100% filled (rise-only, not indexed). */
+  pace?: number[];
+  /** Spec 24 Prove it: the clue indexes (generated order) the player showed prove a solved case. */
+  proof?: number[];
 }
 export interface CardRow extends StateRow {
   deckId: string;

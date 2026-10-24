@@ -160,3 +160,23 @@
 .mind-share { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
 .mind-share-text { flex-basis: 100%; white-space: pre-line; overflow-wrap: anywhere; margin: 0; }
 .mind-share .mind-share-image { font-size: .9rem; font-weight: 500; }
+
+/* Spec 24 pace line: two quiet dots on a thin line; it counts up and never ends a run. */
+.mind-pace-box { margin: 0 0 8px; }
+.mind-pace-caption, .mind-pace-still { margin: 0 0 4px; color: var(--ink-2); }
+.mind-pace-track { position: relative; height: 4px; margin: 10px 6px 6px; border-radius: 999px; background: var(--surface-2); }
+.mind-pace-dot { position: absolute; top: 50%; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; transform: translateY(-50%); transition: left 0.9s linear; }
+.mind-pace-you { background: var(--area-think); }
+.mind-pace-other { background: transparent; border: 2px solid var(--ink-2); }
+.mind-pace-key { display: flex; gap: 16px; margin: 0; color: var(--ink-2); }
+.mind-pace-key span::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; vertical-align: middle; }
+.mind-pace-you-key::before { background: var(--area-think); }
+.mind-pace-other-key::before { border: 2px solid var(--ink-2); width: 6px !important; height: 6px !important; }
+.mind-pace-toggle { min-height: 44px; }
+.mind-par-beaten strong { font-weight: 700; }
+
+/* Spec 24 Prove it: one optional card after a right accusation. */
+.case-prove { margin-top: 12px; }
+.case-prove-clues { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 8px; }
+.case-prove-clue { width: 100%; min-height: 44px; text-align: left; background: var(--surface-2); color: var(--ink); border: 2px solid transparent; }
+.case-prove-clue[aria-pressed="true"] { border-color: var(--area-think); background: color-mix(in srgb, var(--area-think) 14%, var(--surface-2)); }

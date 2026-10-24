@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import type { MysteryCase } from '../../core/mysteries';
 import { revealedPanels } from '../../core/mysteries';
@@ -24,11 +24,15 @@ import { db } from '../../data/db';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import type { PuzzleRunRow } from '../../data/types';
 import { recordError } from '../errorRing';
+import { offerProof, shortestProof } from '../../core/mysteries/proof';
+import { ProveIt } from './ProveIt';
 
 type GridName = 'A' | 'B' | 'C';
 type CaseTestHook = {
   solveKnownSolution: () => void;
   solveTodaysCase: () => void;
+  /** Spec 24 Prove it: one shortest proof (clue indexes) and the clue count. */
+  proof: () => { shortest: number[]; clues: number };
 };
 function timeText(ms: number): string {
   const seconds = Math.floor(ms / 1000);
@@ -68,6 +72,7 @@ export function CaseScreen({
   const [hintStep, setHintStep] = useState(0);
   const [newCard, setNewCard] = useState(false);
   const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  const proofOffered = useMemo(() => !!mystery && offerProof(mystery), [mystery]);
   const [pick, setPick] = useState<Accusation>({ s: -1, i: -1, p: -1 });
   const pending = useRef<Promise<unknown>>(Promise.resolve());
   const latest = useRef<PuzzleRunRow | null>(null);
@@ -252,6 +257,7 @@ export function CaseScreen({
     const hook: CaseTestHook = {
       solveKnownSolution: solveTodaysCase,
       solveTodaysCase,
+      proof: () => ({ shortest: shortestProof(mystery), clues: mystery.clues.length }),
     };
     return installCaseTestHook(hook);
   }, [mystery]);
@@ -425,6 +431,8 @@ export function CaseScreen({
                   ))}
                 </ol>
               </details>
+              {/* Spec 24 Prove it: day window only (canShare is night === 'day'), and only when a proof is shorter than the clue list. */}
+              {run.result === 'solved' && canShare && proofOffered && <ProveIt mystery={mystery} run={run} />}
               {run.result === 'solved' && <>{revealedPanels(runs, day).filter(panel => panel.dayKey === day && !panel.bonus).map(panel => <div className="mind-story-panel" key={panel.id}><h3>{panel.chapterTitle}</h3><p>{panel.text}</p></div>)}{newCard && <p role="status">New technique card</p>}{canShare && (() => { const result = caseResultText(run, day, diff, runs); return <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, 'Case'), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>; })()}</>}
             </div>
           ) : (

@@ -4,7 +4,9 @@ import { pathToFileURL } from 'node:url';
 import ts from 'typescript';
 
 /** Phrases that never belong in product copy. Keep this check separate from name bans. */
-export const copyPhrases = ['addiction', 'fail', 'fails', 'failed', 'failing', 'failure', 'lost', 'you should', 'streak broken'] as const;
+// Spec 24 / cj5-mind §3.3: no brain-training claims (Simons 2016; Sala & Gobet 2019).
+export const copyPhrases = ['addiction', 'fail', 'fails', 'failed', 'failing', 'failure', 'lost', 'you should', 'streak broken',
+  'brain training', 'train your brain', 'makes you smarter', 'boost your IQ', 'raise your IQ'] as const;
 const pattern = new RegExp(`\\b(?:${copyPhrases.join('|')})\\b`, 'gi');
 
 export function findCopyIssues(text: string): { line: number; phrase: string }[] {
