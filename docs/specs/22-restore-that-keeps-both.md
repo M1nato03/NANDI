@@ -1,7 +1,10 @@
 # Spec 22 · A restore that keeps both (merge restore)
 
-Status: DRAFT v3 for Jenil (idea engine, 24 Oct 2026; v2 and v3 after two Codex B reviews, idea-engine/codex-review-spec22.md). Not approved. Until it is, restore stays **replace**, with a clear
-warning in the preview (Jenil, 23 Oct: "for now replace it is, but I would like if you found a way to keep them").
+Status: **MOVED TO ONLINE (v2).** Jenil, 24 Oct: "as it's offline for now we should only keep one and [the] other replace as option, then when we go online we can shift towards it." The merge below is NOT built while NANDI is offline (its offline cost is Shards minted by merge, see "Accepted cost"). It becomes the sync merge in Phase 4, where a server order removes that cost. Draft v3 (idea engine, 24 Oct 2026, after two Codex B reviews) is kept as the design for that.
+
+**v1 offline (now): keep one.** Restore stays Replace, with the clear warning in the preview. Proposal, needs Jenil's yes before the builder gets it: just before Replace, NANDI saves this phone's data as a file (`nandi-before-restore-<date>.json`, same format as a backup) and says where. The person keeps one set in the app, and can restore the other set from that file to switch back. Small: it reuses `exportBackup`; no merge, no new economy rules.
+
+Earlier, 23 Oct: "for now replace it is, but I would like if you found a way to keep them".
 
 ## Why
 Today a restore clears the phone and loads the backup (`src/data/backup/index.ts` `importBackup`,
@@ -132,5 +135,5 @@ device-local keys. Old builds' backups are merged with the same rules (their row
 9. Speed: one `bulkPut` per table (cj3 heavy-data: per-row puts made a restore take 212 s).
 
 ## Open question for Jenil
-Should "Add" be the default, or should the person have to choose each time? Recommendation: "Add" is the default,
-because it cannot lose anything.
+1. v1: save this phone as a file just before Replace (above)? Recommendation: yes.
+2. v2 (online): should "Add" be the default? Recommendation: yes, because it cannot lose anything.
