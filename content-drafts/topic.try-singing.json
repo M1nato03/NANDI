@@ -1,0 +1,2048 @@
+{
+  "id": "topic.try-singing",
+  "version": "0.1.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Try it: singing",
+  "description": "Seven short singing tries off the phone: slow down, start from songs you know, and compare with your own start.",
+  "author": "claude",
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "changelog": "DRAFT FOR EDITORS, not for release. Built from docs/reviews/cj4-try-it.md section 7.2 (branch ideas/cj4-try-it). Steps sis-s1 to spw-s7 are Try-it days 1 to 7; steps spw-s8 and spw-s9 are extra, added only because editorial checks need 3 steps per idea. The off-phone quests and next-day self-checks sit in each concept's quest detail, three days per quest. The hook was narrowed to what the source shows (13 of 15 singers in one small study). No fact-check verdicts yet. See docs/reviews/cj7-sing-video.md.",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "try-singing",
+      "title": "Try it: singing",
+      "description": "Seven short singing tries off the phone: slow down, start from songs you know, and compare with your own start."
+    },
+    "modules": [
+      {
+        "id": "singing-starter",
+        "title": "Singing starter",
+        "concepts": [
+          {
+            "id": "sing-it-slow",
+            "title": "Sing it slow",
+            "prerequisites": [],
+            "hook": "Think you can't sing? In one small study, 13 of 15 casual singers sang a well-known song in tune once they slowed down.",
+            "hookSourceRefs": [
+              "db07",
+              "bdb09"
+            ],
+            "rule": "Start with a song you know, sing it slowly, and use your own recorded voice as the note to match.",
+            "ruleSourceRefs": [
+              "db07",
+              "hp12"
+            ],
+            "claims": [
+              {
+                "id": "sis-c1",
+                "text": "In a survey of over 2,000 first-year students in Canada, nearly 17% called themselves tone deaf. Tests later found that many who used the label may hear pitch just fine.",
+                "sourceRefs": [
+                  "cuddy05"
+                ]
+              },
+              {
+                "id": "sis-c2",
+                "text": "In one study, casual singers sang a well-known song faster than trained singers and made more errors. When 15 of them sang it slowly, 13 sang about as well as the trained singers.",
+                "sourceRefs": [
+                  "db07",
+                  "bdb09"
+                ]
+              },
+              {
+                "id": "sis-c3",
+                "text": "In lab tests, people with no music training matched a recording of their own voice better than a computer-made voice.",
+                "sourceRefs": [
+                  "hp12"
+                ]
+              },
+              {
+                "id": "sis-c4",
+                "text": "In two lab tests, people who sang off pitch told pitches apart as well as good singers. The trouble was turning a heard note into a sung one.",
+                "sourceRefs": [
+                  "pb07"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "sis-1",
+                "type": "scenario",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sis-m1"
+                ],
+                "sourceRefs": [
+                  "cuddy05",
+                  "pb07"
+                ],
+                "stem": "In the hostel common room, Joel spots every off note when friends sing, yet he says he is tone deaf. What fits the tests best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "His ear for pitch likely works fine.",
+                    "correct": true,
+                    "feedback": "Right. Spotting off notes takes a working ear, and many people who use the label heard pitch well in tests.",
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He is right, since he knows himself.",
+                    "correct": false,
+                    "feedback": "Knowing yourself is not a pitch test. In tests, many who used this label heard pitch normally.",
+                    "misconceptionIds": [
+                      "sis-m1"
+                    ],
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "He can hear pitch, but only in other people.",
+                    "correct": false,
+                    "feedback": "Hearing other people's off notes already shows his ear works. Turning a note into his own voice is the harder part.",
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sis-2",
+                "type": "true-not-quite",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s1",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "sis-m1"
+                ],
+                "sourceRefs": [
+                  "cuddy05"
+                ],
+                "stem": "True or not quite: people who say they are tone deaf usually cannot hear pitch.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "True. They know their own ears best.",
+                    "correct": false,
+                    "feedback": "In tests, many who called themselves tone deaf showed no trouble hearing pitch.",
+                    "misconceptionIds": [
+                      "sis-m1"
+                    ],
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Not quite. Many hear pitch fine.",
+                    "correct": true,
+                    "feedback": "Right. Many students who used the label did well on pitch tests, so the label can be off.",
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "True for nearly everyone who says it.",
+                    "correct": false,
+                    "feedback": "Not nearly everyone. Many students who used the label did fine on careful pitch tests.",
+                    "misconceptionIds": [
+                      "sis-m1"
+                    ],
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sis-3",
+                "type": "predict",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s2",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "sis-m2"
+                ],
+                "sourceRefs": [
+                  "db07"
+                ],
+                "stem": "At a college fest practice, Nikhil's song sounded shaky all evening. Working back, which habit most likely caused it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "He sang it faster than he needed to.",
+                    "correct": true,
+                    "feedback": "Right. Casual singers who went fast made more pitch and timing errors. Slowing down helped most of them.",
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He picked a song he has known for years.",
+                    "correct": false,
+                    "feedback": "A well-known song was what the study used. Rushing the tempo was the bigger cause of errors.",
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "He practised it sitting on a chair.",
+                    "correct": false,
+                    "feedback": "Sitting or standing was not tested here. Tempo explained much of the gap between singers.",
+                    "misconceptionIds": [
+                      "sis-m2"
+                    ],
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sis-4",
+                "type": "estimate",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s2",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sis-m2"
+                ],
+                "sourceRefs": [
+                  "db07",
+                  "bdb09"
+                ],
+                "stem": "Fifteen casual singers sang a song they knew at a slow tempo. About how many of them ended up singing as well as trained singers?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 13",
+                    "correct": true,
+                    "feedback": "Right. In that study, 13 of the 15 sang about as accurately as trained singers once they slowed down.",
+                    "sourceRefs": [
+                      "db07",
+                      "bdb09"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 4",
+                    "correct": false,
+                    "feedback": "Too low. Most of them did well at the slow tempo; only a couple stayed off pitch.",
+                    "misconceptionIds": [
+                      "sis-m2"
+                    ],
+                    "sourceRefs": [
+                      "db07",
+                      "bdb09"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 8",
+                    "correct": false,
+                    "feedback": "Higher than that. Only two of the fifteen kept making many pitch errors when slow.",
+                    "sourceRefs": [
+                      "db07",
+                      "bdb09"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 13,
+                  "min": 11,
+                  "max": 15,
+                  "unit": "singers"
+                }
+              },
+              {
+                "id": "sis-5",
+                "type": "why",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s3",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "sis-m3"
+                ],
+                "sourceRefs": [
+                  "hp12"
+                ],
+                "stem": "In one lab study, sung tries did not get better over many rounds in a row. Why is matching your own recorded note still a fair start?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "People matched their own voice better than other sounds.",
+                    "correct": true,
+                    "feedback": "Right. Your own voice was the easiest target in lab tests, even if one sitting brings no gain.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Each new round is sure to get closer.",
+                    "correct": false,
+                    "feedback": "Not in that study. Repeated tries did not improve, so round five may sound like round one.",
+                    "misconceptionIds": [
+                      "sis-m3"
+                    ],
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Computer tones are harder to hear.",
+                    "correct": false,
+                    "feedback": "It went the other way: people judged computer tones more easily by ear. Matching their own voice was easier to sing.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "sis-6",
+                "type": "match",
+                "conceptId": "sing-it-slow",
+                "step": "sis-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "db07",
+                  "hp12",
+                  "cuddy05"
+                ],
+                "stem": "Match each singing habit to the trap it helps with.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Sing at half speed",
+                    "correct": true,
+                    "feedback": "A slower pace gives each note time, which cut errors for most casual singers.",
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Rushing a known song",
+                    "correct": true,
+                    "feedback": "Going fast added pitch and timing errors, which slowing down helped fix.",
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Hum to your own recording",
+                    "correct": true,
+                    "feedback": "Your own voice was the easiest sound to copy in lab tests.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Copying a sound unlike your voice",
+                    "correct": true,
+                    "feedback": "A computer-made voice was harder to match than your own recording.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "e",
+                    "text": "Check what you can hear",
+                    "correct": true,
+                    "feedback": "Noticing a wrong note in a friend shows your ear for pitch works.",
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  },
+                  {
+                    "id": "f",
+                    "text": "Believing a tone-deaf label",
+                    "correct": true,
+                    "feedback": "Many people with this label heard pitch fine when they were tested.",
+                    "sourceRefs": [
+                      "cuddy05"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  },
+                  {
+                    "left": "e",
+                    "right": "f"
+                  },
+                  {
+                    "left": "f",
+                    "right": "e"
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "sis-s1",
+                "title": "You are probably not tone deaf",
+                "claimId": "sis-c1",
+                "sourceRefs": [
+                  "cuddy05",
+                  "pb07"
+                ],
+                "hook": {
+                  "stem": "Lots of people say they are tone deaf. When tested, what did many of them turn out to have?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Normal hearing for pitch.",
+                      "correct": true,
+                      "feedback": "Right. Many who called themselves tone deaf showed no trouble hearing pitch in tests."
+                    },
+                    {
+                      "id": "b",
+                      "text": "A rare problem with hearing pitch.",
+                      "correct": false,
+                      "feedback": "Real trouble hearing pitch is rarer than the label. Many who used it heard pitch fine."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Weak voices from birth.",
+                      "correct": false,
+                      "feedback": "The tests checked hearing, and many did fine. A label is not a test result."
+                    }
+                  ]
+                },
+                "teach": "Many people who call themselves tone deaf hear pitch fine when tested. So the label can be wrong. Singing in tune is mostly about linking the note you hear to the note you sing.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "What people say",
+                    "lines": [
+                      "I am tone deaf",
+                      "I can't sing"
+                    ]
+                  },
+                  "right": {
+                    "title": "What tests found",
+                    "lines": [
+                      "Many hear pitch fine",
+                      "The voice link is the hard part"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that is a label, not a test.",
+                  "parts": [
+                    "Kiran says he is tone deaf,",
+                    "yet he can tell when a friend hits a wrong note,",
+                    "and he hums film songs all day."
+                  ],
+                  "spot": "Kiran says he is tone deaf,",
+                  "feedback": "He calls himself tone deaf, yet he spots a wrong note. The label does not match what he can hear."
+                },
+                "guided": [
+                  {
+                    "stem": "Ayesha hears that her friend's note went flat, but her own singing sounds off to her. What does this most likely show?",
+                    "hint": "Ask what she can already do well.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Her ear is fine; linking it to her voice is the hard part.",
+                        "correct": true,
+                        "feedback": "Right. She can hear a flat note, so the gap is between ear and voice."
+                      },
+                      {
+                        "id": "b",
+                        "text": "She is tone deaf and that is that.",
+                        "correct": false,
+                        "feedback": "She heard her friend's flat note, so her hearing for pitch works."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Her friend picked an easier song.",
+                        "correct": false,
+                        "feedback": "The song is not the point. She can hear pitch, so her ear is doing its job."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Hearing a wrong note means your ear for pitch works."
+              },
+              {
+                "id": "sis-s2",
+                "title": "Slow down",
+                "claimId": "sis-c2",
+                "sourceRefs": [
+                  "db07",
+                  "bdb09"
+                ],
+                "hook": {
+                  "stem": "Casual singers often slip on a song they know well. What is one big reason?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "They sing it too fast.",
+                      "correct": true,
+                      "feedback": "Right. Casual singers tended to go faster than trained ones, with more errors."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Their voices are too low.",
+                      "correct": false,
+                      "feedback": "Voice range was not the main cause here. Tempo explained much of the gap."
+                    },
+                    {
+                      "id": "c",
+                      "text": "They forgot the words.",
+                      "correct": false,
+                      "feedback": "They knew the song well. Speed mattered more than memory in this study."
+                    }
+                  ]
+                },
+                "teach": "Casual singers tend to rush. In one study, most sang a song they knew about as well as trained singers once they slowed down, so slow is the first fix to try.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Pick a song you know",
+                    "Sing it at half speed",
+                    "Listen back"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the change that helped most.",
+                  "parts": [
+                    "Pooja sings her favourite song at full speed,",
+                    "slips on the high bits,",
+                    "then sings it again much slower."
+                  ],
+                  "spot": "then sings it again much slower.",
+                  "feedback": "Slowing down gave her time for each note. In the study, slow singing cut errors for most people."
+                },
+                "guided": [
+                  {
+                    "stem": "Dev's song keeps going off near the fast chorus. What is the best first thing to try?",
+                    "hint": "Think about the clock, not the notes.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sing the chorus at half speed.",
+                        "correct": true,
+                        "feedback": "Right. At a slow pace, most casual singers sang about as well as trained ones."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Belt it out louder to stay on track.",
+                        "correct": false,
+                        "feedback": "Louder does not fix rushing. Slowing down helped most casual singers."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Drop the song for a harder one.",
+                        "correct": false,
+                        "feedback": "A harder song adds trouble. Slowing the one he knows comes first."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "If a song slips, slow it down first."
+              },
+              {
+                "id": "sis-s3",
+                "title": "Match your own voice first",
+                "claimId": "sis-c3",
+                "sourceRefs": [
+                  "hp12"
+                ],
+                "hook": {
+                  "stem": "Which is easier for most people to copy by voice: a computer tone or their own recorded voice?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Their own recorded voice.",
+                      "correct": true,
+                      "feedback": "Right. Non-singers matched their own voice better than a computer-made voice."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The computer tone, since it is pure.",
+                      "correct": false,
+                      "feedback": "A computer tone is easier to judge by ear, yet people matched their own voice better."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both are just as hard.",
+                      "correct": false,
+                      "feedback": "Not equal. In lab tests, people matched their own voice more closely."
+                    }
+                  ]
+                },
+                "teach": "Copying your own recorded note is easier than copying a computer tone, since the sound is already yours. So hum one note, record it, then hum along to match.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hum one note",
+                    "Record it",
+                    "Play it and match"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the step that gives her a note to match.",
+                  "parts": [
+                    "Tenzin hums a low note into her phone recorder,",
+                    "plays it back,",
+                    "then hums along with it."
+                  ],
+                  "spot": "Tenzin hums a low note into her phone recorder,",
+                  "feedback": "Recording her own note gives her the easiest target there is: a sound already in her own voice."
+                },
+                "guided": [
+                  {
+                    "stem": "Rahul struggles to copy notes from a keyboard app. What is an easier place to start?",
+                    "hint": "Start with a sound that is already familiar.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Copy a note he recorded himself.",
+                        "correct": true,
+                        "feedback": "Right. People matched their own voice better than a computer-made one."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Copy quicker notes to build speed.",
+                        "correct": false,
+                        "feedback": "Speed adds difficulty. A note in his own voice is easier to match."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Listen for a week before singing.",
+                        "correct": false,
+                        "feedback": "Hearing is not his problem. Matching a note in his own voice is the easier start."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Your own recorded note is the easiest one to match."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "sis-m1",
+                "name": "I'm tone deaf, so I can't sing",
+                "correction": "Many people who call themselves tone deaf hear pitch fine. The harder part is linking ear to voice.",
+                "sourceRefs": [
+                  "cuddy05",
+                  "pb07"
+                ]
+              },
+              {
+                "id": "sis-m2",
+                "name": "Faster sounds surer",
+                "correction": "Casual singers made more errors at their usual fast pace. Slowing down helped most of them.",
+                "sourceRefs": [
+                  "db07"
+                ]
+              },
+              {
+                "id": "sis-m3",
+                "name": "Each try gets closer by itself",
+                "correction": "In one lab study, repeated sung tries did not improve on their own. Your own note is still the easiest to match.",
+                "sourceRefs": [
+                  "hp12"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "cuddy05",
+                "title": "Musical difficulties are rare: a study of tone deafness among university students",
+                "publisher": "Cuddy, Balkwill, Peretz and Holden, Annals of the New York Academy of Sciences",
+                "year": 2005,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/16597781/"
+              },
+              {
+                "id": "db07",
+                "title": "Singing proficiency in the general population",
+                "publisher": "Dalla Bella, Giguère and Peretz, Journal of the Acoustical Society of America",
+                "year": 2007,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/17348539/"
+              },
+              {
+                "id": "bdb09",
+                "title": "Acquired and congenital disorders of sung performance: a review",
+                "publisher": "Berkowska and Dalla Bella, Advances in Cognitive Psychology",
+                "year": 2009,
+                "url": "https://europepmc.org/article/PMC/PMC2865000"
+              },
+              {
+                "id": "hp12",
+                "title": "A frog in your throat or in your ear? Searching for the causes of poor singing",
+                "publisher": "Hutchins and Peretz, Journal of Experimental Psychology: General",
+                "year": 2012,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/21875245/"
+              },
+              {
+                "id": "pb07",
+                "title": "Poor-pitch singing in the absence of tone deafness",
+                "publisher": "Pfordresher and Brown, Music Perception",
+                "year": 2007,
+                "url": "https://researchconnect.buffalo.edu/en/publications/poor-pitch-singing-in-the-absence-of-tone-deafness/"
+              }
+            ],
+            "quest": {
+              "title": "Days 1 to 3: sing it slow",
+              "detail": "Needs: your voice and your phone's own voice recorder. NANDI does not open the microphone. In a hostel or shared room, hum softly and pick a time when others are awake. Sing gently, with no shouting or straining. Day 1: hum or sing a song you know well, twice, and record it. 10 min. Small version: hum one line. Next day, listen once and ask yourself: which part felt easiest, the start, the middle or the end? Day 2: sing yesterday's song at half speed, 3 times. 10 min. Small version: one slow verse. Next day: slow or normal, which felt surer? Day 3: hum one easy note for 3 seconds and record it. Play it, then hum to match. 5 rounds. 10 min. Small version: 2 rounds. Next day: did your match get closer by round 5? Yes and no are both normal.",
+              "sourceRefs": [
+                "db07",
+                "hp12",
+                "cuddy05"
+              ]
+            }
+          },
+          {
+            "id": "sing-what-you-know",
+            "title": "Sing what you know",
+            "prerequisites": [],
+            "hook": "Familiar songs are kinder to beginners. In one study, gaps between stronger and weaker singers were smaller on songs they knew.",
+            "hookSourceRefs": [
+              "pf10"
+            ],
+            "rule": "Build on songs you know, try a line on your own, and aim to land the same note the same way.",
+            "ruleSourceRefs": [
+              "pf10",
+              "pb07"
+            ],
+            "claims": [
+              {
+                "id": "swk-c1",
+                "text": "Gaps between stronger and weaker singers were bigger when they copied new tunes than when they sang familiar songs from memory.",
+                "sourceRefs": [
+                  "pf10"
+                ]
+              },
+              {
+                "id": "swk-c2",
+                "text": "In lab tests, people who sang off pitch did worse, not better, when the right notes played along with them.",
+                "sourceRefs": [
+                  "pb07"
+                ]
+              },
+              {
+                "id": "swk-c3",
+                "text": "In one study of 45 adults with no music training, most were imprecise: their repeated tries at the same pitch did not land the same way.",
+                "sourceRefs": [
+                  "pf10"
+                ]
+              },
+              {
+                "id": "swk-c4",
+                "text": "Singers in that study were closer to the note on average than they were steady from one try to the next.",
+                "sourceRefs": [
+                  "pf10"
+                ]
+              },
+              {
+                "id": "swk-c5",
+                "text": "In two lab tests where people copied short tunes, about 10 to 15% sang at least a semitone off.",
+                "sourceRefs": [
+                  "pb07"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "swk-1",
+                "type": "order",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s4",
+                "job": "combine",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "swk-m1"
+                ],
+                "sourceRefs": [
+                  "pf10",
+                  "db07"
+                ],
+                "stem": "Put Arjun's first singing practice in a helpful order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Pick a song he has known for years",
+                    "correct": true,
+                    "feedback": "A familiar song is where singers differ least, so it makes a kind start.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Sing one verse slowly into his recorder",
+                    "correct": true,
+                    "feedback": "Singing slowly cut errors for most casual singers, and the recording keeps it.",
+                    "sourceRefs": [
+                      "db07"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Play the verse back once and listen",
+                    "correct": true,
+                    "feedback": "Hearing it back once comes after the singing, so there is something to check.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              },
+              {
+                "id": "swk-2",
+                "type": "scenario",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s4",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "swk-m1"
+                ],
+                "sourceRefs": [
+                  "pf10"
+                ],
+                "stem": "On a long train trip, Ritika wants to hum quietly to practise. Which pick gives her the best start?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A song she has hummed since school.",
+                    "correct": true,
+                    "feedback": "Right. Familiar songs showed smaller gaps between singers than new tunes did.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A tune she heard for the first time yesterday.",
+                    "correct": false,
+                    "feedback": "New tunes were where weaker singers fell furthest behind. A long-known song is easier.",
+                    "misconceptionIds": [
+                      "swk-m1"
+                    ],
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The hardest song she can think of.",
+                    "correct": false,
+                    "feedback": "Hard and new is the toughest start. A song she has known for years is kinder.",
+                    "misconceptionIds": [
+                      "swk-m1"
+                    ],
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "swk-3",
+                "type": "choose",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s5",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "swk-m2"
+                ],
+                "sourceRefs": [
+                  "pb07"
+                ],
+                "stem": "Which belief about singing along with a song is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Hearing the right notes keeps every singer on pitch.",
+                    "correct": true,
+                    "feedback": "Right, that belief is off. People who sang off pitch did worse with the right notes playing.",
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A line sung alone is worth comparing.",
+                    "correct": false,
+                    "feedback": "This is a fair test to try, so it is not the mistaken belief here.",
+                    "misconceptionIds": [
+                      "swk-m2"
+                    ],
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Some people sing worse with the notes playing.",
+                    "correct": false,
+                    "feedback": "That matches the lab result, so it is not the belief that is off.",
+                    "misconceptionIds": [
+                      "swk-m2"
+                    ],
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "swk-4",
+                "type": "estimate",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s5",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "swk-m2"
+                ],
+                "sourceRefs": [
+                  "pb07"
+                ],
+                "stem": "In two lab tests of singing short tunes, about what percent of people sang at least a semitone off?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 10 to 15%",
+                    "correct": true,
+                    "feedback": "Right. Only a small share sang that far off, which leaves most people in the clear.",
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 40%",
+                    "correct": false,
+                    "feedback": "Too high. Only about one in ten sang that far off in those tests.",
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 70%",
+                    "correct": false,
+                    "feedback": "Far too high. Most people stayed within a semitone; about a tenth did not.",
+                    "sourceRefs": [
+                      "pb07"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 12,
+                  "min": 8,
+                  "max": 17,
+                  "unit": "%"
+                }
+              },
+              {
+                "id": "swk-5",
+                "type": "predict",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s6",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "swk-m3"
+                ],
+                "sourceRefs": [
+                  "pf10"
+                ],
+                "stem": "At a college music club, a coach records each member singing one note five times. What will most recordings likely show?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Notes near the target, but not identical.",
+                    "correct": true,
+                    "feedback": "Right. Most adults were close on average yet varied from one try to the next.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Five identical notes from most of the members.",
+                    "correct": false,
+                    "feedback": "Few land a note the same way each time. Most varied a little, which is normal.",
+                    "misconceptionIds": [
+                      "swk-m3"
+                    ],
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Notes far from the target for most.",
+                    "correct": false,
+                    "feedback": "Most were closer on average than they were steady. Far misses were the smaller problem.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "swk-6",
+                "type": "explain-it-back",
+                "conceptId": "sing-what-you-know",
+                "step": "swk-s6",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "swk-m3"
+                ],
+                "sourceRefs": [
+                  "pf10"
+                ],
+                "stem": "Which line best explains back why a little wobble on repeated notes is no reason to stop?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Most adults vary a little when repeating a note.",
+                    "correct": true,
+                    "feedback": "Right. In one study most adults were imprecise on repeats, so a wobble is common.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A wobble means the ear is weak.",
+                    "correct": false,
+                    "feedback": "The wobble showed up in the voice, and most adults had it. It does not mean a weak ear.",
+                    "misconceptionIds": [
+                      "swk-m3"
+                    ],
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Wobbles fade for good after a single day of practice.",
+                    "correct": false,
+                    "feedback": "Nothing here showed that. A wobble is common, which makes it a normal place to start.",
+                    "sourceRefs": [
+                      "pf10"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "swk-s4",
+                "title": "Known songs first",
+                "claimId": "swk-c1",
+                "sourceRefs": [
+                  "pf10"
+                ],
+                "hook": {
+                  "stem": "Which will most beginners sing closer to the tune: a childhood song or a tune heard once?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The childhood song.",
+                      "correct": true,
+                      "feedback": "Right. Differences between singers were smaller on familiar songs than on new tunes."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The new tune, since it is fresh.",
+                      "correct": false,
+                      "feedback": "New tunes were where weaker singers fell furthest behind."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both about the same.",
+                      "correct": false,
+                      "feedback": "Not the same. Copying a new tune widened the gap between singers."
+                    }
+                  ]
+                },
+                "teach": "Copying a new tune is harder than singing one you know. Weaker singers fell further behind on new tunes, so start with a song you know by heart, like one from childhood.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "New tune",
+                    "lines": [
+                      "Heard once",
+                      "Bigger gaps between singers"
+                    ]
+                  },
+                  "right": {
+                    "title": "Known song",
+                    "lines": [
+                      "Sung for years",
+                      "Smaller gaps"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the choice that suits a beginner.",
+                  "parts": [
+                    "Farhan picks a trending song he heard once,",
+                    "then swaps it for a lullaby from home,",
+                    "and sings the first verse."
+                  ],
+                  "spot": "then swaps it for a lullaby from home,",
+                  "feedback": "A song he has known for years is easier than a tune heard once."
+                },
+                "guided": [
+                  {
+                    "stem": "Megha wants to start singing tonight. Which song gives her the easiest start?",
+                    "hint": "Think about how long she has known it.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A song her family sang at festivals.",
+                        "correct": true,
+                        "feedback": "Right. She has heard it for years, so the tune is already in memory."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A new song with a tricky tune.",
+                        "correct": false,
+                        "feedback": "A new tune is where singers differ most. A familiar one is easier."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Whatever new song is trending this week.",
+                        "correct": false,
+                        "feedback": "Trending songs are often new to her. Familiar songs make a gentler start."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Start with a song you already know by heart."
+              },
+              {
+                "id": "swk-s5",
+                "title": "Try one line without the song",
+                "claimId": "swk-c2",
+                "sourceRefs": [
+                  "pb07"
+                ],
+                "hook": {
+                  "stem": "You sing along with the original song to stay in tune. Could the music make it harder?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, for some people it can.",
+                      "correct": true,
+                      "feedback": "Right. In lab tests, people who sang off pitch did worse with the right notes playing."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, it keeps everyone on pitch.",
+                      "correct": false,
+                      "feedback": "Not everyone. Off-pitch singers did worse, not better, with the right notes playing."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It depends on the volume.",
+                      "correct": false,
+                      "feedback": "Volume was not tested. The finding was about singing with the right notes at all."
+                    }
+                  ]
+                },
+                "teach": "Singing over the right notes can feel like a guide. Yet in lab tests, people who sang off pitch did worse with it, so try a line alone and compare.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "With the song",
+                    "lines": [
+                      "Notes play along",
+                      "Can pull some people off"
+                    ]
+                  },
+                  "right": {
+                    "title": "On your own",
+                    "lines": [
+                      "Just your voice",
+                      "Compare by ear"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that tests the idea.",
+                  "parts": [
+                    "Imran sings a line along with the song,",
+                    "then sings the same line alone,",
+                    "and records both to compare."
+                  ],
+                  "spot": "and records both to compare.",
+                  "feedback": "Recording both versions lets him hear which one felt surer, instead of guessing."
+                },
+                "guided": [
+                  {
+                    "stem": "Lata sings with the full song playing and often drifts. What is a fair test?",
+                    "hint": "Change just one thing at a time.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sing the same line alone and compare.",
+                        "correct": true,
+                        "feedback": "Right. One line alone versus with the song shows which feels surer for her."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Turn the song up louder.",
+                        "correct": false,
+                        "feedback": "Louder notes may pull her further. Singing alone is the fair comparison."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Switch to a faster song.",
+                        "correct": false,
+                        "feedback": "Speed adds errors. Keep the song and drop the music to compare."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Try one line alone, then with the song, and compare."
+              },
+              {
+                "id": "swk-s6",
+                "title": "Same note, three times",
+                "claimId": "swk-c3",
+                "sourceRefs": [
+                  "pf10"
+                ],
+                "hook": {
+                  "stem": "Sing one note three times. How close will the three be, for most people?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "A little different each time.",
+                      "correct": true,
+                      "feedback": "Right. Most adults in one study varied when repeating the same note."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Identical, if you can hear well.",
+                      "correct": false,
+                      "feedback": "Good hearing does not make repeats identical. Some wobble is normal."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Wildly different.",
+                      "correct": false,
+                      "feedback": "Most were close but not steady. The tries varied a little, not wildly."
+                    }
+                  ]
+                },
+                "teach": "Most people wobble a little when they repeat a note, so a small wobble is normal. Aim to land one note the same way three times, then move on.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hum the note",
+                    "Hum it again",
+                    "Hum it once more",
+                    "Listen back"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the part that checks steadiness.",
+                  "parts": [
+                    "Noor hums the first note of her song,",
+                    "records it three times,",
+                    "and listens for any wobble."
+                  ],
+                  "spot": "and listens for any wobble.",
+                  "feedback": "Listening back to the three tries is the check. Small differences between them are normal."
+                },
+                "guided": [
+                  {
+                    "stem": "Vikram's three tries at one note sound slightly different. How can he read this?",
+                    "hint": "Think about what most people do.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "As normal, and worth one more round.",
+                        "correct": true,
+                        "feedback": "Right. Most adults wobble on repeats, so a little drift is expected."
+                      },
+                      {
+                        "id": "b",
+                        "text": "As proof he cannot sing.",
+                        "correct": false,
+                        "feedback": "Small wobbles were common in the study. They do not mean he cannot sing."
+                      },
+                      {
+                        "id": "c",
+                        "text": "As a sign to give up singing.",
+                        "correct": false,
+                        "feedback": "Most adults wobble a little. That is a starting point, not a stop sign."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A small wobble on repeated notes is normal."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "swk-m1",
+                "name": "New songs are the real test",
+                "correction": "Weaker singers fell furthest behind on new tunes. Familiar songs make a fairer start.",
+                "sourceRefs": [
+                  "pf10"
+                ]
+              },
+              {
+                "id": "swk-m2",
+                "name": "Singing along always helps",
+                "correction": "For people who sang off pitch, singing with the right notes made things worse in lab tests.",
+                "sourceRefs": [
+                  "pb07"
+                ]
+              },
+              {
+                "id": "swk-m3",
+                "name": "Good singers never wobble",
+                "correction": "Most adults in one study varied when repeating a pitch, so a small wobble is normal.",
+                "sourceRefs": [
+                  "pf10"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "pf10",
+                "title": "Imprecise singing is widespread",
+                "publisher": "Pfordresher, Brown, Meier, Belyk and Liotti, Journal of the Acoustical Society of America",
+                "year": 2010,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/20968388/"
+              },
+              {
+                "id": "pb07",
+                "title": "Poor-pitch singing in the absence of tone deafness",
+                "publisher": "Pfordresher and Brown, Music Perception",
+                "year": 2007,
+                "url": "https://researchconnect.buffalo.edu/en/publications/poor-pitch-singing-in-the-absence-of-tone-deafness/"
+              },
+              {
+                "id": "db07",
+                "title": "Singing proficiency in the general population",
+                "publisher": "Dalla Bella, Giguère and Peretz, Journal of the Acoustical Society of America",
+                "year": 2007,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/17348539/"
+              }
+            ],
+            "quest": {
+              "title": "Days 4 to 6: songs you know",
+              "detail": "Needs: your voice and your phone's own voice recorder. NANDI does not open the microphone. In a hostel or shared room, hum softly and pick a time when others are awake. Sing gently, with no shouting or straining. Day 4: pick a song you knew as a child or from a film. Sing verse 1 slowly. 10 min. Small version: 2 lines. Next day, ask yourself: known song or new song, which was easier? Day 5: sing one line alone, then the same line along with the song. 3 times each. 10 min. Small version: once each. Next day: alone or with the song, which felt surer? Day 6: hum the first note of your song 3 times, record it and listen. Repeat with the second note. 10 min. Small version: one note. Next day: were the three the same, close or different?",
+              "sourceRefs": [
+                "pf10",
+                "pb07"
+              ]
+            }
+          },
+          {
+            "id": "singing-past-week-one",
+            "title": "Singing past the first week",
+            "prerequisites": [],
+            "hook": "Day 7 is a first look, not a finish line. In one study, adults who sang off pitch did a bit better after just one short session.",
+            "hookSourceRefs": [
+              "bpd22"
+            ],
+            "rule": "Compare day 1 and day 7 by how sure they felt, keep sessions short, and pick songs you enjoy.",
+            "ruleSourceRefs": [
+              "hp12",
+              "bpd22",
+              "wf17"
+            ],
+            "claims": [
+              {
+                "id": "spw-c1",
+                "text": "In lab tests, listeners judged the pitch of computer tones more accurately than the pitch of real voices.",
+                "sourceRefs": [
+                  "hp12"
+                ]
+              },
+              {
+                "id": "spw-c2",
+                "text": "After one 20-minute practice session, adult poor-pitch singers did better on average. The gain was only clear for those who saw their pitch on a screen.",
+                "sourceRefs": [
+                  "bpd22"
+                ]
+              },
+              {
+                "id": "spw-c3",
+                "text": "In studies of long-term goals, enjoying the task now predicted sticking with it. Rewards that come later did not.",
+                "sourceRefs": [
+                  "wf17"
+                ]
+              },
+              {
+                "id": "spw-c4",
+                "text": "The authors of the practice study read their result as a sign that singing is a skill that grows with practice, not only an inborn gift.",
+                "sourceRefs": [
+                  "bpd22"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "spw-1",
+                "type": "fill-the-step",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s7",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "spw-m1"
+                ],
+                "sourceRefs": [
+                  "hp12"
+                ],
+                "stem": "Fill the step: to compare two of your own recordings, play each once and ask ____.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "which felt surer to sing",
+                    "correct": true,
+                    "feedback": "Right. Ears judge voice pitch roughly, so how sure it felt is a fair check.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "which one had zero slips",
+                    "correct": false,
+                    "feedback": "Ears are less exact with voices than with plain tones, so a zero-slip test asks too much.",
+                    "misconceptionIds": [
+                      "spw-m1"
+                    ],
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "which one strangers liked more",
+                    "correct": false,
+                    "feedback": "Strangers are not needed here. How sure it felt is a fair and private check.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "spw-2",
+                "type": "predict",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s7",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "spw-m1"
+                ],
+                "sourceRefs": [
+                  "hp12"
+                ],
+                "stem": "At the hostel, Kavya's first and newest recordings sound about the same to her. Working back, what is a fair reading?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her ear may miss small changes in a voice.",
+                    "correct": true,
+                    "feedback": "Right. Ears judge voice pitch less exactly than plain tones, so small changes can slip past.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "She has made no real progress since she began.",
+                    "correct": false,
+                    "feedback": "Ears are rough judges of voices, so about the same does not prove nothing changed.",
+                    "misconceptionIds": [
+                      "spw-m1"
+                    ],
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Her phone recorder is broken.",
+                    "correct": false,
+                    "feedback": "Nothing points to the phone. Ears are simply less exact with voices than with tones.",
+                    "sourceRefs": [
+                      "hp12"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "spw-3",
+                "type": "estimate",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s8",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "spw-m2"
+                ],
+                "sourceRefs": [
+                  "bpd22"
+                ],
+                "stem": "In one singing practice study, about how many minutes long was each training session?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 20 minutes",
+                    "correct": true,
+                    "feedback": "Right. Each training session was short, about a third of an hour, and some groups still gained.",
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 2 hours",
+                    "correct": false,
+                    "feedback": "Much shorter. The sessions in that study lasted about twenty minutes.",
+                    "misconceptionIds": [
+                      "spw-m2"
+                    ],
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 1 minute",
+                    "correct": false,
+                    "feedback": "Longer than that. Each session ran for about twenty minutes.",
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 20,
+                  "min": 15,
+                  "max": 25,
+                  "unit": "min"
+                }
+              },
+              {
+                "id": "spw-4",
+                "type": "scenario",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s8",
+                "job": "edge",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "spw-m2"
+                ],
+                "sourceRefs": [
+                  "bpd22"
+                ],
+                "stem": "During exam week, Zoya can spare only a few minutes a day. What keeps her singing going?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A short session, like one slow verse.",
+                    "correct": true,
+                    "feedback": "Right. One study saw average gains after a single short session, so a few minutes counts.",
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Waiting until exams end, then singing for hours.",
+                    "correct": false,
+                    "feedback": "A long session later is not needed. A single short session moved scores in one study.",
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Skipping it, since short sessions do not count.",
+                    "correct": false,
+                    "feedback": "Short sessions do count. One study saw gains after a single short session.",
+                    "misconceptionIds": [
+                      "spw-m2"
+                    ],
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "spw-5",
+                "type": "why",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s9",
+                "job": "misconception",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "spw-m3"
+                ],
+                "sourceRefs": [
+                  "wf17",
+                  "bpd22"
+                ],
+                "stem": "Tarun sings scales daily only because he hopes to perform someday. He keeps skipping days. Why might that happen?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Later rewards predict sticking with it less than enjoyment now.",
+                    "correct": true,
+                    "feedback": "Right. Enjoying the task now predicted sticking with goals, while later rewards did not.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He has no gift for singing.",
+                    "correct": false,
+                    "feedback": "A practice study suggests singing is a skill that grows with practice. Low enjoyment fits the skipping better.",
+                    "misconceptionIds": [
+                      "spw-m3"
+                    ],
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Daily practice is too often for anyone.",
+                    "correct": false,
+                    "feedback": "Nothing here says daily is too much. What predicted sticking was enjoying it now.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "spw-6",
+                "type": "choose",
+                "conceptId": "singing-past-week-one",
+                "step": "spw-s9",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "wf17",
+                  "bpd22",
+                  "hp12"
+                ],
+                "stem": "Which plan for next week puts this track's ideas together best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Short sessions of songs you like, sung slowly, with one recording.",
+                    "correct": true,
+                    "feedback": "Right. Short counts, enjoyment helps you stick, slow helps pitch, and a recording lets you compare.",
+                    "sourceRefs": [
+                      "wf17",
+                      "bpd22",
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Long daily drills of new songs, each graded note by note.",
+                    "correct": false,
+                    "feedback": "New songs, long drills and note grading work against the ideas here: known, short and judged by feel.",
+                    "sourceRefs": [
+                      "wf17",
+                      "hp12"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Sing along with the full song at its original speed.",
+                    "correct": false,
+                    "feedback": "Speed and singing along both made pitch harder in lab tests. Slow and alone is the better test.",
+                    "sourceRefs": [
+                      "bpd22"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "spw-s7",
+                "title": "Day 1 and day 7",
+                "claimId": "spw-c1",
+                "sourceRefs": [
+                  "hp12"
+                ],
+                "hook": {
+                  "stem": "You record day 1 and day 7. Can your ear tell exactly how in tune each one was?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Not exactly. Ears judge voices less well.",
+                      "correct": true,
+                      "feedback": "Right. Listeners judged plain tones more accurately than real voices, so treat your ear as a rough guide."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, ears are exact with voices.",
+                      "correct": false,
+                      "feedback": "Ears were less accurate with voices than with plain tones in lab tests."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No, so recordings are useless.",
+                      "correct": false,
+                      "feedback": "Recordings still help you compare. Your ear is a rough guide, not an exact one."
+                    }
+                  ]
+                },
+                "teach": "Record the day 1 song again and play both once. Ears judge voices less exactly than plain tones, so ask which felt surer to sing, not which was perfectly in tune.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Day 1",
+                    "lines": [
+                      "First recording",
+                      "A song you know"
+                    ]
+                  },
+                  "right": {
+                    "title": "Day 7",
+                    "lines": [
+                      "Same song, slower",
+                      "Which felt surer?"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the fairest way to compare.",
+                  "parts": [
+                    "Asha plays both recordings once,",
+                    "asks herself which one felt surer to sing,",
+                    "and puts the phone away."
+                  ],
+                  "spot": "asks herself which one felt surer to sing,",
+                  "feedback": "Ears judge voices roughly, so how sure it felt is a fairer check than a note-by-note score."
+                },
+                "guided": [
+                  {
+                    "stem": "Manoj plays his two recordings again and again, hunting for tiny pitch slips. What is a fairer check?",
+                    "hint": "Think about how exact ears are with voices.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Ask which one felt surer to sing.",
+                        "correct": true,
+                        "feedback": "Right. Ears judge voice pitch roughly, so how sure it felt is a fair check."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Score each note out of ten.",
+                        "correct": false,
+                        "feedback": "Ears are rough judges of voice pitch, so a note-by-note score may mislead."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Ask a few friends to rank his voice.",
+                        "correct": false,
+                        "feedback": "Sharing is never needed here. How it felt to sing is a fair, private check."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Compare by feel: which recording felt surer to sing?"
+              },
+              {
+                "id": "spw-s8",
+                "title": "Short sessions count",
+                "claimId": "spw-c2",
+                "sourceRefs": [
+                  "bpd22"
+                ],
+                "hook": {
+                  "stem": "Can one short practice session change singing at all?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Yes, a little, in one study.",
+                      "correct": true,
+                      "feedback": "Right. Adults who sang off pitch did better on average after a single short session."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No, it takes months to change.",
+                      "correct": false,
+                      "feedback": "One study saw average gains after a single short session."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Yes, but for trained singers.",
+                      "correct": false,
+                      "feedback": "The study worked with adults who sang off pitch, not trained singers."
+                    }
+                  ]
+                },
+                "teach": "In one study, adults who sang off pitch did better after a single short session, though the clear gain came with a screen showing pitch. So a short session counts.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Short session",
+                    "lines": [
+                      "One sitting",
+                      "Small average gain"
+                    ]
+                  },
+                  "right": {
+                    "title": "Clearest gain",
+                    "lines": [
+                      "Pitch shown on a screen",
+                      "Same short session"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that keeps practice short.",
+                  "parts": [
+                    "Rohit sings for a few minutes,",
+                    "records one verse,",
+                    "and stops while it still feels good."
+                  ],
+                  "spot": "and stops while it still feels good.",
+                  "feedback": "Stopping while it feels good keeps the session short, and short sessions still count."
+                },
+                "guided": [
+                  {
+                    "stem": "Aditi has a few minutes before class. Is it worth singing at all?",
+                    "hint": "Think about what one sitting did in the study.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Yes. A short session is real practice.",
+                        "correct": true,
+                        "feedback": "Right. One study saw average gains after a single short session."
+                      },
+                      {
+                        "id": "b",
+                        "text": "No. Practice needs an hour.",
+                        "correct": false,
+                        "feedback": "One short session moved average scores in one study, so a few minutes counts."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No. Wait for a free weekend.",
+                        "correct": false,
+                        "feedback": "Waiting is not needed. A single short session moved scores in one study."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A short session still counts as practice."
+              },
+              {
+                "id": "spw-s9",
+                "title": "Sing what you enjoy",
+                "claimId": "spw-c3",
+                "sourceRefs": [
+                  "wf17"
+                ],
+                "hook": {
+                  "stem": "What best predicts sticking with a goal: enjoying it now, or rewards that come later?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Enjoying it now.",
+                      "correct": true,
+                      "feedback": "Right. In goal studies, enjoyment now predicted sticking with it; later rewards did not."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Rewards that come later.",
+                      "correct": false,
+                      "feedback": "People often aim for later rewards, but those did not predict sticking with it."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Neither one matters.",
+                      "correct": false,
+                      "feedback": "Enjoyment now did predict sticking with it in these studies."
+                    }
+                  ]
+                },
+                "teach": "In studies of long-term goals, enjoying the task now predicted sticking with it, while later rewards did not. So pick songs you like, not songs you think you ought to sing.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Later rewards",
+                    "lines": [
+                      "A stage show someday",
+                      "Did not predict sticking"
+                    ]
+                  },
+                  "right": {
+                    "title": "Enjoyment now",
+                    "lines": [
+                      "A song you love",
+                      "Predicted sticking"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the choice built on enjoyment.",
+                  "parts": [
+                    "Sneha drops a vocal drill she finds dull,",
+                    "picks an old song she loves,",
+                    "and hums it on her walk."
+                  ],
+                  "spot": "picks an old song she loves,",
+                  "feedback": "She chose a song she loves, and enjoyment now predicted sticking with a goal."
+                },
+                "guided": [
+                  {
+                    "stem": "Harsh practises a song he dislikes because it might impress people one day. What change fits the studies?",
+                    "hint": "Think about now versus later.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Switch to a song he enjoys singing.",
+                        "correct": true,
+                        "feedback": "Right. Enjoying the task now predicted persistence better than later payoffs."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Practise the disliked song for longer.",
+                        "correct": false,
+                        "feedback": "Later rewards did not predict sticking with goals. Enjoying it now did."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Add a strict daily target.",
+                        "correct": false,
+                        "feedback": "A target is not the issue here. Enjoyment now predicted sticking with it."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Pick songs you enjoy singing today."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "spw-m1",
+                "name": "My ear can grade my voice exactly",
+                "correction": "Ears judge voice pitch less exactly than plain tones, so compare recordings by feel.",
+                "sourceRefs": [
+                  "hp12"
+                ]
+              },
+              {
+                "id": "spw-m2",
+                "name": "Short sessions don't count",
+                "correction": "In one study, a single short session moved average scores.",
+                "sourceRefs": [
+                  "bpd22"
+                ]
+              },
+              {
+                "id": "spw-m3",
+                "name": "Singing is a gift, not a skill",
+                "correction": "The authors of one practice study read their result as a sign that singing grows with practice.",
+                "sourceRefs": [
+                  "bpd22"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "hp12",
+                "title": "A frog in your throat or in your ear? Searching for the causes of poor singing",
+                "publisher": "Hutchins and Peretz, Journal of Experimental Psychology: General",
+                "year": 2012,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/21875245/"
+              },
+              {
+                "id": "bpd22",
+                "title": "The effect of visual and auditory feedback on adult poor-pitch remediation",
+                "publisher": "Berglin, Pfordresher and Demorest, Psychology of Music",
+                "year": 2022,
+                "url": "https://researchconnect.buffalo.edu/en/publications/the-effect-of-visual-and-auditory-feedback-on-adult-poor-pitch-re/"
+              },
+              {
+                "id": "wf17",
+                "title": "Immediate rewards predict adherence to long-term goals",
+                "publisher": "Woolley and Fishbach, Personality and Social Psychology Bulletin",
+                "year": 2017,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/27899467/"
+              }
+            ],
+            "quest": {
+              "title": "Day 7 and two extra days",
+              "detail": "Needs: your voice and your phone's own voice recorder. NANDI does not open the microphone. In a hostel or shared room, hum softly and pick a time when others are awake. Sing gently, with no shouting or straining. Day 7: record the day 1 song again, slowly, in a key that feels easy. Play day 1 and day 7 once each. 10 min. Small version: one verse. Next day, ask yourself: which felt surer to sing, day 1, day 7 or about the same? Extra day A: sing for 5 minutes, then stop, even if it is going well. Small version: 2 minutes of humming. Next day: did stopping early make you want to come back? Extra day B: pick a song you like, not one you think you ought to sing. Sing it slowly. 10 min. Small version: hum the chorus. Next day: did you enjoy it more than the day 1 song?",
+              "sourceRefs": [
+                "hp12",
+                "bpd22",
+                "wf17"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

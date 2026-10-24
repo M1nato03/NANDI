@@ -1,0 +1,2057 @@
+{
+  "id": "topic.try-video",
+  "version": "0.1.0",
+  "schema": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Try it: videography",
+  "description": "Seven short filming tries with the phone's own camera app: hold still, face the light, and plan shots in order.",
+  "author": "claude",
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "changelog": "DRAFT FOR EDITORS, not for release. Built from docs/reviews/cj4-try-it.md section 7.3 (branch ideas/cj4-try-it). Steps fsb-s1 to fpw-s7 are Try-it days 1 to 7; steps fpw-s8 and fpw-s9 are extra, added only because editorial checks need 3 steps per idea. The off-phone quests and next-day self-checks sit in each concept's quest detail, three days per quest. NANDI never opens the camera; quests use the phone's own camera app. No fact-check verdicts yet. See docs/reviews/cj7-sing-video.md.",
+  "kind": "topic",
+  "body": {
+    "topic": {
+      "id": "try-video",
+      "title": "Try it: videography",
+      "description": "Seven short filming tries with the phone's own camera app: hold still, face the light, and plan shots in order."
+    },
+    "modules": [
+      {
+        "id": "video-starter",
+        "title": "Videography starter",
+        "concepts": [
+          {
+            "id": "filming-steady-bright-close",
+            "title": "Filming steady, bright and close",
+            "prerequisites": [],
+            "hook": "Think good video needs gear? University filming guides start with free habits: hold still, face the light, and walk closer instead of zooming.",
+            "hookSourceRefs": [
+              "bvj22",
+              "rdg"
+            ],
+            "rule": "Rest the phone on something solid, keep the brightest light in front of your subject, and move your feet instead of zooming.",
+            "ruleSourceRefs": [
+              "bvj22",
+              "rdg"
+            ],
+            "claims": [
+              {
+                "id": "fsb-c1",
+                "text": "One university video class tells students to set the camera down on something flat, like a stack of books. It asks them to hold a steady shot for at least ten seconds.",
+                "sourceRefs": [
+                  "bvj22"
+                ]
+              },
+              {
+                "id": "fsb-c2",
+                "text": "A university filming guide advises placing the brightest light in front of the subject, not behind. Outdoors, that means the sun behind the camera.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              },
+              {
+                "id": "fsb-c3",
+                "text": "The same guide notes that digital zoom on a phone lowers image quality, so it is better to move closer to the subject.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              },
+              {
+                "id": "fsb-c4",
+                "text": "That guide also suggests a light test: record yourself in place for a few seconds and watch it back.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "fsb-1",
+                "type": "scenario",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fsb-m1"
+                ],
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "stem": "At a college fest, Meenal films the stage with her phone held up high in one hand. Her clip shakes. What helps most?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Brace the phone on a railing.",
+                    "correct": true,
+                    "feedback": "Right. A solid rest steadies the phone, and a held shot gives viewers time to see it.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Wave the phone to follow each move on stage.",
+                    "correct": false,
+                    "feedback": "Moving the phone adds shake. Resting it on something solid keeps the shot still.",
+                    "misconceptionIds": [
+                      "fsb-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Keep going and hope the shake will not show.",
+                    "correct": false,
+                    "feedback": "Shake in a hand-held clip does show. Resting the phone is the free fix.",
+                    "misconceptionIds": [
+                      "fsb-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fsb-2",
+                "type": "true-not-quite",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s1",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fsb-m1"
+                ],
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "stem": "True or not quite: steady video needs special gear.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "True. Hands alone can't keep it still.",
+                    "correct": false,
+                    "feedback": "Hands do shake, but you do not need gear. A stack of books or a table works.",
+                    "misconceptionIds": [
+                      "fsb-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Not quite. A stack of books can do it.",
+                    "correct": true,
+                    "feedback": "Right. Setting the phone on a flat surface, like books, keeps a shot steady for free.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "True, unless your phone is very new.",
+                    "correct": false,
+                    "feedback": "A new phone still shakes in the hand. A flat surface to rest it on is what helps.",
+                    "misconceptionIds": [
+                      "fsb-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fsb-3",
+                "type": "predict",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s2",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fsb-m2"
+                ],
+                "sourceRefs": [
+                  "rdg"
+                ],
+                "stem": "In the college canteen, Rehan's clip of a friend shows only a dark outline of her face. Working back, what most likely caused it?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A bright doorway was right behind her.",
+                    "correct": true,
+                    "feedback": "Right. With the brightest light behind the subject, the face comes out dark.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He held the shot for too long.",
+                    "correct": false,
+                    "feedback": "Holding a shot keeps it steady; it does not darken a face. Light from behind does.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "He filmed her in a quiet corner of the hall.",
+                    "correct": false,
+                    "feedback": "A quiet corner helps the sound, not the light. Bright light behind her is the likely cause.",
+                    "misconceptionIds": [
+                      "fsb-m2"
+                    ],
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fsb-4",
+                "type": "estimate",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s2",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fsb-m1"
+                ],
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "stem": "How long does one video class say to hold a steady shot before you stop filming? Give it in seconds.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 10 seconds",
+                    "correct": true,
+                    "feedback": "Right. The class asks for at least ten seconds of steady shot before stopping.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 1 second",
+                    "correct": false,
+                    "feedback": "Too short. The class asks for at least ten seconds, so viewers have time to take it in.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 3 minutes",
+                    "correct": false,
+                    "feedback": "Far longer than needed. The class asks for at least ten seconds per steady shot.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 10,
+                  "min": 8,
+                  "max": 15,
+                  "unit": "seconds"
+                }
+              },
+              {
+                "id": "fsb-5",
+                "type": "why",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s3",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fsb-m2"
+                ],
+                "sourceRefs": [
+                  "rdg"
+                ],
+                "stem": "A filming guide suggests recording a few seconds in place and watching it back before the real shot. Why bother?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A test shows light trouble early.",
+                    "correct": true,
+                    "feedback": "Right. Watching a few seconds back shows a dark face or glare while it is still easy to move.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Phones need to warm up before they film well.",
+                    "correct": false,
+                    "feedback": "Nothing here says phones need warming up. The test is there to check the light.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It makes the final video longer and fuller.",
+                    "correct": false,
+                    "feedback": "The test clip is not part of the final video. It is a quick check on the light.",
+                    "misconceptionIds": [
+                      "fsb-m2"
+                    ],
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fsb-6",
+                "type": "match",
+                "conceptId": "filming-steady-bright-close",
+                "step": "fsb-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "bvj22",
+                  "rdg"
+                ],
+                "stem": "Match each filming habit to the problem it guards against.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Rest the phone on books",
+                    "correct": true,
+                    "feedback": "A solid rest keeps the phone from moving, so the clip stays still.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Wobbly clip",
+                    "correct": true,
+                    "feedback": "Shake from a hand-held phone, which a solid rest helps stop.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Light in front of the subject",
+                    "correct": true,
+                    "feedback": "Light falling on the subject keeps details clear instead of hidden in shadow.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Face in shadow",
+                    "correct": true,
+                    "feedback": "A face goes dark when the brightest light sits behind it.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "e",
+                    "text": "Walk up to the subject",
+                    "correct": true,
+                    "feedback": "Moving closer gets a close-up without digital zoom.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "f",
+                    "text": "Low-quality zoomed picture",
+                    "correct": true,
+                    "feedback": "Zoom on a phone makes the picture worse. Walking closer does not.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  },
+                  {
+                    "left": "e",
+                    "right": "f"
+                  },
+                  {
+                    "left": "f",
+                    "right": "e"
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "fsb-s1",
+                "title": "Hold still",
+                "claimId": "fsb-c1",
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "hook": {
+                  "stem": "Your clip of the hostel corridor looks wobbly. What is the quickest free fix?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Rest the phone on something solid.",
+                      "correct": true,
+                      "feedback": "Right. Setting the phone on a flat surface, like a stack of books, keeps it steady."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Move the phone around much more slowly.",
+                      "correct": false,
+                      "feedback": "Any movement in the hand shows up as shake. Resting the phone works better."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Get a costlier phone.",
+                      "correct": false,
+                      "feedback": "No new phone is needed. Something solid to rest it on is the free fix."
+                    }
+                  ]
+                },
+                "teach": "Hand-held shots shake, so rest the phone on something solid, like a stack of books or a bottle. Then hold each shot for about ten seconds before you stop.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Rest the phone",
+                    "Frame the shot",
+                    "Hold it still"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the part that keeps the shot steady.",
+                  "parts": [
+                    "Arnav props his phone against a stack of books,",
+                    "frames the window,",
+                    "and waits while it records."
+                  ],
+                  "spot": "Arnav props his phone against a stack of books,",
+                  "feedback": "The books hold the phone still, so the shot does not shake the way a hand-held one would."
+                },
+                "guided": [
+                  {
+                    "stem": "Priya films a temple bell while walking past it. The clip shakes. What change helps most?",
+                    "hint": "Think about what her hands are doing.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Stop and rest the phone on a ledge.",
+                        "correct": true,
+                        "feedback": "Right. A still phone and a held shot give a steady clip."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Walk past it faster.",
+                        "correct": false,
+                        "feedback": "Speed does not steady a hand. A solid rest does."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Add a steadying filter to the clip later.",
+                        "correct": false,
+                        "feedback": "A filter does not fix shake, and editing adds screen time. Resting the phone does."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Rest the phone and hold each shot still."
+              },
+              {
+                "id": "fsb-s2",
+                "title": "Light in front",
+                "claimId": "fsb-c2",
+                "sourceRefs": [
+                  "rdg"
+                ],
+                "hook": {
+                  "stem": "A friend sits with a bright window behind her while you film. How will her face likely look?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Dark.",
+                      "correct": true,
+                      "feedback": "Right. With the brightest light behind her, her face comes out dark."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Bright and clear.",
+                      "correct": false,
+                      "feedback": "The window, not her face, is the brightest thing, so her face goes dim."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Sharper than usual.",
+                      "correct": false,
+                      "feedback": "Light from behind does not sharpen. It leaves the face in shadow."
+                    }
+                  ]
+                },
+                "teach": "Put the brightest light in front of your subject, not behind, because a bright window behind them leaves the face dark. Outdoors, keep the sun behind you.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Window behind",
+                    "lines": [
+                      "Face in shadow",
+                      "Bright blob behind"
+                    ]
+                  },
+                  "right": {
+                    "title": "Window in front",
+                    "lines": [
+                      "Face lit",
+                      "Details show"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the move that fixes the light.",
+                  "parts": [
+                    "Divya films her grandfather, who said yes,",
+                    "sees his face go dark against the window,",
+                    "and moves so the window lights his face."
+                  ],
+                  "spot": "and moves so the window lights his face.",
+                  "feedback": "Now the window light falls on his face instead of glaring from behind him."
+                },
+                "guided": [
+                  {
+                    "stem": "Sameer films a plant on a sunny balcony, with the sun behind the plant. It looks like a dark shape. What helps?",
+                    "hint": "Think about where the sun sits.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Stand with the sun behind him.",
+                        "correct": true,
+                        "feedback": "Right. With the sun behind the camera, light falls on the plant."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Turn the screen brightness up.",
+                        "correct": false,
+                        "feedback": "Screen brightness does not light the plant. Moving so the sun lights it does."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Come back and film at night.",
+                        "correct": false,
+                        "feedback": "Less light makes it worse. Put the sun behind the camera instead."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Brightest light in front of the subject, not behind."
+              },
+              {
+                "id": "fsb-s3",
+                "title": "Walk closer, don't zoom",
+                "claimId": "fsb-c3",
+                "sourceRefs": [
+                  "rdg"
+                ],
+                "hook": {
+                  "stem": "You want a close-up of a chai cup across the table. What gives the sharper picture?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Walk closer to the cup.",
+                      "correct": true,
+                      "feedback": "Right. Moving closer keeps quality, while digital zoom on a phone lowers it."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Pinch to zoom in.",
+                      "correct": false,
+                      "feedback": "Digital zoom on a phone lowers image quality. Moving closer avoids that."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Either way, it makes no difference.",
+                      "correct": false,
+                      "feedback": "There is a difference: digital zoom lowers quality, while walking closer does not."
+                    }
+                  ]
+                },
+                "teach": "Digital zoom on a phone lowers picture quality, so move your feet instead. Walk closer for a close-up, and step back for a wide shot.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Zoom in",
+                    "lines": [
+                      "Fingers pinch",
+                      "Lower quality"
+                    ]
+                  },
+                  "right": {
+                    "title": "Walk closer",
+                    "lines": [
+                      "Feet move",
+                      "Quality kept"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the move that gets the close-up.",
+                  "parts": [
+                    "Lakshmi spots a kite stuck in a tree,",
+                    "skips the zoom button,",
+                    "and walks to the foot of the tree to film it."
+                  ],
+                  "spot": "and walks to the foot of the tree to film it.",
+                  "feedback": "Walking up to the tree gets the close-up without the quality drop that digital zoom brings."
+                },
+                "guided": [
+                  {
+                    "stem": "Tushar wants a close-up of his sister's rangoli from his doorway. What is the better move?",
+                    "hint": "Think about using his feet.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Walk up to it and film from close.",
+                        "correct": true,
+                        "feedback": "Right. Moving closer gives the close-up without the quality drop of zoom."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Zoom in hard from the door.",
+                        "correct": false,
+                        "feedback": "Digital zoom lowers quality. Walking up to the rangoli keeps it sharp."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Film it wide from the door and crop it later.",
+                        "correct": false,
+                        "feedback": "Cropping needs an editing app and more screen time. Walking closer gets the close-up now."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "For a close-up, walk closer instead of zooming."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "fsb-m1",
+                "name": "Steady video needs gear",
+                "correction": "Resting the phone on something flat, like a stack of books, steadies a shot for free.",
+                "sourceRefs": [
+                  "bvj22"
+                ]
+              },
+              {
+                "id": "fsb-m2",
+                "name": "Any bright light will do",
+                "correction": "Where the light sits matters: the brightest light belongs in front of the subject, not behind.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              },
+              {
+                "id": "fsb-m3",
+                "name": "Zoom is as good as walking closer",
+                "correction": "Zoom on a phone makes the picture worse, so walking closer works better.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bvj22",
+                "title": "Video Storytelling (class notes, Advanced Video Journalism)",
+                "publisher": "Baruch College, City University of New York",
+                "year": 2022,
+                "url": "https://blogs.baruch.cuny.edu/advancedvideojournalism/?p=22"
+              },
+              {
+                "id": "rdg",
+                "title": "Filming on your phone",
+                "publisher": "University of Reading",
+                "year": 2026,
+                "url": "https://www.reading.ac.uk/research-innovation-hub/communications-engagement-and-impact/research-communications/filming-on-your-phone"
+              }
+            ],
+            "quest": {
+              "title": "Days 1 to 3: steady, bright, close",
+              "detail": "Needs: the phone you have. Use your phone's own camera app; NANDI does not open the camera. Camera app only, and close it after the last shot. Ask before you film anyone. Do not film in washrooms or in other people's rooms, and stay off roads. Nothing needs posting. Day 1: film 5 shots of your room or the view from a window, with the phone resting on a stack of books or against a bottle, 10 seconds each, no moving. 15 min. Small version: one 10-second shot from where you sit. Next day, ask yourself: which shot is steadiest, and what held the phone? Day 2: film an object, or a friend who said yes, once facing a window and once with the window behind. 3 pairs. 15 min. Small version: one pair. Next day: which version shows the face or object better? Day 3: film one thing 3 ways: wide, after walking closer, and a close-up of a detail. Then film it once zoomed in from where you started. 10 to 15 min. Small version: one wide, one close. Next day: zoomed or walked closer, which is sharper?",
+              "sourceRefs": [
+                "bvj22",
+                "rdg"
+              ]
+            }
+          },
+          {
+            "id": "filming-sound-and-shots",
+            "title": "Filming sound and shots",
+            "prerequisites": [],
+            "hook": "Think the picture is everything? In two tests, people rated a scientist as less smart when the sound was poor.",
+            "hookSourceRefs": [
+              "ns18"
+            ],
+            "rule": "Film where it is quiet, show an action in a few kinds of shot, and treat the rule of thirds as a choice.",
+            "ruleSourceRefs": [
+              "rdg",
+              "bmr17",
+              "am14"
+            ],
+            "claims": [
+              {
+                "id": "fss-c1",
+                "text": "In two tests, people who heard poor sound rated the same scientists as less smart and their work as less important.",
+                "sourceRefs": [
+                  "ns18"
+                ]
+              },
+              {
+                "id": "fss-c2",
+                "text": "A university video class teaches a five-shot sequence to show an action: the hands up close, the face up close, a medium shot, over the shoulder, and one creative angle.",
+                "sourceRefs": [
+                  "bmr17"
+                ]
+              },
+              {
+                "id": "fss-c3",
+                "text": "A study of large sets of highly rated photos and paintings found that the rule of thirds played only a minor role, if any.",
+                "sourceRefs": [
+                  "am14"
+                ]
+              },
+              {
+                "id": "fss-c4",
+                "text": "A university filming guide calls the rule of thirds a reliable way to make pleasing images.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              },
+              {
+                "id": "fss-c5",
+                "text": "That guide advises filming in a quiet place, away from roads and crowds, and doing a sound check by recording a short test clip.",
+                "sourceRefs": [
+                  "rdg"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "fss-1",
+                "type": "order",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s4",
+                "job": "combine",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fss-m1"
+                ],
+                "sourceRefs": [
+                  "rdg"
+                ],
+                "stem": "Put Bhavna's short talk recording in a helpful order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Find a quiet corner away from the road",
+                    "correct": true,
+                    "feedback": "A quiet spot comes before anything else, since noise is hard to remove later.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Record a short test clip",
+                    "correct": true,
+                    "feedback": "A test clip in that spot lets her check the sound before the real take.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Listen back to the test",
+                    "correct": true,
+                    "feedback": "Hearing the test shows any noise while it is still easy to move.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Record the full talk",
+                    "correct": true,
+                    "feedback": "With the spot and sound checked, the real take comes at the end.",
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              },
+              {
+                "id": "fss-2",
+                "type": "scenario",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s4",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fss-m1"
+                ],
+                "sourceRefs": [
+                  "rdg",
+                  "ns18"
+                ],
+                "stem": "In the hostel, Kunal wants to record a birthday message for his cousin. Which spot gives the clearest sound?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "His room with the door shut.",
+                    "correct": true,
+                    "feedback": "Right. A quiet room keeps noise out, and clear sound changes how viewers judge the speaker.",
+                    "sourceRefs": [
+                      "rdg",
+                      "ns18"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The corridor during the dinner rush.",
+                    "correct": false,
+                    "feedback": "Crowds add noise, and poor audio makes speakers seem worse. A quiet room is better.",
+                    "misconceptionIds": [
+                      "fss-m1"
+                    ],
+                    "sourceRefs": [
+                      "rdg",
+                      "ns18"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Right under the ceiling fan at full speed.",
+                    "correct": false,
+                    "feedback": "A fan adds steady noise to the recording. A quiet room with the door shut is clearer.",
+                    "misconceptionIds": [
+                      "fss-m1"
+                    ],
+                    "sourceRefs": [
+                      "rdg"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fss-3",
+                "type": "choose",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s5",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fss-m2"
+                ],
+                "sourceRefs": [
+                  "bmr17"
+                ],
+                "stem": "Which belief about filming an action is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "One long wide shot shows an action best.",
+                    "correct": true,
+                    "feedback": "Right, that belief is off. A mix of close-ups, a medium shot and angles shows what and how.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Close-ups of hands help show how it is done.",
+                    "correct": false,
+                    "feedback": "This one is sound: the hands close-up is part of the five-shot sequence.",
+                    "misconceptionIds": [
+                      "fss-m2"
+                    ],
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A sequence can have three shots, or ten.",
+                    "correct": false,
+                    "feedback": "That is fair: the class notes add that real sequences vary in length and order.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fss-4",
+                "type": "estimate",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s5",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fss-m2"
+                ],
+                "sourceRefs": [
+                  "bmr17"
+                ],
+                "stem": "In a classic filming sequence taught to beginners for showing one action, how many shots are there?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 5 shots",
+                    "correct": true,
+                    "feedback": "Right. Hands, face, medium, over the shoulder and one creative angle make five.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 20 shots",
+                    "correct": false,
+                    "feedback": "Far fewer. The classic beginner sequence uses five kinds of shot.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Just 1 long shot",
+                    "correct": false,
+                    "feedback": "One shot is the habit the sequence replaces. It uses five kinds of shot.",
+                    "misconceptionIds": [
+                      "fss-m2"
+                    ],
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 5,
+                  "min": 4,
+                  "max": 6,
+                  "unit": "shots"
+                }
+              },
+              {
+                "id": "fss-5",
+                "type": "predict",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s6",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fss-m3"
+                ],
+                "sourceRefs": [
+                  "am14"
+                ],
+                "stem": "A college photo club checks its highest-rated photos. Going by the study, how much will they follow the rule of thirds?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About as little as photos that skip it.",
+                    "correct": true,
+                    "feedback": "Right. Top-rated photos scored about as low on thirds as photos that did not follow it.",
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Most of them will follow the rule closely.",
+                    "correct": false,
+                    "feedback": "That is what the rule's fame suggests, but top-rated images leaned on it very little.",
+                    "misconceptionIds": [
+                      "fss-m3"
+                    ],
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About half, split evenly.",
+                    "correct": false,
+                    "feedback": "No such split was found. Top-rated photos scored about as low on thirds as photos that skip it.",
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fss-6",
+                "type": "explain-it-back",
+                "conceptId": "filming-sound-and-shots",
+                "step": "fss-s6",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fss-m3"
+                ],
+                "sourceRefs": [
+                  "am14",
+                  "rdg"
+                ],
+                "stem": "Which line best explains back what the thirds study found?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Top-rated images did not lean on thirds much.",
+                    "correct": true,
+                    "feedback": "Right. In large sets of highly rated photos and paintings, thirds played a minor role, if any.",
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Thirds made images about twice as pleasing to people.",
+                    "correct": false,
+                    "feedback": "No such gain was found. Ratings linked only weakly, or not at all, with thirds.",
+                    "misconceptionIds": [
+                      "fss-m3"
+                    ],
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Centred images were rated the highest.",
+                    "correct": false,
+                    "feedback": "The study did not crown centring. It found thirds played a minor role, if any.",
+                    "sourceRefs": [
+                      "am14"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "fss-s4",
+                "title": "Sound counts",
+                "claimId": "fss-c1",
+                "sourceRefs": [
+                  "ns18",
+                  "rdg"
+                ],
+                "hook": {
+                  "stem": "Two clips show the same talk. One has muddy sound. How do viewers tend to judge that speaker?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "As less intelligent.",
+                      "correct": true,
+                      "feedback": "Right. In two experiments, poor audio made the same scientists seem less intelligent."
+                    },
+                    {
+                      "id": "b",
+                      "text": "No differently.",
+                      "correct": false,
+                      "feedback": "Sound changed how people judged the speaker, even with the same words."
+                    },
+                    {
+                      "id": "c",
+                      "text": "As more honest.",
+                      "correct": false,
+                      "feedback": "Poor audio made speakers seem less intelligent, not more honest."
+                    }
+                  ]
+                },
+                "teach": "Poor sound changes how people judge the speaker, so treat sound as part of the shot. Film in a quiet spot, away from roads and crowds.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Noisy spot",
+                    "lines": [
+                      "Traffic and chatter",
+                      "Speaker judged worse"
+                    ]
+                  },
+                  "right": {
+                    "title": "Quiet spot",
+                    "lines": [
+                      "Clear voice",
+                      "Fairer hearing"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the choice that protects the sound.",
+                  "parts": [
+                    "Gaurav plans to film his speech by the main road,",
+                    "hears the honking,",
+                    "and moves into an empty room."
+                  ],
+                  "spot": "and moves into an empty room.",
+                  "feedback": "An empty room keeps the honking out, so the voice comes through clearly."
+                },
+                "guided": [
+                  {
+                    "stem": "Anjali records a short talk for her club near a busy food counter. What one change helps most?",
+                    "hint": "Think about what the viewer hears.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Move somewhere quiet before recording.",
+                        "correct": true,
+                        "feedback": "Right. Clean sound changes how viewers judge the speaker, so a quiet spot helps."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Speak much faster to finish sooner.",
+                        "correct": false,
+                        "feedback": "Rushing does not remove noise. A quiet spot gives clearer sound."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Film it in brighter light.",
+                        "correct": false,
+                        "feedback": "Light fixes the picture, not the sound. Noise needs a quieter place."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Find a quiet spot: sound changes how viewers judge you."
+              },
+              {
+                "id": "fss-s5",
+                "title": "Five shots show an action",
+                "claimId": "fss-c2",
+                "sourceRefs": [
+                  "bmr17"
+                ],
+                "hook": {
+                  "stem": "You film a friend making chai in one long wide shot. What would help viewers follow it?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Mix in close-ups and angles.",
+                      "correct": true,
+                      "feedback": "Right. A five-shot sequence, from hands to face, makes an action clear."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Make the one wide shot run longer.",
+                      "correct": false,
+                      "feedback": "More of the same view adds little. Different shots show what is happening and how."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Add fast music.",
+                      "correct": false,
+                      "feedback": "Music does not show the action. Close-ups and angles do."
+                    }
+                  ]
+                },
+                "teach": "To show an action, film several kinds of shot: hands up close, the face, a medium shot, over the shoulder, and one creative angle. Together they show what is happening and how, so viewers follow.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Hands up close",
+                    "Face up close",
+                    "Medium shot",
+                    "Over the shoulder"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the shot that shows how it is done.",
+                  "parts": [
+                    "Rekha's brother agrees to be filmed,",
+                    "she films the whole room from the door,",
+                    "then films his hands tying his laces up close."
+                  ],
+                  "spot": "then films his hands tying his laces up close.",
+                  "feedback": "The hands close-up shows how the laces get tied, which a wide shot from the door cannot."
+                },
+                "guided": [
+                  {
+                    "stem": "Sunil has a wide shot of his mother rolling rotis, filmed with her yes. Which shot would add the most?",
+                    "hint": "Think about where the action happens.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A close-up of her hands on the dough.",
+                        "correct": true,
+                        "feedback": "Right. Hands up close show how the action is done."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The same wide shot again.",
+                        "correct": false,
+                        "feedback": "Repeating the wide shot shows nothing new. Hands up close show the how."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A shot of the ceiling fan.",
+                        "correct": false,
+                        "feedback": "That shows nothing of the action. Hands, face and angles tell the story."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Show an action with hands, face, medium and angle shots."
+              },
+              {
+                "id": "fss-s6",
+                "title": "Thirds is a habit, not a law",
+                "claimId": "fss-c3",
+                "sourceRefs": [
+                  "am14",
+                  "rdg"
+                ],
+                "hook": {
+                  "stem": "Does putting your subject on a third line make a picture better?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Not reliably; its role looked minor.",
+                      "correct": true,
+                      "feedback": "Right. In large sets of highly rated photos and paintings, thirds played a minor role, if any."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, it is a firm rule of good pictures.",
+                      "correct": false,
+                      "feedback": "Many guides call it reliable, but a study of top-rated images found little role."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No, centring wins.",
+                      "correct": false,
+                      "feedback": "The study did not crown centring either. Try both and pick."
+                    }
+                  ]
+                },
+                "teach": "Many guides teach the rule of thirds, yet a study of highly rated photos and paintings found it played a minor role, if any. So treat it as one option: shoot both ways and pick.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "On a third line",
+                    "lines": [
+                      "Subject off-centre",
+                      "A common habit"
+                    ]
+                  },
+                  "right": {
+                    "title": "Centred",
+                    "lines": [
+                      "Subject in the middle",
+                      "Also fine"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that tests the rule.",
+                  "parts": [
+                    "Yash frames a street dog on a third line,",
+                    "films it centred too,",
+                    "and keeps the one he likes."
+                  ],
+                  "spot": "films it centred too,",
+                  "feedback": "Filming it both ways turns the rule into a test, and his own eye picks the winner."
+                },
+                "guided": [
+                  {
+                    "stem": "Kriti frames a diya on a third line, but likes her centred version more. What fits the study?",
+                    "hint": "Think about whose eye decides.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Keep the centred one; thirds is a choice.",
+                        "correct": true,
+                        "feedback": "Right. Thirds played a minor role in top-rated images, so her eye can choose."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Delete it; thirds is the rule.",
+                        "correct": false,
+                        "feedback": "In a study of top-rated images, thirds played a minor role, if any."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Crop it until it fits the grid.",
+                        "correct": false,
+                        "feedback": "No need. The rule of thirds is one option, not a law."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Thirds is one option: shoot both ways and pick."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "fss-m1",
+                "name": "Picture is what matters",
+                "correction": "Poor audio made the same speakers seem less intelligent, so sound counts too.",
+                "sourceRefs": [
+                  "ns18"
+                ]
+              },
+              {
+                "id": "fss-m2",
+                "name": "One wide shot shows it all",
+                "correction": "A mix of close-ups, a medium shot and angles shows what is happening and how.",
+                "sourceRefs": [
+                  "bmr17"
+                ]
+              },
+              {
+                "id": "fss-m3",
+                "name": "Thirds is a law",
+                "correction": "In a study of highly rated photos and paintings, thirds played a minor role, if any.",
+                "sourceRefs": [
+                  "am14"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "ns18",
+                "title": "What makes someone believe or reject science? Quality of recordings (news release on Newman and Schwarz)",
+                "publisher": "Australian National University, via ScienceDaily",
+                "year": 2018,
+                "url": "https://www.sciencedaily.com/releases/2018/04/180413093842.htm"
+              },
+              {
+                "id": "bmr17",
+                "title": "Class Agenda, November 8, 2017 (Multimedia Reporting)",
+                "publisher": "Baruch College, City University of New York",
+                "year": 2017,
+                "url": "https://blogs.baruch.cuny.edu/multimediafall2017/?p=572"
+              },
+              {
+                "id": "am14",
+                "title": "Evaluating the rule of thirds in photographs and paintings",
+                "publisher": "Amirshahi, Hayn-Leichsenring, Denzler and Redies, Art and Perception",
+                "year": 2014,
+                "url": "https://uniklinikum-jena.de/anatomie1_media/Inhalte/AmirshahiARTP2014-font-1.pdf"
+              },
+              {
+                "id": "rdg",
+                "title": "Filming on your phone",
+                "publisher": "University of Reading",
+                "year": 2026,
+                "url": "https://www.reading.ac.uk/research-innovation-hub/communications-engagement-and-impact/research-communications/filming-on-your-phone"
+              }
+            ],
+            "quest": {
+              "title": "Days 4 to 6: sound, shots and a rule",
+              "detail": "Needs: the phone you have. Use your phone's own camera app; NANDI does not open the camera. Camera app only, and close it after the last shot. Ask before you film anyone. Do not film in washrooms or in other people's rooms, and stay off roads. Nothing needs posting. Day 4: say one sentence to the camera in a noisy spot, then in a quiet one. 10 min. Small version: one noisy, one quiet. Next day, ask yourself: which one would you rather listen to? Day 5: film someone making chai or tying laces, after they say yes, or film your own hands with the phone propped up. Get the hands, the face, a medium shot, over the shoulder and one creative angle. 20 min. Small version: hands and face only. Next day: which of the 5 shots tells the most? Day 6: shoot the same subject centred and on a third line, 3 pairs. 10 min. Small version: one pair. Next day: which of each pair do you like more? There is no right answer.",
+              "sourceRefs": [
+                "rdg",
+                "ns18",
+                "bmr17",
+                "am14"
+              ]
+            }
+          },
+          {
+            "id": "filming-past-week-one",
+            "title": "Filming past the first week",
+            "prerequisites": [],
+            "hook": "Day 7 is a first look, not a finish line. No study shows video skill in a week, so compare with your own day 1.",
+            "hookSourceRefs": [
+              "bvj22"
+            ],
+            "rule": "Plan shots in order so the clip needs no editing app, use the camera to notice, and film what you enjoy.",
+            "ruleSourceRefs": [
+              "bvj22",
+              "dzb16",
+              "wf17"
+            ],
+            "claims": [
+              {
+                "id": "fpw-c1",
+                "text": "One university video class explains that a run of shots shows viewers where we are, what we see, what is going on and how.",
+                "sourceRefs": [
+                  "bvj22"
+                ]
+              },
+              {
+                "id": "fpw-c2",
+                "text": "In 3 field and 6 lab tests, taking photos made good times more enjoyable when it drew people into the moment.",
+                "sourceRefs": [
+                  "dzb16"
+                ]
+              },
+              {
+                "id": "fpw-c3",
+                "text": "In studies of long-term goals, enjoying the task now predicted sticking with it. Rewards that come later did not.",
+                "sourceRefs": [
+                  "wf17"
+                ]
+              },
+              {
+                "id": "fpw-c4",
+                "text": "The photo boost was less likely when taking photos got in the way of the experience.",
+                "sourceRefs": [
+                  "dzb16"
+                ]
+              },
+              {
+                "id": "fpw-c5",
+                "text": "In one university class, groups got 20 to 30 minutes to find and film a five-shot sequence.",
+                "sourceRefs": [
+                  "bmr17"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "fpw-1",
+                "type": "fill-the-step",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s7",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fpw-m1"
+                ],
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "stem": "Fill the step: to make a clip that needs no editing app, list your shots and ____.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "shoot them in that order",
+                    "correct": true,
+                    "feedback": "Right. Shots filmed in a planned order already show where, what and how.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "shoot whatever looks cool",
+                    "correct": false,
+                    "feedback": "Random shots leave viewers unsure about where and what. A planned order orients them.",
+                    "misconceptionIds": [
+                      "fpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "shoot one long take of everything",
+                    "correct": false,
+                    "feedback": "One long take rarely shows where, what and how. Planned shots in order do.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fpw-2",
+                "type": "predict",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s7",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "fpw-m1"
+                ],
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "stem": "At a college fest, Shreya films six shots of setting up a stall, in the order they happened. What will viewers most likely get?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A clear sense of where, what and how.",
+                    "correct": true,
+                    "feedback": "Right. A sequence in order orients viewers to the place, the action and how it is done.",
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A confusing jumble of unrelated bits.",
+                    "correct": false,
+                    "feedback": "Shots in the order they happened tell a story. A jumble comes from random order.",
+                    "misconceptionIds": [
+                      "fpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A clip that cannot be watched without editing.",
+                    "correct": false,
+                    "feedback": "Filmed in order, the shots already make sense. No editing app is needed.",
+                    "misconceptionIds": [
+                      "fpw-m1"
+                    ],
+                    "sourceRefs": [
+                      "bvj22"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fpw-3",
+                "type": "estimate",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s8",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "bmr17"
+                ],
+                "stem": "In one class task on filming a five-shot sequence, about how many minutes did each group get?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 20 to 30 minutes",
+                    "correct": true,
+                    "feedback": "Right. Groups had about half an hour to find an action and film the five shots.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 2 minutes",
+                    "correct": false,
+                    "feedback": "Too short. Groups had about twenty to thirty minutes, enough to find an action first.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 3 hours",
+                    "correct": false,
+                    "feedback": "Much longer than the class gave. Groups had about twenty to thirty minutes.",
+                    "sourceRefs": [
+                      "bmr17"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 25,
+                  "min": 20,
+                  "max": 30,
+                  "unit": "min"
+                }
+              },
+              {
+                "id": "fpw-4",
+                "type": "scenario",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s8",
+                "job": "edge",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "fpw-m2"
+                ],
+                "sourceRefs": [
+                  "dzb16"
+                ],
+                "stem": "On a monsoon walk to college, Neel wants to film the rain without missing the walk. What fits the studies best?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Film two or three shots, then pocket the phone.",
+                    "correct": true,
+                    "feedback": "Right. The camera helped when it drew people in, and less when it got in the way.",
+                    "sourceRefs": [
+                      "dzb16"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Film the whole walk from start to end.",
+                    "correct": false,
+                    "feedback": "Filming the whole way keeps the camera between him and the walk, where it helps less.",
+                    "misconceptionIds": [
+                      "fpw-m2"
+                    ],
+                    "sourceRefs": [
+                      "dzb16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Watch the screen, not the rain, and check later.",
+                    "correct": false,
+                    "feedback": "Watching the screen pulls him out of the moment. A few shots, then looking up, keeps him in it.",
+                    "misconceptionIds": [
+                      "fpw-m2"
+                    ],
+                    "sourceRefs": [
+                      "dzb16"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fpw-5",
+                "type": "why",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s9",
+                "job": "misconception",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "fpw-m3"
+                ],
+                "sourceRefs": [
+                  "wf17"
+                ],
+                "stem": "Gautam films daily only to grow a big following someday, and keeps skipping days. Why might that be?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Later payoffs predict sticking less than fun now.",
+                    "correct": true,
+                    "feedback": "Right. Enjoying the task now predicted sticking with goals, while later rewards did not.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He lacks a creative gift.",
+                    "correct": false,
+                    "feedback": "Nothing here is about a gift. Enjoyment now predicted sticking; later payoffs did not.",
+                    "misconceptionIds": [
+                      "fpw-m3"
+                    ],
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Daily filming is too often for anyone to keep up.",
+                    "correct": false,
+                    "feedback": "Nothing here says daily is too much. What predicted sticking was enjoying it now.",
+                    "sourceRefs": [
+                      "wf17"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "fpw-6",
+                "type": "choose",
+                "conceptId": "filming-past-week-one",
+                "step": "fpw-s9",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "bvj22",
+                  "dzb16",
+                  "wf17"
+                ],
+                "stem": "Which plan for the next fortnight best combines this track's habits?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Short planned clips of things you like, then the phone away.",
+                    "correct": true,
+                    "feedback": "Right. Planned order, enjoyment now and putting the camera down all come from this track.",
+                    "sourceRefs": [
+                      "bvj22",
+                      "dzb16",
+                      "wf17"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Hours of random footage, edited and posted daily.",
+                    "correct": false,
+                    "feedback": "Random order, long screen time and posting work against what this track teaches.",
+                    "sourceRefs": [
+                      "bvj22",
+                      "dzb16"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "One long zoomed take of whatever is trending this week.",
+                    "correct": false,
+                    "feedback": "One long take, zoom and trends for views all cut against the ideas here.",
+                    "sourceRefs": [
+                      "bvj22",
+                      "wf17"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "fpw-s7",
+                "title": "Edit in the camera",
+                "claimId": "fpw-c1",
+                "sourceRefs": [
+                  "bvj22"
+                ],
+                "hook": {
+                  "stem": "You want a 30-second clip of making tea, with no editing app. What makes that possible?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Plan the shots, then film them in order.",
+                      "correct": true,
+                      "feedback": "Right. Filmed in order, the shots already show where, what and how."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Film one long take and hope.",
+                      "correct": false,
+                      "feedback": "One long take rarely shows where, what and how. Planned shots in order do."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Download an editing app.",
+                      "correct": false,
+                      "feedback": "An editing app adds screen time. Planning shots in order skips it."
+                    }
+                  ]
+                },
+                "teach": "A sequence shows viewers where we are, what is happening and how. Plan your shots and film them in that order, so the clip makes sense with no editing app.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Where: a wide shot",
+                    "What: a medium shot",
+                    "How: a close-up",
+                    "Hold each shot"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the part that saves the editing.",
+                  "parts": [
+                    "Pallavi lists six shots of packing her bag,",
+                    "films them in that order,",
+                    "and watches the clip once."
+                  ],
+                  "spot": "films them in that order,",
+                  "feedback": "Filming in the planned order means the clip already runs right, so there is nothing to edit."
+                },
+                "guided": [
+                  {
+                    "stem": "Ravi films his morning routine in random order. The clip is confusing. What would fix it next time?",
+                    "hint": "Think about the order a viewer needs.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Plan the shots and film in sequence.",
+                        "correct": true,
+                        "feedback": "Right. Shots filmed in a planned order already make sense to a viewer."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Film twice as many shots, in random order.",
+                        "correct": false,
+                        "feedback": "More random shots add confusion. A planned order shows where, what and how."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Speed the clip up.",
+                        "correct": false,
+                        "feedback": "Speed does not fix order. Planning shots in sequence does."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Plan the shots, then film them in order."
+              },
+              {
+                "id": "fpw-s8",
+                "title": "Film to notice, then put it down",
+                "claimId": "fpw-c2",
+                "sourceRefs": [
+                  "dzb16"
+                ],
+                "hook": {
+                  "stem": "When does taking photos make an outing more enjoyable, in studies?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "When it draws you into the moment.",
+                      "correct": true,
+                      "feedback": "Right. Taking photos raised enjoyment when it raised engagement with the experience."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Whenever you post them.",
+                      "correct": false,
+                      "feedback": "Posting was not part of it. Enjoyment rose when photos drew people into the moment."
+                    },
+                    {
+                      "id": "c",
+                      "text": "When you take as many as you can.",
+                      "correct": false,
+                      "feedback": "Volume was not the key. Being drawn into the moment was."
+                    }
+                  ]
+                },
+                "teach": "In experiments, taking photos raised enjoyment when it drew people into the moment, and less so when it got in the way. So use the camera to notice, then put the phone down.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Camera draws you in",
+                    "lines": [
+                      "You notice details",
+                      "More enjoyment"
+                    ]
+                  },
+                  "right": {
+                    "title": "Camera gets in the way",
+                    "lines": [
+                      "You miss the moment",
+                      "Less likely to help"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part where the camera helps her notice.",
+                  "parts": [
+                    "Fatima films the steam rising off her chai,",
+                    "spots the light on the rim she missed before,",
+                    "then puts the phone away to drink it."
+                  ],
+                  "spot": "spots the light on the rim she missed before,",
+                  "feedback": "Framing the shot made her look closely, so she noticed the light on the rim."
+                },
+                "guided": [
+                  {
+                    "stem": "At his cousin's wedding, Om keeps filming and misses the dance. What change fits the studies?",
+                    "hint": "Think about whether the camera adds or blocks.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Film a little, then just watch.",
+                        "correct": true,
+                        "feedback": "Right. The camera helped when it added to the moment, not when it blocked it."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Film the whole dance from start to end.",
+                        "correct": false,
+                        "feedback": "That keeps the camera in the way. A few shots, then watching, keeps him in it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Post it right away.",
+                        "correct": false,
+                        "feedback": "Posting adds phone time. Enjoyment rose when the camera drew people in, not out."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Use the camera to notice, then put it down."
+              },
+              {
+                "id": "fpw-s9",
+                "title": "Film what you enjoy",
+                "claimId": "fpw-c3",
+                "sourceRefs": [
+                  "wf17"
+                ],
+                "hook": {
+                  "stem": "Which keeps people going with a long-term goal: fun now or a payoff later?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Fun now.",
+                      "correct": true,
+                      "feedback": "Right. In goal studies, enjoyment now predicted sticking with it; later rewards did not."
+                    },
+                    {
+                      "id": "b",
+                      "text": "A payoff later.",
+                      "correct": false,
+                      "feedback": "People often aim for later payoffs, but those did not predict sticking with it."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Neither one.",
+                      "correct": false,
+                      "feedback": "Enjoyment now did predict sticking with it in these studies."
+                    }
+                  ]
+                },
+                "teach": "Enjoying a task now predicted sticking with long-term goals, while later rewards did not. So film things you like looking at, not what you think might get views.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Later payoff",
+                    "lines": [
+                      "Views someday",
+                      "Did not predict sticking"
+                    ]
+                  },
+                  "right": {
+                    "title": "Fun now",
+                    "lines": [
+                      "A subject you love",
+                      "Predicted sticking"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the choice built on enjoyment.",
+                  "parts": [
+                    "Ishita drops a trend she finds dull,",
+                    "films her neighbour's cat, which she loves watching,",
+                    "and stops after six shots."
+                  ],
+                  "spot": "films her neighbour's cat, which she loves watching,",
+                  "feedback": "She picked a subject she enjoys, and enjoyment now predicted sticking with a goal."
+                },
+                "guided": [
+                  {
+                    "stem": "Mohit films only what he thinks will impress others, and it feels like a chore. What fits the studies?",
+                    "hint": "Think about now versus later.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Film a subject he enjoys watching.",
+                        "correct": true,
+                        "feedback": "Right. Enjoying the task now predicted persistence better than later payoffs."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Push on with the dull subjects.",
+                        "correct": false,
+                        "feedback": "Later rewards did not predict sticking with goals. Enjoying it now did."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Set a strict daily clip target.",
+                        "correct": false,
+                        "feedback": "A target is not the issue here. Enjoyment now predicted sticking with it."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Film what you like looking at."
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "fpw-m1",
+                "name": "Good clips need editing",
+                "correction": "Shots planned and filmed in order already show where, what and how.",
+                "sourceRefs": [
+                  "bvj22"
+                ]
+              },
+              {
+                "id": "fpw-m2",
+                "name": "More filming means more enjoyment",
+                "correction": "Taking photos raised enjoyment when it drew people in, and less so when it got in the way.",
+                "sourceRefs": [
+                  "dzb16"
+                ]
+              },
+              {
+                "id": "fpw-m3",
+                "name": "Only a creative gift keeps you going",
+                "correction": "In goal studies, enjoying the task now predicted sticking with it.",
+                "sourceRefs": [
+                  "wf17"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bvj22",
+                "title": "Video Storytelling (class notes, Advanced Video Journalism)",
+                "publisher": "Baruch College, City University of New York",
+                "year": 2022,
+                "url": "https://blogs.baruch.cuny.edu/advancedvideojournalism/?p=22"
+              },
+              {
+                "id": "bmr17",
+                "title": "Class Agenda, November 8, 2017 (Multimedia Reporting)",
+                "publisher": "Baruch College, City University of New York",
+                "year": 2017,
+                "url": "https://blogs.baruch.cuny.edu/multimediafall2017/?p=572"
+              },
+              {
+                "id": "dzb16",
+                "title": "How taking photos increases enjoyment of experiences",
+                "publisher": "Diehl, Zauberman and Barasch, Journal of Personality and Social Psychology",
+                "year": 2016,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/27267324/"
+              },
+              {
+                "id": "wf17",
+                "title": "Immediate rewards predict adherence to long-term goals",
+                "publisher": "Woolley and Fishbach, Personality and Social Psychology Bulletin",
+                "year": 2017,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/27899467/"
+              }
+            ],
+            "quest": {
+              "title": "Day 7 and two extra days",
+              "detail": "Needs: the phone you have. Use your phone's own camera app; NANDI does not open the camera. Camera app only, and close it after the last shot. Ask before you film anyone. Do not film in washrooms or in other people's rooms, and stay off roads. Nothing needs posting. Day 7: plan 6 shots of one routine, like making tea or packing a bag. Film them in order as a 30 to 60 second clip, each shot held still. Watch it once, then watch your day 1 shots. 20 min. Small version: 3 shots. Next day, ask yourself: which shot would you keep for next time? Extra day A: on a walk or at a meal, film 3 short shots of things you notice, then put the phone away for the rest. 10 min. Small version: one shot. Next day: did filming help you notice anything new? Extra day B: film 5 shots of something you like looking at, such as a plant, a pet or the evening sky. 15 min. Small version: 2 shots. Next day: did you enjoy this more than day 1?",
+              "sourceRefs": [
+                "bvj22",
+                "dzb16",
+                "wf17"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
