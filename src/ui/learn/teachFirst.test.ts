@@ -253,6 +253,9 @@ describe('item 73 follow-ups', () => {
     const cards = [cardHook(money, new Set()), cardHook(psych, new Set())];
     expect(cards.map(card => card.stepId)).toContain(lesson);
   });
+  // Item 75 (contrived, accepted): the Learn screen reads the saved drop for the day it opened, so a screen left open
+  // across 04:00 can name yesterday's saved step until it reloads.
+  it.todo("a Learn screen left open across 04:00 reads the new day's saved drop");
   it('after bedtime the card shows the idea hook, since the drop then teaches no new lesson (item 74)', () => {
     const second = habits.steps![1]!.id;
     expect(cardHook(psych, new Set(), habits, second, true)).toEqual({ conceptId: 'habits', text: habits.hook });
