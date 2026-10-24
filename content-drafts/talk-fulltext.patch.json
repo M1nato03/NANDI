@@ -1,0 +1,150 @@
+[
+  {
+    "id": "reach-out-m1",
+    "field": "reach-out.misconceptions[reach-out-m1].correction",
+    "old": "It held most for hard tasks, not easy ones.",
+    "new": "On easy tasks, asking gave no boost, but it did no harm either.",
+    "quote": "Study 3, p. 1428 and General Discussion, p. 1431: \"when the task is easy, asking for advice confers no benefit. Interestingly, even when the task was easy, seeking advice did not harm perceptions of competence.\"",
+    "url": "https://www.hbs.edu/ris/Publication%20Files/Advice%20Seeking_59ad2c42-54d6-4b32-8517-a99eeae0a45c.pdf"
+  },
+  {
+    "id": "reach-out-s1",
+    "field": "reach-out.steps[reach-out-s1].guided[0].options[a].feedback",
+    "old": "It held most for hard tasks, not easy ones.",
+    "new": "On easy tasks, asking gave no boost in the studies, though it did no harm.",
+    "quote": "Study 3, p. 1428 and General Discussion, p. 1431: \"when the task is easy, asking for advice confers no benefit. Interestingly, even when the task was easy, seeking advice did not harm perceptions of competence.\"",
+    "url": "https://www.hbs.edu/ris/Publication%20Files/Advice%20Seeking_59ad2c42-54d6-4b32-8517-a99eeae0a45c.pdf"
+  },
+  {
+    "id": "reach-out-s1",
+    "field": "reach-out.steps[reach-out-s1].hook.options[b].feedback",
+    "old": "The effect was strongest for hard tasks and expert advisers. These were lab studies, not offices.",
+    "new": "The effect was strongest for hard tasks and expert advisers. These were lab and online studies, not offices.",
+    "quote": "Pilot Study A and Study 5 recruited adults via Amazon's Mechanical Turk (pp. 1424, 1430); Pilot Study B and Studies 1-4 were run with students at US universities (pp. 1424-1429).",
+    "url": "https://www.hbs.edu/ris/Publication%20Files/Advice%20Seeking_59ad2c42-54d6-4b32-8517-a99eeae0a45c.pdf"
+  },
+  {
+    "id": "reach-out-m3",
+    "field": "reach-out.misconceptions[reach-out-m3].correction",
+    "old": "The gap was larger with less-close people.",
+    "new": "Less-close people still valued it, and senders underrated them even more.",
+    "quote": "Experiment 7, advance online version p. 14: \"Initiators significantly underestimated responders' appreciation of being reached out to, both in the case of weak tie reach-outs ... and ... to a lesser extent in the case of strong tie reach-outs\" (weak tie: initiators 5.24 vs responders 5.92; strong tie: 6.35 vs 6.65, on 1-7).",
+    "url": "https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf"
+  },
+  {
+    "id": "reach-out-s2",
+    "field": "reach-out.steps[reach-out-s2].guided[0].options[b].text",
+    "old": "Skip it. Close friends value messages more.",
+    "new": "Skip it. A friend from months ago won't care.",
+    "quote": "Experiment 7, advance online version p. 14: \"Initiators significantly underestimated responders' appreciation of being reached out to, both in the case of weak tie reach-outs ... and ... to a lesser extent in the case of strong tie reach-outs\" (weak tie: initiators 5.24 vs responders 5.92; strong tie: 6.35 vs 6.65, on 1-7).",
+    "url": "https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf"
+  },
+  {
+    "id": "reach-out-s2",
+    "field": "reach-out.steps[reach-out-s2].guided[0].options[b].feedback",
+    "old": "The gap was larger between less-close people.",
+    "new": "In the studies, even less-close people valued a check-in more than senders guessed.",
+    "quote": "Experiment 7, advance online version p. 14: \"Initiators significantly underestimated responders' appreciation of being reached out to, both in the case of weak tie reach-outs ... and ... to a lesser extent in the case of strong tie reach-outs\" (weak tie: initiators 5.24 vs responders 5.92; strong tie: 6.35 vs 6.65, on 1-7).",
+    "url": "https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf"
+  },
+  {
+    "id": "reach-out-c8",
+    "field": "reach-out.claims[reach-out-c8]",
+    "old": null,
+    "new": {
+      "id": "reach-out-c8",
+      "text": "In one US campus study, students sent a check-in note to a classmate. On a 1 to 7 scale, senders guessed about 5.6. The classmates gave about 6.2.",
+      "sourceRefs": [
+        "liu-2023"
+      ]
+    },
+    "quote": "Experiment 2, advance online version pp. 7-8: students wrote a note \"to check in and say hello\" to a classmate they had \"not interacted (either virtually or in-person) in a while\"; \"Initiators (M = 5.57, SD = 1.35) significantly underestimated how much their reach-outs were appreciated compared to how much responders (M = 6.17, SD = 1.24) appreciated them\" (1 = not at all, 7 = a great extent; 54 dyads).",
+    "url": "https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf"
+  },
+  {
+    "id": "reach-out-5",
+    "field": "reach-out.items[reach-out-5]",
+    "old": {
+      "id": "reach-out-5",
+      "type": "predict",
+      "conceptId": "reach-out",
+      "step": "reach-out-s3",
+      "job": "combine",
+      "difficultySeed": 2,
+      "misconceptionTags": [],
+      "sourceRefs": [
+        "liu-2023"
+      ],
+      "stem": "Who focused more on the surprise of a check-in: the sender or the person who got it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The person who got it.",
+          "correct": true,
+          "feedback": "People who got a check-in focused more on the surprise.",
+          "sourceRefs": [
+            "liu-2023"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "The sender, who wrote the note.",
+          "correct": false,
+          "feedback": "Receivers focused more on the surprise than senders did.",
+          "sourceRefs": [
+            "liu-2023"
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "reach-out-5",
+      "type": "estimate",
+      "conceptId": "reach-out",
+      "step": "reach-out-s3",
+      "job": "combine",
+      "difficultySeed": 2,
+      "misconceptionTags": [],
+      "sourceRefs": [
+        "liu-2023"
+      ],
+      "stem": "Students sent a reach-out note to a classmate they hadn't talked to in a while. Senders guessed about 5.6 out of 7. How did the classmates rate it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 6.2 out of 7.",
+          "correct": true,
+          "feedback": "Higher than the senders guessed. The classmates valued the note more, by about 0.6 of a point.",
+          "sourceRefs": [
+            "liu-2023"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "About 4.5 out of 7.",
+          "correct": false,
+          "feedback": "That would be lower than the guess. In the study, the classmates rated the note higher than senders expected.",
+          "sourceRefs": [
+            "liu-2023"
+          ]
+        }
+      ],
+      "answer": {
+        "value": 6.17,
+        "min": 5.8,
+        "max": 6.6,
+        "unit": "points out of 7"
+      }
+    },
+    "quote": "Experiment 2, advance online version pp. 7-8: students wrote a note \"to check in and say hello\" to a classmate they had \"not interacted (either virtually or in-person) in a while\"; \"Initiators (M = 5.57, SD = 1.35) significantly underestimated how much their reach-outs were appreciated compared to how much responders (M = 6.17, SD = 1.24) appreciated them\" (1 = not at all, 7 = a great extent; 54 dyads).",
+    "url": "https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf"
+  },
+  {
+    "id": "reach-out-1",
+    "field": "reach-out.items[reach-out-1].options[a].text",
+    "old": "Ask an expert about a hard fix.",
+    "new": "Ask an expert about a tricky data fix.",
+    "quote": "Length balance only (validator R5). Study 3 and Study 5 still support this as the competent kind of ask (pp. 1428, 1431).",
+    "url": "https://www.hbs.edu/ris/Publication%20Files/Advice%20Seeking_59ad2c42-54d6-4b32-8517-a99eeae0a45c.pdf"
+  }
+]

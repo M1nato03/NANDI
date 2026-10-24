@@ -1959,13 +1959,20 @@
                 "sourceRefs": [
                   "fischer-2011"
                 ]
+              },
+              {
+                "id": "reach-out-c8",
+                "text": "In one US campus study, students sent a check-in note to a classmate. On a 1 to 7 scale, senders guessed about 5.6. The classmates gave about 6.2.",
+                "sourceRefs": [
+                  "liu-2023"
+                ]
               }
             ],
             "misconceptions": [
               {
                 "id": "reach-out-m1",
                 "name": "The effect works for any question.",
-                "correction": "It held most for hard tasks, not easy ones.",
+                "correction": "On easy tasks, asking gave no boost, but it did no harm either.",
                 "sourceRefs": [
                   "brooks-2015"
                 ]
@@ -1981,7 +1988,7 @@
               {
                 "id": "reach-out-m3",
                 "name": "Distance makes it unwelcome.",
-                "correction": "The gap was larger with less-close people.",
+                "correction": "Less-close people still valued it, and senders underrated them even more.",
                 "sourceRefs": [
                   "liu-2023"
                 ]
@@ -2039,7 +2046,7 @@
                       "id": "b",
                       "text": "No. In studies, people who asked for advice on hard tasks were seen as more competent.",
                       "correct": true,
-                      "feedback": "The effect was strongest for hard tasks and expert advisers. These were lab studies, not offices."
+                      "feedback": "The effect was strongest for hard tasks and expert advisers. These were lab and online studies, not offices."
                     },
                     {
                       "id": "c",
@@ -2086,7 +2093,7 @@
                         "id": "a",
                         "text": "Ask for each small thing. That will make you look smart.",
                         "correct": false,
-                        "feedback": "It held most for hard tasks, not easy ones."
+                        "feedback": "On easy tasks, asking gave no boost in the studies, though it did no harm."
                       },
                       {
                         "id": "b",
@@ -2176,9 +2183,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Skip it. Close friends value messages more.",
+                        "text": "Skip it. A friend from months ago won't care.",
                         "correct": false,
-                        "feedback": "The gap was larger between less-close people."
+                        "feedback": "In the studies, even less-close people valued a check-in more than senders guessed."
                       },
                       {
                         "id": "c",
@@ -2276,7 +2283,7 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Ask an expert about a hard fix.",
+                    "text": "Ask an expert about a tricky data fix.",
                     "correct": false,
                     "feedback": "The task is hard and the person has the right skill for it.",
                     "sourceRefs": [
@@ -2442,7 +2449,7 @@
               },
               {
                 "id": "reach-out-5",
-                "type": "predict",
+                "type": "estimate",
                 "conceptId": "reach-out",
                 "step": "reach-out-s3",
                 "job": "combine",
@@ -2451,27 +2458,33 @@
                 "sourceRefs": [
                   "liu-2023"
                 ],
-                "stem": "Who focused more on the surprise of a check-in: the sender or the person who got it?",
+                "stem": "Students sent a reach-out note to a classmate they hadn't talked to in a while. Senders guessed about 5.6 out of 7. How did the classmates rate it?",
                 "options": [
                   {
                     "id": "a",
-                    "text": "The person who got it.",
+                    "text": "About 6.2 out of 7.",
                     "correct": true,
-                    "feedback": "People who got a check-in focused more on the surprise.",
+                    "feedback": "Higher than the senders guessed. The classmates valued the note more, by about 0.6 of a point.",
                     "sourceRefs": [
                       "liu-2023"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The sender, who wrote the note.",
+                    "text": "About 4.5 out of 7.",
                     "correct": false,
-                    "feedback": "Receivers focused more on the surprise than senders did.",
+                    "feedback": "That would be lower than the guess. In the study, the classmates rated the note higher than senders expected.",
                     "sourceRefs": [
                       "liu-2023"
                     ]
                   }
-                ]
+                ],
+                "answer": {
+                  "value": 6.17,
+                  "min": 5.8,
+                  "max": 6.6,
+                  "unit": "points out of 7"
+                }
               },
               {
                 "id": "reach-out-6",
