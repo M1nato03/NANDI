@@ -1,6 +1,7 @@
 # Spec 25 · One look per friend (area looks)
 
-Status: **proposal, waiting for Jenil's yes.** The idea is Jenil's (24 Oct 2026). Visual comparison:
+Status: **APPROVED by Jenil, version C (24 Oct 2026: "C is good, I agree with the 4 same tones argument").** Decisions 2-4 below
+are not answered yet; the recommended option is the default until he says otherwise. The idea is Jenil's (24 Oct 2026). Visual comparison:
 https://claude.ai/artifact/HZCrkxxrPm8nYEj5kNeGMu (private to Jenil).
 
 ## The problem (measured on batch6 bc0458f, 360 px, fresh profile, light and dark)
@@ -43,7 +44,11 @@ Jenil offered (A) the friend's own colour and (B) the opposite colour, so the fr
 4. **Each friend wears one small thing in their area colour**, taken from their courtyard corner (spec 12): Mor a
    marigold, Chiku a teal satchel, Kapi a violet kite, Moti a rose tassel, Kachhua an indigo lantern, Nandi a green band.
    Nandi keeps his orange scarf. This ties friend and colour together.
-5. **Inside an area, screens keep its colour.** A Learn lesson stays teal. Idea checks and Gold review switch to Moti's
+5. **Each friend's stage hosts that friend's own game** (Jenil, 24 Oct: "all friends will have different gamifying
+   mechanics that are unique to themselves"). Spec 24 picks them: Nandi Taal week, Kapi pace line + Prove it, Mor Phone
+   ki chhutti, Kachhua breath kolam + Park it, Chiku spec 23 lessons, Moti still open. Demo:
+   https://claude.ai/artifact/UMsoFAWvKRNBk21UCxU13X
+6. **Inside an area, screens keep its colour.** A Learn lesson stays teal. Idea checks and Gold review switch to Moti's
    rose, so new and review look different.
 
 ## What does not change
