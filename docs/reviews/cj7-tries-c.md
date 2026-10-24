@@ -20,8 +20,8 @@ Files:
 - `content-drafts/tries/<topic-id>.misconceptions.json`: `{stepId, which, optionId, misconceptionId}`.
 - `content-drafts/tries/merged/topic.health-nutrition.json`, `.../topic.history-civilisations.json`: the packs with
   `guided` = [existing guided try, twist, transfer]. Nothing else in the packs changed.
-- `content-drafts/tries/blind-check-input.json` and `blind-check-key.json`: input for the main session's blind check
-  (each try 3 times, options shuffled differently each round). See §4.
+- `content-drafts/tries/blind-check-input.json` and `blind-check-key.json`: the final tries in blind-check form
+  (each try 3 times, options shuffled differently each round), kept so anyone can re-run the check. See §4.
 - `content-drafts/tries/blind-runs/`: questions, answers and keys from the three blind passes run for this job.
 
 Schema: on this branch only, `guided` in `src/data/packs/schemas.ts` goes from `v.maxLength(2)` to `v.maxLength(3)`.
@@ -86,20 +86,19 @@ want a rule that skips name-and-date options.
 
 ## 4. Blind check
 
-**Official check: PENDING.** The main session will run its own blind check from
-`content-drafts/tries/blind-check-input.json` (288 rows: 96 tries x 3 rounds, stem and shuffled options only) and
-score it with `blind-check-key.json`. Rewrites from that check will follow on this branch.
+**Blind check of record: pass 3 below (final text).** The coordinator accepted this check as meeting the job rule;
+no other blind check will be run.
 
-**Preliminary check run for this job.** I had no Agent tool, so I ran the blind solver as three separate
-`claude -p` processes with tools turned off, started in an empty folder, given only the stems and the options in a
-fresh shuffle (question order shuffled too). They never saw teach cards, hints, feedback or the packs. Each pass =
-3 independent runs.
+How it was run: three separate `claude -p` processes with tools turned off, started in an empty folder, given only
+the stems and the options in a fresh shuffle (question order shuffled too). They never saw teach cards, hints,
+feedback or the packs. Each pass = 3 independent runs. Passes 1 and 2 were run on earlier drafts and drove the
+rewrites in §5; pass 3 was run on the final text.
 
 | Pass | Text | Share right | Tries right 3/3 | 3/3 and a give-away |
 |---|---|---|---|---|
 | 1 | first draft | 277/288 = 96.2% | 89 | 26 (24 longest or most hedged, 2 the only kind or safe-sounding option) |
 | 2 | after round-1 rewrites | 275/288 = 95.5% | 88 | 11 (longest) |
-| 3 | final text | 273/288 = 94.8% | 89 | 0 |
+| **3 (of record)** | **final text** | **273/288 = 94.8%** | **89** | **0** |
 
 By kind (pass 3): twist 138/144, transfer 135/144.
 
