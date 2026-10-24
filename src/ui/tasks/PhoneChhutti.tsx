@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { answerChhutti, checkChhutti, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
+import { answerChhutti, checkChhutti, initChosenApps, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday, type ChhuttiPending } from '../../data/repos/chhutti';
 import { appliesOn, boundsOn, CHHUTTI_KEY, CHHUTTI_LABELS, chhuttiLine, isLive, lockTrustFrom, readChhutti, windowBounds } from '../../core/plan/chhutti';
 import { RULES } from '../../core/rules.config';
+import { DEFAULT_PAUSE_APPS } from '../../core/nightPause';
+import { readInstalledApps } from '../../platform/nightPause';
 import { shareWindow } from '../../core/shareGate';
 import { dayKey } from '../../core/time';
 
@@ -50,6 +52,8 @@ export function PhoneChhutti() {
   async function save() {
     try {
       await saveChhuttiWindow(db, { id: window?.id, label: choice.label, from, weekdays: 'weekdays' in choice ? [...choice.weekdays] : undefined });
+      // A first window saves the default apps that are on this phone, so a missing one never blocks the check.
+      if (!window) await initChosenApps(db, await readInstalledApps(DEFAULT_PAUSE_APPS.map(app => app.packageName)).catch(() => null));
       setEditing(false);
       setMessage('Saved. Nothing will stop you; NANDI just looks back afterwards.');
     } catch { setMessage('Could not save that. Try again.'); }

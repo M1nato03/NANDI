@@ -4,6 +4,7 @@ import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { DAY_LIMIT_CHOICES, DAY_MODES, DEFAULT_PAUSE_APPS, pauseWindowTimes, readDayLimit, readDayMode } from '../../core/nightPause';
 import { RULES } from '../../core/rules.config';
+import { initChosenApps, saveChosenApps } from '../../data/repos/chhutti';
 import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openOverlaySettings, openUsageSettings, readInstalledApps, testNightPause } from '../../platform/nightPause';
 import { notifier } from '../../platform/notifier';
 
@@ -17,7 +18,7 @@ export function NightSettings() {
   // On the phone, only the default apps that are installed are offered (Codex A item 66): a chosen app that is not
   // installed would stop Phone ki chhutti from checking by itself, so it shows as not on this phone, to untick.
   const [installed, setInstalled] = useState<string[] | null>(null);
-  useEffect(() => { void readInstalledApps(defaultPackages).then(setInstalled).catch(() => setInstalled(null)); }, []);
+  useEffect(() => { void readInstalledApps(defaultPackages).then(list => { setInstalled(list); return initChosenApps(db, list); }).catch(() => setInstalled(null)); }, []);
   const enabled = rows?.find(row => row.key === 'night.pause.enabled')?.value === true;
   const storedPackages = rows?.find(row => row.key === 'night.pause.apps')?.value;
   const packages = Array.isArray(storedPackages) ? storedPackages.filter((item): item is string => typeof item === 'string') : defaultPackages;
@@ -40,7 +41,7 @@ export function NightSettings() {
         setMessage('Allow NANDI notifications first, so the pause can appear.');
         return;
       }
-      const now = Date.now(); // eslint-disable-line react-hooks/purity
+      const now = Date.now();
       const deviceId = await getOrCreateDeviceId(db, now);
       await db.settings.put({ key, value, updatedAt: now, deleted: 0, deviceId });
       setMessage('App pause saved.');
@@ -53,11 +54,14 @@ export function NightSettings() {
       setMessage(`For the next ${RULES.night.pauseTestMin} minutes, open one of your chosen apps to see the pause.`);
     } catch { setMessage('Could not start the test. Check that Usage access is on.'); }
   }
-  const toggle = (packageName: string) => void save('night.pause.apps', packages.includes(packageName) ? packages.filter(item => item !== packageName) : [...packages, packageName]);
+  async function saveApps(next: string[]) {
+    try { await saveChosenApps(db, next); setMessage('App pause saved.'); } catch { setMessage('Could not save App pause.'); }
+  }
+  const toggle = (packageName: string) => void saveApps(packages.includes(packageName) ? packages.filter(item => item !== packageName) : [...packages, packageName]);
   const add = () => {
     const value = newPackage.trim();
     if (!/^[a-zA-Z][a-zA-Z0-9_.]+$/.test(value)) { setMessage('Enter an Android package name, such as com.example.app.'); return; }
-    if (!packages.includes(value)) void save('night.pause.apps', [...packages, value]);
+    if (!packages.includes(value)) void saveApps([...packages, value]);
     setNewPackage('');
   };
   return <section className="card settings-group" aria-label="App pause settings">

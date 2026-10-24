@@ -2,7 +2,7 @@
 import 'fake-indexeddb/auto';
 import { afterEach, expect, it } from 'vitest';
 import { createDb, type NandiDb } from '../db';
-import { answerChhutti, checkChhutti, chhuttiInLightsOut, CHHUTTI_LOCK_TEST_KEY, readLockTest, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
+import { answerChhutti, checkChhutti, chhuttiInLightsOut, CHHUTTI_LOCK_TEST_KEY, initChosenApps, readLockTest, saveChosenApps, removeChhuttiWindow, saveChhuttiWindow, skipChhuttiToday } from './chhutti';
 import { deriveEconomy } from '../../core/economy/deriveEconomy';
 import { deriveCourtyard } from '../../core/courtyard/courtyard';
 import { readChhutti, type UsageEvent } from '../../core/plan/chhutti';
@@ -294,4 +294,36 @@ it('a native read that never answers times out as no log, so the window is asked
   expect(await checkChhutti(db, at('2026-11-02', '22:00'), never, never, 50)).toHaveLength(1);
   // The next check is not stuck behind it.
   expect(await checkChhutti(db, at('2026-11-02', '22:05'), reader(() => null), async () => null, 50)).toHaveLength(1);
+});
+
+it('a past window is checked against the apps chosen then, even after one is unticked (Codex A item 67)', async () => {
+  const db = fresh();
+  await db.settings.put({ key: 'night.pause.apps', value: [ig], updatedAt: 1, deleted: 0, deviceId: 't' });
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  // An open on the 2nd notes Instagram as chosen; the window is not over yet.
+  await checkChhutti(db, at('2026-11-02', '18:00'), reader(() => null), async () => null);
+  // Next morning Instagram is unticked, then the 2nd is read: Instagram (used in the window) still counts.
+  await saveChosenApps(db, ['com.google.android.youtube'], at('2026-11-03', '08:00'));
+  const used = reader(from => ({ logStart: from - 3_600_000, events: [{ type: 'boot', at: from - 3_000_000 }, { type: 'fg', at: from + 60_000, pkg: ig, cls: 'Main' }, { type: 'bg', at: from + 25 * 60_000, pkg: ig, cls: 'Main' }] }));
+  await checkChhutti(db, at('2026-11-03', '09:00'), used, async () => null);
+  const fact = (await db.ledger.where('kind').equals('chhutti').toArray())[0];
+  expect(fact?.inputs).toMatchObject({ source: 'usage', kept: false });
+});
+
+it('no chosen app means the window is asked about, never kept (Codex A item 67)', async () => {
+  const db = fresh();
+  await db.settings.put({ key: 'night.pause.apps', value: [], updatedAt: 1, deleted: 0, deviceId: 't' });
+  await saveChhuttiWindow(db, { label: 'After dinner', from: '21:00' }, at('2026-11-02', '12:00'));
+  expect(await checkChhutti(db, at('2026-11-02', '22:00'), dark, async () => null)).toHaveLength(1);
+  expect(await db.ledger.where('kind').equals('chhutti').count()).toBe(0);
+});
+
+it('the first time the phone reports its apps, only the installed defaults are saved, once (Codex A item 67)', async () => {
+  const db = fresh();
+  await initChosenApps(db, null);
+  expect(await db.settings.get('night.pause.apps')).toBeUndefined();
+  await initChosenApps(db, [ig, 'com.google.android.youtube'], at('2026-11-02', '12:00'));
+  expect((await db.settings.get('night.pause.apps'))?.value).toEqual([ig, 'com.google.android.youtube']);
+  await initChosenApps(db, [ig], at('2026-11-02', '13:00'));
+  expect((await db.settings.get('night.pause.apps'))?.value).toEqual([ig, 'com.google.android.youtube']);
 });

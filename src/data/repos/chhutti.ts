@@ -133,8 +133,8 @@ async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: R
   const today = dayKey(now);
   const trustLocksFrom = lockTrustFrom(await runLockTest(db, now, since => withTimeout(readLock(since), timeoutMs)));
   const shutdowns = await snapshotShutdown(db, rows, windows, now, (await clockOf(db, rows, now)).shutdown);
-  const saved = live(rows, 'night.pause.apps');
-  const packages = Array.isArray(saved) ? saved.filter((item): item is string => typeof item === 'string') : DEFAULT_PAUSE_APPS.map(app => app.packageName);
+  const current = chosenApps(rows);
+  const appSnapshots = await recordChhuttiApps(db, [current], now);
   const pending: ChhuttiPending[] = [];
   for (let back = CHHUTTI_LOOKBACK_DAYS; back >= 0; back--) {
     const day = addEconomyDays(today, -back);
@@ -143,12 +143,16 @@ async function checkOnce(db: NandiDb, now: number, read: ReadEvents, readLock: R
       if (await db.ledger.get(chhuttiFactId(day, window.id))) continue;
       const bounds = await dayBounds(db, rows, window, day, shutdowns);
       if (!bounds || bounds.toMs > now) continue;
+      // Each day is checked against every app chosen on it or since (Codex A item 67), never the current list alone.
+      const packages = appsFor(day, appSnapshots, current);
+      const ask = () => { if (back <= 1 && isLive(window)) pending.push({ day, window }); };
+      // No chosen app means nothing can be checked: a window is never "kept" by default.
+      if (!packages.length) { ask(); continue; }
       const usageLog = await withTimeout(read(bounds.fromMs, bounds.toMs, packages), timeoutMs);
       // A start-up baseline needs no trust; only when the lock is the baseline does the fact depend on the self-test.
       const plain = usageLog ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart) : null;
       const lockFrom = usageLog?.lockSafe === true ? trustLocksFrom : null;
       const usage = plain ?? (usageLog && lockFrom !== null ? windowUsage(usageLog.events, bounds.fromMs, bounds.toMs, packages, usageLog.logStart, lockFrom) : null);
-      const ask = () => { if (back <= 1 && isLive(window)) pending.push({ day, window }); };
       // Unknown: only today and yesterday are asked about, so a week away never comes back as a list of questions.
       if (!usage) { ask(); continue; }
       const written = await writeFact(db, day, window, bounds, { chosenAppMs: usage.chosenAppMs, darkMs: usage.darkMs, source: 'usage', kept: isKept(usage, day) }, now, plain ? null : lockFrom);
@@ -192,6 +196,55 @@ async function runLockTest(db: NandiDb, now: number, readLock: ReadLock): Promis
     await db.settings.put({ key: CHHUTTI_LOCK_TEST_KEY, value: next, updatedAt: now, deleted: 0, deviceId });
     return next;
   }));
+}
+
+/** The apps chosen for App pause now: the saved list, or the defaults until one is saved. */
+export function chosenApps(rows: readonly SettingRow[]): string[] {
+  const saved = live(rows, 'night.pause.apps');
+  return Array.isArray(saved) ? saved.filter((item): item is string => typeof item === 'string') : DEFAULT_PAUSE_APPS.map(app => app.packageName);
+}
+/**
+ * Every app chosen on each day (Codex A item 67): written at each check and each time the list changes, kept for the
+ * read-back. A day is checked against what it had plus every app chosen since, so unticking an app afterwards never
+ * removes it from a day it was chosen on (more apps can only make a day less likely to count as kept).
+ */
+export const CHHUTTI_APPS_KEY = `${CHHUTTI_KEY}.apps`;
+function readAppSnapshots(rows: readonly SettingRow[]): Record<string, string[]> {
+  const value = live(rows, CHHUTTI_APPS_KEY);
+  if (!value || typeof value !== 'object') return {};
+  return Object.fromEntries(Object.entries(value as Record<string, unknown>).filter((entry): entry is [string, string[]] => /^\d{4}-\d{2}-\d{2}$/.test(entry[0]) && Array.isArray(entry[1]) && entry[1].every(item => typeof item === 'string')));
+}
+export async function recordChhuttiApps(db: NandiDb, lists: readonly (readonly string[])[], now = Date.now()): Promise<Record<string, string[]>> {
+  const today = dayKey(now);
+  const oldest = addEconomyDays(today, -(CHHUTTI_LOOKBACK_DAYS + 1));
+  const deviceId = await getOrCreateDeviceId(db, now);
+  return trackWrite(() => db.transaction('rw', db.settings, async () => {
+    const stored = readAppSnapshots(await db.settings.toArray());
+    const todays = [...new Set([...(stored[today] ?? []), ...lists.flat()])].sort();
+    const next = Object.fromEntries([...Object.entries(stored).filter(([day]) => day >= oldest && day !== today), [today, todays]]);
+    if (JSON.stringify(next) !== JSON.stringify(stored)) await db.settings.put({ key: CHHUTTI_APPS_KEY, value: next, updatedAt: now, deleted: 0, deviceId });
+    return next;
+  }));
+}
+function appsFor(day: string, snapshots: Record<string, string[]>, current: readonly string[]): string[] {
+  return [...new Set([...current, ...Object.entries(snapshots).filter(([key]) => key >= day).flatMap(([, apps]) => apps)])];
+}
+/** Saves the App pause list, first noting the old and new lists for today's chhutti check (Codex A item 67). */
+export async function saveChosenApps(db: NandiDb, next: readonly string[], now = Date.now(), noteOld = true): Promise<void> {
+  const old = chosenApps(await db.settings.toArray());
+  await recordChhuttiApps(db, noteOld ? [old, next] : [next], now);
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.settings.put({ key: 'night.pause.apps', value: [...next], updatedAt: now, deleted: 0, deviceId }));
+}
+/**
+ * Until a list is saved, the defaults include apps that may not be on this phone, and an app that cannot be looked up
+ * blocks the lock baseline. The first time the phone can say what is installed, the defaults on it are saved
+ * (Codex A item 67). Only the installed ones are noted: this runs once, before any window is checked by lock.
+ */
+export async function initChosenApps(db: NandiDb, installed: readonly string[] | null, now = Date.now()): Promise<void> {
+  if (!installed || live(await db.settings.toArray(), 'night.pause.apps') !== undefined) return;
+  const onPhone = DEFAULT_PAUSE_APPS.map(app => app.packageName).filter(pkg => installed.includes(pkg));
+  if (onPhone.length) await saveChosenApps(db, onPhone, now, false);
 }
 
 /** Records today's effective shutdown once, while a window of today has not started yet; keeps the last 9 days. */
