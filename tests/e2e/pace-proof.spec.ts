@@ -91,11 +91,10 @@ test('Prove it: a short pick shows what still fits, a real proof earns the stamp
   const clue = card.locator('.case-prove-clue');
   await expect(clue).toHaveCount(clues);
   // The finish toast moves clear of the card while it is open (Codex A item 77).
-  const toast = page.locator('.economy-toast');
-  if (await toast.count()) {
-    const [toastBox, cardBox] = [await toast.first().boundingBox(), await card.boundingBox()];
-    if (toastBox && cardBox) expect(toastBox.y + toastBox.height <= cardBox.y || toastBox.y >= cardBox.y + cardBox.height).toBe(true);
-  }
+  const toast = page.locator('.economy-toast').first();
+  await expect(toast).toBeVisible();
+  const [toastBox, cardBox] = [await toast.boundingBox(), await card.boundingBox()];
+  expect(toastBox!.y + toastBox!.height <= cardBox!.y || toastBox!.y >= cardBox!.y + cardBox!.height).toBe(true);
   await clue.nth(shortest[0]!).click();
   if (shortest.length > 1) {
     await card.getByRole('button', { name: 'Check' }).click();

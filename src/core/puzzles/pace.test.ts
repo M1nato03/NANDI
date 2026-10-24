@@ -46,6 +46,7 @@ describe('pace line (spec 24, cj5-mind §7.1)', () => {
     expect(decodePace(segment)).toEqual(marks);
     const route = challengeRoute({ type: 'crowns', diff: 'medium', seed: 797416356, day: '2026-11-05', pace: marks });
     expect(canonicalRoute(`#${route}`)).toBe(route);
+    expect(canonicalRoute(`#${route.toUpperCase()}`)).toBe(route);
     expect(parseChallenge(route.slice('mind/'.length))).toEqual({ type: 'crowns', diff: 'medium', seed: 797416356, day: '2026-11-05', pace: marks });
     // The same link read the way older versions did: day, then type/diff/seed, and nothing after.
     const [, day, type, diff, seed] = route.slice('mind/'.length).split('/');
@@ -75,6 +76,8 @@ describe('pace line (spec 24, cj5-mind §7.1)', () => {
     expect(decodePace(good.slice(0, -1))).toBeUndefined();
     expect(decodePace(`${good}0`)).toBeUndefined();
     expect(decodePace(`${good.slice(0, -1)}!`)).toBeUndefined();
+    // The parser itself refuses capitals; a typed link still opens, because the router lowercases a route before it
+    // gets here (see the route test above).
     expect(decodePace(good.toUpperCase())).toBeUndefined();
     expect(decodePace(`q${good.slice(1)}`)).toBeUndefined();
     // Marks must not go down: a later mark smaller than an earlier one is refused.

@@ -170,6 +170,10 @@
 .mind-pace-you { background: var(--area-think); }
 .mind-pace-other { background: var(--surface-1); border: 2px solid var(--ink-2); }
 .mind-pace-still { flex: 1; color: var(--ink-2); }
+.mind-pace-key { display: flex; flex-direction: column; gap: 0; flex: none; line-height: 1.15; color: var(--ink-2); font-size: 11px; }
+.mind-pace-key span::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 4px; border-radius: 50%; vertical-align: middle; box-sizing: border-box; }
+.mind-pace-you-key::before { background: var(--area-think); }
+.mind-pace-other-key::before { border: 1.5px solid var(--ink-2); }
 .mind-pace-toggle { flex: none; min-height: 44px; min-width: 44px; margin-left: auto; }
 .mind-par-beaten strong { font-weight: 700; }
 

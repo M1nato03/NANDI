@@ -10,6 +10,8 @@ it('draws two dots, and a still line of text under reduced motion', () => {
   const { container } = render(<PaceLine mine={0.4} marks={marks} elapsed={25_000} who="Your best" caption="Your best Mini Sudoku easy pace" totalMs={100_000} motion />);
   expect(screen.getByRole('img').getAttribute('aria-label')).toBe('Your best Mini Sudoku easy pace. You 40% filled · Your best 25% at this time');
   expect(container.querySelectorAll('.mind-pace-dot')).toHaveLength(2);
+  // A visible key, so a touch user can tell which dot is theirs (Codex A item 78).
+  expect(container.querySelector('.mind-pace-key')?.textContent).toBe('youbest');
   cleanup();
   const still = render(<PaceLine mine={0.4} marks={marks} elapsed={25_000} who="Your best" caption="x" totalMs={100_000} motion={false} />);
   expect(still.container.querySelector('.mind-pace-dot')).toBeNull();

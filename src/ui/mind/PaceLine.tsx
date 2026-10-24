@@ -20,8 +20,12 @@ export function PaceLine({ mine, marks, elapsed, who, caption, totalMs, motion =
   if (!motion) return <span className="small mind-pace-still">{who}: {timeText(totalMs)}</span>;
   const other = paceAt(marks, elapsed);
   const percent = (value: number) => Math.round(value * 100);
-  return <span className="mind-pace-track" role="img" aria-label={`${caption}. You ${percent(mine)}% filled · ${who} ${percent(other)}% at this time`} title={caption}>
-    <span className="mind-pace-dot mind-pace-other" style={{ left: `${other * 100}%` }} />
-    <span className="mind-pace-dot mind-pace-you" style={{ left: `${mine * 100}%` }} />
-  </span>;
+  return <>
+    <span className="mind-pace-track" role="img" aria-label={`${caption}. You ${percent(mine)}% filled · ${who} ${percent(other)}% at this time`} title={caption}>
+      <span className="mind-pace-dot mind-pace-other" style={{ left: `${other * 100}%` }} />
+      <span className="mind-pace-dot mind-pace-you" style={{ left: `${mine * 100}%` }} />
+    </span>
+    {/* A tiny key, always shown while the line is on, so a touch user can tell which dot is theirs (Codex A item 78). */}
+    <span className="small mind-pace-key" aria-hidden="true"><span className="mind-pace-you-key">you</span><span className="mind-pace-other-key">{who.replace(/^Your /, '')}</span></span>
+  </>;
 }

@@ -404,8 +404,6 @@ export function Mind({ entry }: { entry?: string }) {
   const togglePace = async () => {
     const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
     await trackWrite(() => db.settings.put({ key: 'mind.paceOn', value: !paceOn, updatedAt: time, deleted: 0, deviceId }));
-    // The slim row has no room for a key, so turning it on says once which dot is which.
-    setMessage(!paceOn && paceOther ? `Filled dot: you. Ring: ${paceOther.caption.replace(/^Your/, 'your')}.` : '');
   };
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
