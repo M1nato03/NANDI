@@ -188,3 +188,22 @@ describe('lesson option order', () => {
     expect(firstRight / questions.length).toBeLessThan(0.5);
   });
 });
+
+describe('daily lesson across several topics (item 71, B2)', () => {
+  const ids = ['money-markets', 'psychology'];
+  const firstOf = (id: string) => nextStep(catalogFor([id]), new Set())!.step.id;
+  it('starts the next topic instead of using up the first one', () => {
+    const day1 = makeDrop({ ...base, ids }).items[0]!.lesson!;
+    const first = [firstOf('money-markets'), firstOf('psychology')];
+    expect(first).toContain(day1);
+    const other = first.find(id => id !== day1)!;
+    const day2 = makeDrop({ ...base, ids, now: now + 86_400_000, taughtSteps: [day1], taughtOn: { [day1]: '2026-10-22' } }).items[0]!.lesson;
+    expect(day2).toBe(other);
+  });
+  it('goes back to the topic whose last lesson is oldest', () => {
+    const money = firstOf('money-markets'); const psych = firstOf('psychology');
+    const drop = makeDrop({ ...base, ids, now: now + 2 * 86_400_000, taughtSteps: [money, psych], taughtOn: { [money]: '2026-10-22', [psych]: '2026-10-23' } });
+    const lesson = drop.items[0]!.lesson!;
+    expect(catalogFor(['money-markets']).some(concept => concept.steps?.some(step => step.id === lesson))).toBe(true);
+  });
+});

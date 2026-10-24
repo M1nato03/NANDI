@@ -1,5 +1,5 @@
 import { composeConceptPractice, composeDrop, orderOptions, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
-import { findStep, goldItems, interleave, lessonItemId, nextStep, practiceTail, taughtCatalog, type TailAnswer } from '../../core/learn/steps';
+import { findStep, goldItems, interleave, lessonItemId, nextStep, nextStepAcross, practiceTail, taughtCatalog, type TailAnswer } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -45,7 +45,8 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
   const today = dayKey(input.now);
   const catalog = taughtCatalog(fullCatalog, new Set([...taught].filter(stepId => (input.taughtOn?.[stepId] ?? '') < today)));
   const lesson = (conceptId?: string): DropItem[] | undefined => {
-    const next = nextStep(fullCatalog, taught, conceptId);
+    const next = conceptId ? nextStep(fullCatalog, taught, conceptId)
+      : nextStepAcross(topics.filter(pack => input.ids.includes(pack.body.topic.id)).map(pack => pack.body.modules.flatMap(module => module.concepts)), taught, input.taughtOn ?? {});
     if (!next) return undefined;
     return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id }];
   };

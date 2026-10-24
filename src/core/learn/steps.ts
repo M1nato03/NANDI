@@ -28,6 +28,23 @@ export function nextStep(concepts: readonly TopicConcept[], taught: ReadonlySet<
   return undefined;
 }
 
+/**
+ * The daily lesson across several chosen topics (idea engine item 71, B2): take the next step of the topic whose last
+ * taught step is oldest (a topic never taught counts as oldest), so one topic is not used up before the next begins.
+ * Ties keep the catalog order. A step with no recorded day counts as taught long ago.
+ */
+export function nextStepAcross(topics: readonly (readonly TopicConcept[])[], taught: ReadonlySet<string>, taughtOn: Readonly<Record<string, string>> = {}): StepRef | undefined {
+  let best: StepRef | undefined;
+  let bestDay = '';
+  for (const concepts of topics) {
+    const next = nextStep(concepts, taught);
+    if (!next) continue;
+    const last = concepts.flatMap(concept => concept.steps ?? []).filter(step => taught.has(step.id)).map(step => taughtOn[step.id] ?? '0000-00-00').sort().at(-1) ?? '';
+    if (!best || last < bestDay) { best = next; bestDay = last; }
+  }
+  return best;
+}
+
 /** What the selector may draw from: stepped concepts keep only items of taught steps, and drop out until one is taught. */
 export function taughtCatalog(concepts: readonly TopicConcept[], taught: ReadonlySet<string>): TopicConcept[] {
   return concepts.flatMap(concept => {
