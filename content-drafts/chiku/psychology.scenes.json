@@ -1,0 +1,234 @@
+{
+  "scenes": [
+    {
+      "ideaId": "habits",
+      "claimIds": ["habits-c1", "habits-c5"],
+      "chiku": {
+        "ask": "After 30 rides, Noor, 20, opens her flashcards as the train leaves. What starts it? Give me one card.",
+        "cards": [
+          { "text": "The train leaving", "correct": true },
+          { "text": "Thirty days make it stick", "misconceptionId": "habits-m1" },
+          { "text": "Wanting to study starts it", "misconceptionId": "habits-m3" }
+        ],
+        "newDay": {
+          "caption": "New day: Noor takes a bus instead, with time and the same wish to study.",
+          "prop": "bus",
+          "question": "Will she open her flashcards as usual?"
+        },
+        "guesses": [
+          { "answer": "no", "why": "Your card says the train starts it. The train is gone today.", "act": "pat-pocket" },
+          { "answer": "yes", "why": "Your card says the ride count made it stick. The 30 rides are done.", "act": "pull-phone" },
+          { "answer": "yes", "why": "Your card says her wish starts it. She still wants to study.", "act": "pull-phone" }
+        ],
+        "truth": { "answer": "no", "caption": "On the bus, Noor left her flashcards in her pocket.", "act": "pat-pocket" }
+      }
+    },
+    {
+      "ideaId": "loss-aversion",
+      "claimIds": ["loss-aversion-c1", "loss-aversion-c2"],
+      "chiku": {
+        "ask": "Leila, 22, takes a free cafe coin toss that pays $20 or $0. Why does it feel easy to accept? Give me one card.",
+        "cards": [
+          { "text": "No loss from her start", "correct": true },
+          { "text": "Gains and losses feel equal", "misconceptionId": "loss-aversion-m1" },
+          { "text": "The starting point changes nothing", "misconceptionId": "loss-aversion-m3" }
+        ],
+        "newDay": {
+          "caption": "New day: The cafe gives Leila a sure $10 first; the toss would leave her with $20 or $0.",
+          "prop": "coin",
+          "question": "Will she take the toss now?"
+        },
+        "guesses": [
+          { "answer": "no", "why": "Your card says the sure $10 is her new start. Losing it weighs heavily.", "act": "walk-away" },
+          { "answer": "yes", "why": "Your card says gaining or losing $10 feels equal. The fair toss still looks fine.", "act": "pay" },
+          { "answer": "yes", "why": "Your card says the new starting point changes nothing. She took this toss before.", "act": "pay" }
+        ],
+        "truth": { "answer": "no", "caption": "Leila kept the sure $10 and passed on the toss.", "act": "walk-away" }
+      }
+    },
+    {
+      "ideaId": "anchoring",
+      "claimIds": ["anchoring-c1", "anchoring-c4"],
+      "chiku": {
+        "ask": "At a shop, Maya, 24, raises her desk bid after seeing a $100 tag. Why? Give me one card.",
+        "cards": [
+          { "text": "First numbers pull bids", "correct": true },
+          { "text": "Random numbers have no pull", "misconceptionId": "anchoring-m2" },
+          { "text": "One check erases the pull", "misconceptionId": "anchoring-m4" }
+        ],
+        "newDay": {
+          "caption": "New day: A random draw shows $100 for another desk; Maya lists two reasons it is too high.",
+          "prop": "shop",
+          "question": "Will she still bid above her earlier $50 plan?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says a first number can still pull her bid, even after she checks it.", "act": "pay" },
+          { "answer": "no", "why": "Your card says a random number has no pull. She will keep her $50 plan.", "act": "walk-away" },
+          { "answer": "no", "why": "Your card says her two reasons erase the pull. She will keep her $50 plan.", "act": "walk-away" }
+        ],
+        "truth": { "answer": "yes", "caption": "Maya offered $55, above her first $50 plan.", "act": "pay" }
+      }
+    },
+    {
+      "ideaId": "confirmation-bias",
+      "claimIds": ["confirmation-bias-c2", "confirmation-bias-c3"],
+      "chiku": {
+        "ask": "After three late buses, Omar, 21, tests his guess that every bus on his route is late. Why test it? Give me one card.",
+        "cards": [
+          { "text": "An early bus could disprove it", "correct": true },
+          { "text": "One match proves it", "misconceptionId": "confirmation-bias-m1" },
+          { "text": "Many matches prove it", "misconceptionId": "confirmation-bias-m3" }
+        ],
+        "newDay": {
+          "caption": "New day: A bus arrives early at Omar's stop, after the three late ones.",
+          "prop": "bus",
+          "question": "Will he drop his every-bus-is-late guess?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says one early bus can disprove a claim about every bus.", "act": "close-book" },
+          { "answer": "no", "why": "Your card says one late bus already proved the guess. He keeps it.", "act": "open-book" },
+          { "answer": "no", "why": "Your card says the three late buses proved the guess. He keeps it.", "act": "open-book" }
+        ],
+        "truth": { "answer": "yes", "caption": "Omar saw the early bus and crossed out his every-bus guess.", "act": "close-book" }
+      }
+    },
+    {
+      "ideaId": "social-proof",
+      "claimIds": ["social-proof-c4", "social-proof-c5"],
+      "chiku": {
+        "ask": "At a station, Eva, 19, checks the platform sign while friends all point to platform 2. Why check? Give me one card.",
+        "cards": [
+          { "text": "A group can be mistaken", "correct": true },
+          { "text": "The crowd proves it", "misconceptionId": "social-proof-m1" },
+          { "text": "Everyone follows the crowd", "misconceptionId": "social-proof-m4" }
+        ],
+        "newDay": {
+          "caption": "New day: The sign clearly says platform 3, but another group still points to platform 2.",
+          "prop": "crowd",
+          "question": "Will Eva walk toward platform 3?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says the crowd can be mistaken. Eva follows the clear sign.", "act": "walk-away" },
+          { "answer": "no", "why": "Your card says the crowd proves platform 2 is right. Eva stays with it.", "act": "skip" },
+          { "answer": "no", "why": "Your card says everyone follows the crowd. Eva stays with it.", "act": "skip" }
+        ],
+        "truth": { "answer": "yes", "caption": "Eva read platform 3 on the sign and walked there.", "act": "walk-away" }
+      }
+    },
+    {
+      "ideaId": "planning-fallacy",
+      "claimIds": ["planning-fallacy-c3", "planning-fallacy-c4"],
+      "chiku": {
+        "ask": "Theo, 20, adds an hour to his poster plan after checking how long his last poster took. Why? Give me one card.",
+        "cards": [
+          { "text": "Past tasks reveal missed time", "correct": true },
+          { "text": "The best case is normal", "misconceptionId": "planning-fallacy-m1" },
+          { "text": "Past tasks cannot help", "misconceptionId": "planning-fallacy-m2" }
+        ],
+        "newDay": {
+          "caption": "New day: Theo has another poster to print; last time, the printer line took an hour.",
+          "prop": "clock",
+          "question": "Will he start before his first planned time?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says the last printer line reveals time his first plan missed.", "act": "open-book" },
+          { "answer": "no", "why": "Your card says the smooth plan is normal. He starts at his first planned time.", "act": "close-book" },
+          { "answer": "no", "why": "Your card says past tasks cannot help. He keeps his first planned time.", "act": "close-book" }
+        ],
+        "truth": { "answer": "yes", "caption": "Theo started an hour early to allow for the printer line.", "act": "open-book" }
+      }
+    },
+    {
+      "ideaId": "sleep-memory",
+      "claimIds": ["sleep-memory-c1", "sleep-memory-c2"],
+      "chiku": {
+        "ask": "After learning new words, Inez, 23, puts her book away and rests before a quiz. Why rest? Give me one card.",
+        "cards": [
+          { "text": "Rest helps keep new learning", "correct": true },
+          { "text": "Staying up works better", "misconceptionId": "sleep-memory-m3" },
+          { "text": "Busy breaks help more", "misconceptionId": "sleep-memory-m5" }
+        ],
+        "newDay": {
+          "caption": "New day: Inez learns another word list, then can sleep or do chores until the quiz.",
+          "prop": "bed",
+          "question": "Will she sleep after studying?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says sleep after learning can reduce forgetting.", "act": "sleep" },
+          { "answer": "no", "why": "Your card says staying up works better. She stays awake.", "act": "wake" },
+          { "answer": "no", "why": "Your card says busy breaks help more. She does chores instead.", "act": "wake" }
+        ],
+        "truth": { "answer": "yes", "caption": "Inez slept after studying, then recalled the new words at the quiz.", "act": "sleep" }
+      }
+    },
+    {
+      "ideaId": "variable-rewards",
+      "claimIds": ["variable-rewards-c1", "variable-rewards-c3"],
+      "chiku": {
+        "ask": "At an arcade, Sam, 18, keeps trying a prize box that pays after changing numbers of tries. Why keep trying? Give me one card.",
+        "cards": [
+          { "text": "The next prize is uncertain", "correct": true },
+          { "text": "Only willpower keeps him going", "misconceptionId": "variable-rewards-m3" },
+          { "text": "Steady prizes last longer", "misconceptionId": "variable-rewards-m6" }
+        ],
+        "newDay": {
+          "caption": "New day: Sam feels tired after three empty tries, but the next prize still has no set turn.",
+          "prop": "coin",
+          "question": "Will he try the box again?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says the unknown next prize can keep tries going after empty ones.", "act": "pay" },
+          { "answer": "no", "why": "Your card says only willpower keeps him going. He feels tired now.", "act": "walk-away" },
+          { "answer": "no", "why": "Your card says uneven prizes fade faster than steady ones. The empty tries end his turn.", "act": "walk-away" }
+        ],
+        "truth": { "answer": "yes", "caption": "Sam put in another coin after the three empty tries.", "act": "pay" }
+      }
+    },
+    {
+      "ideaId": "if-then-plans",
+      "claimIds": ["if-then-plans-c1", "if-then-plans-c3", "if-then-plans-c4"],
+      "chiku": {
+        "ask": "On campus, Hana, 22, opens her notebook when the 8 a.m. bus arrives, as she planned. What starts it? Give me one card.",
+        "cards": [
+          { "text": "The named bus is her cue", "correct": true },
+          { "text": "A wish is enough", "misconceptionId": "if-then-plans-m1" },
+          { "text": "One sharp cue costs nothing", "misconceptionId": "if-then-plans-m3" }
+        ],
+        "newDay": {
+          "caption": "New day: The bus is canceled, but Hana has a free hour at home with her notebook.",
+          "prop": "notebook",
+          "question": "Will she open it during that hour?"
+        },
+        "guesses": [
+          { "answer": "no", "why": "Your card says the bus is her named cue. That cue never comes today.", "act": "close-book" },
+          { "answer": "yes", "why": "Your card says her wish is enough. She still wants to write.", "act": "open-book" },
+          { "answer": "yes", "why": "Your card says one sharp cue costs nothing. She uses this other free hour.", "act": "open-book" }
+        ],
+        "truth": { "answer": "no", "caption": "Hana used the free hour for other tasks and left the notebook shut.", "act": "close-book" }
+      }
+    },
+    {
+      "ideaId": "spotlight-effect",
+      "claimIds": ["spotlight-effect-c1", "spotlight-effect-c4"],
+      "chiku": {
+        "ask": "At a workshop, Zoya, 25, thinks all six classmates noticed her bright shirt, then checks their recall. Why check? Give me one card.",
+        "cards": [
+          { "text": "Her own view feels larger", "correct": true },
+          { "text": "Everyone noticed it", "misconceptionId": "spotlight-effect-m1" },
+          { "text": "Nobody ever notices", "misconceptionId": "spotlight-effect-m2" }
+        ],
+        "newDay": {
+          "caption": "New day: Zoya wears a bright shirt to another six-person workshop and asks who recalls it.",
+          "prop": "notebook",
+          "question": "Will she write 'some noticed' in her notebook?"
+        },
+        "guesses": [
+          { "answer": "yes", "why": "Your card says her own view can make the shirt seem more noticed than it was.", "act": "open-book" },
+          { "answer": "no", "why": "Your card says everyone noticed it. She writes 'all noticed' instead.", "act": "close-book" },
+          { "answer": "no", "why": "Your card says nobody notices. She writes 'none noticed' instead.", "act": "close-book" }
+        ],
+        "truth": { "answer": "yes", "caption": "One classmate recalled Zoya's shirt, so she wrote 'some noticed'.", "act": "open-book" }
+      }
+    }
+  ]
+}
