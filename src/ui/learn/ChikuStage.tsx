@@ -21,6 +21,9 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const [card, setCard] = useState<number | null>(null);
   const [tried, setTried] = useState<number[]>([]);
   const played = useRef(false);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  // After a card is handed over, focus moves to the scene so a keyboard or screen reader follows the beats.
+  useEffect(() => { if (beat === 'take') sceneRef.current?.focus(); }, [beat]);
   useEffect(() => {
     const length = LENGTH[beat];
     if (!length) return;
@@ -42,24 +45,33 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const moment = beat === 'done' ? (matched ? 'right' : 'wrong') : beat === 'ask' ? 'stuck' : beat;
   const caption = beat === 'newday' ? scene.newDay.caption : beat === 'guess' ? guess?.why : beat === 'truth' ? scene.truth.caption : undefined;
   const cardText = card === null ? '' : scene.cards[card]!.text;
+  // One polite live region reads each beat (Codex B item 110); the visible captions carry no roles of their own.
+  const said = beat === 'ask' ? (tried.length ? 'Got another card?' : scene.ask) : beat === 'take' ? `You gave Chiku: ${cardText}.` : beat === 'guess' ? `${scene.newDay.question} ${caption ?? ''}` : beat === 'done' ? `${scene.truth.caption} ${matched ? 'Got it.' : 'Chiku asks for another card.'}` : caption ?? '';
+  // A tap anywhere in the scene, or Enter or Space on it, skips to the next beat; buttons keep their own job.
+  const skipFrom = (target: EventTarget) => { if (!(target as HTMLElement).closest('button')) skipBeat(); };
+  const timed = !!NEXT[beat];
   return <section className="chiku-step" aria-label="Teach Chiku" data-beat={beat}>
-    <div className="chiku-stage" onClick={skipBeat} role="presentation">
-      {beat !== 'ask' && <ChikuPropArt prop={scene.newDay.prop} className={`chiku-prop${beat === 'take' ? ' waiting' : ''}`} />}
-      <span className={`chiku-actor chiku-${moment}${act ? ` chiku-act-${act}` : ''}`} key={`${beat}-${card ?? ''}`} data-moment={moment} data-act={act ?? ''}>
-        <Chiku pose={pose} size={84} title="Chiku" />
-        {item && <span className={`chiku-item chiku-item-${item}${act === 'pat-pocket' || act === 'close-book' ? ' away' : ''}`} aria-hidden="true"><ChikuPropArt prop={item} /></span>}
-        {beat === 'take' && <span className="chiku-card-held" aria-hidden="true">{cardText}</span>}
-      </span>
-      {beat === 'ask' && <span className="chiku-think-bubble" aria-hidden="true">?</span>}
+    <p className="sr-only" aria-live="polite">{said}</p>
+    <div className="chiku-scene" ref={sceneRef} tabIndex={-1} role="group" aria-label="Chiku's scene" onClick={event => skipFrom(event.target)} onKeyDown={event => { if ((event.key === 'Enter' || event.key === ' ') && timed && event.target === event.currentTarget) { event.preventDefault(); skipBeat(); } }}>
+      <div className="chiku-stage" role="presentation">
+        {beat !== 'ask' && <ChikuPropArt prop={scene.newDay.prop} className={`chiku-prop${beat === 'take' ? ' waiting' : ''}`} />}
+        <span className={`chiku-actor chiku-${moment}${act ? ` chiku-act-${act}` : ''}`} key={`${beat}-${card ?? ''}`} data-moment={moment} data-act={act ?? ''}>
+          <Chiku pose={pose} size={84} title="Chiku" />
+          {item && <span className={`chiku-item chiku-item-${item}${act === 'pat-pocket' || act === 'close-book' ? ' away' : ''}`} aria-hidden="true"><ChikuPropArt prop={item} /></span>}
+          {beat === 'take' && <span className="chiku-card-held" aria-hidden="true">{cardText}</span>}
+        </span>
+        {beat === 'ask' && <span className="chiku-think-bubble" aria-hidden="true">?</span>}
+      </div>
+      {beat === 'ask' && <><p className="chiku-say">{tried.length ? 'Got another card?' : scene.ask}</p>
+        <div className="chiku-cards" role="group" aria-label="Your cards">{order.map(index => <button type="button" key={index} className={`chiku-card${tried.includes(index) ? ' tried' : ''}`} onClick={() => pick(index)}>{scene.cards[index]!.text}</button>)}</div></>}
+      {caption && <p className="chiku-caption" key={beat}>{beat === 'guess' && <span className="chiku-question">{scene.newDay.question} </span>}{caption}</p>}
+      {beat === 'done' && <div className="chiku-end">
+        <p className="chiku-caption">{scene.truth.caption}</p>
+        <p className="chiku-say">{matched ? 'Got it, because your card named the real cause.' : `My card said "${cardText}", so I guessed ${guess?.answer}. It went the other way. Got another card?`}</p>
+        {matched ? <button type="button" onClick={onDone}>Done</button> : <div className="chiku-cards" role="group" aria-label="Your cards">{order.map(index => <button type="button" key={index} className={`chiku-card${tried.includes(index) ? ' tried' : ''}`} onClick={() => pick(index)}>{scene.cards[index]!.text}</button>)}</div>}
+      </div>}
+      {timed && <button type="button" className="text-button chiku-next" onClick={skipBeat}>Skip ahead</button>}
     </div>
-    {beat === 'ask' && <><p className="chiku-say" role="status">{tried.length ? 'Got another card?' : scene.ask}</p>
-      <div className="chiku-cards" role="group" aria-label="Your cards">{order.map(index => <button type="button" key={index} className={`chiku-card${tried.includes(index) ? ' tried' : ''}`} onClick={() => pick(index)}>{scene.cards[index]!.text}</button>)}</div></>}
-    {caption && <p className="chiku-caption" role="status" key={beat}>{beat === 'guess' && <span className="chiku-question">{scene.newDay.question} </span>}{caption}</p>}
-    {beat === 'done' && <div className="chiku-end" role="status">
-      <p className="chiku-caption">{scene.truth.caption}</p>
-      <p className="chiku-say">{matched ? 'Got it, because your card named the real cause.' : `My card said "${cardText}", so I guessed ${guess?.answer}. It went the other way. Got another card?`}</p>
-      {matched ? <button type="button" onClick={onDone}>Done</button> : <div className="chiku-cards" role="group" aria-label="Your cards">{order.map(index => <button type="button" key={index} className={`chiku-card${tried.includes(index) ? ' tried' : ''}`} onClick={() => pick(index)}>{scene.cards[index]!.text}</button>)}</div>}
-    </div>}
     <button type="button" className="text-button chiku-skip" onClick={onDone}>Skip</button>
   </section>;
 }

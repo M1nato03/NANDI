@@ -60,6 +60,12 @@ export function chikuDue(concept: { id: string; chiku?: unknown; steps?: { id: s
   return !!concept?.chiku && concept.steps?.at(-1)?.id === stepId && !afterBedtime && !facts.some(row => row.id === `chiku:${concept.id}` && !row.deleted);
 }
 
+/** Spec 30 second door (Codex B item 110): a finished idea with an unplayed scene offers "Teach Chiku" on its card. */
+export function chikuOpen(concept: { id: string; chiku?: unknown; steps?: { id: string }[] }, taught: ReadonlySet<string>, played: ReadonlySet<string>, afterBedtime: boolean): boolean {
+  const steps = concept.steps ?? [];
+  return !!concept.chiku && steps.length > 0 && steps.every(step => taught.has(step.id)) && !played.has(concept.id) && !afterBedtime;
+}
+
 /** Whether Chiku's guess from a card matches what really happened. */
 export const chikuMatches = (scene: ChikuScene, card: number) => scene.guesses[card]?.answer === scene.truth.answer;
 

@@ -20,7 +20,7 @@ import { playCastSound } from '../cast/sound';
 import { estimateFeedback, formatEstimate, sliderScale } from '../../core/learn/estimate';
 import { askFor } from '../../core/learn/ask';
 import { findStep } from '../../core/learn/steps';
-import { saveChikuPlayed, saveLessonDone } from '../../data/repos/learn-engine';
+import { chikuPlayed, saveChikuPlayed, saveLessonDone } from '../../data/repos/learn-engine';
 import { ChikuStage } from './ChikuStage';
 import { chikuDue, type ChikuScene } from '../../core/learn/chiku';
 import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
@@ -46,7 +46,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     drops: await db.learnDrops.toArray(),
     concepts: await db.learnConcepts.toArray(),
     items: await db.learnItems.toArray(),
-    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention', 'gold-review', 'gold-attempt', 'learn-lesson').toArray(),
+    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention', 'gold-review', 'gold-attempt', 'learn-lesson', 'chiku').toArray(),
   }), []);
   const [picked, setPicked] = useState<string[]>([]);
   const [practiceId, setPracticeId] = useState<string>();
@@ -223,7 +223,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       // Spec 30: once per idea, after the lesson that teaches its last step, if the idea has a scene; never after bedtime.
       const concept = concepts.find(row => row.id === conceptId);
       const bedtime = typeof data?.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
-      if (concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), data?.ledger ?? [])) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
+      // The played check reads the ledger itself, so a replayed lesson or a restored backup never offers Chiku twice (Codex B item 110).
+      if (concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), []) && !(await chikuPlayed(db, conceptId))) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
     } catch { setMessage('Could not save this lesson. Try again.'); }
     finally { writing.current = false; setBusy(false); }
   };

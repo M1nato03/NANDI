@@ -43,7 +43,7 @@ test('a tap skips to the next beat, a playthrough is under 6 seconds, and Skip l
   await expect(beat(page)).toHaveAttribute('data-beat', 'newday');
   await stage(page).click();
   await expect(beat(page)).toHaveAttribute('data-beat', 'guess');
-  await page.getByRole('button', { name: 'Skip' }).click();
+  await page.getByRole('button', { name: 'Skip', exact: true }).click();
   await expect(page.getByText('Demo finished.')).toBeVisible();
 });
 
@@ -87,4 +87,21 @@ test('at 360 px with 20 px text the stage, cards and captions fit with nothing c
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   for (const card of await page.getByRole('group', { name: 'Your cards' }).getByRole('button').all()) expect(await card.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+});
+
+test('after a card, focus moves to the scene; one polite region reads each beat; Skip ahead, Enter and a tap on the caption all move on (Codex B item 110)', async ({ page }) => {
+  await open(page);
+  await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'Wanting to revise' }).click();
+  await expect(page.getByRole('group', { name: "Chiku's scene" })).toBeFocused();
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveCount(1);
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('You gave Chiku: Wanting to revise.');
+  await page.getByRole('button', { name: 'Skip ahead' }).click();
+  await expect(beat(page)).toHaveAttribute('data-beat', 'newday');
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText("New day: Kunal's train is cancelled, so he takes the bus.");
+  await page.getByRole('group', { name: "Chiku's scene" }).focus();
+  await page.keyboard.press('Enter');
+  await expect(beat(page)).toHaveAttribute('data-beat', 'guess');
+  await page.locator('.chiku-caption').click();
+  await expect(beat(page)).toHaveAttribute('data-beat', 'truth');
+  await expect(page.locator('.chiku-step [role="status"]')).toHaveCount(0);
 });

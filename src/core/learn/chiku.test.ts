@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CHIKU_ACTS, CHIKU_PROPS, KUNAL_SCENE, chikuDue, chikuMatches, chikuOrder, chikuProblems, type ChikuScene } from './chiku';
+import { CHIKU_ACTS, CHIKU_PROPS, KUNAL_SCENE, chikuDue, chikuMatches, chikuOpen, chikuOrder, chikuProblems, type ChikuScene } from './chiku';
 import { deriveEconomy } from '../economy/deriveEconomy';
 import type { LedgerRow, SettingRow } from '../../data/types';
 
@@ -31,6 +31,15 @@ describe('spec 30 Chiku scenes', () => {
     expect(chikuDue(concept, 'habits-s3', true, [])).toBe(false);
     expect(chikuDue(concept, 'habits-s3', false, [{ id: 'chiku:habits' }])).toBe(false);
     expect(chikuDue({ ...concept, chiku: undefined }, 'habits-s3', false, [])).toBe(false);
+  });
+  it('the second door: a finished idea with an unplayed scene offers Teach Chiku, never after bedtime (Codex B item 110)', () => {
+    const concept = { id: 'habits', chiku: KUNAL_SCENE, steps: [{ id: 'habits-s1' }, { id: 'habits-s2' }] };
+    const taught = new Set(['habits-s1', 'habits-s2']);
+    expect(chikuOpen(concept, taught, new Set(), false)).toBe(true);
+    expect(chikuOpen(concept, new Set(['habits-s1']), new Set(), false)).toBe(false);
+    expect(chikuOpen(concept, taught, new Set(['habits']), false)).toBe(false);
+    expect(chikuOpen(concept, taught, new Set(), true)).toBe(false);
+    expect(chikuOpen({ ...concept, chiku: undefined }, taught, new Set(), false)).toBe(false);
   });
   it("the right card's place rotates with the idea and day", () => {
     const places = new Set(Array.from({ length: 30 }, (_, day) => chikuOrder(`habits:2026-11-${String(day + 1).padStart(2, '0')}`).indexOf(0)));

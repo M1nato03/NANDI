@@ -68,6 +68,12 @@ export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResu
   }));
 }
 
+/** Spec 30: whether Chiku's scene for an idea was already played (on this phone or in a restored backup). */
+export async function chikuPlayed(db: NandiDb, conceptId: string): Promise<boolean> {
+  const row = await db.ledger.get(`chiku:${conceptId}`);
+  return !!row && !row.deleted;
+}
+
 /** Spec 30: playing Chiku's scene for an idea, once per idea ever, the same XP whichever card came first. */
 export async function saveChikuPlayed(db: NandiDb, input: { conceptId: string; card: number; matched: boolean; deviceId: string; now: number }): Promise<void> {
   const id = `chiku:${input.conceptId}`;
