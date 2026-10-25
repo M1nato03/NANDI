@@ -59,14 +59,20 @@ describe('rule history', () => {
     // paid), so they count too (Codex A item 61). Chhutti is not on main yet, so no stored day has a chhutti fact.
     // 25 Oct (item 64): Jenil chose 10 XP for a measured chhutti. The 5 Oct entry is frozen with chhutti.xp 0 and the
     // current rules (24129226) start on 25 Oct, so no day before it is rescored. cf7b07d1 is that frozen 5 Oct copy.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226']]);
+    // 26 Oct (spec 30): mind.chikuXp (5) was added as a new entry. The 5 and 25 Oct copies are frozen without the key, so
+    // their fingerprints did not move, and Chiku facts exist only from the build that writes them.
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9']]);
   });
 
   it('ends with the current rules, and the older entry differs only in what it froze', () => {
     expect(RULES_HISTORY.at(-1)).toMatchObject({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
     const frozen = RULES_HISTORY[0]!.rules;
-    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan }).toEqual(RULES);
+    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan, mind: RULES.mind }).toEqual(RULES);
     expect(frozen.plan.chhutti.xp).toBe(0);
+    const before = RULES_HISTORY[1]!.rules;
+    expect({ ...before, version: RULES.version, effectiveFrom: RULES.effectiveFrom, mind: RULES.mind }).toEqual(RULES);
+    expect('chikuXp' in before.mind).toBe(false);
+    expect({ ...before.mind, chikuXp: RULES.mind.chikuXp }).toEqual(RULES.mind);
   });
 
   it('a measured chhutti pays 10 XP only from 25 Oct, forward-only (item 64)', () => {
@@ -87,4 +93,11 @@ describe('rule history', () => {
     expect(rulesFor('2026-12-07', entries)).toBe(entries[1]);
     expect(entries).toHaveLength(2);
   });
+  it('teaching Chiku pays 5 XP once per idea only from 26 Oct, forward-only, and nothing after bedtime (spec 30)', () => {
+    const fact = (dayKey: string, afterBedtime = false) => ({ id: `chiku:habits:${dayKey}`, mode: 'mind' as const, kind: 'chiku', refId: 'habits', dayKey, inputs: { afterBedtime }, updatedAt: 1, deleted: 0 as const, deviceId: 't' });
+    expect(replayFactXp(fact('2026-10-25'))).toBe(0);
+    expect(replayFactXp(fact('2026-10-26'))).toBe(5);
+    expect(replayFactXp(fact('2026-10-26', true))).toBe(0);
+  });
 });
+

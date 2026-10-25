@@ -38,6 +38,17 @@ export const topicStepSchema = v.strictObject({
   guided: v.pipe(v.array(v.strictObject({ stem: text, hint: text, options: lessonOptions })), v.minLength(1), v.maxLength(2)),
   takeaway: text,
 });
+// Spec 30: Chiku's one-card scene for an idea. Acts and props come from fixed lists (core/learn/chiku.ts, checked in validate.ts).
+const chikuAnswer = v.picklist(['yes', 'no']);
+const chikuSceneSchema = v.strictObject({
+  ask: v.pipe(text, v.maxLength(200)),
+  cards: v.pipe(v.array(v.strictObject({ text: v.pipe(text, v.maxLength(60)), correct: v.optional(v.literal(true)), misconceptionId: v.optional(text) })), v.length(3)),
+  newDay: v.strictObject({ caption: v.pipe(text, v.maxLength(120)), prop: text, question: v.pipe(text, v.maxLength(80)) }),
+  guesses: v.pipe(v.array(v.strictObject({ answer: chikuAnswer, why: v.pipe(text, v.maxLength(120)), act: text })), v.length(3)),
+  truth: v.strictObject({ answer: chikuAnswer, caption: v.pipe(text, v.maxLength(120)), act: text }),
+  /** The idea's claims the right card and what happened trace to (editor sign-off). */
+  claimIds: v.pipe(strings, v.minLength(1)),
+});
 export const topicConceptSchema = v.strictObject({
   id: text, title: text, prerequisites: strings,
   hook: v.pipe(text, v.maxLength(280)), hookSourceRefs: v.pipe(strings, v.minLength(1)),
@@ -50,6 +61,7 @@ export const topicConceptSchema = v.strictObject({
   misconceptions: v.array(v.strictObject({ id: text, name: text, correction: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
   sources: v.pipe(v.array(sourceRef), v.minLength(1)),
   quest: v.optional(v.strictObject({ title: text, detail: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
+  chiku: v.optional(chikuSceneSchema),
   factCheck: v.optional(v.strictObject({ checker: v.optional(text), verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
 });
 export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), modules: v.pipe(v.array(v.strictObject({ id: text, title: text, concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)) })), v.minLength(1)) });

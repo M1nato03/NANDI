@@ -67,3 +67,13 @@ export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResu
     await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
+
+/** Spec 30: playing Chiku's scene for an idea, once per idea ever, the same XP whichever card came first. */
+export async function saveChikuPlayed(db: NandiDb, input: { conceptId: string; card: number; matched: boolean; deviceId: string; now: number }): Promise<void> {
+  const id = `chiku:${input.conceptId}`;
+  const afterBedtime = input.now >= shutdownAt(input.now, await effectiveBedtime(db, input.now));
+  await trackWrite(() => db.transaction('rw', db.ledger, async () => {
+    if (await db.ledger.get(id)) return;
+    await db.ledger.add({ id, mode: 'mind', kind: 'chiku', refId: input.conceptId, dayKey: dayKey(input.now), inputs: { afterBedtime, firstCard: input.card, matched: input.matched }, updatedAt: input.now, deleted: 0, deviceId: input.deviceId });
+  }));
+}

@@ -1,8 +1,8 @@
 /** Starting defaults from 05-economy §2. Rule changes apply by dayKey, never retroactively. */
 export const RULES = {
-  version: 2,
-  // 25 Oct (item 64): a measured kept Phone ki chhutti pays plan.chhutti.xp from this day on; see RULES_HISTORY.
-  effectiveFrom: '2026-10-25',
+  version: 3,
+  // 26 Oct (spec 30): teaching Chiku an idea pays mind.chikuXp once per idea from this day on; see RULES_HISTORY.
+  effectiveFrom: '2026-10-26',
   dayBoundaryHour: 4,
 
   // 05-economy §2, Tasks; 02-tasks §6 (timers and optional pre-reminder).
@@ -80,6 +80,8 @@ export const RULES = {
     cardsMaxPerDay: 20,
     sideBoardXp: 10,
     sideBoardsMaxPerDay: 1,
+    // Spec 30: playing Chiku's one-card scene, once per idea, the same whichever card comes first.
+    chikuXp: 5,
     dailyCap: 80,
     freePlayXp: 0,
     dropUnlockTime: '07:00',
@@ -309,7 +311,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.mysteryXp': [0, 100], 'mind.dropBoardXp': [0, 100], 'mind.lessonXp': [0, 100],
   'mind.learnDropXp': [0, 100],
   'mind.lessonsPaidPerDay': [0, 10], 'mind.lessonsPerCoursePerDay': [0, 10],
-  'mind.cardXp': [0, 20], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
+  'mind.cardXp': [0, 20], 'mind.chikuXp': [0, 20], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
   'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 120], 'mind.freePlayXp': [0, 0],
   'mind.onboardingEasyCases': [0, 20], 'mind.eloK.early': [1, 100], 'mind.eloK.later': [1, 100],
   'mind.hintLadderRungs': [3, 3], 'mind.parMinSolves': [1, 10], 'mind.parWindow': [5, 20],
@@ -378,12 +380,18 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
 
 export type RulesHistoryEntry = { effectiveFrom: string; rules: Rules; note?: string };
 
-/** The rules in force from 5 Oct: the same as now, except that a measured chhutti paid nothing (item 64). Frozen. */
-const RULES_2026_10_05: Rules = { ...RULES, version: 1, effectiveFrom: '2026-10-05', plan: { chhutti: { ...RULES.plan.chhutti, xp: 0 } } };
+// Before 26 Oct there was no Chiku step, so the frozen copies have no chikuXp key at all (it reads as 0).
+const { chikuXp: _noChiku, ...MIND_BEFORE_CHIKU } = RULES.mind;
+void _noChiku;
+/** The rules in force from 25 Oct: a measured chhutti pays 10 XP (item 64); no Chiku step yet. Frozen. */
+const RULES_2026_10_25 = { ...RULES, version: 2, effectiveFrom: '2026-10-25', mind: MIND_BEFORE_CHIKU } as unknown as Rules;
+/** The rules in force from 5 Oct: as 25 Oct, except that a measured chhutti paid nothing (item 64). Frozen. */
+const RULES_2026_10_05 = { ...RULES_2026_10_25, version: 1, effectiveFrom: '2026-10-05', plan: { chhutti: { ...RULES.plan.chhutti, xp: 0 } } } as Rules;
 
 export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
   { effectiveFrom: RULES_2026_10_05.effectiveFrom, rules: RULES_2026_10_05 },
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'chhutti pays 10 XP when measured (item 64)' },
+  { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10 XP when measured (item 64)' },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */

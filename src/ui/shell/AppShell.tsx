@@ -46,6 +46,7 @@ const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(m
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
+const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
 const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
 const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
 const Train = lazy(() => import('../screens/Train').then(module => ({ default: module.Train })));
@@ -177,6 +178,7 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'plan/focus') screen = <Today />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/chiku-demo') screen = <ChikuDemo />;
   else if (path === 'learn' || path === 'learn/drop') screen = <Learn entry={path.split('/')[1]} />;
   else if (path === 'learn/lesson' || path === 'learn/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
   else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
