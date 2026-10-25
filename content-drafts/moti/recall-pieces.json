@@ -1,0 +1,202 @@
+[
+  {
+    "conceptId": "habits",
+    "takeaway": "Give it weeks, and do not worry about one missed day.",
+    "pieces": ["Give it weeks, and", "do not worry about", "one missed day."],
+    "decoys": [
+      {"text": "Give it exactly 21 days, and", "slot": 0, "misconceptionId": "habits-m1", "fix": "Habit time varies by person and act; there is no fixed day count."},
+      {"text": "expect progress to vanish after", "slot": 1, "misconceptionId": "habits-m2", "fix": "One missed chance did not wipe out habit growth in the study."}
+    ],
+    "claimIds": ["habits-c2"]
+  },
+  {
+    "conceptId": "loss-aversion",
+    "takeaway": "On average a loss weighs about twice a gain; people differ.",
+    "pieces": ["On average a loss weighs", "about twice a gain;", "people differ."],
+    "decoys": [
+      {"text": "the same as a gain;", "slot": 1, "misconceptionId": "loss-aversion-m1", "fix": "Equal gain and loss can have a different felt weight."},
+      {"text": "everyone feels it identically.", "slot": 2, "misconceptionId": "loss-aversion-m2", "fix": "The pattern does not fix how every person will feel."}
+    ],
+    "claimIds": ["loss-aversion-c3"]
+  },
+  {
+    "conceptId": "anchoring",
+    "takeaway": "Even a made-up number can tug your guess toward it.",
+    "pieces": ["Even a made-up number can", "tug your guess", "toward it."],
+    "decoys": [
+      {"text": "Only a fair number can", "slot": 0, "misconceptionId": "anchoring-m1", "fix": "The first number is a starting point, not proof of the fair value."},
+      {"text": "A random number never can", "slot": 0, "misconceptionId": "anchoring-m2", "fix": "Even a number known to be random can sway a later guess."}
+    ],
+    "claimIds": ["anchoring-c2"]
+  },
+  {
+    "conceptId": "confirmation-bias",
+    "takeaway": "To test an idea, look for the case that could break it.",
+    "pieces": ["To test an idea,", "look for the case", "that could break it."],
+    "decoys": [
+      {"text": "that seems to fit once.", "slot": 2, "misconceptionId": "confirmation-bias-m1", "fix": "One fitting case may fit more than one idea."},
+      {"text": "ignore any case", "slot": 1, "misconceptionId": "confirmation-bias-m2", "fix": "A case against an idea can test it well."}
+    ],
+    "claimIds": ["confirmation-bias-c2"]
+  },
+  {
+    "conceptId": "social-proof",
+    "takeaway": "What a crowd picks can pull your own pick.",
+    "pieces": ["What a crowd picks", "can pull", "your own pick."],
+    "decoys": [
+      {"text": "cannot influence", "slot": 1, "misconceptionId": "social-proof-m2", "fix": "Group answers can pull some people in some settings."},
+      {"text": "only a weak person's pick.", "slot": 2, "misconceptionId": "social-proof-m3", "fix": "Anyone can take a crowd's choice as a clue; it is not a sign of a weak person."}
+    ],
+    "claimIds": ["social-proof-c3"]
+  },
+  {
+    "conceptId": "planning-fallacy",
+    "takeaway": "Past tasks show how long the next one may take.",
+    "pieces": ["Past tasks", "show how long", "the next one may take."],
+    "decoys": [
+      {"text": "cannot help estimate how long", "slot": 1, "misconceptionId": "planning-fallacy-m2", "fix": "Past task times can show steps a new plan has missed."},
+      {"text": "only show flukes, never how long", "slot": 1, "misconceptionId": "planning-fallacy-m3", "fix": "Calling each past delay a fluke keeps it out of the next plan, so guesses stay short."}
+    ],
+    "claimIds": ["planning-fallacy-c3"]
+  },
+  {
+    "conceptId": "sleep-memory",
+    "takeaway": "Learn first; the memory firms up later.",
+    "pieces": ["Learn first;", "the memory", "firms up later."],
+    "decoys": [
+      {"text": "Skip learning first;", "slot": 0, "misconceptionId": "sleep-memory-m2", "fix": "Sleep can help store what was learned, but it does not supply an unread lesson."},
+      {"text": "firms up at once.", "slot": 2, "misconceptionId": "sleep-memory-m4", "fix": "A new memory firms up over time after learning."}
+    ],
+    "claimIds": ["sleep-memory-c3"]
+  },
+  {
+    "conceptId": "variable-rewards",
+    "takeaway": "Variable means the reward comes, but you cannot tell when.",
+    "pieces": ["Variable means", "the reward comes,", "but you cannot tell when."],
+    "decoys": [
+      {"text": "after every single try.", "slot": 2, "misconceptionId": "variable-rewards-m1", "fix": "A good result can come after dull ones, with no set gap."},
+      {"text": "after every fifth try.", "slot": 2, "misconceptionId": "variable-rewards-m4", "fix": "A reward after every fifth try is fixed; on a variable schedule, the number of tries keeps changing."}
+    ],
+    "claimIds": ["variable-rewards-c3"]
+  },
+  {
+    "conceptId": "if-then-plans",
+    "takeaway": "A clear moment is easy to notice; a vague one is easy to miss.",
+    "pieces": ["A clear moment", "is easy to notice;", "a vague one is easy to miss."],
+    "decoys": [
+      {"text": "a broad wish names the moment.", "slot": 2, "misconceptionId": "if-then-plans-m1", "fix": "A broad goal leaves the moment of action unnamed."},
+      {"text": "one named cue never hides chances.", "slot": 2, "misconceptionId": "if-then-plans-m3", "fix": "Focusing on one named cue can make other good chances easier to miss."}
+    ],
+    "claimIds": ["if-then-plans-c3"]
+  },
+  {
+    "conceptId": "spotlight-effect",
+    "takeaway": "Others usually judge our slips more kindly than we fear.",
+    "pieces": ["Others usually", "judge our slips", "more kindly than we fear."],
+    "decoys": [
+      {"text": "notice every slip and judge", "slot": 1, "misconceptionId": "spotlight-effect-m1", "fix": "Our own vivid view can make an event seem more visible to others than it was."},
+      {"text": "far more harshly than we fear.", "slot": 2, "misconceptionId": "spotlight-effect-m3", "fix": "After a slip, people judged us more kindly than we expected."}
+    ],
+    "claimIds": ["spotlight-effect-c3"]
+  },
+  {
+    "conceptId": "inflation",
+    "takeaway": "If prices grow faster than your money, you fall behind.",
+    "pieces": ["If prices grow faster", "than your money,", "you fall behind."],
+    "decoys": [
+      {"text": "you buy the same goods.", "slot": 2, "misconceptionId": "inflation-m2", "fix": "When broad prices rise, the same cash can buy fewer goods."},
+      {"text": "any raise puts you ahead.", "slot": 2, "misconceptionId": "inflation-m3", "fix": "A raise smaller than the rise in prices still buys less than before."}
+    ],
+    "claimIds": ["inflation-c4"]
+  },
+  {
+    "conceptId": "compounding",
+    "takeaway": "Gains you leave in start to earn gains too.",
+    "pieces": ["Gains you leave in start", "to earn", "gains too."],
+    "decoys": [
+      {"text": "Only the original amount starts", "slot": 0, "misconceptionId": "compounding-m1", "fix": "When gains stay in the pot, later gains can build on them too."},
+      {"text": "Past gains never start", "slot": 0, "misconceptionId": "compounding-m4", "fix": "Compound growth includes gains on past gains as well as on the starting amount."}
+    ],
+    "claimIds": ["compounding-c1"]
+  },
+  {
+    "conceptId": "rule-of-72",
+    "takeaway": "Years to double is about 72 divided by the rate.",
+    "pieces": ["Years to double", "is about 72 divided", "by the rate."],
+    "decoys": [
+      {"text": "is exactly 72 divided", "slot": 1, "misconceptionId": "rule-of-72-m1", "fix": "The rule gives a rough guess, not an exact date."},
+      {"text": "by any market rate.", "slot": 2, "misconceptionId": "rule-of-72-m2", "fix": "Market gains can vary; the shortcut needs a steady assumed rate."}
+    ],
+    "claimIds": ["rule-of-72-c1"]
+  },
+  {
+    "conceptId": "risk-return",
+    "takeaway": "A chance of more gain comes with bigger ups and downs.",
+    "pieces": ["A chance of more gain", "comes with", "bigger ups and downs."],
+    "decoys": [
+      {"text": "guarantees gains without", "slot": 1, "misconceptionId": "risk-return-m1", "fix": "A high possible return can come with a loss too."},
+      {"text": "rules out all losses despite", "slot": 1, "misconceptionId": "risk-return-m2", "fix": "An uncertain asset can lose value as well as gain it."}
+    ],
+    "claimIds": ["risk-return-c3"]
+  },
+  {
+    "conceptId": "diversification",
+    "takeaway": "A real spread means many firms across many different industries.",
+    "pieces": ["A real spread means", "many firms across", "many different industries."],
+    "decoys": [
+      {"text": "one firm alone across", "slot": 1, "misconceptionId": "diversification-m1", "fix": "One firm or sector leaves a lot tied to one outcome."},
+      {"text": "just one industry.", "slot": 2, "misconceptionId": "diversification-m3", "fix": "Many firms in one industry still share the same risk."}
+    ],
+    "claimIds": ["diversification-c3"]
+  },
+  {
+    "conceptId": "shares",
+    "takeaway": "Each share is a slice; more shares means a bigger slice.",
+    "pieces": ["Each share is a slice;", "more shares means", "a bigger slice."],
+    "decoys": [
+      {"text": "Each share is a loan;", "slot": 0, "misconceptionId": "shares-m1", "fix": "A share is ownership, not a fixed loan payment."},
+      {"text": "your count alone guarantees", "slot": 1, "misconceptionId": "shares-m4", "fix": "Your slice depends on your shares out of all the shares."}
+    ],
+    "claimIds": ["shares-c3"]
+  },
+  {
+    "conceptId": "emergency-fund",
+    "takeaway": "Keep it in a separate savings account you can reach fast.",
+    "pieces": ["Keep it in", "a separate savings account", "you can reach fast."],
+    "decoys": [
+      {"text": "even if you cannot reach it.", "slot": 2, "misconceptionId": "emergency-fund-m1", "fix": "Money tied up in a hard-to-sell asset may not be ready when an urgent bill arrives."},
+      {"text": "only if it pays the most.", "slot": 2, "misconceptionId": "emergency-fund-m4", "fix": "The guide puts the fund in an easy-to-reach savings account."}
+    ],
+    "claimIds": ["emergency-fund-c4"]
+  },
+  {
+    "conceptId": "loan-emi",
+    "takeaway": "A longer loan lowers each EMI but raises the total interest.",
+    "pieces": ["A longer loan", "lowers each EMI", "but raises the total interest."],
+    "decoys": [
+      {"text": "and cuts the total interest.", "slot": 2, "misconceptionId": "loan-emi-m2", "fix": "A longer term can lower each payment but raise total interest."},
+      {"text": "always raises the rate", "slot": 1, "misconceptionId": "loan-emi-m4", "fix": "A longer term can raise total interest even when the loan rate stays fixed."}
+    ],
+    "claimIds": ["loan-emi-c3"]
+  },
+  {
+    "conceptId": "index-funds",
+    "takeaway": "An index fund matches its index, up and down, minus a small gap.",
+    "pieces": ["An index fund", "matches its index, up and down,", "minus a small gap."],
+    "decoys": [
+      {"text": "only rises with its index,", "slot": 1, "misconceptionId": "index-funds-m1", "fix": "Tracking a market index also means sharing its falls."},
+      {"text": "with no gap at all.", "slot": 2, "misconceptionId": "index-funds-m3", "fix": "Fees and running costs leave a small gap called tracking error."}
+    ],
+    "claimIds": ["index-funds-c5"]
+  },
+  {
+    "conceptId": "upi-scams",
+    "takeaway": "Your PIN approves payments. Receiving money never needs it.",
+    "pieces": ["Your PIN approves payments.", "Receiving money", "never needs it."],
+    "decoys": [
+      {"text": "always needs it.", "slot": 2, "misconceptionId": "upi-scams-m1", "fix": "To get money, a person need not key in a UPI PIN."},
+      {"text": "requires a QR scan and PIN.", "slot": 2, "misconceptionId": "upi-scams-m5", "fix": "A QR scan and UPI PIN can make a payment; getting money needs neither."}
+    ],
+    "claimIds": ["upi-scams-c3"]
+  }
+]
