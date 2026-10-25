@@ -46,6 +46,18 @@ function Frame({ name, pose = 'idle', size = 48, title, children }: CastProps & 
     {title && <title>{title}</title>}{children}
   </svg>;
 }
+/**
+ * Spec 25 §4: each friend wears one small thing in its area colour, taken from its courtyard corner. The hues are fixed
+ * in both themes, like the friends, and sit between the light and dark area tokens in areas.ts.
+ */
+export const ACCESSORY: Record<CastName, { thing: string; fill: string; line: string }> = {
+  Nandi: { thing: 'green band', fill: '#3f9a52', line: '#24622f' },
+  Moti: { thing: 'rose tassel', fill: '#d04870', line: '#8e2546' },
+  Chiku: { thing: 'teal satchel', fill: '#1f9c8a', line: '#0f5f54' },
+  Kapi: { thing: 'violet kite', fill: '#8a6ae0', line: '#523a9c' },
+  Mor: { thing: 'marigold', fill: '#f2a516', line: '#b06a08' },
+  Kachhua: { thing: 'indigo lantern', fill: '#4b57a8', line: '#2a326e' },
+};
 const Shadow = ({ cx = 50, rx = 30 }: { cx?: number; rx?: number }) => <ellipse cx={cx} cy="93.5" rx={rx} ry="3.8" fill="#000" opacity=".1" />;
 
 /** Nandi: a friendly young bull resting, with a hump, a dark muzzle and an orange knitted scarf. */
@@ -67,6 +79,7 @@ export function Nandi(props: CastProps) {
     <ellipse cx="88.4" cy="90.6" rx="4" ry="2.2" fill={N.hoof} />
     <path d="M36 85.5C37 82.5 46 82.5 50 84.8L50 90.5C46 92.2 38.5 92.2 36 90Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="38" cy="89" rx="3.2" ry="2.6" fill={N.hoof} />
     <path d="M50 86.5C52 83.6 60 83.6 63 86.4L62.4 91C58.4 92.6 52.4 92.6 50 91Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="60.6" cy="89.6" rx="3" ry="2.4" fill={N.hoof} />
+    <path className="cast-accessory" d="M54.2 84.1L57.4 84.3L57.2 92.1L54 92.2Z" fill={ACCESSORY.Nandi.fill} stroke={ACCESSORY.Nandi.line} strokeWidth=".8" strokeLinejoin="round" />
     <g transform={head}>
       <g transform={earL}><path d="M24.5 32C17 31 9.5 33 6 38.2C10 41.5 18 40.6 25 37Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><path d="M22.5 33.8C16.5 33.7 11.5 35.2 9 37.8C13 39.4 18 38.8 22.6 36.6Z" fill={N.ear} /></g>
       <g transform={earR}><path d="M51.5 32C59 31 66.5 33 70 38.2C66 41.5 58 40.6 51 37Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><path d="M53.5 33.8C59.5 33.7 64.5 35.2 67 37.8C63 39.4 58 38.8 53.4 36.6Z" fill={N.ear} /></g>
@@ -117,7 +130,8 @@ export function Moti(props: CastProps) {
     <g fill={M.nail}>{[34.4, 39, 43.6, 56.4, 61, 65.6].map((x, i) => <ellipse key={x} cx={x} cy={i % 3 === 1 ? 91.5 : 90.7} rx="1.8" ry="1.2" />)}</g>
     <g transform={headT}>
       <g transform={earL}><path d="M31 30C19 21 6 27 6 41C6 54 16 61 29 55Z" fill={M.body} stroke={M.line} strokeWidth="1.5" /><path d="M28 33.5C20 28.5 11.5 32 11.5 41.5C11.5 50 18 55 26.5 51.5Z" fill={M.ear} /></g>
-      <g transform={earR}><path d="M69 30C81 21 94 27 94 41C94 54 84 61 71 55Z" fill={M.body} stroke={M.line} strokeWidth="1.5" /><path d="M72 33.5C80 28.5 88.5 32 88.5 41.5C88.5 50 82 55 73.5 51.5Z" fill={M.ear} /></g>
+      <g transform={earR}><path d="M69 30C81 21 94 27 94 41C94 54 84 61 71 55Z" fill={M.body} stroke={M.line} strokeWidth="1.5" /><path d="M72 33.5C80 28.5 88.5 32 88.5 41.5C88.5 50 82 55 73.5 51.5Z" fill={M.ear} />
+        <g className="cast-accessory"><path d="M82 57.4V60" stroke={ACCESSORY.Moti.line} strokeWidth="1" /><circle cx="82" cy="60.6" r="1.7" fill={ACCESSORY.Moti.fill} stroke={ACCESSORY.Moti.line} strokeWidth=".7" /><path d="M80.2 62L83.8 62L85 68.4L79 68.4Z" fill={ACCESSORY.Moti.fill} stroke={ACCESSORY.Moti.line} strokeWidth=".8" strokeLinejoin="round" /><path d="M80.8 66.4v2M82 66.4v2M83.2 66.4v2" stroke={ACCESSORY.Moti.line} strokeWidth=".6" /></g></g>
       <path d={headD} fill={M.body} stroke={M.line} strokeWidth="1.6" />
       <g clipPath={`url(#${id}h)`}><ellipse cx="50" cy="65" rx="26" ry="8.5" fill={M.shade} /><path d="M33 29C36 25 40 23.6 44 23.6" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".7" /></g>
       <path d="M50 22.2C54.5 22.2 57.6 24.4 57.6 27.4C57.6 31 54 34.2 50 37.4C46 34.2 42.4 31 42.4 27.4C42.4 24.4 45.5 22.2 50 22.2Z" fill={M.gold} stroke={M.goldLine} strokeWidth=".9" />
@@ -149,6 +163,8 @@ export function Chiku(props: CastProps) {
     <path d="M41 85C39 75 42 65 48.5 64C55 64 57.5 73 56.5 85Z" fill={C.cream} />
     <path d="M59.4 61C61.8 68 62.2 77 60.8 85" fill="none" stroke={C.cream} strokeWidth="1.7" strokeLinecap="round" />
     <ellipse cx="41" cy="88.6" rx="5.2" ry="2.6" fill={C.dark} /><ellipse cx="55.6" cy="88.6" rx="5.2" ry="2.6" fill={C.dark} />
+    <g className="cast-accessory"><path d="M58.6 60.4L38 78" stroke={ACCESSORY.Chiku.line} strokeWidth="3.2" strokeLinecap="round" /><path d="M58.6 60.4L38 78" stroke={ACCESSORY.Chiku.fill} strokeWidth="1.8" strokeLinecap="round" />
+      <rect x="29.4" y="75.4" width="12.4" height="10" rx="2.2" fill={ACCESSORY.Chiku.fill} stroke={ACCESSORY.Chiku.line} strokeWidth=".9" /><path d="M29.6 78.6C33 80.4 38.4 80.4 41.6 78.6V77.4C41.6 76.2 40.6 75.4 39.4 75.4H31.8C30.6 75.4 29.6 76.2 29.6 77.4Z" fill={ACCESSORY.Chiku.line} opacity=".55" /></g>
     <g transform={`translate(0 ${nutY})`}>
       <ellipse cx="48.5" cy="67" rx="4.2" ry="5" fill={C.nut} stroke={C.line} strokeWidth="1" /><path d="M44.4 64.2C44.8 60.6 52.2 60.6 52.6 64.2C50 65.4 47 65.4 44.4 64.2Z" fill={C.cap} /><path d="M48.5 60.9l1 -2" stroke={C.cap} strokeWidth="1.2" strokeLinecap="round" />
       <ellipse cx="44" cy="68" rx="2.6" ry="3.2" fill={C.fur} stroke={C.line} strokeWidth=".9" /><ellipse cx="53" cy="68" rx="2.6" ry="3.2" fill={C.fur} stroke={C.line} strokeWidth=".9" />
@@ -202,6 +218,9 @@ export function Kapi(props: CastProps) {
       <path d={pose === 'think' ? 'M37.6 37.4Q42.4 35.2 47 37.2M53 35.6Q57.6 32.6 62.4 35.2' : 'M37.6 37.4Q42.4 35.2 47 37.2M53 37.2Q57.6 35.2 62.4 37.4'} fill="none" stroke={K.dark} strokeWidth="1.3" strokeLinecap="round" opacity=".7" />
       <Blush at={[37.6, 50.4, 62.4, 50.4]} r={0.9} />
     </g>
+    <g className="cast-accessory"><path d={`M89 40Q${(89 + arm.hand[0]) / 2 + 4} ${(40 + arm.hand[1]) / 2} ${arm.hand[0]} ${arm.hand[1]}`} fill="none" stroke={ACCESSORY.Kapi.line} strokeWidth=".7" />
+      <path d="M89 21L95.4 29.6L89 40L82.6 29.6Z" fill={ACCESSORY.Kapi.fill} stroke={ACCESSORY.Kapi.line} strokeWidth=".9" strokeLinejoin="round" /><path d="M89 21V40M82.6 29.6H95.4" stroke="#fff" strokeWidth=".7" opacity=".6" />
+      <path d="M89 40q-2 3 0 5q2 2 0 5" fill="none" stroke={ACCESSORY.Kapi.line} strokeWidth=".7" /><path d="M87.4 44.6l3.2 -.6M87.4 49.4l3.2 -.6" stroke={ACCESSORY.Kapi.fill} strokeWidth="1.4" strokeLinecap="round" /></g>
     <path d={arm.d} fill="none" stroke={K.line} strokeWidth="6.6" strokeLinecap="round" /><path d={arm.d} fill="none" stroke={K.fur} strokeWidth="4.8" strokeLinecap="round" />
     <circle cx={arm.hand[0]} cy={arm.hand[1]} r="2.8" fill={K.face} stroke={K.line} strokeWidth=".9" />
     <Mood pose={pose} at={pose === 'cheer' ? [16, 14] : [78, 12]} />
@@ -234,6 +253,7 @@ export function Mor(props: CastProps) {
       <circle cx="50" cy="42" r="12.6" fill={P.blue} stroke={P.line} strokeWidth="1.3" />
       <path d="M41.4 35.4C43.6 32.8 47.6 31.8 50.6 32.2" fill="none" stroke={P.blueHi} strokeWidth="1.8" strokeLinecap="round" opacity=".8" />
       <g fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round"><path d="M40.2 47.2Q44.2 49.6 48 47" /><path d="M59.8 47.2Q55.8 49.6 52 47" /></g>
+      <g className="cast-accessory">{Array.from({ length: 8 }, (_, k) => { const a = (Math.PI / 4) * k; return <circle key={k} cx={(61.4 + 2.7 * Math.cos(a)).toFixed(2)} cy={(31.4 + 2.7 * Math.sin(a)).toFixed(2)} r="1.9" fill={ACCESSORY.Mor.fill} stroke={ACCESSORY.Mor.line} strokeWidth=".5" />; })}<circle cx="61.4" cy="31.4" r="1.6" fill={ACCESSORY.Mor.line} /></g>
       <Eyes at={[44.6, 41.6, 55.4, 41.6]} pose={pose} ink={P.line} s={0.92} />
       {pose === 'cheer' ? <><path d="M47.3 46.8L52.7 46.8L50 50.2Z" fill={P.beak} stroke={P.beakLine} strokeWidth=".8" strokeLinejoin="round" /><path d="M48.2 51L51.8 51L50 53.6Z" fill={P.beak} stroke={P.beakLine} strokeWidth=".8" strokeLinejoin="round" /></>
         : <path d="M47.6 47.2L52.4 47.2L50 52.2Z" fill={P.beak} stroke={P.beakLine} strokeWidth=".8" strokeLinejoin="round" />}
@@ -265,6 +285,9 @@ export function Kachhua(props: CastProps) {
       </g>)}
       <path d="M38 44C44 39.6 51 38 58 38" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".25" />
     </g>
+    <g className="cast-accessory"><path d="M60.4 25.4Q64 20.6 67.6 25.4" fill="none" stroke={ACCESSORY.Kachhua.line} strokeWidth="1" />
+      <rect x="59.4" y="25" width="9.2" height="2.2" rx=".8" fill={ACCESSORY.Kachhua.line} /><rect x="59.8" y="27" width="8.4" height="8.6" rx="2" fill={ACCESSORY.Kachhua.fill} stroke={ACCESSORY.Kachhua.line} strokeWidth=".8" />
+      <rect x="61.8" y="28.6" width="4.4" height="5.4" rx="1.2" fill={pose === 'rest' ? '#e9c96a' : '#f7d774'} /><rect x="59.4" y="35.4" width="9.2" height="1.8" rx=".7" fill={ACCESSORY.Kachhua.line} /></g>
     <path d="M21.5 77C21.5 74 95.5 74 95.5 77C95.5 81 21.5 81 21.5 77Z" fill={T.rim} stroke={T.line} strokeWidth="1.2" />
     <g stroke={T.line} strokeWidth=".8">{[30, 38, 46, 54, 62, 70, 78, 86].map(x => <path key={x} d={`M${x} 75.4V80.2`} />)}</g>
     <g fill={T.star}>{[34, 50, 66, 82].map(x => <circle key={x} cx={x} cy="77.8" r=".9" />)}</g>

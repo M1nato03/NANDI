@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { dropCast, finishCast } from './placement';
 import { completedModuleKey } from './UnitScene';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ACCESSORY, Cast, castNames, poses } from './Cast';
 
 describe('cast placement', () => {
   it('uses the intended friend for each finish and a memory keeper for review', () => {
@@ -36,5 +39,15 @@ describe('opening', () => {
     vi.resetModules();
     const reduced = await import('./OpenMoment');
     expect(reduced.shouldOpen({ night: false, pause: false, reduced: true })).toBe(false);
+  });
+});
+
+describe('area accessories (spec 25 §4)', () => {
+  it('every friend wears its one accessory in all 4 poses', () => {
+    for (const name of castNames) for (const pose of poses) {
+      const svg = renderToStaticMarkup(createElement(Cast, { name, pose }));
+      expect(svg.match(/class="cast-accessory"/g), `${name} ${pose}`).toHaveLength(1);
+      expect(svg, `${name} ${pose}`).toContain(ACCESSORY[name].fill);
+    }
   });
 });
