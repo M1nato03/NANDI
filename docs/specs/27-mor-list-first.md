@@ -1,6 +1,6 @@
 # 27. Mor's list first: Plan becomes a plain to-do list
 
-Status: DRAFT, waiting for Jenil's yes. Not for the builder until then.
+Status: APPROVED by Jenil, 25 Oct 2026 ("Yes to spec 27").
 Idea engine, 25 Oct 2026. Sources: Jenil's notes of 25 Oct, the Codex audit of Plan
 (D:\nandi-gate-logs\idea-engine\codex-mor-audit.md), and the round-3 demo
 (https://claude.ai/artifact/LVWKWGavbn6VpE6uxRvWEA, Mor tab).
@@ -76,6 +76,25 @@ on the task name, in its detail sheet. Nothing about it appears on the first scr
   fourth move to Someday are removed. Instead, after a task has moved 3 times, its detail sheet offers one
   optional line: "Make it smaller?" (split) or "Move it to Later?". Nothing happens unless the user taps.
 - Every move shows a toast with Undo, and the moved task visibly lands in its new list.
+
+## Mor is alive on this screen
+
+Jenil, 25 Oct: "there should be animations for all the mascots, be it minor or major depending on the need."
+Mor sits in the Plan header and reacts. Use the existing Cast poses (idle, cheer, think, rest) plus small CSS
+transforms; no new art is needed for v1.
+
+| Moment | Size | Animation |
+|---|---|---|
+| Plan opens | minor | Mor blinks and settles (idle). |
+| Task added | minor | Mor nods once. |
+| Task done | minor | Mor hops (cheer), one feather flick. |
+| Task moved | minor | Mor glances toward the Tomorrow list as the row slides there. |
+| Start | minor | Mor turns to watch the timer (think) and stays quiet while it runs. |
+| Timed task finished | major | Mor fans its tail (cheer, scaled up for about 1 s) as the "Noted…" line appears. |
+| Nothing left today | major | Mor rests (rest pose), with a slow breathing loop. |
+
+Every animation honours prefers-reduced-motion (swap to a pose change with no movement), runs at most once
+per action, never loops except the slow rest breathing, and never blocks a tap.
 
 ## Kept, but out of the way
 
