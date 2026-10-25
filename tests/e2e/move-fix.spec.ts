@@ -31,6 +31,8 @@ test('a move the rules refuse says why inside the open sheet', async ({ page }) 
   const sheet = page.getByRole('dialog');
   await expect(sheet.getByRole('alert')).toHaveText('Real-reason moves are used up for this week.');
   await expect(sheet).toBeVisible();
+  // The sheet scrolls inside itself at 360 px; the message must be on screen, not below the fold (Codex A item 87).
+  await expect(sheet.getByRole('alert')).toBeInViewport();
 });
 
 test('moving the task you are focusing on to tomorrow takes it off the Now card', async ({ page }) => {

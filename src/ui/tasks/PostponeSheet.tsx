@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { TaskRow } from '../../data/types';
 import type { PostponeReason, RealReason } from '../../core/tasks/postponeGate';
 import { defaultSlot, splitEstimates } from './model';
@@ -30,6 +30,9 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
   const [split, setSplit] = useState(false);
   const [parts, setParts] = useState<number[]>(() => splitEstimates(task.estimateMin ?? 0) ?? []);
   const [error, setError] = useState(notice);
+  // At 360 px the sheet scrolls inside itself, so a new message is scrolled into view (Codex A item 87).
+  const alertRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => { if (error) alertRef.current?.scrollIntoView({ block: 'nearest' }); }, [error]);
   const count = task.postponeCount ?? 0;
   const choice = count === 2;
   const next = new Date(slot).getTime();
@@ -72,12 +75,13 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
       {!split && <><label>New date and time <input type="datetime-local" value={slot} onChange={(event) => setSlot(event.target.value)} /></label>
         <fieldset><legend>Quick reason {count < 2 && <span className="small">Optional unless the weekly budget is full</span>}</legend>{reasons.map((item) => <label key={item}><input type="radio" name="postpone-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>
         <div className="sheet-actions">{choice ? <><button type="button" onClick={() => setSplit(true)}>Split into steps</button><button type="button" className="secondary" onClick={() => void move('do10')}>Do 10 min now</button><button type="button" className="secondary" onClick={() => void move('someday')}>Move to Someday</button><button type="button" className="text-button" onClick={() => void move('anyway')}>Postpone anyway</button></> : <button type="button" onClick={() => void move('normal')}>{toSomeday ? 'Move to Someday' : 'Save new time'}</button>}</div>
+        {error && <p role="alert" ref={alertRef}>{error}</p>}
         {toSomeday && <p className="small postpone-someday-note">This would be its 4th move, so it rests in Someday instead of the new date. Plan it again from Later whenever you like.</p>}
         <details><summary>Schedule changed for a real reason?</summary><fieldset><legend>What changed?</legend>{realReasons.map((item) => <label key={item}><input type="radio" name="real-reason" checked={realReason === item} onChange={() => setRealReason(item)} /> {item}</label>)}</fieldset><button type="button" className="secondary" onClick={() => void move('real')}>Move with reason</button></details>
         {!choice && <button type="button" className="text-button" onClick={() => setSplit(true)}>Split task</button>}
       </>}
       {split && <div><h3>Split into steps</h3><fieldset><legend>Quick reason <span className="small">Needed only when this week's moves are used up</span></legend>{reasons.map((item) => <label key={item}><input type="radio" name="split-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>{parts.length ? parts.map((part, index) => <label key={index}>Step {index + 1} minutes <input type="number" min="25" max="60" value={part} onChange={(event) => setParts(parts.map((value, position) => position === index ? Number(event.target.value) : value))} /></label>) : <p>This estimate is too small to split into 25 minute steps.</p>}<div className="sheet-actions"><button type="button" disabled={!parts.length} onClick={() => void saveSplit()}>Save split</button><button type="button" className="secondary" onClick={() => setSplit(false)}>Previous step</button></div></div>}
-      {error && <p role="alert">{error}</p>}
+      {split && error && <p role="alert" ref={alertRef}>{error}</p>}
     </section>
   </div>;
 }

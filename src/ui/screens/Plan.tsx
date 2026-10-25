@@ -32,6 +32,7 @@ import { SoftChip, SoftHome, softMoreKey, useSoftFacts } from '../soft/SoftDay';
 import { softToday, yesterdayWasSoft } from '../../core/soft/soft';
 import { isAfterBedtime } from '../../core/time';
 import { useModalFocus } from '../shell/useModalFocus';
+import { errorMessage } from '../shell/errorMessage';
 
 export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
@@ -81,7 +82,10 @@ export function Plan({ questId }: { questId?: string }) {
     const slot = suggestSlots(board.now, task.estimateMin ?? 30, occupied).find(at => dayKey(at) === today);
     if (slot == null) { setPickNote('No free time left today. Open the task and choose a time.'); return; }
     setPickNote('');
-    const ok = await board.act(async (repos, at) => { if (task.status !== 'planned' || task.dayKey !== today) await repos.postpone(task.id, at, { newStart: slot }); await repos.setPriority(task.id, 'must', at); }, 'One Must picked.');
+    // A refusal (say, a first step needed) shows next to the choices, not far down Plan (Codex A item 87).
+    let failure = '';
+    const ok = await board.act(async (repos, at) => { try { if (task.status !== 'planned' || task.dayKey !== today) await repos.postpone(task.id, at, { newStart: slot }); await repos.setPriority(task.id, 'must', at); } catch (caught) { failure = errorMessage(caught); throw caught; } }, 'One Must picked.');
+    if (!ok) setPickNote(failure ? `${failure} Open the task to move it.` : 'That did not save. Try again.');
     if (ok) { await dismissFresh(); setPickMust(false); }
   }
   const complete = (id: string) => { void board.act(async (repos, now) => {
