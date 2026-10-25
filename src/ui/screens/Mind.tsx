@@ -82,7 +82,7 @@ export function Mind({ entry }: { entry?: string }) {
   const [hintFocus, setHintFocus] = useState<number[]>([]);
   const [newCard, setNewCard] = useState(false);
   // Spec 29: Check marks only the cells that break a rule, named in plain words; nothing is marked while you play.
-  const [checkMark, setCheckMark] = useState<{ cells: number[]; rule: string } | null>(null);
+  const [checkMark, setCheckMark] = useState<{ cells: number[]; rules: Record<number, string> } | null>(null);
   const [kapi, setKapi] = useState<{ kind: KapiMomentKind; at: number }>({ kind: 'idle', at: 0 });
   const react = (kind: KapiMomentKind) => setKapi(current => ({ kind, at: current.at + 1 }));
   const [passed, setPassed] = useState<string[]>([]);
@@ -408,7 +408,7 @@ export function Mind({ entry }: { entry?: string }) {
             const open = extras.find(row => !row.result);
             const index = open ? open.practiceAttempt! - SHELF_ATTEMPT : Math.min(SHELF_PER_DAY - 1, extras.length + 1);
             setSelection({ type, diff, daily: false, shelf: true, attempt: SHELF_ATTEMPT + index, seedText: shelfSeedText(today, type, diff, index) });
-          } else if (type === featured.type) setSelection(needsIntro(type, live) ? { type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type, diff: featured.diff, daily: true, shelf: true });
+          } else if (type === featured.type && diff === featured.diff) setSelection({ type, diff, daily: true, shelf: true });
           else setSelection({ type, diff, daily: true, shelf: true, seedText: shelfSeedText(today, type, diff, 0) });
         }).catch(error => { recordError('window', error); setMessage('Could not open this board.'); setBusy(false); });
       }
@@ -477,14 +477,16 @@ export function Mind({ entry }: { entry?: string }) {
             <button type="button" className="text-button mind-pace-toggle" aria-pressed={paceOn} aria-label={paceOn ? 'Hide pace' : 'Show pace'} onClick={() => void togglePace().catch(error => recordError('window', error))}>{paceOn ? 'Hide' : 'Pace'}</button>
           </div>}
         </div>
-        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checkMark?.cells ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
+        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checkMark?.cells ?? []} marks={checkMark?.rules} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
         <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; setCheckMark(null); if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
           // Spec 29 Check: only rule-breaking cells, in Kapi's colour with a mark, and the rule in words. Never red.
           const broken = brokenRules(board, state);
           if (!broken.length) { setCheckMark(null); setMessage('Nothing breaks a rule so far.'); react('clap'); return; }
           setHintFocus([]);
-          setCheckMark({ cells: [...new Set(broken.flatMap(item => item.cells))], rule: broken[0]!.rule });
-          setMessage(`${broken[0]!.rule}${broken.length > 1 ? ` ${broken.length - 1} more ${broken.length === 2 ? 'rule is' : 'rules are'} broken too.` : ''}`);
+          const rules: Record<number, string> = {};
+          for (const item of broken) for (const cell of item.cells) rules[cell] = rules[cell] ? `${rules[cell]} ${item.rule}` : item.rule;
+          setCheckMark({ cells: [...new Set(broken.flatMap(item => item.cells))], rules });
+          setMessage(broken.map(item => item.rule).join(' '));
           react('scratch');
         }}>Check</button><button type="button" className="secondary" onClick={() => {
           setCheckMark(null);

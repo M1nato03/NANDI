@@ -55,7 +55,11 @@ describe("spec 29 Kapi's shelf", () => {
     expect(shelfLevel(other, [], day)).toBe('easy');
     expect(shelfLevel(other, [solvedOn('2026-11-01'), solvedOn('2026-11-02'), solvedOn(day)], day)).toBe('easy');
     expect(shelfLevel(other, [solvedOn('2026-10-30'), solvedOn('2026-11-01'), solvedOn('2026-11-02')], day)).toBe(other === 'sunmoon' ? 'hard' : 'medium');
-    expect(shelfLevel(featured.type, [], day)).toBe(featured.diff);
+    // The ramp comes first, for the featured type too (Codex B item 105).
+    expect(shelfLevel(featured.type, [], day)).toBe('easy');
+    const featuredSolved = (dayKey: string) => ({ type: featured.type, dayKey, result: 'solved', deleted: 0, daily: true });
+    expect(shelfLevel(featured.type, [featuredSolved('2026-10-30'), featuredSolved('2026-11-01')], day)).toBe('easy');
+    expect(shelfLevel(featured.type, ['2026-10-29', '2026-10-30', '2026-11-01'].map(featuredSolved), day)).toBe(featured.diff);
   });
   it('counts the daily board and the shelf extras of today only', () => {
     const rows = [

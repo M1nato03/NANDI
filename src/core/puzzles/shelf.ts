@@ -25,10 +25,11 @@ type RunLike = { type: string; dayKey?: string; result?: string; deleted?: numbe
 
 /** The shelf level of a type for a day, from the solves before that day (so it never changes mid-day). */
 export function shelfLevel(type: PuzzleType, runs: readonly RunLike[], day: string): PuzzleDifficulty {
-  const featured = featuredSpec(day);
-  if (featured.type === type) return featured.diff;
+  // The ramp comes first (Codex B item 105): under 3 earlier solves of a type, its shelf board is easy whatever the weekday.
   const earlier = runs.filter(run => run.type === type && run.result === 'solved' && !run.deleted && (run.dayKey ?? '') < day).length;
   if (earlier < SHELF_EASY_SOLVES) return 'easy';
+  const featured = featuredSpec(day);
+  if (featured.type === type) return featured.diff;
   return type === 'sunmoon' ? 'hard' : 'medium';
 }
 

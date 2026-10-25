@@ -25,9 +25,9 @@ export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBed
   if (run.type === 'mystery') return;
   const id = `board:${run.id}`;
   if (await db.ledger.get(id)) return;
-  // Spec 29, no economy change: the first shelf daily of the day is the daily board fact; any further shelf board
-  // (another type's daily or an extra) is a side board under the existing side-board cap.
-  const dailyTaken = run.shelf && await db.ledger.where('dayKey').equals(run.dayKey).filter(row => row.mode === 'mind' && row.kind === 'board' && row.inputs.daily !== false && !row.deleted).count() > 0;
+  // Spec 29, no economy change: the first daily board of the day (shelf or featured) is the daily board fact; any
+  // further board (another type's daily or an extra) is a side board under the existing side-board cap.
+  const dailyTaken = await db.ledger.where('dayKey').equals(run.dayKey).filter(row => row.mode === 'mind' && row.kind === 'board' && row.inputs.daily !== false && !row.deleted).count() > 0;
   const daily = !!run.daily && !dailyTaken;
   await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily, afterBedtime, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
 }

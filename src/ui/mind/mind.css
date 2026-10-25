@@ -89,7 +89,8 @@
 .mind-case .case-grid button.case-no { background: var(--surface); color: var(--secondary-ink); }
 .mind-case .case-grid button.case-yes { background: color-mix(in srgb, var(--teal) 25%, var(--raised)); border-color: var(--teal); color: var(--ink); }
 .mind-case .case-accusation-heading { margin-top: 28px; }
-.mind-case .case-grid button.case-error { outline: 2px solid #b43a3a; outline-offset: -2px; }
+.mind-case .case-grid button.case-error { position: relative; outline: 2px dashed var(--area-think); outline-offset: -2px; }
+.mind-case .case-grid button.case-error::after { content: '!'; position: absolute; top: 1px; right: 3px; font-size: 12px; font-weight: 800; line-height: 1; color: var(--area-think); }
 .mind-case .case-grid-wrap { min-width: 0; }
 .mind-case .card label { display: block; margin: .5rem 0; }
 .mind-case .card select { display: block; width: 100%; min-height: 44px; }
@@ -132,7 +133,7 @@
 .mind-case .case-grid button.case-blank { background: var(--surface-2); }
 .mind-case .case-grid button.case-no { background: var(--surface-3); color: var(--ink-2); }
 .mind-case .case-grid button.case-yes { border: 0; background: color-mix(in srgb, var(--area-notice) 23%, var(--surface-2)); }
-.mind-case .case-grid button.case-error { outline-color: var(--area-move); }
+.mind-case .case-grid button.case-error { outline-color: var(--area-think); }
 .mind-lesson-options button { min-height: 56px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); }
 .mind-lesson-options button.selected { background: color-mix(in srgb, var(--area-think) 20%, var(--surface-2)); outline: 0; }
 .mind-feedback, .mind-scene, .mind-source { border-radius: var(--radius-row); background: var(--surface-2); }

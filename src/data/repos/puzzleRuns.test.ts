@@ -40,6 +40,16 @@ describe('puzzle runs', () => {
     const facts = (await store.ledger.toArray()).filter(row => row.kind === 'board').sort((a, b) => a.updatedAt - b.updatedAt);
     expect(facts.map(row => [row.refId, row.inputs.daily])).toEqual([[first.id, true], [second.id, false], [extra.id, false]]);
   });
+  it('spec 29: the featured board from Today after a shelf daily is a side board, not a second daily (Codex B item 105)', async () => {
+    const store = createDb(`mind-test-${crypto.randomUUID()}`); stores.push(store);
+    const day = '2026-11-03';
+    const shelf = await openPuzzleRun(store, PZ.generate('crowns', { seed: 31, diff: 'easy' })!, day, true, 1000);
+    await savePuzzleRun(store, { ...shelf, shelf: true, result: 'solved', solveMs: 1, finishedAt: 2000 }, 2000);
+    const featured = await openPuzzleRun(store, PZ.generate('sunmoon', { seed: 37, diff: 'easy' })!, day, true, 3000);
+    await savePuzzleRun(store, { ...featured, result: 'solved', solveMs: 1, finishedAt: 4000 }, 4000);
+    const facts = (await store.ledger.toArray()).filter(row => row.kind === 'board').sort((a, b) => a.updatedAt - b.updatedAt);
+    expect(facts.map(row => row.inputs.daily)).toEqual([true, false]);
+  });
   it('keeps one solved daily fact even after another save', async () => {
     const store = createDb(`mind-test-${crypto.randomUUID()}`); stores.push(store);
     const board = PZ.generate('crowns', { seed: 19, diff: 'easy' })!;

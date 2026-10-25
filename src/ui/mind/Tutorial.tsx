@@ -44,6 +44,8 @@ export function BoardTutorial({ type, onDone }: { type: PuzzleType; onDone: (ski
   const onPath = (path: number[]) => {
     if (done) return;
     const expected = [...step.start.path, step.cell];
+    // Starting a drag on the line's head reports the same line again; that is not a move.
+    if (path.length === state.path.length && path.every((cell, i) => cell === state.path[i])) return;
     if (path.length === expected.length && path.every((cell, i) => cell === expected[i])) { setState({ ...state, path }); setDone(true); setNote(''); }
     else setNote('Tap the glowing square.');
   };
