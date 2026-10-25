@@ -32,7 +32,7 @@ test('a wrong card: Chiku acts it out, the truth plays after, the mistake is the
   for (let i = 0; i < 4; i++) await stage(page).click();
   await expect(page.locator('.chiku-end')).toContainText('Got it, because your card named the real cause.');
   await expect(page.locator('[data-played]')).toHaveAttribute('data-played', '1:false');
-  await page.getByRole('button', { name: 'Done' }).click();
+  await page.locator('.chiku-end').getByRole('button', { name: 'Done', exact: true }).click();
   await expect(page.getByText('Demo finished.')).toBeVisible();
 });
 
