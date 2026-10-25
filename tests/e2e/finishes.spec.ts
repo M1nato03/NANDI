@@ -24,7 +24,7 @@ async function seedOtherCoreItems(page: Page) {
       const tx = database.transaction(['sessions', 'learnDrops', 'puzzleRuns'], 'readwrite');
       tx.objectStore('sessions').put({ id: `finish-session:${day}`, dayKey: day, status: 'completed', deleted: 0 });
       tx.objectStore('learnDrops').put({ id: `drop:daily:${day}`, drop: { cursor: 1, items: [{}] } });
-      tx.objectStore('puzzleRuns').put({ id: `daily:${day}:${featured.type}:${featured.diff}`, dayKey: day, type: featured.type, diff: featured.diff, result: 'solved', deleted: 0 });
+      tx.objectStore('puzzleRuns').put({ id: `daily:${day}:${featured.type}:${featured.diff}`, dayKey: day, type: featured.type, diff: featured.diff, daily: true, result: 'solved', deleted: 0 });
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
     });

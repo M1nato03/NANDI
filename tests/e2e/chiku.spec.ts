@@ -2,7 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 // Spec 30, Teach Chiku: one question, three cards, one tap; Chiku acts out the card on a new day, then what happened.
 // No scene ships until editors sign them off, so these run on the e2e-only demo route with the Kunal fixture.
-const open = async (page: Page, seed = 'demo') => {
+// A fixed noon, so a run after the night window opens does not land on the night deck; timers keep running.
+const open = async (page: Page, seed = 'demo', fixNoon = true) => {
+  if (fixNoon) await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
   await page.goto(`/?e2e&seed=${seed}#learn/chiku-demo`);
   await expect(page.getByRole('region', { name: 'Teach Chiku' })).toBeVisible();
 };
@@ -49,7 +51,7 @@ test('a tap skips to the next beat, a playthrough is under 6 seconds, and Skip l
 
 test('a whole playthrough ends within 6 seconds', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
-  await open(page, 'other');
+  await open(page, 'other', false);
   await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'Having free time' }).click();
   await page.clock.runFor(6_000);
   await expect(beat(page)).toHaveAttribute('data-beat', 'done');
