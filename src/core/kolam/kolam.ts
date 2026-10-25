@@ -299,7 +299,7 @@ export function checkKolam(n: number, points: readonly Pt[]): CheckResult {
   const segs = new Set<string>();
   for (let k = 0; k < L; k++) {
     const [ax, ay] = points[k]!;
-    const [bx, by] = points[(k + 1) % L];
+    const [bx, by] = points[(k + 1) % L]!;
     if ((ax + ay) % 2 !== 1 || ax < 0 || ay < 0 || ax > max || ay > max) problems.push(`bad point ${ax},${ay}`);
     if (Math.abs(bx - ax) !== 1 || Math.abs(by - ay) !== 1) problems.push(`step ${k} is not a diagonal unit step`);
     const s = segKey(ax, ay, bx, by);
