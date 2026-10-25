@@ -174,6 +174,8 @@ export interface PuzzleRunRow extends EntityRow {
   finishedAt?: number;
   afterBedtime?: boolean;
   practiceAttempt?: number;
+  /** Spec 29: opened from Kapi's shelf (its daily board or one of the two extras a day). */
+  shelf?: boolean;
   caseGrid?: { A: number[]; B: number[]; C: number[]; struck: number[] };
   accusation?: { s: number; i: number; p: number };
   /** Spec 24 pace line: active ms at 10%, 20% … 100% filled (rise-only, not indexed). */

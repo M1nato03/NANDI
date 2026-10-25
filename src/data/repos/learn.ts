@@ -20,12 +20,16 @@ export async function seedDeckCards(db: NandiDb, deck: DeckPack, now = Date.now(
 }
 /** Caller must own a ledger write transaction. */
 export async function putDailyBoardFact(db: NandiDb, run: PuzzleRunRow, afterBedtime: boolean, now: number): Promise<void> {
-  if (!run.daily || run.result !== 'solved' || !run.dayKey) return;
+  if ((!run.daily && !run.shelf) || run.result !== 'solved' || !run.dayKey) return;
   // A solved daily case pays as a case, not also as the daily board (batch 3 g). Facts already written keep paying.
   if (run.type === 'mystery') return;
   const id = `board:${run.id}`;
   if (await db.ledger.get(id)) return;
-  await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily: true, afterBedtime, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
+  // Spec 29, no economy change: the first shelf daily of the day is the daily board fact; any further shelf board
+  // (another type's daily or an extra) is a side board under the existing side-board cap.
+  const dailyTaken = run.shelf && await db.ledger.where('dayKey').equals(run.dayKey).filter(row => row.mode === 'mind' && row.kind === 'board' && row.inputs.daily !== false && !row.deleted).count() > 0;
+  const daily = !!run.daily && !dailyTaken;
+  await db.ledger.add({ id, dayKey: run.dayKey, mode: 'mind', kind: 'board', refId: run.id, inputs: { daily, afterBedtime, type: run.type, diff: run.diff ?? '', hintsUsed: run.hintsUsed ?? 0 }, updatedAt: now, deleted: 0, deviceId: run.deviceId });
 }
 export async function saveLessonDraft(db: NandiDb, draft: LessonDraft | null, now = Date.now()): Promise<void> {
   const deviceId = await getOrCreateDeviceId(db, now);
