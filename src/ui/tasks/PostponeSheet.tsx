@@ -34,7 +34,7 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
   // 360 px, where the sheet scrolls inside itself (Codex A items 87, 88).
   const [errorAt, setErrorAt] = useState<'main' | 'real' | 'split'>('main');
   const alertRef = useRef<HTMLParagraphElement>(null);
-  useEffect(() => { if (error) alertRef.current?.focus(); }, [error, errorAt]);
+  useEffect(() => { if (error) { alertRef.current?.focus(); alertRef.current?.scrollIntoView({ block: 'nearest' }); } }, [error, errorAt]);
   const fail = (at: 'main' | 'real' | 'split', text: string) => { setErrorAt(at); setError(text); };
   const alert = (at: 'main' | 'real' | 'split') => error && errorAt === at ? <p role="alert" tabIndex={-1} ref={alertRef}>{error}</p> : null;
   const count = task.postponeCount ?? 0;

@@ -75,7 +75,7 @@ test("Shutdown's Move to tomorrow moves the task to tomorrow 9:00 at once", asyn
   expect(start).toBe(new Date('2026-10-12T09:00:00').getTime());
 });
 
-test('Pick one Must says why a choice could not move, on that choice', async ({ page }) => {
+test('Pick one Must says why the last choice could not move, on that choice and in view', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
@@ -85,8 +85,8 @@ test('Pick one Must says why a choice could not move, on that choice', async ({ 
     await new Promise<void>((resolve, reject) => {
       const transaction = database.transaction('tasks', 'readwrite');
       const base = { status: 'unplaced', dayKey: '2026-10-11', size: 'M', plannedSize: 'M', estimateMin: 30, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, firstScheduledDayKey: '2026-10-09', lastPlannedDayKey: '2026-10-10', updatedAt: Date.now(), deleted: 0, deviceId: 'move-e2e' };
-      for (let index = 0; index < 6; index++) transaction.objectStore('tasks').put({ ...base, id: `z-filler-${index}`, title: `Filler ${index + 1}`, postponeCount: 0 });
-      transaction.objectStore('tasks').put({ ...base, id: 'a-slipped', title: 'Slipped task', postponeCount: 1 });
+      for (let index = 0; index < 12; index++) transaction.objectStore('tasks').put({ ...base, id: `a-filler-${String(index).padStart(2, '0')}`, title: `Filler ${index + 1}`, postponeCount: 0 });
+      transaction.objectStore('tasks').put({ ...base, id: 'z-slipped', title: 'Slipped task', postponeCount: 1 });
       transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
     });
     database.close();
@@ -101,5 +101,7 @@ test('Pick one Must says why a choice could not move, on that choice', async ({ 
   const [choice, alert] = [await fresh.getByRole('button', { name: 'Slipped task' }).boundingBox(), await note.boundingBox()];
   expect(alert!.y).toBeGreaterThanOrEqual(choice!.y + choice!.height - 1);
   expect(alert!.y - (choice!.y + choice!.height)).toBeLessThan(40);
+  // The last choice sits near the bottom of a 360 px screen: the note takes focus and is scrolled into view (item 89).
+  await expect(note).toBeFocused();
   await expect(note).toBeInViewport();
 });
