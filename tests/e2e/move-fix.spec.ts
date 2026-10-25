@@ -31,8 +31,10 @@ test('a move the rules refuse says why inside the open sheet', async ({ page }) 
   const sheet = page.getByRole('dialog');
   await expect(sheet.getByRole('alert')).toHaveText('Real-reason moves are used up for this week.');
   await expect(sheet).toBeVisible();
-  // The sheet scrolls inside itself at 360 px; the message must be on screen, not below the fold (Codex A item 87).
+  // The message sits by the pressed button and takes focus, so it is on screen at 360 px too (Codex A items 87, 88).
   await expect(sheet.getByRole('alert')).toBeInViewport();
+  await expect(sheet.getByRole('alert')).toBeFocused();
+  await expect(sheet.locator('details').getByRole('alert')).toHaveCount(1);
 });
 
 test('moving the task you are focusing on to tomorrow takes it off the Now card', async ({ page }) => {
@@ -71,4 +73,33 @@ test("Shutdown's Move to tomorrow moves the task to tomorrow 9:00 at once", asyn
     return rows.find(row => row.title === 'Pay the bill')?.scheduledStart;
   });
   expect(start).toBe(new Date('2026-10-12T09:00:00').getTime());
+});
+
+test('Pick one Must says why a choice could not move, on that choice', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
+  await page.goto('/#plan');
+  await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+  // Yesterday's planned task, moved once and missed: the move rules want a first step before it moves again.
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    await new Promise<void>((resolve, reject) => {
+      const transaction = database.transaction('tasks', 'readwrite');
+      const base = { status: 'unplaced', dayKey: '2026-10-11', size: 'M', plannedSize: 'M', estimateMin: 30, category: 'general', mustOrCould: 'could', scheduledStart: null, scheduledEnd: null, firstScheduledDayKey: '2026-10-09', lastPlannedDayKey: '2026-10-10', updatedAt: Date.now(), deleted: 0, deviceId: 'move-e2e' };
+      for (let index = 0; index < 6; index++) transaction.objectStore('tasks').put({ ...base, id: `z-filler-${index}`, title: `Filler ${index + 1}`, postponeCount: 0 });
+      transaction.objectStore('tasks').put({ ...base, id: 'a-slipped', title: 'Slipped task', postponeCount: 1 });
+      transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
+    });
+    database.close();
+  });
+  await page.reload();
+  const fresh = page.getByRole('region', { name: 'Fresh start' });
+  await fresh.getByRole('button', { name: 'Pick one Must' }).click();
+  await fresh.getByRole('button', { name: 'Slipped task' }).click();
+  const note = fresh.getByRole('alert');
+  await expect(note).toContainText('Add a first step of 10 minutes or less.');
+  // It sits right under the tapped choice, not after the whole list.
+  const [choice, alert] = [await fresh.getByRole('button', { name: 'Slipped task' }).boundingBox(), await note.boundingBox()];
+  expect(alert!.y).toBeGreaterThanOrEqual(choice!.y + choice!.height - 1);
+  expect(alert!.y - (choice!.y + choice!.height)).toBeLessThan(40);
+  await expect(note).toBeInViewport();
 });

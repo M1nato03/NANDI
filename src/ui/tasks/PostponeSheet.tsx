@@ -30,26 +30,31 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
   const [split, setSplit] = useState(false);
   const [parts, setParts] = useState<number[]>(() => splitEstimates(task.estimateMin ?? 0) ?? []);
   const [error, setError] = useState(notice);
-  // At 360 px the sheet scrolls inside itself, so a new message is scrolled into view (Codex A item 87).
+  // The message shows next to the action that was pressed and takes focus, so focus and view stay together at
+  // 360 px, where the sheet scrolls inside itself (Codex A items 87, 88).
+  const [errorAt, setErrorAt] = useState<'main' | 'real' | 'split'>('main');
   const alertRef = useRef<HTMLParagraphElement>(null);
-  useEffect(() => { if (error) alertRef.current?.scrollIntoView({ block: 'nearest' }); }, [error]);
+  useEffect(() => { if (error) alertRef.current?.focus(); }, [error, errorAt]);
+  const fail = (at: 'main' | 'real' | 'split', text: string) => { setErrorAt(at); setError(text); };
+  const alert = (at: 'main' | 'real' | 'split') => error && errorAt === at ? <p role="alert" tabIndex={-1} ref={alertRef}>{error}</p> : null;
   const count = task.postponeCount ?? 0;
   const choice = count === 2;
   const next = new Date(slot).getTime();
   // Item 83: the 4th counted move parks the task in Someday whatever date is picked, so the button says so.
   const toSomeday = !choice && wouldPark(task, next);
   // A refusal from the rules shows here, next to Save, not on the screen behind the sheet (item 83).
-  async function save(operation: Parameters<Run>[0], success: string): Promise<boolean> {
+  async function save(operation: Parameters<Run>[0], success: string, at: 'main' | 'real' | 'split' = 'main'): Promise<boolean> {
     let failure = '';
     const ok = await run(async (repos, at) => { try { return await operation(repos, at); } catch (caught) { failure = errorMessage(caught); throw caught; } }, success);
-    if (!ok) setError(failure || 'That did not save. Try again.');
+    if (!ok) fail(at, failure || 'That did not save. Try again.');
     return ok;
   }
   async function move(action: 'anyway' | 'someday' | 'do10' | 'real' | 'normal') {
-    if ((action === 'normal' || action === 'anyway' || action === 'real') && !Number.isFinite(next)) { setError('Pick a date and time.'); return; }
-    if ((action === 'normal' || action === 'anyway') && count >= 1 && !toSomeday && !firstStep.trim()) { setError('Add a first step of 10 minutes or less.'); return; }
-    if (action === 'anyway' && !reason) { setError('Pick a quick reason.'); return; }
-    if (action === 'real' && !realReason) { setError('Pick what changed.'); return; }
+    const at = action === 'real' ? 'real' : 'main';
+    if ((action === 'normal' || action === 'anyway' || action === 'real') && !Number.isFinite(next)) { fail(at, 'Pick a date and time.'); return; }
+    if ((action === 'normal' || action === 'anyway') && count >= 1 && !toSomeday && !firstStep.trim()) { fail(at, 'Add a first step of 10 minutes or less.'); return; }
+    if (action === 'anyway' && !reason) { fail(at, 'Pick a quick reason.'); return; }
+    if (action === 'real' && !realReason) { fail(at, 'Pick what changed.'); return; }
     setError('');
     const ok = await save((repos, now) => repos.postpone(task.id, now, {
       newStart: action === 'someday' || action === 'do10' ? null : next,
@@ -57,14 +62,14 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
       firstStep: firstStep.trim() || undefined,
       reason: reason || undefined,
       realReason: action === 'real' ? realReason || undefined : undefined,
-    }), action === 'do10' ? 'Focus started.' : 'Plan updated.');
+    }), action === 'do10' ? 'Focus started.' : 'Plan updated.', at);
     if (ok) { close(); if (task.checkpointOf && Number.isFinite(next) && action !== 'someday' && action !== 'do10') onMoved?.(next); }
   }
   async function saveSplit() {
     if (parts.length < 2 || parts.some((part) => part < 25 || part > 60) || parts.reduce((sum, part) => sum + part, 0) !== task.estimateMin) {
-      setError('Use 2 or more steps of 25 to 60 minutes that add up to the estimate.'); return;
+      fail('split', 'Use 2 or more steps of 25 to 60 minutes that add up to the estimate.'); return;
     }
-    if (await save((repos, now) => repos.split(task.id, now, parts.length, parts, reason || undefined), 'Split into smaller steps.')) close();
+    if (await save((repos, now) => repos.split(task.id, now, parts.length, parts, reason || undefined), 'Split into smaller steps.', 'split')) close();
   }
   return <div className="sheet-backdrop" onClick={close}>
     <section ref={dialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label={`Move ${task.title}`} onClick={(event) => event.stopPropagation()}>
@@ -75,13 +80,12 @@ export function PostponeSheet({ task, run, close, onMoved, notice = '', initialS
       {!split && <><label>New date and time <input type="datetime-local" value={slot} onChange={(event) => setSlot(event.target.value)} /></label>
         <fieldset><legend>Quick reason {count < 2 && <span className="small">Optional unless the weekly budget is full</span>}</legend>{reasons.map((item) => <label key={item}><input type="radio" name="postpone-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>
         <div className="sheet-actions">{choice ? <><button type="button" onClick={() => setSplit(true)}>Split into steps</button><button type="button" className="secondary" onClick={() => void move('do10')}>Do 10 min now</button><button type="button" className="secondary" onClick={() => void move('someday')}>Move to Someday</button><button type="button" className="text-button" onClick={() => void move('anyway')}>Postpone anyway</button></> : <button type="button" onClick={() => void move('normal')}>{toSomeday ? 'Move to Someday' : 'Save new time'}</button>}</div>
-        {error && <p role="alert" ref={alertRef}>{error}</p>}
+        {alert('main')}
         {toSomeday && <p className="small postpone-someday-note">This would be its 4th move, so it rests in Someday instead of the new date. Plan it again from Later whenever you like.</p>}
-        <details><summary>Schedule changed for a real reason?</summary><fieldset><legend>What changed?</legend>{realReasons.map((item) => <label key={item}><input type="radio" name="real-reason" checked={realReason === item} onChange={() => setRealReason(item)} /> {item}</label>)}</fieldset><button type="button" className="secondary" onClick={() => void move('real')}>Move with reason</button></details>
+        <details><summary>Schedule changed for a real reason?</summary><fieldset><legend>What changed?</legend>{realReasons.map((item) => <label key={item}><input type="radio" name="real-reason" checked={realReason === item} onChange={() => setRealReason(item)} /> {item}</label>)}</fieldset><button type="button" className="secondary" onClick={() => void move('real')}>Move with reason</button>{alert('real')}</details>
         {!choice && <button type="button" className="text-button" onClick={() => setSplit(true)}>Split task</button>}
       </>}
-      {split && <div><h3>Split into steps</h3><fieldset><legend>Quick reason <span className="small">Needed only when this week's moves are used up</span></legend>{reasons.map((item) => <label key={item}><input type="radio" name="split-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>{parts.length ? parts.map((part, index) => <label key={index}>Step {index + 1} minutes <input type="number" min="25" max="60" value={part} onChange={(event) => setParts(parts.map((value, position) => position === index ? Number(event.target.value) : value))} /></label>) : <p>This estimate is too small to split into 25 minute steps.</p>}<div className="sheet-actions"><button type="button" disabled={!parts.length} onClick={() => void saveSplit()}>Save split</button><button type="button" className="secondary" onClick={() => setSplit(false)}>Previous step</button></div></div>}
-      {split && error && <p role="alert" ref={alertRef}>{error}</p>}
+      {split && <div><h3>Split into steps</h3><fieldset><legend>Quick reason <span className="small">Needed only when this week's moves are used up</span></legend>{reasons.map((item) => <label key={item}><input type="radio" name="split-reason" checked={reason === item} onChange={() => setReason(item)} /> {item}</label>)}</fieldset>{parts.length ? parts.map((part, index) => <label key={index}>Step {index + 1} minutes <input type="number" min="25" max="60" value={part} onChange={(event) => setParts(parts.map((value, position) => position === index ? Number(event.target.value) : value))} /></label>) : <p>This estimate is too small to split into 25 minute steps.</p>}<div className="sheet-actions"><button type="button" disabled={!parts.length} onClick={() => void saveSplit()}>Save split</button><button type="button" className="secondary" onClick={() => setSplit(false)}>Previous step</button></div>{alert('split')}</div>}
     </section>
   </div>;
 }
