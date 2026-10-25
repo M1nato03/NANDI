@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
+import { openMoreBoards } from './helpers/mind';
 
 test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
@@ -33,6 +34,7 @@ test('Practice hub shows daily status, destinations and fits a phone', async ({ 
   await page.goto('/#mind');
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible();
   for (const name of ['Case Not done', 'Board Not done']) await expect(page.getByRole('button', { name })).toBeVisible();
+  await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toHaveCount(0);
@@ -49,6 +51,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#mind');
+    await openMoreBoards(page);
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     const boards = [
       { name: 'Mini Sudoku', grid: 'Mini Sudoku board', slug: 'sudoku', difficulty: 'easy' },
@@ -103,6 +106,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByLabel('Puzzle result')).toContainText('Best');
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await openMoreBoards(page);
     await expect(page.getByText('Best times')).toBeVisible();
     await expect(page.locator('.mind-best-times')).toContainText('0:');
     await page.getByRole('button', { name: /^Board (Not done|Done)$/ }).click();
@@ -115,6 +119,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByText('Courses', { exact: true }).click();
     await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+
+    await openMoreBoards(page);
 
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();

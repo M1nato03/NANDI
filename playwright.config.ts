@@ -9,6 +9,9 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     browserName: 'chromium',
     channel: process.env.PLAYWRIGHT_CHANNEL as 'msedge' | undefined,
+    // Spec 29: every board starts with its how-to the first time. Specs about other things start with them seen (the
+    // e2e build reads this flag); tests/e2e/kapi-shelf.spec.ts clears it to test the real first open.
+    storageState: { cookies: [], origins: [{ origin: `http://localhost:${port}`, localStorage: [{ name: 'nandi.e2e.tutorialsSeen', value: '1' }] }] },
   },
   projects: [
     {

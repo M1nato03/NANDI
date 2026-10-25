@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import PZ, { type PuzzleType } from '../../core/puzzles';
 import type { PuzzleState } from '../../core/puzzles/rules';
 import { CASE_TUTORIAL, TUTORIALS } from '../../core/puzzles/tutorials';
@@ -6,18 +6,20 @@ import { PuzzleBoardView } from './Boards';
 import { Kapi } from '../cast/Cast';
 import { KapiMoment } from './KapiMoment';
 
-/** Kapi sits on the step's square (it hops there with each new step) without catching taps (spec 29 table). */
-function KapiOnCell({ cell, step, gridRef }: { cell: number; step: number; gridRef: RefObject<HTMLDivElement | null> }) {
-  const [spot, setSpot] = useState<{ left: number; top: number } | null>(null);
+/** Kapi sits on the step's square (it hops there with each new step) without catching taps (spec 29 table). It
+ * measures from its own place in the board wrapper, since the wrapper's ref is not set yet when a child first lays out. */
+function KapiOnCell({ cell, step }: { cell: number; step: number }) {
+  const self = useRef<HTMLSpanElement>(null);
+  const [spot, setSpot] = useState<{ left: number; top: number; step: number } | null>(null);
   useLayoutEffect(() => {
-    const target = gridRef.current?.querySelectorAll<HTMLElement>('.mind-grid > button, .case-tutorial-grid button')[cell];
-    const wrap = gridRef.current;
+    const wrap = self.current?.parentElement;
+    const target = wrap?.querySelectorAll<HTMLElement>('.mind-grid > button, .case-tutorial-grid button')[cell];
     if (!target || !wrap) return;
     const box = target.getBoundingClientRect(), outer = wrap.getBoundingClientRect();
-    setSpot({ left: box.left - outer.left + box.width / 2 - 14, top: box.top - outer.top - 26 });
-  }, [cell, step, gridRef]);
-  if (!spot) return null;
-  return <span className="kapi-on-cell kapi-friend kapi-hop" key={step} data-moment="hop" style={{ left: spot.left, top: spot.top }} aria-hidden="true"><Kapi pose="think" size={28} /></span>;
+    setSpot({ left: box.left - outer.left + box.width / 2 - 14, top: box.top - outer.top - 26, step });
+  }, [cell, step]);
+  const shown = spot?.step === step;
+  return <span ref={self} className={shown ? 'kapi-on-cell kapi-friend kapi-hop' : 'kapi-on-cell'} key={step} data-moment="hop" style={shown ? { left: spot.left, top: spot.top } : { visibility: 'hidden' }} aria-hidden="true"><Kapi pose="think" size={28} /></span>;
 }
 
 /** Spec 29: the first open of a board type starts here. One rule and one move per step; it can be skipped, never by default. */
@@ -28,7 +30,6 @@ export function BoardTutorial({ type, onDone }: { type: PuzzleType; onDone: (ski
   const [state, setState] = useState<PuzzleState>(step.start);
   const [done, setDone] = useState(false);
   const [note, setNote] = useState('');
-  const gridRef = useRef<HTMLDivElement>(null);
   const finished = index >= tutorial.steps.length;
   const go = (next: number) => { setIndex(next); setDone(false); setNote(''); const s = tutorial.steps[next]; if (s) setState(s.start); };
   const onGrid = (grid: number[]) => {
@@ -54,9 +55,9 @@ export function BoardTutorial({ type, onDone }: { type: PuzzleType; onDone: (ski
       <button type="button" onClick={() => onDone(false)}>Play my first board</button>
     </> : <>
       <KapiMoment moment={done ? 'clap' : 'hop'} at={index * 2 + (done ? 1 : 0)}>{done ? 'That is it.' : step.text}</KapiMoment>
-      <div className="mind-tutorial-board" ref={gridRef}>
+      <div className="mind-tutorial-board">
         <PuzzleBoardView key={index} board={step.board} state={state} conflicts={[]} highlights={[step.cell]} notes={[]} notesMode={false} onGrid={onGrid} onPath={onPath} onNotesMode={() => {}} done={done} />
-        {!done && <KapiOnCell cell={step.cell} step={index} gridRef={gridRef} />}
+        {!done && <KapiOnCell cell={step.cell} step={index} />}
       </div>
       {note && <p className="small" role="status">{note}</p>}
       {done && <button type="button" onClick={() => go(index + 1)}>{index + 1 < tutorial.steps.length ? 'Next' : 'Done'}</button>}
@@ -73,7 +74,6 @@ export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void })
   const [grid, setGrid] = useState(step.start);
   const [done, setDone] = useState(false);
   const [note, setNote] = useState('');
-  const gridRef = useRef<HTMLDivElement>(null);
   const finished = index >= steps.length;
   const n = objects.length;
   const auto = (i: number) => grid[i] === 0 && grid.some((value, j) => value === 1 && j !== i && (Math.floor(j / n) === Math.floor(i / n) || j % n === i % n));
@@ -93,7 +93,7 @@ export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void })
       <button type="button" onClick={() => onDone(false)}>Open today's case</button>
     </> : <>
       <KapiMoment moment={done ? 'clap' : 'hop'} at={index * 2 + (done ? 1 : 0)}>{done ? 'That is it.' : step.text}</KapiMoment>
-      <div className="mind-tutorial-board mind-case" ref={gridRef}>
+      <div className="mind-tutorial-board mind-case">
         <div className="case-grid case-tutorial-grid" style={{ gridTemplateColumns: `minmax(72px, 1.3fr) repeat(${n}, minmax(44px, 1fr))` }}>
           <span />{objects.map(label => <span key={label}>{label}</span>)}
           {suspects.map((who, r) => <div key={who} style={{ display: 'contents' }}><strong>{who}</strong>{objects.map((what, c) => {
@@ -101,7 +101,7 @@ export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void })
             return <button key={what} type="button" className={`case-cell ${value === 1 ? 'case-yes' : value === -1 || auto(i) ? 'case-no' : 'case-blank'}${i === step.cell && !done ? ' hint-focus' : ''}`} aria-label={`${who}, ${what}: ${value === 1 ? 'yes' : value === -1 || auto(i) ? 'no' : 'blank'}`} onClick={() => tap(i)}>{value === 1 ? '✓' : value === -1 || auto(i) ? '×' : ''}</button>;
           })}</div>)}
         </div>
-        {!done && step.cell !== undefined && <KapiOnCell cell={step.cell} step={index} gridRef={gridRef} />}
+        {!done && step.cell !== undefined && <KapiOnCell cell={step.cell} step={index} />}
       </div>
       {step.culprit !== undefined && !done && <div className="mind-review-actions" role="group" aria-label="Name the culprit">{suspects.map((who, i) => <button type="button" className="secondary" key={who} onClick={() => { if (i === step.culprit) { setDone(true); setNote(''); } else setNote(`${who} didn't have the lamp. Look at the ✓ marks.`); }}>{who}</button>)}</div>}
       {note && <p className="small" role="status">{note}</p>}

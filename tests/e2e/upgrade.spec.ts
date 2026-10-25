@@ -86,6 +86,8 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
     }
     for (const key of await caches.keys()) await caches.delete(key);
     localStorage.clear();
+    // Spec 29: keep the e2e-only "how-tos seen" flag the config sets, so this spec reaches its boards.
+    localStorage.setItem('nandi.e2e.tutorialsSeen', '1');
     sessionStorage.clear();
     for (const database of await indexedDB.databases()) {
       if (!database.name) continue;
@@ -228,6 +230,8 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
   try {
     await page.goto(`${server.origin}/#plan`);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+    // This server has its own origin, so the config's "how-tos seen" flag (spec 29) is set here by hand.
+    await page.evaluate(() => localStorage.setItem('nandi.e2e.tutorialsSeen', '1'));
     await page.evaluate(() => navigator.serviceWorker.ready);
     await page.reload();
     await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
