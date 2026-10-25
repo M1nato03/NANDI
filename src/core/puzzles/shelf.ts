@@ -52,3 +52,9 @@ export function shelfBoard(type: PuzzleType, diff: PuzzleDifficulty, seedText: s
   }
   return null;
 }
+
+/** Today's board is done once any daily board of the weekday's featured type is solved (one daily per type, any level). */
+export function featuredDailyDone(runs: readonly RunLike[], day: string): boolean {
+  const featured = featuredSpec(day);
+  return runs.some(run => run.type === featured.type && run.daily && run.dayKey === day && run.result === 'solved' && !run.deleted);
+}

@@ -20,6 +20,7 @@ import { DeckGlyph, type Glyph } from '../DeckGlyph';
 import { ReviewToday } from '../mind/ReviewToday';
 import { announceFinish } from '../shell/finish';
 import { Kachhua } from '../cast/Cast';
+import { featuredDailyDone } from '../../core/puzzles/shelf';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
 let rememberedSwaps = { day: '', count: 0 };
@@ -74,7 +75,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const card = NIGHT_CARDS[at]!;
   const glyph = ({ tonight: 'night', learn: 'learn', puzzle: 'think', words: 'end', phone: 'extra', stop: 'do' } as Record<string, Glyph>)[card.id] ?? 'night';
   const featured = featuredSpec(today);
-  const dailySolved = runs.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved' && !row.deleted);
+  const dailySolved = featuredDailyDone(runs, today);
   const doneTasks = board.tasks.filter(row => !row.deleted && row.doneAt && dayKey(row.doneAt) === today);
   const focusMinutes = Math.round(board.focus.filter(row => row.endedAt && dayKey(row.endedAt) === today).reduce((sum, row) => sum + focusElapsedMs(row, row.endedAt!), 0) / 60_000);
   const workoutDone = sessions.some(row => row.dayKey === today && row.status !== 'active' && row.status !== 'skipped');
