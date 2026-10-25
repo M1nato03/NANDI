@@ -3,6 +3,7 @@ import type { FocusRow, TaskEventRow, TaskRow } from '../../data/types';
 import { calibration, calibratedMinutes, proposeCheckpoints } from '../../core/tasks/complete';
 import type { TaskRepos } from './useTaskBoard';
 import { useModalFocus } from '../shell/useModalFocus';
+import { REPEATS, type Repeat } from '../../core/tasks/repeat';
 
 type Run = (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 const categories = ['general', 'study', 'project', 'admin', 'personal', 'trading', 'health'];
@@ -14,6 +15,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move }: { t
   const [category, setCategory] = useState(task.category || 'general');
   const [place, setPlace] = useState(task.place ?? '');
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
+  const [repeat, setRepeat] = useState<Repeat | ''>(task.repeat ?? '');
   const [confirmDrop, setConfirmDrop] = useState(false);
   const [proposal, setProposal] = useState(false);
   const [error, setError] = useState('');
@@ -24,7 +26,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move }: { t
   const history = events.filter(event => event.taskId === task.id && (event.kind === 'postponed' || event.kind === 'realReasonMove')).sort((a, b) => a.at - b.at);
   const subtasks = tasks.filter(row => row.parentId === task.id && !row.deleted);
   async function save() {
-    const ok = await run((repos, now) => repos.editTask(task.id, { title, estimateMin: estimate, mustOrCould: priority, category, place, firstStep }, now), 'Task saved.');
+    const ok = await run((repos, now) => repos.editTask(task.id, { title, estimateMin: estimate, mustOrCould: priority, category, place, firstStep, repeat: repeat || undefined }, now), 'Task saved.');
     if (ok) close(); else setError(priority === 'must' ? 'If this makes four Musts, make it a Could.' : 'Check the task details.');
   }
   return <div className="sheet-backdrop" onClick={close}><section ref={dialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label={`Task detail ${task.title}`} onClick={event => event.stopPropagation()}>
@@ -36,6 +38,7 @@ export function TaskDetail({ task, tasks, focus, events, run, close, move }: { t
     <label>Category <select value={category} onChange={event => setCategory(event.target.value)}>{availableCategories.map(item => <option key={item} value={item}>{item.charAt(0).toUpperCase() + item.slice(1)}</option>)}</select></label>
     <label>Place <input value={place} onChange={event => setPlace(event.target.value)} /></label>
     <label>First step <input maxLength={120} value={firstStep} onChange={event => setFirstStep(event.target.value)} /></label>
+    <label>Repeat <select value={repeat} onChange={event => setRepeat(event.target.value as Repeat | '')}><option value="">Does not repeat</option>{REPEATS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
     {error && <p role="alert">{error} <button type="button" className="secondary" onClick={() => setPriority('could')}>Make it a Could</button></p>}
     <div className="sheet-actions"><button type="button" onClick={() => void save()}>Save task</button><button type="button" className="secondary" onClick={move}>Another day…</button></div>
     {history.length > 0 && <section><h3>History</h3>{history.map(event => <p className="small" key={event.id}>{new Date(event.at).toLocaleDateString()} · {event.kind === 'realReasonMove' ? 'Moved for a real reason' : 'Moved'}{event.reason ? ` · ${event.reason}` : ''}</p>)}</section>}

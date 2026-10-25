@@ -1,8 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('large task preview, grouped progress, and whole-task drop', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Complete the app work');
   await page.getByLabel('Minutes').fill('500');
@@ -23,8 +25,7 @@ test('large task preview, grouped progress, and whole-task drop', async ({ page 
   await parent.locator('summary').click();
   await expect(parent.locator('.task-row')).toHaveCount(9);
   await expect(parent).toContainText('Prepare the app release');
-  await expect(parent.locator('.task-row').first()).toContainText('Must');
-  await parent.locator('.task-row').first().getByRole('button', { name: 'Done' }).click();
+  await parent.locator('.task-row').first().getByRole('button', { name: /^Done: / }).click();
   const remainingParent = page.locator('.task-group');
   await expect(remainingParent.locator('summary')).toContainText('1 of 9 steps done');
   await remainingParent.getByRole('button', { name: 'Drop whole task' }).click();
@@ -47,12 +48,15 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/?e2e#plan');
     await page.waitForFunction(() => '__nandiTest' in globalThis);
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await expectLargeControls(page);
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Write outline');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Today' })).toContainText('Write outline');
-    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await openMore(page);
+    await page.getByRole('button', { name: 'Focus timer with breaks' }).click();
     await expect(page.getByRole('region', { name: 'Focus task' })).toContainText('Write outline');
     await page.getByRole('button', { name: 'Start focus' }).click();
     await page.clock.fastForward(65_000);
@@ -67,16 +71,18 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
     await expect(page.getByRole('status').filter({ hasText: 'Planned 30 min' })).toContainText('Took 2 min');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Keep this task');
     await page.getByRole('radio', { name: 'Unplaced' }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
+    await openMore(page);
     await expect(page.getByPlaceholder('Add a task, e.g. call bank 15m')).toBeVisible();
     await expect.poll(async () => (await page.evaluate(() => window.__nandiTest!.shellCounts())).tasks).toBe(2);
     await page.reload();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
-    await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
+    // Spec 27: a task with no time sits on Today.
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
     await page.screenshot({ path: testInfo.outputPath(`tasks-${scheme}.png`), fullPage: true });
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'You' }).click();
     await page.getByRole('button', { name: /Settings/ }).click();
@@ -92,60 +98,33 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Confirm restore' }).click();
     await expect(page.getByRole('main').getByRole('status')).toContainText('Restore complete');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
-    await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
     expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
     await page.evaluate(() => (globalThis as unknown as { navigator: { serviceWorker: { ready: Promise<unknown> } } }).navigator.serviceWorker.ready);
     await context.setOffline(true);
     await page.reload();
-    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
-    await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Keep this task');
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
   });
 
-  test(`postpone ladder and large controls in ${scheme}`, async ({ page }) => {
+  test(`the move sheet never refuses and keeps large controls in ${scheme}`, async ({ page }) => {
+    // Spec 27 retired the postponing ladder: the same task moves again and again with no step, reason or Someday.
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#plan');
-    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
-    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Review notes');
-    await page.getByLabel('Size').selectOption('L');
-    await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    const row = page.locator('.task-row').filter({ hasText: 'Review notes' });
-    await row.getByRole('button', { name: 'Move' }).click();
-    await expect(page.getByRole('dialog')).toContainText('When will you do it? Pick a time.');
+    await page.getByLabel('Add a task').fill('Review notes');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
     await expectLargeControls(page);
-    await page.getByLabel('New date and time').fill('2026-10-12T12:00');
-    await page.getByRole('button', { name: 'Save new time' }).click();
-    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
-    await row.getByRole('button', { name: 'Move' }).click();
-    await expect(page.getByRole('dialog')).toContainText('First 10 minutes?');
-    await page.getByLabel('First step').fill('Open the notes');
-    await page.getByLabel('New date and time').fill('2026-10-13T12:00');
-    await page.getByRole('button', { name: 'Save new time' }).click();
-    await row.getByRole('button', { name: 'Move' }).click();
-    await expect(page.getByRole('dialog')).toContainText('Split it, do 10 minutes now, or park it in Someday. All fine.');
-    await page.getByRole('button', { name: 'Split into steps' }).click();
-    await expect(page.getByRole('dialog').getByLabel('Step 1 minutes')).toHaveValue('30');
-    await page.getByRole('dialog').getByRole('button', { name: 'Previous step' }).click();
-    await page.getByLabel('New date and time').fill('2026-10-14T12:00');
-    await page.getByLabel('blocked', { exact: true }).check();
-    await page.getByRole('button', { name: 'Postpone anyway' }).click();
-    await row.getByRole('button', { name: 'Move' }).click();
-    await page.getByLabel('New date and time').fill('2026-10-15T12:00');
-    // The 4th counted move parks the task in Someday, and the sheet says so before Save (item 83).
-    await expect(page.getByRole('dialog')).toContainText('This would be its 4th move, so it rests in Someday instead of the new date.');
-    await page.getByRole('button', { name: 'Move to Someday' }).click();
-    await expect(page.getByRole('region', { name: 'Someday' })).toContainText('Review notes');
-    await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
-    await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Class reading');
-    await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await page.locator('.task-row').filter({ hasText: 'Class reading' }).getByRole('button', { name: 'Move' }).click();
-    await page.getByText('Schedule changed for a real reason?').click();
-    await page.getByLabel('class moved', { exact: true }).check();
-    await page.getByLabel('New date and time').fill('2026-10-12T14:00');
-    await page.getByRole('button', { name: 'Move with reason' }).click();
-    await expect(page.getByRole('region', { name: 'Upcoming' })).toContainText('Class reading');
-    await expectLargeControls(page);
-    expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
+    for (const day of ['12', '13', '14', '15']) {
+      await page.locator('.mor-row').filter({ hasText: 'Review notes' }).locator('.task-title-button').click();
+      await page.getByRole('dialog').getByRole('button', { name: 'Another day…' }).click();
+      const sheet = page.getByRole('dialog', { name: 'Move Review notes' });
+      await expectLargeControls(page);
+      await expect(sheet).not.toContainText(/first step|quick reason|Someday/i);
+      await sheet.getByLabel('Day').fill(`2026-10-${day}`);
+      await sheet.getByRole('button', { name: 'Move to this day' }).click();
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+    }
+    await expect(page.getByRole('region', { name: 'Later', exact: true })).toContainText('Review notes');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

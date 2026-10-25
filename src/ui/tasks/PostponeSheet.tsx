@@ -26,7 +26,8 @@ export function PostponeSheet({ task, run, close, onMoved, onUndoable }: { task:
     if (!ok) { setError(failure || 'That did not save. Try again.'); return; }
     close();
     if (before) onUndoable?.(task, before, where);
-    if (task.checkpointOf && typeof target === 'object' && target.start != null) onMoved?.(target.start);
+    // A moved checkpoint offers to re-space the rest; with no time picked it counts from 9:00 that day.
+    if (task.checkpointOf && typeof target === 'object') onMoved?.(target.start ?? new Date(`${target.day}T09:00:00`).getTime());
   }
   function another() {
     if (!day) { setError('Pick a day.'); return; }

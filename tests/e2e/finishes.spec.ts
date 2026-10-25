@@ -1,10 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 import { featuredSpec } from '../../src/core/puzzles/daily';
 import { finishLines } from '../../src/ui/shell/finish';
+import { openMore } from './helpers/plan';
 
 const day = '2026-10-20';
 
 async function completeTask(page: Page, title: string) {
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill(title);
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Done' }).last().click();

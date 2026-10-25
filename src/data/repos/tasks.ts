@@ -233,7 +233,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         return repos.tasks.put({ ...task, firstStep: trimmed }, now);
       });
     },
-    async editTask(taskId: string, changes: Pick<TaskRow, 'title' | 'estimateMin' | 'mustOrCould' | 'category' | 'place' | 'firstStep'>, now: number): Promise<TaskRow> {
+    async editTask(taskId: string, changes: Pick<TaskRow, 'title' | 'estimateMin' | 'mustOrCould' | 'category' | 'place' | 'firstStep'> & Partial<Pick<TaskRow, 'repeat'>>, now: number): Promise<TaskRow> {
       return mutation(async () => {
         const task = await repos.tasks.get(taskId);
         if (!task) throw new Error('Task not found');
@@ -245,7 +245,9 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           if (task.status !== 'planned') throw new Error('Give this Must a start time first.');
           if (!canAddMust(await mustCount(task.dayKey))) throw new Error('Three Musts already. Make it a Could.');
         }
-        return repos.tasks.put({ ...task, ...changes, title, estimateMin: estimate, category: changes.category?.trim() || 'general', place: changes.place?.trim(), firstStep: changes.firstStep?.trim() }, now);
+        // Spec 27: changing the minutes in the detail sheet counts as setting a time, so the row and Mor's line show it.
+        const timeSet = task.timeSet || (estimate !== task.estimateMin ? true : undefined);
+        return repos.tasks.put({ ...task, ...changes, title, estimateMin: estimate, timeSet, category: changes.category?.trim() || 'general', place: changes.place?.trim(), firstStep: changes.firstStep?.trim() }, now);
       });
     },
     async addCheckpoints(taskId: string, proposals: { title: string; scheduledStart: number; estimateMin: number }[], now: number): Promise<TaskRow[]> {

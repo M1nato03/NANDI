@@ -4,7 +4,8 @@ import type { MoveSnapshot, MoveTarget } from '../../data/repos/tasks';
 import { dayKey } from '../../core/time/dayKey';
 import { focusElapsedMs } from '../../core/tasks/focus';
 import { Cast, type Pose } from '../cast/Cast';
-import { visibleTasks } from './model';
+import { taskGroups, visibleTasks } from './model';
+import { GroupRow } from './TaskList';
 import type { useTaskBoard } from './useTaskBoard';
 
 type Board = ReturnType<typeof useTaskBoard>;
@@ -103,10 +104,22 @@ export function MorList({ board, onDetail, avgHidden, hideAverage }: { board: Bo
         : <button type="button" className="secondary" disabled={board.busy} aria-label={`Today: ${task.title}`} onClick={() => void move(task, 'today', 'Today')}>← Today</button>}
     </div>
   </li>;
-  const list = (name: string, items: TaskRow[], key: 'today' | 'tomorrow' | 'later', empty: string) => <section className="task-list mor-list" aria-label={name}>
-    <div className="ui-section-header"><h2>{name} <span className="task-count">{items.length}</span></h2></div>
-    {items.length ? <ul>{items.map(task => row(task, key))}</ul> : <p className="small">{empty}</p>}
-  </section>;
+  // Steps of a split task stay together under their task, with its progress and a whole-task drop.
+  const groups = new Map(taskGroups(board.tasks).filter(group => group.total).map(group => [group.parent.id, group]));
+  const list = (name: string, items: TaskRow[], key: 'today' | 'tomorrow' | 'later', empty: string) => {
+    const seen = new Set<string>();
+    const rows = items.flatMap(task => {
+      const group = task.parentId ? groups.get(task.parentId) : undefined;
+      if (!group) return [row(task, key)];
+      if (seen.has(group.parent.id)) return [];
+      seen.add(group.parent.id);
+      return [<GroupRow key={group.parent.id} group={group} onDetail={onDetail} busy={board.busy} onDrop={id => void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.')}><ul>{items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))}</ul></GroupRow>];
+    });
+    return <section className="task-list mor-list" aria-label={name}>
+      <div className="ui-section-header"><h2>{name} <span className="task-count">{items.length}</span></h2></div>
+      {items.length ? <ul>{rows}</ul> : <p className="small">{empty}</p>}
+    </section>;
+  };
 
   return <div className="mor-plan">
     <div className="mor-header">

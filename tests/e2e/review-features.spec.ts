@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('weekly review starts with plain words and keeps details optional', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-18T12:00:00') });
@@ -43,6 +44,7 @@ test('daily case progress and completion survive reload', async ({ page }) => {
 test('focus phase follows timestamps and keeps the chosen cycle', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus cycle task');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();

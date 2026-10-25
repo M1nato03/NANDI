@@ -10,6 +10,7 @@ import { RULES } from '../../core/rules.config';
 import { SideQuests } from '../quests/SideQuests';
 import { PostponeSheet } from '../tasks/PostponeSheet';
 import { MorList } from '../tasks/MorList';
+import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { TaskDetail } from '../tasks/TaskDetail';
 import { Reminders } from '../tasks/Reminders';
 import { PhoneChhutti } from '../tasks/PhoneChhutti';
@@ -92,7 +93,9 @@ export function Plan({ questId }: { questId?: string }) {
     <PhoneChhutti />
     <SideQuests />
     <details className="card plan-more"><summary><strong>More</strong><span className="small">Routines, focus timer, reminders</span></summary>
-      <div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}><DeckGlyph type="do" />Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}><DeckGlyph type="night" />Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}><DeckGlyph type="extra" />Weekly review<small>Sundays</small></button></div>
+      <section className="plan-rituals" aria-label="Planning routines"><h2>Rituals</h2><div className="ritual-buttons"><button type="button" onClick={() => go('plan/morning')}><DeckGlyph type="do" />Morning plan<small>2 min</small></button><button type="button" onClick={() => go('plan/shutdown')}><DeckGlyph type="night" />Shutdown<small>5 min</small></button><button type="button" onClick={() => go('plan/review')}><DeckGlyph type="extra" />Weekly review<small>Sundays</small></button></div></section>
+      {/* A fuller add form (size, priority, a start time, repeat, split preview) for those who want it. */}
+      <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} label="Add with details" />
       <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer with breaks</button>
       <p className="day-horizon small">{dayHorizon(todayOpen.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0), board.now, shutdownTime)}</p>
       <Reminders />

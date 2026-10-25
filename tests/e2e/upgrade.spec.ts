@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { extname, isAbsolute, relative, resolve } from 'node:path';
+import { openMore } from './helpers/plan';
 
 const buildADir = resolve('dist-e2e');
 const buildBDir = resolve('dist-e2e-b');
@@ -175,6 +176,7 @@ test('active focus waits until paused before updating', async ({ page, context }
   try {
     await prepareUpgrade(page, context, server.origin);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();

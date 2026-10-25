@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { walkLesson } from './learn-helpers';
+import { openMore } from './helpers/plan';
 
 type Item = { stem: string; type: string; options: { id: string; text: string; correct: boolean }[]; answer?: unknown };
 const pack = JSON.parse(readFileSync('content/topics/topic.psychology.json', 'utf8')) as { body: { modules: { concepts: { items: Item[] }[] }[] } };
@@ -113,6 +114,7 @@ test('after bedtime the first run ends on the night routine, whatever was picked
 test('someone who already used NANDI never sees the first run', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
   await page.goto('/?e2e#plan');
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call the bank');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await expect(page.getByText('Call the bank').first()).toBeVisible();

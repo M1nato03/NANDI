@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`five feature tabs and one home in ${scheme}`, async ({ page }, testInfo) => {
@@ -9,16 +10,17 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(tabs).toHaveText(['Plan', 'Train', 'Learn', 'Mind', 'You']);
     await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Focus timer' })).toBeVisible();
-    // Rituals sit folded in one row until first used.
-    await page.locator('.plan-rituals-fold > summary').click();
+    // Spec 27: routines and the focus timer with breaks sit in Plan's More fold.
+    await openMore(page);
+    await expect(page.getByRole('button', { name: 'Focus timer with breaks' })).toBeVisible();
     await expect(page.getByRole('button', { name: /Morning plan/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /Shutdown/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /Weekly review/ })).toBeVisible();
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call bank 15m');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await expect(page.getByRole('region', { name: 'Today' })).toContainText('Call bank');
-    await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Done' }).click();
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Call bank');
+    await page.getByRole('region', { name: 'Today', exact: true }).getByRole('button', { name: /^Done: Call bank/ }).click();
     await expect(page.getByRole('button', { name: 'Plan: done' })).toBeVisible();
     await page.getByRole('button', { name: 'Learn: not done' }).click();
     await expect(page).toHaveURL(/#learn$/);

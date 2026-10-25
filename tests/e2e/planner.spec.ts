@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { mkdirSync } from 'node:fs';
+import { openMore } from './helpers/plan';
 
 const screenshotDir = 'screenshots/rituals-plain';
 function capture(page: Page, name: string) {
@@ -22,27 +23,31 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#plan');
+    // Spec 27: routines live in Plan's More fold.
+    await openMore(page);
     const rituals = page.getByRole('region', { name: 'Planning routines' });
     await expect(rituals.getByRole('heading', { name: 'Rituals' })).toBeVisible();
     await expect(rituals.locator('.ritual-buttons button')).toHaveCount(3);
     await expect(rituals).toContainText('2 min');
     await expect(rituals).toContainText('5 min');
     await expect(rituals).toContainText('Sundays');
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Plan project outline');
     await page.getByRole('radio', { name: 'Unplaced' }).check();
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
-    await page.getByText('Tap to see what is waiting. Nothing here is late.').click();
-    await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText('Plan project outline');
+    // Spec 27: a task with no time stays on Today.
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Plan project outline');
     for (const title of ['Keep for later', 'Drop this one']) {
+      await openMore(page);
       await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
       await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill(title);
       await page.getByRole('radio', { name: 'Unplaced' }).check();
       await page.getByRole('button', { name: 'Add task', exact: true }).click();
-      await expect(page.getByRole('region', { name: 'Unplaced' })).toContainText(title);
+      await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText(title);
     }
     // Rituals stay folded until the first one is used; after that they open by themselves.
-    await page.locator('.plan-rituals-fold > summary').click();
+    await openMore(page);
     await page.getByRole('button', { name: 'Morning plan' }).click();
     await expect(page.getByRole('region', { name: 'Not scheduled yet' })).toContainText('Plan project outline');
     await expect(page.getByRole('region', { name: 'Time for today' })).toContainText('Today you have about');
@@ -63,7 +68,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Finish morning plan' }).click();
     await expect(page.getByText('Plan complete for today.')).toBeVisible();
     await page.getByRole('button', { name: 'Back to Plan' }).click();
-    await expect(page.getByRole('region', { name: 'Today' })).toContainText('Plan project outline');
+    await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Plan project outline');
+    await openMore(page);
     await page.getByRole('button', { name: 'Shutdown' }).click();
     await expectLayout(page);
     await page.getByRole('region', { name: 'Close today' }).getByRole('button', { name: 'Done' }).click();
@@ -81,6 +87,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Complete shutdown' }).click();
     await expect(page.getByText('Shutdown complete. Wind-down has started.')).toBeVisible();
     await page.getByRole('button', { name: 'Back to Plan' }).click();
+    await openMore(page);
     await page.getByRole('button', { name: 'Weekly review' }).click();
     await expect(page.getByRole('region', { name: 'This week, in words' })).toContainText('You finished 1 task.');
     await expect(page.getByRole('region', { name: 'What helped' })).toContainText('You finished 1 of 1 task on the day you first planned it.');

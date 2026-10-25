@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('phone-down move leaves lights-out check-in for an explicit tap', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-19T12:00:00') });
   await page.goto('/#plan');
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Unfinished plan');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.clock.setFixedTime(new Date('2026-10-19T23:40:00'));
