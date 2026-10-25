@@ -21,6 +21,27 @@ import { Cast, Moti, type CastName } from '../cast/Cast';
 // A friend waits at each checkpoint and cheers once every idea before it is strong.
 const trailFriends: CastName[] = ['Chiku', 'Moti', 'Kapi', 'Nandi'];
 import { playCastSound } from '../cast/sound';
+import { finishedIdeas, haveliPicks, lastVisits, type HaveliIdea } from '../../core/moti/haveli';
+import { matkaPicks, type MatkaItem } from '../../core/moti/matka';
+import { findStep } from '../../core/learn/steps';
+import { formatEstimate, sliderScale, type EstimateItem } from '../../core/learn/estimate';
+import { weekStart } from '../../core/economy/deriveEconomy';
+import { saveHaveliRebuilt, saveMatkaAnswer } from '../../data/repos/moti';
+import { Haveli } from '../learn/Haveli';
+import { Matka, type MatkaContext } from '../learn/Matka';
+
+// Spec 26: every idea with recall pieces, in topic order (content lands with editor sign-off).
+const HAVELI_IDEAS: HaveliIdea[] = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts.filter(concept => concept.recall).map(concept => ({ id: concept.id, title: concept.title, topicId: pack.body.topic.id, topicTitle: pack.title, recall: concept.recall!, steps: (concept.steps ?? []).map(step => step.id) }))));
+const ALL_CONCEPTS = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts));
+const matkaContext = (item: MatkaItem): MatkaContext => {
+  if (item.level === 2) {
+    const found = ALL_CONCEPTS.flatMap(concept => concept.items).find(row => row.id === item.itemId);
+    const estimate = found && found.type === 'estimate' ? found as unknown as EstimateItem : undefined;
+    return { title: estimate ? 'Your first number' : 'Your first guess', scale: estimate ? sliderScale(estimate) : undefined, format: estimate ? (value: number) => formatEstimate(value, estimate.answer.unit) : undefined };
+  }
+  const ref = item.stepId ? findStep(ALL_CONCEPTS, item.stepId) : undefined;
+  return { title: ref ? `Your first guess on ${ref.step.title}, before the lesson` : 'Your first guess', options: item.level === 1 ? ref?.step.hook.options.map(option => ({ id: option.id, text: option.text })) : undefined };
+};
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
 const dropStatus = (row?: LearnDropRow) => !row ? 'Not started' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : `${row.drop.cursor} of ${row.drop.items.length} done`;
@@ -28,6 +49,7 @@ const dropAction = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= r
 
 export function Learn({ entry }: { entry?: string }) {
   const [practice, setPractice] = useState<Practice>();
+  const [moti, setMoti] = useState<'haveli' | 'matka' | null>(null);
   const [expanded, setExpanded] = useState<string>();
   const [openedAt] = useState(() => Date.now());
   const [message, setMessage] = useState('');
@@ -79,12 +101,28 @@ export function Learn({ entry }: { entry?: string }) {
       setMessage('Topics updated.');
     } catch { setMessage('Could not update topics. Try again.'); }
   };
+  // Spec 26: Moti's haveli (finished ideas with pieces) and, on Sundays before bedtime, Moti's matka.
+  const today = dayKey(now);
+  const haveliIdeas = finishedIdeas(HAVELI_IDEAS, data?.ledger ?? []);
+  const haveliCap = RULES.moti.haveliDailyCap;
+  const dueAt = new Map((data?.states ?? []).filter(row => row.memory).map(row => [row.id, row.memory!.dueAt]));
+  const haveliToday = haveliPicks(haveliIdeas, data?.ledger ?? [], dueAt, now, today, haveliCap);
+  const visits = lastVisits(data?.ledger ?? []);
+  const litToday = haveliIdeas.filter(idea => visits.get(idea.id) === today).map(idea => idea.id);
+  const week = weekStart(today);
+  const sunday = new Date(`${today}T12:00:00`).getDay() === 0;
+  const matkaItems = afterBedtime ? [] : matkaPicks(data?.ledger ?? [], today, week, sunday);
+  const matkaDone = (data?.ledger ?? []).filter(row => row.kind === 'matka' && row.refId.startsWith(`${week}.`)).map(row => String(row.inputs.sourceFactId));
+  if (moti === 'haveli') return <Haveli ideas={haveliToday} lit={litToday} cap={haveliCap} day={today} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => setMoti(null)} />;
+  if (moti === 'matka') return <Matka items={matkaItems} answered={matkaDone} context={matkaContext} onAnswer={(item, recalled) => saveMatkaAnswer(db, { week, item, recalled, now: Date.now() })} onLeave={() => setMoti(null)} />;
   if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
   if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
   return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
+      {haveliIdeas.length > 0 && <div className="cast-inline"><Moti pose="idle" size={40} /><button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Moti's haveli · {Math.max(0, Math.min(haveliCap, haveliToday.length) - litToday.length)} to light</button></div>}
+      {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <div className="cast-inline"><Moti pose="think" size={40} /><button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Moti's matka · {matkaItems.length - matkaDone.length} sealed guesses</button></div>}
       {dueCount > 0 && <><div className="cast-inline"><Moti pose="think" size={40} /><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button></div>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>
     <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>

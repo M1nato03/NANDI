@@ -4,6 +4,9 @@ export const RULES = {
   // 25 Oct (item 64): a measured kept Phone ki chhutti pays plan.chhutti.xp from this day on; see RULES_HISTORY.
   effectiveFrom: '2026-10-25',
   dayBoundaryHour: 4,
+  // Spec 26: Moti's haveli offers at most this many ideas a day. It decides what is offered, not what pays (the
+  // rebuild pays as a card review under mind.cardsMaxPerDay), so it sits outside the scoring keys.
+  moti: { haveliDailyCap: 5 },
 
   // 05-economy §2, Tasks; 02-tasks §6 (timers and optional pre-reminder).
   tasks: {
@@ -309,7 +312,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.mysteryXp': [0, 100], 'mind.dropBoardXp': [0, 100], 'mind.lessonXp': [0, 100],
   'mind.learnDropXp': [0, 100],
   'mind.lessonsPaidPerDay': [0, 10], 'mind.lessonsPerCoursePerDay': [0, 10],
-  'mind.cardXp': [0, 20], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
+  'mind.cardXp': [0, 20], 'moti.haveliDailyCap': [3, 8], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
   'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 120], 'mind.freePlayXp': [0, 0],
   'mind.onboardingEasyCases': [0, 20], 'mind.eloK.early': [1, 100], 'mind.eloK.later': [1, 100],
   'mind.hintLadderRungs': [3, 3], 'mind.parMinSolves': [1, 10], 'mind.parWindow': [5, 20],

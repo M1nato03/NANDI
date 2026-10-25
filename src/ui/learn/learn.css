@@ -288,3 +288,38 @@
 /* Spec 19 E: one quiet way to talk about today's idea; no card, no badge, no count. */
 .learn-ask { display: grid; justify-items: start; gap: 2px; margin-block: var(--space-2) var(--space-3); }
 .learn-ask p { margin: 0; color: var(--ink-2); }
+
+/* Spec 26: Moti's haveli and matka, on Moti's colour. */
+.haveli-head, .matka-head { display: flex; align-items: center; gap: var(--space-3); }
+.haveli-room { margin-top: var(--space-3); padding: var(--space-3); border-radius: var(--radius-row); background: var(--surface-2); transition: background 600ms; }
+.haveli-room.glow { background: color-mix(in srgb, var(--area-learn) 22%, var(--surface-2)); }
+.haveli-room ul { display: grid; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.haveli-diya { display: flex; align-items: center; gap: 8px; min-height: 48px; width: 100%; padding: 8px 12px; border: 0; border-radius: var(--radius-row); background: var(--surface); color: var(--ink); text-align: left; }
+.haveli-diya.lit { font-weight: 600; }
+.haveli-flame { width: 12px; height: 16px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--gold, #f5bf3f); box-shadow: 0 0 10px var(--gold, #f5bf3f); }
+.haveli-slots { display: grid; gap: 6px; margin: var(--space-3) 0; padding: 0; list-style: none; }
+.haveli-slots li { min-height: 44px; padding: 10px 12px; border: 2px dashed var(--surface-3); border-radius: var(--radius-row); color: var(--ink-3); }
+.haveli-slots li.filled { border-style: solid; border-color: var(--area-learn); color: var(--ink); }
+.haveli-tiles { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.haveli-tile { min-height: 48px; padding: 10px 14px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); }
+.haveli-fix { margin-top: var(--space-2); padding: 10px 12px; border-radius: var(--radius-row); background: color-mix(in srgb, var(--area-learn) 12%, var(--surface-2)); }
+.moti-friend { display: inline-block; transform-origin: 50% 90%; }
+.moti-open { animation: moti-look 700ms ease-out 1; }
+.moti-nod { animation: moti-nod 360ms ease-out 1; }
+.moti-hmm { animation: moti-tilt 600ms ease-in-out 1; }
+.moti-carry { animation: moti-carry 900ms ease-out 1; }
+.matka-pot { display: inline-block; width: 44px; height: 40px; border-radius: 45% 45% 40% 40%; background: #b5643a; }
+.matka-crack .matka-pot { display: inline-flex; gap: 4px; background: none; }
+.matka-crack .matka-pot span { width: 20px; height: 38px; background: #b5643a; border-radius: 40%; animation: matka-open 700ms ease-out 1 forwards; }
+.matka-crack .matka-pot span:last-child { animation-name: matka-open-right; }
+.matka-options { display: grid; gap: var(--space-2); }
+.matka-value { font-weight: 700; }
+.matka-reveal p { margin: var(--space-2) 0; }
+@keyframes moti-look { 40% { transform: translateY(-6%); } 100% { transform: none; } }
+@keyframes moti-nod { 50% { transform: rotate(6deg) translateY(3%); } 100% { transform: none; } }
+@keyframes moti-tilt { 50% { transform: rotate(-8deg); } 100% { transform: none; } }
+@keyframes moti-carry { 40% { transform: translateX(8%) translateY(-4%); } 100% { transform: none; } }
+@keyframes matka-open { to { transform: rotate(-18deg) translateX(-6px); } }
+@keyframes matka-open-right { to { transform: rotate(18deg) translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .haveli *, .matka *, .moti-friend { animation: none !important; transition: none !important; } }
+:root[data-motion='reduce'] .haveli *, :root[data-motion='reduce'] .matka *, :root[data-motion='reduce'] .moti-friend { animation: none !important; transition: none !important; }

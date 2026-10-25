@@ -46,6 +46,7 @@ const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(m
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
+const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
 const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
 const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
 const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
@@ -185,6 +186,7 @@ export function AppShell() {
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
   else if (path === 'kolam') screen = <KolamScreen />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/haveli-demo') screen = <HaveliDemo />;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
