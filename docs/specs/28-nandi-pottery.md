@@ -1,6 +1,6 @@
 # 28. Nandi's pottery: your training shapes a bowl
 
-Status: PARKED by Jenil, 25 Oct 2026 ("keep NANDI as it is for now and work on other mascots"). Do not build.
+Status: PARKED by Jenil, 25 Oct 2026: "keep [Train] as it is for now and work on other mascots" (he meant the Train category, not Nandi the mascot). Do not build.
 Idea engine, 25 Oct 2026. Research: D:\nandi-gate-logs\idea-engine\codex-kintsugi.md (cloud-sessions item 86).
 
 ## Why
