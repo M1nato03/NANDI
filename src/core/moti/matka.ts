@@ -6,8 +6,11 @@
  */
 export const MATKA = { itemsPerWeek: 3, minAgeDays: 5, maxAgeDays: 21 } as const;
 export type MatkaLevel = 0 | 1 | 2;
-/** `sealedText` is the sealed hook pick's own words, stored with it, so the reveal never reads them from a newer pack. */
-export type MatkaItem = { factId: string; level: MatkaLevel; stepId?: string; itemId?: string; sealed: boolean | string | number; sealedText?: string; answer?: number; dayKey: string };
+/**
+ * `sealedText` is the sealed hook pick's own words and `optionTexts` the hook's options in their order then, both
+ * stored with it, so neither the reveal nor the options asked can be changed by a newer pack.
+ */
+export type MatkaItem = { factId: string; level: MatkaLevel; stepId?: string; itemId?: string; sealed: boolean | string | number; sealedText?: string; optionTexts?: string[]; answer?: number; dayKey: string };
 type Fact = { id: string; kind: string; refId: string; dayKey: string; deleted?: number; inputs: Record<string, unknown> };
 
 const days = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86_400_000);
@@ -18,18 +21,19 @@ export function matkaItem(fact: Fact): MatkaItem | undefined {
   if (fact.deleted) return undefined;
   if (fact.kind === 'learn-answer' && typeof fact.inputs.guess === 'number' && typeof fact.inputs.answerValue === 'number')
     return { factId: fact.id, level: 2, itemId: String(fact.inputs.itemId ?? ''), sealed: fact.inputs.guess, answer: fact.inputs.answerValue, dayKey: fact.dayKey };
-  if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookPick === 'string') return { factId: fact.id, level: 1, stepId: fact.refId, sealed: fact.inputs.hookPick, ...(typeof fact.inputs.hookPickText === 'string' ? { sealedText: fact.inputs.hookPickText } : {}), dayKey: fact.dayKey };
+  if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookPick === 'string') return { factId: fact.id, level: 1, stepId: fact.refId, sealed: fact.inputs.hookPick, ...(typeof fact.inputs.hookPickText === 'string' ? { sealedText: fact.inputs.hookPickText } : {}), ...(Array.isArray(fact.inputs.hookOptionTexts) && fact.inputs.hookOptionTexts.every(text => typeof text === 'string') ? { optionTexts: fact.inputs.hookOptionTexts as string[] } : {}), dayKey: fact.dayKey };
   if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookCorrect === 'boolean') return { factId: fact.id, level: 0, stepId: fact.refId, sealed: fact.inputs.hookCorrect, dayKey: fact.dayKey };
   return undefined;
 }
 
 /**
  * The week's items: Sundays only; from facts 5-21 days old; picked by a hash of the week and the fact, so the pick is
- * the same all day and does not depend on whether the guess was right.
+ * the same all day and does not depend on whether the guess was right. `askable` drops items the screen cannot ask
+ * fairly (a Matka 1 item whose options a pack update mostly removed) before the three are picked.
  */
-export function matkaPicks(facts: readonly Fact[], day: string, week: string, sunday: boolean): MatkaItem[] {
+export function matkaPicks(facts: readonly Fact[], day: string, week: string, sunday: boolean, askable: (item: MatkaItem) => boolean = () => true): MatkaItem[] {
   if (!sunday) return [];
-  return facts.map(matkaItem).filter((item): item is MatkaItem => !!item)
+  return facts.map(matkaItem).filter((item): item is MatkaItem => !!item && askable(item))
     .filter(item => { const age = days(item.dayKey, day); return age >= MATKA.minAgeDays && age <= MATKA.maxAgeDays; })
     .sort((a, b) => hash(`${week}.${a.factId}`) - hash(`${week}.${b.factId}`) || a.factId.localeCompare(b.factId))
     .slice(0, MATKA.itemsPerWeek);
@@ -39,6 +43,21 @@ export function matkaPicks(facts: readonly Fact[], day: string, week: string, su
 export function matkaShift(sealed: number, recalled: number, answer: number): number {
   const gapSealed = Math.abs(sealed - answer), gapRecalled = Math.abs(recalled - answer);
   return gapSealed > 0 ? (gapSealed - gapRecalled) / gapSealed : 0;
+}
+
+/**
+ * Matka 1's options, in the order they had when the guess was sealed: each one still in today's pack keeps its id,
+ * the sealed pick returns at its own place even if the pack dropped or reworded it, and other dropped options stay
+ * out. Fewer than two of the original options left in the pack means the item is not asked (undefined).
+ */
+export function sealedOptions(item: MatkaItem, current: readonly { id: string; text: string }[]): { id: string; text: string }[] | undefined {
+  if (!item.optionTexts || item.sealedText === undefined) return current.some(option => option.id === item.sealed) ? current.map(option => ({ id: option.id, text: option.text })) : undefined;
+  if (item.optionTexts.filter(text => current.some(option => option.text === text)).length < 2) return undefined;
+  return item.optionTexts.flatMap(text => {
+    const now = current.find(option => option.text === text);
+    if (now) return [{ id: now.id, text }];
+    return text === item.sealedText ? [{ id: `sealed:${String(item.sealed)}`, text }] : [];
+  });
 }
 
 export const MATKA_ASK = ['Moti sealed this in the matka before your lesson.', 'What was your first guess?'] as const;

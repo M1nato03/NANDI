@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MATKA_STOP, matkaItem, matkaPicks, matkaReveal, matkaShift } from './matka';
+import { MATKA_STOP, matkaItem, matkaPicks, matkaReveal, matkaShift, sealedOptions } from './matka';
 
 const fact = (id: string, kind: string, dayKey: string, inputs: Record<string, unknown>) => ({ id, kind, refId: id.split(':')[1] ?? id, dayKey, inputs });
 const pct = (v: number) => `${v}%`;
@@ -29,6 +29,18 @@ describe("spec 26 Moti's matka", () => {
     expect(matkaReveal(sealed, 'a', { value: pct, option: newer })[0]).toBe('Sealed: your first pick was Twenty-one days.');
     expect(matkaReveal(sealed, 'b', { value: pct, option: newer })[0]).toBe('Sealed: your first pick was Twenty-one days.');
     expect(matkaReveal(sealed, 'sealed:b', { value: pct, option: newer })[0]).toMatch(/^Matches the seal\./);
+  });
+  it('Matka 1 asks the options in their sealed order, puts a dropped sealed pick back in its own place, and skips a mostly changed hook (Codex B item 115)', () => {
+    const sealed = matkaItem(fact('learn-lesson:s', 'learn-lesson', '2026-10-20', { hookCorrect: false, hookPick: 'b', hookPickText: 'Twenty-one days', hookOptionTexts: ['A few weeks', 'Twenty-one days', 'Two months'] }))!;
+    // The pack reworded b and added an option; the sealed words return second, not last, and the new option stays out.
+    expect(sealedOptions(sealed, [{ id: 'a', text: 'A few weeks' }, { id: 'b', text: 'About three weeks' }, { id: 'c', text: 'Two months' }, { id: 'd', text: 'New one' }])).toEqual([
+      { id: 'a', text: 'A few weeks' }, { id: 'sealed:b', text: 'Twenty-one days' }, { id: 'c', text: 'Two months' }]);
+    // Unchanged pack: the same options in the same order with their own ids.
+    expect(sealedOptions(sealed, [{ id: 'a', text: 'A few weeks' }, { id: 'b', text: 'Twenty-one days' }, { id: 'c', text: 'Two months' }])!.map(option => option.id)).toEqual(['a', 'b', 'c']);
+    // Fewer than 2 of the original options left: not asked, and matkaPicks skips it before choosing three.
+    expect(sealedOptions(sealed, [{ id: 'a', text: 'A few weeks' }, { id: 'x', text: 'Other' }])).toBeUndefined();
+    const facts = [fact('learn-lesson:s', 'learn-lesson', '2026-10-20', { hookCorrect: false, hookPick: 'b', hookPickText: 'Twenty-one days', hookOptionTexts: ['A few weeks', 'Twenty-one days', 'Two months'] })];
+    expect(matkaPicks(facts, '2026-11-01', '2026-10-26', true, () => false)).toEqual([]);
   });
   it('the shift moves toward the answer and is never a score', () => {
     expect(matkaShift(40, 60, 70)).toBeCloseTo(2 / 3);

@@ -21,13 +21,19 @@ describe('spec 26 kolam completion (Codex B item 114)', () => {
     expect(await saveKolamDone(db, kolam, at('23:45'))).toBe(true);
     expect((await db.ledger.get(`kolam:${kolam.nightDate}`))!.inputs.afterBedtime).toBe(true);
   });
-  it('a busy day moves bedtime to 00:00, so 23:45 is still before it; a second finish keeps the first answer', async () => {
+  it('a busy day moves bedtime to 00:00, so 23:45 is still before it', async () => {
     const db = fresh();
     await db.settings.put(setting('planner.bedtime', '23:30'));
     await db.tasks.bulkPut([task('a', 150), task('b', 150)] as never);
-    const kolam = selectClockKolam(new Date(at('23:45')));
-    expect(await saveKolamDone(db, kolam, at('23:45'))).toBe(false);
-    expect(await saveKolamDone(db, kolam, at('23:59'))).toBe(false);
-    expect(await db.ledger.where('kind').equals('kolam').count()).toBe(1);
+    expect(await saveKolamDone(db, selectClockKolam(new Date(at('23:45'))), at('23:45'))).toBe(false);
+  });
+  it('the first finish of a night is the stored row; a late re-trace still gets the late end line (Codex B item 115)', async () => {
+    const db = fresh();
+    await db.settings.put(setting('planner.bedtime', '23:30'));
+    const kolam = selectClockKolam(new Date(at('23:00')));
+    expect(await saveKolamDone(db, kolam, at('23:00'))).toBe(false);
+    expect(await saveKolamDone(db, kolam, at('23:45'))).toBe(true);
+    const rows = await db.ledger.where('kind').equals('kolam').toArray();
+    expect(rows.map(row => row.inputs.afterBedtime)).toEqual([false]);
   });
 });

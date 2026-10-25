@@ -32,18 +32,16 @@ export async function tonightKolam(db: NandiDb, now: number): Promise<ClockKolam
 
 /**
  * The finished line: one completion row a night (for Kachhua's corner of the courtyard). It pays no XP. Whether it
- * came after bedtime is decided here, at completion, from tonight's effective bedtime (busy-day shift included), and
- * returned so the end screen says the same thing the ledger does.
+ * came after bedtime is decided here, at completion, from tonight's effective bedtime (busy-day shift included). The
+ * first finish of a night is the stored row; the return value is THIS completion's answer, for its end screen.
  */
 export async function saveKolamDone(db: NandiDb, kolam: ClockKolam, now: number): Promise<boolean> {
   const id = `kolam:${kolam.nightDate}`;
   const afterBedtime = isAfterBedtime(now, await effectiveBedtime(db, now));
   const deviceId = await getOrCreateDeviceId(db, now);
-  let stored = afterBedtime;
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
-    const existing = await db.ledger.get(id);
-    if (existing) { stored = existing.inputs.afterBedtime === true; return; }
+    if (await db.ledger.get(id)) return;
     await db.ledger.add({ id, dayKey: dayKey(now), mode: 'night', kind: 'kolam', refId: kolam.nightDate, inputs: { size: kolam.size, family: kolam.family, lineColor: kolam.lineColor, afterBedtime }, updatedAt: now, deleted: 0, deviceId });
   }));
-  return stored;
+  return afterBedtime;
 }

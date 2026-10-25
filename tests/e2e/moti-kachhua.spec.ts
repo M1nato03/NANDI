@@ -108,3 +108,13 @@ test('a late first open draws a 3 by 3 kolam; a fast finger only tucks Kachhua i
   await expect(board).toHaveAttribute('aria-label', touched!);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('under reduced motion Draw it for me draws the whole line at once, and nothing moves (Codex B items 114-115)', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.clock.install({ time: new Date('2026-11-03T12:00:00') });
+  await page.goto('/?e2e#kolam');
+  const kolam = page.getByRole('region', { name: "Tonight's kolam" });
+  await kolam.getByRole('button', { name: 'Draw it for me' }).click();
+  await expect(kolam).toHaveAttribute('data-done', 'yes');
+  await expect(kolam.locator('.kolam-friend')).toHaveCSS('animation-name', 'none');
+});

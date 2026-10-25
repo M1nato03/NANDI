@@ -22,7 +22,7 @@ import { Cast, Moti, type CastName } from '../cast/Cast';
 const trailFriends: CastName[] = ['Chiku', 'Moti', 'Kapi', 'Nandi'];
 import { playCastSound } from '../cast/sound';
 import { finishedIdeas, haveliPicks, lastVisits, type HaveliIdea } from '../../core/moti/haveli';
-import { matkaPicks, type MatkaItem } from '../../core/moti/matka';
+import { matkaPicks, sealedOptions, type MatkaItem } from '../../core/moti/matka';
 import { findStep } from '../../core/learn/steps';
 import { formatEstimate, sliderScale, type EstimateItem } from '../../core/learn/estimate';
 import { weekStart } from '../../core/economy/deriveEconomy';
@@ -33,11 +33,6 @@ import { Matka, type MatkaContext } from '../learn/Matka';
 // Spec 26: every idea with recall pieces, in topic order (content lands with editor sign-off).
 const HAVELI_IDEAS: HaveliIdea[] = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts.filter(concept => concept.recall).map(concept => ({ id: concept.id, title: concept.title, topicId: pack.body.topic.id, topicTitle: pack.title, recall: concept.recall!, steps: (concept.steps ?? []).map(step => step.id) }))));
 const ALL_CONCEPTS = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts));
-// Matka 1 offers today's hook options; if a pack update dropped or reworded the sealed pick, its own words are offered too.
-const sealedOptions = (item: MatkaItem, options: readonly { id: string; text: string }[]) => {
-  const shown = options.map(option => ({ id: option.id, text: option.text }));
-  return item.sealedText !== undefined && !shown.some(option => option.text === item.sealedText) ? [...shown, { id: `sealed:${String(item.sealed)}`, text: item.sealedText }] : shown;
-};
 const matkaContext = (item: MatkaItem): MatkaContext => {
   if (item.level === 2) {
     const found = ALL_CONCEPTS.flatMap(concept => concept.items).find(row => row.id === item.itemId);
@@ -46,6 +41,21 @@ const matkaContext = (item: MatkaItem): MatkaContext => {
   }
   const ref = item.stepId ? findStep(ALL_CONCEPTS, item.stepId) : undefined;
   return { title: ref ? `Your first guess on ${ref.step.title}, before the lesson` : 'Your first guess', options: item.level === 1 ? sealedOptions(item, ref?.step.hook.options ?? []) : undefined };
+};
+// Spec 26 M1: a Matka 1 item is asked only while its sealed options can still be shown fairly (Codex B item 115).
+// Read at the tap, not during render.
+const currentTime = () => Date.now();
+const matkaAskable = (item: MatkaItem) => {
+  if (item.level !== 1) return true;
+  const ref = item.stepId ? findStep(ALL_CONCEPTS, item.stepId) : undefined;
+  return !!ref && sealedOptions(item, ref.step.hook.options) !== undefined;
+};
+// Spec 26: the haveli entry counts new diyas to light and lit ideas ready for a visit separately (Codex B item 115).
+const haveliCount = (picks: readonly HaveliIdea[], litToday: readonly string[], visits: ReadonlyMap<string, string>, cap: number) => {
+  const open = picks.filter(idea => !litToday.includes(idea.id)).slice(0, Math.max(0, Math.min(cap, picks.length) - litToday.length));
+  const visit = open.filter(idea => visits.has(idea.id)).length, light = open.length - visit;
+  const parts = [light ? `${light} to light` : '', visit ? `${visit} ready for a visit` : ''].filter(Boolean);
+  return parts.length ? parts.join(' · ') : 'quiet for today';
 };
 import { chikuOpen, type ChikuScene } from '../../core/learn/chiku';
 import { ChikuStage } from '../learn/ChikuStage';
@@ -127,10 +137,10 @@ export function Learn({ entry }: { entry?: string }) {
   const litToday = haveliIdeas.filter(idea => visits.get(idea.id) === today).map(idea => idea.id);
   const week = weekStart(today);
   const sunday = new Date(`${today}T12:00:00`).getDay() === 0;
-  const matkaItems = afterBedtime ? [] : matkaPicks(data?.ledger ?? [], today, week, sunday);
+  const matkaItems = afterBedtime ? [] : matkaPicks(data?.ledger ?? [], today, week, sunday, matkaAskable);
   const matkaDone = (data?.ledger ?? []).filter(row => row.kind === 'matka' && row.refId.startsWith(`${week}.`)).map(row => String(row.inputs.sourceFactId));
   if (moti === 'haveli') return <Haveli ideas={haveliToday} lit={litToday} everLit={[...visits.keys()]} cap={haveliCap} day={today} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => setMoti(null)} />;
-  if (moti === 'matka') return <Matka items={matkaItems} answered={matkaDone} context={matkaContext} onAnswer={(item, recalled) => saveMatkaAnswer(db, { week, item, recalled, now: Date.now() })} onLeave={() => setMoti(null)} />;
+  if (moti === 'matka') return <Matka items={matkaItems} answered={matkaDone} context={matkaContext} onAnswer={(item, recalled) => saveMatkaAnswer(db, { week, item, recalled, now: currentTime() })} onLeave={() => setMoti(null)} />;
   // Spec 30 second door: ideas finished before their scene existed can still teach Chiku once (Codex B item 110).
   const taughtSteps = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));
   const chikuPlayedIds = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chiku' && !fact.deleted).map(fact => fact.refId));
@@ -141,7 +151,7 @@ export function Learn({ entry }: { entry?: string }) {
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
-      {haveliIdeas.length > 0 && <div className="cast-inline"><Moti pose="idle" size={40} /><button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Moti's haveli · {Math.max(0, Math.min(haveliCap, haveliToday.length) - litToday.length)} to light</button></div>}
+      {haveliIdeas.length > 0 && <div className="cast-inline"><Moti pose="idle" size={40} /><button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Moti's haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button></div>}
       {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <div className="cast-inline"><Moti pose="think" size={40} /><button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Moti's matka · {matkaItems.length - matkaDone.length} sealed guesses</button></div>}
       {dueCount > 0 && <><div className="cast-inline"><Moti pose="think" size={40} /><button type="button" className="secondary learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} for today</button></div>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
     </section>

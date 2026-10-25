@@ -37,7 +37,7 @@ export function KolamScreen() {
   const path = useMemo(() => kolam ? tracePath(kolam.kolam.points, UNIT, PAD) : [], [kolam]);
   const current = trace ?? (path.length ? startTrace(path) : null);
   const done = !!current && traceDone(current);
-  // "Draw it for me": the line draws itself slowly while you watch.
+  // "Draw it for me": the line draws itself slowly while you watch (under reduced motion the button draws it at once).
   useEffect(() => {
     if (!auto || !current || done) return;
     const timer = window.setInterval(() => setTrace(state => { const base = state ?? startTrace(path); return { ...base, progress: Math.min(base.total, base.progress + base.total * AUTO_TICK_MS / AUTO_MS), tooFast: false }; }), AUTO_TICK_MS);
@@ -75,6 +75,6 @@ export function KolamScreen() {
       {/* Spec 26 B3: after bedtime the end screen is exactly these two lines. */}<p>The line is complete.</p>{endLate === true && <p>That's enough for tonight. Put the phone down.</p>}{endLate === false && <p>Kachhua curls up beside it. A new one comes tomorrow night.</p>}
       <button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div>
       : <>{current.tooFast && <p className="small" role="status">Kachhua tucked in. Slow down and the line waits for you.</p>}
-        <button type="button" className="secondary" disabled={auto} onClick={() => setAuto(true)}>Draw it for me</button></>}
+        <button type="button" className="secondary" disabled={auto} onClick={() => { setAuto(true); if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce') setTrace(state => { const base = state ?? startTrace(path); return { ...base, progress: base.total, tooFast: false }; }); }}>Draw it for me</button></>}
   </section>;
 }

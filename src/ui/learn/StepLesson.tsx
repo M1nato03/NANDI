@@ -27,7 +27,7 @@ export function StepVisual({ visual }: { visual: StepVisualData }) {
 }
 
 /** Spec 26 M1: `hookPick` is the option first picked on the hook, sealed in the matka (never edited), with its words. */
-export interface StepLessonResult { hookCorrect: boolean; hookPick?: string; hookPickText?: string; spotCorrect: boolean; guidedFirstTry: boolean[] }
+export interface StepLessonResult { hookCorrect: boolean; hookPick?: string; hookPickText?: string; hookOptionTexts?: string[]; spotCorrect: boolean; guidedFirstTry: boolean[] }
 type Phase = { kind: 'hook' } | { kind: 'teach' } | { kind: 'show' } | { kind: 'guided'; index: number };
 
 /**
@@ -60,7 +60,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, more = 
     setPicked(id);
     const option = question.options.find(item => item.id === id);
     const right = option?.correct === true;
-    setResult(current => phase.kind === 'hook' ? { ...current, hookCorrect: right, hookPick: id, hookPickText: option?.text } : { ...current, guidedFirstTry: [...current.guidedFirstTry, right] });
+    setResult(current => phase.kind === 'hook' ? { ...current, hookCorrect: right, hookPick: id, hookPickText: option?.text, hookOptionTexts: question.options.map(item => item.text) } : { ...current, guidedFirstTry: [...current.guidedFirstTry, right] });
   };
   const ask = phase.kind === 'hook' ? 'Guess first' : phase.kind === 'teach' ? 'The idea' : phase.kind === 'show' ? step.example.ask : 'Pick the best answer';
   const eyebrow = phase.kind === 'guided' ? 'Try it' : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
