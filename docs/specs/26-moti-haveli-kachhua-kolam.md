@@ -1,8 +1,8 @@
 # 26. Moti's haveli and matka; Kachhua's kolam by the clock
 
-Status: APPROVED games (Jenil, 25 Oct 2026: Moti "excellent, it cannot get better than this"; Kachhua
-"excellent, try to add different patterns based on time"). This written spec waits for Jenil's yes before the
-builder starts.
+Status: APPROVED. Games approved by Jenil on 25 Oct 2026 (Moti: "excellent, it cannot get better than this";
+Kachhua: "excellent, try to add different patterns based on time"). The written spec was approved on 26 Oct 2026
+("okay go ahead").
 Idea engine, 25 Oct 2026. Demo: https://claude.ai/artifact/LVWKWGavbn6VpE6uxRvWEA (Moti and Kachhua tabs).
 Inputs: cloud jobs cj8-check, cj8-matka-tarazu, cj8-kolam, cj9-kolam-clock (branches named below).
 Spec 25 applies: each friend's game sits on that friend's own stage colour (Moti rose, Kachhua indigo).
