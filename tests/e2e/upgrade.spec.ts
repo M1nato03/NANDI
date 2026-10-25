@@ -212,7 +212,8 @@ test('active focus waits until paused before updating', async ({ page, context }
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await openMore(page);
+    await page.getByRole('button', { name: 'Focus timer with breaks' }).click();
     await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
   } finally {
     await server.close();

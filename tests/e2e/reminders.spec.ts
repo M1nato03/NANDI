@@ -1,8 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('reminders have no time, survive reload and backup, and never fill the Plan dot', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-20T12:00:00') });
   await page.goto('/?e2e#plan');
+  // Spec 27: Reminders sit in Plan's More fold.
+  await openMore(page);
   const reminders = page.getByRole('region', { name: 'Reminders' });
   await expect(reminders).toContainText('Little things to remember, with no clock attached.');
 
@@ -18,12 +21,14 @@ test('reminders have no time, survive reload and backup, and never fill the Plan
   await expect(page.getByRole('button', { name: 'Plan: not done' })).toBeVisible();
 
   await page.reload();
+  await openMore(page);
   await expect(reminders.getByText('call Nani')).toBeVisible();
   await expect(reminders.getByText('Done lately · 1')).toBeVisible();
 
   await page.waitForFunction(() => Boolean((window as Window & { __nandiTest?: unknown }).__nandiTest));
   await page.evaluate(() => (window as Window & { __nandiTest?: { backupRoundTrip: () => Promise<unknown> } }).__nandiTest!.backupRoundTrip());
   await page.reload();
+  await openMore(page);
   await expect(reminders.getByText('call Nani')).toBeVisible();
 
   await reminders.getByText('Done lately · 1').click();
