@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { checkKolam, generateKolam, loopCount, sites, toPathData, toSvg, traceLoops, type Pt } from './kolam';
+import { checkKolam, generateKolam, generatePatternFamily, loopCount, sites, toPathData, toSvg, traceLoops, type Pt } from './kolam';
 
 const SIZES = [3, 4, 5] as const;
 const SEEDS = 200;
@@ -54,6 +54,29 @@ describe('generator + checker', () => {
         const [x, y] = w.split(',').map(Number);
         expect(set.has(`${2 * n - y},${x}`)).toBe(true);
       }
+    }
+  });
+});
+
+describe('clock pattern families', () => {
+  const rimTurns = (n: number, walls: readonly string[]) => walls.filter((wall) => {
+    const [x, y] = wall.split(',').map(Number);
+    return x === 1 || y === 1 || x === 2 * n - 1 || y === 2 * n - 1;
+  }).length;
+
+  it.each(SIZES)('%ix%i: both families keep one strict closed line, with different turn placement', (n) => {
+    for (let seed = 1; seed <= 40; seed++) {
+      const rim = generatePatternFamily(n, seed, 'rim-turns');
+      const inner = generatePatternFamily(n, seed, 'inner-turns');
+      for (const k of [rim, inner]) {
+        const result = checkKolam(n, k.points);
+        expect(result.ok).toBe(true);
+        expect(result.loops).toBe(1);
+        expect(result.emptyRegions).toBe(0);
+        expect(k.seed).toBe(seed);
+      }
+      expect(rimTurns(n, rim.walls)).toBeGreaterThan(rimTurns(n, inner.walls));
+      expect(generatePatternFamily(n, seed, 'rim-turns')).toEqual(rim);
     }
   });
 });
@@ -140,5 +163,10 @@ describe('svg', () => {
   ] as const)('%s matches the generator output', (file, n, seed, strict) => {
     const svg = readFileSync(new URL(`./${file}`, import.meta.url), 'utf8');
     expect(svg).toBe(toSvg(generateKolam(n, seed, { strict })));
+  });
+
+  it.each(['rim-turns', 'inner-turns'] as const)('5x5 %s sample matches its family', (family) => {
+    const svg = readFileSync(new URL(`./sample-5x5-${family}-seed7.svg`, import.meta.url), 'utf8');
+    expect(svg).toBe(toSvg(generatePatternFamily(5, 7, family)));
   });
 });

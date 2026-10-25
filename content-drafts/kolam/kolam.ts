@@ -43,6 +43,9 @@ export interface GenOptions {
   strict?: boolean;
 }
 
+/** Original layout studies within the square-dot, one-line model. These are not traditional names. */
+export type PatternFamily = 'rim-turns' | 'inner-turns';
+
 /** mulberry32: small seeded PRNG so a seed always gives the same kolam. */
 export function rng(seed: number): () => number {
   let a = seed >>> 0;
@@ -200,6 +203,31 @@ export function generateKolam(n: number, seed: number, opts: GenOptions = {}): K
     }
   }
   throw new Error(`could not reach one loop (n=${n}, seed=${seed})`);
+}
+
+/**
+ * Choose a strict single-line layout from a small, deterministic candidate set.
+ * Rim turns put more separating turns beside the outside row of dots; inner turns put fewer there.
+ * The source for both remains the same square-dot model, so checkKolam validates the final line.
+ */
+export function generatePatternFamily(n: number, seed: number, family: PatternFamily): Kolam {
+  if (family !== 'rim-turns' && family !== 'inner-turns') throw new Error(`unknown pattern family: ${family}`);
+  const r = rng(seed ^ 0x4b4f4c41);
+  let best: Kolam | undefined;
+  let bestScore = family === 'rim-turns' ? -Infinity : Infinity;
+  for (let i = 0; i < 16; i++) {
+    const candidate = generateKolam(n, Math.floor(r() * 4294967296), { strict: true, symmetry: 1 });
+    const rimTurns = candidate.walls.filter((wall) => {
+      const [x, y] = wall.split(',').map(Number);
+      return x === 1 || y === 1 || x === 2 * n - 1 || y === 2 * n - 1;
+    }).length;
+    if (family === 'rim-turns' ? rimTurns > bestScore : rimTurns < bestScore) {
+      best = candidate;
+      bestScore = rimTurns;
+    }
+  }
+  // Keep the caller's date seed in the result, rather than the internal candidate seed.
+  return { ...best!, seed };
 }
 
 /**
