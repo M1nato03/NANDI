@@ -40,13 +40,13 @@ export function averageLine(tasks: TaskRow[]): string | undefined {
 }
 
 /** A move made elsewhere on Plan (the detail sheet's Another day or Later) that the list should offer to undo. */
-export type OuterMove = { task: TaskRow; before: MoveSnapshot; where: string; at: number };
+export type OuterMove = { task: TaskRow; before: MoveSnapshot; where: string; at: number; writes: number };
 
 export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove }) {
   const today = dayKey(board.now);
   const [moment, setMoment] = useState<{ kind: MorMoment; at: number }>({ kind: 'open', at: 0 });
   const [noted, setNoted] = useState('');
-  const [toast, setToast] = useState<{ text: string; undo?: () => void; at: number } | null>(null);
+  const [toast, setToast] = useState<{ text: string; undo?: () => void; at: number; writes?: number } | null>(null);
   const [title, setTitle] = useState('');
   const [timeOpen, setTimeOpen] = useState(false);
   const [time, setTime] = useState<number | undefined>();
@@ -56,10 +56,11 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   const undo = (task: TaskRow, before: MoveSnapshot) => { void board.act((repos, now) => repos.undoMove(task.id, now, before), 'Move undone.'); };
   // Moves from the detail sheet get the same toast and Undo (Codex A item 91); a newer toast here replaces it.
   const [outerDone, setOuterDone] = useState(0);
-  const offerUndo = (task: TaskRow, before: MoveSnapshot, text: string) => { setOuterDone(outerMove?.at ?? 0); setToast(current => ({ text, at: (current?.at ?? 0) + 1, undo: () => { undo(task, before); setToast(null); } })); };
-  const outerToast = outerMove && outerMove.at !== outerDone ? { text: `Moved to ${outerMove.where}.`, at: outerMove.at, undo: () => { undo(outerMove.task, outerMove.before); setOuterDone(outerMove.at); } } : null;
+  const offerUndo = (task: TaskRow, before: MoveSnapshot, text: string) => { setOuterDone(outerMove?.at ?? 0); setToast(current => ({ text, at: (current?.at ?? 0) + 1, writes: board.writesRef.current, undo: () => { undo(task, before); setToast(null); } })); };
+  const outerToast = outerMove && outerMove.at !== outerDone && outerMove.writes === board.writes ? { text: `Moved to ${outerMove.where}.`, at: outerMove.at, undo: () => { undo(outerMove.task, outerMove.before); setOuterDone(outerMove.at); } } : null;
   useEffect(() => { if (!outerToast) return; const timer = window.setTimeout(() => setOuterDone(outerToast.at), 8000); return () => window.clearTimeout(timer); }, [outerToast?.at]); // eslint-disable-line react-hooks/exhaustive-deps
-  const shownToast = outerToast ?? toast;
+  // Central rule: any write after the move (from anywhere on Plan) ends its Undo (Codex A item 93).
+  const shownToast = outerToast ?? (toast && (toast.writes === undefined || toast.writes === board.writes) ? toast : null);
   // Undo is one step and lasts only until the next action (Codex A item 92, the spec owner's call).
   const clearUndo = () => { setToast(null); setOuterDone(outerMove?.at ?? 0); };
   const openDetail = (task: TaskRow) => { clearUndo(); onDetail(task); };

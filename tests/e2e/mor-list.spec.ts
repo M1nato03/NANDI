@@ -167,3 +167,16 @@ test('Undo lasts only until the next action: Done, Start or another move clears 
   await expect(taskRow(page, 'Today', 'Gamma')).toBeVisible();
   await expect(taskRow(page, 'Tomorrow', 'Alpha')).toBeVisible();
 });
+
+test('any later write on Plan ends the Undo: adding a task with details clears it (Codex A item 93)', async ({ page }) => {
+  await add(page, 'Alpha');
+  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
+  const toast = page.locator('.mor-toast');
+  await expect(toast).toContainText('Moved to Tomorrow.');
+  await page.locator('details.plan-more > summary').click();
+  await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Beta');
+  await page.getByRole('button', { name: 'Add task', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Beta');
+  await expect(toast).toHaveCount(0);
+  await expect(taskRow(page, 'Tomorrow', 'Alpha')).toBeVisible();
+});

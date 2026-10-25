@@ -105,7 +105,7 @@ export function Plan({ questId }: { questId?: string }) {
       <Reminders />
     </details>
     {detail && <TaskDetail key={detail.id} task={board.tasks.find(row => row.id === detail.id) ?? detail} tasks={board.tasks} focus={board.focus} events={events} run={board.act} close={() => setDetail(null)} move={() => { setMoving(detail); setDetail(null); }} />}
-    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} onUndoable={(task, before, where) => setOuterMove(current => ({ task, before, where, at: (current?.at ?? 0) + 1 }))} />}
+    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} onUndoable={(task, before, where) => setOuterMove(current => ({ task, before, where, at: (current?.at ?? 0) + 1, writes: board.writesRef.current }))} />}
     {respace && <div className="sheet-backdrop"><section ref={respaceDialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label="Re-space checkpoints"><h2>Re-space the remaining checkpoints?</h2><div className="sheet-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.respaceRemainingCheckpoints(respace.task.id, respace.at, now), 'Checkpoints updated.').then(() => setRespace(null))}>Re-space</button><button type="button" className="secondary" onClick={() => setRespace(null)}>Keep them</button></div></section></div>}
   </section>;
 }
