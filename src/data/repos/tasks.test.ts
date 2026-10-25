@@ -182,6 +182,35 @@ describe('Tasks repository transactions', () => {
     expect(await db.tasks.get(second.id)).toMatchObject({ dayKey: dayKey(at(5)) });
     expect(await db.focus.filter(row => row.deleted === 0 && row.endedAt == null && row.taskId === second.id).count()).toBe(0);
   });
+  it('Undo is one step: after Done, or after another Start, it does nothing and says it cannot (Codex A item 92)', async () => {
+    const added = await repos.addToList('Pay rent', at(4, 10));
+    const moved = await repos.moveTask(added.id, at(4, 11), 'tomorrow');
+    await repos.completeTask(added.id, at(4, 12));
+    await expect(repos.undoMove(added.id, at(4, 13), moved)).rejects.toThrow('cant_undo');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'done', dayKey: dayKey(at(5)) });
+    const other = await repos.addToList('Call home', at(4, 10));
+    const running = await repos.startFocus(other.id, at(4, 10));
+    const again = await repos.moveTask(other.id, at(4, 14), 'tomorrow');
+    const third = await repos.addToList('Read', at(4, 10));
+    await repos.startFromList(third.id, at(4, 15));
+    await expect(repos.undoMove(other.id, at(4, 16), again)).rejects.toThrow('cant_undo');
+    // Still one timer: the guard left the first focus ended.
+    expect((await db.focus.get(running.id))?.endedAt).toBeDefined();
+    expect(await db.focus.filter(row => row.deleted === 0 && row.endedAt == null).count()).toBe(1);
+  });
+  it('Start from Tomorrow then Undo reopens the focus it interrupted and gives back its minutes unchanged (Codex A item 92)', async () => {
+    const first = await repos.addToList('First', at(4, 10));
+    const second = await repos.addToList('Second', at(4, 10));
+    await repos.moveTask(second.id, at(4, 10), 'tomorrow');
+    const interrupted = await repos.startFocus(first.id, at(4, 10));
+    const before = await repos.startFromList(second.id, at(4, 10) + 10 * 60_000);
+    expect(await db.tasks.get(first.id)).toMatchObject({ actualMinutes: 10 });
+    await repos.undoMove(second.id, at(4, 10) + 11 * 60_000, before!);
+    expect((await db.focus.get(interrupted.id))?.endedAt).toBeUndefined();
+    expect((await db.tasks.get(first.id))?.actualMinutes).toBeUndefined();
+    expect(await db.tasks.get(second.id)).toMatchObject({ dayKey: dayKey(at(5)) });
+    expect((await db.focus.filter(row => row.deleted === 0 && row.endedAt == null).toArray()).map(row => row.id)).toEqual([interrupted.id]);
+  });
   it('a task parked by its 4th move can be planned again from Someday (Codex A item 87)', async () => {
     const created = await task(at(4, 10));
     await db.tasks.update(created.id, { postponeCount: 3, firstStep: 'Open it' });

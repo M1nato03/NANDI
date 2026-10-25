@@ -51,7 +51,13 @@ export type MoveSnapshot = {
   focus: FocusRow[];
   eventId?: string;
   startedFocusId?: string;
+  /** Other tasks whose focus this action ended, with their minutes before it. */
+  otherTasks?: { id: string; actualMinutes?: number }[];
+  /** The state just after the action. Undo runs only if nothing has changed since (Codex A item 92). */
+  after?: { task: string; focus: Record<string, string>; open: string; others: Record<string, string> };
 };
+const taskMark = (row: TaskRow | undefined) => JSON.stringify(row ? [row.status, row.dayKey, row.scheduledStart ?? null, row.postponeCount ?? 0, row.actualMinutes ?? null, row.doneAt ?? null, row.deleted, row.updatedAt] : null);
+const focusMark = (row: FocusRow | undefined) => JSON.stringify(row ? [row.endedAt ?? null, row.deleted, row.pauses?.length ?? 0, row.updatedAt] : null);
 
 export function coreTask(row: TaskRow): CoreTask {
   if (
@@ -134,6 +140,17 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
     if (!stored || JSON.stringify(state) !== JSON.stringify(stored)) await saveBudget(state, now);
     return state;
   }
+  // The state an Undo expects to find: the task, every focus the action touched, which focuses are open, and any
+  // other task whose minutes the action changed.
+  const afterState = async (taskId: string, snapshot: MoveSnapshot): Promise<NonNullable<MoveSnapshot['after']>> => {
+    const ids = [...snapshot.focus.map((row) => row.id), ...(snapshot.startedFocusId ? [snapshot.startedFocusId] : [])];
+    const focus: Record<string, string> = {};
+    for (const id of ids) focus[id] = focusMark(await db.focus.get(id));
+    const open = (await db.focus.filter((f) => f.deleted === 0 && f.endedAt == null).toArray()).map((row) => row.id).sort().join(',');
+    const others: Record<string, string> = {};
+    for (const other of snapshot.otherTasks ?? []) others[other.id] = taskMark(await db.tasks.get(other.id));
+    return { task: taskMark(await db.tasks.get(taskId)), focus, open, others };
+  };
   // Ending a focus adds the minutes worked to the task (spec 27: the only source of real times).
   const endFocus = async (focus: FocusRow, now: number): Promise<FocusRow> => {
     const ended = await repos.focus.put(coreFinishFocus(focus, now), now);
@@ -711,6 +728,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         // Re-read: ending a focus just added its minutes to the task.
         const latest = (await repos.tasks.get(taskId)) ?? row;
         await repos.tasks.put({ ...latest, ...next }, now);
+        before.after = await afterState(taskId, before);
         return before;
       });
     },
@@ -719,7 +737,11 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const row = await repos.tasks.get(taskId);
         if (!row) throw new Error('Task not found');
+        // Undo is one step: if anything has changed since the action, it does nothing (Codex A item 92).
+        const current = await afterState(taskId, before);
+        if (!before.after || JSON.stringify(current) !== JSON.stringify(before.after)) throw new Error('cant_undo');
         for (const focus of before.focus) await repos.focus.put(focus, now);
+        for (const other of before.otherTasks ?? []) { const task = await repos.tasks.get(other.id); if (task) await repos.tasks.put({ ...task, actualMinutes: other.actualMinutes }, now); }
         if (before.startedFocusId) await repos.focus.softDelete(before.startedFocusId, now);
         if (before.eventId) await repos.taskEvents.softDelete(before.eventId, now);
         return repos.tasks.put({ ...row, ...before.task }, now);
@@ -737,9 +759,15 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const onToday = row.status !== 'someday' && row.dayKey <= today;
         const before = onToday ? undefined : await this.moveTask(taskId, now, 'today');
         const others = await db.focus.filter((f) => f.deleted === 0 && f.endedAt == null && f.taskId !== taskId).toArray();
+        // Undo of a Start from Tomorrow or Later also reopens the focus it interrupted and takes its minutes back.
+        if (before) {
+          before.focus.push(...others);
+          before.otherTasks = [];
+          for (const id of new Set(others.map((row) => row.taskId))) before.otherTasks.push({ id, actualMinutes: (await db.tasks.get(id))?.actualMinutes });
+        }
         for (const focus of others) await endFocus(focus, now);
         const started = await this.startFocus(taskId, now);
-        if (before) before.startedFocusId = started.id;
+        if (before) { before.startedFocusId = started.id; before.after = await afterState(taskId, before); }
         return before;
       });
     },

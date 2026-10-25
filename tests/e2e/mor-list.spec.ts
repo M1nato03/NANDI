@@ -148,3 +148,22 @@ test('a focus paused on the timer screen shows as paused on Plan, with Resume (C
   await expect(focus).toContainText('Working on');
   await expect(focus.getByRole('button', { name: 'Resume' })).toHaveCount(0);
 });
+
+test('Undo lasts only until the next action: Done, Start or another move clears it (Codex A item 92)', async ({ page }) => {
+  for (const title of ['Alpha', 'Beta', 'Gamma']) await add(page, title);
+  const toast = page.locator('.mor-toast');
+  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
+  await expect(toast).toContainText('Moved to Tomorrow.');
+  await taskRow(page, 'Today', 'Beta').getByRole('button', { name: 'Done: Beta' }).click();
+  await expect(toast).toHaveCount(0);
+  await taskRow(page, 'Tomorrow', 'Alpha').getByRole('button', { name: 'Today: Alpha' }).click();
+  await expect(toast).toContainText('Moved to Today.');
+  await taskRow(page, 'Today', 'Gamma').getByRole('button', { name: 'Start' }).click();
+  await expect(toast).toHaveCount(0);
+  // A second move replaces the first one's Undo: Undo now takes back only the second.
+  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
+  await taskRow(page, 'Today', 'Gamma').getByRole('button', { name: 'Tomorrow: Gamma' }).click();
+  await toast.getByRole('button', { name: 'Undo' }).click();
+  await expect(taskRow(page, 'Today', 'Gamma')).toBeVisible();
+  await expect(taskRow(page, 'Tomorrow', 'Alpha')).toBeVisible();
+});

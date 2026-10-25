@@ -60,6 +60,9 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   const outerToast = outerMove && outerMove.at !== outerDone ? { text: `Moved to ${outerMove.where}.`, at: outerMove.at, undo: () => { undo(outerMove.task, outerMove.before); setOuterDone(outerMove.at); } } : null;
   useEffect(() => { if (!outerToast) return; const timer = window.setTimeout(() => setOuterDone(outerToast.at), 8000); return () => window.clearTimeout(timer); }, [outerToast?.at]); // eslint-disable-line react-hooks/exhaustive-deps
   const shownToast = outerToast ?? toast;
+  // Undo is one step and lasts only until the next action (Codex A item 92, the spec owner's call).
+  const clearUndo = () => { setToast(null); setOuterDone(outerMove?.at ?? 0); };
+  const openDetail = (task: TaskRow) => { clearUndo(); onDetail(task); };
 
   const rows = visibleTasks(board.tasks);
   const by = (list: string) => rows.filter(task => listOf(task, today) === list).sort((a, b) => (a.scheduledStart ?? Number.MAX_SAFE_INTEGER) - (b.scheduledStart ?? Number.MAX_SAFE_INTEGER) || a.id.localeCompare(b.id));
@@ -74,12 +77,14 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
     event.preventDefault();
     const name = title.trim();
     if (!name) return;
+    clearUndo();
     const picked = time ?? (other ? Number(other) : undefined);
     if (await board.act((repos, now) => repos.addToList(name, now, picked && Number.isFinite(picked) && picked > 0 ? Math.min(picked, 90) : undefined), 'Added to Today.')) {
       setTitle(''); setTime(undefined); setOther(''); setTimeOpen(false); react('add');
     }
   }
   async function done(task: TaskRow) {
+    clearUndo();
     const open = board.focus.filter(row => row.taskId === task.id && row.endedAt == null && !row.deleted);
     const worked = Math.round(open.reduce((sum, row) => sum + focusElapsedMs(row, board.now), 0) / 60_000);
     const ok = await board.act(async (repos, now) => { for (const row of open) await repos.finishFocus(row.id, now); await repos.completeTask(task.id, now); }, 'Done.');
@@ -89,18 +94,21 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   }
   async function stopForNow(task: TaskRow) {
     if (!running) return;
+    clearUndo();
     const worked = Math.round(focusElapsedMs(running, board.now) / 60_000);
     if (await board.act((repos, now) => repos.finishFocus(running.id, now), 'Saved for now.')) { if (worked > 0) setNoted(notedLine(task, worked, false)); react('open'); }
   }
   // One focus at a time: Start ends any other open focus. From Tomorrow or Later it brings the task to Today first,
   // with Undo (Codex A item 91).
   async function start(task: TaskRow) {
+    clearUndo();
     let before: MoveSnapshot | undefined;
     if (!await board.act(async (repos, now) => { before = await repos.startFromList(task.id, now); }, 'Focus started.')) return;
     setNoted(''); react('start');
     if (before) offerUndo(task, before, 'Moved to Today.');
   }
   async function move(task: TaskRow, target: MoveTarget, where: string) {
+    clearUndo();
     let before: MoveSnapshot | undefined;
     const ok = await board.act(async (repos, now) => { before = await repos.moveTask(task.id, now, target); }, '');
     if (!ok || !before) return;
@@ -110,7 +118,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
 
   const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className="task-row ui-list-row mor-row" key={task.id} data-list={list}>
     <button type="button" className="done-circle" aria-label={`Done: ${task.title}`} disabled={board.busy} onClick={() => void done(task)}><span aria-hidden="true">○</span></button>
-    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => onDetail(task)}>{task.title}</button>
+    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(task)}>{task.title}</button>
       {(task.timeSet || task.scheduledStart != null) && <span className="small">{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>}</div>
     <div className="task-row-actions">
       {runningTask?.id !== task.id && <button type="button" className="secondary" disabled={board.busy} aria-label={`Start: ${task.title}`} onClick={() => void start(task)}>Start</button>}
@@ -127,7 +135,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
       if (!group) return [row(task, key)];
       if (seen.has(group.parent.id)) return [];
       seen.add(group.parent.id);
-      return [<GroupRow key={group.parent.id} group={group} onDetail={onDetail} busy={board.busy} onDrop={id => void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.')}><ul>{items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))}</ul></GroupRow>];
+      return [<GroupRow key={group.parent.id} group={group} onDetail={openDetail} busy={board.busy} onDrop={id => void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.')}><ul>{items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))}</ul></GroupRow>];
     });
     return <section className="task-list mor-list" aria-label={name}>
       <div className="ui-section-header"><h2>{name} <span className="task-count">{items.length}</span></h2></div>
@@ -145,7 +153,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
       {/* A focus paused on the focus timer screen shows as paused, with Resume (Codex A item 91). */}
       <span className="eyebrow">{isFocusRunning(running) ? 'Working on' : 'Paused'}</span><h2>{runningTask.title}</h2>
       <p className="mor-clock" aria-live="off">{(() => { const ms = focusElapsedMs(running, board.now); const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; })()}</p>
-      <div className="sheet-actions">{!isFocusRunning(running) && <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.')}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
+      <div className="sheet-actions">{!isFocusRunning(running) && <button type="button" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.'); }}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
     </section>}
     <form className="mor-add" onSubmit={event => void add(event)}>
       <label className="quick-add-field">Add a task<span className="mor-add-row"><input maxLength={160} value={title} onChange={event => setTitle(event.target.value)} placeholder="Add a task" />
@@ -159,7 +167,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
     {shownToast && <p className="mor-toast" role="status">{shownToast.text} {shownToast.undo && <button type="button" className="text-button" onClick={shownToast.undo}>Undo</button>}</p>}
     {!shownToast && board.message && <p className="small" role="status">{board.message}</p>}
     {list('Today', todayRows, 'today', 'Add one thing you want to do.')}
-    {doneRows.length > 0 && <details className="mor-done"><summary>Done <span className="task-count">{doneRows.length}</span></summary><ul>{doneRows.map(task => <li key={task.id} className="task-row ui-list-row"><span className="done-circle done-mark" aria-label="Done"><span aria-hidden="true">✓</span></span><button type="button" className="task-title-button" onClick={() => onDetail(task)}>{task.title}</button>{(task.actualMinutes ?? 0) > 0 && <span className="small">{minutes(task.actualMinutes!)}</span>}</li>)}</ul></details>}
+    {doneRows.length > 0 && <details className="mor-done"><summary>Done <span className="task-count">{doneRows.length}</span></summary><ul>{doneRows.map(task => <li key={task.id} className="task-row ui-list-row"><span className="done-circle done-mark" aria-label="Done"><span aria-hidden="true">✓</span></span><button type="button" className="task-title-button" onClick={() => openDetail(task)}>{task.title}</button>{(task.actualMinutes ?? 0) > 0 && <span className="small">{minutes(task.actualMinutes!)}</span>}</li>)}</ul></details>}
     {list('Tomorrow', tomorrowRows, 'tomorrow', 'Nothing yet.')}
     {list('Later', laterRows, 'later', 'Nothing waiting.')}
   </div>;
