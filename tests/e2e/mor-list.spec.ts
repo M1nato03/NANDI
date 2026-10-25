@@ -97,7 +97,8 @@ test('Start → Done saves the real minutes and Mor notes them; Stop for now kee
   await expect(page.locator('.mor-noted')).toHaveText("Noted: 12 minutes on 'Revise chapter 4' so far.");
   await expect(taskRow(page, 'Today', 'Revise chapter 4')).toBeVisible();
   await taskRow(page, 'Today', 'Revise chapter 4').getByRole('button', { name: 'Start' }).click();
-  await page.clock.runFor(30 * 60_000);
+  // fastForward fires each due timer once; runFor would replay 1,800 one-second ticks under gate load.
+  await page.clock.fastForward(30 * 60_000);
   await page.getByRole('region', { name: 'Focus' }).getByRole('button', { name: 'Done' }).click();
   await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Revise chapter 4' took 42 minutes.");
   expect(await readTask(page, 'Revise chapter 4')).toMatchObject({ status: 'done', actualMinutes: 42 });
