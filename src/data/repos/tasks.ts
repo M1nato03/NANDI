@@ -42,8 +42,16 @@ import {
 
 /** Spec 27: where a task can be moved to from Mor's list. A day key moves it to that day, with an optional clock time. */
 export type MoveTarget = 'today' | 'tomorrow' | 'later' | { day: string; start?: number };
-/** The fields a move changes, kept so Undo can put them back exactly. */
-export type MoveSnapshot = Pick<TaskRow, 'status' | 'dayKey' | 'scheduledStart' | 'scheduledEnd' | 'postponeCount' | 'lastPlannedDayKey'>;
+/**
+ * Everything a move (or a Start from Tomorrow or Later) changed, so Undo puts it all back: the task's own fields,
+ * any focus the move ended (as it was before), the move's event, and a focus the action started (Codex A item 91).
+ */
+export type MoveSnapshot = {
+  task: Pick<TaskRow, 'status' | 'dayKey' | 'scheduledStart' | 'scheduledEnd' | 'postponeCount' | 'lastPlannedDayKey' | 'firstScheduledDayKey' | 'actualMinutes'>;
+  focus: FocusRow[];
+  eventId?: string;
+  startedFocusId?: string;
+};
 
 export function coreTask(row: TaskRow): CoreTask {
   if (
@@ -680,7 +688,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         const row = await repos.tasks.get(taskId);
         if (!row) throw new Error('Task not found');
         if (row.status === 'done' || row.status === 'dropped') throw new Error('Task is closed');
-        const before: MoveSnapshot = { status: row.status, dayKey: row.dayKey, scheduledStart: row.scheduledStart ?? null, scheduledEnd: row.scheduledEnd ?? null, postponeCount: row.postponeCount ?? 0, lastPlannedDayKey: row.lastPlannedDayKey };
+        const before: MoveSnapshot = { task: { status: row.status, dayKey: row.dayKey, scheduledStart: row.scheduledStart ?? null, scheduledEnd: row.scheduledEnd ?? null, postponeCount: row.postponeCount ?? 0, lastPlannedDayKey: row.lastPlannedDayKey, firstScheduledDayKey: row.firstScheduledDayKey, actualMinutes: row.actualMinutes }, focus: [] };
         const today = dayKey(now);
         const tomorrow = dayKey(new Date(`${today}T12:00:00`).getTime() + 86_400_000);
         const from = row.status === 'someday' ? '9999-12-31' : row.dayKey < today ? today : row.dayKey;
@@ -691,13 +699,13 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           const start = typeof target === 'object' ? target.start ?? null : null;
           next = { status: 'planned', dayKey: day, scheduledStart: start, scheduledEnd: start != null ? start + (row.estimateMin ?? 30) * 60_000 : null, lastPlannedDayKey: day, firstScheduledDayKey: row.firstScheduledDayKey ?? day };
         }
-        const later = next.status === 'someday' ? row.status !== 'someday' : (next.dayKey ?? from) > from;
-        if (later) {
-          next.postponeCount = (row.postponeCount ?? 0) + 1;
-          await event(taskId, next.status === 'someday' ? 'someday' : 'postponed', now, { budgetCounted: false });
-        } else await event(taskId, 'scheduled', now);
+        // Only a move to a later day counts; parking in Later never did (it was Someday, uncounted) and still doesn't.
+        const later = next.status !== 'someday' && (next.dayKey ?? from) > from;
+        if (later) next.postponeCount = (row.postponeCount ?? 0) + 1;
+        before.eventId = (await event(taskId, next.status === 'someday' ? 'someday' : later ? 'postponed' : 'scheduled', now, later ? { budgetCounted: false } : {})).id;
         if (next.status !== 'planned' || next.dayKey !== today) {
           const open = await db.focus.filter((f) => f.deleted === 0 && f.taskId === taskId && f.endedAt == null).toArray();
+          before.focus = open;
           for (const focus of open) await endFocus(focus, now);
         }
         // Re-read: ending a focus just added its minutes to the task.
@@ -706,12 +714,33 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         return before;
       });
     },
-    /** Undo for a move: puts the moved fields back as they were. */
+    /** Undo for a move: the task's fields, any focus the move ended, the move's event, and a focus it started. */
     async undoMove(taskId: string, now: number, before: MoveSnapshot): Promise<TaskRow> {
       return mutation(async () => {
         const row = await repos.tasks.get(taskId);
         if (!row) throw new Error('Task not found');
-        return repos.tasks.put({ ...row, ...before }, now);
+        for (const focus of before.focus) await repos.focus.put(focus, now);
+        if (before.startedFocusId) await repos.focus.softDelete(before.startedFocusId, now);
+        if (before.eventId) await repos.taskEvents.softDelete(before.eventId, now);
+        return repos.tasks.put({ ...row, ...before.task }, now);
+      });
+    },
+    /**
+     * Spec 27 Start: one focus at a time, so any other open focus ends first (its minutes kept). Started from
+     * Tomorrow or Later, the task moves to Today first; the returned snapshot lets Undo take both back.
+     */
+    async startFromList(taskId: string, now: number): Promise<MoveSnapshot | undefined> {
+      return mutation(async () => {
+        const row = await repos.tasks.get(taskId);
+        if (!row) throw new Error('Task not found');
+        const today = dayKey(now);
+        const onToday = row.status !== 'someday' && row.dayKey <= today;
+        const before = onToday ? undefined : await this.moveTask(taskId, now, 'today');
+        const others = await db.focus.filter((f) => f.deleted === 0 && f.endedAt == null && f.taskId !== taskId).toArray();
+        for (const focus of others) await endFocus(focus, now);
+        const started = await this.startFocus(taskId, now);
+        if (before) before.startedFocusId = started.id;
+        return before;
       });
     },
     async listForDay(key: string): Promise<TaskRow[]> {

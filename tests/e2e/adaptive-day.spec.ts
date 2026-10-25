@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 async function seedTasks(page: Page, minutes: number[]) {
   await page.evaluate(async list => {
@@ -24,6 +25,8 @@ test('a busy day starts the night later and can be undone for today', async ({ p
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
   await seedTasks(page, [90, 90, 90]);
+  // Spec 27: the busy-day line sits in Plan's More fold.
+  await openMore(page);
   const line = page.locator('.busy-day');
   await expect(line).toContainText('tonight starts 30 min later');
   await line.getByRole('button', { name: 'Keep my usual time' }).click();

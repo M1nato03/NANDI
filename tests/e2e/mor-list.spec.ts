@@ -38,23 +38,52 @@ test('a task added with no time shows no time anywhere; the time chip lives in t
   await expect(taskRow(page, 'Today', 'Read')).toContainText('15 min');
 });
 
-test('Tomorrow → moves at once with a toast and Undo, and a fourth move works like the first', async ({ page }) => {
+test('Tomorrow → moves at once with a toast and Undo, and a fourth kept move works like the first', async ({ page }) => {
   await add(page, 'Write report');
+  // An undone move is not kept.
+  await taskRow(page, 'Today', 'Write report').getByRole('button', { name: 'Tomorrow: Write report' }).click();
+  await expect(page.locator('.mor-toast')).toContainText('Moved to Tomorrow.');
+  await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
+  await expect(taskRow(page, 'Today', 'Write report')).toBeVisible();
+  expect(await readTask(page, 'Write report')).toMatchObject({ postponeCount: 0 });
+  // Four kept moves to tomorrow (brought back each time with ← Today, which does not count): none is refused,
+  // none lands in Later, and the count reads 4.
   for (let move = 1; move <= 4; move++) {
     await taskRow(page, 'Today', 'Write report').getByRole('button', { name: 'Tomorrow: Write report' }).click();
     await expect(page.locator('.mor-toast')).toContainText('Moved to Tomorrow.');
     await expect(taskRow(page, 'Tomorrow', 'Write report')).toBeVisible();
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    if (move === 1) {
-      await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
-      await expect(taskRow(page, 'Today', 'Write report')).toBeVisible();
-      continue;
-    }
-    // Bring it back with ← Today so it can move again; nothing is refused and nothing lands in Someday.
-    await taskRow(page, 'Tomorrow', 'Write report').getByRole('button', { name: 'Today: Write report' }).click();
-    await expect(taskRow(page, 'Today', 'Write report')).toBeVisible();
+    expect(await readTask(page, 'Write report')).toMatchObject({ status: 'planned', dayKey: '2026-10-27', postponeCount: move });
+    if (move < 4) await taskRow(page, 'Tomorrow', 'Write report').getByRole('button', { name: 'Today: Write report' }).click();
   }
-  expect(await readTask(page, 'Write report')).toMatchObject({ status: 'planned', dayKey: '2026-10-26' });
+  await expect(page.getByRole('region', { name: 'Later', exact: true })).not.toContainText('Write report');
+});
+
+test('Undo after a move that ended a focus brings back the task, the running timer and the minutes as they were', async ({ page }) => {
+  await add(page, 'Draft the letter');
+  await taskRow(page, 'Today', 'Draft the letter').getByRole('button', { name: 'Start' }).click();
+  await page.clock.runFor(5 * 60_000);
+  await taskRow(page, 'Today', 'Draft the letter').getByRole('button', { name: 'Tomorrow: Draft the letter' }).click();
+  await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
+  expect(await readTask(page, 'Draft the letter')).toMatchObject({ actualMinutes: 5, postponeCount: 1 });
+  await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
+  await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Draft the letter');
+  await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Working on');
+  const row = await readTask(page, 'Draft the letter');
+  expect(row).toMatchObject({ dayKey: '2026-10-26', postponeCount: 0 });
+  expect(row?.actualMinutes).toBeUndefined();
+});
+
+test('Start on a Tomorrow task brings it to Today and starts the timer, with Undo', async ({ page }) => {
+  await add(page, 'Book tickets');
+  await taskRow(page, 'Today', 'Book tickets').getByRole('button', { name: 'Tomorrow: Book tickets' }).click();
+  await taskRow(page, 'Tomorrow', 'Book tickets').getByRole('button', { name: 'Start' }).click();
+  await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Book tickets');
+  await expect(taskRow(page, 'Today', 'Book tickets')).toBeVisible();
+  await expect(page.locator('.mor-toast')).toContainText('Moved to Today.');
+  await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
+  await expect(taskRow(page, 'Tomorrow', 'Book tickets')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
 });
 
 test('Start → Done saves the real minutes and Mor notes them; Stop for now keeps the task', async ({ page }) => {
@@ -105,4 +134,17 @@ test('at 360 px with a 20 px root font the rows wrap and nothing is clipped', as
     expect(box.x + box.width).toBeLessThanOrEqual(width);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('a focus paused on the timer screen shows as paused on Plan, with Resume (Codex A item 91)', async ({ page }) => {
+  await add(page, 'Sort the files');
+  await taskRow(page, 'Today', 'Sort the files').getByRole('button', { name: 'Start' }).click();
+  await page.goto('/#plan/focus');
+  await page.getByRole('button', { name: 'Pause' }).click();
+  await page.goto('/#plan');
+  const focus = page.getByRole('region', { name: 'Focus' });
+  await expect(focus).toContainText('Paused');
+  await focus.getByRole('button', { name: 'Resume' }).click();
+  await expect(focus).toContainText('Working on');
+  await expect(focus.getByRole('button', { name: 'Resume' })).toHaveCount(0);
 });

@@ -48,7 +48,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
     try {
       const ok = await run(async (repos, now) => {
           const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now), ...(repeat && schedule === 'today' ? { repeat } : {}) }, now);
-          if (schedule === 'someday') await repos.postpone(task.id, now + 1, { newStart: null, choice: 'someday', baselineWeek: true });
+          if (schedule === 'someday') await repos.moveTask(task.id, now + 1, 'later');
         }, 'Task added.');
       if (ok) { setTitle(''); setRepeat(''); setOpen(false); setFeedback(''); if (scheduledStart !== undefined) void askNotificationsOnce().catch(() => undefined); }
     } finally {

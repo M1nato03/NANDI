@@ -9,7 +9,7 @@ import { dayHorizon, effectiveShutdown, suggestSlots } from '../../core/tasks/pl
 import { RULES } from '../../core/rules.config';
 import { SideQuests } from '../quests/SideQuests';
 import { PostponeSheet } from '../tasks/PostponeSheet';
-import { MorList } from '../tasks/MorList';
+import { MorList, type OuterMove } from '../tasks/MorList';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { TaskDetail } from '../tasks/TaskDetail';
 import { Reminders } from '../tasks/Reminders';
@@ -36,6 +36,7 @@ import { errorMessage } from '../shell/errorMessage';
 export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
   const [moving, setMoving] = useState<TaskRow | null>(null);
+  const [outerMove, setOuterMove] = useState<OuterMove | undefined>();
   const [detail, setDetail] = useState<TaskRow | null>(null);
   // Task events load only for the task whose details are open (cj2 heavy data #6: Plan read all ~4.6k a year).
   const events = useLiveQuery(() => detail ? db.taskEvents.where('taskId').equals(detail.id).filter(row => row.deleted === 0).toArray() : [], [detail?.id]) ?? [];
@@ -86,10 +87,12 @@ export function Plan({ questId }: { questId?: string }) {
   const softMore = settings.some(row => row.key === softMoreKey(today) && row.value === true);
   const afterBed = isAfterBedtime(board.now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
   if (soft.state && !softMore) return <section className="screen plan-screen soft-screen"><p className="eyebrow">Go gently</p><h1>Plan</h1><SoftHome state={soft.state} today={today} done={!!soft.done} facts={softFacts} settings={settings} tasks={board.tasks} act={board.act} /></section>;
-  return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><div className="cast-inline"><h1>Plan</h1>{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" />}</div><CourtyardBanner />{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}{!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}<StorybookCard today={today} />{askAgency && <AgencyCheck now={board.now} />}{awayToday && <p>You're away. Rest well.</p>}{night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift} min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}<MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />
+  return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><div className="cast-inline"><h1>Plan</h1>{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" />}</div>{awayToday && <p>You're away. Rest well.</p>}
+    {/* Spec 27 (and Codex A item 91, the spec owner's call): the three lists come first; the older cards follow. */}
+    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} />
+    {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
     {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}
-    {/* Spec 27: Mor's list first. Three lists, three controls per row; everything else waits behind More. */}
-    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} />
+    <MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />{askAgency && <AgencyCheck now={board.now} />}<StorybookCard today={today} /><CourtyardBanner />
     <PhoneChhutti />
     <SideQuests />
     <details className="card plan-more"><summary><strong>More</strong><span className="small">Routines, focus timer, reminders</span></summary>
@@ -97,11 +100,12 @@ export function Plan({ questId }: { questId?: string }) {
       {/* A fuller add form (size, priority, a start time, repeat, split preview) for those who want it. */}
       <TaskQuickAdd run={board.act} tasks={board.tasks} focus={board.focus} label="Add with details" />
       <button type="button" className="secondary" onClick={() => go('plan/focus')}>Focus timer with breaks</button>
+      {night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift} min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}
       <p className="day-horizon small">{dayHorizon(todayOpen.reduce((sum, task) => sum + (task.estimateMin ?? 0), 0), board.now, shutdownTime)}</p>
       <Reminders />
     </details>
     {detail && <TaskDetail key={detail.id} task={board.tasks.find(row => row.id === detail.id) ?? detail} tasks={board.tasks} focus={board.focus} events={events} run={board.act} close={() => setDetail(null)} move={() => { setMoving(detail); setDetail(null); }} />}
-    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} />}
+    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} onMoved={at => setRespace({ task: moving, at })} onUndoable={(task, before, where) => setOuterMove(current => ({ task, before, where, at: (current?.at ?? 0) + 1 }))} />}
     {respace && <div className="sheet-backdrop"><section ref={respaceDialog} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label="Re-space checkpoints"><h2>Re-space the remaining checkpoints?</h2><div className="sheet-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.respaceRemainingCheckpoints(respace.task.id, respace.at, now), 'Checkpoints updated.').then(() => setRespace(null))}>Re-space</button><button type="button" className="secondary" onClick={() => setRespace(null)}>Keep them</button></div></section></div>}
   </section>;
 }
