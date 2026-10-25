@@ -1,6 +1,6 @@
 # 29. Kapi's familiar puzzles, each with a do-it-yourself tutorial
 
-Status: DRAFT, waiting for Jenil's yes. Not for the builder until then.
+Status: APPROVED by Jenil, 25 Oct 2026 ("29 30 can go to builder").
 Idea engine, 25 Oct 2026. Generators and tutorials: origin/ideas/cj9-popular-puzzles f766c02
 (content-drafts/puzzles/, docs/reviews/cj9-popular-puzzles.md). Logged as cloud-sessions item 86.
 
