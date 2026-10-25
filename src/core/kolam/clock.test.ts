@@ -24,6 +24,8 @@ describe('clock kolam', () => {
     expect(selectClockKolam(at('2027-01-14T21:30:00')).size).toBe(5);
     expect(selectClockKolam(at('2027-01-15T21:30:00')).size).toBe(4);
     expect(selectClockKolam(at('2027-01-14T20:30:00')).size).toBe(5);
+    expect(selectClockKolam(at('2027-01-14T20:30:00')).grew).toBe(false);
+    expect(selectClockKolam(at('2026-12-16T23:30:00')).grew).toBe(true);
   });
 
   it('uses a supplied full-moon night for silver and keeps the checker valid', () => {

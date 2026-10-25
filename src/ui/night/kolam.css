@@ -1,0 +1,28 @@
+/* Spec 26: Kachhua's kolam. Chalk white on the night surface; silver on the full-moon night. */
+.kolam-screen { --kolam-line: #f6efe2; }
+.kolam-screen.kolam-full-moon { --kolam-line: #c9d3e6; }
+.kolam-stage { position: relative; width: 100%; max-width: 420px; margin: var(--space-4) auto; border-radius: var(--radius-row); background: #1d2436; touch-action: none; }
+.kolam-board { display: block; width: 100%; height: auto; touch-action: none; }
+.kolam-dot { fill: #f6efe2; opacity: 0.9; }
+.kolam-guide { fill: none; stroke: #f6efe2; stroke-opacity: 0.14; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.kolam-line { fill: none; stroke: var(--kolam-line); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.kolam-line.kolam-glow { animation: kolam-glow 1400ms ease-out 1; }
+.kolam-kachhua { position: absolute; transform: translate(-50%, -110%); pointer-events: none; transition: left 120ms linear, top 120ms linear; }
+.kolam-moon { position: absolute; top: 10px; right: 12px; width: 22px; height: 22px; border-radius: 50%; background: #e9edf5; box-shadow: 0 0 12px rgba(233, 237, 245, 0.6); animation: kolam-rise 2s ease-out 1; }
+.kolam-end { text-align: center; }
+.kolam-end p { margin: var(--space-2) 0; }
+.kolam-friend, .kolam-kachhua { display: inline-block; transform-origin: 50% 90%; }
+.kachhua-blink { animation: kachhua-blink 900ms ease-in-out 1; }
+.kachhua-walk { animation: kachhua-walk 900ms ease-in-out infinite; }
+.kachhua-tuck svg { animation: kachhua-tuck 400ms ease-out 1 forwards; }
+.kolam-friend.kachhua-rest { animation: kachhua-yawn 1200ms ease-out 1, kachhua-breathe 4s ease-in-out 1200ms infinite; }
+@keyframes kolam-glow { 30% { filter: drop-shadow(0 0 6px var(--kolam-line)); } 100% { filter: none; } }
+@keyframes kolam-rise { from { transform: translateY(18px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes kachhua-blink { 50% { transform: scaleY(0.9); } }
+@keyframes kachhua-walk { 50% { transform: translate(-50%, -112%) rotate(3deg); } }
+@keyframes kachhua-tuck { to { transform: scale(0.82) translateY(4px); } }
+@keyframes kachhua-yawn { 40% { transform: scale(1.06) rotate(-3deg); } 100% { transform: none; } }
+@keyframes kachhua-breathe { 50% { transform: scale(1.02); } }
+/* Reduced motion: pose changes only; the slow breathing on the final rest pose is the one loop left. */
+@media (prefers-reduced-motion: reduce) { .kolam-screen *:not(.kolam-friend) { animation: none !important; transition: none !important; } .kolam-friend.kachhua-rest { animation: kachhua-breathe 4s ease-in-out infinite !important; } }
+:root[data-motion='reduce'] .kolam-screen *:not(.kolam-friend) { animation: none !important; transition: none !important; }

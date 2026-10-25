@@ -6,6 +6,8 @@ export interface ClockKolam {
   seed: number;
   family: 'base' | PatternFamily;
   lineColor: 'warm-white' | 'silver';
+  /** Margazhi made it one size bigger (the label shows only then). */
+  grew: boolean;
   kolam: Kolam;
 }
 
@@ -39,7 +41,7 @@ export const NO_REPEAT_NIGHTS = 30;
 export const NO_REPEAT_TRIES = 50;
 
 const FAMILIES = ['base', 'rim-turns', 'inner-turns'] as const;
-const build = (size: number, seed: number, family: (typeof FAMILIES)[number]) => family === 'base' ? generateKolam(size, seed, { strict: true }) : generatePatternFamily(size, seed, family);
+export const build = (size: number, seed: number, family: (typeof FAMILIES)[number]) => family === 'base' ? generateKolam(size, seed, { strict: true }) : generatePatternFamily(size, seed, family);
 
 /**
  * The night's kolam. The 04:00 boundary keeps a post-midnight visit on the previous night's pattern. The date seeds
@@ -67,5 +69,5 @@ export function selectClockKolam(now: Date, options: { fullMoon?: (nightDate: st
       if (!recent.has(layoutHash(candidate))) { seed = candidateSeed; family = candidateFamily; kolam = candidate; break; }
     }
   }
-  return { nightDate, size, seed, family, lineColor: options.fullMoon?.(nightDate) ? 'silver' : 'warm-white', kolam };
+  return { nightDate, size, seed, family, lineColor: options.fullMoon?.(nightDate) ? 'silver' : 'warm-white', grew: size > base, kolam };
 }
