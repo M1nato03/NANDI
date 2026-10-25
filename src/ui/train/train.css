@@ -123,3 +123,24 @@
 .exercise-figure .fig-arrow { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; }
 .exercise-figure .fig-arrowhead { fill: var(--accent); }
 .nordic-checks { grid-template-columns: 1fr; }
+
+/* Spec 24 #3 Taal week: claps are filled dots, rest beats are open waves; both only ever fill. */
+.taal-beats { list-style: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 8px 0; padding: 0; max-width: 320px; }
+.taal-beat { display: grid; justify-items: center; gap: 4px; }
+.taal-beat .taal-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; font-size: 14px; line-height: 1; color: var(--ink-2); }
+.taal-clap .taal-mark { border: 2px solid var(--area-move, var(--accent)); }
+.taal-clap.taal-filled .taal-mark { background: var(--area-move, var(--accent)); }
+.taal-rest .taal-mark { border: 2px dashed var(--line); border-radius: 12px; }
+.taal-rest.taal-filled .taal-mark { background: color-mix(in srgb, var(--area-move, var(--accent)) 18%, var(--raised)); border-style: solid; }
+.taal-extra .taal-mark { outline: 2px dotted var(--ink-2); outline-offset: 2px; }
+.taal-today .taal-day { font-weight: 700; color: var(--ink); }
+.taal-day { font-size: 12px; color: var(--ink-2); }
+.taal-beats-small { gap: 3px; margin: 0; max-width: 168px; }
+.taal-beats-small .taal-mark { width: 16px; height: 16px; font-size: 10px; }
+.taal-key { display: flex; gap: 16px; }
+.taal-key span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: middle; border-radius: 50%; }
+.taal-key-clap::before { background: var(--area-move, var(--accent)); }
+.taal-key-rest::before { border: 2px dashed var(--line); border-radius: 4px !important; }
+.taal-sheet ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; }
+.taal-sheet li { display: flex; align-items: center; gap: 10px; }
+.train-readiness-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }

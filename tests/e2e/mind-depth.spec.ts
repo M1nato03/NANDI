@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { openMoreBoards } from './helpers/mind';
 
 const openSudoku = async (page: import('@playwright/test').Page) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto('/?e2e#mind');
+  await openMoreBoards(page);
   await page.getByRole('button', { name: 'Practice', exact: true }).click();
   await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
@@ -38,6 +40,7 @@ test('a correctly used technique unlocks after solve and survives reload and bac
   // A real restore runs from the Backup screen and screens mount fresh afterwards; reload to match.
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible({ timeout: 30_000 });
+  await openMoreBoards(page);
   await page.getByText('Technique cards', { exact: true }).click();
   const card = page.locator('.mind-technique-list article').filter({ has: page.getByRole('heading', { name: deduction.technique, exact: true }) });
   await expect(card).not.toContainText('Solve to unlock');

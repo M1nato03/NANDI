@@ -1,9 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMoreBoards } from './helpers/mind';
 
 // Spec 24 Mind: the pace line (cj5-mind §7.1) and Prove it (§7.2). Both are optional, day-window only, and pay 0 XP.
 const marks = 'p' + Array.from({ length: 10 }, (_, index) => ((index + 1) * 5).toString(36).padStart(3, '0')).join('');
 
 const openPractice = async (page: Page) => {
+  await openMoreBoards(page);
   await page.getByRole('button', { name: 'Practice', exact: true }).click();
   await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
@@ -55,24 +57,20 @@ test('the pace line is opt-in, remembered, compares with your best, and hides af
   await expect(page.locator('.mind-pace-box')).toHaveCount(0);
 });
 
-test('with large text (20 px root) the pace row wraps instead of clipping (Codex A items 79, 80)', async ({ page }) => {
+test('with large text (20 px root) the pace row fits above the board without clipping (Codex A items 79, 80; spec 29)', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto(`/?e2e#mind/challenge/sudoku/easy/12345/${marks}`);
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Show pace' }).click();
   await expect(page.locator('.mind-pace-track')).toBeVisible();
-  // At 16 px the pace box sits beside the timer. At 20 px on a 360 px phone it no longer fits and wraps onto its own line
-  // below the timer; at 390 px it still fits beside it, so there only the no-clipping checks below apply.
-  const rows = async () => {
-    const [timer, box] = [(await page.locator('.mind-timer').boundingBox())!, (await page.locator('.mind-pace-box').boundingBox())!];
-    return { timerBottom: timer.y + timer.height, timerTop: timer.y, boxTop: box.y };
-  };
-  const normal = await rows();
-  expect(normal.boxTop).toBeLessThan(normal.timerBottom);
+  // Spec 29: no timer while playing, so the opt-in pace box has the row to itself, above the board, at any text size.
   await page.evaluate(() => { document.documentElement.style.fontSize = '20px'; });
-  if (page.viewportSize()!.width <= 360) await expect.poll(async () => { const large = await rows(); return large.boxTop >= large.timerBottom; }).toBe(true);
+  const board = (await page.getByRole('group', { name: 'Mini Sudoku board' }).boundingBox())!;
+  const pace = (await page.locator('.mind-pace-box').boundingBox())!;
+  expect(pace.y + pace.height).toBeLessThanOrEqual(board.y);
+  await expect(page.locator('.mind-timer')).toHaveCount(0);
   const width = page.viewportSize()!.width;
-  for (const selector of ['.mind-timer', '.mind-pace-track', '.mind-pace-key', '.mind-pace-toggle']) {
+  for (const selector of ['.mind-pace-track', '.mind-pace-key', '.mind-pace-toggle']) {
     const box = (await page.locator(selector).boundingBox())!;
     expect(box.x, selector).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width, selector).toBeLessThanOrEqual(width);

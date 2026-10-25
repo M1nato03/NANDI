@@ -26,6 +26,7 @@ import type { PuzzleRunRow } from '../../data/types';
 import { recordError } from '../errorRing';
 
 import { ProveIt } from './ProveIt';
+import { go } from '../shell/router';
 
 type GridName = 'A' | 'B' | 'C';
 type CaseTestHook = {
@@ -72,6 +73,8 @@ export function CaseScreen({
   const [hintStep, setHintStep] = useState(0);
   const [newCard, setNewCard] = useState(false);
   const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  // Spec 29: no running timer while playing unless the person turned pace on (Codex B item 105).
+  const paceOn = useLiveQuery(async () => (await db.settings.get('mind.paceOn'))?.value === true, []) ?? false;
   // Spec 24 Prove it: the worker sends one shortest proof with the case, so the main thread never searches.
   const [shortest, setShortest] = useState<number[]>();
   const proofOffered = !!mystery && !!shortest && shortest.length < mystery.clues.length;
@@ -305,7 +308,7 @@ export function CaseScreen({
                   type="button"
                   disabled={!!run?.result}
                   className={`case-cell ${value === 1 ? 'case-yes' : value === -1 || auto ? 'case-no' : 'case-blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ' case-error' : ''}`}
-                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}`}
+                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ", doesn't fit the clues yet" : ''}`}
                   onClick={() => mark(name, r * cols.length + c)}
                 >
                   {value === 1 ? '✓' : value === -1 || auto ? '×' : ''}
@@ -329,7 +332,7 @@ export function CaseScreen({
         <>
           <h1>{mystery.title}</h1>
           <p>{mystery.setup}</p>
-          <p className="small">
+          {(run.result || paceOn) && <p className="small">
             Time{' '}
             {timeText(
               run.result
@@ -342,7 +345,7 @@ export function CaseScreen({
                         )
                       : 0),
             )}
-          </p>
+          </p>}
           <p>
             <strong>Suspects:</strong>{' '}
             {mystery.S.map((item) => `${item.n} (${item.role})`).join(', ')}
@@ -355,15 +358,8 @@ export function CaseScreen({
             <strong>Places:</strong>{' '}
             {mystery.P.map((item) => item.s).join(', ')}
           </p>
-          <details>
-            <summary>How to play</summary>
-            <p>
-              Each suspect had one object and was in one place. Tap a grid cell
-              for ×, then ✓, then clear. A ✓ greys the rest of its row and
-              column. Use the clues to complete the grids, then name the
-              culprit.
-            </p>
-          </details>
+          {/* Spec 29: How to play replays the 4-step walkthrough. */}
+          <button type="button" className="text-button" onClick={() => go('mind/howto/case')}>How to play</button>
           <div className="card case-clues">
             <h2>Clues</h2>
             <ol>
@@ -469,7 +465,7 @@ export function CaseScreen({
                     !marked
                       ? 'Mark some boxes first, then check.'
                       : wrong.length
-                        ? `${wrong.length} mark${wrong.length === 1 ? '' : 's'} wrong, outlined in red.`
+                        ? `These marks don't fit the clues yet: ${wrong.length}, outlined on the grid.`
                         : 'Every mark so far is right. Keep going.',
                   );
                   if (marked)

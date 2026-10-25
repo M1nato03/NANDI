@@ -1,6 +1,7 @@
 import { RULES } from '../rules.config';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from './index';
 import type { Challenge } from './challenge';
+import { shelfBoard } from './shelf';
 
 /** Intro is extra; it never changes the shared date seed or the daily slot. */
 export function needsIntro(type: PuzzleType, runs: readonly { type: string; result?: string; deleted?: number }[]): boolean {
@@ -52,9 +53,9 @@ export function dailyBoardLabel(day: string, formatted: string): string {
  * days and other seeds open the same board as practice. A link can be written by hand, but it still has to be solved.
  */
 export function friendBoard(link: Challenge, today: string): { board: PuzzleBoard | null; daily: boolean } {
-  const spec = featuredSpec(today);
-  if (link.day === today && spec.type === link.type && spec.diff === link.diff) {
-    const board = dailyBoard(today);
+  // Spec 29: every type has a daily board per level, seeded `daily:<day>:<type>:<diff>` (the featured one included).
+  if (link.day === today) {
+    const board = shelfBoard(link.type, link.diff, `daily:${today}:${link.type}:${link.diff}`);
     if (board && Number(board.seed) === link.seed) return { board, daily: true };
   }
   return { board: PZ.generate(link.type, { seed: link.seed, diff: link.diff }), daily: false };
