@@ -20,7 +20,7 @@ import { bestPace, fillFraction, nextPace, paceShown } from '../../core/puzzles/
 import { PaceLine, ParLine } from '../mind/PaceLine';
 import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { brokenRules, checkRules, type PuzzleState } from '../../core/puzzles/rules';
-import { SHELF, SHELF_ATTEMPT, SHELF_PER_DAY, shelfLevel, shelfSeedText, shelfSolvedToday } from '../../core/puzzles/shelf';
+import { SHELF, SHELF_ATTEMPT, SHELF_PER_DAY, featuredDailyDone, shelfLevel, shelfSeedText, shelfSolvedToday } from '../../core/puzzles/shelf';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { trackWrite } from '../../core/pendingWrites';
@@ -264,7 +264,7 @@ export function Mind({ entry }: { entry?: string }) {
 
   useEffect(() => {
     let live = true;
-    void db.puzzleRuns.get(`daily:${today}:${featured.type}:${featured.diff}`).then(row => { if (live) setDailyDoneKey(row?.result === 'solved' ? today : null); });
+    void db.puzzleRuns.where('dayKey').equals(today).toArray().then(rows => { if (live) setDailyDoneKey(featuredDailyDone(rows, today) ? today : null); });
     return () => { live = false; };
   }, [today, featured.type, featured.diff]);
 
