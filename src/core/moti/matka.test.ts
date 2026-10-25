@@ -21,6 +21,15 @@ describe("spec 26 Moti's matka", () => {
     expect(matkaPicks(flipped, sunday, '2026-10-26', true).map(item => item.factId)).toEqual(picks.map(item => item.factId));
     expect(matkaPicks(facts, '2026-10-31', '2026-10-26', false)).toEqual([]);
   });
+  it('a sealed pick keeps its own words: the reveal and the match read them, not a newer pack (Codex B item 114)', () => {
+    const sealed = matkaItem(fact('learn-lesson:s', 'learn-lesson', '2026-10-20', { hookCorrect: false, hookPick: 'b', hookPickText: 'Twenty-one days', packVersion: '1.4.0' }))!;
+    expect(sealed).toMatchObject({ level: 1, sealed: 'b', sealedText: 'Twenty-one days' });
+    // A pack update reworded option b and moved the old words; the reveal still says what was sealed.
+    const newer = (id: string) => ({ a: 'A few weeks', b: 'About three weeks', 'sealed:b': 'Twenty-one days' })[id] ?? id;
+    expect(matkaReveal(sealed, 'a', { value: pct, option: newer })[0]).toBe('Sealed: your first pick was Twenty-one days.');
+    expect(matkaReveal(sealed, 'b', { value: pct, option: newer })[0]).toBe('Sealed: your first pick was Twenty-one days.');
+    expect(matkaReveal(sealed, 'sealed:b', { value: pct, option: newer })[0]).toMatch(/^Matches the seal\./);
+  });
   it('the shift moves toward the answer and is never a score', () => {
     expect(matkaShift(40, 60, 70)).toBeCloseTo(2 / 3);
     expect(matkaShift(40, 40, 70)).toBe(0);

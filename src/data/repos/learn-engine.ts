@@ -62,14 +62,14 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
 }
 
 /** Spec 14: a taught step is one ledger fact, written with the drop moving past its lesson entry. */
-export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; hookPick?: string; spotCorrect: boolean; guidedFirstTry: boolean[] }
+export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; hookPick?: string; hookPickText?: string; packVersion?: string; spotCorrect: boolean; guidedFirstTry: boolean[] }
 export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResult, deviceId: string, now: number): Promise<void> {
   const id = `learn-lesson:${result.stepId}`;
   // Mind earns nothing after bedtime, so the lesson fact says when it was finished (economy second opinion 3).
   const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
   await trackWrite(() => db.transaction('rw', db.ledger, db.learnDrops, async () => {
     if (!await db.ledger.get(id)) await db.ledger.add({ id, mode: 'learn', kind: 'learn-lesson', refId: result.stepId, dayKey: dayKey(now),
-      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, ...(result.hookPick ? { hookPick: result.hookPick } : {}), spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, ...(result.hookPick ? { hookPick: result.hookPick, ...(result.hookPickText ? { hookPickText: result.hookPickText } : {}), ...(result.packVersion ? { packVersion: result.packVersion } : {}) } : {}), spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
     await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }

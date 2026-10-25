@@ -40,8 +40,8 @@ export function areaOf(fact: LedgerRow, nightFrom = '9999-12-31'): AreaId | null
   // Spec 24 #1: a kept Phone ki chhutti is a Plan practice day (Mor's corner).
   if (fact.mode === 'tasks' && fact.kind === 'chhutti') return fact.inputs.kept === true ? 'plan' : null;
   if (fact.kind === 'lightsout') return fact.inputs.metTarget === true ? 'sleep' : null;
-  // Spec 26: a finished kolam is a night practice day for Kachhua (it pays no XP).
-  if (fact.mode === 'night' && fact.kind === 'kolam') return 'sleep';
+  // Spec 26: a finished kolam is a night practice day for Kachhua (it pays no XP); one finished after bedtime grows nothing.
+  if (fact.mode === 'night' && fact.kind === 'kolam') return fact.inputs.afterBedtime === true ? null : 'sleep';
   if (fact.mode !== 'mind') return null;
   if (fact.kind === 'board' || fact.kind === 'mystery') return 'mind';
   if (fact.kind === 'learn-retention' || fact.kind === 'card') return 'remember';

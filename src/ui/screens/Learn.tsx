@@ -33,6 +33,11 @@ import { Matka, type MatkaContext } from '../learn/Matka';
 // Spec 26: every idea with recall pieces, in topic order (content lands with editor sign-off).
 const HAVELI_IDEAS: HaveliIdea[] = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts.filter(concept => concept.recall).map(concept => ({ id: concept.id, title: concept.title, topicId: pack.body.topic.id, topicTitle: pack.title, recall: concept.recall!, steps: (concept.steps ?? []).map(step => step.id) }))));
 const ALL_CONCEPTS = topics.flatMap(pack => pack.body.modules.flatMap(module => module.concepts));
+// Matka 1 offers today's hook options; if a pack update dropped or reworded the sealed pick, its own words are offered too.
+const sealedOptions = (item: MatkaItem, options: readonly { id: string; text: string }[]) => {
+  const shown = options.map(option => ({ id: option.id, text: option.text }));
+  return item.sealedText !== undefined && !shown.some(option => option.text === item.sealedText) ? [...shown, { id: `sealed:${String(item.sealed)}`, text: item.sealedText }] : shown;
+};
 const matkaContext = (item: MatkaItem): MatkaContext => {
   if (item.level === 2) {
     const found = ALL_CONCEPTS.flatMap(concept => concept.items).find(row => row.id === item.itemId);
@@ -40,7 +45,7 @@ const matkaContext = (item: MatkaItem): MatkaContext => {
     return { title: estimate ? 'Your first number' : 'Your first guess', scale: estimate ? sliderScale(estimate) : undefined, format: estimate ? (value: number) => formatEstimate(value, estimate.answer.unit) : undefined };
   }
   const ref = item.stepId ? findStep(ALL_CONCEPTS, item.stepId) : undefined;
-  return { title: ref ? `Your first guess on ${ref.step.title}, before the lesson` : 'Your first guess', options: item.level === 1 ? ref?.step.hook.options.map(option => ({ id: option.id, text: option.text })) : undefined };
+  return { title: ref ? `Your first guess on ${ref.step.title}, before the lesson` : 'Your first guess', options: item.level === 1 ? sealedOptions(item, ref?.step.hook.options ?? []) : undefined };
 };
 import { chikuOpen, type ChikuScene } from '../../core/learn/chiku';
 import { ChikuStage } from '../learn/ChikuStage';
@@ -124,7 +129,7 @@ export function Learn({ entry }: { entry?: string }) {
   const sunday = new Date(`${today}T12:00:00`).getDay() === 0;
   const matkaItems = afterBedtime ? [] : matkaPicks(data?.ledger ?? [], today, week, sunday);
   const matkaDone = (data?.ledger ?? []).filter(row => row.kind === 'matka' && row.refId.startsWith(`${week}.`)).map(row => String(row.inputs.sourceFactId));
-  if (moti === 'haveli') return <Haveli ideas={haveliToday} lit={litToday} cap={haveliCap} day={today} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => setMoti(null)} />;
+  if (moti === 'haveli') return <Haveli ideas={haveliToday} lit={litToday} everLit={[...visits.keys()]} cap={haveliCap} day={today} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => setMoti(null)} />;
   if (moti === 'matka') return <Matka items={matkaItems} answered={matkaDone} context={matkaContext} onAnswer={(item, recalled) => saveMatkaAnswer(db, { week, item, recalled, now: Date.now() })} onLeave={() => setMoti(null)} />;
   // Spec 30 second door: ideas finished before their scene existed can still teach Chiku once (Codex B item 110).
   const taughtSteps = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));

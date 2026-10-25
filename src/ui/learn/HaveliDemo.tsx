@@ -16,5 +16,5 @@ export function HaveliDemo() {
   const ledger = useLiveQuery(() => db.ledger.toArray(), []) ?? [];
   const [day] = useState(() => dayKey(Date.now()));
   const visits = lastVisits(ledger);
-  return <Haveli ideas={IDEAS} lit={IDEAS.filter(idea => visits.get(idea.id) === day).map(idea => idea.id)} cap={Number(new URLSearchParams(location.search).get('cap') ?? 5)} day={day} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => history.back()} />;
+  return <Haveli ideas={IDEAS} lit={IDEAS.filter(idea => visits.get(idea.id) === day).map(idea => idea.id)} everLit={[...visits.keys()]} cap={Number(new URLSearchParams(location.search).get('cap') ?? 5)} day={day} onRebuilt={idea => saveHaveliRebuilt(db, idea.id, Date.now())} onLeave={() => history.back()} />;
 }

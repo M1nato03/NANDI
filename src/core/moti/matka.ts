@@ -6,7 +6,8 @@
  */
 export const MATKA = { itemsPerWeek: 3, minAgeDays: 5, maxAgeDays: 21 } as const;
 export type MatkaLevel = 0 | 1 | 2;
-export type MatkaItem = { factId: string; level: MatkaLevel; stepId?: string; itemId?: string; sealed: boolean | string | number; answer?: number; dayKey: string };
+/** `sealedText` is the sealed hook pick's own words, stored with it, so the reveal never reads them from a newer pack. */
+export type MatkaItem = { factId: string; level: MatkaLevel; stepId?: string; itemId?: string; sealed: boolean | string | number; sealedText?: string; answer?: number; dayKey: string };
 type Fact = { id: string; kind: string; refId: string; dayKey: string; deleted?: number; inputs: Record<string, unknown> };
 
 const days = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86_400_000);
@@ -17,7 +18,7 @@ export function matkaItem(fact: Fact): MatkaItem | undefined {
   if (fact.deleted) return undefined;
   if (fact.kind === 'learn-answer' && typeof fact.inputs.guess === 'number' && typeof fact.inputs.answerValue === 'number')
     return { factId: fact.id, level: 2, itemId: String(fact.inputs.itemId ?? ''), sealed: fact.inputs.guess, answer: fact.inputs.answerValue, dayKey: fact.dayKey };
-  if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookPick === 'string') return { factId: fact.id, level: 1, stepId: fact.refId, sealed: fact.inputs.hookPick, dayKey: fact.dayKey };
+  if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookPick === 'string') return { factId: fact.id, level: 1, stepId: fact.refId, sealed: fact.inputs.hookPick, ...(typeof fact.inputs.hookPickText === 'string' ? { sealedText: fact.inputs.hookPickText } : {}), dayKey: fact.dayKey };
   if (fact.kind === 'learn-lesson' && typeof fact.inputs.hookCorrect === 'boolean') return { factId: fact.id, level: 0, stepId: fact.refId, sealed: fact.inputs.hookCorrect, dayKey: fact.dayKey };
   return undefined;
 }
@@ -46,7 +47,7 @@ export const MATKA_FOOTER = 'Hindsight bias: Fischhoff 1975; Fischhoff & Beyth 1
 
 /** The reveal copy, exactly as cj8 wrote it. `recalled` is a number (Matka 2), an option id (1), 'landed'/'missed' (0), or 'unsure'. */
 export function matkaReveal(item: MatkaItem, recalled: number | string, show: { value: (v: number) => string; option?: (id: string) => string }): string[] {
-  const sealedText = item.level === 2 ? show.value(item.sealed as number) : item.level === 1 ? show.option?.(item.sealed as string) ?? String(item.sealed) : item.sealed ? 'your first guess landed' : 'your first guess missed';
+  const sealedText = item.level === 2 ? show.value(item.sealed as number) : item.level === 1 ? item.sealedText ?? show.option?.(item.sealed as string) ?? String(item.sealed) : item.sealed ? 'your first guess landed' : 'your first guess missed';
   if (recalled === 'unsure') return [`Fair answer. Sealed: ${sealedText}. Answers this week: done.`];
   if (item.level === 2) {
     const line = `Sealed: ${show.value(item.sealed as number)}. You remembered: ${show.value(recalled as number)}. Answer: ${show.value(item.answer!)}.`;
@@ -54,7 +55,8 @@ export function matkaReveal(item: MatkaItem, recalled: number | string, show: { 
       ? [line, "Your memory slid toward the answer. That's hindsight bias: once we know how it ended, it feels like we knew.", "Many people show it and don't notice. That's why Moti seals the guess first."]
       : [line, 'Spot on. Hindsight often nudges memory toward the answer without us noticing. The sealed guess is how we check.'];
   }
-  const matches = item.level === 1 ? recalled === item.sealed : (recalled === 'landed') === item.sealed;
+  // Matka 1 matches by the sealed words when it has them (a pack update may rename an option id or reword it).
+  const matches = item.level === 1 ? (item.sealedText !== undefined ? show.option?.(recalled as string) === item.sealedText : recalled === item.sealed) : (recalled === 'landed') === item.sealed;
   if (matches) return ["Matches the seal. Hindsight can still nudge memory on other ideas; that's why Moti keeps the matka."];
   // cj8 has no line for "recalled missed, sealed landed"; this one says the seal plainly (sent to the idea engine to confirm).
   if (item.level === 0 && item.sealed === true) return ['Sealed: your first guess landed.', "Memory can drift either way. That's why Moti keeps the matka."];

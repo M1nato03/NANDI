@@ -1,6 +1,7 @@
 import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
-import { dayKey } from '../../core/time';
+import { dayKey, isAfterBedtime } from '../../core/time';
+import { effectiveBedtime } from './night';
 import { NO_REPEAT_NIGHTS, build, layoutHash, selectClockKolam, type ClockKolam } from '../../core/kolam/clock';
 import { isFullMoonNight } from '../../core/kolam/moon';
 import { getOrCreateDeviceId } from '../device';
@@ -29,12 +30,20 @@ export async function tonightKolam(db: NandiDb, now: number): Promise<ClockKolam
   return chosen;
 }
 
-/** The finished line: one completion row a night (for Kachhua's corner of the courtyard). It pays no XP. */
-export async function saveKolamDone(db: NandiDb, kolam: ClockKolam, afterBedtime: boolean, now: number): Promise<void> {
+/**
+ * The finished line: one completion row a night (for Kachhua's corner of the courtyard). It pays no XP. Whether it
+ * came after bedtime is decided here, at completion, from tonight's effective bedtime (busy-day shift included), and
+ * returned so the end screen says the same thing the ledger does.
+ */
+export async function saveKolamDone(db: NandiDb, kolam: ClockKolam, now: number): Promise<boolean> {
   const id = `kolam:${kolam.nightDate}`;
+  const afterBedtime = isAfterBedtime(now, await effectiveBedtime(db, now));
   const deviceId = await getOrCreateDeviceId(db, now);
+  let stored = afterBedtime;
   await trackWrite(() => db.transaction('rw', db.ledger, async () => {
-    if (await db.ledger.get(id)) return;
+    const existing = await db.ledger.get(id);
+    if (existing) { stored = existing.inputs.afterBedtime === true; return; }
     await db.ledger.add({ id, dayKey: dayKey(now), mode: 'night', kind: 'kolam', refId: kolam.nightDate, inputs: { size: kolam.size, family: kolam.family, lineColor: kolam.lineColor, afterBedtime }, updatedAt: now, deleted: 0, deviceId });
   }));
+  return stored;
 }

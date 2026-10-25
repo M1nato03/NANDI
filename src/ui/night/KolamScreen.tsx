@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
 import type { ClockKolam } from '../../core/kolam/clock';
 import { advanceTrace, pointAt, startTrace, traceDone, tracePath, type Trace } from '../../core/kolam/trace';
 import { toPathData } from '../../core/kolam/kolam';
-import { isAfterBedtime } from '../../core/time';
-import { RULES } from '../../core/rules.config';
 import { db } from '../../data/db';
 import { saveKolamDone, tonightKolam } from '../../data/repos/kolam';
 import { recordError } from '../errorRing';
@@ -26,9 +23,12 @@ export function KolamScreen() {
   const [trace, setTrace] = useState<Trace | null>(null);
   const [auto, setAuto] = useState(false);
   const drawing = useRef(false);
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const tick = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(tick); }, []);
-  const bedtimeRow = useLiveQuery(() => db.settings.get('planner.bedtime'), []);
+  // Kachhua walks only while the finger is moving (or the line draws itself); a still finger is a still Kachhua.
+  const [moving, setMoving] = useState(false);
+  const still = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(still.current), []);
+  // Set once the line is saved: whether it finished after tonight's effective bedtime (decided by saveKolamDone).
+  const [endLate, setEndLate] = useState<boolean | null>(null);
   useEffect(() => {
     let live = true;
     void tonightKolam(db, Date.now()).then(result => { if (live) setKolam(result); }).catch(error => recordError('window', error));
@@ -37,8 +37,6 @@ export function KolamScreen() {
   const path = useMemo(() => kolam ? tracePath(kolam.kolam.points, UNIT, PAD) : [], [kolam]);
   const current = trace ?? (path.length ? startTrace(path) : null);
   const done = !!current && traceDone(current);
-  const bedtime = typeof bedtimeRow?.value === 'string' ? bedtimeRow.value : RULES.night.defaultBedtime;
-  const afterBedtime = isAfterBedtime(now, bedtime);
   // "Draw it for me": the line draws itself slowly while you watch.
   useEffect(() => {
     if (!auto || !current || done) return;
@@ -49,14 +47,14 @@ export function KolamScreen() {
   useEffect(() => {
     if (!done || !kolam || saved.current) return;
     saved.current = true;
-    void saveKolamDone(db, kolam, afterBedtime, Date.now()).catch(error => recordError('window', error));
-  }, [done, kolam, afterBedtime]);
+    void saveKolamDone(db, kolam, Date.now()).then(setEndLate).catch(error => { setEndLate(false); recordError('window', error); });
+  }, [done, kolam]);
   if (!kolam || !current) return <section className="screen kolam-screen" role="status">Drawing tonight's dots…</section>;
   const size = PAD * 2 + kolam.size * 2 * UNIT;
   const head = pointAt(path, current.progress);
   const local = (event: PointerEvent<SVGSVGElement>) => { const box = event.currentTarget.getBoundingClientRect(); const scale = size / box.width; return { x: (event.clientX - box.left) * scale, y: (event.clientY - box.top) * scale, t: event.timeStamp }; };
-  const move = (event: PointerEvent<SVGSVGElement>) => { if (!drawing.current || done || auto) return; const sample = local(event); setTrace(state => advanceTrace(path, state ?? startTrace(path), sample)); };
-  const moment = done ? 'rest' : current.tooFast ? 'tuck' : current.progress > 0 ? 'walk' : 'blink';
+  const move = (event: PointerEvent<SVGSVGElement>) => { if (!drawing.current || done || auto) return; const sample = local(event); setTrace(state => advanceTrace(path, state ?? startTrace(path), sample)); setMoving(true); window.clearTimeout(still.current); still.current = window.setTimeout(() => setMoving(false), 250); };
+  const moment = done ? 'rest' : current.tooFast ? 'tuck' : current.progress > 0 && (moving || auto) ? 'walk' : current.progress > 0 ? 'still' : 'blink';
   const dots = Array.from({ length: kolam.size * kolam.size }, (_, i) => ({ x: PAD + (2 * (i % kolam.size) + 1) * UNIT, y: PAD + (2 * Math.floor(i / kolam.size) + 1) * UNIT }));
   // The drawn part: the line up to the progress point, as a dash over the full path.
   const fullLength = current.total;
@@ -66,7 +64,7 @@ export function KolamScreen() {
     <div className="kolam-stage">
       {kolam.lineColor === 'silver' && <span className="kolam-moon" aria-hidden="true" />}
       <svg className="kolam-board" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`A ${kolam.size} by ${kolam.size} kolam, ${Math.round(current.progress / fullLength * 100)}% traced`}
-        onPointerDown={event => { drawing.current = true; event.currentTarget.setPointerCapture(event.pointerId); move(event); }} onPointerMove={move} onPointerUp={() => { drawing.current = false; }} onPointerCancel={() => { drawing.current = false; }}>
+        onPointerDown={event => { drawing.current = true; event.currentTarget.setPointerCapture(event.pointerId); move(event); }} onPointerMove={move} onPointerUp={() => { drawing.current = false; setMoving(false); }} onPointerCancel={() => { drawing.current = false; setMoving(false); }}>
         {dots.map((dot, i) => <circle key={i} cx={dot.x} cy={dot.y} r={3.2} className="kolam-dot" />)}
         <path d={toPathData(kolam.kolam.points, UNIT, PAD)} className="kolam-guide" />
         <path d={toPathData(kolam.kolam.points, UNIT, PAD)} className={`kolam-line${done ? ' kolam-glow' : ''}`} pathLength={fullLength} strokeDasharray={`${current.progress} ${fullLength}`} />
@@ -74,7 +72,7 @@ export function KolamScreen() {
       {!done && <span className={`kolam-kachhua kachhua-${moment}`} data-moment={moment} style={{ left: `${head.x / size * 100}%`, top: `${head.y / size * 100}%` }} aria-hidden="true"><Kachhua pose={current.tooFast ? 'rest' : 'idle'} size={34} /></span>}
     </div>
     {done ? <div className="kolam-end" role="status"><span className="kolam-friend kachhua-rest" data-moment="rest"><Kachhua pose="rest" size={64} title="Kachhua" /></span>
-      {/* Spec 26 B3: after bedtime the end screen is exactly these two lines. */}<p>The line is complete.</p>{afterBedtime ? <p>That's enough for tonight. Put the phone down.</p> : <p>Kachhua curls up beside it. A new one comes tomorrow night.</p>}
+      {/* Spec 26 B3: after bedtime the end screen is exactly these two lines. */}<p>The line is complete.</p>{endLate === true && <p>That's enough for tonight. Put the phone down.</p>}{endLate === false && <p>Kachhua curls up beside it. A new one comes tomorrow night.</p>}
       <button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div>
       : <>{current.tooFast && <p className="small" role="status">Kachhua tucked in. Slow down and the line waits for you.</p>}
         <button type="button" className="secondary" disabled={auto} onClick={() => setAuto(true)}>Draw it for me</button></>}

@@ -23,6 +23,6 @@
 @keyframes kachhua-tuck { to { transform: scale(0.82) translateY(4px); } }
 @keyframes kachhua-yawn { 40% { transform: scale(1.06) rotate(-3deg); } 100% { transform: none; } }
 @keyframes kachhua-breathe { 50% { transform: scale(1.02); } }
-/* Reduced motion: pose changes only; the slow breathing on the final rest pose is the one loop left. */
-@media (prefers-reduced-motion: reduce) { .kolam-screen *:not(.kolam-friend) { animation: none !important; transition: none !important; } .kolam-friend.kachhua-rest { animation: kachhua-breathe 4s ease-in-out infinite !important; } }
-:root[data-motion='reduce'] .kolam-screen *:not(.kolam-friend) { animation: none !important; transition: none !important; }
+/* Reduced motion: pose changes only, with no walking and no breathing loop (Codex B item 114). */
+@media (prefers-reduced-motion: reduce) { .kolam-screen, .kolam-screen * { animation: none !important; transition: none !important; } }
+:root[data-motion='reduce'] .kolam-screen, :root[data-motion='reduce'] .kolam-screen * { animation: none !important; transition: none !important; }

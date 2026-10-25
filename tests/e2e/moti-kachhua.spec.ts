@@ -24,15 +24,18 @@ test("Moti's haveli: a decoy shows its fix and costs nothing, the pieces in orde
   await expect(haveli.locator('.moti-friend[data-moment="hmm"]')).toBeVisible();
   await expect(haveli.locator('.haveli-slots li.filled')).toHaveCount(0);
   for (const piece of ['Give it weeks, and', 'do not worry about', 'one missed day.']) await haveli.getByRole('button', { name: piece, exact: true }).click();
-  await expect(haveli.getByLabel('Habits: lit today')).toBeVisible();
+  await expect(haveli.getByLabel('Habits: lit, visited today')).toBeVisible();
   await expect(haveli).toContainText('The haveli is quiet for today.');
   await expect(haveli.getByRole('button', { name: 'Anchoring' })).toBeDisabled();
   const facts = await readLedger(page);
   expect(facts.filter(row => row.kind === 'card' && row.refId === '2026-11-03:haveli:habits')).toHaveLength(1);
-  // Nothing dims: the next day the diya is simply unlit again, never darkened.
+  // Nothing dims: the next day the diya is still lit, with a separate "Ready for a visit" mark.
   await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
   await page.reload();
-  await expect(page.getByRole('region', { name: "Moti's haveli" }).getByRole('button', { name: 'Habits' })).toBeEnabled();
+  const again = page.getByRole('region', { name: "Moti's haveli" }).getByRole('button', { name: 'Habits: lit, ready for a visit' });
+  await expect(again).toBeEnabled();
+  await expect(again.locator('.haveli-flame')).toHaveCount(1);
+  await expect(again).toContainText('Ready for a visit');
 });
 
 test("Moti's matka: on Sunday three sealed first guesses from 5-21 days ago, the exact copy, then the stop; not on Saturday", async ({ page }) => {

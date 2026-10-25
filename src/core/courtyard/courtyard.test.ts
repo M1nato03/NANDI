@@ -18,6 +18,9 @@ describe('courtyard areas', () => {
     expect(areaOf(fact('2026-10-20', 'mind', 'board'))).toBe('mind');
     expect(areaOf(fact('2026-10-20', 'bonuses', 'lightsout', { metTarget: true }))).toBe('sleep');
     expect(areaOf(fact('2026-10-20', 'bonuses', 'lightsout', { metTarget: false }))).toBeNull();
+    // Spec 26: a kolam is Kachhua's, but one finished after bedtime grows nothing (Codex B item 114).
+    expect(areaOf(fact('2026-10-20', 'night', 'kolam', { afterBedtime: false }))).toBe('sleep');
+    expect(areaOf(fact('2026-10-20', 'night', 'kolam', { afterBedtime: true }))).toBeNull();
   });
   it('from the batch 5 day on, a puzzle or lesson after bedtime grows nothing; earlier days keep what they grew', () => {
     const late = (day: string, kind: string, inputs: Record<string, unknown> = {}) => fact(day, 'mind', kind, { afterBedtime: true, ...inputs });

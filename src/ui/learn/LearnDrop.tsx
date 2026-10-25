@@ -221,7 +221,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     try {
       const at = currentTime();
       const current = (await db.learnDrops.get(drop.id))?.drop ?? drop;
-      await saveLessonDone(db, current, { stepId, conceptId, dropId: drop.id, ...result }, await getOrCreateDeviceId(db, at), at);
+      // Spec 26 M1: the sealed pick keeps its words and the pack version, so a later pack update cannot change it.
+      const packVersion = topics.find(pack => pack.body.modules.some(module => module.concepts.some(concept => concept.id === conceptId)))?.version;
+      await saveLessonDone(db, current, { stepId, conceptId, dropId: drop.id, ...result, packVersion }, await getOrCreateDeviceId(db, at), at);
       setAnsweredHere(true);
       // Spec 30: once per idea, after the lesson that teaches its last step, if the idea has a scene; never after bedtime.
       const concept = concepts.find(row => row.id === conceptId);
