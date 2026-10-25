@@ -64,6 +64,8 @@ test("a friend opening today's link plays today's daily board and gets the Today
   expect(await board(friend)).toEqual(mine);
   await solve(friend);
   await expect(friend.getByRole('button', { name: 'Share result' })).toBeVisible();
+  // The solved run is written after the result shows; leave only once it is saved (CI flake 10-25).
+  await expect(friend.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   await friend.goto('/?e2e#mind');
   await friend.reload();
   await expect(friend.getByRole('button', { name: /^Board\s+Done$/ })).toBeVisible();
