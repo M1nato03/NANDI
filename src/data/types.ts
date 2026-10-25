@@ -32,6 +32,9 @@ export interface TaskRow extends EntityRow {
   /** Repeating tasks: how it repeats, and which task this one follows. */
   repeat?: 'daily' | 'weekdays' | 'weekly';
   repeatOf?: string;
+  /** Spec 27: minutes worked, summed over focus sessions; and whether the person picked a time when adding it. */
+  actualMinutes?: number;
+  timeSet?: boolean;
 }
 export interface TaskEventRow extends EntityRow {
   taskId: string;

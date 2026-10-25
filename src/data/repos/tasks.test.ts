@@ -118,6 +118,41 @@ describe('Tasks repository transactions', () => {
     const ended = await db.focus.get(running.id);
     expect(ended?.endedAt).toBe(at(4, 10) + 10 * 60_000);
   });
+  it("spec 27: Mor's list adds a planned Today task with no time, and moves are never refused", async () => {
+    const added = await repos.addToList('Call the bank', at(4, 10));
+    expect(added).toMatchObject({ status: 'planned', dayKey: dayKey(at(4)), scheduledStart: null, timeSet: undefined, estimateMin: 30, firstScheduledDayKey: dayKey(at(4)) });
+    const timed = await repos.addToList('Read', at(4, 10), 15);
+    expect(timed).toMatchObject({ timeSet: true, estimateMin: 15, size: 'S' });
+    // Five moves to tomorrow in a row, no first step, no reason: each one goes through, and none parks it in Someday.
+    let day = 4;
+    for (let move = 1; move <= 5; move++) {
+      await repos.moveTask(added.id, at(day, 11), 'tomorrow');
+      day++;
+      const row = await db.tasks.get(added.id);
+      expect(row).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: move });
+    }
+    const before = await repos.moveTask(added.id, at(day, 12), 'later');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'someday', postponeCount: 6 });
+    await repos.undoMove(added.id, at(day, 12), before);
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: 5 });
+    // Bringing it back to today is not counted as a move.
+    await repos.moveTask(added.id, at(day, 13), 'later');
+    await repos.moveTask(added.id, at(day, 14), 'today');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: 6 });
+  });
+  it('spec 27: ending a focus adds the minutes worked to the task, across sessions', async () => {
+    const added = await repos.addToList('Write', at(4, 10));
+    const first = await repos.startFocus(added.id, at(4, 10));
+    await repos.finishFocus(first.id, at(4, 10) + 12 * 60_000);
+    const second = await repos.startFocus(added.id, at(4, 11));
+    await repos.finishFocus(second.id, at(4, 11) + 30 * 60_000);
+    expect((await db.tasks.get(added.id))?.actualMinutes).toBe(42);
+    // Moving a task in focus stops its timer and keeps the minutes.
+    const third = await repos.startFocus(added.id, at(4, 12));
+    await repos.moveTask(added.id, at(4, 12) + 5 * 60_000, 'tomorrow');
+    expect((await db.focus.get(third.id))?.endedAt).toBe(at(4, 12) + 5 * 60_000);
+    expect((await db.tasks.get(added.id))?.actualMinutes).toBe(47);
+  });
   it('guards postpone choices within the transaction and does not write on rejection', async () => {
     const created = await task(at(4, 10));
     await expect(

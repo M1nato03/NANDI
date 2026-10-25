@@ -10,8 +10,7 @@ import { minutesInWords, moveReasonInWords, weekInWords, weekInWordsSummary } fr
 import { postponeWeekKey } from '../../core/tasks/budget';
 import { shareOrDownload } from '../../platform/files';
 import { buildWeeklySummary, isoFileWeek } from '../../core/weeklySummary';
-import { PostponeSheet, wouldPark } from '../tasks/PostponeSheet';
-import { errorMessage } from '../shell/errorMessage';
+import { PostponeSheet } from '../tasks/PostponeSheet';
 import { TaskDetail } from '../tasks/TaskDetail';
 import { TaskQuickAdd } from '../tasks/TaskQuickAdd';
 import { GroupedSteps } from '../tasks/TaskList';
@@ -37,12 +36,12 @@ function TriageRow({ task, board, onMove, onDetail }: { task: TaskRow; board: Re
   const [priority, setPriority] = useState<'must' | 'could'>(task.mustOrCould ?? 'could');
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
   async function place() {
-    // A third move goes through the move sheet's choices and reason, never around them (Tasks audit 1).
-    if ((task.postponeCount ?? 0) >= 2) { onMove(task); return; }
+    // Spec 27: placing never goes through a move gate.
     await board.act(async (repos, now) => {
       const start = new Date(slot).getTime();
       if (!Number.isFinite(start) || dayKey(start) !== dayKey(now)) throw new Error('Pick a time today.');
-      await repos.postpone(task.id, now, { newStart: start, firstStep: firstStep.trim() || undefined });
+      await repos.moveTask(task.id, now, { day: dayKey(start), start });
+      if (firstStep.trim()) await repos.setFirstStep(task.id, firstStep.trim(), now);
       await repos.setPriority(task.id, priority, now);
     }, 'Placed for today.');
   }
@@ -63,16 +62,11 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
   const sessions = useLiveQuery(() => db.sessions.filter((row) => row.deleted === 0).toArray(), []) ?? [];
   const settings = useLiveQuery(() => db.settings.filter((row) => row.deleted === 0).toArray(), []) ?? [];
   const [moving, setMoving] = useState<TaskRow | null>(null);
-  const [moveNote, setMoveNote] = useState('');
-  // Item 83: Shutdown's "Move to tomorrow" moves the task straight to tomorrow 9:00 and says so. Only when a rule needs
-  // more (a first step, a reason, or the 4th move that parks it in Someday) does the move sheet open, showing why.
+  // Item 83 + spec 27: Shutdown's "Move to tomorrow" moves the task straight to tomorrow 9:00 and says so. No move is refused.
   async function moveTomorrow(task: TaskRow) {
     const at = new Date(tomorrowSlot(Date.now())).getTime();
-    if (wouldPark(task, at)) { setMoveNote(''); setMoving(task); return; }
     const when = new Date(at).toLocaleString([], { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
-    let failure = '';
-    const ok = await board.act(async (repos, now) => { try { await repos.postpone(task.id, now, { newStart: at }); } catch (caught) { failure = errorMessage(caught); throw caught; } }, `Moved to ${when}.`);
-    if (!ok) { setMoveNote(failure); setMoving(task); }
+    await board.act((repos, now) => repos.moveTask(task.id, now, { day: dayKey(at), start: at }), `Moved to ${when}.`);
   }
   const [detail, setDetail] = useState<TaskRow | null>(null);
   const [skipped, setSkipped] = useState(false);
@@ -119,11 +113,12 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
   useEffect(() => { void board.act((repos, now) => repos.plannerBudget(now)); /* Set or advance the baseline week. */ }, []); // eslint-disable-line react-hooks/exhaustive-deps
   async function saveTomorrow() {
     const start = new Date(firstTime || tomorrowSlot(board.now)).getTime();
-    const tomorrow = new Date(board.now); tomorrow.setDate(tomorrow.getDate() + 1);
-    if (!Number.isFinite(start) || dayKey(start) !== dayKey(tomorrow.getTime()) || !firstTitle.trim()) { setExportMessage('Add a task for tomorrow and check its time.'); return false; }
+    // Tomorrow is the planning day after today's (which runs to 04:00), the same day tomorrowSlot uses.
+    const tomorrowKey = dayKey(new Date(`${dayKey(board.now)}T12:00:00`).getTime() + 86_400_000);
+    if (!Number.isFinite(start) || dayKey(start) !== tomorrowKey || !firstTitle.trim()) { setExportMessage('Add a task for tomorrow and check its time.'); return false; }
     const ok = await board.act(async (repos, now) => {
       const id = firstChoice === 'new' ? (await repos.createTask({ title: firstTitle.trim(), size: 'M', estimateMin: 30, dayKey: dayKey(start), scheduledStart: start }, now)).id : firstChoice;
-      if (firstChoice !== 'new') await repos.postpone(id, now, { newStart: start });
+      if (firstChoice !== 'new') await repos.moveTask(id, now, { day: dayKey(start), start });
       if (firstPlace.trim()) await repos.setPlace(id, firstPlace, now);
       if (firstStep.trim()) await repos.setFirstStep(id, firstStep, now);
     }, 'Tomorrow’s first task is set.');
@@ -183,6 +178,6 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       {completed?.reviewDone && <p className="small">Review recorded for today.</p>}
     </>}
     {detail && <TaskDetail key={detail.id} task={board.tasks.find(row => row.id === detail.id) ?? detail} tasks={board.tasks} focus={board.focus} events={events} run={board.act} close={() => setDetail(null)} move={() => { setMoving(detail); setDetail(null); }} />}
-    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} notice={moveNote} initialStart={mode === 'shutdown' ? tomorrowSlot(board.now) : undefined} close={() => { setMoving(null); setMoveNote(''); }} />}
+    {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} />}
   </section>;
 }
