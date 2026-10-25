@@ -46,8 +46,9 @@ export function Haveli({ ideas, lit, everLit, cap, day, onRebuilt, onLeave }: { 
     {active ? <>
       <p className="small">{active.title} · {active.topicTitle}</p>
       <ol className="haveli-slots" aria-label="Your rebuild">{active.recall.pieces.map((piece, index) => <li key={index} className={index < placed ? 'filled' : ''}>{index < placed ? piece : '…'}</li>)}</ol>
-      <div className="haveli-tiles" role="group" aria-label="Pieces">{tiles.map((tile, index) => tile.kind === 'piece' && tile.index < placed ? null : <button type="button" key={index} className="haveli-tile" onClick={() => void tap(tile)}>{tile.text}</button>)}</div>
+      {/* The fix sits right under the rebuild, above the pieces, so it is on screen at 360 px. */}
       {fix && <p className="haveli-fix" role="status">Hmm. {fix}</p>}
+      <div className="haveli-tiles" role="group" aria-label="Pieces">{tiles.map((tile, index) => tile.kind === 'piece' && tile.index < placed ? null : <button type="button" key={index} className="haveli-tile" onClick={() => void tap(tile)}>{tile.text}</button>)}</div>
       <button type="button" className="text-button" onClick={() => setActive(null)}>Back to the rooms</button>
     </> : <>
       {rooms.map(room => <section key={room.topicId} className={`haveli-room${room.ideas.some(idea => justLit.includes(idea.id)) ? ' glow' : ''}`} aria-label={`${room.title} room`}><h2>{room.title}</h2><ul>{room.ideas.map(idea => <li key={idea.id}>{litNow.has(idea.id) ? <span className="haveli-diya lit" aria-label={`${idea.title}: lit, visited today`}><span className="haveli-flame" aria-hidden="true" />{idea.title}</span>
