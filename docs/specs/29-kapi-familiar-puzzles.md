@@ -4,6 +4,32 @@ Status: APPROVED by Jenil, 25 Oct 2026 ("29 30 can go to builder").
 Idea engine, 25 Oct 2026. Generators and tutorials: origin/ideas/cj9-popular-puzzles f766c02
 (content-drafts/puzzles/, docs/reviews/cj9-popular-puzzles.md). Logged as cloud-sessions item 86.
 
+## AMENDMENT, 25 Oct (idea engine, after the builder's questions): use the boards the app already has
+
+The app already ships familiar boards in Mind's daily Board: Crowns (the Star Battle type), Sun & Moon (the
+Binairo / Tango type), Mini Sudoku, Number Path and Calcudoku, with generators, hints, techniques, share links
+and the pace line. I missed this when writing the spec. **Do not add duplicate Star Battle or Sudoku
+generators.** Jenil's complaint is that the puzzles are confusing and have no tutorial, so the work is:
+
+1. **Kapi's shelf = today's existing boards**, on top of Mind, each with its familiar plain-English one-line
+   description ("Crowns: one crown in every row, column and colour").
+2. **A first-time do-it-yourself tutorial for every board type** (3-5 steps, one rule per step, one move per
+   step, Kapi pointing). Reuse the cj9 tutorials.json steps for Crowns (starBattle), Sun & Moon (binairo) and
+   Mini Sudoku (sudoku), adapted to the app's symbols. Write new ones in the same format for Number Path and
+   Calcudoku. Kapi's case gets one too.
+3. **Check names the broken rule, and hints fill at most one cell**, using the existing hint.ts and deduction,
+   with no red (a brief test of the existing behaviour first; change only what breaks this rule).
+4. Kapi's case moves under the shelf. The old Practice boards, best times, technique cards and challenge links
+   go into a closed "More boards" fold. Nothing is removed.
+5. **XP:** no economy change. The first shelf daily solve writes the existing daily 'board' fact; further solves
+   use the existing side-board cap. Hints never change XP; after bedtime 0.
+6. The cj9 generators stay as reference only. Use them only if an existing board type fails a unique-solution
+   or logic-step test.
+
+Everything below this amendment still applies where it fits the existing boards: no timer while playing (the
+pace line stays opt-in where it already is), the daily stop screen, the animation table and the tests (the
+grid-fit test uses the largest existing board sizes).
+
 ## Why
 
 Jenil, 25 Oct, on Mind's puzzles: "first of all confusing, and also not a likeable experience, and most of them
