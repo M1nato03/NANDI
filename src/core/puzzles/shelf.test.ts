@@ -4,7 +4,8 @@ import { loadPortedGenerator } from '../ported-test-loader.js';
 import { brokenRules, checkRules, type PuzzleState } from './rules';
 import { availableDeductions } from './deduction';
 import { featuredSpec } from './daily';
-import { SHELF, shelfLevel, shelfSeedText, shelfSolvedToday } from './shelf';
+import { SHELF, shelfBoard, shelfLevel, shelfSeedText, shelfSolvedToday } from './shelf';
+import { friendBoard } from './daily';
 import { dayKey } from '../time';
 
 const PZ = loadPortedGenerator(new URL('./puzzles.js', import.meta.url), 'PZ') as typeof import('./puzzles.js').default & { _test: Record<string, (...args: unknown[]) => number> };
@@ -60,6 +61,13 @@ describe("spec 29 Kapi's shelf", () => {
     const featuredSolved = (dayKey: string) => ({ type: featured.type, dayKey, result: 'solved', deleted: 0, daily: true });
     expect(shelfLevel(featured.type, [featuredSolved('2026-10-30'), featuredSolved('2026-11-01')], day)).toBe('easy');
     expect(shelfLevel(featured.type, ['2026-10-29', '2026-10-30', '2026-11-01'].map(featuredSolved), day)).toBe(featured.diff);
+  });
+  it("a friend's link to any type's daily board today opens as that daily; another seed or day is practice (Codex B item 106)", () => {
+    const day = '2026-11-03';
+    const daily = shelfBoard('crowns', 'easy', shelfSeedText(day, 'crowns', 'easy', 0))!;
+    expect(friendBoard({ type: 'crowns', diff: 'easy', seed: Number(daily.seed), day }, day).daily).toBe(true);
+    expect(friendBoard({ type: 'crowns', diff: 'easy', seed: Number(daily.seed) + 1, day }, day).daily).toBe(false);
+    expect(friendBoard({ type: 'crowns', diff: 'easy', seed: Number(daily.seed), day: '2026-11-02' }, day).daily).toBe(false);
   });
   it('counts the daily board and the shelf extras of today only', () => {
     const rows = [

@@ -126,6 +126,17 @@ test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page
   await expect(page.getByText('Mark some boxes first, then check.')).toBeVisible();
   await page.getByRole('button', { name: 'How to play', exact: true }).click();
   await expect(page.getByRole('region', { name: 'How to play the case' })).toContainText('Step 1 of 4');
+  // Skipping a replay goes back to the case, and so does finishing it (Codex B item 106).
+  await page.getByRole('button', { name: 'Skip how-to' }).click();
+  await expect(page.getByText(/^Case of the day/)).toBeVisible({ timeout: 30_000 });
+  await page.getByRole('button', { name: 'How to play', exact: true }).click();
+  await cell(page, /^Asha, key:/).click(); await cell(page, /^Asha, key:/).click(); await howto.getByRole('button', { name: 'Next' }).click();
+  await cell(page, /^Ravi, lamp:/).click(); await howto.getByRole('button', { name: 'Next' }).click();
+  await cell(page, /^Ravi, book:/).click(); await cell(page, /^Ravi, book:/).click(); await howto.getByRole('button', { name: 'Next' }).click();
+  await howto.getByRole('group', { name: 'Name the culprit' }).getByRole('button', { name: 'Meera' }).click();
+  await howto.getByRole('button', { name: 'Done' }).click();
+  await howto.getByRole('button', { name: "Open today's case" }).click();
+  await expect(page.getByText(/^Case of the day/)).toBeVisible({ timeout: 30_000 });
 });
 
 test('the how-to takes each board’s real input: Sun & Moon taps, Sudoku and Calcudoku digits, a Number Path drag', async ({ page }) => {

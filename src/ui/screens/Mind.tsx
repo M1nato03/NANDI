@@ -7,7 +7,7 @@ import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
-import { boardNumber, dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { boardNumber, dailyBoardLabel, featuredSpec } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
 import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
 import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
@@ -101,9 +101,12 @@ export function Mind({ entry }: { entry?: string }) {
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
   const flags = useLiveQuery(() => db.flags.toArray(), []) ?? [];
   const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  const puzzleRunsRef = useRef(puzzleRuns);
+  useEffect(() => { puzzleRunsRef.current = puzzleRuns; });
   const unlocks = useLiveQuery(() => db.unlocks.where('kind').equals('technique').toArray(), []) ?? [];
   // Live, so the Today chip flips to Done as soon as the daily board is solved.
-  const dailySolvedLive = puzzleRuns.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved');
+  // One daily per type (spec 29): the featured type's daily may be its easy shelf board while the ramp applies.
+  const dailySolvedLive = puzzleRuns.some(row => row.type === featured.type && row.daily && row.dayKey === today && row.result === 'solved' && !row.deleted);
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const ownedPacks = useLiveQuery(() => db.ledger.where('kind').equals('purchase').toArray(), []) ?? [];
@@ -275,7 +278,7 @@ export function Mind({ entry }: { entry?: string }) {
       if (event.data.error || !event.data.board) { setMessage(event.data.error ?? 'Could not build this board.'); setBusy(false); return; }
       const generated = event.data.board;
       // Spec 19 D: a friend's link to today's generated board opens the daily run itself (resumed if already solved).
-      const asDaily = selection.daily || event.data.daily === true;
+      const asDaily = selection.daily || (event.data.daily === true && !puzzleRunsRef.current.some(row => row.type === generated.type && row.daily && row.dayKey === today && row.diff !== generated.diff && !row.deleted));
       void openPuzzleRun(db, generated, today, asDaily, Date.now(), asDaily ? undefined : selection.attempt).then(async row => {
         if (!live) return;
         await writes.current;
@@ -363,6 +366,14 @@ export function Mind({ entry }: { entry?: string }) {
     if (entry === 'case' && !caseReady) return;
     const timer = window.setTimeout(() => {
       if (entryHandled.current) return;
+      // Spec 29 (Codex B item 106): ONE daily board per type per day. A daily already opened today (from the shelf,
+      // Today's Board chip or a friend's link) is the one; otherwise the shelf's level decides, easy while the ramp applies.
+      const dailySelection = (type: PuzzleType, rows: readonly PuzzleRunRow[]): Selection => {
+        const live = rows.filter(row => !row.deleted);
+        const opened = live.find(row => row.type === type && row.daily && row.dayKey === today && diffs.includes(row.diff as PuzzleDifficulty));
+        const diff = (opened?.diff as PuzzleDifficulty | undefined) ?? shelfLevel(type, live, today);
+        return type === featured.type && diff === featured.diff ? { type, diff, daily: true, shelf: true } : { type, diff, daily: true, shelf: true, seedText: shelfSeedText(today, type, diff, 0) };
+      };
       entryHandled.current = true;
       const challenge = parseChallenge(entry);
       if (challenge) {
@@ -375,10 +386,7 @@ export function Mind({ entry }: { entry?: string }) {
         const [, practiceType, practiceDiff, variant] = entry.split('/');
         const type = types.find(value => value === practiceType);
         const diff = diffs.find(value => value === practiceDiff);
-        if (practiceType === 'daily') {
-          setSelection({ type: featured.type, diff: featured.diff, daily: true });
-          return;
-        }
+
         if (type && diff === 'easy' && variant === 'night') {
           setSelection({ type, diff, daily: false, night: true, attempt: -2 });
           return;
@@ -389,7 +397,7 @@ export function Mind({ entry }: { entry?: string }) {
             const unfinished = matching.find(row => !row.result);
             const attempt = unfinished?.practiceAttempt ?? (matching.length ? Math.max(...matching.map(row => row.practiceAttempt ?? 0)) + 1 : 0);
             setSelection({ type, diff, daily: false, attempt });
-          } else setSelection(needsIntro(featured.type, rows) ? { type: featured.type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type: featured.type, diff: featured.diff, daily: true });
+          } else setSelection(dailySelection(featured.type, rows));
         }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
       }
       else if (entry.startsWith('shelf/')) {
@@ -408,8 +416,7 @@ export function Mind({ entry }: { entry?: string }) {
             const open = extras.find(row => !row.result);
             const index = open ? open.practiceAttempt! - SHELF_ATTEMPT : Math.min(SHELF_PER_DAY - 1, extras.length + 1);
             setSelection({ type, diff, daily: false, shelf: true, attempt: SHELF_ATTEMPT + index, seedText: shelfSeedText(today, type, diff, index) });
-          } else if (type === featured.type && diff === featured.diff) setSelection({ type, diff, daily: true, shelf: true });
-          else setSelection({ type, diff, daily: true, shelf: true, seedText: shelfSeedText(today, type, diff, 0) });
+          } else setSelection(dailySelection(type, live));
         }).catch(error => { recordError('window', error); setMessage('Could not open this board.'); setBusy(false); });
       }
       else if (entry === 'case') setCaseOpen(true);
@@ -450,7 +457,8 @@ export function Mind({ entry }: { entry?: string }) {
   if (reviews && deck) return <Reviews key={reviewIsPractice ? 'practice' : reviewIsOneMore ? 'more' : 'daily'} entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} waiting={reviewIsPractice ? 0 : reviewWaiting} canOneMore={!reviewIsPractice && !reviewIsOneMore && reviewWaiting > 0 && reviewRamp.oneMoreDay !== today} onDone={finishReviews} />;
   if (howto) {
     const type = types.find(value => value === howto);
-    if (howto === 'case') return <CaseTutorial onDone={() => { void markSeen('case').catch(error => recordError('window', error)); go('mind'); }} />;
+    // Replayed from the case: finishing or skipping goes back to the case, whose run is saved as it goes (Codex B item 106).
+    if (howto === 'case') return <CaseTutorial onDone={() => { void markSeen('case').catch(error => recordError('window', error)); go('mind/case'); }} />;
     if (type) return <BoardTutorial key={type} type={type} onDone={() => { void markSeen(type).catch(error => recordError('window', error)); history.back(); }} />;
   }
   if (napType) return <section className="screen mind-hub mind-nap"><KapiMoment moment="nap">That's today's puzzles. Kapi's off to nap.</KapiMoment><p className="small">Come back tomorrow for a new {PZ.TYPES[napType].name} board.</p><button type="button" className="secondary" onClick={() => go('mind')}>Back to Mind</button></section>;
