@@ -1,0 +1,26 @@
+{
+  "starBattle": [
+    { "text": "Put one star in each row. This row has one open square.", "board": ["xxxx.", ".....", ".....", ".....", "....."], "regions": ["AAAAA", "BBBBB", "CCCCC", "DDDDD", "EEEEE"], "highlights": [[0, 4]], "move": { "row": 0, "col": 4, "value": "star" } },
+    { "text": "A column also gets one star. Cross out this square below a star.", "board": ["..*..", ".....", ".....", ".....", "....."], "regions": ["AAAAA", "BBBBB", "CCCCC", "DDDDD", "EEEEE"], "highlights": [[1, 2]], "move": { "row": 1, "col": 2, "value": "empty" } },
+    { "text": "A coloured area gets one star. Cross out this square in the same area.", "board": [".....", ".....", ".....", ".....", "..*.."], "regions": ["EEEAA", "BBEEA", "DBECE", "DDEEE", "EEEEE"], "highlights": [[0, 0]], "move": { "row": 0, "col": 0, "value": "empty" } },
+    { "text": "Stars cannot touch at a corner. Cross out this diagonal square.", "board": [".*...", ".....", ".....", ".....", "....."], "regions": ["AAAAA", "BBBBB", "CCCCC", "DDDDD", "EEEEE"], "highlights": [[1, 2]], "move": { "row": 1, "col": 2, "value": "empty" } }
+  ],
+  "binairo": [
+    { "text": "Use only sun and moon. Three matching symbols cannot sit together. Put moon here.", "board": ["SS..", "....", "....", "...."], "edges": [], "highlights": [[0, 2]], "move": { "row": 0, "col": 2, "value": "M" } },
+    { "text": "Each row needs two suns and two moons. Finish this row with moon.", "board": ["SSM.", "....", "....", "...."], "edges": [], "highlights": [[0, 3]], "move": { "row": 0, "col": 3, "value": "M" } },
+    { "text": "Each column also needs two of each. Put moon below these two suns.", "board": ["S...", "S...", "....", "...."], "edges": [], "highlights": [[2, 0]], "move": { "row": 2, "col": 0, "value": "M" } },
+    { "text": "An equals sign means neighbours match. Put sun on the other side.", "board": ["S...", "....", "....", "...."], "edges": [{ "a": [0, 0], "b": [0, 1], "kind": "=" }], "highlights": [[0, 1]], "move": { "row": 0, "col": 1, "value": "S" } },
+    { "text": "An x means neighbours differ. Put moon on the other side.", "board": ["S...", "....", "....", "...."], "edges": [{ "a": [0, 0], "b": [0, 1], "kind": "x" }], "highlights": [[0, 1]], "move": { "row": 0, "col": 1, "value": "M" } }
+  ],
+  "sudoku": [
+    { "text": "Each row uses 1, 2, 3 and 4 once. Fill the missing 4.", "board": ["123.", "....", "....", "...."], "boxRows": 2, "boxCols": 2, "highlights": [[0, 3]], "move": { "row": 0, "col": 3, "value": 4 } },
+    { "text": "Each column also uses each number once. Fill the missing 4.", "board": ["1...", "2...", "3...", "...."], "boxRows": 2, "boxCols": 2, "highlights": [[3, 0]], "move": { "row": 3, "col": 0, "value": 4 } },
+    { "text": "Each small box uses each number once. Fill the missing 4.", "board": ["12..", "3...", "....", "...."], "boxRows": 2, "boxCols": 2, "highlights": [[1, 1]], "move": { "row": 1, "col": 1, "value": 4 } }
+  ],
+  "nonogram": [
+    { "text": "A 3 means three filled squares in a row. Fill this square.", "board": [".....", ".....", ".....", ".....", "....."], "rowClues": [[3], [], [], [], []], "colClues": [[], [1], [1], [1], []], "highlights": [[0, 2]], "move": { "row": 0, "col": 2, "value": "filled" } },
+    { "text": "Two numbers mean two groups with a gap. Mark the gap empty.", "board": ["#.#..", ".....", ".....", ".....", "....."], "rowClues": [[1, 1], [], [], [], []], "colClues": [[1], [], [1], [], []], "highlights": [[0, 1]], "move": { "row": 0, "col": 1, "value": "empty" } },
+    { "text": "Use the column numbers too. Fill the square that joins this group of 3.", "board": ["..#..", "..#..", ".....", ".....", "....."], "rowClues": [[1], [1], [1], [], []], "colClues": [[], [], [3], [], []], "highlights": [[2, 2]], "move": { "row": 2, "col": 2, "value": "filled" } },
+    { "text": "When a group is complete, mark the next square empty.", "board": ["###..", ".....", ".....", ".....", "....."], "rowClues": [[3], [], [], [], []], "colClues": [[1], [1], [1], [], []], "highlights": [[0, 3]], "move": { "row": 0, "col": 3, "value": "empty" } }
+  ]
+}
