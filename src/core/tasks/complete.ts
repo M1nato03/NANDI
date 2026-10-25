@@ -19,7 +19,8 @@ export function chooseNowTask(tasks: TaskRow[], focus: FocusRow[], now: number):
   const open = tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !parents.has(task.id));
   const live = open.filter(task => task.status === 'planned' && task.dayKey === today);
   const active = focus.filter(row => !row.deleted && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt);
-  const focused = active.map(row => open.find(task => task.id === row.taskId)).find(Boolean);
+  // A focus holds the Now card only while its task still belongs to today (item 83: a task moved to tomorrow mid-focus).
+  const focused = active.map(row => open.find(task => task.id === row.taskId && task.dayKey === today && (task.status === 'planned' || task.status === 'unplaced'))).find(Boolean);
   return focused ?? live.sort((a, b) => (a.scheduledStart ?? 0) - (b.scheduledStart ?? 0))[0] ?? open.find(task => task.status === 'unplaced' && task.mustOrCould === 'must' && task.dayKey === today);
 }
 

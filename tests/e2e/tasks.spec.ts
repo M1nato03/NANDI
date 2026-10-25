@@ -132,7 +132,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Postpone anyway' }).click();
     await row.getByRole('button', { name: 'Move' }).click();
     await page.getByLabel('New date and time').fill('2026-10-15T12:00');
-    await page.getByRole('button', { name: 'Save new time' }).click();
+    // The 4th counted move parks the task in Someday, and the sheet says so before Save (item 83).
+    await expect(page.getByRole('dialog')).toContainText('This would be its 4th move, so it rests in Someday instead of the new date.');
+    await page.getByRole('button', { name: 'Move to Someday' }).click();
     await expect(page.getByRole('region', { name: 'Someday' })).toContainText('Review notes');
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Class reading');

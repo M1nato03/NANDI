@@ -39,7 +39,7 @@ import {
   finishFocus as coreFinishFocus,
 } from '../../core/tasks/focus';
 
-function coreTask(row: TaskRow): CoreTask {
+export function coreTask(row: TaskRow): CoreTask {
   if (
     (row.size !== 'S' && row.size !== 'M' && row.size !== 'L') ||
     row.estimateMin == null ||
@@ -556,6 +556,12 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         if (attempt.firstStep) {
           next.firstStep = attempt.firstStep;
           await event(taskId, 'shrunk', now);
+        }
+        // Item 83: a task moved off today stops its focus here, keeping the minutes already worked, so the Now card
+        // and Focus no longer hold on to it.
+        if (next.status !== 'planned' || next.dayKey !== dayKey(now)) {
+          const open = await db.focus.filter((f) => f.deleted === 0 && f.taskId === taskId && f.endedAt == null).toArray();
+          for (const focus of open) await repos.focus.put(coreFinishFocus(focus, now), now);
         }
         return repos.tasks.put({ ...row, ...next }, now);
       });

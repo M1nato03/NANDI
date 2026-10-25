@@ -21,6 +21,13 @@ describe('planner completion helpers', () => {
     expect(chooseNowTask([a, b], [focus('b', '2026-10-19T08:00:00', 10, { endedAt: undefined })], now)?.id).toBe('b');
     expect(chooseNowTask([{ ...a, status: 'unplaced', mustOrCould: 'must' }], [], now)?.id).toBe('a');
   });
+  it('a running focus no longer holds Now once its task moved off today (item 83)', () => {
+    const now = at('2026-10-19T09:00:00');
+    const a = task('a', '2026-10-19T10:00:00'); const moved = task('b', '2026-10-20T09:00:00');
+    const running = focus('b', '2026-10-19T08:30:00', 10, { endedAt: undefined });
+    expect(chooseNowTask([a, moved], [running], now)?.id).toBe('a');
+    expect(chooseNowTask([a, { ...moved, status: 'someday', dayKey: '2026-10-19' }], [running], now)?.id).toBe('a');
+  });
   it('picks the Now task in linear time: a year of tasks stays fast, and a parent with steps is never picked (cj2 heavy data #1)', () => {
     const now = at('2026-10-19T09:00:00');
     const year = Array.from({ length: 6000 }, (_, i) => task(`t${i}`, '2026-10-19T10:00:00', { status: i % 3 ? 'done' : 'planned', scheduledStart: at('2026-10-19T10:00:00') + i }));

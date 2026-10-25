@@ -109,6 +109,15 @@ describe('Tasks repository transactions', () => {
     expect(await db.taskEvents.count()).toBe(3);
   });
 
+  it('moving a task off today ends its running focus with the minutes kept; a same-day move keeps it running (item 83)', async () => {
+    const created = await task(at(4, 10));
+    const running = await repos.startFocus(created.id, at(4, 10));
+    await repos.postpone(created.id, at(4, 10) + 5 * 60_000, { newStart: at(4, 16) });
+    expect((await db.focus.get(running.id))?.endedAt).toBeUndefined();
+    await repos.postpone(created.id, at(4, 10) + 10 * 60_000, { newStart: at(5, 9), firstStep: 'Open the file' });
+    const ended = await db.focus.get(running.id);
+    expect(ended?.endedAt).toBe(at(4, 10) + 10 * 60_000);
+  });
   it('guards postpone choices within the transaction and does not write on rejection', async () => {
     const created = await task(at(4, 10));
     await expect(
