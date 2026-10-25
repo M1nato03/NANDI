@@ -15,7 +15,7 @@ import '../train/train.css';
 const reposPromise = getOrCreateDeviceId(db, Date.now()).then(id => createTrainRepos(db, id));
 
 export function Train({ entry }: { entry?: string }) {
-  const data = useLiveQuery(async () => ({ program: await db.programs.get('train-program'), sessions: await db.sessions.filter(row => row.deleted === 0).toArray(), sets: await db.sets.filter(row => row.deleted === 0).toArray(), prs: await db.prs.filter(row => row.deleted === 0).toArray(), state: await db.exState.filter(row => row.deleted === 0).toArray(), ledger: await db.ledger.filter(row => row.deleted === 0 && row.mode === 'train').toArray(), softFacts: await db.ledger.where('dayKey').equals(dayKey(Date.now())).filter(row => row.deleted === 0 && row.mode === 'soft').toArray(), bedtime: await db.settings.get('planner.bedtime') }), []);
+  const data = useLiveQuery(async () => ({ program: await db.programs.get('train-program'), sessions: await db.sessions.filter(row => row.deleted === 0).toArray(), sets: await db.sets.filter(row => row.deleted === 0).toArray(), prs: await db.prs.filter(row => row.deleted === 0).toArray(), state: await db.exState.filter(row => row.deleted === 0).toArray(), ledger: await db.ledger.filter(row => row.deleted === 0 && row.mode === 'train').toArray(), softFacts: await db.ledger.where('dayKey').equals(dayKey(Date.now())).filter(row => row.deleted === 0 && row.mode === 'soft').toArray(), bedtime: await db.settings.get('planner.bedtime'), beats: await db.settings.where('key').startsWith('train.beats:').toArray() }), []);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const page = entry === 'history' || entry === 'settings' || entry === 'finish' || entry === 'retest' ? entry : 'today';
@@ -36,7 +36,7 @@ export function Train({ entry }: { entry?: string }) {
     finally { setBusy(false); }
   }
   if (!data) return <section className="screen"><p className="eyebrow">Train</p><h1>Loading</h1></section>;
-  const { program, sessions, sets, prs, state, ledger, softFacts } = data;
+  const { program, sessions, sets, prs, state, ledger, softFacts, beats } = data;
   const bedtime = data.bedtime && !data.bedtime.deleted && typeof data.bedtime.value === 'string' ? data.bedtime.value : undefined;
   // Spec 18: "Start easy" goes straight into the first workout on the easiest step of every move.
   const startEasy = (result: OnboardingResult) => { void act(async (repos, now) => { await repos.completeOnboarding(result, now); await repos.startSession(now, { readiness: 'unanswered:unanswered' }); }, 'Your first easy workout is ready.').then(ok => { if (ok) go('train/workout'); }); };
@@ -53,6 +53,6 @@ export function Train({ entry }: { entry?: string }) {
     {message && <p role="status">{message}</p>}
     {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Your session</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
     {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('train/workout')}>Continue session</button></div>}
-    <Dashboard data={{ program, sessions, sets, prs, state, ledger, softFacts, bedtime }} page={page} setPage={setPage} startWorkout={() => go('train/workout')} busy={busy} message={message} act={act} />
+    <Dashboard data={{ program, sessions, sets, prs, state, ledger, softFacts, bedtime, beats }} page={page} setPage={setPage} startWorkout={() => go('train/workout')} busy={busy} message={message} act={act} />
   </section>;
 }

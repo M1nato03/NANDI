@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, SLOW_NAME, SLOW_RANK, calculatePlates, isRetestWeek, nordicCardDue, nordicState, nordicSwitchShown, type Track } from '../../core/train';
@@ -9,10 +9,14 @@ import { Reassessment } from './Reassessment';
 import { NordicCard } from './NordicCard';
 import { EmptyState } from '../EmptyState';
 import { RULES } from '../../core/rules.config';
+import { nextRestBeat, readBeatChanges, rhythmSheet, rhythmWeeks, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
+import { weekStart } from '../../core/economy/deriveEconomy';
+import type { SettingRow } from '../../data/types';
+import { TaalWeekCard } from './TaalWeek';
 
 type Page = 'today' | 'history' | 'settings' | 'finish' | 'retest';
 type Repos = ReturnType<typeof createTrainRepos>;
-type Data = { program: ProgramRow; sessions: SessionRow[]; sets: SetRow[]; prs: PrRow[]; state: ExStateRow[]; ledger: LedgerRow[]; softFacts?: LedgerRow[]; bedtime?: string };
+type Data = { program: ProgramRow; sessions: SessionRow[]; sets: SetRow[]; prs: PrRow[]; state: ExStateRow[]; ledger: LedgerRow[]; softFacts?: LedgerRow[]; bedtime?: string; beats?: SettingRow[] };
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const mondayOf = (at: number) => { const date = new Date(at); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() - ((date.getDay() + 6) % 7)); return dayKey(date.getTime()); };
 const sessionWords: Record<string, string> = { completed: 'Finished', minimum: 'Short session', partial: 'Partly finished', safety: 'Stopped for comfort' };
@@ -27,7 +31,16 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   const [plateLoad, setPlateLoad] = useState(40);
   const [plateInventory, setPlateInventory] = useState('20, 10, 5, 2.5');
   const [draftDays, setDraftDays] = useState(() => program.days ?? [1, 3, 5]);
-  const [now] = useState(() => Date.now());
+  // The clock moves on when the screen comes back or a minute passes, so 04:00 rolls the day and the week (Codex B item 100).
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const tick = () => setNow(Date.now());
+    const interval = window.setInterval(tick, 60_000);
+    const shown = () => { if (document.visibilityState === 'visible') tick(); };
+    document.addEventListener('visibilitychange', shown);
+    window.addEventListener('pageshow', tick);
+    return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', shown); window.removeEventListener('pageshow', tick); };
+  }, []);
   const completed = sessions.filter(row => row.status !== 'active' && row.status !== 'skipped').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0));
   const thisWeek = completed.filter(row => row.startedAt != null && mondayOf(row.startedAt) === mondayOf(now));
   const target = program.weeklyTarget ?? 3;
@@ -45,6 +58,21 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   // Spec 17: never on a soft day, after bedtime or in hot-day mode.
   const nordic = nordicState(program.nordic, program.placement?.hinge);
   const nordicDue = program.track === 'bodyweight' && nordicCardDue(nordic, { rank: program.placement?.hinge ?? 1, today: dayKey(now), softDay: !!softToday(data.softFacts ?? [], dayKey(now)).state, afterBedtime: isAfterBedtime(now, data.bedtime ?? RULES.night.defaultBedtime), heatMode: !!program.heatModeEnabled });
+  // Spec 24 #3 Taal week: derived from the train facts and one change row per week; nothing new is scored.
+  // Built per facts version and day, not per clock tick; past weeks are built only when the sheet opens (Codex B item 102).
+  const today = dayKey(now);
+  const beatRows = data.beats;
+  const changesFor = useCallback((week: string) => readBeatChanges(beatRows?.find(row => row.key === TAAL_BEATS_KEY(week) && !row.deleted)?.value), [beatRows]);
+  const programDays = program.days ?? [1, 3, 5];
+  const daysKey = programDays.join();
+  const facts = useMemo(() => trainDays(ledger), [ledger]);
+  const week = useMemo(() => taalWeek({ today, programDays: daysKey.split(',').map(Number), target, days: facts, changes: changesFor(weekStart(today)) }), [today, daysKey, target, facts, changesFor]);
+  const since = dayKey(program.startedAt ?? now);
+  const history = program.planHistory;
+  const sheetWeeks = rhythmWeeks(today, since);
+  const loadSheet = useCallback(() => rhythmSheet({ today, since, programDays: daysKey.split(',').map(Number), target, ledger, changesFor, history }), [today, since, daysKey, target, ledger, changesFor, history]);
+  const todayBeat = week.beats.find(beat => beat.today);
+  const moveTo = nextRestBeat(week);
   if (page === 'finish') return null;
   if (page === 'retest') return <Reassessment busy={busy} save={placement => { void act((repos, at) => repos.recordRetest(placement, at), 'Steps updated.').then(ok => { if (ok) setPage('today'); }); }} />;
   if (page === 'history') return <div className="card"><h2>History</h2>{completed.length === 0 ? <EmptyState area="move">Your sessions will appear here.</EmptyState> : <ol className="train-history">{completed.map(row => <li key={row.id}><strong>{formatDayKey(row.dayKey)}</strong><span>{PROGRAMS[row.templateKey ?? '']?.name ?? 'Workout'} · {sessionWords[row.status] ?? 'Finished'}</span></li>)}</ol>}</div>;
@@ -67,17 +95,25 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     <div className="card train-hero"><p className="eyebrow">Today's session</p><h2>{plan.name}</h2><p>{target} days a week · {program.days?.map(day => days[day]).join(' / ')}</p><p>{plan.exercises.length} movements. Start with one set of each if today is tight.</p>
       {program.track === 'bodyweight' && !program.equipment?.sturdyAnchor && <p>Rows use a backpack or band today. Limited pulling until you have a sturdy anchor.</p>}
       <div className="train-readiness"><p>Quick readiness check (optional)</p><button type="button" className={slept === true ? '' : 'secondary'} aria-pressed={slept === true} onClick={() => setSlept(true)}>Slept OK</button><button type="button" className={slept === false ? '' : 'secondary'} aria-pressed={slept === false} onClick={() => setSlept(false)}>Not much sleep</button><button type="button" className={sore === true ? '' : 'secondary'} aria-pressed={sore === true} onClick={() => setSore(true)}>Very sore</button><button type="button" className={sore === false ? '' : 'secondary'} aria-pressed={sore === false} onClick={() => setSore(false)}>Soreness OK</button></div>
-      {(slept === false || sore === true) && <p>The minimum session is one set of each movement. Either choice counts.</p>}
+      {(slept === false || sore === true) && <p>The minimum session is one set of each movement. Any of these counts.</p>}
       {program.heatModeEnabled && <p>Hot-day mode: fewer sets at first. Choose indoors or late evening.</p>}
       {isRetestWeek(program.startedAt ?? now, now) && <p>Re-test week: today's volume is lighter.</p>}
       {retestDue && program.track === 'bodyweight' && <button type="button" className="secondary" onClick={() => setPage('retest')}>Re-test ladder steps</button>}
       {retestDue && program.track === 'gym' && <p>Use a light session to check your working loads.</p>}
-      <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: `${slept ?? 'unanswered'}:${sore ?? 'unanswered'}` }), 'Session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Start session</button>
+      {/* Spec 24 #3: after a low answer the full session is one of the equal choices below, not a bigger button above them. */}
+      {!(slept === false || sore === true) && <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: `${slept ?? 'unanswered'}:${sore ?? 'unanswered'}` }), 'Session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Start session</button>}
       {/* Spec 03 §4: a low readiness answer offers the minimum session (one set each); the workout reads this value. */}
-      {(slept === false || sore === true) && <button type="button" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: 'minimum:10-minutes' }), 'Minimum session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Minimum session</button>}
+      {/* Spec 24 #3: a low answer offers equal choices (full, minimum, move, rest); none is marked as the right one. */}
+      {(slept === false || sore === true) && <div className="train-readiness-choices">
+        <button type="button" className="secondary" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: `${slept ?? 'unanswered'}:${sore ?? 'unanswered'}` }), 'Session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Full session</button>
+        <button type="button" className="secondary" disabled={busy || sessions.some(row => row.status === 'active')} onClick={() => { void act((repos, now) => repos.startSession(now, { confirmVolume, readiness: 'minimum:10-minutes' }), 'Minimum session started.').then(ok => { if (ok) startWorkout?.(); }); }}>Minimum session</button>
+        {moveTo && <button type="button" className="secondary" disabled={busy} onClick={() => { void act((repos, at) => repos.setBeat(at, { moveTo: moveTo.dayKey }), `Moved to ${days[moveTo.weekday]}.`); }}>Move to {days[moveTo.weekday]}</button>}
+        {todayBeat?.plan === 'clap' && !todayBeat.filled && <button type="button" className="secondary" disabled={busy} onClick={() => { void act((repos, at) => repos.setBeat(at, { restToday: true }), 'Rest is today’s beat.'); }}>Rest today</button>}
+      </div>}
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
     {nordicDue && <NordicCard busy={busy} answer={choice => { void act((repos, at) => repos.answerNordicCard(choice, at), choice === 'ready' ? 'Your next hinge session is a banded Nordic curl.' : 'Staying on slow single-leg RDL.'); }} />}
+    <TaalWeekCard week={week} sheetWeeks={sheetWeeks} loadSheet={loadSheet} />
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
     <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
       const isTrained = completed.some(row => row.dayKey === key);

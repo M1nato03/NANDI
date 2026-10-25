@@ -6,6 +6,8 @@ import { entityRepo, naturalRepo } from './base';
 import { setRestWeekday } from './economy';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
+import { weekStart } from '../../core/economy/deriveEconomy';
+import { readBeatChanges, TAAL_BEATS_KEY } from '../../core/train/taal';
 import { RULES, rulesFor } from '../../core/rules.config';
 import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, afterHingeSession, hingeSlot, nordicState, NORDIC_RANK, SLOW_RANK, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
 
@@ -89,7 +91,13 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const old = await getProgram();
         if (!old) throw new Error('Complete rank assessment first');
-        const row = { ...old, ...changes, heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
+        // A change of days or target applies from this week on; earlier weeks keep the plan they had (Codex B item 100).
+        const planChanged = (changes.days && changes.days.join() !== (old.days ?? [1, 3, 5]).join()) || (changes.weeklyTarget && changes.weeklyTarget !== (old.weeklyTarget ?? 3));
+        const from = weekStart(dayKey(now));
+        const planHistory = planChanged
+          ? [...(old.planHistory ?? [{ from: '0000-01-01', days: old.days ?? [1, 3, 5], target: old.weeklyTarget ?? 3 }]).filter(step => step.from !== from), { from, days: changes.days ?? old.days ?? [1, 3, 5], target: changes.weeklyTarget ?? old.weeklyTarget ?? 3 }]
+          : old.planHistory;
+        const row = { ...old, ...changes, ...(planHistory ? { planHistory } : {}), heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
         await db.programs.put(row);
         return row;
       }).then(async row => {
@@ -288,6 +296,24 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const id = `train-rest:${key}`;
         if (!(await db.ledger.get(id))) await db.ledger.add({ id, mode: 'train', kind: 'rest', refId: key, dayKey: key, inputs: { minutes }, ...meta(now) });
       });
+    },
+    /**
+     * Spec 24 #3 Taal week: readiness moves today's clap to a later rest beat of this week, or makes today a rest beat.
+     * Only today can change, so no past beat ever moves. One settings row per week (`train.beats:<weekStart>`).
+     */
+    async setBeat(now: number, change: { moveTo: string } | { restToday: true }): Promise<void> {
+      const today = dayKey(now);
+      const key = TAAL_BEATS_KEY(weekStart(today));
+      await trackWrite(() => db.transaction('rw', db.settings, async () => {
+        const row = await db.settings.get(key);
+        const current = readBeatChanges(row && !row.deleted ? row.value : undefined);
+        if ('moveTo' in change) {
+          if (change.moveTo <= today || weekStart(change.moveTo) !== weekStart(today)) throw new Error('Pick a later day this week');
+          if (current.moves.length >= RULES.taal.movesPerWeek) throw new Error('This week already has a move');
+          current.moves.push({ from: today, to: change.moveTo });
+        } else if (!current.restToday.includes(today)) current.restToday.push(today);
+        await db.settings.put({ key, value: current, ...meta(now) });
+      }));
     },
   };
 }
