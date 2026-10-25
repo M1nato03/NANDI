@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
+import { openMoreBoards } from './helpers/mind';
 
 test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
@@ -33,6 +34,7 @@ test('Practice hub shows daily status, destinations and fits a phone', async ({ 
   await page.goto('/#mind');
   await expect(page.getByRole('heading', { name: 'Mind', exact: true })).toBeVisible();
   for (const name of ['Case Not done', 'Board Not done']) await expect(page.getByRole('button', { name })).toBeVisible();
+  await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toHaveCount(0);
@@ -49,6 +51,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#mind');
+    await openMoreBoards(page);
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     const boards = [
       { name: 'Mini Sudoku', grid: 'Mini Sudoku board', slug: 'sudoku', difficulty: 'easy' },
@@ -98,23 +101,22 @@ for (const scheme of ['light', 'dark'] as const) {
     });
     expect(sizing).toEqual({ cells: true, controls: true, noScroll: true });
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-    // A new user's first board is the warm-up (live QA, build 67).
-    await expect(page.getByLabel('Puzzle result')).toContainText('Warm-up done');
+    // Spec 29: a new user's first daily board is the type's easy board (the ramp replaced the warm-up).
+    await expect(page.getByLabel('Puzzle result')).toContainText('Board complete');
     await expect(page.getByLabel('Puzzle result')).toContainText('Best');
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
     await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await openMoreBoards(page);
     await expect(page.getByText('Best times')).toBeVisible();
     await expect(page.locator('.mind-best-times')).toContainText('0:');
-    await page.getByRole('button', { name: /^Board (Not done|Done)$/ }).click();
-    await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
-    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
-    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
-    await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    // One daily board per type per day (spec 29): the solved board is today's, so the chip reads Done.
+    await expect(page.getByRole('button', { name: 'Board Done' })).toBeVisible();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Learn' }).click();
     await page.getByText('Courses', { exact: true }).click();
     await expect(page.getByRole('heading', { name: "Today's lesson" })).toBeVisible();
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+
+    await openMoreBoards(page);
 
     await page.getByRole('button', { name: 'Practice', exact: true }).click();
     await page.getByRole('heading', { name: 'Mini Sudoku' }).locator('..').getByRole('button', { name: 'easy' }).click();

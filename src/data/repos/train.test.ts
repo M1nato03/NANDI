@@ -168,3 +168,41 @@ describe('spec 17: slow SL-RDL, the Nordic ready card and the Nordic switch', ()
     expect(await planHinge(train, day(10))).toEqual({ exerciseId: 'banded-nordic', sets: 3, repMin: 5, repMax: 8, isBodyweightLadder: 'hinge' });
   });
 });
+
+describe('Taal week beat changes (spec 24 #3)', () => {
+  const wed = new Date('2026-11-04T12:00:00').getTime();
+  it('moves only today to a later day of the same week, once, and keeps the row in a backup', async () => {
+    const db = fresh();
+    const train = createTrainRepos(db, 'test');
+    await expect(train.setBeat(wed, { moveTo: '2026-11-03' })).rejects.toThrow('Pick a later day this week');
+    await expect(train.setBeat(wed, { moveTo: '2026-11-09' })).rejects.toThrow('Pick a later day this week');
+    await train.setBeat(wed, { moveTo: '2026-11-05' });
+    await expect(train.setBeat(wed, { moveTo: '2026-11-07' })).rejects.toThrow('This week already has a move');
+    await train.setBeat(wed, { restToday: true });
+    await train.setBeat(wed, { restToday: true });
+    const row = await db.settings.get('train.beats:2026-11-02');
+    expect(row?.value).toEqual({ moves: [{ from: '2026-11-04', to: '2026-11-05' }], restToday: ['2026-11-04'] });
+    const envelope = await exportBackup(db, new Date(wed));
+    await Promise.all(db.tables.map(table => table.clear()));
+    await importBackup(db, envelope);
+    expect((await db.settings.get('train.beats:2026-11-02'))?.value).toEqual(row?.value);
+  });
+  it('a change of target or days applies from this week; earlier weeks keep their plan, through a backup (Codex B item 100)', async () => {
+    const db = fresh();
+    const train = createTrainRepos(db, 'test');
+    await train.completeOnboarding({ track: 'bodyweight', days: [1, 4], weeklyTarget: 2, restDay: 0, equipment: { gymAccess: false, dumbbells: false, barbell: null, smallestPlate: null, resistanceBand: false, pullUpBar: false, sturdyAnchor: false }, heatModeEnabled: false, placement: { squat: 2 } }, 1000);
+    await train.updateProgram({ heatModeEnabled: true }, wed);
+    expect((await db.programs.toArray())[0]!.planHistory).toBeUndefined();
+    await train.updateProgram({ weeklyTarget: 3, days: [1, 3, 5] }, wed);
+    const history = (await db.programs.toArray())[0]!.planHistory;
+    expect(history).toEqual([{ from: '0000-01-01', days: [1, 4], target: 2 }, { from: '2026-11-02', days: [1, 3, 5], target: 3 }]);
+    // A second change in the same week replaces that week's step instead of stacking.
+    await train.updateProgram({ days: [2, 4, 6] }, wed + 3_600_000);
+    expect((await db.programs.toArray())[0]!.planHistory).toEqual([{ from: '0000-01-01', days: [1, 4], target: 2 }, { from: '2026-11-02', days: [2, 4, 6], target: 3 }]);
+    const envelope = await exportBackup(db, new Date(wed));
+    await Promise.all(db.tables.map(table => table.clear()));
+    await importBackup(db, envelope);
+    expect((await db.programs.toArray())[0]!.planHistory).toHaveLength(2);
+  });
+});
+

@@ -3,13 +3,15 @@
 .mind-board { max-width: 520px; }
 .mind-board .rule { color: var(--muted); }
 /* Eight-column Crowns cells are 40px at a 360px viewport: largest size without horizontal scroll. */
-.mind-grid { display: grid; width: 100%; max-width: 440px; aspect-ratio: 1; margin: 16px 0; touch-action: none; }
+.mind-grid { display: grid; grid-auto-rows: 1fr; width: 100%; max-width: 440px; aspect-ratio: 1; margin: 16px 0; touch-action: none; }
 .mind-cell { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; width: 100%; height: 100%; padding: 0; border: 1px solid var(--line); border-radius: 0; background: var(--surface); color: var(--ink); font-size: clamp(17px, 6vw, 28px); touch-action: none; }
 .mind-cell.given { background: var(--raised); font-weight: 700; }
 .mind-cell.peer { background: color-mix(in srgb, var(--mind) 12%, var(--surface)); }
 .mind-cell.same { background: color-mix(in srgb, var(--gold) 25%, var(--surface)); }
 .mind-cell.selected { background: var(--mind); color: var(--bg); }
-.mind-cell.conflict { outline: 3px solid var(--danger); outline-offset: -4px; z-index: 1; }
+/* Spec 29: Check marks a broken rule in Kapi's colour with a small mark, never red; nothing is marked while you play. */
+.mind-cell.conflict { outline: 3px dashed var(--area-think); outline-offset: -4px; z-index: 1; }
+.mind-cell.conflict::after { content: '!'; position: absolute; top: 1px; right: 3px; font-size: 12px; font-weight: 800; line-height: 1; color: var(--area-think); }
 .mind-cell[class*='region-'] { color: var(--region-ink); border-color: var(--region-boundary); }
 .mind-cell.region-0 { background: var(--region-0); }
 .mind-cell.region-1 { background: var(--region-1); }
@@ -87,7 +89,8 @@
 .mind-case .case-grid button.case-no { background: var(--surface); color: var(--secondary-ink); }
 .mind-case .case-grid button.case-yes { background: color-mix(in srgb, var(--teal) 25%, var(--raised)); border-color: var(--teal); color: var(--ink); }
 .mind-case .case-accusation-heading { margin-top: 28px; }
-.mind-case .case-grid button.case-error { outline: 2px solid #b43a3a; outline-offset: -2px; }
+.mind-case .case-grid button.case-error { position: relative; outline: 2px dashed var(--area-think); outline-offset: -2px; }
+.mind-case .case-grid button.case-error::after { content: '!'; position: absolute; top: 1px; right: 3px; font-size: 12px; font-weight: 800; line-height: 1; color: var(--area-think); }
 .mind-case .case-grid-wrap { min-width: 0; }
 .mind-case .card label { display: block; margin: .5rem 0; }
 .mind-case .card select { display: block; width: 100%; min-height: 44px; }
@@ -130,7 +133,7 @@
 .mind-case .case-grid button.case-blank { background: var(--surface-2); }
 .mind-case .case-grid button.case-no { background: var(--surface-3); color: var(--ink-2); }
 .mind-case .case-grid button.case-yes { border: 0; background: color-mix(in srgb, var(--area-notice) 23%, var(--surface-2)); }
-.mind-case .case-grid button.case-error { outline-color: var(--area-move); }
+.mind-case .case-grid button.case-error { outline-color: var(--area-think); }
 .mind-lesson-options button { min-height: 56px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); }
 .mind-lesson-options button.selected { background: color-mix(in srgb, var(--area-think) 20%, var(--surface-2)); outline: 0; }
 .mind-feedback, .mind-scene, .mind-source { border-radius: var(--radius-row); background: var(--surface-2); }
@@ -183,3 +186,39 @@
 .case-prove-clues { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 8px; }
 .case-prove-clue { width: 100%; min-height: 44px; text-align: left; background: var(--surface-2); color: var(--ink); border: 2px solid transparent; }
 .case-prove-clue[aria-pressed="true"] { border-color: var(--area-think); background: color-mix(in srgb, var(--area-think) 14%, var(--surface-2)); }
+
+/* Spec 29: Kapi's shelf, the how-to and Kapi's moments. */
+.mind-shelf { margin-top: var(--space-4); }
+.mind-shelf ul { display: grid; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.mind-shelf li { display: grid; gap: 2px; }
+.mind-shelf li > .text-button { justify-self: end; }
+.mind-shelf-tile { display: grid; gap: 2px; min-height: 64px; padding: 12px 14px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); text-align: left; }
+.mind-shelf-tile span { color: var(--ink-2); font-weight: 400; }
+.mind-shelf-tile .mind-shelf-status { color: var(--area-think); font-weight: 600; }
+.mind-shelf li > .text-button, .mind-howto { min-height: 44px; }
+.mind-more { margin-top: 16px; }
+.mind-more > .mind-practice { margin-top: var(--space-3); }
+.mind-more .mind-techniques { margin-top: var(--space-3); }
+.kapi-say { display: flex; align-items: flex-end; gap: var(--space-2); margin: var(--space-2) 0; }
+.kapi-friend { display: inline-block; flex: none; transform-origin: 50% 90%; }
+.kapi-bubble { flex: 1; padding: 10px 12px; border-radius: var(--radius-row); background: color-mix(in srgb, var(--area-think) 12%, var(--surface-2)); color: var(--ink); }
+.mind-tutorial-board { position: relative; margin: var(--space-4) 0 var(--space-2); }
+.mind-tutorial-board .mind-grid { max-width: 320px; }
+.kapi-on-cell { position: absolute; z-index: 3; pointer-events: none; }
+.mind-tutorial .case-tutorial-grid { display: grid; gap: 4px; align-items: center; }
+.kapi-swing { animation: kapi-swing 900ms ease-out 1; }
+.kapi-hop { animation: kapi-hop 600ms ease-out 1; }
+.kapi-clap { animation: kapi-clap 420ms ease-out 1; }
+.kapi-scratch { animation: kapi-scratch 700ms ease-in-out 1; }
+.kapi-whisper { animation: kapi-whisper 600ms ease-out 1; }
+.kapi-cartwheel { animation: kapi-cartwheel 1100ms ease-in-out 1; }
+.kapi-nap { animation: kapi-nap 1400ms ease-out 1 forwards; }
+@keyframes kapi-swing { 0% { transform: translateY(-30%) rotate(-24deg); } 55% { transform: translateY(4%) rotate(10deg); } 80% { transform: rotate(-4deg); } 100% { transform: none; } }
+@keyframes kapi-hop { 0% { transform: translateY(-60%) scale(0.9); } 60% { transform: translateY(6%) scaleY(0.92); } 100% { transform: none; } }
+@keyframes kapi-clap { 40% { transform: scale(1.12); } 100% { transform: none; } }
+@keyframes kapi-scratch { 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } 100% { transform: none; } }
+@keyframes kapi-whisper { 50% { transform: translateX(10%) rotate(8deg); } 100% { transform: translateX(4%) rotate(4deg); } }
+@keyframes kapi-cartwheel { 0% { transform: translateX(-60%) rotate(0); } 70% { transform: translateX(40%) rotate(360deg); } 100% { transform: none; } }
+@keyframes kapi-nap { 60% { transform: translateY(6%) rotate(-8deg); } 100% { transform: translateY(6%) rotate(-8deg); } }
+@media (prefers-reduced-motion: reduce) { .kapi-friend { animation: none !important; } }
+:root[data-motion='reduce'] .kapi-friend { animation: none !important; }

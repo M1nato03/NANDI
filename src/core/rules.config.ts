@@ -189,6 +189,9 @@ export const RULES = {
   // 05-economy §2, night schedule. Clock bounds, if added, use the night timeline.
   // spec 11 W5: a busy day moves the night later (bounded) and keeps Learn small.
   adaptive: { busyMinutes: 240, busyShiftMin: 30, veryBusyMinutes: 360, veryBusyShiftMin: 60 },
+  // Spec 24 #3 Taal week: how many claps a week can move to a later rest beat. It pays nothing, so it sits outside the
+  // scoring keys (cj5-train §7 #1).
+  taal: { movesPerWeek: 1 },
 
   // Spec 17 Nordic ready card. Not scoring, so it sits outside `train` (whose values the rules history fingerprints).
   nordic: { notNowDays: 14, introSets: 2, introReps: 3 },
@@ -370,6 +373,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'plan.chhutti.xp': [0, 50], 'plan.chhutti.paidPerDay': [0, 3], 'plan.chhutti.startMin': [10, 120], 'plan.chhutti.rampStepMin': [0, 60],
   'plan.chhutti.maxMin': [30, 300], 'plan.chhutti.graceMin': [0, 30], 'plan.chhutti.rampNeedsKeptOfLast3': [1, 3], 'plan.chhutti.lockPasses': [1, 10], 'plan.chhutti.lockSlackMs': [1000, 15000],
   'courtyard.stageDays.0': [1, 400], 'courtyard.stageDays.1': [1, 400], 'courtyard.stageDays.2': [1, 400], 'courtyard.stageDays.3': [1, 400], 'courtyard.stageDays.4': [1, 400],
+  'taal.movesPerWeek': [0, 3],
   'adaptive.busyMinutes': [60, 720], 'adaptive.busyShiftMin': [0, 60], 'adaptive.veryBusyMinutes': [60, 900], 'adaptive.veryBusyShiftMin': [0, 60],
   'notifications.engagementPerDayMax': [0, 5], 'backup.nagAfterDays': [1, 90],
   'juice.microMs.0': [0, 1000], 'juice.microMs.1': [0, 1000],
