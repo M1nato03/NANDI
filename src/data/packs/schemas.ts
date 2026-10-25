@@ -38,6 +38,12 @@ export const topicStepSchema = v.strictObject({
   guided: v.pipe(v.array(v.strictObject({ stem: text, hint: text, options: lessonOptions })), v.minLength(1), v.maxLength(2)),
   takeaway: text,
 });
+// Spec 26: Moti's haveli rebuilds an idea's takeaway from three pieces; the two decoys are the idea's misconceptions.
+const recallSchema = v.strictObject({
+  pieces: v.pipe(v.array(v.pipe(text, v.maxLength(48))), v.length(3)),
+  decoys: v.pipe(v.array(v.strictObject({ text: v.pipe(text, v.maxLength(48)), slot: v.picklist([0, 1, 2]), misconceptionId: text, fix: v.pipe(text, v.maxLength(140)) })), v.length(2)),
+  claimIds: v.pipe(strings, v.minLength(1)),
+});
 export const topicConceptSchema = v.strictObject({
   id: text, title: text, prerequisites: strings,
   hook: v.pipe(text, v.maxLength(280)), hookSourceRefs: v.pipe(strings, v.minLength(1)),
@@ -50,6 +56,7 @@ export const topicConceptSchema = v.strictObject({
   misconceptions: v.array(v.strictObject({ id: text, name: text, correction: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
   sources: v.pipe(v.array(sourceRef), v.minLength(1)),
   quest: v.optional(v.strictObject({ title: text, detail: text, sourceRefs: v.pipe(strings, v.minLength(1)) })),
+  recall: v.optional(recallSchema),
   factCheck: v.optional(v.strictObject({ checker: v.optional(text), verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
 });
 export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), modules: v.pipe(v.array(v.strictObject({ id: text, title: text, concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)) })), v.minLength(1)) });

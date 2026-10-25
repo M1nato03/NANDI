@@ -132,6 +132,11 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         for (const problem of askLineProblems(concept)) errors.push(`${where}.askLine: ${problem}`);
       }
       checkText(`${where}.rule`, concept.rule);
+      if (concept.recall) {
+        for (const decoy of concept.recall.decoys) if (!concept.misconceptions.some(item => item.id === decoy.misconceptionId)) errors.push(`${where}.recall: unknown misconception ${decoy.misconceptionId}`);
+        for (const id of concept.recall.claimIds) if (!concept.claims.some(claim => claim.id === id)) errors.push(`${where}.recall: unknown claim ${id}`);
+        for (const line of [...concept.recall.pieces, ...concept.recall.decoys.flatMap(decoy => [decoy.text, decoy.fix])]) checkText(`${where}.recall`, line);
+      }
       const claimIds = new Set<string>();
       for (const claim of concept.claims) {
         if (claimIds.has(claim.id)) errors.push(`${where}: duplicate claim ${claim.id}`);
