@@ -1,6 +1,6 @@
 # 30. Teach Chiku, one card: Chiku acts out the answer
 
-Status: DRAFT, waiting for Jenil's yes. Not for the builder until then.
+Status: APPROVED by Jenil, 25 Oct 2026 ("29 30 can go to builder").
 Idea engine, 25 Oct 2026. Demo (round 3, Chiku tab): https://claude.ai/artifact/LVWKWGavbn6VpE6uxRvWEA
 
 ## Why
