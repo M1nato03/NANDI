@@ -68,33 +68,40 @@ test("Kachhua's kolam: the size follows the clock, Draw it for me completes it, 
   await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveAttribute('data-size', '5');
   await page.goto('/?e2e#plan');
   await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveCount(0);
-  await page.clock.setSystemTime(new Date('2026-11-04T02:30:00')); // the night of 3 Nov, after the 01:30 bedtime
+  // From 20:00 Plan offers it; at night an open lands on the night deck, which offers it too.
+  await page.clock.setSystemTime(new Date('2026-11-03T21:00:00'));
   await page.reload();
   await expect(page.getByRole('region', { name: "Tonight's kolam" }).getByRole('button', { name: 'Trace it' })).toBeVisible();
-  await page.getByRole('region', { name: "Tonight's kolam" }).getByRole('button', { name: 'Trace it' }).click();
+  await page.clock.setSystemTime(new Date('2026-11-04T02:30:00')); // the night of 3 Nov, after the 01:30 bedtime
+  await page.reload();
+  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight's kolam" }).click();
   const kolam = page.getByRole('region', { name: "Tonight's kolam" });
   // The night's kolam was picked at noon and stays the same size all night.
   await expect(kolam).toHaveAttribute('data-size', '5');
   await kolam.getByRole('button', { name: 'Draw it for me' }).click();
-  await page.clock.runFor(20_000);
+  await page.clock.runFor(13_000);
   await expect(kolam).toHaveAttribute('data-done', 'yes');
   await expect(kolam.locator('.kolam-end p')).toHaveText(['The line is complete.', "That's enough for tonight. Put the phone down."]);
   const facts = await readLedger(page);
   expect(facts.filter(row => row.kind === 'kolam')).toHaveLength(1);
 });
 
-test('a late first open draws a 3 by 3 kolam; a fast finger only tucks Kachhua in, a slow one draws', async ({ page }) => {
+test('a late first open draws a 3 by 3 kolam; a fast finger only tucks Kachhua in and adds nothing', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-05T23:30:00') });
   await page.goto('/?e2e#kolam');
+  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: "Trace tonight's kolam" }).click();
   const kolam = page.getByRole('region', { name: "Tonight's kolam" });
   await expect(kolam).toHaveAttribute('data-size', '3');
   const board = kolam.locator('.kolam-board');
   const box = (await board.boundingBox())!;
-  // The line starts at its first lattice point; a quick swipe across the board adds nothing.
+  // A quick swipe across the board adds nothing after the first touch: Kachhua tucks in and the line waits.
   await page.mouse.move(box.x + box.width * 0.1, box.y + box.height * 0.1);
   await page.mouse.down();
+  const touched = await board.getAttribute('aria-label');
   await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.9, { steps: 2 });
   await page.mouse.up();
-  await expect(board).toHaveAttribute('aria-label', /, 0% traced$/);
+  await expect(kolam.locator('.kolam-kachhua')).toHaveAttribute('data-moment', 'tuck');
+  await expect(kolam).toContainText('Kachhua tucked in. Slow down and the line waits for you.');
+  await expect(board).toHaveAttribute('aria-label', touched!);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

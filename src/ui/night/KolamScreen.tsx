@@ -13,6 +13,8 @@ import { go } from '../shell/router';
 import './kolam.css';
 
 const UNIT = 28, PAD = 14;
+// "Draw it for me" takes the same calm 12 seconds at every size (a 5 by 5 line is about 4,000 px).
+const AUTO_MS = 12_000, AUTO_TICK_MS = 40;
 
 /**
  * Spec 26 B, Kachhua's kolam by the clock: one kolam a night, traced with one finger in one unbroken line. Slow
@@ -40,7 +42,7 @@ export function KolamScreen() {
   // "Draw it for me": the line draws itself slowly while you watch.
   useEffect(() => {
     if (!auto || !current || done) return;
-    const timer = window.setInterval(() => setTrace(state => { const base = state ?? startTrace(path); return { ...base, progress: Math.min(base.total, base.progress + 6), tooFast: false }; }), 40);
+    const timer = window.setInterval(() => setTrace(state => { const base = state ?? startTrace(path); return { ...base, progress: Math.min(base.total, base.progress + base.total * AUTO_TICK_MS / AUTO_MS), tooFast: false }; }), AUTO_TICK_MS);
     return () => window.clearInterval(timer);
   }, [auto, current, done, path]);
   const saved = useRef(false);
