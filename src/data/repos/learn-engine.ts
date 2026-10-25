@@ -22,6 +22,11 @@ export async function loadEngineFacts(db: NandiDb): Promise<{ facts: AnswerFact[
       retentionDay: row.inputs.retentionDay as 7 | 30 | undefined })) };
 }
 export interface AnswerInput { answerId: string; dropId: string; item: TopicItem; answer: ItemAnswer; confidence: Confidence; deviceId: string; now: number; goldReview?: boolean }
+/** Spec 26 M2: what the matka keeps of an answer: the number and the pack's answer value for an estimate, the pick otherwise. */
+export function sealedGuess(item: TopicItem, answer: ItemAnswer): { guess?: number; answerValue?: number; pick?: string } {
+  if (item.type === 'estimate') return typeof answer === 'number' && Number.isFinite(answer) ? { guess: answer, answerValue: item.answer.value } : {};
+  return typeof answer === 'string' ? { pick: answer } : {};
+}
 /** State, drop cursor and its immutable ledger fact commit atomically. */
 export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise<void> {
   const bedtime = await effectiveBedtime(db, input.now);
@@ -50,20 +55,21 @@ export async function saveEngineAnswer(db: NandiDb, input: AnswerInput): Promise
     }
     await db.learnDrops.put({ ...current, drop: { ...advanceDrop(current.drop), pendingFeedback: { cursor: current.drop.cursor, answer: input.answer, correct: grade.correct } }, updatedAt: input.now });
     await db.ledger.add({ id: factId, dayKey: dayKey(input.now), mode: 'mind', kind: step.mode === 'retention' ? 'learn-retention' : 'learn-answer', refId: input.answerId,
-        inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime },
+        // Spec 26 M2: the raw first answer, sealed for the matka. Facts are append-only, so it can never be edited.
+        inputs: { itemId: input.item.id, conceptId: input.item.conceptId, correct: grade.correct, score: grade.score, confidence: input.confidence, dropId: input.dropId, retentionDay: step.retentionDay, afterBedtime, ...sealedGuess(input.item, input.answer) },
       updatedAt: input.now, deleted: 0, deviceId: input.deviceId });
   }));
 }
 
 /** Spec 14: a taught step is one ledger fact, written with the drop moving past its lesson entry. */
-export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; spotCorrect: boolean; guidedFirstTry: boolean[] }
+export interface LessonResult { stepId: string; conceptId: string; dropId: string; hookCorrect: boolean; hookPick?: string; spotCorrect: boolean; guidedFirstTry: boolean[] }
 export async function saveLessonDone(db: NandiDb, drop: Drop, result: LessonResult, deviceId: string, now: number): Promise<void> {
   const id = `learn-lesson:${result.stepId}`;
   // Mind earns nothing after bedtime, so the lesson fact says when it was finished (economy second opinion 3).
   const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
   await trackWrite(() => db.transaction('rw', db.ledger, db.learnDrops, async () => {
     if (!await db.ledger.get(id)) await db.ledger.add({ id, mode: 'learn', kind: 'learn-lesson', refId: result.stepId, dayKey: dayKey(now),
-      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
+      inputs: { conceptId: result.conceptId, dropId: result.dropId, afterBedtime, hookCorrect: result.hookCorrect, ...(result.hookPick ? { hookPick: result.hookPick } : {}), spotCorrect: result.spotCorrect, guidedFirstTry: result.guidedFirstTry }, updatedAt: now, deleted: 0, deviceId });
     await db.learnDrops.put({ id: drop.id, drop: { ...drop, cursor: Math.min(drop.items.length, drop.cursor + 1) }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
