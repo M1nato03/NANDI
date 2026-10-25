@@ -17,13 +17,22 @@ test('the first run keeps keyboard focus inside the welcome', async ({ page }) =
   await expect(welcome).toBeVisible();
 });
 
-test('the Move sheet takes focus, closes on Escape and returns focus to Move', async ({ page }) => {
+test('the task and move sheets take focus, keep it inside, close on Escape and give focus back', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
-  await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Review notes');
-  await page.getByRole('button', { name: 'Add task', exact: true }).click();
-  const move = page.locator('.task-row').filter({ hasText: 'Review notes' }).getByRole('button', { name: 'Move' });
-  await move.click();
+  await page.getByLabel('Add a task').fill('Review notes');
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  // Spec 27: the task's name opens its detail sheet; "Another day…" there opens the move sheet.
+  const name = page.locator('.mor-row').filter({ hasText: 'Review notes' }).locator('.task-title-button');
+  await name.click();
+  const detail = page.getByRole('dialog', { name: 'Task detail Review notes' });
+  expect(await detail.evaluate(node => node.contains(document.activeElement))).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(detail).toHaveCount(0);
+  await expect(name).toBeFocused();
+  await name.click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Another day…' }).click();
+  const move = name;
   const sheet = page.getByRole('dialog', { name: /Move Review notes/ });
   await expect(sheet).toBeVisible();
   expect(await sheet.evaluate(node => node.contains(document.activeElement))).toBe(true);

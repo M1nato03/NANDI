@@ -154,6 +154,8 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
           {option.id === 'good-thing' && <GoodThing done={(text, inStory) => void finish('good-thing', { text, inStory })} />}
           <button type="button" className="text-button" onClick={() => setChoice(null)}>Pick another</button></div>}
       <button type="button" className="text-button soft-okay" onClick={() => void setSoftState(db, 'okay', Date.now())}>I feel okay now</button>
+      {/* Item 83: tasks stay reachable on a soft day (to move or tick one) without ending the gentle day. */}
+      <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>See my tasks</button>
     </section>
   </>;
 }

@@ -28,6 +28,45 @@ export function nextStep(concepts: readonly TopicConcept[], taught: ReadonlySet<
   return undefined;
 }
 
+/**
+ * The hook on a topic card (idea engine items 71 B3 and 72, Jenil approved): while the topic has an untaught step,
+ * the card shows that next step's own hook guess, which the same lesson answers, so the card never promises what the
+ * next lesson does not teach. Once every step is taught, it shows the idea's hook (`fallback` picks the idea).
+ */
+export function cardHook(concepts: readonly TopicConcept[], taught: ReadonlySet<string>, fallback?: TopicConcept, savedStepId?: string, afterBedtime = false): { conceptId?: string; stepId?: string; text?: string } {
+  const ideaHook = () => { const concept = fallback ?? concepts[0]; return { conceptId: concept?.id, text: concept?.hook }; };
+  // After bedtime a drop teaches nothing new (reviewsOnlyRemainder), so the card promises no lesson (Codex A item 74).
+  if (afterBedtime) return ideaHook();
+  // Today's saved drop has not reached its lesson yet, so Today opens that step: the card shows it, even if Practice
+  // has taught it since (Codex A items 73, 74). The caller passes it only while the lesson is still ahead.
+  if (savedStepId) {
+    for (const concept of concepts) {
+      const step = concept.steps?.find(row => row.id === savedStepId);
+      if (step) return { conceptId: concept.id, stepId: step.id, text: step.hook.stem };
+    }
+  }
+  const next = nextStep(concepts, taught);
+  if (next) return { conceptId: next.concept.id, stepId: next.step.id, text: next.step.hook.stem };
+  return ideaHook();
+}
+
+/**
+ * The daily lesson across several chosen topics (idea engine item 71, B2): take the next step of the topic whose last
+ * taught step is oldest (a topic never taught counts as oldest), so one topic is not used up before the next begins.
+ * Ties keep the catalog order. A step with no recorded day counts as taught long ago.
+ */
+export function nextStepAcross(topics: readonly (readonly TopicConcept[])[], taught: ReadonlySet<string>, taughtOn: Readonly<Record<string, string>> = {}): StepRef | undefined {
+  let best: StepRef | undefined;
+  let bestDay = '';
+  for (const concepts of topics) {
+    const next = nextStep(concepts, taught);
+    if (!next) continue;
+    const last = concepts.flatMap(concept => concept.steps ?? []).filter(step => taught.has(step.id)).map(step => taughtOn[step.id] ?? '0000-00-00').sort().at(-1) ?? '';
+    if (!best || last < bestDay) { best = next; bestDay = last; }
+  }
+  return best;
+}
+
 /** What the selector may draw from: stepped concepts keep only items of taught steps, and drop out until one is taught. */
 export function taughtCatalog(concepts: readonly TopicConcept[], taught: ReadonlySet<string>): TopicConcept[] {
   return concepts.flatMap(concept => {

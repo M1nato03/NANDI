@@ -252,7 +252,15 @@ public class NightPausePlugin extends Plugin {
     public void openUsageSettings(PluginCall call) {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getContext().startActivity(intent);
+        // Android says this screen may not exist on every phone (idea engine item 71, cj6 B1): fall back to Settings.
+        try { getContext().startActivity(intent); }
+        catch (android.content.ActivityNotFoundException error) {
+            try {
+                Intent fallback = new Intent(Settings.ACTION_SETTINGS);
+                fallback.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(fallback);
+            } catch (android.content.ActivityNotFoundException ignored) { call.reject("Settings could not be opened"); return; }
+        }
         call.resolve();
     }
 

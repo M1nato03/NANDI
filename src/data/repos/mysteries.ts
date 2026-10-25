@@ -39,3 +39,18 @@ export async function saveDailyCase(db: NandiDb, row: PuzzleRunRow, now = Date.n
     return saved;
   }));
 }
+
+/**
+ * Spec 24 Prove it: keeps the first proof the player found on a solved case. It touches only `proof`, never the result,
+ * the ledger or the rating, so it pays nothing and changes no day (cj5-mind §7.2).
+ */
+export async function saveCaseProof(db: NandiDb, id: string, proof: readonly number[], now = Date.now()): Promise<PuzzleRunRow | undefined> {
+  return trackWrite(() => db.transaction('rw', db.puzzleRuns, async () => {
+    const prior = await db.puzzleRuns.get(id);
+    if (!prior || prior.deleted || prior.result !== 'solved') return prior;
+    if (prior.proof) return prior;
+    const saved = { ...prior, proof: [...proof].sort((a, b) => a - b), updatedAt: now };
+    await db.puzzleRuns.put(saved);
+    return saved;
+  }));
+}

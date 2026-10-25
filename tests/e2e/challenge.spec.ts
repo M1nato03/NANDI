@@ -17,8 +17,9 @@ test('a solved daily board becomes a link that opens the same board for a friend
   await expect(page.getByRole('button', { name: 'Share as image' })).toBeVisible();
   await page.getByRole('button', { name: 'Share result' }).click();
   const text = await shared(page);
-  // Spec 19 C: three lines, text only. 21 Oct is before the board-number epoch, so no number yet.
-  expect(text).toMatch(/^NANDI \S+ [A-Za-z &]+ · (Easy|Medium|Hard)\n\d+:\d\d · no hints ✨\nSame board, your turn: https:\/\/nandi\.nandi11\.workers\.dev\/#mind\/challenge\/20261021\/[a-z]+\/[a-z]+\/\d+$/);
+  // Spec 19 C: three lines, text only. 21 Oct is before the board-number epoch, so no number yet. Spec 24: the link ends
+  // with the sender's pace marks.
+  expect(text).toMatch(/^NANDI \S+ [A-Za-z &]+ · (Easy|Medium|Hard)\n\d+:\d\d · no hints ✨\nSame board, your turn: https:\/\/nandi\.nandi11\.workers\.dev\/#mind\/challenge\/20261021\/[a-z]+\/[a-z]+\/\d+\/p[0-9a-z]{30}$/);
   const hash = text.slice(text.indexOf('#'));
 
   // The friend, two days later: a fresh phone with no NANDI data, no account, and no first-run screens in the way.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { catalogFor, makeDrop } from './flow';
-import { goldItems, nextStep, taughtCatalog } from '../../core/learn/steps';
+import { cardHook, goldItems, nextStep, nextStepAcross, taughtCatalog } from '../../core/learn/steps';
 import type { LearnConceptRow } from '../../data/types';
 
 const now = new Date('2026-10-22T12:00:00').getTime();
@@ -186,5 +186,88 @@ describe('lesson option order', () => {
     // Spec 16 §5: one hook and one guided try per step (30 steps).
     expect(questions.length).toBeGreaterThanOrEqual(60);
     expect(firstRight / questions.length).toBeLessThan(0.5);
+  });
+});
+
+describe('daily lesson across several topics (item 71, B2)', () => {
+  const ids = ['money-markets', 'psychology'];
+  const firstOf = (id: string) => nextStep(catalogFor([id]), new Set())!.step.id;
+  it('starts the next topic instead of using up the first one', () => {
+    const day1 = makeDrop({ ...base, ids }).items[0]!.lesson!;
+    const first = [firstOf('money-markets'), firstOf('psychology')];
+    expect(first).toContain(day1);
+    const other = first.find(id => id !== day1)!;
+    const day2 = makeDrop({ ...base, ids, now: now + 86_400_000, taughtSteps: [day1], taughtOn: { [day1]: '2026-10-22' } }).items[0]!.lesson;
+    expect(day2).toBe(other);
+  });
+  it('goes back to the topic whose last lesson is oldest', () => {
+    const money = firstOf('money-markets'); const psych = firstOf('psychology');
+    const drop = makeDrop({ ...base, ids, now: now + 2 * 86_400_000, taughtSteps: [money, psych], taughtOn: { [money]: '2026-10-22', [psych]: '2026-10-23' } });
+    const lesson = drop.items[0]!.lesson!;
+    expect(catalogFor(['money-markets']).some(concept => concept.steps?.some(step => step.id === lesson))).toBe(true);
+  });
+});
+
+describe('topic card hook (items 71 B3, 72)', () => {
+  it("shows each step's own hook on days 1-3, then the idea hook, and always names the next lesson's step", () => {
+    const concepts = catalogFor(['psychology']);
+    const steps = habits.steps!;
+    expect(steps.length).toBeGreaterThanOrEqual(2);
+    const taught: string[] = [];
+    const taughtOn: Record<string, string> = {};
+    steps.forEach((step, day) => {
+      const card = cardHook(concepts, new Set(taught));
+      expect(card).toEqual({ conceptId: 'habits', stepId: step.id, text: step.hook.stem });
+      const lesson = makeDrop({ ...base, now: now + day * 86_400_000, taughtSteps: [...taught], taughtOn }).items[0]!.lesson;
+      expect(lesson).toBe(card.stepId);
+      taught.push(step.id); taughtOn[step.id] = new Date(now + day * 86_400_000).toISOString().slice(0, 10);
+    });
+    // The next lesson moves to the next idea, and so does the card.
+    expect(cardHook(concepts, new Set(taught)).stepId).toBe(nextStep(concepts, new Set(taught))!.step.id);
+    // With every step of a topic taught, the card shows the chosen idea's own hook.
+    const all = new Set(concepts.flatMap(concept => (concept.steps ?? []).map(step => step.id)));
+    expect(cardHook(concepts, all, habits)).toEqual({ conceptId: 'habits', text: habits.hook });
+  });
+});
+
+describe('item 73 follow-ups', () => {
+  const money = catalogFor(['money-markets']); const psych = catalogFor(['psychology']);
+  it('B2: a tie keeps catalog order, and a newly added topic goes first', () => {
+    expect(nextStepAcross([money, psych], new Set())!.step.id).toBe(nextStep(money, new Set())!.step.id);
+    expect(nextStepAcross([psych, money], new Set())!.step.id).toBe(nextStep(psych, new Set())!.step.id);
+    // Two days of Money, then Psychology is added: the never-taught topic is the oldest.
+    const m1 = nextStep(money, new Set())!.step.id;
+    const m2 = nextStep(money, new Set([m1]))!.step.id;
+    const taught = new Set([m1, m2]);
+    expect(nextStepAcross([money, psych], taught, { [m1]: '2026-10-21', [m2]: '2026-10-22' })!.step.id).toBe(nextStep(psych, taught)!.step.id);
+  });
+  it('the card names the step in a saved daily drop, and with several topics each card names its own next step', () => {
+    const second = habits.steps![1]!.id;
+    expect(cardHook(psych, new Set(), undefined, second)).toMatchObject({ conceptId: 'habits', stepId: second });
+    // A saved step of another topic does not move this card.
+    expect(cardHook(psych, new Set(), undefined, nextStep(money, new Set())!.step.id).stepId).toBe(habits.steps![0]!.id);
+    // Item 74: Practice taught the saved step since, but Today still opens it, so the card keeps naming it.
+    expect(cardHook(psych, new Set([second]), undefined, second).stepId).toBe(second);
+    const ids = ['money-markets', 'psychology'];
+    const lesson = makeDrop({ ...base, ids }).items[0]!.lesson!;
+    const cards = [cardHook(money, new Set()), cardHook(psych, new Set())];
+    expect(cards.map(card => card.stepId)).toContain(lesson);
+  });
+  // Item 75 (contrived, accepted): the Learn screen reads the saved drop for the day it opened, so a screen left open
+  // across 04:00 can name yesterday's saved step until it reloads.
+  it.todo("a Learn screen left open across 04:00 reads the new day's saved drop");
+  it('after bedtime the card shows the idea hook, since the drop then teaches no new lesson (item 74)', () => {
+    const second = habits.steps![1]!.id;
+    expect(cardHook(psych, new Set(), habits, second, true)).toEqual({ conceptId: 'habits', text: habits.hook });
+    expect(cardHook(psych, new Set(), habits, undefined, true)).toEqual({ conceptId: 'habits', text: habits.hook });
+  });
+  it('a saved drop keeps its option order: the order is stored per item and the same drop rebuilds the same order', () => {
+    const later = { ...base, ids: ['psychology'], now: now + 86_400_000, taughtSteps: [habits.steps![0]!.id], taughtOn: { [habits.steps![0]!.id]: '2026-10-22' } };
+    const a = makeDrop(later); const b = makeDrop(later);
+    expect(a.items.map(item => item.optionOrder)).toEqual(b.items.map(item => item.optionOrder));
+    for (const item of a.items.filter(row => !row.lesson)) {
+      const source = catalogFor(['psychology']).flatMap(concept => concept.items).find(row => row.id === item.itemId)!;
+      expect([...item.optionOrder].sort()).toEqual(source.options.map(option => option.id).sort());
+    }
   });
 });

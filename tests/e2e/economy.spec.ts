@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 type Fact = { id: string; dayKey: string; mode: string; kind: string; refId: string; inputs: Record<string, unknown>; updatedAt: number; deleted: 0; deviceId: string };
 let count = 0;
@@ -104,6 +105,7 @@ test('task completion shows an XP toast and a skippable level reveal', async ({ 
   await page.goto('/#plan');
   await seed(page, [fact('2026-11-03', 'train', 'session', { xp: 95 })]);
   const add = async (title: string) => {
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill(title);
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
     await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Done' }).last().click();

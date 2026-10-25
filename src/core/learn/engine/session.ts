@@ -2,6 +2,7 @@ import { RULES } from '../../rules.config';
 import type { TopicConcept, TopicItem } from '../../../data/packs/schemas';
 import { DAY_MS, ENGINE_RULES, INITIAL_MASTERY, itemSeedRating, predictedSuccess, type ConceptState, type ItemAnswer, type ItemState } from './model';
 import type { AnswerFact, RetentionDay } from './analytics';
+import { seededShuffle } from './shuffle';
 
 export interface EngineCatalog { concepts: readonly TopicConcept[] }
 export interface SelectionContext {
@@ -70,7 +71,7 @@ export interface ComposeContext extends Omit<SelectionContext, 'recentTypes' | '
   minutesPerItem?: number; requestedItems?: number;
 }
 export function orderOptions(item: TopicItem, seed: number): string[] {
-  return item.options.map(option => option.id).sort((a, b) => hash(`${item.id}:${a}`, seed) - hash(`${item.id}:${b}`, seed));
+  return seededShuffle(item.options.map(option => option.id), `${item.id}:${seed}`);
 }
 export function composeDrop(context: ComposeContext): Drop {
   const minutesPerItem = context.minutesPerItem ?? 0.7;

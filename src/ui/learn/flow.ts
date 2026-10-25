@@ -1,5 +1,5 @@
 import { composeConceptPractice, composeDrop, orderOptions, type ConceptState, type DropItem, type ItemState, type Drop } from '../../core/learn/engine';
-import { findStep, goldItems, interleave, lessonItemId, nextStep, practiceTail, taughtCatalog, type TailAnswer } from '../../core/learn/steps';
+import { findStep, goldItems, interleave, lessonItemId, nextStep, nextStepAcross, practiceTail, taughtCatalog, type TailAnswer } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
 import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
@@ -45,7 +45,8 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
   const today = dayKey(input.now);
   const catalog = taughtCatalog(fullCatalog, new Set([...taught].filter(stepId => (input.taughtOn?.[stepId] ?? '') < today)));
   const lesson = (conceptId?: string): DropItem[] | undefined => {
-    const next = nextStep(fullCatalog, taught, conceptId);
+    const next = conceptId ? nextStep(fullCatalog, taught, conceptId)
+      : nextStepAcross(topics.filter(pack => input.ids.includes(pack.body.topic.id)).map(pack => pack.body.modules.flatMap(module => module.concepts)), taught, input.taughtOn ?? {});
     if (!next) return undefined;
     return [{ itemId: lessonItemId(next.step.id), conceptId: next.concept.id, optionOrder: [], mode: 'new', lesson: next.step.id }];
   };
@@ -56,7 +57,7 @@ export function makeDrop(input: { ids: string[]; concepts: LearnConceptRow[]; it
     const pool = concept && goldItems(concept, input.taughtOn ?? {}, today);
     if (concept && pool) return { id: `drop:gold:${concept.id}:${input.now}`, cursor: 0, ending: { kind: 'stopping-screen' },
       items: [...pool].sort((a, b) => b.difficultySeed - a.difficultySeed || a.id.localeCompare(b.id)).slice(0, RULES.gamify.goldReviewItems)
-        .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: item.options.map(option => option.id), mode: 'review' as const })) };
+        .map(item => ({ itemId: item.id, conceptId: concept.id, optionOrder: orderOptions(item, input.now % 1_000_000), mode: 'review' as const })) };
   }
   const afterBedtime = isAfterBedtime(input.now, input.bedtime ?? RULES.night.defaultBedtime);
   const due = input.reviewDue || afterBedtime ? catalog.filter(concept => {

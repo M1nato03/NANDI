@@ -74,9 +74,11 @@ export function postponeTask(
   newStart: number | null,
   now: number,
 ): CoreTask {
-  const count =
-    task.postponeCount + (isActualPostpone(task, newStart, now) ? 1 : 0);
-  if (count >= RULES.tasks.postpone.autoSomedayAt)
+  const counted = isActualPostpone(task, newStart, now);
+  const count = task.postponeCount + (counted ? 1 : 0);
+  // Only a counted move parks the task. Planning it again from Someday is never counted, so it always comes back
+  // (Codex A item 87: a task parked by its 4th move could never leave Someday).
+  if (counted && count >= RULES.tasks.postpone.autoSomedayAt)
     return {
       ...task,
       status: 'someday',

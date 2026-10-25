@@ -6,6 +6,7 @@ const plain: Record<string, string> = {
   choice_sheet_required: 'This one has moved twice. Pick a choice in the move sheet.',
   reason_required: "This week's moves are used up. Pick a quick reason first.",
   real_reason_limit: 'Real-reason moves are used up for this week.',
+  cant_undo: "Can't undo now.",
 };
 export function errorMessage(error: unknown): string {
   const text = error instanceof Error ? error.message : String(error);

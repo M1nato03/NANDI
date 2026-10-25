@@ -21,9 +21,13 @@ declare global {
     };
   }
   interface Window {
+    __nandiMindTest?: {
+      solveKnownSolution(): void;
+    };
     __nandiCaseTest?: {
       solveKnownSolution(): void;
       solveTodaysCase(): void;
+      proof(): { shortest: number[]; clues: number };
     };
     __nandiTest?: {
       seedShell(): Promise<void>;
