@@ -20,7 +20,9 @@ import { playCastSound } from '../cast/sound';
 import { estimateFeedback, formatEstimate, sliderScale } from '../../core/learn/estimate';
 import { askFor } from '../../core/learn/ask';
 import { findStep } from '../../core/learn/steps';
-import { saveLessonDone } from '../../data/repos/learn-engine';
+import { chikuPlayed, saveChikuPlayed, saveLessonDone } from '../../data/repos/learn-engine';
+import { ChikuStage } from './ChikuStage';
+import { chikuDue, type ChikuScene } from '../../core/learn/chiku';
 import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
 import { useCountUp } from './useCountUp';
 import { askLineFor, askMessage } from '../../core/learn/askLine';
@@ -44,7 +46,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     drops: await db.learnDrops.toArray(),
     concepts: await db.learnConcepts.toArray(),
     items: await db.learnItems.toArray(),
-    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention', 'gold-review', 'gold-attempt', 'learn-lesson').toArray(),
+    ledger: await db.ledger.where('kind').anyOf('learn-answer', 'learn-retention', 'gold-review', 'gold-attempt', 'learn-lesson', 'chiku').toArray(),
   }), []);
   const [picked, setPicked] = useState<string[]>([]);
   const [practiceId, setPracticeId] = useState<string>();
@@ -60,6 +62,10 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const [ideaAgain, setIdeaAgain] = useState(false);
   // A celebration plays only for a drop finished on this screen, never when a finished drop is reopened.
   const [answeredHere, setAnsweredHere] = useState(false);
+  const [chiku, setChiku] = useState<{ conceptId: string; scene: ChikuScene } | null>(null);
+  const [chikuClosed, setChikuClosed] = useState(0);
+  // After Chiku, focus goes to the next control in the drop (Codex B item 111).
+  useEffect(() => { if (chikuClosed) document.querySelector<HTMLElement>('.learn-drop button, .learn-drop [href]')?.focus(); }, [chikuClosed]);
   // Spec 19 E: "Ask someone" sits on the daily finish screen in the day window only, and checks the clock again when tapped.
   const shareDay = useShareDay();
   const [askNote, setAskNote] = useState('');
@@ -217,6 +223,11 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       const current = (await db.learnDrops.get(drop.id))?.drop ?? drop;
       await saveLessonDone(db, current, { stepId, conceptId, dropId: drop.id, ...result }, await getOrCreateDeviceId(db, at), at);
       setAnsweredHere(true);
+      // Spec 30: once per idea, after the lesson that teaches its last step, if the idea has a scene; never after bedtime.
+      const concept = concepts.find(row => row.id === conceptId);
+      const bedtime = typeof data?.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
+      // The played check reads the ledger itself, so a replayed lesson or a restored backup never offers Chiku twice (Codex B item 110).
+      if (concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), []) && !(await chikuPlayed(db, conceptId))) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
     } catch { setMessage('Could not save this lesson. Try again.'); }
     finally { writing.current = false; setBusy(false); }
   };
@@ -228,6 +239,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     <div className="learn-topic-tiles">{topics.map(pack => <button type="button" key={pack.id} className={`learn-topic-tile ${picked.includes(pack.body.topic.id) ? 'chosen' : ''}`} aria-pressed={picked.includes(pack.body.topic.id)} onClick={() => setPicked(current => current.includes(pack.body.topic.id) ? current.filter(id => id !== pack.body.topic.id) : [...current, pack.body.topic.id])}><strong>{pack.title}</strong><span>{pack.description}</span></button>)}</div>
     <button type="button" disabled={!picked.length || busy} onClick={() => void start(picked)}>Start my first drop</button>{message && <p role="status">{message}</p>}</div>;
   if (!drop) return <div className="learn-drop" role="status">Preparing your drop…{message}</div>;
+  if (chiku) return <div className="learn-drop learn-active"><header className="learn-drop-head"><span>Teach Chiku</span></header>
+    <ChikuStage scene={chiku.scene} seed={`${chiku.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChiku(null); setChikuClosed(count => count + 1); }} />
+    {message && <p role="status">{message}</p>}</div>;
   if (!step) {
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);
     const improved = touched.filter(concept => masteryMapState(data.concepts.find(row => row.id === concept.id)) !== 'Not started');

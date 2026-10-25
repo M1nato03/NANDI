@@ -323,3 +323,47 @@
 @keyframes matka-open-right { to { transform: rotate(18deg) translateX(6px); } }
 @media (prefers-reduced-motion: reduce) { .haveli *, .matka *, .moti-friend { animation: none !important; transition: none !important; } }
 :root[data-motion='reduce'] .haveli *, :root[data-motion='reduce'] .matka *, :root[data-motion='reduce'] .moti-friend { animation: none !important; transition: none !important; }
+/* Spec 30: Teach Chiku, one card. One stage, Chiku, one prop; each beat is a still frame under reduced motion. */
+.chiku-step { margin-top: var(--space-4); }
+.chiku-stage { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: var(--space-4); min-height: 148px; padding: var(--space-3); border-radius: var(--radius-row); background: color-mix(in srgb, var(--area-learn) 14%, var(--surface-2)); overflow: hidden; cursor: pointer; }
+.chiku-actor { position: relative; display: inline-block; transform-origin: 50% 90%; }
+.chiku-prop { flex: none; }
+.chiku-prop.waiting { opacity: 0; }
+.chiku-item { position: absolute; right: -18px; bottom: 26px; width: 36px; height: 36px; }
+.chiku-item svg { width: 36px; height: 36px; }
+.chiku-item.away { opacity: 0; transform: translateY(18px); transition: opacity 600ms 500ms, transform 600ms 500ms; }
+.chiku-card-held { position: absolute; left: 46px; bottom: 30px; max-width: 120px; padding: 4px 8px; border-radius: 8px; background: var(--surface); color: var(--ink); font-size: 0.75rem; transform: rotate(8deg); }
+.chiku-think-bubble { position: absolute; left: calc(50% + 34px); top: 14px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); color: var(--ink); font-weight: 800; }
+.chiku-say { margin: var(--space-3) 0 var(--space-2); font-weight: 600; }
+.chiku-caption { margin: var(--space-2) 0; color: var(--ink); animation: chiku-fade 400ms ease-out 1; }
+.chiku-question { color: var(--ink-2); }
+.chiku-cards { display: grid; gap: var(--space-2); }
+.chiku-card { min-height: 56px; padding: 12px 14px; border: 0; border-radius: var(--radius-row); background: var(--surface-2); color: var(--ink); text-align: left; font-weight: 600; }
+.chiku-card.tried { background: var(--surface-3); color: var(--ink-2); }
+.chiku-end > button { margin-top: var(--space-2); }
+.chiku-skip { display: block; min-height: 44px; margin-top: var(--space-2); }
+.chiku-stuck { animation: chiku-tilt 900ms ease-in-out 1; }
+.chiku-take { animation: chiku-tuck 400ms ease-out 1; }
+.chiku-newday { animation: chiku-walk 900ms ease-out 1; }
+.chiku-newday ~ .chiku-prop, .chiku-stage .chiku-prop { animation: chiku-slide 700ms ease-out 1; }
+.chiku-act-pull-phone .chiku-item { animation: chiku-reach 700ms ease-out 1; }
+.chiku-act-pat-pocket { animation: chiku-pat 600ms ease-in-out 2; }
+.chiku-act-open-book .chiku-item, .chiku-act-eat .chiku-item, .chiku-act-pay .chiku-item { animation: chiku-reach 700ms ease-out 1; }
+.chiku-act-skip, .chiku-act-walk-away { animation: chiku-leave 1200ms ease-in 1 forwards; }
+.chiku-act-wake { animation: chiku-hop 600ms ease-out 1; }
+.chiku-right { animation: chiku-hop 600ms ease-out 2; }
+.chiku-wrong { animation: chiku-tilt 800ms ease-in-out 1; }
+@keyframes chiku-tilt { 30% { transform: rotate(-8deg); } 70% { transform: rotate(6deg); } 100% { transform: none; } }
+@keyframes chiku-tuck { 0% { transform: scale(0.94); } 100% { transform: none; } }
+@keyframes chiku-walk { from { transform: translateX(-120%); } to { transform: none; } }
+@keyframes chiku-slide { from { transform: translateX(120%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes chiku-reach { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes chiku-pat { 50% { transform: translateY(3px) rotate(-3deg); } }
+@keyframes chiku-leave { to { transform: translateX(140%); } }
+@keyframes chiku-hop { 40% { transform: translateY(-16px); } 100% { transform: none; } }
+@keyframes chiku-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .chiku-step *, .chiku-actor { animation: none !important; transition: none !important; } }
+:root[data-motion='reduce'] .chiku-step *, :root[data-motion='reduce'] .chiku-actor { animation: none !important; transition: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.chiku-scene { cursor: pointer; outline-offset: 4px; }
+.chiku-next { display: block; min-height: 44px; margin-top: var(--space-1); }

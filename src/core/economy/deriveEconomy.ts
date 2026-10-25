@@ -532,6 +532,8 @@ function replayEconomy(
     const mind = Math.min(rules.mind.dailyCap,
       (caseSolved ? rules.mind.mysteryXp : 0) + (dailyBoard ? rules.mind.dropBoardXp : 0) +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
+      // Spec 30: one Chiku fact per idea, ever; none exist before the build that writes them.
+      count('chiku', Number.MAX_SAFE_INTEGER, rules.mind.chikuXp ?? 0) +
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
       mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).length * rules.mind.sideBoardXp +
       (learnDrop ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));

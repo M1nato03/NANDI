@@ -136,6 +136,7 @@ export function replayFactXp(fact: LedgerRow, history: readonly RulesHistoryEntr
     if (fact.kind === 'board') return input.daily === false ? rules.mind.sideBoardXp : rules.mind.dropBoardXp;
     if (fact.kind === 'lesson') return rules.mind.lessonXp;
     if (fact.kind === 'card') return rules.mind.cardXp;
+    if (fact.kind === 'chiku') return rules.mind.chikuXp ?? 0;
   }
   return 0;
 }
