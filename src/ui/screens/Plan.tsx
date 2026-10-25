@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -30,6 +30,7 @@ import { SoftChip, SoftHome, softMoreKey, useSoftFacts } from '../soft/SoftDay';
 import { softToday, yesterdayWasSoft } from '../../core/soft/soft';
 import { isAfterBedtime } from '../../core/time';
 import { useModalFocus } from '../shell/useModalFocus';
+import { errorMessage } from '../shell/errorMessage';
 
 export function Plan({ questId }: { questId?: string }) {
   const board = useTaskBoard();
@@ -38,7 +39,11 @@ export function Plan({ questId }: { questId?: string }) {
   // Task events load only for the task whose details are open (cj2 heavy data #6: Plan read all ~4.6k a year).
   const events = useLiveQuery(() => detail ? db.taskEvents.where('taskId').equals(detail.id).filter(row => row.deleted === 0).toArray() : [], [detail?.id]) ?? [];
   const [pickMust, setPickMust] = useState(false);
-  const [pickNote, setPickNote] = useState('');
+  // Item 83/88: a Pick one Must message shows on the tapped choice's own row.
+  const [pickNote, setPickNote] = useState<{ id: string; text: string } | null>(null);
+  // It also takes focus and scrolls into view, so a tap near the bottom of a 360 px screen still shows it (item 89).
+  const pickNoteRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => { if (pickNote) { pickNoteRef.current?.focus(); pickNoteRef.current?.scrollIntoView({ block: 'nearest' }); } }, [pickNote]);
   const [respace, setRespace] = useState<{ task: TaskRow; at: number } | null>(null);
   const respaceDialog = useModalFocus<HTMLElement>(() => setRespace(null));
   const logs = useLiveQuery(() => db.dailyLog.filter(row => row.deleted === 0).toArray(), []) ?? [];
@@ -66,9 +71,12 @@ export function Plan({ questId }: { questId?: string }) {
   async function pinMust(task: TaskRow) {
     const occupied = todayOpen.filter(row => row.scheduledStart != null).map(row => ({ start: row.scheduledStart!, end: row.scheduledEnd ?? row.scheduledStart! + (row.estimateMin ?? 30) * 60_000 }));
     const slot = suggestSlots(board.now, task.estimateMin ?? 30, occupied).find(at => dayKey(at) === today);
-    if (slot == null) { setPickNote('No free time left today. Open the task and choose a time.'); return; }
-    setPickNote('');
-    const ok = await board.act(async (repos, at) => { if (task.status !== 'planned' || task.dayKey !== today) await repos.moveTask(task.id, at, { day: today, start: slot }); await repos.setPriority(task.id, 'must', at); }, 'One Must picked.');
+    if (slot == null) { setPickNote({ id: task.id, text: 'No free time left today. Open the task and choose a time.' }); return; }
+    setPickNote(null);
+    // A refusal (say, a first step needed) shows next to the choices, not far down Plan (Codex A item 87).
+    let failure = '';
+    const ok = await board.act(async (repos, at) => { try { if (task.status !== 'planned' || task.dayKey !== today) await repos.moveTask(task.id, at, { day: today, start: slot }); await repos.setPriority(task.id, 'must', at); } catch (caught) { failure = errorMessage(caught); throw caught; } }, 'One Must picked.');
+    if (!ok) setPickNote({ id: task.id, text: failure ? `${failure} Open the task to move it.` : 'That did not save. Try again.' });
     if (ok) { await dismissFresh(); setPickMust(false); }
   }
   if (questId) return <section className="screen plan-screen"><SideQuests selectedId={questId} /></section>;
@@ -78,7 +86,7 @@ export function Plan({ questId }: { questId?: string }) {
   const afterBed = isAfterBedtime(board.now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
   if (soft.state && !softMore) return <section className="screen plan-screen soft-screen"><p className="eyebrow">Go gently</p><h1>Plan</h1><SoftHome state={soft.state} today={today} done={!!soft.done} facts={softFacts} settings={settings} tasks={board.tasks} act={board.act} /></section>;
   return <section className="screen plan-screen"><p className="eyebrow">Make room for what matters</p><div className="cast-inline"><h1>Plan</h1>{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" />}</div><CourtyardBanner />{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}{!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}<StorybookCard today={today} />{askAgency && <AgencyCheck now={board.now} />}{awayToday && <p>You're away. Rest well.</p>}{night.shift > 0 && <p className="small busy-day">Busy day: about {Math.round(night.plannedMinutes / 60)} h planned, so tonight starts {night.shift} min later (bedtime {night.bedtime}). <button type="button" className="text-button" onClick={() => void keepUsualNight()}>Keep my usual time</button></p>}<MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />
-    {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <button type="button" className="secondary fresh-choice" key={task.id} onClick={() => void pinMust(task)}>{task.title}</button>)}{pickNote && <p role="alert">{pickNote}</p>}</div>}</section>}
+    {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}
     {/* Spec 27: Mor's list first. Three lists, three controls per row; everything else waits behind More. */}
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} />
     <PhoneChhutti />

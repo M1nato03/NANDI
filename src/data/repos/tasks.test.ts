@@ -153,6 +153,14 @@ describe('Tasks repository transactions', () => {
     expect((await db.focus.get(third.id))?.endedAt).toBe(at(4, 12) + 5 * 60_000);
     expect((await db.tasks.get(added.id))?.actualMinutes).toBe(47);
   });
+  it('a task parked by its 4th move can be planned again from Someday (Codex A item 87)', async () => {
+    const created = await task(at(4, 10));
+    await db.tasks.update(created.id, { postponeCount: 3, firstStep: 'Open it' });
+    const parked = await repos.postpone(created.id, at(4, 11), { newStart: at(5, 10), reason: 'blocked' });
+    expect(parked).toMatchObject({ status: 'someday', postponeCount: 4 });
+    const back = await repos.postpone(created.id, at(4, 12), { newStart: at(6, 10) });
+    expect(back).toMatchObject({ status: 'planned', dayKey: dayKey(at(6, 10)), scheduledStart: at(6, 10), postponeCount: 4 });
+  });
   it('guards postpone choices within the transaction and does not write on rejection', async () => {
     const created = await task(at(4, 10));
     await expect(
