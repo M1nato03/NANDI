@@ -54,6 +54,12 @@ export function chikuOrder(seedText: string, count = 3): number[] {
   return order;
 }
 
+/** Spec 30: Chiku comes once per idea, right after the lesson that teaches the idea's last step, only if the idea has
+ * a scene, never after bedtime, and never again once played. */
+export function chikuDue(concept: { id: string; chiku?: unknown; steps?: { id: string }[] } | undefined, stepId: string, afterBedtime: boolean, facts: readonly { id: string; deleted?: number }[]): boolean {
+  return !!concept?.chiku && concept.steps?.at(-1)?.id === stepId && !afterBedtime && !facts.some(row => row.id === `chiku:${concept.id}` && !row.deleted);
+}
+
 /** Whether Chiku's guess from a card matches what really happened. */
 export const chikuMatches = (scene: ChikuScene, card: number) => scene.guesses[card]?.answer === scene.truth.answer;
 

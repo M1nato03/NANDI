@@ -22,7 +22,7 @@ import { askFor } from '../../core/learn/ask';
 import { findStep } from '../../core/learn/steps';
 import { saveChikuPlayed, saveLessonDone } from '../../data/repos/learn-engine';
 import { ChikuStage } from './ChikuStage';
-import type { ChikuScene } from '../../core/learn/chiku';
+import { chikuDue, type ChikuScene } from '../../core/learn/chiku';
 import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './StepLesson';
 import { useCountUp } from './useCountUp';
 import { askLineFor, askMessage } from '../../core/learn/askLine';
@@ -223,7 +223,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       // Spec 30: once per idea, after the lesson that teaches its last step, if the idea has a scene; never after bedtime.
       const concept = concepts.find(row => row.id === conceptId);
       const bedtime = typeof data?.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
-      if (concept?.chiku && concept.steps?.at(-1)?.id === stepId && !isAfterBedtime(at, bedtime) && !data?.ledger.some(row => row.id === `chiku:${conceptId}`)) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
+      if (concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), data?.ledger ?? [])) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
     } catch { setMessage('Could not save this lesson. Try again.'); }
     finally { writing.current = false; setBusy(false); }
   };
