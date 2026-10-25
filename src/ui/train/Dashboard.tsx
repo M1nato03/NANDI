@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, SLOW_NAME, SLOW_RANK, calculatePlates, isRetestWeek, nordicCardDue, nordicState, nordicSwitchShown, type Track } from '../../core/train';
@@ -9,7 +9,7 @@ import { Reassessment } from './Reassessment';
 import { NordicCard } from './NordicCard';
 import { EmptyState } from '../EmptyState';
 import { RULES } from '../../core/rules.config';
-import { nextRestBeat, readBeatChanges, rhythmSheet, taalWeek, TAAL_BEATS_KEY } from '../../core/train/taal';
+import { nextRestBeat, readBeatChanges, rhythmSheet, rhythmWeeks, taalWeek, trainDays, TAAL_BEATS_KEY } from '../../core/train/taal';
 import { weekStart } from '../../core/economy/deriveEconomy';
 import type { SettingRow } from '../../data/types';
 import { TaalWeekCard } from './TaalWeek';
@@ -59,10 +59,18 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
   const nordic = nordicState(program.nordic, program.placement?.hinge);
   const nordicDue = program.track === 'bodyweight' && nordicCardDue(nordic, { rank: program.placement?.hinge ?? 1, today: dayKey(now), softDay: !!softToday(data.softFacts ?? [], dayKey(now)).state, afterBedtime: isAfterBedtime(now, data.bedtime ?? RULES.night.defaultBedtime), heatMode: !!program.heatModeEnabled });
   // Spec 24 #3 Taal week: derived from the train facts and one change row per week; nothing new is scored.
-  const changesFor = (week: string) => readBeatChanges(data.beats?.find(row => row.key === TAAL_BEATS_KEY(week) && !row.deleted)?.value);
+  // Built per facts version and day, not per clock tick; past weeks are built only when the sheet opens (Codex B item 102).
+  const today = dayKey(now);
+  const beatRows = data.beats;
+  const changesFor = useCallback((week: string) => readBeatChanges(beatRows?.find(row => row.key === TAAL_BEATS_KEY(week) && !row.deleted)?.value), [beatRows]);
   const programDays = program.days ?? [1, 3, 5];
-  const week = taalWeek({ today: dayKey(now), programDays, target, ledger, changes: changesFor(weekStart(dayKey(now))) });
-  const sheet = rhythmSheet({ today: dayKey(now), since: dayKey(program.startedAt ?? now), programDays, target, ledger, changesFor, history: program.planHistory });
+  const daysKey = programDays.join();
+  const facts = useMemo(() => trainDays(ledger), [ledger]);
+  const week = useMemo(() => taalWeek({ today, programDays: daysKey.split(',').map(Number), target, days: facts, changes: changesFor(weekStart(today)) }), [today, daysKey, target, facts, changesFor]);
+  const since = dayKey(program.startedAt ?? now);
+  const history = program.planHistory;
+  const sheetWeeks = rhythmWeeks(today, since);
+  const loadSheet = useCallback(() => rhythmSheet({ today, since, programDays: daysKey.split(',').map(Number), target, ledger, changesFor, history }), [today, since, daysKey, target, ledger, changesFor, history]);
   const todayBeat = week.beats.find(beat => beat.today);
   const moveTo = nextRestBeat(week);
   if (page === 'finish') return null;
@@ -105,7 +113,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
       {message.includes('20%') && <label><input type="checkbox" checked={confirmVolume} onChange={event => setConfirmVolume(event.target.checked)} /> Confirm the weekly hard-set increase</label>}
     </div>
     {nordicDue && <NordicCard busy={busy} answer={choice => { void act((repos, at) => repos.answerNordicCard(choice, at), choice === 'ready' ? 'Your next hinge session is a banded Nordic curl.' : 'Staying on slow single-leg RDL.'); }} />}
-    <TaalWeekCard week={week} sheet={sheet} />
+    <TaalWeekCard week={week} sheetWeeks={sheetWeeks} loadSheet={loadSheet} />
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
     <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
       const isTrained = completed.some(row => row.dayKey === key);

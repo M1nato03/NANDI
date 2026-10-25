@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { nextRestBeat, planForWeek, readBeatChanges, rhythmSheet, taalWeek, weekLine } from './taal';
+import { nextRestBeat, planForWeek, readBeatChanges, rhythmSheet, rhythmWeeks, taalWeek, trainDays, weekLine } from './taal';
 import type { LedgerRow } from '../../data/types';
 
 // Mon 2 Nov 2026 starts the week; program days Mon, Wed, Fri (1, 3, 5).
@@ -76,4 +76,25 @@ describe('Taal week (spec 24 #3, cj5-train §7 #1)', () => {
     expect(sheet[0]).toMatchObject({ weekStart: '2026-11-09', target: 2, filled: 2, closed: true });
     expect(weekLine(sheet[0]!)).toBe('This week’s cycle is closed.');
   });
+  it('a real session wins over a choice: it takes back a move and a rest-today, with no rest-day label (Codex B item 102)', () => {
+    const moved = taalWeek({ ...base, today: '2026-11-04', ledger: [session('2026-11-04')], changes: { moves: [{ from: '2026-11-04', to: '2026-11-05' }], restToday: [] } });
+    expect(moved.beats[2]).toMatchObject({ plan: 'clap', filled: true, extra: false });
+    expect(moved.beats[3]).toMatchObject({ plan: 'rest', filled: false });
+    expect(moved.claps).toBe(3);
+    const rested = taalWeek({ ...base, today: '2026-11-04', ledger: [session('2026-11-04')], changes: { moves: [], restToday: ['2026-11-04'] } });
+    expect(rested.beats[2]).toMatchObject({ plan: 'clap', filled: true, extra: false });
+    // Training on the day a clap moved to is that day's clap, not an extra; a true program rest day still says so.
+    const onTarget = taalWeek({ ...base, today: '2026-11-05', ledger: [session('2026-11-05')], changes: { moves: [{ from: '2026-11-04', to: '2026-11-05' }], restToday: [] } });
+    expect(onTarget.beats[3]).toMatchObject({ plan: 'clap', filled: true, extra: false });
+    expect(taalWeek({ ...base, today: '2026-11-03', ledger: [session('2026-11-03')] }).beats[1]).toMatchObject({ extra: true });
+  });
+  it('reads the train facts once: the same week from shared days, and a sheet size without building it (Codex B item 102)', () => {
+    const ledger = [session('2026-11-02'), walk('2026-11-03'), session('2026-11-11')];
+    const days = trainDays(ledger);
+    expect(taalWeek({ ...base, today: '2026-11-04', days })).toEqual(taalWeek({ ...base, today: '2026-11-04', ledger }));
+    expect(rhythmWeeks('2026-11-18', '2026-10-28')).toBe(3);
+    expect(rhythmWeeks('2026-11-04', '2026-11-02')).toBe(0);
+    expect(rhythmWeeks('2027-03-24', '2026-11-02')).toBe(rhythmSheet({ ...base, today: '2027-03-24', since: '2026-11-02', ledger, changesFor: () => ({ moves: [], restToday: [] }) }).length);
+  });
 });
+

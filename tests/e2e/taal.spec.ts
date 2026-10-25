@@ -60,6 +60,9 @@ test('the week rolls over at 04:00 on a screen left open, and the closed week re
   await page.clock.setFixedTime(new Date('2026-11-09T04:30:00'));
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
   await expect(page.getByRole('list', { name: 'This week' }).getByRole('listitem', { name: 'Mon: training day, today' })).toBeVisible();
+  // Past weeks are built only when the sheet opens (Codex B item 102).
+  await expect(page.locator('.taal-sheet > ul > li')).toHaveCount(0);
   await page.locator('.taal-sheet > summary').click();
+  await expect(page.locator('.taal-sheet > ul > li')).toHaveCount(1);
   await expect(page.locator('.taal-sheet')).toContainText('This week closed at 0. That counts.');
 });

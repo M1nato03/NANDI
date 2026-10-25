@@ -29,25 +29,42 @@ export function readBeatChanges(value: unknown): BeatChanges {
 
 const weekdayOf = (key: string) => new Date(`${key}T12:00:00Z`).getUTCDay();
 
-export function taalWeek(input: { today: string; week?: string; programDays: readonly number[]; target: number; ledger: readonly LedgerRow[]; changes?: BeatChanges }): TaalWeek {
+/** The training days and walk checks of a ledger, read once (Codex B item 102: no rescan per week). */
+export type TrainDays = { trained: ReadonlySet<string>; walked: ReadonlySet<string> };
+export function trainDays(ledger: readonly LedgerRow[]): TrainDays {
+  const trained = new Set<string>(), walked = new Set<string>();
+  for (const fact of ledger) {
+    if (fact.deleted || fact.mode !== 'train') continue;
+    if (fact.kind === 'session' && Number(fact.inputs?.xp ?? 0) > 0) trained.add(fact.dayKey);
+    else if (fact.kind === 'rest') walked.add(fact.dayKey);
+  }
+  return { trained, walked };
+}
+
+export function taalWeek(input: { today: string; week?: string; programDays: readonly number[]; target: number; ledger?: readonly LedgerRow[]; days?: TrainDays; changes?: BeatChanges }): TaalWeek {
   const start = input.week ?? weekStart(input.today);
   const keys = Array.from({ length: 7 }, (_, index) => addEconomyDays(start, index));
   const changes = input.changes ?? { moves: [], restToday: [] };
-  const plan = new Map(keys.map(key => [key, input.programDays.includes(weekdayOf(key)) ? 'clap' as const : 'rest' as const]));
+  const { trained, walked } = input.days ?? trainDays(input.ledger ?? []);
+  const program = new Map(keys.map(key => [key, input.programDays.includes(weekdayOf(key)) ? 'clap' as const : 'rest' as const]));
+  const plan = new Map(program);
   // Changes apply in order, and only inside this week: a move swaps a clap with a rest beat, rest-today turns a clap.
+  // A real session wins over a choice (Codex B item 102): training on a day moved away from takes the move back, so
+  // its target day is a rest beat again, and training after "Rest today" is a clap like any other.
   let moves = 0;
   for (const move of changes.moves) {
     if (plan.get(move.from) !== 'clap' || plan.get(move.to) !== 'rest' || moves >= RULES.taal.movesPerWeek) continue;
-    plan.set(move.from, 'rest'); plan.set(move.to, 'clap'); moves++;
+    moves++;
+    if (trained.has(move.from) && !trained.has(move.to)) continue;
+    plan.set(move.from, 'rest'); plan.set(move.to, 'clap');
   }
-  for (const key of changes.restToday) if (plan.get(key) === 'clap') plan.set(key, 'rest');
-  const trained = new Set(input.ledger.filter(fact => !fact.deleted && fact.mode === 'train' && fact.kind === 'session' && Number(fact.inputs?.xp ?? 0) > 0).map(fact => fact.dayKey));
-  const walked = new Set(input.ledger.filter(fact => !fact.deleted && fact.mode === 'train' && fact.kind === 'rest').map(fact => fact.dayKey));
+  for (const key of changes.restToday) if (plan.get(key) === 'clap' && !trained.has(key)) plan.set(key, 'rest');
   const beats = keys.map(key => {
     const planned = plan.get(key)!;
     const session = trained.has(key);
     const past = key < input.today;
-    return { dayKey: key, weekday: weekdayOf(key), plan: session ? 'clap' as const : planned, filled: session || (planned === 'rest' && past), walked: walked.has(key) && !session, extra: session && planned === 'rest', today: key === input.today, past };
+    // "Trained on a rest day" only for a day that was rest in the program and not made a clap by a move.
+    return { dayKey: key, weekday: weekdayOf(key), plan: session ? 'clap' as const : planned, filled: session || (planned === 'rest' && past), walked: walked.has(key) && !session, extra: session && planned === 'rest' && program.get(key) === 'rest', today: key === input.today, past };
   });
   const filled = beats.filter(beat => beat.plan === 'clap' && beat.filled).length;
   const ended = keys[6]! < input.today;
@@ -75,15 +92,21 @@ export function planForWeek(history: readonly PlanStep[] | undefined, week: stri
   return step ? { days: step.days, target: step.target } : current;
 }
 
+/** How many past weeks the rhythm sheet holds, without building them. */
+export function rhythmWeeks(today: string, since: string): number {
+  const first = weekStart(since), last = addEconomyDays(weekStart(today), -7);
+  return last < first ? 0 : Math.round((Date.parse(`${last}T12:00:00Z`) - Date.parse(`${first}T12:00:00Z`)) / (7 * 86_400_000)) + 1;
+}
+
 /** The rhythm sheet: every past week since the program began, newest first. It only grows (no cap). */
 export function rhythmSheet(input: { today: string; since: string; programDays: readonly number[]; target: number; ledger: readonly LedgerRow[]; changesFor: (week: string) => BeatChanges; history?: readonly PlanStep[] }): TaalWeek[] {
   const out: TaalWeek[] = [];
-  const ledger = input.ledger.filter(fact => fact.mode === 'train');
+  const days = trainDays(input.ledger);
   let week = addEconomyDays(weekStart(input.today), -7);
   const first = weekStart(input.since);
   while (week >= first) {
     const plan = planForWeek(input.history, week, { days: input.programDays, target: input.target });
-    out.push(taalWeek({ today: input.today, week, programDays: plan.days, target: plan.target, ledger, changes: input.changesFor(week) }));
+    out.push(taalWeek({ today: input.today, week, programDays: plan.days, target: plan.target, days, changes: input.changesFor(week) }));
     week = addEconomyDays(week, -7);
   }
   return out;
