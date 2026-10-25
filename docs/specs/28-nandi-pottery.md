@@ -1,6 +1,6 @@
 # 28. Nandi's pottery: your training shapes a bowl
 
-Status: DRAFT, waiting for Jenil's yes. Not for the builder until then.
+Status: PARKED by Jenil, 25 Oct 2026 ("keep NANDI as it is for now and work on other mascots"). Do not build.
 Idea engine, 25 Oct 2026. Research: D:\nandi-gate-logs\idea-engine\codex-kintsugi.md (cloud-sessions item 86).
 
 ## Why
