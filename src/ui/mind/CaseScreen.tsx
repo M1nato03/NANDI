@@ -469,7 +469,7 @@ export function CaseScreen({
                     !marked
                       ? 'Mark some boxes first, then check.'
                       : wrong.length
-                        ? `${wrong.length} mark${wrong.length === 1 ? '' : 's'} wrong, outlined in red.`
+                        ? `${wrong.length} mark${wrong.length === 1 ? '' : 's'} wrong, outlined on the grid.`
                         : 'Every mark so far is right. Keep going.',
                   );
                   if (marked)
