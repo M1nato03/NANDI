@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { nextRestBeat, readBeatChanges, rhythmSheet, taalWeek, weekLine } from './taal';
+import { nextRestBeat, planForWeek, readBeatChanges, rhythmSheet, taalWeek, weekLine } from './taal';
 import type { LedgerRow } from '../../data/types';
 
 // Mon 2 Nov 2026 starts the week; program days Mon, Wed, Fri (1, 3, 5).
@@ -30,7 +30,7 @@ describe('Taal week (spec 24 #3, cj5-train §7 #1)', () => {
     const short = taalWeek({ ...base, today: '2026-11-09', week: '2026-11-02', ledger: ['2026-11-02', '2026-11-04'].map(day => session(day)) });
     expect(short.ended && !short.closed).toBe(true);
     expect(weekLine(short)).toBe('This week closed at 2. That counts.');
-    expect(weekLine(taalWeek({ ...base, today: '2026-11-09', week: '2026-11-02', ledger: [] }))).toBe('A rest week.');
+    expect(weekLine(taalWeek({ ...base, today: '2026-11-09', week: '2026-11-02', ledger: [] }))).toBe('This week closed at 0. That counts.');
   });
   it("readiness can move today's clap to the next rest beat, once a week, or make today a rest beat", () => {
     const before = taalWeek({ ...base, today: '2026-11-04', ledger: [] });
@@ -61,5 +61,19 @@ describe('Taal week (spec 24 #3, cj5-train §7 #1)', () => {
     expect(sheet.map(week => week.weekStart)).toEqual(['2026-11-09', '2026-11-02', '2026-10-26']);
     expect(sheet[1]!.filled).toBe(1);
     expect(sheet.every(week => week.ended)).toBe(true);
+  });
+  it('the rhythm sheet only grows: a 20th week keeps the first one (Codex B item 100)', () => {
+    const sheet = rhythmSheet({ ...base, today: '2027-03-24', since: '2026-11-02', ledger: [], changesFor: () => ({ moves: [], restToday: [] }) });
+    expect(sheet).toHaveLength(20);
+    expect(sheet.at(-1)!.weekStart).toBe('2026-11-02');
+  });
+  it('past weeks keep the target and days they were planned with after a change (Codex B item 100)', () => {
+    const history = [{ from: '0000-01-01', days: [1, 4], target: 2 }, { from: '2026-11-16', days: [1, 3, 5], target: 3 }];
+    expect(planForWeek(history, '2026-11-09', { days: [1, 3, 5], target: 3 })).toEqual({ days: [1, 4], target: 2 });
+    expect(planForWeek(history, '2026-11-16', { days: [1, 3, 5], target: 3 })).toEqual({ days: [1, 3, 5], target: 3 });
+    expect(planForWeek(undefined, '2026-11-09', { days: [1, 3, 5], target: 3 })).toEqual({ days: [1, 3, 5], target: 3 });
+    const sheet = rhythmSheet({ ...base, today: '2026-11-18', since: '2026-11-09', ledger: [session('2026-11-09'), session('2026-11-12')], changesFor: () => ({ moves: [], restToday: [] }), history });
+    expect(sheet[0]).toMatchObject({ weekStart: '2026-11-09', target: 2, filled: 2, closed: true });
+    expect(weekLine(sheet[0]!)).toBe('This week’s cycle is closed.');
   });
 });

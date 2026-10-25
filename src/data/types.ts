@@ -101,6 +101,8 @@ export interface ProgramRow extends EntityRow {
   lastRetestWeek?: number;
   /** Spec 17: slow SL-RDL, the ready card and `nordicReady`. */
   nordic?: import('../core/train').NordicState;
+  /** Spec 24 #3: the program days and target each week was planned with, from the week a change was made. */
+  planHistory?: import('../core/train/taal').PlanStep[];
 }
 export interface ExStateRow extends StateRow {
   loadKg?: number;

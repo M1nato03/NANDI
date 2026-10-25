@@ -91,7 +91,13 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
       return mutation(async () => {
         const old = await getProgram();
         if (!old) throw new Error('Complete rank assessment first');
-        const row = { ...old, ...changes, heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
+        // A change of days or target applies from this week on; earlier weeks keep the plan they had (Codex B item 100).
+        const planChanged = (changes.days && changes.days.join() !== (old.days ?? [1, 3, 5]).join()) || (changes.weeklyTarget && changes.weeklyTarget !== (old.weeklyTarget ?? 3));
+        const from = weekStart(dayKey(now));
+        const planHistory = planChanged
+          ? [...(old.planHistory ?? [{ from: '0000-01-01', days: old.days ?? [1, 3, 5], target: old.weeklyTarget ?? 3 }]).filter(step => step.from !== from), { from, days: changes.days ?? old.days ?? [1, 3, 5], target: changes.weeklyTarget ?? old.weeklyTarget ?? 3 }]
+          : old.planHistory;
+        const row = { ...old, ...changes, ...(planHistory ? { planHistory } : {}), heatStartedAt: changes.heatModeEnabled && !old.heatModeEnabled ? now : old.heatStartedAt, ...meta(now) };
         await db.programs.put(row);
         return row;
       }).then(async row => {

@@ -25,6 +25,6 @@ export function TaalWeekCard({ week, sheet }: { week: Week; sheet: Week[] }) {
     <p>{weekLine(week)}</p>
     {today?.plan === 'rest' && !today.filled && <p className="small">Rest is today's beat.</p>}
     <p className="small taal-key"><span className="taal-key-clap">Training day</span><span className="taal-key-rest">Rest day</span></p>
-    {sheet.length > 0 && <details className="taal-sheet"><summary>Rhythm sheet</summary><ul>{sheet.map(past => <li key={past.weekStart}><Beats week={past} small /><span className="small">{past.filled} of {past.target}</span></li>)}</ul></details>}
+    {sheet.length > 0 && <details className="taal-sheet"><summary>Rhythm sheet</summary><ul>{sheet.map(past => <li key={past.weekStart}><Beats week={past} small /><span className="small">{weekLine(past)}</span></li>)}</ul></details>}
   </div>;
 }

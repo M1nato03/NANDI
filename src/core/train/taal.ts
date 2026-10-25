@@ -64,17 +64,26 @@ export function nextRestBeat(week: TaalWeek): Beat | undefined {
 /** One line for the week, never a loss: a closed cycle, a week that closed short, or how far it has come. */
 export function weekLine(week: TaalWeek): string {
   if (week.closed) return 'This week’s cycle is closed.';
-  if (week.ended) return week.filled ? `This week closed at ${week.filled}. That counts.` : 'A rest week.';
+  if (week.ended) return `This week closed at ${week.filled}. That counts.`;
   return `${week.filled} of ${week.target} sessions this week.`;
 }
 
-/** The rhythm sheet: every past week since the program began, newest first. It only grows. */
-export function rhythmSheet(input: { today: string; since: string; programDays: readonly number[]; target: number; ledger: readonly LedgerRow[]; changesFor: (week: string) => BeatChanges; limit?: number }): TaalWeek[] {
+/** A week's own plan: program days and target as they were set for that week (Codex B item 100, finding 4). */
+export type PlanStep = { from: string; days: number[]; target: number };
+export function planForWeek(history: readonly PlanStep[] | undefined, week: string, current: { days: readonly number[]; target: number }): { days: readonly number[]; target: number } {
+  const step = [...(history ?? [])].sort((a, b) => a.from.localeCompare(b.from)).filter(entry => entry.from <= week).at(-1);
+  return step ? { days: step.days, target: step.target } : current;
+}
+
+/** The rhythm sheet: every past week since the program began, newest first. It only grows (no cap). */
+export function rhythmSheet(input: { today: string; since: string; programDays: readonly number[]; target: number; ledger: readonly LedgerRow[]; changesFor: (week: string) => BeatChanges; history?: readonly PlanStep[] }): TaalWeek[] {
   const out: TaalWeek[] = [];
+  const ledger = input.ledger.filter(fact => fact.mode === 'train');
   let week = addEconomyDays(weekStart(input.today), -7);
   const first = weekStart(input.since);
-  while (week >= first && out.length < (input.limit ?? 12)) {
-    out.push(taalWeek({ today: input.today, week, programDays: input.programDays, target: input.target, ledger: input.ledger, changes: input.changesFor(week) }));
+  while (week >= first) {
+    const plan = planForWeek(input.history, week, { days: input.programDays, target: input.target });
+    out.push(taalWeek({ today: input.today, week, programDays: plan.days, target: plan.target, ledger, changes: input.changesFor(week) }));
     week = addEconomyDays(week, -7);
   }
   return out;
