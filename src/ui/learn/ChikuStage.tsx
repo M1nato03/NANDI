@@ -24,6 +24,8 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const sceneRef = useRef<HTMLDivElement>(null);
   // After a card is handed over, focus moves to the scene so a keyboard or screen reader follows the beats.
   useEffect(() => { if (beat === 'take') sceneRef.current?.focus(); }, [beat]);
+  // On open, focus goes to the scene too, so Chiku's question is read first (Codex B item 111).
+  useEffect(() => { sceneRef.current?.focus(); }, []);
   useEffect(() => {
     const length = LENGTH[beat];
     if (!length) return;
@@ -46,7 +48,7 @@ export function ChikuStage({ scene, seed, onPlayed, onDone }: { scene: ChikuScen
   const caption = beat === 'newday' ? scene.newDay.caption : beat === 'guess' ? guess?.why : beat === 'truth' ? scene.truth.caption : undefined;
   const cardText = card === null ? '' : scene.cards[card]!.text;
   // One polite live region reads each beat (Codex B item 110); the visible captions carry no roles of their own.
-  const said = beat === 'ask' ? (tried.length ? 'Got another card?' : scene.ask) : beat === 'take' ? `You gave Chiku: ${cardText}.` : beat === 'guess' ? `${scene.newDay.question} ${caption ?? ''}` : beat === 'done' ? `${scene.truth.caption} ${matched ? 'Got it.' : 'Chiku asks for another card.'}` : caption ?? '';
+  const said = beat === 'ask' ? (tried.length ? 'Got another card?' : scene.ask) : beat === 'take' ? `You gave Chiku: ${cardText}.` : beat === 'guess' ? `${scene.newDay.question} ${caption ?? ''}` : beat === 'done' ? (matched ? 'Got it, because your card named the real cause.' : `My card said "${cardText}", so I guessed ${guess?.answer}. It went the other way. Got another card?`) : caption ?? '';
   // A tap anywhere in the scene, or Enter or Space on it, skips to the next beat; buttons keep their own job.
   const skipFrom = (target: EventTarget) => { if (!(target as HTMLElement).closest('button')) skipBeat(); };
   const timed = !!NEXT[beat];

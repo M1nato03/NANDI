@@ -63,6 +63,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   // A celebration plays only for a drop finished on this screen, never when a finished drop is reopened.
   const [answeredHere, setAnsweredHere] = useState(false);
   const [chiku, setChiku] = useState<{ conceptId: string; scene: ChikuScene } | null>(null);
+  const [chikuClosed, setChikuClosed] = useState(0);
+  // After Chiku, focus goes to the next control in the drop (Codex B item 111).
+  useEffect(() => { if (chikuClosed) document.querySelector<HTMLElement>('.learn-drop button, .learn-drop [href]')?.focus(); }, [chikuClosed]);
   // Spec 19 E: "Ask someone" sits on the daily finish screen in the day window only, and checks the clock again when tapped.
   const shareDay = useShareDay();
   const [askNote, setAskNote] = useState('');
@@ -237,7 +240,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     <button type="button" disabled={!picked.length || busy} onClick={() => void start(picked)}>Start my first drop</button>{message && <p role="status">{message}</p>}</div>;
   if (!drop) return <div className="learn-drop" role="status">Preparing your drop…{message}</div>;
   if (chiku) return <div className="learn-drop learn-active"><header className="learn-drop-head"><span>Teach Chiku</span></header>
-    <ChikuStage scene={chiku.scene} seed={`${chiku.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => setChiku(null)} />
+    <ChikuStage scene={chiku.scene} seed={`${chiku.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChiku(null); setChikuClosed(count => count + 1); }} />
     {message && <p role="status">{message}</p>}</div>;
   if (!step) {
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);

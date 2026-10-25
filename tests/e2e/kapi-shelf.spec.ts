@@ -43,6 +43,13 @@ test('a first open starts with the how-to: one move per step, Kapi on the square
   await expect(page.getByRole('group', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
   // No timer while playing.
   await expect(page.locator('.mind-timer')).toHaveCount(0);
+  // The seen mark is written as the board opens; wait for it before reloading (slow CI runners, 10-25).
+  await expect.poll(() => page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    const row = await new Promise<{ value?: unknown } | undefined>(resolve => { const request = database.transaction('settings').objectStore('settings').get('mind.tutorialSeen:crowns'); request.onsuccess = () => resolve(request.result); });
+    database.close();
+    return row?.value === true;
+  })).toBe(true);
   await page.reload();
   await expect(page.getByRole('group', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByRole('region', { name: 'How to play Crowns' })).toHaveCount(0);

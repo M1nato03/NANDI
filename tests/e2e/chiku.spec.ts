@@ -105,3 +105,12 @@ test('after a card, focus moves to the scene; one polite region reads each beat;
   await expect(beat(page)).toHaveAttribute('data-beat', 'truth');
   await expect(page.locator('.chiku-step [role="status"]')).toHaveCount(0);
 });
+
+test('focus starts on the scene, and at the end only the verdict is read, not the caption again (Codex B item 111)', async ({ page }) => {
+  await open(page);
+  await expect(page.getByRole('group', { name: "Chiku's scene" })).toBeFocused();
+  await page.getByRole('group', { name: 'Your cards' }).getByRole('button', { name: 'The train leaving the station' }).click();
+  for (let i = 0; i < 4; i++) await page.getByRole('button', { name: 'Skip ahead' }).click();
+  await expect(beat(page)).toHaveAttribute('data-beat', 'done');
+  await expect(page.locator('.chiku-step [aria-live="polite"]')).toHaveText('Got it, because your card named the real cause.');
+});
