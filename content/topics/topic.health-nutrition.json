@@ -1,6 +1,6 @@
 {
   "id": "topic.health-nutrition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schema": 1,
   "minAppVersion": "0.1.0",
   "title": "Health and nutrition",
@@ -14,10 +14,23 @@
       "title": "Health and nutrition",
       "description": "Explore food, rest and movement with everyday examples. This is general information, not medical advice."
     },
+    "book": {
+      "title": "Eat, Drink, Sleep",
+      "author": "NANDI",
+      "year": 2026,
+      "rights": "original",
+      "cover": {
+        "palette": "leaf",
+        "motif": "kolam"
+      },
+      "blurb": "How food, water, sleep and movement feed the body each day."
+    },
     "modules": [
       {
-        "id": "health-nutrition-module",
-        "title": "How the body uses daily inputs",
+        "id": "health-nutrition-ch1",
+        "title": "What you eat",
+        "minutes": 13,
+        "check": "quiz",
         "concepts": [
           {
             "id": "protein-foods",
@@ -1495,6 +1508,1499 @@
               }
             ]
           },
+          {
+            "id": "iron-and-anaemia",
+            "title": "Iron and anaemia basics",
+            "prerequisites": [],
+            "hook": "Dal and greens carry iron, and a squeeze of lemon in the same meal helps the body take it in.",
+            "hookSourceRefs": [
+              "medline-iron",
+              "icmr-iron"
+            ],
+            "rule": "Iron helps make haemoglobin, which carries oxygen in red blood cells. Plant iron is harder to take in; vitamin C helps and tea near meals holds it back. Anaemia has many causes, so a blood test finds which.",
+            "ruleSourceRefs": [
+              "iron",
+              "anaemia",
+              "medline-iron",
+              "icmr-iron"
+            ],
+            "claims": [
+              {
+                "id": "iron-and-anaemia-c1",
+                "text": "Vitamin C foods like guava, oranges or lemon help the body take in iron from plant foods, while tea and coffee get in the way.",
+                "sourceRefs": [
+                  "medline-iron",
+                  "icmr-iron"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c2",
+                "text": "Anaemia has many causes. Low iron is one. Others are low folate or B12, malaria, heavy periods, and blood disorders passed down in families, like thalassaemia and sickle cell.",
+                "sourceRefs": [
+                  "anaemia"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c3",
+                "text": "Iron helps make haemoglobin, the part of red blood cells that carries oxygen around the body.",
+                "sourceRefs": [
+                  "iron",
+                  "icmr-iron",
+                  "anaemia"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c4",
+                "text": "India's food guide says tannin in tea and coffee gets in the way of iron uptake, and keeps them an hour away from meals.",
+                "sourceRefs": [
+                  "icmr-iron"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c5",
+                "text": "Anaemia can make you tired, dizzy or short of breath on effort. It can also cause headaches and cold hands and feet.",
+                "sourceRefs": [
+                  "anaemia"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c6",
+                "text": "India's nutrient guide (ICMR-NIN 2020) sets 19 mg of iron a day for adult men and 29 mg for adult women.",
+                "sourceRefs": [
+                  "icmr-rda"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c7",
+                "text": "Women who have periods are more at risk of low iron and anaemia, because of the blood that leaves the body each month.",
+                "sourceRefs": [
+                  "anaemia",
+                  "medline-iron"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-c8",
+                "text": "Anaemia is found with a blood test of haemoglobin, and treatment depends on the cause; iron tablets are given once a test shows low iron.",
+                "sourceRefs": [
+                  "anaemia",
+                  "nhs-ida"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "iron-and-anaemia-9",
+                "type": "scenario",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s1",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "anaemia",
+                  "iron"
+                ],
+                "stem": "Before exams, Nisha gets breathless on the hostel stairs and feels tired all day for weeks. Which link fits these signs?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her blood may be carrying less oxygen.",
+                    "correct": true,
+                    "feedback": "Feeling tired and out of breath on stairs can be signs that less oxygen is reaching the body.",
+                    "sourceRefs": [
+                      "anaemia",
+                      "iron"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "She is eating too much protein.",
+                    "correct": false,
+                    "feedback": "Too much protein does not cause these signs. They point to blood carrying less oxygen.",
+                    "sourceRefs": [
+                      "anaemia",
+                      "iron"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Climbing stairs uses up her iron.",
+                    "correct": false,
+                    "feedback": "Stairs do not use up iron. The signs point to blood that carries less oxygen.",
+                    "sourceRefs": [
+                      "anaemia",
+                      "iron"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-10",
+                "type": "estimate",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s1",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m4"
+                ],
+                "sourceRefs": [
+                  "icmr-rda"
+                ],
+                "stem": "Raj says his sister needs the same iron as him. India's nutrient guide sets 19 mg a day for men and 29 mg for women. Estimate how much more iron a day she needs.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 10 mg.",
+                    "correct": true,
+                    "feedback": "29 minus 19 is 10, so women need about 10 mg more, largely because of blood that leaves the body in periods.",
+                    "sourceRefs": [
+                      "icmr-rda"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 48 mg.",
+                    "correct": false,
+                    "feedback": "That adds the two figures. The gap comes from taking 19 away from 29.",
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m4"
+                    ],
+                    "sourceRefs": [
+                      "icmr-rda"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 1 mg.",
+                    "correct": false,
+                    "feedback": "The gap is far bigger. 29 minus 19 leaves about 10 mg.",
+                    "sourceRefs": [
+                      "icmr-rda"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 10,
+                  "min": 9,
+                  "max": 11,
+                  "unit": "mg"
+                }
+              },
+              {
+                "id": "iron-and-anaemia-11",
+                "type": "scenario",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s2",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m3"
+                ],
+                "sourceRefs": [
+                  "icmr-iron"
+                ],
+                "stem": "Your hostel breakfast is poha with a cup of chai straight after. Which change helps the most iron from the poha get in?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Have the chai an hour later.",
+                    "correct": true,
+                    "feedback": "Tea holds back iron uptake, so moving it an hour away from the meal lets more iron in.",
+                    "sourceRefs": [
+                      "icmr-iron"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Add a second cup of chai.",
+                    "correct": false,
+                    "feedback": "More tea near the meal holds back even more iron.",
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m3"
+                    ],
+                    "sourceRefs": [
+                      "icmr-iron"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Skip the poha and keep the chai.",
+                    "correct": false,
+                    "feedback": "That removes the food that brings the iron. Moving the tea later is the better change.",
+                    "sourceRefs": [
+                      "icmr-iron"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-12",
+                "type": "why",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m1"
+                ],
+                "sourceRefs": [
+                  "icmr-iron",
+                  "medline-iron"
+                ],
+                "stem": "Why can a person who eats plenty of spinach still be low in iron?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Iron from plants is harder to take in.",
+                    "correct": true,
+                    "feedback": "Greens hold plenty of iron, but the body takes in only part of it, unless vitamin C helps.",
+                    "sourceRefs": [
+                      "icmr-iron",
+                      "medline-iron"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Spinach holds no iron of any kind.",
+                    "correct": false,
+                    "feedback": "Spinach does have iron, often plenty. The problem is how little of it gets taken in.",
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m1"
+                    ],
+                    "sourceRefs": [
+                      "icmr-iron",
+                      "medline-iron"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Cooking turns the iron into fat.",
+                    "correct": false,
+                    "feedback": "Cooking does not turn iron into fat. Plant iron is simply harder for the body to take in.",
+                    "sourceRefs": [
+                      "icmr-iron",
+                      "medline-iron"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-13",
+                "type": "true-not-quite",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s3",
+                "job": "combine",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "iron-and-anaemia-m2"
+                ],
+                "sourceRefs": [
+                  "anaemia",
+                  "nhs-ida"
+                ],
+                "stem": "During exam season, Kavya feels tired and breathless for weeks, so she plans to buy iron tablets. What is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A blood test should find the cause first.",
+                    "correct": true,
+                    "feedback": "Her signs fit anaemia, but it has many causes. A blood test shows what is wrong before any tablets.",
+                    "sourceRefs": [
+                      "anaemia",
+                      "nhs-ida"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Nothing; tiredness always means low iron.",
+                    "correct": false,
+                    "feedback": "Tiredness can come from many causes, and anaemia itself has several. A test finds the real one.",
+                    "misconceptionIds": [
+                      "iron-and-anaemia-m2"
+                    ],
+                    "sourceRefs": [
+                      "anaemia",
+                      "nhs-ida"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "She should drink more tea with meals.",
+                    "correct": false,
+                    "feedback": "Tea holds back iron uptake, and it does not answer what is causing her tiredness.",
+                    "sourceRefs": [
+                      "anaemia",
+                      "nhs-ida"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-14",
+                "type": "choose",
+                "conceptId": "iron-and-anaemia",
+                "step": "iron-and-anaemia-s3",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "anaemia"
+                ],
+                "stem": "Which of these can cause anaemia besides low iron?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Malaria.",
+                    "correct": true,
+                    "feedback": "It is an infection, and infections are one of the causes of anaemia.",
+                    "sourceRefs": [
+                      "anaemia"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Drinking plenty of water.",
+                    "correct": false,
+                    "feedback": "Water does not cause anaemia. Infections like malaria, low vitamins and blood loss can.",
+                    "sourceRefs": [
+                      "anaemia"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Going to bed late.",
+                    "correct": false,
+                    "feedback": "Late nights do not cause anaemia. Infections like malaria, low vitamins and blood loss can.",
+                    "sourceRefs": [
+                      "anaemia"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "iron-and-anaemia-m1",
+                "name": "All iron is absorbed alike",
+                "correction": "Iron from plant foods is harder for the body to take in.",
+                "sourceRefs": [
+                  "medline-iron",
+                  "icmr-iron"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-m2",
+                "name": "All anaemia is low iron",
+                "correction": "Anaemia has many causes, so a blood test is needed to find which one.",
+                "sourceRefs": [
+                  "anaemia"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-m3",
+                "name": "Tea with meals is harmless for iron",
+                "correction": "Tea binds iron, so it can hold back uptake from a meal.",
+                "sourceRefs": [
+                  "icmr-iron",
+                  "medline-iron"
+                ]
+              },
+              {
+                "id": "iron-and-anaemia-m4",
+                "name": "Men and women need the same iron",
+                "correction": "Women who have periods need more iron than men.",
+                "sourceRefs": [
+                  "icmr-rda",
+                  "anaemia"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "iron",
+                "title": "Iron - Vitamins and minerals",
+                "publisher": "NHS",
+                "year": 2020,
+                "url": "https://www.nhs.uk/conditions/vitamins-and-minerals/iron/",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "anaemia",
+                "title": "Anaemia",
+                "publisher": "World Health Organization",
+                "year": 2025,
+                "url": "https://www.who.int/news-room/fact-sheets/detail/anaemia",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "medline-iron",
+                "title": "Iron in diet",
+                "publisher": "MedlinePlus, US National Library of Medicine",
+                "year": 2025,
+                "url": "https://medlineplus.gov/ency/article/002422.htm",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "icmr-iron",
+                "title": "Dietary Guidelines for Indians 2024",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2024,
+                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "icmr-rda",
+                "title": "Nutrient Requirements for Indians 2020: brief note",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2020,
+                "url": "https://www.nin.res.in/rdabook/brief_note.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "nhs-ida",
+                "title": "Iron deficiency anaemia",
+                "publisher": "NHS",
+                "year": 2024,
+                "url": "https://www.nhs.uk/conditions/iron-deficiency-anaemia/",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Find a vitamin C helper",
+              "detail": "Look at one meal with dal or greens and name a vitamin C food that could go with it.",
+              "sourceRefs": [
+                "icmr-iron"
+              ]
+            },
+            "factCheck": {
+              "checker": "content agent re-check 2026-10-22 (WHO Anaemia fact sheet: symptoms tiredness, dizziness, headache, cold hands and feet, shortness of breath on exertion; diagnosed by blood haemoglobin; iron deficiency the most common nutritional cause; folate, B12, malaria and other infections, heavy menstrual loss, thalassaemia and sickle cell; menstruating women most at risk; NHS Iron deficiency anaemia: iron tablets once a blood test shows low levels; MedlinePlus Iron in diet: vitamin C raises plant iron absorption, tea binds iron, menstruating women at risk; ICMR-NIN DGI 2024: iron forms haemoglobin, guava, orange and lemon help, greens absorbed poorly, tea and coffee an hour from meals; ICMR-NIN RDA 2020 brief note Tables 3 and 4: iron 19 mg men, 29 mg women; NHS Iron: iron makes red blood cells that carry oxygen. UK mg figures replaced by India's)",
+              "verdicts": [
+                {
+                  "claimId": "iron-and-anaemia-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-c8",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "iron-and-anaemia-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "iron-and-anaemia-s1",
+                "title": "Iron helps blood carry oxygen",
+                "claimId": "iron-and-anaemia-c3",
+                "sourceRefs": [
+                  "iron",
+                  "icmr-iron",
+                  "anaemia"
+                ],
+                "hook": {
+                  "stem": "What job does iron do in the blood?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Helps make the oxygen carrier.",
+                      "correct": true,
+                      "feedback": "Right. Iron is used to build haemoglobin, which carries oxygen in red blood cells."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Turns the food you eat into body fat.",
+                      "correct": false,
+                      "feedback": "That is not its job. Iron helps build haemoglobin, the oxygen carrier."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Makes bones hard.",
+                      "correct": false,
+                      "feedback": "That is mainly calcium's job. Iron helps build haemoglobin, which carries oxygen."
+                    }
+                  ]
+                },
+                "teach": "Iron builds haemoglobin, which carries oxygen in the blood. Too little leaves you tired and short of breath. Women lose blood in periods, so they need more iron.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Iron from food",
+                    "Haemoglobin in red cells",
+                    "Oxygen to the body"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap what iron helps the body make.",
+                  "parts": [
+                    "The iron in Meena's rajma",
+                    "helps her make haemoglobin,",
+                    "which takes oxygen from her lungs to her legs."
+                  ],
+                  "spot": "helps her make haemoglobin,",
+                  "feedback": "Iron is needed to build haemoglobin, the oxygen carrier in red blood cells."
+                },
+                "guided": [
+                  {
+                    "stem": "If there is less haemoglobin in the blood, how much oxygen gets to the body?",
+                    "hint": "Haemoglobin is the carrier.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Less of it arrives.",
+                        "correct": true,
+                        "feedback": "Right. With less carrier, less oxygen gets to the organs and muscles."
+                      },
+                      {
+                        "id": "b",
+                        "text": "More of it arrives.",
+                        "correct": false,
+                        "feedback": "Less carrier means less oxygen moved, not more."
+                      },
+                      {
+                        "id": "c",
+                        "text": "It stays the same.",
+                        "correct": false,
+                        "feedback": "Haemoglobin does the carrying, so less of it means less oxygen moved."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Iron builds haemoglobin; too little leaves you tired and breathless."
+              },
+              {
+                "id": "iron-and-anaemia-s2",
+                "title": "Plant iron needs a helper",
+                "claimId": "iron-and-anaemia-c1",
+                "sourceRefs": [
+                  "medline-iron",
+                  "icmr-iron"
+                ],
+                "hook": {
+                  "stem": "Palak dal gets a squeeze of lemon. What does the lemon do for the iron?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Helps the body take it in.",
+                      "correct": true,
+                      "feedback": "Right. Lemon has vitamin C, which helps the body take in plant iron."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Locks the iron away from the body.",
+                      "correct": false,
+                      "feedback": "Lemon does the reverse. Its vitamin C helps the body take in plant iron."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Turns it into vitamin C.",
+                      "correct": false,
+                      "feedback": "Iron does not change into vitamin C. The vitamin C in lemon helps iron get in."
+                    }
+                  ]
+                },
+                "teach": "Iron from plants like greens and dal is harder for the body to take in. Vitamin C in guava, orange or lemon helps, while tea holds it back, so keep tea an hour away from meals.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Helps",
+                    "lines": [
+                      "Guava, orange, lemon",
+                      "Sprouted or fermented grains"
+                    ]
+                  },
+                  "right": {
+                    "title": "Holds it back",
+                    "lines": [
+                      "Tea or coffee with meals"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the vitamin C food.",
+                  "parts": [
+                    "For lunch, Aditi eats chana and roti",
+                    "with a slice of guava on the side,",
+                    "and waits an hour before her tea."
+                  ],
+                  "spot": "with a slice of guava on the side,",
+                  "feedback": "Guava is rich in vitamin C, which helps the body take in iron from the chana."
+                },
+                "guided": [
+                  {
+                    "stem": "Which side helps the body take in iron from a bowl of rajma?",
+                    "hint": "Look for a vitamin C food.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Orange slices.",
+                        "correct": true,
+                        "feedback": "Yes. Oranges are rich in vitamin C, which helps plant iron get in."
+                      },
+                      {
+                        "id": "b",
+                        "text": "A cup of tea.",
+                        "correct": false,
+                        "feedback": "Tea binds iron and holds it back, so it works the other way."
+                      },
+                      {
+                        "id": "c",
+                        "text": "A glass of cola.",
+                        "correct": false,
+                        "feedback": "Cola is not a vitamin C food. An orange or guava would help."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Vitamin C helps plant iron in; tea near meals holds it back."
+              },
+              {
+                "id": "iron-and-anaemia-s3",
+                "title": "A blood test finds the cause",
+                "claimId": "iron-and-anaemia-c8",
+                "sourceRefs": [
+                  "anaemia",
+                  "nhs-ida"
+                ],
+                "hook": {
+                  "stem": "Is low iron the only cause of anaemia?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No, there are several.",
+                      "correct": true,
+                      "feedback": "Right. Low iron is common, but vitamins, infections, blood loss and inherited conditions can cause it too."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, low iron is the one cause.",
+                      "correct": false,
+                      "feedback": "Low iron is the most common food cause, but there are many others."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No, it comes from old age.",
+                      "correct": false,
+                      "feedback": "Age is not the main cause. Low iron, low vitamins, infections and inherited conditions are."
+                    }
+                  ]
+                },
+                "teach": "Low iron is the top food cause of anaemia, but low B12, malaria, heavy periods and thalassaemia can cause it too. So only a blood test can tell. Don't start iron tablets without one.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Low iron, B12 or folate",
+                    "Malaria or heavy periods",
+                    "Thalassaemia or sickle cell",
+                    "Anaemia"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the step that looks for the cause.",
+                  "parts": [
+                    "Tired for weeks, Divya gets a blood test,",
+                    "which shows low haemoglobin,",
+                    "and her doctor then checks what is causing it."
+                  ],
+                  "spot": "and her doctor then checks what is causing it.",
+                  "feedback": "The test shows anaemia, but the cause still has to be found before treatment."
+                },
+                "guided": [
+                  {
+                    "stem": "Two friends both have anaemia. Will the cause be the same?",
+                    "hint": "Look back at the flow of reasons.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Not always; causes differ.",
+                        "correct": true,
+                        "feedback": "Right. One may have low iron, another an infection or low B12."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Yes, it is low iron for both.",
+                        "correct": false,
+                        "feedback": "Low iron is common, but it is not the cause for everyone."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Yes, it is malaria for both.",
+                        "correct": false,
+                        "feedback": "Malaria is one cause. Low iron and low vitamins are others."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Anaemia has many causes; a blood test, not a guess, finds it."
+              }
+            ]
+          },
+          {
+            "id": "food-label-reading",
+            "title": "Reading a food label",
+            "prerequisites": [],
+            "hook": "Two packs can use different serving sizes. The per-100-g line puts them on the same base so you can compare them.",
+            "hookSourceRefs": [
+              "label"
+            ],
+            "rule": "Compare like foods on their per-100-g or per-100-ml lines. Ingredients run from most to least. Front-of-pack marketing claims like 'real fruit' can mislead, so the back label tells more.",
+            "ruleSourceRefs": [
+              "label",
+              "icmr-label"
+            ],
+            "claims": [
+              {
+                "id": "food-label-reading-c1",
+                "text": "Nutrition values are given per 100 g or 100 ml, and may also be given per serving, whose size each brand sets.",
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-c2",
+                "text": "Packed food lists its ingredients in order, with the largest amount first.",
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-c3",
+                "text": "India's food guide says front-of-pack claims can mislead. A 'real fruit' product may hold 10% fruit or less. A 'sugar free' food may carry sweeteners like maltitol, fat or white flour.",
+                "sourceRefs": [
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-c4",
+                "text": "If a pack holds two servings of 100 kcal each, eating the whole pack gives 200 kcal.",
+                "sourceRefs": [
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-c5",
+                "text": "India's food guide says 'all natural' is often used loosely, so the ingredients on the back should be read to check the claim.",
+                "sourceRefs": [
+                  "icmr-label"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "food-label-reading-9",
+                "type": "true-not-quite",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s1",
+                "job": "misconception",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "food-label-reading-m4"
+                ],
+                "sourceRefs": [
+                  "icmr-label"
+                ],
+                "stem": "A friend says a snack is light because the label shows 'only 80 kcal per serving'. What is missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "How many servings the pack holds.",
+                    "correct": true,
+                    "feedback": "If the pack holds three servings, eating it all gives 240 kcal, not 80.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Nothing; 80 kcal covers the pack.",
+                    "correct": false,
+                    "feedback": "The figure is per serving, and a pack often holds more than one.",
+                    "misconceptionIds": [
+                      "food-label-reading-m4"
+                    ],
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The weight of the empty wrapper.",
+                    "correct": false,
+                    "feedback": "The wrapper tells you nothing. The number of servings changes the total.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-10",
+                "type": "estimate",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s1",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m4"
+                ],
+                "sourceRefs": [
+                  "label"
+                ],
+                "stem": "Reading the label, a 40 g packet of namkeen has 1.5 g of salt per 100 g. Estimate the salt in the whole packet.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 0.6 g.",
+                    "correct": true,
+                    "feedback": "40 g is 0.4 of 100 g, so 1.5 g times 0.4 is about 0.6 g.",
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 1.5 g.",
+                    "correct": false,
+                    "feedback": "That is the figure for 100 g. The packet holds only 40 g.",
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 15 g.",
+                    "correct": false,
+                    "feedback": "The decimal slipped. A packet smaller than 100 g holds less than 1.5 g, about 0.6 g.",
+                    "sourceRefs": [
+                      "label"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 0.6,
+                  "min": 0.5,
+                  "max": 0.7,
+                  "unit": "grams"
+                }
+              },
+              {
+                "id": "food-label-reading-11",
+                "type": "why",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "food-label-reading-m1"
+                ],
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ],
+                "stem": "Namkeen A lists salt third; namkeen B lists it fifth. Yet B has more salt per 100 g. How can that be?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "List order ranks items inside one pack, not across packs.",
+                    "correct": true,
+                    "feedback": "Order shows what is biggest within a pack. To compare two packs, use the per 100 g line.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The label on B has to be wrong.",
+                    "correct": false,
+                    "feedback": "Both labels can be right. Order ranks items within one pack, not between packs.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Fifth place means less salt in every case.",
+                    "correct": false,
+                    "feedback": "Fifth place only ranks salt against B's other items. Per 100 g compares packs.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-12",
+                "type": "order",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s2",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ],
+                "stem": "A trail mix holds 40% oats, 25% sugar, 20% nuts and 15% raisins. Put them in label order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Oats",
+                    "correct": true,
+                    "feedback": "At 40%, oats are the largest part, so they lead the list.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Sugar",
+                    "correct": true,
+                    "feedback": "At 25%, sugar is the second largest part.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Nuts",
+                    "correct": true,
+                    "feedback": "At 20%, nuts come after sugar in the list.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Raisins",
+                    "correct": true,
+                    "feedback": "At 15%, raisins are the smallest part, so they come last.",
+                    "sourceRefs": [
+                      "label",
+                      "icmr-label"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              },
+              {
+                "id": "food-label-reading-13",
+                "type": "scenario",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s3",
+                "job": "transfer",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "food-label-reading-m3"
+                ],
+                "sourceRefs": [
+                  "icmr-label"
+                ],
+                "stem": "At the school canteen, a chips pack shouts 'all natural' in big letters. What is the sensible next step?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Read the ingredients on the back.",
+                    "correct": true,
+                    "feedback": "'Natural' is often used loosely to sell, so the back label shows what is really inside.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Trust it, since 'natural' is a strict rule.",
+                    "correct": false,
+                    "feedback": "India's food guide says 'natural' is used loosely. The ingredients tell you more.",
+                    "misconceptionIds": [
+                      "food-label-reading-m3"
+                    ],
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Pick it over a pack with no claims.",
+                    "correct": false,
+                    "feedback": "A claim on the front proves nothing. Read both backs and compare.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "food-label-reading-14",
+                "type": "predict",
+                "conceptId": "food-label-reading",
+                "step": "food-label-reading-s3",
+                "job": "combine",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "icmr-label"
+                ],
+                "stem": "In the college canteen, Meera sees a 'sugar free' cookie with 480 kcal per 100 g and a regular one with 490 kcal per 100 g. What will swapping save her?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Hardly any energy at all.",
+                    "correct": true,
+                    "feedback": "Per 100 g the two are nearly the same, because sugar-free snacks can carry fat and flour.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About half the calories.",
+                    "correct": false,
+                    "feedback": "The per 100 g lines are close, so the swap saves very little energy.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Every calorie from sugar.",
+                    "correct": false,
+                    "feedback": "Sugar free does not mean energy free. Fat and flour keep the energy high.",
+                    "sourceRefs": [
+                      "icmr-label"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "food-label-reading-m1",
+                "name": "Serving sizes are universal",
+                "correction": "Two food packs may use different sizes for one serving.",
+                "sourceRefs": [
+                  "label"
+                ]
+              },
+              {
+                "id": "food-label-reading-m2",
+                "name": "First ingredient is smallest",
+                "correction": "The first listed ingredient is the largest amount.",
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-m3",
+                "name": "Front claims tell the whole story",
+                "correction": "Front claims sell, so the back label and ingredients matter.",
+                "sourceRefs": [
+                  "icmr-label"
+                ]
+              },
+              {
+                "id": "food-label-reading-m4",
+                "name": "Per serving means per pack",
+                "correction": "A pack can hold more than one serving.",
+                "sourceRefs": [
+                  "icmr-label"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "label",
+                "title": "Food labels",
+                "publisher": "NHS",
+                "year": 2026,
+                "url": "https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/how-to-read-food-labels/",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "icmr-label",
+                "title": "Dietary Guidelines for Indians 2024",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2024,
+                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Compare two labels",
+              "detail": "Look at two similar packs and find the same per-100 g or per-100 ml line on each.",
+              "sourceRefs": [
+                "label"
+              ]
+            },
+            "factCheck": {
+              "checker": "content agent re-check 2026-10-22 (NHS Food labels: values per 100 g or 100 ml and sometimes per portion, ingredients in order of weight; ICMR-NIN DGI 2024 Guideline 17 p.108-109: ingredients in descending order with the highest quantity first, nutrients per 100 g/100 ml or serve, two servings of 100 kcal is 200 kcal, a real fruit claim can mean 10% fruit or less, sugar-free foods may carry fats, refined cereals and hidden sugars such as maltitol, 'all natural' used loosely so read the ingredients. FSSAI front-of-pack warning rule still pending in Oct 2026: revisit this concept once it is notified)",
+              "verdicts": [
+                {
+                  "claimId": "food-label-reading-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-c5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "food-label-reading-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "food-label-reading-s1",
+                "title": "Compare on the per 100 g line",
+                "claimId": "food-label-reading-c1",
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ],
+                "hook": {
+                  "stem": "Two biscuit packs list sugar per serving, but their servings differ. What is the fair way to compare?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Use the per 100 g column.",
+                      "correct": true,
+                      "feedback": "Right. Per 100 g puts both packs on the same base."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Use the bigger pack.",
+                      "correct": false,
+                      "feedback": "Pack size does not make a fair test. The per 100 g line does."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Go with the brand you have heard of.",
+                      "correct": false,
+                      "feedback": "A familiar name tells you nothing about sugar. Compare per 100 g."
+                    }
+                  ]
+                },
+                "teach": "Each brand picks its own serving size, so per-serving numbers can't be compared fairly. The per 100 g or per 100 ml line puts every pack on the same base. A pack may hold several servings.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Pack A, per 100 g",
+                    "lines": [
+                      "Sugar 30 g"
+                    ]
+                  },
+                  "right": {
+                    "title": "Pack B, per 100 g",
+                    "lines": [
+                      "Sugar 18 g"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the fair line to compare.",
+                  "parts": [
+                    "Pack A says 6 g sugar per 20 g serving,",
+                    "Pack B says 9 g per 50 g serving,",
+                    "but per 100 g, A has 30 g and B has 18 g."
+                  ],
+                  "spot": "but per 100 g, A has 30 g and B has 18 g.",
+                  "feedback": "On the same 100 g base, Pack A has far more sugar, even though its serving shows less."
+                },
+                "guided": [
+                  {
+                    "stem": "Why is a per-serving number hard to compare across brands?",
+                    "hint": "Ask who decides the portion size.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Each brand sets its own serving.",
+                        "correct": true,
+                        "feedback": "Right. One brand's serving may be far bigger or smaller than another's."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Servings are fixed at 100 g.",
+                        "correct": false,
+                        "feedback": "Servings vary from pack to pack. The per 100 g line is the fixed one."
+                      },
+                      {
+                        "id": "c",
+                        "text": "The numbers are printed too small.",
+                        "correct": false,
+                        "feedback": "Print size is not the trouble. Serving sizes differ between brands."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Compare packs on the per 100 g or per 100 ml line."
+              },
+              {
+                "id": "food-label-reading-s2",
+                "title": "Ingredients run from most to least",
+                "claimId": "food-label-reading-c2",
+                "sourceRefs": [
+                  "label",
+                  "icmr-label"
+                ],
+                "hook": {
+                  "stem": "A list reads: sugar, wheat flour, palm oil, cocoa. What is there most of?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Sugar.",
+                      "correct": true,
+                      "feedback": "Right. The first ingredient is the one with the largest amount."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Cocoa.",
+                      "correct": false,
+                      "feedback": "Cocoa comes last, so there is the least of it."
+                    },
+                    {
+                      "id": "c",
+                      "text": "You can't tell from a list.",
+                      "correct": false,
+                      "feedback": "You can. Ingredients run from the most to the least."
+                    }
+                  ]
+                },
+                "teach": "Ingredients are listed by amount, the most first, so the first few tell you what the food mostly is. Sugar near the top means a lot of sugar.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "First: the most",
+                    "Second",
+                    "Third",
+                    "Last: the least"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the main ingredient.",
+                  "parts": [
+                    "The muesli pack lists sugar first,",
+                    "then oats and nuts,",
+                    "with dried fruit near the end."
+                  ],
+                  "spot": "The muesli pack lists sugar first,",
+                  "feedback": "The first ingredient is the largest amount, so this mix has more sugar than oats."
+                },
+                "guided": [
+                  {
+                    "stem": "A chips pack lists potato, oil, salt. Which is there least of?",
+                    "hint": "Look at the end of the list.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Salt.",
+                        "correct": true,
+                        "feedback": "Yes. Salt comes last, so there is the least of it of the three."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Potato.",
+                        "correct": false,
+                        "feedback": "Potato comes first, so there is the most of it."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Oil.",
+                        "correct": false,
+                        "feedback": "Oil is in the middle. Salt, at the end, is the smallest amount."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The first ingredient is the one there is most of."
+              },
+              {
+                "id": "food-label-reading-s3",
+                "title": "Front claims sell; the back tells",
+                "claimId": "food-label-reading-c3",
+                "sourceRefs": [
+                  "icmr-label"
+                ],
+                "hook": {
+                  "stem": "A drink pack says 'made with real fruit'. How much fruit can that mean?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "10% fruit, or even less.",
+                      "correct": true,
+                      "feedback": "Right. India's food guide says a 'real fruit' claim can sit on a drink with 10% fruit or less."
+                    },
+                    {
+                      "id": "b",
+                      "text": "At least 90% fruit.",
+                      "correct": false,
+                      "feedback": "The rule is far looser. The claim can cover 10% fruit or less."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Pure fruit with no water added.",
+                      "correct": false,
+                      "feedback": "It need not be pure. The claim can cover 10% fruit or less."
+                    }
+                  ]
+                },
+                "teach": "The front of a pack is there to sell, so read the back. A 'real fruit' drink can hold 10% fruit or less, and 'sugar free' snacks can still carry sweeteners like maltitol, fat or white flour.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Front of pack",
+                    "lines": [
+                      "'Real fruit'",
+                      "'Sugar free'"
+                    ]
+                  },
+                  "right": {
+                    "title": "Back of pack",
+                    "lines": [
+                      "Fruit 10% or less",
+                      "Maltitol, refined flour"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the line that tells the truth.",
+                  "parts": [
+                    "The front says 'made with real mango',",
+                    "the back lists water, sugar, then 10% mango pulp,",
+                    "and the picture shows a whole mango."
+                  ],
+                  "spot": "the back lists water, sugar, then 10% mango pulp,",
+                  "feedback": "The ingredient list on the back shows the drink is mostly water and sugar."
+                },
+                "guided": [
+                  {
+                    "stem": "A 'sugar free' cookie lists maltitol near the top. What does that tell you?",
+                    "hint": "Recall what the card said about hidden extras.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "It still has a sweetener.",
+                        "correct": true,
+                        "feedback": "Right. Maltitol is a sweetener, and sugar-free snacks can also carry fat and refined flour."
+                      },
+                      {
+                        "id": "b",
+                        "text": "It has no sweetener in it.",
+                        "correct": false,
+                        "feedback": "Maltitol is a sweetener, so the cookie is still sweetened."
+                      },
+                      {
+                        "id": "c",
+                        "text": "It is free of calories.",
+                        "correct": false,
+                        "feedback": "Sugar free does not mean energy free. Fat and flour still add calories."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Front claims sell; the back label shows what is inside."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "health-nutrition-ch2",
+        "title": "Drink, sleep, move",
+        "minutes": 13,
+        "check": "quiz",
+        "concepts": [
           {
             "id": "hydration-cues",
             "title": "Hydration cues",
@@ -3658,1491 +5164,6 @@
             ]
           },
           {
-            "id": "iron-and-anaemia",
-            "title": "Iron and anaemia basics",
-            "prerequisites": [],
-            "hook": "Dal and greens carry iron, and a squeeze of lemon in the same meal helps the body take it in.",
-            "hookSourceRefs": [
-              "medline-iron",
-              "icmr-iron"
-            ],
-            "rule": "Iron helps make haemoglobin, which carries oxygen in red blood cells. Plant iron is harder to take in; vitamin C helps and tea near meals holds it back. Anaemia has many causes, so a blood test finds which.",
-            "ruleSourceRefs": [
-              "iron",
-              "anaemia",
-              "medline-iron",
-              "icmr-iron"
-            ],
-            "claims": [
-              {
-                "id": "iron-and-anaemia-c1",
-                "text": "Vitamin C foods like guava, oranges or lemon help the body take in iron from plant foods, while tea and coffee get in the way.",
-                "sourceRefs": [
-                  "medline-iron",
-                  "icmr-iron"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c2",
-                "text": "Anaemia has many causes. Low iron is one. Others are low folate or B12, malaria, heavy periods, and blood disorders passed down in families, like thalassaemia and sickle cell.",
-                "sourceRefs": [
-                  "anaemia"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c3",
-                "text": "Iron helps make haemoglobin, the part of red blood cells that carries oxygen around the body.",
-                "sourceRefs": [
-                  "iron",
-                  "icmr-iron",
-                  "anaemia"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c4",
-                "text": "India's food guide says tannin in tea and coffee gets in the way of iron uptake, and keeps them an hour away from meals.",
-                "sourceRefs": [
-                  "icmr-iron"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c5",
-                "text": "Anaemia can make you tired, dizzy or short of breath on effort. It can also cause headaches and cold hands and feet.",
-                "sourceRefs": [
-                  "anaemia"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c6",
-                "text": "India's nutrient guide (ICMR-NIN 2020) sets 19 mg of iron a day for adult men and 29 mg for adult women.",
-                "sourceRefs": [
-                  "icmr-rda"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c7",
-                "text": "Women who have periods are more at risk of low iron and anaemia, because of the blood that leaves the body each month.",
-                "sourceRefs": [
-                  "anaemia",
-                  "medline-iron"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-c8",
-                "text": "Anaemia is found with a blood test of haemoglobin, and treatment depends on the cause; iron tablets are given once a test shows low iron.",
-                "sourceRefs": [
-                  "anaemia",
-                  "nhs-ida"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "iron-and-anaemia-9",
-                "type": "scenario",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s1",
-                "job": "reverse",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "anaemia",
-                  "iron"
-                ],
-                "stem": "Before exams, Nisha gets breathless on the hostel stairs and feels tired all day for weeks. Which link fits these signs?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Her blood may be carrying less oxygen.",
-                    "correct": true,
-                    "feedback": "Feeling tired and out of breath on stairs can be signs that less oxygen is reaching the body.",
-                    "sourceRefs": [
-                      "anaemia",
-                      "iron"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "She is eating too much protein.",
-                    "correct": false,
-                    "feedback": "Too much protein does not cause these signs. They point to blood carrying less oxygen.",
-                    "sourceRefs": [
-                      "anaemia",
-                      "iron"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Climbing stairs uses up her iron.",
-                    "correct": false,
-                    "feedback": "Stairs do not use up iron. The signs point to blood that carries less oxygen.",
-                    "sourceRefs": [
-                      "anaemia",
-                      "iron"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-10",
-                "type": "estimate",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s1",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "iron-and-anaemia-m4"
-                ],
-                "sourceRefs": [
-                  "icmr-rda"
-                ],
-                "stem": "Raj says his sister needs the same iron as him. India's nutrient guide sets 19 mg a day for men and 29 mg for women. Estimate how much more iron a day she needs.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 10 mg.",
-                    "correct": true,
-                    "feedback": "29 minus 19 is 10, so women need about 10 mg more, largely because of blood that leaves the body in periods.",
-                    "sourceRefs": [
-                      "icmr-rda"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 48 mg.",
-                    "correct": false,
-                    "feedback": "That adds the two figures. The gap comes from taking 19 away from 29.",
-                    "misconceptionIds": [
-                      "iron-and-anaemia-m4"
-                    ],
-                    "sourceRefs": [
-                      "icmr-rda"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 1 mg.",
-                    "correct": false,
-                    "feedback": "The gap is far bigger. 29 minus 19 leaves about 10 mg.",
-                    "sourceRefs": [
-                      "icmr-rda"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 10,
-                  "min": 9,
-                  "max": 11,
-                  "unit": "mg"
-                }
-              },
-              {
-                "id": "iron-and-anaemia-11",
-                "type": "scenario",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s2",
-                "job": "transfer",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "iron-and-anaemia-m3"
-                ],
-                "sourceRefs": [
-                  "icmr-iron"
-                ],
-                "stem": "Your hostel breakfast is poha with a cup of chai straight after. Which change helps the most iron from the poha get in?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Have the chai an hour later.",
-                    "correct": true,
-                    "feedback": "Tea holds back iron uptake, so moving it an hour away from the meal lets more iron in.",
-                    "sourceRefs": [
-                      "icmr-iron"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Add a second cup of chai.",
-                    "correct": false,
-                    "feedback": "More tea near the meal holds back even more iron.",
-                    "misconceptionIds": [
-                      "iron-and-anaemia-m3"
-                    ],
-                    "sourceRefs": [
-                      "icmr-iron"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Skip the poha and keep the chai.",
-                    "correct": false,
-                    "feedback": "That removes the food that brings the iron. Moving the tea later is the better change.",
-                    "sourceRefs": [
-                      "icmr-iron"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-12",
-                "type": "why",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s2",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "iron-and-anaemia-m1"
-                ],
-                "sourceRefs": [
-                  "icmr-iron",
-                  "medline-iron"
-                ],
-                "stem": "Why can a person who eats plenty of spinach still be low in iron?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Iron from plants is harder to take in.",
-                    "correct": true,
-                    "feedback": "Greens hold plenty of iron, but the body takes in only part of it, unless vitamin C helps.",
-                    "sourceRefs": [
-                      "icmr-iron",
-                      "medline-iron"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Spinach holds no iron of any kind.",
-                    "correct": false,
-                    "feedback": "Spinach does have iron, often plenty. The problem is how little of it gets taken in.",
-                    "misconceptionIds": [
-                      "iron-and-anaemia-m1"
-                    ],
-                    "sourceRefs": [
-                      "icmr-iron",
-                      "medline-iron"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Cooking turns the iron into fat.",
-                    "correct": false,
-                    "feedback": "Cooking does not turn iron into fat. Plant iron is simply harder for the body to take in.",
-                    "sourceRefs": [
-                      "icmr-iron",
-                      "medline-iron"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-13",
-                "type": "true-not-quite",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s3",
-                "job": "combine",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "iron-and-anaemia-m2"
-                ],
-                "sourceRefs": [
-                  "anaemia",
-                  "nhs-ida"
-                ],
-                "stem": "During exam season, Kavya feels tired and breathless for weeks, so she plans to buy iron tablets. What is not quite right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A blood test should find the cause first.",
-                    "correct": true,
-                    "feedback": "Her signs fit anaemia, but it has many causes. A blood test shows what is wrong before any tablets.",
-                    "sourceRefs": [
-                      "anaemia",
-                      "nhs-ida"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Nothing; tiredness always means low iron.",
-                    "correct": false,
-                    "feedback": "Tiredness can come from many causes, and anaemia itself has several. A test finds the real one.",
-                    "misconceptionIds": [
-                      "iron-and-anaemia-m2"
-                    ],
-                    "sourceRefs": [
-                      "anaemia",
-                      "nhs-ida"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "She should drink more tea with meals.",
-                    "correct": false,
-                    "feedback": "Tea holds back iron uptake, and it does not answer what is causing her tiredness.",
-                    "sourceRefs": [
-                      "anaemia",
-                      "nhs-ida"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-14",
-                "type": "choose",
-                "conceptId": "iron-and-anaemia",
-                "step": "iron-and-anaemia-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "anaemia"
-                ],
-                "stem": "Which of these can cause anaemia besides low iron?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Malaria.",
-                    "correct": true,
-                    "feedback": "It is an infection, and infections are one of the causes of anaemia.",
-                    "sourceRefs": [
-                      "anaemia"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Drinking plenty of water.",
-                    "correct": false,
-                    "feedback": "Water does not cause anaemia. Infections like malaria, low vitamins and blood loss can.",
-                    "sourceRefs": [
-                      "anaemia"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Going to bed late.",
-                    "correct": false,
-                    "feedback": "Late nights do not cause anaemia. Infections like malaria, low vitamins and blood loss can.",
-                    "sourceRefs": [
-                      "anaemia"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "iron-and-anaemia-m1",
-                "name": "All iron is absorbed alike",
-                "correction": "Iron from plant foods is harder for the body to take in.",
-                "sourceRefs": [
-                  "medline-iron",
-                  "icmr-iron"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-m2",
-                "name": "All anaemia is low iron",
-                "correction": "Anaemia has many causes, so a blood test is needed to find which one.",
-                "sourceRefs": [
-                  "anaemia"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-m3",
-                "name": "Tea with meals is harmless for iron",
-                "correction": "Tea binds iron, so it can hold back uptake from a meal.",
-                "sourceRefs": [
-                  "icmr-iron",
-                  "medline-iron"
-                ]
-              },
-              {
-                "id": "iron-and-anaemia-m4",
-                "name": "Men and women need the same iron",
-                "correction": "Women who have periods need more iron than men.",
-                "sourceRefs": [
-                  "icmr-rda",
-                  "anaemia"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "iron",
-                "title": "Iron - Vitamins and minerals",
-                "publisher": "NHS",
-                "year": 2020,
-                "url": "https://www.nhs.uk/conditions/vitamins-and-minerals/iron/",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "anaemia",
-                "title": "Anaemia",
-                "publisher": "World Health Organization",
-                "year": 2025,
-                "url": "https://www.who.int/news-room/fact-sheets/detail/anaemia",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "medline-iron",
-                "title": "Iron in diet",
-                "publisher": "MedlinePlus, US National Library of Medicine",
-                "year": 2025,
-                "url": "https://medlineplus.gov/ency/article/002422.htm",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "icmr-iron",
-                "title": "Dietary Guidelines for Indians 2024",
-                "publisher": "ICMR-National Institute of Nutrition",
-                "year": 2024,
-                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "icmr-rda",
-                "title": "Nutrient Requirements for Indians 2020: brief note",
-                "publisher": "ICMR-National Institute of Nutrition",
-                "year": 2020,
-                "url": "https://www.nin.res.in/rdabook/brief_note.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "nhs-ida",
-                "title": "Iron deficiency anaemia",
-                "publisher": "NHS",
-                "year": 2024,
-                "url": "https://www.nhs.uk/conditions/iron-deficiency-anaemia/",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Find a vitamin C helper",
-              "detail": "Look at one meal with dal or greens and name a vitamin C food that could go with it.",
-              "sourceRefs": [
-                "icmr-iron"
-              ]
-            },
-            "factCheck": {
-              "checker": "content agent re-check 2026-10-22 (WHO Anaemia fact sheet: symptoms tiredness, dizziness, headache, cold hands and feet, shortness of breath on exertion; diagnosed by blood haemoglobin; iron deficiency the most common nutritional cause; folate, B12, malaria and other infections, heavy menstrual loss, thalassaemia and sickle cell; menstruating women most at risk; NHS Iron deficiency anaemia: iron tablets once a blood test shows low levels; MedlinePlus Iron in diet: vitamin C raises plant iron absorption, tea binds iron, menstruating women at risk; ICMR-NIN DGI 2024: iron forms haemoglobin, guava, orange and lemon help, greens absorbed poorly, tea and coffee an hour from meals; ICMR-NIN RDA 2020 brief note Tables 3 and 4: iron 19 mg men, 29 mg women; NHS Iron: iron makes red blood cells that carry oxygen. UK mg figures replaced by India's)",
-              "verdicts": [
-                {
-                  "claimId": "iron-and-anaemia-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c5",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c6",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c7",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-c8",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "iron-and-anaemia-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "iron-and-anaemia-s1",
-                "title": "Iron helps blood carry oxygen",
-                "claimId": "iron-and-anaemia-c3",
-                "sourceRefs": [
-                  "iron",
-                  "icmr-iron",
-                  "anaemia"
-                ],
-                "hook": {
-                  "stem": "What job does iron do in the blood?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Helps make the oxygen carrier.",
-                      "correct": true,
-                      "feedback": "Right. Iron is used to build haemoglobin, which carries oxygen in red blood cells."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Turns the food you eat into body fat.",
-                      "correct": false,
-                      "feedback": "That is not its job. Iron helps build haemoglobin, the oxygen carrier."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Makes bones hard.",
-                      "correct": false,
-                      "feedback": "That is mainly calcium's job. Iron helps build haemoglobin, which carries oxygen."
-                    }
-                  ]
-                },
-                "teach": "Iron builds haemoglobin, which carries oxygen in the blood. Too little leaves you tired and short of breath. Women lose blood in periods, so they need more iron.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Iron from food",
-                    "Haemoglobin in red cells",
-                    "Oxygen to the body"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap what iron helps the body make.",
-                  "parts": [
-                    "The iron in Meena's rajma",
-                    "helps her make haemoglobin,",
-                    "which takes oxygen from her lungs to her legs."
-                  ],
-                  "spot": "helps her make haemoglobin,",
-                  "feedback": "Iron is needed to build haemoglobin, the oxygen carrier in red blood cells."
-                },
-                "guided": [
-                  {
-                    "stem": "If there is less haemoglobin in the blood, how much oxygen gets to the body?",
-                    "hint": "Haemoglobin is the carrier.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Less of it arrives.",
-                        "correct": true,
-                        "feedback": "Right. With less carrier, less oxygen gets to the organs and muscles."
-                      },
-                      {
-                        "id": "b",
-                        "text": "More of it arrives.",
-                        "correct": false,
-                        "feedback": "Less carrier means less oxygen moved, not more."
-                      },
-                      {
-                        "id": "c",
-                        "text": "It stays the same.",
-                        "correct": false,
-                        "feedback": "Haemoglobin does the carrying, so less of it means less oxygen moved."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Iron builds haemoglobin; too little leaves you tired and breathless."
-              },
-              {
-                "id": "iron-and-anaemia-s2",
-                "title": "Plant iron needs a helper",
-                "claimId": "iron-and-anaemia-c1",
-                "sourceRefs": [
-                  "medline-iron",
-                  "icmr-iron"
-                ],
-                "hook": {
-                  "stem": "Palak dal gets a squeeze of lemon. What does the lemon do for the iron?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Helps the body take it in.",
-                      "correct": true,
-                      "feedback": "Right. Lemon has vitamin C, which helps the body take in plant iron."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Locks the iron away from the body.",
-                      "correct": false,
-                      "feedback": "Lemon does the reverse. Its vitamin C helps the body take in plant iron."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Turns it into vitamin C.",
-                      "correct": false,
-                      "feedback": "Iron does not change into vitamin C. The vitamin C in lemon helps iron get in."
-                    }
-                  ]
-                },
-                "teach": "Iron from plants like greens and dal is harder for the body to take in. Vitamin C in guava, orange or lemon helps, while tea holds it back, so keep tea an hour away from meals.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Helps",
-                    "lines": [
-                      "Guava, orange, lemon",
-                      "Sprouted or fermented grains"
-                    ]
-                  },
-                  "right": {
-                    "title": "Holds it back",
-                    "lines": [
-                      "Tea or coffee with meals"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the vitamin C food.",
-                  "parts": [
-                    "For lunch, Aditi eats chana and roti",
-                    "with a slice of guava on the side,",
-                    "and waits an hour before her tea."
-                  ],
-                  "spot": "with a slice of guava on the side,",
-                  "feedback": "Guava is rich in vitamin C, which helps the body take in iron from the chana."
-                },
-                "guided": [
-                  {
-                    "stem": "Which side helps the body take in iron from a bowl of rajma?",
-                    "hint": "Look for a vitamin C food.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Orange slices.",
-                        "correct": true,
-                        "feedback": "Yes. Oranges are rich in vitamin C, which helps plant iron get in."
-                      },
-                      {
-                        "id": "b",
-                        "text": "A cup of tea.",
-                        "correct": false,
-                        "feedback": "Tea binds iron and holds it back, so it works the other way."
-                      },
-                      {
-                        "id": "c",
-                        "text": "A glass of cola.",
-                        "correct": false,
-                        "feedback": "Cola is not a vitamin C food. An orange or guava would help."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Vitamin C helps plant iron in; tea near meals holds it back."
-              },
-              {
-                "id": "iron-and-anaemia-s3",
-                "title": "A blood test finds the cause",
-                "claimId": "iron-and-anaemia-c8",
-                "sourceRefs": [
-                  "anaemia",
-                  "nhs-ida"
-                ],
-                "hook": {
-                  "stem": "Is low iron the only cause of anaemia?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "No, there are several.",
-                      "correct": true,
-                      "feedback": "Right. Low iron is common, but vitamins, infections, blood loss and inherited conditions can cause it too."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Yes, low iron is the one cause.",
-                      "correct": false,
-                      "feedback": "Low iron is the most common food cause, but there are many others."
-                    },
-                    {
-                      "id": "c",
-                      "text": "No, it comes from old age.",
-                      "correct": false,
-                      "feedback": "Age is not the main cause. Low iron, low vitamins, infections and inherited conditions are."
-                    }
-                  ]
-                },
-                "teach": "Low iron is the top food cause of anaemia, but low B12, malaria, heavy periods and thalassaemia can cause it too. So only a blood test can tell. Don't start iron tablets without one.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Low iron, B12 or folate",
-                    "Malaria or heavy periods",
-                    "Thalassaemia or sickle cell",
-                    "Anaemia"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the step that looks for the cause.",
-                  "parts": [
-                    "Tired for weeks, Divya gets a blood test,",
-                    "which shows low haemoglobin,",
-                    "and her doctor then checks what is causing it."
-                  ],
-                  "spot": "and her doctor then checks what is causing it.",
-                  "feedback": "The test shows anaemia, but the cause still has to be found before treatment."
-                },
-                "guided": [
-                  {
-                    "stem": "Two friends both have anaemia. Will the cause be the same?",
-                    "hint": "Look back at the flow of reasons.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Not always; causes differ.",
-                        "correct": true,
-                        "feedback": "Right. One may have low iron, another an infection or low B12."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Yes, it is low iron for both.",
-                        "correct": false,
-                        "feedback": "Low iron is common, but it is not the cause for everyone."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Yes, it is malaria for both.",
-                        "correct": false,
-                        "feedback": "Malaria is one cause. Low iron and low vitamins are others."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Anaemia has many causes; a blood test, not a guess, finds it."
-              }
-            ]
-          },
-          {
-            "id": "food-label-reading",
-            "title": "Reading a food label",
-            "prerequisites": [],
-            "hook": "Two packs can use different serving sizes. The per-100-g line puts them on the same base so you can compare them.",
-            "hookSourceRefs": [
-              "label"
-            ],
-            "rule": "Compare like foods on their per-100-g or per-100-ml lines. Ingredients run from most to least. Front-of-pack marketing claims like 'real fruit' can mislead, so the back label tells more.",
-            "ruleSourceRefs": [
-              "label",
-              "icmr-label"
-            ],
-            "claims": [
-              {
-                "id": "food-label-reading-c1",
-                "text": "Nutrition values are given per 100 g or 100 ml, and may also be given per serving, whose size each brand sets.",
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-c2",
-                "text": "Packed food lists its ingredients in order, with the largest amount first.",
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-c3",
-                "text": "India's food guide says front-of-pack claims can mislead. A 'real fruit' product may hold 10% fruit or less. A 'sugar free' food may carry sweeteners like maltitol, fat or white flour.",
-                "sourceRefs": [
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-c4",
-                "text": "If a pack holds two servings of 100 kcal each, eating the whole pack gives 200 kcal.",
-                "sourceRefs": [
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-c5",
-                "text": "India's food guide says 'all natural' is often used loosely, so the ingredients on the back should be read to check the claim.",
-                "sourceRefs": [
-                  "icmr-label"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "food-label-reading-9",
-                "type": "true-not-quite",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s1",
-                "job": "misconception",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "food-label-reading-m4"
-                ],
-                "sourceRefs": [
-                  "icmr-label"
-                ],
-                "stem": "A friend says a snack is light because the label shows 'only 80 kcal per serving'. What is missing?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "How many servings the pack holds.",
-                    "correct": true,
-                    "feedback": "If the pack holds three servings, eating it all gives 240 kcal, not 80.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Nothing; 80 kcal covers the pack.",
-                    "correct": false,
-                    "feedback": "The figure is per serving, and a pack often holds more than one.",
-                    "misconceptionIds": [
-                      "food-label-reading-m4"
-                    ],
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The weight of the empty wrapper.",
-                    "correct": false,
-                    "feedback": "The wrapper tells you nothing. The number of servings changes the total.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "food-label-reading-10",
-                "type": "estimate",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s1",
-                "job": "reverse",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "food-label-reading-m4"
-                ],
-                "sourceRefs": [
-                  "label"
-                ],
-                "stem": "Reading the label, a 40 g packet of namkeen has 1.5 g of salt per 100 g. Estimate the salt in the whole packet.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 0.6 g.",
-                    "correct": true,
-                    "feedback": "40 g is 0.4 of 100 g, so 1.5 g times 0.4 is about 0.6 g.",
-                    "sourceRefs": [
-                      "label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 1.5 g.",
-                    "correct": false,
-                    "feedback": "That is the figure for 100 g. The packet holds only 40 g.",
-                    "sourceRefs": [
-                      "label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 15 g.",
-                    "correct": false,
-                    "feedback": "The decimal slipped. A packet smaller than 100 g holds less than 1.5 g, about 0.6 g.",
-                    "sourceRefs": [
-                      "label"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 0.6,
-                  "min": 0.5,
-                  "max": 0.7,
-                  "unit": "grams"
-                }
-              },
-              {
-                "id": "food-label-reading-11",
-                "type": "why",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s2",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "food-label-reading-m1"
-                ],
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ],
-                "stem": "Namkeen A lists salt third; namkeen B lists it fifth. Yet B has more salt per 100 g. How can that be?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "List order ranks items inside one pack, not across packs.",
-                    "correct": true,
-                    "feedback": "Order shows what is biggest within a pack. To compare two packs, use the per 100 g line.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The label on B has to be wrong.",
-                    "correct": false,
-                    "feedback": "Both labels can be right. Order ranks items within one pack, not between packs.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Fifth place means less salt in every case.",
-                    "correct": false,
-                    "feedback": "Fifth place only ranks salt against B's other items. Per 100 g compares packs.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "food-label-reading-12",
-                "type": "order",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s2",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ],
-                "stem": "A trail mix holds 40% oats, 25% sugar, 20% nuts and 15% raisins. Put them in label order.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Oats",
-                    "correct": true,
-                    "feedback": "At 40%, oats are the largest part, so they lead the list.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Sugar",
-                    "correct": true,
-                    "feedback": "At 25%, sugar is the second largest part.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Nuts",
-                    "correct": true,
-                    "feedback": "At 20%, nuts come after sugar in the list.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "Raisins",
-                    "correct": true,
-                    "feedback": "At 15%, raisins are the smallest part, so they come last.",
-                    "sourceRefs": [
-                      "label",
-                      "icmr-label"
-                    ]
-                  }
-                ],
-                "answer": [
-                  "a",
-                  "b",
-                  "c",
-                  "d"
-                ]
-              },
-              {
-                "id": "food-label-reading-13",
-                "type": "scenario",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s3",
-                "job": "transfer",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "food-label-reading-m3"
-                ],
-                "sourceRefs": [
-                  "icmr-label"
-                ],
-                "stem": "At the school canteen, a chips pack shouts 'all natural' in big letters. What is the sensible next step?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Read the ingredients on the back.",
-                    "correct": true,
-                    "feedback": "'Natural' is often used loosely to sell, so the back label shows what is really inside.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Trust it, since 'natural' is a strict rule.",
-                    "correct": false,
-                    "feedback": "India's food guide says 'natural' is used loosely. The ingredients tell you more.",
-                    "misconceptionIds": [
-                      "food-label-reading-m3"
-                    ],
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Pick it over a pack with no claims.",
-                    "correct": false,
-                    "feedback": "A claim on the front proves nothing. Read both backs and compare.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "food-label-reading-14",
-                "type": "predict",
-                "conceptId": "food-label-reading",
-                "step": "food-label-reading-s3",
-                "job": "combine",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "icmr-label"
-                ],
-                "stem": "In the college canteen, Meera sees a 'sugar free' cookie with 480 kcal per 100 g and a regular one with 490 kcal per 100 g. What will swapping save her?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Hardly any energy at all.",
-                    "correct": true,
-                    "feedback": "Per 100 g the two are nearly the same, because sugar-free snacks can carry fat and flour.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About half the calories.",
-                    "correct": false,
-                    "feedback": "The per 100 g lines are close, so the swap saves very little energy.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Every calorie from sugar.",
-                    "correct": false,
-                    "feedback": "Sugar free does not mean energy free. Fat and flour keep the energy high.",
-                    "sourceRefs": [
-                      "icmr-label"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "food-label-reading-m1",
-                "name": "Serving sizes are universal",
-                "correction": "Two food packs may use different sizes for one serving.",
-                "sourceRefs": [
-                  "label"
-                ]
-              },
-              {
-                "id": "food-label-reading-m2",
-                "name": "First ingredient is smallest",
-                "correction": "The first listed ingredient is the largest amount.",
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-m3",
-                "name": "Front claims tell the whole story",
-                "correction": "Front claims sell, so the back label and ingredients matter.",
-                "sourceRefs": [
-                  "icmr-label"
-                ]
-              },
-              {
-                "id": "food-label-reading-m4",
-                "name": "Per serving means per pack",
-                "correction": "A pack can hold more than one serving.",
-                "sourceRefs": [
-                  "icmr-label"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "label",
-                "title": "Food labels",
-                "publisher": "NHS",
-                "year": 2026,
-                "url": "https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/how-to-read-food-labels/",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "icmr-label",
-                "title": "Dietary Guidelines for Indians 2024",
-                "publisher": "ICMR-National Institute of Nutrition",
-                "year": 2024,
-                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Compare two labels",
-              "detail": "Look at two similar packs and find the same per-100 g or per-100 ml line on each.",
-              "sourceRefs": [
-                "label"
-              ]
-            },
-            "factCheck": {
-              "checker": "content agent re-check 2026-10-22 (NHS Food labels: values per 100 g or 100 ml and sometimes per portion, ingredients in order of weight; ICMR-NIN DGI 2024 Guideline 17 p.108-109: ingredients in descending order with the highest quantity first, nutrients per 100 g/100 ml or serve, two servings of 100 kcal is 200 kcal, a real fruit claim can mean 10% fruit or less, sugar-free foods may carry fats, refined cereals and hidden sugars such as maltitol, 'all natural' used loosely so read the ingredients. FSSAI front-of-pack warning rule still pending in Oct 2026: revisit this concept once it is notified)",
-              "verdicts": [
-                {
-                  "claimId": "food-label-reading-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-c5",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "food-label-reading-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "food-label-reading-s1",
-                "title": "Compare on the per 100 g line",
-                "claimId": "food-label-reading-c1",
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ],
-                "hook": {
-                  "stem": "Two biscuit packs list sugar per serving, but their servings differ. What is the fair way to compare?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Use the per 100 g column.",
-                      "correct": true,
-                      "feedback": "Right. Per 100 g puts both packs on the same base."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Use the bigger pack.",
-                      "correct": false,
-                      "feedback": "Pack size does not make a fair test. The per 100 g line does."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Go with the brand you have heard of.",
-                      "correct": false,
-                      "feedback": "A familiar name tells you nothing about sugar. Compare per 100 g."
-                    }
-                  ]
-                },
-                "teach": "Each brand picks its own serving size, so per-serving numbers can't be compared fairly. The per 100 g or per 100 ml line puts every pack on the same base. A pack may hold several servings.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Pack A, per 100 g",
-                    "lines": [
-                      "Sugar 30 g"
-                    ]
-                  },
-                  "right": {
-                    "title": "Pack B, per 100 g",
-                    "lines": [
-                      "Sugar 18 g"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the fair line to compare.",
-                  "parts": [
-                    "Pack A says 6 g sugar per 20 g serving,",
-                    "Pack B says 9 g per 50 g serving,",
-                    "but per 100 g, A has 30 g and B has 18 g."
-                  ],
-                  "spot": "but per 100 g, A has 30 g and B has 18 g.",
-                  "feedback": "On the same 100 g base, Pack A has far more sugar, even though its serving shows less."
-                },
-                "guided": [
-                  {
-                    "stem": "Why is a per-serving number hard to compare across brands?",
-                    "hint": "Ask who decides the portion size.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Each brand sets its own serving.",
-                        "correct": true,
-                        "feedback": "Right. One brand's serving may be far bigger or smaller than another's."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Servings are fixed at 100 g.",
-                        "correct": false,
-                        "feedback": "Servings vary from pack to pack. The per 100 g line is the fixed one."
-                      },
-                      {
-                        "id": "c",
-                        "text": "The numbers are printed too small.",
-                        "correct": false,
-                        "feedback": "Print size is not the trouble. Serving sizes differ between brands."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Compare packs on the per 100 g or per 100 ml line."
-              },
-              {
-                "id": "food-label-reading-s2",
-                "title": "Ingredients run from most to least",
-                "claimId": "food-label-reading-c2",
-                "sourceRefs": [
-                  "label",
-                  "icmr-label"
-                ],
-                "hook": {
-                  "stem": "A list reads: sugar, wheat flour, palm oil, cocoa. What is there most of?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Sugar.",
-                      "correct": true,
-                      "feedback": "Right. The first ingredient is the one with the largest amount."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Cocoa.",
-                      "correct": false,
-                      "feedback": "Cocoa comes last, so there is the least of it."
-                    },
-                    {
-                      "id": "c",
-                      "text": "You can't tell from a list.",
-                      "correct": false,
-                      "feedback": "You can. Ingredients run from the most to the least."
-                    }
-                  ]
-                },
-                "teach": "Ingredients are listed by amount, the most first, so the first few tell you what the food mostly is. Sugar near the top means a lot of sugar.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "First: the most",
-                    "Second",
-                    "Third",
-                    "Last: the least"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the main ingredient.",
-                  "parts": [
-                    "The muesli pack lists sugar first,",
-                    "then oats and nuts,",
-                    "with dried fruit near the end."
-                  ],
-                  "spot": "The muesli pack lists sugar first,",
-                  "feedback": "The first ingredient is the largest amount, so this mix has more sugar than oats."
-                },
-                "guided": [
-                  {
-                    "stem": "A chips pack lists potato, oil, salt. Which is there least of?",
-                    "hint": "Look at the end of the list.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Salt.",
-                        "correct": true,
-                        "feedback": "Yes. Salt comes last, so there is the least of it of the three."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Potato.",
-                        "correct": false,
-                        "feedback": "Potato comes first, so there is the most of it."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Oil.",
-                        "correct": false,
-                        "feedback": "Oil is in the middle. Salt, at the end, is the smallest amount."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "The first ingredient is the one there is most of."
-              },
-              {
-                "id": "food-label-reading-s3",
-                "title": "Front claims sell; the back tells",
-                "claimId": "food-label-reading-c3",
-                "sourceRefs": [
-                  "icmr-label"
-                ],
-                "hook": {
-                  "stem": "A drink pack says 'made with real fruit'. How much fruit can that mean?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "10% fruit, or even less.",
-                      "correct": true,
-                      "feedback": "Right. India's food guide says a 'real fruit' claim can sit on a drink with 10% fruit or less."
-                    },
-                    {
-                      "id": "b",
-                      "text": "At least 90% fruit.",
-                      "correct": false,
-                      "feedback": "The rule is far looser. The claim can cover 10% fruit or less."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Pure fruit with no water added.",
-                      "correct": false,
-                      "feedback": "It need not be pure. The claim can cover 10% fruit or less."
-                    }
-                  ]
-                },
-                "teach": "The front of a pack is there to sell, so read the back. A 'real fruit' drink can hold 10% fruit or less, and 'sugar free' snacks can still carry sweeteners like maltitol, fat or white flour.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Front of pack",
-                    "lines": [
-                      "'Real fruit'",
-                      "'Sugar free'"
-                    ]
-                  },
-                  "right": {
-                    "title": "Back of pack",
-                    "lines": [
-                      "Fruit 10% or less",
-                      "Maltitol, refined flour"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the line that tells the truth.",
-                  "parts": [
-                    "The front says 'made with real mango',",
-                    "the back lists water, sugar, then 10% mango pulp,",
-                    "and the picture shows a whole mango."
-                  ],
-                  "spot": "the back lists water, sugar, then 10% mango pulp,",
-                  "feedback": "The ingredient list on the back shows the drink is mostly water and sugar."
-                },
-                "guided": [
-                  {
-                    "stem": "A 'sugar free' cookie lists maltitol near the top. What does that tell you?",
-                    "hint": "Recall what the card said about hidden extras.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "It still has a sweetener.",
-                        "correct": true,
-                        "feedback": "Right. Maltitol is a sweetener, and sugar-free snacks can also carry fat and refined flour."
-                      },
-                      {
-                        "id": "b",
-                        "text": "It has no sweetener in it.",
-                        "correct": false,
-                        "feedback": "Maltitol is a sweetener, so the cookie is still sweetened."
-                      },
-                      {
-                        "id": "c",
-                        "text": "It is free of calories.",
-                        "correct": false,
-                        "feedback": "Sugar free does not mean energy free. Fat and flour still add calories."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Front claims sell; the back label shows what is inside."
-              }
-            ]
-          },
-          {
             "id": "fad-diet-claims",
             "title": "Fad diet claims",
             "prerequisites": [],
@@ -5853,5 +5874,5 @@
       }
     ]
   },
-  "changelog": "W3 review rewrite, 2026-10-20: all 64 items revised with specific distractor feedback, sourced quantities and checked source fields."
+  "changelog": "W3 review rewrite, 2026-10-20: all 64 items revised with specific distractor feedback, sourced quantities and checked source fields. 1.1.0: a NANDI Original book in chapters (spec 33); idea ids unchanged."
 }

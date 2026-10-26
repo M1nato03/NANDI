@@ -1,6 +1,6 @@
 {
   "id": "topic.body-training",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schema": 1,
   "minAppVersion": "0.1.0",
   "title": "Body and training",
@@ -14,10 +14,23 @@
       "title": "Body and training",
       "description": "Short cases from hostel rooms, gyms and hot days."
     },
+    "book": {
+      "title": "Body Basics",
+      "author": "NANDI",
+      "year": 2026,
+      "rights": "original",
+      "cover": {
+        "palette": "teal",
+        "motif": "stripes"
+      },
+      "blurb": "How muscles grow, recover and stay safe while you train."
+    },
     "modules": [
       {
-        "id": "body-training-module",
-        "title": "Train, recover and read the clues",
+        "id": "body-training-ch1",
+        "title": "Getting stronger",
+        "minutes": 13,
+        "check": "quiz",
         "concepts": [
           {
             "id": "progressive-overload",
@@ -2090,2123 +2103,6 @@
             ]
           },
           {
-            "id": "heat-hydration",
-            "title": "Heat and hydration",
-            "prerequisites": [],
-            "hook": "An Ahmedabad noon can make an outdoor session feel harder than the same work on a cool day.",
-            "hookSourceRefs": [
-              "heat",
-              "cdc-heat-rate"
-            ],
-            "rule": "In heat your body works to shed heat as well as move. Train in cooler hours, start slow, sip water and replace salt on long days, but do not force down big amounts. Dizziness, nausea or cramps mean stop and get cool; confusion is an emergency.",
-            "ruleSourceRefs": [
-              "heat",
-              "cdc-heat-rate",
-              "signs"
-            ],
-            "claims": [
-              {
-                "id": "heat-hydration-c1",
-                "text": "Hot exercise can raise heat risk and fluid loss. Feeling dizzy, sick or headachy can be a warning.",
-                "sourceRefs": [
-                  "heat",
-                  "signs"
-                ]
-              },
-              {
-                "id": "heat-hydration-c2",
-                "text": "In hot weather, train early or late when it is cooler, start slow and pick up the pace bit by bit, and drink more water than usual without waiting for thirst.",
-                "sourceRefs": [
-                  "heat"
-                ]
-              },
-              {
-                "id": "heat-hydration-c3",
-                "text": "In the heat, sweat may reach 1 litre an hour, taking fluid and salt. Forcing water on someone who is not thirsty raises risk, and food is the easiest way to replace salt.",
-                "sourceRefs": [
-                  "cdc-heat-rate"
-                ]
-              },
-              {
-                "id": "heat-hydration-c4",
-                "text": "In heat, the body must move heat from the core to the skin, and heart rate and temperature rise as the body loses fluid. Heart, sugar and kidney conditions lower heat tolerance.",
-                "sourceRefs": [
-                  "cdc-heat-rate"
-                ]
-              },
-              {
-                "id": "heat-hydration-c5",
-                "text": "Dizziness, nausea, headache, cramps or feeling faint in the heat are signs to stop, get cool and sip water. Get medical help if you throw up, feel worse, or it lasts over an hour.",
-                "sourceRefs": [
-                  "signs",
-                  "heat"
-                ]
-              },
-              {
-                "id": "heat-hydration-c6",
-                "text": "Confusion or passing out in the heat can mean heat stroke, an emergency: call for help, move the person somewhere cool, cool them, and give nothing to drink.",
-                "sourceRefs": [
-                  "signs",
-                  "cdc-heat-rate"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "heat-hydration-9",
-                "type": "true-not-quite",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s1",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "heat-hydration-m1"
-                ],
-                "sourceRefs": [
-                  "heat",
-                  "cdc-heat-rate"
-                ],
-                "stem": "A coach says noon practice in May toughens players up, so the heat is a bonus workout. What is not quite right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Heat adds strain, so cooler hours and a slow start are safer.",
-                    "correct": true,
-                    "feedback": "In heat the body must shed heat as well as move, so the same work strains it more. Cooler hours cut that.",
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Heat is fine as long as nobody drinks water.",
-                    "correct": false,
-                    "feedback": "Skipping water adds danger. Drink more than usual, and train in cooler hours.",
-                    "misconceptionIds": [
-                      "heat-hydration-m1"
-                    ],
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Noon is fine for anyone who feels fit that day.",
-                    "correct": false,
-                    "feedback": "Feeling fit does not remove the heat strain. Cooler hours and a slow start are safer for everyone.",
-                    "misconceptionIds": [
-                      "heat-hydration-m1"
-                    ],
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "heat-hydration-10",
-                "type": "scenario",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s1",
-                "job": "reverse",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "cdc-heat-rate"
-                ],
-                "stem": "In a Delhi May, Nisha's usual college run feels much harder, though she is no less fit. What is the likely cause?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Her body is shedding heat as well as running.",
-                    "correct": true,
-                    "feedback": "In heat, blood flow goes to moving heat out to the skin too, so the same run asks more of her.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Her fitness was gone in a single week.",
-                    "correct": false,
-                    "feedback": "Fitness does not vanish that fast. The heat makes the same run harder.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Hot air holds no oxygen for her to breathe.",
-                    "correct": false,
-                    "feedback": "Hot air still has oxygen. Her body is doing two jobs: running and shedding heat.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "heat-hydration-11",
-                "type": "estimate",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s2",
-                "job": "transfer",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "cdc-heat-rate"
-                ],
-                "stem": "A builder works 8 hours outdoors in a Delhi heatwave. If he sweats about 1 litre an hour, about how many litres could he lose in the day?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 8 litres.",
-                    "correct": true,
-                    "feedback": "At up to 1 litre an hour, 8 hours can mean up to 8 litres, so he needs sips and salty food all day.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 1 litre.",
-                    "correct": false,
-                    "feedback": "That is one hour at the top rate. Over 8 hours it can add up to about 8 litres.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 80 litres.",
-                    "correct": false,
-                    "feedback": "That is ten times too much. At about 1 litre an hour, 8 hours is about 8 litres.",
-                    "sourceRefs": [
-                      "cdc-heat-rate"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 8,
-                  "min": 7,
-                  "max": 9,
-                  "unit": "litres"
-                }
-              },
-              {
-                "id": "heat-hydration-12",
-                "type": "scenario",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s2",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "heat-hydration-m2"
-                ],
-                "sourceRefs": [
-                  "heat",
-                  "cdc-heat-rate"
-                ],
-                "stem": "Arjun's team must play at noon in a Chennai summer. Which plan uses both steps?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A slow start, sips at each break, and salty food after.",
-                    "correct": true,
-                    "feedback": "A slow start cuts heat strain, and sips plus salty food replace what sweat takes out.",
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Full speed, then two litres gulped at the end.",
-                    "correct": false,
-                    "feedback": "A fast start adds strain, and gulping big amounts at once is not the fix.",
-                    "misconceptionIds": [
-                      "heat-hydration-m2"
-                    ],
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A slow start, with no water so he stays light.",
-                    "correct": false,
-                    "feedback": "The slow start helps, but skipping water adds heat risk. He needs sips through the match.",
-                    "sourceRefs": [
-                      "heat",
-                      "cdc-heat-rate"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "heat-hydration-13",
-                "type": "choose",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s3",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "signs"
-                ],
-                "stem": "Kunal stopped, rested in the shade and sipped water, but his dizziness is still there after more than an hour. What now?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Get medical help now.",
-                    "correct": true,
-                    "feedback": "Symptoms that get worse or last over an hour need medical help, not more waiting.",
-                    "sourceRefs": [
-                      "signs"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Wait it out, since it passes by itself.",
-                    "correct": false,
-                    "feedback": "Signs that last over an hour are the point to get medical help, not to keep waiting.",
-                    "sourceRefs": [
-                      "signs"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Go back to training to shake it off.",
-                    "correct": false,
-                    "feedback": "Training on would add more heat strain. Signs that last this long need medical help.",
-                    "sourceRefs": [
-                      "signs"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "heat-hydration-14",
-                "type": "fill-the-step",
-                "conceptId": "heat-hydration",
-                "step": "heat-hydration-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "heat-hydration-m3"
-                ],
-                "sourceRefs": [
-                  "signs",
-                  "heat"
-                ],
-                "stem": "In the heat, muscle cramps, dizziness or nausea are signs to ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "stop and get somewhere cool.",
-                    "correct": true,
-                    "feedback": "These are heat warning signs, so stop, move somewhere cool and sip water.",
-                    "sourceRefs": [
-                      "signs",
-                      "heat"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "stretch it out and push on.",
-                    "correct": false,
-                    "feedback": "Cramps in heat are a warning sign, not a stretching problem. Stop and cool down.",
-                    "misconceptionIds": [
-                      "heat-hydration-m3"
-                    ],
-                    "sourceRefs": [
-                      "signs",
-                      "heat"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "drink fast and keep going.",
-                    "correct": false,
-                    "feedback": "Gulping water and carrying on adds strain. Stop and get somewhere cool first.",
-                    "misconceptionIds": [
-                      "heat-hydration-m3"
-                    ],
-                    "sourceRefs": [
-                      "signs",
-                      "heat"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "heat-hydration-m1",
-                "name": "Heat is a bonus workout",
-                "correction": "Heat adds strain and fluid loss; warning signs call for a stop and a cool place.",
-                "sourceRefs": [
-                  "heat",
-                  "signs"
-                ]
-              },
-              {
-                "id": "heat-hydration-m2",
-                "name": "Gulp it all at the end",
-                "correction": "Sip water through hot sessions and replace salt with food; do not force down big amounts.",
-                "sourceRefs": [
-                  "heat",
-                  "cdc-heat-rate"
-                ]
-              },
-              {
-                "id": "heat-hydration-m3",
-                "name": "Cramps mean push on",
-                "correction": "Cramps, dizziness or feeling faint in the heat are signs to stop and cool down.",
-                "sourceRefs": [
-                  "signs",
-                  "heat"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "heat",
-                "title": "Heat and Athletes",
-                "publisher": "Centers for Disease Control and Prevention",
-                "year": 2024,
-                "url": "https://www.cdc.gov/heat-health/risk-factors/heat-and-athletes.html",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "signs",
-                "title": "Heat Related Illnesses",
-                "publisher": "Centers for Disease Control and Prevention",
-                "year": 2017,
-                "url": "https://www.cdc.gov/extreme-heat/media/pdf/Heat_Related_Illness.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "cdc-heat-rate",
-                "title": "Heat and Cold Illness in Travelers",
-                "publisher": "Centers for Disease Control and Prevention",
-                "year": 2025,
-                "url": "https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/heat-and-cold-illness-in-travelers.html",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Read the hot-day switch",
-              "detail": "In a made-up Train screen, mark which changes cut heat strain and which add it.",
-              "sourceRefs": [
-                "heat"
-              ]
-            },
-            "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22 (CDC Heat and Athletes, 2024-06-25, via WebFetch: cooler hours, start slow and pick up the pace gradually, drink more than usual and not wait for thirst, stop if faint, cramps an early sign, seek care for symptoms; CDC Yellow Book 2025-04-23 via WebFetch: sweat may reach 1 L/h with sodium, forcing water on the non-thirsty raises hyponatremia risk, food the best salt replacement, blood flow shunts heat from core to surface, temperature and heart rate rise with dehydration, cardiovascular disease, diabetes and renal disease limit heat tolerance; CDC heat illness poster PDF text: heat stroke = confusion or passing out, call emergency, cool, nothing to drink; heat exhaustion: get help if throwing up, worse, or over 1 hour. The 10-day acclimatisation item and the Indian 112/108 numbers were dropped: the numbers could not be verified on a government page)",
-              "verdicts": [
-                {
-                  "claimId": "heat-hydration-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-c5",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-c6",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "heat-hydration-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "heat-hydration-s1",
-                "title": "Plan hot days: cooler hours and a slow start",
-                "claimId": "heat-hydration-c2",
-                "sourceRefs": [
-                  "heat",
-                  "cdc-heat-rate"
-                ],
-                "hook": {
-                  "stem": "Your team wants to practise on a hot day. Which plan is safer?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Early morning, starting slow, with water breaks.",
-                      "correct": true,
-                      "feedback": "Right. Cooler hours, a slow start and water breaks all cut heat strain."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Noon, at full speed from the very start.",
-                      "correct": false,
-                      "feedback": "Midday is the hottest time, and a fast start adds strain on top."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Noon, with no water breaks, to toughen up.",
-                      "correct": false,
-                      "feedback": "Skipping water in heat is dangerous, not tough. Drink more than usual on hot days."
-                    }
-                  ]
-                },
-                "teach": "In heat, your body works to shed heat as well as move, so the same run is harder. Train in the cool morning or evening and start slow. A heart, kidney or sugar condition? Ask your doctor first.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Noon, full pace",
-                    "lines": [
-                      "Hottest sun",
-                      "More strain"
-                    ]
-                  },
-                  "right": {
-                    "title": "Dawn, slow start",
-                    "lines": [
-                      "Cooler air",
-                      "Less strain"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the timing change.",
-                  "parts": [
-                    "In a Chennai summer, the school team",
-                    "moves football practice to 6 am,",
-                    "and brings big water bottles."
-                  ],
-                  "spot": "moves football practice to 6 am,",
-                  "feedback": "Moving to the cooler early morning cuts heat strain before the sun gets strong."
-                },
-                "guided": [
-                  {
-                    "stem": "Practice is fixed at 4 pm in May. What can still be changed?",
-                    "hint": "The clock is fixed, but the plan is not.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Start slower and build up over the session.",
-                        "correct": true,
-                        "feedback": "Yes. When the time cannot move, a slow start that builds up gradually still cuts strain."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Little, since the time cannot move.",
-                        "correct": false,
-                        "feedback": "The pace can still change. A slow start that builds up gradually cuts heat strain."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Go hard early, before the heat tires you.",
-                        "correct": false,
-                        "feedback": "A hard start adds heat strain. Start slow and pick up the pace bit by bit."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Hot day: cooler hours and a slow start. Have a condition? See a doctor."
-              },
-              {
-                "id": "heat-hydration-s2",
-                "title": "Sweat takes water and salt out",
-                "claimId": "heat-hydration-c3",
-                "sourceRefs": [
-                  "cdc-heat-rate",
-                  "heat"
-                ],
-                "hook": {
-                  "stem": "In one hour of hard work in the heat, about how much sweat can you lose?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Up to about 1 litre.",
-                      "correct": true,
-                      "feedback": "Right. Sweat can reach about 1 litre an hour in the heat."
-                    },
-                    {
-                      "id": "b",
-                      "text": "About a cup at most.",
-                      "correct": false,
-                      "feedback": "It can be far more than that. Sweat in the heat can reach about 1 litre an hour."
-                    },
-                    {
-                      "id": "c",
-                      "text": "About 5 litres an hour.",
-                      "correct": false,
-                      "feedback": "That is far too much. The top rate is about 1 litre an hour."
-                    }
-                  ]
-                },
-                "teach": "In hot weather, sweat can reach about 1 litre an hour, and salt leaves with it. So sip water through the session, but never force down big amounts. On long sweaty days, salty food helps replace the salt.",
-                "visual": {
-                  "kind": "scale",
-                  "label": "Sweat in one hour of hot work",
-                  "min": "0 L",
-                  "max": "2 L",
-                  "marks": [
-                    {
-                      "at": 50,
-                      "text": "Up to about 1 L an hour"
-                    }
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the fluid loss.",
-                  "parts": [
-                    "Rohan plays two hours of cricket in the summer sun,",
-                    "and may sweat out up to 2 litres,",
-                    "so he sips water at every break."
-                  ],
-                  "spot": "and may sweat out up to 2 litres,",
-                  "feedback": "At up to 1 litre an hour, two hours in the heat can mean up to 2 litres."
-                },
-                "guided": [
-                  {
-                    "stem": "Which plan fits a 2-hour hot match?",
-                    "hint": "Fluid goes out fast in the heat.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Sips at every break, and a salty snack after.",
-                        "correct": true,
-                        "feedback": "Yes. Regular sips replace sweat as it goes, and salty food replaces the salt."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Two big bottles gulped down at the end.",
-                        "correct": false,
-                        "feedback": "Gulping big amounts at once is not the fix. Sip through the match instead."
-                      },
-                      {
-                        "id": "c",
-                        "text": "No water, so you stay light and quick.",
-                        "correct": false,
-                        "feedback": "Skipping water adds heat risk. Sip regularly through the match."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Up to 1 litre of sweat an hour: sip often, replace salt."
-              },
-              {
-                "id": "heat-hydration-s3",
-                "title": "Warning signs mean stop and cool down",
-                "claimId": "heat-hydration-c5",
-                "sourceRefs": [
-                  "signs",
-                  "heat",
-                  "cdc-heat-rate"
-                ],
-                "hook": {
-                  "stem": "Midway through a hot run, you feel dizzy and sick. What is the safe move?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Stop and get to a cool place.",
-                      "correct": true,
-                      "feedback": "Right. Dizziness and nausea in the heat are signs to stop and cool down."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Push on and finish the run.",
-                      "correct": false,
-                      "feedback": "Pushing on adds more heat strain. These are signs to stop."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Slow down, but keep running home.",
-                      "correct": false,
-                      "feedback": "Running on, even slowly, keeps making heat. Stop and cool down first."
-                    }
-                  ]
-                },
-                "teach": "Dizziness, nausea, headache, cramps or feeling faint in heat mean stop, get cool and sip water, because heat illness can get worse. Throwing up, getting worse or over an hour? Get medical help. Confusion means call an ambulance.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Warning sign",
-                    "Stop and cool down",
-                    "Worse or confused? Get help"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the warning sign.",
-                  "parts": [
-                    "At net practice in the afternoon,",
-                    "Riya suddenly feels dizzy and weak,",
-                    "so she stops and sits in the shade."
-                  ],
-                  "spot": "Riya suddenly feels dizzy and weak,",
-                  "feedback": "Feeling dizzy or weak in the heat is a warning sign to stop and cool down."
-                },
-                "guided": [
-                  {
-                    "stem": "A teammate seems confused on a hot field. What comes first?",
-                    "hint": "Think about how serious this sign is.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Call an ambulance and move them somewhere cool.",
-                        "correct": true,
-                        "feedback": "Yes. Confusion in heat can mean heat stroke, an emergency. Cool them with wet cloths and give them nothing to drink."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Give them a big bottle of cold water to gulp down.",
-                        "correct": false,
-                        "feedback": "With heat stroke, do not give them anything to drink. Call an ambulance and cool them down."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Sit them on the bench and keep playing.",
-                        "correct": false,
-                        "feedback": "Confusion is an emergency sign. Call an ambulance and cool them down right away."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Warning sign in heat? Stop and cool down. Confused? Call an ambulance."
-              }
-            ]
-          },
-          {
-            "id": "warmup-myths",
-            "title": "Warm-up and injury myths",
-            "prerequisites": [],
-            "hook": "A few easy moves before hard work can let breathing and pulse rise bit by bit.",
-            "hookSourceRefs": [
-              "guide"
-            ],
-            "rule": "A warm-up is usually an easier version of the activity, slower or lighter, so heart rate and breathing rise bit by bit. Long still holds just before power work can dull it a little. Stretching showed no clear effect on overall injury rates, so it is no guarantee.",
-            "ruleSourceRefs": [
-              "guide",
-              "review"
-            ],
-            "claims": [
-              {
-                "id": "warmup-myths-c1",
-                "text": "A gradual warm-up raises heart rate and breathing; long still holds can slightly lower results in tests done soon after.",
-                "sourceRefs": [
-                  "guide",
-                  "review"
-                ]
-              },
-              {
-                "id": "warmup-myths-c2",
-                "text": "A warm-up is usually the activity done at a slower speed or lower effort, such as brisk walking before jogging, so heart rate and breathing rise bit by bit. A cool-down does the same at the end.",
-                "sourceRefs": [
-                  "guide"
-                ]
-              },
-              {
-                "id": "warmup-myths-c3",
-                "text": "In a review, holding a stretch for 60 seconds or more per muscle cut results in tests a few minutes later by about 4.6%, against about 1.1% for shorter holds. With active moves after, no clear effect was seen.",
-                "sourceRefs": [
-                  "review"
-                ]
-              },
-              {
-                "id": "warmup-myths-c4",
-                "text": "Static stretching had no clear effect on overall injury rates, and range gains usually lasted under 30 minutes. The review still suggests stretching inside a warm-up that ends with active moves.",
-                "sourceRefs": [
-                  "review",
-                  "guide"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "warmup-myths-9",
-                "type": "scenario",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s1",
-                "job": "transfer",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "warmup-myths-m2"
-                ],
-                "sourceRefs": [
-                  "guide"
-                ],
-                "stem": "Before a school cricket match, which start fits a warm-up for a fast bowler?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A few easy, slow balls first.",
-                    "correct": true,
-                    "feedback": "Easy, slower versions of the same move let heart rate and breathing rise bit by bit.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Full-speed balls from the first over.",
-                    "correct": false,
-                    "feedback": "Starting at full speed skips the gradual rise that a warm-up gives.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "One long, still hamstring stretch.",
-                    "correct": false,
-                    "feedback": "A still hold is not the gradual, easy movement of a warm-up. Easy bowling is.",
-                    "misconceptionIds": [
-                      "warmup-myths-m2"
-                    ],
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "warmup-myths-10",
-                "type": "true-not-quite",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s1",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "warmup-myths-m2"
-                ],
-                "sourceRefs": [
-                  "guide"
-                ],
-                "stem": "A friend says a warm-up just means stretching your legs. What is not quite right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "The main part is easy movement that lifts heart rate.",
-                    "correct": true,
-                    "feedback": "A warm-up is usually the activity done slower or lighter, so heart rate and breathing climb bit by bit.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Stretching is not allowed before any sport.",
-                    "correct": false,
-                    "feedback": "Stretching is allowed. It just is not the main part of a warm-up, which is easy movement.",
-                    "misconceptionIds": [
-                      "warmup-myths-m2"
-                    ],
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A warm-up means one hard set to get going.",
-                    "correct": false,
-                    "feedback": "A hard set is the opposite. A warm-up starts easy so effort can rise gradually.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "warmup-myths-11",
-                "type": "predict",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s2",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "review"
-                ],
-                "stem": "At a college sprint trial, Ishita holds a long stretch, then does jogs and drills before her start. What did the review find for cases like this?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "No clear effect on how she runs.",
-                    "correct": true,
-                    "feedback": "When active moves came after the stretch, the review saw no clear effect on performance.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "A big drop of about half her speed.",
-                    "correct": false,
-                    "feedback": "No large drop was seen. With active moves after the stretch, the effect was unclear.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A drop just as big as with no jogs after.",
-                    "correct": false,
-                    "feedback": "The jogs and drills matter. With them, the review found no clear drop.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "warmup-myths-12",
-                "type": "estimate",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s2",
-                "job": "reverse",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "review"
-                ],
-                "stem": "After a long hold in his warm-up, Om's jump fell by about 2 cm, the usual 4.6% drop. About how high was his jump before?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 43 cm.",
-                    "correct": true,
-                    "feedback": "2 cm is about 4.6% of the jump, so the jump was about 2 divided by 0.046, near 43 cm.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 9 cm.",
-                    "correct": false,
-                    "feedback": "That would make 2 cm over a fifth of the jump, far more than 4.6%.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 200 cm.",
-                    "correct": false,
-                    "feedback": "4.6% of 200 cm is about 9 cm, not 2. The jump was near 43 cm.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 43,
-                  "min": 40,
-                  "max": 46,
-                  "unit": "cm"
-                }
-              },
-              {
-                "id": "warmup-myths-13",
-                "type": "order",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s3",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "review",
-                  "guide"
-                ],
-                "stem": "Put a sprint-day warm-up in a sensible order.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Easy jog",
-                    "correct": true,
-                    "feedback": "An easy jog comes first, so heart rate and breathing start to rise bit by bit.",
-                    "sourceRefs": [
-                      "review",
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Short stretches",
-                    "correct": true,
-                    "feedback": "Short holds next add range for a while and cost much less than long holds.",
-                    "sourceRefs": [
-                      "review",
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Drills that build up to sprint speed",
-                    "correct": true,
-                    "feedback": "Active moves after stretching seemed to cancel the small drop that stretching can cause.",
-                    "sourceRefs": [
-                      "review",
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "The sprint itself",
-                    "correct": true,
-                    "feedback": "The hard effort comes last, once the body has eased in and moved again.",
-                    "sourceRefs": [
-                      "review",
-                      "guide"
-                    ]
-                  }
-                ],
-                "answer": [
-                  "a",
-                  "b",
-                  "c",
-                  "d"
-                ]
-              },
-              {
-                "id": "warmup-myths-14",
-                "type": "choose",
-                "conceptId": "warmup-myths",
-                "step": "warmup-myths-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "warmup-myths-m3"
-                ],
-                "sourceRefs": [
-                  "review"
-                ],
-                "stem": "How long does the extra range from a stretch usually last?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Under about half an hour.",
-                    "correct": true,
-                    "feedback": "The review found range gains usually lasted less than 30 minutes.",
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Until the end of a full match.",
-                    "correct": false,
-                    "feedback": "The gain is short-lived, usually gone within about half an hour.",
-                    "misconceptionIds": [
-                      "warmup-myths-m3"
-                    ],
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About three hours.",
-                    "correct": false,
-                    "feedback": "Much shorter. Range gains usually fade within 30 minutes.",
-                    "misconceptionIds": [
-                      "warmup-myths-m3"
-                    ],
-                    "sourceRefs": [
-                      "review"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "warmup-myths-m1",
-                "name": "One stretch fixes all",
-                "correction": "A warm-up raises effort in steps; stretch effects vary by task and dose.",
-                "sourceRefs": [
-                  "guide",
-                  "review"
-                ]
-              },
-              {
-                "id": "warmup-myths-m2",
-                "name": "A warm-up means stretching",
-                "correction": "A warm-up is mainly the activity done slower or lighter, so heart rate rises gradually.",
-                "sourceRefs": [
-                  "guide"
-                ]
-              },
-              {
-                "id": "warmup-myths-m3",
-                "name": "Stretch gains last all day",
-                "correction": "Range gains from stretching usually last under 30 minutes.",
-                "sourceRefs": [
-                  "review"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "guide",
-                "title": "Physical Activity Guidelines for Americans, 2nd edition",
-                "publisher": "US Department of Health and Human Services",
-                "year": 2018,
-                "url": "https://odphp.health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "review",
-                "title": "Acute effects of muscle stretching on physical performance, range of motion, and injury incidence in healthy active individuals: a systematic review",
-                "publisher": "Behm et al., Applied Physiology, Nutrition, and Metabolism",
-                "year": 2016,
-                "url": "https://pubmed.ncbi.nlm.nih.gov/26642915/",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Spot the easy start",
-              "detail": "In a made-up cricket warm-up, mark when the work first moves from easy to hard.",
-              "sourceRefs": [
-                "guide"
-              ]
-            },
-            "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22 (US Physical Activity Guidelines 2nd ed. PDF text p.61: warm-up and cool-down commonly at a slower speed or lower intensity, brisk walking before jogging, lighter weight for strength work; p.60: unclear whether flexibility work reduces injury risk; Behm et al. 2016 abstract via NCBI E-utilities: -4.6% for 60 s or more and -1.1% under 60 s per muscle group, tested 3-5 min after, no clear effect with post-stretch dynamic activity, no clear effect on all-cause or overuse injuries, ROM gains under 30 min, stretching within a dynamic warm-up still recommended. 'Power' reworded as test results)",
-              "verdicts": [
-                {
-                  "claimId": "warmup-myths-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "warmup-myths-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "warmup-myths-s1",
-                "title": "A warm-up is the move, done easier",
-                "claimId": "warmup-myths-c2",
-                "sourceRefs": [
-                  "guide"
-                ],
-                "hook": {
-                  "stem": "Before a jog, which start best fits a warm-up?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Walk briskly for a few minutes first.",
-                      "correct": true,
-                      "feedback": "Right. A warm-up is an easier version of the activity, so a brisk walk suits a jog."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Sprint flat out right away.",
-                      "correct": false,
-                      "feedback": "A flat-out start skips the gradual rise in heart rate that a warm-up gives."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Hold a long toe-touch stretch first.",
-                      "correct": false,
-                      "feedback": "A still stretch does not lift heart rate bit by bit. Easy movement does."
-                    }
-                  ]
-                },
-                "teach": "A warm-up is the activity done slower or lighter, like a brisk walk before a jog, so your heart rate and breathing climb bit by bit. A cool-down does the same in reverse.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Cold start",
-                    "lines": [
-                      "Straight to full pace"
-                    ]
-                  },
-                  "right": {
-                    "title": "Warm start",
-                    "lines": [
-                      "Same move, slower first",
-                      "Heart and breath rise bit by bit"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the warm-up.",
-                  "parts": [
-                    "Farhan's leg day starts with",
-                    "a few squats using just the empty bar,",
-                    "then he adds plates for his real sets."
-                  ],
-                  "spot": "a few squats using just the empty bar,",
-                  "feedback": "Lighter squats first are a warm-up for strength work, so his effort rises step by step."
-                },
-                "guided": [
-                  {
-                    "stem": "Which is a warm-up for push-ups?",
-                    "hint": "Same move, lighter load.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "A few push-ups against a wall.",
-                        "correct": true,
-                        "feedback": "Yes. Wall push-ups are the same move with less load."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Ten minutes lying on the floor.",
-                        "correct": false,
-                        "feedback": "Lying down does not raise heart rate or breathing."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Your hardest push-up set first.",
-                        "correct": false,
-                        "feedback": "Starting with the hardest set skips the gradual build a warm-up gives."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Warm up with the same kind of move, done slower or lighter."
-              },
-              {
-                "id": "warmup-myths-s2",
-                "title": "Long still holds can dull a jump a little",
-                "claimId": "warmup-myths-c3",
-                "sourceRefs": [
-                  "review"
-                ],
-                "hook": {
-                  "stem": "Right before a jump test, you hold one stretch for two minutes. What happens to the jump, on average?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "It tends to drop a little.",
-                      "correct": true,
-                      "feedback": "Right. In a review, holds of a minute or more cut test results by about 4.6% on average."
-                    },
-                    {
-                      "id": "b",
-                      "text": "It goes much higher.",
-                      "correct": false,
-                      "feedback": "Long holds just before tended to lower results a little, not raise them."
-                    },
-                    {
-                      "id": "c",
-                      "text": "It drops by about half.",
-                      "correct": false,
-                      "feedback": "The drop was small, about 4.6% on average, not half."
-                    }
-                  ]
-                },
-                "teach": "A long, still stretch leaves the muscle a little slack, so it springs less for a jump or sprint soon after. Short holds cost much less, and moving again after the stretch seemed to cancel the drop.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Hold under 60 s",
-                    "lines": [
-                      "About 1.1% drop in tests",
-                      "50 cm jump: about 0.5 cm lower"
-                    ]
-                  },
-                  "right": {
-                    "title": "Hold 60 s or more",
-                    "lines": [
-                      "About 4.6% drop in tests",
-                      "50 cm jump: about 2 cm lower"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the long hold.",
-                  "parts": [
-                    "Before the 100 m race on school sports day,",
-                    "Tanvi holds a hamstring stretch for 90 seconds,",
-                    "then lines up at the start."
-                  ],
-                  "spot": "Tanvi holds a hamstring stretch for 90 seconds,",
-                  "feedback": "90 seconds is over the 60-second mark linked to a bigger drop."
-                },
-                "guided": [
-                  {
-                    "stem": "Rahul holds each stretch for 45 seconds. Which group is that?",
-                    "hint": "Find where the line between groups sits.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Under 60 seconds, the smaller drop.",
-                        "correct": true,
-                        "feedback": "Yes. Holds under 60 seconds cut results by about 1.1% on average."
-                      },
-                      {
-                        "id": "b",
-                        "text": "60 seconds or more, the bigger drop.",
-                        "correct": false,
-                        "feedback": "45 seconds is under the 60-second line, so it is the smaller-drop group."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Too short to count as a stretch.",
-                        "correct": false,
-                        "feedback": "A 45-second hold is still a stretch. It sits in the under-60 group."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Long still holds right before jumps and sprints can dull them a little."
-              },
-              {
-                "id": "warmup-myths-s3",
-                "title": "Stretching is no injury guarantee",
-                "claimId": "warmup-myths-c4",
-                "sourceRefs": [
-                  "review",
-                  "guide"
-                ],
-                "hook": {
-                  "stem": "Does stretching before sport stop injuries, by the evidence?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "No clear effect on overall injuries was found.",
-                      "correct": true,
-                      "feedback": "Right. In a large review, static stretching showed no clear effect on overall injury rates."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Yes, it prevents most injuries in sport and gym work.",
-                      "correct": false,
-                      "feedback": "The review found no clear effect on overall injuries, so that goes too far."
-                    },
-                    {
-                      "id": "c",
-                      "text": "No, it makes injuries more likely.",
-                      "correct": false,
-                      "feedback": "The review did not find that either. The effect on injuries was unclear."
-                    }
-                  ]
-                },
-                "teach": "Stretching lets you move further, but the gain often fades within 30 minutes. A big review found no clear drop in injuries, so warm up anyway, since easy moves get you ready.",
-                "visual": {
-                  "kind": "scale",
-                  "label": "Extra range after a stretch",
-                  "min": "0 min",
-                  "max": "60 min",
-                  "marks": [
-                    {
-                      "at": 50,
-                      "text": "Usually gone by 30 min"
-                    }
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the short-lived gain.",
-                  "parts": [
-                    "Dev stretches and can touch his toes,",
-                    "but 40 minutes later his reach is back to usual,",
-                    "so he warms up again before practice."
-                  ],
-                  "spot": "but 40 minutes later his reach is back to usual,",
-                  "feedback": "Range gains from stretching usually last less than 30 minutes."
-                },
-                "guided": [
-                  {
-                    "stem": "What does stretching most clearly give, by the review?",
-                    "hint": "Think about what fades within half an hour.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "A short-term gain in how far you can move.",
-                        "correct": true,
-                        "feedback": "Right. All forms of stretching improved range of motion for a short time."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Full protection from injury in sport.",
-                        "correct": false,
-                        "feedback": "The review found no clear effect of static stretching on overall injuries."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Much more sprint power for the race.",
-                        "correct": false,
-                        "feedback": "Long still holds tended to cut results a little, not add a lot."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Stretching adds range for a while; it is no injury guarantee."
-              }
-            ]
-          },
-          {
-            "id": "cardio-talk-test",
-            "title": "Cardio zones and talk test",
-            "prerequisites": [],
-            "hook": "A walk can feel easy while a run makes speech come in short bursts. Breath gives a clue to effort.",
-            "hookSourceRefs": [
-              "guide",
-              "nin"
-            ],
-            "rule": "Your voice shows effort: talk but not sing is moderate, only a few words is vigorous. On a 0 to 10 scale moderate is 5 or 6, and the scale is your own. After time off, start moderate and build up; pain or odd breathlessness means rest.",
-            "ruleSourceRefs": [
-              "guide",
-              "nin"
-            ],
-            "claims": [
-              {
-                "id": "cardio-talk-test-c1",
-                "text": "As a rule of thumb, at moderate effort you can talk but not sing; at vigorous effort you cannot say more than a few words without pausing for breath.",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-c2",
-                "text": "On a 0 to 10 effort scale, where sitting is 0, moderate effort is a 5 or 6 and vigorous starts at 7 or 8.",
-                "sourceRefs": [
-                  "guide"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-c3",
-                "text": "Effort is personal: less fit people need more effort than fitter people to do the same activity.",
-                "sourceRefs": [
-                  "guide"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-c4",
-                "text": "People who are inactive should start with moderate effort and add minutes and days first, effort later. Shortness of breath, pain, nausea or headache are signs the body needs rest.",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-c5",
-                "text": "After a long time without exercise, it is wise to see a doctor before starting a programme. New symptoms while building up also need a doctor.",
-                "sourceRefs": [
-                  "nin"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "cardio-talk-test-9",
-                "type": "true-not-quite",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s1",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "cardio-talk-test-m2"
-                ],
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "stem": "A friend says if you can talk at all, the workout is too easy to count. What is not quite right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Talk but no singing marks moderate effort.",
-                    "correct": true,
-                    "feedback": "Being able to talk but not sing is the sign of moderate effort, which is real exercise.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Silent workouts are the ones that count.",
-                    "correct": false,
-                    "feedback": "Silence is not the test. Moderate effort lets you talk, and it is real effort.",
-                    "misconceptionIds": [
-                      "cardio-talk-test-m2"
-                    ],
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Talking means you are already at vigorous effort.",
-                    "correct": false,
-                    "feedback": "Vigorous effort leaves breath for just a few words. Talking, but not singing, means moderate.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "cardio-talk-test-10",
-                "type": "predict",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s1",
-                "job": "transfer",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "stem": "At the college fest, Mira dances hard but can still chat, though she cannot sing along. Which effort is that?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Moderate effort.",
-                    "correct": true,
-                    "feedback": "Talking but not singing marks moderate effort, on a dance floor as much as on a track.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Very light effort.",
-                    "correct": false,
-                    "feedback": "If she cannot sing, she is working harder than a light pace.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Vigorous effort.",
-                    "correct": false,
-                    "feedback": "Vigorous would leave her only a few words per breath. She can still chat.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "cardio-talk-test-11",
-                "type": "why",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s2",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "cardio-talk-test-m1"
-                ],
-                "sourceRefs": [
-                  "guide"
-                ],
-                "stem": "Two friends walk the same hill at the same speed. One rates it 3, the other 7. Why can both be right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Effort depends on each person's fitness.",
-                    "correct": true,
-                    "feedback": "Less fit people need more effort for the same task, so the ratings can differ.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "One of them must be wrong about it.",
-                    "correct": false,
-                    "feedback": "Both can be honest. The scale rates each person's own effort.",
-                    "misconceptionIds": [
-                      "cardio-talk-test-m1"
-                    ],
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The hill is steeper for one of them.",
-                    "correct": false,
-                    "feedback": "The hill is the same. What differs is how fit each person is.",
-                    "sourceRefs": [
-                      "guide"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "cardio-talk-test-12",
-                "type": "estimate",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s2",
-                "job": "combine",
-                "difficultySeed": 2,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "stem": "Cardio check: on a run you can say only a few words per breath. About what number is that on the 0 to 10 scale?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 7.5.",
-                    "correct": true,
-                    "feedback": "A few words per breath is vigorous, and vigorous starts at 7 or 8 on the scale.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 3.",
-                    "correct": false,
-                    "feedback": "A 3 is light effort, where you could easily talk. A few words means vigorous.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 10.",
-                    "correct": false,
-                    "feedback": "10 is your hardest. Vigorous effort starts lower, at 7 or 8.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 7.5,
-                  "min": 7,
-                  "max": 8,
-                  "unit": "out of 10"
-                }
-              },
-              {
-                "id": "cardio-talk-test-13",
-                "type": "scenario",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s3",
-                "job": "reverse",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "cardio-talk-test-m3"
-                ],
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "stem": "Back at college after a long break, Rohit's first jog leaves him gasping single words. What should he change?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Slow to a pace where he can talk.",
-                    "correct": true,
-                    "feedback": "Gasping single words means vigorous. After time off, a moderate pace he can talk through is the start.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Push on until it starts to feel easy.",
-                    "correct": false,
-                    "feedback": "Pushing hard after a break is a big jump. A moderate, talking pace comes first.",
-                    "misconceptionIds": [
-                      "cardio-talk-test-m3"
-                    ],
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Run faster, so the session ends sooner.",
-                    "correct": false,
-                    "feedback": "More speed means more effort. After time off he should slow to a talking pace.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "cardio-talk-test-14",
-                "type": "explain-it-back",
-                "conceptId": "cardio-talk-test",
-                "step": "cardio-talk-test-s3",
-                "job": "recall",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "cardio-talk-test-m3"
-                ],
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "stem": "How would you explain the safe order for building up after time off?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "More minutes and days first, then more effort.",
-                    "correct": true,
-                    "feedback": "Add time and days at a moderate effort first. Raise the effort later, once that feels fine.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "More effort first, then more minutes.",
-                    "correct": false,
-                    "feedback": "Effort comes last. Minutes and days rise first, at a moderate effort.",
-                    "misconceptionIds": [
-                      "cardio-talk-test-m3"
-                    ],
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Minutes, days and effort at once, in week one.",
-                    "correct": false,
-                    "feedback": "Raising everything at once is a big jump. Minutes and days come first, effort later.",
-                    "sourceRefs": [
-                      "guide",
-                      "nin"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "cardio-talk-test-m1",
-                "name": "One speed fits all",
-                "correction": "Effort is personal: less fit people need more effort for the same task.",
-                "sourceRefs": [
-                  "guide"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-m2",
-                "name": "Talking means too easy",
-                "correction": "If you can talk but not sing, your effort is moderate.",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ]
-              },
-              {
-                "id": "cardio-talk-test-m3",
-                "name": "Start hard to catch up on the missed weeks",
-                "correction": "After time off, start moderate and add minutes and days before effort.",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "guide",
-                "title": "Physical Activity Guidelines for Americans, 2nd edition",
-                "publisher": "US Department of Health and Human Services",
-                "year": 2018,
-                "url": "https://odphp.health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "nin",
-                "title": "Dietary Guidelines for Indians 2024",
-                "publisher": "ICMR-National Institute of Nutrition",
-                "year": 2024,
-                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Sort the talk clues",
-              "detail": "In a made-up walk, ride and run, mark where speech is easy, short or in between.",
-              "sourceRefs": [
-                "guide",
-                "nin"
-              ]
-            },
-            "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22 (US Physical Activity Guidelines 2nd ed. PDF text p.58 and p.70: relative intensity 0-10, sitting 0, moderate 5-6, vigorous from 7-8, less fit need more effort, talk but not sing for moderate, a few words for vigorous; p.89: start with relatively moderate intensity, avoid relatively vigorous activity such as running at first, increase duration and frequency first, intensity later; ICMR-NIN DGI 2024 p.70: moderate keeps the ability to talk, vigorous does not let you talk freely, consult a doctor before starting if sedentary, increase gradually, breathlessness, pain, nausea, vomiting, headache are warning signs to rest. The 2-to-1 vigorous step was cut because Health's exercise-heart teaches it; the CDC page could not be opened by curl and was replaced by the guide and NIN)",
-              "verdicts": [
-                {
-                  "claimId": "cardio-talk-test-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-c5",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "cardio-talk-test-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "cardio-talk-test-s1",
-                "title": "Your voice shows your effort",
-                "claimId": "cardio-talk-test-c1",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "hook": {
-                  "stem": "You are cycling and can chat, but singing is too much. How hard are you working?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Moderate effort.",
-                      "correct": true,
-                      "feedback": "Right. Being able to talk but not sing is the sign of moderate effort."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Very light, like sitting.",
-                      "correct": false,
-                      "feedback": "If singing is too hard, you are working more than a light pace."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Vigorous effort.",
-                      "correct": false,
-                      "feedback": "At vigorous effort, only a few words fit before you need a breath."
-                    }
-                  ]
-                },
-                "teach": "Talking takes breath, so your voice shows your effort. If you can talk but not sing, that is moderate. If only a few words fit before a breath, that is vigorous.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Can sing: easy",
-                    "Talk, not sing: moderate",
-                    "Few words: vigorous"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the vigorous clue.",
-                  "parts": [
-                    "On the metro station stairs, Nisha races up,",
-                    "and can only gasp out two words at a time,",
-                    "before she stops at the top."
-                  ],
-                  "spot": "and can only gasp out two words at a time,",
-                  "feedback": "Only a few words before a breath is the talk-test sign of vigorous effort."
-                },
-                "guided": [
-                  {
-                    "stem": "During sprints, Leela can only say 'wait' and 'go'. Which effort is it?",
-                    "hint": "Count the words before each breath.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Vigorous.",
-                        "correct": true,
-                        "feedback": "Yes. Just a word or two before a breath marks vigorous effort."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Moderate.",
-                        "correct": false,
-                        "feedback": "Moderate lets you hold a chat. One or two words is vigorous."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Light.",
-                        "correct": false,
-                        "feedback": "Light effort leaves plenty of breath to talk. This is vigorous."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Talk, not sing: moderate. Few words: vigorous."
-              },
-              {
-                "id": "cardio-talk-test-s2",
-                "title": "Rate your own effort from 0 to 10",
-                "claimId": "cardio-talk-test-c2",
-                "sourceRefs": [
-                  "guide"
-                ],
-                "hook": {
-                  "stem": "On a 0 to 10 effort scale, where sitting is 0, what number is moderate effort?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "5 or 6.",
-                      "correct": true,
-                      "feedback": "Right. Moderate effort sits at 5 or 6 on the scale."
-                    },
-                    {
-                      "id": "b",
-                      "text": "1 or 2.",
-                      "correct": false,
-                      "feedback": "1 or 2 is very light. Moderate effort sits at 5 or 6."
-                    },
-                    {
-                      "id": "c",
-                      "text": "9 or 10.",
-                      "correct": false,
-                      "feedback": "9 or 10 is near your top effort. Moderate is 5 or 6."
-                    }
-                  ]
-                },
-                "teach": "Rate effort from 0, sitting still, to 10, your hardest. Moderate is a 5 or 6 and vigorous starts at 7 or 8. Less fit people need more effort for the same task, so the scale is your own.",
-                "visual": {
-                  "kind": "scale",
-                  "label": "Effort from 0 to 10",
-                  "min": "0: sitting",
-                  "max": "10: hardest",
-                  "marks": [
-                    {
-                      "at": 55,
-                      "text": "5 to 6: moderate"
-                    },
-                    {
-                      "at": 75,
-                      "text": "7 to 8: vigorous starts"
-                    }
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the vigorous rating.",
-                  "parts": [
-                    "Ishaan rates his walk to class a 4,",
-                    "his football game an 8,",
-                    "and his evening stretch a 2."
-                  ],
-                  "spot": "his football game an 8,",
-                  "feedback": "Vigorous effort starts at 7 or 8 on the scale, so his football game counts."
-                },
-                "guided": [
-                  {
-                    "stem": "Pooja rates a brisk walk a 6. Which effort band is that?",
-                    "hint": "Find the band that holds 5 and 6.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Moderate.",
-                        "correct": true,
-                        "feedback": "Yes. A 6 sits in the moderate band of 5 to 6."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Vigorous.",
-                        "correct": false,
-                        "feedback": "Vigorous starts at 7 or 8. A 6 is still moderate."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Rest.",
-                        "correct": false,
-                        "feedback": "Rest is near 0. A 6 is moderate effort."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Moderate is 5 or 6 out of 10, rated by you."
-              },
-              {
-                "id": "cardio-talk-test-s3",
-                "title": "New to it? Start moderate, then build",
-                "claimId": "cardio-talk-test-c4",
-                "sourceRefs": [
-                  "guide",
-                  "nin"
-                ],
-                "hook": {
-                  "stem": "After months without exercise, which effort should your first sessions aim for?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Moderate, where you can still talk.",
-                      "correct": true,
-                      "feedback": "Right. After time off, start at a moderate effort and build up gradually."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Vigorous, to catch up on the missed weeks.",
-                      "correct": false,
-                      "feedback": "Hard effort after time off raises injury risk. Start moderate and build up."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Your hardest, to test where you stand.",
-                      "correct": false,
-                      "feedback": "Testing your limit on day one is a big jump. Start moderate and build up."
-                    }
-                  ]
-                },
-                "teach": "After time off, start at a moderate effort you can talk through, because big jumps raise injury risk. Add minutes and days first, effort later. Pain, odd breathlessness, nausea or headache mean rest.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Moderate start",
-                    "More minutes and days",
-                    "Then more effort"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the choice that keeps effort low at first.",
-                  "parts": [
-                    "Back after exams, Kavya walks briskly for 20 minutes,",
-                    "adds a few minutes each week,",
-                    "and saves running for later."
-                  ],
-                  "spot": "and saves running for later.",
-                  "feedback": "Brisk walks first and running later follows the plan: minutes and days first, effort later."
-                },
-                "guided": [
-                  {
-                    "stem": "Om starts jogging and gets a sharp pain in his knee. What should he do?",
-                    "hint": "Think about what pain is telling his body.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Stop and rest it, and see a doctor if it stays.",
-                        "correct": true,
-                        "feedback": "Yes. Pain is a sign the body needs rest, and a new problem that stays needs a doctor."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Push through so the knee gets used to it.",
-                        "correct": false,
-                        "feedback": "Pain is a warning sign, not something to train through. Stop and rest."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Speed up to finish the session sooner.",
-                        "correct": false,
-                        "feedback": "More effort adds strain to a painful knee. Stop and rest it."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Start moderate; add time first. Pain or odd breathlessness means rest."
-              }
-            ]
-          },
-          {
             "id": "showing-up",
             "title": "Habit of showing up",
             "prerequisites": [],
@@ -4955,6 +2851,2131 @@
                 "takeaway": "One missed day does not undo a habit; just go back to it."
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "body-training-ch2",
+        "title": "Training safely",
+        "minutes": 13,
+        "check": "quiz",
+        "concepts": [
+          {
+            "id": "warmup-myths",
+            "title": "Warm-up and injury myths",
+            "prerequisites": [],
+            "hook": "A few easy moves before hard work can let breathing and pulse rise bit by bit.",
+            "hookSourceRefs": [
+              "guide"
+            ],
+            "rule": "A warm-up is usually an easier version of the activity, slower or lighter, so heart rate and breathing rise bit by bit. Long still holds just before power work can dull it a little. Stretching showed no clear effect on overall injury rates, so it is no guarantee.",
+            "ruleSourceRefs": [
+              "guide",
+              "review"
+            ],
+            "claims": [
+              {
+                "id": "warmup-myths-c1",
+                "text": "A gradual warm-up raises heart rate and breathing; long still holds can slightly lower results in tests done soon after.",
+                "sourceRefs": [
+                  "guide",
+                  "review"
+                ]
+              },
+              {
+                "id": "warmup-myths-c2",
+                "text": "A warm-up is usually the activity done at a slower speed or lower effort, such as brisk walking before jogging, so heart rate and breathing rise bit by bit. A cool-down does the same at the end.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "warmup-myths-c3",
+                "text": "In a review, holding a stretch for 60 seconds or more per muscle cut results in tests a few minutes later by about 4.6%, against about 1.1% for shorter holds. With active moves after, no clear effect was seen.",
+                "sourceRefs": [
+                  "review"
+                ]
+              },
+              {
+                "id": "warmup-myths-c4",
+                "text": "Static stretching had no clear effect on overall injury rates, and range gains usually lasted under 30 minutes. The review still suggests stretching inside a warm-up that ends with active moves.",
+                "sourceRefs": [
+                  "review",
+                  "guide"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "warmup-myths-9",
+                "type": "scenario",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "warmup-myths-m2"
+                ],
+                "sourceRefs": [
+                  "guide"
+                ],
+                "stem": "Before a school cricket match, which start fits a warm-up for a fast bowler?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A few easy, slow balls first.",
+                    "correct": true,
+                    "feedback": "Easy, slower versions of the same move let heart rate and breathing rise bit by bit.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Full-speed balls from the first over.",
+                    "correct": false,
+                    "feedback": "Starting at full speed skips the gradual rise that a warm-up gives.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "One long, still hamstring stretch.",
+                    "correct": false,
+                    "feedback": "A still hold is not the gradual, easy movement of a warm-up. Easy bowling is.",
+                    "misconceptionIds": [
+                      "warmup-myths-m2"
+                    ],
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "warmup-myths-10",
+                "type": "true-not-quite",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s1",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "warmup-myths-m2"
+                ],
+                "sourceRefs": [
+                  "guide"
+                ],
+                "stem": "A friend says a warm-up just means stretching your legs. What is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "The main part is easy movement that lifts heart rate.",
+                    "correct": true,
+                    "feedback": "A warm-up is usually the activity done slower or lighter, so heart rate and breathing climb bit by bit.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Stretching is not allowed before any sport.",
+                    "correct": false,
+                    "feedback": "Stretching is allowed. It just is not the main part of a warm-up, which is easy movement.",
+                    "misconceptionIds": [
+                      "warmup-myths-m2"
+                    ],
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A warm-up means one hard set to get going.",
+                    "correct": false,
+                    "feedback": "A hard set is the opposite. A warm-up starts easy so effort can rise gradually.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "warmup-myths-11",
+                "type": "predict",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "review"
+                ],
+                "stem": "At a college sprint trial, Ishita holds a long stretch, then does jogs and drills before her start. What did the review find for cases like this?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No clear effect on how she runs.",
+                    "correct": true,
+                    "feedback": "When active moves came after the stretch, the review saw no clear effect on performance.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "A big drop of about half her speed.",
+                    "correct": false,
+                    "feedback": "No large drop was seen. With active moves after the stretch, the effect was unclear.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A drop just as big as with no jogs after.",
+                    "correct": false,
+                    "feedback": "The jogs and drills matter. With them, the review found no clear drop.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "warmup-myths-12",
+                "type": "estimate",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s2",
+                "job": "reverse",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "review"
+                ],
+                "stem": "After a long hold in his warm-up, Om's jump fell by about 2 cm, the usual 4.6% drop. About how high was his jump before?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 43 cm.",
+                    "correct": true,
+                    "feedback": "2 cm is about 4.6% of the jump, so the jump was about 2 divided by 0.046, near 43 cm.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 9 cm.",
+                    "correct": false,
+                    "feedback": "That would make 2 cm over a fifth of the jump, far more than 4.6%.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 200 cm.",
+                    "correct": false,
+                    "feedback": "4.6% of 200 cm is about 9 cm, not 2. The jump was near 43 cm.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 43,
+                  "min": 40,
+                  "max": 46,
+                  "unit": "cm"
+                }
+              },
+              {
+                "id": "warmup-myths-13",
+                "type": "order",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s3",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "review",
+                  "guide"
+                ],
+                "stem": "Put a sprint-day warm-up in a sensible order.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Easy jog",
+                    "correct": true,
+                    "feedback": "An easy jog comes first, so heart rate and breathing start to rise bit by bit.",
+                    "sourceRefs": [
+                      "review",
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Short stretches",
+                    "correct": true,
+                    "feedback": "Short holds next add range for a while and cost much less than long holds.",
+                    "sourceRefs": [
+                      "review",
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Drills that build up to sprint speed",
+                    "correct": true,
+                    "feedback": "Active moves after stretching seemed to cancel the small drop that stretching can cause.",
+                    "sourceRefs": [
+                      "review",
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "The sprint itself",
+                    "correct": true,
+                    "feedback": "The hard effort comes last, once the body has eased in and moved again.",
+                    "sourceRefs": [
+                      "review",
+                      "guide"
+                    ]
+                  }
+                ],
+                "answer": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              },
+              {
+                "id": "warmup-myths-14",
+                "type": "choose",
+                "conceptId": "warmup-myths",
+                "step": "warmup-myths-s3",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "warmup-myths-m3"
+                ],
+                "sourceRefs": [
+                  "review"
+                ],
+                "stem": "How long does the extra range from a stretch usually last?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Under about half an hour.",
+                    "correct": true,
+                    "feedback": "The review found range gains usually lasted less than 30 minutes.",
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Until the end of a full match.",
+                    "correct": false,
+                    "feedback": "The gain is short-lived, usually gone within about half an hour.",
+                    "misconceptionIds": [
+                      "warmup-myths-m3"
+                    ],
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About three hours.",
+                    "correct": false,
+                    "feedback": "Much shorter. Range gains usually fade within 30 minutes.",
+                    "misconceptionIds": [
+                      "warmup-myths-m3"
+                    ],
+                    "sourceRefs": [
+                      "review"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "warmup-myths-m1",
+                "name": "One stretch fixes all",
+                "correction": "A warm-up raises effort in steps; stretch effects vary by task and dose.",
+                "sourceRefs": [
+                  "guide",
+                  "review"
+                ]
+              },
+              {
+                "id": "warmup-myths-m2",
+                "name": "A warm-up means stretching",
+                "correction": "A warm-up is mainly the activity done slower or lighter, so heart rate rises gradually.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "warmup-myths-m3",
+                "name": "Stretch gains last all day",
+                "correction": "Range gains from stretching usually last under 30 minutes.",
+                "sourceRefs": [
+                  "review"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "guide",
+                "title": "Physical Activity Guidelines for Americans, 2nd edition",
+                "publisher": "US Department of Health and Human Services",
+                "year": 2018,
+                "url": "https://odphp.health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "review",
+                "title": "Acute effects of muscle stretching on physical performance, range of motion, and injury incidence in healthy active individuals: a systematic review",
+                "publisher": "Behm et al., Applied Physiology, Nutrition, and Metabolism",
+                "year": 2016,
+                "url": "https://pubmed.ncbi.nlm.nih.gov/26642915/",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Spot the easy start",
+              "detail": "In a made-up cricket warm-up, mark when the work first moves from easy to hard.",
+              "sourceRefs": [
+                "guide"
+              ]
+            },
+            "factCheck": {
+              "checker": "spec 16 rewrite re-check 2026-10-22 (US Physical Activity Guidelines 2nd ed. PDF text p.61: warm-up and cool-down commonly at a slower speed or lower intensity, brisk walking before jogging, lighter weight for strength work; p.60: unclear whether flexibility work reduces injury risk; Behm et al. 2016 abstract via NCBI E-utilities: -4.6% for 60 s or more and -1.1% under 60 s per muscle group, tested 3-5 min after, no clear effect with post-stretch dynamic activity, no clear effect on all-cause or overuse injuries, ROM gains under 30 min, stretching within a dynamic warm-up still recommended. 'Power' reworded as test results)",
+              "verdicts": [
+                {
+                  "claimId": "warmup-myths-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "warmup-myths-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "warmup-myths-s1",
+                "title": "A warm-up is the move, done easier",
+                "claimId": "warmup-myths-c2",
+                "sourceRefs": [
+                  "guide"
+                ],
+                "hook": {
+                  "stem": "Before a jog, which start best fits a warm-up?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Walk briskly for a few minutes first.",
+                      "correct": true,
+                      "feedback": "Right. A warm-up is an easier version of the activity, so a brisk walk suits a jog."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Sprint flat out right away.",
+                      "correct": false,
+                      "feedback": "A flat-out start skips the gradual rise in heart rate that a warm-up gives."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Hold a long toe-touch stretch first.",
+                      "correct": false,
+                      "feedback": "A still stretch does not lift heart rate bit by bit. Easy movement does."
+                    }
+                  ]
+                },
+                "teach": "A warm-up is the activity done slower or lighter, like a brisk walk before a jog, so your heart rate and breathing climb bit by bit. A cool-down does the same in reverse.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Cold start",
+                    "lines": [
+                      "Straight to full pace"
+                    ]
+                  },
+                  "right": {
+                    "title": "Warm start",
+                    "lines": [
+                      "Same move, slower first",
+                      "Heart and breath rise bit by bit"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the warm-up.",
+                  "parts": [
+                    "Farhan's leg day starts with",
+                    "a few squats using just the empty bar,",
+                    "then he adds plates for his real sets."
+                  ],
+                  "spot": "a few squats using just the empty bar,",
+                  "feedback": "Lighter squats first are a warm-up for strength work, so his effort rises step by step."
+                },
+                "guided": [
+                  {
+                    "stem": "Which is a warm-up for push-ups?",
+                    "hint": "Same move, lighter load.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A few push-ups against a wall.",
+                        "correct": true,
+                        "feedback": "Yes. Wall push-ups are the same move with less load."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Ten minutes lying on the floor.",
+                        "correct": false,
+                        "feedback": "Lying down does not raise heart rate or breathing."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Your hardest push-up set first.",
+                        "correct": false,
+                        "feedback": "Starting with the hardest set skips the gradual build a warm-up gives."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Warm up with the same kind of move, done slower or lighter."
+              },
+              {
+                "id": "warmup-myths-s2",
+                "title": "Long still holds can dull a jump a little",
+                "claimId": "warmup-myths-c3",
+                "sourceRefs": [
+                  "review"
+                ],
+                "hook": {
+                  "stem": "Right before a jump test, you hold one stretch for two minutes. What happens to the jump, on average?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "It tends to drop a little.",
+                      "correct": true,
+                      "feedback": "Right. In a review, holds of a minute or more cut test results by about 4.6% on average."
+                    },
+                    {
+                      "id": "b",
+                      "text": "It goes much higher.",
+                      "correct": false,
+                      "feedback": "Long holds just before tended to lower results a little, not raise them."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It drops by about half.",
+                      "correct": false,
+                      "feedback": "The drop was small, about 4.6% on average, not half."
+                    }
+                  ]
+                },
+                "teach": "A long, still stretch leaves the muscle a little slack, so it springs less for a jump or sprint soon after. Short holds cost much less, and moving again after the stretch seemed to cancel the drop.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Hold under 60 s",
+                    "lines": [
+                      "About 1.1% drop in tests",
+                      "50 cm jump: about 0.5 cm lower"
+                    ]
+                  },
+                  "right": {
+                    "title": "Hold 60 s or more",
+                    "lines": [
+                      "About 4.6% drop in tests",
+                      "50 cm jump: about 2 cm lower"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the long hold.",
+                  "parts": [
+                    "Before the 100 m race on school sports day,",
+                    "Tanvi holds a hamstring stretch for 90 seconds,",
+                    "then lines up at the start."
+                  ],
+                  "spot": "Tanvi holds a hamstring stretch for 90 seconds,",
+                  "feedback": "90 seconds is over the 60-second mark linked to a bigger drop."
+                },
+                "guided": [
+                  {
+                    "stem": "Rahul holds each stretch for 45 seconds. Which group is that?",
+                    "hint": "Find where the line between groups sits.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Under 60 seconds, the smaller drop.",
+                        "correct": true,
+                        "feedback": "Yes. Holds under 60 seconds cut results by about 1.1% on average."
+                      },
+                      {
+                        "id": "b",
+                        "text": "60 seconds or more, the bigger drop.",
+                        "correct": false,
+                        "feedback": "45 seconds is under the 60-second line, so it is the smaller-drop group."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Too short to count as a stretch.",
+                        "correct": false,
+                        "feedback": "A 45-second hold is still a stretch. It sits in the under-60 group."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Long still holds right before jumps and sprints can dull them a little."
+              },
+              {
+                "id": "warmup-myths-s3",
+                "title": "Stretching is no injury guarantee",
+                "claimId": "warmup-myths-c4",
+                "sourceRefs": [
+                  "review",
+                  "guide"
+                ],
+                "hook": {
+                  "stem": "Does stretching before sport stop injuries, by the evidence?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "No clear effect on overall injuries was found.",
+                      "correct": true,
+                      "feedback": "Right. In a large review, static stretching showed no clear effect on overall injury rates."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Yes, it prevents most injuries in sport and gym work.",
+                      "correct": false,
+                      "feedback": "The review found no clear effect on overall injuries, so that goes too far."
+                    },
+                    {
+                      "id": "c",
+                      "text": "No, it makes injuries more likely.",
+                      "correct": false,
+                      "feedback": "The review did not find that either. The effect on injuries was unclear."
+                    }
+                  ]
+                },
+                "teach": "Stretching lets you move further, but the gain often fades within 30 minutes. A big review found no clear drop in injuries, so warm up anyway, since easy moves get you ready.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Extra range after a stretch",
+                  "min": "0 min",
+                  "max": "60 min",
+                  "marks": [
+                    {
+                      "at": 50,
+                      "text": "Usually gone by 30 min"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the short-lived gain.",
+                  "parts": [
+                    "Dev stretches and can touch his toes,",
+                    "but 40 minutes later his reach is back to usual,",
+                    "so he warms up again before practice."
+                  ],
+                  "spot": "but 40 minutes later his reach is back to usual,",
+                  "feedback": "Range gains from stretching usually last less than 30 minutes."
+                },
+                "guided": [
+                  {
+                    "stem": "What does stretching most clearly give, by the review?",
+                    "hint": "Think about what fades within half an hour.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "A short-term gain in how far you can move.",
+                        "correct": true,
+                        "feedback": "Right. All forms of stretching improved range of motion for a short time."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Full protection from injury in sport.",
+                        "correct": false,
+                        "feedback": "The review found no clear effect of static stretching on overall injuries."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Much more sprint power for the race.",
+                        "correct": false,
+                        "feedback": "Long still holds tended to cut results a little, not add a lot."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Stretching adds range for a while; it is no injury guarantee."
+              }
+            ]
+          },
+          {
+            "id": "heat-hydration",
+            "title": "Heat and hydration",
+            "prerequisites": [],
+            "hook": "An Ahmedabad noon can make an outdoor session feel harder than the same work on a cool day.",
+            "hookSourceRefs": [
+              "heat",
+              "cdc-heat-rate"
+            ],
+            "rule": "In heat your body works to shed heat as well as move. Train in cooler hours, start slow, sip water and replace salt on long days, but do not force down big amounts. Dizziness, nausea or cramps mean stop and get cool; confusion is an emergency.",
+            "ruleSourceRefs": [
+              "heat",
+              "cdc-heat-rate",
+              "signs"
+            ],
+            "claims": [
+              {
+                "id": "heat-hydration-c1",
+                "text": "Hot exercise can raise heat risk and fluid loss. Feeling dizzy, sick or headachy can be a warning.",
+                "sourceRefs": [
+                  "heat",
+                  "signs"
+                ]
+              },
+              {
+                "id": "heat-hydration-c2",
+                "text": "In hot weather, train early or late when it is cooler, start slow and pick up the pace bit by bit, and drink more water than usual without waiting for thirst.",
+                "sourceRefs": [
+                  "heat"
+                ]
+              },
+              {
+                "id": "heat-hydration-c3",
+                "text": "In the heat, sweat may reach 1 litre an hour, taking fluid and salt. Forcing water on someone who is not thirsty raises risk, and food is the easiest way to replace salt.",
+                "sourceRefs": [
+                  "cdc-heat-rate"
+                ]
+              },
+              {
+                "id": "heat-hydration-c4",
+                "text": "In heat, the body must move heat from the core to the skin, and heart rate and temperature rise as the body loses fluid. Heart, sugar and kidney conditions lower heat tolerance.",
+                "sourceRefs": [
+                  "cdc-heat-rate"
+                ]
+              },
+              {
+                "id": "heat-hydration-c5",
+                "text": "Dizziness, nausea, headache, cramps or feeling faint in the heat are signs to stop, get cool and sip water. Get medical help if you throw up, feel worse, or it lasts over an hour.",
+                "sourceRefs": [
+                  "signs",
+                  "heat"
+                ]
+              },
+              {
+                "id": "heat-hydration-c6",
+                "text": "Confusion or passing out in the heat can mean heat stroke, an emergency: call for help, move the person somewhere cool, cool them, and give nothing to drink.",
+                "sourceRefs": [
+                  "signs",
+                  "cdc-heat-rate"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "heat-hydration-9",
+                "type": "true-not-quite",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s1",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "heat-hydration-m1"
+                ],
+                "sourceRefs": [
+                  "heat",
+                  "cdc-heat-rate"
+                ],
+                "stem": "A coach says noon practice in May toughens players up, so the heat is a bonus workout. What is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Heat adds strain, so cooler hours and a slow start are safer.",
+                    "correct": true,
+                    "feedback": "In heat the body must shed heat as well as move, so the same work strains it more. Cooler hours cut that.",
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Heat is fine as long as nobody drinks water.",
+                    "correct": false,
+                    "feedback": "Skipping water adds danger. Drink more than usual, and train in cooler hours.",
+                    "misconceptionIds": [
+                      "heat-hydration-m1"
+                    ],
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Noon is fine for anyone who feels fit that day.",
+                    "correct": false,
+                    "feedback": "Feeling fit does not remove the heat strain. Cooler hours and a slow start are safer for everyone.",
+                    "misconceptionIds": [
+                      "heat-hydration-m1"
+                    ],
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "heat-hydration-10",
+                "type": "scenario",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "cdc-heat-rate"
+                ],
+                "stem": "In a Delhi May, Nisha's usual college run feels much harder, though she is no less fit. What is the likely cause?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Her body is shedding heat as well as running.",
+                    "correct": true,
+                    "feedback": "In heat, blood flow goes to moving heat out to the skin too, so the same run asks more of her.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Her fitness was gone in a single week.",
+                    "correct": false,
+                    "feedback": "Fitness does not vanish that fast. The heat makes the same run harder.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Hot air holds no oxygen for her to breathe.",
+                    "correct": false,
+                    "feedback": "Hot air still has oxygen. Her body is doing two jobs: running and shedding heat.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "heat-hydration-11",
+                "type": "estimate",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s2",
+                "job": "transfer",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "cdc-heat-rate"
+                ],
+                "stem": "A builder works 8 hours outdoors in a Delhi heatwave. If he sweats about 1 litre an hour, about how many litres could he lose in the day?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 8 litres.",
+                    "correct": true,
+                    "feedback": "At up to 1 litre an hour, 8 hours can mean up to 8 litres, so he needs sips and salty food all day.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 1 litre.",
+                    "correct": false,
+                    "feedback": "That is one hour at the top rate. Over 8 hours it can add up to about 8 litres.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 80 litres.",
+                    "correct": false,
+                    "feedback": "That is ten times too much. At about 1 litre an hour, 8 hours is about 8 litres.",
+                    "sourceRefs": [
+                      "cdc-heat-rate"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 8,
+                  "min": 7,
+                  "max": 9,
+                  "unit": "litres"
+                }
+              },
+              {
+                "id": "heat-hydration-12",
+                "type": "scenario",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s2",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "heat-hydration-m2"
+                ],
+                "sourceRefs": [
+                  "heat",
+                  "cdc-heat-rate"
+                ],
+                "stem": "Arjun's team must play at noon in a Chennai summer. Which plan uses both steps?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A slow start, sips at each break, and salty food after.",
+                    "correct": true,
+                    "feedback": "A slow start cuts heat strain, and sips plus salty food replace what sweat takes out.",
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Full speed, then two litres gulped at the end.",
+                    "correct": false,
+                    "feedback": "A fast start adds strain, and gulping big amounts at once is not the fix.",
+                    "misconceptionIds": [
+                      "heat-hydration-m2"
+                    ],
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A slow start, with no water so he stays light.",
+                    "correct": false,
+                    "feedback": "The slow start helps, but skipping water adds heat risk. He needs sips through the match.",
+                    "sourceRefs": [
+                      "heat",
+                      "cdc-heat-rate"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "heat-hydration-13",
+                "type": "choose",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s3",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "signs"
+                ],
+                "stem": "Kunal stopped, rested in the shade and sipped water, but his dizziness is still there after more than an hour. What now?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Get medical help now.",
+                    "correct": true,
+                    "feedback": "Symptoms that get worse or last over an hour need medical help, not more waiting.",
+                    "sourceRefs": [
+                      "signs"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Wait it out, since it passes by itself.",
+                    "correct": false,
+                    "feedback": "Signs that last over an hour are the point to get medical help, not to keep waiting.",
+                    "sourceRefs": [
+                      "signs"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Go back to training to shake it off.",
+                    "correct": false,
+                    "feedback": "Training on would add more heat strain. Signs that last this long need medical help.",
+                    "sourceRefs": [
+                      "signs"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "heat-hydration-14",
+                "type": "fill-the-step",
+                "conceptId": "heat-hydration",
+                "step": "heat-hydration-s3",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "heat-hydration-m3"
+                ],
+                "sourceRefs": [
+                  "signs",
+                  "heat"
+                ],
+                "stem": "In the heat, muscle cramps, dizziness or nausea are signs to ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "stop and get somewhere cool.",
+                    "correct": true,
+                    "feedback": "These are heat warning signs, so stop, move somewhere cool and sip water.",
+                    "sourceRefs": [
+                      "signs",
+                      "heat"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "stretch it out and push on.",
+                    "correct": false,
+                    "feedback": "Cramps in heat are a warning sign, not a stretching problem. Stop and cool down.",
+                    "misconceptionIds": [
+                      "heat-hydration-m3"
+                    ],
+                    "sourceRefs": [
+                      "signs",
+                      "heat"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "drink fast and keep going.",
+                    "correct": false,
+                    "feedback": "Gulping water and carrying on adds strain. Stop and get somewhere cool first.",
+                    "misconceptionIds": [
+                      "heat-hydration-m3"
+                    ],
+                    "sourceRefs": [
+                      "signs",
+                      "heat"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "heat-hydration-m1",
+                "name": "Heat is a bonus workout",
+                "correction": "Heat adds strain and fluid loss; warning signs call for a stop and a cool place.",
+                "sourceRefs": [
+                  "heat",
+                  "signs"
+                ]
+              },
+              {
+                "id": "heat-hydration-m2",
+                "name": "Gulp it all at the end",
+                "correction": "Sip water through hot sessions and replace salt with food; do not force down big amounts.",
+                "sourceRefs": [
+                  "heat",
+                  "cdc-heat-rate"
+                ]
+              },
+              {
+                "id": "heat-hydration-m3",
+                "name": "Cramps mean push on",
+                "correction": "Cramps, dizziness or feeling faint in the heat are signs to stop and cool down.",
+                "sourceRefs": [
+                  "signs",
+                  "heat"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "heat",
+                "title": "Heat and Athletes",
+                "publisher": "Centers for Disease Control and Prevention",
+                "year": 2024,
+                "url": "https://www.cdc.gov/heat-health/risk-factors/heat-and-athletes.html",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "signs",
+                "title": "Heat Related Illnesses",
+                "publisher": "Centers for Disease Control and Prevention",
+                "year": 2017,
+                "url": "https://www.cdc.gov/extreme-heat/media/pdf/Heat_Related_Illness.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "cdc-heat-rate",
+                "title": "Heat and Cold Illness in Travelers",
+                "publisher": "Centers for Disease Control and Prevention",
+                "year": 2025,
+                "url": "https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/heat-and-cold-illness-in-travelers.html",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Read the hot-day switch",
+              "detail": "In a made-up Train screen, mark which changes cut heat strain and which add it.",
+              "sourceRefs": [
+                "heat"
+              ]
+            },
+            "factCheck": {
+              "checker": "spec 16 rewrite re-check 2026-10-22 (CDC Heat and Athletes, 2024-06-25, via WebFetch: cooler hours, start slow and pick up the pace gradually, drink more than usual and not wait for thirst, stop if faint, cramps an early sign, seek care for symptoms; CDC Yellow Book 2025-04-23 via WebFetch: sweat may reach 1 L/h with sodium, forcing water on the non-thirsty raises hyponatremia risk, food the best salt replacement, blood flow shunts heat from core to surface, temperature and heart rate rise with dehydration, cardiovascular disease, diabetes and renal disease limit heat tolerance; CDC heat illness poster PDF text: heat stroke = confusion or passing out, call emergency, cool, nothing to drink; heat exhaustion: get help if throwing up, worse, or over 1 hour. The 10-day acclimatisation item and the Indian 112/108 numbers were dropped: the numbers could not be verified on a government page)",
+              "verdicts": [
+                {
+                  "claimId": "heat-hydration-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-c5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-c6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "heat-hydration-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "heat-hydration-s1",
+                "title": "Plan hot days: cooler hours and a slow start",
+                "claimId": "heat-hydration-c2",
+                "sourceRefs": [
+                  "heat",
+                  "cdc-heat-rate"
+                ],
+                "hook": {
+                  "stem": "Your team wants to practise on a hot day. Which plan is safer?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Early morning, starting slow, with water breaks.",
+                      "correct": true,
+                      "feedback": "Right. Cooler hours, a slow start and water breaks all cut heat strain."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Noon, at full speed from the very start.",
+                      "correct": false,
+                      "feedback": "Midday is the hottest time, and a fast start adds strain on top."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Noon, with no water breaks, to toughen up.",
+                      "correct": false,
+                      "feedback": "Skipping water in heat is dangerous, not tough. Drink more than usual on hot days."
+                    }
+                  ]
+                },
+                "teach": "In heat, your body works to shed heat as well as move, so the same run is harder. Train in the cool morning or evening and start slow. A heart, kidney or sugar condition? Ask your doctor first.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Noon, full pace",
+                    "lines": [
+                      "Hottest sun",
+                      "More strain"
+                    ]
+                  },
+                  "right": {
+                    "title": "Dawn, slow start",
+                    "lines": [
+                      "Cooler air",
+                      "Less strain"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the timing change.",
+                  "parts": [
+                    "In a Chennai summer, the school team",
+                    "moves football practice to 6 am,",
+                    "and brings big water bottles."
+                  ],
+                  "spot": "moves football practice to 6 am,",
+                  "feedback": "Moving to the cooler early morning cuts heat strain before the sun gets strong."
+                },
+                "guided": [
+                  {
+                    "stem": "Practice is fixed at 4 pm in May. What can still be changed?",
+                    "hint": "The clock is fixed, but the plan is not.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Start slower and build up over the session.",
+                        "correct": true,
+                        "feedback": "Yes. When the time cannot move, a slow start that builds up gradually still cuts strain."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Little, since the time cannot move.",
+                        "correct": false,
+                        "feedback": "The pace can still change. A slow start that builds up gradually cuts heat strain."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Go hard early, before the heat tires you.",
+                        "correct": false,
+                        "feedback": "A hard start adds heat strain. Start slow and pick up the pace bit by bit."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Hot day: cooler hours and a slow start. Have a condition? See a doctor."
+              },
+              {
+                "id": "heat-hydration-s2",
+                "title": "Sweat takes water and salt out",
+                "claimId": "heat-hydration-c3",
+                "sourceRefs": [
+                  "cdc-heat-rate",
+                  "heat"
+                ],
+                "hook": {
+                  "stem": "In one hour of hard work in the heat, about how much sweat can you lose?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Up to about 1 litre.",
+                      "correct": true,
+                      "feedback": "Right. Sweat can reach about 1 litre an hour in the heat."
+                    },
+                    {
+                      "id": "b",
+                      "text": "About a cup at most.",
+                      "correct": false,
+                      "feedback": "It can be far more than that. Sweat in the heat can reach about 1 litre an hour."
+                    },
+                    {
+                      "id": "c",
+                      "text": "About 5 litres an hour.",
+                      "correct": false,
+                      "feedback": "That is far too much. The top rate is about 1 litre an hour."
+                    }
+                  ]
+                },
+                "teach": "In hot weather, sweat can reach about 1 litre an hour, and salt leaves with it. So sip water through the session, but never force down big amounts. On long sweaty days, salty food helps replace the salt.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Sweat in one hour of hot work",
+                  "min": "0 L",
+                  "max": "2 L",
+                  "marks": [
+                    {
+                      "at": 50,
+                      "text": "Up to about 1 L an hour"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the fluid loss.",
+                  "parts": [
+                    "Rohan plays two hours of cricket in the summer sun,",
+                    "and may sweat out up to 2 litres,",
+                    "so he sips water at every break."
+                  ],
+                  "spot": "and may sweat out up to 2 litres,",
+                  "feedback": "At up to 1 litre an hour, two hours in the heat can mean up to 2 litres."
+                },
+                "guided": [
+                  {
+                    "stem": "Which plan fits a 2-hour hot match?",
+                    "hint": "Fluid goes out fast in the heat.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Sips at every break, and a salty snack after.",
+                        "correct": true,
+                        "feedback": "Yes. Regular sips replace sweat as it goes, and salty food replaces the salt."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Two big bottles gulped down at the end.",
+                        "correct": false,
+                        "feedback": "Gulping big amounts at once is not the fix. Sip through the match instead."
+                      },
+                      {
+                        "id": "c",
+                        "text": "No water, so you stay light and quick.",
+                        "correct": false,
+                        "feedback": "Skipping water adds heat risk. Sip regularly through the match."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Up to 1 litre of sweat an hour: sip often, replace salt."
+              },
+              {
+                "id": "heat-hydration-s3",
+                "title": "Warning signs mean stop and cool down",
+                "claimId": "heat-hydration-c5",
+                "sourceRefs": [
+                  "signs",
+                  "heat",
+                  "cdc-heat-rate"
+                ],
+                "hook": {
+                  "stem": "Midway through a hot run, you feel dizzy and sick. What is the safe move?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Stop and get to a cool place.",
+                      "correct": true,
+                      "feedback": "Right. Dizziness and nausea in the heat are signs to stop and cool down."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Push on and finish the run.",
+                      "correct": false,
+                      "feedback": "Pushing on adds more heat strain. These are signs to stop."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Slow down, but keep running home.",
+                      "correct": false,
+                      "feedback": "Running on, even slowly, keeps making heat. Stop and cool down first."
+                    }
+                  ]
+                },
+                "teach": "Dizziness, nausea, headache, cramps or feeling faint in heat mean stop, get cool and sip water, because heat illness can get worse. Throwing up, getting worse or over an hour? Get medical help. Confusion means call an ambulance.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Warning sign",
+                    "Stop and cool down",
+                    "Worse or confused? Get help"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the warning sign.",
+                  "parts": [
+                    "At net practice in the afternoon,",
+                    "Riya suddenly feels dizzy and weak,",
+                    "so she stops and sits in the shade."
+                  ],
+                  "spot": "Riya suddenly feels dizzy and weak,",
+                  "feedback": "Feeling dizzy or weak in the heat is a warning sign to stop and cool down."
+                },
+                "guided": [
+                  {
+                    "stem": "A teammate seems confused on a hot field. What comes first?",
+                    "hint": "Think about how serious this sign is.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Call an ambulance and move them somewhere cool.",
+                        "correct": true,
+                        "feedback": "Yes. Confusion in heat can mean heat stroke, an emergency. Cool them with wet cloths and give them nothing to drink."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Give them a big bottle of cold water to gulp down.",
+                        "correct": false,
+                        "feedback": "With heat stroke, do not give them anything to drink. Call an ambulance and cool them down."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Sit them on the bench and keep playing.",
+                        "correct": false,
+                        "feedback": "Confusion is an emergency sign. Call an ambulance and cool them down right away."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Warning sign in heat? Stop and cool down. Confused? Call an ambulance."
+              }
+            ]
+          },
+          {
+            "id": "cardio-talk-test",
+            "title": "Cardio zones and talk test",
+            "prerequisites": [],
+            "hook": "A walk can feel easy while a run makes speech come in short bursts. Breath gives a clue to effort.",
+            "hookSourceRefs": [
+              "guide",
+              "nin"
+            ],
+            "rule": "Your voice shows effort: talk but not sing is moderate, only a few words is vigorous. On a 0 to 10 scale moderate is 5 or 6, and the scale is your own. After time off, start moderate and build up; pain or odd breathlessness means rest.",
+            "ruleSourceRefs": [
+              "guide",
+              "nin"
+            ],
+            "claims": [
+              {
+                "id": "cardio-talk-test-c1",
+                "text": "As a rule of thumb, at moderate effort you can talk but not sing; at vigorous effort you cannot say more than a few words without pausing for breath.",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-c2",
+                "text": "On a 0 to 10 effort scale, where sitting is 0, moderate effort is a 5 or 6 and vigorous starts at 7 or 8.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-c3",
+                "text": "Effort is personal: less fit people need more effort than fitter people to do the same activity.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-c4",
+                "text": "People who are inactive should start with moderate effort and add minutes and days first, effort later. Shortness of breath, pain, nausea or headache are signs the body needs rest.",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-c5",
+                "text": "After a long time without exercise, it is wise to see a doctor before starting a programme. New symptoms while building up also need a doctor.",
+                "sourceRefs": [
+                  "nin"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "cardio-talk-test-9",
+                "type": "true-not-quite",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s1",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "cardio-talk-test-m2"
+                ],
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "stem": "A friend says if you can talk at all, the workout is too easy to count. What is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Talk but no singing marks moderate effort.",
+                    "correct": true,
+                    "feedback": "Being able to talk but not sing is the sign of moderate effort, which is real exercise.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Silent workouts are the ones that count.",
+                    "correct": false,
+                    "feedback": "Silence is not the test. Moderate effort lets you talk, and it is real effort.",
+                    "misconceptionIds": [
+                      "cardio-talk-test-m2"
+                    ],
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Talking means you are already at vigorous effort.",
+                    "correct": false,
+                    "feedback": "Vigorous effort leaves breath for just a few words. Talking, but not singing, means moderate.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "cardio-talk-test-10",
+                "type": "predict",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "stem": "At the college fest, Mira dances hard but can still chat, though she cannot sing along. Which effort is that?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Moderate effort.",
+                    "correct": true,
+                    "feedback": "Talking but not singing marks moderate effort, on a dance floor as much as on a track.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Very light effort.",
+                    "correct": false,
+                    "feedback": "If she cannot sing, she is working harder than a light pace.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Vigorous effort.",
+                    "correct": false,
+                    "feedback": "Vigorous would leave her only a few words per breath. She can still chat.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "cardio-talk-test-11",
+                "type": "why",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "cardio-talk-test-m1"
+                ],
+                "sourceRefs": [
+                  "guide"
+                ],
+                "stem": "Two friends walk the same hill at the same speed. One rates it 3, the other 7. Why can both be right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Effort depends on each person's fitness.",
+                    "correct": true,
+                    "feedback": "Less fit people need more effort for the same task, so the ratings can differ.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "One of them must be wrong about it.",
+                    "correct": false,
+                    "feedback": "Both can be honest. The scale rates each person's own effort.",
+                    "misconceptionIds": [
+                      "cardio-talk-test-m1"
+                    ],
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The hill is steeper for one of them.",
+                    "correct": false,
+                    "feedback": "The hill is the same. What differs is how fit each person is.",
+                    "sourceRefs": [
+                      "guide"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "cardio-talk-test-12",
+                "type": "estimate",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s2",
+                "job": "combine",
+                "difficultySeed": 2,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "stem": "Cardio check: on a run you can say only a few words per breath. About what number is that on the 0 to 10 scale?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 7.5.",
+                    "correct": true,
+                    "feedback": "A few words per breath is vigorous, and vigorous starts at 7 or 8 on the scale.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 3.",
+                    "correct": false,
+                    "feedback": "A 3 is light effort, where you could easily talk. A few words means vigorous.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 10.",
+                    "correct": false,
+                    "feedback": "10 is your hardest. Vigorous effort starts lower, at 7 or 8.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 7.5,
+                  "min": 7,
+                  "max": 8,
+                  "unit": "out of 10"
+                }
+              },
+              {
+                "id": "cardio-talk-test-13",
+                "type": "scenario",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s3",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "cardio-talk-test-m3"
+                ],
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "stem": "Back at college after a long break, Rohit's first jog leaves him gasping single words. What should he change?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Slow to a pace where he can talk.",
+                    "correct": true,
+                    "feedback": "Gasping single words means vigorous. After time off, a moderate pace he can talk through is the start.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Push on until it starts to feel easy.",
+                    "correct": false,
+                    "feedback": "Pushing hard after a break is a big jump. A moderate, talking pace comes first.",
+                    "misconceptionIds": [
+                      "cardio-talk-test-m3"
+                    ],
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Run faster, so the session ends sooner.",
+                    "correct": false,
+                    "feedback": "More speed means more effort. After time off he should slow to a talking pace.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "cardio-talk-test-14",
+                "type": "explain-it-back",
+                "conceptId": "cardio-talk-test",
+                "step": "cardio-talk-test-s3",
+                "job": "recall",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "cardio-talk-test-m3"
+                ],
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "stem": "How would you explain the safe order for building up after time off?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "More minutes and days first, then more effort.",
+                    "correct": true,
+                    "feedback": "Add time and days at a moderate effort first. Raise the effort later, once that feels fine.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "More effort first, then more minutes.",
+                    "correct": false,
+                    "feedback": "Effort comes last. Minutes and days rise first, at a moderate effort.",
+                    "misconceptionIds": [
+                      "cardio-talk-test-m3"
+                    ],
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Minutes, days and effort at once, in week one.",
+                    "correct": false,
+                    "feedback": "Raising everything at once is a big jump. Minutes and days come first, effort later.",
+                    "sourceRefs": [
+                      "guide",
+                      "nin"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "cardio-talk-test-m1",
+                "name": "One speed fits all",
+                "correction": "Effort is personal: less fit people need more effort for the same task.",
+                "sourceRefs": [
+                  "guide"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-m2",
+                "name": "Talking means too easy",
+                "correction": "If you can talk but not sing, your effort is moderate.",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ]
+              },
+              {
+                "id": "cardio-talk-test-m3",
+                "name": "Start hard to catch up on the missed weeks",
+                "correction": "After time off, start moderate and add minutes and days before effort.",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "guide",
+                "title": "Physical Activity Guidelines for Americans, 2nd edition",
+                "publisher": "US Department of Health and Human Services",
+                "year": 2018,
+                "url": "https://odphp.health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "nin",
+                "title": "Dietary Guidelines for Indians 2024",
+                "publisher": "ICMR-National Institute of Nutrition",
+                "year": 2024,
+                "url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI_2024.pdf",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Sort the talk clues",
+              "detail": "In a made-up walk, ride and run, mark where speech is easy, short or in between.",
+              "sourceRefs": [
+                "guide",
+                "nin"
+              ]
+            },
+            "factCheck": {
+              "checker": "spec 16 rewrite re-check 2026-10-22 (US Physical Activity Guidelines 2nd ed. PDF text p.58 and p.70: relative intensity 0-10, sitting 0, moderate 5-6, vigorous from 7-8, less fit need more effort, talk but not sing for moderate, a few words for vigorous; p.89: start with relatively moderate intensity, avoid relatively vigorous activity such as running at first, increase duration and frequency first, intensity later; ICMR-NIN DGI 2024 p.70: moderate keeps the ability to talk, vigorous does not let you talk freely, consult a doctor before starting if sedentary, increase gradually, breathlessness, pain, nausea, vomiting, headache are warning signs to rest. The 2-to-1 vigorous step was cut because Health's exercise-heart teaches it; the CDC page could not be opened by curl and was replaced by the guide and NIN)",
+              "verdicts": [
+                {
+                  "claimId": "cardio-talk-test-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-c5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "cardio-talk-test-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "cardio-talk-test-s1",
+                "title": "Your voice shows your effort",
+                "claimId": "cardio-talk-test-c1",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "hook": {
+                  "stem": "You are cycling and can chat, but singing is too much. How hard are you working?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Moderate effort.",
+                      "correct": true,
+                      "feedback": "Right. Being able to talk but not sing is the sign of moderate effort."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Very light, like sitting.",
+                      "correct": false,
+                      "feedback": "If singing is too hard, you are working more than a light pace."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Vigorous effort.",
+                      "correct": false,
+                      "feedback": "At vigorous effort, only a few words fit before you need a breath."
+                    }
+                  ]
+                },
+                "teach": "Talking takes breath, so your voice shows your effort. If you can talk but not sing, that is moderate. If only a few words fit before a breath, that is vigorous.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Can sing: easy",
+                    "Talk, not sing: moderate",
+                    "Few words: vigorous"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the vigorous clue.",
+                  "parts": [
+                    "On the metro station stairs, Nisha races up,",
+                    "and can only gasp out two words at a time,",
+                    "before she stops at the top."
+                  ],
+                  "spot": "and can only gasp out two words at a time,",
+                  "feedback": "Only a few words before a breath is the talk-test sign of vigorous effort."
+                },
+                "guided": [
+                  {
+                    "stem": "During sprints, Leela can only say 'wait' and 'go'. Which effort is it?",
+                    "hint": "Count the words before each breath.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Vigorous.",
+                        "correct": true,
+                        "feedback": "Yes. Just a word or two before a breath marks vigorous effort."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Moderate.",
+                        "correct": false,
+                        "feedback": "Moderate lets you hold a chat. One or two words is vigorous."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Light.",
+                        "correct": false,
+                        "feedback": "Light effort leaves plenty of breath to talk. This is vigorous."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Talk, not sing: moderate. Few words: vigorous."
+              },
+              {
+                "id": "cardio-talk-test-s2",
+                "title": "Rate your own effort from 0 to 10",
+                "claimId": "cardio-talk-test-c2",
+                "sourceRefs": [
+                  "guide"
+                ],
+                "hook": {
+                  "stem": "On a 0 to 10 effort scale, where sitting is 0, what number is moderate effort?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "5 or 6.",
+                      "correct": true,
+                      "feedback": "Right. Moderate effort sits at 5 or 6 on the scale."
+                    },
+                    {
+                      "id": "b",
+                      "text": "1 or 2.",
+                      "correct": false,
+                      "feedback": "1 or 2 is very light. Moderate effort sits at 5 or 6."
+                    },
+                    {
+                      "id": "c",
+                      "text": "9 or 10.",
+                      "correct": false,
+                      "feedback": "9 or 10 is near your top effort. Moderate is 5 or 6."
+                    }
+                  ]
+                },
+                "teach": "Rate effort from 0, sitting still, to 10, your hardest. Moderate is a 5 or 6 and vigorous starts at 7 or 8. Less fit people need more effort for the same task, so the scale is your own.",
+                "visual": {
+                  "kind": "scale",
+                  "label": "Effort from 0 to 10",
+                  "min": "0: sitting",
+                  "max": "10: hardest",
+                  "marks": [
+                    {
+                      "at": 55,
+                      "text": "5 to 6: moderate"
+                    },
+                    {
+                      "at": 75,
+                      "text": "7 to 8: vigorous starts"
+                    }
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the vigorous rating.",
+                  "parts": [
+                    "Ishaan rates his walk to class a 4,",
+                    "his football game an 8,",
+                    "and his evening stretch a 2."
+                  ],
+                  "spot": "his football game an 8,",
+                  "feedback": "Vigorous effort starts at 7 or 8 on the scale, so his football game counts."
+                },
+                "guided": [
+                  {
+                    "stem": "Pooja rates a brisk walk a 6. Which effort band is that?",
+                    "hint": "Find the band that holds 5 and 6.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Moderate.",
+                        "correct": true,
+                        "feedback": "Yes. A 6 sits in the moderate band of 5 to 6."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Vigorous.",
+                        "correct": false,
+                        "feedback": "Vigorous starts at 7 or 8. A 6 is still moderate."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Rest.",
+                        "correct": false,
+                        "feedback": "Rest is near 0. A 6 is moderate effort."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Moderate is 5 or 6 out of 10, rated by you."
+              },
+              {
+                "id": "cardio-talk-test-s3",
+                "title": "New to it? Start moderate, then build",
+                "claimId": "cardio-talk-test-c4",
+                "sourceRefs": [
+                  "guide",
+                  "nin"
+                ],
+                "hook": {
+                  "stem": "After months without exercise, which effort should your first sessions aim for?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Moderate, where you can still talk.",
+                      "correct": true,
+                      "feedback": "Right. After time off, start at a moderate effort and build up gradually."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Vigorous, to catch up on the missed weeks.",
+                      "correct": false,
+                      "feedback": "Hard effort after time off raises injury risk. Start moderate and build up."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Your hardest, to test where you stand.",
+                      "correct": false,
+                      "feedback": "Testing your limit on day one is a big jump. Start moderate and build up."
+                    }
+                  ]
+                },
+                "teach": "After time off, start at a moderate effort you can talk through, because big jumps raise injury risk. Add minutes and days first, effort later. Pain, odd breathlessness, nausea or headache mean rest.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Moderate start",
+                    "More minutes and days",
+                    "Then more effort"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the choice that keeps effort low at first.",
+                  "parts": [
+                    "Back after exams, Kavya walks briskly for 20 minutes,",
+                    "adds a few minutes each week,",
+                    "and saves running for later."
+                  ],
+                  "spot": "and saves running for later.",
+                  "feedback": "Brisk walks first and running later follows the plan: minutes and days first, effort later."
+                },
+                "guided": [
+                  {
+                    "stem": "Om starts jogging and gets a sharp pain in his knee. What should he do?",
+                    "hint": "Think about what pain is telling his body.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Stop and rest it, and see a doctor if it stays.",
+                        "correct": true,
+                        "feedback": "Yes. Pain is a sign the body needs rest, and a new problem that stays needs a doctor."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Push through so the knee gets used to it.",
+                        "correct": false,
+                        "feedback": "Pain is a warning sign, not something to train through. Stop and rest."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Speed up to finish the session sooner.",
+                        "correct": false,
+                        "feedback": "More effort adds strain to a painful knee. Stop and rest it."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Start moderate; add time first. Pain or odd breathlessness means rest."
+              }
+            ]
           },
           {
             "id": "food-labels",
@@ -5633,5 +5654,6 @@
         ]
       }
     ]
-  }
+  },
+  "changelog": "1.1.0: a NANDI Original book in chapters (spec 33); idea ids unchanged."
 }

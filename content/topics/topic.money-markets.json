@@ -1,6 +1,6 @@
 {
   "id": "topic.money-markets",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schema": 1,
   "minAppVersion": "0.1.0",
   "title": "Money and markets",
@@ -14,10 +14,23 @@
       "title": "Money and markets",
       "description": "Use short cases to see how money and markets work."
     },
+    "book": {
+      "title": "Money, Plainly",
+      "author": "NANDI",
+      "year": 2026,
+      "rights": "original",
+      "cover": {
+        "palette": "saffron",
+        "motif": "stamp"
+      },
+      "blurb": "What money is worth, how it grows, and how to keep it safe."
+    },
     "modules": [
       {
-        "id": "money-markets-module",
-        "title": "How money grows",
+        "id": "money-markets-ch1",
+        "title": "Money's value",
+        "minutes": 10,
+        "check": "recall",
         "concepts": [
           {
             "id": "inflation",
@@ -1496,6 +1509,686 @@
               }
             ]
           },
+          {
+            "id": "loan-emi",
+            "title": "EMI and loan cost",
+            "prerequisites": [
+              "compounding"
+            ],
+            "hook": "A smaller monthly EMI can still lead to more total interest when a loan runs longer.",
+            "hookSourceRefs": [
+              "rbi-loan"
+            ],
+            "rule": "An EMI pays interest and some principal. Interest is based on what is still owed, and a longer term means a smaller EMI but more interest in total.",
+            "ruleSourceRefs": [
+              "rbi-loan"
+            ],
+            "claims": [
+              {
+                "id": "loan-emi-c1",
+                "text": "An EMI can pay loan interest and part of the loan sum. On a fixed-rate loan the EMI stays the same each month.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-c2",
+                "text": "As a loan shrinks, later interest uses the sum still due.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-c3",
+                "text": "A longer loan term makes each EMI smaller but means paying more interest in total.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-c4",
+                "text": "In the RBI example, a ₹10 lakh loan at 15% over 120 months has an EMI of ₹16,133.50, and ₹12,500 of the first EMI is interest.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "loan-emi-9",
+                "type": "fill-the-step",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s3",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "loan-emi-m2"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "Stretching a loan over more months raises its total cost, because ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "interest keeps running for longer",
+                    "correct": true,
+                    "feedback": "Right. Each EMI is smaller, but interest is charged for more months, so the total paid goes up.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "the rate goes up each extra month",
+                    "correct": false,
+                    "feedback": "The rate can stay the same. The total rises because interest is charged for more months.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "smaller EMIs carry a late fee",
+                    "correct": false,
+                    "feedback": "Smaller EMIs are not late payments. The extra cost is interest charged over more months.",
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-10",
+                "type": "predict",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s1",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "loan-emi-m2"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "A ₹30,000 phone is sold on \"0% EMI\" for 6 months, plus a ₹1,500 processing fee. Is the loan free?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "No; the fee is a cost of borrowing, about 5% of the price.",
+                    "correct": true,
+                    "feedback": "Right. With no interest part, the fee is the price of the loan: ₹1,500 on ₹30,000.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Yes; with no interest, it costs no more.",
+                    "correct": false,
+                    "feedback": "Interest is one cost of a loan, not the only one. The ₹1,500 fee is paid on top.",
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Yes, as long as each EMI is the same size.",
+                    "correct": false,
+                    "feedback": "Equal EMIs say nothing about cost. The ₹1,500 fee still makes the phone dearer.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-11",
+                "type": "fill-the-step",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s1",
+                "job": "reverse",
+                "difficultySeed": 1,
+                "misconceptionTags": [
+                  "loan-emi-m1"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "This month's EMI is ₹9,000, and ₹6,500 of it cuts the principal. So the interest part is ___.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "₹2,500",
+                    "correct": true,
+                    "feedback": "Yes. The EMI is interest plus principal, so ₹9,000 minus ₹6,500 leaves ₹2,500 of interest.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "₹15,500",
+                    "correct": false,
+                    "feedback": "That adds the two. The principal part sits inside the EMI, so subtract it instead.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "₹9,000",
+                    "correct": false,
+                    "feedback": "That is the whole EMI. Most of it cuts the principal, leaving ₹2,500 as interest.",
+                    "misconceptionIds": [
+                      "loan-emi-m1"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-12",
+                "type": "estimate",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s2",
+                "job": "combine",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "In the RBI example, a ₹10 lakh loan at 15% is repaid with 120 EMIs of about ₹16,133. About how much interest is paid in all?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About ₹9.4 lakh.",
+                    "correct": true,
+                    "feedback": "120 EMIs come to about ₹19.4 lakh. Take away the ₹10 lakh borrowed to get about ₹9.4 lakh.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About ₹1.5 lakh.",
+                    "correct": false,
+                    "feedback": "That is 15% for one year only. Interest is paid every month for ten years.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About ₹19.4 lakh.",
+                    "correct": false,
+                    "feedback": "That is everything paid back. The ₹10 lakh borrowed is not interest.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 9.4,
+                  "min": 9,
+                  "max": 9.7,
+                  "unit": "lakh rupees"
+                }
+              },
+              {
+                "id": "loan-emi-14",
+                "type": "scenario",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s2",
+                "job": "transfer",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m3"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "In college, Tara uses a ₹20,000 scholarship to pay off part of her education loan early. What happens to her later interest?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It falls, since she owes less.",
+                    "correct": true,
+                    "feedback": "Interest is worked out on what is still owed, so a smaller balance means less interest.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "It stays the same.",
+                    "correct": false,
+                    "feedback": "Interest follows the balance, not the first amount, so paying early lowers it.",
+                    "misconceptionIds": [
+                      "loan-emi-m3"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "It rises to make up for it.",
+                    "correct": false,
+                    "feedback": "Interest does not rise because you repaid. A smaller balance means less interest.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "loan-emi-16",
+                "type": "true-not-quite",
+                "conceptId": "loan-emi",
+                "step": "loan-emi-s3",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "loan-emi-m2"
+                ],
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "stem": "Arjun picks the loan with the smallest EMI, sure that it is the cheapest. What is he missing?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A longer term can mean more total interest.",
+                    "correct": true,
+                    "feedback": "A small EMI often comes from a long term, and the extra months add interest.",
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "He is right; a smaller EMI means less interest.",
+                    "correct": false,
+                    "feedback": "A small EMI can hide a long term, which pushes the total interest up.",
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The rate matters, not the term.",
+                    "correct": false,
+                    "feedback": "At the same rate, a longer term charges interest for more months, so the term matters too.",
+                    "misconceptionIds": [
+                      "loan-emi-m2"
+                    ],
+                    "sourceRefs": [
+                      "rbi-loan"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "loan-emi-m1",
+                "name": "EMI is all principal",
+                "correction": "Part of a typical EMI pays interest, while the rest lowers the debt.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-m2",
+                "name": "Small EMI means cheap loan",
+                "correction": "A longer term can lower each payment but raise total interest.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-m3",
+                "name": "Interest stays on the first amount",
+                "correction": "Interest is worked out on the loan still unpaid, so paying some back early lowers later interest.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "rbi-loan",
+                "title": "FAQs: Housing Loans",
+                "publisher": "Reserve Bank of India",
+                "year": 2026,
+                "url": "https://www.rbi.org.in/Scripts/FS_FAQs.aspx?Id=77&fn=2754",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Read a schedule",
+              "detail": "In a sample EMI table, point to the principal, interest and balance columns.",
+              "sourceRefs": [
+                "rbi-loan"
+              ]
+            },
+            "factCheck": {
+              "verdicts": [
+                {
+                  "claimId": "loan-emi-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-14",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "loan-emi-16",
+                  "verdict": "supported"
+                }
+              ],
+              "checker": "builder content agent source check 2026-10-21 (RBI housing loan FAQ: EMI is principal plus interest, monthly reducing balance, longer tenure lowers EMI but costs more, annex Rs 10 lakh at 15% for 120 months EMI 16,133.50 with first interest 12,500 and last 199.18; 12% EMI sums computed); spec 16 rewrite 2026-10-22: source moved to the live RBI page (rbi.org.in FS_FAQs Id=77), re-read: \"In case of a pure fixed loan, the EMI due to the bank remains constant\"; \"most banks allow you to repay the loan ahead of schedule by making lump sum payments\"; spec 16 fix-up 2026-10-22: loan-emi-9 rewritten for step 3 as its recall (step 1 held 3 items, step 3 held 1), so transfer no longer repeats"
+            },
+            "steps": [
+              {
+                "id": "loan-emi-s1",
+                "title": "An EMI is one fixed payment with two parts",
+                "claimId": "loan-emi-c1",
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "hook": {
+                  "stem": "You repay a loan with the same EMI each month. What does each EMI pay for?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Some interest and some of the loan.",
+                      "correct": true,
+                      "feedback": "Right. Each EMI covers that month's interest, and the rest brings the loan down."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Just the loan amount.",
+                      "correct": false,
+                      "feedback": "Part of every EMI goes to interest, so not all of it cuts the loan."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Just the interest.",
+                      "correct": false,
+                      "feedback": "Then the loan would never shrink. Part of each EMI pays the loan back."
+                    }
+                  ]
+                },
+                "teach": "EMI means equated monthly instalment: on a fixed-rate loan, the same payment each month. Each EMI first pays that month's interest, so only the rest cuts the principal, the amount you borrowed.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Fixed EMI",
+                    "Pays month's interest",
+                    "Rest cuts the loan"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the part that cuts the loan.",
+                  "parts": [
+                    "Sunil pays an EMI of ₹5,000,",
+                    "of which ₹1,000 covers interest,",
+                    "and ₹4,000 brings his loan down."
+                  ],
+                  "spot": "and ₹4,000 brings his loan down.",
+                  "feedback": "Only the part left after interest lowers what he owes."
+                },
+                "guided": [
+                  {
+                    "stem": "What does the word 'equated' in EMI tell you?",
+                    "hint": "Look inside the word itself.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Every payment is the same size.",
+                        "correct": true,
+                        "feedback": "Right. On a fixed-rate loan the EMI stays the same each month until the loan is paid."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The loan ends early.",
+                        "correct": false,
+                        "feedback": "Equated is about equal payments, not an early end."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Extra interest is added.",
+                        "correct": false,
+                        "feedback": "The word says nothing about extra interest. It means equal payments."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Each EMI pays the month's interest; the rest cuts the loan."
+              },
+              {
+                "id": "loan-emi-s2",
+                "title": "Interest is charged on what you still owe",
+                "claimId": "loan-emi-c2",
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "hook": {
+                  "stem": "Month by month you pay down your loan. What happens to the interest part of your EMI?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "It shrinks, since you owe less.",
+                      "correct": true,
+                      "feedback": "Right. Interest is worked out on what is still owed, and that keeps falling."
+                    },
+                    {
+                      "id": "b",
+                      "text": "It stays the same each month.",
+                      "correct": false,
+                      "feedback": "The EMI stays the same, but the interest part inside it gets smaller."
+                    },
+                    {
+                      "id": "c",
+                      "text": "It grows each month.",
+                      "correct": false,
+                      "feedback": "You owe less each month, so the interest charged on it falls, not rises."
+                    }
+                  ]
+                },
+                "teach": "Each month, interest is worked out on the loan still unpaid. As the loan shrinks, the interest part falls, so more of each EMI cuts the loan.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "First EMI (RBI example)",
+                    "lines": [
+                      "₹12,500 interest",
+                      "About ₹3,600 to the loan"
+                    ]
+                  },
+                  "right": {
+                    "title": "Last EMI",
+                    "lines": [
+                      "About ₹200 interest",
+                      "About ₹15,900 to the loan"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap why the interest part fell.",
+                  "parts": [
+                    "In month one Rani owed ₹1,00,000,",
+                    "but by month ten she owed ₹70,000,",
+                    "so her interest that month was smaller."
+                  ],
+                  "spot": "but by month ten she owed ₹70,000,",
+                  "feedback": "Interest follows the amount still owed, and she owed less by month ten."
+                },
+                "guided": [
+                  {
+                    "stem": "You owe ₹50,000 at 1% interest a month. What is this month's interest?",
+                    "hint": "Find 1% of what you still owe.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "₹500.",
+                        "correct": true,
+                        "feedback": "Yes. 1% of ₹50,000 is ₹500."
+                      },
+                      {
+                        "id": "b",
+                        "text": "₹5,000.",
+                        "correct": false,
+                        "feedback": "That is 10%. One percent of ₹50,000 is ₹500."
+                      },
+                      {
+                        "id": "c",
+                        "text": "₹50.",
+                        "correct": false,
+                        "feedback": "That is 0.1%. One percent of ₹50,000 is ₹500."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Interest follows what you still owe, so it shrinks over time."
+              },
+              {
+                "id": "loan-emi-s3",
+                "title": "Longer loans mean smaller EMIs but more interest",
+                "claimId": "loan-emi-c3",
+                "sourceRefs": [
+                  "rbi-loan"
+                ],
+                "hook": {
+                  "stem": "Two loans have the same size and rate. One runs 2 years and one runs 5 years. Which costs more interest in total?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The 5-year loan.",
+                      "correct": true,
+                      "feedback": "Right. Interest runs for more months, so the total paid is larger."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The 2-year loan.",
+                      "correct": false,
+                      "feedback": "Its EMIs are bigger, but interest stops sooner, so its total interest is lower."
+                    },
+                    {
+                      "id": "c",
+                      "text": "They cost the same.",
+                      "correct": false,
+                      "feedback": "Same rate, but different lengths. The longer one pays interest for more months."
+                    }
+                  ]
+                },
+                "teach": "Stretching a loan over more months makes each EMI smaller. But you pay interest for longer, so the total cost goes up.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "₹1 lakh at 12%, 12 months",
+                    "lines": [
+                      "EMI about ₹8,885",
+                      "Interest about ₹6,600"
+                    ]
+                  },
+                  "right": {
+                    "title": "Same loan, 24 months",
+                    "lines": [
+                      "EMI about ₹4,707",
+                      "Interest about ₹13,000"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the hidden cost.",
+                  "parts": [
+                    "Vivek picks a seven-year bike loan",
+                    "because its EMI is the smallest,",
+                    "but he pays the most interest of all."
+                  ],
+                  "spot": "but he pays the most interest of all.",
+                  "feedback": "A long term shrinks the EMI, but interest runs for more months, so the total grows."
+                },
+                "guided": [
+                  {
+                    "stem": "At the same rate, which term gives the least total interest?",
+                    "hint": "Count how long interest keeps running.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The shortest term.",
+                        "correct": true,
+                        "feedback": "Right. A short term has bigger EMIs but stops interest sooner."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The longest term.",
+                        "correct": false,
+                        "feedback": "The longest term has the smallest EMIs but the most interest overall."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Any term, since the rate is the same.",
+                        "correct": false,
+                        "feedback": "The rate is the same, but the time differs, so the totals differ."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "A longer loan lowers each EMI but raises the total interest."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "money-markets-ch2",
+        "title": "Growing money",
+        "minutes": 13,
+        "check": "quiz",
+        "concepts": [
           {
             "id": "rule-of-72",
             "title": "The rule of 72",
@@ -4402,7 +5095,15 @@
                 "shares-c3"
               ]
             }
-          },
+          }
+        ]
+      },
+      {
+        "id": "money-markets-ch3",
+        "title": "Staying safe",
+        "minutes": 10,
+        "check": "recall",
+        "concepts": [
           {
             "id": "emergency-fund",
             "title": "Emergency fund",
@@ -5164,678 +5865,6 @@
                 "emergency-fund-c4"
               ]
             }
-          },
-          {
-            "id": "loan-emi",
-            "title": "EMI and loan cost",
-            "prerequisites": [
-              "compounding"
-            ],
-            "hook": "A smaller monthly EMI can still lead to more total interest when a loan runs longer.",
-            "hookSourceRefs": [
-              "rbi-loan"
-            ],
-            "rule": "An EMI pays interest and some principal. Interest is based on what is still owed, and a longer term means a smaller EMI but more interest in total.",
-            "ruleSourceRefs": [
-              "rbi-loan"
-            ],
-            "claims": [
-              {
-                "id": "loan-emi-c1",
-                "text": "An EMI can pay loan interest and part of the loan sum. On a fixed-rate loan the EMI stays the same each month.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              },
-              {
-                "id": "loan-emi-c2",
-                "text": "As a loan shrinks, later interest uses the sum still due.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              },
-              {
-                "id": "loan-emi-c3",
-                "text": "A longer loan term makes each EMI smaller but means paying more interest in total.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              },
-              {
-                "id": "loan-emi-c4",
-                "text": "In the RBI example, a ₹10 lakh loan at 15% over 120 months has an EMI of ₹16,133.50, and ₹12,500 of the first EMI is interest.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "loan-emi-9",
-                "type": "fill-the-step",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "loan-emi-m2"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "Stretching a loan over more months raises its total cost, because ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "interest keeps running for longer",
-                    "correct": true,
-                    "feedback": "Right. Each EMI is smaller, but interest is charged for more months, so the total paid goes up.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "the rate goes up each extra month",
-                    "correct": false,
-                    "feedback": "The rate can stay the same. The total rises because interest is charged for more months.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "smaller EMIs carry a late fee",
-                    "correct": false,
-                    "feedback": "Smaller EMIs are not late payments. The extra cost is interest charged over more months.",
-                    "misconceptionIds": [
-                      "loan-emi-m2"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "loan-emi-10",
-                "type": "predict",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s1",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "loan-emi-m2"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "A ₹30,000 phone is sold on \"0% EMI\" for 6 months, plus a ₹1,500 processing fee. Is the loan free?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "No; the fee is a cost of borrowing, about 5% of the price.",
-                    "correct": true,
-                    "feedback": "Right. With no interest part, the fee is the price of the loan: ₹1,500 on ₹30,000.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Yes; with no interest, it costs no more.",
-                    "correct": false,
-                    "feedback": "Interest is one cost of a loan, not the only one. The ₹1,500 fee is paid on top.",
-                    "misconceptionIds": [
-                      "loan-emi-m2"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Yes, as long as each EMI is the same size.",
-                    "correct": false,
-                    "feedback": "Equal EMIs say nothing about cost. The ₹1,500 fee still makes the phone dearer.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "loan-emi-11",
-                "type": "fill-the-step",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s1",
-                "job": "reverse",
-                "difficultySeed": 1,
-                "misconceptionTags": [
-                  "loan-emi-m1"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "This month's EMI is ₹9,000, and ₹6,500 of it cuts the principal. So the interest part is ___.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "₹2,500",
-                    "correct": true,
-                    "feedback": "Yes. The EMI is interest plus principal, so ₹9,000 minus ₹6,500 leaves ₹2,500 of interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "₹15,500",
-                    "correct": false,
-                    "feedback": "That adds the two. The principal part sits inside the EMI, so subtract it instead.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "₹9,000",
-                    "correct": false,
-                    "feedback": "That is the whole EMI. Most of it cuts the principal, leaving ₹2,500 as interest.",
-                    "misconceptionIds": [
-                      "loan-emi-m1"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "loan-emi-12",
-                "type": "estimate",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s2",
-                "job": "combine",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "In the RBI example, a ₹10 lakh loan at 15% is repaid with 120 EMIs of about ₹16,133. About how much interest is paid in all?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About ₹9.4 lakh.",
-                    "correct": true,
-                    "feedback": "120 EMIs come to about ₹19.4 lakh. Take away the ₹10 lakh borrowed to get about ₹9.4 lakh.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About ₹1.5 lakh.",
-                    "correct": false,
-                    "feedback": "That is 15% for one year only. Interest is paid every month for ten years.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About ₹19.4 lakh.",
-                    "correct": false,
-                    "feedback": "That is everything paid back. The ₹10 lakh borrowed is not interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 9.4,
-                  "min": 9,
-                  "max": 9.7,
-                  "unit": "lakh rupees"
-                }
-              },
-              {
-                "id": "loan-emi-14",
-                "type": "scenario",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s2",
-                "job": "transfer",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "loan-emi-m3"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "In college, Tara uses a ₹20,000 scholarship to pay off part of her education loan early. What happens to her later interest?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "It falls, since she owes less.",
-                    "correct": true,
-                    "feedback": "Interest is worked out on what is still owed, so a smaller balance means less interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "It stays the same.",
-                    "correct": false,
-                    "feedback": "Interest follows the balance, not the first amount, so paying early lowers it.",
-                    "misconceptionIds": [
-                      "loan-emi-m3"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "It rises to make up for it.",
-                    "correct": false,
-                    "feedback": "Interest does not rise because you repaid. A smaller balance means less interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "loan-emi-16",
-                "type": "true-not-quite",
-                "conceptId": "loan-emi",
-                "step": "loan-emi-s3",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "loan-emi-m2"
-                ],
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "stem": "Arjun picks the loan with the smallest EMI, sure that it is the cheapest. What is he missing?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A longer term can mean more total interest.",
-                    "correct": true,
-                    "feedback": "A small EMI often comes from a long term, and the extra months add interest.",
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "He is right; a smaller EMI means less interest.",
-                    "correct": false,
-                    "feedback": "A small EMI can hide a long term, which pushes the total interest up.",
-                    "misconceptionIds": [
-                      "loan-emi-m2"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The rate matters, not the term.",
-                    "correct": false,
-                    "feedback": "At the same rate, a longer term charges interest for more months, so the term matters too.",
-                    "misconceptionIds": [
-                      "loan-emi-m2"
-                    ],
-                    "sourceRefs": [
-                      "rbi-loan"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "loan-emi-m1",
-                "name": "EMI is all principal",
-                "correction": "Part of a typical EMI pays interest, while the rest lowers the debt.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              },
-              {
-                "id": "loan-emi-m2",
-                "name": "Small EMI means cheap loan",
-                "correction": "A longer term can lower each payment but raise total interest.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              },
-              {
-                "id": "loan-emi-m3",
-                "name": "Interest stays on the first amount",
-                "correction": "Interest is worked out on the loan still unpaid, so paying some back early lowers later interest.",
-                "sourceRefs": [
-                  "rbi-loan"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "rbi-loan",
-                "title": "FAQs: Housing Loans",
-                "publisher": "Reserve Bank of India",
-                "year": 2026,
-                "url": "https://www.rbi.org.in/Scripts/FS_FAQs.aspx?Id=77&fn=2754",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Read a schedule",
-              "detail": "In a sample EMI table, point to the principal, interest and balance columns.",
-              "sourceRefs": [
-                "rbi-loan"
-              ]
-            },
-            "factCheck": {
-              "verdicts": [
-                {
-                  "claimId": "loan-emi-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-14",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "loan-emi-16",
-                  "verdict": "supported"
-                }
-              ],
-              "checker": "builder content agent source check 2026-10-21 (RBI housing loan FAQ: EMI is principal plus interest, monthly reducing balance, longer tenure lowers EMI but costs more, annex Rs 10 lakh at 15% for 120 months EMI 16,133.50 with first interest 12,500 and last 199.18; 12% EMI sums computed); spec 16 rewrite 2026-10-22: source moved to the live RBI page (rbi.org.in FS_FAQs Id=77), re-read: \"In case of a pure fixed loan, the EMI due to the bank remains constant\"; \"most banks allow you to repay the loan ahead of schedule by making lump sum payments\"; spec 16 fix-up 2026-10-22: loan-emi-9 rewritten for step 3 as its recall (step 1 held 3 items, step 3 held 1), so transfer no longer repeats"
-            },
-            "steps": [
-              {
-                "id": "loan-emi-s1",
-                "title": "An EMI is one fixed payment with two parts",
-                "claimId": "loan-emi-c1",
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "hook": {
-                  "stem": "You repay a loan with the same EMI each month. What does each EMI pay for?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Some interest and some of the loan.",
-                      "correct": true,
-                      "feedback": "Right. Each EMI covers that month's interest, and the rest brings the loan down."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Just the loan amount.",
-                      "correct": false,
-                      "feedback": "Part of every EMI goes to interest, so not all of it cuts the loan."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Just the interest.",
-                      "correct": false,
-                      "feedback": "Then the loan would never shrink. Part of each EMI pays the loan back."
-                    }
-                  ]
-                },
-                "teach": "EMI means equated monthly instalment: on a fixed-rate loan, the same payment each month. Each EMI first pays that month's interest, so only the rest cuts the principal, the amount you borrowed.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Fixed EMI",
-                    "Pays month's interest",
-                    "Rest cuts the loan"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the part that cuts the loan.",
-                  "parts": [
-                    "Sunil pays an EMI of ₹5,000,",
-                    "of which ₹1,000 covers interest,",
-                    "and ₹4,000 brings his loan down."
-                  ],
-                  "spot": "and ₹4,000 brings his loan down.",
-                  "feedback": "Only the part left after interest lowers what he owes."
-                },
-                "guided": [
-                  {
-                    "stem": "What does the word 'equated' in EMI tell you?",
-                    "hint": "Look inside the word itself.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Every payment is the same size.",
-                        "correct": true,
-                        "feedback": "Right. On a fixed-rate loan the EMI stays the same each month until the loan is paid."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The loan ends early.",
-                        "correct": false,
-                        "feedback": "Equated is about equal payments, not an early end."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Extra interest is added.",
-                        "correct": false,
-                        "feedback": "The word says nothing about extra interest. It means equal payments."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Each EMI pays the month's interest; the rest cuts the loan."
-              },
-              {
-                "id": "loan-emi-s2",
-                "title": "Interest is charged on what you still owe",
-                "claimId": "loan-emi-c2",
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "hook": {
-                  "stem": "Month by month you pay down your loan. What happens to the interest part of your EMI?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "It shrinks, since you owe less.",
-                      "correct": true,
-                      "feedback": "Right. Interest is worked out on what is still owed, and that keeps falling."
-                    },
-                    {
-                      "id": "b",
-                      "text": "It stays the same each month.",
-                      "correct": false,
-                      "feedback": "The EMI stays the same, but the interest part inside it gets smaller."
-                    },
-                    {
-                      "id": "c",
-                      "text": "It grows each month.",
-                      "correct": false,
-                      "feedback": "You owe less each month, so the interest charged on it falls, not rises."
-                    }
-                  ]
-                },
-                "teach": "Each month, interest is worked out on the loan still unpaid. As the loan shrinks, the interest part falls, so more of each EMI cuts the loan.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "First EMI (RBI example)",
-                    "lines": [
-                      "₹12,500 interest",
-                      "About ₹3,600 to the loan"
-                    ]
-                  },
-                  "right": {
-                    "title": "Last EMI",
-                    "lines": [
-                      "About ₹200 interest",
-                      "About ₹15,900 to the loan"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap why the interest part fell.",
-                  "parts": [
-                    "In month one Rani owed ₹1,00,000,",
-                    "but by month ten she owed ₹70,000,",
-                    "so her interest that month was smaller."
-                  ],
-                  "spot": "but by month ten she owed ₹70,000,",
-                  "feedback": "Interest follows the amount still owed, and she owed less by month ten."
-                },
-                "guided": [
-                  {
-                    "stem": "You owe ₹50,000 at 1% interest a month. What is this month's interest?",
-                    "hint": "Find 1% of what you still owe.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "₹500.",
-                        "correct": true,
-                        "feedback": "Yes. 1% of ₹50,000 is ₹500."
-                      },
-                      {
-                        "id": "b",
-                        "text": "₹5,000.",
-                        "correct": false,
-                        "feedback": "That is 10%. One percent of ₹50,000 is ₹500."
-                      },
-                      {
-                        "id": "c",
-                        "text": "₹50.",
-                        "correct": false,
-                        "feedback": "That is 0.1%. One percent of ₹50,000 is ₹500."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Interest follows what you still owe, so it shrinks over time."
-              },
-              {
-                "id": "loan-emi-s3",
-                "title": "Longer loans mean smaller EMIs but more interest",
-                "claimId": "loan-emi-c3",
-                "sourceRefs": [
-                  "rbi-loan"
-                ],
-                "hook": {
-                  "stem": "Two loans have the same size and rate. One runs 2 years and one runs 5 years. Which costs more interest in total?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "The 5-year loan.",
-                      "correct": true,
-                      "feedback": "Right. Interest runs for more months, so the total paid is larger."
-                    },
-                    {
-                      "id": "b",
-                      "text": "The 2-year loan.",
-                      "correct": false,
-                      "feedback": "Its EMIs are bigger, but interest stops sooner, so its total interest is lower."
-                    },
-                    {
-                      "id": "c",
-                      "text": "They cost the same.",
-                      "correct": false,
-                      "feedback": "Same rate, but different lengths. The longer one pays interest for more months."
-                    }
-                  ]
-                },
-                "teach": "Stretching a loan over more months makes each EMI smaller. But you pay interest for longer, so the total cost goes up.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "₹1 lakh at 12%, 12 months",
-                    "lines": [
-                      "EMI about ₹8,885",
-                      "Interest about ₹6,600"
-                    ]
-                  },
-                  "right": {
-                    "title": "Same loan, 24 months",
-                    "lines": [
-                      "EMI about ₹4,707",
-                      "Interest about ₹13,000"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the hidden cost.",
-                  "parts": [
-                    "Vivek picks a seven-year bike loan",
-                    "because its EMI is the smallest,",
-                    "but he pays the most interest of all."
-                  ],
-                  "spot": "but he pays the most interest of all.",
-                  "feedback": "A long term shrinks the EMI, but interest runs for more months, so the total grows."
-                },
-                "guided": [
-                  {
-                    "stem": "At the same rate, which term gives the least total interest?",
-                    "hint": "Count how long interest keeps running.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The shortest term.",
-                        "correct": true,
-                        "feedback": "Right. A short term has bigger EMIs but stops interest sooner."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The longest term.",
-                        "correct": false,
-                        "feedback": "The longest term has the smallest EMIs but the most interest overall."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Any term, since the rate is the same.",
-                        "correct": false,
-                        "feedback": "The rate is the same, but the time differs, so the totals differ."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "A longer loan lowers each EMI but raises the total interest."
-              }
-            ]
           },
           {
             "id": "index-funds",
@@ -7397,5 +7426,5 @@
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17. 1.1.0: a NANDI Original book in chapters (spec 33); idea ids unchanged."
 }

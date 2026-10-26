@@ -1,6 +1,6 @@
 {
   "id": "topic.how-things-work",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schema": 1,
   "minAppVersion": "0.1.0",
   "title": "How things work",
@@ -14,10 +14,23 @@
       "title": "How things work",
       "description": "Use everyday motion to see how air and machines work."
     },
+    "book": {
+      "title": "How Things Work",
+      "author": "NANDI",
+      "year": 2026,
+      "rights": "original",
+      "cover": {
+        "palette": "indigo",
+        "motif": "stripes"
+      },
+      "blurb": "Wings, drones, fans and phones: the simple ideas inside everyday things."
+    },
     "modules": [
       {
-        "id": "how-things-work-module",
-        "title": "Things that fly and spin",
+        "id": "how-things-work-ch1",
+        "title": "Things that fly",
+        "minutes": 10,
+        "check": "quiz",
         "concepts": [
           {
             "id": "lift",
@@ -746,6 +759,795 @@
                   }
                 ],
                 "takeaway": "Double the speed, four times the lift."
+              }
+            ]
+          },
+          {
+            "id": "birds-and-planes",
+            "title": "Why birds flap but planes do not",
+            "prerequisites": [],
+            "hook": "A bird can flap for both lift and forward push; a jet keeps fixed wings while its engine supplies the forward push.",
+            "hookSourceRefs": [
+              "bird",
+              "nasa"
+            ],
+            "rule": "A plane's fixed wings make most of its lift, while its engines beat drag. A bird has no engine, so its flapping wings make both lift and forward push, and the downstroke does most of the work.",
+            "ruleSourceRefs": [
+              "nasa",
+              "bird"
+            ],
+            "claims": [
+              {
+                "id": "birds-and-planes-c1",
+                "text": "Bird wing flaps can provide lift and forward push.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c2",
+                "text": "A plane's wings make most of its lift, and its engines make thrust.",
+                "sourceRefs": [
+                  "nasa"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c3",
+                "text": "A plane's engine only has to beat drag, not lift the plane. Gliders fly with no engine at all.",
+                "sourceRefs": [
+                  "nasa"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c4",
+                "text": "At takeoff, small parrots tilt their wing strokes so lift points forward to speed up, and drag points up to hold nearly half their weight.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c5",
+                "text": "In small parrots, the downstroke uses nearly all the flapping power, while the upstroke costs almost none.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c6",
+                "text": "In steady cruise, thrust equals drag and lift equals weight.",
+                "sourceRefs": [
+                  "cruise"
+                ]
+              },
+              {
+                "id": "birds-and-planes-c7",
+                "text": "When landing, small parrots aim their lift backward, which gives about a quarter of the braking force.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              }
+            ],
+            "items": [
+              {
+                "id": "birds-and-planes-9",
+                "type": "estimate",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s1",
+                "job": "reverse",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "birds-and-planes-m4"
+                ],
+                "sourceRefs": [
+                  "cruise"
+                ],
+                "stem": "A plane cruises at a steady speed and height. Its engines give 20,000 newtons of thrust. About how much drag must act on the plane?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "About 20,000 newtons.",
+                    "correct": true,
+                    "feedback": "At a steady speed, thrust equals drag, so the drag is about 20,000 newtons.",
+                    "sourceRefs": [
+                      "cruise"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "About 40,000 newtons.",
+                    "correct": false,
+                    "feedback": "More drag than thrust would slow it down. In steady cruise the two are equal.",
+                    "sourceRefs": [
+                      "cruise"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "About 10,000 newtons.",
+                    "correct": false,
+                    "feedback": "If thrust beat drag by that much, the plane would keep speeding up. In steady cruise they match.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m4"
+                    ],
+                    "sourceRefs": [
+                      "cruise"
+                    ]
+                  }
+                ],
+                "answer": {
+                  "value": 20000,
+                  "min": 19000,
+                  "max": 21000,
+                  "unit": "newtons"
+                }
+              },
+              {
+                "id": "birds-and-planes-10",
+                "type": "predict",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s1",
+                "job": "transfer",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "nasa"
+                ],
+                "stem": "In the school classroom, Arjun throws a paper plane. Predict what keeps it in the air once it leaves his hand.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Its wings lift as air flows past, with no engine.",
+                    "correct": true,
+                    "feedback": "A paper plane is a glider. Air flowing past its wings lifts it while it slowly glides down.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "The push from Arjun's hand keeps lifting it up.",
+                    "correct": false,
+                    "feedback": "His throw gives it speed, but once it leaves his hand the wings make the lift.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m2"
+                    ],
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The warm classroom air carries it like a balloon.",
+                    "correct": false,
+                    "feedback": "Paper is far denser than air. Air flowing past its wings is what lifts it.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-11",
+                "type": "scenario",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s2",
+                "job": "edge",
+                "difficultySeed": 3,
+                "misconceptionTags": [
+                  "birds-and-planes-m3"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "On a hostel balcony, a small pet parrot swoops in to land on a rail. Which way does it aim the lift from its wings?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Backward, to help it brake before the rail.",
+                    "correct": true,
+                    "feedback": "Lift does not always point up. When landing, small parrots aim it backward for about a quarter of the braking.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Straight up, as lift points up in flight.",
+                    "correct": false,
+                    "feedback": "Lift can be aimed. When landing, small parrots tilt it backward to help them slow down.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m3"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Forward, to keep its speed until it lands.",
+                    "correct": false,
+                    "feedback": "Forward lift speeds a bird up, which suits takeoff. To land, it aims lift backward.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m3"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-12",
+                "type": "true-not-quite",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s2",
+                "job": "misconception",
+                "difficultySeed": 2,
+                "misconceptionTags": [
+                  "birds-and-planes-m5"
+                ],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "Sam says birds flap their wings just to stay up, the way you pump air into a tyre. What is not quite right?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "Each tilted flap also pushes the bird forward.",
+                    "correct": true,
+                    "feedback": "A bird has no engine, so its flaps must give forward push as well as lift.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Birds flap to stay up, but glide to move ahead.",
+                    "correct": false,
+                    "feedback": "Gliding only uses speed it already has. The forward push comes from tilted flaps.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m5"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "Birds flap to steer, not to stay up.",
+                    "correct": false,
+                    "feedback": "Flaps do lift the bird. They also push it forward, since it has no engine.",
+                    "misconceptionIds": [
+                      "birds-and-planes-m5"
+                    ],
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-13",
+                "type": "why",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s3",
+                "job": "recall",
+                "difficultySeed": 1,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "bird"
+                ],
+                "stem": "Why does the downstroke use nearly all the power of a wingbeat?",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "It pushes hard on the air, while the upstroke is a light reset.",
+                    "correct": true,
+                    "feedback": "The downstroke does the hard pushing, so it uses nearly all the power. The upstroke costs almost none.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Gravity pulls the wing down, so it needs the most power.",
+                    "correct": false,
+                    "feedback": "Gravity helps a wing move down, if anything. The power goes into pushing on the air.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "The upstroke is when the bird rests its whole body.",
+                    "correct": false,
+                    "feedback": "The upstroke is light, but the bird is still flying. The downstroke does the pushing.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "birds-and-planes-14",
+                "type": "match",
+                "conceptId": "birds-and-planes",
+                "step": "birds-and-planes-s3",
+                "job": "combine",
+                "difficultySeed": 3,
+                "misconceptionTags": [],
+                "sourceRefs": [
+                  "nasa",
+                  "bird"
+                ],
+                "stem": "Match each flying part with its main job.",
+                "options": [
+                  {
+                    "id": "a",
+                    "text": "A plane's fixed wing",
+                    "correct": true,
+                    "feedback": "The fixed wing makes most of the lift as air flows past it.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "b",
+                    "text": "Most of the lift",
+                    "correct": true,
+                    "feedback": "On a plane, most of the lift comes from the fixed wings.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "c",
+                    "text": "A jet engine",
+                    "correct": true,
+                    "feedback": "An engine only has to push the plane forward against drag.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "d",
+                    "text": "Beating air drag",
+                    "correct": true,
+                    "feedback": "That is the engine's whole job; the wings hold the plane up.",
+                    "sourceRefs": [
+                      "nasa"
+                    ]
+                  },
+                  {
+                    "id": "e",
+                    "text": "A small parrot's downstroke",
+                    "correct": true,
+                    "feedback": "The downstroke is the hard-working half of each wingbeat.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  },
+                  {
+                    "id": "f",
+                    "text": "Nearly all the flap power",
+                    "correct": true,
+                    "feedback": "Almost all the work of each wingbeat is done on the way down.",
+                    "sourceRefs": [
+                      "bird"
+                    ]
+                  }
+                ],
+                "answer": [
+                  {
+                    "left": "a",
+                    "right": "b"
+                  },
+                  {
+                    "left": "b",
+                    "right": "a"
+                  },
+                  {
+                    "left": "c",
+                    "right": "d"
+                  },
+                  {
+                    "left": "d",
+                    "right": "c"
+                  },
+                  {
+                    "left": "e",
+                    "right": "f"
+                  },
+                  {
+                    "left": "f",
+                    "right": "e"
+                  }
+                ]
+              }
+            ],
+            "misconceptions": [
+              {
+                "id": "birds-and-planes-m1",
+                "name": "All wings must flap",
+                "correction": "A fixed wing can lift when air moves past it.",
+                "sourceRefs": [
+                  "nasa"
+                ]
+              },
+              {
+                "id": "birds-and-planes-m2",
+                "name": "Engine makes all lift",
+                "correction": "The engine gives forward thrust; the wing makes most lift.",
+                "sourceRefs": [
+                  "nasa"
+                ]
+              },
+              {
+                "id": "birds-and-planes-m3",
+                "name": "Lift only points up",
+                "correction": "Small parrots tilt their strokes so lift can point forward to speed up or backward to brake.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              },
+              {
+                "id": "birds-and-planes-m4",
+                "name": "Thrust must beat drag in cruise",
+                "correction": "At a steady speed, thrust equals drag. More thrust than drag would make the plane speed up.",
+                "sourceRefs": [
+                  "cruise"
+                ]
+              },
+              {
+                "id": "birds-and-planes-m5",
+                "name": "Birds flap only to stay up",
+                "correction": "A bird's tilted flaps also push it forward, since it has no engine.",
+                "sourceRefs": [
+                  "bird"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "bird",
+                "title": "Birds repurpose the role of drag and lift to take off and land",
+                "publisher": "Chin and Lentink, Nature Communications",
+                "year": 2019,
+                "url": "https://www.nature.com/articles/s41467-019-13347-3.pdf",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "nasa",
+                "title": "Four Forces on an Airplane",
+                "publisher": "NASA Glenn Research Center",
+                "year": 2022,
+                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/",
+                "asOf": "2026-10-22"
+              },
+              {
+                "id": "cruise",
+                "title": "Range Summary",
+                "publisher": "NASA Glenn Research Center",
+                "year": 2025,
+                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/range-summary/",
+                "asOf": "2026-10-22"
+              }
+            ],
+            "quest": {
+              "title": "Spot two pushes",
+              "detail": "Watch a bird and a plane clip. Draw an arrow for forward push and one for lift on each.",
+              "sourceRefs": [
+                "bird",
+                "nasa"
+              ]
+            },
+            "factCheck": {
+              "checker": "spec 16 rewrite re-check 2026-10-22, pages opened with curl and pdftotext (Chin and Lentink 2019, Pacific parrotlets in short foraging flights: \"birds sustain level flight by generating net aerodynamic forces with their flapping wings that balance gravity and body drag\", \"At takeoff they incline their wing stroke plane, which orients lift forward to accelerate and drag upward to support nearly half of their bodyweight\", \"Upon landing, lift is oriented backward to contribute a quarter of the braking force\", \"Wingbeat power requirements are dominated by downstrokes, while relatively inactive upstrokes cost almost no aerodynamic power\"; NASA Four Forces: \"Most of the lift is generated by the wings\", \"the job of the engine is just to overcome the drag of the airplane, not to lift the airplane\", gliders \"fly just fine\", \"Paper airplanes are the most obvious example\"; NASA Range Summary: \"In cruise, the lift L is equal to the weight W and the thrust F is equal to the drag D\"). Steps reshaped from the learner review: old s1 and s2 merged, new step on why a bird must flap. Parrot findings kept to small parrots.",
+              "verdicts": [
+                {
+                  "claimId": "birds-and-planes-c1",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c2",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c3",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c4",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c5",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c6",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-c7",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-9",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-10",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-11",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-12",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-13",
+                  "verdict": "supported"
+                },
+                {
+                  "claimId": "birds-and-planes-14",
+                  "verdict": "supported"
+                }
+              ]
+            },
+            "steps": [
+              {
+                "id": "birds-and-planes-s1",
+                "title": "A plane splits the jobs: wings lift, engines beat drag",
+                "claimId": "birds-and-planes-c3",
+                "sourceRefs": [
+                  "nasa",
+                  "cruise"
+                ],
+                "hook": {
+                  "stem": "A jet's wings never flap. What keeps it up?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Air flowing past its wings.",
+                      "correct": true,
+                      "feedback": "Right. Moving air over the fixed wings makes most of the lift."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Its engines pushing it upward.",
+                      "correct": false,
+                      "feedback": "The engines push it forward. The wings make most of the lift."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Hot air trapped inside the cabin.",
+                      "correct": false,
+                      "feedback": "A plane is no hot-air balloon. Its wings make the lift."
+                    }
+                  ]
+                },
+                "teach": "Wings hold a plane up as air flows past them. Engines only push it forward against air drag, and at a steady speed the push equals the drag. So a glider, with no engine, still flies.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Wings",
+                    "lines": [
+                      "Lift, upward",
+                      "Balances weight"
+                    ]
+                  },
+                  "right": {
+                    "title": "Engines",
+                    "lines": [
+                      "Thrust, forward",
+                      "Balances drag"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the part that holds the plane up.",
+                  "parts": [
+                    "The jet's engines roar,",
+                    "pushing it fast down the runway,",
+                    "until air over its wings lifts it off."
+                  ],
+                  "spot": "until air over its wings lifts it off.",
+                  "feedback": "The engines give speed, but the air flowing over the wings makes the lift."
+                },
+                "guided": [
+                  {
+                    "stem": "A plane's engine stops high in the sky. What can its wings still do?",
+                    "hint": "Think about whether air still moves past.",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Keep making lift as it glides down.",
+                        "correct": true,
+                        "feedback": "Right. While air flows past, the wings keep lifting, so it glides."
+                      },
+                      {
+                        "id": "b",
+                        "text": "No lift, so it drops like a stone.",
+                        "correct": false,
+                        "feedback": "The wings still lift as long as air flows past them."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Lift it higher for a while.",
+                        "correct": false,
+                        "feedback": "Without thrust it cannot climb, but the wings still let it glide."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "Wings carry the weight; engines beat drag."
+              },
+              {
+                "id": "birds-and-planes-s2",
+                "title": "A bird has no engine, so its wings push too",
+                "claimId": "birds-and-planes-c1",
+                "sourceRefs": [
+                  "bird"
+                ],
+                "hook": {
+                  "stem": "A bird has no engine. What pushes it forward as it takes off?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "Its own flapping wings.",
+                      "correct": true,
+                      "feedback": "Right. Tilted flaps push air down and back, so the bird is lifted and pushed forward."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Wind under its tail feathers.",
+                      "correct": false,
+                      "feedback": "Birds take off in still air too. Their flapping wings give the push."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Its light, hollow bones.",
+                      "correct": false,
+                      "feedback": "Light bones help, but they push nothing. The flapping wings do."
+                    }
+                  ]
+                },
+                "teach": "A bird has no engine, so its wings must do both jobs. By tilting each stroke it aims the push: forward and up to take off, backward to brake when it lands.",
+                "visual": {
+                  "kind": "compare",
+                  "left": {
+                    "title": "Plane",
+                    "lines": [
+                      "Wings: lift",
+                      "Engines: forward push"
+                    ]
+                  },
+                  "right": {
+                    "title": "Bird",
+                    "lines": [
+                      "Flapping wings: both",
+                      "Tilt aims the push"
+                    ]
+                  }
+                },
+                "example": {
+                  "ask": "Tap the move that speeds it up.",
+                  "parts": [
+                    "A small parrot leaps off its perch,",
+                    "it tilts its wing strokes forward,",
+                    "and it speeds up as it climbs."
+                  ],
+                  "spot": "it tilts its wing strokes forward,",
+                  "feedback": "Tilting the strokes aims lift forward, so the bird speeds up as well as rising."
+                },
+                "guided": [
+                  {
+                    "stem": "Why can't a bird just hold its wings still, like a plane, to take off?",
+                    "hint": "Where would its forward push come from?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "Nothing else would drive it ahead.",
+                        "correct": true,
+                        "feedback": "Right. A plane has engines for that. A bird must flap to make its own push."
+                      },
+                      {
+                        "id": "b",
+                        "text": "Its wings are too small to lift a bird.",
+                        "correct": false,
+                        "feedback": "Bird wings do lift. What a still wing cannot give a bird is forward push."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Feathers stop air flowing past still wings.",
+                        "correct": false,
+                        "feedback": "Air flows past still feathers fine. The missing piece is forward push."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "With no engine, a bird flaps to lift and push."
+              },
+              {
+                "id": "birds-and-planes-s3",
+                "title": "The downstroke does most of the work",
+                "claimId": "birds-and-planes-c5",
+                "sourceRefs": [
+                  "bird"
+                ],
+                "hook": {
+                  "stem": "A small parrot flaps down, then up. Which half of the flap needs most of the power?",
+                  "options": [
+                    {
+                      "id": "a",
+                      "text": "The downstroke.",
+                      "correct": true,
+                      "feedback": "Right. The downstroke uses nearly all the power of each wingbeat."
+                    },
+                    {
+                      "id": "b",
+                      "text": "The upstroke.",
+                      "correct": false,
+                      "feedback": "The upstroke costs almost no power. The downstroke does the work."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Both need the same.",
+                      "correct": false,
+                      "feedback": "They are very unequal. The downstroke uses nearly all the power."
+                    }
+                  ]
+                },
+                "teach": "Each wingbeat has two halves. The downstroke pushes hard on the air, so it uses nearly all the power. The upstroke is a light reset that costs almost nothing.",
+                "visual": {
+                  "kind": "flow",
+                  "nodes": [
+                    "Downstroke: hard push",
+                    "Upstroke: light reset",
+                    "Next downstroke"
+                  ]
+                },
+                "example": {
+                  "ask": "Tap the stroke that does the hard work.",
+                  "parts": [
+                    "A small parrot beats its wings to take off,",
+                    "its strong downstroke uses most of the power,",
+                    "while its upstroke costs almost nothing."
+                  ],
+                  "spot": "its strong downstroke uses most of the power,",
+                  "feedback": "The downstroke does nearly all the work. The upstroke costs almost no power."
+                },
+                "guided": [
+                  {
+                    "stem": "A small parrot tires on a long flight. Which half of its flap is wearing it out?",
+                    "hint": "Which half pushes hard on the air?",
+                    "options": [
+                      {
+                        "id": "a",
+                        "text": "The downstroke.",
+                        "correct": true,
+                        "feedback": "Yes. The downstroke uses nearly all the power, so it does the tiring work."
+                      },
+                      {
+                        "id": "b",
+                        "text": "The upstroke.",
+                        "correct": false,
+                        "feedback": "The upstroke is a light reset that costs almost no power."
+                      },
+                      {
+                        "id": "c",
+                        "text": "Gliding between flaps.",
+                        "correct": false,
+                        "feedback": "Gliding uses little power. The downstroke does the hard work."
+                      }
+                    ]
+                  }
+                ],
+                "takeaway": "The downstroke does nearly all the work of a flap."
               }
             ]
           },
@@ -1479,7 +2281,15 @@
                 "takeaway": "Two pairs spin opposite ways; speed one, slow one, to turn."
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "id": "how-things-work-ch2",
+        "title": "Drones and fans",
+        "minutes": 10,
+        "check": "quiz",
+        "concepts": [
           {
             "id": "battery-flight-time",
             "title": "Batteries and flight time",
@@ -2932,795 +3742,6 @@
             ]
           },
           {
-            "id": "birds-and-planes",
-            "title": "Why birds flap but planes do not",
-            "prerequisites": [],
-            "hook": "A bird can flap for both lift and forward push; a jet keeps fixed wings while its engine supplies the forward push.",
-            "hookSourceRefs": [
-              "bird",
-              "nasa"
-            ],
-            "rule": "A plane's fixed wings make most of its lift, while its engines beat drag. A bird has no engine, so its flapping wings make both lift and forward push, and the downstroke does most of the work.",
-            "ruleSourceRefs": [
-              "nasa",
-              "bird"
-            ],
-            "claims": [
-              {
-                "id": "birds-and-planes-c1",
-                "text": "Bird wing flaps can provide lift and forward push.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c2",
-                "text": "A plane's wings make most of its lift, and its engines make thrust.",
-                "sourceRefs": [
-                  "nasa"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c3",
-                "text": "A plane's engine only has to beat drag, not lift the plane. Gliders fly with no engine at all.",
-                "sourceRefs": [
-                  "nasa"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c4",
-                "text": "At takeoff, small parrots tilt their wing strokes so lift points forward to speed up, and drag points up to hold nearly half their weight.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c5",
-                "text": "In small parrots, the downstroke uses nearly all the flapping power, while the upstroke costs almost none.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c6",
-                "text": "In steady cruise, thrust equals drag and lift equals weight.",
-                "sourceRefs": [
-                  "cruise"
-                ]
-              },
-              {
-                "id": "birds-and-planes-c7",
-                "text": "When landing, small parrots aim their lift backward, which gives about a quarter of the braking force.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              }
-            ],
-            "items": [
-              {
-                "id": "birds-and-planes-9",
-                "type": "estimate",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s1",
-                "job": "reverse",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "birds-and-planes-m4"
-                ],
-                "sourceRefs": [
-                  "cruise"
-                ],
-                "stem": "A plane cruises at a steady speed and height. Its engines give 20,000 newtons of thrust. About how much drag must act on the plane?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "About 20,000 newtons.",
-                    "correct": true,
-                    "feedback": "At a steady speed, thrust equals drag, so the drag is about 20,000 newtons.",
-                    "sourceRefs": [
-                      "cruise"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "About 40,000 newtons.",
-                    "correct": false,
-                    "feedback": "More drag than thrust would slow it down. In steady cruise the two are equal.",
-                    "sourceRefs": [
-                      "cruise"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "About 10,000 newtons.",
-                    "correct": false,
-                    "feedback": "If thrust beat drag by that much, the plane would keep speeding up. In steady cruise they match.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m4"
-                    ],
-                    "sourceRefs": [
-                      "cruise"
-                    ]
-                  }
-                ],
-                "answer": {
-                  "value": 20000,
-                  "min": 19000,
-                  "max": 21000,
-                  "unit": "newtons"
-                }
-              },
-              {
-                "id": "birds-and-planes-10",
-                "type": "predict",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s1",
-                "job": "transfer",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "nasa"
-                ],
-                "stem": "In the school classroom, Arjun throws a paper plane. Predict what keeps it in the air once it leaves his hand.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Its wings lift as air flows past, with no engine.",
-                    "correct": true,
-                    "feedback": "A paper plane is a glider. Air flowing past its wings lifts it while it slowly glides down.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "The push from Arjun's hand keeps lifting it up.",
-                    "correct": false,
-                    "feedback": "His throw gives it speed, but once it leaves his hand the wings make the lift.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m2"
-                    ],
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The warm classroom air carries it like a balloon.",
-                    "correct": false,
-                    "feedback": "Paper is far denser than air. Air flowing past its wings is what lifts it.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "birds-and-planes-11",
-                "type": "scenario",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s2",
-                "job": "edge",
-                "difficultySeed": 3,
-                "misconceptionTags": [
-                  "birds-and-planes-m3"
-                ],
-                "sourceRefs": [
-                  "bird"
-                ],
-                "stem": "On a hostel balcony, a small pet parrot swoops in to land on a rail. Which way does it aim the lift from its wings?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Backward, to help it brake before the rail.",
-                    "correct": true,
-                    "feedback": "Lift does not always point up. When landing, small parrots aim it backward for about a quarter of the braking.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Straight up, as lift points up in flight.",
-                    "correct": false,
-                    "feedback": "Lift can be aimed. When landing, small parrots tilt it backward to help them slow down.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m3"
-                    ],
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Forward, to keep its speed until it lands.",
-                    "correct": false,
-                    "feedback": "Forward lift speeds a bird up, which suits takeoff. To land, it aims lift backward.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m3"
-                    ],
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "birds-and-planes-12",
-                "type": "true-not-quite",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s2",
-                "job": "misconception",
-                "difficultySeed": 2,
-                "misconceptionTags": [
-                  "birds-and-planes-m5"
-                ],
-                "sourceRefs": [
-                  "bird"
-                ],
-                "stem": "Sam says birds flap their wings just to stay up, the way you pump air into a tyre. What is not quite right?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "Each tilted flap also pushes the bird forward.",
-                    "correct": true,
-                    "feedback": "A bird has no engine, so its flaps must give forward push as well as lift.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Birds flap to stay up, but glide to move ahead.",
-                    "correct": false,
-                    "feedback": "Gliding only uses speed it already has. The forward push comes from tilted flaps.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m5"
-                    ],
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "Birds flap to steer, not to stay up.",
-                    "correct": false,
-                    "feedback": "Flaps do lift the bird. They also push it forward, since it has no engine.",
-                    "misconceptionIds": [
-                      "birds-and-planes-m5"
-                    ],
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "birds-and-planes-13",
-                "type": "why",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s3",
-                "job": "recall",
-                "difficultySeed": 1,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "bird"
-                ],
-                "stem": "Why does the downstroke use nearly all the power of a wingbeat?",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "It pushes hard on the air, while the upstroke is a light reset.",
-                    "correct": true,
-                    "feedback": "The downstroke does the hard pushing, so it uses nearly all the power. The upstroke costs almost none.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Gravity pulls the wing down, so it needs the most power.",
-                    "correct": false,
-                    "feedback": "Gravity helps a wing move down, if anything. The power goes into pushing on the air.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "The upstroke is when the bird rests its whole body.",
-                    "correct": false,
-                    "feedback": "The upstroke is light, but the bird is still flying. The downstroke does the pushing.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "birds-and-planes-14",
-                "type": "match",
-                "conceptId": "birds-and-planes",
-                "step": "birds-and-planes-s3",
-                "job": "combine",
-                "difficultySeed": 3,
-                "misconceptionTags": [],
-                "sourceRefs": [
-                  "nasa",
-                  "bird"
-                ],
-                "stem": "Match each flying part with its main job.",
-                "options": [
-                  {
-                    "id": "a",
-                    "text": "A plane's fixed wing",
-                    "correct": true,
-                    "feedback": "The fixed wing makes most of the lift as air flows past it.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "b",
-                    "text": "Most of the lift",
-                    "correct": true,
-                    "feedback": "On a plane, most of the lift comes from the fixed wings.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "c",
-                    "text": "A jet engine",
-                    "correct": true,
-                    "feedback": "An engine only has to push the plane forward against drag.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "d",
-                    "text": "Beating air drag",
-                    "correct": true,
-                    "feedback": "That is the engine's whole job; the wings hold the plane up.",
-                    "sourceRefs": [
-                      "nasa"
-                    ]
-                  },
-                  {
-                    "id": "e",
-                    "text": "A small parrot's downstroke",
-                    "correct": true,
-                    "feedback": "The downstroke is the hard-working half of each wingbeat.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  },
-                  {
-                    "id": "f",
-                    "text": "Nearly all the flap power",
-                    "correct": true,
-                    "feedback": "Almost all the work of each wingbeat is done on the way down.",
-                    "sourceRefs": [
-                      "bird"
-                    ]
-                  }
-                ],
-                "answer": [
-                  {
-                    "left": "a",
-                    "right": "b"
-                  },
-                  {
-                    "left": "b",
-                    "right": "a"
-                  },
-                  {
-                    "left": "c",
-                    "right": "d"
-                  },
-                  {
-                    "left": "d",
-                    "right": "c"
-                  },
-                  {
-                    "left": "e",
-                    "right": "f"
-                  },
-                  {
-                    "left": "f",
-                    "right": "e"
-                  }
-                ]
-              }
-            ],
-            "misconceptions": [
-              {
-                "id": "birds-and-planes-m1",
-                "name": "All wings must flap",
-                "correction": "A fixed wing can lift when air moves past it.",
-                "sourceRefs": [
-                  "nasa"
-                ]
-              },
-              {
-                "id": "birds-and-planes-m2",
-                "name": "Engine makes all lift",
-                "correction": "The engine gives forward thrust; the wing makes most lift.",
-                "sourceRefs": [
-                  "nasa"
-                ]
-              },
-              {
-                "id": "birds-and-planes-m3",
-                "name": "Lift only points up",
-                "correction": "Small parrots tilt their strokes so lift can point forward to speed up or backward to brake.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              },
-              {
-                "id": "birds-and-planes-m4",
-                "name": "Thrust must beat drag in cruise",
-                "correction": "At a steady speed, thrust equals drag. More thrust than drag would make the plane speed up.",
-                "sourceRefs": [
-                  "cruise"
-                ]
-              },
-              {
-                "id": "birds-and-planes-m5",
-                "name": "Birds flap only to stay up",
-                "correction": "A bird's tilted flaps also push it forward, since it has no engine.",
-                "sourceRefs": [
-                  "bird"
-                ]
-              }
-            ],
-            "sources": [
-              {
-                "id": "bird",
-                "title": "Birds repurpose the role of drag and lift to take off and land",
-                "publisher": "Chin and Lentink, Nature Communications",
-                "year": 2019,
-                "url": "https://www.nature.com/articles/s41467-019-13347-3.pdf",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "nasa",
-                "title": "Four Forces on an Airplane",
-                "publisher": "NASA Glenn Research Center",
-                "year": 2022,
-                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/",
-                "asOf": "2026-10-22"
-              },
-              {
-                "id": "cruise",
-                "title": "Range Summary",
-                "publisher": "NASA Glenn Research Center",
-                "year": 2025,
-                "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/range-summary/",
-                "asOf": "2026-10-22"
-              }
-            ],
-            "quest": {
-              "title": "Spot two pushes",
-              "detail": "Watch a bird and a plane clip. Draw an arrow for forward push and one for lift on each.",
-              "sourceRefs": [
-                "bird",
-                "nasa"
-              ]
-            },
-            "factCheck": {
-              "checker": "spec 16 rewrite re-check 2026-10-22, pages opened with curl and pdftotext (Chin and Lentink 2019, Pacific parrotlets in short foraging flights: \"birds sustain level flight by generating net aerodynamic forces with their flapping wings that balance gravity and body drag\", \"At takeoff they incline their wing stroke plane, which orients lift forward to accelerate and drag upward to support nearly half of their bodyweight\", \"Upon landing, lift is oriented backward to contribute a quarter of the braking force\", \"Wingbeat power requirements are dominated by downstrokes, while relatively inactive upstrokes cost almost no aerodynamic power\"; NASA Four Forces: \"Most of the lift is generated by the wings\", \"the job of the engine is just to overcome the drag of the airplane, not to lift the airplane\", gliders \"fly just fine\", \"Paper airplanes are the most obvious example\"; NASA Range Summary: \"In cruise, the lift L is equal to the weight W and the thrust F is equal to the drag D\"). Steps reshaped from the learner review: old s1 and s2 merged, new step on why a bird must flap. Parrot findings kept to small parrots.",
-              "verdicts": [
-                {
-                  "claimId": "birds-and-planes-c1",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c2",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c3",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c4",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c5",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c6",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-c7",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-9",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-10",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-11",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-12",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-13",
-                  "verdict": "supported"
-                },
-                {
-                  "claimId": "birds-and-planes-14",
-                  "verdict": "supported"
-                }
-              ]
-            },
-            "steps": [
-              {
-                "id": "birds-and-planes-s1",
-                "title": "A plane splits the jobs: wings lift, engines beat drag",
-                "claimId": "birds-and-planes-c3",
-                "sourceRefs": [
-                  "nasa",
-                  "cruise"
-                ],
-                "hook": {
-                  "stem": "A jet's wings never flap. What keeps it up?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Air flowing past its wings.",
-                      "correct": true,
-                      "feedback": "Right. Moving air over the fixed wings makes most of the lift."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Its engines pushing it upward.",
-                      "correct": false,
-                      "feedback": "The engines push it forward. The wings make most of the lift."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Hot air trapped inside the cabin.",
-                      "correct": false,
-                      "feedback": "A plane is no hot-air balloon. Its wings make the lift."
-                    }
-                  ]
-                },
-                "teach": "Wings hold a plane up as air flows past them. Engines only push it forward against air drag, and at a steady speed the push equals the drag. So a glider, with no engine, still flies.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Wings",
-                    "lines": [
-                      "Lift, upward",
-                      "Balances weight"
-                    ]
-                  },
-                  "right": {
-                    "title": "Engines",
-                    "lines": [
-                      "Thrust, forward",
-                      "Balances drag"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the part that holds the plane up.",
-                  "parts": [
-                    "The jet's engines roar,",
-                    "pushing it fast down the runway,",
-                    "until air over its wings lifts it off."
-                  ],
-                  "spot": "until air over its wings lifts it off.",
-                  "feedback": "The engines give speed, but the air flowing over the wings makes the lift."
-                },
-                "guided": [
-                  {
-                    "stem": "A plane's engine stops high in the sky. What can its wings still do?",
-                    "hint": "Think about whether air still moves past.",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Keep making lift as it glides down.",
-                        "correct": true,
-                        "feedback": "Right. While air flows past, the wings keep lifting, so it glides."
-                      },
-                      {
-                        "id": "b",
-                        "text": "No lift, so it drops like a stone.",
-                        "correct": false,
-                        "feedback": "The wings still lift as long as air flows past them."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Lift it higher for a while.",
-                        "correct": false,
-                        "feedback": "Without thrust it cannot climb, but the wings still let it glide."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "Wings carry the weight; engines beat drag."
-              },
-              {
-                "id": "birds-and-planes-s2",
-                "title": "A bird has no engine, so its wings push too",
-                "claimId": "birds-and-planes-c1",
-                "sourceRefs": [
-                  "bird"
-                ],
-                "hook": {
-                  "stem": "A bird has no engine. What pushes it forward as it takes off?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Its own flapping wings.",
-                      "correct": true,
-                      "feedback": "Right. Tilted flaps push air down and back, so the bird is lifted and pushed forward."
-                    },
-                    {
-                      "id": "b",
-                      "text": "Wind under its tail feathers.",
-                      "correct": false,
-                      "feedback": "Birds take off in still air too. Their flapping wings give the push."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Its light, hollow bones.",
-                      "correct": false,
-                      "feedback": "Light bones help, but they push nothing. The flapping wings do."
-                    }
-                  ]
-                },
-                "teach": "A bird has no engine, so its wings must do both jobs. By tilting each stroke it aims the push: forward and up to take off, backward to brake when it lands.",
-                "visual": {
-                  "kind": "compare",
-                  "left": {
-                    "title": "Plane",
-                    "lines": [
-                      "Wings: lift",
-                      "Engines: forward push"
-                    ]
-                  },
-                  "right": {
-                    "title": "Bird",
-                    "lines": [
-                      "Flapping wings: both",
-                      "Tilt aims the push"
-                    ]
-                  }
-                },
-                "example": {
-                  "ask": "Tap the move that speeds it up.",
-                  "parts": [
-                    "A small parrot leaps off its perch,",
-                    "it tilts its wing strokes forward,",
-                    "and it speeds up as it climbs."
-                  ],
-                  "spot": "it tilts its wing strokes forward,",
-                  "feedback": "Tilting the strokes aims lift forward, so the bird speeds up as well as rising."
-                },
-                "guided": [
-                  {
-                    "stem": "Why can't a bird just hold its wings still, like a plane, to take off?",
-                    "hint": "Where would its forward push come from?",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "Nothing else would drive it ahead.",
-                        "correct": true,
-                        "feedback": "Right. A plane has engines for that. A bird must flap to make its own push."
-                      },
-                      {
-                        "id": "b",
-                        "text": "Its wings are too small to lift a bird.",
-                        "correct": false,
-                        "feedback": "Bird wings do lift. What a still wing cannot give a bird is forward push."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Feathers stop air flowing past still wings.",
-                        "correct": false,
-                        "feedback": "Air flows past still feathers fine. The missing piece is forward push."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "With no engine, a bird flaps to lift and push."
-              },
-              {
-                "id": "birds-and-planes-s3",
-                "title": "The downstroke does most of the work",
-                "claimId": "birds-and-planes-c5",
-                "sourceRefs": [
-                  "bird"
-                ],
-                "hook": {
-                  "stem": "A small parrot flaps down, then up. Which half of the flap needs most of the power?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "The downstroke.",
-                      "correct": true,
-                      "feedback": "Right. The downstroke uses nearly all the power of each wingbeat."
-                    },
-                    {
-                      "id": "b",
-                      "text": "The upstroke.",
-                      "correct": false,
-                      "feedback": "The upstroke costs almost no power. The downstroke does the work."
-                    },
-                    {
-                      "id": "c",
-                      "text": "Both need the same.",
-                      "correct": false,
-                      "feedback": "They are very unequal. The downstroke uses nearly all the power."
-                    }
-                  ]
-                },
-                "teach": "Each wingbeat has two halves. The downstroke pushes hard on the air, so it uses nearly all the power. The upstroke is a light reset that costs almost nothing.",
-                "visual": {
-                  "kind": "flow",
-                  "nodes": [
-                    "Downstroke: hard push",
-                    "Upstroke: light reset",
-                    "Next downstroke"
-                  ]
-                },
-                "example": {
-                  "ask": "Tap the stroke that does the hard work.",
-                  "parts": [
-                    "A small parrot beats its wings to take off,",
-                    "its strong downstroke uses most of the power,",
-                    "while its upstroke costs almost nothing."
-                  ],
-                  "spot": "its strong downstroke uses most of the power,",
-                  "feedback": "The downstroke does nearly all the work. The upstroke costs almost no power."
-                },
-                "guided": [
-                  {
-                    "stem": "A small parrot tires on a long flight. Which half of its flap is wearing it out?",
-                    "hint": "Which half pushes hard on the air?",
-                    "options": [
-                      {
-                        "id": "a",
-                        "text": "The downstroke.",
-                        "correct": true,
-                        "feedback": "Yes. The downstroke uses nearly all the power, so it does the tiring work."
-                      },
-                      {
-                        "id": "b",
-                        "text": "The upstroke.",
-                        "correct": false,
-                        "feedback": "The upstroke is a light reset that costs almost no power."
-                      },
-                      {
-                        "id": "c",
-                        "text": "Gliding between flaps.",
-                        "correct": false,
-                        "feedback": "Gliding uses little power. The downstroke does the hard work."
-                      }
-                    ]
-                  }
-                ],
-                "takeaway": "The downstroke does nearly all the work of a flap."
-              }
-            ]
-          },
-          {
             "id": "ceiling-fans",
             "title": "How a ceiling fan moves air",
             "prerequisites": [],
@@ -4471,7 +4492,15 @@
                 "takeaway": "Damp air slows drying sweat, so a fan cools you less."
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "id": "how-things-work-ch3",
+        "title": "Everyday things",
+        "minutes": 13,
+        "check": "quiz",
+        "concepts": [
           {
             "id": "upi-path",
             "title": "How UPI moves money",
@@ -7525,5 +7554,5 @@
       }
     ]
   },
-  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17."
+  "changelog": "Independent fact check: codex-factcheck-2026-10-16 on 2026-10-16. Verdicts cover every listed concept claim; see the audit report for hook, rule, item and feedback checks. Editorial review codex-factcheck-2026-10-16b: concept estimates and level 1-3 difficulty seeds; revised item verdicts in factCheck. Added four hand-written concepts and item fact checks on 2026-10-17. 1.1.0: a NANDI Original book in chapters (spec 33); idea ids unchanged."
 }

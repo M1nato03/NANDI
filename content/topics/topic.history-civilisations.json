@@ -1,6 +1,6 @@
 {
   "id": "topic.history-civilisations",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schema": 1,
   "minAppVersion": "0.1.0",
   "title": "History and civilisations",
@@ -14,10 +14,23 @@
       "title": "History and civilisations",
       "description": "Follow the choices, routes and ideas that changed societies."
     },
+    "book": {
+      "title": "Ideas That Built India",
+      "author": "NANDI",
+      "year": 2026,
+      "rights": "original",
+      "cover": {
+        "palette": "rose",
+        "motif": "kolam"
+      },
+      "blurb": "From Indus cities to the Constitution: the ideas that shaped India."
+    },
     "modules": [
       {
-        "id": "history-civilisations-module",
-        "title": "Turning points and connections",
+        "id": "history-civilisations-ch1",
+        "title": "Early India",
+        "minutes": 13,
+        "check": "quiz",
         "concepts": [
           {
             "id": "indus-cities",
@@ -2913,7 +2926,15 @@
                 "takeaway": "India's digits went west through Arabic books to Europe."
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "id": "history-civilisations-ch2",
+        "title": "Toward a republic",
+        "minutes": 13,
+        "check": "quiz",
+        "concepts": [
           {
             "id": "printing-and-reading",
             "title": "Printing and reading",
@@ -5981,5 +6002,5 @@
       }
     ]
   },
-  "changelog": "W3 review rewrite, 2026-10-20: items revised with specific distractor feedback, sourced quantities and checked source fields. Spec 16 fix-up, 2026-10-22: 48 items (6 per idea, 2 per step, one of each job), taught-only History items, and the cloud fact-review fixes."
+  "changelog": "W3 review rewrite, 2026-10-20: items revised with specific distractor feedback, sourced quantities and checked source fields. Spec 16 fix-up, 2026-10-22: 48 items (6 per idea, 2 per step, one of each job), taught-only History items, and the cloud fact-review fixes. 1.1.0: a NANDI Original book in chapters (spec 33); idea ids unchanged."
 }
