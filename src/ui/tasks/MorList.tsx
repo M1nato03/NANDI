@@ -1,11 +1,11 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import type { TaskRow } from '../../data/types';
 import type { MoveSnapshot, MoveTarget } from '../../data/repos/tasks';
 import { dayKey } from '../../core/time/dayKey';
 import { focusElapsedMs, isFocusRunning } from '../../core/tasks/focus';
 import { Cast, type Pose } from '../cast/Cast';
-import { taskGroups, visibleTasks } from './model';
-import { GroupRow } from './TaskList';
+import { taskGroups, visibleTasks, type TaskGroup } from './model';
+import { FriendStage } from '../cast/FriendStage';
 import type { useTaskBoard } from './useTaskBoard';
 
 type Board = ReturnType<typeof useTaskBoard>;
@@ -42,7 +42,8 @@ export function averageLine(tasks: TaskRow[]): string | undefined {
 /** A move made elsewhere on Plan (the detail sheet's Another day or Later) that the list should offer to undo. */
 export type OuterMove = { task: TaskRow; before: MoveSnapshot; where: string; at: number; writes: number };
 
-export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove }) {
+/** Mor's list sits under Mor's stage at the top of Plan: the stage's Mor is the one that reacts (item 135, one Mor per screen). */
+export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, heading, away }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove; heading?: ReactNode; away?: boolean }) {
   const today = dayKey(board.now);
   const [moment, setMoment] = useState<{ kind: MorMoment; at: number }>({ kind: 'open', at: 0 });
   const [noted, setNoted] = useState('');
@@ -51,6 +52,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   const [timeOpen, setTimeOpen] = useState(false);
   const [time, setTime] = useState<number | undefined>();
   const [other, setOther] = useState('');
+  const [confirmAll, setConfirmAll] = useState<string | null>(null);
   useEffect(() => { if (!toast) return; const timer = window.setTimeout(() => setToast(current => current?.at === toast.at ? null : current), 8000); return () => window.clearTimeout(timer); }, [toast]);
   const react = (kind: MorMoment) => setMoment(current => ({ kind, at: current.at + 1 }));
   const undo = (task: TaskRow, before: MoveSnapshot) => { void board.act((repos, now) => repos.undoMove(task.id, now, before), 'Move undone.'); };
@@ -71,7 +73,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   const running = board.focus.filter(row => !row.deleted && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt).find(row => todayRows.some(task => task.id === row.taskId));
   const runningTask = running && todayRows.find(task => task.id === running.taskId);
   const nothingLeft = todayRows.length === 0 && doneRows.length > 0;
-  const shown: MorMoment = moment.kind === 'open' && nothingLeft ? 'rest' : moment.kind;
+  const shown: MorMoment = moment.kind === 'open' && (nothingLeft || away) ? 'rest' : moment.kind;
   const average = avgHidden ? undefined : averageLine(board.tasks);
 
   async function add(event: FormEvent) {
@@ -93,6 +95,13 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
     if (!ok) return;
     if (open.length && worked > 0) { setNoted(notedLine(task, (task.actualMinutes ?? 0) + worked, true)); react('timed'); }
     else react('done');
+  }
+  // A split task's own circle finishes every step still open, after one inline check (item 135).
+  async function doneAll(group: TaskGroup) {
+    clearUndo(); setConfirmAll(null);
+    const open = group.steps.filter(step => !step.deleted && step.status !== 'done' && step.status !== 'dropped');
+    const focus = board.focus.filter(row => row.endedAt == null && !row.deleted && open.some(step => step.id === row.taskId));
+    if (await board.act(async (repos, now) => { for (const row of focus) await repos.finishFocus(row.id, now); for (const step of open) await repos.completeTask(step.id, now); }, 'All steps done.')) react('done');
   }
   async function stopForNow(task: TaskRow) {
     if (!running) return;
@@ -118,9 +127,15 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
     offerUndo(task, before, `Moved to ${where}.`);
   }
 
-  const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className="task-row ui-list-row mor-row" key={task.id} data-list={list}>
+  // Under its task, a step reads 'Step 1 of 3', not the task's name again.
+  const stepLabel = (task: TaskRow) => {
+    const parent = task.parentId ? board.tasks.find(row => row.id === task.parentId) : undefined;
+    const rest = parent && task.title.startsWith(`${parent.title} — `) ? task.title.slice(parent.title.length + 3) : '';
+    return rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : task.title;
+  };
+  const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className={`task-row ui-list-row mor-row${task.parentId ? ' mor-step' : ''}`} key={task.id} data-list={list}>
     <button type="button" className="done-circle" aria-label={`Done: ${task.title}`} disabled={board.busy} onClick={() => void done(task)}><span aria-hidden="true">○</span></button>
-    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(task)}>{task.title}</button>
+    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(task)}>{stepLabel(task)}</button>
       {(task.timeSet || task.scheduledStart != null) && <span className="small">{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>}</div>
     <div className="task-row-actions">
       {runningTask?.id !== task.id && <button type="button" className="secondary" disabled={board.busy} aria-label={`Start: ${task.title}`} onClick={() => void start(task)}>Start</button>}
@@ -128,7 +143,16 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
         : <button type="button" className="secondary" disabled={board.busy} aria-label={`Today: ${task.title}`} onClick={() => void move(task, 'today', 'Today')}>← Today</button>}
     </div>
   </li>;
-  // Steps of a split task stay together under their task, with its progress and a whole-task drop.
+  // A split task reads as a plain row with its own circle; its steps sit open under it as indented rows (item 135).
+  // Dropping the whole task lives in its Details sheet.
+  const parentRow = (group: TaskGroup, list: 'today' | 'tomorrow' | 'later') => {
+    const left = group.steps.filter(step => !step.deleted && step.status !== 'done' && step.status !== 'dropped').length;
+    return <li className="task-row ui-list-row mor-row mor-parent" key={group.parent.id} data-list={list}>
+      <button type="button" className="done-circle" aria-label={`Done: ${group.parent.title}`} aria-expanded={confirmAll === group.parent.id} disabled={board.busy || !left} onClick={() => setConfirmAll(current => current === group.parent.id ? null : group.parent.id)}><span aria-hidden="true">○</span></button>
+      <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(group.parent)}>{group.parent.title}</button><span className="small">{group.done} of {group.total} steps done</span></div>
+      {confirmAll === group.parent.id && <div className="mor-confirm" role="group" aria-label={`Finish ${group.parent.title}`}><span>{left === 1 ? 'Mark the last step done?' : `Mark all ${left} steps done?`}</span><button type="button" disabled={board.busy} onClick={() => void doneAll(group)}>Mark done</button><button type="button" className="secondary" onClick={() => setConfirmAll(null)}>Cancel</button></div>}
+    </li>;
+  };
   const groups = new Map(taskGroups(board.tasks).filter(group => group.total).map(group => [group.parent.id, group]));
   const list = (name: string, items: TaskRow[], key: 'today' | 'tomorrow' | 'later', empty: string) => {
     const seen = new Set<string>();
@@ -137,7 +161,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
       if (!group) return [row(task, key)];
       if (seen.has(group.parent.id)) return [];
       seen.add(group.parent.id);
-      return [<GroupRow key={group.parent.id} group={group} onDetail={openDetail} busy={board.busy} onDrop={id => void board.act((repos, now) => repos.dropTask(id, now), 'Split task dropped.')}><ul>{items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))}</ul></GroupRow>];
+      return [parentRow(group, key), ...items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))];
     });
     return <section className="task-list mor-list" aria-label={name}>
       <div className="ui-section-header"><h2>{name} <span className="task-count">{items.length}</span></h2></div>
@@ -146,11 +170,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
   };
 
   return <div className="mor-plan">
-    <div className="mor-header">
-      <span className={`mor-friend mor-${shown}`} key={`${shown}-${moment.at}`} data-moment={shown}><Cast name="Mor" pose={POSE[shown]} size={64} title="Mor" /></span>
-      <div className="mor-say">{noted ? <p className="mor-noted" role="status">{noted}</p> : <p className="small">{nothingLeft ? 'Nothing left for today.' : 'Your list for today.'}</p>}
-        {average && <p className="small mor-average">{average} <button type="button" className="text-button" onClick={hideAverage}>Hide</button></p>}</div>
-    </div>
+    <FriendStage area="plan" compact art={<span className={`mor-friend mor-${shown}`} key={`${shown}-${moment.at}`} data-moment={shown}><Cast name="Mor" pose={POSE[shown]} size={64} title="Mor" /></span>}>{heading}</FriendStage>
     {runningTask && running && <section className="card mor-focus" aria-label="Focus">
       {/* A focus paused on the focus timer screen shows as paused, with Resume (Codex A item 91). */}
       <span className="eyebrow">{isFocusRunning(running) ? 'Working on' : 'Paused'}</span><h2>{runningTask.title}</h2>
@@ -166,6 +186,8 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
         <button type="button" className="text-button" onClick={() => { setTime(undefined); setOther(''); setTimeOpen(false); }}>No time</button></fieldset>}
       <button type="submit" disabled={board.busy || !title.trim()}>Add</button>
     </form>
+    {noted && <p className="small mor-noted" role="status">{noted}</p>}
+    {average && <p className="small mor-average">{average} <button type="button" className="text-button" onClick={hideAverage}>Hide</button></p>}
     {shownToast && <p className="mor-toast" role="status">{shownToast.text} {shownToast.undo && <button type="button" className="text-button" onClick={shownToast.undo}>Undo</button>}</p>}
     {!shownToast && board.message && <p className="small" role="status">{board.message}</p>}
     {list('Today', todayRows, 'today', 'Add one thing you want to do.')}

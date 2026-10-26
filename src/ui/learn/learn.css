@@ -363,3 +363,8 @@
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .chiku-scene { cursor: pointer; outline-offset: 4px; }
 .chiku-next { display: block; min-height: 44px; margin-top: var(--space-1); }
+/* Item 135: Moti's review card under Today, in the review area's rose. */
+.learn-moti { display: grid; gap: 10px; }
+.learn-moti .friend-stage { margin: 0; }
+.learn-moti .friend-stage h2 { margin: 0; }
+.learn-moti > button { width: 100%; min-height: 44px; }

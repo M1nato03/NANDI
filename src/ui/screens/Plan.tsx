@@ -22,8 +22,6 @@ import { MorningBackfill } from './MorningBackfill';
 import { isAway } from '../../core/economy/away';
 import { adaptiveNight, shiftOffKey } from '../../core/adaptive/day';
 import '../tasks/tasks.css';
-import { Cast } from '../cast/Cast';
-import { FriendStage } from '../cast/FriendStage';
 import { CourtyardBanner } from '../courtyard/Courtyard';
 import { StorybookCard } from '../courtyard/Storybook';
 import { AgencyCheck } from '../tasks/AgencyCheck';
@@ -87,10 +85,12 @@ export function Plan({ questId }: { questId?: string }) {
   const soft = softToday(softFacts, today);
   const softMore = settings.some(row => row.key === softMoreKey(today) && row.value === true);
   const afterBed = isAfterBedtime(board.now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
-  if (soft.state && !softMore) return <section className="screen plan-screen soft-screen"><FriendStage area="plan" size={64} compact><p className="eyebrow">Go gently</p><h1>Plan</h1></FriendStage><SoftHome state={soft.state} today={today} done={!!soft.done} facts={softFacts} settings={settings} tasks={board.tasks} act={board.act} /></section>;
-  return <section className="screen plan-screen"><FriendStage area="plan" size={64} compact><p className="eyebrow">Make room for what matters</p><h1>Plan</h1></FriendStage><div className="cast-inline">{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" moment="settle" at={1} breathe />}</div>{awayToday && <p>You're away. Rest well.</p>}
+  if (soft.state && !softMore) return <section className="screen plan-screen soft-screen"><p className="eyebrow">Go gently</p><h1>Plan</h1><SoftHome state={soft.state} today={today} done={!!soft.done} facts={softFacts} settings={settings} tasks={board.tasks} act={board.act} /></section>;
+  // Item 135: one friend per area. Mor's stage heads Plan and is the Mor that reacts; away days rest Mor (no Kachhua here).
+  return <section className="screen plan-screen">
     {/* Spec 27 (and Codex A item 91, the spec owner's call): the three lists come first; the older cards follow. */}
-    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} />
+    <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} away={awayToday}
+      heading={<><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
     {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}
     <MorningBackfill today={today} now={board.now} logs={logs} hadYesterday={hadYesterday} />{askAgency && <AgencyCheck now={board.now} />}<StorybookCard today={today} /><CourtyardBanner />

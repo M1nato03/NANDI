@@ -65,6 +65,6 @@ export function StorybookCard({ today }: { today: string }) {
   if (weekday !== 0 && weekday !== 1) return null;
   const week = weekday === 0 ? storyWeekStart(today) : recentWeeks(today, 2)[1]!;
   return <button type="button" className="card you-link storybook-card" onClick={() => go(storyRoute(week))}>
-    <span className="cast-inline"><Cast name="Mor" pose="cheer" size={40} moment="wave" at={1} /><strong>Your week as a story</strong></span><span>Six friends tell you what your week became</span>
+    <strong>Your week as a story</strong><span>Six friends tell you what your week became</span>
   </button>;
 }

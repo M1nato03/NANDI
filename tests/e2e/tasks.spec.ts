@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from './helpers/plan';
 
-test('large task preview, grouped progress, and whole-task drop', async ({ page }) => {
+async function addSplitTask(page: Page) {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
   await page.goto('/#plan');
   await openMore(page);
@@ -19,20 +19,52 @@ test('large task preview, grouped progress, and whole-task drop', async ({ page 
   await preview.getByLabel('Step 2 name').fill('Prepare the app release');
   await preview.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByRole('main').getByRole('status')).toContainText('Split task saved.');
-  const parent = page.getByRole('region', { name: 'Today' }).locator('.task-group');
+}
+
+// Item 135: in Mor's list a split task is a plain row with its own circle, its steps sit open under it, and the
+// whole-task drop lives in the Details sheet.
+test('large task preview, open steps under a plain row, and whole-task drop from Details', async ({ page }) => {
+  await addSplitTask(page);
+  const today = page.getByRole('region', { name: 'Today' });
+  const parent = today.locator('.mor-parent');
   await expect(parent).toHaveCount(1);
-  await expect(parent.locator('summary')).toContainText('0 of 9 steps done');
-  await parent.locator('summary').click();
-  await expect(parent.locator('.task-row')).toHaveCount(9);
-  await expect(parent).toContainText('Prepare the app release');
-  await parent.locator('.task-row').first().getByRole('button', { name: /^Done: / }).click();
-  const remainingParent = page.locator('.task-group');
-  await expect(remainingParent.locator('summary')).toContainText('1 of 9 steps done');
-  await remainingParent.getByRole('button', { name: 'Drop whole task' }).click();
-  await expect(remainingParent).toContainText('Drop this task and its remaining steps?');
-  await remainingParent.getByRole('button', { name: 'Confirm drop' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toContainText('Split task dropped.');
-  await expect(remainingParent).toHaveCount(0);
+  await expect(parent).toContainText('0 of 9 steps done');
+  await expect(parent.getByRole('button', { name: 'Done: Complete the app work' })).toBeVisible();
+  await expect(today.locator('details')).toHaveCount(0);
+  await expect(today.getByRole('button', { name: 'Drop whole task' })).toHaveCount(0);
+  await expect(today.locator('.mor-step')).toHaveCount(9);
+  await expect(today).toContainText('Prepare the app release');
+  await expect(today.locator('.mor-step').first().getByRole('button', { name: /^Start: / })).toBeVisible();
+  await today.locator('.mor-step').first().getByRole('button', { name: /^Done: / }).click();
+  await expect(parent).toContainText('1 of 9 steps done');
+  await expect(today.locator('.mor-step')).toHaveCount(8);
+  await parent.getByRole('button', { name: 'Complete the app work', exact: true }).click();
+  const detail = page.getByRole('dialog', { name: 'Task detail Complete the app work' });
+  await detail.getByRole('button', { name: 'Drop whole task' }).click();
+  await expect(detail).toContainText('This drops the task and its remaining steps.');
+  await detail.getByRole('button', { name: 'Confirm drop' }).click();
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Task dropped.');
+  await expect(parent).toHaveCount(0);
+  await expect(today.locator('.mor-step')).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('region', { name: 'Today' })).not.toContainText('Complete the app work');
+});
+
+test('the split task circle asks once, then marks every open step done', async ({ page }) => {
+  await addSplitTask(page);
+  const today = page.getByRole('region', { name: 'Today' });
+  const parent = today.locator('.mor-parent');
+  const circle = parent.getByRole('button', { name: 'Done: Complete the app work' });
+  await circle.click();
+  await expect(parent).toContainText('Mark all 9 steps done?');
+  await parent.getByRole('button', { name: 'Cancel' }).click();
+  await expect(parent).not.toContainText('Mark all 9 steps done?');
+  await expect(today.locator('.mor-step')).toHaveCount(9);
+  await circle.click();
+  await parent.getByRole('button', { name: 'Mark done' }).click();
+  await expect(page.getByRole('main').getByRole('status')).toContainText('All steps done.');
+  await expect(today).not.toContainText('Complete the app work');
+  await expect(page.locator('.mor-done summary')).toContainText('Done');
   await page.reload();
   await expect(page.getByRole('region', { name: 'Today' })).not.toContainText('Complete the app work');
 });

@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 // Spec 31, living friends: one shared set of small moments for every friend, never in the way.
 test('Meet the cast: tapping a pose card plays its natural moment, once per tap', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-03T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you/cast');
   const card = page.getByRole('button', { name: 'Kapi cheer: play' });
   await card.click();
@@ -11,6 +12,7 @@ test('Meet the cast: tapping a pose card plays its natural moment, once per tap'
 });
 
 test('a friend mid-hop never blocks a tap on what lies under it', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-03T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you/cast');
   const card = page.getByRole('button', { name: 'Nandi cheer: play' });
   await card.click();
@@ -35,6 +37,7 @@ test('reduced motion: no friend moves anywhere, only the pose', async ({ page })
 });
 
 test('six friends hopping together move only by transform and opacity (no layout work)', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-03T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/?e2e#you/cast');
   const props = await page.evaluate(() => {
     const seen = new Set<string>();
