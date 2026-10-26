@@ -44,7 +44,7 @@ test('Train equipment has accessible toggle chips at 360x800', async ({ page }, 
   await expect(gym).not.toBeChecked();
   await gym.check();
   await expect(gym).toBeChecked();
-  await expect(page.locator('.train-checks label').first().locator('span')).toHaveCSS('background-color', 'rgb(255, 178, 91)');
+  await expect(page.locator('.train-checks label').first().locator('span')).toHaveCSS('background-color', 'rgb(143, 211, 155)'); // spec 25: Train's area accent (--area-move, dark)
   const box = await page.locator('.train-checks label').first().boundingBox();
   expect(box && box.height >= 44).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
