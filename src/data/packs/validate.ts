@@ -47,12 +47,45 @@ const estimateMechanisms: Record<string, RegExp> = {
   'planning-fallacy': /\b(?:plan\w*|past.task|prior.task|estimat\w*)\b/i,
 };
 
+type TopicBody = Extract<Pack, { kind: 'topic' }>['body'];
+/**
+ * Spec 33: every topic pack is a book. A public-domain book names its edition and an author who died more than 60
+ * years ago (Indian copyright); an author's own claim cites the book itself; every chapter has minutes and a check
+ * it can actually run (recall needs recall pieces, chiku a Chiku scene, quiz three items).
+ */
+export function bookErrors(body: TopicBody, checkText: (where: string, value: string) => void, year = new Date().getFullYear()): string[] {
+  const errors: string[] = [];
+  const book = body.book;
+  if (!book) return ['book: a topic pack needs a book block (spec 33)'];
+  checkText('book.blurb', book.blurb);
+  if (book.rights === 'public-domain') {
+    if (!book.edition) errors.push('book: a public-domain book needs its edition');
+    if (book.authorDied === undefined) errors.push('book: a public-domain book needs authorDied');
+    else if (book.authorDied + 60 >= year) errors.push(`book: an author who died in ${book.authorDied} is not 60 years past`);
+  }
+  const title = book.title.toLowerCase();
+  for (const module of body.modules) {
+    if (module.minutes === undefined) errors.push(`${module.id}: a chapter needs minutes`);
+    if (!module.check) errors.push(`${module.id}: a chapter needs a check`);
+    else if (module.check === 'recall' && !module.concepts.some(concept => concept.recall)) errors.push(`${module.id}: a recall check needs an idea with recall pieces`);
+    else if (module.check === 'chiku' && !module.concepts.some(concept => concept.chiku)) errors.push(`${module.id}: a chiku check needs an idea with a Chiku scene`);
+    else if (module.check === 'quiz' && module.concepts.flatMap(concept => concept.items).length < 3) errors.push(`${module.id}: a quiz check needs three items`);
+    for (const concept of module.concepts) for (const claim of concept.claims) {
+      if (claim.voice !== 'author') continue;
+      const cited = concept.sources.filter(source => claim.sourceRefs.includes(source.id));
+      if (!cited.some(source => source.title.toLowerCase().includes(title))) errors.push(`${concept.id}.${claim.id}: an author claim needs the book itself as a source`);
+    }
+  }
+  return errors;
+}
+
 export function validatePack(input: unknown, options: { allowUnchecked?: boolean; editorial?: boolean } = {}): string[] {
   const parsed = v.safeParse(packSchema, input);
   if (!parsed.success) return parsed.issues.map((issue) => `${v.getDotPath(issue) ?? 'pack'}: ${issue.message}`);
   const pack: Pack = parsed.output;
   const errors: string[] = [];
-  if (!pack.id.startsWith(`${pack.kind}.`)) errors.push('id must match kind');
+  // Spec 33: a book is a topic pack, and a book's file may say so in its id (book.how-to-win-friends).
+  if (!pack.id.startsWith(`${pack.kind}.`) && !(pack.kind === 'topic' && pack.id.startsWith('book.'))) errors.push('id must match kind');
   if (pack.kind === 'mystery-arc') {
     if (pack.body.chapters.length !== RULES.mind.arcChapters) errors.push('arc needs five chapters for long seasons');
     for (const [index, chapter] of pack.body.chapters.entries()) {
@@ -75,11 +108,13 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       if (moduleIds.has(module.id)) errors.push(`${module.id}: duplicate module id`);
       moduleIds.add(module.id);
     }
+    errors.push(...bookErrors(pack.body, checkText));
     // Spec 16: fresh practice inside each step (editorial checks for stepped topics).
     if (options.editorial) errors.push(...freshPracticeErrors(pack));
-    if (options.editorial) for (const module of pack.body.modules) {
-      const moduleTypes = new Set<string>(module.concepts.flatMap(concept => concept.items.map(item => item.type)));
-      for (const type of allTypes) if (!moduleTypes.has(type)) errors.push(`${module.id}: missing item type ${type}`);
+    // Every item type somewhere in the book (one unit before spec 33 split it into chapters).
+    if (options.editorial) {
+      const bookTypes = new Set<string>(pack.body.modules.flatMap(module => module.concepts.flatMap(concept => concept.items.map(item => item.type))));
+      for (const type of allTypes) if (!bookTypes.has(type)) errors.push(`${pack.body.topic.id}: missing item type ${type}`);
     }
     {
       // Spec 14: same-shaped teach cards would undo the point; vary how teach cards, hooks and examples open.

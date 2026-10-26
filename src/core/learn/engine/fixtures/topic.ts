@@ -29,5 +29,7 @@ const second = {
 };
 export const fixtureTopic: TopicPack = {
   id: 'topic.seed-lab', version: '1.0.0', schema: 1, minAppVersion: '0.1.0', title: 'Seed lab', author: 'jenil',
-  createdAt: '2026-10-11T00:00:00.000Z', kind: 'topic', body: { topic: { id: 'seed-lab', title: 'Seed lab' }, modules: [{ id: 'growth', title: 'How seeds grow', concepts: [first, second] }] },
+  createdAt: '2026-10-11T00:00:00.000Z', kind: 'topic', body: { topic: { id: 'seed-lab', title: 'Seed lab' },
+    book: { title: 'Seed Lab', author: 'NANDI', year: 2026, rights: 'original', cover: { palette: 'leaf', motif: 'kolam' }, blurb: 'How a seed wakes up and grows.' },
+    modules: [{ id: 'growth', title: 'How seeds grow', minutes: 5, check: 'quiz', concepts: [first, second] }] },
 };

@@ -81,7 +81,8 @@ describe('wind-down pack', () => {
 describe('topic editorial rules', () => {
   const badTopic = (change, message) => {
     const copy = structuredClone(money);
-    change(copy.body.modules[0].concepts, copy.body.modules[0]);
+    // Spec 33: a book's ideas span its chapters; edits reach them all.
+    change(copy.body.modules.flatMap(module => module.concepts), copy.body.modules[0]);
     expect(validatePack(copy, { allowUnchecked: true, editorial: true }).join(' ')).toContain(message);
   };
   it('accepts the hand-authored money pack', () => {
@@ -90,8 +91,8 @@ describe('topic editorial rules', () => {
     expect(validatePack(money, { editorial: true }).filter(error => !fresh.has(error))).toEqual([]);
   });
   it('accepts the body and training pack with checked claims and editorial rules', () => {
-    expect(body.body.modules[0].concepts).toHaveLength(8);
-    expect(body.body.modules[0].concepts.flatMap(concept => concept.items)).toHaveLength(48);
+    expect(body.body.modules.flatMap(module => module.concepts)).toHaveLength(8);
+    expect(body.body.modules.flatMap(module => module.concepts.flatMap(concept => concept.items))).toHaveLength(48);
     const fresh = new Set(freshPracticeErrors(body));
     expect(validatePack(body, { editorial: true }).filter(error => !fresh.has(error))).toEqual([]);
   });
@@ -106,7 +107,7 @@ describe('topic editorial rules', () => {
     badTopic((concepts) => { const item = concepts[0].items[2]; item.type = 'choose'; delete item.answer; }, 'needs an estimate item');
     badTopic((concepts) => { concepts[0].items[0].stem = 'A plain case with no place. What follows?'; concepts[0].items[1].stem = 'Another plain case with no place. What follows?'; }, 'needs 2 Indian student scenarios or predictions');
   });
-  it('limits type repetition and requires all ten types in a module', () => {
+  it('limits type repetition and requires all ten types in a book', () => {
     badTopic((concepts) => { concepts[0].items[3].type = 'predict'; concepts[0].items[4].type = 'predict'; delete concepts[0].items[4].task; }, 'more than 2 predict items');
     badTopic((concepts) => { for (const concept of concepts) for (const item of concept.items) if (item.type === 'order') { item.type = 'choose'; delete item.answer; } }, 'missing item type order');
   });

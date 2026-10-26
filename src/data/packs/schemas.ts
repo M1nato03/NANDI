@@ -8,7 +8,8 @@ const integer = v.pipe(v.number(), v.integer());
 const semver = v.pipe(v.string(), v.regex(/^\d+\.\d+\.\d+$/));
 
 const sourceRef = v.strictObject({ id: text, title: text, publisher: text, year: integer, url: v.pipe(v.string(), v.url()), asOf: v.optional(v.pipe(v.string(), v.isoDate())) });
-const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)) });
+// Spec 33: an `author` claim is the book's own view ("Carnegie argues...") and cites the book itself; `research` is the default.
+const claim = v.strictObject({ id: text, text, sourceRefs: v.pipe(strings, v.minLength(1)), voice: v.optional(v.picklist(['author', 'research'])) });
 const option = v.strictObject({ id: text, text, feedback: text, correct: v.boolean(), misconceptionIds: v.optional(strings), sourceRefs: v.pipe(strings, v.minLength(1)) });
 // Spec 16 R1: what a practice item asks the learner to do with the idea.
 const practiceJob = v.picklist(['reverse', 'misconception', 'transfer', 'combine', 'edge', 'recall']);
@@ -71,7 +72,27 @@ export const topicConceptSchema = v.strictObject({
   chiku: v.optional(chikuSceneSchema),
   factCheck: v.optional(v.strictObject({ checker: v.optional(text), verdicts: v.array(v.strictObject({ claimId: text, verdict: v.picklist(['supported', 'unsupported', 'outdated']) })) })),
 });
-export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), modules: v.pipe(v.array(v.strictObject({ id: text, title: text, concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)) })), v.minLength(1)) });
+// Spec 33: a book is a topic pack with a `book` block; its modules are the chapters, each with an estimate and one check.
+export const bookRights = ['original', 'public-domain', 'private', 'licensed'] as const;
+export const coverPalettes = ['saffron', 'teal', 'rose', 'indigo', 'violet', 'leaf'] as const;
+export const coverMotifs = ['kolam', 'stamp', 'halftone', 'stripes'] as const;
+export const bookSchema = v.strictObject({
+  title: text, author: text, year: v.optional(integer),
+  rights: v.picklist(bookRights),
+  region: v.optional(v.literal('IN')),
+  edition: v.optional(text),
+  authorDied: v.optional(integer),
+  cover: v.strictObject({ palette: v.picklist(coverPalettes), motif: v.picklist(coverMotifs) }),
+  blurb: v.pipe(text, v.maxLength(140)),
+});
+export const chapterCheckKinds = ['recall', 'chiku', 'quiz'] as const;
+const topicModuleSchema = v.strictObject({
+  id: text, title: text,
+  minutes: v.optional(v.pipe(integer, v.minValue(1), v.maxValue(60))),
+  check: v.optional(v.picklist(chapterCheckKinds)),
+  concepts: v.pipe(v.array(topicConceptSchema), v.minLength(1)),
+});
+export const topicBodySchema = v.strictObject({ topic: v.strictObject({ id: text, title: text, description: v.optional(text) }), book: v.optional(bookSchema), modules: v.pipe(v.array(topicModuleSchema), v.minLength(1)) });
 
 export const diagramSchema = v.variant('k', [
   v.strictObject({ k: v.literal('split'), l: text, ls: v.optional(text), r: text, rs: v.optional(text), hi: v.picklist(['l', 'r']) }),
@@ -180,6 +201,8 @@ export type TrackPack = v.InferOutput<typeof trackPackSchema>;
 export type TrackUnit = v.InferOutput<typeof trackUnitSchema>;
 export type TopicPack = v.InferOutput<typeof topicPackSchema>;
 export type TopicConcept = v.InferOutput<typeof topicConceptSchema>;
+export type TopicModule = v.InferOutput<typeof topicModuleSchema>;
+export type Book = v.InferOutput<typeof bookSchema>;
 export type TopicItem = v.InferOutput<typeof topicItemSchema>;
 export type TopicStep = v.InferOutput<typeof topicStepSchema>;
 export type StepVisual = v.InferOutput<typeof stepVisualSchema>;
