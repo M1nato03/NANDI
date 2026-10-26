@@ -31,7 +31,8 @@ test('Read: the tabs are Plan, Read and You; Continue sits above the fold; Games
   const box = (await resume.getByRole('button', { name: 'Start' }).boundingBox())!;
   expect(box.y + box.height).toBeLessThan(page.viewportSize()!.height - 64);
   await expect(page.getByRole('region', { name: 'NANDI Originals' }).getByRole('button')).toHaveCount(6);
-  await expect(page.getByRole('region', { name: 'Classics' })).toHaveCount(0);
+  // The first classic (spec 33 §6): How to Win Friends, public domain in India.
+  await expect(page.getByRole('region', { name: 'Classics' }).getByRole('button', { name: /^How to Win Friends/ })).toBeVisible();
   await expect(page.locator('details.read-games')).not.toHaveAttribute('open');
   await page.locator('details.read-games summary').click();
   await page.getByRole('button', { name: "Open Kapi's shelf" }).click();

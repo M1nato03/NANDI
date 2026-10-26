@@ -80,7 +80,7 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await expect(page.locator('.learn-idea-row')).toHaveCount(10);
   await expect(page.locator('.learn-idea-row:not([data-state="new"])')).not.toHaveCount(0);
   await expect(page.locator('.learn-idea-row[data-state="new"]')).not.toHaveCount(0);
-  if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: 'screenshots/book-ideas-390x844.png' });
+  if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: testInfo.outputPath('book-ideas-390x844.png') });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   const title = await node.locator('strong').innerText();
   await node.getByRole('button', { name: `Practice this idea: ${title}` }).click();

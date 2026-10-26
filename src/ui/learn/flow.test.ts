@@ -29,8 +29,9 @@ describe('live learning drop glue', () => {
     expect(due.items.every(item => item.mode !== 'new')).toBe(true);
   });
   it('keeps only bundled topic ids and resolves stored items', () => {
-    expect(topics).toHaveLength(6);
-    expect(topics.map(pack => pack.body.topic.id).sort()).toEqual(['body-training', 'health-nutrition', 'history-civilisations', 'how-things-work', 'money-markets', 'psychology']);
+    // The six Originals and the first classic (spec 33).
+    expect(topics).toHaveLength(7);
+    expect(topics.map(pack => pack.body.topic.id).sort()).toEqual(['body-training', 'health-nutrition', 'history-civilisations', 'how-things-work', 'how-to-win-friends', 'money-markets', 'psychology']);
     expect(chosenTopics(['money-markets', 'history-civilisations', 'health-nutrition', 'unknown'])).toEqual(['money-markets', 'history-civilisations', 'health-nutrition']);
     const concepts = catalogFor(['money-markets']);
     expect(concepts).toHaveLength(10);

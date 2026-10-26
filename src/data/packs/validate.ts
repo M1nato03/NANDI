@@ -63,6 +63,10 @@ export function bookErrors(body: TopicBody, checkText: (where: string, value: st
     if (book.authorDied === undefined) errors.push('book: a public-domain book needs authorDied');
     else if (book.authorDied + 60 >= year) errors.push(`book: an author who died in ${book.authorDied} is not 60 years past`);
   }
+  // Book and chapter ids name the routes (read/chapter/<book>/<chapter>): lower-case words joined by hyphens.
+  const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  if (!slug.test(body.topic.id)) errors.push(`book: id ${body.topic.id} must be lower-case words joined by hyphens`);
+  for (const module of body.modules) if (!slug.test(module.id)) errors.push(`${module.id}: a chapter id must be lower-case words joined by hyphens`);
   const title = book.title.toLowerCase();
   for (const module of body.modules) {
     if (module.minutes === undefined) errors.push(`${module.id}: a chapter needs minutes`);

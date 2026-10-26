@@ -1,11 +1,13 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { expect, type Page } from '@playwright/test';
 
 type Option = { id: string; text: string; correct: boolean };
 type Step = { id: string; hook: { stem: string; options: Option[] }; example: { spot: string }; guided: { stem: string; options: Option[] }[] };
 type Pack = { body: { modules: { concepts: { id: string; steps?: Step[] }[] }[] } };
 
-const readPack = (topicId: string) => JSON.parse(readFileSync(`content/topics/topic.${topicId}.json`, 'utf8')) as Pack;
+// A book's file is topic.<id>.json (the Originals) or book.<id>.json (spec 33: the classics).
+const packFile = (topicId: string) => existsSync(`content/topics/topic.${topicId}.json`) ? `content/topics/topic.${topicId}.json` : `content/topics/book.${topicId}.json`;
+const readPack = (topicId: string) => JSON.parse(readFileSync(packFile(topicId), 'utf8')) as Pack;
 export const stepsOf = (topicId: string): Step[] => readPack(topicId).body.modules.flatMap(module => module.concepts.flatMap(concept => concept.steps ?? []));
 
 /** A learner who was already taught every step of these topics (a week ago), so a drop is quiz items only. */
@@ -39,7 +41,7 @@ export async function walkLesson(page: Page, topicId: string, inChapter = false)
 }
 
 type AnyItem = { stem: string; type: string; options: Option[]; answer?: unknown };
-const itemsOf = (topicId: string): AnyItem[] => (JSON.parse(readFileSync(`content/topics/topic.${topicId}.json`, 'utf8')) as { body: { modules: { concepts: { items: AnyItem[] }[] }[] } })
+const itemsOf = (topicId: string): AnyItem[] => (JSON.parse(readFileSync(packFile(topicId), 'utf8')) as { body: { modules: { concepts: { items: AnyItem[] }[] }[] } })
   .body.modules.flatMap(module => module.concepts.flatMap(concept => concept.items));
 /** Answers the question on screen right (any item type) and moves on: used for chapter checks (spec 33). */
 export async function answerRight(page: Page, topicId: string) {

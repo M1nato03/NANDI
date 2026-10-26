@@ -13,6 +13,10 @@ describe('spec 33 book rules', () => {
     expect(validatePack(fixtureTopic)).toEqual([]);
     expect(errors({ ...fixtureTopic, body: { ...fixtureTopic.body, book: undefined } })).toMatch(/needs a book block/);
   });
+  it('book and chapter ids are route-safe slugs', () => {
+    expect(errors({ ...fixtureTopic, body: { ...fixtureTopic.body, topic: { id: 'book.seed-lab', title: 'x' } } })).toMatch(/lower-case words joined by hyphens/);
+    expect(errors(book({}, [{ ...fixtureTopic.body.modules[0]!, id: 'Ch 1' }]))).toMatch(/chapter id must be lower-case/);
+  });
   it('a book may say so in its id (book.how-to-win-friends), and nothing else may', () => {
     expect(validatePack({ ...fixtureTopic, id: 'book.seed-lab' })).toEqual([]);
     expect(errors({ ...fixtureTopic, id: 'deck.seed-lab' })).toMatch(/id must match kind/);

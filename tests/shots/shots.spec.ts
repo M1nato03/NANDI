@@ -88,6 +88,19 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-7-chapter-done', false);
   });
 
+  test('read: the Classics shelf and How to Win Friends mid-chapter', async ({ page }) => {
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e#read');
+    await page.getByRole('region', { name: 'Classics' }).scrollIntoViewIfNeeded();
+    await shot(page, 'read-9-classics-shelf', false);
+    await page.goto('/?e2e#read/book/how-to-win-friends');
+    await shot(page, 'read-10-htwf-book');
+    await page.goto('/?e2e#read/chapter/how-to-win-friends/htwf-1');
+    await walkLesson(page, 'how-to-win-friends', true);
+    await expect(page.locator('.step-lesson')).toBeVisible();
+    await shot(page, 'read-11-htwf-midway', false);
+  });
+
   test('read: the recall and Chiku checks, and book done', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e#read');
