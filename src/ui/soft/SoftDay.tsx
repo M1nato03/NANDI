@@ -159,7 +159,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
           {option.id === 'kind-word' && <KindWord done={() => void finish('kind-word')} />}
           {option.id === 'good-thing' && <GoodThing done={(text, inStory) => void finish('good-thing', { text, inStory })} />}
           <button type="button" className="text-button" onClick={() => setChoice(null)}>Pick another</button></div>}
-      <button type="button" className="text-button soft-okay" onClick={() => { if (okayTimer.current !== undefined) return; setOkay(count => count + 1); okayTimer.current = window.setTimeout(() => void setSoftState(db, 'okay', Date.now()), motionReduced() ? 0 : 260); }}>I feel okay now</button>
+      <button type="button" className="text-button soft-okay" onClick={() => { if (okayTimer.current !== undefined) return; setOkay(count => count + 1); okayTimer.current = window.setTimeout(() => { okayTimer.current = undefined; void setSoftState(db, 'okay', Date.now()); }, motionReduced() ? 0 : 260); }}>I feel okay now</button>
       {/* Item 83: tasks stay reachable on a soft day (to move or tick one) without ending the gentle day. */}
       <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>See my tasks</button>
     </section>
