@@ -75,8 +75,12 @@ export function areaTokenCss(): string {
     return `--${area}-area: ${look.area}; --${area}-tint: ${look.tint}; --${area}-button: ${look.button}; --${area}-on: ${look.onButton};`;
   }).join(' ');
   const stages = AREAS.map(area => `--${area}-stage: ${STAGES[area].stage}; --${area}-stage-ink: ${STAGES[area].captionInk};`).join(' ');
+  // The night deck is dark in both themes, so Night always takes its dark values (Codex B item 123: a light-theme
+  // indigo on the dark deck read at 2.7:1).
+  const deck = AREA_PALETTE.dark.night;
+  const night = `--night-deck-area: ${deck.area}; --night-deck-button: ${deck.button}; --night-deck-on: ${deck.onButton};`;
   return [
-    `:root, :root[data-theme='dark'] { ${block('dark')} ${stages} }`,
+    `:root, :root[data-theme='dark'] { ${block('dark')} ${stages} ${night} }`,
     `@media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { ${block('light')} } }`,
     `:root[data-theme='light'] { ${block('light')} }`,
   ].join('\n');

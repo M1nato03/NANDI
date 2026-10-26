@@ -8,9 +8,9 @@ import { STAGES, type Area } from '../areas';
  * The heading and a short line sit beside the friend; later the stage hosts that friend's own game (spec 24). `art`
  * replaces the plain friend with an animated one (Kapi's moments on Mind).
  */
-export function FriendStage({ area, pose = 'idle', size = 96, art, children }: { area: Area; pose?: Pose; size?: number; art?: ReactNode; children?: ReactNode }) {
+export function FriendStage({ area, pose = 'idle', size = 96, art, compact, children }: { area: Area; pose?: Pose; size?: number; art?: ReactNode; compact?: boolean; children?: ReactNode }) {
   const stage = STAGES[area];
-  return <section className="friend-stage" data-friend={stage.friend} data-rim={stage.rim} aria-label={`${stage.friend}'s stage`}>
+  return <section className="friend-stage" data-friend={stage.friend} data-rim={stage.rim} data-compact={compact || undefined} aria-label={`${stage.friend}'s stage`}>
     {art ?? <Cast name={stage.friend} pose={pose} size={size} />}
     {children && <div className="friend-stage-text">{children}</div>}
   </section>;

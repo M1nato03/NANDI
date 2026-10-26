@@ -27,6 +27,7 @@ import { lessonScreens, StepLesson, StepVisual, type StepLessonResult } from './
 import { useCountUp } from './useCountUp';
 import { askLineFor, askMessage } from '../../core/learn/askLine';
 import { shareNote, shareTextNow, useShareDay } from '../shareActions';
+import { AreaScope } from '../shell/AreaScope';
 import './learn.css';
 
 const currentTime = () => Date.now();
@@ -284,7 +285,9 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   const questionNumber = drop.items.slice(0, position).filter(entry => !entry.lesson).length + 1;
   const friend = dropCast(step.mode === 'review' || reviewDue, visibleFeedback?.correct).name;
   const pose = visibleFeedback ? (visibleFeedback.correct ? 'cheer' : 'think') : 'idle';
-  return <div className={`learn-drop learn-active${night ? ' learn-night' : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}><header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{questionNumber} / {questionItems.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
+  // Spec 25 §6: a review question (Moti's) shows in rose; a new step stays teal; the night deck keeps its own look.
+  const review = !night && (step.mode === 'review' || !!reviewDue || !!goldReview);
+  return <div className={`learn-drop learn-active${night ? ' learn-night' : ''}${!night && visibleFeedback?.correct ? ' learn-correct' : ''}`}>{review && <AreaScope area="review" />}<header className="learn-drop-head">{!daily && !night && <button type="button" className="learn-header-link" onClick={onDone}>← Practice · Leave</button>}<span>{questionNumber} / {questionItems.length}</span>{inARow >= 3 && <span className="pill learn-streak-pill" key={inARow}>{inARow} in a row</span>}</header><div className={`learn-progress${!night && combo >= 3 ? ' hot' : ''}`} aria-hidden="true"><span style={{ width: `${filled}%` }} /></div>
     <div className="learn-q" key={position}>
     <div className={`learn-ask-row${pending && !visibleFeedback ? ' leaning' : ''}`}><span className="learn-friend"><Cast name={friend} pose={pose} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span><div className="learn-ask-bubble"><p className="eyebrow">{concept.title}</p><p className="learn-ask">{askFor(item.type)}</p></div></div><h2>{item.stem}</h2>
     {!goldReview && item.type === 'order' && <p className="learn-hint">Tap the steps in order. {sequence.length ? `${sequence.length} placed.` : ''}</p>}
