@@ -15,9 +15,9 @@ export const STARTER_TOPIC = 'psychology';
 export interface FirstAction { route: string; label: string }
 
 const ACTIONS: Record<Goal, FirstAction> = {
-  learn: { route: 'learn/drop', label: 'Start your first lesson' },
+  learn: { route: 'read', label: 'Open your books' },
   // Today's board itself, not the warm-up board.
-  mind: { route: 'mind/board/daily', label: "Try today's puzzle" },
+  mind: { route: 'read/games/board/daily', label: "Try today's puzzle" },
   train: { route: 'train/easy', label: 'Start an easy first workout' },
   plan: { route: 'plan', label: 'Add your first task' },
   sleep: { route: 'you/tonight', label: 'Plan tonight' },

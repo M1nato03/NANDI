@@ -2,7 +2,7 @@ import Dexie, { type Table } from 'dexie';
 import type {
   CardRow, DailyLogRow, DeckProgRow, ExerciseRow, ExStateRow, FlagRow, LearnConceptRow, LearnDropRow, LearnItemRow,
   FocusRow, InventoryRow, LadderRow, LedgerRow, LessonProgRow, PackRow,
-  PlanRow, PrRow, ProgramRow, PuzzleRunRow, QuestRow, RatingRow, ReminderRow,
+  PlanRow, PrRow, PrivatePackRow, ProgramRow, PuzzleRunRow, QuestRow, RatingRow, ReminderRow,
   SessionRow, SetRow, SettingRow, TaskEventRow, TaskRow, UnlockRow,
 } from './types';
 
@@ -35,6 +35,7 @@ export class NandiDb extends Dexie {
   learnConcepts!: Table<LearnConceptRow, string>;
   learnItems!: Table<LearnItemRow, string>;
   learnDrops!: Table<LearnDropRow, string>;
+  privatePacks!: Table<PrivatePackRow, string>;
 
   constructor(name = 'nandi') {
     super(name);
@@ -91,6 +92,22 @@ export class NandiDb extends Dexie {
       inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
       quests: 'id, week, status, sourceId, updatedAt',
       learnConcepts: 'id', learnItems: 'id, lastSeen', learnDrops: 'id',
+    });
+    // Spec 33 §7: private books imported on this phone.
+    this.version(4).stores({
+      tasks: 'id, status, dayKey, scheduledStart, category, parentId, updatedAt',
+      taskEvents: 'id, taskId, kind, at', focus: 'id, taskId, startedAt',
+      reminders: 'id, refType, refId, at', plans: 'id, lessonId, madeDayKey',
+      exercises: 'id, pattern, source', ladders: 'id, pattern', programs: 'id, track',
+      exState: 'id', sessions: 'id, dayKey, status', sets: 'id, sessionId, exerciseId',
+      prs: 'id, exerciseId, kind', puzzleRuns: 'id, type, dayKey, seed',
+      cards: 'id, deckId, due', deckProg: 'id, due', lessonProg: 'id, packId',
+      ratings: 'id', flags: 'id, refId', unlocks: 'id, kind',
+      packs: 'id, kind, version', ledger: 'id, dayKey, mode, kind',
+      inventory: 'id, kind', dailyLog: 'dayKey', settings: 'key',
+      quests: 'id, week, status, sourceId, updatedAt',
+      learnConcepts: 'id', learnItems: 'id, lastSeen', learnDrops: 'id',
+      privatePacks: 'id',
     });
   }
 }

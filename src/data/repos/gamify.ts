@@ -1,4 +1,5 @@
 import { RULES } from '../../core/rules.config';
+import { bookConcepts, bookUnitId } from '../../core/learn/books';
 import { dayKey } from '../../core/time';
 import { badges, badgeTier, chestReady, completedQuests, dailyQuests, goldReviewPassed, monthlyQuestCount, perfectDrop } from '../../core/economy/gamify';
 import { masteryMapState } from '../../core/learn/engine';
@@ -99,7 +100,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     }
     const states = await db.learnConcepts.toArray();
     const mastered = new Set(states.filter(row => masteryMapState(row) === 'Mastered' || known.has(`gold-review:${row.id}`)).map(row => row.id));
-    for (const pack of topics) for (const module of pack.body.modules) if (chestReady(module.concepts.map(c => c.id), mastered)) await add('unit-chest', module.id, today);
+    // Spec 33: one chest per book, under the id its unit had before it became chapters, so no chest is paid twice.
+    for (const pack of topics) if (chestReady(bookConcepts(pack).map(c => c.id), mastered)) await add('unit-chest', bookUnitId(pack), today);
     // The tier is worked out once per badge (the loop condition used to re-count the whole ledger each pass; cj2 heavy data #4).
     for (const badge of badges) { const reached = badgeTier(badge, facts); for (let tier = 1; tier <= reached; tier++) await add('badge-tier', `${badge.id}:${tier}`, today); }
     const month = today.slice(0, 7);

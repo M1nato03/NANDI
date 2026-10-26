@@ -101,6 +101,14 @@ export function migrateEnvelope(
     }
     dexie.data.databaseVersion = 3;
   }
+  // Dexie v4 (spec 33) adds the private books table; an older backup gains it empty.
+  if (dexie?.data && dexie.data.databaseVersion < 4) {
+    if (!dexie.data.tables.some(table => table.name === 'privatePacks')) {
+      dexie.data.tables.push({ name: 'privatePacks', schema: 'id', rowCount: 0 });
+      dexie.data.data.push({ tableName: 'privatePacks', inbound: true, rows: [] });
+    }
+    dexie.data.databaseVersion = 4;
+  }
   return migrated;
 }
 

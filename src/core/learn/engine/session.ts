@@ -65,7 +65,9 @@ export function selectNextItem(context: SelectionContext): Selection | null {
 
 /** A lesson entry (spec 14) carries `lesson` = the step id and teaches before any question; it has no answer of its own. */
 export interface DropItem { itemId: string; conceptId: string; optionOrder: string[]; mode: 'review' | 'new' | 'retention'; retentionDay?: RetentionDay; lesson?: string }
-export interface Drop { id: string; items: DropItem[]; cursor: number; ending: { kind: 'stopping-screen' }; pendingFeedback?: { cursor: number; answer: ItemAnswer; correct: boolean } }
+export interface Drop { id: string; items: DropItem[]; cursor: number; ending: { kind: 'stopping-screen' }; pendingFeedback?: { cursor: number; answer: ItemAnswer; correct: boolean };
+  /** Spec 33: a chapter's reading (its untaught steps) or its quiz check. */
+  chapter?: { topicId: string; moduleId: string; kind: 'read' | 'check' } }
 export interface ComposeContext extends Omit<SelectionContext, 'recentTypes' | 'excludedItemIds' | 'mode'> {
   spentMinutes: number; answeredToday: number; newToday: number; busyDay?: boolean; afterBedtime?: boolean;
   minutesPerItem?: number; requestedItems?: number;

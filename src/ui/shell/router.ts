@@ -17,17 +17,24 @@ export function canonicalRoute(path: string): string {
   if (value === 'ground' || value === 'you/settings') return 'you/settings';
   if (value.startsWith('ground/')) return `you/${value.slice(7)}`;
   if (value === 'you/train' || value.startsWith('you/train/')) return `train${value.slice(9)}`;
-  if (value === 'you/learn' || value.startsWith('you/learn/')) return `learn${value.slice(9)}`;
-  if (value === 'you/mind/lesson' || value === 'you/mind/unit') return `learn/${value.slice(9)}`;
-  if (value === 'you/mind' || value.startsWith('you/mind/')) return `mind${value.slice(8)}`;
+  if (value === 'you/learn' || value.startsWith('you/learn/')) return `read${value.slice(9)}`;
+  if (value === 'you/mind/lesson' || value === 'you/mind/unit') return `read/${value.slice(9)}`;
+  if (value === 'you/mind' || value.startsWith('you/mind/')) return `read/games${value.slice(8)}`;
+  // Spec 33: Learn became Read and Mind became Read's Games; old links, notifications and backups still resolve.
+  if (value === 'learn' || value.startsWith('learn/')) return `read${value.slice(5)}`;
+  if (value === 'mind/generator') return 'you/mind/generator';
+  if (value === 'mind' || value.startsWith('mind/')) return `read/games${value.slice(4)}`;
   return value;
 }
 
 export function route(): string { return canonicalRoute(location.hash); }
 export function parentRoute(path: string): string {
   if (path === 'night') return 'plan';
-  if (path === 'mind/board/daily') return 'mind';
-  if (path.startsWith('mind/board/')) return 'mind/practice';
+  if (path === 'read/games/board/daily' || path === 'read/games') return path === 'read/games' ? 'read' : 'read/games';
+  if (path.startsWith('read/games/board/')) return 'read/games/practice';
+  if (path.startsWith('read/games/')) return 'read/games';
+  if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
+  if (path === 'train' || path.startsWith('train/')) return path === 'train' ? 'you' : 'train';
   if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];
@@ -51,10 +58,13 @@ export function initializeHistory(): void {
 }
 export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
+  // Train lives under You now (spec 33).
+  if (root === 'train') return 'You';
   return tabs.find(tab => tab.toLowerCase() === root) ?? 'Plan';
 }
 export function go(path: string): void {
-  if (!/^[a-z0-9]+(?:\/[a-z0-9]+)*$/.test(path)) throw new Error('Invalid route');
+  // Book and chapter ids carry hyphens (read/chapter/money-markets/money-markets-ch1).
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/.test(path)) throw new Error('Invalid route');
   const destination = canonicalRoute(path);
   if (route() === destination) return;
   const from = route();

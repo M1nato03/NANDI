@@ -35,3 +35,22 @@ export async function walkLesson(page: Page, topicId: string) {
   await expect(lesson).toHaveCount(0);
   return step;
 }
+
+type AnyItem = { stem: string; type: string; options: Option[]; answer?: unknown };
+const itemsOf = (topicId: string): AnyItem[] => (JSON.parse(readFileSync(`content/topics/topic.${topicId}.json`, 'utf8')) as { body: { modules: { concepts: { items: AnyItem[] }[] }[] } })
+  .body.modules.flatMap(module => module.concepts.flatMap(concept => concept.items));
+/** Answers the question on screen right (any item type) and moves on: used for chapter checks (spec 33). */
+export async function answerRight(page: Page, topicId: string) {
+  const stem = await page.locator('.learn-drop h2').innerText();
+  const item = itemsOf(topicId).find(candidate => candidate.stem === stem);
+  if (!item) throw new Error(`Unknown item: ${stem}`);
+  const tap = (id: string) => page.locator('.learn-drop').getByRole('button', { name: item.options.find(option => option.id === id)!.text, exact: true }).click();
+  if (item.type === 'order') for (const id of item.answer as string[]) await tap(id);
+  else if (item.type === 'match') {
+    const pairs = (item.answer as { left: string; right: string }[]).filter((pair, index, all) => !all.slice(0, index).some(seen => seen.left === pair.right && seen.right === pair.left));
+    for (const pair of pairs) { await tap(pair.left); await tap(pair.right); }
+  } else if (item.type === 'estimate') await page.locator('.learn-estimate input[type=range]').fill(String((item.answer as { value: number }).value));
+  else await tap(item.options.find(option => option.correct)!.id);
+  await page.getByRole('button', { name: /^Check/ }).first().click();
+  await page.locator('.learn-feedback').getByRole('button').last().click();
+}

@@ -51,6 +51,8 @@ export const STAGES: Record<Area, { friend: CastName; stage: string; body: strin
 export function areaOf(path: string): Area | undefined {
   const root = path.split('/')[0];
   if (root === 'night') return 'night';
+  // Spec 33: Read is Chiku's (learn) area; its Games are Kapi's (mind).
+  if (root === 'read') return path.split('/')[1] === 'games' ? 'mind' : 'learn';
   return root === 'plan' || root === 'train' || root === 'learn' || root === 'mind' ? root : undefined;
 }
 

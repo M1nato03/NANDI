@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { gradeItem, masteryMapState, matchPairKeys, type Confidence, type ItemAnswer } from '../../core/learn/engine';
+import { gradeItem, masteryMapState, matchPairKeys, orderOptions, type Confidence, type Drop, type ItemAnswer } from '../../core/learn/engine';
 import { revealSheet } from './revealSheet';
 import { RULES } from '../../core/rules.config';
 import { dayKey, isAfterBedtime } from '../../core/time';
@@ -13,7 +13,9 @@ import { tapHaptic } from '../../platform/haptics';
 import { go } from '../shell/router';
 import { longestCombo, perfectDrop } from '../../core/economy/gamify';
 import { saveGoldReview } from '../../data/repos/gamify';
-import { catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics, withoutMissing } from './flow';
+import { bundledConceptIds, catalogFor, chosenTopics, dailyDropId, nightDropId, findItem, makeDrop, reviewsOnlyRemainder, selectedTopicKey, topics, withoutMissing } from './flow';
+import { checkPicks, untaughtSteps } from '../../core/learn/books';
+import { lessonItemId } from '../../core/learn/steps';
 import { Cast } from '../cast/Cast';
 import { dropCast } from '../cast/placement';
 import { playCastSound } from '../cast/sound';
@@ -34,7 +36,7 @@ const currentTime = () => Date.now();
 const progressWord = (state: string) => state === 'Learning' ? 'started' : state.toLowerCase();
 const motionOn = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce';
 
-export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, goldReview = false, onDone }: { daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; goldReview?: boolean; onDone?: () => void }) {
+export function LearnDrop({ daily = true, night = false, itemCount, preferredConceptId, practiceTopicId, reviewDue = false, goldReview = false, chapter, onDone }: { chapter?: { topicId: string; moduleId: string; kind: 'read' | 'check' }; daily?: boolean; night?: boolean; itemCount?: number; preferredConceptId?: string; practiceTopicId?: string; reviewDue?: boolean; goldReview?: boolean; onDone?: () => void }) {
   const [now] = useState(currentTime);
   const [busy, setBusy] = useState(false);
   const data = useLiveQuery(async () => ({
@@ -119,6 +121,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       if (isDaily && ids.join('|') !== selected.join('|')) {
         await trackWrite(() => db.settings.put({ key: selectedTopicKey, value: selected, updatedAt: at, deleted: 0, deviceId }));
       }
+      if (chapter) { await startChapter(at, deviceId); return; }
       const today = dayKey(at);
       const answered = data.ledger.filter(fact => !fact.deleted && fact.dayKey === today && fact.kind !== 'learn-lesson');
       const { facts } = await loadEngineFacts(db);
@@ -141,6 +144,39 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       setMessage('Could not save this drop. Try again.');
     } finally { starting.current = false; setBusy(false); }
   };
+
+  /**
+   * Spec 33: a chapter is read in one sitting, as the day's drop when today's drop is free (not started), so its
+   * XP, quests and caps follow the drop's existing path; a second chapter on the same day keeps its own id. A chapter
+   * left half-read resumes where it stopped. Its quiz check is three of the chapter's items.
+   */
+  const startChapter = async (at: number, deviceId: string) => {
+    if (!data || !chapter) return;
+    const module = topics.find(pack => pack.body.topic.id === chapter.topicId)?.body.modules.find(row => row.id === chapter.moduleId);
+    if (!module) throw new Error('Unknown chapter');
+    const mine = (row: { deleted: number; drop: Drop }) => !row.deleted && row.drop.chapter?.topicId === chapter.topicId && row.drop.chapter.moduleId === chapter.moduleId && row.drop.chapter.kind === chapter.kind && row.drop.cursor < row.drop.items.length;
+    const resume = data.drops.filter(mine).sort((a, b) => b.updatedAt - a.updatedAt)[0];
+    if (resume) { setPracticeId(resume.id); return; }
+    const selected = chosenTopics(data.setting?.value);
+    if (!selected.includes(chapter.topicId)) await trackWrite(() => db.settings.put({ key: selectedTopicKey, value: [...selected, chapter.topicId], updatedAt: at, deleted: 0, deviceId }));
+    let created: Drop;
+    if (chapter.kind === 'read') {
+      const taught = new Set(data.ledger.filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));
+      const daily = data.dailyDrop;
+      const free = !daily || !!daily.deleted || (daily.drop.cursor === 0 && !daily.drop.pendingFeedback);
+      created = { id: free ? dailyDropId(at) : `drop:chapter:${chapter.topicId}:${chapter.moduleId}:${at}`, cursor: 0, ending: { kind: 'stopping-screen' }, chapter,
+        items: untaughtSteps(module, taught).map(({ concept, step }) => ({ itemId: lessonItemId(step.id), conceptId: concept.id, optionOrder: [], mode: 'new' as const, lesson: step.id })) };
+    } else {
+      created = { id: `drop:check:${chapter.topicId}:${chapter.moduleId}:${at}`, cursor: 0, ending: { kind: 'stopping-screen' }, chapter,
+        items: checkPicks(module, String(at)).map(({ concept, item }) => ({ itemId: item.id, conceptId: concept.id, optionOrder: orderOptions(item, at % 1_000_000), mode: 'new' as const })) };
+    }
+    await saveDrop(db, created, deviceId, at);
+    setPracticeId(created.id);
+  };
+  // A chapter's reading or check hands back to the chapter screen the moment it is finished.
+  const finishedChapter = !!chapter && !!drop && drop.cursor >= drop.items.length && !drop.pendingFeedback;
+  const handedBack = useRef(false);
+  useEffect(() => { if (finishedChapter && !handedBack.current) { handedBack.current = true; onDone?.(); } }, [finishedChapter, onDone]);
 
   useEffect(() => {
     if (data && practiceIds.length && (night ? !data.nightDrop : daily ? !data.dailyDrop : !practiceId)) queueMicrotask(() => void start(practiceIds));
@@ -230,7 +266,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
       const concept = concepts.find(row => row.id === conceptId);
       const bedtime = typeof data?.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime;
       // The played check reads the ledger itself, so a replayed lesson or a restored backup never offers Chiku twice (Codex B item 110).
-      if (concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), []) && !(await chikuPlayed(db, conceptId))) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
+      if (!chapter && concept?.chiku && chikuDue(concept, stepId, isAfterBedtime(at, bedtime), []) && !(await chikuPlayed(db, conceptId))) setChiku({ conceptId, scene: concept.chiku as ChikuScene });
     } catch { setMessage('Could not save this lesson. Try again.'); }
     finally { writing.current = false; setBusy(false); }
   };
@@ -245,6 +281,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
   if (chiku) return <div className="learn-drop learn-active"><header className="learn-drop-head"><span>Teach Chiku</span></header>
     <ChikuStage scene={chiku.scene} seed={`${chiku.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChiku(null); setChikuClosed(count => count + 1); }} />
     {message && <p role="status">{message}</p>}</div>;
+  if (!step && chapter) return <div className="learn-drop" role="status">Saving your place…</div>;
   if (!step) {
     const touched = [...new Set(drop.items.map(item => item.conceptId))].map(id => concepts.find(concept => concept.id === id)).filter((concept): concept is NonNullable<typeof concept> => !!concept);
     const improved = touched.filter(concept => masteryMapState(data.concepts.find(row => row.id === concept.id)) !== 'Not started');
@@ -257,7 +294,7 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
     const friends = [...new Set(drop.items.map(item => dropCast(item.mode === 'review' || reviewDue, true).name))];
     const celebrate = answeredHere && !night && drop.items.length > 0 && (!goldReview || passed);
     const askOffered = daily && !night && !goldReview && drop.items.length > 0 && shareDay;
-    const askLine = askOffered ? askLineFor(touched, data.concepts, currentTime(), taughtToday ? [taughtToday.concept.id] : []) : undefined;
+    const askLine = askOffered ? askLineFor(touched.filter(concept => bundledConceptIds.has(concept.id)), data.concepts, currentTime(), taughtToday && bundledConceptIds.has(taughtToday.concept.id) ? [taughtToday.concept.id] : []) : undefined;
     return <div className={`learn-drop learn-stop${celebrate ? ' learn-celebrate' : ''}`}>{celebrate && <FinishBurst />}<span className="pill">A good place to pause</span><h2 className="learn-stop-title">{night ? "That's the night drop" : daily ? "That's today's drop" : goldReview ? 'Gold review complete' : "That's your practice drop"}</h2>
       {celebrate && <div className="learn-finish-friends" aria-hidden="true">{friends.map((name, index) => <span key={name} style={{ '--i': index } as CSSProperties}><Cast name={name} pose="cheer" size={64} moment="hop" at={1} /></span>)}</div>}
       {goldReview ? <p>{passed ? 'Gold is yours. That idea is holding well.' : 'Try again tomorrow.'}</p> : !drop.items.length && (night || isAfterBedtime(currentTime(), typeof data.bedtime?.value === 'string' ? data.bedtime.value : RULES.night.defaultBedtime)) ? <p>Nothing to review tonight. Sleep is the best study.</p> : <>

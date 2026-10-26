@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from '../e2e/helpers/plan';
-import { seedTaughtTopics } from '../e2e/learn-helpers';
+import { answerRight, seedTaughtTopics, walkLesson } from '../e2e/learn-helpers';
 
 // The 360x800 review set (item 140): each main screen with seeded data, reduced motion so a frame is stable.
 // Run with `npm run shots`; add a shot here when a change touches a screen that is not in the set.
@@ -58,22 +58,55 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'plan-4-focus');
   });
 
-  test('learn: idea checks due, and a topic trail', async ({ page }) => {
+  // Spec 33: Read, a book, a chapter mid-way, each check kind, chapter done and book done.
+  test('read: home with idea checks due, then a book page', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
-    await page.goto('/?e2e#learn');
+    await page.goto('/?e2e#read');
     await seedTaughtTopics(page, ['money-markets']);
     await seedDueIdeas(page, ['inflation', 'compounding'], NOON.getTime());
     await page.reload();
-    const money = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
-    await money.getByRole('button', { name: 'Add to my drops' }).click();
     await expect(page.getByRole('region', { name: 'Review with Moti' })).toBeVisible();
-    await shot(page, 'learn-1-today');
-    await money.locator('.learn-topic-expand').click();
-    await page.locator('.learn-trail-chest').first().scrollIntoViewIfNeeded();
-    await shot(page, 'learn-2-trail', false);
+    await shot(page, 'read-1-home');
+    await page.goto('/?e2e#read/book/psychology');
+    await page.locator('.read-chapter-ideas summary').first().click();
+    await shot(page, 'read-2-book');
   });
 
-  for (const route of ['train', 'mind', 'you', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
+  test('read: a chapter mid-way, the quiz check, chapter done', async ({ page }) => {
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await walkLesson(page, 'how-things-work');
+    await expect(page.locator('.step-lesson')).toBeVisible();
+    await shot(page, 'read-3-chapter-midway', false);
+    await page.goto('/?e2e#read');
+    await seedTaughtTopics(page, ['how-things-work']);
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
+    await shot(page, 'read-4-check-quiz', false);
+    for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
+    await expect(page.locator('.read-done-card')).toBeVisible();
+    await shot(page, 'read-7-chapter-done', false);
+  });
+
+  test('read: the recall and Chiku checks, and book done', async ({ page }) => {
+    await page.clock.setFixedTime(NOON);
+    await page.goto('/?e2e#read');
+    await seedTaughtTopics(page, ['money-markets', 'psychology', 'history-civilisations']);
+    await page.goto('/?e2e#read/chapter/money-markets/money-markets-ch1');
+    await page.getByRole('button', { name: 'Inflation', exact: true }).click();
+    await shot(page, 'read-5-check-recall', false);
+    await page.goto('/?e2e#read/chapter/psychology/psychology-ch1');
+    await expect(page.locator('.chiku-skip')).toBeVisible();
+    await shot(page, 'read-6-check-chiku', false);
+    for (const chapter of ['history-civilisations-ch1', 'history-civilisations-ch2']) {
+      await page.goto(`/?e2e#read/chapter/history-civilisations/${chapter}`);
+      for (let question = 0; question < 3; question++) await answerRight(page, 'history-civilisations');
+    }
+    await expect(page.locator('.read-done-card')).toContainText('You finished');
+    await shot(page, 'read-8-book-done', false);
+  });
+
+  for (const route of ['you', 'read/games', 'train', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto(`/?e2e#${route}`);
     await expect(page.locator('main')).toBeVisible();

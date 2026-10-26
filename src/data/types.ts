@@ -296,3 +296,9 @@ export interface LearnItemRow extends StateRow {
 export interface LearnDropRow extends StateRow {
   drop: import('../core/learn/engine').Drop;
 }
+/** Spec 33 §7: a private book imported on this phone only (never bundled, shared or sent). `private` marks it in backups. */
+export interface PrivatePackRow extends StateRow {
+  pack: unknown;
+  importedAt: number;
+  private: true;
+}

@@ -309,6 +309,7 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-area-notice { --area-color: var(--area-notice); }
 .deck-area-learn { --area-color: var(--area-learn); }
 .deck-area-extra { --area-color: var(--area-extra); }
+.deck-area-night { --area-color: var(--area-night); }
 .deck-area-end { --area-color: var(--area-do); }
 .deck-card-body { flex: 1 1 auto; min-width: 0; }
 .deck-card h2, .deck-night .deck-card h2 { margin: 0 0 8px; font-size: 26px; line-height: 30px; letter-spacing: -.035em; overflow-wrap: anywhere; }

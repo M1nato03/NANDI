@@ -2,12 +2,24 @@ import { composeConceptPractice, composeDrop, orderOptions, type ConceptState, t
 import { findStep, goldItems, interleave, lessonItemId, nextStep, nextStepAcross, practiceTail, taughtCatalog, type TailAnswer } from '../../core/learn/steps';
 import { dailyDropId, nightDropId } from './dropIds';
 import { bundledTopicPacks } from '../../data/packs/seed';
-import type { TopicConcept, TopicItem } from '../../data/packs/schemas';
+import type { TopicConcept, TopicItem, TopicPack } from '../../data/packs/schemas';
 import type { LearnConceptRow, LearnItemRow } from '../../data/types';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { RULES } from '../../core/rules.config';
 
-export const topics = bundledTopicPacks;
+/** Every book on this phone: the bundled ones, then any private books imported here (spec 33 §7). */
+export const topics: TopicPack[] = [...bundledTopicPacks];
+/** Bundled book ids: only these may appear in anything shared or sent (private books never do). */
+export const bundledBookIds: ReadonlySet<string> = new Set(bundledTopicPacks.map(pack => pack.body.topic.id));
+export const bundledConceptIds: ReadonlySet<string> = new Set(bundledTopicPacks.flatMap(pack => pack.body.modules.flatMap(module => module.concepts.map(concept => concept.id))));
+/** Puts this phone's private books after the bundled ones. Returns whether the list changed. */
+export function setPrivateTopics(packs: readonly TopicPack[]): boolean {
+  const key = (list: readonly TopicPack[]) => list.map(pack => `${pack.id}@${pack.version}`).join('|');
+  const next = [...bundledTopicPacks, ...packs.filter(pack => !bundledBookIds.has(pack.body.topic.id))];
+  if (key(next) === key(topics)) return false;
+  topics.splice(0, topics.length, ...next);
+  return true;
+}
 export const selectedTopicKey = 'learn.selectedTopics';
 export { dailyDropId, nightDropId };
 export function chosenTopics(value: unknown): string[] {

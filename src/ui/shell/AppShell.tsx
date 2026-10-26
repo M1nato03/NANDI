@@ -3,6 +3,8 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
+import { privateTopicPacks } from '../../data/packs/privateBooks';
+import { setPrivateTopics } from '../learn/flow';
 import { getOrCreateDeviceId } from '../../data/device';
 import { reconcileSolvedBoards } from '../../data/repos/puzzleRuns';
 import { recordError } from '../errorRing';
@@ -48,6 +50,7 @@ const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(m
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
+const Chapter = lazy(() => import('../learn/Chapter').then(module => ({ default: module.Chapter })));
 const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
 const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
 const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
@@ -65,6 +68,10 @@ const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(modul
 
 export function AppShell() {
   const [path, setPath] = useState(route);
+  // Spec 33 §7: private books imported on this phone join the library; a change remounts the screen once.
+  const privateRows = useLiveQuery(() => db.privatePacks.toArray(), []);
+  const [booksGen, setBooksGen] = useState(0);
+  useEffect(() => { if (privateRows && setPrivateTopics(privateTopicPacks(privateRows))) queueMicrotask(() => setBooksGen(gen => gen + 1)); }, [privateRows]);
   const [today, setToday] = useState(() => dayKey(Date.now()));
   const [clockTime, setClockTime] = useState(Date.now);
   const [pause, setPause] = useState<{ packageName: string; reason: string; minutes: number } | null>(null);
@@ -183,19 +190,22 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'plan/focus') screen = <Today />;
-  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/chiku-demo') screen = <ChikuDemo />;
-  else if (path === 'learn' || path === 'learn/drop') screen = <Learn entry={path.split('/')[1]} />;
-  else if (path === 'learn/lesson' || path === 'learn/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'read/chiku-demo') screen = <ChikuDemo />;
+  // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
+  else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
+  else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;
+  else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <Chapter key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
+  else if (path === 'read/lesson' || path === 'read/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
+  else if (path === 'read/games' || path.startsWith('read/games/')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
-  else if (path === 'mind' || path.startsWith('mind/')) screen = <Mind key={path} entry={path.split('/').slice(1).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
   else if (path === 'kolam') screen = <KolamScreen />;
-  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/haveli-demo') screen = <HaveliDemo />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'read/haveli-demo') screen = <HaveliDemo />;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
-  const root = ['plan', 'train', 'learn', 'mind', 'you'].includes(path);
+  const root = ['plan', 'read', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}><NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /></Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense key={booksGen} fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}><NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /></Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

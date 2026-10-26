@@ -2,20 +2,21 @@ import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { learningFigures, masteryMapState } from '../../core/learn/engine';
 import { loadEngineFacts } from '../../data/repos/learn-engine';
-import { trackWrite } from '../../core/pendingWrites';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
-import type { LearnDropRow } from '../../data/types';
 import { LearnDrop } from '../learn/LearnDrop';
 import { Mind } from './Mind';
 import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from '../learn/flow';
 import { go } from '../shell/router';
 import { chestReady } from '../../core/economy/gamify';
-import { cardHook, goldItems } from '../../core/learn/steps';
+import { goldItems } from '../../core/learn/steps';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { effectiveBedtime } from '../../data/repos/night';
 import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
+import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryShelves, nextChapter, type ChapterState } from '../../core/learn/books';
+import { Cover } from '../learn/Cover';
+import '../learn/read.css';
 import { Cast } from '../cast/Cast';
 
 // Chiku waits at each checkpoint and cheers once every idea before it is strong (item 135: Learn is Chiku's area only).
@@ -63,10 +64,11 @@ import { FriendStage } from '../cast/FriendStage';
 import { saveChikuPlayed } from '../../data/repos/learn-engine';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
-const dropStatus = (row?: LearnDropRow) => !row ? 'Not started' : row.drop.cursor >= row.drop.items.length ? 'Done for today' : `${row.drop.cursor} of ${row.drop.items.length} done`;
-const dropAction = (row?: LearnDropRow) => !row ? 'Start' : row.drop.cursor >= row.drop.items.length ? 'View' : 'Continue';
 
-export function Learn({ entry }: { entry?: string }) {
+const STATE_LABEL: Record<ChapterState, string> = { 'not-started': 'Not started', 'in-progress': 'In progress', done: 'Done', due: 'Due for review' };
+
+/** Spec 33: the Read tab (Continue, Review with Moti, the Library, Games) and each book's page. */
+export function Learn({ entry, book: bookParam }: { entry?: string; book?: string }) {
   const [practice, setPractice] = useState<Practice>();
   const [moti, setMoti] = useState<'haveli' | 'matka' | null>(null);
   const [chikuFor, setChikuFor] = useState<{ conceptId: string; title: string; scene: ChikuScene } | null>(null);
@@ -77,7 +79,6 @@ export function Learn({ entry }: { entry?: string }) {
     const target = [...document.querySelectorAll<HTMLElement>('button[aria-label]')].find(node => node.getAttribute('aria-label') === `Teach Chiku: ${chikuBack}` || node.getAttribute('aria-label') === `Practice this idea: ${chikuBack}`);
     target?.focus();
   }, [chikuBack, chikuFor]);
-  const [expanded, setExpanded] = useState<string>();
   const [openedAt] = useState(() => Date.now());
   const [message, setMessage] = useState('');
   const data = useLiveQuery(async () => ({
@@ -97,13 +98,10 @@ export function Learn({ entry }: { entry?: string }) {
   const selected = chosenTopics(data?.setting?.value);
   const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
-  // Today's lesson in a saved daily drop that has not reached it yet, so its topic card names the step Today opens
-  // (Codex A items 73, 74). Once the drop is past its lesson, the card follows the next untaught step.
-  const savedDrop = data?.daily && !data.daily.deleted ? data.daily.drop : undefined;
-  const savedLesson = savedDrop?.items.slice(savedDrop.cursor).find(item => item.lesson)?.lesson;
   const [unitScene, setUnitScene] = useState<string>();
   const learned = new Set((data?.states ?? []).filter(row => !!row.firstLearnedAt).map(row => row.id));
-  const completedUnit = data && completedModuleKey(topics.flatMap(pack => pack.body.modules), learned, id => localStorage.getItem(`cast.unit:${id}`) === 'seen');
+  // Spec 33: a book is the unit (its chapters are smaller), under the id the unit had before.
+  const completedUnit = data && completedModuleKey(topics.map(pack => ({ id: bookUnitId(pack), concepts: bookConcepts(pack) })), learned, id => localStorage.getItem(`cast.unit:${id}`) === 'seen');
   useEffect(() => {
     if (!completedUnit || matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce') return;
     try { localStorage.setItem(`cast.unit:${completedUnit}`, 'seen'); } catch { /* Scene remains optional when storage is blocked. */ }
@@ -118,16 +116,6 @@ export function Learn({ entry }: { entry?: string }) {
   };
   const dueCount = topics.filter(pack => selected.includes(pack.body.topic.id))
     .flatMap(pack => pack.body.modules.flatMap(module => module.concepts)).filter(concept => isDue(concept.id)).length;
-  const toggle = async (id: string) => {
-    const next = selected.includes(id) ? selected.filter(value => value !== id) : [...selected, id];
-    if (!next.length) return;
-    try {
-      const now = openedAt;
-      const deviceId = await getOrCreateDeviceId(db, now);
-      await trackWrite(() => db.settings.put({ key: selectedTopicKey, value: next, updatedAt: now, deleted: 0, deviceId }));
-      setMessage('Topics updated.');
-    } catch { setMessage('Could not update topics. Try again.'); }
-  };
   // Spec 26: Moti's haveli (finished ideas with pieces) and, on Sundays before bedtime, Moti's matka.
   const today = dayKey(now);
   const haveliIdeas = finishedIdeas(HAVELI_IDEAS, data?.ledger ?? []);
@@ -148,42 +136,87 @@ export function Learn({ entry }: { entry?: string }) {
   if (chikuFor) return <section className="screen learn-screen"><ChikuStage scene={chikuFor.scene} seed={`${chikuFor.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = Date.now(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chikuFor.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChikuBack(chikuFor.title); setChikuFor(null); }} />{message && <p role="status">{message}</p>}</section>;
   if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
   if (practice) return <section className="screen learn-screen">{(practice.reviewDue || practice.goldReview) && <AreaScope area="review" />}<LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
-  return <section className="screen learn-screen"><FriendStage area="learn"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1></FriendStage>
-    <section className="card learn-today" aria-label="Today"><h2>Today</h2>
-      <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
-      <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>
+  // Spec 33: chapters done, books touched most recently, and each idea's place in the trail (Practice, Teach Chiku, Gold).
+  const chaptersDone = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chapter' && !fact.deleted).map(fact => fact.refId));
+  const bookOf = new Map(topics.flatMap(pack => bookConcepts(pack).map(concept => [concept.id, pack.body.topic.id] as const)));
+  const lastTouched = new Map<string, number>();
+  for (const fact of data?.ledger ?? []) {
+    if (fact.deleted || (fact.kind !== 'learn-lesson' && fact.kind !== 'chapter')) continue;
+    const id = fact.kind === 'chapter' ? fact.refId.split(':')[0]! : bookOf.get(String(fact.inputs.conceptId));
+    if (id) lastTouched.set(id, Math.max(lastTouched.get(id) ?? 0, fact.updatedAt));
+  }
+  const taughtOn = Object.fromEntries((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => [fact.refId, fact.dayKey]));
+  const gold = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'gold-review').map(fact => fact.refId));
+  const stateOf = (topicId: string, module: (typeof topics)[number]['body']['modules'][number]) => chapterState({ topicId, module, taught: taughtSteps, done: chaptersDone, due: isDue });
+  const ideaRows = (topicId: string, concepts: ReturnType<typeof bookConcepts>) => <div className="learn-trail">{concepts.map((concept, index) => {
+    const state = gold.has(concept.id) ? 'Gold' : masteryMapState(stateById.get(concept.id));
+    const triedToday = (data?.ledger ?? []).some(fact => fact.kind === 'gold-attempt' && fact.refId === `${concept.id}:${new Date(openedAt).toISOString().slice(0, 10)}`);
+    return <div key={concept.id} className={`learn-trail-node learn-idea-row offset-${index % 3}`} data-state={state === 'Not started' ? 'new' : state.toLowerCase()}><span className="learn-trail-dot" aria-hidden="true">{index + 1}</span><div><strong>{concept.title}</strong><small>{state}</small></div>
+      <button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button>
+      {chikuOpen(concept, taughtSteps, chikuPlayedIds, afterBedtime) && <button type="button" className="secondary learn-chiku-chip" aria-label={`Teach Chiku: ${concept.title}`} onClick={() => { if (data && isAfterBedtime(Date.now(), data.bedtime)) return; setChikuFor({ conceptId: concept.id, title: concept.title, scene: concept.chiku as ChikuScene }); }}>Teach Chiku</button>}
+      {state === 'Mastered' && goldItems(concept, taughtOn, dayKey(openedAt)) && <button type="button" className="secondary" disabled={triedToday} onClick={() => setPractice({ conceptId: concept.id, topicId, goldReview: true })}>Gold review</button>}</div>;
+  })}</div>;
+
+  if (entry === 'book') {
+    const pack = topics.find(row => row.body.topic.id === bookParam);
+    if (!pack) return <section className="screen learn-screen"><h1>Book not found</h1><button type="button" onClick={() => go('read')}>Back to library</button>{scene}</section>;
+    const topicId = pack.body.topic.id, book = pack.body.book;
+    const next = nextChapter(pack, chaptersDone);
+    const started = pack.body.modules.some(module => stateOf(topicId, module) !== 'not-started');
+    const concepts = bookConcepts(pack);
+    const mastered = new Set(concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Mastered' || gold.has(concept.id)).map(concept => concept.id));
+    const chest = chestReady(concepts.map(concept => concept.id), mastered);
+    return <section className="screen learn-screen read-book-page">
+      <div className="read-book-head"><Cover pack={pack} size="large" /><div><h1>{bookTitle(pack)}</h1><p>{book?.author ?? 'NANDI'}{book?.year ? ` · ${book.year}` : ''}</p></div></div>
+      {book && <p className="read-blurb">{book.blurb}</p>}
+      <p className="small">{pack.body.modules.length} chapters · {bookMinutes(pack)} min</p>
+      {book?.rights === 'public-domain' && <p className="small read-rights">Original {book.year ?? ''} text, free to read in India</p>}
+      {book?.rights === 'private' && <p className="small read-rights">Private copy on this phone</p>}
+      {!next ? <p className="pill">Finished</p> : afterBedtime ? <p className="small" role="status">New chapters open tomorrow. Your idea checks stay open tonight.</p>
+        : <button type="button" className="read-start" onClick={() => go(`read/chapter/${topicId}/${next.id}`)}>{started ? 'Continue' : 'Start'} · Chapter {pack.body.modules.indexOf(next) + 1}</button>}
+      <ol className="read-chapters" aria-label="Chapters">{pack.body.modules.map((module, index) => {
+        const state = stateOf(topicId, module);
+        return <li key={module.id} className="card read-chapter" data-state={state}>
+          <button type="button" className="read-chapter-open" aria-label={`Chapter ${index + 1}: ${module.title}, ${STATE_LABEL[state]}`} onClick={() => go(`read/chapter/${topicId}/${module.id}`)}>
+            <span className="read-chapter-num" aria-hidden="true">{index + 1}</span><span className="read-chapter-text"><strong>{module.title}</strong><span className="small">{module.minutes ?? 0} min · {module.concepts.length} ideas</span></span><span className="pill">{STATE_LABEL[state]}</span>
+          </button>
+          <details className="read-chapter-ideas"><summary>Ideas in this chapter</summary>{ideaRows(topicId, module.concepts)}</details>
+        </li>;
+      })}</ol>
+      <div className="learn-trail-chest"><Cast name="Chiku" pose={chest ? 'cheer' : 'idle'} size={44} />Book chest · {chest ? 'Opened' : 'Keep reading'} · {RULES.gamify.unitChestShards} Shards</div>
+      {message && <p role="status">{message}</p>}{scene}
+    </section>;
+  }
+
+  const current = currentBook(topics, { done: chaptersDone, lastTouched });
+  const upNext = current && nextChapter(current, chaptersDone);
+  const upNextState = current && upNext ? stateOf(current.body.topic.id, upNext) : undefined;
+  const shelves = libraryShelves(topics, chaptersDone);
+  return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Read</p><h1>Your books</h1></FriendStage>
+    <section className="card read-continue" aria-label="Continue">
+      {current && upNext ? <>
+        <Cover pack={current} size="thumb" />
+        <div className="read-continue-text"><p className="eyebrow">{upNextState === 'in-progress' ? 'Continue' : 'Up next'}</p><h2>{bookTitle(current)}</h2><p>Chapter {current.body.modules.indexOf(upNext) + 1} · {upNext.minutes ?? 0} min</p><p className="small">{upNext.title}</p></div>
+        {afterBedtime ? <p className="small read-night-note" role="status">New chapters open tomorrow. Your idea checks stay open tonight.</p>
+          : <button type="button" onClick={() => go(`read/chapter/${current.body.topic.id}/${upNext.id}`)}>{upNextState === 'in-progress' ? 'Continue' : 'Start'}</button>}
+      </> : <p className="read-empty">Every book here is finished. New books are on their way.</p>}
     </section>
-    {/* Item 135: one friend per panel. Today is Chiku's; review (idea checks, haveli, matka) gets Moti's own rose card. */}
+    {/* Item 135: one friend per panel. Review (idea checks, haveli, matka) is Moti's own rose card. */}
     {(dueCount > 0 || haveliIdeas.length > 0 || (matkaItems.length > 0 && matkaDone.length < matkaItems.length)) && <section className="card learn-moti" data-area="review" aria-label="Review with Moti">
       <FriendStage area="review" size={48} compact><h2>Review with Moti</h2></FriendStage>
       {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
       {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
       {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
     </section>}
-    <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>
-    {[...topics].sort((a, b) => Number(selected.includes(b.body.topic.id)) - Number(selected.includes(a.body.topic.id))).map(pack => {
-      const topicId = pack.body.topic.id;
-      const concepts = pack.body.modules.flatMap(module => module.concepts);
-      const strong = concepts.filter(concept => ['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))).length;
-      // Gold review waits until every step of the idea was taught on an earlier day.
-      const taughtOn = Object.fromEntries((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => [fact.refId, fact.dayKey]));
-      const gold = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'gold-review').map(fact => fact.refId));
-      const mastered = new Set(concepts.filter(concept => masteryMapState(stateById.get(concept.id)) === 'Mastered' || gold.has(concept.id)).map(concept => concept.id));
-      const open = expanded === topicId;
-      // Each card leads with the next lesson's own hook guess, which that lesson answers (items 71 B3, 72); once every
-      // step is taught, with the first idea not yet strong. The six topics no longer read alike (audit 10-21).
-      const hook = cardHook(concepts, new Set(Object.keys(taughtOn)), concepts.find(concept => !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(concept.id)))), savedLesson, afterBedtime);
-      return <section className="card learn-map-topic" key={pack.id}>
-        <button type="button" className="learn-topic-expand" aria-expanded={open} aria-controls={`learn-ideas-${topicId}`} onClick={() => setExpanded(open ? undefined : topicId)}>
-          <span className="learn-topic-title"><strong>{pack.title}</strong><span aria-hidden="true">{open ? '−' : '+'}</span></span>
-          <span className="learn-topic-hook" data-step={hook.stepId}>{hook.text ?? pack.description}</span>
-          <span className="learn-topic-progress-label">{strong} of {concepts.length} ideas strong</span>
-          <span className="learn-topic-progress" role="progressbar" aria-label={`${pack.title} strong ideas`} aria-valuenow={strong} aria-valuemin={0} aria-valuemax={concepts.length}><span style={{ width: `${strong / concepts.length * 100}%` }} /></span>
-        </button>
-        <button type="button" className="secondary learn-topic-toggle" aria-pressed={selected.includes(topicId)} onClick={() => void toggle(topicId)}>{selected.includes(topicId) ? 'In my drops ✓' : 'Add to my drops'}</button>
-        {open && <div id={`learn-ideas-${topicId}`} className="learn-trail" aria-label={`${pack.title} mastery map`}><div className="learn-trail-legend">{(['New', 'Learning', 'Strong'] as const).filter(label => concepts.some(concept => (masteryMapState(stateById.get(concept.id)) === 'Not started' ? 'New' : masteryMapState(stateById.get(concept.id))) === label)).map(label => <h3 key={label}>{label}</h3>)}</div>{pack.body.modules.map(module => { const current = module.concepts.findIndex(item => !gold.has(item.id) && !['Strong', 'Mastered'].includes(masteryMapState(stateById.get(item.id)))); return <section key={module.id} className="learn-trail-module"><h3>{module.title}</h3>{module.concepts.map((concept, index) => { const state = gold.has(concept.id) ? 'Gold' : masteryMapState(stateById.get(concept.id)); const triedToday = (data?.ledger ?? []).some(fact => fact.kind === 'gold-attempt' && fact.refId === `${concept.id}:${new Date(openedAt).toISOString().slice(0, 10)}`); return <div key={concept.id}><div className={`learn-trail-node learn-idea-row offset-${index % 3}`} data-state={state === 'Not started' ? 'new' : state.toLowerCase()} data-current={index === current || undefined}><span className="learn-trail-dot" aria-hidden="true">{index + 1}</span><div><strong>{concept.title}</strong><small>{state}</small></div><button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button>{chikuOpen(concept, taughtSteps, chikuPlayedIds, afterBedtime) && <button type="button" className="secondary learn-chiku-chip" aria-label={`Teach Chiku: ${concept.title}`} onClick={() => { if (data && isAfterBedtime(Date.now(), data.bedtime)) return; setChikuFor({ conceptId: concept.id, title: concept.title, scene: concept.chiku as ChikuScene }); }}>Teach Chiku</button>}{state === 'Mastered' && goldItems(concept, taughtOn, dayKey(openedAt)) && <button type="button" className="secondary" disabled={triedToday} onClick={() => setPractice({ conceptId: concept.id, topicId, goldReview: true })}>Gold review</button>}</div>{(index + 1) % 4 === 0 && index < module.concepts.length - 1 && <div className="learn-trail-checkpoint"><Cast name="Chiku" pose={module.concepts.slice(0, index + 1).every(item => gold.has(item.id) || ['Strong', 'Mastered'].includes(masteryMapState(stateById.get(item.id)))) ? 'cheer' : 'think'} size={44} />Checkpoint · {index + 1} ideas</div>}</div>; })}<div className="learn-trail-chest"><Cast name="Chiku" pose={chestReady(module.concepts.map(concept => concept.id), mastered) ? 'cheer' : 'idle'} size={44} />Unit chest · {chestReady(module.concepts.map(concept => concept.id), mastered) ? 'Opened' : 'Keep exploring'} · {RULES.gamify.unitChestShards} Shards</div></section>; })}</div>}
-      </section>;
-    })}
+    <section className="read-library" aria-label="Library"><h2>Library</h2>
+      {shelves.map(shelf => <section key={shelf.shelf} className="read-shelf" aria-label={shelf.title}><h3>{shelf.title}</h3>
+        <ul className="read-shelf-row">{shelf.books.map(pack => {
+          const chapters = pack.body.modules.length, read = pack.body.modules.filter(module => chaptersDone.has(chapterRef(pack.body.topic.id, module.id))).length;
+          return <li key={pack.id}><button type="button" className="read-book-tile" aria-label={`${bookTitle(pack)} · ${bookDone(pack, chaptersDone) ? 'finished' : `${read} of ${chapters} chapters`}`} onClick={() => go(`read/book/${pack.body.topic.id}`)}>
+            <Cover pack={pack} /><span className="small">{bookDone(pack, chaptersDone) ? 'Finished' : `${read} of ${chapters} chapters`}</span></button></li>;
+        })}</ul></section>)}
+    </section>
+    <details className="card read-games"><summary>Games</summary><p>Kapi's shelf: a board of each kind a day, and the case.</p><button type="button" className="secondary" onClick={() => go('read/games')}>Open Kapi's shelf</button></details>
     <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2><p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>{figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>
     {message && <p role="status">{message}</p>}
     <Mind entry="courses" />{scene}
