@@ -139,7 +139,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
     if (!title || title === parent) return fallback;
     return /^step \d+ of \d+$/i.test(title.slice(parent.length + 3)) && title.startsWith(`${parent} — `) ? fallback : task.title;
   };
-  const timeOf = (task: TaskRow) => (task.timeSet || task.scheduledStart != null) && <span className="small mor-time">{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>;
+  const timeOf = (task: TaskRow) => (task.timeSet || task.scheduledStart != null) && <span className="small mor-time" id={`time-${task.id}`}>{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>;
   // The moves a row offers behind its ⋯: the two lists it is not in.
   const MOVES: Record<'today' | 'tomorrow' | 'later', { target: MoveTarget; where: string; label: string; aria: string }[]> = {
     today: [{ target: 'tomorrow', where: 'Tomorrow', label: 'Tomorrow →', aria: 'Tomorrow' }, { target: 'later', where: 'Later', label: 'Later', aria: 'Later' }],
@@ -149,7 +149,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
   // Item 139: every row is one compact line: circle, title (and time), a small Start pill, and ⋯ for moves.
   const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className={`task-row ui-list-row mor-row${task.parentId ? ' mor-step' : ''}`} key={task.id} data-list={list}>
     <button type="button" className="done-circle" aria-label={`Done: ${task.title}`} disabled={board.busy} onClick={() => void done(task)}><span aria-hidden="true">○</span></button>
-    <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(task)}><span className="mor-title">{stepLabel(task)}</span>{timeOf(task)}</button></div>
+    <div className="task-row-main"><button type="button" className="task-title-button" aria-label={stepLabel(task)} aria-describedby={task.timeSet || task.scheduledStart != null ? `time-${task.id}` : undefined} onClick={() => openDetail(task)}><span className="mor-title">{stepLabel(task)}</span>{timeOf(task)}</button></div>
     {runningTask?.id !== task.id && <button type="button" className="secondary mor-start" disabled={board.busy} aria-label={`Start: ${task.title}`} onClick={() => void start(task)}>Start</button>}
     <button type="button" className="text-button mor-more" aria-label={`More for ${task.title}`} aria-expanded={menu === task.id} onClick={() => setMenu(current => current === task.id ? null : task.id)}><span aria-hidden="true">⋯</span></button>
     {menu === task.id && <div className="mor-menu" role="group" aria-label={`Move ${task.title}`}>{MOVES[list].map(item => <button type="button" key={item.where} className="secondary" disabled={board.busy} aria-label={`${item.aria}: ${task.title}`} onClick={() => void move(task, item.target, item.where)}>{item.label}</button>)}</div>}
@@ -160,7 +160,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
     const left = group.steps.filter(step => !step.deleted && step.status !== 'done' && step.status !== 'dropped').length;
     return <li className="task-row ui-list-row mor-row mor-parent" key={group.parent.id} data-list={list}>
       <button type="button" className="done-circle" aria-label={`Done: ${group.parent.title}`} aria-expanded={confirmAll === group.parent.id} disabled={board.busy || !left} onClick={() => setConfirmAll(current => current === group.parent.id ? null : group.parent.id)}><span aria-hidden="true">○</span></button>
-      <div className="task-row-main"><button type="button" className="task-title-button" onClick={() => openDetail(group.parent)}><span className="mor-title">{group.parent.title}</span><span className="small">{group.done} of {group.total} steps done</span></button></div>
+      <div className="task-row-main"><button type="button" className="task-title-button" aria-label={group.parent.title} aria-describedby={`progress-${group.parent.id}`} onClick={() => openDetail(group.parent)}><span className="mor-title">{group.parent.title}</span><span className="small" id={`progress-${group.parent.id}`}>{group.done} of {group.total} steps done</span></button></div>
       {confirmAll === group.parent.id && <div className="mor-confirm" role="group" aria-label={`Finish ${group.parent.title}`}><span>{left === 1 ? 'Mark the last step done?' : `Mark all ${left} steps done?`}</span><button type="button" disabled={board.busy} onClick={() => void doneAll(group)}>Mark done</button><button type="button" className="secondary" onClick={() => setConfirmAll(null)}>Cancel</button></div>}
     </li>;
   };
