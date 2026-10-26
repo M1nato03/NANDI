@@ -136,12 +136,23 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
       if (concept.recall) {
         for (const decoy of concept.recall.decoys) if (!concept.misconceptions.some(item => item.id === decoy.misconceptionId)) errors.push(`${where}.recall: unknown misconception ${decoy.misconceptionId}`);
         for (const id of concept.recall.claimIds) if (!concept.claims.some(claim => claim.id === id)) errors.push(`${where}.recall: unknown claim ${id}`);
-        for (const line of [...concept.recall.pieces, ...concept.recall.decoys.flatMap(decoy => [decoy.text, decoy.fix])]) checkText(`${where}.recall`, line);
+        // Readability is measured on what is read as a sentence: the rebuilt takeaway and each fix. A 3-word piece has
+        // no meaningful Flesch score, so pieces and decoy tiles get the banned-word and advice checks only.
+        for (const line of [concept.recall.pieces.join(' '), ...concept.recall.decoys.map(decoy => decoy.fix)]) checkText(`${where}.recall`, line);
+        for (const line of [...concept.recall.pieces, ...concept.recall.decoys.map(decoy => decoy.text)]) {
+          if (bannedPattern.test(line)) errors.push(`${where}.recall: banned words`);
+          if (advicePattern.test(line)) errors.push(`${where}.recall: advice is prohibited`);
+        }
       }
       if (concept.chiku) {
         for (const problem of chikuProblems(concept.chiku as ChikuScene, concept.misconceptions.map(item => item.id))) errors.push(`${where}.chiku: ${problem}`);
         for (const id of concept.chiku.claimIds) if (!concept.claims.some(claim => claim.id === id)) errors.push(`${where}.chiku: unknown claim ${id}`);
-        for (const line of [concept.chiku.ask, concept.chiku.newDay.caption, concept.chiku.truth.caption, ...concept.chiku.cards.map(card => card.text), ...concept.chiku.guesses.map(guess => guess.why)]) checkText(`${where}.chiku`, line);
+        // Sentences get the readability check; a card is a short label ("Nobody ever notices"), so banned words and advice only.
+        for (const line of [concept.chiku.ask, concept.chiku.newDay.caption, concept.chiku.truth.caption, ...concept.chiku.guesses.map(guess => guess.why)]) checkText(`${where}.chiku`, line);
+        for (const card of concept.chiku.cards) {
+          if (bannedPattern.test(card.text)) errors.push(`${where}.chiku: banned words`);
+          if (advicePattern.test(card.text)) errors.push(`${where}.chiku: advice is prohibited`);
+        }
       }
       const claimIds = new Set<string>();
       for (const claim of concept.claims) {
