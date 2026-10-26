@@ -1514,6 +1514,54 @@
                 "takeaway": "On average a loss weighs about twice a gain; people differ."
               }
             ],
+            "chiku": {
+              "ask": "A cafe offers Leila, 22, a free coin toss: win $20 or get $0. Why is yes an easy choice? Give me one card.",
+              "cards": [
+                {
+                  "text": "No loss from her start",
+                  "correct": true
+                },
+                {
+                  "text": "Gains and losses feel equal",
+                  "misconceptionId": "loss-aversion-m1"
+                },
+                {
+                  "text": "The starting point changes nothing",
+                  "misconceptionId": "loss-aversion-m3"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: The cafe hands Leila $10 first. The toss could win her $10 more or lose that $10.",
+                "prop": "coin",
+                "question": "Will she take the toss now?"
+              },
+              "guesses": [
+                {
+                  "answer": "no",
+                  "why": "Your card says she judges from her start. The toss can take $10 of it, and a loss weighs more than a same-size gain.",
+                  "act": "walk-away"
+                },
+                {
+                  "answer": "yes",
+                  "why": "Your card says gaining or losing $10 feels equal. The fair toss still looks fine.",
+                  "act": "pay"
+                },
+                {
+                  "answer": "yes",
+                  "why": "Your card says the starting point changes nothing. She said yes to a toss before.",
+                  "act": "pay"
+                }
+              ],
+              "truth": {
+                "answer": "no",
+                "caption": "Leila kept the sure $10 and passed on the toss.",
+                "act": "walk-away"
+              },
+              "claimIds": [
+                "loss-aversion-c1",
+                "loss-aversion-c2"
+              ]
+            },
             "recall": {
               "pieces": [
                 "On average a loss weighs",
@@ -3027,54 +3075,6 @@
                 "takeaway": "To test an idea, look for the case that could break it."
               }
             ],
-            "chiku": {
-              "ask": "Omar, 21, has seen three late buses. He guesses every bus on his route is late. What can show if he is right? Give me one card.",
-              "cards": [
-                {
-                  "text": "Watching for an early bus",
-                  "correct": true
-                },
-                {
-                  "text": "One late bus proves it",
-                  "misconceptionId": "confirmation-bias-m1"
-                },
-                {
-                  "text": "Many late buses prove it",
-                  "misconceptionId": "confirmation-bias-m3"
-                }
-              ],
-              "newDay": {
-                "caption": "New day: Omar sees two more late buses, then one early bus.",
-                "prop": "bus",
-                "question": "Does his every-bus-is-late guess still hold?"
-              },
-              "guesses": [
-                {
-                  "answer": "no",
-                  "why": "Your card says watch for an early bus. One came, so 'every bus is late' fails.",
-                  "act": "close-book"
-                },
-                {
-                  "answer": "yes",
-                  "why": "Your card says one late bus proves it. He saw two today, so it holds.",
-                  "act": "open-book"
-                },
-                {
-                  "answer": "yes",
-                  "why": "Your card says many late buses prove it. He has seen five now, so it holds.",
-                  "act": "open-book"
-                }
-              ],
-              "truth": {
-                "answer": "no",
-                "caption": "One early bus shows not every bus is late. Omar crossed out his guess.",
-                "act": "close-book"
-              },
-              "claimIds": [
-                "confirmation-bias-c2",
-                "confirmation-bias-c3"
-              ]
-            },
             "recall": {
               "pieces": [
                 "To test an idea,",
