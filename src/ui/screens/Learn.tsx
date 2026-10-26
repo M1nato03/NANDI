@@ -166,7 +166,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
       <div className="read-book-head"><Cover pack={pack} size="large" /><div><h1>{bookTitle(pack)}</h1><p>{book?.author ?? 'NANDI'}{book?.year ? ` · ${book.year}` : ''}</p></div></div>
       {book && <p className="read-blurb">{book.blurb}</p>}
       <p className="small">{pack.body.modules.length} chapters · {bookMinutes(pack)} min</p>
-      {book?.rights === 'public-domain' && <p className="small read-rights">Original {book.year ?? ''} text, free to read in India</p>}
+      {book?.rights === 'public-domain' && <p className="small read-rights">Based on the {book.year ?? ''} edition, free to use in India</p>}
       {book?.rights === 'private' && <p className="small read-rights">Private copy on this phone</p>}
       {!next ? <p className="pill">Finished</p> : afterBedtime ? <p className="small" role="status">New chapters open tomorrow. Your idea checks stay open tonight.</p>
         : <button type="button" className="read-start" onClick={() => go(`read/chapter/${topicId}/${next.id}`)}>{started ? 'Continue' : 'Start'} · Chapter {pack.body.modules.indexOf(next) + 1}</button>}
