@@ -48,7 +48,7 @@ test("Moti's matka: on Sunday three sealed first guesses from 5-21 days ago, the
   await expect(page.getByRole('button', { name: /^Moti's matka/ })).toHaveCount(0);
   await page.clock.setFixedTime(new Date('2026-11-08T12:00:00')); // Sunday
   await page.reload();
-  await page.getByRole('button', { name: "Moti's matka · 3 sealed guesses" }).click();
+  await page.getByRole('button', { name: "Matka · 3 sealed guesses" }).click();
   const matka = page.getByRole('region', { name: "Moti's matka" });
   for (let i = 0; i < 3; i++) {
     await expect(matka).toContainText('Moti sealed this in the matka before your lesson.');
