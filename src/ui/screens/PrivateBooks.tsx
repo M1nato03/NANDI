@@ -33,7 +33,7 @@ export function PrivateBooks() {
     {books.length > 0 && <ul className="you-private-list">{books.map(pack => <li key={pack.id}><span>{bookTitle(pack)}</span>
       {confirm === pack.id ? <span className="you-private-confirm"><button type="button" onClick={() => { setConfirm(null); void removePrivatePack(db, pack.id).then(() => setMessage(`${bookTitle(pack)} was removed.`)); }}>Remove it</button><button type="button" className="secondary" onClick={() => setConfirm(null)}>Keep</button></span>
         : <button type="button" className="secondary" aria-label={`Remove ${bookTitle(pack)}`} onClick={() => setConfirm(pack.id)}>Remove</button>}</li>)}</ul>}
-    <label className="ui-button-secondary you-private-import">Import a private book<input ref={input} type="file" accept=".json,application/json" className="visually-hidden" onChange={event => void pick(event.target.files?.[0])} /></label>
+    <label className="ui-button-secondary you-private-import">Import a private book<input ref={input} type="file" accept=".json,application/json" className="you-private-file" onChange={event => void pick(event.target.files?.[0])} /></label>
     {message && <p role="status">{message}</p>}
   </section>;
 }

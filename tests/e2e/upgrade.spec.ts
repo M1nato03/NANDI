@@ -238,7 +238,7 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
     await context.setOffline(true);
 
     const screens: [string, string][] = [
-      ['train', 'Train'], ['mind', 'Mind'], ['learn', 'Learn'],
+      ['train', 'Train'], ['mind', "Kapi's shelf"], ['learn', 'Your books'], ['read/book/money-markets', 'Money, Plainly'],
       ['plan', 'Plan'], ['plan/morning', 'Morning plan'], ['you/settings', 'Settings'],
       ['you/backup', 'Backup'], ['you/night', 'Night'],
     ];
@@ -255,7 +255,7 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
     await page.evaluate(() => { location.hash = '#you'; });
     await expect(page.getByRole('region', { name: 'This week in words' })).toBeVisible();
     await page.evaluate(() => { location.hash = '#learn'; });
-    await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
   } finally {
     await context.setOffline(false);
     await page.close();

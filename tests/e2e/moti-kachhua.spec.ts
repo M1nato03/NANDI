@@ -41,7 +41,7 @@ test("Moti's haveli: a decoy shows its fix and costs nothing, the pieces in orde
 test("Moti's matka: on Sunday three sealed first guesses from 5-21 days ago, the exact copy, then the stop; not on Saturday", async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-07T12:00:00')); // Saturday
   await page.goto('/?e2e#learn');
-  await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
   const lesson = (n: number, dayKey: string) => ({ id: `learn-lesson:habits-s${n}`, dayKey, mode: 'learn', kind: 'learn-lesson', refId: `habits-s${n}`, inputs: { hookCorrect: n % 2 === 0, conceptId: 'habits' }, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
   await seedLedger(page, [lesson(1, '2026-10-26'), lesson(2, '2026-10-27'), lesson(3, '2026-10-28'), lesson(4, '2026-11-05')]);
   await page.reload();

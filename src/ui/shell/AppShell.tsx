@@ -195,7 +195,7 @@ export function AppShell() {
   else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
   else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;
   else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <Chapter key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
-  else if (path === 'read/lesson' || path === 'read/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
+  else if (path === 'read/lesson' || path === 'read/unit' || path === 'read/courses') screen = <Mind key={path} entry={path.split('/')[1]} />;
   else if (path === 'read/games' || path.startsWith('read/games/')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
   else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;

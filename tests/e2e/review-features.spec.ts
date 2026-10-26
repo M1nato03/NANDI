@@ -36,7 +36,7 @@ test('daily case progress and completion survive reload', async ({ page }) => {
   await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Case closed.' })).toBeVisible();
-  await page.getByRole('button', { name: 'Back to Mind' }).click();
+  await page.getByRole('button', { name: 'Back to Games' }).click();
   await expect(page.getByRole('button', { name: 'Case Done' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

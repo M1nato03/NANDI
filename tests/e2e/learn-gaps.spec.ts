@@ -68,9 +68,9 @@ test('a daily question asks one thing: no "How sure?" step, and the answer is sa
   expect(await page.evaluate(() => window.__nandiTest!.learnConfidence())).toBe('fairly-sure');
 });
 
-test('Learn shows empty learning figures', async ({ page }) => {
+test('You shows empty learning figures (spec 33 moved them from Read to You)', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
-  await page.goto('/?e2e#learn');
+  await page.goto('/?e2e#you');
   const figures = page.getByRole('region', { name: 'How your learning is holding' });
   await expect(figures).toContainText('30-day recall: Builds after your first 30 days');
   await expect(figures).not.toContainText('When you feel sure');

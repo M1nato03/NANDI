@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { seedTaughtTopics } from './learn-helpers';
+import { openIdeas, seedTaughtTopics, selectBooks } from './learn-helpers';
 
 // Item 135: a friend appears only in its own area's panels. The courtyard banner shows the whole cast on purpose.
 const friendsOnScreen = (page: Page) => page.evaluate(() => [...document.querySelectorAll('main [data-cast]')]
@@ -28,21 +28,21 @@ test('Plan has one Mor, on its stage, and Mor reacts there', async ({ page }) =>
   await expect(page.getByRole('region', { name: "Mor's stage" }).locator('.mor-friend')).toHaveAttribute('data-moment', 'add');
 });
 
-test("Learn: Today is Chiku's, idea checks get Moti's own card, and the trail is Chiku's", async ({ page }) => {
+test("Read: Continue is Chiku's, idea checks get Moti's own card, and a book's ideas and chest are Chiku's", async ({ page }) => {
   const noon = new Date('2026-10-20T12:00:00').getTime();
   await page.clock.setFixedTime(new Date(noon));
-  await page.goto('/?e2e#learn');
+  await page.goto('/?e2e#read');
   await seedTaughtTopics(page, ['money-markets']);
   await seedDueIdeas(page, ['inflation', 'compounding'], noon);
+  // Idea checks count the books you have started (spec 33; the old topic picks).
+  await selectBooks(page, ['money-markets']);
   await page.reload();
-  // Idea checks count only topics in your drops.
-  await page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' }).getByRole('button', { name: 'Add to my drops' }).click();
   const moti = page.getByRole('region', { name: 'Review with Moti' });
   await expect(moti.getByRole('button', { name: 'Idea checks · 2 today' })).toBeVisible();
   await expect(moti.locator('[data-cast="Moti"]')).toHaveCount(1);
-  await expect(page.locator('.learn-today [data-cast]')).toHaveCount(0);
-  await page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' }).locator('.learn-topic-expand').click();
+  await expect(page.getByRole('region', { name: 'Continue' }).locator('[data-cast]')).toHaveCount(0);
+  await openIdeas(page, 'money-markets', 'Inflation');
   await expect(page.locator('.learn-trail-chest [data-cast="Chiku"]').first()).toBeVisible();
-  const trail = await page.evaluate(() => [...document.querySelectorAll('.learn-trail [data-cast]')].map(node => node.getAttribute('data-cast')));
+  const trail = await page.evaluate(() => [...document.querySelectorAll('.read-book-page [data-cast]')].map(node => node.getAttribute('data-cast')));
   expect(new Set(trail)).toEqual(new Set(['Chiku']));
 });

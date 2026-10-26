@@ -19,6 +19,7 @@ export function canonicalRoute(path: string): string {
   if (value === 'you/train' || value.startsWith('you/train/')) return `train${value.slice(9)}`;
   if (value === 'you/learn' || value.startsWith('you/learn/')) return `read${value.slice(9)}`;
   if (value === 'you/mind/lesson' || value === 'you/mind/unit') return `read/${value.slice(9)}`;
+  if (value === 'you/mind/generator') return value; // the owner's generator check stays under You
   if (value === 'you/mind' || value.startsWith('you/mind/')) return `read/games${value.slice(8)}`;
   // Spec 33: Learn became Read and Mind became Read's Games; old links, notifications and backups still resolve.
   if (value === 'learn' || value.startsWith('learn/')) return `read${value.slice(5)}`;
@@ -81,4 +82,8 @@ export function back(fallback = parentRoute(route())): void {
   if (entry()?.from) history.back();
   else go(fallback);
 }
-export function backDestination(): string { return tabOf(entry()?.from ?? parentRoute(route())); }
+/** Where Back goes, named: a tab, or Games for Kapi's boards inside Read (spec 33). */
+export function backDestination(): string {
+  const target = canonicalRoute(entry()?.from ?? parentRoute(route()));
+  return target === 'read/games' || target.startsWith('read/games/') ? 'Games' : tabOf(target);
+}

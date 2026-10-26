@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { seedTaughtTopics } from './learn-helpers';
+import { openIdeas, seedTaughtTopics } from './learn-helpers';
 
 // Spec 25, one look per friend: each tab takes its area's colour and puts its friend on a stage at the top.
 const shell = (page: import('@playwright/test').Page) => page.locator('.app-shell');
@@ -63,9 +63,9 @@ test('in the app, a real Gold review turns rose and leaving it hands Learn its t
   }, noon);
   await page.reload();
   await expect(shell(page)).toHaveAttribute('data-area', 'learn');
-  const topic = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
-  await topic.getByRole('button', { name: /Money and markets/ }).click();
-  await topic.locator('.learn-trail-node').first().getByRole('button', { name: 'Gold review' }).click();
+  // Spec 33: Gold review sits on the book page, in the chapter's idea list.
+  const node = await openIdeas(page, 'money-markets', 'Inflation');
+  await node.getByRole('button', { name: 'Gold review' }).click();
   await expect(page.locator('.learn-drop-head')).toContainText('1 / 5');
   await expect(shell(page)).toHaveAttribute('data-area', 'review');
   await page.getByRole('button', { name: '← Practice · Leave' }).click();

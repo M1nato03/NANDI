@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { seedTaughtTopics } from './learn-helpers';
+import { openIdeas, seedTaughtTopics } from './learn-helpers';
 
 type Fact = { id: string; dayKey: string; mode: string; kind: string; refId: string; inputs: Record<string, unknown>; updatedAt: number; deleted: 0; deviceId: string };
 const day = '2026-10-20';
@@ -96,20 +96,17 @@ test('combo appears in a drop and the topic trail opens practice', async ({ page
   await expect(page.locator('.learn-options')).toBeVisible();
   for (let index = 0; index < 3; index++) await answerItem(page);
   await expect(page.locator('.learn-drop-head')).toContainText('3 in a row');
-  await page.goto('/#learn');
-  const topic = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
-  await topic.getByRole('button', { name: /Money and markets/ }).click();
-  const trail = page.getByLabel('Money and markets mastery map');
-  await expect(trail.locator('.learn-trail-node')).toHaveCount(10);
-  await expect(trail.locator('.learn-trail-checkpoint')).toHaveCount(2);
-  await expect(trail.locator('.learn-trail-chest')).toBeVisible();
+  // Spec 33: the trail lives on the book page, one idea list per chapter, and the chest is the book's.
+  const node = await openIdeas(page, 'money-markets', 'Inflation');
+  await expect(page.locator('.read-chapter')).toHaveCount(3);
+  await expect(page.locator('.learn-trail-chest')).toBeVisible();
   if (testInfo.project.name === 'mobile-360x800') {
-    await trail.screenshot({ path: testInfo.outputPath('trail-light-360.png') });
+    await page.screenshot({ path: testInfo.outputPath('book-light-360.png'), fullPage: true });
     await page.emulateMedia({ colorScheme: 'dark' });
-    await trail.screenshot({ path: testInfo.outputPath('trail-dark-360.png') });
+    await page.screenshot({ path: testInfo.outputPath('book-dark-360.png'), fullPage: true });
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await trail.getByRole('button', { name: /Practice this idea:/ }).first().click();
+  await node.getByRole('button', { name: /Practice this idea:/ }).click();
   await expect(page.locator('.learn-drop-head')).toContainText('1 / 3');
 });
 
@@ -132,9 +129,7 @@ test('a missed Gold review has five items and keeps Mastered state', async ({ pa
     database.close();
   }, noon);
   await page.reload();
-  const topic = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
-  await topic.getByRole('button', { name: /Money and markets/ }).click();
-  const node = topic.locator('.learn-trail-node').first();
+  const node = await openIdeas(page, 'money-markets', 'Inflation');
   await expect(node).toHaveAttribute('data-state', 'mastered');
   await node.getByRole('button', { name: 'Gold review' }).click();
   await expect(page.locator('.learn-drop-head')).toContainText('1 / 5');
@@ -146,7 +141,8 @@ test('a missed Gold review has five items and keeps Mastered state', async ({ pa
   await expect(page.getByRole('heading', { name: 'Gold review complete' })).toBeVisible();
   await expect(page.locator('.learn-drop')).toContainText('Try again tomorrow');
   await page.getByRole('button', { name: 'Continue' }).click();
-  const stillMastered = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' }).locator('.learn-trail-node').first();
+  await expect(page.getByRole('heading', { name: 'Money, Plainly', level: 1 })).toBeVisible();
+  const stillMastered = await openIdeas(page, 'money-markets', 'Inflation');
   await expect(stillMastered).toHaveAttribute('data-state', 'mastered');
   await expect(stillMastered.getByRole('button', { name: 'Gold review' })).toBeDisabled();
 });

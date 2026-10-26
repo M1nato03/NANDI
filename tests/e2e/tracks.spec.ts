@@ -1,12 +1,13 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
+import { openGames } from './helpers/mind';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`drone track resumes, adds reviews and stops in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(120_000);
     await page.clock.setFixedTime(new Date('2026-10-12T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#learn');
+    await page.goto('/?e2e#read/courses'); // spec 33: Courses sit in Read's Library
     await page.getByText('Courses').click();
     const tracks = page.getByLabel('Learning tracks');
     await tracks.getByRole('button', { name: 'Pick this track' }).click();
@@ -54,7 +55,7 @@ for (const scheme of ['light', 'dark'] as const) {
       if (!(await courses.evaluate(element => (element as HTMLDetailsElement).open))) await page.getByText('Courses').click();
       await expect(tracks.getByRole('heading', { name: 'Done for today' })).toBeVisible({ timeout: 1_500 });
     }).toPass({ timeout: 15_000 });
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+    await openGames(page);
     await page.getByRole('button', { name: 'Review cards' }).click();
     await expect(page.getByLabel('Review card')).toContainText('What do rotors push to make lift?');
     await page.screenshot({ path: testInfo.outputPath(`track-review-${scheme}.png`), fullPage: true });

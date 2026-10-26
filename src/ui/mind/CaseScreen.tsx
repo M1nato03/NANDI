@@ -322,7 +322,7 @@ export function CaseScreen({
   );
   return (
     <section className="screen mind-case" data-save-state={saveState}>
-      <button type="button" className="screen-back" aria-label="Back to Mind" onClick={onExit}>
+      <button type="button" className="screen-back" aria-label="Back to Games" onClick={onExit}>
         <span className="back-chevron" aria-hidden="true">‹</span>Back
       </button>
       <p className="eyebrow">Case of the day · {formatDayKey(day)}</p>

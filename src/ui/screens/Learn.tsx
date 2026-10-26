@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { learningFigures, masteryMapState } from '../../core/learn/engine';
-import { loadEngineFacts } from '../../data/repos/learn-engine';
+import { masteryMapState } from '../../core/learn/engine';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
 import { LearnDrop } from '../learn/LearnDrop';
-import { Mind } from './Mind';
 import { chosenTopics, dailyDropId, nightDropId, selectedTopicKey, topics } from '../learn/flow';
 import { go } from '../shell/router';
 import { chestReady } from '../../core/economy/gamify';
@@ -87,7 +85,6 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     states: await db.learnConcepts.toArray(),
     daily: await db.learnDrops.get(dailyDropId(openedAt)),
     night: await db.learnDrops.get(nightDropId(openedAt)),
-    facts: (await loadEngineFacts(db)).facts,
     ledger: await db.ledger.toArray(),
     bedtime: await effectiveBedtime(db, openedAt),
   }), [openedAt]);
@@ -96,7 +93,6 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
   const afterBedtime = !!data && isAfterBedtime(now, data.bedtime);
   const selected = chosenTopics(data?.setting?.value);
-  const figures = learningFigures({ facts: data?.facts ?? [] }, openedAt);
   const stateById = new Map((data?.states ?? []).map(row => [row.id, row]));
   const [unitScene, setUnitScene] = useState<string>();
   const learned = new Set((data?.states ?? []).filter(row => !!row.firstLearnedAt).map(row => row.id));
@@ -180,7 +176,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
           <button type="button" className="read-chapter-open" aria-label={`Chapter ${index + 1}: ${module.title}, ${STATE_LABEL[state]}`} onClick={() => go(`read/chapter/${topicId}/${module.id}`)}>
             <span className="read-chapter-num" aria-hidden="true">{index + 1}</span><span className="read-chapter-text"><strong>{module.title}</strong><span className="small">{module.minutes ?? 0} min · {module.concepts.length} ideas</span></span><span className="pill">{STATE_LABEL[state]}</span>
           </button>
-          <details className="read-chapter-ideas"><summary>Ideas in this chapter</summary>{ideaRows(topicId, module.concepts)}</details>
+          <details className="read-chapter-ideas"><summary>{module.concepts.length} ideas<span className="read-chevron" aria-hidden="true">▸</span></summary>{ideaRows(topicId, module.concepts)}</details>
         </li>;
       })}</ol>
       <div className="learn-trail-chest"><Cast name="Chiku" pose={chest ? 'cheer' : 'idle'} size={44} />Book chest · {chest ? 'Opened' : 'Keep reading'} · {RULES.gamify.unitChestShards} Shards</div>
@@ -216,10 +212,9 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
           return <li key={pack.id}><button type="button" className="read-book-tile" aria-label={`${bookTitle(pack)} · ${bookDone(pack, chaptersDone) ? 'finished' : `${read} of ${chapters} chapters`}`} onClick={() => go(`read/book/${pack.body.topic.id}`)}>
             <Cover pack={pack} /><span className="small">{bookDone(pack, chaptersDone) ? 'Finished' : `${read} of ${chapters} chapters`}</span></button></li>;
         })}</ul></section>)}
+      <section className="read-shelf" aria-label="Courses"><h3>Courses</h3><button type="button" className="card you-link you-courtyard-link read-courses-link" onClick={() => go('read/courses')}><strong>Short courses</strong><span>Lessons and tracks from before the books</span></button></section>
     </section>
-    <details className="card read-games"><summary>Games</summary><p>Kapi's shelf: a board of each kind a day, and the case.</p><button type="button" className="secondary" onClick={() => go('read/games')}>Open Kapi's shelf</button></details>
-    <section className="card learn-figures" aria-label="How your learning is holding"><h2>How your learning is holding</h2><p>30-day recall: {figures.recall30 === null ? 'Builds after your first 30 days' : `${figures.recall30}%`}</p>{figures.sureAccuracy !== null && <p>When you feel sure, you are right {figures.sureAccuracy}% of the time</p>}</section>
-    {message && <p role="status">{message}</p>}
-    <Mind entry="courses" />{scene}
+    <details className="card read-games"><summary><span className="read-fold-title">Games</span><span className="small">Kapi's puzzles, when you want them</span><span className="read-chevron" aria-hidden="true">▸</span></summary><p>A board of each kind a day, and the case.</p><button type="button" className="secondary" onClick={() => go('read/games')}>Open Kapi's shelf</button></details>
+    {message && <p role="status">{message}</p>}{scene}
   </section>;
 }

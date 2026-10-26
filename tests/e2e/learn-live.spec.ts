@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { seedTaughtTopics } from './learn-helpers';
+import { openIdeas, seedTaughtTopics } from './learn-helpers';
 
 const pack = JSON.parse(readFileSync('content/topics/topic.money-markets.json', 'utf8')) as {
   body: { modules: { concepts: { id: string; rule: string; steps?: unknown[]; items: { stem: string; type: string; options: { id: string; text: string; feedback: string; correct: boolean }[]; answer?: string[] | { left: string; right: string }[] }[] }[] }[] };
@@ -71,35 +71,21 @@ test('topic pick, daily drop, resume and mastery map', async ({ page }, testInfo
   await expect(learnCard).toContainText('Next review:');
   await page.screenshot({ path: testInfo.outputPath('learn-stop-390x844.png') });
   await learnCard.getByRole('button', { name: 'Continue' }).click();
-  await expect(page).toHaveURL(/#learn$/);
-  await expect(page.getByRole('heading', { name: 'Learn', exact: true })).toBeVisible();
-  await expect(page.getByRole('region', { name: 'Today' })).toContainText('Done for today');
-  await expect(page.getByRole('region', { name: 'Today' })).toContainText('Night drop');
-  const topic = page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' });
-  const expand = topic.getByRole('button', { name: /Money and markets/ });
-  await expect(expand).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.getByLabel('Money and markets mastery map')).toHaveCount(0);
-  if (testInfo.project.name === 'mobile-390x844') {
-    await page.getByRole('heading', { name: 'Topics' }).evaluate(element => element.scrollIntoView({ block: 'start' }));
-    await page.screenshot({ path: 'screenshots/learn-collapsed-390x844.png' });
-  }
-  await expand.click();
-  const map = page.getByLabel('Money and markets mastery map');
-  await expect(map.locator('.learn-idea-row')).toHaveCount(10);
-  await expect(map.getByRole('heading', { name: /New/ })).toBeVisible();
-  await expect(map.getByRole('heading', { name: /Learning|Strong/ })).toBeVisible();
-  await expect(map.locator('.learn-idea-row:not([data-state="new"])')).not.toHaveCount(0);
-  await expect(map.locator('.learn-idea-row[data-state="new"]')).not.toHaveCount(0);
-  if (testInfo.project.name === 'mobile-390x844') {
-    await topic.evaluate(element => element.scrollIntoView({ block: 'start' }));
-    await page.screenshot({ path: 'screenshots/learn-expanded-390x844.png' });
-  }
+  // Spec 33: the drop hands back to Read; an idea's map and Practice live on its book page.
+  await expect(page).toHaveURL(/#read$/);
+  await expect(page.getByRole('heading', { name: 'Your books', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
+  const node = await openIdeas(page, 'money-markets', 'Inflation');
+  await expect(page.locator('.read-chapter').first().locator('.learn-idea-row')).toHaveCount(3);
+  await expect(page.locator('.learn-idea-row')).toHaveCount(10);
+  await expect(page.locator('.learn-idea-row:not([data-state="new"])')).not.toHaveCount(0);
+  await expect(page.locator('.learn-idea-row[data-state="new"]')).not.toHaveCount(0);
+  if (testInfo.project.name === 'mobile-390x844') await page.screenshot({ path: 'screenshots/book-ideas-390x844.png' });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  const firstIdea = map.locator('.learn-idea-row').first();
-  const title = await firstIdea.locator('strong').innerText();
-  await firstIdea.getByRole('button', { name: `Practice this idea: ${title}` }).click();
+  const title = await node.locator('strong').innerText();
+  await node.getByRole('button', { name: `Practice this idea: ${title}` }).click();
   await expect(page.locator('.learn-drop-head')).toContainText('1 / 3');
   await expect(page.locator('.learn-drop .eyebrow')).toContainText(title);
   await page.getByRole('button', { name: /Practice · Leave/ }).click();
-  await expect(page.getByRole('region', { name: 'Today' })).toContainText('Done for today');
+  await expect(page.getByRole('heading', { name: 'Money, Plainly', level: 1 })).toBeVisible();
 });

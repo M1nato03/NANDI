@@ -516,10 +516,10 @@ export function Mind({ entry }: { entry?: string }) {
   </section>;
 
   return <section className="screen mind-hub">
-    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Practice</p><h1>Mind</h1></FriendStage>
+    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Games</p><h1>Kapi's shelf</h1></FriendStage>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     {/* Spec 29: Kapi's shelf, the boards Mind already has, each with a plain line and a how-to the first time. */}
-    <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Kapi's shelf</h2><p className="small">One board of each a day, and two more if you want them.</p>
+    <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Today's boards</h2><p className="small">One board of each a day, and two more if you want them.</p>
       <ul>{SHELF.map(item => {
         const solved = shelfSolvedToday(item.type, puzzleRuns, today);
         const status = solved >= SHELF_PER_DAY ? 'Done for today' : solved ? `Solved · ${solved} of ${SHELF_PER_DAY}` : !seenTutorial(item.type) ? 'Starts with a how-to' : item.type === featured.type ? "Today's board" : 'New today';

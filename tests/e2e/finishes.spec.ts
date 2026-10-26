@@ -31,9 +31,8 @@ async function seedOtherCoreItems(page: Page) {
     database.close();
   }, { day, featured });
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Train: done' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Learn: done' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Mind: done' })).toBeVisible();
+  // Spec 33: the day's areas are Plan and Read (a drop or Kapi's daily board fills Read).
+  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
 }
 
 test('a finished task gets one warm line that fades', async ({ page }) => {

@@ -1,12 +1,13 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
+import { openGames } from './helpers/mind';
 
 for (const scheme of ['light', 'dark'] as const) {
   test(`course lesson, reviews, reload and stop in ${scheme}`, async ({ page }, testInfo) => {
     test.setTimeout(180_000);
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
-    await page.goto('/?e2e#learn');
+    await page.goto('/?e2e#read/courses'); // spec 33: Courses sit in Read's Library
     await page.getByText('Courses', { exact: true }).click();
     await page.getByRole('button', { name: 'Start lesson', exact: true }).click();
     const lesson = page.locator('.mind-lesson');
@@ -49,7 +50,7 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await lesson.getByRole('button', { name: 'Done' }).click();
 
-    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Mind' }).click();
+    await openGames(page);
     // The people-reading deck is opt-in; turning it on adds its cards to the reviews.
     await page.getByRole('button', { name: 'Turn on the deck' }).click();
     await expect(page.getByText('5 for today')).toBeVisible();
@@ -82,7 +83,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.getByLabel('Puzzle result')).toBeVisible();
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await page.getByRole('button', { name: 'Back to Games' }).click();
     // The first board can be the intro; if the daily board is still open, solve it too.
     await expect(page.getByRole('button', { name: /^Board (Not done|Done)$/ })).toBeVisible();
     if (await page.getByRole('button', { name: 'Board Not done' }).isVisible()) {
@@ -92,7 +93,7 @@ for (const scheme of ['light', 'dark'] as const) {
       await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
       await expect(page.getByLabel('Puzzle result')).toBeVisible();
       await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-      await page.getByRole('button', { name: 'Back to Mind' }).click();
+      await page.getByRole('button', { name: 'Back to Games' }).click();
     }
     await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
     await page.getByRole('button', { name: 'Case Not done' }).click();
@@ -103,7 +104,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
     await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
     await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Mind' }).click();
+    await page.getByRole('button', { name: 'Back to Games' }).click();
     await expect(page.getByRole('button', { name: 'Case Done' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Board Done' })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`practice-status-${scheme}.png`), fullPage: true });

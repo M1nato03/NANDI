@@ -15,7 +15,8 @@ export const STARTER_TOPIC = 'psychology';
 export interface FirstAction { route: string; label: string }
 
 const ACTIONS: Record<Goal, FirstAction> = {
-  learn: { route: 'read', label: 'Open your books' },
+  // Spec 33: Learn something opens Read, straight into the first chapter of the first book (spec 18's quick first win).
+  learn: { route: 'read/chapter/psychology/psychology-ch1', label: 'Start your first chapter' },
   // Today's board itself, not the warm-up board.
   mind: { route: 'read/games/board/daily', label: "Try today's puzzle" },
   train: { route: 'train/easy', label: 'Start an easy first workout' },

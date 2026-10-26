@@ -12,6 +12,7 @@ import { revealMeters } from '../../core/economy/reveal';
 import { dayKey } from '../../core/time/dayKey';
 import { softToday } from '../../core/soft/soft';
 import { PrivateBooks } from './PrivateBooks';
+import { LearningHolding } from './LearningHolding';
 
 export function You() {
   const sources = useLiveQuery(async () => {
@@ -35,7 +36,7 @@ export function You() {
   const today = dayKey(Date.now()); // eslint-disable-line react-hooks/purity
   const softMore = useLiveQuery(() => db.settings.get(`soft.more:${today}`), [today]);
   const softDay = !!softToday(sources?.facts ?? [], today).state && softMore?.value !== true;
-  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}{!softDay && <YourSeason />}
+  return <section className="screen you-screen"><p className="eyebrow">Your space</p><h1>You</h1><button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/courtyard')}><strong>Courtyard</strong><span>Your six friends and how each corner is growing</span></button>{show.storybooks && <button type="button" className="card you-link you-courtyard-link" onClick={() => go('you/stories')}><strong>Storybooks</strong><span>Each week, told as a short story</span></button>}{!softDay && <YourSeason />}<LearningHolding />
     {show.quests && !softDay && <DailyQuests />}{show.badges && <button type="button" className="card you-link" onClick={() => go('you/badges')}><strong>Badges</strong><span>See the ideas and habits taking shape</span></button>}
     <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
     <HexagonCard now={Date.now()} />{/* eslint-disable-line react-hooks/purity */}

@@ -16,7 +16,7 @@ it('maps legacy links to their single feature homes', () => {
     'read/games/board/daily', 'read/games/reviews', 'read/lesson', 'read/unit', 'you/backup',
   ]);
   // Spec 33: Learn became Read, Mind became Read's Games, and Train is parked under You.
-  expect(['#learn', '#learn/drop', '#mind', '#mind/case', '#mind/generator'].map(canonicalRoute)).toEqual(['read', 'read/drop', 'read/games', 'read/games/case', 'you/mind/generator']);
+  expect(['#learn', '#learn/drop', '#mind', '#mind/case', '#mind/generator', '#you/mind/generator'].map(canonicalRoute)).toEqual(['read', 'read/drop', 'read/games', 'read/games/case', 'you/mind/generator', 'you/mind/generator']);
   expect(parentRoute('read/games/board/crowns/easy')).toBe('read/games/practice');
   expect(parentRoute('read/chapter/psychology/psychology-ch1')).toBe('read/book/psychology');
   expect(parentRoute('train')).toBe('you');

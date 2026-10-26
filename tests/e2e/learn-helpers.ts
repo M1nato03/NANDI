@@ -57,3 +57,24 @@ export async function answerRight(page: Page, topicId: string) {
   await page.locator('.learn-feedback').getByRole('button').last().click();
   await expect(page.locator('.learn-drop h2').filter({ hasText: stem })).toHaveCount(0);
 }
+
+/** Spec 33: books a learner has started count for idea checks and the night drop (the old topic picks). */
+export async function selectBooks(page: Page, topicIds: string[]) {
+  await page.evaluate(async ids => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    await new Promise<void>((resolve, reject) => {
+      const transaction = database.transaction('settings', 'readwrite');
+      transaction.objectStore('settings').put({ key: 'learn.selectedTopics', value: ids, updatedAt: Date.now(), deleted: 0, deviceId: 'e2e' });
+      transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
+    });
+    database.close();
+  }, topicIds);
+}
+/** Spec 33: an idea's Practice and Gold review live on its book page, under the chapter's idea list. */
+export async function openIdeas(page: Page, topicId: string, conceptTitle: string) {
+  await page.goto(`/?e2e#read/book/${topicId}`);
+  const chapter = page.locator('.read-chapter').filter({ hasText: conceptTitle });
+  const ideas = chapter.locator('details.read-chapter-ideas');
+  if (!(await ideas.evaluate(node => (node as HTMLDetailsElement).open))) await ideas.locator(':scope > summary').click();
+  return chapter.locator('.learn-trail-node').filter({ hasText: conceptTitle });
+}

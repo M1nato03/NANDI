@@ -26,7 +26,7 @@ test('opening plays once and a tap skips it', async ({ page }) => {
   await expect(opening).toBeVisible();
   await opening.click();
   await expect(opening).toHaveCount(0);
-  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Learn' }).click();
+  await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
   await expect(opening).toHaveCount(0);
 });

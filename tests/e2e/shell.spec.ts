@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-const names = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
+// Spec 33: three tabs; Read's heading is "Your books".
+const names = ['Plan', 'Read', 'You'];
+const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', You: 'You' };
 
 test('day one shows a calm You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
@@ -10,7 +12,7 @@ test('day one shows a calm You before Season 1', async ({ page }) => {
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Season 1 starts');
   await expect(page.getByRole('region', { name: 'Your season' })).not.toContainText('Shards');
   await page.goto('/#mind');
-  await expect(page.getByRole('main')).toContainText('Mind');
+  await expect(page.getByRole('main')).toContainText("Kapi's shelf");
 });
 
 test('offline ready notice clears visible buttons and dismisses', async ({ page }) => {
@@ -32,16 +34,16 @@ test('offline ready notice clears visible buttons and dismisses', async ({ page 
   await expect(toast).toBeHidden({ timeout: 5_000 });
 });
 
-test('five tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
+test('the three tabs remain reachable after reload in both themes', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00')); // daytime: after shutdown the app opens the night deck
   await page.goto('/');
   for (const scheme of ['dark', 'light'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     for (const name of names) {
       await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
-      await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
+      await expect(page.getByRole('main').getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
       await page.reload();
-      await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
+      await expect(page.getByRole('main').getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
       expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);
     }
     await page.screenshot({ path: testInfo.outputPath(`you-${scheme}.png`), fullPage: true });
@@ -114,7 +116,7 @@ test('offline reload still opens every tab', async ({ page, context }) => {
   await page.reload();
   for (const name of names) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
-    await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
+    await expect(page.getByRole('main').getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
   }
   // The self-hosted display font must come from the precache, not fall back offline.
   const fontLoaded = await page.evaluate(async () => {

@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-const tabs = ['Plan', 'Train', 'Learn', 'Mind', 'You'];
+// Spec 33: three tabs; Read's heading is "Your books".
+const tabs = ['Plan', 'Read', 'You'];
+const headings: Record<string, string> = { Plan: 'Plan', Read: 'Your books', You: 'You' };
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {
@@ -10,7 +12,7 @@ test('visible controls meet tap size and tabs do not scroll sideways in both the
     await page.emulateMedia({ colorScheme: scheme });
     for (const name of tabs) {
       await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
-      await expect(page.getByRole('main').getByRole('heading', { name, exact: true })).toBeVisible();
+      await expect(page.getByRole('main').getByRole('heading', { name: headings[name], exact: true })).toBeVisible();
       // One pass in the page (a round trip per control made this test slow enough to time out under load).
       const tooSmall = await page.locator('button, a, select, input').evaluateAll(nodes => nodes.flatMap(node => {
         const box = node.getBoundingClientRect();

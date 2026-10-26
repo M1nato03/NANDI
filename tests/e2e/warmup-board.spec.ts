@@ -24,12 +24,12 @@ test("on a hard featured day, Today's Board and the shelf tile open the same eas
   await expect(page.getByRole('region', { name: "Kapi's shelf" }).getByRole('button', { name: /^Crowns/ })).toContainText('Solved · 1 of 3');
 });
 
-test('the Mind dot and the night deck count the easy daily of the featured type', async ({ page }) => {
+test('the Read dot (spec 33: games live in Read) and the night deck count the easy daily of the featured type', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-24T12:00:00'));
   await page.goto('/?e2e#mind/board/daily');
   await expect(page.getByRole('group', { name: 'Crowns board' })).toBeVisible({ timeout: 30_000 });
   await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
   await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
   await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-  await expect(page.getByRole('button', { name: 'Mind: done' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Read: done' })).toBeVisible();
 });
