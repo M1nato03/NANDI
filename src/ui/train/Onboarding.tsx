@@ -4,6 +4,7 @@ import type { Onboarding as OnboardingResult } from '../../data/repos/train';
 import { ExerciseFigure } from './ExerciseFigure';
 import { formCues } from '../../core/train/cues';
 import { PATTERN_NAMES } from '../../core/train/patternNames';
+import { FriendStage } from '../cast/FriendStage';
 
 const patterns: LadderPattern[] = ['squat', 'push-up', 'hinge', 'row', 'core-anti-ext', 'core-anti-rot', 'core-ext'];
 const gymChecks = [['goblet-squat', 'Squat'], ['db-bench', 'Push'], ['seated-cable-row', 'Pull'], ['db-rdl', 'Hinge']] as const;
@@ -41,7 +42,7 @@ export function Onboarding({ save, startEasy, busy }: { save: (result: Onboardin
       else setIndex(index + 1);
     } else setTests(next);
   }
-  return <section className="train-onboarding"><p className="eyebrow">Rank assessment · about 10 minutes</p><h1>Train</h1>
+  return <section className="train-onboarding"><FriendStage area="train"><p className="eyebrow">Rank assessment · about 10 minutes</p><h1>Train</h1></FriendStage>
     {stage === 'setup' ? <>
       {/* Spec 18: a new person can start without the 10-minute test; the ladders move them up as reps get easy. */}
       <div className="card train-easy"><h2>New to training?</h2><p>Skip the test and start on the easiest step of every move. Each move steps up once your reps get easy.</p>

@@ -5,7 +5,7 @@ const shell = (page: import('@playwright/test').Page) => page.locator('.app-shel
 
 test('each tab carries its own area, with its friend on a stage; You stays neutral', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-03T12:00:00'));
-  for (const [route, area, friend] of [['learn', 'learn', 'Chiku'], ['mind', 'mind', 'Kapi']] as const) {
+  for (const [route, area, friend] of [['train', 'train', 'Nandi'], ['learn', 'learn', 'Chiku'], ['mind', 'mind', 'Kapi']] as const) {
     await page.goto(`/?e2e#${route}`);
     await expect(shell(page)).toHaveAttribute('data-area', area);
     await expect(page.getByRole('region', { name: `${friend}'s stage` })).toBeVisible();
