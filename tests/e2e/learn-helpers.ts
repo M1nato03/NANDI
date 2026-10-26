@@ -16,7 +16,7 @@ export async function seedTaughtTopics(page: Page, topicIds: string[]) {
 }
 
 /** Walks one lesson the way a learner does: hook guess, idea, show me, the one guided try (spec 16 §5), then "Your turn" or "Done". */
-export async function walkLesson(page: Page, topicId: string) {
+export async function walkLesson(page: Page, topicId: string, inChapter = false) {
   const lesson = page.locator('.step-lesson');
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'hook');
   const hookStem = await lesson.locator('h2').innerText();
@@ -32,7 +32,9 @@ export async function walkLesson(page: Page, topicId: string) {
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'guided-1');
   await page.getByRole('button', { name: step.guided[0]!.options.find(option => option.correct)!.text, exact: true }).click();
   await page.locator('.learn-feedback').getByRole('button', { name: /^(Your turn|Done)$/ }).click();
-  await expect(lesson).toHaveCount(0);
+  // In a chapter (spec 33) the next lesson follows at once, or the chapter's check.
+  if (inChapter) await expect.poll(async () => (await lesson.count()) === 0 || (await lesson.getAttribute('data-lesson-phase')) === 'hook' && (await lesson.locator('h2').first().innerText()) !== hookStem).toBe(true);
+  else await expect(lesson).toHaveCount(0);
   return step;
 }
 
@@ -53,4 +55,5 @@ export async function answerRight(page: Page, topicId: string) {
   else await tap(item.options.find(option => option.correct)!.id);
   await page.getByRole('button', { name: /^Check/ }).first().click();
   await page.locator('.learn-feedback').getByRole('button').last().click();
+  await expect(page.locator('.learn-drop h2').filter({ hasText: stem })).toHaveCount(0);
 }

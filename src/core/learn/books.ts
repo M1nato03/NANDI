@@ -13,6 +13,12 @@ const LEGACY_UNITS: Record<string, string> = {
   'history-civilisations': 'history-civilisations-module', 'health-nutrition': 'health-nutrition-module', 'body-training': 'body-training-module',
 };
 export const bookId = (pack: TopicPack) => pack.body.topic.id;
+const ORIGINALS_ORDER = ['psychology', 'money-markets', 'how-things-work', 'history-civilisations', 'health-nutrition', 'body-training'];
+/** The library order: the Originals as spec 33 lists them, then every other book in the order it arrived. */
+export function libraryOrder(packs: readonly TopicPack[]): TopicPack[] {
+  const rank = (pack: TopicPack) => { const index = ORIGINALS_ORDER.indexOf(bookId(pack)); return index < 0 ? ORIGINALS_ORDER.length : index; };
+  return packs.map((pack, index) => ({ pack, index })).sort((a, b) => rank(a.pack) - rank(b.pack) || a.index - b.index).map(entry => entry.pack);
+}
 export const bookUnitId = (pack: TopicPack) => LEGACY_UNITS[bookId(pack)] ?? `book:${bookId(pack)}`;
 export const bookConcepts = (pack: TopicPack): TopicConcept[] => pack.body.modules.flatMap(module => module.concepts);
 export const bookTitle = (pack: TopicPack) => pack.body.book?.title ?? pack.body.topic.title;

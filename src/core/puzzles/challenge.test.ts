@@ -26,7 +26,8 @@ describe('challenge a friend', () => {
     const route = challengeRoute({ type: 'sunmoon', diff: 'hard', seed: 4_000_000_000, day: '2026-11-05' });
     expect(route).toBe('mind/challenge/20261105/sunmoon/hard/4000000000');
     expect(route).toMatch(/^[a-z0-9]+(?:\/[a-z0-9]+)*$/);
-    expect(canonicalRoute(`#${route}`)).toBe(route);
+    // The link keeps mind/ so older installs open it; this build reads it inside Read's Games (spec 33).
+    expect(canonicalRoute(`#${route}`)).toBe(`read/games/${route.slice('mind/'.length)}`);
     expect(challengeUrl({ type: 'calc', diff: 'easy', seed: 7 })).toBe('https://nandi.nandi11.workers.dev/#mind/challenge/calc/easy/7');
     expect(challengeUrl({ type: 'calc', diff: 'easy', seed: 7, day: '2026-11-05' })).toBe('https://nandi.nandi11.workers.dev/#mind/challenge/20261105/calc/easy/7');
     expect(parseChallenge('challenge/chess/easy/7')).toBeNull();

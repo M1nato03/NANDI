@@ -6,7 +6,7 @@ import { effectiveBedtime } from '../../data/repos/night';
 import { saveChikuPlayed } from '../../data/repos/learn-engine';
 import { saveHaveliRebuilt } from '../../data/repos/moti';
 import { saveChapterDone } from '../../data/repos/books';
-import { bookDone, bookTitle, chapterRef, chapterTakeaway, nextChapter, untaughtSteps } from '../../core/learn/books';
+import { bookDone, bookTitle, chapterRef, chapterTakeaway, libraryOrder, nextChapter, untaughtSteps } from '../../core/learn/books';
 import type { ChikuScene } from '../../core/learn/chiku';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { topics } from './flow';
@@ -57,7 +57,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const toDone = () => setStep('done');
 
   if (view === 'wait') return <section className="screen learn-screen">{head}<div className="card read-wait" role="status"><p>That is enough reading for tonight. The rest of this chapter opens tomorrow.</p><p className="small">Your idea checks stay open tonight.</p><button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>Back to the book</button></div></section>;
-  if (view === 'read') return <section className="screen learn-screen read-chapter-screen">{head}<LearnDrop daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'read' }} onDone={() => setStep('check')} /></section>;
+  if (view === 'read') return <section className="screen learn-screen read-chapter-screen">{head}<LearnDrop key="read" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'read' }} onDone={() => setStep('check')} /></section>;
 
   if (view === 'check') {
     const kind = module.check ?? 'quiz';
@@ -70,19 +70,19 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
     if (chiku?.chiku) return <section className="screen learn-screen">{head}<ChikuStage scene={chiku.chiku as ChikuScene} seed={`${chiku.id}:${dayKey(openedAt)}`}
       onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.id, card, matched, deviceId, now: at })); }}
       onDone={toDone} /></section>;
-    return <section className="screen learn-screen">{head}<p className="eyebrow read-check-label">Chapter check · three questions</p><LearnDrop daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={toDone} /></section>;
+    return <section className="screen learn-screen"><header className="read-chapter-head"><p className="eyebrow">{title} · Chapter {index + 1}</p><h1>{module.title}</h1><p className="small read-check-label">Chapter check · three questions</p></header><LearnDrop key="check" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={toDone} /></section>;
   }
 
   // Done: the takeaway in one line, then the next chapter, or the next book when this one is finished.
   const doneNow = new Set([...done, chapterRef(topicId, moduleId)]);
   const following = nextChapter(pack, doneNow);
   const finishedBook = bookDone(pack, doneNow);
-  const nextBook = finishedBook ? topics.find(row => row !== pack && !bookDone(row, doneNow)) : undefined;
+  const nextBook = finishedBook ? libraryOrder(topics).find(row => row !== pack && !bookDone(row, doneNow)) : undefined;
   return <section className="screen learn-screen">
     <div className="card read-done-card" role="status">
       <Cast name="Chiku" pose="cheer" size={96} moment="hop" at={1} title="Chiku cheering" />
       {finishedBook ? <><p className="eyebrow">Book finished</p><h1>You finished {title}.</h1></> : <><p className="eyebrow">Chapter {index + 1} done</p><h1>{module.title}</h1></>}
-      <p className="read-takeaway">{chapterTakeaway(module)}</p>
+      <p className="read-takeaway">{finishedBook ? `${pack.body.modules.length} chapters and ${pack.body.modules.reduce((sum, row) => sum + row.concepts.length, 0)} ideas, read.` : chapterTakeaway(module)}</p>
       {!finishedBook && following && <button type="button" onClick={() => go(`read/chapter/${topicId}/${following.id}`)}>Next chapter</button>}
       {finishedBook && nextBook && <button type="button" onClick={() => go(`read/book/${nextBook.body.topic.id}`)}>Next book: {bookTitle(nextBook)}</button>}
       <button type="button" className="secondary" onClick={() => go('read')}>Back to library</button>

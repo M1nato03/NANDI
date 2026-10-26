@@ -14,7 +14,7 @@ import { dayKey, isAfterBedtime } from '../../core/time';
 import { effectiveBedtime } from '../../data/repos/night';
 import { RULES } from '../../core/rules.config';
 import { completedModuleKey, UnitScene } from '../cast/UnitScene';
-import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryShelves, nextChapter, type ChapterState } from '../../core/learn/books';
+import { bookConcepts, bookDone, bookMinutes, bookTitle, bookUnitId, chapterRef, chapterState, currentBook, libraryOrder, libraryShelves, nextChapter, type ChapterState } from '../../core/learn/books';
 import { Cover } from '../learn/Cover';
 import '../learn/read.css';
 import { Cast } from '../cast/Cast';
@@ -151,7 +151,7 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
   const ideaRows = (topicId: string, concepts: ReturnType<typeof bookConcepts>) => <div className="learn-trail">{concepts.map((concept, index) => {
     const state = gold.has(concept.id) ? 'Gold' : masteryMapState(stateById.get(concept.id));
     const triedToday = (data?.ledger ?? []).some(fact => fact.kind === 'gold-attempt' && fact.refId === `${concept.id}:${new Date(openedAt).toISOString().slice(0, 10)}`);
-    return <div key={concept.id} className={`learn-trail-node learn-idea-row offset-${index % 3}`} data-state={state === 'Not started' ? 'new' : state.toLowerCase()}><span className="learn-trail-dot" aria-hidden="true">{index + 1}</span><div><strong>{concept.title}</strong><small>{state}</small></div>
+    return <div key={concept.id} className="learn-trail-node learn-idea-row" data-state={state === 'Not started' ? 'new' : state.toLowerCase()}><span className="learn-trail-dot" aria-hidden="true">{index + 1}</span><div><strong>{concept.title}</strong><small>{state}</small></div>
       <button type="button" className="secondary" aria-label={`Practice this idea: ${concept.title}`} onClick={() => setPractice({ conceptId: concept.id, topicId })}>Practice</button>
       {chikuOpen(concept, taughtSteps, chikuPlayedIds, afterBedtime) && <button type="button" className="secondary learn-chiku-chip" aria-label={`Teach Chiku: ${concept.title}`} onClick={() => { if (data && isAfterBedtime(Date.now(), data.bedtime)) return; setChikuFor({ conceptId: concept.id, title: concept.title, scene: concept.chiku as ChikuScene }); }}>Teach Chiku</button>}
       {state === 'Mastered' && goldItems(concept, taughtOn, dayKey(openedAt)) && <button type="button" className="secondary" disabled={triedToday} onClick={() => setPractice({ conceptId: concept.id, topicId, goldReview: true })}>Gold review</button>}</div>;
@@ -188,10 +188,11 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
     </section>;
   }
 
-  const current = currentBook(topics, { done: chaptersDone, lastTouched });
+  const library = libraryOrder(topics);
+  const current = currentBook(library, { done: chaptersDone, lastTouched });
   const upNext = current && nextChapter(current, chaptersDone);
   const upNextState = current && upNext ? stateOf(current.body.topic.id, upNext) : undefined;
-  const shelves = libraryShelves(topics, chaptersDone);
+  const shelves = libraryShelves(library, chaptersDone);
   return <section className="screen learn-screen read-screen"><FriendStage area="learn"><p className="eyebrow">Read</p><h1>Your books</h1></FriendStage>
     <section className="card read-continue" aria-label="Continue">
       {current && upNext ? <>

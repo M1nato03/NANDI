@@ -66,6 +66,6 @@
 .you-private-list { display: grid; gap: 8px; margin: 10px 0; padding: 0; list-style: none; }
 .you-private-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .you-private-confirm { display: flex; gap: 8px; }
-.you-private-import { display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; padding: 0 18px; border-radius: var(--radius-row); font-weight: 600; cursor: pointer; }
+.you-private .you-private-import { box-sizing: border-box; display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; padding: 0 18px; border-radius: var(--radius-row); font-weight: 600; cursor: pointer; }
 .you-private-import:focus-within { outline: 3px solid var(--accent); outline-offset: 3px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

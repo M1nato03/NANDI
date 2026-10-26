@@ -51,6 +51,7 @@ test('old Learn and Mind links still open, now inside Read', async ({ page }) =>
 });
 
 test('a chapter reads its lessons as the day\'s drop, then its quiz check, then the done card; a second chapter keeps its own drop', async ({ page }) => {
+  test.setTimeout(150_000); // nine lessons and three questions
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read/book/how-things-work');
   const book = pack('how-things-work');
@@ -58,24 +59,25 @@ test('a chapter reads its lessons as the day\'s drop, then its quiz check, then 
   await expect(page.getByRole('list', { name: 'Chapters' }).getByRole('button', { name: /^Chapter \d: .*, Not started$/ })).toHaveCount(3);
   await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
   await expect(page).toHaveURL(/#read\/chapter\/how-things-work\/how-things-work-ch1$/);
-  await walkLesson(page, 'how-things-work');
+  await walkLesson(page, 'how-things-work', true);
   // Half-read: the book page shows it in progress, and Continue goes back to where it stopped.
   await page.goto('/?e2e#read/book/how-things-work');
   await expect(page.getByRole('button', { name: /^Chapter 1: Things that fly, In progress$/ })).toBeVisible();
   await page.getByRole('button', { name: 'Continue · Chapter 1' }).click();
-  for (let lesson = 0; lesson < 8; lesson++) await walkLesson(page, 'how-things-work');
+  for (let lesson = 0; lesson < 8; lesson++) await walkLesson(page, 'how-things-work', true);
   await expect(page.getByText('Chapter check · three questions')).toBeVisible();
   for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
   const done = page.locator('.read-done-card');
   await expect(done).toContainText('Chapter 1 done');
-  expect(await ledgerIds(page, 'chapter:')).toEqual(['chapter:how-things-work:how-things-work-ch1']);
+  await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:how-things-work:how-things-work-ch1']);
   // The first chapter of the day was the day's drop; the next one today keeps its own id (one drop's XP a day).
   await done.getByRole('button', { name: 'Next chapter' }).click();
-  await walkLesson(page, 'how-things-work');
+  await walkLesson(page, 'how-things-work', true);
   expect(await dropIds(page)).toEqual(['drop:chapter|how-things-work-ch2', 'drop:check|how-things-work-ch1', 'drop:daily|how-things-work-ch1']);
 });
 
 test('a finished book offers the next one; the recall and Chiku checks finish their chapters too', async ({ page }) => {
+  test.setTimeout(90_000);
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read');
   await seedTaughtTopics(page, ['history-civilisations', 'money-markets', 'psychology']);
@@ -98,15 +100,22 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   await page.goto('/?e2e#read/chapter/psychology/psychology-ch1');
   await page.locator('.chiku-skip').click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
-  expect(await ledgerIds(page, 'chapter:')).toEqual(['chapter:history-civilisations:history-civilisations-ch1', 'chapter:history-civilisations:history-civilisations-ch2', 'chapter:money-markets:money-markets-ch1', 'chapter:psychology:psychology-ch1']);
+  await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:history-civilisations:history-civilisations-ch1', 'chapter:history-civilisations:history-civilisations-ch2', 'chapter:money-markets:money-markets-ch1', 'chapter:psychology:psychology-ch1']);
   await page.goto('/?e2e#read');
   await expect(page.getByRole('region', { name: 'Finished' })).toContainText(pack('history-civilisations').body.book.title);
 });
 
 test('after bedtime no new chapter starts; the rest waits for tomorrow', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2026-10-27T23:50:00'));
-  await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-  await expect(page.getByRole('status')).toContainText('The rest of this chapter opens tomorrow.');
+  await page.clock.setFixedTime(new Date('2026-10-28T02:30:00')); // after the default bedtime (01:30)
+  // After shutdown the app opens on the night deck (once its settings load); leaving it for a chapter shows the
+  // chapter waiting.
+  await page.goto('/?e2e#night');
+  await expect(async () => {
+    const leave = page.getByRole('button', { name: 'Leave night deck' });
+    if (await leave.isVisible()) await leave.click();
+    await page.evaluate(() => { location.hash = '#read/chapter/how-things-work/how-things-work-ch1'; });
+    await expect(page.locator('.read-wait')).toContainText('The rest of this chapter opens tomorrow.', { timeout: 1500 });
+  }).toPass({ timeout: 20_000 });
   await expect(page.locator('.step-lesson')).toHaveCount(0);
 });
 

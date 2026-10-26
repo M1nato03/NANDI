@@ -34,6 +34,7 @@ const indexes: Record<string, string[]> = {
   learnConcepts: [],
   learnItems: ['lastSeen'],
   learnDrops: [],
+  privatePacks: [],
 };
 
 let sequence = 0;

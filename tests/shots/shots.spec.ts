@@ -75,7 +75,7 @@ for (const theme of themes) test.describe(theme, () => {
   test('read: a chapter mid-way, the quiz check, chapter done', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-    await walkLesson(page, 'how-things-work');
+    await walkLesson(page, 'how-things-work', true);
     await expect(page.locator('.step-lesson')).toBeVisible();
     await shot(page, 'read-3-chapter-midway', false);
     await page.goto('/?e2e#read');
