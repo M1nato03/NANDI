@@ -13,7 +13,7 @@ describe("Mor's list add field", () => {
     render(<MorList board={board as never} onDetail={() => {}} avgHidden hideAverage={() => {}} />);
     const field = screen.getByPlaceholderText('Add a task') as HTMLInputElement;
     fireEvent.change(field, { target: { value: 'First block' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Add', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
     // The save is still running; the next task is typed straight away.
     fireEvent.change(field, { target: { value: 'Second block' } });
     await act(async () => { finish(true); });
@@ -25,7 +25,7 @@ describe("Mor's list add field", () => {
     render(<MorList board={board as never} onDetail={() => {}} avgHidden hideAverage={() => {}} />);
     const field = screen.getByPlaceholderText('Add a task') as HTMLInputElement;
     fireEvent.change(field, { target: { value: 'Only block' } });
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Add', exact: true })); });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Add' })); });
     expect(field.value).toBe('');
   });
 });
