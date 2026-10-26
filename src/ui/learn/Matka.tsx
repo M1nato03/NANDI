@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MATKA_ASK, MATKA_FOOTER, MATKA_STOP, matkaReveal, type MatkaItem } from '../../core/moti/matka';
 import { Moti } from '../cast/Cast';
+import { AreaScope } from '../shell/AreaScope';
 
 /** What the screen needs to ask about one sealed item: the step's hook options, or an estimate's scale and units. */
 export type MatkaContext = { title: string; options?: { id: string; text: string }[]; scale?: { lo: number; hi: number; step: number; start: number }; format?: (value: number) => string };
@@ -21,16 +22,16 @@ export function Matka({ items, answered, context, onAnswer, onLeave }: { items: 
     setReveal({ item: current, lines: matkaReveal(current, recalled, { value: ctx.format ?? String, option: id => ctx.options?.find(option => option.id === id)?.text ?? id }) });
     setValue(null);
   };
-  if (reveal) return <section className="screen matka" aria-label="Moti's matka">
+  if (reveal) return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" />
     <div className="matka-crack" data-moment="crack"><Moti pose="cheer" size={64} title="Moti" /><span className="matka-pot" aria-hidden="true"><span /><span /></span></div>
     <div className="matka-reveal" role="status">{reveal.lines.map(line => <p key={line}>{line}</p>)}</div>
     {!footerShown && <p className="small matka-footer">{MATKA_FOOTER}</p>}
     <button type="button" onClick={() => { setReveal(null); setFooterShown(true); }}>{open.length ? 'Next' : 'Done'}</button>
   </section>;
-  if (!item) return <section className="screen matka" aria-label="Moti's matka"><Moti pose="rest" size={64} title="Moti" /><p role="status">{MATKA_STOP}</p><button type="button" className="secondary" onClick={onLeave}>Close</button></section>;
+  if (!item) return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" /><Moti pose="rest" size={64} title="Moti" /><p role="status">{MATKA_STOP}</p><button type="button" className="secondary" onClick={onLeave}>Close</button></section>;
   const ctx = context(item);
   const scale = ctx.scale;
-  return <section className="screen matka" aria-label="Moti's matka">
+  return <section className="screen matka" aria-label="Moti's matka"><AreaScope area="review" />
     <div className="matka-head"><Moti pose="think" size={56} title="Moti" /><span className="matka-pot whole" aria-hidden="true" /></div>
     <p className="eyebrow">{ctx.title}</p>
     {MATKA_ASK.map(line => <p key={line} className="matka-ask">{line}</p>)}

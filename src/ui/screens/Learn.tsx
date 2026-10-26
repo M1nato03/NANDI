@@ -59,6 +59,8 @@ const haveliCount = (picks: readonly HaveliIdea[], litToday: readonly string[], 
 };
 import { chikuOpen, type ChikuScene } from '../../core/learn/chiku';
 import { ChikuStage } from '../learn/ChikuStage';
+import { AreaScope } from '../shell/AreaScope';
+import { FriendStage } from '../cast/FriendStage';
 import { saveChikuPlayed } from '../../data/repos/learn-engine';
 
 type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; goldReview?: boolean };
@@ -146,8 +148,8 @@ export function Learn({ entry }: { entry?: string }) {
   const chikuPlayedIds = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chiku' && !fact.deleted).map(fact => fact.refId));
   if (chikuFor) return <section className="screen learn-screen"><ChikuStage scene={chikuFor.scene} seed={`${chikuFor.conceptId}:${dayKey(now)}`} onPlayed={(card, matched) => { const at = Date.now(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chikuFor.conceptId, card, matched, deviceId, now: at })).catch(() => setMessage("Could not save Chiku's turn.")); }} onDone={() => { setChikuBack(chikuFor.title); setChikuFor(null); }} />{message && <p role="status">{message}</p>}</section>;
   if (entry === 'drop') return <section className="screen learn-screen"><p className="eyebrow">Today</p><h1>Today's drop</h1><LearnDrop daily itemCount={5} onDone={() => go('learn')} />{scene}</section>;
-  if (practice) return <section className="screen learn-screen"><LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
-  return <section className="screen learn-screen"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1>
+  if (practice) return <section className="screen learn-screen">{(practice.reviewDue || practice.goldReview) && <AreaScope area="review" />}<LearnDrop daily={false} itemCount={practice.goldReview ? 5 : 3} preferredConceptId={practice.conceptId} practiceTopicId={practice.topicId} reviewDue={practice.reviewDue} goldReview={practice.goldReview} onDone={() => setPractice(undefined)} />{scene}</section>;
+  return <section className="screen learn-screen"><FriendStage area="learn"><p className="eyebrow">Your curiosity, in motion</p><h1>Learn</h1></FriendStage>
     <section className="card learn-today" aria-label="Today"><h2>Today</h2>
       <div className="learn-today-status"><div><strong>Today's drop</strong><span>{dropStatus(data?.daily)}</span></div><button type="button" onClick={() => go('learn/drop')}>{dropAction(data?.daily)}</button></div>
       <div className="learn-today-status"><div><strong>Night drop</strong><span>{dropStatus(data?.night)}</span></div><span className="learn-today-note">In your night cards</span></div>

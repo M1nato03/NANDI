@@ -10,7 +10,7 @@
   --teal: #5FD4C0; --danger: #FF8A80; --focus: #FFD08A;
   --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 8px 24px rgba(0,0,0,.35);
   --shadow-2: 0 1px 0 rgba(255,255,255,.06) inset, 0 16px 40px rgba(0,0,0,.45);
-  --area-do: #FFB25B; --area-move: #FF8A6B; --area-think: #B39DFF;
+  --area-do: #FAD27A; --area-move: #8FD39B; --area-think: #B39DFF;
   --area-notice: #7CC4FF; --area-learn: #5FD4C0; --area-extra: #C6E36A; --area-night: #9FA8FF;
   --input-line: rgba(255,255,255,.06);
   --surface: var(--surface-1); --raised: var(--surface-2); --line: var(--surface-3);
@@ -35,7 +35,7 @@
     --teal: #0F6E61; --danger: #A8322A; --focus: #8A4A06;
     --shadow-1: 0 1px 2px rgba(60,40,10,.06), 0 8px 24px rgba(60,40,10,.08);
     --shadow-2: 0 2px 4px rgba(60,40,10,.06), 0 18px 40px rgba(60,40,10,.12);
-    --area-do: #9B5200; --area-move: #A84129; --area-think: #6950AA;
+    --area-do: #7E5300; --area-move: #2E6A38; --area-think: #6950AA;
     --area-notice: #216C9B; --area-learn: #0F6E61; --area-extra: #657D13; --area-night: #535FB0;
     --input-line: rgba(0,0,0,.08);
     --focus-ring: var(--focus);
@@ -52,7 +52,7 @@
   --teal: #0F6E61; --danger: #A8322A; --focus: #8A4A06;
   --shadow-1: 0 1px 2px rgba(60,40,10,.06), 0 8px 24px rgba(60,40,10,.08);
   --shadow-2: 0 2px 4px rgba(60,40,10,.06), 0 18px 40px rgba(60,40,10,.12);
-  --area-do: #9B5200; --area-move: #A84129; --area-think: #6950AA;
+  --area-do: #7E5300; --area-move: #2E6A38; --area-think: #6950AA;
   --area-notice: #216C9B; --area-learn: #0F6E61; --area-extra: #657D13; --area-night: #535FB0;
   --input-line: rgba(0,0,0,.08);
     --focus-ring: var(--focus);

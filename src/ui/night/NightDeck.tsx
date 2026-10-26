@@ -19,7 +19,7 @@ import { NightPlanSetting } from '../screens/NightPlanSetting';
 import { DeckGlyph, type Glyph } from '../DeckGlyph';
 import { ReviewToday } from '../mind/ReviewToday';
 import { announceFinish } from '../shell/finish';
-import { Kachhua } from '../cast/Cast';
+import { FriendStage } from '../cast/FriendStage';
 import { featuredDailyDone } from '../../core/puzzles/shelf';
 
 const LearnDrop = lazy(() => import('../learn/LearnDrop').then(module => ({ default: module.LearnDrop })));
@@ -142,7 +142,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     {card.id !== 'stop' && <div className="deck-dashes" role="group" aria-label={`Card ${at + 1} of ${NIGHT_CARDS.length}`}>{NIGHT_CARDS.map((item, i) => <button type="button" key={item.id} className={i === at ? 'active' : ''} aria-current={i === at ? 'step' : undefined} aria-label={`Go to card ${i + 1}: ${item.tag}`} onClick={() => { if (at === NIGHT_CARDS.length - 2 && i === NIGHT_CARDS.length - 1) finishNightOnce(today); goToCard(i); }} />)}</div>}
     <article className="deck-card card" aria-label={`${card.tag} card`} key={card.id}>
       <div className="deck-card-head"><DeckGlyph type={glyph} /><span className="deck-eyebrow">{card.tag}</span></div>
-      {card.id === 'tonight' && <Kachhua pose="rest" size={48} />}{card.id === 'tonight' && <button type="button" className="secondary night-kolam" onClick={() => go('kolam')}>Trace tonight's kolam</button>}{card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
+      {card.id === 'tonight' && <FriendStage area="night" pose="rest" size={72} />}{card.id === 'tonight' && <button type="button" className="secondary night-kolam" onClick={() => go('kolam')}>Trace tonight's kolam</button>}{card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
       {card.id === 'learn' && <><ReviewToday day={today} /><Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense></>}
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
       {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<div className="deck-end"><p><strong>Tomorrow’s first step</strong></p>{tomorrowTask ? <p>{tomorrowTask.title}</p> : <form className="deck-add" onSubmit={event => void saveTomorrow(event)}><label htmlFor="night-tomorrow">Name one small step</label><input id="night-tomorrow" value={tomorrowTitle} onChange={event => setTomorrowTitle(event.target.value)} maxLength={160} placeholder="Tomorrow’s first step" required /><button type="submit" disabled={board.busy}>Save</button></form>}</div></>}

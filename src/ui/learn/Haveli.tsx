@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { haveliTiles, placeTile, type HaveliIdea, type HaveliTile } from '../../core/moti/haveli';
 import { Moti, type Pose } from '../cast/Cast';
+import { AreaScope } from '../shell/AreaScope';
 
 /**
  * Spec 26 A1, Moti's haveli: a room per topic, a diya per finished idea. Review is a rebuild: put the takeaway back
@@ -41,7 +42,7 @@ export function Haveli({ ideas, lit, everLit, cap, day, onRebuilt, onLeave }: { 
   };
   const tiles = active ? haveliTiles(active, `${day}:${active.id}`) : [];
   const shownMoment: Moment = !active && quiet ? 'rest' : moment.kind;
-  return <section className="screen haveli" aria-label="Moti's haveli">
+  return <section className="screen haveli" aria-label="Moti's haveli"><AreaScope area="review" />
     <div className="haveli-head"><span className={`moti-friend moti-${shownMoment}`} key={`${shownMoment}-${moment.at}`} data-moment={shownMoment}><Moti pose={POSE[shownMoment]} size={64} title="Moti" /></span><div><p className="eyebrow">Moti's haveli</p><h1>{active ? 'Put the idea back together' : quiet ? 'The haveli is quiet for today.' : 'Light a diya'}</h1></div></div>
     {active ? <>
       <p className="small">{active.title} · {active.topicTitle}</p>

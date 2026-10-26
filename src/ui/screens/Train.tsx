@@ -11,6 +11,7 @@ import { formatDayKey } from '../../core/time/formatDayKey';
 import { dayKey } from '../../core/time';
 import { go } from '../shell/router';
 import '../train/train.css';
+import { FriendStage } from '../cast/FriendStage';
 
 const reposPromise = getOrCreateDeviceId(db, Date.now()).then(id => createTrainRepos(db, id));
 
@@ -49,7 +50,7 @@ export function Train({ entry }: { entry?: string }) {
     adjustRest={endAt => { void act((repos, now) => repos.setRestEnd(active.id, endAt, now), 'Rest updated.'); }}
     finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) go('train/finish'); }); }} /></section>;
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
-  return <section className="screen train-screen"><p className="eyebrow">The Proving Ground</p><h1>Train</h1>
+  return <section className="screen train-screen"><FriendStage area="train"><p className="eyebrow">The Proving Ground</p><h1>Train</h1></FriendStage>
     {message && <p role="status">{message}</p>}
     {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Your session</p><h2>Session finished</h2><p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : 'Plan logged. Come back for the next session.'}</p><p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
     {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('train/workout')}>Continue session</button></div>}

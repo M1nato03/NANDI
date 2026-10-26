@@ -193,7 +193,7 @@ const K = { line: '#47301f', fur: '#9a6a48', dark: '#6a4630', face: '#f1c6a4', f
 export function Kapi(props: CastProps) {
   const pose = props.pose ?? 'idle';
   const headT = pose === 'think' ? 'rotate(6 50 62)' : pose === 'rest' ? 'translate(0 2) rotate(-4 50 62)' : pose === 'cheer' ? 'rotate(-4 50 62) translate(0 -1)' : undefined;
-  const arm = pose === 'cheer' ? { d: 'M64.5 66C71 62 74.5 54 72.5 46.5', hand: [72.4, 45.4] } : pose === 'think' ? { d: 'M64.5 66C69.5 63 67 58 60 58', hand: [58.6, 58.2] } : { d: 'M64.5 66C70 72 69.5 80 64.5 84', hand: [64, 84.8] };
+  const arm: { d: string; hand: [number, number] } = pose === 'cheer' ? { d: 'M64.5 66C71 62 74.5 54 72.5 46.5', hand: [72.4, 45.4] } : pose === 'think' ? { d: 'M64.5 66C69.5 63 67 58 60 58', hand: [58.6, 58.2] } : { d: 'M64.5 66C70 72 69.5 80 64.5 84', hand: [64, 84.8] };
   return <Frame name="Kapi" {...props}>
     <Shadow rx={26} />
     <path d="M66 85C84 90 93 77 89 65C86 57 78 57 77.6 63.4C77.4 67.4 81.4 68.6 82.6 65.6" fill="none" stroke={K.line} strokeWidth="5.6" strokeLinecap="round" />

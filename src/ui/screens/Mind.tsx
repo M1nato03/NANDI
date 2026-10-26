@@ -46,6 +46,7 @@ import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
 import { BoardTutorial, CaseTutorial } from '../mind/Tutorial';
 import { KapiMoment, type KapiMomentKind } from '../mind/KapiMoment';
+import { FriendStage } from '../cast/FriendStage';
 
 type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number; challenge?: boolean; linkDay?: string; friendPace?: number[]; shelf?: boolean; seedText?: string };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
@@ -514,8 +515,8 @@ export function Mind({ entry }: { entry?: string }) {
     </>}
   </section>;
 
-  return <section className="screen mind-hub">{entry !== 'courses' && entry !== 'unit' && <KapiMoment moment="swing" />}
-    {entry !== 'courses' && entry !== 'unit' && <><p className="eyebrow">Practice</p><h1>Mind</h1>
+  return <section className="screen mind-hub">
+    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Practice</p><h1>Mind</h1></FriendStage>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
     {/* Spec 29: Kapi's shelf, the boards Mind already has, each with a plain line and a how-to the first time. */}
     <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Kapi's shelf</h2><p className="small">One board of each a day, and two more if you want them.</p>
