@@ -43,6 +43,9 @@ body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .c
 .cast-limb { transform-origin: 50% 0%; }
 .cast-svg { pointer-events: none; }
 .cast-m-blink .cast-eye { animation: cast-blink .25s ease-in-out 1; }
+/* Closed (rest) eyes can't shut further: they give a small lift instead. */
+.cast-m-blink .cast-eye-closed { animation: cast-lid-lift .25s ease-in-out 1; }
+@keyframes cast-lid-lift { 50% { transform: translateY(-1px) scaleY(1.2); } }
 .cast-m-nod > .cast-move { animation: cast-nod .5s ease-in-out 1; }
 .cast-m-hop > .cast-move { animation: cast-moment-hop .6s ease-out 1; }
 .cast-m-tilt > .cast-move { animation: cast-tilt .6s ease-in-out 1; }

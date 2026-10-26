@@ -21,18 +21,28 @@ export function useFriendMoment(trigger: unknown, initial = 0): number {
 }
 
 const seedOf = (text: string) => { let h = 2166136261; for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619); return h >>> 0; };
-/** An idle friend blinks once every 8-14 s (seeded per friend on screen), only while it is visible. */
-function useIdleBlink(node: RefObject<SVGSVGElement | null>, on: boolean, seed: string): number {
+/**
+ * An idle friend blinks once every 8-14 s (seeded per friend), only while it is on screen and the page is visible, and
+ * never over a moment that is still playing (Codex A item 128).
+ */
+function useIdleBlink(node: RefObject<SVGSVGElement | null>, on: boolean, seed: string, lastMoment: RefObject<number>): number {
   const [blinks, setBlinks] = useState(0);
   useEffect(() => {
     const svg = node.current;
     if (!on || !svg || typeof IntersectionObserver === 'undefined') return;
-    let timer: number | undefined, n = 0;
-    const next = () => { n += 1; timer = window.setTimeout(() => { setBlinks(count => count + 1); next(); }, 8000 + seedOf(`${seed}:${n}`) % 6000); };
-    const observer = new IntersectionObserver(([entry]) => { window.clearTimeout(timer); if (entry?.isIntersecting) next(); });
+    let timer: number | undefined, n = 0, inView = false;
+    const stop = () => { window.clearTimeout(timer); timer = undefined; };
+    const next = () => {
+      stop();
+      if (!inView || document.visibilityState === 'hidden') return;
+      n += 1;
+      timer = window.setTimeout(() => { if (Date.now() - lastMoment.current > 1300) setBlinks(count => count + 1); next(); }, 8000 + seedOf(`${seed}:${n}`) % 6000);
+    };
+    const observer = new IntersectionObserver(([entry]) => { inView = !!entry?.isIntersecting; next(); });
     observer.observe(svg);
-    return () => { observer.disconnect(); window.clearTimeout(timer); };
-  }, [node, on, seed]);
+    document.addEventListener('visibilitychange', next);
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', next); stop(); };
+  }, [node, on, seed, lastMoment]);
   return blinks;
 }
 
@@ -41,7 +51,7 @@ const useUid = () => useId().replace(/[^a-zA-Z0-9]/g, '');
 
 function Eye({ x, y, pose, ink, s = 1 }: { x: number; y: number; pose: Pose; ink: string; s?: number }) {
   if (pose === 'cheer') return <path d={`M${x - 3.4 * s} ${y + 0.9 * s}Q${x} ${y - 3.8 * s} ${x + 3.4 * s} ${y + 0.9 * s}`} fill="none" stroke={ink} strokeWidth={1.9 * s} strokeLinecap="round" />;
-  if (pose === 'rest') return <g fill="none" stroke={ink} strokeWidth={1.6 * s} strokeLinecap="round">
+  if (pose === 'rest') return <g className="cast-eye cast-eye-closed" fill="none" stroke={ink} strokeWidth={1.6 * s} strokeLinecap="round">
     <path d={`M${x - 3.4 * s} ${y - 0.4 * s}Q${x} ${y + 3.2 * s} ${x + 3.4 * s} ${y - 0.4 * s}`} />
     <path d={`M${x - 2.2 * s} ${y + 1.9 * s}l-.9 1.4M${x + 2.2 * s} ${y + 1.9 * s}l.9 1.4`} strokeWidth={1.1 * s} />
   </g>;
@@ -73,7 +83,9 @@ function Mood({ pose, at }: { pose: Pose; at: [number, number] }) {
 function Frame({ name, pose = 'idle', size = 48, title, moment, at = 0, breathe, children }: CastProps & { name: CastName; children: ReactNode }) {
   const svg = useRef<SVGSVGElement>(null);
   const uid = useId();
-  const blinks = useIdleBlink(svg, pose === 'idle' && !(moment && at), `${name}${uid}`);
+  const lastMoment = useRef(0);
+  useEffect(() => { if (at) lastMoment.current = Date.now(); }, [at]);
+  const blinks = useIdleBlink(svg, pose === 'idle', `${name}${uid}`, lastMoment);
   // The latest of the caller's moment and the idle blink plays; the inner group's key restarts its animation once.
   const [shown, setShown] = useState<{ at: number; blinks: number; kind?: FriendMoment; key: string }>({ at: 0, blinks: 0, key: '' });
   let current = shown;

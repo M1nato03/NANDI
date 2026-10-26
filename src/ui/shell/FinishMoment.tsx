@@ -1,11 +1,13 @@
 import { RULES } from '../../core/rules.config';
-import { Cast, Nandi } from '../cast/Cast';
+import { Cast, Nandi, useFriendMoment } from '../cast/Cast';
 import { finishCast } from '../cast/placement';
 import type { FinishActivity } from './finish';
 import { useModalFocus } from './useModalFocus';
 
 export function FinishMoment({ line, gain = 0, shownXp = 0, reduced, activity = 'task' }: { line: string; gain?: number; shownXp?: number; reduced: boolean; activity?: FinishActivity }) {
-  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={1} /><span>{gain > 0 && <>+{shownXp} XP · </>}{line}</span></div>;
+  // A new notice replacing a visible one nods again (Codex A item 128).
+  const at = useFriendMoment(`${activity}|${line}|${gain}`, 1);
+  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={at} /><span>{gain > 0 && <>+{shownXp} XP · </>}{line}</span></div>;
 }
 
 export function DoneForToday({ close, reduced, suggestion }: { close: () => void; reduced: boolean; suggestion?: string | null }) {

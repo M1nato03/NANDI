@@ -14,9 +14,13 @@ test('a friend mid-hop never blocks a tap on what lies under it', async ({ page 
   await page.goto('/?e2e#you/cast');
   const card = page.getByRole('button', { name: 'Nandi cheer: play' });
   await card.click();
-  // The svg takes no pointer events, so a second tap mid-animation still reaches the card.
+  const first = await card.locator('.cast-move').evaluate(node => { (node as HTMLElement).dataset.mark = 'first'; return true; });
+  expect(first).toBe(true);
+  // The svg takes no pointer events, so a second tap mid-animation still reaches the card and restarts the hop.
   await card.click();
   await expect(card.locator('svg')).toHaveCSS('pointer-events', 'none');
+  await expect(card.locator('svg')).toHaveAttribute('data-moment', 'hop');
+  await expect(card.locator('.cast-move[data-mark="first"]')).toHaveCount(0);
 });
 
 test('reduced motion: no friend moves anywhere, only the pose', async ({ page }) => {
@@ -29,3 +33,22 @@ test('reduced motion: no friend moves anywhere, only the pose', async ({ page })
     expect(names, route).toEqual([]);
   }
 });
+
+test('six friends hopping together move only by transform and opacity (no layout work)', async ({ page }) => {
+  await page.goto('/?e2e#you/cast');
+  const props = await page.evaluate(() => {
+    const seen = new Set<string>();
+    for (const sheet of [...document.styleSheets]) {
+      let rules: CSSRuleList;
+      try { rules = sheet.cssRules; } catch { continue; }
+      for (const rule of [...rules]) {
+        if (!(rule instanceof CSSKeyframesRule) || !/^cast-/.test(rule.name)) continue;
+        for (const frame of [...rule.cssRules] as CSSKeyframeRule[]) for (const name of [...frame.style]) seen.add(name);
+      }
+    }
+    return [...seen];
+  });
+  expect(props.length).toBeGreaterThan(0);
+  expect(props.filter(name => !['transform', 'opacity'].includes(name))).toEqual([]);
+});
+

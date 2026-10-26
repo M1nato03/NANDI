@@ -119,6 +119,9 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
 }) {
   const [choice, setChoice] = useState<SoftChoice | null>(null);
   const [okay, setOkay] = useState(0);
+  // The 'I feel okay now' blink waits 260 ms; one pending change at a time, dropped if the screen closes first.
+  const okayTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(okayTimer.current), []);
   // The day a gentle thing was opened on; the Home itself can re-render with the next day after 04:00.
   const openedOn = useRef<string | null>(null);
   const [closed, setClosed] = useState(false);
@@ -156,7 +159,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
           {option.id === 'kind-word' && <KindWord done={() => void finish('kind-word')} />}
           {option.id === 'good-thing' && <GoodThing done={(text, inStory) => void finish('good-thing', { text, inStory })} />}
           <button type="button" className="text-button" onClick={() => setChoice(null)}>Pick another</button></div>}
-      <button type="button" className="text-button soft-okay" onClick={() => { setOkay(count => count + 1); window.setTimeout(() => void setSoftState(db, 'okay', Date.now()), motionReduced() ? 0 : 260); }}>I feel okay now</button>
+      <button type="button" className="text-button soft-okay" onClick={() => { if (okayTimer.current !== undefined) return; setOkay(count => count + 1); okayTimer.current = window.setTimeout(() => void setSoftState(db, 'okay', Date.now()), motionReduced() ? 0 : 260); }}>I feel okay now</button>
       {/* Item 83: tasks stay reachable on a soft day (to move or tick one) without ending the gentle day. */}
       <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>See my tasks</button>
     </section>

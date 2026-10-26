@@ -61,4 +61,30 @@ describe('spec 31 living friends', () => {
     vi.unstubAllGlobals();
     vi.useRealTimers();
   });
+  it('the idle blink comes back after a triggered moment, and waits while the page is hidden (Codex A item 128)', () => {
+    vi.useFakeTimers();
+    let callback: (entries: { isIntersecting: boolean }[]) => void = () => {};
+    vi.stubGlobal('IntersectionObserver', class { constructor(cb: typeof callback) { callback = cb; } observe() {} disconnect() {} });
+    const view = render(<Cast name="Chiku" pose="idle" moment="nod" at={1} />);
+    expect(moment(view.container)).toBe('nod');
+    act(() => { callback([{ isIntersecting: true }]); });
+    act(() => { vi.advanceTimersByTime(14_000); });
+    expect(moment(view.container)).toBe('blink');
+    const hidden = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    act(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    const shown = moveNode(view.container);
+    act(() => { vi.advanceTimersByTime(30_000); });
+    expect(moveNode(view.container)).toBe(shown);
+    hidden.mockRestore();
+    act(() => { document.dispatchEvent(new Event('visibilitychange')); });
+    act(() => { vi.advanceTimersByTime(14_000); });
+    expect(moveNode(view.container)).not.toBe(shown);
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+  it('a resting friend can blink: its closed eyes carry the eye class', () => {
+    const view = render(<Cast name="Kachhua" pose="rest" moment="blink" at={1} />);
+    expect(view.container.querySelectorAll('.cast-eye-closed').length).toBe(2);
+    expect(moment(view.container)).toBe('blink');
+  });
 });
