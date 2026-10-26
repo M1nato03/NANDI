@@ -737,7 +737,31 @@
                 ],
                 "takeaway": "A little inflation is normal; India aims for about 4%."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "If prices grow faster",
+                "than your money,",
+                "you fall behind."
+              ],
+              "decoys": [
+                {
+                  "text": "you can buy just as much.",
+                  "slot": 2,
+                  "misconceptionId": "inflation-m2",
+                  "fix": "When broad prices rise, the same cash can buy fewer goods."
+                },
+                {
+                  "text": "any raise puts you ahead.",
+                  "slot": 2,
+                  "misconceptionId": "inflation-m3",
+                  "fix": "A raise smaller than the rise in prices still buys less than before."
+                }
+              ],
+              "claimIds": [
+                "inflation-c4"
+              ]
+            }
           },
           {
             "id": "compounding",
@@ -2171,7 +2195,31 @@
                 ],
                 "takeaway": "The rule needs a steady rate; markets do not give one."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "Years to double",
+                "is about 72",
+                "divided by the rate."
+              ],
+              "decoys": [
+                {
+                  "text": "is exactly 72",
+                  "slot": 1,
+                  "misconceptionId": "rule-of-72-m1",
+                  "fix": "The rule gives a rough guess, not an exact date."
+                },
+                {
+                  "text": "divided by any market rate.",
+                  "slot": 2,
+                  "misconceptionId": "rule-of-72-m2",
+                  "fix": "Market gains can vary; the shortcut needs a steady assumed rate."
+                }
+              ],
+              "claimIds": [
+                "rule-of-72-c1"
+              ]
+            }
           },
           {
             "id": "risk-return",
@@ -2860,7 +2908,31 @@
                 ],
                 "takeaway": "Money needed soon belongs where drops are unlikely."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "A chance of more gain",
+                "comes with",
+                "bigger ups and downs."
+              ],
+              "decoys": [
+                {
+                  "text": "guarantees gains without",
+                  "slot": 1,
+                  "misconceptionId": "risk-return-m1",
+                  "fix": "A high possible return can come with a loss too."
+                },
+                {
+                  "text": "rules out all losses despite",
+                  "slot": 1,
+                  "misconceptionId": "risk-return-m2",
+                  "fix": "An uncertain asset can lose value as well as gain it."
+                }
+              ],
+              "claimIds": [
+                "risk-return-c3"
+              ]
+            }
           },
           {
             "id": "diversification",
@@ -3567,7 +3639,31 @@
                 ],
                 "takeaway": "A spread softens one firm's fall, not a fall of everything."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "A real spread means",
+                "many firms across",
+                "many different industries."
+              ],
+              "decoys": [
+                {
+                  "text": "one strong firm, not",
+                  "slot": 1,
+                  "misconceptionId": "diversification-m1",
+                  "fix": "One firm or sector leaves a lot tied to one outcome."
+                },
+                {
+                  "text": "just one industry.",
+                  "slot": 2,
+                  "misconceptionId": "diversification-m3",
+                  "fix": "Many firms in one industry still share the same risk."
+                }
+              ],
+              "claimIds": [
+                "diversification-c3"
+              ]
+            }
           },
           {
             "id": "shares",
@@ -4281,7 +4377,31 @@
                 ],
                 "takeaway": "Dividends may come, but the amount and timing are never promised."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "Each share is a slice;",
+                "more shares means",
+                "a bigger slice."
+              ],
+              "decoys": [
+                {
+                  "text": "Each share is a loan;",
+                  "slot": 0,
+                  "misconceptionId": "shares-m1",
+                  "fix": "A share is ownership, not a fixed loan payment."
+                },
+                {
+                  "text": "your count alone guarantees",
+                  "slot": 1,
+                  "misconceptionId": "shares-m4",
+                  "fix": "Your slice depends on your shares out of all the shares."
+                }
+              ],
+              "claimIds": [
+                "shares-c3"
+              ]
+            }
           },
           {
             "id": "emergency-fund",
@@ -5019,7 +5139,31 @@
                 ],
                 "takeaway": "Keep it in a separate savings account you can reach fast."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "An RBI guide puts the fund in",
+                "a separate savings account",
+                "you can reach fast."
+              ],
+              "decoys": [
+                {
+                  "text": "gold or land",
+                  "slot": 1,
+                  "misconceptionId": "emergency-fund-m1",
+                  "fix": "Money tied up in a hard-to-sell asset may not be ready when an urgent bill arrives."
+                },
+                {
+                  "text": "only if it pays the most.",
+                  "slot": 2,
+                  "misconceptionId": "emergency-fund-m4",
+                  "fix": "The guide puts the fund in an easy-to-reach savings account."
+                }
+              ],
+              "claimIds": [
+                "emergency-fund-c4"
+              ]
+            }
           },
           {
             "id": "loan-emi",
@@ -6441,7 +6585,31 @@
                 ],
                 "takeaway": "An index fund matches its index, up and down, minus a small gap."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "An index fund",
+                "matches its index, up and down,",
+                "minus a small gap."
+              ],
+              "decoys": [
+                {
+                  "text": "only rises with its index,",
+                  "slot": 1,
+                  "misconceptionId": "index-funds-m1",
+                  "fix": "Tracking a market index also means sharing its falls."
+                },
+                {
+                  "text": "with no gap at all.",
+                  "slot": 2,
+                  "misconceptionId": "index-funds-m3",
+                  "fix": "Fees and running costs leave a small gap called tracking error."
+                }
+              ],
+              "claimIds": [
+                "index-funds-c5"
+              ]
+            }
           },
           {
             "id": "upi-scams",

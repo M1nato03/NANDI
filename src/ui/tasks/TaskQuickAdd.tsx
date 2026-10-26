@@ -33,6 +33,7 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
     event.preventDefault();
     if (submitting) return;
     const trimmed = taskTitle;
+    const typed = title;
     const count = taskMinutes;
     if (!trimmed || !Number.isInteger(count) || count <= 0) { setFeedback('Add a title and a whole-minute estimate.'); return; }
     const scheduledStart = schedule === 'today' ? new Date(slot).getTime() : undefined;
@@ -50,7 +51,8 @@ export function TaskQuickAdd({ run, tasks = [], focus = [], label = 'Add a task'
           const task = await repos.createTask({ title: trimmed, size, estimateMin: count, mustOrCould: priority, category, scheduledStart, dayKey: dayKey(scheduledStart ?? now), ...(repeat && schedule === 'today' ? { repeat } : {}) }, now);
           if (schedule === 'someday') await repos.moveTask(task.id, now + 1, 'later');
         }, 'Task added.');
-      if (ok) { setTitle(''); setRepeat(''); setOpen(false); setFeedback(''); if (scheduledStart !== undefined) void askNotificationsOnce().catch(() => undefined); }
+      // Clear only what was added; a next task typed during the save stays (same race as Mor's list).
+      if (ok) { setTitle(current => current === typed ? '' : current); setRepeat(''); setOpen(false); setFeedback(''); if (scheduledStart !== undefined) void askNotificationsOnce().catch(() => undefined); }
     } finally {
       setSubmitting(false);
     }

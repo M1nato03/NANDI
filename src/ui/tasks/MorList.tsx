@@ -81,7 +81,8 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove }: 
     clearUndo();
     const picked = time ?? (other ? Number(other) : undefined);
     if (await board.act((repos, now) => repos.addToList(name, now, picked && Number.isFinite(picked) && picked > 0 ? Math.min(picked, 90) : undefined), 'Added to Today.')) {
-      setTitle(''); setTime(undefined); setOther(''); setTimeOpen(false); react('add');
+      // Clear only what was added: a next task typed while the save was running stays in the field (CI caught the race).
+      setTitle(current => current.trim() === name ? '' : current); setTime(undefined); setOther(''); setTimeOpen(false); react('add');
     }
   }
   async function done(task: TaskRow) {
