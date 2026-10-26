@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('a tired day: one gentle thing, a calm finish, and a lantern that stays', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
@@ -46,12 +47,13 @@ test('a low day: keep one good thing, or switch back when you feel okay', async 
   await card.getByRole('button', { name: 'Keep it' }).click();
   await expect(card).toContainText('That counts. Kachhua lit a lantern for today.');
   await card.getByRole('button', { name: 'I feel better, show me more' }).click();
-  await expect(page.getByRole('region', { name: 'Planning routines' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Today', exact: true })).toBeVisible();
 });
 
 test('a tired day: the tiny task ends in the calm finish, with no reward overlay on top', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-04T12:00:00'));
   await page.goto('/#plan');
+  await openMore(page);
   const field = page.getByPlaceholder('Add a task, e.g. call bank 15m');
   await field.fill('Fill water bottle 5m');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();

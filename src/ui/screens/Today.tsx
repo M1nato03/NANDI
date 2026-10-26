@@ -23,7 +23,8 @@ export function Today() {
   const [cyclePreset, setCyclePreset] = useState<'25/5' | '50/10'>('25/5');
   const focus = currentFocus(board.focus);
   const scheduled = todayTasks(board.tasks, board.now);
-  const task = (focus && visibleTasks(board.tasks).find(row => row.id === focus.taskId && row.status !== 'done')) ?? scheduled[0];
+  // A focus on a task moved off today no longer holds the timer screen (item 83).
+  const task = (focus && visibleTasks(board.tasks).find(row => row.id === focus.taskId && row.status !== 'done' && row.status !== 'someday' && row.dayKey === dayKey(board.now))) ?? scheduled[0];
   const group = task?.parentId ? taskGroups(board.tasks).find(row => row.parent.id === task.parentId) : undefined;
   const step = group && task ? group.steps.findIndex(row => row.id === task.id) + 1 : 0;
   const taskFocus = task ? board.focus.filter(row => row.taskId === task.id && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0] : undefined;

@@ -3,6 +3,7 @@ import { packSchema, type Pack } from './schemas';
 import { RULES } from '../../core/rules.config';
 import { freshPracticeErrors } from './fresh';
 import { askLineProblems } from '../../core/learn/askLine';
+import { chikuProblems, type ChikuScene } from '../../core/learn/chiku';
 
 /** Flesch reading ease. A 0.5 point tolerance covers syllable heuristic rounding. */
 export function fleschReadingEase(value: string): number {
@@ -132,6 +133,16 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
         for (const problem of askLineProblems(concept)) errors.push(`${where}.askLine: ${problem}`);
       }
       checkText(`${where}.rule`, concept.rule);
+      if (concept.recall) {
+        for (const decoy of concept.recall.decoys) if (!concept.misconceptions.some(item => item.id === decoy.misconceptionId)) errors.push(`${where}.recall: unknown misconception ${decoy.misconceptionId}`);
+        for (const id of concept.recall.claimIds) if (!concept.claims.some(claim => claim.id === id)) errors.push(`${where}.recall: unknown claim ${id}`);
+        for (const line of [...concept.recall.pieces, ...concept.recall.decoys.flatMap(decoy => [decoy.text, decoy.fix])]) checkText(`${where}.recall`, line);
+      }
+      if (concept.chiku) {
+        for (const problem of chikuProblems(concept.chiku as ChikuScene, concept.misconceptions.map(item => item.id))) errors.push(`${where}.chiku: ${problem}`);
+        for (const id of concept.chiku.claimIds) if (!concept.claims.some(claim => claim.id === id)) errors.push(`${where}.chiku: unknown claim ${id}`);
+        for (const line of [concept.chiku.ask, concept.chiku.newDay.caption, concept.chiku.truth.caption, ...concept.chiku.cards.map(card => card.text), ...concept.chiku.guesses.map(guess => guess.why)]) checkText(`${where}.chiku`, line);
+      }
       const claimIds = new Set<string>();
       for (const claim of concept.claims) {
         if (claimIds.has(claim.id)) errors.push(`${where}: duplicate claim ${claim.id}`);

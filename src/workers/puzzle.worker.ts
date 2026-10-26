@@ -1,20 +1,24 @@
 import PZ from '../core/puzzles';
 import { generateCheck } from './generator';
 import { dailyBoard, friendBoard } from '../core/puzzles/daily';
+import { shelfBoard } from '../core/puzzles/shelf';
 import type { PuzzleDifficulty, PuzzleType } from '../core/puzzles';
 import CaseGen from '../core/mysteries';
+import { shortestProof } from '../core/mysteries/proof';
 
 const pathRuns = 20;
 const pathBudgetMs = 300;
 
-self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice' | 'case' | 'friend'; day: string; type?: PuzzleType; diff?: PuzzleDifficulty; seed?: number; caseDiff?: 'easy' | 'medium' | 'hard'; linkDay?: string }>) => {
+self.onmessage = (event: MessageEvent<string | { kind: 'daily' | 'practice' | 'case' | 'friend' | 'shelf'; day: string; type?: PuzzleType; diff?: PuzzleDifficulty; seed?: number; caseDiff?: 'easy' | 'medium' | 'hard'; linkDay?: string; seedText?: string }>) => {
   try {
     if (typeof event.data !== 'string') {
       const request = event.data;
-      if (request.kind === 'case') { self.postMessage({ kind: 'case', mystery: CaseGen.daily(request.day, request.caseDiff) }); return; }
+      // Spec 24 Prove it: the shortest-proof search runs here, once, off the main thread (Codex A item 77).
+      if (request.kind === 'case') { const mystery = CaseGen.daily(request.day, request.caseDiff); self.postMessage({ kind: 'case', mystery, shortest: mystery ? shortestProof(mystery) : undefined }); return; }
       // Spec 19 D: today's link with today's generated seed is the daily board; anything else is practice.
       if (request.kind === 'friend') { self.postMessage({ kind: 'friend', ...friendBoard({ type: request.type!, diff: request.diff!, seed: request.seed!, day: request.linkDay }, request.day) }); return; }
       const board = request.kind === 'daily' ? dailyBoard(request.day)
+        : request.kind === 'shelf' ? shelfBoard(request.type!, request.diff!, request.seedText!)
         : PZ.generate(request.type!, { seed: request.seed!, diff: request.diff! });
       self.postMessage({ kind: request.kind, board });
       return;

@@ -125,3 +125,41 @@
 .reminder-done { margin-top: 12px; }
 .reminder-done summary { min-height: 44px; display: flex; align-items: center; color: var(--ink-2); cursor: pointer; }
 .reminders button.reminder-remove { color: var(--ink-3); }
+
+/* Spec 27: Mor's list first. Three lists, three controls a row, and Mor reacting once per action. */
+.mor-header { display: flex; align-items: center; gap: 12px; margin: 4px 0 12px; }
+.mor-say { min-width: 0; }
+.mor-say p { margin: 0; }
+.mor-friend { display: inline-block; flex: none; transform-origin: 50% 90%; }
+.mor-friend.mor-open .cast-eye { transform-box: fill-box; transform-origin: center; animation: mor-blink 0.45s ease-in-out 0.3s 1; }
+.mor-friend.mor-add { animation: mor-nod 0.5s ease-out 1; }
+.mor-friend.mor-done { animation: cast-hop 0.55s ease-out 1; }
+.mor-friend.mor-move { animation: mor-glance 0.7s ease-in-out 1; }
+.mor-friend.mor-start { animation: mor-turn 0.5s ease-out 1 forwards; }
+.mor-friend.mor-timed { animation: mor-fan 1s ease-out 1; }
+.mor-friend.mor-rest { animation: mor-breathe 4s ease-in-out infinite; }
+@keyframes mor-blink { 50% { transform: scaleY(0.1); } }
+@keyframes mor-nod { 40% { transform: rotate(6deg) translateY(3%); } 100% { transform: none; } }
+@keyframes mor-glance { 30%, 70% { transform: translateX(6%) rotate(4deg); } 100% { transform: none; } }
+@keyframes mor-turn { to { transform: rotate(-4deg); } }
+@keyframes mor-fan { 30% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes mor-breathe { 50% { transform: scale(1.03); } }
+@media (prefers-reduced-motion: reduce) { .mor-friend, .mor-friend .cast-eye { animation: none !important; } }
+:root[data-motion='reduce'] .mor-friend, :root[data-motion='reduce'] .mor-friend .cast-eye { animation: none !important; }
+.mor-add { display: grid; gap: 8px; margin: 0 0 12px; }
+.mor-add-row { display: flex; align-items: center; gap: 8px; }
+.mor-add-row input { flex: 1 1 auto; min-width: 0; }
+.mor-time-chip { flex: none; white-space: nowrap; }
+.mor-time { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mor-time label { display: flex; align-items: center; gap: 6px; }
+.mor-time input { width: 5rem; }
+.mor-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mor-row .task-row-main { flex: 1 1 8rem; min-width: 0; }
+.mor-row .task-row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.mor-focus .mor-clock { font-size: 2rem; font-variant-numeric: tabular-nums; margin: 4px 0 8px; }
+.mor-toast { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mor-done summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 6px; }
+.plan-more > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; min-height: 44px; cursor: pointer; }
+.plan-more[open] > summary { margin-bottom: 8px; }
+.plan-more .ritual-buttons { margin-bottom: 8px; }
+.move-another { display: grid; gap: 8px; }

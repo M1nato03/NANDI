@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { extname, isAbsolute, relative, resolve } from 'node:path';
+import { openMore } from './helpers/plan';
 
 const buildADir = resolve('dist-e2e');
 const buildBDir = resolve('dist-e2e-b');
@@ -85,6 +86,8 @@ async function prepareUpgrade(page: Page, context: BrowserContext, origin: strin
     }
     for (const key of await caches.keys()) await caches.delete(key);
     localStorage.clear();
+    // Spec 29: keep the e2e-only "how-tos seen" flag the config sets, so this spec reaches its boards.
+    localStorage.setItem('nandi.e2e.tutorialsSeen', '1');
     sessionStorage.clear();
     for (const database of await indexedDB.databases()) {
       if (!database.name) continue;
@@ -175,6 +178,7 @@ test('active focus waits until paused before updating', async ({ page, context }
   try {
     await prepareUpgrade(page, context, server.origin);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
+    await openMore(page);
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
     await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Focus through update');
     await page.getByRole('button', { name: 'Add task', exact: true }).click();
@@ -210,7 +214,8 @@ test('active focus waits until paused before updating', async ({ page, context }
       async () => (await window.__nandiTest!.shellCounts()).tasks,
     )).toBe(count);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
-    await page.getByRole('button', { name: 'Focus timer' }).click();
+    await openMore(page);
+    await page.getByRole('button', { name: 'Focus timer with breaks' }).click();
     await page.getByRole('region', { name: 'Focus task' }).getByRole('button', { name: 'Finish' }).click();
   } finally {
     await server.close();
@@ -225,6 +230,8 @@ test('precache opens lazy screens after the first visit goes offline', async ({ 
   try {
     await page.goto(`${server.origin}/#plan`);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+    // This server has its own origin, so the config's "how-tos seen" flag (spec 29) is set here by hand.
+    await page.evaluate(() => localStorage.setItem('nandi.e2e.tutorialsSeen', '1'));
     await page.evaluate(() => navigator.serviceWorker.ready);
     await page.reload();
     await page.waitForFunction(() => navigator.serviceWorker.controller !== null);

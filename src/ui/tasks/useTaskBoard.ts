@@ -14,6 +14,9 @@ export function useTaskBoard() {
   const focus = useLiveQuery(() => db.focus.filter((row) => row.deleted === 0).toArray(), []);
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
+  // Counts finished writes, so a one-step Undo can tell that any write came after it (Codex A item 93).
+  const writesRef = useRef(0);
+  const [writes, setWrites] = useState(0);
   const [now, setNow] = useState(() => Date.now());
   // The clock re-renders every screen that uses the board, so it ticks each second only while a focus
   // timer runs, and otherwise once a minute (cj2 heavy data #2: idle Plan at a year of data used the whole CPU).
@@ -42,9 +45,9 @@ export function useTaskBoard() {
   }, []);
   async function act(operation: (repos: TaskRepos, at: number) => Promise<unknown>, success = ''): Promise<boolean> {
     setBusy(true); setMessage('');
-    try { await operation(await reposPromise, Date.now()); setMessage(success); return true; }
+    try { await operation(await reposPromise, Date.now()); setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
     catch (error) { setMessage(errorMessage(error)); return false; }
     finally { setBusy(false); setNow(Date.now()); }
   }
-  return { tasks: tasks ?? [], focus: focus ?? [], now, busy, message, act };
+  return { tasks: tasks ?? [], focus: focus ?? [], now, busy, message, act, writes, writesRef };
 }

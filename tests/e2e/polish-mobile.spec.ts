@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test.beforeEach(async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-360x800', 'Screenshots target 360x800.');
@@ -24,6 +25,7 @@ test('Plan and focus controls fit at 360x800', async ({ page }, testInfo) => {
   await expect(offlineReady).toBeVisible({ timeout: 30_000 });
   await page.clock.fastForward(4500);
   await expect(offlineReady).toBeHidden({ timeout: 10_000 });
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Call bank 15m');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.getByRole('button', { name: 'Focus timer' }).click();

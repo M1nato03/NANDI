@@ -8,3 +8,8 @@ it('finds discouraged product phrases without regard to case', () => {
   ]);
   expect(findCopyIssues('failure? Failed.')).toHaveLength(2);
 });
+
+it('finds brain-training claims (spec 24, cj5-mind §3.3)', () => {
+  expect(findCopyIssues('Brain training that makes you smarter and can boost your IQ.').map(hit => hit.phrase)).toEqual(['Brain training', 'makes you smarter', 'boost your IQ']);
+  expect(findCopyIssues('Train your mind for a calm day.')).toEqual([]);
+});

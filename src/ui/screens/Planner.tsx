@@ -23,6 +23,8 @@ import '../tasks/tasks.css';
 
 function tomorrowSlot(now: number) {
   const date = new Date(now);
+  // The planning day runs to 04:00, so a shutdown at 00:30 still means "tomorrow" is the coming morning (item 83).
+  if (date.getHours() < 4) date.setDate(date.getDate() - 1);
   date.setDate(date.getDate() + 1);
   date.setHours(9, 0, 0, 0);
   return localDateTime(date.getTime());
@@ -34,12 +36,12 @@ function TriageRow({ task, board, onMove, onDetail }: { task: TaskRow; board: Re
   const [priority, setPriority] = useState<'must' | 'could'>(task.mustOrCould ?? 'could');
   const [firstStep, setFirstStep] = useState(task.firstStep ?? '');
   async function place() {
-    // A third move goes through the move sheet's choices and reason, never around them (Tasks audit 1).
-    if ((task.postponeCount ?? 0) >= 2) { onMove(task); return; }
+    // Spec 27: placing never goes through a move gate.
     await board.act(async (repos, now) => {
       const start = new Date(slot).getTime();
       if (!Number.isFinite(start) || dayKey(start) !== dayKey(now)) throw new Error('Pick a time today.');
-      await repos.postpone(task.id, now, { newStart: start, firstStep: firstStep.trim() || undefined });
+      await repos.moveTask(task.id, now, { day: dayKey(start), start });
+      if (firstStep.trim()) await repos.setFirstStep(task.id, firstStep.trim(), now);
       await repos.setPriority(task.id, priority, now);
     }, 'Placed for today.');
   }
@@ -48,7 +50,7 @@ function TriageRow({ task, board, onMove, onDetail }: { task: TaskRow; board: Re
     <div className="planner-chips" aria-label={`Suggested times for ${task.title}`}>{slots.map((start) => <button key={start} type="button" className="secondary" onClick={() => setSlot(localDateTime(start))}>{new Date(start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</button>)}</div>
     {(task.postponeCount ?? 0) >= 1 && <label>First 10 minutes <input maxLength={120} value={firstStep} onChange={(event) => setFirstStep(event.target.value)} placeholder="A small first step" /></label>}
     <label>Priority <select value={priority} onChange={(event) => setPriority(event.target.value as 'must' | 'could')}><option value="could">Could</option><option value="must">Must</option></select></label>
-    <div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void place()}>Place today</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.postpone(task.id, now, { newStart: null, choice: 'someday' }), 'Parked in Someday.')}>Someday</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task dropped.')}>Drop</button></div>
+    <div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void place()}>Place today</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.moveTask(task.id, now, 'later'), 'Parked in Someday.')}>Someday</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task dropped.')}>Drop</button></div>
     {(task.postponeCount ?? 0) >= 2 && <button type="button" className="text-button" onClick={() => onMove(task)}>See postpone choices</button>}
   </div>;
 }
@@ -60,6 +62,12 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
   const sessions = useLiveQuery(() => db.sessions.filter((row) => row.deleted === 0).toArray(), []) ?? [];
   const settings = useLiveQuery(() => db.settings.filter((row) => row.deleted === 0).toArray(), []) ?? [];
   const [moving, setMoving] = useState<TaskRow | null>(null);
+  // Item 83 + spec 27: Shutdown's "Move to tomorrow" moves the task straight to tomorrow 9:00 and says so. No move is refused.
+  async function moveTomorrow(task: TaskRow) {
+    const at = new Date(tomorrowSlot(Date.now())).getTime();
+    const when = new Date(at).toLocaleString([], { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    await board.act((repos, now) => repos.moveTask(task.id, now, { day: dayKey(at), start: at }), `Moved to ${when}.`);
+  }
   const [detail, setDetail] = useState<TaskRow | null>(null);
   const [skipped, setSkipped] = useState(false);
   const [skipTomorrow, setSkipTomorrow] = useState(false);
@@ -105,11 +113,12 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
   useEffect(() => { void board.act((repos, now) => repos.plannerBudget(now)); /* Set or advance the baseline week. */ }, []); // eslint-disable-line react-hooks/exhaustive-deps
   async function saveTomorrow() {
     const start = new Date(firstTime || tomorrowSlot(board.now)).getTime();
-    const tomorrow = new Date(board.now); tomorrow.setDate(tomorrow.getDate() + 1);
-    if (!Number.isFinite(start) || dayKey(start) !== dayKey(tomorrow.getTime()) || !firstTitle.trim()) { setExportMessage('Add a task for tomorrow and check its time.'); return false; }
+    // Tomorrow is the planning day after today's (which runs to 04:00), the same day tomorrowSlot uses.
+    const tomorrowKey = dayKey(new Date(`${dayKey(board.now)}T12:00:00`).getTime() + 86_400_000);
+    if (!Number.isFinite(start) || dayKey(start) !== tomorrowKey || !firstTitle.trim()) { setExportMessage('Add a task for tomorrow and check its time.'); return false; }
     const ok = await board.act(async (repos, now) => {
       const id = firstChoice === 'new' ? (await repos.createTask({ title: firstTitle.trim(), size: 'M', estimateMin: 30, dayKey: dayKey(start), scheduledStart: start }, now)).id : firstChoice;
-      if (firstChoice !== 'new') await repos.postpone(id, now, { newStart: start });
+      if (firstChoice !== 'new') await repos.moveTask(id, now, { day: dayKey(start), start });
       if (firstPlace.trim()) await repos.setPlace(id, firstPlace, now);
       if (firstStep.trim()) await repos.setFirstStep(id, firstStep, now);
     }, 'Tomorrow’s first task is set.');
@@ -147,7 +156,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
     </>}
     {mode === 'shutdown' && <>
       <p>A few minutes to leave today here and make tomorrow easier.</p>
-      <section className="card planner-step" aria-label="Close today"><h2><span className="step-number">1</span> Close today</h2>{open.length ? <GroupedSteps all={board.tasks} selected={open} render={(task) => <><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button><div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.completeTask(task.id, now), 'Task done.')}>Done</button><button type="button" className="secondary" onClick={() => setMoving(task)}>Move to tomorrow</button></div><details><summary>Other choices</summary><div className="planner-actions"><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.postpone(task.id, now, { newStart: null, choice: 'someday' }), 'Parked in Someday.')}>Someday</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task dropped.')}>Drop</button></div></details></>} onDetail={setDetail} onDropGroup={dropGroup} busy={board.busy} /> : <EmptyState area="do">Nothing left open.</EmptyState>}</section>
+      <section className="card planner-step" aria-label="Close today"><h2><span className="step-number">1</span> Close today</h2>{open.length ? <GroupedSteps all={board.tasks} selected={open} render={(task) => <><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button><div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.completeTask(task.id, now), 'Task done.')}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void moveTomorrow(task)}>Move to tomorrow</button></div><details><summary>Other choices</summary><div className="planner-actions"><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.moveTask(task.id, now, 'later'), 'Parked in Someday.')}>Someday</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task dropped.')}>Drop</button></div></details></>} onDetail={setDetail} onDropGroup={dropGroup} busy={board.busy} /> : <EmptyState area="do">Nothing left open.</EmptyState>}</section>
       <section className="card planner-step" aria-label="Tomorrow's first step"><h2><span className="step-number">2</span> Tomorrow's first step</h2>{!skipTomorrow ? <><label>Task name <input value={firstTitle} onChange={(event) => { setFirstTitle(event.target.value); setFirstChoice('new'); }} placeholder="What will you start with?" /></label><label>Time (optional) <input type="datetime-local" value={firstTime} onChange={(event) => setFirstTime(event.target.value)} /></label><p className="small">Leave time blank to start at 9:00 AM.</p><details><summary>More details</summary><label>Choose an open task <select value={firstChoice} onChange={(event) => { const id = event.target.value; setFirstChoice(id); setFirstTitle(open.find((task) => task.id === id)?.title ?? ''); }}><option value="new">New task</option>{open.map((task) => <option key={task.id} value={task.id}>{task.title}</option>)}</select></label><label>First 10 minutes <input maxLength={120} value={firstStep} onChange={(event) => setFirstStep(event.target.value)} placeholder="A small first step" /></label><label>Place <input value={firstPlace} onChange={(event) => setFirstPlace(event.target.value)} placeholder="Where will you start?" /></label></details><button type="button" className="text-button" onClick={() => setSkipTomorrow(true)}>Skip tomorrow's step</button></> : <><p>Tomorrow's step skipped for now.</p><button type="button" className="text-button" onClick={() => setSkipTomorrow(false)}>Add tomorrow's step</button></>}</section>
       <section className="card planner-step" aria-label="Tonight's if-then"><h2><span className="step-number">3</span> Tonight's if-then <span className="small">Optional</span></h2><label>If this happens, then I will… <input value={ifThen} onChange={(event) => setIfThen(event.target.value)} placeholder="If I am in bed with my phone, then…" /></label></section>
       <button type="button" disabled={board.busy || (!skipTomorrow && !firstTitle.trim())} onClick={() => void completeShutdown()}>Complete shutdown</button>
@@ -162,7 +171,7 @@ export function Planner({ mode }: { mode: 'plan' | 'shutdown' | 'review' }) {
       <details className="card planner-numbers" aria-label="Numbers"><summary>Numbers</summary><p>Task moves: {summary.postpones}.{summary.reachedThree > 0 ? ` ${summary.reachedThree} reached a third move (${summary.reachedThreeShare}%).` : ''}</p><p>Move reasons: {Object.entries(summary.reasons).map(([reason, count]) => `${moveReasonInWords(reason)} ${count}`).join(' · ') || 'None recorded'}</p><p>Weekly move budget: {summary.postpones} of {summary.budget} used; {summary.budgetOverrun ? `${summary.budgetOverrun} over` : `${summary.budgetRemaining} left`}.{policy?.baselineStart && weekKey >= postponeWeekKey(new Date(`${policy.baselineStart}T12:00:00`).getTime()) && (policy.enforcementFromWeek == null || weekKey < policy.enforcementFromWeek) ? ' This is a baseline week, so the limit is not enforced yet.' : ''}</p><p>How long tasks took compared with your guesses: {Object.entries(summary.estimateRatio).map(([category, ratio]) => `${category} ${ratio}×`).join(' · ') || 'Time a few tasks to see this.'}</p><p>Task switches per focus block: {summary.switchesPerBlock}</p><p>Times you checked in: morning plan {summary.rituals.plan} · shutdown {summary.rituals.shutdown} · weekly review {summary.rituals.review}</p></details>
       {policy?.raisedAtWeek === currentWeek && <p role="status">Budget raised to {policy.budget}. Plans should fit real life.</p>}
       {lowerOffer != null && <div className="card"><p>You were under budget in at least three of the last four weeks.</p><button type="button" className="secondary" onClick={() => void board.act((repos, now) => repos.lowerBudget(now), `Budget lowered to ${lowerOffer}.`)}>Lower the budget by 1?</button></div>}
-      <section aria-label="Someday items"><h2>Someday</h2>{someday.length ? <GroupedSteps all={board.tasks} selected={someday} render={(task) => <><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button>{summary.somedayMoved.includes(task.id) && <span>Moved this week</span>}<div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.postpone(task.id, now, { newStart: new Date(tomorrowSlot(now)).getTime() }), 'Task revived for tomorrow.')}>Revive</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task removed.')}>Delete</button></div></>} onDetail={setDetail} onDropGroup={dropGroup} busy={board.busy} /> : <p>No Someday items right now.</p>}</section>
+      <section aria-label="Someday items"><h2>Someday</h2>{someday.length ? <GroupedSteps all={board.tasks} selected={someday} render={(task) => <><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button>{summary.somedayMoved.includes(task.id) && <span>Moved this week</span>}<div className="planner-actions"><button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.moveTask(task.id, now, { day: dayKey(new Date(tomorrowSlot(now)).getTime()), start: new Date(tomorrowSlot(now)).getTime() }), 'Task revived for tomorrow.')}>Revive</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.dropTask(task.id, now), 'Task removed.')}>Delete</button></div></>} onDetail={setDetail} onDropGroup={dropGroup} busy={board.busy} /> : <p>No Someday items right now.</p>}</section>
       <section aria-label="Upcoming checkpoints"><h2>Upcoming checkpoints</h2>{rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button> · {formatDayKey(task.dayKey)}</p>).length ? rows.filter((task) => task.checkpointOf && task.status === 'planned' && task.dayKey >= today).map((task) => <p key={task.id}><button type="button" className="task-title-button" onClick={() => setDetail(task)}>{task.title}</button> · {formatDayKey(task.dayKey)}</p>) : <p>No upcoming checkpoints.</p>}</section>
       <AgencyCheck now={board.now} />
       <div className="planner-actions"><button type="button" onClick={() => void board.act((repos, now) => repos.markRitual('reviewDone', now), 'Weekly review complete.')}>Finish review</button><button type="button" className="secondary" onClick={() => void exportWeek()}>Export summary</button></div>

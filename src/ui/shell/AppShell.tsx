@@ -47,6 +47,9 @@ const NightPlanSetting = lazy(() => import('../screens/NightPlanSetting').then(m
 const Backup = lazy(() => import('../screens/Backup').then(module => ({ default: module.Backup })));
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
+const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
+const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
+const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
 const Plan = lazy(() => import('../screens/Plan').then(module => ({ default: module.Plan })));
 const Planner = lazy(() => import('../screens/Planner').then(module => ({ default: module.Planner })));
 const Train = lazy(() => import('../screens/Train').then(module => ({ default: module.Train })));
@@ -178,12 +181,15 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'plan/focus') screen = <Today />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/chiku-demo') screen = <ChikuDemo />;
   else if (path === 'learn' || path === 'learn/drop') screen = <Learn entry={path.split('/')[1]} />;
   else if (path === 'learn/lesson' || path === 'learn/unit') screen = <Mind key={path} entry={path.split('/')[1]} />;
   else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
   else if (path === 'mind' || path.startsWith('mind/')) screen = <Mind key={path} entry={path.split('/').slice(1).join('/')} />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
+  else if (path === 'kolam') screen = <KolamScreen />;
+  else if (import.meta.env.VITE_E2E === '1' && path === 'learn/haveli-demo') screen = <HaveliDemo />;
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;

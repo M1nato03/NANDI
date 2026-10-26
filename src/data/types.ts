@@ -32,6 +32,9 @@ export interface TaskRow extends EntityRow {
   /** Repeating tasks: how it repeats, and which task this one follows. */
   repeat?: 'daily' | 'weekdays' | 'weekly';
   repeatOf?: string;
+  /** Spec 27: minutes worked, summed over focus sessions; and whether the person picked a time when adding it. */
+  actualMinutes?: number;
+  timeSet?: boolean;
 }
 export interface TaskEventRow extends EntityRow {
   taskId: string;
@@ -98,6 +101,8 @@ export interface ProgramRow extends EntityRow {
   lastRetestWeek?: number;
   /** Spec 17: slow SL-RDL, the ready card and `nordicReady`. */
   nordic?: import('../core/train').NordicState;
+  /** Spec 24 #3: the program days and target each week was planned with, from the week a change was made. */
+  planHistory?: import('../core/train/taal').PlanStep[];
 }
 export interface ExStateRow extends StateRow {
   loadKg?: number;
@@ -171,8 +176,16 @@ export interface PuzzleRunRow extends EntityRow {
   finishedAt?: number;
   afterBedtime?: boolean;
   practiceAttempt?: number;
+  /** Spec 29: opened from Kapi's shelf (its daily board or one of the two extras a day). */
+  shelf?: boolean;
   caseGrid?: { A: number[]; B: number[]; C: number[]; struck: number[] };
   accusation?: { s: number; i: number; p: number };
+  /** Spec 24 pace line: active ms at 10%, 20% … 100% filled (rise-only, not indexed). */
+  pace?: number[];
+  /** The highest fill this run reached, 0 to 1, so your pace dot never moves back (Codex A item 77). */
+  paceTop?: number;
+  /** Spec 24 Prove it: the clue indexes (generated order) the player showed prove a solved case. */
+  proof?: number[];
 }
 export interface CardRow extends StateRow {
   deckId: string;

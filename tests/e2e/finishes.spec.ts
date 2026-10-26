@@ -1,10 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 import { featuredSpec } from '../../src/core/puzzles/daily';
 import { finishLines } from '../../src/ui/shell/finish';
+import { openMore } from './helpers/plan';
 
 const day = '2026-10-20';
 
 async function completeTask(page: Page, title: string) {
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill(title);
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
   await page.getByRole('region', { name: 'Today' }).getByRole('button', { name: 'Done' }).last().click();
@@ -22,7 +24,7 @@ async function seedOtherCoreItems(page: Page) {
       const tx = database.transaction(['sessions', 'learnDrops', 'puzzleRuns'], 'readwrite');
       tx.objectStore('sessions').put({ id: `finish-session:${day}`, dayKey: day, status: 'completed', deleted: 0 });
       tx.objectStore('learnDrops').put({ id: `drop:daily:${day}`, drop: { cursor: 1, items: [{}] } });
-      tx.objectStore('puzzleRuns').put({ id: `daily:${day}:${featured.type}:${featured.diff}`, dayKey: day, type: featured.type, diff: featured.diff, result: 'solved', deleted: 0 });
+      tx.objectStore('puzzleRuns').put({ id: `daily:${day}:${featured.type}:${featured.diff}`, dayKey: day, type: featured.type, diff: featured.diff, daily: true, result: 'solved', deleted: 0 });
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
     });

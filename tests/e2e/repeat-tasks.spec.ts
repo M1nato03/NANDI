@@ -1,18 +1,20 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 test('finishing a repeating task plans the next one at the same time', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-23T08:00:00') });
   await page.goto('/#plan');
+  await openMore(page);
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').click();
   await page.getByPlaceholder('Add a task, e.g. call bank 15m').fill('Morning walk');
   await page.getByLabel('Minutes').fill('20');
   await page.getByLabel('Repeat').selectOption('weekdays');
   await page.getByLabel('Start time').fill('2026-10-23T09:00');
   await page.getByRole('button', { name: 'Add task', exact: true }).click();
-  const today = page.getByRole('region', { name: 'Today' });
-  await expect(today).toContainText('repeats on weekdays');
-  await today.getByRole('button', { name: 'Done', exact: true }).first().click();
-  await expect(today.locator('.done-mark')).toHaveCount(1);
+  const today = page.getByRole('region', { name: 'Today', exact: true });
+  await expect(today).toContainText('Morning walk');
+  await today.getByRole('button', { name: 'Done: Morning walk' }).click();
+  await expect(page.locator('.mor-done .done-mark')).toHaveCount(1);
   const next = await page.evaluate(async () => {
     const open = indexedDB.open('nandi');
     const db = await new Promise<IDBDatabase>(resolve => { open.onsuccess = () => resolve(open.result); });

@@ -109,6 +109,116 @@ describe('Tasks repository transactions', () => {
     expect(await db.taskEvents.count()).toBe(3);
   });
 
+  it('moving a task off today ends its running focus with the minutes kept; a same-day move keeps it running (item 83)', async () => {
+    const created = await task(at(4, 10));
+    const running = await repos.startFocus(created.id, at(4, 10));
+    await repos.postpone(created.id, at(4, 10) + 5 * 60_000, { newStart: at(4, 16) });
+    expect((await db.focus.get(running.id))?.endedAt).toBeUndefined();
+    await repos.postpone(created.id, at(4, 10) + 10 * 60_000, { newStart: at(5, 9), firstStep: 'Open the file' });
+    const ended = await db.focus.get(running.id);
+    expect(ended?.endedAt).toBe(at(4, 10) + 10 * 60_000);
+  });
+  it("spec 27: Mor's list adds a planned Today task with no time, and moves are never refused", async () => {
+    const added = await repos.addToList('Call the bank', at(4, 10));
+    expect(added).toMatchObject({ status: 'planned', dayKey: dayKey(at(4)), scheduledStart: null, timeSet: undefined, estimateMin: 30, firstScheduledDayKey: dayKey(at(4)) });
+    const timed = await repos.addToList('Read', at(4, 10), 15);
+    expect(timed).toMatchObject({ timeSet: true, estimateMin: 15, size: 'S' });
+    // Five moves to tomorrow in a row, no first step, no reason: each one goes through, and none parks it in Someday.
+    let day = 4;
+    for (let move = 1; move <= 5; move++) {
+      await repos.moveTask(added.id, at(day, 11), 'tomorrow');
+      day++;
+      const row = await db.tasks.get(added.id);
+      expect(row).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: move });
+    }
+    // Later parks it without counting, as Someday did; Undo puts it back exactly.
+    const before = await repos.moveTask(added.id, at(day, 12), 'later');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'someday', postponeCount: 5 });
+    await repos.undoMove(added.id, at(day, 12), before);
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: 5 });
+    // Bringing it back to today is not counted either.
+    await repos.moveTask(added.id, at(day, 13), 'later');
+    await repos.moveTask(added.id, at(day, 14), 'today');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'planned', dayKey: dayKey(at(day)), postponeCount: 5 });
+  });
+  it('spec 27: ending a focus adds the minutes worked to the task, across sessions', async () => {
+    const added = await repos.addToList('Write', at(4, 10));
+    const first = await repos.startFocus(added.id, at(4, 10));
+    await repos.finishFocus(first.id, at(4, 10) + 12 * 60_000);
+    const second = await repos.startFocus(added.id, at(4, 11));
+    await repos.finishFocus(second.id, at(4, 11) + 30 * 60_000);
+    expect((await db.tasks.get(added.id))?.actualMinutes).toBe(42);
+    // Moving a task in focus stops its timer and keeps the minutes.
+    const third = await repos.startFocus(added.id, at(4, 12));
+    await repos.moveTask(added.id, at(4, 12) + 5 * 60_000, 'tomorrow');
+    expect((await db.focus.get(third.id))?.endedAt).toBe(at(4, 12) + 5 * 60_000);
+    expect((await db.tasks.get(added.id))?.actualMinutes).toBe(47);
+  });
+  it('Undo takes back everything a move did: the focus it ended, its minutes, the event and the count (Codex A item 91)', async () => {
+    const added = await repos.addToList('Write', at(4, 10));
+    const running = await repos.startFocus(added.id, at(4, 10));
+    const eventsBefore = (await db.taskEvents.filter(row => row.deleted === 0 && row.taskId === added.id).toArray()).length;
+    const before = await repos.moveTask(added.id, at(4, 10) + 7 * 60_000, 'tomorrow');
+    expect(await db.tasks.get(added.id)).toMatchObject({ postponeCount: 1, actualMinutes: 7 });
+    expect((await db.focus.get(running.id))?.endedAt).toBeDefined();
+    await repos.undoMove(added.id, at(4, 10) + 8 * 60_000, before);
+    const row = await db.tasks.get(added.id);
+    expect(row).toMatchObject({ status: 'planned', dayKey: dayKey(at(4)), postponeCount: 0 });
+    expect(row?.actualMinutes).toBeUndefined();
+    expect((await db.focus.get(running.id))?.endedAt).toBeUndefined();
+    expect((await db.taskEvents.filter(row => row.deleted === 0 && row.taskId === added.id).toArray()).length).toBe(eventsBefore);
+  });
+  it('Start keeps one focus at a time and, from Tomorrow, brings the task to Today; Undo takes both back (Codex A item 91)', async () => {
+    const first = await repos.addToList('First', at(4, 10));
+    const second = await repos.addToList('Second', at(4, 10));
+    await repos.moveTask(second.id, at(4, 10), 'tomorrow');
+    await repos.startFromList(first.id, at(4, 10));
+    const before = await repos.startFromList(second.id, at(4, 10) + 10 * 60_000);
+    const open = await db.focus.filter(row => row.deleted === 0 && row.endedAt == null).toArray();
+    expect(open.map(row => row.taskId)).toEqual([second.id]);
+    expect(await db.tasks.get(first.id)).toMatchObject({ actualMinutes: 10 });
+    expect(await db.tasks.get(second.id)).toMatchObject({ dayKey: dayKey(at(4)) });
+    await repos.undoMove(second.id, at(4, 10) + 11 * 60_000, before!);
+    expect(await db.tasks.get(second.id)).toMatchObject({ dayKey: dayKey(at(5)) });
+    expect(await db.focus.filter(row => row.deleted === 0 && row.endedAt == null && row.taskId === second.id).count()).toBe(0);
+  });
+  it('Undo is one step: after Done, or after another Start, it does nothing and says it cannot (Codex A item 92)', async () => {
+    const added = await repos.addToList('Pay rent', at(4, 10));
+    const moved = await repos.moveTask(added.id, at(4, 11), 'tomorrow');
+    await repos.completeTask(added.id, at(4, 12));
+    await expect(repos.undoMove(added.id, at(4, 13), moved)).rejects.toThrow('cant_undo');
+    expect(await db.tasks.get(added.id)).toMatchObject({ status: 'done', dayKey: dayKey(at(5)) });
+    const other = await repos.addToList('Call home', at(4, 10));
+    const running = await repos.startFocus(other.id, at(4, 10));
+    const again = await repos.moveTask(other.id, at(4, 14), 'tomorrow');
+    const third = await repos.addToList('Read', at(4, 10));
+    await repos.startFromList(third.id, at(4, 15));
+    await expect(repos.undoMove(other.id, at(4, 16), again)).rejects.toThrow('cant_undo');
+    // Still one timer: the guard left the first focus ended.
+    expect((await db.focus.get(running.id))?.endedAt).toBeDefined();
+    expect(await db.focus.filter(row => row.deleted === 0 && row.endedAt == null).count()).toBe(1);
+  });
+  it('Start from Tomorrow then Undo reopens the focus it interrupted and gives back its minutes unchanged (Codex A item 92)', async () => {
+    const first = await repos.addToList('First', at(4, 10));
+    const second = await repos.addToList('Second', at(4, 10));
+    await repos.moveTask(second.id, at(4, 10), 'tomorrow');
+    const interrupted = await repos.startFocus(first.id, at(4, 10));
+    const before = await repos.startFromList(second.id, at(4, 10) + 10 * 60_000);
+    expect(await db.tasks.get(first.id)).toMatchObject({ actualMinutes: 10 });
+    await repos.undoMove(second.id, at(4, 10) + 11 * 60_000, before!);
+    expect((await db.focus.get(interrupted.id))?.endedAt).toBeUndefined();
+    expect((await db.tasks.get(first.id))?.actualMinutes).toBeUndefined();
+    expect(await db.tasks.get(second.id)).toMatchObject({ dayKey: dayKey(at(5)) });
+    expect((await db.focus.filter(row => row.deleted === 0 && row.endedAt == null).toArray()).map(row => row.id)).toEqual([interrupted.id]);
+  });
+  it('a task parked by its 4th move can be planned again from Someday (Codex A item 87)', async () => {
+    const created = await task(at(4, 10));
+    await db.tasks.update(created.id, { postponeCount: 3, firstStep: 'Open it' });
+    const parked = await repos.postpone(created.id, at(4, 11), { newStart: at(5, 10), reason: 'blocked' });
+    expect(parked).toMatchObject({ status: 'someday', postponeCount: 4 });
+    const back = await repos.postpone(created.id, at(4, 12), { newStart: at(6, 10) });
+    expect(back).toMatchObject({ status: 'planned', dayKey: dayKey(at(6, 10)), scheduledStart: at(6, 10), postponeCount: 4 });
+  });
   it('guards postpone choices within the transaction and does not write on rejection', async () => {
     const created = await task(at(4, 10));
     await expect(

@@ -7,7 +7,7 @@ import { shuffleOptions, duePlan } from '../../core/learn/learn';
 import { buildReviewSession, type DeckPack, type ReviewEntry } from '../../core/learn/deck';
 import { finishReviewRamp, oneMoreAllowance, readReviewRamp, reviewAllowance, spreadReviewBacklog } from '../../core/learn/reviewSessions';
 import PZ, { type PuzzleBoard, type PuzzleDifficulty, type PuzzleType } from '../../core/puzzles';
-import { boardNumber, dailyBoardLabel, featuredSpec, needsIntro } from '../../core/puzzles/daily';
+import { boardNumber, dailyBoardLabel, featuredSpec } from '../../core/puzzles/daily';
 import { nightPracticeSeed } from '../../core/puzzles/night';
 import { availableDeductions, nudgeFor, usedTechnique } from '../../core/puzzles/deduction';
 import { techniqueCard, techniqueCards, techniqueId } from '../../core/puzzles/techniques';
@@ -16,8 +16,11 @@ import { isPersonalBest, resultText, shareTile } from '../../core/puzzles/share'
 import { revealedPanels, currentArcTitle } from '../../core/mysteries';
 import { unlockTechnique } from '../../data/repos/techniques';
 import { challengeUrl, parseChallenge } from '../../core/puzzles/challenge';
+import { bestPace, fillFraction, nextPace, paceShown } from '../../core/puzzles/pace';
+import { PaceLine, ParLine } from '../mind/PaceLine';
 import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
-import { checkRules, type PuzzleState } from '../../core/puzzles/rules';
+import { brokenRules, checkRules, type PuzzleState } from '../../core/puzzles/rules';
+import { SHELF, SHELF_ATTEMPT, SHELF_PER_DAY, featuredDailyDone, shelfLevel, shelfSeedText, shelfSolvedToday } from '../../core/puzzles/shelf';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { trackWrite } from '../../core/pendingWrites';
@@ -41,9 +44,10 @@ import { CaseScreen } from '../mind/CaseScreen';
 import { EmptyState } from '../EmptyState';
 import { caseRunId } from '../../data/repos/mysteries';
 import '../mind/mind.css';
-import { Kapi } from '../cast/Cast';
+import { BoardTutorial, CaseTutorial } from '../mind/Tutorial';
+import { KapiMoment, type KapiMomentKind } from '../mind/KapiMoment';
 
-type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number; challenge?: boolean; linkDay?: string };
+type Selection = { type: PuzzleType; diff: PuzzleDifficulty; daily: boolean; intro?: boolean; night?: boolean; attempt?: number; packSeed?: number; challenge?: boolean; linkDay?: string; friendPace?: number[]; shelf?: boolean; seedText?: string };
 const types: PuzzleType[] = ['sudoku', 'crowns', 'sunmoon', 'path', 'calc'];
 const diffs: PuzzleDifficulty[] = ['easy', 'medium', 'hard'];
 const lessonPacks = bundledPacks.filter((pack): pack is Extract<typeof pack, { kind: 'lessons' }> => pack.kind === 'lessons');
@@ -77,6 +81,12 @@ export function Mind({ entry }: { entry?: string }) {
   const [hintStep, setHintStep] = useState(0);
   const [hintFocus, setHintFocus] = useState<number[]>([]);
   const [newCard, setNewCard] = useState(false);
+  // Spec 29: Check marks only the cells that break a rule, named in plain words; nothing is marked while you play.
+  const [checkMark, setCheckMark] = useState<{ cells: number[]; rules: Record<number, string> } | null>(null);
+  const [kapi, setKapi] = useState<{ kind: KapiMomentKind; at: number }>({ kind: 'idle', at: 0 });
+  const react = (kind: KapiMomentKind) => setKapi(current => ({ kind, at: current.at + 1 }));
+  const [passed, setPassed] = useState<string[]>([]);
+  const [napType, setNapType] = useState<PuzzleType | null>(null);
   const [busy, setBusy] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saving');
@@ -91,14 +101,27 @@ export function Mind({ entry }: { entry?: string }) {
   const itemProgress = useLiveQuery(() => db.deckProg.toArray(), []) ?? [];
   const flags = useLiveQuery(() => db.flags.toArray(), []) ?? [];
   const puzzleRuns = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  const puzzleRunsRef = useRef(puzzleRuns);
+  useEffect(() => { puzzleRunsRef.current = puzzleRuns; });
   const unlocks = useLiveQuery(() => db.unlocks.where('kind').equals('technique').toArray(), []) ?? [];
   // Live, so the Today chip flips to Done as soon as the daily board is solved.
-  const dailySolvedLive = puzzleRuns.some(row => row.id === `daily:${today}:${featured.type}:${featured.diff}` && row.result === 'solved');
+  // One daily per type (spec 29): the featured type's daily may be its easy shelf board while the ramp applies.
+  const dailySolvedLive = puzzleRuns.some(row => row.type === featured.type && row.daily && row.dayKey === today && row.result === 'solved' && !row.deleted);
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const ownedPacks = useLiveQuery(() => db.ledger.where('kind').equals('purchase').toArray(), []) ?? [];
   const settings = settingRows ?? [];
   const showEconomy = economyVisible(settings, today);
+  // Spec 29: each board type (and the case) starts with its how-to the first time; it can be replayed or skipped.
+  // The e2e build alone can mark the how-tos as seen (playwright storageState), so older specs reach their boards.
+  const e2eSeen = import.meta.env.VITE_E2E === '1' && (() => { try { return localStorage.getItem('nandi.e2e.tutorialsSeen') === '1'; } catch { return false; } })();
+  const seenTutorial = (key: string) => e2eSeen || passed.includes(key) || settings.some(row => row.key === `mind.tutorialSeen:${key}` && row.value === true && !row.deleted);
+  const markSeen = async (key: string) => {
+    setPassed(current => [...current, key]);
+    const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
+    await trackWrite(() => db.settings.put({ key: `mind.tutorialSeen:${key}`, value: true, updatedAt: time, deleted: 0, deviceId }));
+  };
+  const howto = entry?.startsWith('howto/') ? entry.slice(6) : null;
   const log = useLiveQuery(() => db.dailyLog.get(today), [today]);
   const caseRun = useLiveQuery(async () => (await db.puzzleRuns.get(caseRunId(today))) ?? null, [today]);
   const solvedCases = useLiveQuery(() => db.puzzleRuns.where('type').equals('mystery').filter(row => row.result === 'solved' && !row.deleted).count(), []);
@@ -241,7 +264,7 @@ export function Mind({ entry }: { entry?: string }) {
 
   useEffect(() => {
     let live = true;
-    void db.puzzleRuns.get(`daily:${today}:${featured.type}:${featured.diff}`).then(row => { if (live) setDailyDoneKey(row?.result === 'solved' ? today : null); });
+    void db.puzzleRuns.where('dayKey').equals(today).toArray().then(rows => { if (live) setDailyDoneKey(featuredDailyDone(rows, today) ? today : null); });
     return () => { live = false; };
   }, [today, featured.type, featured.diff]);
 
@@ -255,12 +278,12 @@ export function Mind({ entry }: { entry?: string }) {
       if (event.data.error || !event.data.board) { setMessage(event.data.error ?? 'Could not build this board.'); setBusy(false); return; }
       const generated = event.data.board;
       // Spec 19 D: a friend's link to today's generated board opens the daily run itself (resumed if already solved).
-      const asDaily = selection.daily || event.data.daily === true;
+      const asDaily = selection.daily || (event.data.daily === true && !puzzleRunsRef.current.some(row => row.type === generated.type && row.daily && row.dayKey === today && row.diff !== generated.diff && !row.deleted));
       void openPuzzleRun(db, generated, today, asDaily, Date.now(), asDaily ? undefined : selection.attempt).then(async row => {
         if (!live) return;
         await writes.current;
-        const opened = selection.intro ? { ...row, intro: true } : row;
-        if (selection.intro && !row.intro) await savePuzzleRun(db, opened);
+        const opened = { ...row, ...(selection.intro ? { intro: true } : {}), ...(selection.shelf ? { shelf: true } : {}) };
+        if ((selection.intro && !row.intro) || (selection.shelf && !row.shelf)) await savePuzzleRun(db, opened);
         current.current = opened;
         setBoard(generated); setRun(opened); setElapsed(opened.activeMs ?? 0);
         setSaveState('saved');
@@ -269,7 +292,8 @@ export function Mind({ entry }: { entry?: string }) {
       }).catch(error => { setBusy(false); recordError('window', error); setMessage('Could not open the saved board.'); });
     };
     worker.onerror = event => { setBusy(false); setMessage(event.message); recordError('window', event.message); };
-    worker.postMessage(selection.daily ? { kind: 'daily', day: today }
+    worker.postMessage(selection.seedText ? { kind: 'shelf', day: today, type: selection.type, diff: selection.diff, seedText: selection.seedText }
+      : selection.daily ? { kind: 'daily', day: today }
       : selection.challenge && selection.linkDay ? { kind: 'friend', day: today, linkDay: selection.linkDay, type: selection.type, diff: selection.diff, seed }
         : { kind: 'practice', day: today, type: selection.type, diff: selection.diff, seed });
     return () => { live = false; worker.terminate(); };
@@ -306,13 +330,18 @@ export function Mind({ entry }: { entry?: string }) {
     const technique = usedTechnique(availableDeductions(board, before), before, state);
     const techniquesSeen = technique && !extra.hintRungs && !row.techniquesSeen?.includes(technique) ? [...(row.techniquesSeen ?? []), technique] : row.techniquesSeen;
     const next = { ...accrueActive(row, now), grid: state.grid, path: state.path, techniquesSeen, ...extra };
+    // Spec 24 pace line: the marks only rise, so a restart never takes one back.
+    const fill = fillFraction(board, state);
+    next.pace = nextPace(row.pace, fill, next.activeMs ?? 0, checked.solved);
+    next.paceTop = paceShown(row.paceTop ?? 0, checked.solved ? 1 : fill, next.pace);
     if (checked.solved) {
       next.result = 'solved'; next.solveMs = next.activeMs; next.finishedAt = now;
       if (next.daily) setDailyDoneKey(today);
+      react('cartwheel');
       setBest(previous => previous === undefined ? next.solveMs : Math.min(previous, next.solveMs ?? previous));
       setMessage('');
       if (techniquesSeen?.length) void Promise.all(techniquesSeen.map(name => unlockTechnique(db, board.type, name))).then(results => { if (results.some(Boolean)) setNewCard(true); }).catch(error => recordError('window', error));
-    } else if (checked.complete) setMessage('Board full. Check the marked rules.');
+    } else if (checked.complete) setMessage('The board is full, and one rule is broken. Tap Check to find it.');
     else setMessage('');
     persist(next);
   };
@@ -337,22 +366,27 @@ export function Mind({ entry }: { entry?: string }) {
     if (entry === 'case' && !caseReady) return;
     const timer = window.setTimeout(() => {
       if (entryHandled.current) return;
+      // Spec 29 (Codex B item 106): ONE daily board per type per day. A daily already opened today (from the shelf,
+      // Today's Board chip or a friend's link) is the one; otherwise the shelf's level decides, easy while the ramp applies.
+      const dailySelection = (type: PuzzleType, rows: readonly PuzzleRunRow[]): Selection => {
+        const live = rows.filter(row => !row.deleted);
+        const opened = live.find(row => row.type === type && row.daily && row.dayKey === today && diffs.includes(row.diff as PuzzleDifficulty));
+        const diff = (opened?.diff as PuzzleDifficulty | undefined) ?? shelfLevel(type, live, today);
+        return type === featured.type && diff === featured.diff ? { type, diff, daily: true, shelf: true } : { type, diff, daily: true, shelf: true, seedText: shelfSeedText(today, type, diff, 0) };
+      };
       entryHandled.current = true;
       const challenge = parseChallenge(entry);
       if (challenge) {
         // A friend's link: the same board. Today's board from today's link counts as the daily (the worker checks the
         // generated seed); old links, other days and other seeds play as practice on this phone.
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
-        setSelection({ type: challenge.type, diff: challenge.diff, daily: false, packSeed: challenge.seed, attempt: 2_000_000 + challenge.seed % 1_000_000, challenge: true, linkDay: challenge.day });
+        setSelection({ type: challenge.type, diff: challenge.diff, daily: false, packSeed: challenge.seed, attempt: 2_000_000 + challenge.seed % 1_000_000, challenge: true, linkDay: challenge.day, friendPace: challenge.pace });
       } else if (entry === 'board' || entry.startsWith('board/')) {
         setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
         const [, practiceType, practiceDiff, variant] = entry.split('/');
         const type = types.find(value => value === practiceType);
         const diff = diffs.find(value => value === practiceDiff);
-        if (practiceType === 'daily') {
-          setSelection({ type: featured.type, diff: featured.diff, daily: true });
-          return;
-        }
+
         if (type && diff === 'easy' && variant === 'night') {
           setSelection({ type, diff, daily: false, night: true, attempt: -2 });
           return;
@@ -363,8 +397,27 @@ export function Mind({ entry }: { entry?: string }) {
             const unfinished = matching.find(row => !row.result);
             const attempt = unfinished?.practiceAttempt ?? (matching.length ? Math.max(...matching.map(row => row.practiceAttempt ?? 0)) + 1 : 0);
             setSelection({ type, diff, daily: false, attempt });
-          } else setSelection(needsIntro(featured.type, rows) ? { type: featured.type, diff: 'easy', daily: false, intro: true, attempt: -1 } : { type: featured.type, diff: featured.diff, daily: true });
+          } else setSelection(dailySelection(featured.type, rows));
         }).catch(error => { recordError('window', error); setMessage('Could not open today’s board.'); setBusy(false); });
+      }
+      else if (entry.startsWith('shelf/')) {
+        // Spec 29: a shelf board. The weekday's featured type is the shared daily board; the others have their own
+        // date-seeded daily board; "/more" opens one of the two extras, then Kapi naps.
+        const [, shelfType, more] = entry.split('/');
+        const type = types.find(value => value === shelfType);
+        if (!type) return;
+        setBoard(null); setRun(null); current.current = null; setBusy(true); setMessage(''); setSaveState('saving');
+        void db.puzzleRuns.where('type').equals(type).toArray().then(rows => {
+          const live = rows.filter(row => !row.deleted);
+          const diff = shelfLevel(type, live, today);
+          if (more) {
+            if (shelfSolvedToday(type, live, today) >= SHELF_PER_DAY) { setBusy(false); setNapType(type); return; }
+            const extras = live.filter(row => row.dayKey === today && row.shelf && !row.daily && (row.practiceAttempt ?? 0) > SHELF_ATTEMPT);
+            const open = extras.find(row => !row.result);
+            const index = open ? open.practiceAttempt! - SHELF_ATTEMPT : Math.min(SHELF_PER_DAY - 1, extras.length + 1);
+            setSelection({ type, diff, daily: false, shelf: true, attempt: SHELF_ATTEMPT + index, seedText: shelfSeedText(today, type, diff, index) });
+          } else setSelection(dailySelection(type, live));
+        }).catch(error => { recordError('window', error); setMessage('Could not open this board.'); setBusy(false); });
       }
       else if (entry === 'case') setCaseOpen(true);
       else if (entry === 'reviews' && deck) void Promise.all([db.cards.toArray(), db.deckProg.toArray(), db.ratings.toArray(), db.flags.toArray(), db.settings.get('mind.reviewRamp')]).then(([allCards, progress, allRatings, allFlags, stored]) => {
@@ -380,7 +433,6 @@ export function Mind({ entry }: { entry?: string }) {
     return () => window.clearTimeout(timer);
   }, [entry, caseReady, featured.type, featured.diff, today]);
   const state: PuzzleState = { grid: run?.grid ?? (board ? initialGrid(board) : []), path: run?.path ?? [] };
-  const checked = board ? checkRules(board, state) : null;
   const par = board ? parMs(puzzleRuns, board.type, board.diff) : undefined;
   const panels = revealedPanels(puzzleRuns, today);
   const name = board ? PZ.TYPES[board.type].name : '';
@@ -388,11 +440,30 @@ export function Mind({ entry }: { entry?: string }) {
   const shareable = !!board && !!run && run.result === 'solved' && (!!run.daily || !!selection?.challenge);
   const result = board && run?.result === 'solved' ? resultText({ type: board.type, name, diff: board.diff, solveMs: run.solveMs, hintsUsed: run.hintsUsed,
     number: run.daily ? boardNumber(run.dayKey ?? today) : undefined, best: isPersonalBest(run, puzzleRuns), reply: !!selection?.challenge,
-    link: shareable ? challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed), day: run.daily ? run.dayKey ?? today : selection?.linkDay }) : undefined }) : '';
+    link: shareable ? challengeUrl({ type: board.type, diff: board.diff, seed: Number(board.seed), day: run.daily ? run.dayKey ?? today : selection?.linkDay, pace: run.pace }) : undefined }) : '';
+  // Spec 24 pace line: opt-in (remembered), day window only, against a friend's run on this board or your own best of
+  // this type and difficulty (a different board, so the caption says so). 0 XP; nothing happens when the other dot leads.
+  const paceOn = settings.some(row => row.key === 'mind.paceOn' && row.value === true && !row.deleted);
+  const ownBest = board && run ? bestPace(puzzleRuns, board.type, board.diff, run.id) : undefined;
+  const paceOther = selection?.friendPace ? { marks: selection.friendPace, who: 'Your friend', caption: 'Your friend on this board', totalMs: selection.friendPace.at(-1)! }
+    : ownBest ? { marks: ownBest.marks, who: 'Your best', caption: `Your best ${name} ${board?.diff ?? ''} pace`, totalMs: ownBest.solveMs } : undefined;
+  const togglePace = async () => {
+    const time = Date.now(), deviceId = await getOrCreateDeviceId(db, time);
+    await trackWrite(() => db.settings.put({ key: 'mind.paceOn', value: !paceOn, updatedAt: time, deleted: 0, deviceId }));
+  };
 
   if (windDownCapped) return <section className="screen mind-hub"><div className="card"><h1>Wind-down pause.</h1><p>Ten active minutes in Mind are up for tonight.</p><button type="button" className="secondary" onClick={() => void overrideWindDown()}>Continue anyway</button></div></section>;
   if (activeLesson && lessonDraft) return <LessonPlayer key={`${lessonDraft.lessonId}:${lessonDraft.review}`} lesson={activeLesson.lesson} packId={activeLesson.pack.id} courseName={activeLesson.pack.body.course.name} total={activeLesson.pack.body.lessons.length} completed={activeLesson.pack.body.lessons.filter(lesson => lessonProgress.some(row => row.id === lesson.id && row.doneDayKey)).length} draft={lessonDraft} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} onLeave={() => back('learn')} onDone={() => {}} teaser={activeLesson.pack.body.lessons[activeLesson.index + 1]?.t} />;
   if (reviews && deck) return <Reviews key={reviewIsPractice ? 'practice' : reviewIsOneMore ? 'more' : 'daily'} entries={reviews} cards={cards} progress={itemProgress} deck={deck} lessonCards={lessonCards} afterBedtime={night === 'lightsOut'} economyVisible={showEconomy} waiting={reviewIsPractice ? 0 : reviewWaiting} canOneMore={!reviewIsPractice && !reviewIsOneMore && reviewWaiting > 0 && reviewRamp.oneMoreDay !== today} onDone={finishReviews} />;
+  if (howto) {
+    const type = types.find(value => value === howto);
+    // Replayed from the case: finishing or skipping goes back to the case, whose run is saved as it goes (Codex B item 106).
+    if (howto === 'case') return <CaseTutorial onDone={() => { void markSeen('case').catch(error => recordError('window', error)); go('mind/case'); }} />;
+    if (type) return <BoardTutorial key={type} type={type} onDone={() => { void markSeen(type).catch(error => recordError('window', error)); history.back(); }} />;
+  }
+  if (napType) return <section className="screen mind-hub mind-nap"><KapiMoment moment="nap">That's today's puzzles. Kapi's off to nap.</KapiMoment><p className="small">Come back tomorrow for a new {PZ.TYPES[napType].name} board.</p><button type="button" className="secondary" onClick={() => go('mind')}>Back to Mind</button></section>;
+  if (caseOpen && settingRows && !seenTutorial('case')) return <CaseTutorial onDone={() => void markSeen('case').catch(error => recordError('window', error))} />;
+  if (selection && settingRows && !seenTutorial(selection.type)) return <BoardTutorial key={selection.type} type={selection.type} onDone={() => void markSeen(selection.type).catch(error => recordError('window', error))} />;
   if (caseOpen) return <CaseScreen day={today} diff={caseDiff} afterBedtime={night === 'lightsOut'} canShare={night === 'day'} onExit={() => entry === 'case' ? go('mind') : history.back()} />;
   if (selection) return <section className="screen mind-board" data-save-state={saveState} data-board-seed={board?.seed}>
     {(night === 'lightsOut' || busy || !board || !run) && <div role="status">
@@ -403,11 +474,31 @@ export function Mind({ entry }: { entry?: string }) {
       <p className="eyebrow">{run.daily ? dailyBoardLabel(run.dayKey ?? today, formatDayKey(run.dayKey ?? today)) : selection.challenge ? `A friend's challenge · ${board.diff}` : selection.intro ? `Warm-up board · ${board.diff}` : `Practice · ${board.diff}`}</p>
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Take it at your own pace.</p>}
       <h1>{name}</h1>
-      <p className="rule">{PZ.TYPES[board.type].rule}</p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{par !== undefined && <p>Par {timeText(par)} (your median of the last 10)</p>}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
-        <p className="small mind-timer pill">Time {timeText(elapsed)}</p>
-        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checked?.conflicts ?? []} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
-        <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
+      <p className="rule">{PZ.TYPES[board.type].rule} <button type="button" className="text-button mind-howto" onClick={() => go(`mind/howto/${board.type}`)}>How to play</button></p>
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><KapiMoment moment={kapi.kind === 'cartwheel' ? 'cartwheel' : 'clap'} at={kapi.at} /><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{paceOn && night === 'day' && selection.friendPace && <p>Your friend took {timeText(selection.friendPace.at(-1)!)} on this board.</p>}{par !== undefined && <ParLine par={par} solveMs={run.solveMs} />}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{selection.shelf && (shelfSolvedToday(board.type, [...puzzleRuns.filter(row => row.id !== run.id), run], today) < SHELF_PER_DAY
+          ? <button type="button" className="secondary" onClick={() => go(`mind/shelf/${board.type}/more/${shelfSolvedToday(board.type, [...puzzleRuns.filter(row => row.id !== run.id), run], today)}`)}>Another puzzle</button>
+          : <KapiMoment moment="nap">That's today's puzzles. Kapi's off to nap.</KapiMoment>)}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
+        {/* Spec 29: no timer while playing. Spec 24 pace line: opt-in, in one slim row above the board (Codex A item 77). */}
+        <div className="mind-timer-row">
+          {night === 'day' && paceOther && <div className="mind-pace-box">
+            {paceOn && <PaceLine mine={paceShown(run.paceTop ?? 0, fillFraction(board, state), run.pace)} marks={paceOther.marks} elapsed={elapsed} who={paceOther.who} caption={paceOther.caption} totalMs={paceOther.totalMs} />}
+            <button type="button" className="text-button mind-pace-toggle" aria-pressed={paceOn} aria-label={paceOn ? 'Hide pace' : 'Show pace'} onClick={() => void togglePace().catch(error => recordError('window', error))}>{paceOn ? 'Hide' : 'Pace'}</button>
+          </div>}
+        </div>
+        <PuzzleBoardView key={board.seed} board={board} state={state} conflicts={checkMark?.cells ?? []} marks={checkMark?.rules} highlights={hintFocus} notes={run.notes ?? []} notesMode={!!run.notesMode} onGrid={(grid, notes) => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, grid }, notes ? { notes } : {}); }} onPath={path => { setHintStep(0); setHintFocus([]); setCheckMark(null); commit({ ...state, path }); }} onNotesMode={() => { const row = current.current; if (row) persist({ ...row, notesMode: !row.notesMode }); }} done={false} />
+        <div className="mind-actions"><button type="button" className="secondary" onClick={() => { const row = current.current; setCheckMark(null); if (row) commit({ grid: initialGrid(board), path: [] }, { notes: Array(board.solution.length).fill(0), hintsUsed: row.hintsUsed }); }}>Restart</button><button type="button" className="secondary" onClick={() => {
+          // Spec 29 Check: only rule-breaking cells, in Kapi's colour with a mark, and the rule in words. Never red.
+          const broken = brokenRules(board, state);
+          if (!broken.length) { setCheckMark(null); setMessage('Nothing breaks a rule so far.'); react('clap'); return; }
+          setHintFocus([]);
+          const rules: Record<number, string> = {};
+          for (const item of broken) for (const cell of item.cells) rules[cell] = rules[cell] ? `${rules[cell]} ${item.rule}` : item.rule;
+          setCheckMark({ cells: [...new Set(broken.flatMap(item => item.cells))], rules });
+          setMessage(broken.map(item => item.rule).join(' '));
+          react('scratch');
+        }}>Check</button><button type="button" className="secondary" onClick={() => {
+          setCheckMark(null);
+          react('whisper');
           const deduction = availableDeductions(board, state)[0];
           const nudge = nudgeFor(board, state, deduction);
           const rung = nudge.conflict ? 1 : Math.min(RULES.mind.hintLadderRungs, hintStep + 1);
@@ -418,25 +509,35 @@ export function Mind({ entry }: { entry?: string }) {
           commit(next, { hintsUsed: (run.hintsUsed ?? 0) + 1, hintRungs: [...(run.hintRungs ?? []), rung] });
           setMessage(rung === 1 ? nudge.message : rung === 2 && card ? `${card.name}: ${card.example}` : deduction ? `Move: row ${Math.floor(deduction.cell / (board.type === 'path' ? board.C : board.type === 'sunmoon' ? 6 : board.N)) + 1}, value ${deduction.value}.` : nudge.message);
         }}>Hint</button></div>
-        {message && <p>{message}</p>}
+        {message ? <KapiMoment moment={kapi.kind} at={kapi.at} size={40}>{message}</KapiMoment> : <KapiMoment moment="idle" size={40} />}
       </>}
     </>}
   </section>;
 
-  return <section className="screen mind-hub">{entry !== 'courses' && entry !== 'unit' && <Kapi pose="think" size={48} />}
+  return <section className="screen mind-hub">{entry !== 'courses' && entry !== 'unit' && <KapiMoment moment="swing" />}
     {entry !== 'courses' && entry !== 'unit' && <><p className="eyebrow">Practice</p><h1>Mind</h1>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
+    {/* Spec 29: Kapi's shelf, the boards Mind already has, each with a plain line and a how-to the first time. */}
+    <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Kapi's shelf</h2><p className="small">One board of each a day, and two more if you want them.</p>
+      <ul>{SHELF.map(item => {
+        const solved = shelfSolvedToday(item.type, puzzleRuns, today);
+        const status = solved >= SHELF_PER_DAY ? 'Done for today' : solved ? `Solved · ${solved} of ${SHELF_PER_DAY}` : !seenTutorial(item.type) ? 'Starts with a how-to' : item.type === featured.type ? "Today's board" : 'New today';
+        return <li key={item.type}><button type="button" className="mind-shelf-tile" onClick={() => go(solved >= SHELF_PER_DAY ? `mind/shelf/${item.type}/more` : `mind/shelf/${item.type}`)}><strong>{PZ.TYPES[item.type].name}</strong><span>{item.line}</span><span className="small mind-shelf-status">{status}</span></button><button type="button" className="text-button" aria-label={`How to play ${PZ.TYPES[item.type].name}`} onClick={() => go(`mind/howto/${item.type}`)}>How to play</button></li>;
+      })}</ul>
+    </section>
     <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">
       <button type="button" className="mind-today-chip" disabled={!caseReady} onClick={() => go('mind/case')}><strong>Case</strong> <span>{caseDone ? 'Done' : 'Not done'}</span></button>
       <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })}><strong>Board</strong> <span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
     </div></section>
-    <section className="card mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('mind') : go('mind/practice')} aria-expanded={practice}>Practice</button>
+    <details className="card mind-more" open={practice || undefined}><summary>More boards</summary>
+    <section className="mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('mind') : go('mind/practice')} aria-expanded={practice}>Practice</button>
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}
       {practice && <div className="mind-practice-options">{types.map(type => <div key={type}><h3>{PZ.TYPES[type].name}</h3>{diffs.filter(diff => type !== 'sunmoon' || diff !== 'medium').map(diff => <button type="button" className="secondary" key={diff} onClick={() => open({ type, diff, daily: false })}>{diff}</button>)}</div>)}</div>}
       {practice && PUZZLE_PACKS.filter(pack => ownedPacks.some(row => !row.deleted && row.inputs.itemId === pack.id)).map(pack => <div className="mind-practice-pack" key={pack.id}><h3>{pack.name}</h3><p>Practice boards · 0 XP</p>{pack.boards.map((spec, index) => <button type="button" className="secondary" key={spec.seed} onClick={() => open({ type: spec.type, diff: spec.diff, daily: false, packSeed: spec.seed, attempt: 1000 + spec.seed + index })}>{PZ.TYPES[spec.type].name} {index + 1}</button>)}</div>)}
     </section>
+    <details className="mind-techniques"><summary>Technique cards</summary>{(() => { const isOpen = (card: typeof techniqueCards[number]) => unlocks.some(row => row.id === techniqueId(card.type, card.name) && !row.deleted); const open = techniqueCards.filter(isOpen); const locked = techniqueCards.filter(card => !isOpen(card)); const typeNames: Record<string, string> = { sudoku: 'Mini Sudoku', crowns: 'Crowns', sunmoon: 'Sun & Moon', path: 'Number Path', calc: 'Calcudoku', mystery: 'Case' }; return <><p className="small">{open.length} of {techniqueCards.length} unlocked. Use a technique in a solve to unlock its card.</p>{open.length > 0 && <div className="mind-technique-list">{open.map(card => <article key={techniqueId(card.type, card.name)}><h3>{card.name}</h3><p>{card.explanation}</p><p className="small">{card.example}</p></article>)}</div>}{[...new Set(locked.map(card => card.type))].map(type => <div key={type} className="mind-technique-locked"><h3>{typeNames[type] ?? type}</h3><ul>{locked.filter(card => card.type === type).map(card => <li key={card.name}>{card.name}</li>)}</ul></div>)}</>; })()}</details>
+    </details>
     <details className="card mind-story"><summary>Story so far · {currentArcTitle(today)}</summary>{panels.length ? panels.map(panel => <article key={panel.id}><h3>{panel.chapterTitle}{panel.bonus ? ' · Bonus' : ''}</h3><p>{panel.text}</p></article>) : <p>Solve today's case to uncover the first panel.</p>}</details>
-    <details className="card mind-techniques"><summary>Technique cards</summary>{(() => { const isOpen = (card: typeof techniqueCards[number]) => unlocks.some(row => row.id === techniqueId(card.type, card.name) && !row.deleted); const open = techniqueCards.filter(isOpen); const locked = techniqueCards.filter(card => !isOpen(card)); const typeNames: Record<string, string> = { sudoku: 'Mini Sudoku', crowns: 'Crowns', sunmoon: 'Sun & Moon', path: 'Number Path', calc: 'Calcudoku', mystery: 'Case' }; return <><p className="small">{open.length} of {techniqueCards.length} unlocked. Use a technique in a solve to unlock its card.</p>{open.length > 0 && <div className="mind-technique-list">{open.map(card => <article key={techniqueId(card.type, card.name)}><h3>{card.name}</h3><p>{card.explanation}</p><p className="small">{card.example}</p></article>)}</div>}{[...new Set(locked.map(card => card.type))].map(type => <div key={type} className="mind-technique-locked"><h3>{typeNames[type] ?? type}</h3><ul>{locked.filter(card => card.type === type).map(card => <li key={card.name}>{card.name}</li>)}</ul></div>)}</>; })()}</details>
     <section className="card"><h2>Card reviews</h2>{todayReviews ? <><p>{todayReviews} for today</p>{dueCount > todayReviews && <p className="deck-meta">{dueCount} waiting</p>}<button type="button" className="secondary" onClick={startReviews}>Review cards</button></> : dueCount ? <><p>That's enough for today</p><p className="deck-meta">{dueCount} waiting</p></> : <EmptyState area="think">You're all caught up for now.</EmptyState>}{deckOn ? <button type="button" className="secondary" onClick={() => void startDeckPractice()}>Practice people-reading deck</button> : <div className="mind-deck-off"><p className="small">People-reading deck: {deck?.body.cards.length ?? 0} cards on reading people and power. It stays off until you want it.</p><button type="button" className="secondary" onClick={() => void turnOnDeck()}>Turn on the deck</button></div>}</section>
     </>}
     {(entry === 'courses' || entry === 'unit') && <details className="card mind-courses" open={entry === 'unit' ? true : undefined}><summary>Courses</summary>

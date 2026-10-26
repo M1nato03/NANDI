@@ -25,10 +25,15 @@ import { formatDayKey } from '../../core/time/formatDayKey';
 import type { PuzzleRunRow } from '../../data/types';
 import { recordError } from '../errorRing';
 
+import { ProveIt } from './ProveIt';
+import { go } from '../shell/router';
+
 type GridName = 'A' | 'B' | 'C';
 type CaseTestHook = {
   solveKnownSolution: () => void;
   solveTodaysCase: () => void;
+  /** Spec 24 Prove it: one shortest proof (clue indexes) and the clue count. */
+  proof: () => { shortest: number[]; clues: number };
 };
 function timeText(ms: number): string {
   const seconds = Math.floor(ms / 1000);
@@ -68,6 +73,11 @@ export function CaseScreen({
   const [hintStep, setHintStep] = useState(0);
   const [newCard, setNewCard] = useState(false);
   const runs = useLiveQuery(() => db.puzzleRuns.toArray(), []) ?? [];
+  // Spec 29: no running timer while playing unless the person turned pace on (Codex B item 105).
+  const paceOn = useLiveQuery(async () => (await db.settings.get('mind.paceOn'))?.value === true, []) ?? false;
+  // Spec 24 Prove it: the worker sends one shortest proof with the case, so the main thread never searches.
+  const [shortest, setShortest] = useState<number[]>();
+  const proofOffered = !!mystery && !!shortest && shortest.length < mystery.clues.length;
   const [pick, setPick] = useState<Accusation>({ s: -1, i: -1, p: -1 });
   const pending = useRef<Promise<unknown>>(Promise.resolve());
   const latest = useRef<PuzzleRunRow | null>(null);
@@ -83,7 +93,7 @@ export function CaseScreen({
       { type: 'module' },
     );
     worker.onmessage = (
-      event: MessageEvent<{ mystery?: MysteryCase; error?: string }>,
+      event: MessageEvent<{ mystery?: MysteryCase; shortest?: number[]; error?: string }>,
     ) => {
       if (!live) return;
       if (!event.data.mystery) {
@@ -91,12 +101,14 @@ export function CaseScreen({
         return;
       }
       const generated = event.data.mystery;
+      const proof = event.data.shortest;
       void openDailyCase(db, generated, day)
         .then((row) => {
           if (live) {
             latest.current = row;
             setRun(row);
             setMystery(generated);
+            setShortest(proof);
             setPick(row.accusation ?? { s: -1, i: -1, p: -1 });
             setSaveState('saved');
             setMessage('');
@@ -252,9 +264,10 @@ export function CaseScreen({
     const hook: CaseTestHook = {
       solveKnownSolution: solveTodaysCase,
       solveTodaysCase,
+      proof: () => ({ shortest: shortest ?? [], clues: mystery.clues.length }),
     };
     return installCaseTestHook(hook);
-  }, [mystery]);
+  }, [mystery, shortest]);
   const renderGrid = (
     name: GridName,
     title: string,
@@ -295,7 +308,7 @@ export function CaseScreen({
                   type="button"
                   disabled={!!run?.result}
                   className={`case-cell ${value === 1 ? 'case-yes' : value === -1 || auto ? 'case-no' : 'case-blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ' case-error' : ''}`}
-                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}`}
+                  aria-label={`${label}, ${col}: ${value === 1 ? 'yes' : value === -1 || auto ? 'no' : 'blank'}${wrongCells.includes(`${name}:${r}:${c}`) ? ", doesn't fit the clues yet" : ''}`}
                   onClick={() => mark(name, r * cols.length + c)}
                 >
                   {value === 1 ? '✓' : value === -1 || auto ? '×' : ''}
@@ -319,7 +332,7 @@ export function CaseScreen({
         <>
           <h1>{mystery.title}</h1>
           <p>{mystery.setup}</p>
-          <p className="small">
+          {(run.result || paceOn) && <p className="small">
             Time{' '}
             {timeText(
               run.result
@@ -332,7 +345,7 @@ export function CaseScreen({
                         )
                       : 0),
             )}
-          </p>
+          </p>}
           <p>
             <strong>Suspects:</strong>{' '}
             {mystery.S.map((item) => `${item.n} (${item.role})`).join(', ')}
@@ -345,15 +358,8 @@ export function CaseScreen({
             <strong>Places:</strong>{' '}
             {mystery.P.map((item) => item.s).join(', ')}
           </p>
-          <details>
-            <summary>How to play</summary>
-            <p>
-              Each suspect had one object and was in one place. Tap a grid cell
-              for ×, then ✓, then clear. A ✓ greys the rest of its row and
-              column. Use the clues to complete the grids, then name the
-              culprit.
-            </p>
-          </details>
+          {/* Spec 29: How to play replays the 4-step walkthrough. */}
+          <button type="button" className="text-button" onClick={() => go('mind/howto/case')}>How to play</button>
           <div className="card case-clues">
             <h2>Clues</h2>
             <ol>
@@ -425,6 +431,8 @@ export function CaseScreen({
                   ))}
                 </ol>
               </details>
+              {/* Spec 24 Prove it: day window only (canShare is night === 'day'), and only when a proof is shorter than the clue list. */}
+              {run.result === 'solved' && canShare && proofOffered && <ProveIt mystery={mystery} run={run} shortest={shortest!} />}
               {run.result === 'solved' && <>{revealedPanels(runs, day).filter(panel => panel.dayKey === day && !panel.bonus).map(panel => <div className="mind-story-panel" key={panel.id}><h3>{panel.chapterTitle}</h3><p>{panel.text}</p></div>)}{newCard && <p role="status">New technique card</p>}{canShare && (() => { const result = caseResultText(run, day, diff, runs); return <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, 'Case'), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>; })()}</>}
             </div>
           ) : (
@@ -457,7 +465,7 @@ export function CaseScreen({
                     !marked
                       ? 'Mark some boxes first, then check.'
                       : wrong.length
-                        ? `${wrong.length} mark${wrong.length === 1 ? '' : 's'} wrong, outlined in red.`
+                        ? `These marks don't fit the clues yet: ${wrong.length}, outlined on the grid.`
                         : 'Every mark so far is right. Keep going.',
                   );
                   if (marked)
