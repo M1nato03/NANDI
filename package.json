@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "e2e": "playwright test",
+    "shots": "playwright test -c playwright.shots.config.ts",
     "convert-legacy": "tsx scripts/convert-legacy.ts",
     "validate-packs": "tsx scripts/validate-packs.ts",
     "build-packs": "tsx scripts/build-packs.ts"
