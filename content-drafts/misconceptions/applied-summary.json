@@ -1,0 +1,1063 @@
+{
+ "slips": [
+  [
+   "topic.psychology:habits-15/c",
+   "About 254 days.",
+   "It confuses the longest estimate with the halfway value."
+  ],
+  [
+   "topic.psychology:loss-aversion-13/a",
+   "She used to get less than ₹400.",
+   "It reverses the before-and-after amounts in a cut."
+  ],
+  [
+   "topic.psychology:anchoring-11/a",
+   "Far below ₹700, such as ₹200.",
+   "It reverses the direction of his move from the tag."
+  ],
+  [
+   "topic.psychology:confirmation-bias-12/c",
+   "About 79%.",
+   "It swaps the reported success and wrong-rule shares."
+  ],
+  [
+   "topic.psychology:sleep-memory-12/c",
+   "About 70 terms.",
+   "It adds 60 terms instead of 60 percent of ten."
+  ],
+  [
+   "topic.psychology:variable-rewards-12/c",
+   "20%, the same as one swipe.",
+   "It uses one swipe's chance for five chances."
+  ],
+  [
+   "topic.psychology:if-then-plans-10/a",
+   "Watering the plants.",
+   "It swaps the action into the cue's place."
+  ],
+  [
+   "topic.psychology:if-then-plans-15/b",
+   "About 0.1.",
+   "It misrecalls the effect despite the scale in the stem."
+  ],
+  [
+   "topic.psychology:spotlight-effect-10/b",
+   "About 19.",
+   "It adds seven when the guess was seven too high."
+  ],
+  [
+   "topic.psychology:spotlight-effect-10/c",
+   "About 12.",
+   "It repeats the guess instead of finding the lower count."
+  ],
+  [
+   "topic.money-markets:inflation-9/c",
+   "It covers less, because rent went up.",
+   "It notices rent's rise but overlooks the equal stipend rise."
+  ],
+  [
+   "topic.money-markets:inflation-11/b",
+   "About ₹938, which is 25% off today’s price.",
+   "It applies the percentage to the later price."
+  ],
+  [
+   "topic.money-markets:inflation-11/c",
+   "About ₹1,563.",
+   "It adds another rise while seeking the earlier price."
+  ],
+  [
+   "topic.money-markets:inflation-13/c",
+   "They fell.",
+   "It reverses the effect falling prices have on buying power."
+  ],
+  [
+   "topic.money-markets:rule-of-72-9/b",
+   "About 3 years.",
+   "It mistakes the rate for the number of years."
+  ],
+  [
+   "topic.money-markets:rule-of-72-9/c",
+   "About 216 years.",
+   "It multiplies where the shortcut divides."
+  ],
+  [
+   "topic.money-markets:rule-of-72-12/c",
+   "It falls a little every month.",
+   "It treats an interest-only payment as reducing principal."
+  ],
+  [
+   "topic.money-markets:rule-of-72-14/c",
+   "About 64%.",
+   "It multiplies years instead of dividing 72 by them."
+  ],
+  [
+   "topic.money-markets:risk-return-9/b",
+   "About ₹2,970, adding 10% of ₹2,700 back.",
+   "It applies the loss percentage to the final amount."
+  ],
+  [
+   "topic.money-markets:risk-return-9/c",
+   "About ₹2,430.",
+   "It subtracts another ten percent instead of reversing the loss."
+  ],
+  [
+   "topic.money-markets:diversification-9/b",
+   "About 5.",
+   "It mistakes the loss percentage for a holding count."
+  ],
+  [
+   "topic.money-markets:diversification-9/c",
+   "About 95, the share that was left.",
+   "It mistakes the remaining percentage for a holding count."
+  ],
+  [
+   "topic.money-markets:shares-9/b",
+   "About 1,20,000.",
+   "It calculates thirty percent instead of three percent."
+  ],
+  [
+   "topic.money-markets:shares-9/c",
+   "About 1,200.",
+   "It calculates a tenth of the requested share count."
+  ],
+  [
+   "topic.money-markets:emergency-fund-12/b",
+   "About 3 months.",
+   "It confuses target coverage with saving time."
+  ],
+  [
+   "topic.money-markets:emergency-fund-12/c",
+   "About 160 months.",
+   "It shifts the division result's decimal place."
+  ],
+  [
+   "topic.money-markets:emergency-fund-13/b",
+   "About ₹63,000.",
+   "It multiplies a total that already covers three months."
+  ],
+  [
+   "topic.money-markets:emergency-fund-13/c",
+   "About ₹21,000.",
+   "It repeats the full target as one month's cost."
+  ],
+  [
+   "topic.money-markets:loan-emi-11/b",
+   "₹15,500",
+   "It adds a part to the total instead of subtracting."
+  ],
+  [
+   "topic.money-markets:loan-emi-12/b",
+   "About ₹1.5 lakh.",
+   "It uses one year's interest for a ten-year loan."
+  ],
+  [
+   "topic.money-markets:index-funds-12/b",
+   "About 1.5%.",
+   "It moves the expense ratio's decimal one place too far."
+  ],
+  [
+   "topic.money-markets:index-funds-12/c",
+   "About 0.015%.",
+   "It moves the expense ratio's decimal one place too little."
+  ],
+  [
+   "topic.how-things-work:battery-flight-time-9/b",
+   "About 75 hours.",
+   "It multiplies energy and power instead of dividing."
+  ],
+  [
+   "topic.how-things-work:battery-flight-time-9/c",
+   "About 20 hours.",
+   "It adds the two given numbers instead of dividing."
+  ],
+  [
+   "topic.how-things-work:birds-and-planes-9/b",
+   "About 40,000 newtons.",
+   "It doubles drag despite the stated steady speed."
+  ],
+  [
+   "topic.how-things-work:ceiling-fans-13/c",
+   "About 51 degrees hotter.",
+   "It repeats one felt temperature instead of finding the difference."
+  ],
+  [
+   "topic.how-things-work:upi-path-12/b",
+   "About 16 million.",
+   "It mixes millions and billions when finding the daily average."
+  ],
+  [
+   "topic.how-things-work:upi-path-12/c",
+   "About 5 billion.",
+   "It puts the daily average in the wrong size unit."
+  ],
+  [
+   "topic.how-things-work:phone-camera-11/b",
+   "About 16 million.",
+   "It divides spots evenly among three filters instead of reading the grid."
+  ],
+  [
+   "topic.how-things-work:phone-camera-11/c",
+   "About 12 million.",
+   "It uses one red or blue square's share for green."
+  ],
+  [
+   "topic.how-things-work:sky-colours-10/b",
+   "About 1,290 nm.",
+   "It multiplies where the question calls for division."
+  ],
+  [
+   "topic.how-things-work:sky-colours-10/c",
+   "About 700 nm.",
+   "It reuses the stated red length for violet."
+  ],
+  [
+   "topic.how-things-work:pressure-cooker-10/c",
+   "About 89°C.",
+   "It uses the given boil for twice the altitude."
+  ],
+  [
+   "topic.health-nutrition:free-sugars-11/b",
+   "About 400 kcal.",
+   "It uses the sugar amount as the basis for an incorrect energy calculation."
+  ],
+  [
+   "topic.health-nutrition:free-sugars-11/c",
+   "About 2,000 kcal.",
+   "It recalls the 2,000 kcal example without scaling its 50 g limit down."
+  ],
+  [
+   "topic.health-nutrition:hydration-cues-10/b",
+   "About 4 tumblers.",
+   "Four tumblers give 800 ml, short of the stated 2,000 ml."
+  ],
+  [
+   "topic.health-nutrition:hydration-cues-10/c",
+   "About 100 tumblers.",
+   "A place-value error turns 2,000 divided by 200 into 100."
+  ],
+  [
+   "topic.health-nutrition:sleep-recovery-14/b",
+   "About 1.5 hours.",
+   "It counts one night's loss instead of five nights."
+  ],
+  [
+   "topic.health-nutrition:sleep-recovery-14/c",
+   "About 30 minutes.",
+   "It overlooks the hour from 11 pm to midnight."
+  ],
+  [
+   "topic.health-nutrition:exercise-heart-13/b",
+   "About 100 minutes.",
+   "It adds the minutes without doubling the jog minutes."
+  ],
+  [
+   "topic.health-nutrition:exercise-heart-13/c",
+   "About 200 minutes.",
+   "It doubles the walk as well as the jog."
+  ],
+  [
+   "topic.health-nutrition:iron-and-anaemia-10/c",
+   "About 1 mg.",
+   "It understates the difference between 29 mg and 19 mg."
+  ],
+  [
+   "topic.health-nutrition:food-label-reading-10/c",
+   "About 15 g.",
+   "It shifts the decimal place while scaling from 100 g to 40 g."
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-9/b",
+   "About 400 g.",
+   "It uses one person's 400 g for the whole family."
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-9/c",
+   "About 16 kg.",
+   "It multiplies for four people but misplaces the kilogram decimal."
+  ],
+  [
+   "topic.body-training:progressive-overload-13/c",
+   "About 100%.",
+   "It treats one added session as a doubling of three sessions."
+  ],
+  [
+   "topic.body-training:muscle-protein-rest-12/b",
+   "About 55 g.",
+   "It uses 1 g per kg instead of the stated 0.83 g."
+  ],
+  [
+   "topic.body-training:muscle-protein-rest-12/c",
+   "About 88 g.",
+   "It applies the 1.6 g training figure to someone who does not train."
+  ],
+  [
+   "topic.body-training:sleep-recovery-12/b",
+   "About 1 am.",
+   "It adds two hours to bedtime instead of six."
+  ],
+  [
+   "topic.body-training:sleep-recovery-12/c",
+   "About 9 am.",
+   "It moves the usual wake time later instead of two hours earlier."
+  ],
+  [
+   "topic.body-training:heat-hydration-11/b",
+   "About 1 litre.",
+   "It counts one hour of sweat instead of eight."
+  ],
+  [
+   "topic.body-training:heat-hydration-11/c",
+   "About 80 litres.",
+   "It makes a tenfold multiplication error."
+  ],
+  [
+   "topic.body-training:warmup-myths-12/b",
+   "About 9 cm.",
+   "It treats 2 cm as far more than 4.6% of the jump."
+  ],
+  [
+   "topic.body-training:warmup-myths-12/c",
+   "About 200 cm.",
+   "It treats 2 cm as 4.6% of a 200 cm jump."
+  ],
+  [
+   "topic.body-training:cardio-talk-test-12/c",
+   "About 10.",
+   "It mistakes vigorous effort for the scale maximum."
+  ],
+  [
+   "topic.body-training:showing-up-12/b",
+   "About 180 climbs.",
+   "It multiplies 60 by 3 instead of dividing."
+  ],
+  [
+   "topic.body-training:showing-up-12/c",
+   "About 3 climbs.",
+   "It confuses three minutes per climb with three climbs."
+  ],
+  [
+   "topic.history-civilisations:indus-cities-15/b",
+   "About 110 hectares.",
+   "It adds roughly one third instead of multiplying by three."
+  ],
+  [
+   "topic.history-civilisations:indus-cities-15/c",
+   "About 27 hectares.",
+   "It divides the known third instead of finding the whole."
+  ],
+  [
+   "topic.history-civilisations:silk-road-ideas-13/b",
+   "About 50 years.",
+   "It may confuse the 50 BCE voyage date with Gandhara's duration."
+  ],
+  [
+   "topic.history-civilisations:silk-road-ideas-14/b",
+   "Art paying for the trade routes and their upkeep.",
+   "It reverses who funded whom in the sponsor example."
+  ],
+  [
+   "topic.history-civilisations:indian-place-value-9/b",
+   "₹1,500, since the 5 moves up.",
+   "It moves the 5 to a larger place after a zero is removed."
+  ],
+  [
+   "topic.history-civilisations:indian-place-value-9/c",
+   "₹1,005.",
+   "It swaps the positions of the remaining digits."
+  ],
+  [
+   "topic.history-civilisations:indian-place-value-10/b",
+   "About 9 times.",
+   "It understates how much 7 thousands exceeds 79."
+  ],
+  [
+   "topic.history-civilisations:indian-place-value-10/c",
+   "About 900 times, since three places moved.",
+   "It treats moving three places as a direct multiplier for the whole number."
+  ],
+  [
+   "topic.history-civilisations:printing-and-reading-14/b",
+   "About 8 years.",
+   "It loses a digit when estimating the 1377-to-1455 gap."
+  ],
+  [
+   "topic.history-civilisations:printing-and-reading-14/c",
+   "About 400 years.",
+   "It badly overstates the difference between the two dates."
+  ],
+  [
+   "topic.history-civilisations:mughal-revenue-10/b",
+   "About 213 nobles, since it was more back then.",
+   "It multiplies 79 by 2.7 instead of dividing."
+  ],
+  [
+   "topic.history-civilisations:mughal-revenue-10/c",
+   "About 76 nobles.",
+   "It subtracts the factor from 79 instead of dividing."
+  ],
+  [
+   "topic.history-civilisations:company-trade-rule-12/b",
+   "About 16 years.",
+   "It drops a digit from the 1600-to-1765 gap."
+  ],
+  [
+   "topic.history-civilisations:company-trade-rule-12/c",
+   "About 365 years, nearly four centuries.",
+   "It overstates the difference between 1600 and 1765."
+  ],
+  [
+   "topic.history-civilisations:independence-constitution-10/b",
+   "About 24 months.",
+   "It converts the two years but drops eleven months and seventeen days."
+  ],
+  [
+   "topic.history-civilisations:independence-constitution-10/c",
+   "About 47 months, close to four years.",
+   "It adds too many months to the stated duration."
+  ]
+ ],
+ "rewrites": [
+  [
+   "topic.psychology:habits-10/b",
+   "Sit-ups count for more when the TV is off.",
+   "His goal to exercise matters more than the TV cue.",
+   "habits-m3"
+  ],
+  [
+   "topic.psychology:habits-16/c",
+   "Exams make every habit stronger.",
+   "One missed day resets the habit, so a week adds no harm.",
+   "habits-m2"
+  ],
+  [
+   "topic.psychology:loss-aversion-9/b",
+   "The new match is sure to be worse.",
+   "His starting ticket cannot shape how the swap feels.",
+   "loss-aversion-m3"
+  ],
+  [
+   "topic.psychology:loss-aversion-11/a",
+   "Big stakes make the fifty-fifty chances unfair.",
+   "The gain and loss feel equal at both stakes.",
+   "loss-aversion-m1"
+  ],
+  [
+   "topic.psychology:loss-aversion-11/c",
+   "People enjoy losing small sums.",
+   "The loss weighs twice as much for each person at either stake.",
+   "loss-aversion-m2"
+  ],
+  [
+   "topic.psychology:anchoring-11/b",
+   "A price of ₹700 itself, the same as his guess.",
+   "The tag was ₹700, so his guess had to be ₹700.",
+   "anchoring-m5"
+  ],
+  [
+   "topic.psychology:anchoring-14/b",
+   "Yes, as long as the buyer is honest.",
+   "Yes; a random first price cannot sway his guess.",
+   "anchoring-m2"
+  ],
+  [
+   "topic.psychology:anchoring-15/b",
+   "Om, who keeps saying the ₹4,000 to himself.",
+   "Om, who treats the first price as the bat's fair value.",
+   "anchoring-m1"
+  ],
+  [
+   "topic.psychology:anchoring-15/c",
+   "Ira, who waits for the seller to name a new price.",
+   "Ira, who assumes a random opening price cannot sway her.",
+   "anchoring-m2"
+  ],
+  [
+   "topic.psychology:anchoring-16/c",
+   "It works by making the first number bigger and easier to see.",
+   "It works because a random first number has no pull.",
+   "anchoring-m2"
+  ],
+  [
+   "topic.psychology:confirmation-bias-9/b",
+   "The meals from last term.",
+   "He will give good and bad meals the same weight.",
+   "confirmation-bias-m4"
+  ],
+  [
+   "topic.psychology:confirmation-bias-14/c",
+   "He has checked both sides already.",
+   "His slow payments prove the app is slow each evening.",
+   "confirmation-bias-m1"
+  ],
+  [
+   "topic.psychology:social-proof-16/c",
+   "Likes on videos are mostly fake, so they carry no weight.",
+   "Real likes prove the health tip is right.",
+   "social-proof-m1"
+  ],
+  [
+   "topic.psychology:planning-fallacy-14/a",
+   "The main building work itself.",
+   "no step, since a smooth path is the normal one",
+   "planning-fallacy-m1"
+  ],
+  [
+   "topic.psychology:planning-fallacy-16/c",
+   "One-off delays come back every time.",
+   "The printer jam was a fluke, so past delays add no time.",
+   "planning-fallacy-m3"
+  ],
+  [
+   "topic.psychology:sleep-memory-10/b",
+   "It firmed up, then she learned it.",
+   "She learned it and it became firm at once.",
+   "sleep-memory-m4"
+  ],
+  [
+   "topic.psychology:variable-rewards-9/c",
+   "A ₹5 discount on each payment.",
+   "A prize after ten payments, then ten more.",
+   "variable-rewards-m4"
+  ],
+  [
+   "topic.psychology:variable-rewards-10/c",
+   "Praise has no effect on new acts.",
+   "Surprise praise teaches this new act faster than steady praise.",
+   "variable-rewards-m5"
+  ],
+  [
+   "topic.psychology:variable-rewards-14/b",
+   "Her alerts must still be on.",
+   "Surprise likes still explain her checks, even with alerts off.",
+   "variable-rewards-m2"
+  ],
+  [
+   "topic.psychology:if-then-plans-12/c",
+   "Revise for twice as long that night.",
+   "Use the quiet hour too, since a named cue cannot hide other chances.",
+   "if-then-plans-m3"
+  ],
+  [
+   "topic.psychology:if-then-plans-16/c",
+   "The plan works for top students alone.",
+   "A clear cue makes that top result certain for students.",
+   "if-then-plans-m2"
+  ],
+  [
+   "topic.psychology:spotlight-effect-13/c",
+   "Online classes hide frozen screens from view.",
+   "No classmate saw it, so her worry has no basis.",
+   "spotlight-effect-m2"
+  ],
+  [
+   "topic.psychology:spotlight-effect-15/b",
+   "Onlookers judged the slips without any thought.",
+   "No onlooker took note of the slips.",
+   "spotlight-effect-m2"
+  ],
+  [
+   "topic.psychology:spotlight-effect-16/c",
+   "how heavy the tray was",
+   "other students judging him harshly despite the wet floor",
+   "spotlight-effect-m3"
+  ],
+  [
+   "topic.money-markets:inflation-15/c",
+   "Inflation is harmless at any level.",
+   "A falling price target would make people buy sooner.",
+   "inflation-m4"
+  ],
+  [
+   "topic.money-markets:compounding-15/b",
+   "the payments stop when prices fall",
+   "a fixed SIP return turns negative in a bad year",
+   "compounding-m2"
+  ],
+  [
+   "topic.money-markets:risk-return-13/c",
+   "The same swings as shares.",
+   "Cash savings swing like shares but earn more over time.",
+   "risk-return-m4"
+  ],
+  [
+   "topic.money-markets:risk-return-15/c",
+   "Savings for both, since shares can fall at the worst time.",
+   "Savings for both, since cash has earned more than shares.",
+   "risk-return-m4"
+  ],
+  [
+   "topic.money-markets:diversification-11/b",
+   "two firms are worse than one",
+   "the two firm names make the money well spread",
+   "diversification-m3"
+  ],
+  [
+   "topic.money-markets:diversification-11/c",
+   "the small holding is sure to fall",
+   "two firms mean a market fall cannot hurt the money",
+   "diversification-m2"
+  ],
+  [
+   "topic.money-markets:diversification-12/c",
+   "steel firms cannot fall in price",
+   "the steel firms have separate names, so their risks cannot overlap",
+   "diversification-m3"
+  ],
+  [
+   "topic.money-markets:shares-10/c",
+   "It grows to a half.",
+   "It stays near a quarter because her count stayed at 40.",
+   "shares-m4"
+  ],
+  [
+   "topic.money-markets:emergency-fund-16/b",
+   "they tend to lose most of their value very quickly",
+   "a good return makes the time to sell unimportant",
+   "emergency-fund-m4"
+  ],
+  [
+   "topic.money-markets:emergency-fund-16/c",
+   "banks will not keep them for you",
+   "their value can cover a sudden bill without a sale",
+   "emergency-fund-m1"
+  ],
+  [
+   "topic.money-markets:upi-scams-13/b",
+   "just checks your name",
+   "lets bank staff safely approve a payment",
+   "upi-scams-m3"
+  ],
+  [
+   "topic.money-markets:upi-scams-15/c",
+   "The scammer gave up after one try.",
+   "She could approve those requests first and cancel them later.",
+   "upi-scams-m4"
+  ],
+  [
+   "topic.how-things-work:lift-14/b",
+   "The engines need a long run to warm up before they push.",
+   "Wing shape makes lift before the air starts to move.",
+   "lift-m1"
+  ],
+  [
+   "topic.how-things-work:multirotor-turns-9/c",
+   "It climbs, since less weight sits on the rotors.",
+   "It hovers, since holding still takes no upward push.",
+   "multirotor-turns-m1"
+  ],
+  [
+   "topic.how-things-work:multirotor-turns-12/c",
+   "Gravity drags the lower nose ahead.",
+   "A tilted drone still pushes straight up, so it stays in place.",
+   "multirotor-turns-m4"
+  ],
+  [
+   "topic.how-things-work:battery-flight-time-13/b",
+   "Big batteries hold less energy in each kilogram they weigh.",
+   "Power grows no faster than weight, so the extra load costs little.",
+   "battery-flight-time-m3"
+  ],
+  [
+   "topic.how-things-work:battery-flight-time-13/c",
+   "The motors get weaker as they get older.",
+   "Added battery weight cuts flight time from the start.",
+   "battery-flight-time-m5"
+  ],
+  [
+   "topic.how-things-work:battery-flight-time-14/c",
+   "The same battery, since the size makes no difference.",
+   "Keep it; hover power rises in step with weight.",
+   "battery-flight-time-m3"
+  ],
+  [
+   "topic.how-things-work:flight-sensors-9/c",
+   "Drones do not tilt in flight, so they need no sensor.",
+   "GPS tracks its tilt while the gyroscope tracks its place.",
+   "flight-sensors-m1"
+  ],
+  [
+   "topic.how-things-work:birds-and-planes-10/c",
+   "The warm classroom air carries it like a balloon.",
+   "The throw keeps it up; wings need engines to make lift.",
+   "birds-and-planes-m2"
+  ],
+  [
+   "topic.how-things-work:birds-and-planes-13/b",
+   "Gravity pulls the wing down, so it needs the most power.",
+   "It uses power for lift while forward push comes for free.",
+   "birds-and-planes-m5"
+  ],
+  [
+   "topic.how-things-work:birds-and-planes-13/c",
+   "The upstroke is when the bird rests its whole body.",
+   "Its lift points straight up, so it must work harder.",
+   "birds-and-planes-m3"
+  ],
+  [
+   "topic.how-things-work:ceiling-fans-10/c",
+   "Resting its motor for the next summer.",
+   "Making new cold air as the blades turn back.",
+   "ceiling-fans-m1"
+  ],
+  [
+   "topic.how-things-work:upi-path-13/b",
+   "the payee's bank balance.",
+   "the payee knowing your UPI ID",
+   "upi-path-m5"
+  ],
+  [
+   "topic.how-things-work:upi-path-13/c",
+   "a call from your bank.",
+   "the app moving cash without a bank check",
+   "upi-path-m2"
+  ],
+  [
+   "topic.how-things-work:phone-camera-9/c",
+   "The screen records it as you look at the preview.",
+   "The lens stores the photo while the sensor aims light.",
+   "phone-camera-m2"
+  ],
+  [
+   "topic.how-things-work:phone-camera-10/b",
+   "Those spots were newer and simply worked better.",
+   "The lens made the bright patch; the spots did not record it.",
+   "phone-camera-m2"
+  ],
+  [
+   "topic.how-things-work:sky-colours-14/b",
+   "The Moon heats up and glows red in the dark.",
+   "The Sun turns red during the eclipse and lights the Moon.",
+   "sky-colours-m2"
+  ],
+  [
+   "topic.how-things-work:pressure-cooker-9/c",
+   "Hill water is harder, so the dal soaks it up slowly.",
+   "High places have less pressure to push flavour into dal.",
+   "pressure-cooker-m1"
+  ],
+  [
+   "topic.how-things-work:pressure-cooker-11/c",
+   "Cookers are faster just for beans like rajma.",
+   "The whistle marks cooked food, while pressure leaves the boil unchanged.",
+   "pressure-cooker-m3"
+  ],
+  [
+   "topic.how-things-work:pressure-cooker-12/b",
+   "Ordinary pots crack in the cold, thin mountain air up there.",
+   "Thin mountain air lets heat leak from an open pot faster.",
+   "pressure-cooker-m5"
+  ],
+  [
+   "topic.how-things-work:pressure-cooker-12/c",
+   "Pressure cookers weigh less, so they are easy to carry.",
+   "A cooker pushes flavour into food under more pressure.",
+   "pressure-cooker-m1"
+  ],
+  [
+   "topic.health-nutrition:protein-foods-9/c",
+   "Plants have protein, but rice has the most of all.",
+   "Plant foods cannot meet a protein need.",
+   "protein-foods-m1"
+  ],
+  [
+   "topic.health-nutrition:protein-foods-14/c",
+   "About 0.1 g per kg.",
+   "About 2 g per kg; more protein is better.",
+   "protein-foods-m3"
+  ],
+  [
+   "topic.health-nutrition:free-sugars-10/c",
+   "it was bought in a shop",
+   "honey and whole fruit both count as free sugar",
+   "free-sugars-m2"
+  ],
+  [
+   "topic.health-nutrition:hydration-cues-9/c",
+   "The real figure is 15 glasses a day.",
+   "Tea and milk do not add to the count.",
+   "hydration-cues-m1"
+  ],
+  [
+   "topic.health-nutrition:hydration-cues-12/c",
+   "Yes; pale pee means she is short of water.",
+   "Yes; low fluid leaves pee pale yellow.",
+   "hydration-cues-m5"
+  ],
+  [
+   "topic.health-nutrition:hydration-cues-14/c",
+   "Pee that is pale yellow.",
+   "No change in pee, even after hours in heat.",
+   "hydration-cues-m5"
+  ],
+  [
+   "topic.health-nutrition:exercise-heart-10/b",
+   "Sitting up straight in each lecture.",
+   "A short walk cannot count toward weekly minutes.",
+   "exercise-heart-m2"
+  ],
+  [
+   "topic.health-nutrition:exercise-heart-10/c",
+   "Watching a cricket match from the stands.",
+   "Hard sprints are the exercise that counts.",
+   "exercise-heart-m1"
+  ],
+  [
+   "topic.health-nutrition:exercise-heart-11/c",
+   "Slow down to save his breath.",
+   "Keep chatting; full sentences show vigorous effort.",
+   "exercise-heart-m4"
+  ],
+  [
+   "topic.health-nutrition:iron-and-anaemia-9/b",
+   "She is eating too much protein.",
+   "Her signs prove low iron caused anaemia.",
+   "iron-and-anaemia-m2"
+  ],
+  [
+   "topic.health-nutrition:iron-and-anaemia-11/c",
+   "Skip the poha and keep the chai.",
+   "Keep the chai; tea with food has no effect.",
+   "iron-and-anaemia-m3"
+  ],
+  [
+   "topic.health-nutrition:iron-and-anaemia-12/c",
+   "Cooking turns the iron into fat.",
+   "Plant iron gets in as easily as other iron.",
+   "iron-and-anaemia-m1"
+  ],
+  [
+   "topic.health-nutrition:iron-and-anaemia-14/b",
+   "Drinking plenty of water.",
+   "There are no causes besides low iron.",
+   "iron-and-anaemia-m2"
+  ],
+  [
+   "topic.health-nutrition:food-label-reading-9/c",
+   "The weight of the empty wrapper.",
+   "The 80 kcal covers the full pack.",
+   "food-label-reading-m4"
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-10/c",
+   "Milk is fine, but just for children.",
+   "Milk gives an adult the key nutrients they need.",
+   "fad-diet-claims-m1"
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-12/b",
+   "Sharper focus for his exams.",
+   "No risk; detox plans are proven to work.",
+   "fad-diet-claims-m2"
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-13/b",
+   "None, if the reel has many views.",
+   "None; a detox drink has proven results.",
+   "fad-diet-claims-m2"
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-13/c",
+   "The drink costs too little to work.",
+   "None; overnight loss is the better pace.",
+   "fad-diet-claims-m3"
+  ],
+  [
+   "topic.health-nutrition:fad-diet-claims-14/c",
+   "Yes, but in summer alone.",
+   "Yes; faster weight loss is better.",
+   "fad-diet-claims-m3"
+  ],
+  [
+   "topic.body-training:progressive-overload-9/b",
+   "The bag got lighter as her books wore out.",
+   "Repeated carrying wore her muscles down.",
+   "progressive-overload-m4"
+  ],
+  [
+   "topic.body-training:progressive-overload-11/c",
+   "He should add a training day before he fixes his form.",
+   "A big weight jump will make him stronger faster.",
+   "progressive-overload-m2"
+  ],
+  [
+   "topic.body-training:muscle-protein-rest-14/c",
+   "Time after training matters mainly for people over 50.",
+   "Muscle building starts once soreness ends.",
+   "muscle-protein-rest-m4"
+  ],
+  [
+   "topic.body-training:sleep-recovery-11/c",
+   "A gain in play, since she was awake longer.",
+   "Losing the start of sleep hurts play most.",
+   "sleep-recovery-m4"
+  ],
+  [
+   "topic.body-training:sleep-recovery-13/b",
+   "Skipping lunch to make up for the snacks.",
+   "Keep five hours of sleep to lower hunger.",
+   "sleep-recovery-m6"
+  ],
+  [
+   "topic.body-training:sleep-recovery-14/c",
+   "Her stomach has shrunk from the short night.",
+   "Short sleep lowers the hunger hormone.",
+   "sleep-recovery-m6"
+  ],
+  [
+   "topic.body-training:heat-hydration-10/b",
+   "Her fitness was gone in a single week.",
+   "The heat gives her a bonus workout.",
+   "heat-hydration-m1"
+  ],
+  [
+   "topic.body-training:cardio-talk-test-11/c",
+   "The hill is steeper for one of them.",
+   "The same speed must feel equal to both.",
+   "cardio-talk-test-m1"
+  ],
+  [
+   "topic.body-training:showing-up-9/c",
+   "A zero day is fine if you rest the whole day.",
+   "Short walks and stairs do not count.",
+   "showing-up-m2"
+  ],
+  [
+   "topic.body-training:food-labels-11/b",
+   "Chillies weigh too little to be measured.",
+   "Ingredient percentages apply to drinks, not chips.",
+   "food-labels-m6"
+  ],
+  [
+   "topic.history-civilisations:indus-cities-9/c",
+   "One builder put up the houses.",
+   "Neat roads can grow with no plan.",
+   "indus-cities-m3"
+  ],
+  [
+   "topic.history-civilisations:indus-cities-12/c",
+   "They dug a well beside each house.",
+   "Open ditches let workers reach the silt.",
+   "indus-cities-m4"
+  ],
+  [
+   "topic.history-civilisations:indus-cities-13/c",
+   "The drains were made of iron.",
+   "They stayed open so silt could be cleared.",
+   "indus-cities-m4"
+  ],
+  [
+   "topic.history-civilisations:ashoka-edicts-9/b",
+   "Print it on glossy paper posters.",
+   "Keep it at court, as Ashoka kept his messages.",
+   "ashoka-edicts-m1"
+  ],
+  [
+   "topic.history-civilisations:ashoka-edicts-10/b",
+   "Yes; each village had its own stone.",
+   "No; the carved edicts stayed at court.",
+   "ashoka-edicts-m1"
+  ],
+  [
+   "topic.history-civilisations:ashoka-edicts-12/c",
+   "About 10 scripts.",
+   "About 1 script, used across the empire.",
+   "ashoka-edicts-m3"
+  ],
+  [
+   "topic.history-civilisations:ashoka-edicts-15/c",
+   "They held no messages, just names.",
+   "They gave orders without advice on kindness.",
+   "ashoka-edicts-m4"
+  ],
+  [
+   "topic.history-civilisations:silk-road-ideas-10/c",
+   "A new road to be built.",
+   "A road across Asia to open before sailing.",
+   "silk-road-ideas-m2"
+  ],
+  [
+   "topic.history-civilisations:silk-road-ideas-14/c",
+   "Monks paying traders to travel.",
+   "Art spreading on its own, apart from trade.",
+   "silk-road-ideas-m3"
+  ],
+  [
+   "topic.history-civilisations:silk-road-ideas-16/b",
+   "The art first came from China and then moved to Gandhara.",
+   "No one had to carry the style there.",
+   "silk-road-ideas-m3"
+  ],
+  [
+   "topic.history-civilisations:indian-place-value-16/c",
+   "Yes, because his book was a law.",
+   "Yes; Europe already used digits from Arabia.",
+   "indian-place-value-m3"
+  ],
+  [
+   "topic.history-civilisations:printing-and-reading-10/c",
+   "Blocks printed faster than type.",
+   "It did not; movable type replaced blocks there.",
+   "printing-and-reading-m3"
+  ],
+  [
+   "topic.history-civilisations:printing-and-reading-12/b",
+   "Gutenberg did not print any books himself.",
+   "Gutenberg invented printing before Bi Sheng.",
+   "printing-and-reading-m1"
+  ],
+  [
+   "topic.history-civilisations:printing-and-reading-12/c",
+   "Movable type began in the 1800s.",
+   "Printing began with Gutenberg in Europe.",
+   "printing-and-reading-m1"
+  ],
+  [
+   "topic.history-civilisations:mughal-revenue-9/b",
+   "A royal charter for overseas trade.",
+   "A mansab title with no pay tied to it.",
+   "mughal-revenue-m1"
+  ],
+  [
+   "topic.history-civilisations:mughal-revenue-16/c",
+   "Horseman.",
+   "Province, since one tax rate fit its crops.",
+   "mughal-revenue-m2"
+  ],
+  [
+   "topic.history-civilisations:company-trade-rule-9/b",
+   "Lower its prices to beat rival sellers there.",
+   "Run the stadium because its charter gives control.",
+   "company-trade-rule-m1"
+  ],
+  [
+   "topic.history-civilisations:company-trade-rule-10/b",
+   "The Dutch had bought the charter from the Company.",
+   "They could not; the charter granted rule there.",
+   "company-trade-rule-m1"
+  ],
+  [
+   "topic.history-civilisations:company-trade-rule-14/b",
+   "The Company had just won its royal charter.",
+   "The charter had already made the Company ruler.",
+   "company-trade-rule-m1"
+  ],
+  [
+   "topic.history-civilisations:independence-constitution-9/c",
+   "A king who must approve each rule before it passes.",
+   "British officials to write its rules.",
+   "independence-constitution-m4"
+  ],
+  [
+   "topic.history-civilisations:independence-constitution-12/b",
+   "It met once a year.",
+   "The first draft passed with no changes.",
+   "independence-constitution-m3"
+  ],
+  [
+   "topic.history-civilisations:independence-constitution-16/b",
+   "It was not passed by anyone.",
+   "It was signed and began on the same day.",
+   "independence-constitution-m2"
+  ]
+ ]
+}

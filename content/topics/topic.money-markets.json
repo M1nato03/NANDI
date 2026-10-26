@@ -326,11 +326,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Inflation is harmless at any level.",
+                    "text": "A falling price target would make people buy sooner.",
                     "correct": false,
-                    "feedback": "Fast inflation does hurt buying power. The point is that a little is normal, not that any amount is fine.",
+                    "feedback": "Falling prices can make people put off buying. A little inflation is normal in the stated target.",
                     "sourceRefs": [
                       "inflation"
+                    ],
+                    "misconceptionIds": [
+                      "inflation-m4"
                     ]
                   }
                 ]
@@ -651,9 +654,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "One and a quarter baskets.",
+                        "text": "Three quarters, as prices rose by a quarter.",
                         "correct": false,
-                        "feedback": "That flips the sum. ₹125 is the new price, so ₹100 buys less than one basket."
+                        "feedback": "Close, but 100 divided by 125 is 0.8, so it buys four fifths, not three quarters."
                       }
                     ]
                   }
@@ -888,7 +891,8 @@
                 "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "compounding-m1"
+                  "compounding-m1",
+                  "compounding-m4"
                 ],
                 "sourceRefs": [
                   "compound"
@@ -911,6 +915,9 @@
                     "feedback": "The rate applies every year. Each year it works on the sum plus the gains kept in.",
                     "sourceRefs": [
                       "compound"
+                    ],
+                    "misconceptionIds": [
+                      "compounding-m4"
                     ]
                   },
                   {
@@ -988,7 +995,9 @@
                 "step": "compounding-s2",
                 "job": "edge",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "compounding-m5"
+                ],
                 "sourceRefs": [
                   "compound",
                   "investing"
@@ -1013,6 +1022,9 @@
                     "sourceRefs": [
                       "compound",
                       "investing"
+                    ],
+                    "misconceptionIds": [
+                      "compounding-m5"
                     ]
                   },
                   {
@@ -1023,6 +1035,9 @@
                     "sourceRefs": [
                       "compound",
                       "investing"
+                    ],
+                    "misconceptionIds": [
+                      "compounding-m5"
                     ]
                   }
                 ]
@@ -1055,12 +1070,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "the payments stop when prices fall",
+                    "text": "a fixed SIP return turns negative in a bad year",
                     "correct": false,
-                    "feedback": "Payments keep going on the set dates. The loss comes from the fund's value falling, not from missed payments.",
+                    "feedback": "A SIP sets when money is added, not its return. The fund can lose value when its investments fall.",
                     "sourceRefs": [
                       "sip",
                       "investing"
+                    ],
+                    "misconceptionIds": [
+                      "compounding-m2"
                     ]
                   },
                   {
@@ -1161,6 +1179,24 @@
                 "sourceRefs": [
                   "compound",
                   "finra"
+                ]
+              },
+              {
+                "id": "compounding-m4",
+                "name": "Interest only grows the first amount",
+                "correction": "Compound growth includes gains on past gains as well as on the starting amount.",
+                "sourceRefs": [
+                  "compound",
+                  "sip"
+                ]
+              },
+              {
+                "id": "compounding-m5",
+                "name": "Time alone compounds idle cash",
+                "correction": "Compound growth needs gains; cash that earns nothing has no gains to build on.",
+                "sourceRefs": [
+                  "compound",
+                  "sip"
                 ]
               }
             ],
@@ -1498,9 +1534,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "The return the fund will earn.",
+                        "text": "The 12% a year that SIPs give.",
                         "correct": false,
-                        "feedback": "A SIP never fixes the return. Only the sum you put in and the date stay set."
+                        "feedback": "No SIP fixes a return. Only the sum and the date stay set; the fund's price moves."
                       }
                     ]
                   }
@@ -1562,7 +1598,8 @@
                 "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "loan-emi-m2"
+                  "loan-emi-m2",
+                  "loan-emi-m4"
                 ],
                 "sourceRefs": [
                   "rbi-loan"
@@ -1585,6 +1622,9 @@
                     "feedback": "The rate can stay the same. The total rises because interest is charged for more months.",
                     "sourceRefs": [
                       "rbi-loan"
+                    ],
+                    "misconceptionIds": [
+                      "loan-emi-m4"
                     ]
                   },
                   {
@@ -1644,6 +1684,9 @@
                     "feedback": "Equal EMIs say nothing about cost. The ₹1,500 fee still makes the phone dearer.",
                     "sourceRefs": [
                       "rbi-loan"
+                    ],
+                    "misconceptionIds": [
+                      "loan-emi-m2"
                     ]
                   }
                 ]
@@ -1702,7 +1745,9 @@
                 "step": "loan-emi-s2",
                 "job": "combine",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "loan-emi-m5"
+                ],
                 "sourceRefs": [
                   "rbi-loan"
                 ],
@@ -1733,6 +1778,9 @@
                     "feedback": "That is everything paid back. The ₹10 lakh borrowed is not interest.",
                     "sourceRefs": [
                       "rbi-loan"
+                    ],
+                    "misconceptionIds": [
+                      "loan-emi-m5"
                     ]
                   }
                 ],
@@ -1862,6 +1910,22 @@
                 "id": "loan-emi-m3",
                 "name": "Interest stays on the first amount",
                 "correction": "Interest is worked out on the loan still unpaid, so paying some back early lowers later interest.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-m4",
+                "name": "Longer terms raise the rate",
+                "correction": "A longer term can raise total interest even when the loan rate stays fixed.",
+                "sourceRefs": [
+                  "rbi-loan"
+                ]
+              },
+              {
+                "id": "loan-emi-m5",
+                "name": "Every EMI rupee is interest",
+                "correction": "An EMI can pay both interest and part of the loan sum.",
                 "sourceRefs": [
                   "rbi-loan"
                 ]
@@ -2413,6 +2477,9 @@
                     "sourceRefs": [
                       "rule72",
                       "sbi-card"
+                    ],
+                    "misconceptionIds": [
+                      "rule-of-72-m3"
                     ]
                   },
                   {
@@ -2792,9 +2859,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Both grow the same.",
+                        "text": "The savings; debt stays put.",
                         "correct": false,
-                        "feedback": "A higher rate doubles faster, so the 18% debt grows about three times as fast."
+                        "feedback": "Unpaid interest is added to a debt, so it grows like savings do, only faster here."
                       }
                     ]
                   }
@@ -2879,9 +2946,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "A fund whose return changes monthly.",
+                        "text": "An index fund that averaged 12% for ten years.",
                         "correct": false,
-                        "feedback": "A return that keeps changing gives the rule no steady rate."
+                        "feedback": "An average hides up and down years, so the rule is only a what-if here."
                       }
                     ]
                   }
@@ -3023,7 +3090,10 @@
                 "step": "risk-return-s3",
                 "job": "recall",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "risk-return-m4",
+                  "risk-return-m5"
+                ],
                 "sourceRefs": [
                   "risk"
                 ],
@@ -3045,6 +3115,9 @@
                     "feedback": "Over long spans, shares have usually earned more. Savings fit here because they swing less, not because they earn more.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "risk-return-m4"
                     ]
                   },
                   {
@@ -3054,6 +3127,9 @@
                     "feedback": "Share prices can move a lot in a few months. That is why money needed soon suits low-risk savings.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "risk-return-m5"
                     ]
                   }
                 ]
@@ -3171,7 +3247,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "risk-return-m2"
+                  "risk-return-m2",
+                  "risk-return-m4"
                 ],
                 "sourceRefs": [
                   "risk"
@@ -3201,11 +3278,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The same swings as shares.",
+                    "text": "Cash savings swing like shares but earn more over time.",
                     "correct": false,
-                    "feedback": "Cash swings far less than shares. Its main worry is prices rising faster than it earns.",
+                    "feedback": "Cash savings have been steadier and earned less than shares. Rising prices can still cut what cash buys.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "risk-return-m4"
                     ]
                   }
                 ]
@@ -3217,7 +3297,10 @@
                 "step": "risk-return-s3",
                 "job": "combine",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "risk-return-m1",
+                  "risk-return-m4"
+                ],
                 "sourceRefs": [
                   "risk"
                 ],
@@ -3239,15 +3322,21 @@
                     "feedback": "Shares could drop just before the 6-month goal, with no time to recover.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "risk-return-m1"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Savings for both, since shares can fall at the worst time.",
+                    "text": "Savings for both, since cash has earned more than shares.",
                     "correct": false,
-                    "feedback": "Shares can fall, but 28 years gives time to wait out dips, so the far goal can take more swing.",
+                    "feedback": "Cash savings have earned less than shares over time. The distant goal has more room to wait out swings.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "risk-return-m4"
                     ]
                   }
                 ]
@@ -3276,6 +3365,24 @@
                 "correction": "Shares of large, famous firms can drop in value too.",
                 "sourceRefs": [
                   "risk"
+                ]
+              },
+              {
+                "id": "risk-return-m4",
+                "name": "Savings earn more than shares",
+                "correction": "Cash savings have earned less than shares over time, though shares carry more risk.",
+                "sourceRefs": [
+                  "risk",
+                  "what-risk"
+                ]
+              },
+              {
+                "id": "risk-return-m5",
+                "name": "Shares stay steady short term",
+                "correction": "Share values can fall, so money needed soon usually suits a lower-risk place.",
+                "sourceRefs": [
+                  "risk",
+                  "what-risk"
                 ]
               }
             ],
@@ -3506,9 +3613,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "They give up no return.",
+                        "text": "None; calm pays more.",
                         "correct": false,
-                        "feedback": "The calmer ride usually costs some return."
+                        "feedback": "Calmer things usually earn less. More reward tends to come with bigger swings."
                       }
                     ]
                   }
@@ -3592,9 +3699,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No reason to think about risk.",
+                        "text": "A sure gain, as markets rise in the long run.",
                         "correct": false,
-                        "feedback": "Risk still matters; he just has more time to handle it."
+                        "feedback": "Time gives room to wait out dips, but losses are still possible."
                       }
                     ]
                   }
@@ -3763,6 +3870,9 @@
                     "sourceRefs": [
                       "risk",
                       "diversify"
+                    ],
+                    "misconceptionIds": [
+                      "diversification-m2"
                     ]
                   },
                   {
@@ -3788,7 +3898,9 @@
                 "job": "edge",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "diversification-m1"
+                  "diversification-m1",
+                  "diversification-m3",
+                  "diversification-m2"
                 ],
                 "sourceRefs": [
                   "risk"
@@ -3806,20 +3918,26 @@
                   },
                   {
                     "id": "b",
-                    "text": "two firms are worse than one",
+                    "text": "the two firm names make the money well spread",
                     "correct": false,
-                    "feedback": "Two firms are not worse. The problem is the uneven split, with most money in one place.",
+                    "feedback": "Names alone do not make a spread. Most of this money still depends on one firm.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "diversification-m3"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "the small holding is sure to fall",
+                    "text": "two firms mean a market fall cannot hurt the money",
                     "correct": false,
-                    "feedback": "Nothing says the small one will fall. The weak point is that one firm holds most of the money.",
+                    "feedback": "A mix can still fall with the market. Here most of the money also rests on one firm.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "diversification-m2"
                     ]
                   }
                 ]
@@ -3862,11 +3980,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "steel firms cannot fall in price",
+                    "text": "the steel firms have separate names, so their risks cannot overlap",
                     "correct": false,
-                    "feedback": "Steel firms can fall like any others. The weak spot is that they tend to fall together.",
+                    "feedback": "Different names in one industry can share risks. A broader mix spreads firm risk better.",
                     "sourceRefs": [
                       "risk"
+                    ],
+                    "misconceptionIds": [
+                      "diversification-m3"
                     ]
                   }
                 ]
@@ -3968,6 +4089,9 @@
                     "sourceRefs": [
                       "risk",
                       "diversify"
+                    ],
+                    "misconceptionIds": [
+                      "diversification-m2"
                     ]
                   }
                 ]
@@ -4145,9 +4269,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Meera, since one firm is easier to watch.",
+                        "text": "Om, with his full ₹10,000 safe.",
                         "correct": false,
-                        "feedback": "Watching one firm does not stop its fall. Her one firm halved, leaving her ₹5,000."
+                        "feedback": "Om still loses ₹1,000. A spread makes a loss smaller, not zero."
                       },
                       {
                         "id": "c",
@@ -4491,11 +4615,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "It grows to a half.",
+                    "text": "It stays near a quarter because her count stayed at 40.",
                     "correct": false,
-                    "feedback": "The new shares went to others, not to her. Her 40 out of 320 is an eighth.",
+                    "feedback": "Her slice depends on her shares out of the new total. Forty out of 320 is an eighth.",
                     "sourceRefs": [
                       "shares"
+                    ],
+                    "misconceptionIds": [
+                      "shares-m4"
                     ]
                   }
                 ]
@@ -4507,7 +4634,9 @@
                 "step": "shares-s2",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "shares-m6"
+                ],
                 "sourceRefs": [
                   "shares"
                 ],
@@ -4538,6 +4667,9 @@
                     "feedback": "Small owners can vote. Their vote just carries little weight next to big holdings.",
                     "sourceRefs": [
                       "shares"
+                    ],
+                    "misconceptionIds": [
+                      "shares-m6"
                     ]
                   }
                 ]
@@ -4770,6 +4902,14 @@
                 "sourceRefs": [
                   "shares"
                 ]
+              },
+              {
+                "id": "shares-m6",
+                "name": "Small owners cannot vote",
+                "correction": "Owners of shares can vote on big decisions at the firm's general meeting.",
+                "sourceRefs": [
+                  "shares"
+                ]
               }
             ],
             "sources": [
@@ -4897,9 +5037,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Both own the same.",
+                        "text": "Can't tell without the price each paid.",
                         "correct": false,
-                        "feedback": "They hold different numbers of shares, so their pieces are different sizes."
+                        "feedback": "Price paid does not set the slice. 50 of 200 shares is a quarter; 20 is a tenth."
                       }
                     ]
                   }
@@ -4977,9 +5117,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Arjun.",
+                        "text": "Arjun, who paid more.",
                         "correct": false,
-                        "feedback": "Buying a phone makes him a customer, not an owner, so he gets no vote."
+                        "feedback": "Paying more as a customer buys a phone, not a part of the firm. Only owners vote."
                       },
                       {
                         "id": "c",
@@ -5061,9 +5201,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "A bigger payout to make up for the loss.",
+                        "text": "Some payout; owners are owed a share.",
                         "correct": false,
-                        "feedback": "Nothing makes a company pay more after a bad year. It may pay less or nothing."
+                        "feedback": "Nothing is owed. The company decides each year, and may pay nothing."
                       }
                     ]
                   }
@@ -5453,7 +5593,10 @@
                 "step": "emergency-fund-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "emergency-fund-m4",
+                  "emergency-fund-m1"
+                ],
                 "sourceRefs": [
                   "rbi-emergency"
                 ],
@@ -5470,20 +5613,26 @@
                   },
                   {
                     "id": "b",
-                    "text": "they tend to lose most of their value very quickly",
+                    "text": "a good return makes the time to sell unimportant",
                     "correct": false,
-                    "feedback": "Gold and land usually keep their value. The problem is speed: they must be sold before you can pay.",
+                    "feedback": "An urgent bill needs money that can be reached quickly. Gold or land needs a buyer before it becomes cash.",
                     "sourceRefs": [
                       "rbi-emergency"
+                    ],
+                    "misconceptionIds": [
+                      "emergency-fund-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "banks will not keep them for you",
+                    "text": "their value can cover a sudden bill without a sale",
                     "correct": false,
-                    "feedback": "Where they are kept is not the issue. Turning them into cash needs a buyer, and that takes time.",
+                    "feedback": "Their value is not ready cash. Each needs a buyer before it can cover a sudden bill.",
                     "sourceRefs": [
                       "rbi-emergency"
+                    ],
+                    "misconceptionIds": [
+                      "emergency-fund-m1"
                     ]
                   }
                 ]
@@ -5669,9 +5818,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "A quick loan from an app.",
+                        "text": "Your 3-year fixed deposit.",
                         "correct": false,
-                        "feedback": "A loan adds a debt with interest to repay. A fund set aside earlier avoids that."
+                        "feedback": "Breaking a locked deposit can cost a penalty and take time. The fund is kept ready for this."
                       }
                     ]
                   }
@@ -5825,9 +5974,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "So it earns a much higher rate.",
+                        "text": "So it can sit in shares and grow faster.",
                         "correct": false,
-                        "feedback": "A separate savings account need not pay more. The point is keeping it whole."
+                        "feedback": "Shares can be down just when a surprise comes. Keep the fund in savings you can reach fast."
                       },
                       {
                         "id": "c",
@@ -6520,9 +6669,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Both keep the same.",
+                        "text": "Fund X, for better picks.",
                         "correct": false,
-                        "feedback": "They follow the same index, but X's bigger fee leaves less behind."
+                        "feedback": "Both just follow the same index. No one picks, so the extra fee only takes more out."
                       }
                     ]
                   }
@@ -6809,7 +6958,10 @@
                 "step": "upi-scams-s1",
                 "job": "edge",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "upi-scams-m5",
+                  "upi-scams-m1"
+                ],
                 "sourceRefs": [
                   "npci-fraud",
                   "rbi-fraud"
@@ -6834,6 +6986,9 @@
                     "sourceRefs": [
                       "npci-fraud",
                       "rbi-fraud"
+                    ],
+                    "misconceptionIds": [
+                      "upi-scams-m5"
                     ]
                   },
                   {
@@ -6844,6 +6999,9 @@
                     "sourceRefs": [
                       "npci-fraud",
                       "rbi-fraud"
+                    ],
+                    "misconceptionIds": [
+                      "upi-scams-m1"
                     ]
                   }
                 ]
@@ -6935,11 +7093,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "just checks your name",
+                    "text": "lets bank staff safely approve a payment",
                     "correct": false,
-                    "feedback": "An OTP is not a name check. It approves a payment or login, which is why it stays secret.",
+                    "feedback": "Bank staff do not need your OTP. It can approve a payment or login, so it must stay secret.",
                     "sourceRefs": [
                       "rbi-fraud"
+                    ],
+                    "misconceptionIds": [
+                      "upi-scams-m3"
                     ]
                   },
                   {
@@ -6960,7 +7121,9 @@
                 "step": "upi-scams-s3",
                 "job": "reverse",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "upi-scams-m4"
+                ],
                 "sourceRefs": [
                   "rbi-fraud"
                 ],
@@ -6986,11 +7149,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The scammer gave up after one try.",
+                    "text": "She could approve those requests first and cancel them later.",
                     "correct": false,
-                    "feedback": "The scammer did try again. Those debits were blocked because she had already told her bank and blocked UPI.",
+                    "feedback": "Approval can make a payment. Her quick report and UPI block stopped the later debits.",
                     "sourceRefs": [
                       "rbi-fraud"
+                    ],
+                    "misconceptionIds": [
+                      "upi-scams-m4"
                     ]
                   }
                 ]
@@ -7070,6 +7236,15 @@
                 "id": "upi-scams-m4",
                 "name": "Approve now, cancel later",
                 "correction": "Entering your PIN on any request, link or QR code is the payment itself.",
+                "sourceRefs": [
+                  "npci-fraud",
+                  "rbi-fraud"
+                ]
+              },
+              {
+                "id": "upi-scams-m5",
+                "name": "Scanning a QR can get you money",
+                "correction": "A QR scan and UPI PIN can make a payment; getting money needs neither.",
                 "sourceRefs": [
                   "npci-fraud",
                   "rbi-fraud"
@@ -7333,9 +7508,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Install it if he knows your name.",
+                        "text": "Install it if he calls from the bank's number.",
                         "correct": false,
-                        "feedback": "Knowing your name proves nothing. Refuse any app a caller asks you to install."
+                        "feedback": "A caller's number can be faked, and real bank staff never ask you to install apps."
                       }
                     ]
                   }
