@@ -1,6 +1,6 @@
 # 31. Living friends: every mascot animates, everywhere it appears
 
-Status: DRAFT, waiting for Jenil's yes. Not for the builder until then.
+Status: APPROVED by Jenil, 26 Oct 2026 ("yes").
 Idea engine, 26 Oct 2026.
 
 ## Why
