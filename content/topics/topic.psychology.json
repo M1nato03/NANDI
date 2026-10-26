@@ -138,6 +138,9 @@
                     "sourceRefs": [
                       "wood",
                       "wood-move"
+                    ],
+                    "misconceptionIds": [
+                      "habits-m3"
                     ]
                   }
                 ]
@@ -173,12 +176,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "Sit-ups count for more when the TV is off.",
+                    "text": "His goal to exercise matters more than the TV cue.",
                     "correct": false,
-                    "feedback": "The TV going off does not change the sit-ups. It is the signal that starts them.",
+                    "feedback": "A goal may not start a habit when its cue is absent. The TV going off is the cue here.",
                     "sourceRefs": [
                       "lally",
                       "wood"
+                    ],
+                    "misconceptionIds": [
+                      "habits-m3"
                     ]
                   },
                   {
@@ -398,11 +404,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Exams make every habit stronger.",
+                    "text": "One missed day resets the habit, so a week adds no harm.",
                     "correct": false,
-                    "feedback": "Nothing here says exams help habits. The long gap is the problem.",
+                    "feedback": "One missed chance did not erase habit growth. A whole week off made later practice less likely.",
                     "sourceRefs": [
                       "lally"
+                    ],
+                    "misconceptionIds": [
+                      "habits-m2"
                     ]
                   }
                 ]
@@ -764,9 +773,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "This habit is not going to form.",
+                        "text": "The usual 21 days are up, so it will not form.",
                         "correct": false,
-                        "feedback": "Three weeks is early. Many people take two months or more."
+                        "feedback": "There is no fixed 21 days. In one study the middle time was about two months."
                       }
                     ]
                   }
@@ -910,7 +919,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "variable-rewards-m1"
+                  "variable-rewards-m1",
+                  "variable-rewards-m4"
                 ],
                 "sourceRefs": [
                   "operant"
@@ -933,15 +943,21 @@
                     "feedback": "Every fifth payment is a set count, so you know when it comes. That is fixed.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "A ₹5 discount on each payment.",
+                    "text": "A prize after ten payments, then ten more.",
                     "correct": false,
-                    "feedback": "A reward on each payment comes every time, so there is nothing to guess.",
+                    "feedback": "That gap is fixed. With variable rewards, the number of tries before a prize changes.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m4"
                     ]
                   }
                 ]
@@ -953,7 +969,9 @@
                 "step": "variable-rewards-s1",
                 "job": "edge",
                 "difficultySeed": 2,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "variable-rewards-m5"
+                ],
                 "sourceRefs": [
                   "operant"
                 ],
@@ -966,6 +984,9 @@
                     "feedback": "Uneven rewards keep an act going. For teaching it first, a reward each time is quicker.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m5"
                     ]
                   },
                   {
@@ -979,11 +1000,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Praise has no effect on new acts.",
+                    "text": "Surprise praise teaches this new act faster than steady praise.",
                     "correct": false,
-                    "feedback": "Rewards do shape new acts. Rewarding every time teaches fastest.",
+                    "feedback": "A reward after each try teaches a new act fastest. Uneven rewards can help a learned response last.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m5"
                     ]
                   }
                 ]
@@ -996,7 +1020,8 @@
                 "job": "combine",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "variable-rewards-m1"
+                  "variable-rewards-m1",
+                  "variable-rewards-m4"
                 ],
                 "sourceRefs": [
                   "operant"
@@ -1019,6 +1044,9 @@
                     "feedback": "Chances do not stack that neatly. Five misses in a row can still happen.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m4"
                     ]
                   },
                   {
@@ -1045,7 +1073,9 @@
                 "step": "variable-rewards-s2",
                 "job": "recall",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "variable-rewards-m6"
+                ],
                 "sourceRefs": [
                   "operant"
                 ],
@@ -1058,6 +1088,9 @@
                     "feedback": "When a reward that came each time stops, people notice fast and give up sooner.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m6"
                     ]
                   },
                   {
@@ -1076,6 +1109,9 @@
                     "feedback": "Both stopped, but uneven rewards fade much more slowly than steady ones.",
                     "sourceRefs": [
                       "operant"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m6"
                     ]
                   }
                 ]
@@ -1108,12 +1144,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "Her alerts must still be on.",
+                    "text": "Surprise likes still explain her checks, even with alerts off.",
                     "correct": false,
-                    "feedback": "She turned them off. Opening the app anyway points to other pulls, such as wanting news from friends.",
+                    "feedback": "People open apps for several reasons. Her checks can continue through other pulls, such as news from friends.",
                     "sourceRefs": [
                       "social-reward",
                       "scroll-review"
+                    ],
+                    "misconceptionIds": [
+                      "variable-rewards-m2"
                     ]
                   },
                   {
@@ -1205,6 +1244,30 @@
                 "id": "variable-rewards-m3",
                 "name": "It is just weak will",
                 "correction": "Rewards that come at unknown times keep checks going for most people, not only the weak-willed.",
+                "sourceRefs": [
+                  "operant"
+                ]
+              },
+              {
+                "id": "variable-rewards-m4",
+                "name": "A skipped reward is variable",
+                "correction": "A reward after every fifth try is fixed; on a variable schedule, the number of tries keeps changing.",
+                "sourceRefs": [
+                  "operant"
+                ]
+              },
+              {
+                "id": "variable-rewards-m5",
+                "name": "Surprise rewards teach fastest",
+                "correction": "A reward after every try is the quickest way to teach a new act.",
+                "sourceRefs": [
+                  "operant"
+                ]
+              },
+              {
+                "id": "variable-rewards-m6",
+                "name": "Steady rewards last longer",
+                "correction": "Responses learned with uneven rewards are slower to fade when rewards stop.",
                 "sourceRefs": [
                   "operant"
                 ]
@@ -1361,9 +1424,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Yes, stars are variable.",
+                        "text": "Yes, as it does not come each time.",
                         "correct": false,
-                        "feedback": "Here the star always comes every third time. That is fixed."
+                        "feedback": "Not every time is not the same as variable. You know it comes every third time, so it is fixed."
                       },
                       {
                         "id": "c",
@@ -1530,16 +1593,88 @@
                       },
                       {
                         "id": "c",
-                        "text": "The app forces him.",
+                        "text": "Weak will; he cannot stop himself.",
                         "correct": false,
-                        "feedback": "Nothing forces him. He opens it to keep up with the match."
+                        "feedback": "It is not about weak will. He wants the latest score, one of many reasons we open apps."
                       }
                     ]
                   }
                 ],
                 "takeaway": "Uneven rewards are one pull, not the whole story."
               }
-            ]
+            ],
+            "chiku": {
+              "ask": "At an arcade, Sam, 18, keeps trying a prize box that pays after a changing number of tries. Why keep trying? Give me one card.",
+              "cards": [
+                {
+                  "text": "The next prize is uncertain",
+                  "correct": true
+                },
+                {
+                  "text": "It all comes down to willpower",
+                  "misconceptionId": "variable-rewards-m3"
+                },
+                {
+                  "text": "Steady prizes last longer",
+                  "misconceptionId": "variable-rewards-m6"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: Sam is rested and calm. His first three tries win nothing, and the next prize has no set turn.",
+                "prop": "coin",
+                "question": "Will he try the box again?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says he never knows which try will pay. That keeps tries going after empty ones.",
+                  "act": "pay"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says it comes down to willpower. He is rested today, so he stops.",
+                  "act": "walk-away"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says uneven prizes fade faster than steady ones. Three empty tries end it.",
+                  "act": "walk-away"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Sam put in another coin after the three empty tries.",
+                "act": "pay"
+              },
+              "claimIds": [
+                "variable-rewards-c1",
+                "variable-rewards-c3"
+              ]
+            },
+            "recall": {
+              "pieces": [
+                "Variable means",
+                "the reward comes,",
+                "but you cannot tell when."
+              ],
+              "decoys": [
+                {
+                  "text": "after every single try.",
+                  "slot": 2,
+                  "misconceptionId": "variable-rewards-m1",
+                  "fix": "A good result can come after dull ones, with no set gap."
+                },
+                {
+                  "text": "after every fifth try.",
+                  "slot": 2,
+                  "misconceptionId": "variable-rewards-m4",
+                  "fix": "A reward after every fifth try is fixed; on a variable schedule, the number of tries keeps changing."
+                }
+              ],
+              "claimIds": [
+                "variable-rewards-c3"
+              ]
+            }
           },
           {
             "id": "sleep-memory",
@@ -1601,7 +1736,9 @@
                 "step": "sleep-memory-s1",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-memory-m4"
+                ],
                 "sourceRefs": [
                   "sleep-review"
                 ],
@@ -1618,11 +1755,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "It firmed up, then she learned it.",
+                    "text": "She learned it and it became firm at once.",
                     "correct": false,
-                    "feedback": "A memory has to exist before it can firm up, so learning comes first.",
+                    "feedback": "A new memory gets firm over time, after you learn it. So she learned it first, then it set.",
                     "sourceRefs": [
                       "sleep-review"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-memory-m4"
                     ]
                   },
                   {
@@ -1647,7 +1787,9 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "sleep-memory-m1"
+                  "sleep-memory-m1",
+                  "sleep-memory-m3",
+                  "sleep-memory-m4"
                 ],
                 "sourceRefs": [
                   "sleep-review"
@@ -1661,6 +1803,9 @@
                     "feedback": "Late cramming leaves little time and sleep for new memories to firm up.",
                     "sourceRefs": [
                       "sleep-review"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-memory-m3"
                     ]
                   },
                   {
@@ -1679,6 +1824,9 @@
                     "feedback": "The memory firms up over time after you learn, not at the very moment you read.",
                     "sourceRefs": [
                       "sleep-review"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-memory-m4"
                     ]
                   }
                 ]
@@ -1897,7 +2045,9 @@
                 "step": "sleep-memory-s3",
                 "job": "recall",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "sleep-memory-m5"
+                ],
                 "sourceRefs": [
                   "sleep-rest"
                 ],
@@ -1910,6 +2060,9 @@
                     "feedback": "Reels are a busy task. Quiet rest with nothing to do is what helped.",
                     "sourceRefs": [
                       "sleep-rest"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-memory-m5"
                     ]
                   },
                   {
@@ -1919,6 +2072,9 @@
                     "feedback": "Quiet breaks after learning helped memory in studies, so they do not undo it.",
                     "sourceRefs": [
                       "sleep-rest"
+                    ],
+                    "misconceptionIds": [
+                      "sleep-memory-m5"
                     ]
                   },
                   {
@@ -1949,6 +2105,30 @@
                 "correction": "Sleep can help store what was learned, but it does not supply an unread lesson.",
                 "sourceRefs": [
                   "sleep-review",
+                  "sleep-rest"
+                ]
+              },
+              {
+                "id": "sleep-memory-m3",
+                "name": "Staying up beats sleeping after study",
+                "correction": "Sleep after learning reduced forgetting compared with the same length of time awake.",
+                "sourceRefs": [
+                  "sleep-review"
+                ]
+              },
+              {
+                "id": "sleep-memory-m4",
+                "name": "Memories firm up at once",
+                "correction": "A new memory firms up over time after learning.",
+                "sourceRefs": [
+                  "sleep-review"
+                ]
+              },
+              {
+                "id": "sleep-memory-m5",
+                "name": "Busy breaks aid memory",
+                "correction": "Quiet rest after learning helped memory more than spending that time on other tasks.",
+                "sourceRefs": [
                   "sleep-rest"
                 ]
               }
@@ -2296,7 +2476,79 @@
                 ],
                 "takeaway": "Sleep helps memory, and so can quiet rest while awake."
               }
-            ]
+            ],
+            "chiku": {
+              "ask": "After learning new words, Inez, 23, puts her book away and rests before a quiz. Why rest? Give me one card.",
+              "cards": [
+                {
+                  "text": "Rest helps keep new learning",
+                  "correct": true
+                },
+                {
+                  "text": "Staying up works better",
+                  "misconceptionId": "sleep-memory-m3"
+                },
+                {
+                  "text": "Busy breaks help more",
+                  "misconceptionId": "sleep-memory-m5"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: Inez learns another word list, then can sleep or do chores until the quiz.",
+                "prop": "bed",
+                "question": "Will she sleep after studying?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says rest helps keep new learning. Sleep after learning can cut forgetting.",
+                  "act": "sleep"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says staying up works better. She stays awake.",
+                  "act": "wake"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says busy breaks help more. She does chores instead.",
+                  "act": "wake"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Inez slept after studying, then took the quiz.",
+                "act": "sleep"
+              },
+              "claimIds": [
+                "sleep-memory-c1",
+                "sleep-memory-c2"
+              ]
+            },
+            "recall": {
+              "pieces": [
+                "Learn first;",
+                "the memory",
+                "firms up later."
+              ],
+              "decoys": [
+                {
+                  "text": "Let sleep do the learning;",
+                  "slot": 0,
+                  "misconceptionId": "sleep-memory-m2",
+                  "fix": "Sleep can help store what was learned, but it does not supply an unread lesson."
+                },
+                {
+                  "text": "firms up at once.",
+                  "slot": 2,
+                  "misconceptionId": "sleep-memory-m4",
+                  "fix": "A new memory firms up over time after learning."
+                }
+              ],
+              "claimIds": [
+                "sleep-memory-c3"
+              ]
+            }
           }
         ]
       },
@@ -2353,7 +2605,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "loss-aversion-m1"
+                  "loss-aversion-m1",
+                  "loss-aversion-m3"
                 ],
                 "sourceRefs": [
                   "prospect"
@@ -2371,11 +2624,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "The new match is sure to be worse.",
+                    "text": "His starting ticket cannot shape how the swap feels.",
                     "correct": false,
-                    "feedback": "He would enjoy both just as much. What holds him back is how a possible loss feels, not the match.",
+                    "feedback": "Choices are judged from a start point. His ticket makes a possible loss feel weightier.",
                     "sourceRefs": [
                       "prospect"
+                    ],
+                    "misconceptionIds": [
+                      "loss-aversion-m3"
                     ]
                   },
                   {
@@ -2400,7 +2656,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "loss-aversion-m2"
+                  "loss-aversion-m2",
+                  "loss-aversion-m1"
                 ],
                 "sourceRefs": [
                   "prospect"
@@ -2409,11 +2666,14 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "Big stakes make the fifty-fifty odds unfair to the player.",
+                    "text": "The gain and loss feel equal at both stakes.",
                     "correct": false,
-                    "feedback": "The odds stay fifty-fifty. It is the size of the possible loss that changes.",
+                    "feedback": "A loss tends to weigh more than an equal gain. That can matter more as the stake grows.",
                     "sourceRefs": [
                       "prospect"
+                    ],
+                    "misconceptionIds": [
+                      "loss-aversion-m1"
                     ]
                   },
                   {
@@ -2427,11 +2687,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "People enjoy losing small sums.",
+                    "text": "The loss weighs twice as much for each person at either stake.",
                     "correct": false,
-                    "feedback": "Nobody needs to enjoy losing. A small loss simply weighs less than a big one.",
+                    "feedback": "Twice was an average across studies, not a fixed feeling for each person. Larger possible losses can deter more people.",
                     "sourceRefs": [
                       "prospect"
+                    ],
+                    "misconceptionIds": [
+                      "loss-aversion-m2"
                     ]
                   }
                 ]
@@ -2595,7 +2858,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "loss-aversion-m2"
+                  "loss-aversion-m2",
+                  "loss-aversion-m4"
                 ],
                 "sourceRefs": [
                   "loss-meta"
@@ -2621,6 +2885,9 @@
                     "feedback": "Some found less and some more. The average still came out near two.",
                     "sourceRefs": [
                       "loss-meta"
+                    ],
+                    "misconceptionIds": [
+                      "loss-aversion-m4"
                     ]
                   },
                   {
@@ -2658,6 +2925,14 @@
                 "correction": "The same result can feel like a gain or a loss, depending on the start point it is framed from.",
                 "sourceRefs": [
                   "prospect"
+                ]
+              },
+              {
+                "id": "loss-aversion-m4",
+                "name": "One differing study disproves the average",
+                "correction": "Some studies found less and some found more, while the pooled average was about twice a gain.",
+                "sourceRefs": [
+                  "loss-meta"
                 ]
               }
             ],
@@ -2810,9 +3085,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "Yes, as gains count for more.",
+                        "text": "Yes, winning 5 and losing 5 feel the same.",
                         "correct": false,
-                        "feedback": "It runs the other way. A loss of one size usually counts for more than the same gain."
+                        "feedback": "On paper they are equal, but in choices a loss usually counts for more."
                       }
                     ]
                   }
@@ -3115,7 +3390,8 @@
                 "job": "transfer",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "anchoring-m1"
+                  "anchoring-m1",
+                  "anchoring-m2"
                 ],
                 "sourceRefs": [
                   "philosophy",
@@ -3154,6 +3430,9 @@
                     "sourceRefs": [
                       "philosophy",
                       "tversky"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m2"
                     ]
                   }
                 ]
@@ -3165,7 +3444,9 @@
                 "step": "anchoring-s1",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "anchoring-m5"
+                ],
                 "sourceRefs": [
                   "philosophy",
                   "tversky"
@@ -3184,12 +3465,15 @@
                   },
                   {
                     "id": "b",
-                    "text": "A price of ₹700 itself, the same as his guess.",
+                    "text": "The tag was ₹700, so his guess had to be ₹700.",
                     "correct": false,
-                    "feedback": "He moved down a little from the tag, so it was above ₹700, not equal to it.",
+                    "feedback": "An anchor can pull a guess without fixing it. He came down a little, so the tag was higher.",
                     "sourceRefs": [
                       "philosophy",
                       "tversky"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m5"
                     ]
                   },
                   {
@@ -3212,7 +3496,8 @@
                 "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "anchoring-m2"
+                  "anchoring-m2",
+                  "anchoring-m5"
                 ],
                 "sourceRefs": [
                   "philosophy"
@@ -3235,6 +3520,9 @@
                     "feedback": "People adjusted away from 65, just not far enough, so the guess was lower.",
                     "sourceRefs": [
                       "philosophy"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m5"
                     ]
                   },
                   {
@@ -3244,6 +3532,9 @@
                     "feedback": "That was the guess after the low number. The high number pulled guesses up.",
                     "sourceRefs": [
                       "philosophy"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m2"
                     ]
                   }
                 ],
@@ -3262,7 +3553,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "anchoring-m3"
+                  "anchoring-m3",
+                  "anchoring-m2"
                 ],
                 "sourceRefs": [
                   "judges"
@@ -3283,11 +3575,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Yes, as long as the buyer is honest.",
+                    "text": "Yes; a random first price cannot sway his guess.",
                     "correct": false,
-                    "feedback": "Honesty is not the issue. A random first number can pull anyone's guess.",
+                    "feedback": "Even a number known to be random can pull a guess. Experience did not remove that effect in the judge study.",
                     "sourceRefs": [
                       "judges"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m2"
                     ]
                   },
                   {
@@ -3309,7 +3604,8 @@
                 "job": "combine",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "anchoring-m1"
+                  "anchoring-m1",
+                  "anchoring-m2"
                 ],
                 "sourceRefs": [
                   "opposite"
@@ -3327,20 +3623,26 @@
                   },
                   {
                     "id": "b",
-                    "text": "Om, who keeps saying the ₹4,000 to himself.",
+                    "text": "Om, who treats the first price as the bat's fair value.",
                     "correct": false,
-                    "feedback": "Repeating the number keeps it in mind, so its pull stays strong.",
+                    "feedback": "A first price is a starting point, not proof of fair value. Listing reasons against it can shrink its pull.",
                     "sourceRefs": [
                       "opposite"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m1"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "Ira, who waits for the seller to name a new price.",
+                    "text": "Ira, who assumes a random opening price cannot sway her.",
                     "correct": false,
-                    "feedback": "Waiting lets the seller set the next number too, so the pull stays.",
+                    "feedback": "Even a random first number can pull a later guess. Reasons against the price can reduce that pull.",
                     "sourceRefs": [
                       "opposite"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m2"
                     ]
                   }
                 ]
@@ -3353,7 +3655,8 @@
                 "job": "misconception",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "anchoring-m4"
+                  "anchoring-m4",
+                  "anchoring-m2"
                 ],
                 "sourceRefs": [
                   "opposite"
@@ -3383,11 +3686,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "It works by making the first number bigger and easier to see.",
+                    "text": "It works because a random first number has no pull.",
                     "correct": false,
-                    "feedback": "The trick does not change the number. It brings reasons against it to mind.",
+                    "feedback": "A random number can still pull a guess. Listing reasons against it makes the pull smaller.",
                     "sourceRefs": [
                       "opposite"
+                    ],
+                    "misconceptionIds": [
+                      "anchoring-m2"
                     ]
                   }
                 ]
@@ -3425,6 +3731,15 @@
                 "correction": "Listing reasons against an anchor shrinks its pull; it does not remove it.",
                 "sourceRefs": [
                   "opposite"
+                ]
+              },
+              {
+                "id": "anchoring-m5",
+                "name": "An anchor fixes the answer",
+                "correction": "A first number pulls a guess toward it, but the guess can differ from that number.",
+                "sourceRefs": [
+                  "tversky",
+                  "philosophy"
                 ]
               }
             ],
@@ -3576,9 +3891,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "Its shoes must be better made.",
+                        "text": "The old price shows what they are worth.",
                         "correct": false,
-                        "feedback": "The shoes are the same. Only the tag differs, and its old price is what pulls on the buyer."
+                        "feedback": "The old price is a starting point, not proof of value. Both shops charge ₹1,500."
                       },
                       {
                         "id": "c",
@@ -3804,6 +4119,30 @@
                 "anchoring-c2",
                 "anchoring-c4"
               ]
+            },
+            "recall": {
+              "pieces": [
+                "Even a random number can",
+                "tug your guess",
+                "toward it."
+              ],
+              "decoys": [
+                {
+                  "text": "exactly onto it.",
+                  "slot": 2,
+                  "misconceptionId": "anchoring-m5",
+                  "fix": "A first number pulls a guess toward it, but the guess can differ from that number."
+                },
+                {
+                  "text": "A random number can never",
+                  "slot": 0,
+                  "misconceptionId": "anchoring-m2",
+                  "fix": "Even a number known to be random can sway a later guess."
+                }
+              ],
+              "claimIds": [
+                "anchoring-c2"
+              ]
             }
           },
           {
@@ -3861,7 +4200,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "confirmation-bias-m1"
+                  "confirmation-bias-m1",
+                  "confirmation-bias-m4"
                 ],
                 "sourceRefs": [
                   "bias"
@@ -3875,15 +4215,21 @@
                     "feedback": "A fair mix would need him to count both sides, which a strong belief makes hard.",
                     "sourceRefs": [
                       "bias"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m4"
                     ]
                   },
                   {
                     "id": "b",
-                    "text": "The meals from last term.",
+                    "text": "He will give good and bad meals the same weight.",
                     "correct": false,
-                    "feedback": "His belief is about this term, so he will dwell on recent bad meals.",
+                    "feedback": "People tend to notice evidence that fits their view. Kabir is more likely to discuss this term's bad meals.",
                     "sourceRefs": [
                       "bias"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m4"
                     ]
                   },
                   {
@@ -4054,7 +4400,8 @@
                 "difficultySeed": 3,
                 "misconceptionTags": [
                   "confirmation-bias-m1",
-                  "confirmation-bias-m3"
+                  "confirmation-bias-m3",
+                  "confirmation-bias-m4"
                 ],
                 "sourceRefs": [
                   "bias",
@@ -4080,16 +4427,22 @@
                     "sourceRefs": [
                       "bias",
                       "wason-246"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m4"
                     ]
                   },
                   {
                     "id": "c",
-                    "text": "He has checked both sides already.",
+                    "text": "His slow payments prove the app is slow each evening.",
                     "correct": false,
-                    "feedback": "He never tried a morning payment, so he has looked at only one side.",
+                    "feedback": "Fitting cases do not settle the claim. He needs a case that could show his view is wrong.",
                     "sourceRefs": [
                       "bias",
                       "wason-246"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m1"
                     ]
                   }
                 ]
@@ -4170,6 +4523,9 @@
                     "feedback": "They do count. One just is not enough against a claim that says usually.",
                     "sourceRefs": [
                       "wason"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m2"
                     ]
                   },
                   {
@@ -4179,6 +4535,9 @@
                     "feedback": "Exceptions are strong tests for always claims. This claim only says usually.",
                     "sourceRefs": [
                       "wason"
+                    ],
+                    "misconceptionIds": [
+                      "confirmation-bias-m2"
                     ]
                   },
                   {
@@ -4218,6 +4577,14 @@
                 "correction": "Cases that fit a guess can also fit other rules, so they prove little.",
                 "sourceRefs": [
                   "wason-246"
+                ]
+              },
+              {
+                "id": "confirmation-bias-m4",
+                "name": "Beliefs leave evidence balanced",
+                "correction": "We tend to see the clues that fit what we think, and miss the ones that do not.",
+                "sourceRefs": [
+                  "bias"
                 ]
               }
             ],
@@ -4369,9 +4736,9 @@
                       },
                       {
                         "id": "b",
-                        "text": "More wins in white.",
+                        "text": "Wins in white from more seasons.",
                         "correct": false,
-                        "feedback": "More wins would only add to the side she already counts."
+                        "feedback": "More wins only add to the side she counts. The white-jersey losses could test her idea."
                       },
                       {
                         "id": "c",
@@ -4782,7 +5149,8 @@
                 "job": "recall",
                 "difficultySeed": 2,
                 "misconceptionTags": [
-                  "social-proof-m2"
+                  "social-proof-m2",
+                  "social-proof-m4"
                 ],
                 "sourceRefs": [
                   "asch-original"
@@ -4817,6 +5185,9 @@
                     "feedback": "Most answers stayed right. About a third went along, and about a quarter of people never gave in.",
                     "sourceRefs": [
                       "asch-original"
+                    ],
+                    "misconceptionIds": [
+                      "social-proof-m4"
                     ]
                   }
                 ],
@@ -4835,7 +5206,8 @@
                 "job": "edge",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "social-proof-m2"
+                  "social-proof-m2",
+                  "social-proof-m5"
                 ],
                 "sourceRefs": [
                   "asch-original"
@@ -4870,6 +5242,9 @@
                     "feedback": "Asch's lines were easy too. The effect is about some answers, not everyone.",
                     "sourceRefs": [
                       "asch-original"
+                    ],
+                    "misconceptionIds": [
+                      "social-proof-m5"
                     ]
                   }
                 ]
@@ -5009,11 +5384,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Likes on videos are mostly fake, so they carry no weight.",
+                    "text": "Real likes prove the health tip is right.",
                     "correct": false,
-                    "feedback": "Some may be real. Real or not, likes cannot prove a tip is true.",
+                    "feedback": "Even genuine agreement is a clue, not proof. The tip does not become true because many people liked it.",
                     "sourceRefs": [
                       "asch"
+                    ],
+                    "misconceptionIds": [
+                      "social-proof-m1"
                     ]
                   }
                 ]
@@ -5042,6 +5420,23 @@
                 "correction": "Anyone can take a crowd's choice as a clue; it is not a sign of a weak person.",
                 "sourceRefs": [
                   "asch"
+                ]
+              },
+              {
+                "id": "social-proof-m4",
+                "name": "Everyone follows the crowd",
+                "correction": "People differed in Asch's test; about a quarter never followed the wrong group.",
+                "sourceRefs": [
+                  "asch-original"
+                ]
+              },
+              {
+                "id": "social-proof-m5",
+                "name": "Easy tasks resist social pressure",
+                "correction": "Some people followed a wrong group even when the right answer was plain.",
+                "sourceRefs": [
+                  "asch",
+                  "asch-original"
                 ]
               }
             ],
@@ -5357,9 +5752,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "That 42 is wrong.",
+                        "text": "That 42 is checked, since they agree.",
                         "correct": false,
-                        "feedback": "It may be right or wrong. Agreement alone does not tell us."
+                        "feedback": "Agreement is not a check. No one worked it out."
                       }
                     ]
                   }
@@ -5367,6 +5762,54 @@
                 "takeaway": "Many people agreeing is a clue, not proof."
               }
             ],
+            "chiku": {
+              "ask": "Eva, 19, sees her friends all point to platform 2. What does a whole group agreeing tell her? Give me one card.",
+              "cards": [
+                {
+                  "text": "A clue, but not proof",
+                  "correct": true
+                },
+                {
+                  "text": "Proof that it is right",
+                  "misconceptionId": "social-proof-m1"
+                },
+                {
+                  "text": "Something everyone follows",
+                  "misconceptionId": "social-proof-m4"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: The sign clearly says platform 3, but a group of strangers points to platform 2.",
+                "prop": "crowd",
+                "question": "Will Eva walk to platform 3?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says a group is a clue, not proof. The clear sign says 3.",
+                  "act": "walk-away"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says the group proves it. She goes with platform 2.",
+                  "act": "skip"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says everyone follows the crowd. So Eva does too.",
+                  "act": "skip"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Eva read the sign and walked to platform 3.",
+                "act": "walk-away"
+              },
+              "claimIds": [
+                "social-proof-c4",
+                "social-proof-c5"
+              ]
+            },
             "recall": {
               "pieces": [
                 "What a crowd picks",
@@ -5454,7 +5897,8 @@
                 "job": "transfer",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "spotlight-effect-m1"
+                  "spotlight-effect-m1",
+                  "spotlight-effect-m3"
                 ],
                 "sourceRefs": [
                   "spotlight-paper"
@@ -5480,6 +5924,9 @@
                     "feedback": "A viva is marked on answers. And few will even recall the pimple.",
                     "sourceRefs": [
                       "spotlight-paper"
+                    ],
+                    "misconceptionIds": [
+                      "spotlight-effect-m3"
                     ]
                   },
                   {
@@ -5551,7 +5998,8 @@
                 "job": "misconception",
                 "difficultySeed": 3,
                 "misconceptionTags": [
-                  "spotlight-effect-m1"
+                  "spotlight-effect-m1",
+                  "spotlight-effect-m2"
                 ],
                 "sourceRefs": [
                   "spotlight-paper"
@@ -5581,11 +6029,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Online classes hide frozen screens from view.",
+                    "text": "No classmate saw it, so her worry has no basis.",
                     "correct": false,
-                    "feedback": "Some classmates may have seen it. The slip is guessing that all of them did, because it felt so big.",
+                    "feedback": "Some of the class may have seen it. She lived it up close, so she thinks more people saw it than did.",
                     "sourceRefs": [
                       "spotlight-paper"
+                    ],
+                    "misconceptionIds": [
+                      "spotlight-effect-m2"
                     ]
                   }
                 ]
@@ -5633,6 +6084,9 @@
                     "feedback": "Others noticed both good and bad remarks less than speakers thought.",
                     "sourceRefs": [
                       "spotlight-paper"
+                    ],
+                    "misconceptionIds": [
+                      "spotlight-effect-m4"
                     ]
                   }
                 ]
@@ -5645,7 +6099,8 @@
                 "job": "recall",
                 "difficultySeed": 1,
                 "misconceptionTags": [
-                  "spotlight-effect-m3"
+                  "spotlight-effect-m3",
+                  "spotlight-effect-m2"
                 ],
                 "sourceRefs": [
                   "harsh"
@@ -5666,11 +6121,14 @@
                   },
                   {
                     "id": "b",
-                    "text": "Onlookers judged the slips without any thought.",
+                    "text": "No onlooker took note of the slips.",
                     "correct": false,
-                    "feedback": "Onlookers did think. They weighed the whole situation, which softened their view.",
+                    "feedback": "Some people can notice a slip. The studies found that feared judgment was harsher than the judgment received.",
                     "sourceRefs": [
                       "harsh"
+                    ],
+                    "misconceptionIds": [
+                      "spotlight-effect-m2"
                     ]
                   },
                   {
@@ -5725,12 +6183,15 @@
                   },
                   {
                     "id": "c",
-                    "text": "how heavy the tray was",
+                    "text": "other students judging him harshly despite the wet floor",
                     "correct": false,
-                    "feedback": "The tray's weight explains nothing about his fears. He lived the slip up close and forgot the wet floor.",
+                    "feedback": "People can judge a slip more kindly than expected and take context into account. He is dwelling on the mishap.",
                     "sourceRefs": [
                       "harsh",
                       "spotlight-paper"
+                    ],
+                    "misconceptionIds": [
+                      "spotlight-effect-m3"
                     ]
                   }
                 ]
@@ -5919,9 +6380,9 @@
                       },
                       {
                         "id": "c",
-                        "text": "No one could hear it.",
+                        "text": "Nobody noticed, so she can forget it.",
                         "correct": false,
-                        "feedback": "Some may hear it. The point is she guesses too many will remember."
+                        "feedback": "Some may notice. The point is she guesses too many will remember."
                       }
                     ]
                   }
@@ -6269,6 +6730,9 @@
                     "feedback": "That is possible, but guesses for our own tasks tend to fall short.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
                     ]
                   }
                 ]
@@ -6280,7 +6744,9 @@
                 "step": "planning-fallacy-s1",
                 "job": "edge",
                 "difficultySeed": 3,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "planning-fallacy-m5"
+                ],
                 "sourceRefs": [
                   "planning"
                 ],
@@ -6293,6 +6759,9 @@
                     "feedback": "When people guess for others, they tend to guess long and lean on past cases.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m5"
                     ]
                   },
                   {
@@ -6381,7 +6850,10 @@
                 "step": "planning-fallacy-s2",
                 "job": "reverse",
                 "difficultySeed": 1,
-                "misconceptionTags": [],
+                "misconceptionTags": [
+                  "planning-fallacy-m1",
+                  "planning-fallacy-m3"
+                ],
                 "sourceRefs": [
                   "planning"
                 ],
@@ -6389,11 +6861,14 @@
                 "options": [
                   {
                     "id": "a",
-                    "text": "The main building work itself.",
+                    "text": "no step, since a smooth path is the normal one",
                     "correct": false,
-                    "feedback": "She surely planned the main work. It is the extra steps that get left out.",
+                    "feedback": "A smooth plan can miss snags and side jobs. Those extra steps help explain the longer finish.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m1"
                     ]
                   },
                   {
@@ -6403,6 +6878,9 @@
                     "feedback": "Slow work is possible, but plans usually miss delays and extra steps.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m3"
                     ]
                   },
                   {
@@ -6491,6 +6969,9 @@
                     "feedback": "Jams do take time. The trouble is treating them as if they will not happen again.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m3"
                     ]
                   },
                   {
@@ -6504,11 +6985,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "One-off delays come back every time.",
+                    "text": "The printer jam was a fluke, so past delays add no time.",
                     "correct": false,
-                    "feedback": "Not every delay repeats. But some delay usually turns up, so it belongs in the guess.",
+                    "feedback": "Dismissing past delays keeps them out of the next plan. Some delay can still make the guess short.",
                     "sourceRefs": [
                       "planning"
+                    ],
+                    "misconceptionIds": [
+                      "planning-fallacy-m3"
                     ]
                   }
                 ]
@@ -6543,6 +7027,14 @@
                 "id": "planning-fallacy-m4",
                 "name": "Only careless people guess short",
                 "correction": "Short guesses for our own tasks are common, even for careful planners.",
+                "sourceRefs": [
+                  "planning"
+                ]
+              },
+              {
+                "id": "planning-fallacy-m5",
+                "name": "Others' tasks take less time",
+                "correction": "People in the study guessed longer times for others' tasks and used past cases more.",
                 "sourceRefs": [
                   "planning"
                 ]
@@ -7034,6 +7526,9 @@
                     "feedback": "Missing home is a vague moment, and thinking is not a clear action.",
                     "sourceRefs": [
                       "plan-meta"
+                    ],
+                    "misconceptionIds": [
+                      "if-then-plans-m1"
                     ]
                   }
                 ]
@@ -7118,11 +7613,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "Revise for twice as long that night.",
+                    "text": "Use the quiet hour too, since a named cue cannot hide other chances.",
                     "correct": false,
-                    "feedback": "Nothing in the plan doubles the time. The risk is missing the earlier chance.",
+                    "feedback": "Focus on one cue can make other chances easier to miss. She may pass over the quiet hour.",
                     "sourceRefs": [
                       "plan-study"
+                    ],
+                    "misconceptionIds": [
+                      "if-then-plans-m3"
                     ]
                   }
                 ]
@@ -7263,11 +7761,14 @@
                   },
                   {
                     "id": "c",
-                    "text": "The plan works for top students alone.",
+                    "text": "A clear cue makes that top result certain for students.",
                     "correct": false,
-                    "feedback": "Nothing limits it to top students. The issue is the promise of a result.",
+                    "feedback": "If-then plans help on average. They cannot guarantee that result.",
                     "sourceRefs": [
                       "plan-meta"
+                    ],
+                    "misconceptionIds": [
+                      "if-then-plans-m2"
                     ]
                   }
                 ]
