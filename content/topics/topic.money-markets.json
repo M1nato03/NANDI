@@ -1543,7 +1543,31 @@
                 ],
                 "takeaway": "A SIP fixes what you put in, not what you get back."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "Gains you leave in",
+                "start to earn",
+                "gains too."
+              ],
+              "decoys": [
+                {
+                  "text": "Only the sums you put in",
+                  "slot": 0,
+                  "misconceptionId": "compounding-m1",
+                  "fix": "When gains stay in the pot, later gains can build on them too."
+                },
+                {
+                  "text": "nothing of their own.",
+                  "slot": 2,
+                  "misconceptionId": "compounding-m4",
+                  "fix": "Compound growth includes gains on past gains as well as on the starting amount."
+                }
+              ],
+              "claimIds": [
+                "compounding-c1"
+              ]
+            }
           },
           {
             "id": "loan-emi",
@@ -2243,7 +2267,31 @@
                 ],
                 "takeaway": "A longer loan lowers each EMI but raises the total interest."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "A longer loan",
+                "lowers each EMI",
+                "but raises the total interest."
+              ],
+              "decoys": [
+                {
+                  "text": "and cuts the total interest.",
+                  "slot": 2,
+                  "misconceptionId": "loan-emi-m2",
+                  "fix": "A longer term can lower each payment but raise total interest."
+                },
+                {
+                  "text": "but raises the interest rate.",
+                  "slot": 2,
+                  "misconceptionId": "loan-emi-m4",
+                  "fix": "A longer term can raise total interest even when the loan rate stays fixed."
+                }
+              ],
+              "claimIds": [
+                "loan-emi-c3"
+              ]
+            }
           }
         ]
       },
@@ -7595,7 +7643,31 @@
                 ],
                 "takeaway": "Act fast: bank, then 1930. Report scam calls and texts on Chakshu."
               }
-            ]
+            ],
+            "recall": {
+              "pieces": [
+                "Your PIN approves payments.",
+                "Receiving money",
+                "never needs it."
+              ],
+              "decoys": [
+                {
+                  "text": "always needs it.",
+                  "slot": 2,
+                  "misconceptionId": "upi-scams-m1",
+                  "fix": "To get money, a person need not key in a UPI PIN."
+                },
+                {
+                  "text": "requires a QR scan and PIN.",
+                  "slot": 2,
+                  "misconceptionId": "upi-scams-m5",
+                  "fix": "A QR scan and UPI PIN can make a payment; getting money needs neither."
+                }
+              ],
+              "claimIds": [
+                "upi-scams-c3"
+              ]
+            }
           }
         ]
       }

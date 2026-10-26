@@ -1602,7 +1602,79 @@
                 ],
                 "takeaway": "Uneven rewards are one pull, not the whole story."
               }
-            ]
+            ],
+            "chiku": {
+              "ask": "At an arcade, Sam, 18, keeps trying a prize box that pays after a changing number of tries. Why keep trying? Give me one card.",
+              "cards": [
+                {
+                  "text": "The next prize is uncertain",
+                  "correct": true
+                },
+                {
+                  "text": "It all comes down to willpower",
+                  "misconceptionId": "variable-rewards-m3"
+                },
+                {
+                  "text": "Steady prizes last longer",
+                  "misconceptionId": "variable-rewards-m6"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: Sam is rested and calm. His first three tries win nothing, and the next prize has no set turn.",
+                "prop": "coin",
+                "question": "Will he try the box again?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says he never knows which try will pay. That keeps tries going after empty ones.",
+                  "act": "pay"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says it comes down to willpower. He is rested today, so he stops.",
+                  "act": "walk-away"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says uneven prizes fade faster than steady ones. Three empty tries end it.",
+                  "act": "walk-away"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Sam put in another coin after the three empty tries.",
+                "act": "pay"
+              },
+              "claimIds": [
+                "variable-rewards-c1",
+                "variable-rewards-c3"
+              ]
+            },
+            "recall": {
+              "pieces": [
+                "Variable means",
+                "the reward comes,",
+                "but you cannot tell when."
+              ],
+              "decoys": [
+                {
+                  "text": "after every single try.",
+                  "slot": 2,
+                  "misconceptionId": "variable-rewards-m1",
+                  "fix": "A good result can come after dull ones, with no set gap."
+                },
+                {
+                  "text": "after every fifth try.",
+                  "slot": 2,
+                  "misconceptionId": "variable-rewards-m4",
+                  "fix": "A reward after every fifth try is fixed; on a variable schedule, the number of tries keeps changing."
+                }
+              ],
+              "claimIds": [
+                "variable-rewards-c3"
+              ]
+            }
           },
           {
             "id": "sleep-memory",
@@ -2404,7 +2476,79 @@
                 ],
                 "takeaway": "Sleep helps memory, and so can quiet rest while awake."
               }
-            ]
+            ],
+            "chiku": {
+              "ask": "After learning new words, Inez, 23, puts her book away and rests before a quiz. Why rest? Give me one card.",
+              "cards": [
+                {
+                  "text": "Rest helps keep new learning",
+                  "correct": true
+                },
+                {
+                  "text": "Staying up works better",
+                  "misconceptionId": "sleep-memory-m3"
+                },
+                {
+                  "text": "Busy breaks help more",
+                  "misconceptionId": "sleep-memory-m5"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: Inez learns another word list, then can sleep or do chores until the quiz.",
+                "prop": "bed",
+                "question": "Will she sleep after studying?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says rest helps keep new learning. Sleep after learning can cut forgetting.",
+                  "act": "sleep"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says staying up works better. She stays awake.",
+                  "act": "wake"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says busy breaks help more. She does chores instead.",
+                  "act": "wake"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Inez slept after studying, then took the quiz.",
+                "act": "sleep"
+              },
+              "claimIds": [
+                "sleep-memory-c1",
+                "sleep-memory-c2"
+              ]
+            },
+            "recall": {
+              "pieces": [
+                "Learn first;",
+                "the memory",
+                "firms up later."
+              ],
+              "decoys": [
+                {
+                  "text": "Let sleep do the learning;",
+                  "slot": 0,
+                  "misconceptionId": "sleep-memory-m2",
+                  "fix": "Sleep can help store what was learned, but it does not supply an unread lesson."
+                },
+                {
+                  "text": "firms up at once.",
+                  "slot": 2,
+                  "misconceptionId": "sleep-memory-m4",
+                  "fix": "A new memory firms up over time after learning."
+                }
+              ],
+              "claimIds": [
+                "sleep-memory-c3"
+              ]
+            }
           }
         ]
       },
@@ -3974,6 +4118,30 @@
                 "anchoring-c1",
                 "anchoring-c2",
                 "anchoring-c4"
+              ]
+            },
+            "recall": {
+              "pieces": [
+                "Even a random number can",
+                "tug your guess",
+                "toward it."
+              ],
+              "decoys": [
+                {
+                  "text": "exactly onto it.",
+                  "slot": 2,
+                  "misconceptionId": "anchoring-m5",
+                  "fix": "A first number pulls a guess toward it, but the guess can differ from that number."
+                },
+                {
+                  "text": "A random number can never",
+                  "slot": 0,
+                  "misconceptionId": "anchoring-m2",
+                  "fix": "Even a number known to be random can sway a later guess."
+                }
+              ],
+              "claimIds": [
+                "anchoring-c2"
               ]
             }
           },
@@ -5594,6 +5762,54 @@
                 "takeaway": "Many people agreeing is a clue, not proof."
               }
             ],
+            "chiku": {
+              "ask": "Eva, 19, sees her friends all point to platform 2. What does a whole group agreeing tell her? Give me one card.",
+              "cards": [
+                {
+                  "text": "A clue, but not proof",
+                  "correct": true
+                },
+                {
+                  "text": "Proof that it is right",
+                  "misconceptionId": "social-proof-m1"
+                },
+                {
+                  "text": "Something everyone follows",
+                  "misconceptionId": "social-proof-m4"
+                }
+              ],
+              "newDay": {
+                "caption": "New day: The sign clearly says platform 3, but a group of strangers points to platform 2.",
+                "prop": "crowd",
+                "question": "Will Eva walk to platform 3?"
+              },
+              "guesses": [
+                {
+                  "answer": "yes",
+                  "why": "Your card says a group is a clue, not proof. The clear sign says 3.",
+                  "act": "walk-away"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says the group proves it. She goes with platform 2.",
+                  "act": "skip"
+                },
+                {
+                  "answer": "no",
+                  "why": "Your card says everyone follows the crowd. So Eva does too.",
+                  "act": "skip"
+                }
+              ],
+              "truth": {
+                "answer": "yes",
+                "caption": "Eva read the sign and walked to platform 3.",
+                "act": "walk-away"
+              },
+              "claimIds": [
+                "social-proof-c4",
+                "social-proof-c5"
+              ]
+            },
             "recall": {
               "pieces": [
                 "What a crowd picks",
