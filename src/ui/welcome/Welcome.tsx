@@ -91,7 +91,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
     <div className="welcome-inner">
       <p className="welcome-steps" role="img" aria-label={`Step ${step + 1} of 3`}>{[0, 1, 2].map(index => <span key={index} className={index <= step ? 'on' : ''} />)}</p>
       {step === 0 && <>
-        <Cast name="Nandi" pose="cheer" size={120} title="Nandi saying hello" />
+        <Cast name="Nandi" pose="cheer" size={120} title="Nandi saying hello" moment="wave" at={1} />
         <h1>Hi, I'm Nandi.</h1>
         <p>Swap a little scrolling for things you'll be glad you did.</p>
         <p className="small">Your activity is saved on this phone. It leaves only when you back it up or share it.</p>
@@ -107,7 +107,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
         <div className="welcome-goals">{GOALS.map(item => <button type="button" key={item.id} className="welcome-goal" onClick={() => { setGoal(item.id); setStep(2); }}>{item.label}</button>)}</div>
       </>}
       {step === 2 && <>
-        <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" />
+        <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" moment="settle" at={1} breathe />
         <h1>When do you want to be asleep?</h1>
         <p>From this time, NANDI turns calm: no new lessons, just a gentle wind-down.</p>
         <label className="welcome-time">Bedtime<input type="time" required value={bedtime} onChange={event => setBedtime(event.target.value || WELCOME_BEDTIME)} /></label>

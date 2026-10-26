@@ -7,6 +7,8 @@
 .cast-kachhua { --cast-body: #82a24d; --cast-detail: #3f7b5c; }
 /* Characters keep their own colours in light and dark (a theme token would turn Nandi's face black at night). */
 .cast-pose-cheer { animation: cast-hop .6s ease-out 1 both; }
+/* Spec 31: when a moment plays, it is the only movement (no second hop from the cheer pose). */
+.cast-pose-cheer[class*='cast-m-'] { animation: none; }
 @keyframes cast-hop { 40% { transform: translateY(-6%); } 100% { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .cast-svg { animation: none !important; transition: none !important; transform: none !important; } }
 :root[data-motion='reduce'] .cast-svg { animation: none !important; transition: none !important; transform: none !important; }
@@ -14,7 +16,7 @@
 .cast-gallery-row { margin: 16px 0; }
 .cast-gallery-row h2 { margin: 0 0 8px; }
 .cast-gallery-poses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.cast-gallery-pose { display: grid; justify-items: center; gap: 3px; font-size: 12px; text-transform: capitalize; }
+.cast-gallery-pose { display: grid; justify-items: center; gap: 3px; min-height: 44px; padding: 4px 0; border: 0; border-radius: var(--radius-row); background: transparent; color: var(--ink); font: 400 12px 'DM Sans', sans-serif; text-transform: capitalize; }
 .cast-gallery-pose .cast-svg { max-width: 100%; }
 .cast-open { position: fixed; inset: 0; z-index: 40; width: 100%; height: 100%; border: 0; border-radius: 0; background: var(--bg); color: var(--ink); display: grid; place-items: center; padding: 0; }
 .cast-open-inner { display: grid; justify-items: center; gap: 8px; animation: cast-arrive 1.1s ease-out both; }
@@ -25,9 +27,35 @@
 .cast-unit-scene { position: fixed; z-index: 35; inset: 0; background: var(--bg); display: grid; place-items: center; padding: 20px; }
 .cast-unit-card { width: min(100%, 420px); text-align: center; }
 .cast-unit-friends { display: flex; align-items: end; justify-content: center; gap: 4px; max-width: 100%; }
-.cast-unit-friends .cast-svg { max-width: calc((100% - 20px) / 6); }
+.cast-unit-friends .cast-svg { max-width: 100%; }
+.cast-unit-friends > span { flex: 0 1 calc((100% - 20px) / 6); display: grid; }
+.cast-unit-friends > span .cast-move { animation-delay: calc(var(--i) * 80ms); }
 .cast-unit-card button { margin: 4px; }
 @media (prefers-reduced-motion: reduce) { .cast-unit-scene { display: none; } }
 :root[data-motion='reduce'] .cast-unit-scene { display: none; }
 body:has(.economy-toast) .screen .cast-svg, body:has(.economy-reveal) .screen .cast-svg, body:has(.cast-unit-scene) .screen .cast-svg { visibility: hidden; }
 .cast-unit-scene .cast-svg { visibility: visible !important; }
+/* Spec 31, living friends: short moments on the existing drawing. Transform and opacity only; at most 1.2 s, except
+   the breathe loop on a rest pose. Moments never take taps (the friend is never the button). */
+.cast-move, .cast-limb, .cast-eye { transform-box: fill-box; }
+.cast-move { transform-origin: 50% 100%; }
+.cast-eye { transform-origin: 50% 50%; }
+.cast-limb { transform-origin: 50% 0%; }
+.cast-svg { pointer-events: none; }
+.cast-m-blink .cast-eye { animation: cast-blink .25s ease-in-out 1; }
+.cast-m-nod > .cast-move { animation: cast-nod .5s ease-in-out 1; }
+.cast-m-hop > .cast-move { animation: cast-moment-hop .6s ease-out 1; }
+.cast-m-tilt > .cast-move { animation: cast-tilt .6s ease-in-out 1; }
+.cast-m-wave .cast-limb { animation: cast-wave .8s ease-in-out 1; }
+.cast-m-settle > .cast-move { animation: cast-settle .8s ease-out 1; }
+.cast-breathe > .cast-move { animation: cast-breathe 4s ease-in-out infinite; }
+.cast-m-settle.cast-breathe > .cast-move { animation: cast-settle .8s ease-out 1, cast-breathe 4s ease-in-out .8s infinite; }
+@keyframes cast-blink { 50% { transform: scaleY(.1); } }
+@keyframes cast-nod { 40% { transform: translateY(3px); } }
+@keyframes cast-moment-hop { 40% { transform: translateY(-8px); } 70% { transform: translateY(0); } 85% { transform: translateY(-2px); } }
+@keyframes cast-tilt { 30% { transform: rotate(-6deg); } 70% { transform: rotate(6deg); } }
+@keyframes cast-wave { 25% { transform: rotate(-24deg) translateY(-2px); } 50% { transform: rotate(-10deg) translateY(-2px); } 75% { transform: rotate(-24deg) translateY(-2px); } }
+@keyframes cast-settle { from { transform: translateY(-4px) scale(1.02); } }
+@keyframes cast-breathe { 50% { transform: scale(1.02); } }
+@media (prefers-reduced-motion: reduce) { .cast-svg *, .cast-svg { animation: none !important; } }
+:root[data-motion='reduce'] .cast-svg * { animation: none !important; }

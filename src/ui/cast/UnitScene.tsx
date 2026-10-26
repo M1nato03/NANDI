@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Cast, castNames } from './Cast';
 import { useModalFocus } from '../shell/useModalFocus';
 
@@ -12,7 +12,7 @@ export function UnitScene({ moduleId, close }: { moduleId: string; close: () => 
     return () => window.clearTimeout(timer);
   }, [close]);
   return <div ref={dialog} tabIndex={-1} className="cast-unit-scene" role="dialog" aria-modal="true" aria-label="Unit complete"><div className="cast-unit-card card">
-    <div className="cast-unit-friends">{castNames.map(name => <Cast key={name} name={name} pose="cheer" size={44} />)}</div>
+    <div className="cast-unit-friends">{castNames.map((name, index) => <span key={name} style={{ '--i': index } as CSSProperties}><Cast name={name} pose="cheer" size={44} moment="hop" at={1} /></span>)}</div>
     <h2>Unit complete</h2><p>Those ideas are yours to keep.</p><button type="button" onClick={close} data-module={moduleId}>Continue</button><button type="button" className="secondary" onClick={close}>Skip scene</button>
   </div></div>;
 }

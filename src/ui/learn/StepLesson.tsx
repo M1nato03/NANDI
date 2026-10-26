@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import type { StepVisual as StepVisualData, TopicStep } from '../../data/packs/schemas';
-import { Cast, type CastName } from '../cast/Cast';
+import { Cast, useFriendMoment, type CastName } from '../cast/Cast';
 import { tapHaptic } from '../../platform/haptics';
 import { revealSheet } from './revealSheet';
 import { seededShuffle } from '../../core/learn/engine/shuffle';
@@ -65,6 +65,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, more = 
   const ask = phase.kind === 'hook' ? 'Guess first' : phase.kind === 'teach' ? 'The idea' : phase.kind === 'show' ? step.example.ask : 'Pick the best answer';
   const eyebrow = phase.kind === 'guided' ? 'Try it' : phase.kind === 'show' ? 'Show me' : `New idea · ${conceptTitle}`;
   const pose = chosen ? (chosen.correct ? 'cheer' : 'think') : phase.kind === 'show' && picked ? (picked === step.example.spot ? 'cheer' : 'think') : 'idle';
+  const reaction = useFriendMoment(picked ?? null);
   const last = at === phases.length - 1;
   const root = useRef<HTMLDivElement>(null);
   // The sheet opens below the options; bring it into its own place so it never sits over the right answer.
@@ -74,7 +75,7 @@ export function StepLesson({ step, conceptTitle, friend, busy, progress, more = 
     {progress ? <div className="learn-progress" role="progressbar" aria-label={`Lesson part ${at + 1} of ${phases.length}`} aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.before + at}><span style={{ width: `${(progress.before + at) / progress.total * 100}%` }} /></div>
       : <ol className="step-dots" aria-label={`Lesson part ${at + 1} of ${phases.length}`}>{phases.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>}
     <div className="learn-q" key={at}>
-      <div className="learn-ask-row"><span className="learn-friend"><Cast name={friend} pose={pose} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span>
+      <div className="learn-ask-row"><span className="learn-friend"><Cast name={friend} pose={pose} moment={pose === 'cheer' ? 'nod' : pose === 'think' ? 'tilt' : undefined} at={reaction} size={72} title={`${friend} ${pose === 'cheer' ? 'cheering' : pose === 'think' ? 'thinking' : 'watching'}`} /></span>
         <div className="learn-ask-bubble"><p className="eyebrow">{eyebrow}</p><p className="learn-ask">{ask}</p></div></div>
       {phase.kind === 'teach' && <div className="step-teach"><h2>{step.title}</h2><p className="step-teach-text">{step.teach}</p><StepVisual visual={step.visual} /></div>}
       {phase.kind === 'show' && <>

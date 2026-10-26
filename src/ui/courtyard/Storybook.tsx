@@ -23,7 +23,7 @@ function Page({ page, facts, weekEnd, nightFrom }: { page: StoryPage; facts: Par
   </div>;
   if (page.kind === 'close') return <div className="story-page story-close"><CourtyardView state={deriveCourtyard(facts, weekEnd, undefined, nightFrom)} phase="evening" forcePose="idle" /><p>{page.text}</p></div>;
   return <div className="story-page">
-    <Cast name={page.friend!} pose={page.kind === 'quiet' || page.kind === 'soft' ? 'rest' : 'cheer'} size={120} title={`${page.friend} ${page.kind === 'quiet' || page.kind === 'soft' ? 'resting' : 'cheering'}`} />
+    <Cast name={page.friend!} pose={page.kind === 'quiet' || page.kind === 'soft' ? 'rest' : 'cheer'} size={120} title={`${page.friend} ${page.kind === 'quiet' || page.kind === 'soft' ? 'resting' : 'cheering'}`} key={page.text} moment={page.kind === 'quiet' || page.kind === 'soft' ? 'settle' : 'hop'} at={1} />
     <p className="story-text">{page.text}</p>
     {page.days != null && <div className="story-dots" aria-label={`${page.days} of 7 days`}>{Array.from({ length: 7 }, (_, index) => <span key={index} className={index < page.days! ? 'got' : ''} />)}</div>}
   </div>;
@@ -65,6 +65,6 @@ export function StorybookCard({ today }: { today: string }) {
   if (weekday !== 0 && weekday !== 1) return null;
   const week = weekday === 0 ? storyWeekStart(today) : recentWeeks(today, 2)[1]!;
   return <button type="button" className="card you-link storybook-card" onClick={() => go(storyRoute(week))}>
-    <span className="cast-inline"><Cast name="Mor" pose="cheer" size={40} /><strong>Your week as a story</strong></span><span>Six friends tell you what your week became</span>
+    <span className="cast-inline"><Cast name="Mor" pose="cheer" size={40} moment="wave" at={1} /><strong>Your week as a story</strong></span><span>Six friends tell you what your week became</span>
   </button>;
 }

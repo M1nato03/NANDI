@@ -37,7 +37,15 @@ export function useCourtyard() {
 
 export const stagesOf = (state: CourtyardState): Stages => Object.fromEntries(state.areas.map(area => [area.id, area.stage])) as Stages;
 
+const NOD_KEY = 'nandi.courtyard.nodded';
+/** Spec 31: true only on the first courtyard view of a day on this phone (a per-viewer nicety, so localStorage). */
+function firstViewToday(): boolean {
+  try { const day = dayKey(Date.now()); if (localStorage.getItem(NOD_KEY) === day) return false; localStorage.setItem(NOD_KEY, day); return true; } catch { return false; }
+}
+
 export function CourtyardView({ state, phase, onFriend, selected, forcePose }: { state: CourtyardState; phase: Phase; onFriend?: (id: AreaId) => void; selected?: AreaId; forcePose?: 'idle' }) {
+  const [taps, setTaps] = useState<Partial<Record<AreaId, number>>>({});
+  const [nod] = useState(firstViewToday);
   const title = `${PHASE_WORD[phase]} in the courtyard. ${courtyardLine(state, phase)}${state.lanterns ? ` ${state.lanterns === 1 ? 'One lantern glows' : `${state.lanterns} lanterns glow`} in Kachhua's corner.` : ''}${state.toran ? ` ${state.toran === 1 ? 'One marigold hangs' : `${state.toran} marigolds hang`} over the door.` : ''}`;
   return <div className={`courtyard courtyard-${phase}`} style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}` }}>
     <CourtyardScene phase={phase} stages={stagesOf(state)} treeStage={state.treeStage} title={title} lanterns={state.lanterns} toran={state.toran} />
@@ -45,10 +53,12 @@ export function CourtyardView({ state, phase, onFriend, selected, forcePose }: {
       const [x, feet, size] = SPOTS[area.id](area.stage);
       const style = { left: `${(x - size / 2) / SCENE_W * 100}%`, top: `${(feet - size * 0.95) / SCENE_H * 100}%`, width: `${size / SCENE_W * 100}%` };
       const pose = forcePose ?? poseFor(area.today, phase);
+      const tapped = taps[area.id] ?? 0;
+      const moment = tapped ? { moment: 'hop' as const, at: tapped } : nod && area.today ? { moment: 'nod' as const, at: 1 } : {};
       const label = `${area.friend}, ${area.label}: ${area.days} ${area.days === 1 ? 'day' : 'days'}${area.today ? ', done today' : ''}`;
       return onFriend
-        ? <button type="button" key={area.id} className={`courtyard-friend${selected === area.id ? ' selected' : ''}`} style={style} aria-label={label} aria-pressed={selected === area.id} onClick={() => onFriend(area.id)}><Cast name={area.friend} pose={pose} size={size} /></button>
-        : <span key={area.id} className="courtyard-friend" style={style} aria-hidden="true"><Cast name={area.friend} pose={pose} size={size} /></span>;
+        ? <button type="button" key={area.id} className={`courtyard-friend${selected === area.id ? ' selected' : ''}`} style={style} aria-label={label} aria-pressed={selected === area.id} onClick={() => { setTaps(current => ({ ...current, [area.id]: (current[area.id] ?? 0) + 1 })); onFriend(area.id); }}><Cast name={area.friend} pose={pose} {...moment} size={size} /></button>
+        : <span key={area.id} className="courtyard-friend" style={style} aria-hidden="true"><Cast name={area.friend} pose={pose} size={size} {...moment} /></span>;
     })}
   </div>;
 }

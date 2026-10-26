@@ -1,11 +1,40 @@
-import { useId, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from 'react';
 import './cast.css';
 
 export type Pose = 'idle' | 'cheer' | 'think' | 'rest';
 export type CastName = 'Nandi' | 'Moti' | 'Chiku' | 'Kapi' | 'Mor' | 'Kachhua';
 export const castNames: CastName[] = ['Nandi', 'Moti', 'Chiku', 'Kapi', 'Mor', 'Kachhua'];
 export const poses: Pose[] = ['idle', 'cheer', 'think', 'rest'];
-export type CastProps = { pose?: Pose; size?: number; title?: string };
+/**
+ * Spec 31, living friends: one short moment on the existing drawing (whole body, eyes or front limb). `at` says when to
+ * play it: a moment plays when `at` first becomes non-zero and again each time it changes, never on a plain re-render.
+ * `breathe` adds the slow loop on a rest pose (after `settle` when both are set).
+ */
+export type FriendMoment = 'blink' | 'nod' | 'hop' | 'tilt' | 'wave' | 'settle';
+export type CastProps = { pose?: Pose; size?: number; title?: string; moment?: FriendMoment; at?: number; breathe?: boolean };
+
+/** The trigger's change count: hand it to <Cast at>. Starts at `initial` (1 plays the moment on mount). */
+export function useFriendMoment(trigger: unknown, initial = 0): number {
+  const [state, setState] = useState({ trigger, at: initial });
+  if (!Object.is(state.trigger, trigger)) setState({ trigger, at: state.at + 1 });
+  return Object.is(state.trigger, trigger) ? state.at : state.at + 1;
+}
+
+const seedOf = (text: string) => { let h = 2166136261; for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619); return h >>> 0; };
+/** An idle friend blinks once every 8-14 s (seeded per friend on screen), only while it is visible. */
+function useIdleBlink(node: RefObject<SVGSVGElement | null>, on: boolean, seed: string): number {
+  const [blinks, setBlinks] = useState(0);
+  useEffect(() => {
+    const svg = node.current;
+    if (!on || !svg || typeof IntersectionObserver === 'undefined') return;
+    let timer: number | undefined, n = 0;
+    const next = () => { n += 1; timer = window.setTimeout(() => { setBlinks(count => count + 1); next(); }, 8000 + seedOf(`${seed}:${n}`) % 6000); };
+    const observer = new IntersectionObserver(([entry]) => { window.clearTimeout(timer); if (entry?.isIntersecting) next(); });
+    observer.observe(svg);
+    return () => { observer.disconnect(); window.clearTimeout(timer); };
+  }, [node, on, seed]);
+  return blinks;
+}
 
 // Each friend keeps fixed colours in light and dark, drawn flat with one shade and one highlight (spec 11 §2).
 const useUid = () => useId().replace(/[^a-zA-Z0-9]/g, '');
@@ -41,9 +70,19 @@ function Mood({ pose, at }: { pose: Pose; at: [number, number] }) {
   return null;
 }
 
-function Frame({ name, pose = 'idle', size = 48, title, children }: CastProps & { name: CastName; children: ReactNode }) {
-  return <svg className={`cast-svg cast-${name.toLowerCase()} cast-pose-${pose}`} width={size} height={size} viewBox="0 0 100 100" role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : true} focusable="false" data-cast={name} data-pose={pose}>
-    {title && <title>{title}</title>}{children}
+function Frame({ name, pose = 'idle', size = 48, title, moment, at = 0, breathe, children }: CastProps & { name: CastName; children: ReactNode }) {
+  const svg = useRef<SVGSVGElement>(null);
+  const uid = useId();
+  const blinks = useIdleBlink(svg, pose === 'idle' && !(moment && at), `${name}${uid}`);
+  // The latest of the caller's moment and the idle blink plays; the inner group's key restarts its animation once.
+  const [shown, setShown] = useState<{ at: number; blinks: number; kind?: FriendMoment; key: string }>({ at: 0, blinks: 0, key: '' });
+  let current = shown;
+  if (at !== shown.at) current = { ...shown, at, kind: at && moment ? moment : undefined, key: `m${at}` };
+  else if (blinks !== shown.blinks) current = { ...shown, blinks, kind: 'blink', key: `b${blinks}` };
+  if (current !== shown) setShown(current);
+  const loop = breathe && pose === 'rest';
+  return <svg ref={svg} className={`cast-svg cast-${name.toLowerCase()} cast-pose-${pose}${current.kind ? ` cast-m-${current.kind}` : ''}${loop ? ' cast-breathe' : ''}`} width={size} height={size} viewBox="0 0 100 100" role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : true} focusable="false" data-cast={name} data-pose={pose} data-moment={current.kind ?? ''}>
+    {title && <title>{title}</title>}<g className="cast-move" key={current.key}>{children}</g>
   </svg>;
 }
 /**
@@ -77,7 +116,7 @@ export function Nandi(props: CastProps) {
     <g clipPath={`url(#${id}b)`}><ellipse cx="66" cy="96" rx="34" ry="9.5" fill={N.shade} /><path d="M78 69C88 71 91 81 87 92" fill="none" stroke={N.shade} strokeWidth="2.6" strokeLinecap="round" /><path d="M53 50C57 47 63 46.5 67 49" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity=".9" /></g>
     <path d="M73 63.5C79.5 61.5 86 65.5 85 72C84 77.5 77 78 73.5 74C71 71 70.5 66 73 63.5Z" fill={N.patch} />
     <ellipse cx="88.4" cy="90.6" rx="4" ry="2.2" fill={N.hoof} />
-    <path d="M36 85.5C37 82.5 46 82.5 50 84.8L50 90.5C46 92.2 38.5 92.2 36 90Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="38" cy="89" rx="3.2" ry="2.6" fill={N.hoof} />
+    <g className="cast-limb"><path d="M36 85.5C37 82.5 46 82.5 50 84.8L50 90.5C46 92.2 38.5 92.2 36 90Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="38" cy="89" rx="3.2" ry="2.6" fill={N.hoof} /></g>
     <path d="M50 86.5C52 83.6 60 83.6 63 86.4L62.4 91C58.4 92.6 52.4 92.6 50 91Z" fill={N.cream} stroke={N.line} strokeWidth="1.4" /><ellipse cx="60.6" cy="89.6" rx="3" ry="2.4" fill={N.hoof} />
     <path className="cast-accessory" d="M54.2 84.1L57.4 84.3L57.2 92.1L54 92.2Z" fill={ACCESSORY.Nandi.fill} stroke={ACCESSORY.Nandi.line} strokeWidth=".8" strokeLinejoin="round" />
     <g transform={head}>
@@ -142,8 +181,8 @@ export function Moti(props: CastProps) {
       {pose === 'think' && <path d="M56 35.6Q59.6 33.4 63.4 35.6" fill="none" stroke={M.line} strokeWidth="1.3" strokeLinecap="round" />}
       <Blush at={[34.5, 50, 65.5, 50]} />
       {pose === 'cheer' ? <path d="M39 51.2Q42.4 57.6 46 52.4Z" fill={M.dark} /> : <path d={pose === 'think' ? 'M41 53.2Q43.4 52.6 45.6 53.6' : 'M40.4 51.8Q43 54.8 45.8 52.8'} fill="none" stroke={M.dark} strokeWidth="1.3" strokeLinecap="round" />}
-      <path d={trunk} fill={M.body} stroke={M.line} strokeWidth="1.5" strokeLinejoin="round" />
-      <g fill="none" stroke={M.shade} strokeWidth="1.1" strokeLinecap="round"><path d="M46 53.4q4.2 1.2 8.4-.2" /><path d="M46.2 57.6q3.8 1.2 7.4-.4" />{pose !== 'cheer' && <path d="M47 62q3 1.1 5.6-.6" />}</g>
+      <g className="cast-limb"><path d={trunk} fill={M.body} stroke={M.line} strokeWidth="1.5" strokeLinejoin="round" />
+        <g fill="none" stroke={M.shade} strokeWidth="1.1" strokeLinecap="round"><path d="M46 53.4q4.2 1.2 8.4-.2" /><path d="M46.2 57.6q3.8 1.2 7.4-.4" />{pose !== 'cheer' && <path d="M47 62q3 1.1 5.6-.6" />}</g></g>
     </g>
     <Mood pose={pose} at={pose === 'cheer' ? [80, 10] : [76, 12]} />
   </Frame>;
@@ -165,7 +204,7 @@ export function Chiku(props: CastProps) {
     <ellipse cx="41" cy="88.6" rx="5.2" ry="2.6" fill={C.dark} /><ellipse cx="55.6" cy="88.6" rx="5.2" ry="2.6" fill={C.dark} />
     <g className="cast-accessory"><path d="M58.6 60.4L38 78" stroke={ACCESSORY.Chiku.line} strokeWidth="3.2" strokeLinecap="round" /><path d="M58.6 60.4L38 78" stroke={ACCESSORY.Chiku.fill} strokeWidth="1.8" strokeLinecap="round" />
       <rect x="29.4" y="75.4" width="12.4" height="10" rx="2.2" fill={ACCESSORY.Chiku.fill} stroke={ACCESSORY.Chiku.line} strokeWidth=".9" /><path d="M29.6 78.6C33 80.4 38.4 80.4 41.6 78.6V77.4C41.6 76.2 40.6 75.4 39.4 75.4H31.8C30.6 75.4 29.6 76.2 29.6 77.4Z" fill={ACCESSORY.Chiku.line} opacity=".55" /></g>
-    <g transform={`translate(0 ${nutY})`}>
+    <g className="cast-limb" transform={`translate(0 ${nutY})`}>
       <ellipse cx="48.5" cy="67" rx="4.2" ry="5" fill={C.nut} stroke={C.line} strokeWidth="1" /><path d="M44.4 64.2C44.8 60.6 52.2 60.6 52.6 64.2C50 65.4 47 65.4 44.4 64.2Z" fill={C.cap} /><path d="M48.5 60.9l1 -2" stroke={C.cap} strokeWidth="1.2" strokeLinecap="round" />
       <ellipse cx="44" cy="68" rx="2.6" ry="3.2" fill={C.fur} stroke={C.line} strokeWidth=".9" /><ellipse cx="53" cy="68" rx="2.6" ry="3.2" fill={C.fur} stroke={C.line} strokeWidth=".9" />
     </g>
@@ -221,8 +260,8 @@ export function Kapi(props: CastProps) {
     <g className="cast-accessory"><path d={`M89 40Q${(89 + arm.hand[0]) / 2 + 4} ${(40 + arm.hand[1]) / 2} ${arm.hand[0]} ${arm.hand[1]}`} fill="none" stroke={ACCESSORY.Kapi.line} strokeWidth=".7" />
       <path d="M89 21L95.4 29.6L89 40L82.6 29.6Z" fill={ACCESSORY.Kapi.fill} stroke={ACCESSORY.Kapi.line} strokeWidth=".9" strokeLinejoin="round" /><path d="M89 21V40M82.6 29.6H95.4" stroke="#fff" strokeWidth=".7" opacity=".6" />
       <path d="M89 40q-2 3 0 5q2 2 0 5" fill="none" stroke={ACCESSORY.Kapi.line} strokeWidth=".7" /><path d="M87.4 44.6l3.2 -.6M87.4 49.4l3.2 -.6" stroke={ACCESSORY.Kapi.fill} strokeWidth="1.4" strokeLinecap="round" /></g>
-    <path d={arm.d} fill="none" stroke={K.line} strokeWidth="6.6" strokeLinecap="round" /><path d={arm.d} fill="none" stroke={K.fur} strokeWidth="4.8" strokeLinecap="round" />
-    <circle cx={arm.hand[0]} cy={arm.hand[1]} r="2.8" fill={K.face} stroke={K.line} strokeWidth=".9" />
+    <g className="cast-limb"><path d={arm.d} fill="none" stroke={K.line} strokeWidth="6.6" strokeLinecap="round" /><path d={arm.d} fill="none" stroke={K.fur} strokeWidth="4.8" strokeLinecap="round" />
+      <circle cx={arm.hand[0]} cy={arm.hand[1]} r="2.8" fill={K.face} stroke={K.line} strokeWidth=".9" /></g>
     <Mood pose={pose} at={pose === 'cheer' ? [16, 14] : [78, 12]} />
   </Frame>;
 }
@@ -242,7 +281,7 @@ export function Mor(props: CastProps) {
       <path d={`M0 -2V${-L + 9}`} stroke={P.greenDark} strokeWidth=".6" opacity=".7" />
       <ellipse cy={-L + 7} rx="5" ry="6" fill={P.gold} /><ellipse cy={-L + 7.4} rx="3.6" ry="4.3" fill={P.teal} /><ellipse cy={-L + 7.8} rx="2.1" ry="2.6" fill={P.navy} />
     </g>)}
-    <path d="M42 66C35.5 70 34.5 82 40 89C42 86 43 78 44 70Z" fill={P.wing} stroke={P.wingBar} strokeWidth=".8" /><path d="M58 66C64.5 70 65.5 82 60 89C58 86 57 78 56 70Z" fill={P.wing} stroke={P.wingBar} strokeWidth=".8" />
+    <path d="M42 66C35.5 70 34.5 82 40 89C42 86 43 78 44 70Z" fill={P.wing} stroke={P.wingBar} strokeWidth=".8" /><path className="cast-limb" d="M58 66C64.5 70 65.5 82 60 89C58 86 57 78 56 70Z" fill={P.wing} stroke={P.wingBar} strokeWidth=".8" />
     <g stroke={P.wingBar} strokeWidth=".8"><path d="M38 74l4 1M37.6 79l4.4 .8M38.4 84l3.6.4M62 74l-4 1M62.4 79l-4.4.8M61.6 84l-3.6.4" /></g>
     <path d="M45 90l-2 4M45 90l1 4M55 90l2 4M55 90l-1 4" stroke={P.feet} strokeWidth="1.6" strokeLinecap="round" />
     <path d="M40.5 89.5C34.5 80 37.5 66 44 58C46.5 54.6 53.5 54.6 56 58C62.5 66 65.5 80 59.5 89.5Z" fill={P.blue} stroke={P.line} strokeWidth="1.3" />
@@ -291,7 +330,7 @@ export function Kachhua(props: CastProps) {
     <path d="M21.5 77C21.5 74 95.5 74 95.5 77C95.5 81 21.5 81 21.5 77Z" fill={T.rim} stroke={T.line} strokeWidth="1.2" />
     <g stroke={T.line} strokeWidth=".8">{[30, 38, 46, 54, 62, 70, 78, 86].map(x => <path key={x} d={`M${x} 75.4V80.2`} />)}</g>
     <g fill={T.star}>{[34, 50, 66, 82].map(x => <circle key={x} cx={x} cy="77.8" r=".9" />)}</g>
-    <path d="M27 77C24.5 86 28 91.5 34 91.5C38.5 91 39.5 85 37.5 77Z" fill={T.skin} stroke={T.line} strokeWidth="1.3" />
+    <path className="cast-limb" d="M27 77C24.5 86 28 91.5 34 91.5C38.5 91 39.5 85 37.5 77Z" fill={T.skin} stroke={T.line} strokeWidth="1.3" />
     <g fill={T.skinShade}><circle cx="31" cy="84" r="1.1" /><circle cx="34.6" cy="87.4" r=".9" /><circle cx="82" cy="83.4" r="1.1" /><circle cx="85.6" cy="86.6" r=".9" /></g>
     <g transform={headT}>
       <path d="M31 72C26 63 22 60.5 17.5 60.5L20 73C24 74 28 74 31 72Z" fill={T.skin} stroke={T.line} strokeWidth="1.2" />

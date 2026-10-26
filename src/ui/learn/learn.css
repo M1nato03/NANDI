@@ -163,14 +163,9 @@
 .learn-screen:has(.learn-active) > .eyebrow, .learn-screen:has(.learn-active) > h1 { display: none; }
 .learn-active .learn-friend { flex-basis: 48px; }
 .learn-active .learn-friend .cast-svg { width: 48px; height: 48px; }
-.learn-friend .cast-svg { transform-origin: 50% 90%; animation: learn-breathe 3s ease-in-out infinite; }
-.learn-friend .cast-pose-cheer { animation: cast-hop .6s ease-out 1 both; }
-.learn-friend .cast-pose-think { animation: learn-tilt .5s ease-out 1 both; }
-.learn-friend .cast-eye { transform-box: fill-box; transform-origin: center; animation: learn-blink 4.6s ease-in-out infinite; }
+/* Spec 31: the lesson friend reacts with the shared moments (right: nod, wrong: tilt) and blinks on the shared idle clock; no loops. */
+.learn-friend .cast-svg { animation: none; }
 .learn-ask-row.leaning .learn-friend { transform: rotate(5deg) translateX(3px); }
-@keyframes learn-breathe { 50% { transform: scale(1.02); } }
-@keyframes learn-tilt { to { transform: rotate(-6deg); } }
-@keyframes learn-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.12); } }
 .learn-ask-bubble { position: relative; flex: 1; min-width: 0; padding: 10px 14px; border: 2px solid var(--edge-soft); border-radius: 16px; background: var(--surface-2); }
 .learn-ask-bubble::before { content: ''; position: absolute; left: -8px; top: 50%; width: 12px; height: 12px; background: var(--surface-2); border-left: 2px solid var(--edge-soft); border-bottom: 2px solid var(--edge-soft); transform: translateY(-50%) rotate(45deg); }
 .learn-drop .learn-ask-bubble .eyebrow { margin: 0 0 2px; font-size: 11px; }
@@ -200,9 +195,9 @@
 /* E: the finish moment, once, when the drop ends on this screen. */
 .learn-stop { position: relative; }
 .learn-finish-friends { display: flex; gap: 6px; justify-content: center; }
-.learn-finish-friends > span { display: grid; animation: learn-hop .6s ease-out calc(var(--i) * 160ms + 250ms) 2 both; }
+.learn-finish-friends > span { display: grid; }
+.learn-finish-friends > span .cast-move { animation-delay: calc(var(--i) * 80ms); }
 .learn-finish-friends .cast-svg { animation: none; visibility: visible !important; }
-@keyframes learn-hop { 40% { transform: translateY(-12px); } }
 .learn-finish-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .learn-finish-stat { display: grid; justify-items: center; gap: 2px; padding: 12px 6px; border-radius: var(--radius-row); background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--edge-soft), 0 var(--press) 0 var(--edge-soft); }
 .learn-finish-stat strong { font: 800 28px/32px 'Bricolage Grotesque', sans-serif; color: var(--area-learn); font-variant-numeric: tabular-nums; }

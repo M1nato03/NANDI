@@ -88,7 +88,7 @@ export function Plan({ questId }: { questId?: string }) {
   const softMore = settings.some(row => row.key === softMoreKey(today) && row.value === true);
   const afterBed = isAfterBedtime(board.now, typeof bedtime === 'string' ? bedtime : RULES.night.defaultBedtime);
   if (soft.state && !softMore) return <section className="screen plan-screen soft-screen"><FriendStage area="plan" size={64} compact><p className="eyebrow">Go gently</p><h1>Plan</h1></FriendStage><SoftHome state={soft.state} today={today} done={!!soft.done} facts={softFacts} settings={settings} tasks={board.tasks} act={board.act} /></section>;
-  return <section className="screen plan-screen"><FriendStage area="plan" size={64} compact><p className="eyebrow">Make room for what matters</p><h1>Plan</h1></FriendStage><div className="cast-inline">{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" />}</div>{awayToday && <p>You're away. Rest well.</p>}
+  return <section className="screen plan-screen"><FriendStage area="plan" size={64} compact><p className="eyebrow">Make room for what matters</p><h1>Plan</h1></FriendStage><div className="cast-inline">{awayToday && <Cast name="Kachhua" pose="rest" size={48} title="Kachhua resting" moment="settle" at={1} breathe />}</div>{awayToday && <p>You're away. Rest well.</p>}
     {/* Spec 27 (and Codex A item 91, the spec owner's call): the three lists come first; the older cards follow. */}
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}

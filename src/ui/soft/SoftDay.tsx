@@ -29,6 +29,8 @@ export { softMoreKey };
 const softThingNow = (picked: SoftChoice, extra: { text?: string; inStory?: boolean } | undefined, day: string) => doSoftThing(db, picked, Date.now(), extra, day);
 
 /** Spec 15 A: the way in. Never asked by notification; after bedtime it opens the night routine instead. */
+const motionReduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
+
 export function SoftChip({ afterBedtime }: { afterBedtime: boolean }) {
   const [open, setOpen] = useState(false);
   const dialog = useModalFocus<HTMLElement>(() => setOpen(false));
@@ -95,7 +97,7 @@ export function KindWord({ done }: { done: () => void }) {
     finally { setBusy(false); }
   };
   return <div className="soft-task">
-    <div ref={friend} className="soft-kind-friend"><Cast name="Kachhua" pose="cheer" size={72} title="Kachhua" /></div>
+    <div ref={friend} className="soft-kind-friend"><Cast name="Kachhua" pose="cheer" size={72} title="Kachhua" moment="settle" at={1} /></div>
     <div className="soft-kind-lines" role="radiogroup" aria-label="Pick a line">{KIND_WORDS.map(item => <button type="button" key={item} role="radio" aria-checked={!own.trim() && line === item} className={`secondary soft-kind-line${!own.trim() && line === item ? ' selected' : ''}`} onClick={() => { setOwn(''); setLine(item); }}>{item}</button>)}</div>
     <label className="soft-field">Or your own words<input value={own} maxLength={120} onChange={event => setOwn(event.target.value)} /></label>
     <p className="soft-kind-preview">“{text}”</p>
@@ -116,6 +118,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   act: (operation: (repos: TaskRepos, at: number) => Promise<unknown>, success?: string) => Promise<boolean>;
 }) {
   const [choice, setChoice] = useState<SoftChoice | null>(null);
+  const [okay, setOkay] = useState(0);
   // The day a gentle thing was opened on; the Home itself can re-render with the next day after 04:00.
   const openedOn = useRef<string | null>(null);
   const [closed, setClosed] = useState(false);
@@ -133,7 +136,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
     setChoice(null);
   };
   if (done) return <section className="card soft-card soft-finish" aria-label="Soft day">
-    <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" />
+    <Cast name="Kachhua" pose="rest" size={96} title="Kachhua resting" moment="settle" at={1} breathe />
     <div className="soft-lantern" aria-hidden="true" />
     {closed ? <><h2>Today is kept.</h2><p>Rest well. See you tomorrow.</p></> : <><h2>That counts. Kachhua lit a lantern for today.</h2>{welcome > 0 && <p>Welcome back. Here is a small gift for coming back: +{welcome} XP.</p>}<p>You can stop here.</p>
       <button type="button" onClick={() => setClosed(true)}>Close for today</button></>}
@@ -143,7 +146,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
   return <>
     {care && <CareCard close={() => setCareClosed(true)} />}
     <section className="card soft-card" aria-label="Soft day">
-      <div className="soft-host"><Cast name="Kachhua" pose="rest" size={72} title="Kachhua resting" /><p className="soft-line">{SOFT_LINES[state]}</p></div>
+      <div className="soft-host"><Cast name="Kachhua" pose="rest" size={72} title="Kachhua resting" moment={okay ? 'blink' : 'settle'} at={okay + 1} breathe /><p className="soft-line">{SOFT_LINES[state]}</p></div>
       {!option ? <ul className="soft-options">{SOFT_OPTIONS[state].map(item => <li key={item.id}><button type="button" className="soft-option" onClick={() => { openedOn.current = today; setChoice(item.id); }}>{item.label}{item.minutes && <small> · {item.minutes} min</small>}</button></li>)}</ul>
         : <div className="soft-doing"><h2>{option.label}</h2>
           {option.id === 'breathe' && <Breathe done={() => void finish('breathe')} />}
@@ -153,7 +156,7 @@ export function SoftHome({ state, today, done, facts, settings, tasks, act }: {
           {option.id === 'kind-word' && <KindWord done={() => void finish('kind-word')} />}
           {option.id === 'good-thing' && <GoodThing done={(text, inStory) => void finish('good-thing', { text, inStory })} />}
           <button type="button" className="text-button" onClick={() => setChoice(null)}>Pick another</button></div>}
-      <button type="button" className="text-button soft-okay" onClick={() => void setSoftState(db, 'okay', Date.now())}>I feel okay now</button>
+      <button type="button" className="text-button soft-okay" onClick={() => { setOkay(count => count + 1); window.setTimeout(() => void setSoftState(db, 'okay', Date.now()), motionReduced() ? 0 : 260); }}>I feel okay now</button>
       {/* Item 83: tasks stay reachable on a soft day (to move or tick one) without ending the gentle day. */}
       <button type="button" className="text-button" onClick={() => void saveSetting(softMoreKey(today), true)}>See my tasks</button>
     </section>
