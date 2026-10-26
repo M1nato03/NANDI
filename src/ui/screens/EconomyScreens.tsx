@@ -10,12 +10,10 @@ import { purchaseShopItem } from '../../data/repos/economy';
 import { recordShown } from '../../data/repos/gamify';
 import { RULES } from '../../core/rules.config';
 import { AWAY_KEY, awayRanges, planAway } from '../../core/economy/away';
-import { isAway } from '../../core/economy/away';
 import { getOrCreateDeviceId } from '../../data/device';
 import type { SettingRow } from '../../data/types';
 import { go } from '../shell/router';
 import './economy.css';
-import { Nandi } from '../cast/Cast';
 import { revealMeters } from '../../core/economy/reveal';
 
 function useEconomy() {
@@ -71,7 +69,7 @@ export function YourSeason() {
   const gap = view.season.rank > 1 ? Math.max(0, seatThreshold(view.season.rank - 1, target) - view.season.sp) : 0;
   const base = RULES.level.stepBase * view.level * (view.level - 1) / 2;
   const show = revealMeters(economy.facts, economy.today, view.season, view.shards);
-  return <section className="your-season" aria-label="Your season">{isAway(settings, economy.today) || view.streak.restUsedYesterday ? <Nandi pose="rest" size={48} /> : <Nandi pose="idle" size={48} />}
+  return <section className="your-season" aria-label="Your season">
     <div className="card economy-level"><span className="economy-jersey" aria-label={`Level ${view.level}`}>{view.level}</span><div><span className="eyebrow">Your progress</span><h2>Level {view.level}</h2><p>{view.totalXp.toLocaleString()} XP in all</p><progress max={view.nextLevelXp - base} value={view.totalXp - base} aria-label="XP to next level" /><span className="small">{Math.max(0, view.nextLevelXp - view.totalXp)} XP to level {view.level + 1}</span></div></div>
     {show.season && <div className={`card economy-season-card ${banner.replace(':', '-')} ${cardBack.replace(':', '-')}`}>
       <span className="eyebrow">Season {view.season.index + 1} · {seasonDates}</span>

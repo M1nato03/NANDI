@@ -7,6 +7,12 @@ const add = async (page: Page, title: string) => {
   await expect(page.getByRole('region', { name: 'Today' })).toContainText(title);
 };
 const taskRow = (page: Page, list: string, title: string) => page.getByRole('region', { name: list, exact: true }).locator('.mor-row').filter({ hasText: title });
+// Item 139: a row's moves sit behind its ⋯.
+const moveTo = async (page: Page, list: string, title: string, to: 'Today' | 'Tomorrow' | 'Later') => {
+  const row = taskRow(page, list, title);
+  await row.getByRole('button', { name: `More for ${title}` }).click();
+  await row.getByRole('button', { name: `${to}: ${title}` }).click();
+};
 const readTask = (page: Page, title: string) => page.evaluate(async name => {
   const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
   const rows = await new Promise<Record<string, unknown>[]>(resolve => { const request = database.transaction('tasks').objectStore('tasks').getAll(); request.onsuccess = () => resolve(request.result); });
@@ -41,7 +47,7 @@ test('a task added with no time shows no time anywhere; the time chip lives in t
 test('Tomorrow → moves at once with a toast and Undo, and a fourth kept move works like the first', async ({ page }) => {
   await add(page, 'Write report');
   // An undone move is not kept.
-  await taskRow(page, 'Today', 'Write report').getByRole('button', { name: 'Tomorrow: Write report' }).click();
+  await moveTo(page, 'Today', 'Write report', 'Tomorrow');
   await expect(page.locator('.mor-toast')).toContainText('Moved to Tomorrow.');
   await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
   await expect(taskRow(page, 'Today', 'Write report')).toBeVisible();
@@ -49,12 +55,12 @@ test('Tomorrow → moves at once with a toast and Undo, and a fourth kept move w
   // Four kept moves to tomorrow (brought back each time with ← Today, which does not count): none is refused,
   // none lands in Later, and the count reads 4.
   for (let move = 1; move <= 4; move++) {
-    await taskRow(page, 'Today', 'Write report').getByRole('button', { name: 'Tomorrow: Write report' }).click();
+    await moveTo(page, 'Today', 'Write report', 'Tomorrow');
     await expect(page.locator('.mor-toast')).toContainText('Moved to Tomorrow.');
     await expect(taskRow(page, 'Tomorrow', 'Write report')).toBeVisible();
     await expect(page.getByRole('dialog')).toHaveCount(0);
     expect(await readTask(page, 'Write report')).toMatchObject({ status: 'planned', dayKey: '2026-10-27', postponeCount: move });
-    if (move < 4) await taskRow(page, 'Tomorrow', 'Write report').getByRole('button', { name: 'Today: Write report' }).click();
+    if (move < 4) await moveTo(page, 'Tomorrow', 'Write report', 'Today');
   }
   await expect(page.getByRole('region', { name: 'Later', exact: true })).not.toContainText('Write report');
 });
@@ -63,7 +69,7 @@ test('Undo after a move that ended a focus brings back the task, the running tim
   await add(page, 'Draft the letter');
   await taskRow(page, 'Today', 'Draft the letter').getByRole('button', { name: 'Start' }).click();
   await page.clock.runFor(5 * 60_000);
-  await taskRow(page, 'Today', 'Draft the letter').getByRole('button', { name: 'Tomorrow: Draft the letter' }).click();
+  await moveTo(page, 'Today', 'Draft the letter', 'Tomorrow');
   await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
   expect(await readTask(page, 'Draft the letter')).toMatchObject({ actualMinutes: 5, postponeCount: 1 });
   await page.locator('.mor-toast').getByRole('button', { name: 'Undo' }).click();
@@ -76,7 +82,7 @@ test('Undo after a move that ended a focus brings back the task, the running tim
 
 test('Start on a Tomorrow task brings it to Today and starts the timer, with Undo', async ({ page }) => {
   await add(page, 'Book tickets');
-  await taskRow(page, 'Today', 'Book tickets').getByRole('button', { name: 'Tomorrow: Book tickets' }).click();
+  await moveTo(page, 'Today', 'Book tickets', 'Tomorrow');
   await taskRow(page, 'Tomorrow', 'Book tickets').getByRole('button', { name: 'Start' }).click();
   await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Book tickets');
   await expect(taskRow(page, 'Today', 'Book tickets')).toBeVisible();
@@ -109,7 +115,7 @@ test('moving a task in focus stops its timer and it leaves the focus card', asyn
   await taskRow(page, 'Today', 'Pay the bill').getByRole('button', { name: 'Start' }).click();
   await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
   await page.clock.runFor(5 * 60_000);
-  await taskRow(page, 'Today', 'Pay the bill').getByRole('button', { name: 'Tomorrow: Pay the bill' }).click();
+  await moveTo(page, 'Today', 'Pay the bill', 'Tomorrow');
   await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
   await expect(taskRow(page, 'Tomorrow', 'Pay the bill')).toBeVisible();
   expect(await readTask(page, 'Pay the bill')).toMatchObject({ actualMinutes: 5 });
@@ -153,17 +159,17 @@ test('a focus paused on the timer screen shows as paused on Plan, with Resume (C
 test('Undo lasts only until the next action: Done, Start or another move clears it (Codex A item 92)', async ({ page }) => {
   for (const title of ['Alpha', 'Beta', 'Gamma']) await add(page, title);
   const toast = page.locator('.mor-toast');
-  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
+  await moveTo(page, 'Today', 'Alpha', 'Tomorrow');
   await expect(toast).toContainText('Moved to Tomorrow.');
   await taskRow(page, 'Today', 'Beta').getByRole('button', { name: 'Done: Beta' }).click();
   await expect(toast).toHaveCount(0);
-  await taskRow(page, 'Tomorrow', 'Alpha').getByRole('button', { name: 'Today: Alpha' }).click();
+  await moveTo(page, 'Tomorrow', 'Alpha', 'Today');
   await expect(toast).toContainText('Moved to Today.');
   await taskRow(page, 'Today', 'Gamma').getByRole('button', { name: 'Start' }).click();
   await expect(toast).toHaveCount(0);
   // A second move replaces the first one's Undo: Undo now takes back only the second.
-  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
-  await taskRow(page, 'Today', 'Gamma').getByRole('button', { name: 'Tomorrow: Gamma' }).click();
+  await moveTo(page, 'Today', 'Alpha', 'Tomorrow');
+  await moveTo(page, 'Today', 'Gamma', 'Tomorrow');
   await toast.getByRole('button', { name: 'Undo' }).click();
   await expect(taskRow(page, 'Today', 'Gamma')).toBeVisible();
   await expect(taskRow(page, 'Tomorrow', 'Alpha')).toBeVisible();
@@ -171,7 +177,7 @@ test('Undo lasts only until the next action: Done, Start or another move clears 
 
 test('any later write on Plan ends the Undo: adding a task with details clears it (Codex A item 93)', async ({ page }) => {
   await add(page, 'Alpha');
-  await taskRow(page, 'Today', 'Alpha').getByRole('button', { name: 'Tomorrow: Alpha' }).click();
+  await moveTo(page, 'Today', 'Alpha', 'Tomorrow');
   const toast = page.locator('.mor-toast');
   await expect(toast).toContainText('Moved to Tomorrow.');
   await page.locator('details.plan-more > summary').click();

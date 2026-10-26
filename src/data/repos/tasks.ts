@@ -431,7 +431,7 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
           const firstTimed = index === 0 && scheduledStart != null && options.placement !== 'someday' && options.placement !== 'unplaced';
           rows.push(
             await repos.tasks.put(
-              { ...child, title: options.titles?.[index]?.trim() ?? `${title} — step ${index + 1} of ${children.length}`, mustOrCould: options.priority ?? 'could', category: options.category, status: options.placement === 'someday' ? 'someday' : firstTimed ? 'planned' : 'unplaced', dayKey: firstTimed ? key : dayKey(now), scheduledStart: firstTimed ? scheduledStart : null, scheduledEnd: null, firstScheduledDayKey: firstTimed ? key : undefined, lastPlannedDayKey: firstTimed ? key : undefined },
+              { ...child, title: options.titles?.[index]?.trim() || `${title} — step ${index + 1} of ${children.length}`, mustOrCould: options.priority ?? 'could', category: options.category, status: options.placement === 'someday' ? 'someday' : firstTimed ? 'planned' : 'unplaced', dayKey: firstTimed ? key : dayKey(now), scheduledStart: firstTimed ? scheduledStart : null, scheduledEnd: null, firstScheduledDayKey: firstTimed ? key : undefined, lastPlannedDayKey: firstTimed ? key : undefined },
               now,
             ),
           );

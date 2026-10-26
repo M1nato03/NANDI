@@ -34,11 +34,14 @@ test('large task preview, open steps under a plain row, and whole-task drop from
   await expect(today.getByRole('button', { name: 'Drop whole task' })).toHaveCount(0);
   await expect(today.locator('.mor-step')).toHaveCount(9);
   await expect(today).toContainText('Prepare the app release');
+  // Item 139: a step's own name wins; an unnamed step reads 'Step 1 of 9' under its task.
+  await expect(today.locator('.mor-step').nth(0).locator('.mor-title')).toHaveText('Step 1 of 9');
+  await expect(today.locator('.mor-step').nth(1).locator('.mor-title')).toHaveText('Prepare the app release');
   await expect(today.locator('.mor-step').first().getByRole('button', { name: /^Start: / })).toBeVisible();
   await today.locator('.mor-step').first().getByRole('button', { name: /^Done: / }).click();
   await expect(parent).toContainText('1 of 9 steps done');
   await expect(today.locator('.mor-step')).toHaveCount(8);
-  await parent.getByRole('button', { name: 'Complete the app work', exact: true }).click();
+  await parent.locator('.task-title-button').click();
   const detail = page.getByRole('dialog', { name: 'Task detail Complete the app work' });
   await detail.getByRole('button', { name: 'Drop whole task' }).click();
   await expect(detail).toContainText('This drops the task and its remaining steps.');

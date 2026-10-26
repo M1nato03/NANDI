@@ -156,9 +156,9 @@ export function Learn({ entry }: { entry?: string }) {
     {/* Item 135: one friend per panel. Today is Chiku's; review (idea checks, haveli, matka) gets Moti's own rose card. */}
     {(dueCount > 0 || haveliIdeas.length > 0 || (matkaItems.length > 0 && matkaDone.length < matkaItems.length)) && <section className="card learn-moti" data-area="review" aria-label="Review with Moti">
       <FriendStage area="review" size={48} compact><h2>Review with Moti</h2></FriendStage>
-      {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks with Moti · {Math.min(dueCount, 3)} for today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
-      {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Moti's haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
-      {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Moti's matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
+      {dueCount > 0 && <><button type="button" className="learn-review-action" onClick={() => setPractice({ reviewDue: true })}>Idea checks · {Math.min(dueCount, 3)} today</button>{dueCount > 3 && <p className="deck-meta">{dueCount} ideas waiting</p>}</>}
+      {haveliIdeas.length > 0 && <button type="button" className="secondary learn-haveli-action" onClick={() => setMoti('haveli')}>Haveli · {haveliCount(haveliToday, litToday, visits, haveliCap)}</button>}
+      {matkaItems.length > 0 && matkaDone.length < matkaItems.length && <button type="button" className="secondary learn-matka-action" onClick={() => setMoti('matka')}>Matka · {matkaItems.length - matkaDone.length} sealed guesses</button>}
     </section>}
     <div className="learn-map-heading"><h2>Topics</h2><p>Open a topic to explore its ideas. Practice is always optional.</p></div>
     {[...topics].sort((a, b) => Number(selected.includes(b.body.topic.id)) - Number(selected.includes(a.body.topic.id))).map(pack => {

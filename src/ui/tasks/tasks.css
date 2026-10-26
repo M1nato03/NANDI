@@ -169,3 +169,20 @@
 .mor-parent .mor-confirm span { flex: 1 1 100%; }
 .mor-parent .mor-confirm button { min-height: 44px; }
 .mor-noted, .mor-average { margin: -4px 0 12px; }
+/* Item 139: compact one-line rows (~56 px): circle, title (time or progress on a small second line inside the same
+   button), a Start pill and ⋯ for moves. Every control keeps a 44 px target; steps indent with a smaller drawn circle. */
+.mor-list > ul { gap: 6px; }
+.task-row.ui-list-row.mor-row { flex-wrap: wrap; align-items: center; gap: 4px 6px; min-height: 56px; padding: 6px 6px 6px 8px; }
+.mor-row .task-row-main { flex: 1 1 0; min-width: 0; gap: 0; }
+.mor-row .task-title-button { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; width: 100%; min-height: 44px; padding: 2px 0; text-align: left; }
+.mor-row .mor-title { line-height: 20px; }
+.mor-row .task-title-button .small { font-size: 13px; line-height: 17px; color: var(--ink-3); }
+.mor-row .done-circle { flex: none; }
+.mor-row .mor-start { flex: none; min-height: 44px; min-width: 0; padding: 0 14px; border-radius: 999px; font-size: 13px; }
+.mor-row .mor-more { flex: none; width: 44px; min-width: 44px; min-height: 44px; padding: 0; font-size: 20px; line-height: 1; }
+.mor-row .mor-menu { flex: 1 1 100%; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.mor-row .mor-menu button { min-height: 44px; font-size: 13px; }
+.mor-row.mor-step { margin-left: 20px; }
+.mor-row.mor-step .done-circle { position: relative; border-color: transparent; }
+.mor-row.mor-step .done-circle::before { content: ''; position: absolute; inset: 8px; border: 2px solid var(--muted); border-radius: 50%; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

@@ -38,7 +38,7 @@ test("Learn: Today is Chiku's, idea checks get Moti's own card, and the trail is
   // Idea checks count only topics in your drops.
   await page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' }).getByRole('button', { name: 'Add to my drops' }).click();
   const moti = page.getByRole('region', { name: 'Review with Moti' });
-  await expect(moti.getByRole('button', { name: 'Idea checks with Moti · 2 for today' })).toBeVisible();
+  await expect(moti.getByRole('button', { name: 'Idea checks · 2 today' })).toBeVisible();
   await expect(moti.locator('[data-cast="Moti"]')).toHaveCount(1);
   await expect(page.locator('.learn-today [data-cast]')).toHaveCount(0);
   await page.locator('.learn-map-topic').filter({ hasText: 'Money and markets' }).locator('.learn-topic-expand').click();
