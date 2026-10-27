@@ -74,7 +74,7 @@ function Mood({ pose, at }: { pose: Pose; at: [number, number] }) {
   const [x, y] = at;
   if (pose === 'cheer') return <g fill="#f5bf3f"><path d={star(x, y, 4.2)} /><path d={star(x + 9, y + 8, 2.6)} /><path d={star(x - 6, y + 11, 2)} /></g>;
   if (pose === 'think') return <g fill="#aab8d3"><circle cx={x - 4} cy={y + 9} r="1.5" /><circle cx={x} cy={y + 4} r="2.1" /><circle cx={x + 5} cy={y - 1.5} r="2.8" /></g>;
-  if (pose === 'rest') return <g fill="none" stroke="#8a9bc0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  if (pose === 'rest') return <g className="cast-mood-rest" fill="none" stroke="#8a9bc0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d={`M${x} ${y + 4}h4.4l-4.4 4.4h4.4`} /><path d={`M${x + 6.5} ${y - 3}h3.2l-3.2 3.2h3.2`} strokeWidth="1.2" />
   </g>;
   return null;

@@ -44,13 +44,14 @@ test('every old Train, Mind and Games route lands in its Yatra corner; You and R
   await expect(page.getByText('Games', { exact: true })).toHaveCount(0);
 });
 
-test('Calm: the breath leads in and out, the bell session saves one quiet row, and stopping early saves nothing', async ({ page }) => {
+test('Calm: the breath leads in and out, a full minute saves one quiet row, and stopping early saves nothing', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/#yatra/calm');
   await expect(page.getByText('A quiet few minutes with your breath.')).toBeVisible();
   await expect(page.locator('.calm-phase')).toHaveText('4 in, 6 out');
   // Stopping early saves nothing and says nothing about it.
-  await page.getByRole('button', { name: '1 min' }).click();
+  await page.locator('.calm-other').click();
+  await page.getByRole('dialog', { name: 'Other lengths' }).getByRole('button', { name: '1 min', exact: true }).click();
   await page.getByRole('button', { name: 'Start 1 minute' }).click();
   await expect(page.locator('.calm-phase')).toHaveText('Breathe in');
   await page.clock.runFor(5_000);
@@ -64,8 +65,8 @@ test('Calm: the breath leads in and out, the bell session saves one quiet row, a
   await expect(page.locator('.calm-phase')).toHaveText('4 in, 8 out');
   await page.getByRole('button', { name: 'Start 1 minute' }).click();
   await page.clock.runFor(61_000);
-  await expect(page.locator('.calm-phase')).toHaveText('A quiet few minutes, together.');
-  await expect(page.getByRole('button', { name: 'Begin again' })).toBeVisible();
+  await expect(page.locator('.calm-phase')).toHaveText('A quiet minute, together.');
+  await expect(page.getByRole('button', { name: 'Start 1 minute' })).toBeVisible();
   const rows = await calmRows(page);
   expect(rows).toHaveLength(1);
   expect(rows[0]).toMatchObject({ kind: 'session', inputs: { minutes: 1, in: 4, out: 8 } });
