@@ -49,14 +49,14 @@
               },
               {
                 "id": "babylon-keep-c2",
-                "text": "Arkad treats one tenth as a rule for all earners. Research finds that low pay and fixed costs can block a cash buffer.",
+                "text": "Arkad treats one tenth as a rule for all earners. A US study finds that low pay and fixed costs can block a cash buffer.",
                 "sourceRefs": ["clason", "saving"],
                 "voice": "research"
               },
               {
                 "id": "babylon-keep-c3",
-                "text": "A cash buffer can help with a sudden cost. The size of a workable saving share can change with income and needs.",
-                "sourceRefs": ["saving"],
+                "text": "SEBI says savings can build an emergency fund for unexpected costs such as medical bills or business loss. The share a home can save depends on its income and expenses.",
+                "sourceRefs": ["emergency"],
                 "voice": "research"
               }
             ],
@@ -259,6 +259,14 @@
                 "publisher": "Consumer Financial Protection Bureau, Office of Research",
                 "year": 2022,
                 "url": "https://www.consumerfinance.gov/data-research/research-reports/emergency-savings-financial-security-insights-from-making-ends-meet-survey-and-consumer-credit-panel/"
+              },
+              {
+                "id": "emergency",
+                "title": "Why Save",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/moneymatters-whysave.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -532,14 +540,14 @@
               },
               {
                 "id": "babylon-budget-c2",
-                "text": "The book treats some costs as habits that can be cut. Yet rent, food, and care may use most of a home's pay.",
+                "text": "The book says some costs can be cut. A US study says bills and low pay can block cash saved for emergencies.",
                 "sourceRefs": ["clason", "saving"],
                 "voice": "research"
               },
               {
                 "id": "babylon-budget-c3",
-                "text": "A spending log can show when cash leaves. It cannot raise low pay or erase a fixed bill.",
-                "sourceRefs": ["saving"],
+                "text": "SEBI advises tracking spending and putting basic needs before wants. A spending log alone cannot raise income or erase a bill.",
+                "sourceRefs": ["budgeting"],
                 "voice": "research"
               }
             ],
@@ -742,6 +750,14 @@
                 "publisher": "Consumer Financial Protection Bureau, Office of Research",
                 "year": 2022,
                 "url": "https://www.consumerfinance.gov/data-research/research-reports/emergency-savings-financial-security-insights-from-making-ends-meet-survey-and-consumer-credit-panel/"
+              },
+              {
+                "id": "budgeting",
+                "title": "Management of Income and Expenses",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/moneymatters-inc-exp.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -1187,10 +1203,11 @@
               },
               {
                 "id": "risk",
-                "title": "Group Chats as a Gateway to Investment Scams -- Investor Alert",
-                "publisher": "U.S. Securities and Exchange Commission",
-                "year": 2025,
-                "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/gateway-to-investment-scams"
+                "title": "How to Spot a Scam",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/spot-any-scam.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -1397,14 +1414,14 @@
             "id": "babylon-safety",
             "title": "Safety first",
             "prerequisites": ["babylon-growth"],
-            "hook": "A cousin offers a fast deal for saved cash. Arkad's brickmaker once brought back glass in place of gems. What went wrong?",
+            "hook": "A cousin offers a fast deal for saved cash. Arkad's brickmaker once brought back glass in place of jewels. What went wrong?",
             "hookSourceRefs": ["clason", "diversify"],
             "rule": "The fourth cure asks who knows the work and how the first sum can come back. Yet no single deal is risk free; spreading risk can help.",
             "ruleSourceRefs": ["clason", "diversify"],
             "claims": [
               {
                 "id": "babylon-safety-c1",
-                "text": "In Seven Cures, Arkad's first gem deal goes wrong because he asks a brickmaker to judge gems.",
+                "text": "In Seven Cures, Arkad's first jewel deal goes wrong because he asks a brickmaker to judge jewels.",
                 "sourceRefs": ["clason"],
                 "voice": "author"
               },
@@ -1428,7 +1445,7 @@
                 "conceptId": "babylon-safety",
                 "step": "babylon-safety-s1",
                 "job": "transfer",
-                "stem": "A Delhi family shop gets a gem tip from a trader who knows only cloth. What is the tale's warning?",
+                "stem": "A Delhi family shop gets a jewel tip from a trader who knows only cloth. What is the tale's warning?",
                 "difficultySeed": 1,
                 "misconceptionTags": ["babylon-safety-m1"],
                 "sourceRefs": ["clason"],
@@ -1436,14 +1453,14 @@
                   {
                     "id": "a",
                     "text": "Check trade skill.",
-                    "feedback": "The brickmaker knew bricks, but he could not judge gems well.",
+                    "feedback": "The brickmaker knew bricks, but he could not judge jewels well.",
                     "correct": true,
                     "sourceRefs": ["clason"]
                   },
                   {
                     "id": "b",
                     "text": "Trust any skilled trader.",
-                    "feedback": "Skill in cloth does not prove skill in gems or their price.",
+                    "feedback": "Skill in cloth does not prove skill in jewels or their price.",
                     "correct": false,
                     "misconceptionIds": ["babylon-safety-m1"],
                     "sourceRefs": ["clason"]
@@ -1616,10 +1633,11 @@
               },
               {
                 "id": "diversify",
-                "title": "Beginners' Guide to Asset Allocation, Diversification, and Rebalancing",
-                "publisher": "U.S. Securities and Exchange Commission",
-                "year": 2019,
-                "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset"
+                "title": "How to Manage Investment Risks",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/investment_risk_managment.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -1629,11 +1647,11 @@
                 "claimId": "babylon-safety-c1",
                 "sourceRefs": ["clason"],
                 "hook": {
-                  "stem": "Who can best judge a gem?",
+                  "stem": "Who can best judge a jewel?",
                   "options": [
                     {
                       "id": "a",
-                      "text": "A gem dealer.",
+                      "text": "A jewel merchant.",
                       "correct": true,
                       "feedback": "That trade is the person's field."
                     },
@@ -1645,17 +1663,17 @@
                     }
                   ]
                 },
-                "teach": "Arkad's brickmaker cannot judge gems, so a shiny deal turns bad. Skill in one trade does not grant skill in each trade.",
+                "teach": "Arkad's brickmaker cannot judge jewels, so a shiny deal turns bad. Skill in one trade does not grant skill in each trade.",
                 "visual": {
                   "kind": "compare",
                   "left": { "title": "Known field", "lines": ["Bricks"] },
-                  "right": { "title": "New field", "lines": ["Gems"] }
+                  "right": { "title": "New field", "lines": ["Jewels"] }
                 },
                 "example": {
                   "ask": "Tap the skill gap.",
                   "parts": [
                     "The man makes bricks.",
-                    "He buys gems abroad.",
+                    "He buys jewels abroad.",
                     "He cannot spot glass."
                   ],
                   "spot": "He cannot spot glass.",
@@ -1832,13 +1850,13 @@
               },
               {
                 "id": "babylon-home-c2",
-                "text": "Buying a home can add upkeep, tax, and moving costs that the parable plays down.",
+                "text": "A US consumer guide says buying can add repair, tax, and moving costs that the parable plays down.",
                 "sourceRefs": ["clason", "housing"],
                 "voice": "research"
               },
               {
                 "id": "babylon-home-c3",
-                "text": "A home choice depends on length of stay, cash flow, and the risk of a price fall.",
+                "text": "A US consumer guide says a home choice depends on length of stay, cash flow, and the risk of a price fall.",
                 "sourceRefs": ["housing"],
                 "voice": "research"
               }
@@ -2265,7 +2283,7 @@
               },
               {
                 "id": "babylon-future-c3",
-                "text": "A Federal Reserve study finds many U.S. homes have too little cash in reach for basic costs in a shock.",
+                "text": "A US study finds that over half of US families lack cash for three months of basic costs.",
                 "sourceRefs": ["liquid"],
                 "voice": "research"
               }
@@ -3361,10 +3379,11 @@
               },
               {
                 "id": "risk",
-                "title": "Group Chats as a Gateway to Investment Scams -- Investor Alert",
-                "publisher": "U.S. Securities and Exchange Commission",
-                "year": 2025,
-                "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/gateway-to-investment-scams"
+                "title": "How to Spot a Scam",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/spot-any-scam.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -3675,37 +3694,61 @@
                 "conceptId": "babylon-know",
                 "step": "babylon-know-s2",
                 "job": "edge",
-                "stem": "Match the checks in a repeat loop: field skill leads to terms, terms lead to risk, and risk leads back to field skill.",
+                "stem": "Match each check to what it can show. No check makes a gain sure.",
                 "difficultySeed": 2,
                 "misconceptionTags": ["babylon-know-m2"],
                 "sourceRefs": ["clason", "diversify"],
                 "options": [
                   {
                     "id": "a",
-                    "text": "Field skill",
-                    "feedback": "A new trade calls for a check of skill in that field.",
-                    "correct": false,
+                    "text": "Ask a jewel merchant",
+                    "feedback": "Algamish tells Arkad to take advice on jewels from a jewel merchant.",
+                    "correct": true,
                     "sourceRefs": ["clason"]
                   },
                   {
                     "id": "b",
-                    "text": "Deal terms",
-                    "feedback": "Terms show what a deal asks and what can go wrong.",
-                    "correct": false,
+                    "text": "Ask a herdsman",
+                    "feedback": "Algamish says the herdsman knows the truth about sheep.",
+                    "correct": true,
                     "sourceRefs": ["clason"]
                   },
                   {
                     "id": "c",
-                    "text": "Shared risk",
-                    "feedback": "One buyer can be a shared point of risk for a plan.",
-                    "correct": false,
+                    "text": "Spread across assets",
+                    "feedback": "Different assets can soften one loss, but some risk hits all of them.",
+                    "correct": true,
+                    "sourceRefs": ["diversify"]
+                  },
+                  {
+                    "id": "d",
+                    "text": "If the stones are real",
+                    "feedback": "Azmur could not tell glass from jewels. A jewel merchant could.",
+                    "correct": true,
+                    "sourceRefs": ["clason"]
+                  },
+                  {
+                    "id": "e",
+                    "text": "If the flock is sound",
+                    "feedback": "Each trade has its own expert. Skill in bricks does not reach sheep.",
+                    "correct": true,
+                    "sourceRefs": ["clason"]
+                  },
+                  {
+                    "id": "f",
+                    "text": "Less harm from one bad pick",
+                    "feedback": "SEBI says a spread helps, yet a market-wide fall cannot be spread away.",
+                    "correct": true,
                     "sourceRefs": ["diversify"]
                   }
                 ],
                 "answer": [
-                  { "left": "a", "right": "b" },
-                  { "left": "b", "right": "c" },
-                  { "left": "c", "right": "a" }
+                  { "left": "a", "right": "d" },
+                  { "left": "d", "right": "a" },
+                  { "left": "b", "right": "e" },
+                  { "left": "e", "right": "b" },
+                  { "left": "c", "right": "f" },
+                  { "left": "f", "right": "c" }
                 ]
               },
               {
@@ -3790,10 +3833,11 @@
               },
               {
                 "id": "diversify",
-                "title": "Beginners' Guide to Asset Allocation, Diversification, and Rebalancing",
-                "publisher": "U.S. Securities and Exchange Commission",
-                "year": 2019,
-                "url": "https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset"
+                "title": "How to Manage Investment Risks",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/investment_risk_managment.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -4008,7 +4052,7 @@
               },
               {
                 "id": "babylon-hype-c3",
-                "text": "A high gain claim can come with high risk. No seller can promise a result free of risk.",
+                "text": "SEBI warns that quick or sure high gains may point to a scam. Investments in stocks still carry risk.",
                 "sourceRefs": ["risk"],
                 "voice": "research"
               }
@@ -4208,10 +4252,11 @@
               },
               {
                 "id": "risk",
-                "title": "Group Chats as a Gateway to Investment Scams -- Investor Alert",
-                "publisher": "U.S. Securities and Exchange Commission",
-                "year": 2025,
-                "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/gateway-to-investment-scams"
+                "title": "How to Spot a Scam",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/spot-any-scam.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -4847,8 +4892,8 @@
               },
               {
                 "id": "babylon-walls-c3",
-                "text": "Research links cash for emergencies with more room to meet a sudden cost. Low pay can make that cash hard to build.",
-                "sourceRefs": ["saving"],
+                "text": "SEBI says savings can build an emergency fund for unexpected costs. A US study finds that low pay and fixed bills can make that fund hard to build.",
+                "sourceRefs": ["emergency", "saving"],
                 "voice": "research"
               }
             ],
@@ -5051,6 +5096,14 @@
                 "publisher": "Consumer Financial Protection Bureau, Office of Research",
                 "year": 2022,
                 "url": "https://www.consumerfinance.gov/data-research/research-reports/emergency-savings-financial-security-insights-from-making-ends-meet-survey-and-consumer-credit-panel/"
+              },
+              {
+                "id": "emergency",
+                "title": "Why Save",
+                "publisher": "SEBI Investor",
+                "year": 2026,
+                "url": "https://investor.sebi.gov.in/moneymatters-whysave.html",
+                "asOf": "2026-10-27"
               }
             ],
             "steps": [
@@ -5259,7 +5312,7 @@
               },
               {
                 "id": "babylon-debt-c2",
-                "text": "The parable frames debt as a test of character. That harsh frame does not account for low pay or sudden costs.",
+                "text": "The tale treats debt as a test of character. A US study finds that low pay and bills can block cash saved for shocks.",
                 "sourceRefs": ["clason", "saving"],
                 "voice": "research"
               },
@@ -5683,7 +5736,7 @@
               },
               {
                 "id": "babylon-tablets-c3",
-                "text": "A fixed split may be hard when low pay and fixed costs use most of a home's income.",
+                "text": "A US study finds that low pay and fixed bills can block saving. Dabasir's fixed split may be hard for some homes.",
                 "sourceRefs": ["clason", "saving"],
                 "voice": "research"
               }
