@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { fixtureTopic } from './engine/fixtures/topic';
 import type { TopicPack } from '../../data/packs/schemas';
-import { bookDone, bookUnitId, chapterRef, chapterState, checkPicks, currentBook, libraryShelves, nextChapter, untaughtSteps } from './books';
+import { bookDone, bookUnitId, chapterRef, chapterState, checkPicks, currentBook, libraryOrder, libraryShelves, nextChapter, untaughtSteps } from './books';
 
 // Spec 33: a two-chapter book from the fixture's two ideas, each with two steps.
 const step = (id: string) => ({ id, title: id, claimId: 'c1', sourceRefs: ['s1'], hook: { stem: 'Guess?', options: [{ id: 'a', text: 'A', correct: true, feedback: 'Yes.' }, { id: 'b', text: 'B', correct: false, feedback: 'No.' }] },
@@ -43,6 +43,11 @@ describe('spec 33 books', () => {
     expect(libraryShelves([lab, mine], new Set()).map(shelf => shelf.shelf)).toEqual(['originals', 'private']);
     const done = new Set([chapterRef('seed-lab', 'seed-lab-ch1'), chapterRef('seed-lab', 'seed-lab-ch2')]);
     expect(libraryShelves([lab, classic], done).map(shelf => [shelf.shelf, shelf.books.map(book => book.body.topic.id)])).toEqual([['classics', ['classic']], ['finished', ['seed-lab']]]);
+  });
+  it('library order: the Originals in spec order, then other books oldest first, no year last by title', () => {
+    const dated = (topicId: string, year: number | undefined, title = topicId) => { const pack = make(topicId, 'public-domain'); return { ...pack, body: { ...pack.body, book: { ...pack.body.book!, title, year } } }; };
+    const order = libraryOrder([dated('worrying', 1948), dated('zeta', undefined, 'Zeta'), make('money-markets'), dated('babylon', 1926), dated('alpha', undefined, 'Alpha'), make('psychology'), dated('friends', 1936)]);
+    expect(order.map(pack => pack.body.topic.id)).toEqual(['psychology', 'money-markets', 'babylon', 'friends', 'worrying', 'alpha', 'zeta']);
   });
   it("an Original's chest keeps the id its unit had; a new book's chest is its own", () => {
     expect(bookUnitId({ ...lab, body: { ...lab.body, topic: { id: 'psychology', title: 'p' } } })).toBe('psychology-module');
