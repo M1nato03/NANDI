@@ -92,3 +92,8 @@
 .trek-postcard h2 { margin: 6px 0 8px; font: italic 26px/1 Georgia, serif; }
 .trek-postcard p { margin: 0 0 8px; }
 .trek-postcard .trek-sources { margin: 8px 0 0; padding: 0; list-style: none; font-size: 12px; color: var(--ink-3); }
+.trek-constellation-name[data-cut='yes'] { visibility: hidden; }
+.trek-actor.kachhua .kachhua-shell { transform-box: view-box; transform-origin: 58px 77px; transition: transform var(--calm-out, 6s) ease-in-out; }
+.trek-actor.kachhua[data-phase='in'] .kachhua-shell { transform: translateY(-5px) scaleY(1.08); transition-duration: var(--calm-in, 4s); }
+@media (prefers-reduced-motion: reduce) { .trek-actor.kachhua .kachhua-shell { transition: none; transform: none; } }
+:root[data-motion='reduce'] .trek-actor.kachhua .kachhua-shell { transition: none; transform: none; }

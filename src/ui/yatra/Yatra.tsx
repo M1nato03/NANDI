@@ -52,8 +52,9 @@ export function useYatra(): { trek: Trek; night: boolean } | null | undefined {
 function narrative(trek: Trek, night: boolean): string {
   const next = trek.trail.places[trek.place + 1]?.name;
   if (trek.complete) return 'The whole trail is walked. The sky above it is yours.';
-  if (night) return trek.today.stars.length ? `Tonight holds ${trek.today.stars.length} ${trek.today.stars.length === 1 ? 'star' : 'stars'} from your day.` : 'The fire is warm. The sky can be quiet, too.';
-  if (trek.today.campDay) return 'The friends stay close to the fire today. The trail will be here tomorrow.';
+  if (night) return trek.today.stars.length ? `Tonight holds ${trek.today.stars.length} ${trek.today.stars.length === 1 ? 'star' : 'stars'} from your day.` : 'The friends rested by the fire today. The trail will be here tomorrow.';
+  // Item 198: the day is still open, so the line invites, it never closes the day.
+  if (trek.today.campDay) return 'The friends are resting by the fire. A session today walks them on.';
   if (trek.stretch === 0) return 'Three stretches, one camp. Tonight, your stars gather overhead.';
   return `${trek.stretch} of ${STRETCHES_PER_LEG} stretches to ${next}. Every session lights one star.`;
 }

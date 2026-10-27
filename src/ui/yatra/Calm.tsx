@@ -75,7 +75,7 @@ export function Calm() {
   return <section className="screen calm-screen">
     <p className="eyebrow">Calm</p><h1>Breathe with Kachhua</h1>
     <p>A quiet few minutes with your breath.</p>
-    {yatra?.night && <TrekScene trek={yatra.trek} night brighten={outBreaths} onRename={() => undefined} />}
+    {yatra?.night && <TrekScene trek={yatra.trek} night brighten={outBreaths} breath={run ? { phase, in: run.breath.in, out: run.breath.out } : undefined} onRename={() => undefined} />}
     <div className="calm-stage" data-phase={run ? phase : undefined} style={style}>
       {/* At night Kachhua sits at camp in the scene above, so the stage shows the breath only (one Kachhua a screen). */}
       {!yatra?.night && <Cast name="Kachhua" pose={run ? 'idle' : done ? 'rest' : 'idle'} size={140} title="Kachhua" />}

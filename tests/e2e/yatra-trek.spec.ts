@@ -88,7 +88,8 @@ test('a day with no session is a warm camp day, never a miss', async ({ page }) 
   await seed(page, [row('train', 1, '2026-10-27')], '2026-10-27');
   await openYatra(page);
   await expect(line(page)).toHaveText('Stretch 1 of 3 to Chika');
-  await expect(page.locator('.trek-narrative')).toHaveText('The friends stay close to the fire today. The trail will be here tomorrow.');
+  await expect(page.locator('.trek-narrative')).toHaveText('The friends are resting by the fire. A session today walks them on.');
+  await expect(page.locator('.trek-caption')).toContainText('A day on the trail');
   await expect(page.locator('.trek-fire')).toHaveCount(1);
   await expect(page.locator('main')).not.toContainText(/missed|failed|lost|broke/i);
   // At night with no session the sky is quiet, and the group sits at a trailside fire mid-leg.
@@ -96,7 +97,7 @@ test('a day with no session is a warm camp day, never a miss', async ({ page }) 
   await page.reload();
   await openYatra(page);
   await expect(page.locator('.trek-caption')).toContainText('By a trailside fire');
-  await expect(page.locator('.trek-narrative')).toHaveText('The fire is warm. The sky can be quiet, too.');
+  await expect(page.locator('.trek-narrative')).toHaveText('The friends rested by the fire today. The trail will be here tomorrow.');
 });
 
 test('every place on the trail is drawn at 360 px and nothing sits under the tab bar', async ({ page }) => {

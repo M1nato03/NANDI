@@ -204,6 +204,55 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'yatra-trek-camp-day');
   });
 
+  // Item 198: tonight's stars over the camp, a Train stretch's footprints by day, and a 4-star constellation forming.
+  test('yatra: night at camp, train footprints, a constellation forming', async ({ page }) => {
+    const fact = (kind: 'train' | 'mind' | 'calm', n: number, day = '2026-10-28') => ({ id: `shot2-${kind}-${n}-${day}`, dayKey: day, mode: kind === 'mind' ? 'mind' : kind, kind: kind === 'mind' ? 'board' : 'session', refId: `r${n}`, inputs: {}, updatedAt: new Date(`${day}T09:00:00`).getTime() + n * 60_000, deleted: 0, deviceId: 'shots' });
+    const seed = async (facts: ReturnType<typeof fact>[]) => {
+      await page.evaluate(async facts => {
+        const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+        await new Promise<void>((resolve, reject) => {
+          const transaction = database.transaction(['ledger', 'settings'], 'readwrite');
+          transaction.objectStore('ledger').clear();
+          for (const row of facts) transaction.objectStore('ledger').put(row);
+          transaction.objectStore('settings').put({ key: 'yatra.startDay', value: '2026-10-28', updatedAt: 1, deleted: 0, deviceId: 'shots' });
+          transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
+        });
+        database.close();
+      }, facts);
+    };
+    const open = async () => {
+      await page.reload();
+      await expect(async () => {
+        const leave = page.getByRole('button', { name: 'Leave night deck' });
+        if (await leave.isVisible()) await leave.click();
+        await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = 'yatra'; });
+        await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 1500 });
+        await page.waitForTimeout(800);
+        await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 100 });
+      }).toPass({ timeout: 20_000 });
+      const card = page.getByRole('button', { name: 'Keep in the journal' });
+      await page.waitForTimeout(1200);
+      if (await card.isVisible()) await card.click();
+      await page.waitForTimeout(700);
+    };
+    await page.clock.install({ time: new Date('2026-10-28T12:00:00') });
+    await page.goto('/?e2e#plan');
+    // A Train stretch by day: footprints on the path.
+    await seed([fact('train', 1), fact('calm', 2)]);
+    await open();
+    await shot(page, 'yatra-trek-day-train', false);
+    // Three sessions reach Chika today; by night their stars hang over the camp.
+    await seed([fact('train', 1), fact('mind', 2), fact('calm', 3)]);
+    await page.clock.setSystemTime(new Date('2026-10-28T23:45:00'));
+    await open();
+    await shot(page, 'yatra-trek-night-camp', false);
+    // A fourth star after camp joins the leg: four stars, joined, the name written in.
+    await seed([fact('train', 1), fact('mind', 2), fact('calm', 3), fact('train', 4)]);
+    await open();
+    await page.waitForTimeout(1500);
+    await shot(page, 'yatra-trek-constellation', false);
+  });
+
   // Spec 34: Calm mid-breath and finished.
   test('yatra: calm running and done', async ({ page }) => {
     await page.clock.install({ time: NOON });

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
-import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Star, type Trek } from '../../core/yatra/trek';
+import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '../../core/yatra/trek';
 import { Cast } from '../cast/Cast';
 
 /** Spec 34 trek scene: one side-on world, trail below and sky above, so scrolling back scrolls the sky too. */
@@ -12,13 +12,37 @@ const placeX = (index: number) => PAD + index * LEG_W;
 const groupX = (walked: number, legs: number) => { const capped = Math.min(walked, legs * STRETCHES_PER_LEG); return placeX(Math.floor(capped / STRETCHES_PER_LEG)) + (capped % STRETCHES_PER_LEG) * LEG_W / STRETCHES_PER_LEG; };
 const walkedOf = (trek: Trek) => trek.legs.reduce((sum, leg) => sum + leg.stretches.length, 0);
 /** A small stable number from a string, for star places and the faint sky. */
-function hash(text: string): number { let h = 2166136261; for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619); return (h >>> 0) / 4294967295; }
+function hash(text: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  // A final mix, so near-identical strings (p1x, p2x…) do not land in a row (item 198).
+  h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); h ^= h >>> 16;
+  return (h >>> 0) / 4294967295;
+}
+/** Tonight's stars hang over the group, as in the prototype; past six they ring a little wider. */
+const TONIGHT = [[-47, 79], [1, 45], [45, 75], [6, 113], [-20, 41], [48, 118]] as const;
+const tonightPoint = (index: number, centre: number) => { const [dx, y] = TONIGHT[index % TONIGHT.length]!; const ring = Math.floor(index / TONIGHT.length); return { x: centre + dx * (1 + ring * 0.6) + ring * 14, y: y - ring * 12 }; };
+/** Where the eye rests: the middle of the group (Kachhua, Kapi, Nandi stand to the left of its point). */
+const centreOf = (gx: number) => gx - 45;
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
 function readSeen(): number | null { try { const value = Number(localStorage.getItem(SEEN_KEY)); return Number.isFinite(value) && localStorage.getItem(SEEN_KEY) !== null ? value : null; } catch { return null; } }
 function writeSeen(value: number) { try { localStorage.setItem(SEEN_KEY, String(value)); } catch { /* a convenience only */ } }
 
-function starPoint(star: Star, left: number, width: number, index: number) {
-  return { x: left + 30 + hash(`${star.id}x`) * (width - 60), y: 26 + ((hash(`${star.id}y`) + index * 0.37) % 1) * 104 };
+/**
+ * Where a constellation hangs: a finished leg's over the camp it ended at (where its stars first came out, as in the
+ * prototype); a leg closed by a week, over the middle of that leg.
+ */
+function skyCentre(row: Constellation, trek: Trek): number {
+  return trek.legs[row.leg]?.doneOn && row.formedOn === trek.legs[row.leg]!.doneOn ? centreOf(placeX(row.leg + 1)) : placeX(row.leg) + LEG_W / 2;
+}
+/** The prototype's kite: stars in order, closed into a shape from three on, with one strut across a four-star kite. */
+function kitePath(points: { x: number; y: number }[]): string {
+  const at = (point: { x: number; y: number }) => `${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+  if (points.length < 2) return '';
+  let path = points.map((point, i) => `${i ? 'L' : 'M'}${at(point)}`).join('');
+  if (points.length >= 3) path += `L${at(points[0]!)}`;
+  if (points.length === 4) path += `M${at(points[1]!)}L${at(points[3]!)}`;
+  return path;
 }
 
 const Ridge = ({ kind, copies }: { kind: 'far' | 'mid' | 'front'; copies: number }) => {
@@ -34,7 +58,7 @@ const Cairn = () => <svg viewBox="0 0 40 56" aria-hidden="true"><path d="M20 4V3
 const Gate = () => <svg viewBox="0 0 45 54" aria-hidden="true"><path d="M4 53V7Q22 -4 41 7V53" fill="none" stroke="#5c5542" strokeWidth="4" /><path className="trek-gate-door" d="M8 51V11Q22 4 37 11V51Z" fill="#ae7750" stroke="#654c37" strokeWidth="1.5" /><path className="trek-gate-door" d="M8 26H37M16 8V52M29 8V52" stroke="#714c35" strokeWidth="2" /></svg>;
 const Fire = () => <svg viewBox="0 0 30 40" aria-hidden="true"><path d="M2 34L27 39M27 34L2 39" stroke="#67503d" strokeWidth="4" strokeLinecap="round" /><path className="trek-flame" d="M15 33C5 29 6 20 14 10C13 19 20 14 21 4C27 16 28 28 18 33Z" fill="#ff9d34" /><path className="trek-flame" d="M15 32C11 27 12 23 16 17C16 23 20 23 20 19C22 25 20 31 15 32Z" fill="#ffe6a1" /></svg>;
 
-export function TrekScene({ trek, night, brighten = 0, onRename }: { trek: Trek; night: boolean; brighten?: number; onRename: (constellation: Constellation) => void }) {
+export function TrekScene({ trek, night, brighten = 0, breath, onRename }: { trek: Trek; night: boolean; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void }) {
   const legs = trek.trail.legs.length;
   const width = PAD * 2 + legs * LEG_W;
   const walked = walkedOf(trek);
@@ -49,8 +73,18 @@ export function TrekScene({ trek, night, brighten = 0, onRename }: { trek: Trek;
     return () => window.clearTimeout(timer);
   }, [night, shown, walked]);
   const gx = groupX(shown, legs);
-  useLayoutEffect(() => { const node = scroller.current; if (node) node.scrollLeft = Math.max(0, groupX(walked, legs) - node.clientWidth * 0.55); }, [walked, legs]);
-  const onScroll = () => { const x = scroller.current?.scrollLeft ?? 0; if (far.current) far.current.style.transform = `translateX(${x * 0.23}px)`; if (mid.current) mid.current.style.transform = `translateX(${x * 0.12}px)`; };
+  const world = useRef<HTMLDivElement>(null);
+  // A constellation's name is never shown cut at the edge: one that does not fit the view hides until it does.
+  const fitLabels = () => {
+    const node = scroller.current;
+    if (!node || !world.current) return;
+    for (const label of world.current.querySelectorAll<HTMLElement>('.trek-constellation-name')) {
+      const left = label.offsetLeft - label.offsetWidth / 2, right = left + label.offsetWidth;
+      label.dataset.cut = left < node.scrollLeft + 4 || right > node.scrollLeft + node.clientWidth - 4 ? 'yes' : 'no';
+    }
+  };
+  useLayoutEffect(() => { const node = scroller.current; if (node) node.scrollLeft = Math.max(0, centreOf(groupX(walked, legs)) - node.clientWidth / 2); fitLabels(); }, [walked, legs, night]);
+  const onScroll = () => { fitLabels(); const x = scroller.current?.scrollLeft ?? 0; if (far.current) far.current.style.transform = `translateX(${x * 0.23}px)`; if (mid.current) mid.current.style.transform = `translateX(${x * 0.12}px)`; };
   const place = trek.trail.places[Math.min(trek.place, trek.trail.places.length - 1)]!;
   const next = trek.trail.places[trek.place + 1];
   const atPlace = trek.today.atPlace || trek.complete;
@@ -62,11 +96,11 @@ export function TrekScene({ trek, night, brighten = 0, onRename }: { trek: Trek;
   const brightId = brighten && tonight.length ? tonight[(brighten - 1) % tonight.length]!.id : undefined;
   const copies = Math.ceil(width / RIDGE_W) + 1;
   const pinpricks = Array.from({ length: Math.round(width / 22) }, (_, i) => ({ x: hash(`p${i}x`) * width, y: 8 + hash(`p${i}y`) * 120, o: 0.2 + hash(`p${i}o`) * 0.5 }));
-  const caption = night ? (atPlace ? `At ${place.name}` : 'By a trailside fire') : trek.complete ? 'Trail complete' : trek.today.campDay ? atPlace ? `A day at ${place.name}` : 'A day on the trail' : atPlace ? `${place.name} camp` : `Toward ${next?.name ?? place.name}`;
+  const caption = night ? (atPlace ? `At ${place.name}` : 'By a trailside fire') : trek.complete ? 'Trail complete' : trek.today.campDay ? atPlace ? `Camp at ${place.name}` : 'A day on the trail' : atPlace ? `${place.name} camp` : `Toward ${next?.name ?? place.name}`;
 
   return <section className={`trek-scene${night ? ' is-night' : ''}`} aria-label={`${trek.trail.name} trail. Swipe to look back along it.`}>
     <div className="trek-scroll" ref={scroller} onScroll={onScroll} tabIndex={0} aria-label="Swipe the trail sideways">
-      <div className="trek-world" style={{ width }}>
+      <div className="trek-world" ref={world} style={{ width }}>
         <div className="trek-sun" style={{ left: Math.max(PAD, gx - 40) }} aria-hidden="true" />
         <div ref={far} className="trek-layer"><Ridge kind="far" copies={copies} /></div>
         <div ref={mid} className="trek-layer"><Ridge kind="mid" copies={copies} /></div>
@@ -75,14 +109,14 @@ export function TrekScene({ trek, night, brighten = 0, onRename }: { trek: Trek;
         <div className="trek-overlay" /><div className="trek-pinpricks" aria-hidden="true">{pinpricks.map((dot, i) => <span key={i} style={{ left: dot.x, top: dot.y, opacity: dot.o }} />)}</div>
         {/* The sky over each leg: its constellation, joined and named, stays above that part of the trail. */}
         <svg className="trek-sky" width={width} height="276" aria-hidden="true">{trek.constellations.map(row => {
-          const points = row.stars.map((star, i) => starPoint(star, placeX(row.leg), LEG_W, i)).sort((a, b) => a.x - b.x);
-          return <path key={row.id} d={points.map((point, i) => `${i ? 'L' : 'M'}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join('')} />;
+          const points = row.stars.map((_, i) => tonightPoint(i, skyCentre(row, trek)));
+          return <path key={row.id} d={kitePath(points)} />;
         })}</svg>
         <div className="trek-stars">
-          {trek.constellations.flatMap(row => row.stars.map((star, i) => ({ star, ...starPoint(star, placeX(row.leg), LEG_W, i) }))).concat(loose.map((star, i) => ({ star, ...starPoint(star, gx - 110, 220, i) })))
+          {trek.constellations.flatMap(row => row.stars.map((star, i) => ({ star, ...tonightPoint(i, skyCentre(row, trek)) }))).concat(loose.map((star, i) => ({ star, ...tonightPoint(i, centreOf(gx)) })))
             .map(({ star, x, y }, i) => <i key={star.id} className={`trek-star${brightId === star.id ? ' bright' : ''}`} data-kind={star.kind} style={{ left: x, top: y, '--star': STAR_COLOURS[star.kind], '--delay': `${i * 0.23}s` } as CSSProperties} />)}
         </div>
-        {night && trek.constellations.map(row => <button type="button" key={row.id} className="trek-constellation-name" style={{ left: placeX(row.leg) + LEG_W / 2 }} onClick={() => onRename(row)} aria-label={`${row.name}, a constellation. Rename it`}>{row.name}</button>)}
+        {night && trek.constellations.map(row => <button type="button" key={row.id} className="trek-constellation-name" style={{ left: skyCentre(row, trek) }} onClick={() => onRename(row)} aria-label={`${row.name}, a constellation. Rename it`}>{row.name}</button>)}
         {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-tent${spot.kind === 'pass' ? ' is-pass' : ''}`} style={{ left: placeX(i) - (spot.kind === 'pass' ? 20 : 45) }}>{spot.kind === 'pass' ? <Cairn /> : <Tent />}</div>)}
         {trek.trail.legs.map((leg, i) => <div key={leg.landmark.id} className={`trek-gate${trek.legs[i]!.gateOn ? ' open' : ''}`} style={{ left: placeX(i) + LEG_W / 2 - 22 }} title={leg.landmark.name}><Gate /></div>)}
         <div className="trek-marks" aria-hidden="true">{trek.legs.flatMap(leg => leg.stretches.map((stretch, k) => {
@@ -94,7 +128,8 @@ export function TrekScene({ trek, night, brighten = 0, onRename }: { trek: Trek;
         }))}</div>
         {fire && <div className="trek-fire" style={{ left: gx + 26 }}><Fire /></div>}
         <div className="trek-group" style={{ left: gx }}>
-          <span className="trek-actor kachhua" style={{ left: -150 }}><Cast name="Kachhua" pose={night ? 'rest' : 'idle'} size={64} /></span>
+          {/* At a night Calm, Kachhua is awake and breathes with the timer; the others may doze (spec 34 table). */}
+          <span className="trek-actor kachhua" style={{ left: -150, '--calm-in': `${breath?.in ?? 4}s`, '--calm-out': `${breath?.out ?? 6}s` } as CSSProperties} data-phase={breath?.phase}><Cast name="Kachhua" pose={night && !breath ? 'rest' : 'idle'} size={64} /></span>
           <span className="trek-actor kapi" style={{ left: -96 }}><Cast name="Kapi" pose={night ? 'rest' : 'idle'} size={62} /></span>
           <span className="trek-actor nandi" style={{ left: -44 }}><Cast name="Nandi" pose={night ? 'rest' : 'idle'} size={66} /></span>
         </div>
