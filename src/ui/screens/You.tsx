@@ -41,8 +41,7 @@ export function You() {
     <section className="card you-week" aria-label="This week in words"><span className="eyebrow">This week in words</span><h2>What your time became</h2>{weekNumbers.length ? <div className="you-week-numbers">{weekNumbers.map(item => <div className="you-week-number" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div> : <p>Your week is just beginning. One small step counts.</p>}{recap && <RecapShare recap={recap} />}</section>
     <HexagonCard now={Date.now()} />{/* eslint-disable-line react-hooks/purity */}
     <BackupNudge />
-    {/* Spec 33: Train is parked under You (its data and routes are kept); private books are imported here. */}
-    <button type="button" className="card you-link you-courtyard-link you-train-link" onClick={() => go('train')}><strong>Train (paused)</strong><span>Kept safe. Open it any time.</span></button>
+    {/* Spec 33: private books are imported here. Train moved to Yatra (spec 34). */}
     <PrivateBooks />
     <button type="button" className="card you-link deck-area-night settings-link" onClick={() => go('you/settings')}><DeckGlyph type="night" /><strong>Settings</strong><span>Night plan, day and night, notifications, appearance, backup and about</span></button>
   </section>;

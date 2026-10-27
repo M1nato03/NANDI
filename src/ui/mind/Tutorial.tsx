@@ -68,7 +68,7 @@ export function BoardTutorial({ type, onDone }: { type: PuzzleType; onDone: (ski
   </section>;
 }
 
-/** Spec 29: Kapi's case gets the same treatment, a 4-step walkthrough of the grid. */
+/** Spec 29: Kapi's case gets the same kind of 4-step walkthrough of the grid. */
 export function CaseTutorial({ onDone }: { onDone: (skipped: boolean) => void }) {
   const { suspects, objects, steps, outro } = CASE_TUTORIAL;
   const [index, setIndex] = useState(0);

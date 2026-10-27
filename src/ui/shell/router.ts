@@ -6,7 +6,14 @@ type Entry = { nandi: true; from?: string; deckIndex?: number };
 const entry = (): Entry | null => history.state?.nandi === true ? history.state as Entry : null;
 
 export function canonicalRoute(path: string): string {
-  const value = path.replace(/^#\/?/, '').toLowerCase();
+  const value = legacyRoute(path.replace(/^#\/?/, '').toLowerCase());
+  // Spec 34: Train and Kapi's shelf (Mind, then Read's Games) live in Yatra's corners now.
+  if (value === 'train' || value.startsWith('train/')) return `yatra/${value}`;
+  if (value === 'read/games' || value.startsWith('read/games/')) return `yatra/mind${value.slice(10)}`;
+  return value;
+}
+
+function legacyRoute(value: string): string {
   if (!value || value === 'now') return 'plan';
   if (value === 'now/focus' || value === 'today') return 'plan/focus';
   if (value === 'tasks') return 'plan';
@@ -31,11 +38,12 @@ export function canonicalRoute(path: string): string {
 export function route(): string { return canonicalRoute(location.hash); }
 export function parentRoute(path: string): string {
   if (path === 'night') return 'plan';
-  if (path === 'read/games/board/daily' || path === 'read/games') return path === 'read/games' ? 'read' : 'read/games';
-  if (path.startsWith('read/games/board/')) return 'read/games/practice';
-  if (path.startsWith('read/games/')) return 'read/games';
+  if (path === 'yatra/mind/board/daily' || path === 'yatra/mind') return path === 'yatra/mind' ? 'yatra' : 'yatra/mind';
+  if (path.startsWith('yatra/mind/board/')) return 'yatra/mind/practice';
+  if (path.startsWith('yatra/mind/')) return 'yatra/mind';
+  if (path.startsWith('yatra/train/')) return 'yatra/train';
+  if (path.startsWith('yatra/')) return 'yatra';
   if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
-  if (path === 'train' || path.startsWith('train/')) return path === 'train' ? 'you' : 'train';
   if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];
@@ -59,8 +67,6 @@ export function initializeHistory(): void {
 }
 export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
-  // Train lives under You now (spec 33).
-  if (root === 'train') return 'You';
   return tabs.find(tab => tab.toLowerCase() === root) ?? 'Plan';
 }
 export function go(path: string): void {
@@ -82,8 +88,10 @@ export function back(fallback = parentRoute(route())): void {
   if (entry()?.from) history.back();
   else go(fallback);
 }
-/** Where Back goes, named: a tab, or Games for Kapi's boards inside Read (spec 33). */
+/** Where Back goes, named: a tab, or the Yatra corner a screen sits in (spec 34). */
 export function backDestination(): string {
   const target = canonicalRoute(entry()?.from ?? parentRoute(route()));
-  return target === 'read/games' || target.startsWith('read/games/') ? 'Games' : tabOf(target);
+  if (target === 'yatra/mind' || target.startsWith('yatra/mind/')) return "Kapi's shelf";
+  if (target === 'yatra/train' || target.startsWith('yatra/train/')) return 'Train';
+  return tabOf(target);
 }

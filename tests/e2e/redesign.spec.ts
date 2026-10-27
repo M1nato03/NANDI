@@ -2,12 +2,12 @@ import { expect, test } from '@playwright/test';
 import { openMore } from './helpers/plan';
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`three tabs (spec 33) and one home in ${scheme}`, async ({ page }, testInfo) => {
+  test(`four tabs (spec 34) and one home in ${scheme}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/');
     const tabs = page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link');
-    await expect(tabs).toHaveText(['Plan', 'Read', 'You']);
+    await expect(tabs).toHaveText(['Plan', 'Read', 'Yatra', 'You']);
     await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     // Spec 27: routines and the focus timer with breaks sit in Plan's More fold.
@@ -28,9 +28,10 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('region', { name: 'Continue' })).toBeVisible();
     await expect(page.getByRole('region', { name: 'Courses' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Review cards' })).toHaveCount(0);
-    await page.locator('details.read-games summary').click();
-    await page.getByRole('button', { name: "Open Kapi's shelf" }).click();
-    await expect(page).toHaveURL(/#read\/games$/);
+    // Spec 34: Kapi's shelf is Yatra's Mind corner.
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
+    await page.getByRole('button', { name: /^Mind: / }).click();
+    await expect(page).toHaveURL(/#yatra\/mind$/);
     await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Board Not done' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
@@ -40,7 +41,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.getByRole('heading', { name: 'You', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: /Settings/ })).toBeVisible();
     await expect(page.getByRole('main').getByRole('button', { name: 'Open Learn' })).toHaveCount(0);
-    await page.getByRole('button', { name: /^Train \(paused\)/ }).click();
+    // Spec 34: Train is Yatra's Train corner now.
+    await tabs.filter({ hasText: 'Yatra' }).click();
+    await page.getByRole('button', { name: /^Train: / }).click();
     await expect(page.getByRole('heading', { name: 'Train', exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`tabs-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -51,7 +54,7 @@ for (const scheme of ['light', 'dark'] as const) {
 
 test('old routes redirect to feature homes and night stays separate', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
-  for (const [oldRoute, newRoute] of [['now', 'plan'], ['you/train', 'train'], ['you/learn', 'read'], ['you/mind', 'read/games']] as const) {
+  for (const [oldRoute, newRoute] of [['now', 'plan'], ['you/train', 'yatra/train'], ['you/learn', 'read'], ['you/mind', 'yatra/mind'], ['train', 'yatra/train'], ['read/games', 'yatra/mind'], ['mind/case', 'yatra/mind/case']] as const) {
     await page.goto(`/#${oldRoute}`);
     await expect(page).toHaveURL(new RegExp(`#${newRoute}$`));
   }

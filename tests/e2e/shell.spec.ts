@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 // Spec 33: three tabs; Read's heading is "Your books".
-const names = ['Plan', 'Read', 'You'];
-const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', You: 'You' };
+const names = ['Plan', 'Read', 'Yatra', 'You'];
+const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', Yatra: 'Yatra', You: 'You' };
 
 test('day one shows a calm You before Season 1', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00') });

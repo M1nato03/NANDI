@@ -18,8 +18,8 @@ const ACTIONS: Record<Goal, FirstAction> = {
   // Spec 33: Learn something opens Read, straight into the first chapter of the first book (spec 18's quick first win).
   learn: { route: 'read/chapter/psychology/psychology-ch1', label: 'Start your first chapter' },
   // Today's board itself, not the warm-up board.
-  mind: { route: 'read/games/board/daily', label: "Try today's puzzle" },
-  train: { route: 'train/easy', label: 'Start an easy first workout' },
+  mind: { route: 'yatra/mind/board/daily', label: "Try today's puzzle" },
+  train: { route: 'yatra/train/easy', label: 'Start an easy first workout' },
   plan: { route: 'plan', label: 'Add your first task' },
   sleep: { route: 'you/tonight', label: 'Plan tonight' },
 };

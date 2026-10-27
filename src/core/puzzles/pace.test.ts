@@ -46,8 +46,8 @@ describe('pace line (spec 24, cj5-mind §7.1)', () => {
     expect(decodePace(segment)).toEqual(marks);
     const route = challengeRoute({ type: 'crowns', diff: 'medium', seed: 797416356, day: '2026-11-05', pace: marks });
     // The link keeps mind/ so older installs open it; this build reads it inside Read's Games (spec 33).
-    expect(canonicalRoute(`#${route}`)).toBe(`read/games/${route.slice('mind/'.length)}`);
-    expect(canonicalRoute(`#${route.toUpperCase()}`)).toBe(`read/games/${route.slice('mind/'.length)}`);
+    expect(canonicalRoute(`#${route}`)).toBe(`yatra/mind/${route.slice('mind/'.length)}`);
+    expect(canonicalRoute(`#${route.toUpperCase()}`)).toBe(`yatra/mind/${route.slice('mind/'.length)}`);
     expect(parseChallenge(route.slice('mind/'.length))).toEqual({ type: 'crowns', diff: 'medium', seed: 797416356, day: '2026-11-05', pace: marks });
     // The same link read the way older versions did: day, then type/diff/seed, and nothing after.
     const [, day, type, diff, seed] = route.slice('mind/'.length).split('/');

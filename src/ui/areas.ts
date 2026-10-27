@@ -51,8 +51,9 @@ export const STAGES: Record<Area, { friend: CastName; stage: string; body: strin
 export function areaOf(path: string): Area | undefined {
   const root = path.split('/')[0];
   if (root === 'night') return 'night';
-  // Spec 33: Read is Chiku's (learn) area; its Games are Kapi's (mind).
-  if (root === 'read') return path.split('/')[1] === 'games' ? 'mind' : 'learn';
+  if (root === 'read') return 'learn';
+  // Spec 34: Yatra's corners keep their friends' areas (Calm is Kachhua's); Yatra's home stays neutral.
+  if (root === 'yatra') { const corner = path.split('/')[1]; return corner === 'train' || corner === 'mind' ? corner : corner === 'calm' ? 'night' : undefined; }
   return root === 'plan' || root === 'train' || root === 'learn' || root === 'mind' ? root : undefined;
 }
 

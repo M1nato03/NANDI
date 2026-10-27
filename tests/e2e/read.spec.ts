@@ -19,10 +19,10 @@ const dropIds = (page: Page) => page.evaluate(async () => {
   return rows.filter(row => row.drop.chapter).map(row => `${row.id.split(':').slice(0, 2).join(':')}|${row.drop.chapter!.moduleId}`).sort();
 });
 
-test('Read: the tabs are Plan, Read and You; Continue sits above the fold; Games starts closed', async ({ page }) => {
+test('Read: the tabs are Plan, Read, Yatra and You; Continue sits above the fold; no Games fold', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read');
-  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Plan', 'Read', 'You']);
+  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Plan', 'Read', 'Yatra', 'You']);
   await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
   await expect(page.getByRole('heading', { name: 'Your books', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });
@@ -33,22 +33,18 @@ test('Read: the tabs are Plan, Read and You; Continue sits above the fold; Games
   await expect(page.getByRole('region', { name: 'NANDI Originals' }).getByRole('button')).toHaveCount(6);
   // The first classic (spec 33 §6): How to Win Friends, public domain in India.
   await expect(page.getByRole('region', { name: 'Classics' }).getByRole('button', { name: /^How to Win Friends/ })).toBeVisible();
-  await expect(page.locator('details.read-games')).not.toHaveAttribute('open');
-  await page.locator('details.read-games summary').click();
-  await page.getByRole('button', { name: "Open Kapi's shelf" }).click();
-  await expect(page).toHaveURL(/#read\/games$/);
-  await expect(page.getByRole('region', { name: "Kapi's shelf" })).toBeVisible();
+  // Spec 34: Kapi's shelf moved to Yatra; Read has no Games fold.
+  await expect(page.locator('details.read-games')).toHaveCount(0);
 });
 
 test('old Learn and Mind links still open, now inside Read', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
-  for (const [from, to] of [['learn', 'read'], ['learn/drop', 'read/drop'], ['mind', 'read/games'], ['mind/practice', 'read/games/practice'], ['you/learn', 'read']] as const) {
+  for (const [from, to] of [['learn', 'read'], ['learn/drop', 'read/drop'], ['mind', 'yatra/mind'], ['mind/practice', 'yatra/mind/practice'], ['you/learn', 'read']] as const) {
     await page.goto(`/?e2e#${from}`);
     await expect(page).toHaveURL(new RegExp(`#${to.replaceAll('/', '\\/')}$`));
   }
   await page.goto('/?e2e#you');
-  await page.getByRole('button', { name: /^Train \(paused\)/ }).click();
-  await expect(page).toHaveURL(/#train$/);
+  await expect(page.getByRole('button', { name: /^Train \(paused\)/ })).toHaveCount(0);
 });
 
 test('a chapter reads its lessons as the day\'s drop, then its quiz check, then the done card; a second chapter keeps its own drop', async ({ page }) => {

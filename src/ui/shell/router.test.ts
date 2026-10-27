@@ -12,17 +12,22 @@ it('maps legacy links to their single feature homes', () => {
     '#now', '#now/focus', '#today', '#tasks/plan', '#you/train/workout', '#you/learn',
     '#you/mind/board/daily', '#you/mind/reviews', '#you/mind/lesson', '#you/mind/unit', '#ground/backup',
   ].map(canonicalRoute)).toEqual([
-    'plan', 'plan/focus', 'plan/focus', 'plan/morning', 'train/workout', 'read',
-    'read/games/board/daily', 'read/games/reviews', 'read/lesson', 'read/unit', 'you/backup',
+    'plan', 'plan/focus', 'plan/focus', 'plan/morning', 'yatra/train/workout', 'read',
+    'yatra/mind/board/daily', 'yatra/mind/reviews', 'read/lesson', 'read/unit', 'you/backup',
   ]);
   // Spec 33: Learn became Read, Mind became Read's Games, and Train is parked under You.
-  expect(['#learn', '#learn/drop', '#mind', '#mind/case', '#mind/generator', '#you/mind/generator'].map(canonicalRoute)).toEqual(['read', 'read/drop', 'read/games', 'read/games/case', 'you/mind/generator', 'you/mind/generator']);
-  expect(parentRoute('read/games/board/crowns/easy')).toBe('read/games/practice');
+  expect(['#learn', '#learn/drop', '#mind', '#mind/case', '#mind/generator', '#you/mind/generator'].map(canonicalRoute)).toEqual(['read', 'read/drop', 'yatra/mind', 'yatra/mind/case', 'you/mind/generator', 'you/mind/generator']);
+  // Spec 34: Train and Read's Games moved to Yatra's corners.
+  expect(['#train', '#train/history', '#read/games', '#read/games/board/daily', '#you/train', '#you/mind', '#learn/games'].map(canonicalRoute)).toEqual(['yatra/train', 'yatra/train/history', 'yatra/mind', 'yatra/mind/board/daily', 'yatra/train', 'yatra/mind', 'yatra/mind']);
+  expect(parentRoute('yatra/mind/board/crowns/easy')).toBe('yatra/mind/practice');
+  expect(parentRoute('yatra/mind')).toBe('yatra');
+  expect(parentRoute('yatra/calm')).toBe('yatra');
+  expect(parentRoute('yatra/train/history')).toBe('yatra/train');
   expect(parentRoute('read/chapter/psychology/psychology-ch1')).toBe('read/book/psychology');
-  expect(parentRoute('train')).toBe('you');
-  expect(tabOf('you/mind/board')).toBe('Read');
+  expect(parentRoute(canonicalRoute('train'))).toBe('yatra');
+  expect(tabOf('you/mind/board')).toBe('Yatra');
   expect(tabOf('learn/unit')).toBe('Read');
-  expect(tabOf('train/history')).toBe('You');
+  expect(tabOf('train/history')).toBe('Yatra');
 });
 
 it('starts at Plan, redirects old links, and remembers a tab for one hour', () => {
@@ -36,5 +41,5 @@ it('starts at Plan, redirects old links, and remembers a tab for one hour', () =
   expect(lastTab(Date.now() + 61 * 60_000)).toBe('plan');
   history.replaceState(null, '', '#you/train/history');
   initializeHistory();
-  expect(location.hash).toBe('#train/history');
+  expect(location.hash).toBe('#yatra/train/history');
 });

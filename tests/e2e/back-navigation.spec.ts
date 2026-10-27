@@ -5,7 +5,7 @@ test('tabs and Today dots navigate to feature homes at phone size', async ({ pag
   await page.goto('/#plan');
   // Spec 33: three tabs (Read's heading is "Your books") and three dots: Plan, Read, Night.
   const heading: Record<string, string> = { Plan: 'Plan', Read: 'Your books', You: 'You' };
-  for (const name of ['Plan', 'Read', 'You']) {
+  for (const name of ['Plan', 'Read', 'Yatra', 'You']) {
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name }).click();
     await expect(page.getByRole('heading', { name: heading[name], exact: true })).toBeVisible();
   }
@@ -38,6 +38,6 @@ test('browser Back restores the Mind board and saved puzzle progress', async ({ 
   await page.getByRole('button', { name: 'Board Not done' }).click();
   await expect(board.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
   expect(await board.locator('.mind-grid button').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(cells);
-  const back = await page.getByRole('button', { name: 'Back to Games' }).boundingBox();
+  const back = await page.getByRole('button', { name: "Back to Kapi's shelf" }).boundingBox();
   expect(back && back.width >= 44 && back.height >= 44).toBe(true);
 });

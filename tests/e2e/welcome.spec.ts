@@ -62,7 +62,7 @@ test("Sharpen my mind opens today's board, and Get fit can start easy without th
   await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
   await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
   // Straight into the first workout, on the easiest step of each move.
-  await expect(page).toHaveURL(/#train\/workout$/);
+  await expect(page).toHaveURL(/#yatra\/train\/workout$/);
   await expect(page.getByText('Current exercise')).toBeVisible();
 });
 

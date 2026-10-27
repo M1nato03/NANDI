@@ -4,7 +4,7 @@ import { openMore } from './helpers/plan';
 // Item 183 (Jenil, build 91): the tab bar spans the screen, and Plan is back to spec 27's first screen.
 test('the tabs share the full width of the bar equally, on every tab', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-27T12:00:00') });
-  for (const tab of ['plan', 'read', 'you']) {
+  for (const tab of ['plan', 'read', 'yatra', 'you']) {
     await page.goto(`/#${tab}`);
     const bar = page.getByRole('navigation', { name: 'Main tabs' });
     const box = (await bar.boundingBox())!;

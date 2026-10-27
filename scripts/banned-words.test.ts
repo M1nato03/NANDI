@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findBannedWords } from './banned-words';
+import { findBannedWords, findClaims } from './banned-words';
 
 describe('banned words', () => {
   it('finds exact, case-sensitive names with word boundaries', () => {
@@ -20,5 +20,11 @@ describe('banned words', () => {
     expect(
       findBannedWords('ego zip file Egoism preEgo Zip_2 3Zip Blue Locker'),
     ).toEqual([]);
+  });
+
+  // Spec 34: Calm and Mind copy makes no health or brain claims (whole phrases, any case).
+  it('finds health and brain claims as whole phrases in any case', () => {
+    expect(findClaims('Breathe to Reduce Stress.\nA brain boost, clinically proven.').map(hit => hit.word)).toEqual(['Reduce Stress', 'brain', 'boost', 'clinically', 'proven']);
+    expect(findClaims('A quiet few minutes with your breath. Wheal, boosted-ish, brainy, health of the shore.')).toEqual([]);
   });
 });

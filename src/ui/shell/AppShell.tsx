@@ -60,6 +60,8 @@ const Train = lazy(() => import('../screens/Train').then(module => ({ default: m
 const Mind = lazy(() => import('../screens/Mind').then(module => ({ default: module.Mind })));
 const Ground = lazy(() => import('../screens/Ground').then(module => ({ default: module.Ground })));
 const You = lazy(() => import('../screens/You').then(module => ({ default: module.You })));
+const Yatra = lazy(() => import('../yatra/Yatra').then(module => ({ default: module.Yatra })));
+const Calm = lazy(() => import('../yatra/Calm').then(module => ({ default: module.Calm })));
 const SeasonLadder = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonLadder })));
 const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module => ({ default: module.SeasonShop })));
 const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
@@ -196,8 +198,11 @@ export function AppShell() {
   else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;
   else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <Chapter key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
   else if (path === 'read/lesson' || path === 'read/unit' || path === 'read/courses') screen = <Mind key={path} entry={path.split('/')[1]} />;
-  else if (path === 'read/games' || path.startsWith('read/games/')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
-  else if (path === 'train' || path.startsWith('train/')) screen = <Train entry={path.split('/')[1]} />;
+  // Spec 34: Yatra and its corners: Train (Nandi), Kapi's shelf (Mind) and Calm (Kachhua).
+  else if (path === 'yatra') screen = <Yatra />;
+  else if (path === 'yatra/mind' || path.startsWith('yatra/mind/')) screen = <Mind key={path} entry={path.split('/').slice(2).join('/')} />;
+  else if (path === 'yatra/train' || path.startsWith('yatra/train/')) screen = <Train entry={path.split('/')[2]} />;
+  else if (path === 'yatra/calm') screen = <Calm />;
   else if (path === 'ground') screen = <section className="screen"><h1>Ground</h1><Ground {...appearance} /></section>;
   else if (path === 'night') screen = <Now />;
   else if (path === 'kolam') screen = <KolamScreen />;
@@ -205,7 +210,7 @@ export function AppShell() {
   else if (tab === 'Plan') screen = <Plan questId={path.startsWith('plan/quest/') ? path.split('/')[2] : undefined} />;
   else if (tab === 'You') screen = <You />;
   else screen = <Plan />;
-  const root = ['plan', 'read', 'you'].includes(path);
+  const root = ['plan', 'read', 'yatra', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
   return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}><NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /></Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

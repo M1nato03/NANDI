@@ -34,9 +34,6 @@
 .read-shelf-row li { flex: none; scroll-snap-align: start; }
 .read-book-tile { display: grid; gap: 6px; width: 112px; padding: 4px; border: 0; background: none; color: var(--ink); text-align: left; box-shadow: none; }
 .read-book-tile .small { color: var(--ink-3); font-size: 12px; line-height: 16px; }
-.read-games { margin: 20px 0; }
-.read-games summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
-.read-games p { margin: 4px 0 12px; }
 
 .read-book-head { display: flex; gap: 16px; align-items: flex-end; margin: 8px 0 12px; }
 .read-book-head h1 { margin: 0 0 6px; font-size: 28px; line-height: 30px; overflow-wrap: anywhere; }
@@ -71,15 +68,11 @@
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* Item 155: folds name themselves and show a chevron; the Train line wraps. */
-.read-games summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: center; padding: 4px 0; list-style: none; }
-.read-games summary::-webkit-details-marker, .read-chapter-ideas summary::-webkit-details-marker { display: none; }
-.read-games summary .small { grid-column: 1; color: var(--ink-3); font-weight: 400; }
-.read-games summary .read-chevron { grid-column: 2; grid-row: 1 / span 2; }
+.read-chapter-ideas summary::-webkit-details-marker { display: none; }
 .read-fold-title { font-weight: 700; }
 .read-chevron { display: inline-block; margin-left: 6px; transition: transform .2s; }
 details[open] > summary .read-chevron { transform: rotate(90deg); }
 .read-chapter-ideas summary { list-style: none; gap: 2px; }
-.you-train-link span { white-space: normal; overflow: visible; text-overflow: clip; }
 .read-courses-link { margin: 0; }
 
 /* The file input lies over the whole Import button (a full-size tap and keyboard target), unseen. */

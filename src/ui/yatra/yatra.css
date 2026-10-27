@@ -1,0 +1,26 @@
+/* Spec 34: Yatra's corners. Each card wears its friend's stage colour (spec 25) around the friend. */
+.yatra-line { margin: 4px 0 16px; color: var(--ink-2); }
+.yatra-corners { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.yatra-corner { display: flex; align-items: center; gap: 16px; width: 100%; min-height: 104px; margin: 0; padding: 12px 16px 12px 12px; text-align: left; color: var(--ink); }
+.yatra-corner svg { flex: none; padding: 4px; border-radius: 18px; background: var(--area-stage); }
+.yatra-corner-text { display: grid; gap: 2px; min-width: 0; }
+.yatra-corner-text strong { font: 800 26px/1.1 'Bricolage Grotesque', sans-serif; letter-spacing: -.03em; }
+.yatra-corner-text span { color: var(--ink-2); font-weight: 400; }
+
+/* Calm: Kachhua's shell rises on the in-breath and settles on the out-breath, at the breath's own pace. */
+.calm-stage { display: grid; justify-items: center; gap: 8px; margin: 8px 0 16px; padding: 20px 16px; border-radius: var(--radius-card); background: var(--area-stage); color: var(--area-stage-ink); }
+.calm-stage .kachhua-shell { transform-box: view-box; transform-origin: 58px 77px; transition: transform var(--calm-out, 6s) ease-in-out; }
+.calm-stage[data-phase='in'] .kachhua-shell { transform: translateY(-5px) scaleY(1.08); transition-duration: var(--calm-in, 4s); }
+.calm-phase { margin: 0; font: 700 22px/1.2 'Bricolage Grotesque', sans-serif; color: inherit; }
+.calm-clock { margin: 0; font-variant-numeric: tabular-nums; font-size: 18px; color: inherit; }
+.calm-progress { width: 100%; height: 6px; border-radius: 999px; background: color-mix(in srgb, currentColor 18%, transparent); overflow: hidden; }
+.calm-progress > span { display: block; height: 100%; background: currentColor; }
+.calm-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; padding: 0; border: 0; }
+.calm-choices legend { width: 100%; margin-bottom: 6px; font-weight: 700; }
+.calm-choices button { min-height: 44px; }
+.calm-breath { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.calm-breath label { display: grid; gap: 4px; }
+.calm-scan ol { margin: 8px 0 0; padding-left: 20px; }
+.calm-scan li { margin: 4px 0; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { .calm-stage .kachhua-shell { transition: none; transform: none; } }
+:root[data-motion='reduce'] .calm-stage .kachhua-shell { transition: none; transform: none; }

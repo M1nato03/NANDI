@@ -62,7 +62,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'plan-6-more-closed');
     await openMore(page);
     await shot(page, 'plan-7-more-open');
-    for (const tab of ['plan', 'read', 'you']) {
+    for (const tab of ['plan', 'read', 'yatra', 'you']) {
       await page.goto(`/#${tab}`);
       const bar = (await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox())!;
       await page.screenshot({ path: `${out}/${theme}/tabbar-${tab}.png`, clip: { x: 0, y: bar.y - 8, width: 360, height: bar.height + 8 } });
@@ -138,12 +138,25 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-8-book-done', false);
   });
 
-  for (const route of ['you', 'read/games', 'train', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
+  for (const route of ['you', 'yatra', 'yatra/mind', 'yatra/train', 'yatra/calm', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto(`/?e2e#${route}`);
     await expect(page.locator('main')).toBeVisible();
     await page.waitForTimeout(600);
     await shot(page, route.replace('/', '-'));
+  });
+
+  // Spec 34: Calm mid-breath and finished.
+  test('yatra: calm running and done', async ({ page }) => {
+    await page.clock.install({ time: NOON });
+    await page.goto('/#yatra/calm');
+    await page.getByRole('button', { name: '1 min' }).click();
+    await page.getByRole('button', { name: 'Start 1 minute' }).click();
+    await page.clock.runFor(2_000);
+    await shot(page, 'yatra-calm-running', false);
+    await page.clock.runFor(60_000);
+    await expect(page.getByRole('button', { name: 'Begin again' })).toBeVisible();
+    await shot(page, 'yatra-calm-done', false);
   });
 
   test('night deck', async ({ page }) => {

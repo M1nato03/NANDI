@@ -327,7 +327,8 @@ export function Kachhua(props: CastProps) {
     <Shadow cx={56} rx={36} />
     <path d="M76 77C76 87 81 91 86 90C90.5 89 91 83 88 77Z" fill={T.skin} stroke={T.line} strokeWidth="1.3" />
     <path d="M91.5 76l6 2.2-6 1.4z" fill={T.skin} stroke={T.line} strokeWidth="1" strokeLinejoin="round" />
-    <path d={shell} fill={T.shell} stroke={T.line} strokeWidth="1.5" />
+    {/* The shell is one group so Calm can raise it on the in-breath (spec 34). */}
+    <g className="kachhua-shell"><path d={shell} fill={T.shell} stroke={T.line} strokeWidth="1.5" />
     <g clipPath={`url(#${id}s)`}>
       {scutes.map(([x, y]) => <g key={`${x}${y}`}>
         <polygon points={hex(x, y, 10.6)} fill={T.scute} stroke={T.line} strokeWidth=".9" strokeLinejoin="round" />
@@ -338,7 +339,7 @@ export function Kachhua(props: CastProps) {
     </g>
     <g className="cast-accessory"><path d="M60.4 25.4Q64 20.6 67.6 25.4" fill="none" stroke={ACCESSORY.Kachhua.line} strokeWidth="1" />
       <rect x="59.4" y="25" width="9.2" height="2.2" rx=".8" fill={ACCESSORY.Kachhua.line} /><rect x="59.8" y="27" width="8.4" height="8.6" rx="2" fill={ACCESSORY.Kachhua.fill} stroke={ACCESSORY.Kachhua.line} strokeWidth=".8" />
-      <rect x="61.8" y="28.6" width="4.4" height="5.4" rx="1.2" fill={pose === 'rest' ? '#e9c96a' : '#f7d774'} /><rect x="59.4" y="35.4" width="9.2" height="1.8" rx=".7" fill={ACCESSORY.Kachhua.line} /></g>
+      <rect x="61.8" y="28.6" width="4.4" height="5.4" rx="1.2" fill={pose === 'rest' ? '#e9c96a' : '#f7d774'} /><rect x="59.4" y="35.4" width="9.2" height="1.8" rx=".7" fill={ACCESSORY.Kachhua.line} /></g></g>
     <path d="M21.5 77C21.5 74 95.5 74 95.5 77C95.5 81 21.5 81 21.5 77Z" fill={T.rim} stroke={T.line} strokeWidth="1.2" />
     <g stroke={T.line} strokeWidth=".8">{[30, 38, 46, 54, 62, 70, 78, 86].map(x => <path key={x} d={`M${x} 75.4V80.2`} />)}</g>
     <g fill={T.star}>{[34, 50, 66, 82].map(x => <circle key={x} cx={x} cy="77.8" r=".9" />)}</g>

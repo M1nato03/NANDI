@@ -43,7 +43,7 @@ export function useWelcomeNeeded(): [boolean, () => void] {
   const [needed, setNeeded] = useState(false);
   useEffect(() => {
     if (!allowed()) return;
-    const challenge = location.hash.startsWith('#mind/challenge/');
+    const challenge = /^#(?:mind|read\/games|yatra\/mind)\/challenge\//.test(location.hash);
     let live = true;
     void (async () => {
       const done = await db.settings.get(DONE_KEY);

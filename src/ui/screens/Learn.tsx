@@ -65,7 +65,7 @@ type Practice = { conceptId?: string; topicId?: string; reviewDue?: boolean; gol
 
 const STATE_LABEL: Record<ChapterState, string> = { 'not-started': 'Not started', 'in-progress': 'In progress', done: 'Done', due: 'Due for review' };
 
-/** Spec 33: the Read tab (Continue, Review with Moti, the Library, Games) and each book's page. */
+/** Spec 33: the Read tab (Continue, Review with Moti, the Library) and each book's page. */
 export function Learn({ entry, book: bookParam }: { entry?: string; book?: string }) {
   const [practice, setPractice] = useState<Practice>();
   const [moti, setMoti] = useState<'haveli' | 'matka' | null>(null);
@@ -214,7 +214,6 @@ export function Learn({ entry, book: bookParam }: { entry?: string; book?: strin
         })}</ul></section>)}
       <section className="read-shelf" aria-label="Courses"><h3>Courses</h3><button type="button" className="card you-link you-courtyard-link read-courses-link" onClick={() => go('read/courses')}><strong>Short courses</strong><span>Lessons and tracks from before the books</span></button></section>
     </section>
-    <details className="card read-games"><summary><span className="read-fold-title">Games</span><span className="small">Kapi's puzzles, when you want them</span><span className="read-chevron" aria-hidden="true">▸</span></summary><p>A board of each kind a day, and the case.</p><button type="button" className="secondary" onClick={() => go('read/games')}>Open Kapi's shelf</button></details>
     {message && <p role="status">{message}</p>}{scene}
   </section>;
 }
