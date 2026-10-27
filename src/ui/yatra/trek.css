@@ -97,3 +97,6 @@
 .trek-actor.kachhua[data-phase='in'] .kachhua-shell { transform: translateY(-5px) scaleY(1.08); transition-duration: var(--calm-in, 4s); }
 @media (prefers-reduced-motion: reduce) { .trek-actor.kachhua .kachhua-shell { transition: none; transform: none; } }
 :root[data-motion='reduce'] .trek-actor.kachhua .kachhua-shell { transition: none; transform: none; }
+/* Item 203: the hour before Yatra's dusk warms the light; the sun sits lower. */
+.trek-scene.is-dusk .trek-overlay { opacity: .38; background: linear-gradient(180deg, #f08a5d55 0%, #e0705f44 45%, #5a3d5a55 100%); }
+.trek-scene.is-dusk .trek-sun { top: 96px; background: #f2a65e; box-shadow: 0 0 0 18px #f5a76a33, 0 0 50px #ff9f6a66; }

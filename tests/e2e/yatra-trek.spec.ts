@@ -114,3 +114,48 @@ test('every place on the trail is drawn at 360 px and nothing sits under the tab
   expect(actions.y + actions.height).toBeLessThanOrEqual(bar.y + 1);
   expect(last.height).toBeGreaterThan(0);
 });
+
+// Item 203: the friends are all in view at the start, stand clear of camp tents mid-leg, and night comes at dusk.
+const inside = async (page: Page, selector: string) => {
+  const scene = (await page.locator('.trek-scene').boundingBox())!;
+  for (const box of await page.locator(selector).evaluateAll(nodes => nodes.map(node => { const rect = node.getBoundingClientRect(); return { x: rect.x, w: rect.width }; }))) {
+    expect(box.x).toBeGreaterThanOrEqual(scene.x - 1);
+    expect(box.x + box.w).toBeLessThanOrEqual(scene.x + scene.width + 1);
+  }
+};
+
+test('on day one at Jobra all three friends and the fire are fully in view', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await seed(page, []);
+  await openYatra(page);
+  await expect(page.locator('.trek-actor')).toHaveCount(3);
+  await inside(page, '.trek-actor svg');
+  await inside(page, '.trek-fire');
+});
+
+test('mid-leg the group stands clear of the camp tent it left', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await seed(page, [row('train', 1), row('train', 2), row('train', 3), row('calm', 1, '2026-10-29')]);
+  await page.clock.setSystemTime(new Date('2026-10-29T12:00:00'));
+  await openYatra(page);
+  await expect(line(page)).toHaveText('Stretch 1 of 3 to Balu Ka Ghera');
+  const tents = await page.locator('.trek-tent').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().right));
+  const rear = await page.locator('.trek-actor.kachhua svg').evaluate(node => node.getBoundingClientRect().left);
+  expect(rear).toBeGreaterThan(tents[1]!); // the Chika tent
+});
+
+test('the scene turns to night at dusk, before the evening switch, with a warm hour before it', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-28T18:30:00') });
+  await page.goto('/?e2e#plan');
+  await seed(page, [row('train', 1)]);
+  await openYatra(page);
+  await expect(page.locator('.trek-scene.is-dusk')).toBeVisible();
+  await page.clock.setSystemTime(new Date('2026-10-28T19:30:00'));
+  await page.reload();
+  await openYatra(page);
+  await expect(page.locator('.trek-scene.is-night')).toBeVisible();
+  await expect(page.locator('.trek-narrative')).toHaveText('Tonight holds 1 star from your day.');
+  await expect(page.getByRole('button', { name: 'Breathe at camp' })).toBeVisible();
+});

@@ -3,13 +3,17 @@ import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '
 import { Cast } from '../cast/Cast';
 
 /** Spec 34 trek scene: one side-on world, trail below and sky above, so scrolling back scrolls the sky too. */
-export const LEG_W = 300;
-const PAD = 90;
+export const LEG_W = 420;
+// Item 203: room before the first place, so Kachhua, Kapi, Nandi and the fire are all in view at the start.
+const PAD = 200;
+const PAD_END = 120;
+/** Where the group stands along a leg after 0, 1 or 2 stretches: clear of both camps' tents (item 203). */
+const STOPS = [0, 0.49, 0.83];
 const RIDGE_W = 1110;
 const SEEN_KEY = 'nandi.yatra.seen';
 
 const placeX = (index: number) => PAD + index * LEG_W;
-const groupX = (walked: number, legs: number) => { const capped = Math.min(walked, legs * STRETCHES_PER_LEG); return placeX(Math.floor(capped / STRETCHES_PER_LEG)) + (capped % STRETCHES_PER_LEG) * LEG_W / STRETCHES_PER_LEG; };
+const groupX = (walked: number, legs: number) => { const capped = Math.min(walked, legs * STRETCHES_PER_LEG); return placeX(Math.floor(capped / STRETCHES_PER_LEG)) + STOPS[capped % STRETCHES_PER_LEG]! * LEG_W; };
 const walkedOf = (trek: Trek) => trek.legs.reduce((sum, leg) => sum + leg.stretches.length, 0);
 /** A small stable number from a string, for star places and the faint sky. */
 function hash(text: string): number {
@@ -58,9 +62,9 @@ const Cairn = () => <svg viewBox="0 0 40 56" aria-hidden="true"><path d="M20 4V3
 const Gate = () => <svg viewBox="0 0 45 54" aria-hidden="true"><path d="M4 53V7Q22 -4 41 7V53" fill="none" stroke="#5c5542" strokeWidth="4" /><path className="trek-gate-door" d="M8 51V11Q22 4 37 11V51Z" fill="#ae7750" stroke="#654c37" strokeWidth="1.5" /><path className="trek-gate-door" d="M8 26H37M16 8V52M29 8V52" stroke="#714c35" strokeWidth="2" /></svg>;
 const Fire = () => <svg viewBox="0 0 30 40" aria-hidden="true"><path d="M2 34L27 39M27 34L2 39" stroke="#67503d" strokeWidth="4" strokeLinecap="round" /><path className="trek-flame" d="M15 33C5 29 6 20 14 10C13 19 20 14 21 4C27 16 28 28 18 33Z" fill="#ff9d34" /><path className="trek-flame" d="M15 32C11 27 12 23 16 17C16 23 20 23 20 19C22 25 20 31 15 32Z" fill="#ffe6a1" /></svg>;
 
-export function TrekScene({ trek, night, brighten = 0, breath, onRename }: { trek: Trek; night: boolean; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void }) {
+export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onRename }: { trek: Trek; night: boolean; dusk?: boolean; brighten?: number; breath?: { phase: 'in' | 'out'; in: number; out: number }; onRename: (constellation: Constellation) => void }) {
   const legs = trek.trail.legs.length;
-  const width = PAD * 2 + legs * LEG_W;
+  const width = PAD + legs * LEG_W + PAD_END;
   const walked = walkedOf(trek);
   // Item 192 g: the walk plays the next time Yatra is seen by day; at night the group stays where it stopped.
   const [shown, setShown] = useState(() => { const seen = readSeen(); return night || seen === null || seen > walked ? walked : seen; });
@@ -98,7 +102,7 @@ export function TrekScene({ trek, night, brighten = 0, breath, onRename }: { tre
   const pinpricks = Array.from({ length: Math.round(width / 22) }, (_, i) => ({ x: hash(`p${i}x`) * width, y: 8 + hash(`p${i}y`) * 120, o: 0.2 + hash(`p${i}o`) * 0.5 }));
   const caption = night ? (atPlace ? `At ${place.name}` : 'By a trailside fire') : trek.complete ? 'Trail complete' : trek.today.campDay ? atPlace ? `Camp at ${place.name}` : 'A day on the trail' : atPlace ? `${place.name} camp` : `Toward ${next?.name ?? place.name}`;
 
-  return <section className={`trek-scene${night ? ' is-night' : ''}`} aria-label={`${trek.trail.name} trail. Swipe to look back along it.`}>
+  return <section className={`trek-scene${night ? ' is-night' : dusk ? ' is-dusk' : ''}`} aria-label={`${trek.trail.name} trail. Swipe to look back along it.`}>
     <div className="trek-scroll" ref={scroller} onScroll={onScroll} tabIndex={0} aria-label="Swipe the trail sideways">
       <div className="trek-world" ref={world} style={{ width }}>
         <div className="trek-sun" style={{ left: Math.max(PAD, gx - 40) }} aria-hidden="true" />
@@ -120,10 +124,11 @@ export function TrekScene({ trek, night, brighten = 0, breath, onRename }: { tre
         {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-tent${spot.kind === 'pass' ? ' is-pass' : ''}`} style={{ left: placeX(i) - (spot.kind === 'pass' ? 20 : 45) }}>{spot.kind === 'pass' ? <Cairn /> : <Tent />}</div>)}
         {trek.trail.legs.map((leg, i) => <div key={leg.landmark.id} className={`trek-gate${trek.legs[i]!.gateOn ? ' open' : ''}`} style={{ left: placeX(i) + LEG_W / 2 - 22 }} title={leg.landmark.name}><Gate /></div>)}
         <div className="trek-marks" aria-hidden="true">{trek.legs.flatMap(leg => leg.stretches.map((stretch, k) => {
-          const from = placeX(leg.index) + k * LEG_W / STRETCHES_PER_LEG;
+          const from = placeX(leg.index) + STOPS[k]! * LEG_W;
+          const span = ((STOPS[k + 1] ?? 1) - STOPS[k]!) * LEG_W;
           if (leg.index * STRETCHES_PER_LEG + k >= shown) return [];
-          if (stretch.kind === 'train') return Array.from({ length: 5 }, (_, f) => <i key={`${leg.index}-${k}-${f}`} className="trek-footprint" style={{ left: from + 16 + f * 15, bottom: 39 + (f % 2) * 4 }} />);
-          if (stretch.kind === 'calm') return [<i key={`${leg.index}-${k}`} className="trek-rest" style={{ left: from + LEG_W / STRETCHES_PER_LEG - 30 }} />];
+          if (stretch.kind === 'train') return Array.from({ length: 5 }, (_, f) => <i key={`${leg.index}-${k}-${f}`} className="trek-footprint" style={{ left: from + span * 0.25 + f * 15, bottom: 39 + (f % 2) * 4 }} />);
+          if (stretch.kind === 'calm') return [<i key={`${leg.index}-${k}`} className="trek-rest" style={{ left: from + span - 40 }} />];
           return [];
         }))}</div>
         {fire && <div className="trek-fire" style={{ left: gx + 26 }}><Fire /></div>}

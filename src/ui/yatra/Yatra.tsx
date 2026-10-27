@@ -27,7 +27,10 @@ const readCards = (): string[] => { try { const value = JSON.parse(localStorage.
 const keepCard = (id: string) => { try { localStorage.setItem(CARDS_KEY, JSON.stringify([...new Set([...readCards(), id])])); } catch { /* a convenience only */ } };
 
 /** The trek for today, and whether Yatra shows its night (from the evening switch, the courtyard's own clock). */
-export function useYatra(): { trek: Trek; night: boolean } | null | undefined {
+/** Yatra's own dusk (item 203): the scene turns to night at 19:00, or at the evening switch if that comes first. */
+export const DUSK_HOUR = 19;
+
+export function useYatra(): { trek: Trek; night: boolean; dusk: boolean } | null | undefined {
   const trail = currentTrail();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
@@ -46,7 +49,10 @@ export function useYatra(): { trek: Trek; night: boolean } | null | undefined {
   const names = Object.fromEntries(source.settings.filter(row => row.key.startsWith(CONSTELLATION_PREFIX) && typeof row.value === 'string').map(row => [row.key.slice(CONSTELLATION_PREFIX.length), row.value as string]));
   const trek = deriveTrek(source.facts, trail, read(YATRA_START, today), today, names);
   const phase = phaseAt(now, shutdown, night.bedtime);
-  return { trek, night: phase === 'evening' || phase === 'night' };
+  // The planning day turns at 04:00, so the small hours are still tonight.
+  const hour = new Date(now).getHours();
+  const sceneNight = phase === 'evening' || phase === 'night' || hour >= DUSK_HOUR || hour < 4;
+  return { trek, night: sceneNight, dusk: !sceneNight && hour === DUSK_HOUR - 1 };
 }
 
 function narrative(trek: Trek, night: boolean): string {
@@ -90,7 +96,7 @@ export function Yatra() {
     </li>)}</ul>
     {trek && yatra && <>
       <p className="eyebrow trek-head">{trek.trail.name}</p>
-      <TrekScene trek={trek} night={yatra.night} onRename={row => { setName(row.name); setRenaming(row); }} />
+      <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />
       <div className="trek-journey">
         <div className="trek-journey-top"><strong>{trekLine(trek)}</strong>{!trek.complete && <span>{trek.stretch} of {STRETCHES_PER_LEG}</span>}</div>
         {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}

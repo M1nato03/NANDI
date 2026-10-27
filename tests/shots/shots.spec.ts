@@ -237,13 +237,21 @@ for (const theme of themes) test.describe(theme, () => {
     };
     await page.clock.install({ time: new Date('2026-10-28T12:00:00') });
     await page.goto('/?e2e#plan');
+    // Item 203: day one at Jobra, all three friends in view.
+    await seed([]);
+    await open();
+    await shot(page, 'yatra-trek-day-one', false);
     // A Train stretch by day: footprints on the path.
     await seed([fact('train', 1), fact('calm', 2)]);
     await open();
     await shot(page, 'yatra-trek-day-train', false);
     // Three sessions reach Chika today; by night their stars hang over the camp.
     await seed([fact('train', 1), fact('mind', 2), fact('calm', 3)]);
-    await page.clock.setSystemTime(new Date('2026-10-28T23:45:00'));
+    // Item 203: the hour before dusk is warm; from 19:00 the stars are out.
+    await page.clock.setSystemTime(new Date('2026-10-28T18:30:00'));
+    await open();
+    await shot(page, 'yatra-trek-dusk', false);
+    await page.clock.setSystemTime(new Date('2026-10-28T19:30:00'));
     await open();
     await shot(page, 'yatra-trek-night-camp', false);
     // A fourth star after camp joins the leg: four stars, joined, the name written in.
