@@ -4,10 +4,10 @@ import { deriveTrek, trekLine } from './trek';
 import { trailErrors, type Trail } from './trail';
 
 // A test trail only (the shipped one comes from the idea engine, every fact sourced).
-const place = (id: string, kind: 'start' | 'camp' | 'pass' = 'camp') => ({ id, name: id[0]!.toUpperCase() + id.slice(1), kind, region: 'Test' });
-const leg = (from: string, to: string, n: number) => ({ from, to, landmark: { id: `mark-${n}`, name: `Mark ${n}`, kind: 'bridge' }, postcard: { lines: ['One.', 'Two.'], sources: ['https://example.org/a'] }, constellation: `The ${to} Kite` });
+const place = (id: string, kind: 'start' | 'camp' | 'pass' = 'camp') => ({ id, name: id[0]!.toUpperCase() + id.slice(1), kind, regionLine: 'Test' });
+const leg = (from: string, to: string, n: number) => ({ id: `${from}-${to}`, from, to, landmark: { id: `mark-${n}`, name: `Mark ${n}`, kind: 'bridge' }, postcard: { lines: ['One.', 'Two.'] }, sources: ['https://example.org/a'], constellation: `The ${to} Kite` });
 const ids = ['jobra', 'chika', 'balu', 'pass', 'shea', 'chatru'];
-const trail: Trail = { id: 'test-trail', title: 'Test trail', region: 'Test', places: ids.map((id, i) => place(id, i === 0 ? 'start' : id === 'pass' ? 'pass' : 'camp')), legs: ids.slice(1).map((id, i) => leg(ids[i]!, id, i + 1)) };
+const trail: Trail = { id: 'test-trail', name: 'Test trail', region: 'Test', places: ids.map((id, i) => place(id, i === 0 ? 'start' : id === 'pass' ? 'pass' : 'camp')), legs: ids.slice(1).map((id, i) => leg(ids[i]!, id, i + 1)) };
 let n = 0;
 const fact = (dayKey: string, kind: 'train' | 'mind' | 'calm' | 'other'): LedgerRow => {
   n++;
@@ -20,7 +20,7 @@ describe('spec 34 trail file', () => {
     expect(trailErrors(trail)).toEqual([]);
     const short = { ...trail, places: trail.places.slice(0, 5), legs: trail.legs.slice(0, 4) };
     expect(trailErrors(short)).toContain('a trail has 6-10 places, this one has 5');
-    const unsourced = { ...trail, legs: trail.legs.map((row, i) => i === 1 ? { ...row, postcard: { lines: ['Only one.'], sources: [] } } : row) };
+    const unsourced = { ...trail, legs: trail.legs.map((row, i) => i === 1 ? { ...row, postcard: { lines: ['Only one.'] }, sources: [] } : row) };
     expect(trailErrors(unsourced)).toEqual(['leg 2 postcard has 2-3 lines', 'leg 2 postcard needs at least one https source']);
   });
 });

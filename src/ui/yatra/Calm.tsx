@@ -4,6 +4,9 @@ import { db } from '../../data/db';
 import { BREATH_IN, BREATH_OUT, CALM_MINUTES, calmKeys, readBreath, saveCalmDone, saveCalmSettings, type Breath } from '../../data/repos/calm';
 import { keepScreenAwake } from '../../platform/awake';
 import { Cast } from '../cast/Cast';
+import { TrekScene } from './TrekScene';
+import { useYatra } from './Yatra';
+import './trek.css';
 import './yatra.css';
 
 /** The soft bell at the end: three quiet sine notes, our own (spec 34). */
@@ -63,13 +66,19 @@ export function Calm() {
   const start = () => { const at = Date.now(); setDone(false); setNow(at); setRun({ startedAt: at, minutes, breath }); };
   const setBreath = (change: Partial<Breath>) => void saveCalmSettings(db, { breath: { ...breath, ...change } }, Date.now());
   const phase = run ? breathPhase(elapsed, run.breath) : 'out';
+  // Spec 34: a Calm session at night happens at camp, and each out-breath brightens one of tonight's stars.
+  const yatra = useYatra();
+  const cycle = run ? (run.breath.in + run.breath.out) * 1000 : 1;
+  const outBreaths = run && elapsed >= run.breath.in * 1000 ? Math.floor((elapsed - run.breath.in * 1000) / cycle) + 1 : 0;
   const style = { '--calm-in': `${(run ?? { breath }).breath.in}s`, '--calm-out': `${(run ?? { breath }).breath.out}s` } as CSSProperties;
 
   return <section className="screen calm-screen">
     <p className="eyebrow">Calm</p><h1>Breathe with Kachhua</h1>
     <p>A quiet few minutes with your breath.</p>
+    {yatra?.night && <TrekScene trek={yatra.trek} night brighten={outBreaths} onRename={() => undefined} />}
     <div className="calm-stage" data-phase={run ? phase : undefined} style={style}>
-      <Cast name="Kachhua" pose={run ? 'idle' : done ? 'rest' : 'idle'} size={140} title="Kachhua" />
+      {/* At night Kachhua sits at camp in the scene above, so the stage shows the breath only (one Kachhua a screen). */}
+      {!yatra?.night && <Cast name="Kachhua" pose={run ? 'idle' : done ? 'rest' : 'idle'} size={140} title="Kachhua" />}
       {run ? <>
         <p className="calm-phase" aria-live="polite">{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>
         <p className="calm-clock">{clock(run.minutes * 60_000 - elapsed)}</p>

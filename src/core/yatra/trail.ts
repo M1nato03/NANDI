@@ -3,15 +3,18 @@
  * postcard (2-3 sourced lines) and the leg's suggested constellation name. All of it ships in the app (offline v1).
  */
 export type PlaceKind = 'start' | 'camp' | 'pass';
-export interface Place { id: string; name: string; kind: PlaceKind; region: string }
+/** Altitudes stay null: the sources disagree and the app shows none (item 196). */
+export interface Place { id: string; name: string; altNames?: string[]; kind: PlaceKind; regionLine: string; altitudeM?: number | null; sources?: string[] }
 export interface Leg {
+  id: string;
   from: string;
   to: string;
   landmark: { id: string; name: string; kind: string };
-  postcard: { lines: string[]; sources: string[] };
+  postcard: { title?: string; lines: string[] };
+  sources: string[];
   constellation: string;
 }
-export interface Trail { id: string; title: string; region: string; places: Place[]; legs: Leg[] }
+export interface Trail { id: string; name: string; region: string; sources?: string[]; places: Place[]; legs: Leg[]; notes?: unknown }
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const KINDS: readonly PlaceKind[] = ['start', 'camp', 'pass'];
@@ -20,7 +23,7 @@ const KINDS: readonly PlaceKind[] = ['start', 'camp', 'pass'];
 export function trailErrors(trail: Trail): string[] {
   const errors: string[] = [];
   if (!SLUG.test(trail.id ?? '')) errors.push('trail id must be a slug');
-  if (!trail.title?.trim()) errors.push('trail needs a title');
+  if (!trail.name?.trim()) errors.push('trail needs a name');
   const places = Array.isArray(trail.places) ? trail.places : [];
   // Spec 34 (item 192 i): a trail counts places, not camps; a pass is a place too.
   if (places.length < 6 || places.length > 10) errors.push(`a trail has 6-10 places, this one has ${places.length}`);
@@ -45,7 +48,7 @@ export function trailErrors(trail: Trail): string[] {
     if (!leg.landmark?.name?.trim()) errors.push(`${name} landmark needs a name`);
     const lines = leg.postcard?.lines ?? [];
     if (lines.length < 2 || lines.length > 3 || lines.some(line => !line?.trim())) errors.push(`${name} postcard has 2-3 lines`);
-    const sources = leg.postcard?.sources ?? [];
+    const sources = leg.sources ?? [];
     if (!sources.length || sources.some(source => !/^https:\/\/\S+$/.test(source))) errors.push(`${name} postcard needs at least one https source`);
     if (!leg.constellation?.trim()) errors.push(`${name} needs a suggested constellation name`);
   });

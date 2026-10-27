@@ -1,0 +1,154 @@
+{
+  "id": "hampta-pass",
+  "name": "Hampta Pass",
+  "region": "Kullu to Lahaul, Himachal Pradesh, India",
+  "sources": [
+    "https://www.indiahikes.com/hampta-pass",
+    "https://www.potala-himalaya.com/trekking/hampta-pass-trek",
+    "https://trekthehimalayas.com/hampta-pass-trek"
+  ],
+  "places": [
+    {
+      "id": "jobra",
+      "name": "Jobra",
+      "altNames": ["Jobri"],
+      "kind": "start",
+      "regionLine": "Road head above Manali, Kullu valley",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    },
+    {
+      "id": "chika",
+      "name": "Chika",
+      "altNames": ["Chikha", "Chhika", "Chikka"],
+      "kind": "camp",
+      "regionLine": "Riverside meadow on the Kullu side",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    },
+    {
+      "id": "balu-ka-ghera",
+      "name": "Balu Ka Ghera",
+      "altNames": ["Balu ka Gera", "Balu Gera"],
+      "kind": "camp",
+      "regionLine": "Boulder camp below the pass",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    },
+    {
+      "id": "hampta-pass",
+      "name": "Hampta Pass",
+      "altNames": ["Hamta Pass"],
+      "kind": "pass",
+      "regionLine": "The crossing from Kullu into Lahaul",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    },
+    {
+      "id": "shea-goru",
+      "name": "Shea Goru",
+      "altNames": ["Shea-Goru"],
+      "kind": "camp",
+      "regionLine": "Stream-side meadow on the Lahaul side",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    },
+    {
+      "id": "chatru",
+      "name": "Chatru",
+      "altNames": ["Chhatru"],
+      "kind": "camp",
+      "regionLine": "End of the trek, by the Chandra River",
+      "altitudeM": null,
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"]
+    }
+  ],
+  "legs": [
+    {
+      "id": "jobra-chika",
+      "from": "jobra",
+      "to": "chika",
+      "landmark": { "id": "rani-nallah", "name": "Rani Nallah", "kind": "river" },
+      "postcard": {
+        "title": "Rani Nallah",
+        "lines": [
+          "The Rani Nallah joins you at Jobra.",
+          "You walk beside it until it disappears under the snow of Hampta Pass.",
+          "Cows and sheep graze its meadow, lined with maple and pine."
+        ]
+      },
+      "sources": ["https://www.indiahikes.com/hampta-pass"],
+      "constellation": "The Chika Kite"
+    },
+    {
+      "id": "chika-balu-ka-ghera",
+      "from": "chika",
+      "to": "balu-ka-ghera",
+      "landmark": { "id": "jwara-meadow", "name": "Jwara", "kind": "meadow" },
+      "postcard": {
+        "title": "Jwara",
+        "lines": [
+          "Just before Jwara, the path crosses a stream.",
+          "Jwara is a lush green meadow, with a couple of waterfalls in the distance.",
+          "Balu Ka Ghera, the next camp, sits among boulders below snowy peaks."
+        ]
+      },
+      "sources": ["https://www.potala-himalaya.com/trekking/hampta-pass-trek", "https://www.indiahikes.com/hampta-pass"],
+      "constellation": "The Jwara Lamp"
+    },
+    {
+      "id": "balu-ka-ghera-hampta-pass",
+      "from": "balu-ka-ghera",
+      "to": "hampta-pass",
+      "landmark": { "id": "hampta-glacier", "name": "Hampta Glacier", "kind": "glacier" },
+      "postcard": {
+        "title": "Hampta Glacier",
+        "lines": [
+          "Climbing from Balu Ka Ghera, you spot the hanging Hampta Glacier.",
+          "It feeds the Hampta Nala, the stream you will camp beside at Shea Goru."
+        ]
+      },
+      "sources": ["https://www.indiahikes.com/hampta-pass"],
+      "constellation": "The Glacier Ladder"
+    },
+    {
+      "id": "hampta-pass-shea-goru",
+      "from": "hampta-pass",
+      "to": "shea-goru",
+      "landmark": { "id": "hampta-pass-top", "name": "Top of the pass", "kind": "pass" },
+      "postcard": {
+        "title": "Top of the pass",
+        "lines": [
+          "From the pass, the peaks of Indrasan and Deo Tibba fill the skyline.",
+          "Green Kullu is behind you now. The cold desert of Lahaul lies ahead.",
+          "Shea Goru camp sits beside a glacial stream, on a meadow dotted with flowers."
+        ]
+      },
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"],
+      "constellation": "The Hampta Crown"
+    },
+    {
+      "id": "shea-goru-chatru",
+      "from": "shea-goru",
+      "to": "chatru",
+      "landmark": { "id": "chandra-river", "name": "Chandra River", "kind": "river" },
+      "postcard": {
+        "title": "Chandra River",
+        "lines": [
+          "Walking down toward Chatru, Inderkilla Peak rises on your left.",
+          "An easy trail runs along the Chandra River to Chatru, where the trek ends."
+        ]
+      },
+      "sources": ["https://www.indiahikes.com/hampta-pass", "https://www.potala-himalaya.com/trekking/hampta-pass-trek"],
+      "constellation": "The Chandra Boat"
+    }
+  ],
+  "notes": [
+    "Checked by the idea engine on 27 Oct 2026 against the live pages. Indiahikes: 'The Rani Nallah, which you will trek alongside till it disappears under the snow of Hampta Pass, starts accompanying you from here [Jobra]'; 'Some cows and sheep graze in the meadow which is lined with Maple and Pine trees'; 'Jwara is to the right of Chikha and can be identified by a couple of waterfalls in the distance'; 'Lush meadows at Jwara, a glacial floor at Balu Ka Ghera and a stream-side meadow at Shea Goru'; 'Balu Ka Ghera ... is nestled amidst boulders and surrounded by snow-covered peaks'; 'the hanging Hampta Glacier ... You spot it as you approach the pass from Balu Ka Ghera. It feeds the Hampta Nala, beside which you camp at Shea Goru'; 'From the pass, the sharp peaks of Indrasan and Deo Tibba dominate the skyline'; 'You have left the lush green Kullu Valley behind you. The cold deserts of Lahaul lie ahead'; 'The camp is set right beside a gushing glacial stream, on a green meadow dotted with flowers'; 'As you descend towards Chhatru, Inderkilla Peak rises to your left'. Potala Himalaya: 'a stream crossing just before Juara'; 'an easy trail along the Chandra River until reaching Chatru'; 'follow the left bank of Chandra River to Chatru where the trek ends'.",
+    "Camps differ by operator: Trek The Himalayas and Potala Himalaya camp at Chika (Chikka); Indiahikes camps at Jwara and treats Chika as a break spot. The app follows the Chika camp order.",
+    "Altitudes are left null on purpose: the sources disagree (the pass is 4,268 m in Potala Himalaya and 14,065 ft, about 4,287 m, in Indiahikes) and the app does not show them.",
+    "Spellings: Chika/Chikha/Chhika/Chikka, Chatru/Chhatru, Jobra/Jobri, Hampta/Hamta. The app uses Chika, Chatru, Jobra and Hampta.",
+    "Landmark kind 'glacier' is new: add it to the validator's allowed kinds.",
+    "Constellation names are app storytelling, not facts."
+  ]
+}

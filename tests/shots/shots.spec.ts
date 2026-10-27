@@ -146,6 +146,64 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, route.replace('/', '-'));
   });
 
+  // Spec 34 slice 3: the trek by day, a gate's postcard, the journal, the sky at night, a camp day, and Calm at camp.
+  test('yatra: trek day, postcard, journal, night sky, camp day, night calm', async ({ page }) => {
+    const fact = (kind: 'train' | 'mind' | 'calm', n: number, day = '2026-10-28') => ({ id: `shot-${kind}-${n}-${day}`, dayKey: day, mode: kind === 'mind' ? 'mind' : kind, kind: kind === 'mind' ? 'board' : 'session', refId: `r${n}`, inputs: {}, updatedAt: new Date(`${day}T09:00:00`).getTime() + n * 60_000, deleted: 0, deviceId: 'shots' });
+    const seed = async (facts: ReturnType<typeof fact>[], startDay: string) => {
+      await page.evaluate(async ({ facts, startDay }) => {
+        const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+        await new Promise<void>((resolve, reject) => {
+          const transaction = database.transaction(['ledger', 'settings'], 'readwrite');
+          transaction.objectStore('ledger').clear();
+          for (const row of facts) transaction.objectStore('ledger').put(row);
+          transaction.objectStore('settings').put({ key: 'yatra.startDay', value: startDay, updatedAt: 1, deleted: 0, deviceId: 'shots' });
+          transaction.oncomplete = () => resolve(); transaction.onerror = () => reject(transaction.error);
+        });
+        database.close();
+      }, { facts, startDay });
+    };
+    const open = async (hash = 'yatra') => {
+      await page.reload();
+      await expect(async () => {
+        const leave = page.getByRole('button', { name: 'Leave night deck' });
+        if (await leave.isVisible()) await leave.click();
+        await page.evaluate(target => { if (location.hash !== `#${target}`) location.hash = target; }, hash);
+        await expect(page.locator('main h1').first()).toBeVisible({ timeout: 1500 });
+        await page.waitForTimeout(800);
+        expect(await page.evaluate(() => location.hash)).toBe(`#${hash}`);
+      }).toPass({ timeout: 20_000 });
+      await page.waitForTimeout(700);
+    };
+    await page.clock.install({ time: new Date('2026-10-29T12:00:00') });
+    await page.goto('/?e2e#plan');
+    // Day two: Chika reached yesterday, one stretch toward Balu Ka Ghera today (a Mind session opens its gate).
+    await seed([fact('train', 1), fact('mind', 2), fact('calm', 3), fact('mind', 4, '2026-10-29')], '2026-10-28');
+    await open();
+    await expect(page.getByRole('dialog', { name: /postcard$/ })).toBeVisible();
+    await shot(page, 'yatra-trek-postcard', false);
+    await page.getByRole('button', { name: 'Keep in the journal' }).click();
+    await page.getByRole('dialog', { name: /postcard$/ }).waitFor({ state: 'detached' }).catch(() => undefined);
+    if (await page.getByRole('dialog', { name: /postcard$/ }).isVisible()) await page.getByRole('button', { name: 'Keep in the journal' }).click();
+    await shot(page, 'yatra-trek-day');
+    await open('yatra/journal');
+    await shot(page, 'yatra-trek-journal');
+    await page.clock.setSystemTime(new Date('2026-10-29T23:45:00'));
+    await open();
+    await page.locator('.trek-scroll').evaluate(node => { node.scrollLeft = 0; });
+    await page.waitForTimeout(300);
+    await shot(page, 'yatra-trek-night-sky');
+    await open('yatra/calm');
+    await page.getByRole('button', { name: '1 min' }).click();
+    await page.getByRole('button', { name: 'Start 1 minute' }).click();
+    await page.clock.runFor(5_000);
+    await shot(page, 'yatra-trek-night-calm');
+    // A camp day: nothing yet today, mid-leg.
+    await page.clock.setSystemTime(new Date('2026-10-31T12:00:00'));
+    await seed([fact('train', 1, '2026-10-30')], '2026-10-30');
+    await open();
+    await shot(page, 'yatra-trek-camp-day');
+  });
+
   // Spec 34: Calm mid-breath and finished.
   test('yatra: calm running and done', async ({ page }) => {
     await page.clock.install({ time: NOON });

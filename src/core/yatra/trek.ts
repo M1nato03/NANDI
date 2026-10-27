@@ -103,7 +103,7 @@ export function deriveTrek(facts: readonly LedgerRow[], trail: Trail, startDay: 
 /** Where the trek is, in words: "Stretch 2 of 3 to Chika", or the place reached. Never kilometres. */
 export function trekLine(trek: Trek): string {
   const places = trek.trail.places;
-  if (trek.complete) return `${trek.trail.title}: trail complete`;
+  if (trek.complete) return `${trek.trail.name}: trail complete`;
   const next = places[trek.place + 1]!;
   return trek.stretch === 0 ? `At ${places[trek.place]!.name}. Next: ${next.name}` : `Stretch ${trek.stretch} of ${STRETCHES_PER_LEG} to ${next.name}`;
 }

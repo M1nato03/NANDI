@@ -1,0 +1,94 @@
+/* Spec 34 trek scene, ported from the approved prototype (D:\nandi-proto\yatra). Day by default; .is-night dims the
+   land, fades the sky in and shows the stars. Reduced motion keeps every pose and fade, and drops the movement. */
+.trek-scene { position: relative; height: 276px; margin: 0 -16px 0; overflow: hidden; background: #bcd5ce; isolation: isolate; }
+.trek-scroll { width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; touch-action: pan-x; }
+.trek-scroll::-webkit-scrollbar { display: none; }
+.trek-world { position: relative; height: 100%; overflow: hidden; }
+.trek-world::before { content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(#c3dcd4 0%, #e5e8d3 51%, #e4cfab 100%); }
+.trek-layer, .trek-ridge { position: absolute; inset: 0; pointer-events: none; }
+.trek-ridge svg { position: absolute; top: 0; width: 1110px; height: 100%; }
+.trek-layer:nth-of-type(1), .trek-ridge-far { z-index: 1; }
+.trek-layer:nth-of-type(2), .trek-ridge-mid { z-index: 2; }
+.trek-ridge-front { z-index: 5; }
+.trek-sun { position: absolute; top: 31px; z-index: 1; width: 58px; height: 58px; border-radius: 50%; background: #f5ca7d; box-shadow: 0 0 0 20px #f7d59933, 0 0 55px #ffebaa77; transition: opacity .8s; }
+.trek-grass { position: absolute; z-index: 6; bottom: 37px; left: 0; right: 0; height: 27px; background: repeating-linear-gradient(106deg, transparent 0 11px, #4d775646 12px 13px, transparent 14px 24px); }
+.trek-road { position: absolute; z-index: 7; left: 0; right: 0; bottom: 24px; height: 58px; background: #c7ad85; opacity: .75; clip-path: polygon(0 60%, 10% 41%, 19% 45%, 27% 33%, 35% 43%, 45% 28%, 55% 34%, 65% 23%, 75% 30%, 86% 20%, 100% 27%, 100% 86%, 88% 71%, 78% 82%, 67% 69%, 56% 82%, 47% 73%, 38% 84%, 29% 75%, 20% 89%, 11% 79%, 0 93%); }
+.trek-stream { position: absolute; z-index: 6; left: 0; right: 0; bottom: 5px; height: 48px; background: linear-gradient(178deg, transparent 0 35%, #4a9a9b55 37%, #a4d7cbba 59%, #356f7e80 100%); clip-path: polygon(0 57%, 9% 64%, 19% 52%, 28% 68%, 37% 56%, 48% 63%, 57% 51%, 68% 63%, 81% 50%, 91% 61%, 100% 53%, 100% 100%, 0 100%); }
+.trek-overlay { position: absolute; inset: 0; z-index: 8; pointer-events: none; opacity: 0; background: linear-gradient(180deg, #101b33e8 0%, #14213ac0 42%, #142b37ab 73%, #15222cab 100%); transition: opacity 1.1s; }
+.trek-pinpricks { position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: 0; transition: opacity .8s; }
+.trek-pinpricks span { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff7d5; box-shadow: 0 0 5px #fff7d5; }
+.trek-sky { position: absolute; left: 0; top: 0; z-index: 9; pointer-events: none; opacity: 0; transition: opacity .8s; }
+.trek-sky path { fill: none; stroke: #e9d7a7; stroke-width: 1.25; stroke-linecap: round; opacity: .72; stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 1.6s ease .4s; }
+.trek-stars { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+.trek-star { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--star); box-shadow: 0 0 8px var(--star), 0 0 16px color-mix(in srgb, var(--star) 50%, transparent); opacity: 0; transform: scale(.4); transition: opacity .6s var(--delay), transform .6s var(--delay); }
+.trek-star.bright { transform: scale(1.7); box-shadow: 0 0 14px var(--star), 0 0 30px var(--star); }
+.trek-constellation-name { position: absolute; top: 140px; z-index: 11; min-height: 44px; padding: 0 8px; border: 0; background: transparent; transform: translateX(-50%); color: #f3e3bc; font: italic 20px/1 Georgia, serif; white-space: nowrap; box-shadow: none; clip-path: inset(0 0 0 0); animation: trek-write 1.1s ease .6s both; }
+.trek-tent { position: absolute; bottom: 44px; z-index: 13; width: 90px; height: 70px; pointer-events: none; }
+.trek-tent.is-pass { width: 40px; height: 56px; }
+.trek-tent svg { width: 100%; height: 100%; overflow: visible; }
+.trek-gate { position: absolute; bottom: 59px; z-index: 12; width: 45px; height: 54px; opacity: .85; }
+.trek-gate svg { width: 100%; height: 100%; }
+.trek-gate .trek-gate-door { transform-box: fill-box; transform-origin: 0 100%; transition: transform .95s ease; }
+.trek-gate.open .trek-gate-door { transform: perspective(200px) rotateY(-65deg); }
+.trek-marks { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+.trek-footprint { position: absolute; width: 7px; height: 11px; border-radius: 55% 55% 43% 43%; background: #9a7252aa; transform: rotate(52deg); animation: trek-fade .3s ease both; }
+.trek-rest { position: absolute; bottom: 42px; width: 18px; height: 9px; border-radius: 50% 50% 40% 40%; background: #8d8a7c; animation: trek-fade .4s ease both; }
+.trek-fire { position: absolute; bottom: 40px; z-index: 14; width: 29px; height: 39px; pointer-events: none; animation: trek-fade .5s ease both; }
+.trek-fire svg { width: 100%; height: 100%; overflow: visible; }
+.trek-flame { transform-box: fill-box; transform-origin: 50% 85%; animation: trek-flicker 1.35s ease-in-out infinite alternate; }
+.trek-group { position: absolute; bottom: 39px; z-index: 16; width: 0; height: 66px; transition: left 1.1s cubic-bezier(.36, .02, .22, 1); }
+.trek-actor { position: absolute; bottom: 0; filter: drop-shadow(0 4px 3px #241b1844); }
+.trek-group .trek-actor { animation: trek-step 1.1s ease-in-out; }
+.trek-place { position: absolute; bottom: 18px; z-index: 14; display: flex; flex-direction: column; align-items: center; gap: 2px; transform: translateX(-50%); pointer-events: none; }
+.trek-place b { padding: 3px 6px; border-radius: 4px; background: #fff9e7e6; color: #56483a; font-size: 10px; line-height: 1; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.trek-place i { width: 1px; height: 8px; background: #5a5147; }
+.trek-place.current b { background: #fff2ca; color: #4b3727; box-shadow: 0 0 0 1px #f4b400; }
+.trek-caption { position: absolute; left: 16px; top: 13px; z-index: 20; min-width: 126px; padding: 7px 9px; border: 1px solid #ffffffa1; border-radius: 7px; background: #fff9eddc; color: #194d4b; pointer-events: none; }
+.trek-caption b { display: block; font-size: 10px; line-height: 1; letter-spacing: .12em; }
+.trek-caption span { display: block; margin-top: 3px; color: #22221c; font: italic 16px/1 Georgia, serif; }
+
+.trek-scene.is-night .trek-overlay, .trek-scene.is-night .trek-pinpricks, .trek-scene.is-night .trek-sky { opacity: 1; }
+.trek-scene.is-night .trek-sky path { stroke-dashoffset: 0; }
+.trek-scene.is-night .trek-star { opacity: 1; transform: scale(1); }
+.trek-scene.is-night .trek-star.bright { transform: scale(1.7); }
+.trek-scene.is-night .trek-sun { opacity: 0; }
+.trek-scene.is-night .trek-ridge-far { filter: brightness(.65) saturate(.7); }
+.trek-scene.is-night .trek-ridge-mid { filter: brightness(.45) saturate(.7); }
+.trek-scene.is-night .trek-ridge-front { filter: brightness(.36) saturate(.7); }
+.trek-scene.is-night .trek-road { filter: brightness(.5); }
+.trek-scene.is-night .trek-footprint { background: #a4a5a0aa; }
+.trek-scene.is-night .trek-place b { background: #efe0beed; }
+.trek-scene.is-night .trek-caption { background: #122338bd; border-color: #ffffff24; color: #e4d7b6; }
+.trek-scene.is-night .trek-caption span { color: #fff7df; }
+
+@keyframes trek-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes trek-flicker { from { transform: scaleY(.92) skewX(-2deg); } to { transform: scaleY(1.06) skewX(2deg); } }
+@keyframes trek-step { 0%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px) rotate(2deg); } 60% { transform: translateY(2px) rotate(-3deg); } }
+@keyframes trek-write { from { opacity: 0; clip-path: inset(0 100% 0 0); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .trek-group { transition: none; }
+  .trek-group .trek-actor, .trek-flame, .trek-constellation-name { animation: none; }
+  .trek-gate .trek-gate-door, .trek-sky path { transition: none; }
+}
+:root[data-motion='reduce'] .trek-group { transition: none; }
+:root[data-motion='reduce'] .trek-group .trek-actor, :root[data-motion='reduce'] .trek-flame, :root[data-motion='reduce'] .trek-constellation-name { animation: none; }
+
+/* Under the scene: where the trek is, three stretches to the next place, one warm line. */
+.trek-journey { margin: 12px 0 4px; }
+.trek-journey-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.trek-journey-top strong { font-weight: 800; }
+.trek-journey-top span { color: var(--ink-2); font-size: 13px; white-space: nowrap; }
+.trek-rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
+.trek-rail i { height: 5px; border-radius: 4px; background: var(--surface-3); }
+.trek-rail i.filled { background: #FF6A1A; }
+.trek-narrative { margin: 8px 0 0; color: var(--ink-2); }
+.trek-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+.yatra-corners.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.yatra-corners.compact .yatra-corner { flex-direction: column; justify-content: center; gap: 6px; min-height: 0; padding: 10px 6px; text-align: center; }
+.yatra-corners.compact .yatra-corner svg { width: 56px; height: 56px; }
+.yatra-corners.compact .yatra-corner-text strong { font-size: 18px; }
+.yatra-corners.compact .yatra-corner-text span { font-size: 12px; line-height: 1.2; }
+.trek-postcard { position: relative; padding: 12px; }
+.trek-postcard h2 { margin: 6px 0 8px; font: italic 26px/1 Georgia, serif; }
+.trek-postcard p { margin: 0 0 8px; }
+.trek-postcard .trek-sources { margin: 8px 0 0; padding: 0; list-style: none; font-size: 12px; color: var(--ink-3); }
