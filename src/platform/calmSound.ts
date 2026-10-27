@@ -147,7 +147,8 @@ export function startPreset(ctx: BaseAudioContext, dest: AudioNode, id: CalmSoun
       break;
     }
     case 'crickets': {
-      bed('brown', [filter(ctx, 'lowpass', 400)], 0.12);
+      // A faint night air, about 10 dB under the chirps, so the crickets lead (item 210).
+      bed('brown', [filter(ctx, 'lowpass', 400)], 0.038);
       // Two crickets, each with its own pitch and rhythm: a chirp is a few quick pulses.
       const crickets = [{ freq: 4400, every: 0.9, pulses: 3 }, { freq: 5200, every: 1.35, pulses: 4 }];
       const due = crickets.map((_, k) => at + 0.3 + k * 0.45);
@@ -156,7 +157,7 @@ export function startPreset(ctx: BaseAudioContext, dest: AudioNode, id: CalmSoun
         for (let p = 0; p < cricket.pulses; p++) {
           const tone = ctx.createOscillator(), env = ctx.createGain(), when = start + p * 0.034;
           tone.type = 'sine'; tone.frequency.setValueAtTime(cricket.freq + random() * 60, when);
-          env.gain.setValueAtTime(0, when); env.gain.linearRampToValueAtTime(0.045, when + 0.004); env.gain.linearRampToValueAtTime(0, when + 0.02);
+          env.gain.setValueAtTime(0, when); env.gain.linearRampToValueAtTime(0.07, when + 0.004); env.gain.linearRampToValueAtTime(0, when + 0.02);
           tone.connect(env); env.connect(out); tone.start(when); tone.stop(when + 0.03);
         }
         due[k] = start + cricket.every * (0.85 + random() * 0.3);

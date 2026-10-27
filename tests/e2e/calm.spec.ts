@@ -36,6 +36,30 @@ async function stop(page: Page) {
 }
 const doneText = (minutes: number) => minutes === 1 ? 'A quiet minute, together.' : `${minutes} quiet minutes, together.`;
 
+test('the setup fits one 360x800 screen: the stage, three rows and Start, with no scroll', async ({ page }) => {
+  await openCalm(page);
+  const fits = async () => page.evaluate(() => {
+    const tabs = document.querySelector('.tabbar')!.getBoundingClientRect().top;
+    const parts = ['.calm-stage', '.calm-ways', '.calm-row', '.calm-sounds', '.calm-start'].map(selector => document.querySelector(selector)!.getBoundingClientRect());
+    return { scrolled: window.scrollY, inView: parts.every(rect => rect.top >= 0 && rect.bottom <= tabs) };
+  });
+  expect(await fits()).toEqual({ scrolled: 0, inView: true });
+  // The chosen chip stays in view in its sliding row, and the page never scrolls sideways.
+  await page.locator('.calm-other').click();
+  await page.getByRole('dialog', { name: 'Other lengths' }).getByRole('button', { name: 'Until I stop' }).click();
+  await page.getByRole('button', { name: 'Soft noise', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Soft noise', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.locator('.calm-start')).toHaveText('Start, until I stop');
+  expect(await fits()).toEqual({ scrolled: 0, inView: true });
+  for (const name of ['Other · until I stop', 'Soft noise']) {
+    const box = await page.getByRole('button', { name, exact: true }).boundingBox();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('every chip, Custom 1 and 120, and the Other lengths run on the wall clock and end with the done line', async ({ page }) => {
   test.setTimeout(120_000);
   await openCalm(page);
@@ -73,7 +97,7 @@ test('Until I stop counts up and counts when stopped; under a minute saves nothi
   await expect(page.locator('.calm-phase')).toHaveText('2 quiet minutes, together.');
   // Stop at exactly a minute: it counts, as 1.
   await pick(page, 5);
-  await page.getByRole('button', { name: 'Quiet sit' }).click();
+  await page.getByRole('button', { name: 'Quiet', exact: true }).click();
   await startButton(page).click();
   await page.clock.fastForward(MIN);
   await stop(page);
@@ -84,7 +108,7 @@ test('Until I stop counts up and counts when stopped; under a minute saves nothi
 test('a 30-minute sit is one row of 30 minutes, and Yatra moves one stretch for it', async ({ page }) => {
   await openCalm(page);
   await pick(page, 30);
-  await page.getByRole('button', { name: 'Body scan' }).click();
+  await page.getByRole('button', { name: 'Scan', exact: true }).click();
   await startButton(page).click();
   await expect(page.locator('.calm-line')).toHaveText('Notice your feet on the floor.');
   await page.clock.fastForward(5 * MIN + 1_000);
@@ -150,6 +174,7 @@ test('the screen dims after 20 seconds without a touch, and a tap wakes it', asy
 
 test('a paced sit of 10 minutes or more fades its guide after 3 minutes', async ({ page }) => {
   await openCalm(page);
+  await page.locator('.calm-settings summary').click();
   await pick(page, 5);
   await expect(page.getByLabel(/Let the guide fade/)).toHaveCount(0);
   await pick(page, 10);
@@ -174,10 +199,11 @@ function wavFile(bytes: number): Buffer {
 
 test('Your sound: a file is kept on the phone, plays through an audio element, and is removed; a 51 MB file is refused', async ({ page }, testInfo) => {
   await openCalm(page);
-  await expect(page.getByText('Your sounds stay on this phone.')).toBeVisible();
+  await expect(page.getByText('Your sounds stay on this phone.')).toHaveCount(0);
   await page.getByLabel('Add your sound').setInputFiles({ name: 'Morning raga.wav', mimeType: 'audio/wav', buffer: wavFile(1024 * 1024) });
   const mine = page.getByRole('button', { name: 'Morning raga', exact: true });
   await expect(mine).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByText('Your sounds stay on this phone.')).toBeVisible();
   await startButton(page).click();
   await expect.poll(() => page.locator('audio.calm-user-audio').evaluate(node => (node as HTMLAudioElement).paused)).toBe(false);
   await stop(page);

@@ -31,15 +31,29 @@
 @keyframes calm-idle { 50% { transform: translateY(1.5px) scale(1.01); } }
 .calm-phase.faded { opacity: 0; transition: opacity 4s ease; }
 .calm-line { max-width: 28ch; text-align: center; font-size: 19px; min-height: 2.5em; }
-.calm-sounds { align-items: center; }
 .calm-own { display: inline-flex; gap: 2px; }
 .calm-own-more { min-width: 44px; padding-inline: 8px; }
-.calm-note { width: 100%; margin: 2px 0 0; color: var(--ink-2); }
-.calm-start { width: 100%; }
-.calm-under { margin: 8px 0 0; color: var(--ink-2); }
+.calm-note { margin: 0 0 8px; color: var(--ink-2); }
+/* Item 210: one screen at 360x800. A smaller stage, one segmented row, two sliding chip rows, a Start bar above the tabs. */
+.calm-stage-setup { gap: 4px; margin: 4px 0 10px; padding: 10px 16px 12px; }
+.calm-stage-setup .calm-phase { font-size: 19px; }
+.calm-legend { padding: 0; margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.calm-ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 0 10px; padding: 0; border: 0; }
+.calm-ways legend { grid-column: 1 / -1; }
+.calm-ways button { min-height: 44px; padding-inline: 4px; }
+.calm-set { min-width: 0; margin: 0 0 10px; padding: 0; border: 0; }
+.calm-row { position: relative; display: flex; gap: 8px; margin: 0 -16px; padding: 0 16px 4px; overflow-x: auto; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.calm-row::-webkit-scrollbar { display: none; }
+.calm-row > button, .calm-row .calm-own { flex: none; white-space: nowrap; }
+.calm-row button { min-height: 44px; }
+.calm-start-bar { position: sticky; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 4; margin: 12px -16px 0; padding: 8px 16px 6px; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.calm-start-bar .calm-start { width: 100%; }
+.calm-under { margin: 4px 0 0; text-align: center; color: var(--ink-2); }
 .calm-settings label { display: grid; gap: 4px; margin-top: 10px; }
 .calm-settings label.toggle-row { display: flex; }
-.calm-settings input[type='range'] { width: 100%; }
+.calm-screen .calm-settings label:not(.toggle-row) { display: grid; grid-template-columns: minmax(0, 1fr); }
+.calm-screen .calm-settings select { width: 100%; }
+.calm-screen .calm-settings input[type='range'] { width: 100%; min-height: 44px; accent-color: var(--accent); }
 .calm-other-sheet input[type='number'] { width: 100%; }
 /* The dim screen: near-black, a small breathing dot and the time left. A tap wakes it. */
 .calm-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 18px; width: 100%; min-height: 100%; margin: 0; border: 0; border-radius: 0; background: #050608; color: #6b7080; box-shadow: none; }

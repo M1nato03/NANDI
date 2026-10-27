@@ -20,10 +20,10 @@ export function breathPhase(elapsedMs: number, breath: Breath): 'in' | 'out' {
 /** The wall clock, read only from handlers and effects. */
 const stamp = () => Date.now();
 const clock = (ms: number) => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-const WAYS: { id: CalmWay; name: string; line: (breath: Breath) => string }[] = [
-  { id: 'paced', name: 'Paced breath', line: breath => `${breath.in} in, ${breath.out} out` },
-  { id: 'scan', name: 'Body scan', line: () => 'Six slow lines, one at a time' },
-  { id: 'quiet', name: 'Quiet sit', line: () => 'No guide, just quiet' },
+const WAYS: { id: CalmWay; short: string; line: (breath: Breath) => string }[] = [
+  { id: 'paced', short: 'Paced', line: breath => `${breath.in} in, ${breath.out} out` },
+  { id: 'scan', short: 'Scan', line: () => 'Six slow lines, one at a time' },
+  { id: 'quiet', short: 'Quiet', line: () => 'No guide, just quiet' },
 ];
 const lengthName = (length: CalmLength) => length === 'open' ? 'until I stop' : `${length} ${length === 1 ? 'minute' : 'minutes'}`;
 /** A seed for the generated sounds: the same sound plays the same way every time. */
@@ -52,6 +52,22 @@ export function Calm() {
   const finishing = useRef(false);
   const rung = useRef({ bells: 0, line: 0 });
   const file = useRef<HTMLInputElement>(null);
+  const lengths = useRef<HTMLDivElement>(null);
+  const sounds = useRef<HTMLDivElement>(null);
+  // The chosen chip stays in view in its sliding row (sideways only, so the page itself never jumps).
+  useEffect(() => {
+    const keep = () => {
+      for (const row of [lengths.current, sounds.current]) {
+        const chip = row?.querySelector<HTMLElement>('[aria-pressed="true"]');
+        if (row && chip && (chip.offsetLeft < row.scrollLeft || chip.offsetLeft + chip.offsetWidth > row.scrollLeft + row.clientWidth)) row.scrollLeft = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
+      }
+    };
+    keep();
+    // Chip widths change once the fonts arrive; keep the chosen chip in view after that too.
+    let live = true;
+    void document.fonts?.ready.then(() => { if (live) keep(); });
+    return () => { live = false; };
+  }, [prefs.minutes, prefs.sound, run]);
   const yatra = useYatra();
 
   useEffect(() => {
@@ -141,9 +157,9 @@ export function Calm() {
   return <section className="screen calm-screen">
     <p className="eyebrow">Calm</p><h1>Breathe with Kachhua</h1>
     {yatra?.night && <TrekScene trek={yatra.trek} night brighten={stars} breath={run && breathing ? { phase, in: run.breath.in, out: run.breath.out } : undefined} onRename={() => undefined} />}
-    <div className="calm-stage" data-way={run?.way} data-phase={breathing ? phase : undefined} data-bells={run ? intervalBells(elapsed, run.interval, run.length) : undefined} style={style}>
+    <div className={`calm-stage${run ? '' : ' calm-stage-setup'}`} data-way={run?.way} data-phase={breathing ? phase : undefined} data-bells={run ? intervalBells(elapsed, run.interval, run.length) : undefined} style={style}>
       {/* At night Kachhua sits at camp in the scene above, so the stage shows the guide only (one Kachhua a screen). */}
-      {!yatra?.night && <Cast name="Kachhua" pose={pose} breathe={!!run && run.way === 'quiet'} size={140} title="Kachhua" />}
+      {!yatra?.night && <Cast name="Kachhua" pose={pose} breathe={!!run && run.way === 'quiet'} size={run ? 140 : 88} title="Kachhua" />}
       {run ? <>
         {run.way === 'paced' && <p className={`calm-phase${faded ? ' faded' : ''}`} aria-live="polite" aria-hidden={faded || undefined}>{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>}
         {run.way === 'scan' && <p className="calm-phase calm-line" aria-live="polite">{SCAN_LINES[scanLine(elapsed, run.length)]}</p>}
@@ -153,15 +169,15 @@ export function Calm() {
       </> : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
     {run ? <button type="button" className="secondary" onClick={stop}>Stop</button> : <>
-      <fieldset className="calm-choices calm-ways"><legend>How to sit</legend>
-        {WAYS.map(way => <button type="button" key={way.id} className={prefs.way === way.id ? '' : 'secondary'} aria-pressed={prefs.way === way.id} onClick={() => setPrefs({ way: way.id })}>{way.name}</button>)}
+      {/* Spec 35 item 210: the setup fits one screen at 360x800: one segmented row, two sliding chip rows and a Start bar. */}
+      <fieldset className="calm-ways"><legend className="calm-legend">How to sit</legend>
+        {WAYS.map(way => <button type="button" key={way.id} className={prefs.way === way.id ? '' : 'secondary'} aria-pressed={prefs.way === way.id} onClick={() => setPrefs({ way: way.id })}>{way.short}</button>)}
       </fieldset>
-      <fieldset className="calm-choices"><legend>How long</legend>
+      <fieldset className="calm-set"><legend className="calm-legend">How long</legend><div className="calm-row" ref={lengths}>
         {CALM_MINUTES.chips.map(value => <button type="button" key={value} className={prefs.minutes === value ? '' : 'secondary'} aria-pressed={prefs.minutes === value} onClick={() => setPrefs({ minutes: value })}>{value} min</button>)}
         <button type="button" className={`calm-other${otherOn ? '' : ' secondary'}`} aria-pressed={otherOn} onClick={() => setSheet('other')}>{otherOn ? `Other · ${prefs.minutes === 'open' ? 'until I stop' : `${prefs.minutes} min`}` : 'Other'}</button>
-      </fieldset>
-      {prefs.way === 'paced' && isLongSit(prefs.minutes) && <label className="toggle-row"><input type="checkbox" checked={prefs.fade} onChange={event => setPrefs({ fade: event.target.checked })} /> Let the guide fade after 3 minutes</label>}
-      <fieldset className="calm-choices calm-sounds"><legend>Sound</legend>
+      </div></fieldset>
+      <fieldset className="calm-set"><legend className="calm-legend">Sound</legend><div className="calm-row calm-sounds" ref={sounds}>
         {[{ id: 'none', name: 'None' }, ...CALM_SOUNDS].map(sound => <button type="button" key={sound.id} className={prefs.sound === sound.id ? '' : 'secondary'} aria-pressed={prefs.sound === sound.id} onClick={() => setPrefs({ sound: sound.id })}>{sound.name}</button>)}
         {userSounds.map(row => <span key={row.id} className="calm-own">
           <button type="button" className={prefs.sound === `user:${row.id}` ? '' : 'secondary'} aria-pressed={prefs.sound === `user:${row.id}`} onClick={() => setPrefs({ sound: `user:${row.id}` })}>{row.name}</button>
@@ -169,12 +185,10 @@ export function Calm() {
         </span>)}
         {userSounds.length < MAX_USER_SOUNDS && <button type="button" className="secondary calm-add" onClick={() => file.current?.click()}>+ Your sound</button>}
         <input ref={file} type="file" accept="audio/*" hidden aria-label="Add your sound" onChange={event => void addSound(event.target.files?.[0])} />
-        <p className="small calm-note" role={soundNote ? 'alert' : undefined}>{soundNote || 'Your sounds stay on this phone.'}</p>
-      </fieldset>
-      <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
-      <p className="calm-under">A quiet few minutes with your breath.</p>
-      {isLongSit(prefs.minutes) && <p className="small calm-under">Keep NANDI open. The sound and bells play here.</p>}
-      <details className="card calm-settings"><summary>Breath, bells and volume</summary>
+      </div></fieldset>
+      {(soundNote || userSounds.length > 0) && <p className="small calm-note" role={soundNote ? 'alert' : undefined}>{soundNote || 'Your sounds stay on this phone.'}</p>}
+      <details className="card calm-settings"><summary>Breath, bells and sound</summary>
+        {prefs.way === 'paced' && isLongSit(prefs.minutes) && <label className="toggle-row"><input type="checkbox" checked={prefs.fade} onChange={event => setPrefs({ fade: event.target.checked })} /> Let the guide fade after 3 minutes</label>}
         <div className="calm-breath">
           <label>Breathe in (seconds)<select value={breath.in} onChange={event => setBreath({ in: Number(event.target.value) })}>{Array.from({ length: BREATH_IN[1] - BREATH_IN[0] + 1 }, (_, i) => BREATH_IN[0] + i).map(value => <option key={value} value={value}>{value}</option>)}</select></label>
           <label>Breathe out (seconds)<select value={breath.out} onChange={event => setBreath({ out: Number(event.target.value) })}>{Array.from({ length: BREATH_OUT[1] - BREATH_OUT[0] + 1 }, (_, i) => BREATH_OUT[0] + i).map(value => <option key={value} value={value}>{value}</option>)}</select></label>
@@ -186,6 +200,10 @@ export function Calm() {
         <label>Bell volume<input type="range" min={0} max={100} value={prefs.bellVolume} onChange={event => setPrefs({ bellVolume: Number(event.target.value) })} /></label>
         {prefs.sound === 'tanpura' && <label>Tanpura Sa<select value={prefs.pitch} onChange={event => setPrefs({ pitch: Number(event.target.value) })}>{TANPURA_PITCHES.map((pitch, index) => <option key={pitch.name} value={index}>{pitch.name}</option>)}</select></label>}
       </details>
+      <div className="calm-start-bar">
+        <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
+        <p className="small calm-under">{isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>
+      </div>
     </>}
     {dim && <button type="button" className="calm-dim" aria-label="Wake the screen" onClick={() => setTouchedAt(stamp())}>
       <span className="calm-dim-dot" aria-hidden="true" /><span className="calm-dim-time">{clock(left)}</span>
