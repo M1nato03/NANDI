@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 async function readLog(page: Page, dayKey: string) {
   return page.evaluate(async key => {
@@ -17,6 +18,7 @@ async function readLog(page: Page, dayKey: string) {
 test('the weekly agency check comes to Plan on Sunday, saves in one tap each, and shows in the weekly review', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-25T12:00:00'));
   await page.goto('/#plan');
+  await openMore(page);
   const check = page.getByRole('region', { name: 'Time in NANDI' });
   await expect(check).toBeVisible();
   await check.getByRole('button', { name: '4 of 5' }).click();
@@ -33,6 +35,7 @@ test('Plan does not ask on other days', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-22T12:00:00'));
   await page.goto('/#plan');
   await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
+  await openMore(page);
   await expect(page.getByRole('region', { name: 'Time in NANDI' })).toHaveCount(0);
 });
 

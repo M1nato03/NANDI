@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 // Item 177 (Jenil's build 90 screenshots): Plan's success line fades; last night's check-in fits a 360 px phone.
 test('the line under Add says what happened, then fades after a few seconds', async ({ page }) => {
@@ -21,6 +22,7 @@ test("last night's check-in shows its time and range choices in full", async ({ 
   await expect(page.getByRole('region', { name: 'Today' })).toContainText('Yesterday task');
   await page.clock.setSystemTime(new Date('2026-10-27T08:30:00'));
   await page.reload();
+  await openMore(page);
   const card = page.getByRole('region', { name: 'Last night' });
   await expect(card).toBeVisible();
   const cardBox = (await card.boundingBox())!;

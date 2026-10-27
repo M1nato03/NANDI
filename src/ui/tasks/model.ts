@@ -77,3 +77,14 @@ export function taskGroups(rows: TaskRow[]): TaskGroup[] {
     return { parent, steps, done: steps.filter((step) => step.status === 'done').length, total: steps.length, placement: active?.status ?? parent.status, dayKey: active?.dayKey ?? parent.dayKey, scheduledStart: active?.scheduledStart ?? parent.scheduledStart };
   });
 }
+
+/**
+ * A step's own name wins. Under its task, an unnamed step (the split's default name, an empty name or the task's
+ * own name) reads 'Step 1 of 3', not the task's name again (item 139).
+ */
+export function stepLabel(group: TaskGroup, task: TaskRow): string {
+  const parent = group.parent.title.trim(), title = task.title.trim();
+  const fallback = `Step ${group.steps.findIndex(step => step.id === task.id) + 1} of ${group.total}`;
+  if (!title || title === parent) return fallback;
+  return /^step \d+ of \d+$/i.test(title.slice(parent.length + 3)) && title.startsWith(`${parent} — `) ? fallback : task.title;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import type { TaskRow } from '../../data/types';
 import type { MoveSnapshot, MoveTarget } from '../../data/repos/tasks';
 import { dayKey } from '../../core/time/dayKey';
@@ -42,8 +42,11 @@ export function averageLine(tasks: TaskRow[]): string | undefined {
 /** A move made elsewhere on Plan (the detail sheet's Another day or Later) that the list should offer to undo. */
 export type OuterMove = { task: TaskRow; before: MoveSnapshot; where: string; at: number; writes: number };
 
+/** A Start tapped on a step in the detail sheet: the list runs it, so Mor reacts and a move to Today gets Undo. */
+export type StartRequest = { task: TaskRow; at: number };
+
 /** Mor's list sits under Mor's stage at the top of Plan: the stage's Mor is the one that reacts (item 135, one Mor per screen). */
-export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, heading, away }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove; heading?: ReactNode; away?: boolean }) {
+export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, startRequest, heading, away }: { board: Board; onDetail: (task: TaskRow) => void; avgHidden: boolean; hideAverage: () => void; outerMove?: OuterMove; startRequest?: StartRequest; heading?: ReactNode; away?: boolean }) {
   const today = dayKey(board.now);
   const [moment, setMoment] = useState<{ kind: MorMoment; at: number }>({ kind: 'open', at: 0 });
   const [noted, setNoted] = useState('');
@@ -53,19 +56,18 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
   const [time, setTime] = useState<number | undefined>();
   const [other, setOther] = useState('');
   const [confirmAll, setConfirmAll] = useState<string | null>(null);
-  const [menu, setMenu] = useState<string | null>(null);
   useEffect(() => { if (!toast) return; const timer = window.setTimeout(() => setToast(current => current?.at === toast.at ? null : current), 8000); return () => window.clearTimeout(timer); }, [toast]);
   const react = (kind: MorMoment) => setMoment(current => ({ kind, at: current.at + 1 }));
   const undo = (task: TaskRow, before: MoveSnapshot) => { void board.act((repos, now) => repos.undoMove(task.id, now, before), 'Move undone.'); };
   // Moves from the detail sheet get the same toast and Undo (Codex A item 91); a newer toast here replaces it.
   const [outerDone, setOuterDone] = useState(0);
-  const offerUndo = (task: TaskRow, before: MoveSnapshot, text: string) => { setOuterDone(outerMove?.at ?? 0); setToast(current => ({ text, at: (current?.at ?? 0) + 1, writes: board.writesRef.current, undo: () => { undo(task, before); setToast(null); } })); };
+  const offerUndo = (moved: [TaskRow, MoveSnapshot][], text: string) => { setOuterDone(outerMove?.at ?? 0); setToast(current => ({ text, at: (current?.at ?? 0) + 1, writes: board.writesRef.current, undo: () => { void board.act(async (repos, now) => { for (const [task, before] of moved) await repos.undoMove(task.id, now, before); }, 'Move undone.'); setToast(null); } })); };
   const outerToast = outerMove && outerMove.at !== outerDone && outerMove.writes === board.writes ? { text: `Moved to ${outerMove.where}.`, at: outerMove.at, undo: () => { undo(outerMove.task, outerMove.before); setOuterDone(outerMove.at); } } : null;
   useEffect(() => { if (!outerToast) return; const timer = window.setTimeout(() => setOuterDone(outerToast.at), 8000); return () => window.clearTimeout(timer); }, [outerToast?.at]); // eslint-disable-line react-hooks/exhaustive-deps
   // Central rule: any write after the move (from anywhere on Plan) ends its Undo (Codex A item 93).
   const shownToast = outerToast ?? (toast && (toast.writes === undefined || toast.writes === board.writes) ? toast : null);
   // Undo is one step and lasts only until the next action (Codex A item 92, the spec owner's call).
-  const clearUndo = () => { setToast(null); setOuterDone(outerMove?.at ?? 0); setMenu(null); };
+  const clearUndo = () => { setToast(null); setOuterDone(outerMove?.at ?? 0); };
   const openDetail = (task: TaskRow) => { clearUndo(); onDetail(task); };
 
   const rows = visibleTasks(board.tasks);
@@ -117,50 +119,47 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
     let before: MoveSnapshot | undefined;
     if (!await board.act(async (repos, now) => { before = await repos.startFromList(task.id, now); }, 'Focus started.')) return;
     setNoted(''); react('start');
-    if (before) offerUndo(task, before, 'Moved to Today.');
+    if (before) offerUndo([[task, before]], 'Moved to Today.');
   }
-  async function move(task: TaskRow, target: MoveTarget, where: string) {
+  const startedAt = useRef(0);
+  useEffect(() => { if (!startRequest || startRequest.at === startedAt.current) return; startedAt.current = startRequest.at; void start(startRequest.task); }, [startRequest?.at]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A stepped task's row moves every open step in its list together, and Undo brings them all back.
+  async function move(tasks: TaskRow[], target: MoveTarget, where: string) {
     clearUndo();
-    let before: MoveSnapshot | undefined;
-    const ok = await board.act(async (repos, now) => { before = await repos.moveTask(task.id, now, target); }, '');
-    if (!ok || !before) return;
+    const moved: [TaskRow, MoveSnapshot][] = [];
+    const ok = await board.act(async (repos, now) => { for (const task of tasks) moved.push([task, await repos.moveTask(task.id, now, target)]); }, '');
+    if (!ok || !moved.length) return;
     react('move');
-    offerUndo(task, before, `Moved to ${where}.`);
+    offerUndo(moved, `Moved to ${where}.`);
   }
 
   const groups = new Map(taskGroups(board.tasks).filter(group => group.total).map(group => [group.parent.id, group]));
-  // A step's own name wins. Under its task, an unnamed step (the split's default name, an empty name or the task's
-  // own name) reads 'Step 1 of 3', not the task's name again (item 139).
-  const stepLabel = (task: TaskRow) => {
-    const group = task.parentId ? groups.get(task.parentId) : undefined;
-    if (!group) return task.title;
-    const parent = group.parent.title.trim(), title = task.title.trim();
-    const fallback = `Step ${group.steps.findIndex(step => step.id === task.id) + 1} of ${group.total}`;
-    if (!title || title === parent) return fallback;
-    return /^step \d+ of \d+$/i.test(title.slice(parent.length + 3)) && title.startsWith(`${parent} — `) ? fallback : task.title;
-  };
   const timeOf = (task: TaskRow) => (task.timeSet || task.scheduledStart != null) && <span className="small mor-time" id={`time-${task.id}`}>{task.scheduledStart != null ? new Date(task.scheduledStart).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : `${task.estimateMin} min`}</span>;
-  // The moves a row offers behind its ⋯: the two lists it is not in.
-  const MOVES: Record<'today' | 'tomorrow' | 'later', { target: MoveTarget; where: string; label: string; aria: string }[]> = {
-    today: [{ target: 'tomorrow', where: 'Tomorrow', label: 'Tomorrow →', aria: 'Tomorrow' }, { target: 'later', where: 'Later', label: 'Later', aria: 'Later' }],
-    tomorrow: [{ target: 'today', where: 'Today', label: '← Today', aria: 'Today' }, { target: 'later', where: 'Later', label: 'Later', aria: 'Later' }],
-    later: [{ target: 'today', where: 'Today', label: '← Today', aria: 'Today' }, { target: 'tomorrow', where: 'Tomorrow', label: 'Tomorrow', aria: 'Tomorrow' }],
+  // Spec 27: one move on the row itself. Today rows go to Tomorrow; Tomorrow and Later rows come back to Today.
+  // Later and another day sit in the detail sheet.
+  const MOVE: Record<'today' | 'tomorrow' | 'later', { target: MoveTarget; where: string; label: string }> = {
+    today: { target: 'tomorrow', where: 'Tomorrow', label: 'Tomorrow →' },
+    tomorrow: { target: 'today', where: 'Today', label: '← Today' },
+    later: { target: 'today', where: 'Today', label: '← Today' },
   };
-  // Item 139: every row is one compact line: circle, title (and time), a small Start pill, and ⋯ for moves.
-  const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className={`task-row ui-list-row mor-row${task.parentId ? ' mor-step' : ''}`} key={task.id} data-list={list}>
+  const moveButton = (tasks: TaskRow[], name: string, list: 'today' | 'tomorrow' | 'later') => <button type="button" className="text-button mor-move" disabled={board.busy} aria-label={`${MOVE[list].where}: ${name}`} onClick={() => void move(tasks, MOVE[list].target, MOVE[list].where)}>{MOVE[list].label}</button>;
+  // Every row has exactly three controls: the circle, Start and the move (spec 27).
+  const row = (task: TaskRow, list: 'today' | 'tomorrow' | 'later') => <li className="task-row ui-list-row mor-row" key={task.id} data-list={list}>
     <button type="button" className="done-circle" aria-label={`Done: ${task.title}`} disabled={board.busy} onClick={() => void done(task)}><span aria-hidden="true">○</span></button>
-    <div className="task-row-main"><button type="button" className="task-title-button" aria-label={stepLabel(task)} aria-describedby={task.timeSet || task.scheduledStart != null ? `time-${task.id}` : undefined} onClick={() => openDetail(task)}><span className="mor-title">{stepLabel(task)}</span>{timeOf(task)}</button></div>
+    <div className="task-row-main"><button type="button" className="task-title-button" aria-label={task.title} aria-describedby={task.timeSet || task.scheduledStart != null ? `time-${task.id}` : undefined} onClick={() => openDetail(task)}><span className="mor-title">{task.title}</span>{timeOf(task)}</button></div>
     {runningTask?.id !== task.id && <button type="button" className="secondary mor-start" disabled={board.busy} aria-label={`Start: ${task.title}`} onClick={() => void start(task)}>Start</button>}
-    <button type="button" className="text-button mor-more" aria-label={`More for ${task.title}`} aria-expanded={menu === task.id} onClick={() => setMenu(current => current === task.id ? null : task.id)}><span aria-hidden="true">⋯</span></button>
-    {menu === task.id && <div className="mor-menu" role="group" aria-label={`Move ${task.title}`}>{MOVES[list].map(item => <button type="button" key={item.where} className="secondary" disabled={board.busy} aria-label={`${item.aria}: ${task.title}`} onClick={() => void move(task, item.target, item.where)}>{item.label}</button>)}</div>}
+    {moveButton([task], task.title, list)}
   </li>;
-  // A split task reads as a plain row with its own circle; its steps sit open under it as indented rows (item 135).
-  // Dropping the whole task lives in its Details sheet.
-  const parentRow = (group: TaskGroup, list: 'today' | 'tomorrow' | 'later') => {
+  // A split task is one row: its circle finishes every open step after an inline check (item 135), Start starts its
+  // next open step here, and the move takes its open steps here along. The steps themselves live in its detail sheet.
+  const parentRow = (group: TaskGroup, here: TaskRow[], list: 'today' | 'tomorrow' | 'later') => {
     const left = group.steps.filter(step => !step.deleted && step.status !== 'done' && step.status !== 'dropped').length;
+    const next = here.find(step => step.id !== runningTask?.id);
     return <li className="task-row ui-list-row mor-row mor-parent" key={group.parent.id} data-list={list}>
       <button type="button" className="done-circle" aria-label={`Done: ${group.parent.title}`} aria-expanded={confirmAll === group.parent.id} disabled={board.busy || !left} onClick={() => setConfirmAll(current => current === group.parent.id ? null : group.parent.id)}><span aria-hidden="true">○</span></button>
       <div className="task-row-main"><button type="button" className="task-title-button" aria-label={group.parent.title} aria-describedby={`progress-${group.parent.id}`} onClick={() => openDetail(group.parent)}><span className="mor-title">{group.parent.title}</span><span className="small" id={`progress-${group.parent.id}`}>{group.done} of {group.total} steps done</span></button></div>
+      {next && <button type="button" className="secondary mor-start" disabled={board.busy} aria-label={`Start: ${group.parent.title}`} onClick={() => void start(next)}>Start</button>}
+      {moveButton(here, group.parent.title, list)}
       {confirmAll === group.parent.id && <div className="mor-confirm" role="group" aria-label={`Finish ${group.parent.title}`}><span>{left === 1 ? 'Mark the last step done?' : `Mark all ${left} steps done?`}</span><button type="button" disabled={board.busy} onClick={() => void doneAll(group)}>Mark done</button><button type="button" className="secondary" onClick={() => setConfirmAll(null)}>Cancel</button></div>}
     </li>;
   };
@@ -171,10 +170,10 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, he
       if (!group) return [row(task, key)];
       if (seen.has(group.parent.id)) return [];
       seen.add(group.parent.id);
-      return [parentRow(group, key), ...items.filter(step => step.parentId === group.parent.id).map(step => row(step, key))];
+      return [parentRow(group, items.filter(step => step.parentId === group.parent.id), key)];
     });
     return <section className="task-list mor-list" aria-label={name}>
-      <div className="ui-section-header"><h2>{name} <span className="task-count">{items.length}</span></h2></div>
+      <div className="ui-section-header"><h2>{name} <span className="task-count">{rows.length}</span></h2></div>
       {items.length ? <ul>{rows}</ul> : <p className="small">{empty}</p>}
     </section>;
   };

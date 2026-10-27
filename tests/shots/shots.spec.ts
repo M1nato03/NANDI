@@ -20,8 +20,9 @@ async function planWithTasks(page: Page) {
   const preview = page.getByRole('dialog', { name: 'Split preview' });
   await preview.getByLabel('Number of steps').selectOption('3');
   await preview.getByRole('button', { name: 'Save' }).click();
-  await page.goto('/#plan');
+  await page.reload(); // More starts closed again, as on a fresh open
   await expect(page.locator('.mor-parent')).toHaveCount(1);
+  await expect(page.locator('details.plan-more')).not.toHaveAttribute('open');
 }
 
 async function seedDueIdeas(page: Page, ids: string[], at: number) {
@@ -40,14 +41,32 @@ for (const theme of themes) test.describe(theme, () => {
   test.beforeEach(async ({ page }) => { await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' }); });
   const shot = (page: Page, name: string, fullPage = true) => page.screenshot({ path: `${out}/${theme}/${name}.png`, fullPage });
 
-  test('plan: a plain and a stepped task, then the mark-all check and a move menu', async ({ page }) => {
+  test('plan: a plain and a stepped task, the mark-all check, a move, and the steps in Details', async ({ page }) => {
     await planWithTasks(page);
+    await shot(page, 'plan-0-top', false);
     await shot(page, 'plan-1-tasks');
     await page.locator('.mor-parent').getByRole('button', { name: /^Done: / }).click();
     await shot(page, 'plan-2-mark-all');
     await page.locator('.mor-parent').getByRole('button', { name: 'Cancel' }).click();
-    await page.getByRole('button', { name: 'More for Call the bank' }).click();
-    await shot(page, 'plan-3-move-menu');
+    await page.getByRole('button', { name: 'Tomorrow: Call the bank' }).click();
+    await expect(page.locator('.mor-toast')).toBeVisible();
+    await shot(page, 'plan-3-moved');
+    await page.locator('.mor-parent .task-title-button').click();
+    await expect(page.getByRole('region', { name: 'Steps' })).toBeVisible();
+    await shot(page, 'plan-5-steps-in-details', false);
+  });
+
+  // Item 183: More starts closed at the bottom of Plan; the tab bar spans the width on every tab.
+  test('plan: More closed and open, and the tab bar on each tab', async ({ page }) => {
+    await planWithTasks(page);
+    await shot(page, 'plan-6-more-closed');
+    await openMore(page);
+    await shot(page, 'plan-7-more-open');
+    for (const tab of ['plan', 'read', 'you']) {
+      await page.goto(`/#${tab}`);
+      const bar = (await page.getByRole('navigation', { name: 'Main tabs' }).boundingBox())!;
+      await page.screenshot({ path: `${out}/${theme}/tabbar-${tab}.png`, clip: { x: 0, y: bar.y - 8, width: 360, height: bar.height + 8 } });
+    }
   });
 
   test('plan: a running focus', async ({ page }) => {

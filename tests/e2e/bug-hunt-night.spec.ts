@@ -15,6 +15,7 @@ test('phone-down move leaves lights-out check-in for an explicit tap', async ({ 
   await expect(page.getByRole('button', { name: 'Lights-out check-in' })).toBeVisible();
   await page.clock.setFixedTime(new Date('2026-10-20T08:30:00'));
   await page.goto('/#plan');
+  await openMore(page);
   await expect(page.getByRole('region', { name: 'Last night' })).toBeVisible();
   await page.getByRole('region', { name: 'Last night' }).getByLabel('Phone-down time').selectOption('23:30');
   await page.getByRole('region', { name: 'Last night' }).getByLabel('Reels time').selectOption('none');

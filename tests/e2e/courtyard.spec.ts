@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 type Fact = { id: string; dayKey: string; mode: string; kind: string; refId: string; inputs: Record<string, unknown>; updatedAt: number; deleted: 0; deviceId: string };
 let count = 0;
@@ -27,6 +28,7 @@ test('the courtyard grows from practice days and opens from Plan', async ({ page
   await page.goto('/#plan');
   // Seven training days, today included, and one finished task today.
   await seed(page, [...daysBefore('2026-10-20', 7).map(day => fact(day, 'train', 'session', { xp: 100 })), fact('2026-10-20', 'tasks', 'done', { wasPlanned: true })]);
+  await openMore(page);
   const banner = page.getByRole('button', { name: /Open the courtyard/ });
   await expect(banner).toBeVisible();
   await expect(banner).toContainText('2 friends are busy with you today.');
@@ -48,7 +50,8 @@ test('the courtyard sleeps at night and the storybook tells the week', async ({ 
   await page.clock.setFixedTime(new Date('2026-10-19T12:00:00'));
   await page.goto('/#plan');
   await seed(page, [...daysBefore('2026-10-18', 5).map(day => fact(day, 'mind', 'board', { daily: true })), fact('2026-10-14', 'bonuses', 'lightsout', { metTarget: true })]);
-  // Monday: Plan offers the story of the week that just ended.
+  // Monday: Plan offers the story of the week that just ended (in More, item 183).
+  await openMore(page);
   await page.getByRole('button', { name: /Your week as a story/ }).click();
   await expect(page.getByRole('heading', { name: 'Your week as a story' })).toBeVisible();
   const book = page.locator('.storybook');

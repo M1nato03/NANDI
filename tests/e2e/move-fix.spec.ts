@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 // Item 83, carried into spec 27: moves are never refused. Shutdown's "Move to tomorrow" moves the task at once, the
 // detail sheet's "Another day…" moves to a picked day and says how the 4 am line works, and Pick one Must places
@@ -61,6 +62,7 @@ test('Pick one Must places the last choice today without asking for anything fir
     database.close();
   });
   await page.reload();
+  await openMore(page);
   const fresh = page.getByRole('region', { name: 'Fresh start' });
   await fresh.getByRole('button', { name: 'Pick one Must' }).click();
   await fresh.getByRole('button', { name: 'Slipped task' }).click();

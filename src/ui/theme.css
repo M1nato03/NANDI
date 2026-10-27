@@ -130,7 +130,7 @@ p { line-height: 1.5; }
 .hero { background: var(--surface); border: 1px solid var(--line); border-radius: 12px 12px 12px 0; padding: 20px; position: relative; overflow: hidden; }
 .rank { display: block; font: 800 clamp(84px, 25vw, 156px) 'Bricolage Grotesque', sans-serif; color: var(--accent); line-height: .9; }
 .hero p:last-child { margin-bottom: 0; }
-.tabbar { position: fixed; z-index: 5; left: 0; bottom: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 7px max(6px, env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-right)); }
+.tabbar { position: fixed; z-index: 5; left: 0; bottom: 0; width: 100%; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 7px max(6px, env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-right)); }
 .tabbar a { color: var(--muted); text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; font-weight: 600; border-radius: 8px; }
 .tabbar a[aria-current='page'] { color: var(--accent); background: var(--raised); }
 .tab-symbol { font-size: 22px; line-height: 1; }

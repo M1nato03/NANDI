@@ -7,11 +7,9 @@ const add = async (page: Page, title: string) => {
   await expect(page.getByRole('region', { name: 'Today' })).toContainText(title);
 };
 const taskRow = (page: Page, list: string, title: string) => page.getByRole('region', { name: list, exact: true }).locator('.mor-row').filter({ hasText: title });
-// Item 139: a row's moves sit behind its ⋯.
-const moveTo = async (page: Page, list: string, title: string, to: 'Today' | 'Tomorrow' | 'Later') => {
-  const row = taskRow(page, list, title);
-  await row.getByRole('button', { name: `More for ${title}` }).click();
-  await row.getByRole('button', { name: `${to}: ${title}` }).click();
+// Spec 27 (item 183): the move sits on the row itself: Tomorrow → on Today rows, ← Today on Tomorrow and Later rows.
+const moveTo = async (page: Page, list: string, title: string, to: 'Today' | 'Tomorrow') => {
+  await taskRow(page, list, title).getByRole('button', { name: `${to}: ${title}` }).click();
 };
 const readTask = (page: Page, title: string) => page.evaluate(async name => {
   const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });

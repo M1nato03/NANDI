@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 // Spec 26: Moti's haveli and matka, and Kachhua's kolam by the clock.
 const readLedger = (page: Page) => page.evaluate(async () => {
@@ -70,10 +71,12 @@ test("Kachhua's kolam: the size follows the clock, Draw it for me completes it, 
   await page.goto('/?e2e#kolam');
   await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveAttribute('data-size', '5');
   await page.goto('/?e2e#plan');
+  await openMore(page);
   await expect(page.getByRole('region', { name: "Tonight's kolam" })).toHaveCount(0);
   // From 20:00 Plan offers it; at night an open lands on the night deck, which offers it too.
   await page.clock.setSystemTime(new Date('2026-11-03T21:00:00'));
   await page.reload();
+  await openMore(page);
   await expect(page.getByRole('region', { name: "Tonight's kolam" }).getByRole('button', { name: 'Trace it' })).toBeVisible();
   await page.clock.setSystemTime(new Date('2026-11-04T02:30:00')); // the night of 3 Nov, after the 01:30 bedtime
   await page.reload();

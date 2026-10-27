@@ -170,7 +170,7 @@
 .mor-parent .mor-confirm button { min-height: 44px; }
 .mor-noted, .mor-average { margin: -4px 0 12px; }
 /* Item 139: compact one-line rows (~56 px): circle, title (time or progress on a small second line inside the same
-   button), a Start pill and ⋯ for moves. Every control keeps a 44 px target; steps indent with a smaller drawn circle. */
+   button), a Start pill and the move. Every control keeps a 44 px target; steps indent with a smaller drawn circle. */
 .mor-list > ul { gap: 6px; }
 .task-row.ui-list-row.mor-row { flex-wrap: wrap; align-items: center; gap: 4px 6px; min-height: 56px; padding: 6px 6px 6px 8px; }
 .mor-row .task-row-main { flex: 1 1 0; min-width: 0; gap: 0; }
@@ -179,9 +179,10 @@
 .mor-row .task-title-button .small { font-size: 13px; line-height: 17px; color: var(--ink-3); }
 .mor-row .done-circle { flex: none; }
 .mor-row .mor-start { flex: none; min-height: 44px; min-width: 0; padding: 0 14px; border-radius: 999px; font-size: 13px; }
-.mor-row .mor-more { flex: none; width: 44px; min-width: 44px; min-height: 44px; padding: 0; font-size: 20px; line-height: 1; }
-.mor-row .mor-menu { flex: 1 1 100%; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.mor-row .mor-menu button { min-height: 44px; font-size: 13px; }
+/* Item 183: the row's own move (spec 27), a quiet text button with a 44 px target. */
+.mor-row .mor-move { flex: none; min-height: 44px; min-width: 44px; padding: 0 6px; font-size: 13px; white-space: nowrap; }
+.task-steps ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.task-steps .mor-title { flex: 1 1 0; min-width: 0; }
 .mor-row.mor-step { margin-left: 20px; }
 .mor-row.mor-step .done-circle { position: relative; border-color: transparent; }
 .mor-row.mor-step .done-circle::before { content: ''; position: absolute; inset: 8px; border: 2px solid var(--muted); border-radius: 50%; }
@@ -192,3 +193,7 @@
 .morning-backfill label select { flex: 1 1 10rem; min-width: 0; max-width: 100%; }
 @media (max-width: 380px) { .morning-backfill label { flex-direction: column; align-items: stretch; gap: 6px; } .morning-backfill label select { flex: none; width: 100%; } }
 .morning-backfill > button { margin-top: 12px; }
+
+/* Item 183: inside the sheet the steps sit flush; inside More the cards sit flat, a step in from the More card. */
+.task-steps .mor-row.mor-step { margin-left: 0; }
+.plan-more .card { margin-block: 12px; padding: 16px; box-shadow: none; background: var(--surface-2); }

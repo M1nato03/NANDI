@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openMore } from './helpers/plan';
 
 async function checkLayout(page: Page) {
   const small = await page.locator('button, input, select, .tabbar a').evaluateAll(nodes => nodes
@@ -14,6 +15,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.install({ time: new Date(2026, 9, 11, 12) });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/#plan');
+    await openMore(page);
     const section = page.getByRole('region', { name: 'Side quests' });
     await expect(section.locator('.quest-row')).toHaveCount(3);
     await expect(section.locator('.quest-list')).toHaveCSS('grid-template-columns', /\d+px/);
@@ -52,6 +54,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await checkLayout(page);
     if (scheme === 'dark' && testInfo.project.name === 'mobile-390x844') await section.screenshot({ path: testInfo.outputPath('side-quests-390x844.png') });
     await page.reload();
+    await openMore(page);
     const restored = page.getByRole('region', { name: 'Side quests' });
     await expect(restored.locator('.quest-row')).toHaveCount(4);
     await expect(restored.locator('.quest-row').filter({ hasText: 'Read two chapters' }).locator('.quest-check')).toBeVisible();
@@ -64,6 +67,7 @@ for (const scheme of ['light', 'dark'] as const) {
 test('your own quests say when their XP is full for the week (item 45)', async ({ page }) => {
   await page.clock.install({ time: new Date(2026, 9, 26, 12) });
   await page.goto('/#plan');
+  await openMore(page);
   const section = page.getByRole('region', { name: 'Side quests' });
   await expect(section.locator('.quest-row')).toHaveCount(3);
   for (const title of ['Call Nani', 'Fix the shelf', 'Water the plants']) {
