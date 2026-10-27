@@ -13,7 +13,7 @@ test('after a missed hook guess the right answer stays in view, not under the re
   await page.evaluate(ids => window.__nandiTest!.seedTaughtSteps(ids), steps.slice(0, at).map(step => step.id));
   await page.reload();
   await page.getByRole('button', { name: /Human psychology/ }).click();
-  await page.getByRole('button', { name: /Start/ }).first().click();
+  await page.getByRole('button', { name: 'Start my first drop' }).click(); // exact: a classic's title also says Start
   const lesson = page.locator('.step-lesson');
   await expect(lesson).toHaveAttribute('data-lesson-phase', 'hook');
   const step = steps[at]!;
