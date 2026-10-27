@@ -28,7 +28,7 @@ test('large task preview, one row for the split task, its steps in Details, and 
   const today = page.getByRole('region', { name: 'Today' });
   const parent = today.locator('.mor-parent');
   await expect(parent).toHaveCount(1);
-  await expect(parent).toContainText('0 of 9 steps done');
+  await expect(parent).toContainText('0/9 steps');
   // Exactly the circle, the name (opens Details), Start and the move.
   await expect(parent.getByRole('button')).toHaveCount(4);
   await expect(parent.getByRole('button', { name: 'Done: Complete the app work' })).toBeVisible();
@@ -45,7 +45,7 @@ test('large task preview, one row for the split task, its steps in Details, and 
   await expect(steps.locator('.mor-step').nth(1).locator('.mor-title')).toHaveText('Prepare the app release');
   await expect(steps.locator('.mor-step').first().getByRole('button', { name: 'Start: Step 1 of 9' })).toBeVisible();
   await steps.locator('.mor-step').first().getByRole('button', { name: 'Done: Step 1 of 9' }).click();
-  await expect(parent).toContainText('1 of 9 steps done');
+  await expect(parent).toContainText('1/9 steps');
   await expect(steps).toContainText('1 of 9');
   await detail.getByRole('button', { name: 'Drop whole task' }).click();
   await expect(detail).toContainText('This drops the task and its remaining steps.');
