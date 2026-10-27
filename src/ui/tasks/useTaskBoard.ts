@@ -13,6 +13,13 @@ export function useTaskBoard() {
   const tasks = useLiveQuery(() => db.tasks.filter((row) => row.deleted === 0).toArray(), []);
   const focus = useLiveQuery(() => db.focus.filter((row) => row.deleted === 0).toArray(), []);
   const [message, setMessage] = useState('');
+  // Item 177: a success line ("Done.", "Added to Today.") fades after a few seconds; an error stays until the next action.
+  const fades = useRef(false);
+  useEffect(() => {
+    if (!message || !fades.current) return;
+    const timer = window.setTimeout(() => setMessage(current => current === message ? '' : current), 5000);
+    return () => window.clearTimeout(timer);
+  }, [message]);
   const [busy, setBusy] = useState(false);
   // Counts finished writes, so a one-step Undo can tell that any write came after it (Codex A item 93).
   const writesRef = useRef(0);
@@ -34,19 +41,19 @@ export function useTaskBoard() {
       const currentDay = dayKey(at);
       if (currentDay !== lastDay) {
         lastDay = currentDay;
-        void reposPromise.then((repos) => repos.reconcile(at)).catch((error) => setMessage(errorMessage(error)));
+        void reposPromise.then((repos) => repos.reconcile(at)).catch((error) => { fades.current = false; setMessage(errorMessage(error)); });
       }
     };
     const interval = window.setInterval(() => refresh(), 1000);
     document.addEventListener('visibilitychange', refresh);
     window.addEventListener('pageshow', refresh);
-    void reposPromise.then((repos) => repos.reconcile(Date.now())).catch((error) => setMessage(errorMessage(error)));
+    void reposPromise.then((repos) => repos.reconcile(Date.now())).catch((error) => { fades.current = false; setMessage(errorMessage(error)); });
     return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('pageshow', refresh); };
   }, []);
   async function act(operation: (repos: TaskRepos, at: number) => Promise<unknown>, success = ''): Promise<boolean> {
     setBusy(true); setMessage('');
-    try { await operation(await reposPromise, Date.now()); setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
-    catch (error) { setMessage(errorMessage(error)); return false; }
+    try { await operation(await reposPromise, Date.now()); fades.current = true; setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
+    catch (error) { fades.current = false; setMessage(errorMessage(error)); return false; }
     finally { setBusy(false); setNow(Date.now()); }
   }
   return { tasks: tasks ?? [], focus: focus ?? [], now, busy, message, act, writes, writesRef };

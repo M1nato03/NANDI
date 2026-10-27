@@ -186,3 +186,8 @@
 .mor-row.mor-step .done-circle { position: relative; border-color: transparent; }
 .mor-row.mor-step .done-circle::before { content: ''; position: absolute; inset: 8px; border: 2px solid var(--muted); border-radius: 50%; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Item 177: last night's check-in fits 360 px: each select takes the room beside its label, and stacks below it on narrow phones. */
+.morning-backfill label { flex-wrap: wrap; }
+.morning-backfill label select { flex: 1 1 10rem; min-width: 0; max-width: 100%; }
+@media (max-width: 380px) { .morning-backfill label { flex-direction: column; align-items: stretch; gap: 6px; } .morning-backfill label select { flex: none; width: 100%; } }
