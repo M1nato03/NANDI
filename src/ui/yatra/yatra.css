@@ -24,7 +24,30 @@
 .calm-choices button { min-height: 44px; }
 .calm-breath { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .calm-breath label { display: grid; gap: 4px; }
-.calm-scan ol { margin: 8px 0 0; padding-left: 20px; }
-.calm-scan li { margin: 4px 0; color: var(--ink-2); }
+/* Spec 35: three ways to sit. A scan sits with eyes closed and a slow idle; a quiet sit breathes slowly (the cast's
+   own loop). Kachhua is resting, not asleep, so the sleep marks stay off on the Calm stage. */
+.calm-stage .cast-mood-rest { display: none; }
+.calm-stage[data-way='scan'] .cast-move { animation: calm-idle 9s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes calm-idle { 50% { transform: translateY(1.5px) scale(1.01); } }
+.calm-phase.faded { opacity: 0; transition: opacity 4s ease; }
+.calm-line { max-width: 28ch; text-align: center; font-size: 19px; min-height: 2.5em; }
+.calm-sounds { align-items: center; }
+.calm-own { display: inline-flex; gap: 2px; }
+.calm-own-more { min-width: 44px; padding-inline: 8px; }
+.calm-note { width: 100%; margin: 2px 0 0; color: var(--ink-2); }
+.calm-start { width: 100%; }
+.calm-under { margin: 8px 0 0; color: var(--ink-2); }
+.calm-settings label { display: grid; gap: 4px; margin-top: 10px; }
+.calm-settings label.toggle-row { display: flex; }
+.calm-settings input[type='range'] { width: 100%; }
+.calm-other-sheet input[type='number'] { width: 100%; }
+/* The dim screen: near-black, a small breathing dot and the time left. A tap wakes it. */
+.calm-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 18px; width: 100%; min-height: 100%; margin: 0; border: 0; border-radius: 0; background: #050608; color: #6b7080; box-shadow: none; }
+.calm-dim:hover, .calm-dim:active { background: #050608; transform: none; }
+.calm-dim-dot { width: 14px; height: 14px; border-radius: 50%; background: #8e93a6; animation: calm-dot 10s ease-in-out infinite; }
+.calm-dim-time { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 400; }
+@keyframes calm-dot { 40% { transform: scale(1.8); opacity: .9; } 0%, 100% { transform: scale(1); opacity: .5; } }
 @media (prefers-reduced-motion: reduce) { .calm-stage .kachhua-shell { transition: none; transform: none; } }
 :root[data-motion='reduce'] .calm-stage .kachhua-shell { transition: none; transform: none; }
+@media (prefers-reduced-motion: reduce) { .calm-stage[data-way='scan'] .cast-move, .calm-dim-dot { animation: none; } .calm-phase.faded { transition: none; } }
+:root[data-motion='reduce'] .calm-stage[data-way='scan'] .cast-move, :root[data-motion='reduce'] .calm-dim-dot { animation: none; }

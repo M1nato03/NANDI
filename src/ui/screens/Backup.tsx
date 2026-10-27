@@ -118,6 +118,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   return <section className="screen backup-screen">
     <p className="eyebrow">Keep your work</p><h1>Backup</h1>
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
+    <p className="small">Your own Calm sounds stay on this phone and are not in backups.</p>
     <div className="card"><h2>Save a copy</h2><p>Last backup: {lastBackup === null ? 'Not yet' : new Date(lastBackup).toLocaleDateString()}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
     {Capacitor.isNativePlatform() && <div className="card"><h2>Automatic backup</h2>
       <p>Automatic backup: {auto?.enabled === false ? 'off' : 'on'} · last saved {auto?.lastSavedAt ? new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(auto.lastSavedAt) : 'never'} · {autoKept} kept in Documents/NANDI/auto</p>

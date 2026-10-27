@@ -193,8 +193,8 @@ for (const theme of themes) test.describe(theme, () => {
     await page.waitForTimeout(300);
     await shot(page, 'yatra-trek-night-sky');
     await open('yatra/calm');
-    await page.getByRole('button', { name: '1 min' }).click();
-    await page.getByRole('button', { name: 'Start 1 minute' }).click();
+    await page.getByRole('button', { name: '3 min', exact: true }).click();
+    await page.getByRole('button', { name: 'Start 3 minutes' }).click();
     await page.clock.runFor(5_000);
     await shot(page, 'yatra-trek-night-calm');
     // A camp day: nothing yet today, mid-leg.
@@ -261,17 +261,44 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'yatra-trek-constellation', false);
   });
 
-  // Spec 34: Calm mid-breath and finished.
-  test('yatra: calm running and done', async ({ page }) => {
+  // Spec 35: Calm setup for each way, the Other sheet, the sound row with Your sound, a running quiet sit, the dim
+  // screen and done.
+  test('yatra: calm setup, other lengths, sounds, quiet sit, dim, done', async ({ page }) => {
     await page.clock.install({ time: NOON });
     await page.goto('/#yatra/calm');
-    await page.getByRole('button', { name: '1 min' }).click();
-    await page.getByRole('button', { name: 'Start 1 minute' }).click();
-    await page.clock.runFor(2_000);
-    await shot(page, 'yatra-calm-running', false);
-    await page.clock.runFor(60_000);
-    await expect(page.getByRole('button', { name: 'Begin again' })).toBeVisible();
-    await shot(page, 'yatra-calm-done', false);
+    await expect(page.getByRole('heading', { name: 'Breathe with Kachhua' })).toBeVisible();
+    await page.getByRole('button', { name: '20 min', exact: true }).click();
+    await expect(page.locator('.calm-start')).toHaveText('Start 20 minutes');
+    await shot(page, 'calm-setup-paced');
+    await page.getByRole('button', { name: 'Body scan' }).click();
+    await expect(page.getByRole('button', { name: 'Body scan' })).toHaveAttribute('aria-pressed', 'true');
+    await shot(page, 'calm-setup-scan');
+    await page.getByRole('button', { name: 'Quiet sit' }).click();
+    await expect(page.getByRole('button', { name: 'Quiet sit' })).toHaveAttribute('aria-pressed', 'true');
+    await shot(page, 'calm-setup-quiet');
+    await page.locator('.calm-other').click();
+    await page.getByRole('dialog', { name: 'Other lengths' }).getByLabel(/^Custom/).fill('25');
+    await shot(page, 'calm-other-sheet', false);
+    await page.getByRole('dialog', { name: 'Other lengths' }).getByRole('button', { name: 'Use 25 min' }).click();
+    const samples = 44_100 * 3, header = Buffer.alloc(44), data = Buffer.alloc(samples * 2);
+    header.write('RIFF', 0); header.writeUInt32LE(36 + data.length, 4); header.write('WAVE', 8); header.write('fmt ', 12);
+    header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20); header.writeUInt16LE(1, 22); header.writeUInt32LE(44_100, 24);
+    header.writeUInt32LE(88_200, 28); header.writeUInt16LE(2, 32); header.writeUInt16LE(16, 34); header.write('data', 36); header.writeUInt32LE(data.length, 40);
+    await page.getByLabel('Add your sound').setInputFiles({ name: 'Morning raga.mp3', mimeType: 'audio/wav', buffer: Buffer.concat([header, data]) });
+    await expect(page.getByRole('button', { name: 'Morning raga', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await page.locator('.calm-sounds').scrollIntoViewIfNeeded();
+    await shot(page, 'calm-sound-row', false);
+    await page.getByRole('button', { name: 'Ridge wind' }).click();
+    await page.locator('.calm-start').click();
+    await page.clock.runFor(4_000);
+    await shot(page, 'calm-running-quiet', false);
+    await page.clock.runFor(20_000);
+    await expect(page.locator('.calm-dim')).toBeVisible();
+    await shot(page, 'calm-dim', false);
+    await page.locator('.calm-dim').click();
+    await page.clock.fastForward(25 * 60_000);
+    await expect(page.locator('.calm-phase')).toHaveText('25 quiet minutes, together.');
+    await shot(page, 'calm-done', false);
   });
 
   // Item 214: the focus card with Pause, paused, and after Stop for now then Start again (carries on from 10:00).
