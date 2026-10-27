@@ -31,5 +31,9 @@ test("last night's check-in shows its time and range choices in full", async ({ 
     expect(await select.evaluate(node => node.scrollWidth <= node.clientWidth + 1 && node.clientWidth >= 120)).toBe(true);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // The save button keeps the card's normal gap below the last choice (jenil-7b, item 179).
+  const lastSelect = (await card.locator('select').last().boundingBox())!;
+  const save = (await card.getByRole('button', { name: 'Save last night' }).boundingBox())!;
+  expect(save.y - (lastSelect.y + lastSelect.height)).toBeGreaterThanOrEqual(12);
   if (testInfo.project.name === 'mobile-360x800') await card.screenshot({ path: testInfo.outputPath('checkin-360.png') });
 });
