@@ -17,3 +17,6 @@ export async function loadPackFiles(contentDir = resolve(root, 'content')) {
   files.sort();
   return Promise.all(files.map(async (path) => ({ path, value: JSON.parse(await readFile(path, 'utf8')) as unknown })));
 }
+
+/** Spec 34: Yatra trails live in content/yatra but are not packs; they have their own rules (src/core/yatra/trail). */
+export const isTrailFile = (path: string) => /[\\/]yatra[\\/][^\\/]+\.json$/.test(path);

@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as v from 'valibot';
-import { loadPackFiles, root } from './pack-files';
+import { isTrailFile, loadPackFiles, root } from './pack-files';
 import { packSchema } from '../src/data/packs/schemas';
 import { validateAll } from './validate-packs';
 
@@ -12,7 +12,8 @@ export async function buildPacks(contentDir = resolve(root, 'content'), outputDi
   if (errors.length) throw new Error(errors.join('\n'));
   await mkdir(join(outputDir, 'v'), { recursive: true });
   const packs = [];
-  for (const { value } of await loadPackFiles(contentDir)) {
+  for (const { path, value } of await loadPackFiles(contentDir)) {
+    if (isTrailFile(path)) continue;
     const pack = v.parse(packSchema, value);
     const filename = `${pack.id}@${pack.version}.json`;
     const bytes = Buffer.from(`${JSON.stringify(pack)}\n`);
