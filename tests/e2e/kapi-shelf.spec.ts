@@ -110,7 +110,7 @@ test('the daily board plus two more, then Kapi naps; the first is the daily boar
 test("Kapi's case starts with its 4-step walkthrough of the grid", async ({ page }) => {
   await page.clock.setFixedTime(monday);
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case Not done' }).click();
+  await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   const howto = page.getByRole('region', { name: 'How to play the case' });
   await expect(howto).toContainText('Step 1 of 4');
   await cell(page, /^Asha, key:/).click();

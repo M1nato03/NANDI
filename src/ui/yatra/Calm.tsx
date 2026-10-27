@@ -68,7 +68,7 @@ export function Calm() {
   return <section className="screen calm-screen">
     <p className="eyebrow">Calm</p><h1>Breathe with Kachhua</h1>
     <p>A quiet few minutes with your breath.</p>
-    <div className="calm-stage" data-area="night" data-phase={run ? phase : undefined} style={style}>
+    <div className="calm-stage" data-phase={run ? phase : undefined} style={style}>
       <Cast name="Kachhua" pose={run ? 'idle' : done ? 'rest' : 'idle'} size={140} title="Kachhua" />
       {run ? <>
         <p className="calm-phase" aria-live="polite">{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>

@@ -83,7 +83,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.getByLabel('Puzzle result')).toBeVisible();
     await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-    await page.getByRole('button', { name: 'Back to Games' }).click();
+    await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
     // The first board can be the intro; if the daily board is still open, solve it too.
     await expect(page.getByRole('button', { name: /^Board (Not done|Done)$/ })).toBeVisible();
     if (await page.getByRole('button', { name: 'Board Not done' }).isVisible()) {
@@ -93,10 +93,10 @@ for (const scheme of ['light', 'dark'] as const) {
       await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
       await expect(page.getByLabel('Puzzle result')).toBeVisible();
       await expect(page.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
-      await page.getByRole('button', { name: 'Back to Games' }).click();
+      await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
     }
-    await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
-    await page.getByRole('button', { name: 'Case Not done' }).click();
+    await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
+    await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
     await expect(page.getByRole('heading', { name: 'Who was where?' })).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
     await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
@@ -104,8 +104,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.mind-case')).toHaveAttribute('data-save-state', 'saved');
     await expect(page.locator('.mind-case').getByRole('status')).toHaveText('Saved.');
     await expect(page.locator('.mind-case').getByRole('status')).toBeVisible();
-    await page.getByRole('button', { name: 'Back to Games' }).click();
-    await expect(page.getByRole('button', { name: 'Case Done' })).toBeVisible();
+    await page.getByRole('button', { name: "Back to Kapi's shelf" }).click();
+    await expect(page.getByRole('button', { name: 'Done · see it again' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Board Done' })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`practice-status-${scheme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

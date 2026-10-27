@@ -72,3 +72,16 @@ test('Calm: the breath leads in and out, the bell session saves one quiet row, a
   await page.reload();
   await expect(page.locator('.calm-phase')).toHaveText('4 in, 8 out');
 });
+
+test("Kapi's shelf leads with today's case, visible without a scroll", async ({ page }) => {
+  await page.clock.setFixedTime(NOON);
+  await page.goto('/#yatra/mind');
+  const card = page.getByRole('region', { name: "Today's case" });
+  await expect(card).toContainText("Today's case");
+  const open = card.getByRole('button', { name: 'Open the case' });
+  await expect(open).toBeEnabled();
+  const box = (await open.boundingBox())!;
+  expect(box.y + box.height).toBeLessThan(page.viewportSize()!.height - 64);
+  await open.click();
+  await expect(page).toHaveURL(/#yatra\/mind\/case$/);
+});

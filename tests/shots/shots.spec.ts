@@ -138,7 +138,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-8-book-done', false);
   });
 
-  for (const route of ['you', 'yatra', 'yatra/mind', 'yatra/train', 'yatra/calm', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
+  for (const route of ['read', 'you', 'yatra', 'yatra/mind', 'yatra/train', 'yatra/calm', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto(`/?e2e#${route}`);
     await expect(page.locator('main')).toBeVisible();

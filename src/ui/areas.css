@@ -22,3 +22,7 @@
 .friend-stage-text h1, .friend-stage-text h2 { margin: 0; color: inherit; }
 .friend-stage-text p { margin: 4px 0 0; color: inherit; }
 .friend-stage .eyebrow { color: inherit; opacity: 1; }
+
+/* Spec 34 Calm (item 193): Kachhua's area on an ordinary screen (not the night deck) takes the theme's own night
+   colours, so text on cream is the deep indigo (the night deck keeps its dark-only values above). */
+.app-shell[data-area='night']:not(.night-route) { --area: var(--night-area); --area-tint: var(--night-tint); --button: var(--night-button); --button-ink: var(--night-on); --accent-ink: var(--night-area); --edge-accent: color-mix(in srgb, var(--night-button) 68%, #000); background: var(--night-tint); }

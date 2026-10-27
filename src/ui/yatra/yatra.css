@@ -8,7 +8,11 @@
 .yatra-corner-text span { color: var(--ink-2); font-weight: 400; }
 
 /* Calm: Kachhua's shell rises on the in-breath and settles on the out-breath, at the breath's own pace. */
-.calm-stage { display: grid; justify-items: center; gap: 8px; margin: 8px 0 16px; padding: 20px 16px; border-radius: var(--radius-card); background: var(--area-stage); color: var(--area-stage-ink); }
+/* Item 193: a deep indigo stage at night-dark, so Calm is not the brightest thing on a dark screen; light keeps lavender. */
+:root, :root[data-theme='dark'] { --calm-stage: #23264a; --calm-stage-ink: #c9ceff; }
+@media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { --calm-stage: var(--night-stage); --calm-stage-ink: var(--night-stage-ink); } }
+:root[data-theme='light'] { --calm-stage: var(--night-stage); --calm-stage-ink: var(--night-stage-ink); }
+.calm-stage { display: grid; justify-items: center; gap: 8px; margin: 8px 0 16px; padding: 20px 16px; border-radius: var(--radius-card); background: var(--calm-stage); color: var(--calm-stage-ink); }
 .calm-stage .kachhua-shell { transform-box: view-box; transform-origin: 58px 77px; transition: transform var(--calm-out, 6s) ease-in-out; }
 .calm-stage[data-phase='in'] .kachhua-shell { transform: translateY(-5px) scaleY(1.08); transition-duration: var(--calm-in, 4s); }
 .calm-phase { margin: 0; font: 700 22px/1.2 'Bricolage Grotesque', sans-serif; color: inherit; }

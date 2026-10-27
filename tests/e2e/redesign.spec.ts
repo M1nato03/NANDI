@@ -34,7 +34,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page).toHaveURL(/#yatra\/mind$/);
     await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Board Not done' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Case Not done' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
     await expect(page.getByRole('main').getByText("Today's drop")).toHaveCount(0);
     await tabs.filter({ hasText: 'You' }).click();

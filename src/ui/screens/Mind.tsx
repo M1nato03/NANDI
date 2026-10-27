@@ -516,8 +516,12 @@ export function Mind({ entry }: { entry?: string }) {
   </section>;
 
   return <section className="screen mind-hub">
-    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Games</p><h1>Kapi's shelf</h1></FriendStage>
+    {entry !== 'courses' && entry !== 'unit' && <><FriendStage area="mind" art={<KapiMoment moment="swing" size={96} />}><p className="eyebrow">Mind</p><h1>Kapi's shelf</h1></FriendStage>
     {night === 'lightsOut' && <p role="status">{nightMindNote(showEconomy)}</p>}
+    {/* Spec 34 (item 193): today's case leads the shelf, so "Puzzles and cases" shows both without a scroll. */}
+    <section className="card mind-case-card" aria-label="Today's case"><p className="eyebrow">Today's case · {caseDiff}</p><h2>{currentArcTitle(today)}</h2>
+      <p className="small">A short mystery: read the clues, find who did it.</p>
+      <button type="button" className={caseDone ? 'secondary' : undefined} disabled={!caseReady} onClick={() => go('mind/case')}>{caseDone ? 'Done · see it again' : caseRun ? 'Continue the case' : 'Open the case'}</button></section>
     {/* Spec 29: Kapi's shelf, the boards Mind already has, each with a plain line and a how-to the first time. */}
     <section className="mind-shelf" aria-label="Kapi's shelf"><h2>Today's boards</h2><p className="small">One board of each a day, and two more if you want them.</p>
       <ul>{SHELF.map(item => {
@@ -527,7 +531,6 @@ export function Mind({ entry }: { entry?: string }) {
       })}</ul>
     </section>
     <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">
-      <button type="button" className="mind-today-chip" disabled={!caseReady} onClick={() => go('mind/case')}><strong>Case</strong> <span>{caseDone ? 'Done' : 'Not done'}</span></button>
       <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })}><strong>Board</strong> <span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
     </div></section>
     <details className="card mind-more" open={practice || undefined}><summary>More boards</summary>

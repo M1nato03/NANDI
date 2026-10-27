@@ -107,7 +107,7 @@ test("a friend's link carries their pace; the finish shows their time and the re
 test('Prove it: a short pick shows what still fits, a real proof earns the stamp, and it stays after reload', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case Not done' }).click();
+  await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
   const { shortest, clues } = await page.evaluate(() => window.__nandiCaseTest!.proof());
   await page.evaluate(() => window.__nandiCaseTest!.solveTodaysCase());
@@ -139,7 +139,7 @@ test('Prove it: a short pick shows what still fits, a real proof earns the stamp
 test('Prove it is not offered after bedtime', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00'));
   await page.goto('/?e2e#mind');
-  await page.getByRole('button', { name: 'Case Not done' }).click();
+  await page.getByRole('button', { name: /^(?:Open|Continue) the case$/ }).click();
   await page.waitForFunction(() => Boolean(window.__nandiCaseTest));
   await page.clock.setFixedTime(new Date('2026-11-02T23:30:00'));
   await page.clock.runFor(1100);
