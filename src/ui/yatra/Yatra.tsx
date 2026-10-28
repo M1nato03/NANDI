@@ -7,6 +7,8 @@ import { effectiveShutdown } from '../../core/tasks/planner';
 import { adaptiveNight, shiftClock } from '../../core/adaptive/day';
 import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
+import { greeting, quietLine } from '../../core/yatra/welcome';
+import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { Cast, type CastName } from '../cast/Cast';
@@ -21,6 +23,11 @@ const CORNERS: { id: 'train' | 'mind' | 'calm'; friend: CastName; title: string;
   { id: 'train', friend: 'Nandi', title: 'Train', caption: 'With Nandi', area: 'train' },
   { id: 'mind', friend: 'Kapi', title: 'Mind', caption: 'Puzzles and cases', area: 'mind' },
   { id: 'calm', friend: 'Kachhua', title: 'Calm', caption: 'Breathe with Kachhua', area: 'night' },
+];
+/** Spec 37: the two wide doors first, Plan with Mor and Read with Chiku. */
+const DOORS: { id: 'plan' | 'read'; friend: CastName; title: string; caption: string; area: string }[] = [
+  { id: 'plan', friend: 'Mor', title: 'Plan my day', caption: 'With Mor', area: 'plan' },
+  { id: 'read', friend: 'Chiku', title: 'Read a little', caption: 'With Chiku', area: 'learn' },
 ];
 const CARDS_KEY = 'nandi.yatra.cards';
 const readCards = (): string[] => { try { const value = JSON.parse(localStorage.getItem(CARDS_KEY) ?? '[]') as unknown; return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : []; } catch { return []; } };
@@ -65,8 +72,39 @@ function narrative(trek: Trek, night: boolean): string {
   return `${trek.stretch} of ${STRETCHES_PER_LEG} stretches to ${next}. Every session lights one star.`;
 }
 
+/** The minute, for the greeting and the day's line. */
+function useMinute(): number {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60_000); return () => window.clearInterval(timer); }, []);
+  return now;
+}
+
+/** Spec 37: while a focus is open, one soft strip under the scene leads back to Plan's focus card. Nothing else changes. */
+function FocusStrip() {
+  const open = useLiveQuery(async () => {
+    const rows = await db.focus.filter(row => !row.deleted).toArray();
+    const current = rows.filter(row => row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0];
+    const task = current ? await db.tasks.get(current.taskId) : undefined;
+    return current && task && !task.deleted ? { rows, current, title: task.title } : null;
+  }, []);
+  const [now, setNow] = useState(() => Date.now());
+  const running = open ? isFocusRunning(open.current) : false;
+  useEffect(() => { if (!running) return; const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, [running]);
+  if (!open) return null;
+  const seconds = Math.floor(taskFocusMs(open.rows, open.current.taskId, Math.max(now, open.current.startedAt)) / 1000);
+  return <button type="button" className="yatra-focus-strip" onClick={() => go('plan')}>
+    <i aria-hidden="true" className={running ? 'running' : undefined} />
+    {/* A long task name gives way; the clock always shows. */}
+    <span className="yatra-focus-text">{running ? 'Working on' : 'Paused'} '{open.title}'</span>
+    <span className="yatra-focus-clock">· {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')}</span>
+    <b>Open</b>
+  </button>;
+}
+
 export function Yatra() {
   const yatra = useYatra();
+  const now = useMinute();
+  const hour = new Date(now).getHours();
   const [postcard, setPostcard] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<Constellation | null>(null);
   const [name, setName] = useState('');
@@ -85,18 +123,30 @@ export function Yatra() {
   const trek = yatra?.trek;
   const leg = trek && postcard !== null ? trek.trail.legs[postcard] : undefined;
 
-  return <section className="screen yatra-screen">
-    <p className="eyebrow">Move, think, breathe</p><h1>Yatra</h1>
-    {!trek && <p className="yatra-line">Pick a corner. A few good minutes with a friend.</p>}
-    <ul className={`yatra-corners${trek ? ' compact' : ''}`} aria-label="Corners">{CORNERS.map(corner => <li key={corner.id}>
+  return <section className="screen yatra-screen yatra-home">
+    {/* Spec 37: Yatra is home. A greeting and one quiet line, then the camp; no counts above the fold. */}
+    <header className="yatra-welcome">
+      <p className="eyebrow">{trek ? `Yatra · ${trek.trail.name}` : 'Yatra'}</p>
+      <h1>{greeting(hour)}</h1>
+      <p className="yatra-quiet">{quietLine(dayKey(now), hour)}</p>
+    </header>
+    {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />}
+    <FocusStrip />
+    <h2 className="yatra-ready">Whenever you feel ready</h2>
+    <ul className="yatra-doors" aria-label="Doors">{DOORS.map(door => <li key={door.id}>
+      <button type="button" className="card yatra-door" data-area={door.area} aria-label={`${door.title}: ${door.caption}`} onClick={() => go(door.id)}>
+        <Cast name={door.friend} pose="idle" size={56} />
+        <span className="yatra-corner-text"><strong>{door.title}</strong><span>{door.caption}</span></span>
+        <span className="yatra-door-chevron" aria-hidden="true">›</span>
+      </button>
+    </li>)}</ul>
+    <ul className="yatra-corners compact" aria-label="Corners">{CORNERS.map(corner => <li key={corner.id}>
       <button type="button" className="card yatra-corner" data-area={corner.area} aria-label={`${corner.title}: ${corner.caption}`} onClick={() => go(`yatra/${corner.id}`)}>
         <Cast name={corner.friend} pose="idle" size={72} />
         <span className="yatra-corner-text"><strong>{corner.title}</strong><span>{corner.caption}</span></span>
       </button>
     </li>)}</ul>
     {trek && yatra && <>
-      <p className="eyebrow trek-head">{trek.trail.name}</p>
-      <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />
       <div className="trek-journey">
         <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
         {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}

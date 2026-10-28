@@ -3,12 +3,15 @@ import { todaysBoard } from './helpers/mind';
 import { openMore } from './helpers/plan';
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`four tabs (spec 34) and one home in ${scheme}`, async ({ page }, testInfo) => {
+  test(`four tabs (spec 34), opening on Yatra (spec 37), in ${scheme}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: new Date('2026-10-11T12:00:00') });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/');
     const tabs = page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link');
-    await expect(tabs).toHaveText(['Plan', 'Read', 'Yatra', 'You']);
+    await expect(tabs).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
+    // Spec 37: the app opens on Yatra; Plan is one tap away.
+    await expect(page).toHaveURL(/#yatra$/);
+    await tabs.getByRole('link', { name: 'Plan' }).click();
     await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     // Spec 27: routines and the focus timer with breaks sit in Plan's More fold.

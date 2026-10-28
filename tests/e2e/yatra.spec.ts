@@ -13,10 +13,10 @@ test('Yatra holds three corners, each opening its friend, with Yatra lit in the 
   await page.clock.setFixedTime(NOON);
   await page.goto('/#plan');
   const tabs = page.getByRole('navigation', { name: 'Main tabs' });
-  await expect(tabs.getByRole('link')).toHaveText(['Plan', 'Read', 'Yatra', 'You']);
+  await expect(tabs.getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
   await tabs.getByRole('link', { name: 'Yatra' }).click();
   await expect(page).toHaveURL(/#yatra$/);
-  await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible();
   const corners = page.getByRole('list', { name: 'Corners' }).getByRole('button');
   await expect(corners).toHaveText([/Train\s*With Nandi/, /Mind\s*Puzzles and cases/, /Calm\s*Breathe with Kachhua/]);
   for (const [name, url, heading] of [['Train', /#yatra\/train$/, null], ['Mind', /#yatra\/mind$/, "Kapi's shelf"], ['Calm', /#yatra\/calm$/, 'Breathe with Kachhua']] as const) {

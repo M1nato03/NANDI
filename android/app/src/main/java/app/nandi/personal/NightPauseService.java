@@ -170,9 +170,11 @@ public class NightPauseService extends Service {
         startForeground(43001, builder.build());
     }
 
+    /** A focus notice opens Plan, where the focus card is (spec 37: an open with no route lands on Yatra). */
     private PendingIntent openApp(int code) {
         Intent launch = new Intent(this, MainActivity.class);
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launch.putExtra("nandiRoute", "#plan");
         return PendingIntent.getActivity(this, code, launch, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 

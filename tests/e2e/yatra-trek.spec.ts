@@ -27,10 +27,10 @@ async function openYatra(page: Page) {
     const leave = page.getByRole('button', { name: 'Leave night deck' });
     if (await leave.isVisible()) await leave.click();
     await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = '#yatra'; });
-    await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 1500 });
+    await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 1500 });
     // After shutdown the app moves to the night deck once its settings load; stay only once Yatra holds.
     await page.waitForTimeout(800);
-    await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 100 });
+    await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 100 });
   }).toPass({ timeout: 20_000 });
 }
 const line = (page: Page) => page.locator('.trek-journey-top strong');
@@ -42,7 +42,7 @@ test('a Train, a Mind and a Calm session each walk one stretch and light one sta
   await page.goto('/?e2e#plan');
   await seed(page, [row('train', 1)]);
   await openYatra(page);
-  await expect(page.locator('.trek-head')).toHaveText('Hampta Pass');
+  await expect(page.locator('.yatra-welcome .eyebrow')).toHaveText('Yatra · Hampta Pass');
   await expect(line(page)).toHaveText('Stretch 1 of 3 to Chika');
   await expect(page.locator('.trek-footprint')).toHaveCount(5);
   await seed(page, [row('train', 1), row('calm', 2)]);
@@ -124,12 +124,12 @@ const inside = async (page: Page, selector: string) => {
   }
 };
 
-test('on day one at Jobra all three friends and the fire are fully in view', async ({ page }) => {
+test('on day one at Jobra all five friends and the fire are fully in view', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/?e2e#plan');
   await seed(page, []);
   await openYatra(page);
-  await expect(page.locator('.trek-actor')).toHaveCount(3);
+  await expect(page.locator('.trek-actor')).toHaveCount(5);
   await inside(page, '.trek-actor svg');
   await inside(page, '.trek-fire');
 });
@@ -142,7 +142,7 @@ test('mid-leg the group stands clear of the camp tent it left', async ({ page })
   await openYatra(page);
   await expect(line(page)).toHaveText('Stretch 1 of 3 to Balu Ka Ghera');
   const tents = await page.locator('.trek-tent').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().right));
-  const rear = await page.locator('.trek-actor.kachhua svg').evaluate(node => node.getBoundingClientRect().left);
+  const rear = await page.locator('.trek-actor.mor svg').evaluate(node => node.getBoundingClientRect().left);
   expect(rear).toBeGreaterThan(tents[1]!); // the Chika tent
 });
 

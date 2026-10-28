@@ -77,6 +77,34 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'plan-4-focus');
   });
 
+  // Spec 37: Yatra is home: morning and night, a running focus, and scrolled to the doors.
+  test('yatra home: morning, night, focus strip, doors', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-10-28T08:30:00') });
+    await page.goto('/');
+    await expect(page.getByRole('heading', { name: 'Good morning.', level: 1 })).toBeVisible();
+    await page.waitForTimeout(800);
+    await shot(page, 'home-1-morning', false);
+    await page.getByRole('heading', { name: 'Whenever you feel ready' }).scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, 200));
+    await shot(page, 'home-4-doors', false);
+    await shot(page, 'home-5-full');
+    await page.goto('/#plan');
+    await page.getByLabel('Add a task').fill('Write the report');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await page.getByRole('button', { name: 'Start: Write the report' }).click();
+    await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
+    await page.clock.fastForward(24 * 60_000 + 10_000);
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
+    await expect(page.locator('.yatra-focus-strip')).toBeVisible();
+    await page.waitForTimeout(800);
+    await shot(page, 'home-3-focus', false);
+    await page.clock.setSystemTime(new Date('2026-10-28T22:10:00'));
+    await page.reload();
+    await expect(page.getByRole('heading', { name: 'Good night.', level: 1 })).toBeVisible();
+    await page.waitForTimeout(800);
+    await shot(page, 'home-2-night', false);
+  });
+
   // Spec 33: Read, a book, a chapter mid-way, each check kind, chapter done and book done.
   test('read: home with idea checks due, then a book page', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
@@ -226,9 +254,9 @@ for (const theme of themes) test.describe(theme, () => {
         const leave = page.getByRole('button', { name: 'Leave night deck' });
         if (await leave.isVisible()) await leave.click();
         await page.evaluate(() => { if (location.hash !== '#yatra') location.hash = 'yatra'; });
-        await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 1500 });
+        await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 1500 });
         await page.waitForTimeout(800);
-        await expect(page.getByRole('heading', { name: 'Yatra', level: 1 })).toBeVisible({ timeout: 100 });
+        await expect(page.getByRole('heading', { name: /^Good (morning|afternoon|evening|night)/, level: 1 })).toBeVisible({ timeout: 100 });
       }).toPass({ timeout: 20_000 });
       const card = page.getByRole('button', { name: 'Keep in the journal' });
       await page.waitForTimeout(1200);

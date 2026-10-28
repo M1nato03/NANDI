@@ -3,12 +3,13 @@ import { STAR_COLOURS, STRETCHES_PER_LEG, type Constellation, type Trek } from '
 import { Cast } from '../cast/Cast';
 
 /** Spec 34 trek scene: one side-on world, trail below and sky above, so scrolling back scrolls the sky too. */
-export const LEG_W = 420;
-// Item 203: room before the first place, so Kachhua, Kapi, Nandi and the fire are all in view at the start.
-const PAD = 200;
+// Spec 37: five friends walk now, so a leg is longer and the group still clears both camps' tents mid-leg.
+export const LEG_W = 560;
+// Item 203: room before the first place, so all five friends and the fire are in view at the start.
+const PAD = 300;
 const PAD_END = 120;
 /** Where the group stands along a leg after 0, 1 or 2 stretches: clear of both camps' tents (item 203). */
-const STOPS = [0, 0.49, 0.83];
+const STOPS = [0, 0.55, 0.8];
 /** The landmark gate stands between the mid-leg stop and the last one, so it is ahead of the friends mid-leg, not behind Nandi. */
 const GATE_AT = (STOPS[1]! + STOPS[2]!) / 2;
 const RIDGE_W = 1110;
@@ -28,8 +29,8 @@ function hash(text: string): number {
 /** Tonight's stars hang over the group, as in the prototype; past six they ring a little wider. */
 const TONIGHT = [[-47, 79], [1, 45], [45, 75], [6, 113], [-20, 41], [48, 118]] as const;
 const tonightPoint = (index: number, centre: number) => { const [dx, y] = TONIGHT[index % TONIGHT.length]!; const ring = Math.floor(index / TONIGHT.length); return { x: centre + dx * (1 + ring * 0.6) + ring * 14, y: y - ring * 12 }; };
-/** Where the eye rests: the middle of the group (Kachhua, Kapi, Nandi stand to the left of its point). */
-const centreOf = (gx: number) => gx - 45;
+/** Where the eye rests: the middle of the group (Mor, Chiku, Kachhua, Kapi, Nandi stand to the left of its point). */
+const centreOf = (gx: number) => gx - 98;
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
 function readSeen(): number | null { try { const value = Number(localStorage.getItem(SEEN_KEY)); return Number.isFinite(value) && localStorage.getItem(SEEN_KEY) !== null ? value : null; } catch { return null; } }
 function writeSeen(value: number) { try { localStorage.setItem(SEEN_KEY, String(value)); } catch { /* a convenience only */ } }
@@ -136,6 +137,9 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
         {fire && <div className="trek-fire" style={{ left: gx + 26 }}><Fire /></div>}
         <div className="trek-group" style={{ left: gx }}>
           {/* At a night Calm, Kachhua is awake and breathes with the timer; the others may doze (spec 34 table). */}
+          {/* Spec 37: Mor and Chiku join the camp, so all five friends sit by the fire. */}
+          <span className="trek-actor mor" style={{ left: -258 }}><Cast name="Mor" pose={night ? 'rest' : 'idle'} size={60} /></span>
+          <span className="trek-actor chiku" style={{ left: -204 }}><Cast name="Chiku" pose={night ? 'rest' : 'idle'} size={58} /></span>
           <span className="trek-actor kachhua" style={{ left: -150, '--calm-in': `${breath?.in ?? 4}s`, '--calm-out': `${breath?.out ?? 6}s` } as CSSProperties} data-phase={breath?.phase}><Cast name="Kachhua" pose={night && !breath ? 'rest' : 'idle'} size={64} /></span>
           <span className="trek-actor kapi" style={{ left: -96 }}><Cast name="Kapi" pose={night ? 'rest' : 'idle'} size={62} /></span>
           <span className="trek-actor nandi" style={{ left: -44 }}><Cast name="Nandi" pose={night ? 'rest' : 'idle'} size={66} /></span>

@@ -1,7 +1,6 @@
 import { tabs, type Tab } from './tabs';
 
 const navigationEvent = 'nandi:navigate';
-const lastTabKey = 'nandi.lastTab';
 type Entry = { nandi: true; from?: string; deckIndex?: number };
 const entry = (): Entry | null => history.state?.nandi === true ? history.state as Entry : null;
 
@@ -14,7 +13,9 @@ export function canonicalRoute(path: string): string {
 }
 
 function legacyRoute(value: string): string {
-  if (!value || value === 'now') return 'plan';
+  // Spec 37: the app opens on Yatra; old Now links still go to Plan.
+  if (!value) return 'yatra';
+  if (value === 'now') return 'plan';
   if (value === 'now/focus' || value === 'today') return 'plan/focus';
   if (value === 'tasks') return 'plan';
   if (value === 'tasks/plan') return 'plan/morning';
@@ -51,19 +52,10 @@ export function parentRoute(path: string): string {
 }
 export function navigationEventName(): string { return navigationEvent; }
 export function deckIndex(): number { return Math.max(0, Number(entry()?.deckIndex) || 0); }
-export function lastTab(now = Date.now()): string {
-  try {
-    const saved = JSON.parse(sessionStorage.getItem(lastTabKey) || 'null') as { path?: string; at?: number } | null;
-    return saved && typeof saved.at === 'number' && now - saved.at < 3_600_000 && tabs.some(tab => tab.toLowerCase() === saved.path) ? saved.path! : 'plan';
-  } catch { return 'plan'; }
-}
-function rememberTab(path: string): void {
-  if (tabs.some(tab => tab.toLowerCase() === path)) sessionStorage.setItem(lastTabKey, JSON.stringify({ path, at: Date.now() }));
-}
 export function initializeHistory(): void {
-  const initial = location.hash ? route() : lastTab();
+  // Spec 37: every open without a link lands on Yatra; a notification, widget or Night route still wins.
+  const initial = location.hash ? route() : 'yatra';
   if (location.hash !== `#${initial}` || !entry()) history.replaceState({ nandi: true, deckIndex: initial === 'night' ? deckIndex() : 0 }, '', `#${initial}`);
-  rememberTab(initial);
 }
 export function tabOf(path: string): Tab {
   const root = canonicalRoute(path).split('/')[0];
@@ -76,7 +68,6 @@ export function go(path: string): void {
   if (route() === destination) return;
   const from = route();
   history.pushState({ nandi: true, from, ...(destination === 'night' ? { deckIndex: 0 } : {}) }, '', `#${destination}`);
-  rememberTab(destination);
   window.dispatchEvent(new Event(navigationEvent));
 }
 export function goToCard(index: number): void {

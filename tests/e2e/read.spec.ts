@@ -22,7 +22,7 @@ const dropIds = (page: Page) => page.evaluate(async () => {
 test('Read: the tabs are Plan, Read, Yatra and You; Continue sits above the fold; no Games fold', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read');
-  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Plan', 'Read', 'Yatra', 'You']);
+  await expect(page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link')).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
   await expect(page.getByRole('navigation', { name: 'Today status' }).getByRole('button')).toHaveText(['Plan', 'Read', 'Night']);
   await expect(page.getByRole('heading', { name: 'Your books', level: 1 })).toBeVisible();
   const resume = page.getByRole('region', { name: 'Continue' });

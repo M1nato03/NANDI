@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test';
 
 // Spec 34: four tabs; Read's heading is "Your books".
 const tabs = ['Plan', 'Read', 'Yatra', 'You'];
-const headings: Record<string, string> = { Plan: 'Plan', Read: 'Your books', Yatra: 'Yatra', You: 'You' };
+// Spec 37: Yatra's heading is the greeting.
+const headings: Record<string, string | RegExp> = { Plan: 'Plan', Read: 'Your books', Yatra: /^Good (morning|afternoon|evening|night)/, You: 'You' };
 interface TestHook { shellCounts: () => Promise<Record<string, number>>; wipeData: () => Promise<void> }
 
 test('visible controls meet tap size and tabs do not scroll sideways in both themes', async ({ page }) => {

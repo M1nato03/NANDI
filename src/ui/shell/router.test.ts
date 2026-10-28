@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, expect, it } from 'vitest';
-import { canonicalRoute, go, initializeHistory, lastTab, parentRoute, route, tabOf } from './router';
+import { canonicalRoute, go, initializeHistory, parentRoute, route, tabOf } from './router';
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -30,15 +30,24 @@ it('maps legacy links to their single feature homes', () => {
   expect(tabOf('train/history')).toBe('Yatra');
 });
 
-it('starts at Plan, redirects old links, and remembers a tab for one hour', () => {
+it('opens on Yatra every time (spec 37), keeps a linked route, and redirects old links', () => {
   initializeHistory();
-  expect(location.hash).toBe('#plan');
+  expect(location.hash).toBe('#yatra');
   go('learn');
   expect(route()).toBe('read');
-  expect(lastTab(Date.now() + 59 * 60_000)).toBe('read');
   go('read/chapter/money-markets/money-markets-ch1');
   expect(route()).toBe('read/chapter/money-markets/money-markets-ch1');
-  expect(lastTab(Date.now() + 61 * 60_000)).toBe('plan');
+  // A fresh open with no link lands on Yatra again, not on the last tab.
+  history.replaceState(null, '', '/');
+  initializeHistory();
+  expect(location.hash).toBe('#yatra');
+  // A notification or the widget opens a link, and the link wins.
+  history.replaceState(null, '', '#plan');
+  initializeHistory();
+  expect(location.hash).toBe('#plan');
+  history.replaceState(null, '', '#now');
+  initializeHistory();
+  expect(location.hash).toBe('#plan');
   history.replaceState(null, '', '#you/train/history');
   initializeHistory();
   expect(location.hash).toBe('#yatra/train/history');
