@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import type { TaskRow } from '../../data/types';
-import { focusPhase, isFocusRunning } from '../../core/tasks/focus';
+import { focusPhase, isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
 import { PostponeSheet } from '../tasks/PostponeSheet';
-import { currentFocus, elapsed, minutes, taskGroups, todayTasks, visibleTasks } from '../tasks/model';
+import { currentFocus, minutes, taskGroups, todayTasks, visibleTasks } from '../tasks/model';
 import { useTaskBoard } from '../tasks/useTaskBoard';
 import { go } from '../shell/router';
 import { isAway } from '../../core/economy/away';
@@ -29,14 +29,15 @@ export function Today() {
   const step = group && task ? group.steps.findIndex(row => row.id === task.id) + 1 : 0;
   const taskFocus = task ? board.focus.filter(row => row.taskId === task.id && row.endedAt == null).sort((a, b) => b.startedAt - a.startedAt)[0] : undefined;
   const plannedMs = (task?.estimateMin ?? 25) * 60_000;
-  const elapsedMs = taskFocus ? elapsed(taskFocus, board.now) : 0;
+  // The task's whole time, across every focus it has had, so Start after Stop for now carries on (item 214).
+  const elapsedMs = taskFocus && task ? taskFocusMs(board.focus, task.id, board.now) : 0;
   const phase = taskFocus ? focusPhase(taskFocus, board.now) : null;
   const remaining = Math.max(0, plannedMs - elapsedMs);
   const percent = Math.max(0, Math.min(100, remaining / plannedMs * 100));
   async function finish() {
     if (!task) return;
     const current = task;
-    const actual = board.focus.filter(row => row.taskId === current.id).reduce((sum, row) => sum + elapsed(row, Date.now()), 0);
+    const actual = taskFocusMs(board.focus, current.id, board.now);
     const ok = await board.act(async (repos, now) => {
       for (const row of board.focus.filter(item => item.taskId === current.id && item.endedAt == null)) await repos.finishFocus(row.id, now);
       await repos.completeTask(current.id, now);

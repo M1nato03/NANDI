@@ -63,6 +63,14 @@ export function focusElapsedMs(focus: FocusRow, now: number): number {
   return Math.max(0, end - focus.startedAt - paused);
 }
 
+/**
+ * All the time worked on one task, across every focus it has had (item 214): Stop for now ends a focus, and Start
+ * opens a new one, so the clock and the Done line read this total and carry on from where the task left off.
+ */
+export function taskFocusMs(rows: readonly FocusRow[], taskId: string, now: number): number {
+  return rows.reduce((sum, row) => row.taskId === taskId && !row.deleted ? sum + focusElapsedMs(row, now) : sum, 0);
+}
+
 export function startFocus(
   taskId: string,
   now: number,

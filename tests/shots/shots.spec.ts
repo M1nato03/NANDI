@@ -274,6 +274,28 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'yatra-calm-done', false);
   });
 
+  // Item 214: the focus card with Pause, paused, and after Stop for now then Start again (carries on from 10:00).
+  test('plan: focus card running, paused, restarted', async ({ page }) => {
+    await page.clock.install({ time: NOON });
+    await page.goto('/#plan');
+    await page.getByLabel('Add a task').fill('Write the report');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    const row = page.getByRole('region', { name: 'Today', exact: true }).locator('.mor-row').filter({ hasText: 'Write the report' });
+    const focus = page.getByRole('region', { name: 'Focus' });
+    await row.getByRole('button', { name: 'Start' }).click();
+    await page.clock.fastForward(4 * 60_000);
+    await shot(page, 'focus-running', false);
+    await focus.getByRole('button', { name: 'Pause' }).click();
+    await expect(focus).toContainText('Paused');
+    await shot(page, 'focus-paused', false);
+    await focus.getByRole('button', { name: 'Resume' }).click();
+    await page.clock.fastForward(6 * 60_000);
+    await focus.getByRole('button', { name: 'Stop for now' }).click();
+    await row.getByRole('button', { name: 'Start' }).click();
+    await expect(focus.locator('.mor-clock')).toHaveText(/^10:0\d$/);
+    await shot(page, 'focus-restarted', false);
+  });
+
   test('night deck', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-26T23:30:00'));
     await page.goto('/?e2e#night');

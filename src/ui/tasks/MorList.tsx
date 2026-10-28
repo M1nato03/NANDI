@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'rea
 import type { TaskRow } from '../../data/types';
 import type { MoveSnapshot, MoveTarget } from '../../data/repos/tasks';
 import { dayKey } from '../../core/time/dayKey';
-import { focusElapsedMs, isFocusRunning } from '../../core/tasks/focus';
+import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
 import { Cast, type Pose } from '../cast/Cast';
 import { taskGroups, visibleTasks, type TaskGroup } from './model';
 import { FriendStage } from '../cast/FriendStage';
@@ -93,10 +93,11 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
   async function done(task: TaskRow) {
     clearUndo();
     const open = board.focus.filter(row => row.taskId === task.id && row.endedAt == null && !row.deleted);
-    const worked = Math.round(open.reduce((sum, row) => sum + focusElapsedMs(row, board.now), 0) / 60_000);
+    // The whole time on the task, across Stop for now and Start again, so the Done line agrees with the clock.
+    const worked = Math.round(taskFocusMs(board.focus, task.id, board.now) / 60_000);
     const ok = await board.act(async (repos, now) => { for (const row of open) await repos.finishFocus(row.id, now); await repos.completeTask(task.id, now); }, 'Done.');
     if (!ok) return;
-    if (open.length && worked > 0) { setNoted(notedLine(task, (task.actualMinutes ?? 0) + worked, true)); react('timed'); }
+    if (worked > 0) { setNoted(notedLine(task, worked, true)); react('timed'); }
     else react('done');
   }
   // A split task's own circle finishes every step still open, after one inline check (item 135).
@@ -109,7 +110,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
   async function stopForNow(task: TaskRow) {
     if (!running) return;
     clearUndo();
-    const worked = Math.round(focusElapsedMs(running, board.now) / 60_000);
+    const worked = Math.round(taskFocusMs(board.focus, task.id, board.now) / 60_000);
     if (await board.act((repos, now) => repos.finishFocus(running.id, now), 'Saved for now.')) { if (worked > 0) setNoted(notedLine(task, worked, false)); react('open'); }
   }
   // One focus at a time: Start ends any other open focus. From Tomorrow or Later it brings the task to Today first,
@@ -181,10 +182,11 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
   return <div className="mor-plan">
     <FriendStage area="plan" compact art={<span className={`mor-friend mor-${shown}`} key={`${shown}-${moment.at}`} data-moment={shown}><Cast name="Mor" pose={POSE[shown]} size={64} title="Mor" /></span>}>{heading}</FriendStage>
     {runningTask && running && <section className="card mor-focus" aria-label="Focus">
-      {/* A focus paused on the focus timer screen shows as paused, with Resume (Codex A item 91). */}
+      {/* Pause holds the clock; Resume carries on from the same second. The clock is the task's whole time, so Start
+          after Stop for now continues from where it left off (item 214). */}
       <span className="eyebrow">{isFocusRunning(running) ? 'Working on' : 'Paused'}</span><h2>{runningTask.title}</h2>
-      <p className="mor-clock" aria-live="off">{(() => { const ms = focusElapsedMs(running, board.now); const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; })()}</p>
-      <div className="sheet-actions">{!isFocusRunning(running) && <button type="button" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.'); }}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
+      <p className="mor-clock" aria-live="off">{(() => { const ms = taskFocusMs(board.focus, runningTask.id, board.now); const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; })()}</p>
+      <div className="sheet-actions">{isFocusRunning(running) ? <button type="button" className="secondary" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.pauseFocus(running.id, now), 'Focus paused.'); }}>Pause</button> : <button type="button" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.'); }}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
     </section>}
     <form className="mor-add" onSubmit={event => void add(event)}>
       <label className="quick-add-field"><span className="visually-hidden">Add a task</span><span className="mor-add-row"><input maxLength={160} value={title} onChange={event => setTitle(event.target.value)} placeholder="Add a task" />
