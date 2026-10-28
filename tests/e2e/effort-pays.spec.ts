@@ -9,11 +9,23 @@ const add = async (page: Page, title: string) => {
   await page.getByRole('button', { name: 'Add', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Today' })).toContainText(title);
 };
-const start = (page: Page, title: string) => page.getByRole('region', { name: 'Today', exact: true }).locator('.mor-row').filter({ hasText: title }).getByRole('button', { name: 'Start' }).click();
 const focus = (page: Page) => page.getByRole('region', { name: 'Focus' });
+/** Start, then wait until the focus is saved and showing, so a jump in time comes after it began. */
+const start = async (page: Page, title: string) => {
+  await page.getByRole('region', { name: 'Today', exact: true }).locator('.mor-row').filter({ hasText: title }).getByRole('button', { name: 'Start' }).click();
+  await expect(focus(page)).toContainText(title);
+  await expect(focus(page).locator('.mor-earned, .mor-guard-off')).toBeVisible();
+};
 const guard = (page: Page, look: Record<string, unknown>) => page.evaluate(value => sessionStorage.setItem('nandi.e2eGuard', JSON.stringify(value)), look);
 /** NANDI looks at the guard when it comes back to the front. */
 const lookAgain = (page: Page) => page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+/** When the open focus began, as the app saved it (a click and the save are a moment apart). */
+const focusStart = (page: Page) => page.evaluate(async () => {
+  const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+  const rows = await new Promise<{ startedAt: number; endedAt?: number }[]>(resolve => { const request = database.transaction('focus').objectStore('focus').getAll(); request.onsuccess = () => resolve(request.result); });
+  database.close();
+  return rows.find(row => row.endedAt == null)!.startedAt;
+});
 const focusFacts = (page: Page) => page.evaluate(async () => {
   const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
   const rows = await new Promise<{ kind: string; deleted: number; inputs: Record<string, unknown> }[]>(resolve => { const request = database.transaction('ledger').objectStore('ledger').getAll(); request.onsuccess = () => resolve(request.result); });
@@ -33,6 +45,7 @@ test('a watched 25-minute focus shows +17 XP so far and the Done line says +17 f
   await start(page, 'Read chapter 5');
   await page.clock.fastForward(25 * MIN + 5_000);
   await lookAgain(page);
+  await expect(focus(page).locator('.mor-clock')).toHaveText(/^25:\d\d$/);
   await expect(focus(page).locator('.mor-earned')).toHaveText('+17 XP so far');
   await focus(page).getByRole('button', { name: 'Done' }).click();
   await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Read chapter 5' took 25 minutes · +17 focus XP.");
@@ -45,7 +58,8 @@ test('a guarded app open for 60 seconds pauses the focus as of when it opened, w
   await guard(page, { usageAllowed: true });
   await add(page, 'Revise notes');
   await start(page, 'Revise notes');
-  const startedAt = await page.evaluate(() => Date.now());
+  await expect(focus(page)).toBeVisible();
+  const startedAt = await focusStart(page);
   await page.clock.fastForward(8 * MIN);
   // The guard saw Instagram come to the front at 3:00 and stay.
   await guard(page, { usageAllowed: true, pausedAt: startedAt + 3 * MIN, pausedApp: 'com.instagram.android' });
@@ -62,13 +76,15 @@ test('time in a guarded app never pays, and the visit breaks the clean block', a
   await guard(page, { usageAllowed: true });
   await add(page, 'Write the essay');
   await start(page, 'Write the essay');
-  const startedAt = await page.evaluate(() => Date.now());
+  await expect(focus(page)).toBeVisible();
+  const startedAt = await focusStart(page);
   await page.clock.fastForward(30 * MIN);
   // A 5-minute visit to YouTube, 5 to 10 minutes in: 25 minutes count, and no 25-minute run was clean.
   await guard(page, { usageAllowed: true, distractedMs: 5 * MIN, spans: [[startedAt + 5 * MIN, startedAt + 10 * MIN]] });
   await lookAgain(page);
   await expect(focus(page).locator('.mor-earned')).toHaveText('+12 XP so far');
   await focus(page).getByRole('button', { name: 'Done' }).click();
+  await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Write the essay' took 30 minutes · +12 focus XP.");
   const [fact] = await focusFacts(page);
   expect(fact).toMatchObject({ guard: true, blocks: 0, distractedMs: 5 * MIN });
   expect(Math.floor(Number(fact!.paidMs) / MIN)).toBe(25);
@@ -85,6 +101,7 @@ test('with Usage access off the focus still counts and the task still pays, but 
   await expect(focus(page).locator('.mor-earned')).toHaveCount(0);
   await focus(page).getByRole('button', { name: 'Done' }).click();
   await expect(page.locator('.mor-noted')).toHaveText("Noted: 'Clean the desk' took 30 minutes.");
+  await expect.poll(async () => (await focusFacts(page)).length).toBe(1);
   expect((await focusFacts(page))[0]).toMatchObject({ guard: false });
 });
 

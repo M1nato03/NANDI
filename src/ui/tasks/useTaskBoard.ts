@@ -100,8 +100,10 @@ export function useTaskBoard() {
   }, [openFocus]);
   async function act(operation: (repos: TaskRepos, at: number) => Promise<unknown>, success = ''): Promise<boolean> {
     setBusy(true); setMessage('');
-    // An action reads the focus as the guard last saw it, so ending a focus pays only its honest minutes.
-    try { await syncFocus(Date.now()).catch(() => undefined); await operation(await reposPromise, Date.now()); fades.current = true; setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
+    // An action reads the focus as the guard last saw it, so ending a focus pays only its honest minutes. Both use the
+    // moment of the tap: the look takes a little while, and a Start must begin when it was pressed.
+    const at = Date.now();
+    try { await syncFocus(at).catch(() => undefined); await operation(await reposPromise, at); fades.current = true; setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
     catch (error) { fades.current = false; setMessage(errorMessage(error)); return false; }
     finally { setBusy(false); setNow(Date.now()); }
   }

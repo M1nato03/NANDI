@@ -341,6 +341,49 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'focus-restarted', false);
   });
 
+  // Spec 36: the focus card earning XP, paused by the guard, asking "Still working?", and with the focus check off.
+  test('plan: effort pays focus card', async ({ page }) => {
+    await page.clock.install({ time: NOON });
+    await page.goto('/#plan');
+    const guard = (look: Record<string, unknown>) => page.evaluate(value => sessionStorage.setItem('nandi.e2eGuard', JSON.stringify(value)), look);
+    const look = () => page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+    const focus = page.getByRole('region', { name: 'Focus' });
+    const begin = async (title: string) => {
+      await page.getByLabel('Add a task').fill(title);
+      await page.getByRole('button', { name: 'Add', exact: true }).click();
+      await page.getByRole('region', { name: 'Today', exact: true }).locator('.mor-row').filter({ hasText: title }).getByRole('button', { name: 'Start' }).click();
+      await expect(focus.locator('.mor-earned, .mor-guard-off')).toBeVisible();
+    };
+    await guard({ usageAllowed: true });
+    await begin('Revise physics');
+    await page.clock.fastForward(52 * 60_000);
+    await look();
+    await expect(focus.locator('.mor-earned')).toHaveText('+36 XP so far');
+    await shot(page, 'effort-earning', false);
+    await page.clock.fastForward(9 * 60_000);
+    await expect(focus.getByRole('alert')).toBeVisible();
+    await shot(page, 'effort-still-working', false);
+    await focus.getByRole('button', { name: "I'm still working" }).click();
+    const startedAt = await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      const rows = await new Promise<{ startedAt: number; endedAt?: number }[]>(resolve => { const request = database.transaction('focus').objectStore('focus').getAll(); request.onsuccess = () => resolve(request.result); });
+      database.close();
+      return rows.find(row => row.endedAt == null)!.startedAt;
+    });
+    await guard({ usageAllowed: true, pausedAt: startedAt + 70 * 60_000, pausedApp: 'com.instagram.android' });
+    await page.clock.fastForward(12 * 60_000);
+    await look();
+    await expect(focus).toContainText('Paused: you opened Instagram');
+    await shot(page, 'effort-paused-by-guard', false);
+    await focus.getByRole('button', { name: 'Done' }).click();
+    await guard({ usageAllowed: false });
+    await begin('Tidy the room');
+    await page.clock.fastForward(10 * 60_000);
+    await look();
+    await expect(focus.locator('.mor-guard-off')).toBeVisible();
+    await shot(page, 'effort-check-off', false);
+  });
+
   test('night deck', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-26T23:30:00'));
     await page.goto('/?e2e#night');
