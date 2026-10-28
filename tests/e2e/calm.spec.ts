@@ -47,12 +47,12 @@ test('the setup fits one 360x800 screen: the stage, three rows and Start, with n
   // The chosen chip stays in view in its sliding row, and the page never scrolls sideways.
   await page.locator('.calm-other').click();
   await page.getByRole('dialog', { name: 'Other lengths' }).getByRole('button', { name: 'Until I stop' }).click();
-  await page.getByRole('button', { name: 'Soft noise', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Soft noise', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Ocean waves', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Ocean waves', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
   await expect(page.locator('.calm-start')).toHaveText('Start, until I stop');
   expect(await fits()).toEqual({ scrolled: 0, inView: true });
-  for (const name of ['Other · until I stop', 'Soft noise']) {
+  for (const name of ['Other · until I stop', 'Ocean waves']) {
     const box = await page.getByRole('button', { name, exact: true }).boundingBox();
     expect(box!.x).toBeGreaterThanOrEqual(0);
     expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
@@ -219,4 +219,31 @@ test('Your sound: a file is kept on the phone, plays through an audio element, a
   // Not in backups: the backup screen says so.
   await page.goto('/#you/backup');
   await expect(page.getByText('Your own Calm sounds stay on this phone and are not in backups.')).toBeVisible();
+});
+
+test('every recorded sound is in the row, its file is served, and it loops through an audio element that plays', async ({ page, request }) => {
+  test.setTimeout(120_000);
+  await openCalm(page);
+  const names = ['River', 'Rain in the forest', 'Campfire', 'Mountain wind', 'Night crickets', 'Morning birds', 'Ocean waves', 'Singing bowls'];
+  const files = ['river', 'rain', 'fire', 'wind', 'crickets', 'birds', 'waves', 'bowls'];
+  await expect(page.locator('.calm-sounds > button').filter({ hasNotText: /None|Your sound/ })).toHaveText(names);
+  for (const [index, name] of names.entries()) {
+    const file = await request.get(`/calm/${files[index]}.ogg`);
+    expect(file.status()).toBe(200);
+    expect((await file.body()).subarray(0, 4).toString()).toBe('OggS');
+    await page.getByRole('button', { name, exact: true }).click();
+    await startButton(page).click();
+    // A stopped sound fades out for a few seconds before its element goes, so pick this sound's element by its file.
+    const audio = page.locator(`audio.calm-sound-audio[src$="/calm/${files[index]}.ogg"]`);
+    await expect(audio).toHaveCount(1);
+    await expect.poll(() => audio.evaluate(node => { const el = node as HTMLAudioElement; return { paused: el.paused, loop: el.loop, error: el.error?.code ?? 0 }; })).toEqual({ paused: false, loop: true, error: 0 });
+    await stop(page);
+  }
+  expect(await calmRows(page)).toEqual([]);
+  // The credits: each recording's author and source, under About.
+  await page.goto('/#you/settings');
+  await page.getByText('About this app').click();
+  await page.getByText('Calm sounds', { exact: true }).click();
+  await expect(page.locator('.about-sounds li')).toHaveCount(names.length);
+  await expect(page.locator('.about-sounds')).toContainText('River by BurghRecords, freesound.org/s/446019 (CC0)');
 });

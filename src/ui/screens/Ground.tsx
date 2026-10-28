@@ -20,6 +20,7 @@ import { nightPauseAvailable } from '../../platform/nightPause';
 import { BUSY_SHIFT_KEY, INTERESTS, INTERESTS_KEY, readInterests, type InterestId } from '../../core/adaptive/day';
 import { notifier } from '../../platform/notifier';
 import { MORNING_DEFAULT, NUDGE_MORNING_ON, NUDGE_MORNING_TIME, NUDGE_NIGHT_ON, NUDGE_STREAK_ON, NUDGE_PERMISSION_ASKED } from '../../core/nudges';
+import { CALM_SOUNDS } from '../../platform/calmSound';
 
 export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
   const settings = useLiveQuery(() => db.settings.toArray(), []);
@@ -126,6 +127,6 @@ export function Ground({ theme, motion, setTheme, setMotion }: Appearance) {
       <ReminderSettings />
       {message && <p role="status">{message}</p>}
     </section>
-    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><a className="secondary ui-list-row" href="privacy.html">Privacy notice</a><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
+    <details className="about-app"><summary>About this app</summary><p className="small" onClick={ownerTap}>NANDI {__APP_VERSION__} · {__BUILD_COMMIT__} · {__BUILD_DATE__}</p><button type="button" className="secondary ui-list-row" onClick={() => go('you/cast')}>Meet the cast</button><button type="button" className="secondary ui-list-row" onClick={() => go('you/contentreview')}>Review content</button><a className="secondary ui-list-row" href="privacy.html">Privacy notice</a><details className="about-sounds"><summary>Calm sounds</summary><ul className="small">{CALM_SOUNDS.map(sound => <li key={sound.id}>{sound.name} by {sound.author}, freesound.org/s/{sound.source} (CC0)</li>)}</ul></details><button type="button" className="text-button small" onClick={() => go('you/mind/generator')}>Puzzle generator check</button><ErrorRing /></details>
   </div>;
 }

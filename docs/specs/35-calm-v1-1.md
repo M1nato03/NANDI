@@ -91,3 +91,16 @@ Spec 34's banned-words list applies. Describe what it is, never what it does to 
 - **Your sound:** a 1 MB test file is stored, shows in the row, plays (the audio element is not paused) and is removed again. A 51 MB file is refused.
 - **Screen:** dim appears after 20 s idle, and a tap wakes it.
 - **Shots:** 360x800 light + dark for the Calm setup (each way), the Other sheet, the sound row with Your sound, a running Quiet sit, the dim screen and done.
+
+## Delta 35b (28 Oct): real recordings replace generated sounds
+
+Jenil, 28 Oct: "the sounds are not calming enough they feel like random noise". He chose to hold the ship until he approves the real recordings by ear (option A).
+- **Drop every WebAudio sound generator.** Presets are now files under `public/calm/`: MP3, stereo, 44.1 kHz, 128k, 75 s seamless loops (equal-power crossfade baked in), loudness about -26 LUFS (bowls -28, tanpura -27), with a 90 Hz rumble cut on the nature sounds.
+- They play through the same HTMLAudioElement loop path as Your sound, with the same gain, limiter and fades (3 s in, 4 s out).
+- **Sound row order:** None · River · Rain on the tent · Campfire · Mountain wind · Night crickets · Morning birds · Ocean waves · Singing bowls · Tanpura · Your sound.
+- Temple bell and Soft noise are gone. The tanpura pitch setting is gone. Singing bowls and Tanpura are their own chips, and nothing plays under another sound.
+- The start, interval and end bells stay generated (unchanged).
+- **Licences:** every file is CC0 on Freesound, checked on each sound's page by the idea engine on 28 Oct. List them on About → Sounds as "<name> by <user>, freesound.org/s/<id> (CC0)".
+- **Final takes:** filled in once Jenil picks A or B on https://claude.ai/artifact/TF4UByrthJJ4qrub3EVkoc.
+- **Size:** about 1.2 MB per sound, 9 sounds, about 11 MB in total.
+- **Test:** each preset's audio element plays (not paused) and has loop=true. The file count matches the row.

@@ -3,9 +3,19 @@
  * public/calm and streamed through an audio element, as Your sound is; nothing is decoded whole into memory. The
  * bells are made in code with WebAudio, so they need no files (scripts/render-calm-audio.ts saves a preview).
  */
-export type CalmPreset = { id: string; name: string; file: string };
+/** A recorded loop: `source` is its Freesound sound number (each one CC0). */
+export type CalmPreset = { id: string; name: string; file: string; author: string; source: number };
 /** The recorded loops, in the order the sound row shows them. Each file's source and licence is in public/calm/SOURCES.md. */
-export const CALM_SOUNDS: readonly CalmPreset[] = [];
+export const CALM_SOUNDS: readonly CalmPreset[] = [
+  { id: 'river', name: 'River', file: 'river.ogg', author: 'BurghRecords', source: 446019 },
+  { id: 'rain', name: 'Rain in the forest', file: 'rain.ogg', author: 'Borgory', source: 678435 },
+  { id: 'fire', name: 'Campfire', file: 'fire.ogg', author: 'HECKFRICKER', source: 729396 },
+  { id: 'wind', name: 'Mountain wind', file: 'wind.ogg', author: 'felix.blume', source: 156414 },
+  { id: 'crickets', name: 'Night crickets', file: 'crickets.ogg', author: 'Defelozedd94', source: 522299 },
+  { id: 'birds', name: 'Morning birds', file: 'birds.ogg', author: 'squashy555', source: 573080 },
+  { id: 'waves', name: 'Ocean waves', file: 'waves.ogg', author: 'SamsterBirdies', source: 578524 },
+  { id: 'bowls', name: 'Singing bowls', file: 'bowls.ogg', author: 'Monkay', source: 48325 },
+];
 export const presetOf = (id: string) => CALM_SOUNDS.find(sound => sound.id === id);
 
 function gainOf(ctx: BaseAudioContext, value: number): GainNode { const node = ctx.createGain(); node.gain.value = value; return node; }
