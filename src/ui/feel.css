@@ -4,6 +4,8 @@
 @media (prefers-color-scheme: light) { :root:not([data-theme='dark']) { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); --card-highlight: rgba(255, 255, 255, .7); } }
 :root[data-theme='light'] { --edge-soft: color-mix(in srgb, var(--surface-3) 86%, #000); --card-highlight: rgba(255, 255, 255, .7); }
 :root { --press: 4px; --edge-accent: color-mix(in srgb, var(--accent) 68%, #000); --edge-learn: color-mix(in srgb, var(--area-learn) 68%, #000); }
+/* Each area's buttons take their own colour (spec 25), so the edge is a darker shade of that colour, not the root accent's (item 203: Kapi's violet button had a brown edge). */
+[data-area] { --edge-accent: color-mix(in srgb, var(--button) 68%, #000); }
 
 button:not([class]), button.secondary, .ui-button {
   box-shadow: 0 var(--press) 0 var(--edge, var(--edge-accent));

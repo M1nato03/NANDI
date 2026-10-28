@@ -146,6 +146,18 @@ test('mid-leg the group stands clear of the camp tent it left', async ({ page })
   expect(rear).toBeGreaterThan(tents[1]!); // the Chika tent
 });
 
+test("mid-leg the leg's landmark gate stands ahead of the friends, not behind Nandi", async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/?e2e#plan');
+  await seed(page, [row('train', 1), row('train', 2), row('train', 3), row('calm', 1, '2026-10-29')]);
+  await page.clock.setSystemTime(new Date('2026-10-29T12:00:00'));
+  await openYatra(page);
+  await expect(line(page)).toHaveText('Stretch 1 of 3 to Balu Ka Ghera');
+  const gate = await page.locator('.trek-gate').nth(1).evaluate(node => node.getBoundingClientRect().left);
+  const front = await page.locator('.trek-actor.nandi svg').evaluate(node => node.getBoundingClientRect().right);
+  expect(gate).toBeGreaterThan(front);
+});
+
 test('the scene turns to night at dusk, before the evening switch, with a warm hour before it', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-28T18:30:00') });
   await page.goto('/?e2e#plan');

@@ -9,6 +9,8 @@ const PAD = 200;
 const PAD_END = 120;
 /** Where the group stands along a leg after 0, 1 or 2 stretches: clear of both camps' tents (item 203). */
 const STOPS = [0, 0.49, 0.83];
+/** The landmark gate stands between the mid-leg stop and the last one, so it is ahead of the friends mid-leg, not behind Nandi. */
+const GATE_AT = (STOPS[1]! + STOPS[2]!) / 2;
 const RIDGE_W = 1110;
 const SEEN_KEY = 'nandi.yatra.seen';
 
@@ -122,7 +124,7 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
         </div>
         {night && trek.constellations.map(row => <button type="button" key={row.id} className="trek-constellation-name" style={{ left: skyCentre(row, trek) }} onClick={() => onRename(row)} aria-label={`${row.name}, a constellation. Rename it`}>{row.name}</button>)}
         {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-tent${spot.kind === 'pass' ? ' is-pass' : ''}`} style={{ left: placeX(i) - (spot.kind === 'pass' ? 20 : 45) }}>{spot.kind === 'pass' ? <Cairn /> : <Tent />}</div>)}
-        {trek.trail.legs.map((leg, i) => <div key={leg.landmark.id} className={`trek-gate${trek.legs[i]!.gateOn ? ' open' : ''}`} style={{ left: placeX(i) + LEG_W / 2 - 22 }} title={leg.landmark.name}><Gate /></div>)}
+        {trek.trail.legs.map((leg, i) => <div key={leg.landmark.id} className={`trek-gate${trek.legs[i]!.gateOn ? ' open' : ''}`} style={{ left: placeX(i) + GATE_AT * LEG_W - 22 }} title={leg.landmark.name}><Gate /></div>)}
         <div className="trek-marks" aria-hidden="true">{trek.legs.flatMap(leg => leg.stretches.map((stretch, k) => {
           const from = placeX(leg.index) + STOPS[k]! * LEG_W;
           const span = ((STOPS[k + 1] ?? 1) - STOPS[k]!) * LEG_W;
