@@ -367,6 +367,54 @@ public class NightPausePlugin extends Plugin {
         call.resolve();
     }
 
+    /**
+     * Spec 36: Android's own usage log for one focus, [from, to]: activity resumes and pauses (package and class), screen
+     * on and off, the lock screen, start-ups and shutdowns. The log keeps recording even if the watcher was stopped, so
+     * the focus's paid minutes never depend on the watcher staying alive. Android 10+ with Usage access only; anything
+     * else (or a locked phone) returns available false, and the focus then earns no focus XP.
+     */
+    @PluginMethod
+    public void focusEvents(PluginCall call) {
+        JSObject result = new JSObject();
+        Long from = call.getLong("from");
+        Long to = call.getLong("to");
+        UsageStatsManager stats = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        if (Build.VERSION.SDK_INT < 29 || from == null || to == null || to <= from || stats == null || !usageAllowed(getContext())) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        UsageEvents events = stats.queryEvents(from, Math.min(to, System.currentTimeMillis()));
+        if (events == null) {
+            result.put("available", false);
+            call.resolve(result);
+            return;
+        }
+        JSArray list = new JSArray();
+        UsageEvents.Event event = new UsageEvents.Event();
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event);
+            int type = event.getEventType();
+            String kind = null;
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED) kind = "fg";
+            else if (type == UsageEvents.Event.ACTIVITY_PAUSED || type == UsageEvents.Event.ACTIVITY_STOPPED) kind = "bg";
+            else if (type == UsageEvents.Event.SCREEN_INTERACTIVE) kind = "on";
+            else if (type == UsageEvents.Event.SCREEN_NON_INTERACTIVE) kind = "off";
+            else if (type == UsageEvents.Event.KEYGUARD_SHOWN) kind = "lock";
+            else if (type == UsageEvents.Event.DEVICE_STARTUP) kind = "boot";
+            else if (type == UsageEvents.Event.DEVICE_SHUTDOWN) kind = "down";
+            if (kind == null) continue;
+            JSObject item = new JSObject();
+            item.put("type", kind);
+            item.put("at", event.getTimeStamp());
+            if (kind.equals("fg") || kind.equals("bg")) { item.put("pkg", event.getPackageName()); item.put("cls", event.getClassName() == null ? "" : event.getClassName()); }
+            list.put(item);
+        }
+        result.put("available", true);
+        result.put("events", list);
+        call.resolve(result);
+    }
+
     /** What the guard saw for this focus: time in guarded apps (and when), and a pause it made. */
     @PluginMethod
     public void focusStatus(PluginCall call) {

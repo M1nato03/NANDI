@@ -44,7 +44,7 @@ public class NightPauseService extends Service {
             SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
             boolean nightOn = prefs.getBoolean("enabled", false);
             boolean focusOn = prefs.getBoolean("focusActive", false);
-            if ((!nightOn && !focusOn) || !NightPausePlugin.usageAllowed(NightPauseService.this)) {
+            if (!shouldRun(nightOn, focusOn, NightPausePlugin.usageAllowed(NightPauseService.this))) {
                 stopSelf(); return;
             }
             long now = System.currentTimeMillis();
@@ -144,6 +144,14 @@ public class NightPauseService extends Service {
     }
     @Override public void onDestroy() { handler.removeCallbacks(check); unregisterReceiver(screenReceiver); super.onDestroy(); }
     @Override public IBinder onBind(Intent intent) { return null; }
+
+    /**
+     * The watcher runs while App pause is on OR a focus runs (spec 36: the focus guard does not need App pause), and
+     * only with Usage access.
+     */
+    static boolean shouldRun(boolean nightOn, boolean focusOn, boolean usageAllowed) {
+        return (nightOn || focusOn) && usageAllowed;
+    }
 
     /** The always-on notice: the running focus while one runs (with its clock), else App pause. */
     private void showOngoing() {

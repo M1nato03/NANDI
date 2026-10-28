@@ -1,4 +1,6 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
+import { distractedWithin, guardedSpans, type GuardEvent } from '../core/focusGuard';
+import type { FocusRow } from '../data/types';
 
 /**
  * Spec 36 focus guard, on the phone: NightPauseService watches in a "focus" mode while a focus runs. It notifies as a
@@ -20,6 +22,7 @@ type FocusGuardPlugin = {
   focusGuard(options: { active: boolean; focusId?: string; task?: string; runningSince?: number; beforeMs?: number; stillAt?: number; packages?: string; graceSec?: number }): Promise<void>;
   focusStatus(options: { focusId: string }): Promise<{ usageAllowed: boolean; distractedMs?: number; spans?: [number, number][]; pausedAt?: number; pausedApp?: string }>;
   clearFocusPause(): Promise<void>;
+  focusEvents(options: { from: number; to: number }): Promise<{ available: boolean; events?: GuardEvent[] }>;
 };
 const native = registerPlugin<FocusGuardPlugin>('NightPause');
 
@@ -29,14 +32,20 @@ function fake(): Partial<GuardLook> | null {
   try { const raw = sessionStorage.getItem(E2E_GUARD); return raw ? JSON.parse(raw) as Partial<GuardLook> : null; } catch { return null; }
 }
 
-/** What the guard has seen for this focus. */
-export async function lookGuard(focusId: string): Promise<GuardLook> {
+/**
+ * What the guard has seen for this focus. The paid minutes come from Android's own usage log, read now for the whole
+ * focus, so a watcher the phone stopped mid-focus can never make unwatched time pay; the watcher only notifies and
+ * pauses. With no usable log (no Usage access, Android 9 or older, a locked phone) the guard is off for this focus.
+ */
+export async function lookGuard(focus: Pick<FocusRow, 'id' | 'startedAt' | 'pauses' | 'endedAt'>, packages: readonly string[], now: number): Promise<GuardLook> {
   const test = fake();
   if (test) return { available: true, usageAllowed: test.usageAllowed ?? true, distractedMs: test.distractedMs ?? 0, spans: test.spans ?? [], pausedAt: test.pausedAt, pausedApp: test.pausedApp };
   if (!Capacitor.isNativePlatform()) return { available: false, usageAllowed: false, distractedMs: 0, spans: [] };
   try {
-    const seen = await native.focusStatus({ focusId });
-    return { available: true, usageAllowed: seen.usageAllowed, distractedMs: seen.distractedMs ?? 0, spans: seen.spans ?? [], pausedAt: seen.pausedAt, pausedApp: seen.pausedApp };
+    const status = await native.focusStatus({ focusId: focus.id });
+    const log = status.usageAllowed ? await native.focusEvents({ from: focus.startedAt, to: focus.endedAt ?? now }) : { available: false };
+    const spans = log.available ? guardedSpans(log.events ?? [], focus.startedAt, focus.endedAt ?? now, packages) : [];
+    return { available: true, usageAllowed: status.usageAllowed && log.available, distractedMs: distractedWithin(spans, focus, now), spans, pausedAt: status.pausedAt, pausedApp: status.pausedApp };
   } catch { return { available: true, usageAllowed: false, distractedMs: 0, spans: [] }; }
 }
 

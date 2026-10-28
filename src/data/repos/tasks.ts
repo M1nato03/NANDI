@@ -681,16 +681,15 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
       });
     },
     /**
-     * Spec 36: what the focus guard saw. `on` stays false once any look found it off, and distracted time only grows,
-     * so neither can be raised after the fact.
+     * Spec 36: what the focus guard saw. `on` stays false once any look found it off (a gap in what could be read is
+     * never paid), and distracted time only grows, so neither can be raised after the fact.
      */
-    async syncFocusGuard(focusId: string, seen: { on: boolean; distractedMs: number; spans?: [number, number][] }, now: number): Promise<FocusRow | undefined> {
+    async syncFocusGuard(focusId: string, seen: { on: boolean; distractedMs: number; spans?: [number, number][] }): Promise<FocusRow | undefined> {
       return mutation(async () => {
         const focus = await repos.focus.get(focusId);
         if (!focus || focus.endedAt != null) return focus;
-        const spans = [...(focus.guard?.spans ?? [])];
-        for (const span of seen.spans ?? []) if (!spans.some(([a, b]) => a === span[0] && b === span[1])) spans.push(span);
-        const guard = { on: (focus.guard?.on ?? true) && seen.on, distractedMs: Math.max(focus.guard?.distractedMs ?? 0, seen.distractedMs), spans: spans.slice(-50) };
+        // The log is read whole each time, so its spans replace the last look's; the time can only grow.
+        const guard = { on: (focus.guard?.on ?? true) && seen.on, distractedMs: Math.max(focus.guard?.distractedMs ?? 0, seen.distractedMs), spans: (seen.spans ?? focus.guard?.spans ?? []).slice(-50) };
         if (focus.guard && focus.guard.on === guard.on && focus.guard.distractedMs === guard.distractedMs && (focus.guard.spans ?? []).length === guard.spans.length) return focus;
         await db.focus.update(focusId, { guard });
         return { ...focus, guard };

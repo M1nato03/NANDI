@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { guardAppName, guardedPackages } from './focusGuard';
+import { distractedWithin, guardAppName, guardedPackages, guardedSpans, type GuardEvent } from './focusGuard';
 import { stillWorking } from './tasks/focus';
 import { cleanBlocks } from './economy/effort';
 import type { FocusRow } from '../data/types';
@@ -33,5 +33,23 @@ describe('spec 36 focus guard', () => {
     expect(cleanBlocks({ startedAt: 0, endedAt: 60 * MIN }, 60 * MIN, 25, [[20 * MIN, 21 * MIN]])).toBe(1);
     expect(cleanBlocks({ startedAt: 0, endedAt: 60 * MIN }, 60 * MIN, 25, [[5 * MIN, 6 * MIN], [40 * MIN, 41 * MIN]])).toBe(1);
     expect(cleanBlocks({ startedAt: 0, endedAt: 60 * MIN }, 60 * MIN, 25, [[20 * MIN, 21 * MIN], [40 * MIN, 41 * MIN]])).toBe(0);
+  });
+
+  it("reads distracted time from Android's own log, so a watcher the phone stopped cannot make it pay", () => {
+    const pkgs = guardedPackages(undefined);
+    // Focus from 0 to 60 min. The watcher was killed at 10 min; the log still has Instagram 20-40 min, a calculator
+    // 45-50, and YouTube 52 min until the screen went off at 55.
+    const log: GuardEvent[] = [
+      { type: 'fg', at: 20 * MIN, pkg: 'com.instagram.android', cls: 'Main' }, { type: 'bg', at: 40 * MIN, pkg: 'com.instagram.android', cls: 'Main' },
+      { type: 'fg', at: 45 * MIN, pkg: 'com.google.android.calculator', cls: 'C' }, { type: 'bg', at: 50 * MIN, pkg: 'com.google.android.calculator', cls: 'C' },
+      { type: 'fg', at: 52 * MIN, pkg: 'com.google.android.youtube', cls: 'W' }, { type: 'off', at: 55 * MIN },
+    ];
+    const spans = guardedSpans(log, 0, 60 * MIN, pkgs);
+    expect(spans).toEqual([[20 * MIN, 40 * MIN], [52 * MIN, 55 * MIN]]);
+    expect(distractedWithin(spans, { startedAt: 0 }, 60 * MIN)).toBe(23 * MIN);
+    // A stretch the focus spent paused is not focus time, so it is not taken off twice.
+    expect(distractedWithin(spans, { startedAt: 0, pauses: [{ at: 20 * MIN, resumeAt: 40 * MIN }] }, 60 * MIN)).toBe(3 * MIN);
+    // An app still in front at the end counts up to then.
+    expect(guardedSpans([{ type: 'fg', at: 5 * MIN, pkg: 'com.snapchat.android' }], 0, 9 * MIN, pkgs)).toEqual([[5 * MIN, 9 * MIN]]);
   });
 });

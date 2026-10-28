@@ -21,8 +21,9 @@ async function syncFocus(at: number): Promise<void> {
   const open = (await db.focus.filter((row) => row.deleted === 0 && row.endedAt == null).toArray()).sort((a, b) => b.startedAt - a.startedAt)[0];
   if (!open) return;
   const repos = await reposPromise;
-  const look = await lookGuard(open.id);
-  await repos.syncFocusGuard(open.id, { on: look.available && look.usageAllowed, distractedMs: look.distractedMs, spans: look.spans }, at);
+  const picks = await db.settings.get('night.pause.apps');
+  const look = await lookGuard(open, guardedPackages(picks && !picks.deleted ? picks.value : null), at);
+  await repos.syncFocusGuard(open.id, { on: look.available && look.usageAllowed, distractedMs: look.distractedMs, spans: look.spans });
   if (look.pausedAt != null) {
     if (isFocusRunning(open)) await repos.pauseFocusAt(open.id, look.pausedAt, at, 'guard', look.pausedApp);
     await clearGuardPause();
