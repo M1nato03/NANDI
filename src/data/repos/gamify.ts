@@ -76,7 +76,8 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
       const own = facts.filter(fact => (fact.kind === 'learn-answer' || fact.kind === 'learn-retention' || fact.kind === 'learn-lesson') && fact.inputs.dropId === drop.id);
       const completing = own.reduce<typeof own[number] | undefined>((latest, fact) => !latest || fact.updatedAt >= latest.updatedAt ? fact : latest, undefined);
       const late = completing?.inputs.afterBedtime === true ? { afterBedtime: true } : {};
-      await add('learn-drop', today, today, late);
+      // Spec 36 v2: a drop that was a chapter's reading pays through the chapter, so it says so.
+      await add('learn-drop', today, today, { ...late, ...(drop.drop.chapter ? { chapter: true } : {}) });
       // A perfect drop needs at least 3 scored questions; a lesson with 1 or 2 is not a "perfect" run (second opinion 5).
       const scored = drop.drop.items.filter(item => !item.lesson).length;
       if (scored >= 3 && perfectDrop(facts, drop.id, scored)) await add('perfect-drop', today, today, late);

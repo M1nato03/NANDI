@@ -555,7 +555,10 @@ function replayEconomy(
     const board = (row: LedgerRow | undefined, flat: number) => row ? (v7(key) ? boardPay(row.inputs, rules) : null) ?? flat : 0;
     const chapters = v7(key) ? rows.filter(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && beforeBed(row) && typeof row.inputs.newSteps === 'number') : [];
     const chapterXp = 'chapterPay' in rules.mind ? chapters.slice(0, rules.mind.chapterPay.paidPerDay).reduce((sum, row) => sum + (chapterPay(row.inputs, rules) ?? 0), 0) : 0;
-    const dropWasChapter = v7(key) && rows.some(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && Array.isArray(row.inputs.readDrops) && row.inputs.readDrops.includes(`drop:daily:${key}`));
+    // The drop was a chapter's reading: its finished chapter says so, and so does the drop fact from the moment the
+    // reading ends (so the drop never pays its 15 first and then gives it back when the chapter is done).
+    const dropWasChapter = v7(key) && rows.some(row => !row.deleted && ((row.mode === 'read' && row.kind === 'chapter' && Array.isArray(row.inputs.readDrops) && row.inputs.readDrops.includes(`drop:daily:${key}`))
+      || (row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key && row.inputs.chapter === true)));
     const mind = Math.min(v7(key) ? rules.mind.dailyCap : Math.min(PRE_V2_MIND_CAP, rules.mind.dailyCap),
       (caseSolved ? rules.mind.mysteryXp : 0) + board(mindRows.find(row => row.kind === 'board' && row.inputs.daily !== false), rules.mind.dropBoardXp) + chapterXp +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +

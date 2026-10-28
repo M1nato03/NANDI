@@ -116,7 +116,7 @@ export function EconomyFeedback() {
       else pendingBadge.current = label;
       return;
     }
-    const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))));
+    const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))) || (row.mode === 'read' && row.kind === 'chapter'));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);
     // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.
@@ -157,7 +157,7 @@ export function EconomyFeedback() {
     const soundOn = source.settings.some(row => row.key === 'economy.soundOn' && row.value === true && !row.deleted);
     if (!motionReduced && !afterBedtime) playCastSound(macro ? 'level-up' : 'finish', soundOn);
     if (!achievement && !dropFinished) return;
-    const activity: FinishActivity = dropFinished ? 'learn' : achievement?.mode === 'tasks' ? 'task' : achievement?.mode === 'train' ? 'train' : achievement?.kind === 'mystery' ? 'case' : 'puzzle';
+    const activity: FinishActivity = dropFinished || achievement?.mode === 'read' ? 'learn' : achievement?.mode === 'tasks' ? 'task' : achievement?.mode === 'train' ? 'train' : achievement?.kind === 'mystery' ? 'case' : 'puzzle';
     const line = pickFinishLine(activity, lastLine.current);
     lastLine.current = line;
     store.set(sessionStorage, 'finish.lastLine', line);

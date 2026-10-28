@@ -25,6 +25,8 @@ test('a new chapter pays for the ideas it taught and the right first answers, an
   await answerRight(page, 'how-things-work');
   const pay = Math.min(40, 5 + 5 * steps + 5 * right);
   await expect(page.locator('.read-earned')).toHaveText(`${steps} new ${steps === 1 ? 'idea' : 'ideas'}, ${right} right · +${pay} XP`);
+  // Its toast carries the same number: the drop's 15 never paid first, so the whole pay arrives with the chapter.
+  await expect(page.locator('.economy-toast')).toContainText(`+${pay} XP today`);
   // The chapter was read as the day's drop, so it pays in place of the drop's 15, never on top.
   await expect.poll(() => totalXp(page)).toBe(before + pay);
   // Opening the finished chapter again pays nothing more.

@@ -7,7 +7,7 @@ import { useModalFocus } from './useModalFocus';
 export function FinishMoment({ line, gain = 0, shownXp = 0, reduced, activity = 'task' }: { line: string; gain?: number; shownXp?: number; reduced: boolean; activity?: FinishActivity }) {
   // A new notice replacing a visible one nods again (Codex A item 128).
   const at = useFriendMoment(`${activity}|${line}|${gain}`, 1);
-  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={at} /><span>{gain > 0 && <>+{shownXp} XP · </>}{line}</span></div>;
+  return <div className={`economy-toast finish-moment${reduced ? '' : ' finish-bloom'}`} role="status"><Cast {...finishCast[activity]} size={38} moment="nod" at={at} /><span>{gain > 0 && <>+{shownXp} XP today · </>}{line}</span></div>;
 }
 
 export function DoneForToday({ close, reduced, suggestion }: { close: () => void; reduced: boolean; suggestion?: string | null }) {

@@ -8,12 +8,20 @@ import type { LedgerRow } from '../../data/types';
  * after the last simply adds no +4.
  */
 
-/** Train done: "6 sets · +72 XP". */
-export function trainLine(fact: LedgerRow | undefined): string | null {
+/**
+ * Train done: "6 sets · +72 XP". A session stopped early says "6 sets logged · +48 XP" and, as a pointer rather than a
+ * judgement, what the whole plan pays ("The full plan pays +76 next time."). A safety stop gets no such line.
+ */
+export function trainLine(fact: LedgerRow | undefined): { line: string; next?: string } | null {
   if (!fact || typeof fact.inputs.paidSets !== 'number') return null;
   const sets = Number(fact.inputs.workingSets) || 0;
+  const planned = Number(fact.inputs.plannedSets) || 0;
   const xp = trainSessionPay(fact.inputs, RULES);
-  return `${sets} ${sets === 1 ? 'set' : 'sets'}${xp ? ` · +${xp} XP` : ''}`;
+  const stopped = fact.inputs.safety !== true && sets < planned;
+  const line = `${sets} ${sets === 1 ? 'set' : 'sets'}${stopped ? ' logged' : ''}${xp ? ` · +${xp} XP` : ''}`;
+  if (!stopped) return { line };
+  const pay = RULES.train.setPay;
+  return { line, next: `The full plan pays +${pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, planned)} next time.` };
 }
 
 const DIFF_NAME: Record<string, string> = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
