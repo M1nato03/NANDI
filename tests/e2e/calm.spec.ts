@@ -236,6 +236,8 @@ test('every recorded sound is in the row, its file is served, and it loops throu
     // A stopped sound fades out for a few seconds before its element goes, so pick this sound's element by its file.
     const audio = page.locator(`audio.calm-sound-audio[src$="/calm/${files[index]}.ogg"]`);
     await expect(audio).toHaveCount(1);
+    // The running sit says what is playing (item 213).
+    await expect(page.locator('.calm-sound-name')).toHaveText(name);
     await expect.poll(() => audio.evaluate(node => { const el = node as HTMLAudioElement; return { paused: el.paused, loop: el.loop, error: el.error?.code ?? 0 }; })).toEqual({ paused: false, loop: true, error: 0 });
     await stop(page);
   }

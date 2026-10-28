@@ -62,9 +62,9 @@ export async function saveCalmSettings(db: NandiDb, change: { breath?: Breath; p
 
 /**
  * A Calm session that lasted at least a minute, finished or stopped: one ledger row (mode 'calm') with the whole
- * minutes sat and the way. It pays no XP and counts toward no quest, mark or courtyard area, so the economy is
- * unchanged; Yatra reads it as one stretch and one pale gold star whatever its length (spec 35: length never earns
- * more). Under a minute nothing is saved.
+ * minutes sat and the way. From spec 36 (economy.v6From) each minute pays 1 XP, up to 30 a day; it counts toward no
+ * quest, mark or courtyard area. Yatra reads it as one stretch and one pale gold star whatever its length. Under a
+ * minute nothing is saved.
  */
 export async function saveCalmDone(db: NandiDb, session: { elapsedMs: number; way: CalmWay; breath: Breath; startedAt: number }, now: number): Promise<string | null> {
   const minutes = sitMinutes(session.elapsedMs);

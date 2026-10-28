@@ -29,12 +29,12 @@ const WAYS: { id: CalmWay; short: string; line: (breath: Breath) => string }[] =
 const presetUrl = (preset: CalmPreset) => `${import.meta.env.BASE_URL}calm/${preset.file}`;
 const lengthName = (length: CalmLength) => length === 'open' ? 'until I stop' : `${length} ${length === 1 ? 'minute' : 'minutes'}`;
 
-type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean };
+type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean; sound?: string };
 
 /**
  * Spec 34 + 35 Calm: Kachhua's corner. Three ways to sit (paced breath, a body scan, a quiet sit), any length from a
  * minute to two hours or until you stop, bells, and sounds made in code or your own. The clock is the wall clock. It
- * says what it is, never what it does to you; length never earns more (one row, one stretch, one star).
+ * says what it is, never what it does to you. A sit is one row, one stretch and one star; its minutes pay (spec 36, capped).
  */
 export function Calm() {
   const settings = useLiveQuery(() => db.settings.where('key').anyOf(calmKeys.breath, calmKeys.prefs).toArray(), []);
@@ -118,12 +118,12 @@ export function Calm() {
 
   const start = () => {
     const at = stamp();
-    const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade };
+    const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
+    const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade, sound: presetOf(prefs.sound)?.name ?? own?.name };
     rung.current = { bells: 0, line: 0 };
     const mixer = CalmAudio.create();
     audio.current = mixer;
     if (mixer) {
-      const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
       const preset = presetOf(prefs.sound);
       mixer.play({ src: preset ? presetUrl(preset) : undefined, file: own?.blob, soundVolume: prefs.soundVolume, bellVolume: prefs.bellVolume });
       if (prefs.startBell) mixer.ring('start');
@@ -166,6 +166,8 @@ export function Calm() {
         {run.way === 'scan' && <p className="calm-phase calm-line" aria-live="polite">{SCAN_LINES[scanLine(elapsed, run.length)]}</p>}
         {run.way === 'quiet' && <p className="calm-phase">Quiet sit</p>}
         <p className="calm-clock" aria-label={total === null ? 'Time sat' : 'Time left'}>{clock(left)}</p>
+        {/* What is playing, so a quiet phone is not taken for a broken sound (item 213). */}
+        {run.sound && <p className="calm-sound-name small">{run.sound}</p>}
         {total !== null && <div className="calm-progress" role="progressbar" aria-label="Time" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(elapsed / total * 100)}><span style={{ width: `${elapsed / total * 100}%` }} /></div>}
       </> : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>

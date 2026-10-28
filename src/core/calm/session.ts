@@ -1,7 +1,7 @@
 /**
  * Spec 35 Calm v1.1: the session's clock, read from the wall clock (start time), never from a count of ticks, so it
- * stays right when the app is hidden or the screen locks. Length never earns more: a counted session is one ledger row,
- * one stretch and one star, whatever its minutes.
+ * stays right when the app is hidden or the screen locks. A counted session is one ledger row, one stretch and one
+ * star, whatever its minutes; from spec 36 its minutes pay 1 XP each, up to 30 a day.
  */
 export type CalmWay = 'paced' | 'scan' | 'quiet';
 /** Minutes 1-120, or 'open' for Until I stop. */
