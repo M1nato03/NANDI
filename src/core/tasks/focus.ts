@@ -63,6 +63,23 @@ export function focusElapsedMs(focus: FocusRow, now: number): number {
   return Math.max(0, end - focus.startedAt - paused);
 }
 
+/** When the running stretch of a focus began: its start, or its last resume. */
+export function runStart(focus: FocusRow): number {
+  return focus.pauses?.at(-1)?.resumeAt ?? focus.startedAt;
+}
+
+/**
+ * Spec 36 "Still working?": `checkMin` minutes after the last touch (a start, a resume or the "still working" tap) the
+ * card asks; with no tap for `graceMin` more, the focus pauses itself at the moment it asked, so the untouched minutes
+ * after it never count. A focus in pause asks nothing.
+ */
+export function stillWorking(focus: FocusRow, now: number, checkMin: number, graceMin: number): { ask: boolean; pauseAt?: number } {
+  if (!isFocusRunning(focus)) return { ask: false };
+  const askAt = Math.max(focus.touchedAt ?? 0, runStart(focus)) + checkMin * 60_000;
+  if (now < askAt) return { ask: false };
+  return now < askAt + graceMin * 60_000 ? { ask: true } : { ask: false, pauseAt: askAt };
+}
+
 /**
  * All the time worked on one task, across every focus it has had (item 214): Stop for now ends a focus, and Start
  * opens a new one, so the clock and the Done line read this total and carry on from where the task left off.

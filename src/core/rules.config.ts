@@ -1,8 +1,10 @@
 /** Starting defaults from 05-economy §2. Rule changes apply by dayKey, never retroactively. */
 export const RULES = {
-  version: 3,
-  // 26 Oct (spec 30): teaching Chiku an idea pays mind.chikuXp once per idea from this day on; see RULES_HISTORY.
-  effectiveFrom: '2026-10-26',
+  version: 4,
+  // 28 Oct (spec 36, "Effort pays"): measured effort pays more: focus minutes and clean blocks, a longer kept chhutti and
+  // calm minutes; the tasks cap rises to 300. It counts from economy.v6From, the day this build first runs on a phone,
+  // so no day shown before it is rescored; see RULES_HISTORY.
+  effectiveFrom: '2026-10-28',
   dayBoundaryHour: 4,
   // Spec 26: Moti's haveli offers at most this many ideas a day. It decides what is offered, not what pays (the
   // rebuild pays as a card review under mind.cardsMaxPerDay), so it sits outside the scoring keys.
@@ -18,7 +20,7 @@ export const RULES = {
     quickWin: { xp: 5, withinMin: 30, maxPerDay: 5 },
     // Clutch is a flat bonus, capped by the first-day bonus forfeited.
     clutch: { clutchBonusXp: 5, minPostpones: 2, maxPerDay: 1 },
-    dailyCap: 200,
+    dailyCap: 300,
     maxEstimateMin: 90,
     subtaskMin: 25,
     subtaskMax: 60,
@@ -36,6 +38,11 @@ export const RULES = {
     },
     freeHours: { classDay: 4, weekend: 6 },
     focus: { workMin: 25, breakMin: 5, longBreakMin: 15, longBreakEvery: 4, extendMin: 10, presetLong: [50, 10] },
+    // Spec 36: minutes on the focus timer pay, measured and honest. 1 XP per 2 minutes (pauses and time in a distracting
+    // app never count), +5 for each full 25-minute block with no pause, only while the focus guard can watch. After 60
+    // minutes with no touch, "Still working?" waits 5 minutes, then the timer pauses itself at the prompt. A distracting
+    // app in front for 60 seconds pauses the focus at the moment it opened.
+    focusPay: { minutesPerXp: 2, blockMin: 25, blockXp: 5, stillCheckMin: 60, stillGraceMin: 5, guardGraceSec: 60 },
     calibrationMinSamples: 5,
     rewardBlockedWords: ['instagram', 'insta', 'reels', 'shorts', 'youtube', 'tiktok', 'snapchat', 'facebook', 'twitter', 'x.com', 'threads'],
     startAdherenceWindowMin: 15,
@@ -223,7 +230,11 @@ export const RULES = {
 
   // Spec 24 #1 (cj5-focus §5 #1): Phone ki chhutti, a planned off-phone window checked afterwards, never blocked.
   // xp: Jenil chose 10 for a MEASURED kept window on 24 Oct (item 64); a self-reported one always pays 0.
-  plan: { chhutti: { xp: 10, paidPerDay: 1, startMin: 30, rampStepMin: 15, maxMin: 180, graceMin: 5, rampNeedsKeptOfLast3: 2, lockPasses: 3, lockSlackMs: 5000 } },
+  // Spec 36: a measured window pays xp for its first 30 minutes and extraXpPer10Min for each further 10 (60 min = 16, 3 h = 40).
+  plan: { chhutti: { xp: 10, extraXpPer10Min: 2, paidPerDay: 1, startMin: 30, rampStepMin: 15, maxMin: 180, graceMin: 5, rampNeedsKeptOfLast3: 2, lockPasses: 3, lockSlackMs: 5000 } },
+
+  // Spec 36: each minute sat in a counted Calm session pays, up to a daily cap.
+  calm: { xpPerMin: 1, dailyCap: 30 },
 
   // Spec 12: practice days a courtyard corner needs for stages 1–5. Days, never points.
   courtyard: { stageDays: [3, 7, 14, 30, 60] },
@@ -290,6 +301,9 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'tasks.focus.workMin': [5, 120], 'tasks.focus.breakMin': [1, 30],
   'tasks.focus.longBreakMin': [5, 60], 'tasks.focus.longBreakEvery': [1, 10],
   'tasks.focus.extendMin': [1, 60], 'tasks.focus.presetLong.0': [5, 120], 'tasks.focus.presetLong.1': [1, 30],
+  'tasks.focusPay.minutesPerXp': [1, 10], 'tasks.focusPay.blockMin': [10, 60], 'tasks.focusPay.blockXp': [0, 20],
+  'tasks.focusPay.stillCheckMin': [30, 180], 'tasks.focusPay.stillGraceMin': [1, 15], 'tasks.focusPay.guardGraceSec': [10, 300],
+  'calm.xpPerMin': [0, 5], 'calm.dailyCap': [0, 60],
   'tasks.calibrationMinSamples': [1, 50], 'tasks.startAdherenceWindowMin': [0, 60],
   'tasks.liveTimers': [1, 1], 'tasks.preReminderMin': [0, 30],
   // Train: session awards, weekly goals, progression and safe finite placement tests.
@@ -373,7 +387,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
   'night.pauseDayLimitChoices.0': [5, 240], 'night.pauseDayLimitChoices.1': [5, 240], 'night.pauseDayLimitChoices.2': [5, 240],
   'night.pauseDayLimitChoices.3': [5, 240], 'night.pauseDayLimitChoices.4': [5, 240], 'night.planLeadMin': [0, 180],
-  'plan.chhutti.xp': [0, 50], 'plan.chhutti.paidPerDay': [0, 3], 'plan.chhutti.startMin': [10, 120], 'plan.chhutti.rampStepMin': [0, 60],
+  'plan.chhutti.xp': [0, 50], 'plan.chhutti.extraXpPer10Min': [0, 10], 'plan.chhutti.paidPerDay': [0, 3], 'plan.chhutti.startMin': [10, 120], 'plan.chhutti.rampStepMin': [0, 60],
   'plan.chhutti.maxMin': [30, 300], 'plan.chhutti.graceMin': [0, 30], 'plan.chhutti.rampNeedsKeptOfLast3': [1, 3], 'plan.chhutti.lockPasses': [1, 10], 'plan.chhutti.lockSlackMs': [1000, 15000],
   'courtyard.stageDays.0': [1, 400], 'courtyard.stageDays.1': [1, 400], 'courtyard.stageDays.2': [1, 400], 'courtyard.stageDays.3': [1, 400], 'courtyard.stageDays.4': [1, 400],
   'taal.movesPerWeek': [0, 3],
@@ -387,18 +401,27 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
 
 export type RulesHistoryEntry = { effectiveFrom: string; rules: Rules; note?: string };
 
+// Before 28 Oct (spec 36) focus minutes, a longer chhutti and calm minutes paid nothing and the tasks cap was 200, so
+// the frozen copies have no focusPay, extraXpPer10Min or calm keys at all (each reads as 0).
+const { focusPay: _noFocusPay, ...TASKS_BEFORE_EFFORT } = RULES.tasks;
+const { extraXpPer10Min: _noExtra, ...CHHUTTI_BEFORE_EFFORT } = RULES.plan.chhutti;
+const { calm: _noCalm, ...RULES_WITHOUT_CALM } = RULES;
+void _noFocusPay; void _noExtra; void _noCalm;
+/** The rules in force from 26 Oct: teaching Chiku pays (spec 30); effort did not pay yet. Frozen. */
+const RULES_2026_10_26 = { ...RULES_WITHOUT_CALM, version: 3, effectiveFrom: '2026-10-26', tasks: { ...TASKS_BEFORE_EFFORT, dailyCap: 200 }, plan: { chhutti: CHHUTTI_BEFORE_EFFORT } } as unknown as Rules;
 // Before 26 Oct there was no Chiku step, so the frozen copies have no chikuXp key at all (it reads as 0).
 const { chikuXp: _noChiku, ...MIND_BEFORE_CHIKU } = RULES.mind;
 void _noChiku;
 /** The rules in force from 25 Oct: a measured chhutti pays 10 XP (item 64); no Chiku step yet. Frozen. */
-const RULES_2026_10_25 = { ...RULES, version: 2, effectiveFrom: '2026-10-25', mind: MIND_BEFORE_CHIKU } as unknown as Rules;
+const RULES_2026_10_25 = { ...RULES_2026_10_26, version: 2, effectiveFrom: '2026-10-25', mind: MIND_BEFORE_CHIKU } as unknown as Rules;
 /** The rules in force from 5 Oct: as 25 Oct, except that a measured chhutti paid nothing (item 64). Frozen. */
-const RULES_2026_10_05 = { ...RULES_2026_10_25, version: 1, effectiveFrom: '2026-10-05', plan: { chhutti: { ...RULES.plan.chhutti, xp: 0 } } } as Rules;
+const RULES_2026_10_05 = { ...RULES_2026_10_25, version: 1, effectiveFrom: '2026-10-05', plan: { chhutti: { ...CHHUTTI_BEFORE_EFFORT, xp: 0 } } } as unknown as Rules;
 
 export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
   { effectiveFrom: RULES_2026_10_05.effectiveFrom, rules: RULES_2026_10_05 },
   { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10 XP when measured (item 64)' },
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
+  { effectiveFrom: RULES_2026_10_26.effectiveFrom, rules: RULES_2026_10_26, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'effort pays: focus minutes and blocks, longer chhutti, calm minutes; tasks cap 300 (spec 36)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */

@@ -197,3 +197,10 @@
 /* Item 183: inside the sheet the steps sit flush; inside More the cards sit flat, a step in from the More card. */
 .task-steps .mor-row.mor-step { margin-left: 0; }
 .plan-more .card { margin-block: 12px; padding: 16px; box-shadow: none; background: var(--surface-2); }
+
+/* Spec 36: what the focus has earned so far, the focus-check line, and "Still working?". */
+.mor-focus .mor-earned { margin: -2px 0 10px; color: var(--area); font-weight: 700; font-variant-numeric: tabular-nums; }
+.mor-focus .mor-guard-off { margin: -2px 0 10px; color: var(--ink-2); }
+.mor-focus .mor-guard-off .text-button { padding: 0; min-height: 44px; font-weight: 700; }
+.mor-focus .mor-still { display: grid; gap: 8px; margin: 0 0 12px; padding: 12px; border-radius: var(--radius-chip); background: var(--surface-2); }
+.mor-focus .mor-still p { margin: 0; font-weight: 700; }

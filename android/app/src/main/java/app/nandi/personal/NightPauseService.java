@@ -26,6 +26,10 @@ import java.util.Set;
 /** Local foreground watcher. Usage events and pause counts never leave the device. */
 public class NightPauseService extends Service {
     static final int NOTICE_ID = 43002;
+    /** Spec 36 focus guard: "Your focus is running" (come back), "Focus paused" and "Still working?". */
+    static final int FOCUS_BACK_ID = 43003;
+    static final int FOCUS_PAUSED_ID = 43004;
+    static final int FOCUS_STILL_ID = 43005;
     private final Handler handler = new Handler(Looper.getMainLooper());
     /** The app last seen in front, kept between checks (a check with no new event keeps it). */
     private String current = "";
@@ -38,14 +42,16 @@ public class NightPauseService extends Service {
     private final Runnable check = new Runnable() {
         @Override public void run() {
             SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
-            if (!prefs.getBoolean("enabled", false) || !NightPausePlugin.usageAllowed(NightPauseService.this)) {
+            boolean nightOn = prefs.getBoolean("enabled", false);
+            boolean focusOn = prefs.getBoolean("focusActive", false);
+            if ((!nightOn && !focusOn) || !NightPausePlugin.usageAllowed(NightPauseService.this)) {
                 stopSelf(); return;
             }
             long now = System.currentTimeMillis();
-            boolean night = now < prefs.getLong("testUntil", 0)
-                || inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30));
-            String dayMode = prefs.getString("dayMode", "off");
-            boolean watching = night || !"off".equals(dayMode);
+            boolean night = nightOn && (now < prefs.getLong("testUntil", 0)
+                || inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30)));
+            String dayMode = nightOn ? prefs.getString("dayMode", "off") : "off";
+            boolean watching = night || !"off".equals(dayMode) || focusOn;
             PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
             boolean screenOn = power != null && power.isInteractive();
             if (screenOn) {
@@ -63,7 +69,8 @@ public class NightPauseService extends Service {
                     prefs.edit().remove("suppressedPackage").remove("suppressUntil").apply();
                 }
                 boolean snoozed = current.equals(snoozedPackage) && now < snoozeUntil;
-                if (watching && selected.contains(current) && !current.equals(prompted) && !snoozed) {
+                if (focusOn) watchFocus(prefs, now);
+                if (nightOn && (night || !"off".equals(dayMode)) && selected.contains(current) && !current.equals(prompted) && !snoozed) {
                     String reason = null;
                     long minutes = 0;
                     if (night) reason = "night";
@@ -80,6 +87,8 @@ public class NightPauseService extends Service {
                     }
                 }
             } else {
+                // The screen went off: a guarded app is no longer in front.
+                if (focusOn) leaveGuarded(prefs, now);
                 current = "";
                 prompted = "";
                 lastCheck = 0;
@@ -112,12 +121,13 @@ public class NightPauseService extends Service {
             pause.setSound(null, null);
             notifications.createNotificationChannel(pause);
         }
-        Notification.Builder ongoingBuilder = Build.VERSION.SDK_INT >= 26
-            ? new Notification.Builder(this, "night_watch_quiet") : new Notification.Builder(this).setPriority(Notification.PRIORITY_MIN);
-        Notification ongoing = ongoingBuilder
-            .setSmallIcon(R.mipmap.ic_launcher).setContentTitle("NANDI app pause is on")
-            .setContentText("You can turn it off in You > Settings > App pause.").setOngoing(true).build();
-        startForeground(43001, ongoing);
+        if (Build.VERSION.SDK_INT >= 26) {
+            // Spec 36: the focus guard's notices come as a quiet heads-up, on their own channel.
+            NotificationChannel focus = new NotificationChannel("focus_guard", "Focus check", NotificationManager.IMPORTANCE_HIGH);
+            focus.setSound(null, null);
+            notifications.createNotificationChannel(focus);
+        }
+        showOngoing();
         IntentFilter screenEvents = new IntentFilter();
         screenEvents.addAction(Intent.ACTION_SCREEN_ON);
         screenEvents.addAction(Intent.ACTION_SCREEN_OFF);
@@ -126,6 +136,7 @@ public class NightPauseService extends Service {
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
+        showOngoing();
         handler.removeCallbacks(check);
         used.invalidate();
         handler.post(check);
@@ -133,6 +144,106 @@ public class NightPauseService extends Service {
     }
     @Override public void onDestroy() { handler.removeCallbacks(check); unregisterReceiver(screenReceiver); super.onDestroy(); }
     @Override public IBinder onBind(Intent intent) { return null; }
+
+    /** The always-on notice: the running focus while one runs (with its clock), else App pause. */
+    private void showOngoing() {
+        SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
+        Notification.Builder builder = Build.VERSION.SDK_INT >= 26
+            ? new Notification.Builder(this, "night_watch_quiet") : new Notification.Builder(this).setPriority(Notification.PRIORITY_MIN);
+        builder.setSmallIcon(R.mipmap.ic_launcher).setOngoing(true);
+        if (prefs.getBoolean("focusActive", false)) {
+            builder.setContentTitle("Focus: " + prefs.getString("focusTask", ""))
+                .setContentText("Instagram, YouTube and the like pause it. Other apps don't.")
+                .setWhen(prefs.getLong("focusSince", System.currentTimeMillis()) - prefs.getLong("focusBeforeMs", 0)).setUsesChronometer(true).setShowWhen(true)
+                .setContentIntent(openApp(FOCUS_BACK_ID));
+        } else {
+            builder.setContentTitle("NANDI app pause is on").setContentText("You can turn it off in You > Settings > App pause.");
+        }
+        startForeground(43001, builder.build());
+    }
+
+    private PendingIntent openApp(int code) {
+        Intent launch = new Intent(this, MainActivity.class);
+        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(this, code, launch, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    private void focusNotice(int id, String title, String text) {
+        Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, "focus_guard") : new Notification.Builder(this).setPriority(Notification.PRIORITY_HIGH);
+        Notification notice = builder.setSmallIcon(R.mipmap.ic_launcher).setContentTitle(title).setContentText(text)
+            .setStyle(new Notification.BigTextStyle().bigText(text))
+            .setCategory(Notification.CATEGORY_REMINDER).setContentIntent(openApp(id)).setAutoCancel(true).build();
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(id, notice);
+    }
+
+    private String appName(String packageName) {
+        try {
+            android.content.pm.PackageManager manager = getPackageManager();
+            return manager.getApplicationLabel(manager.getApplicationInfo(packageName, 0)).toString();
+        } catch (android.content.pm.PackageManager.NameNotFoundException missing) { return packageName; }
+    }
+
+    /**
+     * Spec 36 focus guard (Jenil's idea): a guarded app in front during a focus gets a notice at once; still in front
+     * after the grace time, the focus pauses as of the moment it opened and a second notice says so. A shorter visit is
+     * kept as a span that comes off the paid minutes. Nothing here leaves the phone.
+     */
+    private void watchFocus(SharedPreferences prefs, long now) {
+        Set<String> guarded = new HashSet<>(Arrays.asList(prefs.getString("focusPackages", "").split(",")));
+        String seen = prefs.getString("focusSeenPkg", "");
+        SharedPreferences.Editor edit = prefs.edit();
+        if (guarded.contains(current)) {
+            if (!current.equals(seen)) {
+                if (!seen.isEmpty()) closeSpan(prefs, edit, now);
+                edit.putString("focusSeenPkg", current).putLong("focusSeenAt", now).apply();
+                focusNotice(FOCUS_BACK_ID, "Your focus on " + prefs.getString("focusTask", "your task") + " is running",
+                    "Come back to keep it going.");
+                return;
+            }
+            long seenAt = prefs.getLong("focusSeenAt", now);
+            if (prefs.getLong("focusPausedAt", 0) == 0 && now - seenAt >= prefs.getInt("focusGraceSec", 60) * 1000L) {
+                long worked = Math.max(0, prefs.getLong("focusBeforeMs", 0) + seenAt - prefs.getLong("focusSince", seenAt) - prefs.getLong("focusDistractMs", 0));
+                long minutes = worked / 60000;
+                // Paused as of the moment the app opened; nothing more to watch until NANDI resumes the focus.
+                edit.putLong("focusPausedAt", seenAt).putString("focusPausedApp", current).putString("focusSeenPkg", "")
+                    .putBoolean("focusActive", false).apply();
+                NotificationManager notifications = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notifications.cancel(FOCUS_BACK_ID);
+                notifications.cancel(FOCUS_STILL_ID);
+                focusNotice(FOCUS_PAUSED_ID, "Focus paused", "You opened " + appName(current) + ". Your " + minutes + (minutes == 1 ? " minute" : " minutes") + " before that are saved.");
+                showOngoing();
+                return;
+            }
+        } else if (!seen.isEmpty()) {
+            closeSpan(prefs, edit, now);
+            edit.putString("focusSeenPkg", "").apply();
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(FOCUS_BACK_ID);
+        }
+        long stillAt = prefs.getLong("focusStillAt", 0);
+        if (stillAt > 0 && now >= stillAt && !prefs.getBoolean("focusStillShown", false)) {
+            edit.putBoolean("focusStillShown", true).apply();
+            focusNotice(FOCUS_STILL_ID, "Still working?", "Tap to keep the timer. With no tap in 5 minutes it pauses itself.");
+        }
+    }
+
+    /** A short visit to a guarded app ended: its time comes off the paid minutes and breaks a clean block. */
+    private void closeSpan(SharedPreferences prefs, SharedPreferences.Editor edit, long now) {
+        long seenAt = prefs.getLong("focusSeenAt", now);
+        if (prefs.getLong("focusPausedAt", 0) != 0 || now <= seenAt) return;
+        String spans = prefs.getString("focusSpans", "");
+        String[] kept = spans.isEmpty() ? new String[0] : spans.split(";");
+        StringBuilder next = new StringBuilder();
+        for (int i = Math.max(0, kept.length - 49); i < kept.length; i++) next.append(kept[i]).append(';');
+        next.append(seenAt).append('-').append(now);
+        edit.putLong("focusDistractMs", prefs.getLong("focusDistractMs", 0) + (now - seenAt)).putString("focusSpans", next.toString());
+    }
+
+    private void leaveGuarded(SharedPreferences prefs, long now) {
+        if (prefs.getString("focusSeenPkg", "").isEmpty()) return;
+        SharedPreferences.Editor edit = prefs.edit();
+        closeSpan(prefs, edit, now);
+        edit.putString("focusSeenPkg", "").apply();
+    }
 
     private boolean inPauseWindow(String bedtime, int leadMinutes) {
         try {

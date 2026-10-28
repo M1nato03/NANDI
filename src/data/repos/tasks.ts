@@ -38,7 +38,10 @@ import {
   resumeFocus as coreResumeFocus,
   finishFocus as coreFinishFocus,
   focusElapsedMs,
+  runStart,
 } from '../../core/tasks/focus';
+import { cleanBlocks } from '../../core/economy/effort';
+import { rulesFor } from '../../core/rules.config';
 
 /** Spec 27: where a task can be moved to from Mor's list. A day key moves it to that day, with an optional clock time. */
 export type MoveTarget = 'today' | 'tomorrow' | 'later' | { day: string; start?: number };
@@ -154,9 +157,21 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
   // Ending a focus adds the minutes worked to the task (spec 27: the only source of real times).
   const endFocus = async (focus: FocusRow, now: number): Promise<FocusRow> => {
     const ended = await repos.focus.put(coreFinishFocus(focus, now), now);
-    const minutes = Math.round(focusElapsedMs(focus, now) / 60_000);
+    const elapsed = focusElapsedMs(focus, now);
+    const minutes = Math.round(elapsed / 60_000);
     const task = minutes > 0 ? await repos.tasks.get(focus.taskId) : undefined;
     if (task) await repos.tasks.put({ ...task, actualMinutes: (task.actualMinutes ?? 0) + minutes }, now);
+    // Spec 36: the focus's measured minutes, less any time a distracting app was in front, as one fact for the economy
+    // (it pays only while the guard watched the whole focus). Put, not add: a focus Undo reopened can end again.
+    const distractedMs = Math.max(0, focus.guard?.distractedMs ?? 0);
+    const paidMs = Math.max(0, elapsed - distractedMs);
+    if (paidMs > 0) {
+      const day = dayKey(now);
+      const blockMin = rulesFor(day)?.rules.tasks.focusPay?.blockMin ?? RULES.tasks.focusPay.blockMin;
+      await db.ledger.put({ id: `focus-time:${focus.id}`, mode: 'tasks', kind: 'focus-time', refId: focus.id, dayKey: day,
+        inputs: { taskId: focus.taskId, paidMs, blocks: cleanBlocks(focus, now, blockMin, focus.guard?.spans ?? (distractedMs > 0 ? [[focus.startedAt, now]] : [])), guard: focus.guard?.on === true, distractedMs },
+        updatedAt: now, deleted: 0, deviceId });
+    }
     return ended;
   };
   const event = (
@@ -642,6 +657,45 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         return repos.focus.put(corePauseFocus(focus, now), now);
       });
     },
+    /**
+     * Spec 36: a pause dated when it really began: "Still working?" with no tap (at the moment it asked), or the focus
+     * guard (when the distracting app came to the front). Never before the running stretch began, never after now.
+     */
+    async pauseFocusAt(focusId: string, at: number, now: number, reason: 'still' | 'guard', app?: string): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        if (!isFocusRunning(focus)) return focus;
+        const when = Math.min(now, Math.max(runStart(focus), at));
+        return repos.focus.put({ ...focus, pauses: [...(focus.pauses ?? []), { at: when, reason, ...(app ? { app } : {}) }] }, now);
+      });
+    },
+    /** Spec 36: "I'm still working" moves the next check 60 minutes on. */
+    async keepFocus(focusId: string, now: number): Promise<FocusRow> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus) throw new Error('Focus not found');
+        // In place: a look or a tap is not an action, so a pending Undo still applies (its mark reads updatedAt).
+        await db.focus.update(focusId, { touchedAt: now });
+        return { ...focus, touchedAt: now };
+      });
+    },
+    /**
+     * Spec 36: what the focus guard saw. `on` stays false once any look found it off, and distracted time only grows,
+     * so neither can be raised after the fact.
+     */
+    async syncFocusGuard(focusId: string, seen: { on: boolean; distractedMs: number; spans?: [number, number][] }, now: number): Promise<FocusRow | undefined> {
+      return mutation(async () => {
+        const focus = await repos.focus.get(focusId);
+        if (!focus || focus.endedAt != null) return focus;
+        const spans = [...(focus.guard?.spans ?? [])];
+        for (const span of seen.spans ?? []) if (!spans.some(([a, b]) => a === span[0] && b === span[1])) spans.push(span);
+        const guard = { on: (focus.guard?.on ?? true) && seen.on, distractedMs: Math.max(focus.guard?.distractedMs ?? 0, seen.distractedMs), spans: spans.slice(-50) };
+        if (focus.guard && focus.guard.on === guard.on && focus.guard.distractedMs === guard.distractedMs && (focus.guard.spans ?? []).length === guard.spans.length) return focus;
+        await db.focus.update(focusId, { guard });
+        return { ...focus, guard };
+      });
+    },
     async extendFocus(focusId: string, now: number): Promise<FocusRow> {
       return mutation(async () => {
         const focus = await repos.focus.get(focusId);
@@ -740,7 +794,11 @@ export function createTaskRepos(db: NandiDb, deviceId: string) {
         // Undo is one step: if anything has changed since the action, it does nothing (Codex A item 92).
         const current = await afterState(taskId, before);
         if (!before.after || JSON.stringify(current) !== JSON.stringify(before.after)) throw new Error('cant_undo');
-        for (const focus of before.focus) await repos.focus.put(focus, now);
+        for (const focus of before.focus) {
+          await repos.focus.put(focus, now);
+          const fact = await db.ledger.get(`focus-time:${focus.id}`);
+          if (fact && !fact.deleted) await db.ledger.put({ ...fact, deleted: 1, updatedAt: now });
+        }
         for (const other of before.otherTasks ?? []) { const task = await repos.tasks.get(other.id); if (task) await repos.tasks.put({ ...task, actualMinutes: other.actualMinutes }, now); }
         if (before.startedFocusId) await repos.focus.softDelete(before.startedFocusId, now);
         if (before.eventId) await repos.taskEvents.softDelete(before.eventId, now);

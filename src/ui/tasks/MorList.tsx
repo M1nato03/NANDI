@@ -2,7 +2,15 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'rea
 import type { TaskRow } from '../../data/types';
 import type { MoveSnapshot, MoveTarget } from '../../data/repos/tasks';
 import { dayKey } from '../../core/time/dayKey';
-import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
+import { isFocusRunning, stillWorking, taskFocusMs } from '../../core/tasks/focus';
+import { focusSoFar } from '../../core/economy/effort';
+import { guardAppName } from '../../core/focusGuard';
+import { RULES } from '../../core/rules.config';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from '../../data/db';
+import { go } from '../shell/router';
+import { openUsageSettings } from '../../platform/nightPause';
+import { Capacitor } from '@capacitor/core';
 import { Cast, type Pose } from '../cast/Cast';
 import { taskGroups, visibleTasks, type TaskGroup } from './model';
 import { FriendStage } from '../cast/FriendStage';
@@ -26,9 +34,11 @@ export function listOf(task: TaskRow, today: string): 'today' | 'tomorrow' | 'la
 }
 
 /** Mor's line after a timed task: what it took, and what was set if a time was set. No judgement words. */
-export function notedLine(task: TaskRow, workedMinutes: number, finished: boolean): string {
+export function notedLine(task: TaskRow, workedMinutes: number, finished: boolean, focusXp = 0): string {
   const set = task.timeSet && task.estimateMin ? ` You set ${task.estimateMin}.` : '';
-  return finished ? `Noted: '${task.title}' took ${minutes(workedMinutes)}.${set}` : `Noted: ${minutes(workedMinutes)} on '${task.title}' so far.`;
+  // Spec 36: the guard-watched minutes earned focus XP; the Done line says how much.
+  const earned = focusXp > 0 ? ` · +${focusXp} focus XP` : '';
+  return finished ? `Noted: '${task.title}' took ${minutes(workedMinutes)}${earned}.${set}` : `Noted: ${minutes(workedMinutes)} on '${task.title}' so far.`;
 }
 
 /** The optional average line: shown once there are 5 or more timed, finished tasks. */
@@ -97,7 +107,7 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
     const worked = Math.round(taskFocusMs(board.focus, task.id, board.now) / 60_000);
     const ok = await board.act(async (repos, now) => { for (const row of open) await repos.finishFocus(row.id, now); await repos.completeTask(task.id, now); }, 'Done.');
     if (!ok) return;
-    if (worked > 0) { setNoted(notedLine(task, worked, true)); react('timed'); }
+    if (worked > 0) { setNoted(notedLine(task, worked, true, focusSoFar(board.focus, task.id, board.now, RULES) ?? 0)); react('timed'); }
     else react('done');
   }
   // A split task's own circle finishes every step still open, after one inline check (item 135).
@@ -184,8 +194,13 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
     {runningTask && running && <section className="card mor-focus" aria-label="Focus">
       {/* Pause holds the clock; Resume carries on from the same second. The clock is the task's whole time, so Start
           after Stop for now continues from where it left off (item 214). */}
-      <span className="eyebrow">{isFocusRunning(running) ? 'Working on' : 'Paused'}</span><h2>{runningTask.title}</h2>
+      <span className="eyebrow">{isFocusRunning(running) ? 'Working on' : pausedLabel(running.pauses?.at(-1))}</span><h2>{runningTask.title}</h2>
       <p className="mor-clock" aria-live="off">{(() => { const ms = taskFocusMs(board.focus, runningTask.id, board.now); const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; })()}</p>
+      <FocusPayLine board={board} focusId={running.id} taskId={runningTask.id} />
+      {stillWorking(running, board.now, RULES.tasks.focusPay.stillCheckMin, RULES.tasks.focusPay.stillGraceMin).ask && <div className="mor-still" role="alert">
+        <p>Still working? Tap to keep the timer.</p>
+        <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.keepFocus(running.id, now), '')}>I'm still working</button>
+      </div>}
       <div className="sheet-actions">{isFocusRunning(running) ? <button type="button" className="secondary" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.pauseFocus(running.id, now), 'Focus paused.'); }}>Pause</button> : <button type="button" disabled={board.busy} onClick={() => { clearUndo(); void board.act((repos, now) => repos.resumeFocus(running.id, now), 'Focus resumed.'); }}>Resume</button>}<button type="button" className={isFocusRunning(running) ? '' : 'secondary'} disabled={board.busy} onClick={() => void done(runningTask)}>Done</button><button type="button" className="secondary" disabled={board.busy} onClick={() => void stopForNow(runningTask)}>Stop for now</button></div>
     </section>}
     <form className="mor-add" onSubmit={event => void add(event)}>
@@ -207,3 +222,26 @@ export function MorList({ board, onDetail, avgHidden, hideAverage, outerMove, st
     {list('Later', laterRows, 'later', 'Nothing waiting.')}
   </div>;
 }
+
+/** Why a focus stopped by itself: the guard saw a distracting app, or "Still working?" had no tap. */
+function pausedLabel(pause: { reason?: 'still' | 'guard'; app?: string } | undefined): string {
+  if (pause?.reason === 'guard') return `Paused: you opened ${pause.app ? guardAppName(pause.app) : 'another app'}`;
+  if (pause?.reason === 'still') return 'Paused: no tap after "Still working?"';
+  return 'Paused';
+}
+
+/**
+ * Spec 36: what the focus has earned so far, honestly measured. With the focus check off (no Usage access) the minutes
+ * still count for the task but earn no focus XP, and the card says so once, with a way to turn it on.
+ */
+function FocusPayLine({ board, focusId, taskId }: { board: ReturnType<typeof useTaskBoard>; focusId: string; taskId: string }) {
+  // Play's Usage access disclosure (night.usageDisclosureAt, Night settings) comes first, once per phone.
+  const disclosed = useLiveQuery(async () => !!(await db.settings.get('night.usageDisclosureAt')), []);
+  const open = board.focus.find(row => row.id === focusId);
+  const earned = focusSoFar(board.focus, taskId, board.now, RULES);
+  if (earned != null) return <p className="mor-earned">+{earned} XP so far</p>;
+  if (!open?.guard) return null;
+  if (!Capacitor.isNativePlatform() && !sessionStorageGuard()) return <p className="mor-guard-off small">Focus minutes earn XP in the phone app, where the focus check runs.</p>;
+  return <p className="mor-guard-off small">Focus check is off, so minutes don't earn XP. <button type="button" className="text-button" onClick={() => disclosed ? void openUsageSettings() : go('you/night')}>Turn it on</button></p>;
+}
+const sessionStorageGuard = () => { try { return !!sessionStorage.getItem('nandi.e2eGuard'); } catch { return false; } };

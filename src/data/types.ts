@@ -47,8 +47,17 @@ export interface FocusRow extends EntityRow {
   taskId: string;
   startedAt: number;
   plannedMs?: number;
-  pauses?: { at: number; resumeAt?: number }[];
+  /** A pause by you, by "Still working?" (no tap), or by the focus guard (a distracting app stayed in front). */
+  pauses?: { at: number; resumeAt?: number; reason?: 'still' | 'guard'; app?: string }[];
   endedAt?: number;
+  /**
+   * Spec 36 focus guard: `on` stays true only while every look found usage access (it never turns back on within a
+   * focus); `distractedMs` is the time a distracting app was in front, which never pays, and `spans` when it was
+   * (each one breaks a clean block).
+   */
+  guard?: { on: boolean; distractedMs: number; spans?: [number, number][] };
+  /** The last "I'm still working" tap (or start/resume): "Still working?" asks 60 minutes after it. */
+  touchedAt?: number;
   overtimeMs?: number;
   switches?: number;
   cyclePreset?: '25/5' | '50/10';

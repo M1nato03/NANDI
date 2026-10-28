@@ -43,11 +43,12 @@ describe('rule history', () => {
     // Past days are replayed with RULES_HISTORY, so editing a scoring value in place rescores the past
     // and can lower XP already shown. Add a RULES_HISTORY entry with a new effectiveFrom instead, keep
     // this frozen copy for the old entry, and only then add a fingerprint for the new one.
-    const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards', 'plan'] as const;
+    // 'calm' joined on 28 Oct (spec 36); a copy without it (every frozen one) hashes exactly as before.
+    const scoring = ['tasks', 'train', 'mind', 'bonuses', 'soft', 'quests', 'gamify', 'level', 'season', 'streak', 'shards', 'plan', 'calm'] as const;
     // Keys that live beside scoring values but pay nothing (spec 19's board number, spec 04's internal case rating)
     // stay out of the fingerprint.
     const displayOnly = (key: string, value: unknown) => key === 'mind' && value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([name]) => name !== 'boardNumberEpoch' && name !== 'caseElo')) : value;
-    const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.map(key => [key, displayOnly(key, rules[key])]))]
+    const fingerprint = (rules: Rules) => [...JSON.stringify(scoring.filter(key => key in rules).map(key => [key, displayOnly(key, rules[key])]))]
       .reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 16_777_619) >>> 0, 2_166_136_261).toString(16);
     // b8be6943 (24 Oct): quests.paidCustomPerWeek was added. It is no edit of a past value: it only applies from
     // economy.v4From, the day this build first runs, so no past day is rescored (item 45).
@@ -61,18 +62,26 @@ describe('rule history', () => {
     // current rules (24129226) start on 25 Oct, so no day before it is rescored. cf7b07d1 is that frozen 5 Oct copy.
     // 26 Oct (spec 30): mind.chikuXp (5) was added as a new entry. The 5 and 25 Oct copies are frozen without the key, so
     // their fingerprints did not move, and Chiku facts exist only from the build that writes them.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9']]);
+    // 28 Oct (spec 36): effort pays. The 26 Oct rules are frozen as they were (40e669d9 unchanged), the new entry starts
+    // on 28 Oct, and its pay counts only from economy.v6From, the day the build first runs, so no shown day is rescored.
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9'], ['2026-10-28', '3b03b6b8']]);
   });
 
   it('ends with the current rules, and the older entry differs only in what it froze', () => {
     expect(RULES_HISTORY.at(-1)).toMatchObject({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
     const frozen = RULES_HISTORY[0]!.rules;
-    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan, mind: RULES.mind }).toEqual(RULES);
+    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan, mind: RULES.mind, tasks: RULES.tasks, calm: RULES.calm }).toEqual(RULES);
     expect(frozen.plan.chhutti.xp).toBe(0);
     const before = RULES_HISTORY[1]!.rules;
-    expect({ ...before, version: RULES.version, effectiveFrom: RULES.effectiveFrom, mind: RULES.mind }).toEqual(RULES);
+    const effort = RULES_HISTORY[2]!.rules;
+    expect({ ...before, version: effort.version, effectiveFrom: effort.effectiveFrom, mind: effort.mind }).toEqual(effort);
     expect('chikuXp' in before.mind).toBe(false);
     expect({ ...before.mind, chikuXp: RULES.mind.chikuXp }).toEqual(RULES.mind);
+    // The 26 Oct copy differs from today's only in what spec 36 added: focus pay, the longer chhutti, calm and the cap.
+    const keys = (value: object) => Object.keys(value);
+    expect([keys(effort.tasks).includes('focusPay'), keys(effort).includes('calm'), keys(effort.plan.chhutti).includes('extraXpPer10Min')]).toEqual([false, false, false]);
+    expect(effort.tasks.dailyCap).toBe(200);
+    expect({ ...effort, version: RULES.version, effectiveFrom: RULES.effectiveFrom, tasks: RULES.tasks, plan: RULES.plan, calm: RULES.calm }).toEqual(RULES);
   });
 
   it('a measured chhutti pays 10 XP only from 25 Oct, forward-only (item 64)', () => {

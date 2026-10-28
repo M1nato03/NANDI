@@ -314,7 +314,8 @@ public class NightPausePlugin extends Plugin {
             .putString("dayMode", dayMode).putInt("dayLimitMinutes", dayLimitMinutes)
             .putString("pending", enabled ? getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", "") : "").apply();
         Intent service = new Intent(getContext(), NightPauseService.class);
-        if (enabled && usageAllowed(getContext())) {
+        boolean focusOn = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean("focusActive", false);
+        if ((enabled || focusOn) && usageAllowed(getContext())) {
             if (Build.VERSION.SDK_INT >= 26) getContext().startForegroundService(service);
             else getContext().startService(service);
         }
@@ -327,6 +328,73 @@ public class NightPausePlugin extends Plugin {
         getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove("pending").remove("pendingReason").remove("pendingMinutes").apply();
         NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if (notifications != null) notifications.cancel(NightPauseService.NOTICE_ID);
+        call.resolve();
+    }
+
+    /**
+     * Spec 36 focus guard: watch (or stop watching) the running focus. A new focus starts from zero; the same focus
+     * resumed keeps what was seen before. NightPauseService runs while App pause or a focus needs it.
+     */
+    @PluginMethod
+    public void focusGuard(PluginCall call) {
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        boolean active = call.getBoolean("active", false);
+        if (active) {
+            String focusId = call.getString("focusId", "");
+            if (!focusId.equals(prefs.getString("focusId", ""))) {
+                edit.putString("focusId", focusId).putLong("focusDistractMs", 0).putString("focusSpans", "")
+                    .remove("focusPausedAt").remove("focusPausedApp");
+            }
+            long stillAt = call.getLong("stillAt", 0L);
+            if (stillAt != prefs.getLong("focusStillAt", 0)) edit.putBoolean("focusStillShown", false);
+            edit.putBoolean("focusActive", true).putString("focusTask", call.getString("task", ""))
+                .putLong("focusSince", call.getLong("runningSince", System.currentTimeMillis()))
+                .putLong("focusBeforeMs", call.getLong("beforeMs", 0L))
+                .putLong("focusStillAt", stillAt).putString("focusPackages", call.getString("packages", ""))
+                .putInt("focusGraceSec", call.getInt("graceSec", 60)).putString("focusSeenPkg", "").apply();
+        } else {
+            edit.putBoolean("focusActive", false).putString("focusSeenPkg", "").apply();
+            NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notifications != null) { notifications.cancel(NightPauseService.FOCUS_BACK_ID); notifications.cancel(NightPauseService.FOCUS_STILL_ID); }
+        }
+        Intent service = new Intent(getContext(), NightPauseService.class);
+        boolean needed = (active || prefs.getBoolean("enabled", false)) && usageAllowed(getContext());
+        if (needed) {
+            if (Build.VERSION.SDK_INT >= 26) getContext().startForegroundService(service);
+            else getContext().startService(service);
+        } else getContext().stopService(service);
+        call.resolve();
+    }
+
+    /** What the guard saw for this focus: time in guarded apps (and when), and a pause it made. */
+    @PluginMethod
+    public void focusStatus(PluginCall call) {
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        JSObject result = new JSObject();
+        result.put("usageAllowed", usageAllowed(getContext()));
+        if (call.getString("focusId", "").equals(prefs.getString("focusId", ""))) {
+            long distract = prefs.getLong("focusDistractMs", 0);
+            JSArray spans = new JSArray();
+            for (String span : prefs.getString("focusSpans", "").split(";")) {
+                String[] ends = span.split("-");
+                if (ends.length != 2) continue;
+                try { JSArray pair = new JSArray(); pair.put(Long.parseLong(ends[0])); pair.put(Long.parseLong(ends[1])); spans.put(pair); }
+                catch (NumberFormatException ignored) { /* a damaged span is skipped */ }
+            }
+            result.put("distractedMs", distract);
+            result.put("spans", spans);
+            long pausedAt = prefs.getLong("focusPausedAt", 0);
+            if (pausedAt > 0) { result.put("pausedAt", pausedAt); result.put("pausedApp", prefs.getString("focusPausedApp", "")); }
+        }
+        call.resolve(result);
+    }
+
+    @PluginMethod
+    public void clearFocusPause(PluginCall call) {
+        getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove("focusPausedAt").remove("focusPausedApp").apply();
+        NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notifications != null) notifications.cancel(NightPauseService.FOCUS_PAUSED_ID);
         call.resolve();
     }
 

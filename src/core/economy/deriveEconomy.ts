@@ -1,5 +1,9 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
+import { calmDayXp, chhuttiXp, focusDayXp } from './effort';
+
+/** The tasks cap before spec 36 (26 Oct rules); a day before economy.v6From keeps it. */
+const PRE_EFFORT_TASKS_CAP = 200;
 import type { LedgerRow, SettingRow } from '../../data/types';
 import { isPlannedDone } from './planned';
 
@@ -30,6 +34,8 @@ export interface EconomyDay {
   soft: number; welcome: number;
   /** Spec 24 #1: a kept Phone ki chhutti, paid once a day at most. It is not a Hat-trick slot and marks no day. */
   chhutti: number;
+  /** Spec 36: minutes sat in Calm, from economy.v6From. Not a Hat-trick slot; marks no day. */
+  calm: number;
   /** XP kept from the day's close: a later replay may not show less than the day once closed with. */
   held: number;
 }
@@ -477,6 +483,10 @@ function replayEconomy(
   const paidOnly = (key: string) => key > v3From;
   // The 24 Oct quest cap (item 45) counts from the day this build first runs, like the cutoffs above.
   const v4From = questCapFrom(settings);
+  // Spec 36 (effort pays) counts from the day this build first runs, so no day shown before it is rescored.
+  const v6Stored = value(settings, 'economy.v6From');
+  const v6From = typeof v6Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v6Stored) ? v6Stored : '9999-12-31';
+  const v6 = (key: string) => key >= v6From;
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -501,7 +511,10 @@ function replayEconomy(
   for (let key = start; key <= today; key = addEconomyDays(key, 1)) {
     const rows = byDay.get(key) ?? [];
     const rules = rulesFor(key, history)?.rules ?? RULES;
-    const tasks = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
+    // Spec 36: the guard-watched focus minutes of each task pay on top of finishing it, inside the tasks cap.
+    // Before economy.v6From the tasks cap stays at the 26 Oct 200, so no day shown before the build is rescored.
+    const doneXp = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
+    const tasks = v6(key) ? Math.min(rules.tasks.dailyCap, doneXp + focusDayXp(rows, rules)) : Math.min(PRE_EFFORT_TASKS_CAP, doneXp);
     const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => replayFactXp(row, history));
     const bestSession = Math.max(0, ...sessions);
     const restXp = Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
@@ -554,7 +567,8 @@ function replayEconomy(
     const boostEnd = boost ? Math.min(boost.updatedAt + rules.gamify.focusMinutes * 60_000, typeof boost.inputs.until === 'number' ? boost.inputs.until : Infinity) : 0;
     // A chhutti is paid for time away from the phone, not for a boosted half hour, so Focus never doubles it (Codex A
     // item 66). Chhutti facts exist only from the build that writes them, so no past day changes.
-    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boostEnd && row.kind !== 'focus-boost' && row.kind !== 'chhutti')) {
+    // Spec 36: focus minutes and Calm minutes pay for time already measured, so the boost never doubles them either.
+    if (boost) for (const row of rows.filter(row => row.updatedAt > boost.updatedAt && row.updatedAt <= boostEnd && row.kind !== 'focus-boost' && row.kind !== 'chhutti' && row.kind !== 'focus-time' && row.mode !== 'calm')) {
       let award = replayFactXp(row, history);
       if (row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}` && beforeBed(row)) {
         const before = rows.slice(0, rows.indexOf(row) + 1).filter(candidate => candidate.mode === 'mind' && candidate.kind === 'learn-answer' && candidate.inputs.dropId === `drop:daily:${key}` && beforeBed(candidate));
@@ -568,9 +582,13 @@ function replayEconomy(
     const soft = rows.some(row => row.kind === 'soft') ? rules.soft.dayXp : 0;
     // Spec 24 #1: chhutti facts exist only from the build that writes them, so no past day is rescored. Only a window
     // the phone's usage log measured pays; a self-reported one still grows the courtyard (self-report inflates).
-    const chhutti = Math.min(rules.plan.chhutti.paidPerDay, rows.filter(row => row.mode === 'tasks' && row.kind === 'chhutti' && row.inputs.kept === true && row.inputs.source === 'usage').length) * rules.plan.chhutti.xp;
-    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, welcome: 0, held: 0,
-      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti,
+    const kept = rows.filter(row => row.mode === 'tasks' && row.kind === 'chhutti' && row.inputs.kept === true && row.inputs.source === 'usage');
+    // Spec 36: a longer kept window pays more (10 for the first 30 minutes, 2 per further 10).
+    const chhutti = v6(key) ? kept.slice(0, rules.plan.chhutti.paidPerDay).reduce((sum, row) => sum + chhuttiXp(row, rules), 0)
+      : Math.min(rules.plan.chhutti.paidPerDay, kept.length) * rules.plan.chhutti.xp;
+    const calm = v6(key) ? calmDayXp(rows, rules) : 0;
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, calm, welcome: 0, held: 0,
+      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti + calm,
       mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
   }
   // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days
