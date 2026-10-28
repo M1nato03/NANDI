@@ -292,7 +292,7 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'calm-settings-open', false);
     await page.locator('.calm-settings summary').click();
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.getByRole('button', { name: 'Ridge wind' }).click();
+    await page.getByRole('button', { name: 'None', exact: true }).click();
     await page.locator('.calm-start').click();
     await page.clock.runFor(4_000);
     await shot(page, 'calm-running-quiet', false);

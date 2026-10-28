@@ -46,8 +46,8 @@ describe('spec 35 Calm v1.1', () => {
 
   it('remembers the last choice and keeps every pref inside its bounds', async () => {
     expect(readCalmPrefs(undefined)).toEqual(DEFAULT_CALM_PREFS);
-    expect(readCalmPrefs({ minutes: 'open', way: 'quiet', interval: 10, sound: 'tanpura', pitch: 3 })).toMatchObject({ minutes: 'open', way: 'quiet', interval: 10, sound: 'tanpura', pitch: 3 });
-    expect(readCalmPrefs({ minutes: 500, way: 'nap', interval: 7, soundVolume: -4, pitch: 9, fade: 'yes' })).toMatchObject({ minutes: 120, way: 'paced', interval: 0, soundVolume: 0, pitch: 3, fade: true });
+    expect(readCalmPrefs({ minutes: 'open', way: 'quiet', interval: 10, sound: 'river' })).toMatchObject({ minutes: 'open', way: 'quiet', interval: 10, sound: 'river' });
+    expect(readCalmPrefs({ minutes: 500, way: 'nap', interval: 7, soundVolume: -4, fade: 'yes' })).toMatchObject({ minutes: 120, way: 'paced', interval: 0, soundVolume: 0, fade: true });
     expect(readCalmPrefs({ minutes: 0.5 }).minutes).toBe(3);
     const db = fresh();
     await saveCalmSettings(db, { prefs: { minutes: 45 } }, at);

@@ -205,7 +205,7 @@ test('Your sound: a file is kept on the phone, plays through an audio element, a
   await expect(mine).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByText('Your sounds stay on this phone.')).toBeVisible();
   await startButton(page).click();
-  await expect.poll(() => page.locator('audio.calm-user-audio').evaluate(node => (node as HTMLAudioElement).paused)).toBe(false);
+  await expect.poll(() => page.locator('audio.calm-sound-audio').evaluate(node => (node as HTMLAudioElement).paused)).toBe(false);
   await stop(page);
   await page.getByRole('button', { name: 'Rename or remove Morning raga' }).click();
   await page.getByRole('dialog', { name: /Your sound/ }).getByRole('button', { name: 'Remove' }).click();

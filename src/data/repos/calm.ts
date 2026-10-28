@@ -2,7 +2,7 @@ import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
-import { CALM_MINUTES, CALM_INTERVALS, CALM_WAYS, TANPURA_PITCHES, sitMinutes, type CalmLength, type CalmWay } from '../../core/calm/session';
+import { CALM_MINUTES, CALM_INTERVALS, CALM_WAYS, sitMinutes, type CalmLength, type CalmWay } from '../../core/calm/session';
 
 export { CALM_MINUTES };
 
@@ -22,14 +22,14 @@ export function readBreath(value: unknown): Breath {
 }
 
 /**
- * Spec 35: everything else Calm remembers. `sound` is 'none', a preset id or 'user:<id>' (a sound kept on this phone);
- * a user sound that is not on this phone plays as silence.
+ * Spec 35: everything else Calm remembers. `sound` is 'none', a recorded preset's id or 'user:<id>' (a sound kept on this
+ * phone); one that is not on this phone, or no longer in the app, plays as silence.
  */
 export type CalmPrefs = {
   minutes: CalmLength; way: CalmWay; startBell: boolean; interval: (typeof CALM_INTERVALS)[number];
-  sound: string; soundVolume: number; bellVolume: number; pitch: number; fade: boolean;
+  sound: string; soundVolume: number; bellVolume: number; fade: boolean;
 };
-export const DEFAULT_CALM_PREFS: CalmPrefs = { minutes: 3, way: 'paced', startBell: true, interval: 0, sound: 'none', soundVolume: 60, bellVolume: 70, pitch: 1, fade: true };
+export const DEFAULT_CALM_PREFS: CalmPrefs = { minutes: 3, way: 'paced', startBell: true, interval: 0, sound: 'none', soundVolume: 60, bellVolume: 70, fade: true };
 
 /** Stored prefs, each kept inside its bounds; anything unreadable falls back to its default. */
 export function readCalmPrefs(value: unknown): CalmPrefs {
@@ -44,7 +44,6 @@ export function readCalmPrefs(value: unknown): CalmPrefs {
     sound: typeof row.sound === 'string' && row.sound.length <= 80 ? row.sound : d.sound,
     soundVolume: clamp(row.soundVolume, [0, 100], d.soundVolume),
     bellVolume: clamp(row.bellVolume, [0, 100], d.bellVolume),
-    pitch: clamp(row.pitch, [0, TANPURA_PITCHES.length - 1], d.pitch),
     fade: typeof row.fade === 'boolean' ? row.fade : d.fade,
   };
 }

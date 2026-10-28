@@ -10,8 +10,6 @@ export type CalmLength = number | 'open';
 export const CALM_WAYS: readonly CalmWay[] = ['paced', 'scan', 'quiet'];
 export const CALM_MINUTES = { chips: [3, 5, 10, 20, 30, 60], other: [1, 15, 45], custom: [1, 120] } as const;
 export const CALM_INTERVALS = [0, 5, 10, 15] as const;
-/** Sa for the tanpura, in Hz: four comfortable pitches. */
-export const TANPURA_PITCHES = [{ name: 'C', hz: 130.81 }, { name: 'C♯', hz: 138.59 }, { name: 'D', hz: 146.83 }, { name: 'E', hz: 164.81 }] as const;
 /** The guide fades after this long, in a paced sit of LONG_SIT minutes or more. */
 export const FADE_AFTER_MS = 3 * 60_000;
 export const LONG_SIT = 10;

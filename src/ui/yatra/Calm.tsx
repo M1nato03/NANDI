@@ -3,8 +3,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { BREATH_IN, BREATH_OUT, calmKeys, readBreath, readCalmPrefs, saveCalmDone, saveCalmSettings, type Breath, type CalmPrefs } from '../../data/repos/calm';
 import { addUserSound, calmSoundDb, MAX_USER_SOUNDS, removeUserSound, renameUserSound, type CalmSoundRow } from '../../data/calmSounds';
-import { CALM_INTERVALS, CALM_MINUTES, DIM_AFTER_MS, FADE_AFTER_MS, SCAN_LINES, TANPURA_PITCHES, doneLine, fadeApplies, intervalBells, isLongSit, nightStars, scanLine, sitMinutes, totalMs, type CalmLength, type CalmWay } from '../../core/calm/session';
-import { CALM_SOUNDS, CalmAudio, isPreset } from '../../platform/calmSound';
+import { CALM_INTERVALS, CALM_MINUTES, DIM_AFTER_MS, FADE_AFTER_MS, SCAN_LINES, doneLine, fadeApplies, intervalBells, isLongSit, nightStars, scanLine, sitMinutes, totalMs, type CalmLength, type CalmWay } from '../../core/calm/session';
+import { CALM_SOUNDS, CalmAudio, presetOf, type CalmPreset } from '../../platform/calmSound';
 import { keepScreenAwake } from '../../platform/awake';
 import { Cast } from '../cast/Cast';
 import { TrekScene } from './TrekScene';
@@ -25,9 +25,9 @@ const WAYS: { id: CalmWay; short: string; line: (breath: Breath) => string }[] =
   { id: 'scan', short: 'Scan', line: () => 'Six slow lines, one at a time' },
   { id: 'quiet', short: 'Quiet', line: () => 'No guide, just quiet' },
 ];
+/** A recorded loop's address inside the app, wherever the app is served from. */
+const presetUrl = (preset: CalmPreset) => `${import.meta.env.BASE_URL}calm/${preset.file}`;
 const lengthName = (length: CalmLength) => length === 'open' ? 'until I stop' : `${length} ${length === 1 ? 'minute' : 'minutes'}`;
-/** A seed for the generated sounds: the same sound plays the same way every time. */
-const SOUND_SEED = 35;
 
 type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean };
 
@@ -124,7 +124,8 @@ export function Calm() {
     audio.current = mixer;
     if (mixer) {
       const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
-      mixer.play({ preset: isPreset(prefs.sound) ? prefs.sound : undefined, file: own?.blob, seed: SOUND_SEED, pitch: TANPURA_PITCHES[prefs.pitch]!.hz, soundVolume: prefs.soundVolume, bellVolume: prefs.bellVolume });
+      const preset = presetOf(prefs.sound);
+      mixer.play({ src: preset ? presetUrl(preset) : undefined, file: own?.blob, soundVolume: prefs.soundVolume, bellVolume: prefs.bellVolume });
       if (prefs.startBell) mixer.ring('start');
     }
     setDone(null); setNow(at); setTouchedAt(at); setRun(ran);
@@ -198,7 +199,6 @@ export function Calm() {
         <p className="small">The end bell always rings.</p>
         <label>Sound volume<input type="range" min={0} max={100} value={prefs.soundVolume} onChange={event => setPrefs({ soundVolume: Number(event.target.value) })} /></label>
         <label>Bell volume<input type="range" min={0} max={100} value={prefs.bellVolume} onChange={event => setPrefs({ bellVolume: Number(event.target.value) })} /></label>
-        {prefs.sound === 'tanpura' && <label>Tanpura Sa<select value={prefs.pitch} onChange={event => setPrefs({ pitch: Number(event.target.value) })}>{TANPURA_PITCHES.map((pitch, index) => <option key={pitch.name} value={index}>{pitch.name}</option>)}</select></label>}
       </details>
       <div className="calm-start-bar">
         <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
