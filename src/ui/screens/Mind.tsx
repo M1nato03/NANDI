@@ -20,7 +20,7 @@ import { bestPace, fillFraction, nextPace, paceShown } from '../../core/puzzles/
 import { PaceLine, ParLine } from '../mind/PaceLine';
 import { shareFileNow, shareNote, shareTextNow } from '../shareActions';
 import { brokenRules, checkRules, type PuzzleState } from '../../core/puzzles/rules';
-import { SHELF, SHELF_ATTEMPT, SHELF_PER_DAY, featuredDailyDone, shelfLevel, shelfSeedText, shelfSolvedToday } from '../../core/puzzles/shelf';
+import { SHELF, SHELF_ATTEMPT, SHELF_PER_DAY, shelfLevel, shelfSeedText, shelfSolvedToday } from '../../core/puzzles/shelf';
 import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { trackWrite } from '../../core/pendingWrites';
@@ -75,8 +75,6 @@ export function Mind({ entry }: { entry?: string }) {
   }, [caseOpen]);
   const [board, setBoard] = useState<PuzzleBoard | null>(null);
   const [run, setRun] = useState<PuzzleRunRow | null>(null);
-  const [dailyDoneKey, setDailyDoneKey] = useState<string | null>(null);
-  const dailyDone = dailyDoneKey === today;
   const [best, setBest] = useState<number | undefined>();
   const [message, setMessage] = useState('');
   const [hintStep, setHintStep] = useState(0);
@@ -107,7 +105,6 @@ export function Mind({ entry }: { entry?: string }) {
   const unlocks = useLiveQuery(() => db.unlocks.where('kind').equals('technique').toArray(), []) ?? [];
   // Live, so the Today chip flips to Done as soon as the daily board is solved.
   // One daily per type (spec 29): the featured type's daily may be its easy shelf board while the ramp applies.
-  const dailySolvedLive = puzzleRuns.some(row => row.type === featured.type && row.daily && row.dayKey === today && row.result === 'solved' && !row.deleted);
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const ownedPacks = useLiveQuery(() => db.ledger.where('kind').equals('purchase').toArray(), []) ?? [];
@@ -264,12 +261,6 @@ export function Mind({ entry }: { entry?: string }) {
   }, []);
 
   useEffect(() => {
-    let live = true;
-    void db.puzzleRuns.where('dayKey').equals(today).toArray().then(rows => { if (live) setDailyDoneKey(featuredDailyDone(rows, today) ? today : null); });
-    return () => { live = false; };
-  }, [today, featured.type, featured.diff]);
-
-  useEffect(() => {
     if (!selection) return;
     let live = true;
     const worker = new Worker(new URL('../../workers/puzzle.worker.ts', import.meta.url), { type: 'module' });
@@ -337,7 +328,6 @@ export function Mind({ entry }: { entry?: string }) {
     next.paceTop = paceShown(row.paceTop ?? 0, checked.solved ? 1 : fill, next.pace);
     if (checked.solved) {
       next.result = 'solved'; next.solveMs = next.activeMs; next.finishedAt = now;
-      if (next.daily) setDailyDoneKey(today);
       react('cartwheel');
       setBest(previous => previous === undefined ? next.solveMs : Math.min(previous, next.solveMs ?? previous));
       setMessage('');
@@ -367,8 +357,8 @@ export function Mind({ entry }: { entry?: string }) {
     if (entry === 'case' && !caseReady) return;
     const timer = window.setTimeout(() => {
       if (entryHandled.current) return;
-      // Spec 29 (Codex B item 106): ONE daily board per type per day. A daily already opened today (from the shelf,
-      // Today's Board chip or a friend's link) is the one; otherwise the shelf's level decides, easy while the ramp applies.
+      // Spec 29 (Codex B item 106): ONE daily board per type per day. A daily already opened today (from the shelf
+      // or a friend's link) is the one; otherwise the shelf's level decides, easy while the ramp applies.
       const dailySelection = (type: PuzzleType, rows: readonly PuzzleRunRow[]): Selection => {
         const live = rows.filter(row => !row.deleted);
         const opened = live.find(row => row.type === type && row.daily && row.dayKey === today && diffs.includes(row.diff as PuzzleDifficulty));
@@ -527,12 +517,9 @@ export function Mind({ entry }: { entry?: string }) {
       <ul>{SHELF.map(item => {
         const solved = shelfSolvedToday(item.type, puzzleRuns, today);
         const status = solved >= SHELF_PER_DAY ? 'Done for today' : solved ? `Solved · ${solved} of ${SHELF_PER_DAY}` : !seenTutorial(item.type) ? 'Starts with a how-to' : item.type === featured.type ? "Today's board" : 'New today';
-        return <li key={item.type}><button type="button" className="mind-shelf-tile" onClick={() => go(solved >= SHELF_PER_DAY ? `mind/shelf/${item.type}/more` : `mind/shelf/${item.type}`)}><strong>{PZ.TYPES[item.type].name}</strong><span>{item.line}</span><span className="small mind-shelf-status">{status}</span></button><button type="button" className="text-button" aria-label={`How to play ${PZ.TYPES[item.type].name}`} onClick={() => go(`mind/howto/${item.type}`)}>How to play</button></li>;
+        return <li key={item.type}><button type="button" className="mind-shelf-tile" data-featured={item.type === featured.type || undefined} onClick={() => go(solved >= SHELF_PER_DAY ? `mind/shelf/${item.type}/more` : `mind/shelf/${item.type}`)}><strong>{PZ.TYPES[item.type].name}</strong><span>{item.line}</span><span className="small mind-shelf-status">{status}</span></button><button type="button" className="text-button" aria-label={`How to play ${PZ.TYPES[item.type].name}`} onClick={() => go(`mind/howto/${item.type}`)}>How to play</button></li>;
       })}</ul>
     </section>
-    <section className="mind-today" aria-label="Today"><h2>Today</h2><div className="mind-today-chips">
-      <button type="button" className="mind-today-chip" onClick={() => open({ ...featured, daily: true })}><strong>Board</strong> <span>{dailyDone || dailySolvedLive ? 'Done' : 'Not done'}</span></button>
-    </div></section>
     <details className="card mind-more" open={practice || undefined}><summary>More boards</summary>
     <section className="mind-practice"><h2>Practice boards</h2><p>Choose a board and difficulty.</p><button type="button" onClick={() => practice ? back('mind') : go('mind/practice')} aria-expanded={practice}>Practice</button>
       {types.some(type => bestByType[type] !== undefined) && <div className="mind-best-times"><h3>Best times</h3><ul>{types.filter(type => bestByType[type] !== undefined).map(type => <li key={type}><span>{PZ.TYPES[type].name}</span><strong>{timeText(bestByType[type]!)}</strong></li>)}</ul></div>}

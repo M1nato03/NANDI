@@ -77,7 +77,6 @@
 .trek-journey { margin: 12px 0 4px; }
 .trek-journey-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .trek-journey-top strong { font-weight: 800; }
-.trek-journey-top span { color: var(--ink-2); font-size: 13px; white-space: nowrap; }
 .trek-rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
 .trek-rail i { height: 5px; border-radius: 4px; background: var(--surface-3); }
 .trek-rail i.filled { background: #FF6A1A; }

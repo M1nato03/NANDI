@@ -227,8 +227,6 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .ritual-buttons button { min-height: 70px; font-size: 13px; }
 .you-links .you-link { min-height: 132px; }
 .you-link strong { font-size: clamp(25px, 7vw, 30px); line-height: 1.1; }
-.mind-today-chip { min-height: 76px; align-content: center; }
-.mind-today-chip span { color: var(--secondary-ink); }
 .mind-courses > .card { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; padding: 16px 0 0; }
 .mind-practice-options > div { min-width: 0; }
 .mind-practice-options button { min-height: 48px; border-radius: 12px; }
@@ -347,8 +345,8 @@ select, input:not([type='checkbox']):not([type='radio']) { background: var(--sur
 .deck-card .deck-actions > button:not(.secondary):not(.text-button) { min-height: 52px; height: 52px; padding-block: 12px; }
 .deck-card .deck-actions > button.secondary { min-height: 52px; height: 52px; font-size: 14px; line-height: 18px; padding: 7px 10px; text-wrap: balance; }
 .deck-card .deck-actions { gap: 8px; }
-.plan-screen .ui-section-header, .planner-screen section > h2, .learn-map-heading, .mind-today > h2 { margin: 24px 0 12px; }
-.plan-screen .ui-section-header h2, .planner-screen section > h2, .learn-map-heading h2, .mind-today > h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
+.plan-screen .ui-section-header, .planner-screen section > h2, .learn-map-heading { margin: 24px 0 12px; }
+.plan-screen .ui-section-header h2, .planner-screen section > h2, .learn-map-heading h2 { font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
 .plan-rituals { margin-top: 24px; padding: 0; border: 0; background: transparent; }
 .plan-rituals .ui-section-header { margin: 0 0 12px; }
 .ritual-buttons { gap: 8px; }

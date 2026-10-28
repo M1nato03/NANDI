@@ -98,7 +98,7 @@ export function Yatra() {
       <p className="eyebrow trek-head">{trek.trail.name}</p>
       <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />
       <div className="trek-journey">
-        <div className="trek-journey-top"><strong>{trekLine(trek)}</strong>{!trek.complete && <span>{trek.stretch} of {STRETCHES_PER_LEG}</span>}</div>
+        <div className="trek-journey-top"><strong>{trekLine(trek)}</strong></div>
         {!trek.complete && <div className="trek-rail" aria-hidden="true">{Array.from({ length: STRETCHES_PER_LEG }, (_, i) => <i key={i} className={i < trek.stretch ? 'filled' : undefined} />)}</div>}
         <p className="trek-narrative" role="status">{narrative(trek, yatra.night)}</p>
       </div>

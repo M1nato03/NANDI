@@ -16,3 +16,8 @@ export async function openTrain(page: Page) {
   await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Yatra' }).click();
   await page.getByRole('button', { name: /^Train: / }).click();
 }
+
+/** Item 213: today's board is the shelf tile of the weekday's featured type (the lone Today chip is gone). */
+export const todaysBoard = (page: Page) => page.locator('.mind-shelf-tile[data-featured]');
+/** The tile reads solved once today's daily board is done. */
+export const BOARD_DONE = /Solved · \d of 3|Done for today/;

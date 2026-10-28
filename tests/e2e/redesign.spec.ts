@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { todaysBoard } from './helpers/mind';
 import { openMore } from './helpers/plan';
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -33,7 +34,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: /^Mind: / }).click();
     await expect(page).toHaveURL(/#yatra\/mind$/);
     await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Board Not done' })).toBeVisible();
+    await expect(todaysBoard(page)).toBeVisible();
     await expect(page.getByRole('button', { name: /^(?:Open|Continue) the case$/ })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
     await expect(page.getByRole('main').getByText("Today's drop")).toHaveCount(0);

@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import { expect, test } from '@playwright/test';
-import { openGames, openMoreBoards } from './helpers/mind';
+import { openGames, openMoreBoards, todaysBoard, BOARD_DONE } from './helpers/mind';
 
 test('daily case grid contrast and layout', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
@@ -33,7 +33,8 @@ test('Practice hub shows daily status, destinations and fits a phone', async ({ 
   await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
   await page.goto('/#mind');
   await expect(page.getByRole('heading', { name: "Kapi's shelf", exact: true })).toBeVisible();
-  for (const name of [/^Open the case$/, 'Board Not done']) await expect(page.getByRole('button', { name })).toBeVisible();
+  await expect(page.getByRole('button', { name: /^Open the case$/ })).toBeVisible();
+  await expect(todaysBoard(page)).toContainText("Today's board");
   await openMoreBoards(page);
   await expect(page.getByRole('heading', { name: 'Practice boards' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Card reviews' })).toBeVisible();
@@ -82,7 +83,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.clock.setFixedTime(new Date('2026-10-11T12:00:00'));
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto('/?e2e#mind');
-    await page.getByRole('button', { name: 'Board Not done' }).click();
+    await todaysBoard(page).click();
     await expect(page.locator('.mind-grid')).toBeVisible({ timeout: 30_000 });
     await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
     await expect(page.locator('html')).toHaveCSS('color-scheme', scheme);
@@ -109,8 +110,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await openMoreBoards(page);
     await expect(page.getByText('Best times')).toBeVisible();
     await expect(page.locator('.mind-best-times')).toContainText('0:');
-    // One daily board per type per day (spec 29): the solved board is today's, so the chip reads Done.
-    await expect(page.getByRole('button', { name: 'Board Done' })).toBeVisible();
+    // One daily board per type per day (spec 29): the solved board is today's, so its shelf tile reads solved.
+    await expect(todaysBoard(page)).toContainText(BOARD_DONE);
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Read' }).click();
     await page.getByRole('button', { name: /^Short courses/ }).click();
     await page.getByText('Courses', { exact: true }).click();

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { todaysBoard, BOARD_DONE } from './helpers/mind';
 
 type Hook = { board: () => { seed: number; solution: number[] }; solveKnownSolution: () => void };
 const hook = (page: Page) => page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
@@ -68,5 +69,5 @@ test("a friend opening today's link plays today's daily board and gets the Today
   await expect(friend.locator('.mind-board')).toHaveAttribute('data-save-state', 'saved');
   await friend.goto('/?e2e#mind');
   await friend.reload();
-  await expect(friend.getByRole('button', { name: /^Board\s+Done$/ })).toBeVisible();
+  await expect(todaysBoard(friend)).toContainText(BOARD_DONE);
 });
