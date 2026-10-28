@@ -10,9 +10,11 @@ export function dayBand(hour: number): DayBand {
   return 'night';
 }
 
+/** "Good night" on opening the app reads like goodbye, so the night band greets "Good evening" (jenil-7b review). */
 export function greeting(hour: number, name?: string): string {
   const who = name?.trim();
-  return `Good ${dayBand(hour)}${who ? `, ${who}` : ''}.`;
+  const band = dayBand(hour);
+  return `Good ${band === 'night' ? 'evening' : band}${who ? `, ${who}` : ''}.`;
 }
 
 export const QUIET_LINES = [

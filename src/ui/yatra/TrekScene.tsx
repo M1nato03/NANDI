@@ -13,6 +13,8 @@ const STOPS = [0, 0.55, 0.8];
 /** The landmark gate stands between the mid-leg stop and the last one, so it is ahead of the friends mid-leg, not behind Nandi. */
 const GATE_AT = (STOPS[1]! + STOPS[2]!) / 2;
 const RIDGE_W = 1110;
+/** A place's name sign stands under the camp fire, so it never covers Nandi at camp (jenil-7b review). */
+const MARK_AT = 48;
 const SEEN_KEY = 'nandi.yatra.seen';
 
 const placeX = (index: number) => PAD + index * LEG_W;
@@ -144,7 +146,7 @@ export function TrekScene({ trek, night, dusk = false, brighten = 0, breath, onR
           <span className="trek-actor kapi" style={{ left: -96 }}><Cast name="Kapi" pose={night ? 'rest' : 'idle'} size={62} /></span>
           <span className="trek-actor nandi" style={{ left: -44 }}><Cast name="Nandi" pose={night ? 'rest' : 'idle'} size={66} /></span>
         </div>
-        {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-place${i === trek.place && atPlace ? ' current' : ''}`} style={{ left: placeX(i) }}><b>{spot.name}</b><i /></div>)}
+        {trek.trail.places.map((spot, i) => <div key={spot.id} className={`trek-place${i === trek.place && atPlace ? ' current' : ''}`} style={{ left: placeX(i) + MARK_AT }}><b>{spot.name}</b><i /></div>)}
       </div>
     </div>
     <div className="trek-caption"><b>{place.name.toUpperCase()} · {night ? 'NIGHT' : 'DAY'}</b><span>{caption}</span></div>

@@ -39,8 +39,8 @@ test('a link still wins: a notification route to Plan opens Plan', async ({ page
   await expect(tabs(page).getByRole('link', { name: 'Plan' })).toHaveAttribute('aria-current', 'page');
 });
 
-for (const [hour, words, night] of [[8, 'Good morning.', false], [14, 'Good afternoon.', false], [19, 'Good evening.', false], [22, 'Good night.', true]] as const) {
-  test(`at ${hour}:00 the greeting is "${words}"`, async ({ page }) => {
+for (const [hour, words, night] of [[8, 'Good morning.', false], [14, 'Good afternoon.', false], [19, 'Good evening.', false], [22, 'Good evening.', true]] as const) {
+  test(`at ${hour}:00 the greeting is "${words}"${night ? ' (never "Good night" on opening the app)' : ''}`, async ({ page }) => {
     await page.clock.setFixedTime(at(hour));
     await page.goto('/');
     await expect(greeting(page)).toHaveText(words);
@@ -59,7 +59,7 @@ test('a running focus shows one strip under the camp, and it opens the focus car
   await expect(page.getByRole('region', { name: 'Focus' })).toContainText('Write the report');
   await page.clock.fastForward(24 * 60_000);
   await tabs(page).getByRole('link', { name: 'Yatra' }).click();
-  await expect(strip(page)).toHaveText(/^Working on 'Write the report' · 24:\d\d\s*Open$/);
+  await expect(strip(page)).toHaveText(/^Working on 'Write the report'\s*· 24:\d\d\s*Open$/);
   await strip(page).click();
   await expect(page).toHaveURL(/#plan$/);
   await expect(page.getByRole('region', { name: 'Focus' })).toBeVisible();
@@ -69,4 +69,28 @@ test('a running focus shows one strip under the camp, and it opens the focus car
   await tabs(page).getByRole('link', { name: 'Yatra' }).click();
   await expect(greeting(page)).toBeVisible();
   await expect(strip(page)).toHaveCount(0);
+});
+
+test('a focus left running is held at "Still working?" when the app next opens on Yatra, and its XP stops there', async ({ page }) => {
+  await page.clock.install({ time: at(10) });
+  await page.goto('/#plan');
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2eGuard', JSON.stringify({ usageAllowed: true })));
+  await page.getByLabel('Add a task').fill('Write the report');
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.getByRole('region', { name: 'Today', exact: true }).locator('.mor-row').filter({ hasText: 'Write the report' }).getByRole('button', { name: 'Start' }).click();
+  await expect(page.getByRole('region', { name: 'Focus' }).locator('.mor-earned')).toBeVisible();
+  // NANDI is closed with the focus running, and opened again at 21:00 with no link, so it lands on Yatra, not Plan.
+  await page.goto('about:blank');
+  await page.clock.setSystemTime(at(21));
+  await page.goto('/');
+  await expect(page).toHaveURL(/#yatra$/);
+  await expect(strip(page)).toHaveText(/^Paused 'Write the report'\s*· 6\d:\d\d\s*Open$/);
+  // The pause holds: the clock does not move on.
+  await page.clock.fastForward(5 * 60_000);
+  await expect(strip(page)).toHaveText(/· 6\d:\d\d/);
+  await strip(page).click();
+  const card = page.getByRole('region', { name: 'Focus' });
+  await expect(card).toContainText('Paused: no tap after "Still working?"');
+  // 60 minutes, two clean 25-minute runs: 30 + 10, and no more.
+  await expect(card.locator('.mor-earned')).toHaveText('+40 XP so far');
 });

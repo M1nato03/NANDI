@@ -98,9 +98,14 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.locator('.yatra-focus-strip')).toBeVisible();
     await page.waitForTimeout(800);
     await shot(page, 'home-3-focus', false);
+    // The focus ends before the evening, so the night shot is the plain home.
+    await page.locator('.yatra-focus-strip').click();
+    await page.getByRole('region', { name: 'Focus' }).getByRole('button', { name: 'Done' }).click();
+    await expect(page.getByRole('region', { name: 'Focus' })).toHaveCount(0);
     await page.clock.setSystemTime(new Date('2026-10-28T22:10:00'));
-    await page.reload();
-    await expect(page.getByRole('heading', { name: 'Good night.', level: 1 })).toBeVisible();
+    await page.goto('/');
+    await expect(page.getByRole('heading', { name: 'Good evening.', level: 1 })).toBeVisible();
+    await expect(page.locator('.yatra-quiet')).toHaveText('The friends are by the fire tonight.');
     await page.waitForTimeout(800);
     await shot(page, 'home-2-night', false);
   });

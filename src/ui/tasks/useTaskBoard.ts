@@ -75,8 +75,27 @@ export function useTaskBoard() {
     void reposPromise.then((repos) => repos.reconcile(Date.now())).catch((error) => { fades.current = false; setMessage(errorMessage(error)); });
     return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('pageshow', refresh); };
   }, []);
-  // Spec 36: the phone's focus guard watches the running focus (its task, when its stretch began, when to ask "Still
-  // working?") and stops when no focus runs.
+  async function act(operation: (repos: TaskRepos, at: number) => Promise<unknown>, success = ''): Promise<boolean> {
+    setBusy(true); setMessage('');
+    // An action reads the focus as the guard last saw it, so ending a focus pays only its honest minutes. Both use the
+    // moment of the tap: the look takes a little while, and a Start must begin when it was pressed.
+    const at = Date.now();
+    try { await syncFocus(at).catch(() => undefined); await operation(await reposPromise, at); fades.current = true; setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
+    catch (error) { fades.current = false; setMessage(errorMessage(error)); return false; }
+    finally { setBusy(false); setNow(Date.now()); }
+  }
+  return { tasks: tasks ?? [], focus: focus ?? [], now, busy, message, act, writes, writesRef };
+}
+
+/**
+ * Spec 36 + 37: keeps the open focus honest on every screen, not only on Plan (the app opens on Yatra now). The phone's
+ * focus guard watches the running focus (its task, when its stretch began, when to ask "Still working?") and stops when
+ * none runs; the app looks again on open, on return and once a minute, so a guard pause or an unanswered check is
+ * applied wherever the app is. Mounted once, in the shell.
+ */
+export function useFocusKeeper(): void {
+  const tasks = useLiveQuery(() => db.tasks.filter((row) => row.deleted === 0).toArray(), []);
+  const focus = useLiveQuery(() => db.focus.filter((row) => row.deleted === 0).toArray(), []);
   const nightApps = useLiveQuery(() => db.settings.get('night.pause.apps'), []);
   const running = focus?.filter((row) => row.endedAt == null && isFocusRunning(row)).sort((a, b) => b.startedAt - a.startedAt)[0];
   const runningTitle = running ? tasks?.find((task) => task.id === running.taskId)?.title ?? '' : '';
@@ -98,14 +117,4 @@ export function useTaskBoard() {
     document.addEventListener('visibilitychange', look);
     return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', look); };
   }, [openFocus]);
-  async function act(operation: (repos: TaskRepos, at: number) => Promise<unknown>, success = ''): Promise<boolean> {
-    setBusy(true); setMessage('');
-    // An action reads the focus as the guard last saw it, so ending a focus pays only its honest minutes. Both use the
-    // moment of the tap: the look takes a little while, and a Start must begin when it was pressed.
-    const at = Date.now();
-    try { await syncFocus(at).catch(() => undefined); await operation(await reposPromise, at); fades.current = true; setMessage(success); writesRef.current += 1; setWrites(writesRef.current); return true; }
-    catch (error) { fades.current = false; setMessage(errorMessage(error)); return false; }
-    finally { setBusy(false); setNow(Date.now()); }
-  }
-  return { tasks: tasks ?? [], focus: focus ?? [], now, busy, message, act, writes, writesRef };
 }

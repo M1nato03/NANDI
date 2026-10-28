@@ -7,7 +7,9 @@ describe('spec 37 welcome', () => {
     expect(greeting(8)).toBe('Good morning.');
     expect(greeting(14)).toBe('Good afternoon.');
     expect(greeting(19, 'Jenil')).toBe('Good evening, Jenil.');
-    expect(greeting(23, '  ')).toBe('Good night.');
+    // At night it still greets "Good evening": "Good night" on opening the app reads like goodbye.
+    expect(greeting(23, '  ')).toBe('Good evening.');
+    expect(greeting(4)).toBe('Good evening.');
   });
 
   it('keeps one quiet line all day, and a new one comes on another day', () => {

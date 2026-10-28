@@ -13,6 +13,7 @@ import { Now } from '../screens/Now';
 import { TodayDots } from './TodayDots';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { effectiveShutdown } from '../../core/tasks/planner';
+import { useFocusKeeper } from '../tasks/useTaskBoard';
 import { RULES } from '../../core/rules.config';
 import { DelayedCardSkeleton } from './DelayedCardSkeleton';
 import { back, backDestination, go, initializeHistory, navigationEventName, route, tabOf } from './router';
@@ -91,6 +92,8 @@ export function AppShell() {
   useForegroundMinutes();
   const [welcomeNeeded, closeWelcome] = useWelcomeNeeded();
   useWidgetSync();
+  // Spec 37: the app opens on Yatra, so the open focus is kept up to date (guard, Still working?) on every screen.
+  useFocusKeeper();
   useEffect(() => {
     const refreshDate = () => { const now = Date.now(); setToday(dayKey(now)); setClockTime(now); };
     const interval = window.setInterval(refreshDate, 60_000);
