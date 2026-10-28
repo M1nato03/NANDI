@@ -22,7 +22,9 @@ describe('RULES', () => {
     expect(RULES.train.weeklyTarget).toBe(3);
     expect(RULES.train.placement).toEqual({ stopMinReps: 5, stopMaxReps: 11, moveUpAtReps: 12, maxTestsPerPattern: 3 });
     expect(RULES.tasks.clutch.clutchBonusXp).toBe(5);
-    expect(RULES.mind.dailyCap).toBe(80);
+    // Spec 36 v2 (29 Oct): the shared Mind cap rose from 80 to 120 and the Train cap from 100 to 130.
+    expect(RULES.mind.dailyCap).toBe(120);
+    expect(RULES.train.dailyCapExclWeekly).toBe(130);
     expect(RULES.season.seats).toBe(500);
     expect(RULES.season.tiers.at(-1)).toEqual(['Apex', 1, 1]);
   });
@@ -64,24 +66,29 @@ describe('rule history', () => {
     // their fingerprints did not move, and Chiku facts exist only from the build that writes them.
     // 28 Oct (spec 36): effort pays. The 26 Oct rules are frozen as they were (40e669d9 unchanged), the new entry starts
     // on 28 Oct, and its pay counts only from economy.v6From, the day the build first runs, so no shown day is rescored.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9'], ['2026-10-28', '3b03b6b8']]);
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9'], ['2026-10-28', '3b03b6b8'], ['2026-10-29', 'ad9345a9']]);
   });
 
   it('ends with the current rules, and the older entry differs only in what it froze', () => {
     expect(RULES_HISTORY.at(-1)).toMatchObject({ effectiveFrom: RULES.effectiveFrom, rules: RULES });
     const frozen = RULES_HISTORY[0]!.rules;
-    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan, mind: RULES.mind, tasks: RULES.tasks, calm: RULES.calm }).toEqual(RULES);
+    expect({ ...frozen, version: RULES.version, effectiveFrom: RULES.effectiveFrom, plan: RULES.plan, mind: RULES.mind, tasks: RULES.tasks, train: RULES.train, calm: RULES.calm }).toEqual(RULES);
     expect(frozen.plan.chhutti.xp).toBe(0);
     const before = RULES_HISTORY[1]!.rules;
     const effort = RULES_HISTORY[2]!.rules;
     expect({ ...before, version: effort.version, effectiveFrom: effort.effectiveFrom, mind: effort.mind }).toEqual(effort);
     expect('chikuXp' in before.mind).toBe(false);
-    expect({ ...before.mind, chikuXp: RULES.mind.chikuXp }).toEqual(RULES.mind);
+    expect({ ...before.mind, chikuXp: RULES.mind.chikuXp }).toEqual(RULES_HISTORY[3]!.rules.mind);
     // The 26 Oct copy differs from today's only in what spec 36 added: focus pay, the longer chhutti, calm and the cap.
     const keys = (value: object) => Object.keys(value);
     expect([keys(effort.tasks).includes('focusPay'), keys(effort).includes('calm'), keys(effort.plan.chhutti).includes('extraXpPer10Min')]).toEqual([false, false, false]);
     expect(effort.tasks.dailyCap).toBe(200);
-    expect({ ...effort, version: RULES.version, effectiveFrom: RULES.effectiveFrom, tasks: RULES.tasks, plan: RULES.plan, calm: RULES.calm }).toEqual(RULES);
+    const v1 = RULES_HISTORY[3]!.rules;
+    expect({ ...effort, version: v1.version, effectiveFrom: v1.effectiveFrom, tasks: v1.tasks, plan: v1.plan, calm: v1.calm }).toEqual(v1);
+    // The 28 Oct copy differs from today's only in what spec 36 v2 added: set, board and chapter pay, and the two caps.
+    expect([keys(v1.train).includes('setPay'), keys(v1.mind).includes('boardPay'), keys(v1.mind).includes('chapterPay')]).toEqual([false, false, false]);
+    expect([v1.train.dailyCapExclWeekly, v1.mind.dailyCap]).toEqual([100, 80]);
+    expect({ ...v1, version: RULES.version, effectiveFrom: RULES.effectiveFrom, train: RULES.train, mind: RULES.mind }).toEqual(RULES);
   });
 
   it('a measured chhutti pays 10 XP only from 25 Oct, forward-only (item 64)', () => {

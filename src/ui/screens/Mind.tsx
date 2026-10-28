@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { boardLine } from '../economy/effortLines';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { effectiveShutdown, nightWindow } from '../../core/tasks/planner';
 import { RULES } from '../../core/rules.config';
@@ -108,6 +109,8 @@ export function Mind({ entry }: { entry?: string }) {
   const plans = useLiveQuery(() => db.plans.toArray(), []) ?? [];
   const settingRows = useLiveQuery(() => db.settings.toArray(), []);
   const ownedPacks = useLiveQuery(() => db.ledger.where('kind').equals('purchase').toArray(), []) ?? [];
+  // Spec 36 v2: the board facts, so a solved board can say what it paid and why.
+  const boardFacts = useLiveQuery(() => db.ledger.where('kind').equals('board').toArray(), []) ?? [];
   const settings = settingRows ?? [];
   const showEconomy = economyVisible(settings, today);
   // Spec 29: each board type (and the case) starts with its how-to the first time; it can be replayed or skipped.
@@ -466,7 +469,7 @@ export function Mind({ entry }: { entry?: string }) {
       {selection.challenge && run.result !== 'solved' && <p className="small mind-challenge-note">Same board your friend solved. Take it at your own pace.</p>}
       <h1>{name}</h1>
       <p className="rule">{PZ.TYPES[board.type].rule} <button type="button" className="text-button mind-howto" onClick={() => go(`mind/howto/${board.type}`)}>How to play</button></p>
-      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><KapiMoment moment={kapi.kind === 'cartwheel' ? 'cartwheel' : 'clap'} at={kapi.at} /><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2><p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{paceOn && night === 'day' && selection.friendPace && <p>Your friend took {timeText(selection.friendPace.at(-1)!)} on this board.</p>}{par !== undefined && <ParLine par={par} solveMs={run.solveMs} />}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{selection.shelf && (shelfSolvedToday(board.type, [...puzzleRuns.filter(row => row.id !== run.id), run], today) < SHELF_PER_DAY
+      {run.result === 'solved' ? <div className="card mind-result" aria-label="Puzzle result"><KapiMoment moment={kapi.kind === 'cartwheel' ? 'cartwheel' : 'clap'} at={kapi.at} /><h2>{selection.intro ? 'Warm-up done' : 'Board complete'}</h2>{(() => { const line = boardLine(boardFacts, run.id); return line ? <p className="mind-earned">{line}</p> : null; })()}<p>Time {timeText(run.solveMs ?? 0)} · {run.hintsUsed ?? 0} {(run.hintsUsed ?? 0) === 1 ? 'hint' : 'hints'} · Best {timeText(best ?? run.solveMs ?? 0)}</p>{paceOn && night === 'day' && selection.friendPace && <p>Your friend took {timeText(selection.friendPace.at(-1)!)} on this board.</p>}{par !== undefined && <ParLine par={par} solveMs={run.solveMs} />}{selection.intro && <button type="button" onClick={() => setSelection({ type: featured.type, diff: featured.diff, daily: true })}>Now today's board</button>}{selection.shelf && (shelfSolvedToday(board.type, [...puzzleRuns.filter(row => row.id !== run.id), run], today) < SHELF_PER_DAY
           ? <button type="button" className="secondary" onClick={() => go(`mind/shelf/${board.type}/more/${shelfSolvedToday(board.type, [...puzzleRuns.filter(row => row.id !== run.id), run], today)}`)}>Another puzzle</button>
           : <KapiMoment moment="nap">That's today's puzzles. Kapi's off to nap.</KapiMoment>)}{noHintClear(run) && <p className="mind-stamp">No-hint clear</p>}{newCard && <p role="status">New technique card</p>}{night === 'day' && <div className="mind-share"><p className="small mind-share-text">{result}</p><button type="button" className="secondary" onClick={() => void shareTextNow(result).then(sent => setMessage(shareNote(sent)))}>Share result</button><button type="button" className="text-button mind-share-image" onClick={() => void shareFileNow(() => shareTile(run, name), result).then(sent => setMessage(shareNote(sent))).catch(error => recordError('window', error))}>Share as image</button></div>}{message && <p role="status">{message}</p>}</div> : <>
         {/* Spec 29: no timer while playing. Spec 24 pace line: opt-in, in one slim row above the board (Codex A item 77). */}

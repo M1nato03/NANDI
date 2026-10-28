@@ -1,10 +1,12 @@
 /** Starting defaults from 05-economy §2. Rule changes apply by dayKey, never retroactively. */
 export const RULES = {
-  version: 4,
+  version: 5,
   // 28 Oct (spec 36, "Effort pays"): measured effort pays more: focus minutes and clean blocks, a longer kept chhutti and
   // calm minutes; the tasks cap rises to 300. It counts from economy.v6From, the day this build first runs on a phone,
   // so no day shown before it is rescored; see RULES_HISTORY.
-  effectiveFrom: '2026-10-28',
+  // 29 Oct (spec 36 v2): Train pays per real set, a harder Mind board pays more (less per hint), and a Read chapter pays
+  // for what it taught and what was answered right; the Train and Mind caps rise. From economy.v7From.
+  effectiveFrom: '2026-10-29',
   dayBoundaryHour: 4,
   // Spec 26: Moti's haveli offers at most this many ideas a day. It decides what is offered, not what pays (the
   // rebuild pays as a card review under mind.cardsMaxPerDay), so it sits outside the scoring keys.
@@ -63,7 +65,10 @@ export const RULES = {
     prMaxPerDay: 2,
     weeklyTarget: 3,
     weeklyBonus: { targetMet: 60, oneShort: 30 },
-    dailyCapExclWeekly: 100,
+    // Spec 36 v2: a session pays baseXp + perSetXp for each paid working set, up to maxSets. A set is paid only when it
+    // fills a planned slot and comes at least minGapS after the previous paid set (a real set plus rest always does).
+    setPay: { baseXp: 48, perSetXp: 4, maxSets: 12, minGapS: 45 },
+    dailyCapExclWeekly: 130,
     progression: { confirmSessions: 2, failHoldAt: 2, failDeloadAt: 3, deloadPct: 10, maxIncreasesPerWeekEarly: 1, earlyWeeks: 6 },
     ladder: { repMin: 5, repMax: 8, sets: 3, holdMinS: 20, holdMaxS: 60 },
     placement: { stopMinReps: 5, stopMaxReps: 11, moveUpAtReps: 12, maxTestsPerPattern: 3 },
@@ -92,7 +97,12 @@ export const RULES = {
     sideBoardsMaxPerDay: 1,
     // Spec 30: playing Chiku's one-card scene, once per idea, the same whichever card comes first.
     chikuXp: 5,
-    dailyCap: 80,
+    // Spec 36 v2: a solved board pays by its difficulty, less hintXp per hint, never below minXp; no time bonus.
+    boardPay: { easy: 10, medium: 20, hard: 30, hintXp: 5, minXp: 5 },
+    // Spec 36 v2: a new chapter pays baseXp + stepXp per newly taught step + rightXp per right first answer in its check
+    // (at most rightMax), up to maxXp, for paidPerDay chapters a day. It replaces the day's drop 15 when it was the drop.
+    chapterPay: { baseXp: 5, stepXp: 5, rightXp: 5, rightMax: 3, maxXp: 40, paidPerDay: 3 },
+    dailyCap: 120,
     freePlayXp: 0,
     dropUnlockTime: '07:00',
     featuredByWeekday: {
@@ -312,6 +322,10 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'train.restDayCheckMinMinutes': [1, 60], 'train.prXp': [0, 100], 'train.prMaxPerDay': [0, 10],
   'train.weeklyTarget': [2, 7], 'train.weeklyBonus.targetMet': [0, 200], 'train.weeklyBonus.oneShort': [0, 200],
   'train.dailyCapExclWeekly': [40, 300],
+  'train.setPay.baseXp': [0, 100], 'train.setPay.perSetXp': [0, 20], 'train.setPay.maxSets': [1, 30], 'train.setPay.minGapS': [0, 300],
+  'mind.boardPay.easy': [0, 100], 'mind.boardPay.medium': [0, 100], 'mind.boardPay.hard': [0, 100], 'mind.boardPay.hintXp': [0, 50], 'mind.boardPay.minXp': [0, 50],
+  'mind.chapterPay.baseXp': [0, 50], 'mind.chapterPay.stepXp': [0, 20], 'mind.chapterPay.rightXp': [0, 20], 'mind.chapterPay.rightMax': [0, 10],
+  'mind.chapterPay.maxXp': [0, 100], 'mind.chapterPay.paidPerDay': [0, 10],
   'train.increments.dumbbell': [0.5, 10], 'train.increments.machine': [0.5, 20], 'train.increments.cable': [0.5, 10],
   'train.progression.confirmSessions': [1, 10], 'train.progression.failHoldAt': [1, 10],
   'train.progression.failDeloadAt': [1, 10], 'train.progression.deloadPct': [0, 50],
@@ -332,7 +346,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'mind.learnDropXp': [0, 100],
   'mind.lessonsPaidPerDay': [0, 10], 'mind.lessonsPerCoursePerDay': [0, 10],
   'mind.cardXp': [0, 20], 'mind.chikuXp': [0, 20], 'moti.haveliDailyCap': [3, 8], 'mind.cardsMaxPerDay': [0, 100], 'mind.sideBoardXp': [0, 100],
-  'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 120], 'mind.freePlayXp': [0, 0],
+  'mind.sideBoardsMaxPerDay': [0, 10], 'mind.dailyCap': [40, 200], 'mind.freePlayXp': [0, 0],
   'mind.onboardingEasyCases': [0, 20], 'mind.eloK.early': [1, 100], 'mind.eloK.later': [1, 100],
   'mind.hintLadderRungs': [3, 3], 'mind.parMinSolves': [1, 10], 'mind.parWindow': [5, 20],
   'mind.arcCount': [4, 4], 'mind.arcChapters': [4, 5], 'mind.arcPanelMaxWords': [1, 60],
@@ -401,16 +415,23 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
 
 export type RulesHistoryEntry = { effectiveFrom: string; rules: Rules; note?: string };
 
+// Before 29 Oct (spec 36 v2) a session paid by its share of planned sets, every board paid 10 and a chapter paid
+// through the day's drop, with caps of 100 and 80: the frozen copies have no setPay, boardPay or chapterPay keys.
+const { setPay: _noSetPay, ...TRAIN_BEFORE_V2 } = RULES.train;
+const { boardPay: _noBoardPay, chapterPay: _noChapterPay, ...MIND_BEFORE_V2 } = RULES.mind;
+void _noSetPay; void _noBoardPay; void _noChapterPay;
+/** The rules in force from 28 Oct: focus minutes, a longer chhutti and calm pay (spec 36 v1). Frozen. */
+const RULES_2026_10_28 = { ...RULES, version: 4, effectiveFrom: '2026-10-28', train: { ...TRAIN_BEFORE_V2, dailyCapExclWeekly: 100 }, mind: { ...MIND_BEFORE_V2, dailyCap: 80 } } as unknown as Rules;
 // Before 28 Oct (spec 36) focus minutes, a longer chhutti and calm minutes paid nothing and the tasks cap was 200, so
 // the frozen copies have no focusPay, extraXpPer10Min or calm keys at all (each reads as 0).
-const { focusPay: _noFocusPay, ...TASKS_BEFORE_EFFORT } = RULES.tasks;
-const { extraXpPer10Min: _noExtra, ...CHHUTTI_BEFORE_EFFORT } = RULES.plan.chhutti;
-const { calm: _noCalm, ...RULES_WITHOUT_CALM } = RULES;
+const { focusPay: _noFocusPay, ...TASKS_BEFORE_EFFORT } = RULES_2026_10_28.tasks;
+const { extraXpPer10Min: _noExtra, ...CHHUTTI_BEFORE_EFFORT } = RULES_2026_10_28.plan.chhutti;
+const { calm: _noCalm, ...RULES_WITHOUT_CALM } = RULES_2026_10_28;
 void _noFocusPay; void _noExtra; void _noCalm;
 /** The rules in force from 26 Oct: teaching Chiku pays (spec 30); effort did not pay yet. Frozen. */
 const RULES_2026_10_26 = { ...RULES_WITHOUT_CALM, version: 3, effectiveFrom: '2026-10-26', tasks: { ...TASKS_BEFORE_EFFORT, dailyCap: 200 }, plan: { chhutti: CHHUTTI_BEFORE_EFFORT } } as unknown as Rules;
 // Before 26 Oct there was no Chiku step, so the frozen copies have no chikuXp key at all (it reads as 0).
-const { chikuXp: _noChiku, ...MIND_BEFORE_CHIKU } = RULES.mind;
+const { chikuXp: _noChiku, ...MIND_BEFORE_CHIKU } = RULES_2026_10_28.mind;
 void _noChiku;
 /** The rules in force from 25 Oct: a measured chhutti pays 10 XP (item 64); no Chiku step yet. Frozen. */
 const RULES_2026_10_25 = { ...RULES_2026_10_26, version: 2, effectiveFrom: '2026-10-25', mind: MIND_BEFORE_CHIKU } as unknown as Rules;
@@ -421,7 +442,8 @@ export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
   { effectiveFrom: RULES_2026_10_05.effectiveFrom, rules: RULES_2026_10_05 },
   { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10 XP when measured (item 64)' },
   { effectiveFrom: RULES_2026_10_26.effectiveFrom, rules: RULES_2026_10_26, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'effort pays: focus minutes and blocks, longer chhutti, calm minutes; tasks cap 300 (spec 36)' },
+  { effectiveFrom: RULES_2026_10_28.effectiveFrom, rules: RULES_2026_10_28, note: 'effort pays: focus minutes and blocks, longer chhutti, calm minutes; tasks cap 300 (spec 36)' },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'effort pays in Train, Mind and Read: per real set, by board difficulty, by chapter depth; caps 130 and 120 (spec 36 v2)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */

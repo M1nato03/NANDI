@@ -206,3 +206,25 @@ describe('Taal week beat changes (spec 24 #3)', () => {
   });
 });
 
+
+it('spec 36 v2: a finished session counts its paid sets (45 s apart) and pays 48 + 4 a set', async () => {
+  const at = new Date('2026-11-03T18:00:00').getTime();
+  const run = async (gapMs: number) => {
+    const db = fresh();
+    const train = createTrainRepos(db, 'test');
+    await train.completeOnboarding({ track: 'bodyweight', days: [1, 3, 5], weeklyTarget: 3, restDay: 0, equipment: { gymAccess: false, dumbbells: false, barbell: null, smallestPlate: null, resistanceBand: false, pullUpBar: false, sturdyAnchor: false }, heatModeEnabled: false, placement: { squat: 2 } }, at);
+    const session = await train.startSession(at + 1000);
+    let time = at + 2000;
+    for (const exercise of session.planned!) for (let slot = 0; slot < exercise.sets; slot++) { await train.logSet(session.id, exercise.exerciseId, slot, { reps: 8, loadKg: 0 }, time); time += gapMs; }
+    const ended = await train.finishSession(session.id, time);
+    const fact = (await db.ledger.toArray()).find(row => row.kind === 'session')!;
+    return { ended, fact, sets: session.planned!.reduce((sum, exercise) => sum + exercise.sets, 0) };
+  };
+  const real = await run(90_000);
+  expect(real.fact.inputs).toMatchObject({ workingSets: real.sets, paidSets: Math.min(12, real.sets) });
+  expect(real.ended.xp).toBe(48 + 4 * Math.min(12, real.sets));
+  // The same plan tapped through a second apart pays one set.
+  const tapped = await run(1000);
+  expect(tapped.fact.inputs).toMatchObject({ workingSets: tapped.sets, paidSets: 1 });
+  expect(tapped.ended.xp).toBe(52);
+});

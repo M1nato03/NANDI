@@ -9,6 +9,7 @@ import { dayKey } from '../../core/time';
 import { weekStart } from '../../core/economy/deriveEconomy';
 import { readBeatChanges, TAAL_BEATS_KEY } from '../../core/train/taal';
 import { RULES, rulesFor } from '../../core/rules.config';
+import { paidSetCount, trainSessionPay } from '../../core/economy/effort';
 import { PROGRAMS, LADDERS, EXERCISE_LIBRARY, applyHeatMode, applyRetestVolume, isRetestWeek, calculateSessionXp, detectSetPrs, evaluateBodyweightLadder, evaluateGymLift, getSmallestIncrement, needsWeeklyVolumeConfirmation, afterHingeSession, hingeSlot, nordicState, NORDIC_RANK, SLOW_RANK, type EquipmentSetting, type Routine, type RoutineExercise, type Track, type SessionExercise } from '../../core/train';
 
 export type Onboarding = { track: Track; equipment: EquipmentSetting; days: number[]; weeklyTarget: 2 | 3; restDay: number; heatModeEnabled: boolean; placement: Record<string, number>; startingLoads?: Record<string, number> };
@@ -224,14 +225,18 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const planned = session.planned ?? [];
         const exercises: SessionExercise[] = planned.map(ex => ({ exerciseId: ex.exerciseId, sets: sets.filter(set => set.exerciseId === ex.exerciseId).map(set => ({ load: set.loadKg ?? 0, reps: set.durationS ?? set.reps ?? 0, isHold: ex.isHold })), painFlag: !!session.painExerciseIds?.includes(ex.exerciseId), effort: session.effortByExercise?.[ex.exerciseId], targetRepMin: ex.repMin, targetRepMax: ex.repMax }));
         const routine: Routine = { id: session.templateKey ?? 'session', name: 'Session', track: session.templateKey?.startsWith('gym') ? 'gym' : 'bodyweight', exercises: planned };
-        const xp = calculateSessionXp({ id: session.id, dayKey: session.dayKey, routineId: routine.id, exercises }, routine, rulesFor(session.dayKey)?.rules ?? RULES);
+        const rules = rulesFor(session.dayKey)?.rules ?? RULES;
         const pain = (session.painExerciseIds?.length ?? 0) > 0;
         const done = sets.length;
         const total = planned.reduce((sum, ex) => sum + ex.sets, 0);
+        // Spec 36 v2: each working set in a planned slot pays when it came at least 45 s after the last paid one.
+        const paidSets = paidSetCount(sets.map(set => set.completedAt ?? 0), rules);
+        const counts = { plannedExercises: planned.length, touchedExercises: exercises.filter(ex => ex.sets.length > 0).length, plannedSets: total, workingSets: done, safety: pain };
+        const xp = ('setPay' in rules.train ? trainSessionPay({ ...counts, paidSets }, rules) : null) ?? calculateSessionXp({ id: session.id, dayKey: session.dayKey, routineId: routine.id, exercises }, routine, rules);
         const status: SessionRow['status'] = pain ? 'safety' : done >= total ? 'completed' : exercises.every(ex => ex.sets.length > 0) ? 'minimum' : 'partial';
         const row: SessionRow = { ...session, status, endedAt: now, restEndsAt: undefined, xp, ...meta(now) };
         await db.sessions.put(row);
-        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, plannedExercises: planned.length, touchedExercises: exercises.filter(ex => ex.sets.length > 0).length, plannedSets: total, workingSets: done, safety: pain }, ...meta(now) };
+        const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, ...counts, ...('setPay' in rules.train ? { paidSets } : {}) }, ...meta(now) };
         if (!(await db.ledger.get(fact.id))) await db.ledger.add(fact);
         const program = await getProgram();
         const placement = { ...program?.placement };

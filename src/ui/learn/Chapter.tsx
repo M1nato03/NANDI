@@ -9,6 +9,7 @@ import { saveChapterDone } from '../../data/repos/books';
 import { bookDone, bookTitle, chapterRef, chapterTakeaway, libraryOrder, nextChapter, untaughtSteps } from '../../core/learn/books';
 import type { ChikuScene } from '../../core/learn/chiku';
 import { dayKey, isAfterBedtime } from '../../core/time';
+import { chapterLine } from '../economy/effortLines';
 import { topics } from './flow';
 import { LearnDrop } from './LearnDrop';
 import { Haveli } from './Haveli';
@@ -18,6 +19,7 @@ import { go } from '../shell/router';
 import './read.css';
 
 const currentTime = () => Date.now();
+
 type View = 'read' | 'wait' | 'check' | 'done';
 
 /**
@@ -47,7 +49,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   useEffect(() => {
     if (view !== 'done' || wasDone || finishing.current) return;
     finishing.current = true;
-    void saveChapterDone(db, topicId, moduleId, currentTime());
+    void saveChapterDone(db, topicId, moduleId, currentTime(), { rebuilt: rebuilt.current });
   }, [view, wasDone, topicId, moduleId]);
 
   if (!pack || !module) return <section className="screen learn-screen"><h1>Chapter not found</h1><button type="button" onClick={() => go('read')}>Back to library</button></section>;
@@ -82,6 +84,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
     <div className="card read-done-card" role="status">
       <Cast name="Chiku" pose="cheer" size={96} moment="hop" at={1} title="Chiku cheering" />
       {finishedBook ? <><p className="eyebrow">Book finished</p><h1>You finished {title}.</h1></> : <><p className="eyebrow">Chapter {index + 1} done</p><h1>{module.title}</h1></>}
+      {(() => { const line = chapterLine(data.ledger, chapterRef(topicId, moduleId)); return line ? <p className="read-earned">{line}</p> : null; })()}
       <p className="read-takeaway">{finishedBook ? `${pack.body.modules.length} chapters and ${pack.body.modules.reduce((sum, row) => sum + row.concepts.length, 0)} ideas, read.` : chapterTakeaway(module)}</p>
       {!finishedBook && following && <button type="button" onClick={() => go(`read/chapter/${topicId}/${following.id}`)}>Next chapter</button>}
       {finishedBook && nextBook && <button type="button" onClick={() => go(`read/book/${nextBook.body.topic.id}`)}>Next book: {bookTitle(nextBook)}</button>}

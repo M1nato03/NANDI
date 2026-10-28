@@ -1,9 +1,12 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
-import { calmDayXp, chhuttiXp, focusDayXp } from './effort';
+import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, trainSessionPay } from './effort';
 
 /** The tasks cap before spec 36 (26 Oct rules); a day before economy.v6From keeps it. */
 const PRE_EFFORT_TASKS_CAP = 200;
+/** The Train and Mind caps before spec 36 v2 (28 Oct rules); a day before economy.v7From keeps them. */
+const PRE_V2_TRAIN_CAP = 100;
+const PRE_V2_MIND_CAP = 80;
 import type { LedgerRow, SettingRow } from '../../data/types';
 import { isPlannedDone } from './planned';
 
@@ -487,6 +490,10 @@ function replayEconomy(
   const v6Stored = value(settings, 'economy.v6From');
   const v6From = typeof v6Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v6Stored) ? v6Stored : '9999-12-31';
   const v6 = (key: string) => key >= v6From;
+  // Spec 36 v2 (Train sets, board difficulty, chapter depth) counts from the day its build first runs, the same way.
+  const v7Stored = value(settings, 'economy.v7From');
+  const v7From = typeof v7Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v7Stored) ? v7Stored : '9999-12-31';
+  const v7 = (key: string) => key >= v7From;
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -515,13 +522,14 @@ function replayEconomy(
     // Before economy.v6From the tasks cap stays at the 26 Oct 200, so no day shown before the build is rescored.
     const doneXp = calculateTasksDayXp(rows.filter(row => row.kind === 'done'), RULES, history);
     const tasks = v6(key) ? Math.min(rules.tasks.dailyCap, doneXp + focusDayXp(rows, rules)) : Math.min(PRE_EFFORT_TASKS_CAP, doneXp);
-    const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => replayFactXp(row, history));
+    // Spec 36 v2: a session written with its paid sets pays per set; an older fact keeps its own award.
+    const sessions = rows.filter(row => row.mode === 'train' && row.kind === 'session').map(row => (v7(key) ? trainSessionPay(row.inputs, rules) : null) ?? replayFactXp(row, history));
     const bestSession = Math.max(0, ...sessions);
     const restXp = Math.max(0, ...rows.filter(row => row.mode === 'train' && row.kind === 'rest').map(row => replayFactXp(row, history)));
     const rest = bestSession ? 0 : restXp;
     const prs = rows.filter(row => row.mode === 'train' && row.kind === 'pr').slice(0, rules.train.prMaxPerDay).reduce((sum, row) => sum + replayFactXp(row, history), 0);
     // A short session after a walk check keeps the better of the two, never less (economy review 32, A1).
-    const train = Math.min(rules.train.dailyCapExclWeekly, (v3(key) ? Math.max(bestSession, restXp) : bestSession + rest) + prs);
+    const train = Math.min(v7(key) ? rules.train.dailyCapExclWeekly : Math.min(PRE_V2_TRAIN_CAP, rules.train.dailyCapExclWeekly), (v3(key) ? Math.max(bestSession, restXp) : bestSession + rest) + prs);
     const weekly = rows.filter(row => row.mode === 'train' && row.kind === 'weekly').reduce((sum, row) => sum + replayFactXp(row, history), 0);
     const mindRows = rows.filter(row => row.mode === 'mind' && beforeBed(row));
     const paid = new Set<string>();
@@ -542,14 +550,20 @@ function replayEconomy(
     // Mind earns nothing after bedtime, so a perfect drop pays only when every one of its answers came before it (audit 16.3).
     const dropAnswers = rows.filter(row => row.mode === 'mind' && row.kind === 'learn-answer' && row.inputs.dropId === `drop:daily:${key}`);
     const perfectBeforeBed = !v2(key) || (dropAnswers.length > 0 && dropAnswers.every(beforeBed));
-    const mind = Math.min(rules.mind.dailyCap,
-      (caseSolved ? rules.mind.mysteryXp : 0) + (dailyBoard ? rules.mind.dropBoardXp : 0) +
+    // Spec 36 v2: a solved board pays by difficulty less its hints, and a new chapter pays for what it taught and what was
+    // answered right, up to 3 a day, instead of the day's drop 15 when it was read as the drop. Older days pay as before.
+    const board = (row: LedgerRow | undefined, flat: number) => row ? (v7(key) ? boardPay(row.inputs, rules) : null) ?? flat : 0;
+    const chapters = v7(key) ? rows.filter(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && beforeBed(row) && typeof row.inputs.newSteps === 'number') : [];
+    const chapterXp = 'chapterPay' in rules.mind ? chapters.slice(0, rules.mind.chapterPay.paidPerDay).reduce((sum, row) => sum + (chapterPay(row.inputs, rules) ?? 0), 0) : 0;
+    const dropWasChapter = v7(key) && rows.some(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && Array.isArray(row.inputs.readDrops) && row.inputs.readDrops.includes(`drop:daily:${key}`));
+    const mind = Math.min(v7(key) ? rules.mind.dailyCap : Math.min(PRE_V2_MIND_CAP, rules.mind.dailyCap),
+      (caseSolved ? rules.mind.mysteryXp : 0) + board(mindRows.find(row => row.kind === 'board' && row.inputs.daily !== false), rules.mind.dropBoardXp) + chapterXp +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +
       // Spec 30: one Chiku fact per idea, ever; none exist before the build that writes them.
       count('chiku', Number.MAX_SAFE_INTEGER, rules.mind.chikuXp ?? 0) +
       Math.min(cards.length, rules.mind.cardsMaxPerDay) * rules.mind.cardXp +
-      mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).length * rules.mind.sideBoardXp +
-      (learnDrop ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));
+      mindRows.filter(row => row.kind === 'board' && row.inputs.daily === false).slice(0, rules.mind.sideBoardsMaxPerDay).reduce((sum, row) => sum + board(row, rules.mind.sideBoardXp), 0) +
+      (learnDrop && !dropWasChapter ? rules.mind.learnDropXp : 0) + (perfectBeforeBed ? rows.filter(row => row.mode === 'gamify' && row.kind === 'perfect-drop').reduce((sum, row) => sum + replayFactXp(row, history), 0) : 0));
     const mindSlot = learnDrop || caseSolved || dailyBoard || cards.length >= rules.streak.minDueCardsForMark;
     const plannedTask = rows.some(isPlannedDone);
     const body = bestSession > 0 || rest > 0;

@@ -226,7 +226,7 @@ const deviceLocalKeys = new Set(['deviceId', 'lastBackupAt', 'retired', 'offline
   // Play's Usage access disclosure is shown once per phone (item 71), so a restore onto a new phone shows it again.
   'night.usageDisclosureAt']);
 /** When each set of economy fixes began on this phone. This phone's value wins; else the backup's is kept. */
-const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From'];
+const cutoffKeys = ['economy.v2From', 'economy.v3From', 'economy.v4From', 'economy.v5From', 'economy.v6From', 'economy.v7From'];
 
 /** Full restore only. The current device's local settings survive the clear. */
 export async function importBackup(db: NandiDb, envelope: BackupEnvelope): Promise<void> {

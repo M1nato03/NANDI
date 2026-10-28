@@ -87,3 +87,48 @@ export function calmDayXp(facts: readonly LedgerRow[], rules: Rules): number {
     .reduce((sum, fact) => sum + (Number(fact.inputs.minutes) > 0 ? Math.floor(Number(fact.inputs.minutes)) : 0), 0);
   return Math.min(pay.dailyCap, minutes * pay.xpPerMin);
 }
+
+/*
+ * Spec 36 v2: effort pays in Train, Mind and Read, from economy.v7From. Each reads only what the app itself checked: a
+ * set's slot and the time it was logged, a board's generated difficulty and the hints it took, the steps a chapter
+ * newly taught and the first answers its check graded. Typed reps, kg, hold seconds and how hard it felt pay nothing.
+ */
+
+/** How many working sets pay: in time order, each at least minGapS after the last paid one (so 12 taps in 10 s pay 1). */
+export function paidSetCount(completedAt: readonly number[], rules: Rules): number {
+  if (!('setPay' in rules.train)) return 0;
+  const pay = rules.train.setPay;
+  let last = -Infinity, paid = 0;
+  for (const at of [...completedAt].filter(Number.isFinite).sort((a, b) => a - b)) {
+    if (at - last < pay.minGapS * 1000) continue;
+    paid += 1; last = at;
+  }
+  return Math.min(paid, pay.maxSets);
+}
+
+/** A session's pay from its paid sets; a safety or pain stop keeps its 40 with no set bonus. Null for a fact without them. */
+export function trainSessionPay(inputs: Record<string, unknown>, rules: Rules): number | null {
+  if (!('setPay' in rules.train) || typeof inputs.paidSets !== 'number') return null;
+  const pay = rules.train.setPay;
+  if (inputs.safety === true) return rules.train.minimumOrSafetyXp;
+  if (!(Number(inputs.workingSets) > 0)) return 0;
+  return pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, Math.max(0, Math.floor(inputs.paidSets)));
+}
+
+/** A solved board by its difficulty, less a little per hint and never below minXp; how fast it went pays nothing. */
+export function boardPay(inputs: Record<string, unknown>, rules: Rules): number | null {
+  if (!('boardPay' in rules.mind)) return null;
+  const pay = rules.mind.boardPay;
+  const base = inputs.diff === 'hard' ? pay.hard : inputs.diff === 'medium' ? pay.medium : pay.easy;
+  const hints = Number(inputs.hintsUsed) > 0 ? Math.floor(Number(inputs.hintsUsed)) : 0;
+  return Math.max(pay.minXp, base - pay.hintXp * hints);
+}
+
+/** A new chapter: base, each step it newly taught, each right first answer in its check (up to rightMax), up to maxXp. */
+export function chapterPay(inputs: Record<string, unknown>, rules: Rules): number | null {
+  if (!('chapterPay' in rules.mind) || typeof inputs.newSteps !== 'number') return null;
+  const pay = rules.mind.chapterPay;
+  const steps = Math.max(0, Math.floor(inputs.newSteps));
+  const right = Math.min(pay.rightMax, Math.max(0, Math.floor(Number(inputs.firstRight) || 0)));
+  return Math.min(pay.maxXp, pay.baseXp + pay.stepXp * steps + pay.rightXp * right);
+}
