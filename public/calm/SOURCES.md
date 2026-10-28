@@ -8,7 +8,8 @@ loops, renamed to `<id>.ogg`.
 |---|---|---|---|---|
 | river.ogg | River | BurghRecords | https://freesound.org/people/BurghRecords/sounds/446019/ | CC0 |
 | rain.ogg | Rain in the forest | Borgory | https://freesound.org/people/Borgory/sounds/678435/ | CC0 |
-| fire.ogg | Campfire | HECKFRICKER | https://freesound.org/people/HECKFRICKER/sounds/729396/ | CC0 |
+| rain-stream.ogg | Rain by a stream | thinkingfish | https://freesound.org/people/thinkingfish/sounds/695571/ | CC0 |
+| fire.ogg | Campfire | Sauron974 | https://freesound.org/people/Sauron974/sounds/204348/ | CC0 |
 | wind.ogg | Mountain wind | felix.blume | https://freesound.org/people/felix.blume/sounds/156414/ | CC0 |
 | crickets.ogg | Night crickets | Defelozedd94 | https://freesound.org/people/Defelozedd94/sounds/522299/ | CC0 |
 | birds.ogg | Morning birds | squashy555 | https://freesound.org/people/squashy555/sounds/573080/ | CC0 |

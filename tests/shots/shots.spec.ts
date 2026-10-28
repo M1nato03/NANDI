@@ -276,6 +276,20 @@ for (const theme of themes) test.describe(theme, () => {
     await page.getByRole('button', { name: 'Quiet', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Quiet', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await shot(page, 'calm-setup-quiet', false);
+    // The sound row slides: its start, middle and end show all nine recorded sounds.
+    const row = page.locator('.calm-sounds');
+    for (const [name, at] of [['calm-sounds-1', 0], ['calm-sounds-2', 0.5], ['calm-sounds-3', 1]] as const) {
+      await row.evaluate((node, part) => { node.scrollLeft = (node.scrollWidth - node.clientWidth) * part; }, at);
+      await page.waitForTimeout(150);
+      await shot(page, name, false);
+    }
+    // For review only: the whole row wrapped, so every chip is in one picture (the app keeps one sliding row).
+    await row.evaluate(node => { node.style.flexWrap = 'wrap'; (document.querySelector('.calm-start-bar') as HTMLElement).style.visibility = 'hidden'; });
+    await row.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
+    await row.screenshot({ path: `${out}/${theme}/calm-sounds-all.png` });
+    await row.evaluate(node => { node.style.flexWrap = ''; (document.querySelector('.calm-start-bar') as HTMLElement).style.visibility = ''; });
+    await row.evaluate(node => { node.scrollLeft = 0; });
     await page.locator('.calm-other').click();
     await page.getByRole('dialog', { name: 'Other lengths' }).getByLabel(/^Custom/).fill('25');
     await shot(page, 'calm-other-sheet', false);

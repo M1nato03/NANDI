@@ -9,7 +9,8 @@ export type CalmPreset = { id: string; name: string; file: string; author: strin
 export const CALM_SOUNDS: readonly CalmPreset[] = [
   { id: 'river', name: 'River', file: 'river.ogg', author: 'BurghRecords', source: 446019 },
   { id: 'rain', name: 'Rain in the forest', file: 'rain.ogg', author: 'Borgory', source: 678435 },
-  { id: 'fire', name: 'Campfire', file: 'fire.ogg', author: 'HECKFRICKER', source: 729396 },
+  { id: 'rain-stream', name: 'Rain by a stream', file: 'rain-stream.ogg', author: 'thinkingfish', source: 695571 },
+  { id: 'fire', name: 'Campfire', file: 'fire.ogg', author: 'Sauron974', source: 204348 },
   { id: 'wind', name: 'Mountain wind', file: 'wind.ogg', author: 'felix.blume', source: 156414 },
   { id: 'crickets', name: 'Night crickets', file: 'crickets.ogg', author: 'Defelozedd94', source: 522299 },
   { id: 'birds', name: 'Morning birds', file: 'birds.ogg', author: 'squashy555', source: 573080 },

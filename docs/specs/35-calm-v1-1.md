@@ -101,6 +101,6 @@ Jenil, 28 Oct: "the sounds are not calming enough they feel like random noise". 
 - Temple bell and Soft noise are gone. The tanpura pitch setting is gone. Singing bowls and Tanpura are their own chips, and nothing plays under another sound.
 - The start, interval and end bells stay generated (unchanged).
 - **Licences:** every file is CC0 on Freesound, checked on each sound's page by the idea engine on 28 Oct. List them on About → Sounds as "<name> by <user>, freesound.org/s/<id> (CC0)".
-- **Final takes:** filled in once Jenil picks A or B on https://claude.ai/artifact/TF4UByrthJJ4qrub3EVkoc.
+- **Final takes (Jenil, 28 Oct):** "all recommendation are good from your side … for rain 2 are good enough and also for campfire the one with a little bit less crackle would be good". Nine sounds, in this order: River (446019), Rain in the forest (678435), Rain by a stream (695571), Campfire (204348, the calmer crackle), Mountain wind (156414), Night crickets (522299), Morning birds (573080), Ocean waves (578524), Singing bowls (48325). Tanpura was dropped (voices in both takes). Files are Ogg Vorbis (not MP3), 75 s loops, about 9.3 MB together; sources in public/calm/SOURCES.md.
 - **Size:** about 1.2 MB per sound, 9 sounds, about 11 MB in total.
 - **Test:** each preset's audio element plays (not paused) and has loop=true. The file count matches the row.

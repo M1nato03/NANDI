@@ -224,8 +224,8 @@ test('Your sound: a file is kept on the phone, plays through an audio element, a
 test('every recorded sound is in the row, its file is served, and it loops through an audio element that plays', async ({ page, request }) => {
   test.setTimeout(120_000);
   await openCalm(page);
-  const names = ['River', 'Rain in the forest', 'Campfire', 'Mountain wind', 'Night crickets', 'Morning birds', 'Ocean waves', 'Singing bowls'];
-  const files = ['river', 'rain', 'fire', 'wind', 'crickets', 'birds', 'waves', 'bowls'];
+  const names = ['River', 'Rain in the forest', 'Rain by a stream', 'Campfire', 'Mountain wind', 'Night crickets', 'Morning birds', 'Ocean waves', 'Singing bowls'];
+  const files = ['river', 'rain', 'rain-stream', 'fire', 'wind', 'crickets', 'birds', 'waves', 'bowls'];
   await expect(page.locator('.calm-sounds > button').filter({ hasNotText: /None|Your sound/ })).toHaveText(names);
   for (const [index, name] of names.entries()) {
     const file = await request.get(`/calm/${files[index]}.ogg`);
