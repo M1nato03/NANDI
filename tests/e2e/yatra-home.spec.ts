@@ -39,7 +39,7 @@ test('a link still wins: a notification route to Plan opens Plan', async ({ page
   await expect(tabs(page).getByRole('link', { name: 'Plan' })).toHaveAttribute('aria-current', 'page');
 });
 
-for (const [hour, words, night] of [[8, 'Good morning.', false], [14, 'Good afternoon.', false], [19, 'Good evening.', false], [22, 'Good evening.', true]] as const) {
+for (const [hour, words, night] of [[8, 'Good morning.', false], [14, 'Good afternoon.', false], [17, 'Good evening.', false], [19, 'Good evening.', true], [22, 'Good evening.', true]] as const) {
   test(`at ${hour}:00 the greeting is "${words}"${night ? ' (never "Good night" on opening the app)' : ''}`, async ({ page }) => {
     await page.clock.setFixedTime(at(hour));
     await page.goto('/');

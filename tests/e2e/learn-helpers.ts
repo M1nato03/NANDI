@@ -60,6 +60,19 @@ export async function answerRight(page: Page, topicId: string) {
   await expect(page.locator('.learn-drop h2').filter({ hasText: stem })).toHaveCount(0);
 }
 
+/** Answers a choice question on screen wrong (the first wrong option) and moves on; any other item type is answered right. True when it answered wrong. */
+export async function answerWrong(page: Page, topicId: string): Promise<boolean> {
+  const stem = await page.locator('.learn-drop h2').innerText();
+  const item = itemsOf(topicId).find(candidate => candidate.stem === stem);
+  const wrong = item && !['order', 'match', 'estimate'].includes(item.type) ? item.options.find(option => !option.correct) : undefined;
+  if (!wrong) { await answerRight(page, topicId); return false; }
+  await page.locator('.learn-drop').getByRole('button', { name: wrong.text, exact: true }).click();
+  await page.getByRole('button', { name: /^Check/ }).first().click();
+  await page.locator('.learn-feedback').getByRole('button').last().click();
+  await expect(page.locator('.learn-drop h2').filter({ hasText: stem })).toHaveCount(0);
+  return true;
+}
+
 /** Spec 33: books a learner has started count for idea checks and the night drop (the old topic picks). */
 export async function selectBooks(page: Page, topicIds: string[]) {
   await page.evaluate(async ids => {

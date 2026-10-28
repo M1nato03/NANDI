@@ -128,7 +128,7 @@ export function Yatra() {
     <header className="yatra-welcome">
       <p className="eyebrow">{trek ? `Yatra · ${trek.trail.name}` : 'Yatra'}</p>
       <h1>{greeting(hour)}</h1>
-      <p className="yatra-quiet">{quietLine(dayKey(now), hour)}</p>
+      <p className="yatra-quiet">{quietLine(dayKey(now), hour, !!yatra?.night)}</p>
     </header>
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />}
     <FocusStrip />

@@ -26,9 +26,12 @@ export const QUIET_LINES = [
 ] as const;
 export const NIGHT_LINE = 'The friends are by the fire tonight.';
 
-/** One line a day, the same all day and a different one the next (it steps by the day number); at night, the fire. */
-export function quietLine(dayKey: string, hour: number): string {
-  if (dayBand(hour) === 'night') return NIGHT_LINE;
+/**
+ * One line a day, the same all day and a different one the next (it steps by the day number). At night, the fire: from
+ * the night band, or earlier when the camp scene has already turned to night (19:00, or the evening switch).
+ */
+export function quietLine(dayKey: string, hour: number, sceneNight = false): string {
+  if (sceneNight || dayBand(hour) === 'night') return NIGHT_LINE;
   const [year, month, day] = dayKey.split('-').map(Number);
   const days = Math.floor(Date.UTC(year!, month! - 1, day!) / 86_400_000);
   return QUIET_LINES[((days % QUIET_LINES.length) + QUIET_LINES.length) % QUIET_LINES.length]!;

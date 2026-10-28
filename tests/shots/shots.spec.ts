@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from '../e2e/helpers/plan';
-import { answerRight, seedTaughtTopics, walkLesson } from '../e2e/learn-helpers';
+import { answerRight, answerWrong, seedTaughtTopics, walkLesson } from '../e2e/learn-helpers';
 
 // The 360x800 review set (item 140): each main screen with seeded data, reduced motion so a frame is stable.
 // Run with `npm run shots`; add a shot here when a change touches a screen that is not in the set.
@@ -108,6 +108,66 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.locator('.yatra-quiet')).toHaveText('The friends are by the fire tonight.');
     await page.waitForTimeout(800);
     await shot(page, 'home-2-night', false);
+  });
+
+  // Spec 36 v2: Train done with 6 sets, a hard board with 1 hint, a chapter done (ideas and right answers), You after a heavy day.
+  test('effort v2: train done, hard board with a hint, chapter done, you after a heavy day', async ({ page }) => {
+    test.setTimeout(180_000);
+    await page.clock.install({ time: new Date('2026-11-04T10:00:00') });
+    // Train: placement, then six sets a minute apart, then finish.
+    await page.goto('/#train');
+    await page.getByRole('button', { name: 'Start placement' }).click();
+    for (let pattern = 0; pattern < 7; pattern++) {
+      if (pattern === 4 || pattern === 5) await page.getByRole('spinbutton', { name: 'Clean seconds' }).fill('30');
+      await page.getByRole('button', { name: 'Record test' }).click();
+    }
+    await page.getByRole('button', { name: 'Start session' }).click();
+    for (let set = 0; set < 6; set++) {
+      const log = page.getByRole('button', { name: 'Log set' });
+      if (!(await log.isVisible())) await page.getByRole('button', { name: 'Next exercise' }).click();
+      await page.getByRole('button', { name: 'Log set' }).click();
+      await expect(page.getByRole('status').filter({ hasText: 'Set saved' })).toBeVisible();
+      await page.clock.fastForward(60_000);
+    }
+    await page.getByRole('button', { name: 'Finish session' }).click();
+    await expect(page.getByRole('heading', { name: 'Session finished' })).toBeVisible();
+    // Six sets of a longer plan is a session stopped early: 8 a set (spec 36 v2 review).
+    await expect(page.locator('.train-earned')).toHaveText('6 sets · +48 XP');
+    await shot(page, 'v2-1-train-done', false);
+    // Mind: three earlier Sun and moon solves, so on a Wednesday (not its featured day) its board is hard; one hint, then solved.
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+      await new Promise<void>((resolve, reject) => {
+        const tx = database.transaction('puzzleRuns', 'readwrite');
+        for (const day of ['2026-10-31', '2026-11-01', '2026-11-02']) tx.objectStore('puzzleRuns').put({ id: `daily:${day}:sunmoon:easy`, dayKey: day, type: 'sunmoon', diff: 'easy', daily: true, shelf: true, result: 'solved', deleted: 0, updatedAt: 1, deviceId: 'shots' });
+        tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error);
+      });
+      database.close();
+    });
+    await page.goto('/?e2e#yatra/mind/shelf/sunmoon');
+    await page.waitForFunction(() => Boolean((window as Window & { __nandiMindTest?: unknown }).__nandiMindTest));
+    const howTo = page.getByRole('button', { name: /^(Start|Play|Got it)/ });
+    if (await howTo.first().isVisible().catch(() => false)) await howTo.first().click();
+    await page.getByRole('button', { name: 'Hint' }).click();
+    await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
+    await expect(page.locator('.mind-earned')).toHaveText('Hard board, 1 hint · +25 XP');
+    await shot(page, 'v2-2-board-hard-hint', false);
+    // Read: the chapter's lessons, then its check with two right and one wrong.
+    await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
+    await expect(page.locator('.step-lesson').or(page.getByText('Chapter check · three questions'))).toBeVisible();
+    while (await page.locator('.step-lesson').isVisible()) await walkLesson(page, 'how-things-work', true);
+    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
+    await answerRight(page, 'how-things-work');
+    await answerWrong(page, 'how-things-work');
+    await answerRight(page, 'how-things-work');
+    await expect(page.locator('.read-done-card')).toBeVisible();
+    await expect(page.locator('.read-earned')).toHaveText(/^\d+ new ideas?, [23] right · \+\d+ XP$/);
+    await shot(page, 'v2-3-chapter-done', false);
+    // You after a heavy day: two more chapters and a case on top.
+    await page.goto('/#you');
+    await expect(page.getByRole('region', { name: 'Your season' })).toBeVisible();
+    await page.waitForTimeout(600);
+    await shot(page, 'v2-4-you-heavy-day');
   });
 
   // Spec 33: Read, a book, a chapter mid-way, each check kind, chapter done and book done.

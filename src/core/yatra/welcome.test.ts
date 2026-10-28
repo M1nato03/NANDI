@@ -26,5 +26,8 @@ describe('spec 37 welcome', () => {
   it('at night the line is the fire', () => {
     expect(quietLine('2026-10-28', 22)).toBe(NIGHT_LINE);
     expect(quietLine('2026-10-28', 2)).toBe(NIGHT_LINE);
+    // When the camp scene has turned to night (from 19:00), the line follows it (jenil-7b, build 97 check).
+    expect(quietLine('2026-10-28', 19, true)).toBe(NIGHT_LINE);
+    expect(quietLine('2026-10-28', 19)).not.toBe(NIGHT_LINE);
   });
 });

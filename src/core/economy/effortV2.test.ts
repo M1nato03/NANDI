@@ -14,7 +14,8 @@ const settings = (v7From?: string): SettingRow[] => [['economy.v2From', '2026-10
   .map(([key, value]) => ({ key: key!, value, updatedAt: 1, deleted: 0, deviceId: 'test' }));
 const day = '2026-11-03';
 const view = (facts: LedgerRow[], v7From?: string) => deriveEconomy(facts, undefined, settings(v7From), day).days.at(-1)!;
-const session = (paidSets: number, workingSets = paidSets, extra: Record<string, unknown> = {}) => row(day, 'train', 'session', { plannedExercises: 3, touchedExercises: 3, plannedSets: 12, workingSets, safety: false, paidSets, ...extra });
+// A whole plan by default (every planned set logged); `extra` makes it a session stopped early.
+const session = (paidSets: number, workingSets = paidSets, extra: Record<string, unknown> = {}) => row(day, 'train', 'session', { plannedExercises: 3, touchedExercises: 3, plannedSets: workingSets, workingSets, safety: false, paidSets, ...extra });
 const board = (diff: string, hintsUsed = 0, daily = true) => row(day, 'mind', 'board', { daily, diff, hintsUsed, type: 'sudoku' });
 const chapter = (newSteps: number, firstRight: number, readDrops: string[] = []) => row(day, 'read', 'chapter', { afterBedtime: false, newSteps, firstRight, readDrops });
 
@@ -32,6 +33,17 @@ describe('spec 36 v2: Train pays per real set', () => {
     expect([3, 6, 12].map(sets => trainSessionPay(session(sets).inputs, RULES))).toEqual([60, 72, 96]);
     expect(trainSessionPay(session(6, 6, { safety: true }).inputs, RULES)).toBe(40);
     expect(trainSessionPay(session(0, 0).inputs, RULES)).toBe(0);
+    // A session stopped early pays 8 a set, so stopping never pays more than finishing: 1 set 8, 3 sets 24; with every
+    // exercise touched the old 40 floor holds (5 of 6 sets = 40), and it never tops the whole-plan figure.
+    expect(trainSessionPay(session(1, 1, { plannedSets: 6, touchedExercises: 1 }).inputs, RULES)).toBe(8);
+    expect(trainSessionPay(session(3, 3, { plannedSets: 6, touchedExercises: 2 }).inputs, RULES)).toBe(24);
+    expect(trainSessionPay(session(5, 5, { plannedSets: 6 }).inputs, RULES)).toBe(40);
+    expect(trainSessionPay(session(2, 3, { plannedSets: 6 }).inputs, RULES)).toBe(40);
+    expect(trainSessionPay(session(1, 3, { plannedSets: 6 }).inputs, RULES)).toBe(40);
+    expect(trainSessionPay(session(10, 10, { plannedSets: 12 }).inputs, RULES)).toBe(80);
+    expect(trainSessionPay(session(11, 11, { plannedSets: 12 }).inputs, RULES)).toBe(88);
+    // Never above the whole-plan pay for the same sets.
+    expect(trainSessionPay(session(12, 12, { plannedSets: 14 }).inputs, RULES)).toBe(96);
     // A fact without paid sets (an older build) keeps its own award.
     expect(trainSessionPay({ workingSets: 6 }, RULES)).toBeNull();
   });

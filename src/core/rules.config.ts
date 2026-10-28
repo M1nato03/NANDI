@@ -65,9 +65,10 @@ export const RULES = {
     prMaxPerDay: 2,
     weeklyTarget: 3,
     weeklyBonus: { targetMet: 60, oneShort: 30 },
-    // Spec 36 v2: a session pays baseXp + perSetXp for each paid working set, up to maxSets. A set is paid only when it
-    // fills a planned slot and comes at least minGapS after the previous paid set (a real set plus rest always does).
-    setPay: { baseXp: 48, perSetXp: 4, maxSets: 12, minGapS: 45 },
+    // Spec 36 v2: a whole plan pays baseXp + perSetXp for each paid working set, up to maxSets; a session stopped early
+    // pays partialPerSetXp a set (floor sessionPartialFloorXp when every exercise was touched). A set is paid only when
+    // it fills a planned slot and comes at least minGapS after the previous paid set (a real set plus rest always does).
+    setPay: { baseXp: 48, perSetXp: 4, partialPerSetXp: 8, maxSets: 12, minGapS: 45 },
     dailyCapExclWeekly: 130,
     progression: { confirmSessions: 2, failHoldAt: 2, failDeloadAt: 3, deloadPct: 10, maxIncreasesPerWeekEarly: 1, earlyWeeks: 6 },
     ladder: { repMin: 5, repMax: 8, sets: 3, holdMinS: 20, holdMaxS: 60 },
@@ -322,7 +323,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'train.restDayCheckMinMinutes': [1, 60], 'train.prXp': [0, 100], 'train.prMaxPerDay': [0, 10],
   'train.weeklyTarget': [2, 7], 'train.weeklyBonus.targetMet': [0, 200], 'train.weeklyBonus.oneShort': [0, 200],
   'train.dailyCapExclWeekly': [40, 300],
-  'train.setPay.baseXp': [0, 100], 'train.setPay.perSetXp': [0, 20], 'train.setPay.maxSets': [1, 30], 'train.setPay.minGapS': [0, 300],
+  'train.setPay.baseXp': [0, 100], 'train.setPay.perSetXp': [0, 20], 'train.setPay.partialPerSetXp': [0, 20], 'train.setPay.maxSets': [1, 30], 'train.setPay.minGapS': [0, 300],
   'mind.boardPay.easy': [0, 100], 'mind.boardPay.medium': [0, 100], 'mind.boardPay.hard': [0, 100], 'mind.boardPay.hintXp': [0, 50], 'mind.boardPay.minXp': [0, 50],
   'mind.chapterPay.baseXp': [0, 50], 'mind.chapterPay.stepXp': [0, 20], 'mind.chapterPay.rightXp': [0, 20], 'mind.chapterPay.rightMax': [0, 10],
   'mind.chapterPay.maxXp': [0, 100], 'mind.chapterPay.paidPerDay': [0, 10],

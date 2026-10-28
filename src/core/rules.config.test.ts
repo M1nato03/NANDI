@@ -66,7 +66,7 @@ describe('rule history', () => {
     // their fingerprints did not move, and Chiku facts exist only from the build that writes them.
     // 28 Oct (spec 36): effort pays. The 26 Oct rules are frozen as they were (40e669d9 unchanged), the new entry starts
     // on 28 Oct, and its pay counts only from economy.v6From, the day the build first runs, so no shown day is rescored.
-    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9'], ['2026-10-28', '3b03b6b8'], ['2026-10-29', 'ad9345a9']]);
+    expect(RULES_HISTORY.map(entry => [entry.effectiveFrom, fingerprint(entry.rules)])).toEqual([['2026-10-05', 'cf7b07d1'], ['2026-10-25', '24129226'], ['2026-10-26', '40e669d9'], ['2026-10-28', '3b03b6b8'], ['2026-10-29', '14d54a27']]);
   });
 
   it('ends with the current rules, and the older entry differs only in what it froze', () => {

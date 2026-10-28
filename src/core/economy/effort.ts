@@ -106,13 +106,22 @@ export function paidSetCount(completedAt: readonly number[], rules: Rules): numb
   return Math.min(paid, pay.maxSets);
 }
 
-/** A session's pay from its paid sets; a safety or pain stop keeps its 40 with no set bonus. Null for a fact without them. */
+/**
+ * A session's pay from its paid sets. The whole plan pays baseXp + perSetXp a set; a session stopped early pays
+ * partialPerSetXp a set (so stopping never pays more than finishing), at least the old 40 when every exercise was
+ * touched, and never more than the whole-plan figure for the same sets. A safety or pain stop keeps its 40 with no set
+ * bonus. Null for a fact without paid sets (an older build).
+ */
 export function trainSessionPay(inputs: Record<string, unknown>, rules: Rules): number | null {
   if (!('setPay' in rules.train) || typeof inputs.paidSets !== 'number') return null;
   const pay = rules.train.setPay;
   if (inputs.safety === true) return rules.train.minimumOrSafetyXp;
   if (!(Number(inputs.workingSets) > 0)) return 0;
-  return pay.baseXp + pay.perSetXp * Math.min(pay.maxSets, Math.max(0, Math.floor(inputs.paidSets)));
+  const paid = Math.min(pay.maxSets, Math.max(0, Math.floor(inputs.paidSets)));
+  const full = pay.baseXp + pay.perSetXp * paid;
+  if (Number(inputs.workingSets) >= Number(inputs.plannedSets)) return full;
+  const everyExercise = Number(inputs.touchedExercises) >= Number(inputs.plannedExercises) && Number(inputs.plannedExercises) > 0;
+  return Math.min(full, Math.max(everyExercise ? rules.train.sessionPartialFloorXp : 0, pay.partialPerSetXp * paid));
 }
 
 /** A solved board by its difficulty, less a little per hint and never below minXp; how fast it went pays nothing. */
