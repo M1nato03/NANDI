@@ -44,7 +44,7 @@ describe('economy feedback', () => {
   it('celebrates a finished task in the day', async () => {
     const seen = await finishTask('2026-11-03T12:00:00');
     // The count-up runs on animation frames (frozen with a fixed clock here), so any count is fine; never below 0.
-    await waitFor(() => expect(seen.some(toast => /^\+\d+ XP · /.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+\d+ XP today · /.test(toast.text))).toBe(true));
     expect(mock.tapHaptic).toHaveBeenCalled();
   });
 
@@ -59,7 +59,7 @@ describe('economy feedback', () => {
   it('F2: with Motion off the XP shows in full at once, with no bloom and no sound', async () => {
     document.documentElement.dataset.motion = 'reduce';
     const seen = await finishTask('2026-11-05T12:00:00');
-    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d* XP · /.test(toast.text))).toBe(true));
+    await waitFor(() => expect(seen.some(toast => /^\+[1-9]\d* XP today · /.test(toast.text))).toBe(true));
     // The full number from the first frame: never a count from 0, and no bloom.
     expect(seen.every(toast => !/^\+0 XP/.test(toast.text) && !toast.className.includes('finish-bloom'))).toBe(true);
     expect(mock.playCastSound).not.toHaveBeenCalled();

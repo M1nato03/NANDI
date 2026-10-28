@@ -130,7 +130,7 @@ for (const theme of themes) test.describe(theme, () => {
       await page.clock.fastForward(60_000);
     }
     await page.getByRole('button', { name: 'Finish session' }).click();
-    await expect(page.getByRole('heading', { name: 'Session finished' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Session saved' })).toBeVisible();
     // Six sets of a longer plan is a session stopped early: 8 a set, and what the whole plan pays (spec 36 v2 review).
     await expect(page.locator('.train-earned')).toHaveText('6 sets logged · +48 XP');
     await expect(page.locator('.train-next')).toHaveText(/^The full plan pays \+\d+ next time\.$/);

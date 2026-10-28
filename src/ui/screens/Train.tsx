@@ -53,7 +53,12 @@ export function Train({ entry }: { entry?: string }) {
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
   return <section className="screen train-screen"><FriendStage area="train"><p className="eyebrow">The Proving Ground</p><h1>Train</h1></FriendStage>
     {message && <p role="status">{message}</p>}
-    {page === 'finish' && finished && <div className="card train-finish"><p className="eyebrow">Your session</p><h2>Session finished</h2>{(() => { const earned = trainLine(data.ledger.find(row => row.id === `train-session:${finished.id}`)); return <>{earned && <p className="train-earned">{earned.line}</p>}{earned?.next && <p className="train-next small">{earned.next}</p>}<p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : earned?.next ? 'Come back for the next session.' : 'Plan logged. Come back for the next session.'}</p></>; })()}<p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>}
+    {page === 'finish' && finished && (() => {
+      // Spec 36 v2: a session stopped early is saved, not finished, and says what the whole plan pays (jenil-87 review).
+      const earned = trainLine(data.ledger.find(row => row.id === `train-session:${finished.id}`));
+      const stopped = !!earned?.next;
+      return <div className="card train-finish"><p className="eyebrow">Your session</p><h2>{stopped ? 'Session saved' : 'Session finished'}</h2>{earned && <p className="train-earned">{earned.line}</p>}{earned?.next && <p className="train-next small">{earned.next}</p>}<p>{finished.status === 'safety' ? 'Good call stopping. Rest or take an easier step next time.' : stopped ? 'Come back for the next session.' : 'Plan logged. Come back for the next session.'}</p><p>{formatDayKey(finished.dayKey)} · {finished.status === 'safety' ? 'Stopped for comfort' : stopped ? 'Stopped early' : 'Finished'}</p><button type="button" className="secondary" onClick={() => setPage('history')}>View history</button></div>;
+    })()}
     {active && page === 'today' && <div className="card"><h2>Session in progress</h2><button type="button" onClick={() => go('train/workout')}>Continue session</button></div>}
     <Dashboard data={{ program, sessions, sets, prs, state, ledger, softFacts, bedtime, beats }} page={page} setPage={setPage} startWorkout={() => go('train/workout')} busy={busy} message={message} act={act} />
   </section>;
