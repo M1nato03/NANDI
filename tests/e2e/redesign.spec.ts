@@ -11,7 +11,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(tabs).toHaveText(['Yatra', 'Plan', 'Read', 'You']);
     // Spec 37: the app opens on Yatra; Plan is one tap away.
     await expect(page).toHaveURL(/#yatra$/);
-    await tabs.getByRole('link', { name: 'Plan' }).click();
+    await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
     await expect(page).toHaveURL(/#plan$/);
     await expect(page.getByRole('heading', { name: 'Plan', exact: true })).toBeVisible();
     // Spec 27: routines and the focus timer with breaks sit in Plan's More fold.
