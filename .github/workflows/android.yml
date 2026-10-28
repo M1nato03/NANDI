@@ -36,6 +36,12 @@ jobs:
           log-accepted-android-sdk-licenses: false
       - name: Install Android SDK packages
         run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      # The Java unit tests (FocusGuardTest, UsedTodayCacheTest) run before any APK is built (Jenil, 29 Oct).
+      - name: Java unit tests
+        working-directory: android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew testDebugUnitTest
       - name: Build APK
         working-directory: android
         env:
