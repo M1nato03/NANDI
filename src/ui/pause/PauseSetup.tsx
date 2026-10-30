@@ -179,7 +179,7 @@ function PhoneAccess({ access }: { access: { usage: boolean; overlay: boolean } 
   </div>;
 }
 
-const opensText = (day: AppDay, perDay: boolean) => `${day.opens} ${day.opens === 1 ? 'open' : 'opens'}${perDay ? ' a day' : ''} · ${minutesInWords(Math.round(day.ms / 60_000))}${perDay ? ' a day' : ''}`;
+const opensText = (day: AppDay) => `${day.opens} ${day.opens === 1 ? 'open' : 'opens'} · ${minutesInWords(Math.round(day.ms / 60_000))}`;
 
 /** Spec 39, the opens log: the picked apps' opens and minutes, from the phone's own usage log; the kill test reads these. */
 function OpensCard({ settings, packages, today }: { settings: readonly SettingRow[]; packages: string[]; today: string }) {
@@ -190,10 +190,10 @@ function OpensCard({ settings, packages, today }: { settings: readonly SettingRo
       const summary = summarizeOpens(log, packages, today);
       return <>
         <dl className="pause-opens-list">
-          <div><dt>Today so far</dt><dd>{opensText(summary.today, false)}</dd></div>
-          <div><dt>Last 7 days</dt><dd>{summary.lately ? opensText(summary.lately, true) : 'After your first full day'}</dd></div>
-          <div><dt>The week before the card</dt><dd>{summary.before ? opensText(summary.before, true) : 'Not enough days yet'}</dd></div>
-          {summary.afterAnyway.count > 0 && <div><dt>After "Open anyway"</dt><dd>{minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000))} on average</dd></div>}
+          <div><dt>Today so far</dt><dd>{opensText(summary.today)}</dd></div>
+          <div><dt>{summary.fullWeek ? 'Last 7 days' : 'Since the card'} · a day</dt><dd>{summary.lately ? opensText(summary.lately) : 'After your first full day'}</dd></div>
+          <div><dt>The week before the card · a day</dt><dd>{summary.before ? opensText(summary.before) : 'Not enough days yet'}</dd></div>
+          <div><dt>After "Open anyway" · each time</dt><dd>{summary.afterAnyway.count ? minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000)) : 'None yet'}</dd></div>
         </dl>
         <p className="small">Counted from the phone's own usage log, only for the apps you picked. A day runs from 04:00 to 04:00. It stays on this phone.</p>
       </>;

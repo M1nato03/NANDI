@@ -555,9 +555,21 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p39-11-opens-few-days', false);
     await page.evaluate(async events => { await new Promise<void>(resolve => { indexedDB.open('nandi').onsuccess = event => { const database = (event.target as IDBOpenDBRequest).result; const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').delete('pause.opens'); transaction.oncomplete = () => { database.close(); resolve(); }; }; }); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usage: events })); }, usage(7));
     await page.reload();
-    await expect(page.locator('.pause-opens')).toContainText('7 opens a day');
+    await expect(page.locator('.pause-opens')).toContainText('7 opens · 1 h 24 min');
     await page.locator('.pause-opens').scrollIntoViewIfNeeded();
     await shot(page, 'p39-12-opens-full', false);
+    // Day 11 of the card: the week before, the card's last 7 days and some "Open anyway" minutes, as Jenil sees it in 2 weeks.
+    const stored = (busy: number, minutes: number, anyway = 0) => ({ apps: { 'com.instagram.android': { opens: busy, ms: minutes * 60_000 } }, anyway: { count: anyway, ms: anyway * 7 * 60_000 }, whole: true, covered: true });
+    const days: Record<string, unknown> = {};
+    for (let back = 1; back <= 17; back += 1) {
+      const key = new Date(Date.UTC(2026, 10, 4 - back)).toISOString().slice(0, 10);
+      days[key] = back > 10 ? stored(14 + (back % 3), 105 + back) : stored(8 + (back % 2), 50 + back, back % 3 === 0 ? 1 : 0);
+    }
+    await page.evaluate(async value => { await new Promise<void>(resolve => { indexedDB.open('nandi').onsuccess = event => { const database = (event.target as IDBOpenDBRequest).result; const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').put({ key: 'pause.opens', value, updatedAt: 1, deleted: 0, deviceId: 'e2e' }); transaction.oncomplete = () => { database.close(); resolve(); }; }; }); }, { since: '2026-10-25', days });
+    await page.reload();
+    await expect(page.locator('.pause-opens')).toContainText('Last 7 days · a day');
+    await page.locator('.pause-opens').scrollIntoViewIfNeeded();
+    await shot(page, 'p39-13-opens-compare', false);
   });
 
   test('hunt fixes', async ({ page }) => {

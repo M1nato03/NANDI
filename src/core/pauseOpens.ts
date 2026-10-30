@@ -111,41 +111,48 @@ export function keptDays(days: Record<string, OpensDay>, today: string): Record<
   return Object.fromEntries(Object.entries(days).filter(([day]) => day >= oldest && day <= today));
 }
 
+export type DayAverage = AppDay & { days: string[] };
 export interface OpensSummary {
   today: AppDay;
   /** The whole, covered days before the log began (up to 7): a day's average, or null with fewer than 3 such days. */
-  before: (AppDay & { days: number }) | null;
-  /** The last 7 whole, covered days since the log began: a day's average, or null before the first whole day. */
-  lately: (AppDay & { days: number }) | null;
-  /** Average minutes in the app after an "Open anyway", over the same 7 days and today. */
+  before: DayAverage | null;
+  /**
+   * The last 7 whole, covered days with the card on (never a day from before it): a day's average, or null before the
+   * first whole day. Until 7 days have passed since the card began, these are all the card's days so far.
+   */
+  lately: DayAverage | null;
+  /** 7 days have passed since the card began, so `lately` is a full week. */
+  fullWeek: boolean;
+  /** "Open anyway" taps and the time in the app after them, over the same days as `lately` and today. */
   afterAnyway: { count: number; ms: number };
 }
 
 const sum = (day: OpensDay | undefined, packages: readonly string[]): AppDay => packages.reduce((total, pkg) => ({ opens: total.opens + (day?.apps[pkg]?.opens ?? 0), ms: total.ms + (day?.apps[pkg]?.ms ?? 0) }), { opens: 0, ms: 0 });
-function average(days: OpensDay[], packages: readonly string[]): AppDay & { days: number } {
-  const total = days.reduce((all, day) => { const one = sum(day, packages); return { opens: all.opens + one.opens, ms: all.ms + one.ms }; }, { opens: 0, ms: 0 });
-  return { opens: Math.round(total.opens / days.length), ms: Math.round(total.ms / days.length), days: days.length };
+function average(log: OpensLog, keys: string[], packages: readonly string[]): DayAverage {
+  const total = keys.reduce((all, key) => { const one = sum(log.days[key], packages); return { opens: all.opens + one.opens, ms: all.ms + one.ms }; }, { opens: 0, ms: 0 });
+  return { opens: Math.round(total.opens / keys.length), ms: Math.round(total.ms / keys.length), days: keys };
 }
 
 /** The numbers Plan → Pause card shows, for the apps picked now. */
 export function summarizeOpens(log: OpensLog, packages: readonly string[], today: string): OpensSummary {
   const counted = (day: string) => !!log.days[day]?.whole && !!log.days[day]?.covered;
-  const before: OpensDay[] = [];
-  for (let back = 1; back <= OPENS_BACK_DAYS; back += 1) { const day = addEconomyDays(log.since, -back); if (counted(day)) before.push(log.days[day]!); }
-  const lately: OpensDay[] = [];
+  const before: string[] = [];
+  for (let back = 1; back <= OPENS_BACK_DAYS; back += 1) { const day = addEconomyDays(log.since, -back); if (counted(day)) before.push(day); }
+  const lately: string[] = [];
   const recent: OpensDay[] = [];
   for (let back = 1; back <= 7; back += 1) {
     const day = addEconomyDays(today, -back);
     if (day < log.since || !log.days[day]) continue;
     recent.push(log.days[day]!);
-    if (counted(day)) lately.push(log.days[day]!);
+    if (counted(day)) lately.push(day);
   }
   if (log.days[today]) recent.push(log.days[today]!);
   const afterAnyway = recent.reduce((all, day) => ({ count: all.count + day.anyway.count, ms: all.ms + day.anyway.ms }), { count: 0, ms: 0 });
   return {
     today: sum(log.days[today], packages),
-    before: before.length >= 3 ? average(before, packages) : null,
-    lately: lately.length ? average(lately, packages) : null,
+    before: before.length >= 3 ? average(log, before, packages) : null,
+    lately: lately.length ? average(log, lately, packages) : null,
+    fullWeek: addEconomyDays(log.since, 7) <= today,
     afterAnyway,
   };
 }

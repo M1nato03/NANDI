@@ -68,9 +68,23 @@ describe('the opens log (spec 39)', () => {
     } };
     const summary = summarizeOpens(log, [IG], DAY);
     expect(summary.today).toEqual({ opens: 3, ms: 12 * 60_000 });
-    expect(summary.before).toEqual({ opens: 12, ms: 80 * 60_000, days: 3 });
-    expect(summary.lately).toEqual({ opens: 7, ms: 35 * 60_000, days: 2 });
+    expect(summary.before).toEqual({ opens: 12, ms: 80 * 60_000, days: ['2026-11-01', '2026-10-31', '2026-10-30'] });
+    expect(summary.lately).toEqual({ opens: 7, ms: 35 * 60_000, days: ['2026-11-03', '2026-11-02'] });
+    expect(summary.fullWeek).toBe(false);
     expect(summarizeOpens({ ...log, days: { [DAY]: day(3, 12, false) } }, [IG], DAY).before).toBeNull();
     expect(summarizeOpens(log, [YT], DAY).today).toEqual({ opens: 0, ms: 0 });
+  });
+
+  it('never counts a day in both the week before and the card days, in the first week or later', () => {
+    const days: Record<string, OpensDay> = {};
+    for (let back = 0; back <= 20; back += 1) { const key = new Date(Date.UTC(2026, 10, 4 - back)).toISOString().slice(0, 10); days[key] = day(back, back, back > 0); }
+    for (const [since, full] of [['2026-11-02', false], ['2026-10-28', true], ['2026-10-25', true]] as const) {
+      const summary = summarizeOpens({ since, days }, [IG], DAY);
+      const before = summary.before!.days, lately = summary.lately!.days;
+      expect(before.filter(key => lately.includes(key))).toEqual([]);
+      expect(before.every(key => key < since)).toBe(true);
+      expect(lately.every(key => key >= since && key < DAY)).toBe(true);
+      expect(summary.fullWeek).toBe(full);
+    }
   });
 });
