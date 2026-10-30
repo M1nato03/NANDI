@@ -85,11 +85,20 @@ const hash = (value: string) => { let h = 2166136261; for (const char of value) 
  * Spec 33 §3: a quiz check is three of the chapter's items, mixed: one from each idea in turn (the seed picks which),
  * so no two in a row share an idea when the chapter has three ideas or more.
  */
-export function checkPicks(module: TopicModule, seed: string, count = 3): { concept: TopicConcept; item: TopicConcept['items'][number] }[] {
-  const pools = module.concepts.map(concept => ({ concept, items: [...concept.items].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`) || a.id.localeCompare(b.id)) }));
+export function checkPicks(module: TopicModule, seed: string, count = 3, exclude: ReadonlySet<string> = new Set()): { concept: TopicConcept; item: TopicConcept['items'][number] }[] {
+  const pools = module.concepts.map(concept => ({ concept, items: [...concept.items].filter(item => !exclude.has(item.id)).sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`) || a.id.localeCompare(b.id)) }));
   const order = [...pools].sort((a, b) => hash(`${seed}:${a.concept.id}`) - hash(`${seed}:${b.concept.id}`) || a.concept.id.localeCompare(b.concept.id));
   const picks: { concept: TopicConcept; item: TopicConcept['items'][number] }[] = [];
   for (let round = 0; picks.length < count && order.some(pool => pool.items.length > round); round++)
     for (const pool of order) if (picks.length < count && pool.items[round]) picks.push({ concept: pool.concept, item: pool.items[round]! });
   return picks;
+}
+
+/** Spec 41: the Book check due today: the first chapter finished one idea a sitting on an earlier day and not checked yet. */
+export function bookCheckDue(ledger: readonly { kind: string; refId: string; dayKey: string; deleted: number; inputs: Record<string, unknown> }[], today: string): { topicId: string; moduleId: string } | undefined {
+  const checked = new Set(ledger.filter(row => row.kind === 'chapter-check' && !row.deleted).map(row => row.refId));
+  const due = ledger.filter(row => row.kind === 'chapter' && !row.deleted && row.inputs.checkLater === true && row.dayKey < today && !checked.has(row.refId)).sort((a, b) => a.dayKey.localeCompare(b.dayKey))[0];
+  if (!due) return undefined;
+  const [topicId, moduleId] = due.refId.split(':');
+  return topicId && moduleId ? { topicId, moduleId } : undefined;
 }

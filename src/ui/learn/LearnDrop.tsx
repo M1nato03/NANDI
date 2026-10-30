@@ -168,7 +168,8 @@ export function LearnDrop({ daily = true, night = false, itemCount, preferredCon
         items: untaughtSteps(module, taught).map(({ concept, step }) => ({ itemId: lessonItemId(step.id), conceptId: concept.id, optionOrder: [], mode: 'new' as const, lesson: step.id })) };
     } else {
       created = { id: `drop:check:${chapter.topicId}:${chapter.moduleId}:${at}`, cursor: 0, ending: { kind: 'stopping-screen' }, chapter,
-        items: checkPicks(module, String(at)).map(({ concept, item }) => ({ itemId: item.id, conceptId: concept.id, optionOrder: orderOptions(item, at % 1_000_000), mode: 'new' as const })) };
+        // Spec 41: never a question a sitting already asked on its screen 5.
+        items: checkPicks(module, String(at), 3, new Set((await db.ledger.where('kind').equals('idea').toArray()).map(row => String(row.inputs.askedItem ?? '')).filter(Boolean))).map(({ concept, item }) => ({ itemId: item.id, conceptId: concept.id, optionOrder: orderOptions(item, at % 1_000_000), mode: 'new' as const })) };
     }
     await saveDrop(db, created, deviceId, at);
     setPracticeId(created.id);

@@ -56,7 +56,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const saveDone = () => {
     finishing.current = true;
     setSaveFailed(false);
-    void saveChapterDone(db, topicId, moduleId, currentTime(), { rebuilt: rebuilt.current }).catch(() => { finishing.current = false; setSaveFailed(true); });
+    void saveChapterDone(db, topicId, moduleId, currentTime(), { rebuilt: rebuilt.current, checkLater: quiz }).catch(() => { finishing.current = false; setSaveFailed(true); });
   };
   useEffect(() => {
     if (view !== 'done' || wasDone || finishing.current) return;

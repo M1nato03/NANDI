@@ -9,6 +9,7 @@ import { phaseAt } from '../../core/courtyard/courtyard';
 import { deriveTrek, STRETCHES_PER_LEG, trekLine, YATRA_KINDS, type Constellation, type Trek } from '../../core/yatra/trek';
 import { greeting, quietLine } from '../../core/yatra/welcome';
 import { isFocusRunning, taskFocusMs } from '../../core/tasks/focus';
+import { bookCheckDue } from '../../core/learn/books';
 import { currentTrail } from '../../data/yatra/trails';
 import { CONSTELLATION_PREFIX, ensureYatraStart, saveConstellationName, YATRA_START } from '../../data/repos/yatra';
 import { Cast, type CastName } from '../cast/Cast';
@@ -79,6 +80,17 @@ function useMinute(): number {
   return now;
 }
 
+/** Spec 41: the day after a chapter's last idea, its Book check waits here, right after a running focus. */
+function BookCheckStrip() {
+  const due = useLiveQuery(async () => bookCheckDue(await db.ledger.where('kind').anyOf('chapter', 'chapter-check').toArray(), dayKey(Date.now())), []);
+  if (!due) return null;
+  // No book packs here: Yatra opens first, so the strip names the check, and the check names its chapter.
+  return <button type="button" className="yatra-focus-strip yatra-book-check" onClick={() => go(`read/check/${due.topicId}/${due.moduleId}`)}>
+    <span className="yatra-focus-text">Book check · three questions</span>
+    <b>Open</b>
+  </button>;
+}
+
 /** Spec 37: while a focus is open, one soft strip under the scene leads back to Plan's focus card. Nothing else changes. */
 function FocusStrip() {
   const open = useLiveQuery(async () => {
@@ -132,6 +144,7 @@ export function Yatra() {
     </header>
     {trek && yatra && <TrekScene trek={trek} night={yatra.night} dusk={yatra.dusk} onRename={row => { setName(row.name); setRenaming(row); }} />}
     <FocusStrip />
+    <BookCheckStrip />
     <h2 className="yatra-ready">Whenever you feel ready</h2>
     <ul className="yatra-doors" aria-label="Doors">{DOORS.map(door => <li key={door.id}>
       <button type="button" className="card yatra-door" data-area={door.area} aria-label={`${door.title}: ${door.caption}`} onClick={() => go(door.id)}>

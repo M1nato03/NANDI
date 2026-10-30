@@ -53,6 +53,7 @@ const Backup = lazy(() => import('../screens/Backup').then(module => ({ default:
 const GeneratorCheck = lazy(() => import('../screens/GeneratorCheck').then(module => ({ default: module.GeneratorCheck })));
 const Learn = lazy(() => import('../screens/Learn').then(module => ({ default: module.Learn })));
 const Chapter = lazy(() => import('../learn/Chapter').then(module => ({ default: module.Chapter })));
+const BookCheck = lazy(() => import('../learn/BookCheck').then(module => ({ default: module.BookCheck })));
 const HaveliDemo = lazy(() => import('../learn/HaveliDemo').then(module => ({ default: module.HaveliDemo })));
 const KolamScreen = lazy(() => import('../night/KolamScreen').then(module => ({ default: module.KolamScreen })));
 const ChikuDemo = lazy(() => import('../learn/ChikuDemo').then(module => ({ default: module.ChikuDemo })));
@@ -237,6 +238,7 @@ export function AppShell() {
   else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
   else if (/^read\/book\/[a-z0-9-]+$/.test(path)) screen = <Learn key={path} entry="book" book={path.split('/')[2]} />;
   else if (/^read\/chapter\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <Chapter key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
+  else if (/^read\/check\/[a-z0-9-]+\/[a-z0-9-]+$/.test(path)) screen = <BookCheck key={path} topicId={path.split('/')[2]!} moduleId={path.split('/')[3]!} />;
   else if (path === 'read/lesson' || path === 'read/unit' || path === 'read/courses') screen = <Mind key={path} entry={path.split('/')[1]} />;
   // Spec 34: Yatra and its corners: Train (Nandi), Kapi's shelf (Mind) and Calm (Kachhua).
   else if (path === 'yatra') screen = <Yatra />;

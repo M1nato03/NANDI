@@ -45,6 +45,7 @@ export function parentRoute(path: string): string {
   if (path.startsWith('yatra/train/')) return 'yatra/train';
   if (path.startsWith('yatra/')) return 'yatra';
   if (path.startsWith('read/chapter/')) return `read/book/${path.split('/')[2]}`;
+  if (path.startsWith('read/check/')) return 'yatra';
   if (path.startsWith('you/story/')) return 'you/stories';
   if (path === 'you/backup' || path === 'you/night' || path === 'you/cast' || path === 'you/owner') return 'you/settings';
   const root = path.split('/')[0];
