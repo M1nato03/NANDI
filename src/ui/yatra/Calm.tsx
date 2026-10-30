@@ -10,6 +10,10 @@ import { Cast } from '../cast/Cast';
 import { TrekScene } from './TrekScene';
 import { useYatra } from './Yatra';
 import { useModalFocus } from '../shell/useModalFocus';
+import { blobBase64, calmPlaybackAvailable, calmPlaybackStatus, clearCalmPlayback, pauseCalmPlayback, resumeCalmPlayback, startCalmPlayback, stopCalmPlayback, type CalmStatus } from '../../platform/calmPlayback';
+import { playedMs, sitOver } from '../../core/calm/spans';
+import { askNotificationsOnce } from '../../platform/notifyPermission';
+import { forgetCalmRun, readCalmRun, rememberCalmRun } from './calmKeeper';
 import './trek.css';
 import './yatra.css';
 
@@ -30,7 +34,8 @@ const WAYS: { id: CalmWay; short: string; line: (breath: Breath) => string }[] =
 const presetUrl = (preset: CalmPreset) => `${import.meta.env.BASE_URL}calm/${preset.file}`;
 const lengthName = (length: CalmLength) => length === 'open' ? 'until I stop' : `${length} ${length === 1 ? 'minute' : 'minutes'}`;
 
-type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean; sound?: string };
+/** `native`: spec 38's phone player runs it (it keeps playing with the screen off); the page only shows it. */
+export type Run = { startedAt: number; length: CalmLength; way: CalmWay; breath: Breath; interval: number; fade: boolean; sound?: string; native?: boolean };
 
 /**
  * Spec 34 + 35 Calm: Kachhua's corner. Three ways to sit (paced breath, a body scan, a quiet sit), any length from a
@@ -75,6 +80,24 @@ export function Calm() {
     return () => { live = false; };
   }, [prefs.minutes, prefs.sound, run]);
   const yatra = useYatra();
+  // Spec 38: on the phone, the native player owns the sound, the bells and the clock; the page reads its journal.
+  const nativePlayer = calmPlaybackAvailable();
+  const [sit, setSit] = useState<CalmStatus | null>(null);
+  useEffect(() => {
+    if (!nativePlayer) return;
+    let live = true;
+    const look = () => void calmPlaybackStatus().then(status => {
+      if (!live) return;
+      setSit(status);
+      // A sit started earlier (the app was closed, or the phone locked) is picked up again.
+      const kept = readCalmRun();
+      if (status && kept && String(kept.startedAt) === status.sitId) setRun(current => current ?? kept);
+    });
+    look();
+    const timer = window.setInterval(() => { if (document.visibilityState === 'visible') look(); }, 1000);
+    document.addEventListener('visibilitychange', look);
+    return () => { live = false; window.clearInterval(timer); document.removeEventListener('visibilitychange', look); };
+  }, [nativePlayer]);
 
   useEffect(() => {
     if (!run) return;
@@ -96,7 +119,9 @@ export function Calm() {
   useEffect(() => () => audio.current?.close(), []);
 
   const total = run ? totalMs(run.length) : null;
-  const elapsed = run ? Math.max(0, total === null ? now - run.startedAt : Math.min(total, now - run.startedAt)) : 0;
+  const ownSit = !!run?.native && !!sit && sit.sitId === String(run.startedAt);
+  // A phone-played sit counts only its playing spans (spec 38); the page's own sit counts the wall clock as before.
+  const elapsed = run ? (run.native ? (ownSit ? playedMs(sit!.journal, now, total) : 0) : Math.max(0, total === null ? now - run.startedAt : Math.min(total, now - run.startedAt))) : 0;
   const end = (ran: Run, sat: number) => {
     if (finishing.current) return;
     finishing.current = true;
@@ -108,6 +133,7 @@ export function Calm() {
   };
   const record = (ran: Run, sat: number) => {
     void saveCalmDone(db, { elapsedMs: sat, way: ran.way, breath: ran.breath, startedAt: ran.startedAt }, stamp()).then(() => {
+      if (ran.native) { forgetCalmRun(); void clearCalmPlayback(String(ran.startedAt)); }
       setRun(null); setUnsaved(null); setDone(sitMinutes(sat) >= 1 ? sitMinutes(sat) : null); finishing.current = false;
     }, () => {
       setRun(null); setDone(null); setUnsaved({ ran, sat }); finishing.current = false;
@@ -115,8 +141,14 @@ export function Calm() {
   };
   // The end, the interval bells and the scan's line ticks all follow the wall clock. A bell that came due while the
   // app was hidden is not rung late; the end bell rings once on return when the end passed meanwhile.
+  // Spec 38: the phone's player ended the sit (its length, or Stop on the lock screen): save its playing minutes.
   useEffect(() => {
-    if (!run) return;
+    if (!run?.native || !ownSit || !sitOver(sit!.journal) || finishing.current) return;
+    finishing.current = true;
+    record(run, playedMs(sit!.journal, stamp(), total));
+  });
+  useEffect(() => {
+    if (!run || run.native) return;
     if (total !== null && elapsed >= total) { end(run, total); return; }
     const visible = document.visibilityState === 'visible';
     const bells = intervalBells(elapsed, run.interval, run.length);
@@ -132,6 +164,7 @@ export function Calm() {
     const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
     const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade, sound: presetOf(prefs.sound)?.name ?? own?.name };
     rung.current = { bells: 0, line: 0 };
+    if (nativePlayer) { void startNative({ ...ran, native: true }, own?.blob); return; }
     const mixer = CalmAudio.create();
     audio.current = mixer;
     if (mixer) {
@@ -141,8 +174,20 @@ export function Calm() {
     }
     setDone(null); setUnsaved(null); setNow(at); setTouchedAt(at); setRun(ran);
   };
+  // Spec 38: hands the sit to the phone's player. Notifications are asked for once, on the first sit; a "no" still plays.
+  const startNative = async (ran: Run, file?: Blob) => {
+    const preset = presetOf(prefs.sound);
+    rememberCalmRun(ran);
+    void askNotificationsOnce().catch(() => undefined);
+    try {
+      await startCalmPlayback({ sitId: String(ran.startedAt), lengthMs: totalMs(ran.length), intervalMin: ran.interval, startBell: prefs.startBell, soundVolume: prefs.soundVolume, bellVolume: prefs.bellVolume,
+        ...(preset ? { asset: `public/calm/${preset.file}` } : {}), ...(file ? { fileBase64: await blobBase64(file) } : {}) });
+      setDone(null); setUnsaved(null); setNow(ran.startedAt); setTouchedAt(ran.startedAt); setRun(ran);
+    } catch { forgetCalmRun(); setSoundNote('Calm could not start its player. Try again.'); }
+  };
   const stop = () => {
     if (!run) return;
+    if (run.native) { void stopCalmPlayback(); return; }
     const sat = Math.max(0, stamp() - run.startedAt);
     end(run, total === null ? sat : Math.min(total, sat));
   };
@@ -184,7 +229,12 @@ export function Calm() {
       </> : unsaved ? <div className="calm-unsaved" role="alert"><p className="calm-phase">Your sit could not be saved.</p><button type="button" onClick={() => { finishing.current = true; record(unsaved.ran, unsaved.sat); }}>Try saving again</button></div>
         : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
-    {run ? <button type="button" className="secondary" onClick={stop}>Stop</button> : <>
+    {run ? <>
+      {ownSit && sit!.status === 'paused' && <p className="small calm-paused" role="status">{sit!.pausedFor === 'call' ? 'Paused for a call.' : 'Paused.'} The clock waits.</p>}
+      {ownSit && sit!.status === 'paused' && <button type="button" onClick={() => void resumeCalmPlayback()}>Resume</button>}
+      {ownSit && sit!.status === 'playing' && <button type="button" className="secondary" onClick={() => void pauseCalmPlayback()}>Pause</button>}
+      <button type="button" className="secondary" onClick={stop}>Stop</button>
+    </> : <>
       {/* Spec 35 item 210: the setup fits one screen at 360x800: one segmented row, two sliding chip rows and a Start bar. */}
       <fieldset className="calm-ways"><legend className="calm-legend">How to sit</legend>
         {WAYS.map(way => <button type="button" key={way.id} className={prefs.way === way.id ? '' : 'secondary'} aria-pressed={prefs.way === way.id} onClick={() => setPrefs({ way: way.id })}>{way.short}</button>)}
@@ -218,7 +268,7 @@ export function Calm() {
       </details>
       <div className="calm-start-bar">
         <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
-        <p className="small calm-under">{isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>
+        <p className="small calm-under">{nativePlayer ? 'You can lock your phone. The sound and bells keep playing.' : isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>
       </div>
     </>}
     {dim && <button type="button" className="calm-dim" aria-label="Wake the screen" onClick={() => setTouchedAt(stamp())}>

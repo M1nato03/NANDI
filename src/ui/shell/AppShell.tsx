@@ -4,6 +4,7 @@ import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
 import { recordOpens, switchPauseToTen } from '../../data/repos/pause';
+import { settleCalm } from '../yatra/calmKeeper';
 import { privateTopicPacks } from '../../data/packs/privateBooks';
 import { setPrivateTopics } from '../learn/flow';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -169,6 +170,12 @@ export function AppShell() {
     return () => { disposed = true; void remove?.(); };
   }, []);
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
+  // Spec 38: a Calm sit the phone's player ended while NANDI was away is saved on return (once).
+  useEffect(() => {
+    const settle = () => { if (document.visibilityState === 'visible') void settleCalm(Date.now()).catch(error => recordError('promise', error)); };
+    settle(); document.addEventListener('visibilitychange', settle);
+    return () => document.removeEventListener('visibilitychange', settle);
+  }, []);
   // Spec 39b: an "every open" Pause card moves to "after 10 min a day" once.
   useEffect(() => { void switchPauseToTen(db, Date.now()).catch(error => recordError('promise', error)); }, []);
   useEffect(() => {
