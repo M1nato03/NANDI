@@ -488,6 +488,7 @@ for (const theme of themes) test.describe(theme, () => {
   test('pause card', async ({ page }) => {
     await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
     await page.goto('/?e2e#plan');
+    await expect(page.getByRole('button', { name: /^Pause card/ })).toContainText('Off');
     await shot(page, 'p39-0-plan-row-off');
     await page.getByRole('button', { name: /^Pause card/ }).click();
     await page.getByLabel('Instagram').check();

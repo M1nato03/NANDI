@@ -22,5 +22,10 @@
 .pause-when label { display: flex; align-items: center; gap: 8px; }
 .pause-times { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .pause-setup-nav { display: flex; gap: 10px; justify-content: space-between; }
-.plan-pause-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; }
+.plan-pause-row { color: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; }
 .plan-pause-row small { display: block; color: var(--secondary-ink); font-weight: 400; }
+.plan-pause-row strong { color: var(--ink); }
+/* App-wide labels spread their parts apart; here the box sits right before its words. */
+.pause-apps label, .pause-when label { justify-content: flex-start; }
+.pause-apps input[type="checkbox"], .pause-when input[type="radio"] { flex: none; width: 22px; height: 22px; min-height: 0; margin: 0; accent-color: var(--accent); }
+.pause-step select { width: auto; min-width: 96px; }
