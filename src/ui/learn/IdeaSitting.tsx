@@ -80,7 +80,8 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
 
   return <section className="screen learn-screen idea-sitting" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>
     <header className="idea-head">
-      <ol className="idea-dots" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>{Array.from({ length: ideaCount }, (_, index) => <li key={index} className={index < ideaIndex ? 'done' : index === ideaIndex ? 'now' : ''} />)}</ol>
+      <div className="idea-count"><span className="small">Idea {ideaIndex + 1} of {ideaCount}</span>
+        <ol className="idea-dots" aria-label={`Idea ${ideaIndex + 1} of ${ideaCount}`}>{Array.from({ length: ideaCount }, (_, index) => <li key={index} className={index < ideaIndex ? 'done' : index === ideaIndex ? 'now' : ''} />)}</ol></div>
       <ol className="step-dots" aria-label={`Screen ${at + 1} of ${screens.length}`}>{screens.map((_, index) => <li key={index} className={index < at ? 'done' : index === at ? 'now' : ''} />)}</ol>
     </header>
     <div className="learn-q" key={at}>
@@ -108,7 +109,7 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
       {(screen === 'story' || screen === 'example' || screen === 'plan') && <button type="button" className="step-continue" disabled={saving} onClick={next}>{last ? 'Finish the idea' : 'Continue'}</button>}
       {failed && <div role="alert"><p>This idea could not be saved on this phone.</p><button type="button" onClick={() => void finish()}>Try saving again</button></div>}
     </div>
-    <span className="idea-friend" aria-hidden="true"><Cast name="Moti" pose={chosen ? (chosen.correct ? 'cheer' : 'think') : 'idle'} size={48} /></span>
+    <span className="idea-friend" aria-hidden="true"><Cast name="Chiku" pose={chosen ? (chosen.correct ? 'cheer' : 'think') : 'idle'} size={48} /></span>
   </section>;
 }
 

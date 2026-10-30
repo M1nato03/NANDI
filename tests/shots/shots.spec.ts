@@ -234,12 +234,13 @@ for (const theme of themes) test.describe(theme, () => {
     // An advancing clock, so each sitting has its own time (pay follows the order they were read in).
     await page.clock.install({ time: NOON });
     await page.goto('/?e2e#read/chapter/richest-man-in-babylon/babylon-1');
-    await walkIdea(page, 'richest-man-in-babylon', async screen => { await shot(page, `s41-1-screen-${screen}`, false); });
+    // The clock is installed, so let each screen's entrance finish before its picture.
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { await page.clock.runFor(1000); await shot(page, `s41-1-screen-${screen}`, false); });
     await expect(page.locator('.idea-end')).toBeVisible();
     await shot(page, 's41-2-idea-end', false);
     // The second idea (an even one) tries spot-the-part, and asks nothing from an earlier day yet (same day).
     await page.getByRole('button', { name: 'One more idea' }).click();
-    await walkIdea(page, 'richest-man-in-babylon', async screen => { if (screen === 3 || screen === 4) await shot(page, `s41-3-idea2-screen-${screen}`, false); });
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { if (screen === 3 || screen === 4) { await page.clock.runFor(1000); await shot(page, `s41-3-idea2-screen-${screen}`, false); } });
     while (await page.locator('.idea-end').isVisible()) {
       await page.getByRole('button', { name: 'One more idea' }).click();
       await walkIdea(page, 'richest-man-in-babylon');

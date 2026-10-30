@@ -76,7 +76,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
       <p className="eyebrow">Idea done</p><h2>{ended.title}</h2>
       {(() => { const line = ideaLine(data.ledger, chapterRef(topicId, moduleId), ended.conceptId); return line ? <p className="read-earned">{line}</p> : null; })()}
       <p className="read-takeaway">{ended.takeaway}</p>
-      <div className="idea-end-actions"><button type="button" onClick={() => setEnded(null)}>One more idea</button>
+      <div className="idea-end-actions"><button type="button" className="secondary" onClick={() => setEnded(null)}>One more idea</button>
         <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>That's enough for now</button></div>
     </div></section>;
     const idea = nextIdea(module, taught);

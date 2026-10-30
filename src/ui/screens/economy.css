@@ -49,7 +49,8 @@
 /* During a drop the toast sits at the top, never over the feedback sheet at the bottom (cj2 lesson walk #5). */
 /* Spec 24 Prove it: the same while the proof card is open, so the toast never covers its first prompt (Codex A item 77). */
 .app-shell:has(.case-prove) .economy-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
-.app-shell:has(.learn-active, .learn-feedback) .economy-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
+/* Spec 41: a sitting, its end card and the Book check keep the toast at the top, clear of their buttons. */
+.app-shell:has(.learn-active, .learn-feedback, .idea-sitting, .idea-end, .book-check-tried) .economy-toast { bottom: auto; top: calc(10px + env(safe-area-inset-top)); }
 .economy-reveal { position: fixed; z-index: 30; inset: 0; background: var(--bg); display: grid; place-items: center; padding: 20px; }
 .economy-reveal-card { background: var(--surface-1); border-radius: 28px; padding: 32px; width: min(100%, 440px); box-shadow: var(--shadow-2); text-align: center; animation: economy-reveal-in 1.3s ease-out; }
 .economy-reveal-card h2 { font-size: clamp(36px, 10vw, 54px); }

@@ -371,12 +371,14 @@
 
 /* Spec 41: a sitting is one idea. The idea dots sit above the screen dots; the friend stays small in a corner. */
 .idea-sitting { position: relative; }
-.idea-head { display: grid; gap: 8px; margin-bottom: 12px; padding-right: 56px; }
-.idea-dots { display: flex; gap: 8px; justify-content: center; margin: 0; padding: 0; list-style: none; }
+.idea-head { display: grid; gap: 10px; margin: 12px 0 12px; padding-right: 56px; }
+.idea-count { display: flex; align-items: center; gap: 10px; }
+.idea-count .small { color: var(--ink-2); margin: 0; }
+.idea-dots { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .idea-dots li { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-3); }
 .idea-dots li.done { background: var(--area-learn); }
 .idea-dots li.now { background: var(--area-learn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--area-learn) 30%, transparent); }
-.idea-friend { position: absolute; top: 0; right: 0; }
+.idea-friend { position: absolute; top: 4px; right: 0; }
 .idea-example p, .idea-plan-line { margin: 0; font-size: 18px; line-height: 1.45; }
 .idea-plan-line { font-weight: 700; }
 .idea-end-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
