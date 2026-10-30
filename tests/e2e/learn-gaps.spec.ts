@@ -7,16 +7,23 @@ const conceptId = money.body.modules[0]!.concepts[0]!.id;
 
 async function openNightDrop(page: Page) {
   await page.goto('/?e2e#night');
-  await page.getByRole('region', { name: 'Now deck' }).getByRole('button', { name: 'Next', exact: true }).click();
+  const deck = page.getByRole('region', { name: 'Now deck' });
+  await expect(deck.getByRole('button', { name: 'Next', exact: true })).toBeEnabled();
+  await deck.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByRole('article', { name: 'Night drop card' })).toBeVisible();
 }
 
 async function pickAnswer(page: Page) {
+  const confidence = page.locator('.learn-confidence');
+  const option = page.locator('.learn-options button:enabled').first();
+  await expect(confidence.or(option)).toBeVisible();
   for (let attempt = 0; attempt < 12; attempt++) {
-    if (await page.locator('.learn-confidence').isVisible()) return;
-    await page.locator('.learn-options button:enabled').first().click();
+    if (await confidence.isVisible()) return;
+    await option.click();
+    // Settled: the answer is chosen, or the next part is ready to pick.
+    await expect(confidence.or(option)).toBeVisible();
   }
-  await expect(page.locator('.learn-confidence')).toBeVisible();
+  await expect(confidence).toBeVisible();
 }
 
 test('after bedtime the night drop has only due reviews, then stops calmly when none are due', async ({ page }) => {

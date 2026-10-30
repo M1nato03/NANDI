@@ -116,12 +116,13 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     {nordicDue && <NordicCard busy={busy} answer={choice => { void act((repos, at) => repos.answerNordicCard(choice, at), choice === 'ready' ? 'Your next hinge session is a banded Nordic curl.' : 'Staying on slow single-leg RDL.'); }} />}
     <TaalWeekCard week={week} sheetWeeks={sheetWeeks} loadSheet={loadSheet} />
     <div className="actions"><button type="button" className="secondary" onClick={() => setPage('history')}>History</button><button type="button" className="secondary" onClick={() => setPage('settings')}>Settings</button></div>
-    <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p><div className="train-heatmap" aria-label="Last 28 days of training">{last28.map(key => {
-      const isTrained = completed.some(row => row.dayKey === key);
-      const isRest = ledger.some(row => row.id === `train-rest:${key}`);
-      const statusText = isTrained ? 'trained' : isRest ? 'rest' : 'no data';
-      return <span key={key} className={isTrained ? 'trained' : isRest ? 'rest' : ''} title={key} aria-label={`${key}: ${statusText}`}>{isTrained ? '·' : ''}</span>;
-    })}</div></div>
+    <div className="card"><h2>Consistency</h2><p>{thisWeek.length ? `${thisWeek.length} of ${target} sessions this week` : 'A fresh week. Start with one session.'}{consecutiveWeeks ? ` · ${consecutiveWeeks} steady ${consecutiveWeeks === 1 ? 'week' : 'weeks'}` : ''}</p>{(() => {
+      const days = last28.map(key => ({ key, trained: completed.some(row => row.dayKey === key), rest: ledger.some(row => row.id === `train-rest:${key}`) }));
+      const trained = days.filter(day => day.trained).length, rested = days.filter(day => !day.trained && day.rest).length;
+      return <><div className="train-heatmap" role="img" aria-label={`Last 28 days: ${trained} trained, ${rested} rest ${rested === 1 ? 'day' : 'days'}`}>{days.map(day =>
+        <span key={day.key} className={day.trained ? 'trained' : day.rest ? 'rest' : ''} title={day.key} aria-hidden="true">{day.trained ? '✓' : day.rest ? '–' : ''}</span>)}</div>
+        <p className="small train-heatmap-key" aria-hidden="true">✓ trained · – rest · blank: nothing logged</p></>;
+    })()}</div>
     <div className="card"><h2>Progression</h2>{program.track === 'bodyweight' && <ul className="train-metrics">{Object.entries(program.placement ?? {}).map(([pattern, rank]) => { const ladder = LADDERS[pattern]; const actual = state.find(row => row.id === ladder?.[rank - 1]?.exerciseId)?.ladderStep ?? rank; return <li key={pattern}><strong>{patternWords[pattern] ?? pattern.replaceAll('-', ' ')}</strong><span>Step {actual} of {ladder?.length ?? actual} · {pattern === 'hinge' && actual === SLOW_RANK && nordic.slow && !nordic.ready ? SLOW_NAME : EXERCISE_LIBRARY[ladder?.[actual - 1]?.exerciseId ?? '']?.name ?? 'Your current step'}</span></li>; })}</ul>}
       <h3>Recent bests</h3>{graph.length ? <ul className="train-metrics">{graph.slice(0, 5).map(pr => <li key={pr.id}>{EXERCISE_LIBRARY[pr.exerciseId]?.name ?? pr.exerciseId} · {bestWords[pr.kind] ?? 'best'} {pr.value}</li>)}</ul> : <p>Your best sets will appear as you train.</p>}
       {best.length > 1 && <div className="train-chart" role="img" aria-label={`Best-set trend for ${EXERCISE_LIBRARY[best[0]!.exerciseId]?.name ?? best[0]!.exerciseId}`}><svg viewBox="0 0 240 80" preserveAspectRatio="none"><polyline points={best.map((pr, i) => `${i * 240 / (best.length - 1)},${78 - (pr.value ?? 0) / max * 70}`).join(' ')} /></svg></div>}

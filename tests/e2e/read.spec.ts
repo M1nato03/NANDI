@@ -37,6 +37,12 @@ test('Read: the tabs are Plan, Read, Yatra and You; Continue sits above the fold
   await expect(page.locator('details.read-games')).toHaveCount(0);
 });
 
+/** A move inside the open page (no reload): the app routes on the hash, and the caller waits on the new screen. */
+async function openHash(page: Page, hash: string) {
+  await page.evaluate(next => { location.hash = `#${next}`; }, hash);
+  await expect(page).toHaveURL(new RegExp(`#${hash.replaceAll('/', '\\/')}$`));
+}
+
 test('old Learn and Mind links still open, now inside Read', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   for (const [from, to] of [['learn', 'read'], ['learn/drop', 'read/drop'], ['mind', 'yatra/mind'], ['mind/practice', 'yatra/mind/practice'], ['you/learn', 'read']] as const) {
@@ -80,7 +86,8 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   await seedTaughtTopics(page, ['history-civilisations', 'money-markets', 'psychology']);
   // Quiz checks, both chapters: the book is finished.
   for (const chapter of ['history-civilisations-ch1', 'history-civilisations-ch2']) {
-    await page.goto(`/?e2e#read/chapter/history-civilisations/${chapter}`);
+    await openHash(page, `read/chapter/history-civilisations/${chapter}`);
+    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
     for (let question = 0; question < 3; question++) await answerRight(page, 'history-civilisations');
   }
   await expect(page.locator('.read-done-card')).toContainText(`You finished ${pack('history-civilisations').body.book.title}.`);
@@ -88,13 +95,13 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   // Recall: Moti's haveli rebuilds the chapter's idea from its three pieces.
   const money = pack('money-markets').body.modules[0]!;
   const idea = money.concepts.find(concept => concept.recall)!;
-  await page.goto('/?e2e#read/chapter/money-markets/money-markets-ch1');
+  await openHash(page, 'read/chapter/money-markets/money-markets-ch1');
   await page.getByRole('button', { name: idea.title, exact: true }).click();
   for (const piece of idea.recall!.pieces) await page.locator('.haveli-tiles').getByRole('button', { name: piece, exact: true }).click();
   await page.getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   // Chiku: the chapter's scene (skipping it still finishes the chapter; nothing is lost).
-  await page.goto('/?e2e#read/chapter/psychology/psychology-ch1');
+  await openHash(page, 'read/chapter/psychology/psychology-ch1');
   await page.locator('.chiku-skip').click();
   await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:history-civilisations:history-civilisations-ch1', 'chapter:history-civilisations:history-civilisations-ch2', 'chapter:money-markets:money-markets-ch1', 'chapter:psychology:psychology-ch1']);
@@ -107,12 +114,11 @@ test('after bedtime no new chapter starts; the rest waits for tomorrow', async (
   // After shutdown the app opens on the night deck (once its settings load); leaving it for a chapter shows the
   // chapter waiting.
   await page.goto('/?e2e#night');
-  await expect(async () => {
-    const leave = page.getByRole('button', { name: 'Leave night deck' });
-    if (await leave.isVisible()) await leave.click();
-    await page.evaluate(() => { location.hash = '#read/chapter/how-things-work/how-things-work-ch1'; });
-    await expect(page.locator('.read-wait')).toContainText('The rest of this chapter opens tomorrow.', { timeout: 1500 });
-  }).toPass({ timeout: 20_000 });
+  // The deck is ready once its settings loaded; leaving it then holds, and the chapter opens from there.
+  await page.getByRole('button', { name: 'Leave night deck' }).click();
+  await expect(page).not.toHaveURL(/#night$/);
+  await openHash(page, 'read/chapter/how-things-work/how-things-work-ch1');
+  await expect(page.locator('.read-wait')).toContainText('The rest of this chapter opens tomorrow.');
   await expect(page.locator('.step-lesson')).toHaveCount(0);
 });
 

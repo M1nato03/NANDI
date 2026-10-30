@@ -9,6 +9,7 @@ import { keepScreenAwake } from '../../platform/awake';
 import { Cast } from '../cast/Cast';
 import { TrekScene } from './TrekScene';
 import { useYatra } from './Yatra';
+import { useModalFocus } from '../shell/useModalFocus';
 import './trek.css';
 import './yatra.css';
 
@@ -41,13 +42,18 @@ export function Calm() {
   const breath = readBreath(settings?.find(row => row.key === calmKeys.breath && !row.deleted)?.value);
   const prefs = readCalmPrefs(settings?.find(row => row.key === calmKeys.prefs && !row.deleted)?.value);
   const userSounds = useLiveQuery(() => calmSoundDb.sounds.orderBy('addedAt').toArray(), [], [] as CalmSoundRow[]);
-  const setPrefs = (change: Partial<CalmPrefs>) => void saveCalmSettings(db, { prefs: change }, stamp());
+  // A setting that could not be saved says so (a11y audit C1); the screen keeps working.
+  const [saveNote, setSaveNote] = useState('');
+  const saved = (write: Promise<unknown>) => void write.then(() => setSaveNote(''), () => setSaveNote('Could not save that setting. Try again.'));
+  const setPrefs = (change: Partial<CalmPrefs>) => saved(saveCalmSettings(db, { prefs: change }, stamp()));
   const [run, setRun] = useState<Run | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [touchedAt, setTouchedAt] = useState(0);
   const [done, setDone] = useState<number | null>(null);
   const [sheet, setSheet] = useState<'other' | CalmSoundRow | null>(null);
   const [soundNote, setSoundNote] = useState('');
+  // A sit whose row could not be saved: the screen leaves the sit and offers to save it again (a11y audit C1).
+  const [unsaved, setUnsaved] = useState<{ ran: Run; sat: number } | null>(null);
   const audio = useRef<CalmAudio | null>(null);
   const finishing = useRef(false);
   const rung = useRef({ bells: 0, line: 0 });
@@ -98,8 +104,13 @@ export function Calm() {
     if (counted) audio.current?.ring('end');
     audio.current?.finish();
     audio.current = null;
+    record(ran, sat);
+  };
+  const record = (ran: Run, sat: number) => {
     void saveCalmDone(db, { elapsedMs: sat, way: ran.way, breath: ran.breath, startedAt: ran.startedAt }, stamp()).then(() => {
-      setRun(null); setDone(counted ? sitMinutes(sat) : null); finishing.current = false;
+      setRun(null); setUnsaved(null); setDone(sitMinutes(sat) >= 1 ? sitMinutes(sat) : null); finishing.current = false;
+    }, () => {
+      setRun(null); setDone(null); setUnsaved({ ran, sat }); finishing.current = false;
     });
   };
   // The end, the interval bells and the scan's line ticks all follow the wall clock. A bell that came due while the
@@ -128,7 +139,7 @@ export function Calm() {
       mixer.play({ src: preset ? presetUrl(preset) : undefined, file: own?.blob, soundVolume: prefs.soundVolume, bellVolume: prefs.bellVolume });
       if (prefs.startBell) mixer.ring('start');
     }
-    setDone(null); setNow(at); setTouchedAt(at); setRun(ran);
+    setDone(null); setUnsaved(null); setNow(at); setTouchedAt(at); setRun(ran);
   };
   const stop = () => {
     if (!run) return;
@@ -143,7 +154,7 @@ export function Calm() {
     if (file.current) file.current.value = '';
   };
 
-  const setBreath = (change: Partial<Breath>) => void saveCalmSettings(db, { breath: { ...breath, ...change } }, stamp());
+  const setBreath = (change: Partial<Breath>) => saved(saveCalmSettings(db, { breath: { ...breath, ...change } }, stamp()));
   const shown = run ?? { way: prefs.way, breath, length: prefs.minutes, interval: prefs.interval, fade: prefs.fade };
   const faded = !!run && fadeApplies(run.way, run.length, run.fade) && elapsed >= FADE_AFTER_MS;
   const phase = run ? breathPhase(elapsed, run.breath) : 'out';
@@ -162,21 +173,23 @@ export function Calm() {
       {/* At night Kachhua sits at camp in the scene above, so the stage shows the guide only (one Kachhua a screen). */}
       {!yatra?.night && <Cast name="Kachhua" pose={pose} breathe={!!run && run.way === 'quiet'} size={run ? 140 : 88} title="Kachhua" />}
       {run ? <>
-        {run.way === 'paced' && <p className={`calm-phase${faded ? ' faded' : ''}`} aria-live="polite" aria-hidden={faded || undefined}>{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>}
+        {/* Not live: a breath-by-breath announcement would talk over the whole sit (a11y audit C11). */}
+        {run.way === 'paced' && <p className={`calm-phase${faded ? ' faded' : ''}`} aria-hidden={faded || undefined}>{phase === 'in' ? 'Breathe in' : 'Breathe out'}</p>}
         {run.way === 'scan' && <p className="calm-phase calm-line" aria-live="polite">{SCAN_LINES[scanLine(elapsed, run.length)]}</p>}
         {run.way === 'quiet' && <p className="calm-phase">Quiet sit</p>}
         <p className="calm-clock" aria-label={total === null ? 'Time sat' : 'Time left'}>{clock(left)}</p>
         {/* What is playing, so a quiet phone is not taken for a broken sound (item 213). */}
         {run.sound && <p className="calm-sound-name small">{run.sound}</p>}
         {total !== null && <div className="calm-progress" role="progressbar" aria-label="Time" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(elapsed / total * 100)}><span style={{ width: `${elapsed / total * 100}%` }} /></div>}
-      </> : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
+      </> : unsaved ? <div className="calm-unsaved" role="alert"><p className="calm-phase">Your sit could not be saved.</p><button type="button" onClick={() => { finishing.current = true; record(unsaved.ran, unsaved.sat); }}>Try saving again</button></div>
+        : <p className="calm-phase" role="status">{done !== null ? doneLine(done) : WAYS.find(way => way.id === prefs.way)!.line(breath)}</p>}
     </div>
     {run ? <button type="button" className="secondary" onClick={stop}>Stop</button> : <>
       {/* Spec 35 item 210: the setup fits one screen at 360x800: one segmented row, two sliding chip rows and a Start bar. */}
       <fieldset className="calm-ways"><legend className="calm-legend">How to sit</legend>
         {WAYS.map(way => <button type="button" key={way.id} className={prefs.way === way.id ? '' : 'secondary'} aria-pressed={prefs.way === way.id} onClick={() => setPrefs({ way: way.id })}>{way.short}</button>)}
       </fieldset>
-      <fieldset className="calm-set"><legend className="calm-legend">How long</legend><div className="calm-row" ref={lengths}>
+      <fieldset className="calm-set"><legend className="calm-legend">How long</legend><div className="calm-row calm-lengths" ref={lengths}>
         {CALM_MINUTES.chips.map(value => <button type="button" key={value} className={prefs.minutes === value ? '' : 'secondary'} aria-pressed={prefs.minutes === value} onClick={() => setPrefs({ minutes: value })}>{value} min</button>)}
         <button type="button" className={`calm-other${otherOn ? '' : ' secondary'}`} aria-pressed={otherOn} onClick={() => setSheet('other')}>{otherOn ? `Other · ${prefs.minutes === 'open' ? 'until I stop' : `${prefs.minutes} min`}` : 'Other'}</button>
       </div></fieldset>
@@ -190,6 +203,7 @@ export function Calm() {
         <input ref={file} type="file" accept="audio/*" hidden aria-label="Add your sound" onChange={event => void addSound(event.target.files?.[0])} />
       </div></fieldset>
       {(soundNote || userSounds.length > 0) && <p className="small calm-note" role={soundNote ? 'alert' : undefined}>{soundNote || 'Your sounds stay on this phone.'}</p>}
+      {saveNote && <p className="small calm-note" role="alert">{saveNote}</p>}
       <details className="card calm-settings"><summary>Breath, bells and sound</summary>
         {prefs.way === 'paced' && isLongSit(prefs.minutes) && <label className="toggle-row"><input type="checkbox" checked={prefs.fade} onChange={event => setPrefs({ fade: event.target.checked })} /> Let the guide fade after 3 minutes</label>}
         <div className="calm-breath">
@@ -211,7 +225,7 @@ export function Calm() {
       <span className="calm-dim-dot" aria-hidden="true" /><span className="calm-dim-time">{clock(left)}</span>
     </button>}
     {sheet === 'other' && <OtherSheet current={prefs.minutes} onPick={minutes => { setPrefs({ minutes }); setSheet(null); }} onClose={() => setSheet(null)} />}
-    {sheet && sheet !== 'other' && <SoundSheet row={sheet} onDone={removed => { if (removed && prefs.sound === `user:${sheet.id}`) setPrefs({ sound: 'none' }); setSheet(null); }} />}
+    {sheet && sheet !== 'other' && <SoundSheet row={sheet} onDone={removed => { if (removed && prefs.sound === `user:${sheet.id}`) setPrefs({ sound: 'none' }); setSheet(null); }} onClose={() => setSheet(null)} />}
   </section>;
 }
 
@@ -220,7 +234,8 @@ function OtherSheet({ current, onPick, onClose }: { current: CalmLength; onPick:
   const [custom, setCustom] = useState(typeof current === 'number' ? current : 25);
   const [low, high] = CALM_MINUTES.custom;
   const valid = Number.isInteger(custom) && custom >= low && custom <= high;
-  return <div className="sheet-backdrop" onClick={onClose}><section className="task-sheet calm-other-sheet" role="dialog" aria-modal="true" aria-label="Other lengths" onClick={event => event.stopPropagation()}>
+  const focusRef = useModalFocus<HTMLElement>(onClose);
+  return <div className="sheet-backdrop" onClick={onClose}><section ref={focusRef} tabIndex={-1} className="task-sheet calm-other-sheet" role="dialog" aria-modal="true" aria-label="Other lengths" onClick={event => event.stopPropagation()}>
     <h2>Other lengths</h2>
     <div className="calm-choices">{CALM_MINUTES.other.map(value => <button type="button" key={value} className={current === value ? '' : 'secondary'} onClick={() => onPick(value)}>{value} min</button>)}</div>
     <label>Custom (minutes, {low} to {high})<input type="number" inputMode="numeric" min={low} max={high} step={1} value={Number.isNaN(custom) ? '' : custom} onChange={event => setCustom(event.target.valueAsNumber)} /></label>
@@ -232,15 +247,19 @@ function OtherSheet({ current, onPick, onClose }: { current: CalmLength; onPick:
 }
 
 /** Rename or remove one of your sounds. */
-function SoundSheet({ row, onDone }: { row: CalmSoundRow; onDone: (removed: boolean) => void }) {
+function SoundSheet({ row, onDone, onClose }: { row: CalmSoundRow; onDone: (removed: boolean) => void; onClose: () => void }) {
   const [name, setName] = useState(row.name);
-  return <div className="sheet-backdrop" onClick={() => onDone(false)}><section className="task-sheet" role="dialog" aria-modal="true" aria-label={`Your sound ${row.name}`} onClick={event => event.stopPropagation()}>
+  const [note, setNote] = useState('');
+  const focusRef = useModalFocus<HTMLElement>(onClose);
+  const failed = () => setNote('Could not change your sound. Try again.');
+  return <div className="sheet-backdrop" onClick={onClose}><section ref={focusRef} tabIndex={-1} className="task-sheet" role="dialog" aria-modal="true" aria-label={`Your sound ${row.name}`} onClick={event => event.stopPropagation()}>
     <h2>Your sound</h2>
     <label>Name <input value={name} maxLength={24} onChange={event => setName(event.target.value)} /></label>
     <p className="small">{(row.size / 1048576).toFixed(1)} MB · kept on this phone, not in backups</p>
     <div className="sheet-actions">
-      <button type="button" onClick={() => void renameUserSound(row.id, name).then(() => onDone(false))}>Save</button>
-      <button type="button" className="secondary" onClick={() => void removeUserSound(row.id).then(() => onDone(true))}>Remove</button>
+      <button type="button" onClick={() => void renameUserSound(row.id, name).then(() => onDone(false), failed)}>Save</button>
+      <button type="button" className="secondary" onClick={() => void removeUserSound(row.id).then(() => onDone(true), failed)}>Remove</button>
     </div>
+    {note && <p className="small" role="alert">{note}</p>}
   </section></div>;
 }

@@ -179,6 +179,27 @@ export function AppShell() {
     check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
     return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
   }, []);
+  // a11y C8: after a route change (Back too), focus moves to the new screen's heading, or to main while it loads, so
+  // reading starts at the new screen. Nothing moves if the person already focused something else or a dialog is open.
+  const firstPath = useRef(true);
+  useEffect(() => {
+    if (firstPath.current) { firstPath.current = false; return; }
+    const before = document.activeElement;
+    let tries = 0, frame = 0;
+    const place = () => {
+      const now = document.activeElement;
+      if ((now !== before && now !== document.body) || document.querySelector('[aria-modal="true"]')) return;
+      const main = document.getElementById('main');
+      const heading = main?.querySelector<HTMLElement>('h1');
+      if (!heading && tries++ < 30) { frame = requestAnimationFrame(place); return; }
+      const target = heading ?? main;
+      if (!target) return;
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    };
+    frame = requestAnimationFrame(place);
+    return () => cancelAnimationFrame(frame);
+  }, [path]);
   const tab = tabOf(path);
   const areaOverride = useAreaOverride();
   let screen;

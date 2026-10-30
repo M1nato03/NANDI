@@ -46,11 +46,17 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   // A chapter opened again after it was finished shows its done card; otherwise the reading comes first.
   const view: View = step === 'done' || (wasDone && step === null) ? 'done' : left > 0 ? (afterBedtime ? 'wait' : 'read') : 'check';
   const finishing = useRef(false);
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [playNote, setPlayNote] = useState('');
+  const saveDone = () => {
+    finishing.current = true;
+    setSaveFailed(false);
+    void saveChapterDone(db, topicId, moduleId, currentTime(), { rebuilt: rebuilt.current }).catch(() => { finishing.current = false; setSaveFailed(true); });
+  };
   useEffect(() => {
     if (view !== 'done' || wasDone || finishing.current) return;
-    finishing.current = true;
-    void saveChapterDone(db, topicId, moduleId, currentTime(), { rebuilt: rebuilt.current });
-  }, [view, wasDone, topicId, moduleId]);
+    saveDone();
+  }, [view, wasDone, topicId, moduleId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!pack || !module) return <section className="screen learn-screen"><h1>Chapter not found</h1><button type="button" onClick={() => go('read')}>Back to library</button></section>;
   if (!data) return <section className="screen learn-screen" role="status">Opening the chapter…</section>;
@@ -70,8 +76,8 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
       onRebuilt={async idea => { await saveHaveliRebuilt(db, idea.id, currentTime()); rebuilt.current = true; }}
       onLeave={() => rebuilt.current ? toDone() : go(`read/book/${topicId}`)} />;
     if (chiku?.chiku) return <section className="screen learn-screen">{head}<ChikuStage scene={chiku.chiku as ChikuScene} seed={`${chiku.id}:${dayKey(openedAt)}`}
-      onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.id, card, matched, deviceId, now: at })); }}
-      onDone={toDone} /></section>;
+      onPlayed={(card, matched) => { const at = currentTime(); void getOrCreateDeviceId(db, at).then(deviceId => saveChikuPlayed(db, { conceptId: chiku.id, card, matched, deviceId, now: at })).then(() => setPlayNote(''), () => setPlayNote('Could not save that play. The chapter still finishes.')); }}
+      onDone={toDone} />{playNote && <p className="small" role="alert">{playNote}</p>}</section>;
     return <section className="screen learn-screen"><header className="read-chapter-head"><p className="eyebrow">{title} · Chapter {index + 1}</p><h1>{module.title}</h1><p className="small read-check-label">Chapter check · three questions</p></header><LearnDrop key="check" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'check' }} onDone={toDone} /></section>;
   }
 
@@ -80,6 +86,13 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const following = nextChapter(pack, doneNow);
   const finishedBook = bookDone(pack, doneNow);
   const nextBook = finishedBook ? libraryOrder(topics).find(row => row !== pack && !bookDone(row, doneNow)) : undefined;
+  // Until the chapter's row is saved the card says so; it never shows "done" for a chapter that was not kept.
+  if (!wasDone && saveFailed) return <section className="screen learn-screen">{head}<div className="card read-done-card" role="alert">
+    <p>This chapter could not be saved on this phone.</p>
+    <button type="button" onClick={saveDone}>Try saving again</button>
+    <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>Back to the book</button>
+  </div></section>;
+  if (!wasDone) return <section className="screen learn-screen">{head}<div className="card read-done-card" role="status"><p>Saving the chapter…</p></div></section>;
   return <section className="screen learn-screen">
     <div className="card read-done-card" role="status">
       <Cast name="Chiku" pose="cheer" size={96} moment="hop" at={1} title="Chiku cheering" />

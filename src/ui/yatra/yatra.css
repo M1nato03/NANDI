@@ -47,6 +47,8 @@
 .calm-row::-webkit-scrollbar { display: none; }
 .calm-row > button, .calm-row .calm-own { flex: none; white-space: nowrap; }
 .calm-row button { min-height: 44px; }
+/* Every length shows at once: the row wraps instead of sliding (a11y batch 1). */
+.calm-row.calm-lengths { flex-wrap: wrap; margin: 0; padding: 0 0 4px; overflow: visible; }
 .calm-start-bar { position: sticky; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 4; margin: 12px -16px 0; padding: 8px 16px 6px; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .calm-start-bar .calm-start { width: 100%; }
 .calm-under { margin: 4px 0 0; text-align: center; color: var(--ink-2); }
@@ -57,7 +59,7 @@
 .calm-screen .calm-settings input[type='range'] { width: 100%; min-height: 44px; accent-color: var(--accent); }
 .calm-other-sheet input[type='number'] { width: 100%; }
 /* The dim screen: near-black, a small breathing dot and the time left. A tap wakes it. */
-.calm-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 18px; width: 100%; min-height: 100%; margin: 0; border: 0; border-radius: 0; background: #050608; color: #6b7080; box-shadow: none; }
+.calm-dim { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 18px; width: 100%; min-height: 100%; margin: 0; border: 0; border-radius: 0; background: #050608; color: #7a7f8f; box-shadow: none; }
 .calm-dim:hover, .calm-dim:active { background: #050608; transform: none; }
 .calm-dim-dot { width: 14px; height: 14px; border-radius: 50%; background: #8e93a6; animation: calm-dot 10s ease-in-out infinite; }
 .calm-dim-time { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 400; }

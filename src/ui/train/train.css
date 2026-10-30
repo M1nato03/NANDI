@@ -87,6 +87,10 @@
 .train-heatmap span.trained { background: var(--area-move); }
 /* A rest-day check is drawn too, as a ring: rest is part of the week, not a gap (batch 5). */
 .train-heatmap span.rest { border: 2px solid var(--area-move); background: transparent; }
+.train-heatmap span { display: grid; place-items: center; font-size: 13px; line-height: 1; }
+.train-heatmap span.trained { color: var(--on-accent, #fff); }
+.train-heatmap span.rest { color: var(--ink); }
+.train-heatmap-key { margin: 8px 0 0; }
 .train-chart { border-radius: var(--radius-row); background: var(--surface-2); }
 .train-chart polyline { stroke: var(--area-move); }
 .train-exercise { --area-color: var(--area-move); }

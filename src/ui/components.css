@@ -48,5 +48,7 @@ progress::-moz-progress-bar { background: var(--area-color, var(--teal)); border
 .ui-section-header .eyebrow { display: block; margin-bottom: 4px; }
 .ui-section-header h2 { margin: 0; font: 700 19px/24px 'Bricolage Grotesque', sans-serif; }
 :is(button, a, input, select, textarea, summary, .ui-toggle):focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+/* a11y C8: a heading or main that takes focus after a route change shows no ring unless the keyboard brought it there. */
+#main [tabindex="-1"]:focus:not(:focus-visible), #main:focus:not(:focus-visible) { outline: none; }
 @media (prefers-reduced-motion: reduce) { .ui-progress > span, .ui-toggle::after, button, .ui-button { transition: none; animation: none; } }
 :root[data-motion='reduce'] .ui-progress > span, :root[data-motion='reduce'] .ui-toggle::after, :root[data-motion='reduce'] button, :root[data-motion='reduce'] .ui-button { transition: none; animation: none; }

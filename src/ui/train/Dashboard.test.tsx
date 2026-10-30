@@ -33,13 +33,11 @@ describe('Dashboard', () => {
     
     render(<Dashboard data={data} page="today" setPage={() => {}} busy={false} message="" act={vi.fn()} />);
     
-    const trainedSpan = screen.getByLabelText(`${today}: trained`);
-    expect(trainedSpan).toBeDefined();
-    expect(trainedSpan.textContent).toBe('·');
-
-    const restSpan = screen.getByLabelText(`${yKey}: rest`);
-    expect(restSpan).toBeDefined();
-    expect(restSpan.textContent).toBe('');
+    // a11y C13: one label for the whole map, and each day's state as a visible mark with a key, not colour alone.
+    const map = screen.getByRole('img', { name: 'Last 28 days: 1 trained, 1 rest day' });
+    expect(map.querySelector(`[title="${today}"]`)?.textContent).toBe('✓');
+    expect(map.querySelector(`[title="${yKey}"]`)?.textContent).toBe('–');
+    expect(screen.getByText('✓ trained · – rest · blank: nothing logged')).toBeDefined();
   });
 });
 
