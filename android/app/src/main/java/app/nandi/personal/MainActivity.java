@@ -10,6 +10,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(NightPausePlugin.class);
         registerPlugin(UpdaterPlugin.class);
         registerPlugin(WidgetPlugin.class);
+        registerPlugin(CalmPlaybackPlugin.class);
         super.onCreate(savedInstanceState);
     }
 
