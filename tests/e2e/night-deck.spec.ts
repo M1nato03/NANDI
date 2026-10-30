@@ -80,7 +80,7 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await words.getByRole('button', { name: 'Park', exact: true }).click();
   await expect(words.getByRole('list', { name: 'Parked for tomorrow' }).getByRole('listitem')).toHaveText(['Open the notes', 'Email Riya the slides']);
   await words.getByRole('button', { name: 'That’s all' }).click();
-  await expect(words).toContainText('It’s written down. It can wait till morning.');
+  await expect(words).toContainText('It’s written down: Plan · Tomorrow, 9:00. It can wait till morning.');
   await expect(words.getByRole('textbox')).toHaveCount(0);
 
   await deck.getByRole('button', { name: 'Next', exact: true }).click();
@@ -172,7 +172,7 @@ test('Park it: up to five lines, then it is written down, and they wait in tomor
     await expect(words.getByRole('list', { name: 'Parked for tomorrow' })).toContainText(line);
   }
   // The fifth line closes it: no sixth line, and no XP for writing tasks down.
-  await expect(words).toContainText('It’s written down. It can wait till morning.');
+  await expect(words).toContainText('It’s written down: Plan · Tomorrow, 9:00. It can wait till morning.');
   await expect(words.getByRole('textbox')).toHaveCount(0);
   await page.goto('/#plan');
   const tomorrow = page.getByRole('region', { name: 'Tomorrow', exact: true });

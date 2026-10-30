@@ -70,7 +70,7 @@ function ParkTomorrow({ tomorrow, board }: { tomorrow: string; board: ReturnType
   };
   return <div className="deck-end night-park"><p><strong>Park tomorrow</strong></p>
     {parked.length > 0 && <ol className="night-parked" aria-label="Parked for tomorrow">{parked.map(row => <li key={row.id}>{row.title}</li>)}</ol>}
-    {finished || full ? <p className="night-parked-done">It’s written down. It can wait till morning.</p> : <>
+    {finished || full ? <p className="night-parked-done">It’s written down: Plan · Tomorrow, 9:00. It can wait till morning.</p> : <>
       <form className="deck-add" onSubmit={event => void park(event)}><label htmlFor="night-park">{parked.length ? 'Another line' : 'Write it so tomorrow-you knows the first move'}</label><input id="night-park" value={title} onChange={event => setTitle(event.target.value)} maxLength={160} placeholder={parked.length ? undefined : 'Email Riya the slides'} required /><button type="submit" disabled={board.busy}>Park</button></form>
       <p className="small">Up to {PARK_LINES} lines, about 3 minutes.</p>
       {parked.length > 0 && <button type="button" className="text-button" onClick={() => setFinished(true)}>That’s all</button>}
