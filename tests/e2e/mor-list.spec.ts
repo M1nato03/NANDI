@@ -185,3 +185,13 @@ test('any later write on Plan ends the Undo: adding a task with details clears i
   await expect(toast).toHaveCount(0);
   await expect(taskRow(page, 'Tomorrow', 'Alpha')).toBeVisible();
 });
+
+test('the focus screen with nothing due says so and adds a task in place, never "Focus complete."', async ({ page }) => {
+  await page.goto('/#plan/focus');
+  await expect(page.getByRole('heading', { name: 'Nothing due right now.' })).toBeVisible();
+  await expect(page.getByText('Focus complete.')).toHaveCount(0);
+  await page.locator('#focus-add').fill('Write the report');
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await expect(page.getByText('Write the report')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Start focus' })).toBeVisible();
+});

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { evaluateBodyweightPlacement, getBodyweightPlacementStartStep, LADDERS, EXERCISE_LIBRARY, type EquipmentSetting, type LadderPattern, type Track } from '../../core/train';
 import type { Onboarding as OnboardingResult } from '../../data/repos/train';
 import { ExerciseFigure } from './ExerciseFigure';
@@ -11,7 +11,7 @@ const gymChecks = [['goblet-squat', 'Squat'], ['db-bench', 'Push'], ['seated-cab
 const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const initialEquipment: EquipmentSetting = { gymAccess: false, dumbbells: false, barbell: null, smallestPlate: null, resistanceBand: false, pullUpBar: false, sturdyAnchor: false };
 
-export function Onboarding({ save, startEasy, busy }: { save: (result: OnboardingResult) => void; startEasy?: (result: OnboardingResult) => void; busy: boolean }) {
+export function Onboarding({ save, startEasy, busy, autoEasy = false }: { save: (result: OnboardingResult) => void; startEasy?: (result: OnboardingResult) => void; busy: boolean; autoEasy?: boolean }) {
   const [stage, setStage] = useState<'setup' | 'placement'>('setup');
   const [track, setTrack] = useState<Track>('bodyweight');
   const [equipment, setEquipment] = useState(initialEquipment);
@@ -30,6 +30,14 @@ export function Onboarding({ save, startEasy, busy }: { save: (result: Onboardin
   const toggle = (key: keyof EquipmentSetting) => setEquipment(old => ({ ...old, [key]: !old[key] }));
   const startingLoads = Object.fromEntries(Object.entries(loads).map(([id, value]) => [id, Number(value)]).filter(([, kg]) => Number(kg) > 0));
   const result = { track, equipment, days, weeklyTarget: target, restDay, heatModeEnabled: hot, placement, ...(track === 'gym' ? { startingLoads } : {}) };
+  const easy = () => (startEasy ?? save)({ ...result, track: 'bodyweight', equipment: initialEquipment, placement: Object.fromEntries(patterns.map(name => [name, 1])) });
+  // Welcome's "Start an easy first workout" (yatra/train/easy) means it: start the easy session, not the setup page.
+  const autoStarted = useRef(false);
+  useEffect(() => {
+    if (!autoEasy || autoStarted.current) return;
+    autoStarted.current = true;
+    easy();
+  }, [autoEasy]); // eslint-disable-line react-hooks/exhaustive-deps
   function record() {
     if (!pattern) return;
     const next = [...tests, { reps, stepRank: current }];
@@ -46,7 +54,7 @@ export function Onboarding({ save, startEasy, busy }: { save: (result: Onboardin
     {stage === 'setup' ? <>
       {/* Spec 18: a new person can start without the 10-minute test; the ladders move them up as reps get easy. */}
       <div className="card train-easy"><h2>New to training?</h2><p>Skip the test and start on the easiest step of every move. Each move steps up once your reps get easy.</p>
-        <button type="button" disabled={busy} onClick={() => (startEasy ?? save)({ ...result, track: 'bodyweight', equipment: initialEquipment, placement: Object.fromEntries(patterns.map(name => [name, 1])) })}>Start easy, skip the test</button></div>
+        <button type="button" disabled={busy} onClick={easy}>Start easy, skip the test</button></div>
       <div className="card"><h2>Set your starting line</h2><p>General fitness information, not medical advice. Start easy. Clean reps count.</p>
         <label>Track <select aria-label="Training track" value={track} onChange={event => setTrack(event.target.value as Track)}><option value="bodyweight">Hostel Bodyweight</option><option value="gym">Gym Foundations</option></select></label>
         {track === 'gym' && <p>Your first session is a light load check. Start very light. Find a load for 12 clean reps, adding only your smallest available step. Use that load for the first two sessions.</p>}

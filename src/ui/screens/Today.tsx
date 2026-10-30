@@ -13,6 +13,7 @@ import '../tasks/tasks.css';
 
 export function Today() {
   const board = useTaskBoard();
+  const [newTitle, setNewTitle] = useState('');
   const rewardSettings = useLiveQuery(() => db.settings.where('key').anyOf(['planner.reward', 'planner.rewardEnabled']).toArray(), []) ?? [];
   const awaySettings = useLiveQuery(() => db.settings.where('key').equals('economy.away').toArray(), []) ?? [];
   const awayToday = isAway(awaySettings, dayKey(board.now));
@@ -57,7 +58,7 @@ export function Today() {
       <div className="now-actions">{!taskFocus ? <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.startFocus(task.id, now, cyclePreset), 'Focus started.')}>Start focus</button> : isFocusRunning(taskFocus) ? <button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.pauseFocus(taskFocus.id, now), 'Focus paused.')}>Pause</button> : <button type="button" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.resumeFocus(taskFocus.id, now), 'Focus resumed.')}>Resume</button>}
         {taskFocus && phase?.phase === 'work' && <button type="button" className="secondary" disabled={board.busy} onClick={() => void board.act((repos, now) => repos.extendFocus(taskFocus.id, now), 'Focus extended by 10 min.')}>+10 min</button>}
         <button type="button" className="secondary" disabled={board.busy} onClick={() => void finish()}>Finish</button><button type="button" className="text-button" onClick={() => setMoving(task)}>Move in Plan</button></div>
-    </> : <><h2>Focus complete.</h2><p>Choose another step in Plan when you are ready.</p><button type="button" onClick={() => go('plan')}>Open Plan</button></>}</section>
+    </> : <><h2>Nothing due right now.</h2><p>Add one, then start its focus here.</p><form className="deck-add" onSubmit={event => { event.preventDefault(); const name = newTitle.trim(); if (name) void board.act((repos, now) => repos.addToList(name, now), 'Added to Today.').then(ok => { if (ok) setNewTitle(''); }); }}><label htmlFor="focus-add">Add a task</label><input id="focus-add" value={newTitle} onChange={event => setNewTitle(event.target.value)} maxLength={160} required /><button type="submit" disabled={board.busy}>Add</button></form></>}</section>
     {moving && <PostponeSheet key={moving.id} task={moving} run={board.act} close={() => setMoving(null)} />}
   </section>;
 }

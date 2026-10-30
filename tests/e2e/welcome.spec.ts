@@ -47,7 +47,7 @@ test('a fresh install picks one goal and lands in its first lesson, with no topi
   await expect(page.getByRole('dialog', { name: 'Welcome to NANDI' })).toHaveCount(0);
 });
 
-test("Sharpen my mind opens today's board, and Get fit can start easy without the test", async ({ page }) => {
+test("Sharpen my mind opens today's board, and Get fit starts the easy first workout in one tap", async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00'));
   await page.goto('/?e2e&welcome');
   let welcome = await hello(page);
@@ -60,8 +60,7 @@ test("Sharpen my mind opens today's board, and Get fit can start easy without th
   welcome = await hello(page);
   await welcome.getByRole('button', { name: 'Get fit' }).click();
   await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
-  await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
-  // Straight into the first workout, on the easiest step of each move.
+  // Straight into the first workout, on the easiest step of each move: no setup page and no second tap.
   await expect(page).toHaveURL(/#yatra\/train\/workout$/);
   await expect(page.getByText('Current exercise')).toBeVisible();
 });

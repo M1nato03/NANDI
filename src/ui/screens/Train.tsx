@@ -42,7 +42,7 @@ export function Train({ entry }: { entry?: string }) {
   const bedtime = data.bedtime && !data.bedtime.deleted && typeof data.bedtime.value === 'string' ? data.bedtime.value : undefined;
   // Spec 18: "Start easy" goes straight into the first workout on the easiest step of every move.
   const startEasy = (result: OnboardingResult) => { void act(async (repos, now) => { await repos.completeOnboarding(result, now); await repos.startSession(now, { readiness: 'unanswered:unanswered' }); }, 'Your first easy workout is ready.').then(ok => { if (ok) go('train/workout'); }); };
-  if (!program) return <section className="screen"><Onboarding busy={busy} startEasy={startEasy} save={(result: OnboardingResult) => { void act((repos, now) => repos.completeOnboarding(result, now), 'Assessment saved. Your first session is ready.'); }} />{message && <p role="status">{message}</p>}</section>;
+  if (!program) return <section className="screen"><Onboarding busy={busy} startEasy={startEasy} autoEasy={entry === 'easy'} save={(result: OnboardingResult) => { void act((repos, now) => repos.completeOnboarding(result, now), 'Assessment saved. Your first session is ready.'); }} />{message && <p role="status">{message}</p>}</section>;
   const active = sessions.find(row => row.status === 'active');
   if (active && entry === 'workout') return <section className="screen"><Workout session={active} sets={sets.filter(set => set.sessionId === active.id)} state={state} equipment={program.equipment!} busy={busy} message={message}
     log={(exerciseId, slot, reps, loadKg, type, confirmedJump) => logSet(active.id, exerciseId, slot, reps, loadKg, type, confirmedJump)}

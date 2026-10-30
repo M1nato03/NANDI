@@ -485,6 +485,24 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'night-deck');
   });
 
+  test('small fixes', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
+    // The focus screen with nothing due.
+    await page.goto('/?e2e#plan/focus');
+    await expect(page.getByRole('heading', { name: 'Nothing due right now.' })).toBeVisible();
+    await shot(page, 'fix-1-focus-nothing-due');
+    // Welcome, Get fit: straight into the easy first workout.
+    await page.goto('/?e2e&welcome');
+    const welcome = page.getByRole('dialog', { name: 'Welcome to NANDI' });
+    await welcome.getByLabel("I'm 18 or older.").check();
+    await welcome.getByRole('button', { name: "Let's start" }).click();
+    await welcome.getByRole('button', { name: 'Get fit' }).click();
+    await welcome.getByRole('button', { name: 'Start an easy first workout' }).click();
+    await expect(page).toHaveURL(/#yatra\/train\/workout$/);
+    await expect(page.getByText('Current exercise')).toBeVisible();
+    await shot(page, 'fix-2-get-fit-workout', false);
+  });
+
   test('park it', async ({ page }) => {
     // A moving clock, so the two lines are parked a moment apart and keep their order.
     await page.clock.install({ time: new Date('2026-10-26T22:30:00') });
