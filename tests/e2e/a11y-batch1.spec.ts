@@ -93,3 +93,17 @@ test('a new screen takes focus at its heading; each task\'s Done names its task;
   await page.goto('/?e2e#plan');
   await expect(page.getByRole('button', { name: 'Done: Email Riya the slides' })).toBeVisible();
 });
+
+test('Calm opens fully from Yatra (heading, lengths, Start); the Sound row can scroll clear of the Start bar', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await page.goto('/#yatra');
+  await page.getByRole('button', { name: 'Calm: Breathe with Kachhua' }).click();
+  await expect(page.getByRole('heading', { name: 'Breathe with Kachhua', level: 1 })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'How long' })).toBeVisible();
+  await expect(page.locator('.calm-start')).toBeVisible();
+  // At the bottom of the page the Sound row sits fully above the sticky Start bar.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  const sound = await page.getByRole('group', { name: 'Sound' }).boundingBox();
+  const bar = await page.locator('.calm-start-bar').boundingBox();
+  expect(sound && bar && sound.y + sound.height <= bar.y).toBe(true);
+});

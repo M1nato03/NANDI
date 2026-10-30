@@ -617,6 +617,8 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'a11y-c8-keyboard-ring', false);
     // C1: a Calm sit that could not be saved, and C11-wrap: every length on screen.
     await page.goto('/#yatra/calm');
+    await expect(page.getByRole('group', { name: 'How long' })).toBeVisible();
+    await expect(page.locator('.calm-start')).toBeVisible();
     await shot(page, 'a11y-calm-lengths-wrap', false);
     await page.getByRole('button', { name: 'Quiet', exact: true }).click();
     await page.locator('.calm-start').click();
