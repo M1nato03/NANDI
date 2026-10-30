@@ -460,17 +460,6 @@ public class NightPausePlugin extends Plugin {
         catch (android.content.ActivityNotFoundException error) { call.reject("No home screen", error); }
     }
 
-    /** Spec 39: the phone's default home screen, which never stops a Pause card act (empty when there is none). */
-    @PluginMethod
-    public void homeLauncher(PluginCall call) {
-        Intent home = new Intent(Intent.ACTION_MAIN);
-        home.addCategory(Intent.CATEGORY_HOME);
-        android.content.pm.ResolveInfo info = getContext().getPackageManager().resolveActivity(home, PackageManager.MATCH_DEFAULT_ONLY);
-        JSObject result = new JSObject();
-        result.put("packageName", info == null || info.activityInfo == null ? "" : info.activityInfo.packageName);
-        call.resolve(result);
-    }
-
     /** Spec 39 "Add another app": every app with a launcher icon (the manifest's <queries> lets NANDI see them). */
     @PluginMethod
     public void launcherApps(PluginCall call) {

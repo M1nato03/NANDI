@@ -2,12 +2,13 @@ import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
-import { PAUSE_KEYS, readPauseCard } from '../../core/pauseCard';
+import { PAUSE_KEYS, PAUSE_LIMIT_DEFAULT, readPauseCard } from '../../core/pauseCard';
 import { dayBounds, daysToRead, keptDays, LEAD_MS, opensDay, OPENS_KEY, readOpensLog } from '../../core/pauseOpens';
 import type { GuardEvent } from '../../core/focusGuard';
 import { readUsageEvents } from '../../platform/nightPause';
 
-export type PauseOutcome = 'act_done' | 'backed_out' | 'opened_anyway';
+/** Spec 39b adds 'in_app': the person went on to the next thing in NANDI instead (it pays nothing on the card). */
+export type PauseOutcome = 'act_done' | 'backed_out' | 'opened_anyway' | 'in_app';
 
 /**
  * Spec 39: one ledger row per time the Pause card was answered (an attempt): the app's package, the time and the
@@ -25,6 +26,19 @@ export async function recordPauseAttempt(db: NandiDb, packageName: string, outco
 }
 
 /** Saves the Pause card's settings in one go; `undefined` leaves a key as it is. */
+/**
+ * Spec 39b, once: a Pause card set up on "every open" (the old default) moves to "after 10 min a day", and Plan →
+ * Pause card says so in one line until the next save there. The old day pause and anything set later are left alone.
+ */
+export async function switchPauseToTen(db: NandiDb, now: number): Promise<boolean> {
+  const settings = await db.settings.toArray();
+  const card = readPauseCard(settings, dayKey(now));
+  const stored = (key: string) => settings.find(row => row.key === key && !row.deleted)?.value;
+  if (stored(PAUSE_KEYS.modeNote) !== undefined || !card.on || card.legacy || stored('night.pause.dayMode') !== 'open') return false;
+  await savePauseSettings(db, { mode: 'limit', limitMin: PAUSE_LIMIT_DEFAULT, modeNote: 'shown' }, now);
+  return true;
+}
+
 export async function savePauseSettings(db: NandiDb, change: Partial<Record<keyof typeof PAUSE_KEYS | 'apps' | 'mode' | 'limitMin', unknown>>, now: number): Promise<void> {
   const deviceId = await getOrCreateDeviceId(db, now);
   const keys: Record<string, string> = { ...PAUSE_KEYS, apps: 'night.pause.apps', mode: 'night.pause.dayMode', limitMin: 'night.pause.dayLimitMin' };

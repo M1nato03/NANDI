@@ -8,6 +8,8 @@
 .pause-picks { display: grid; gap: 10px; }
 .pause-exits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
+/* Spec 39b: three equal ways on from the card. */
+.pause-exits-3 { grid-template-columns: repeat(3, 1fr); }
 .pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
 .pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
 .pause-demo { margin: 0; text-align: center; }

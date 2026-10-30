@@ -6,8 +6,13 @@ const today = '2026-11-03';
 const settings = (values: Record<string, unknown>): SettingRow[] => Object.entries(values).map(([key, value]) => ({ key, value, updatedAt: 1, deleted: 0, deviceId: 't' }));
 
 describe('spec 39 the Pause card settings', () => {
-  it('is off for someone new, with nothing set', () => {
-    expect(readPauseCard([], today)).toMatchObject({ on: false, legacy: false, act: null, window: null, grace: 10, mode: 'open' });
+  it('is off for someone new, with nothing set; spec 39b: it would show after 10 min a day', () => {
+    expect(readPauseCard([], today)).toMatchObject({ on: false, legacy: false, act: null, window: null, grace: 10, mode: 'limit', limitMin: 10, switchedTo10: false });
+  });
+  it('spec 39b: "every open" stays a choice, and a kept old day pause keeps its 30 minutes', () => {
+    expect(readPauseCard(settings({ 'pause.card.on': true, 'night.pause.dayMode': 'open' }), today)).toMatchObject({ mode: 'open' });
+    expect(readPauseCard(settings({ 'night.pause.enabled': true }), today)).toMatchObject({ legacy: true, mode: 'limit', limitMin: 30 });
+    expect(readPauseCard(settings({ 'pause.card.on': true, 'night.pause.dayMode': 'limit', 'night.pause.dayLimitMin': 10, 'pause.modeNote': 'shown' }), today)).toMatchObject({ limitMin: 10, switchedTo10: true });
   });
   it('keeps the old day pause on (migration): its apps and mode stay, and it asks once for a line', () => {
     const card = readPauseCard(settings({ 'night.pause.enabled': true, 'night.pause.dayMode': 'limit', 'night.pause.dayLimitMin': 30, 'night.pause.apps': ['com.instagram.android'] }), today);

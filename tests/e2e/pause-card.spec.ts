@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Spec 39, the Pause card. The phone's side (which app came to the front, Home, opening the app) is the e2e stand-in
+// Spec 39 and 39b, the Pause card. The phone's side (Home, opening the app, the usage log) is the e2e stand-in
 // in platform/nightPause.ts: sessionStorage 'nandi.e2ePause' says what the phone reports and logs what NANDI asked.
 const NOON = new Date('2026-11-04T12:00:00');
 const card = (page: Page) => page.getByRole('dialog', { name: 'Pause card' });
@@ -28,17 +28,6 @@ async function phoneOpens(page: Page, packageName = 'com.instagram.android') {
   }, packageName);
   await expect(card(page)).toBeVisible();
 }
-/** The screen goes off or another app opens, then NANDI is back in front; `front` is what the usage log saw meanwhile. */
-async function away(page: Page, front: string[]) {
-  await page.evaluate(apps => {
-    const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}');
-    sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, frontApps: apps }));
-    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
-    document.dispatchEvent(new Event('visibilitychange'));
-    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
-    document.dispatchEvent(new Event('visibilitychange'));
-  }, front);
-}
 const did = (page: Page) => page.evaluate(() => (JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}') as { did?: string[] }).did ?? []);
 const attempts = (page: Page) => page.evaluate(async () => {
   const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
@@ -63,7 +52,9 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await page.getByLabel("If I open Instagram, I'll … first.").fill('do 10 squats');
   await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByLabel('All day until bedtime')).toBeChecked();
-  await expect(page.getByLabel('Every open')).toBeChecked();
+  // Spec 39b: the card shows after 10 min a day unless "Every open" is picked.
+  await expect(page.getByLabel('Every open')).not.toBeChecked();
+  await expect(page.getByLabel('Minutes a day')).toHaveValue('10');
   await page.getByRole('button', { name: 'Next' }).click();
   await page.getByRole('button', { name: 'See it once' }).click();
   await expect(card(page)).toContainText("If I open Instagram, I'll do 10 squats first.");
@@ -76,38 +67,77 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await expect(page.getByRole('button', { name: /^Pause card/ })).toContainText('On · Instagram');
 });
 
-test('the card: do my 2-min thing, Done only when the 2 minutes are up, +2 XP; the phone can go down, but another app stops it', async ({ page }) => {
+test('spec 39b: "I did it" shows from the start of the act (the clock is a guide), pays +2 once, and the card offers three equal ways on', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   const before = await totalXp(page);
   await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
   await phoneOpens(page);
-  await expect(card(page)).toContainText('Instagram');
-  await expect(card(page)).toContainText('Your plan:');
   await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
-  // Opening another app mid-act stops it (the phone's usage log says WhatsApp came to the front).
-  await card(page).getByRole('button', { name: 'Do my 2-min thing' }).click();
-  await away(page, ['com.whatsapp']);
-  await expect(card(page)).toContainText('The 2 minutes stopped when another app opened.');
-  await expect(card(page).getByRole('button', { name: 'Do my 2-min thing' })).toBeVisible();
-  // With the screen off (the phone down for the squats) it keeps counting, and Done shows at 0:00.
-  await page.evaluate(() => { const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}'); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, frontApps: [] })); });
+  for (const name of ['Do it in NANDI', 'Not now', 'Open Instagram anyway']) await expect(card(page).getByRole('button', { name })).toBeVisible();
   await card(page).getByRole('button', { name: 'Do my 2-min thing' }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
-  await expect(card(page)).toContainText('Put the phone down or keep NANDI open; opening another app stops it.');
-  await expect(card(page).getByRole('button', { name: 'Done' })).toHaveCount(0);
-  await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
-  await page.clock.fastForward(121_000);
-  // Home pressed, then the phone put down: the home screen is in the log, and it does not stop the act.
-  await page.evaluate(() => { const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}'); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, launcher: 'com.sec.android.app.launcher' })); });
-  await away(page, ['app.nandi.personal', 'com.sec.android.app.launcher', 'com.android.systemui']);
-  await expect(card(page).getByRole('timer')).toHaveText('0:00');
-  await card(page).getByRole('button', { name: 'Done' }).click();
+  await expect(card(page).getByRole('button', { name: 'I did it' })).toBeVisible();
+  await expect(card(page)).not.toContainText('Done shows when');
+  await page.clock.fastForward(20_000); // a glass of water takes 20 seconds
+  await card(page).getByRole('button', { name: 'I did it' }).click();
   await expect(card(page)).toContainText('+2 XP · 2 minutes back.');
+  await expect(card(page).getByRole('button', { name: 'I did it' })).toHaveCount(0);
   await card(page).getByRole('button', { name: 'Back to my day' }).click();
   expect(await did(page)).toContain('home');
   expect(await attempts(page)).toEqual(['act_done']);
   await expect.poll(() => totalXp(page)).toBe(before + 2);
+});
+
+test('spec 39b: "Do it in NANDI" goes to the next move (a task for today, else the Read drop), pays nothing, and is logged', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  const before = await totalXp(page);
+  await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', '{}'));
+  // Nothing running, no Train programme, no task: today's Read drop.
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Do it in NANDI' }).click();
+  await expect(card(page)).toHaveCount(0);
+  await expect(page).toHaveURL(/#read\/drop$/);
+  // A task planned for today: its focus.
+  await page.goto('/?e2e#plan/focus');
+  await page.getByLabel('Add a task').fill('Email Riya the slides');
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.goto('/?e2e#you');
+  await phoneOpens(page);
+  await card(page).getByRole('button', { name: 'Do it in NANDI' }).click();
+  await expect(page).toHaveURL(/#plan\/focus$/);
+  await expect(page.getByRole('region', { name: 'Focus task' })).toContainText('Email Riya the slides');
+  expect(await attempts(page)).toEqual(['in_app', 'in_app']);
+  expect((await did(page)).filter(action => action === 'clear')).toHaveLength(2);
+  expect(await totalXp(page)).toBe(before);
+});
+
+test('spec 39b: a card on "every open" moves to after 10 min a day once, and Plan says so in one line', async ({ page }) => {
+  await page.clock.setFixedTime(NOON);
+  await page.goto('/?e2e#plan');
+  await page.evaluate(async () => {
+    const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+    await new Promise<void>(resolve => {
+      const transaction = database.transaction('settings', 'readwrite');
+      for (const [key, value] of [['pause.card.on', true], ['pause.act', 'do 10 squats'], ['night.pause.apps', ['com.instagram.android']], ['night.pause.dayMode', 'open']] as const) transaction.objectStore('settings').put({ key, value, updatedAt: 1, deleted: 0, deviceId: 'e2e' });
+      transaction.oncomplete = () => resolve();
+    });
+    database.close();
+  });
+  await page.reload();
+  await page.getByRole('button', { name: /^Pause card/ }).click();
+  await expect(page.locator('.pause-switched')).toContainText('Now shows after 10 min a day. Change it here.');
+  await expect(page.locator('.pause-step')).toContainText('after 10 min a day');
+  // Changing it to every open is kept, and the note goes.
+  await page.getByRole('button', { name: 'Change it here.' }).click();
+  await page.getByLabel('Every open').check();
+  await page.getByRole('button', { name: 'Next' }).click();
+  await page.getByRole('button', { name: 'Turn it on' }).click();
+  await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+  await expect(page.locator('.pause-switched')).toHaveCount(0);
+  await page.reload();
+  await expect(page.locator('.pause-step').first()).toContainText('every open');
 });
 
 test('"Not now" goes Home and pays nothing; "Open anyway" opens the app with the 10-minute quiet', async ({ page }) => {

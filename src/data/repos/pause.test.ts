@@ -64,3 +64,21 @@ it('goes into a backup like any other setting, and a restore replaces it (restor
   await importBackup(db, before);
   expect(await db.settings.get(OPENS_KEY)).toBeUndefined();
 });
+
+it('spec 39b: an "every open" card moves to after 10 min a day once, says so, and the next save clears the note', async () => {
+  const { switchPauseToTen, savePauseSettings } = await import('./pause');
+  const { readPauseCard } = await import('../../core/pauseCard');
+  const db = await withCard();
+  await db.settings.put({ key: 'night.pause.dayMode', value: 'open', ...stamp });
+  expect(await switchPauseToTen(db, NOW)).toBe(true);
+  expect(readPauseCard(await db.settings.toArray(), '2026-11-04')).toMatchObject({ mode: 'limit', limitMin: 10, switchedTo10: true });
+  // Once only: the person may go back to every open, and it stays.
+  await savePauseSettings(db, { mode: 'open', modeNote: 'seen' }, NOW + 1);
+  expect(await switchPauseToTen(db, NOW + 2)).toBe(false);
+  expect(readPauseCard(await db.settings.toArray(), '2026-11-04')).toMatchObject({ mode: 'open', switchedTo10: false });
+  // The old day pause (no card set up) is left alone.
+  const old = await withCard(false);
+  await old.settings.bulkPut([{ key: 'night.pause.enabled', value: true, ...stamp }, { key: 'night.pause.dayMode', value: 'open', ...stamp }]);
+  await old.settings.delete('pause.card.on');
+  expect(await switchPauseToTen(old, NOW)).toBe(false);
+});

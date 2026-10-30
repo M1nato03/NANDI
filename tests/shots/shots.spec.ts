@@ -513,10 +513,57 @@ for (const theme of themes) test.describe(theme, () => {
     await card.getByRole('button', { name: 'Do my 2-min thing' }).click();
     await page.clock.fastForward(37_000);
     await shot(page, 'p39-8-act-timer', false);
-    await page.clock.fastForward(90_000);
-    await card.getByRole('button', { name: 'Done' }).click();
+    await card.getByRole('button', { name: 'I did it' }).click();
     await expect(card).toContainText('2 minutes back.');
     await shot(page, 'p39-9-done', false);
+  });
+
+  test('pause card 39b', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
+    await page.goto('/?e2e#plan/pause');
+    await page.getByLabel('Instagram').check();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'drink a glass of water' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await shot(page, 'p39b-0-when-default-10', false);
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    const opens = async () => {
+      await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'limit' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+      await expect(card).toBeVisible();
+    };
+    await opens();
+    await shot(page, 'p39b-1-card-three-ways', false);
+    await card.getByRole('button', { name: 'Do my 2-min thing' }).click();
+    await expect(card.getByRole('button', { name: 'I did it' })).toBeVisible();
+    await shot(page, 'p39b-2-act-i-did-it-at-start', false);
+    await card.getByRole('button', { name: 'Not now' }).click();
+    // "Do it in NANDI" with nothing else on: today's Read drop.
+    await opens();
+    await card.getByRole('button', { name: 'Do it in NANDI' }).click();
+    await expect(page).toHaveURL(/#read\/drop$/);
+    await shot(page, 'p39b-3-in-nandi-read-drop', false);
+    // With a task planned for today: its focus.
+    await page.goto('/?e2e#plan/focus');
+    await page.getByLabel('Add a task').fill('Email Riya the slides');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await page.goto('/?e2e#you');
+    await opens();
+    await card.getByRole('button', { name: 'Do it in NANDI' }).click();
+    await expect(page).toHaveURL(/#plan\/focus$/);
+    await shot(page, 'p39b-4-in-nandi-task-focus', false);
+    // A card that was on "every open": moved once to after 10 min a day, and Plan says so.
+    await page.evaluate(async () => {
+      const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
+      await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); const store = transaction.objectStore('settings'); store.put({ key: 'night.pause.dayMode', value: 'open', updatedAt: 1, deleted: 0, deviceId: 'e2e' }); store.delete('pause.modeNote'); transaction.oncomplete = () => resolve(); });
+      database.close();
+    });
+    await page.goto('/?e2e#plan/pause');
+    await page.reload();
+    await expect(page.locator('.pause-switched')).toBeVisible();
+    await shot(page, 'p39b-5-plan-switched-to-10', false);
   });
 
   test('opens log', async ({ page }) => {

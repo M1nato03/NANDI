@@ -64,7 +64,7 @@ export function PauseSetup() {
 
   async function save(on: boolean, extra: Partial<Record<'offDay', unknown>> = {}) {
     try {
-      await savePauseSettings(db, { on, act: act || undefined, window: work.window ?? false, grace: work.grace, apps: work.apps.length ? work.apps : undefined, mode: work.mode, limitMin: work.limitMin, ...extra }, Date.now());
+      await savePauseSettings(db, { on, act: act || undefined, window: work.window ?? false, grace: work.grace, apps: work.apps.length ? work.apps : undefined, mode: work.mode, limitMin: work.limitMin, modeNote: card.switchedTo10 ? 'seen' : undefined, ...extra }, Date.now());
       setDraft(null); setMessage(''); return true;
     } catch { setMessage('Could not save that. Try again.'); return false; }
   }
@@ -87,6 +87,7 @@ export function PauseSetup() {
           <p className="small">{card.packages.map(labelOf).join(', ')} · {windowText(card.window)} · {card.mode === 'limit' ? `after ${card.limitMin} min a day` : 'every open'} · quiet {card.grace} min after "Open anyway"</p>
         </>}
         {card.legacy && !card.act && <p>Your day pause now shows a plan. Write the one thing you'll do first.</p>}
+        {card.on && card.switchedTo10 && <p className="pause-switched">Now shows after {card.limitMin} min a day. <button type="button" className="text-button" onClick={() => { setDraft(null); setView('when'); }}>Change it here.</button></p>}
         <div className="pause-setup-nav">
           {card.on && !card.offToday && <button type="button" className="secondary" onClick={() => void quick({ offDay: today }, 'Off for today. It comes back tomorrow.')}>Off for today</button>}
           {card.offToday && <button type="button" className="secondary" onClick={() => void quick({ offDay: '' }, 'On again.')}>On again today</button>}

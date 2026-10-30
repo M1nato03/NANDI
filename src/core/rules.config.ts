@@ -236,7 +236,7 @@ export const RULES = {
     pauseSnoozeMin: 10,
     pauseTestMin: 2,
     pauseDayLimitMin: 30,
-    pauseDayLimitChoices: [15, 30, 45, 60, 90],
+    pauseDayLimitChoices: [10, 15, 30, 45, 60, 90],
     // The "If I…, then I…" night plan leads the night card from this long before bedtime.
     planLeadMin: 30,
   },

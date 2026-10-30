@@ -8,7 +8,10 @@ import type { LedgerRow, SettingRow } from '../data/types';
  * a 2-minute act, "Not now" and "Open Instagram anyway", all one tap. The same service, package list and snooze (now the
  * grace period) run it; the setup lives at Plan → Pause card.
  */
-export const PAUSE_KEYS = { on: 'pause.card.on', act: 'pause.act', window: 'pause.window', grace: 'pause.grace', offDay: 'pause.offDay' } as const;
+export const PAUSE_KEYS = { on: 'pause.card.on', act: 'pause.act', window: 'pause.window', grace: 'pause.grace', offDay: 'pause.offDay', modeNote: 'pause.modeNote' } as const;
+
+/** Spec 39b: the card shows after this many minutes a day in the picked apps, unless the person picks "Every open". */
+export const PAUSE_LIMIT_DEFAULT = 10;
 
 /** The apps the setup offers first (nothing ticked): the usual scroll apps and Indian short-video apps. */
 export const PAUSE_APP_CHOICES: readonly { label: string; packageName: string }[] = [
@@ -50,6 +53,8 @@ export interface PauseCard {
   limitMin: number;
   packages: string[];
   offToday: boolean;
+  /** Spec 39b moved this setup from "every open" to "after 10 min a day" once; Plan → Pause card says so until the next save. */
+  switchedTo10: boolean;
 }
 
 const value = (settings: readonly SettingRow[], key: string) => settings.find(row => row.key === key && !row.deleted)?.value;
@@ -84,11 +89,12 @@ export function readPauseCard(settings: readonly SettingRow[], today: string): P
     act: typeof act === 'string' && cleanAct(act) ? cleanAct(act) : null,
     window: readPauseWindow(value(settings, PAUSE_KEYS.window)),
     grace: readGrace(value(settings, PAUSE_KEYS.grace)),
-    // New setups default to every open; the old day pause defaulted to a daily limit, so a kept one stays that way.
-    mode: dayMode === 'limit' && (value(settings, 'night.pause.dayMode') !== undefined || legacy) ? 'limit' : 'open',
-    limitMin: readDayLimit(value(settings, 'night.pause.dayLimitMin')),
+    // Spec 39b: new setups show the card after 10 min a day; "every open" stays a choice. The old day pause kept its own.
+    mode: value(settings, 'night.pause.dayMode') === 'open' ? 'open' : 'limit',
+    limitMin: value(settings, 'night.pause.dayLimitMin') === undefined && !legacy ? PAUSE_LIMIT_DEFAULT : readDayLimit(value(settings, 'night.pause.dayLimitMin')),
     packages: Array.isArray(apps) ? apps.filter((item): item is string => typeof item === 'string') : DEFAULT_PAUSE_APPS.map(app => app.packageName),
     offToday: value(settings, PAUSE_KEYS.offDay) === today,
+    switchedTo10: value(settings, PAUSE_KEYS.modeNote) === 'shown',
   };
 }
 

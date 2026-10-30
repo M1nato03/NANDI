@@ -3,7 +3,7 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
-import { recordOpens } from '../../data/repos/pause';
+import { recordOpens, switchPauseToTen } from '../../data/repos/pause';
 import { privateTopicPacks } from '../../data/packs/privateBooks';
 import { setPrivateTopics } from '../learn/flow';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -168,6 +168,8 @@ export function AppShell() {
     return () => { disposed = true; void remove?.(); };
   }, []);
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
+  // Spec 39b: an "every open" Pause card moves to "after 10 min a day" once.
+  useEffect(() => { void switchPauseToTen(db, Date.now()).catch(error => recordError('promise', error)); }, []);
   useEffect(() => {
     // Availability is read at each look: on the web it is the e2e stand-in, which a test can set after the app opened.
     // The opens log reads the phone's usage log at most every 10 minutes (spec 39).
