@@ -227,6 +227,29 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-8-book-done', false);
   });
 
+  // Spec 38: Calm on the phone's player (the e2e stand-in): the setup line, a call's pause, the done line after.
+  test('spec 38 calm locked', async ({ page }) => {
+    await page.clock.install({ time: NOON });
+    await page.goto('/#plan');
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2eCalm', JSON.stringify({ on: true })));
+    await page.goto('/#yatra/calm');
+    await expect(page.locator('.calm-under')).toBeVisible();
+    await page.clock.runFor(1000);
+    await shot(page, 's38-1-setup-lock-line', false);
+    await page.getByRole('button', { name: 'Quiet', exact: true }).click();
+    await page.getByRole('button', { name: '10 min', exact: true }).click();
+    await page.locator('.calm-start').click();
+    await page.clock.fastForward(2 * 60_000);
+    await page.evaluate(() => { const fake = JSON.parse(sessionStorage.getItem('nandi.e2eCalm')!); fake.sit.journal.push({ type: 'paused', at: Date.now(), reason: 'call' }); fake.sit.status = 'paused'; fake.sit.pausedFor = 'call'; sessionStorage.setItem('nandi.e2eCalm', JSON.stringify(fake)); });
+    await expect(page.getByText('Paused for a call. The clock waits.')).toBeVisible();
+    if (await page.locator('.calm-dim').count()) await page.locator('.calm-dim').click();
+    await shot(page, 's38-2-paused-for-a-call', false);
+    await page.getByRole('button', { name: 'Resume' }).click();
+    await page.clock.fastForward(9 * 60_000);
+    await expect(page.locator('.calm-phase')).toHaveText('10 quiet minutes, together.');
+    await shot(page, 's38-3-done-after-locked-sit', false);
+  });
+
   // Spec 41: one idea a sitting. Babylon has its extra screens (story, example, plan); the rest use the fallback.
   test('spec 41 sittings', async ({ page }) => {
     test.setTimeout(240_000);

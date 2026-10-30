@@ -1,5 +1,5 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { readJournal, type CalmEvent } from '../core/calm/spans';
+import { playedMs, readJournal, type CalmEvent } from '../core/calm/spans';
 
 /**
  * Spec 38: the native Calm player (Android). It takes a sound, a length and a bell plan, so other flows can use it too.
@@ -44,8 +44,8 @@ export async function calmPlaybackStatus(): Promise<CalmStatus | null> {
   if (test) {
     const sit = test.sit;
     if (!sit) return null;
-    // The phone's player ends a timed sit at its length on its own, screen on or off.
-    if (sit.status === 'playing' && sit.lengthMs && sit.journal.filter(event => event.type !== 'bell').length === 1 && Date.now() - sit.startedAt >= sit.lengthMs) { fakeEvent('ended', 'ended'); return calmPlaybackStatus(); }
+    // The phone's player ends a timed sit once it has PLAYED its length, screen on or off.
+    if (sit.status === 'playing' && sit.lengthMs && playedMs(sit.journal, Date.now()) >= sit.lengthMs) { fakeEvent('ended', 'ended'); return calmPlaybackStatus(); }
     return sit;
   }
   if (!Capacitor.isNativePlatform()) return null;
