@@ -193,7 +193,7 @@ function OpensCard({ settings, packages, today }: { settings: readonly SettingRo
           <div><dt>Today so far</dt><dd>{opensText(summary.today)}</dd></div>
           <div><dt>{summary.fullWeek ? 'Last 7 days' : 'Since the card'} · a day</dt><dd>{summary.lately ? opensText(summary.lately) : 'After your first full day'}</dd></div>
           <div><dt>The week before the card · a day</dt><dd>{summary.before ? opensText(summary.before) : 'Not enough days yet'}</dd></div>
-          <div><dt>After "Open anyway" · each time</dt><dd>{summary.afterAnyway.count ? minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000)) : 'None yet'}</dd></div>
+          <div><dt>After "Open anyway"</dt><dd>{summary.afterAnyway.count ? `${minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000))} on average · ${summary.afterAnyway.count} ${summary.afterAnyway.count === 1 ? 'time' : 'times'}` : 'None yet'}</dd></div>
         </dl>
         <p className="small">Counted from the phone's own usage log, only for the apps you picked. A day runs from 04:00 to 04:00. It stays on this phone.</p>
       </>;

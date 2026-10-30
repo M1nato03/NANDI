@@ -189,5 +189,5 @@ test('the opens log: the week before the card is read at once, and today counts 
   await expect(opens).toContainText('Today so far2 opens · 10 min');
   await expect(opens).toContainText('The week before the card · a day3 opens · 30 min');
   await expect(opens).toContainText('Since the card · a dayAfter your first full day');
-  await expect(opens).toContainText('After "Open anyway" · each timeNone yet');
+  await expect(opens).toContainText('After "Open anyway"None yet');
 });

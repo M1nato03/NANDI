@@ -568,6 +568,7 @@ for (const theme of themes) test.describe(theme, () => {
     await page.evaluate(async value => { await new Promise<void>(resolve => { indexedDB.open('nandi').onsuccess = event => { const database = (event.target as IDBOpenDBRequest).result; const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').put({ key: 'pause.opens', value, updatedAt: 1, deleted: 0, deviceId: 'e2e' }); transaction.oncomplete = () => { database.close(); resolve(); }; }; }); }, { since: '2026-10-25', days });
     await page.reload();
     await expect(page.locator('.pause-opens')).toContainText('Last 7 days · a day');
+    await expect(page.locator('.pause-opens')).toContainText('7 min on average · 2 times');
     await page.locator('.pause-opens').scrollIntoViewIfNeeded();
     await shot(page, 'p39-13-opens-compare', false);
   });
