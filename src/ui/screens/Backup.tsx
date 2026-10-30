@@ -35,6 +35,8 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [lastBackup, setLastBackup] = useState<number | null>(null);
+  // The restore's own line sits in its card (jenil-87): the page-bottom status is easy to miss.
+  const [restored, setRestored] = useState('');
   const [persisted, setPersisted] = useState<boolean | null>(null);
   const [usage, setUsage] = useState<StorageEstimate | null>(null);
   const [counts, setCounts] = useState<Record<string, number> | null>(null);
@@ -71,7 +73,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
   }
 
   async function chooseFile(): Promise<void> {
-    setChoice(null); setMessage('');
+    setChoice(null); setMessage(''); setRestored('');
     try {
       const file = await pickFile(); if (!file) return;
       const parsed: unknown = JSON.parse(await file.text());
@@ -113,7 +115,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       else await importLegacy(db, choice.data, { deviceId: await getOrCreateDeviceId(db, Date.now()), now: Date.now() });
       // Bug hunt 30 Oct: say which backup came back. "Last backup" stays this phone's own last backup.
       const from = choice.kind === 'backup' ? formatDayKey(dayKey(choice.data.exportedAt)) : null;
-      setChoice(null); await onRestored(); await refresh(); setMessage(from ? `Restored · backup from ${from}. Your data is ready.` : 'Restore complete. Your data is ready.');
+      setChoice(null); await onRestored(); await refresh(); setRestored(from ? `Restored · backup from ${from}. Your data is ready.` : 'Restore complete. Your data is ready.');
     } catch (error) { recordError('promise', error); setMessage(`Restore could not finish: ${errorMessage(error)}`); }
     finally { setBusy(false); }
   }
@@ -128,7 +130,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
       <label><input type="checkbox" role="switch" checked={auto?.enabled !== false} onChange={event => void toggleAuto(event.target.checked)} /> Automatic backup</label>
       <button type="button" className="secondary" disabled={busy} onClick={() => void backUpNow()}>Back up now</button>
     </div>}
-    <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button></div>
+    <div className="card"><h2>Bring a copy back</h2><p>Choose a NANDI backup or a legacy export. You will see what is inside before restoring.</p><button className="secondary" disabled={busy} onClick={() => void chooseFile()}>Choose restore file</button>{restored && <p role="status" className="backup-restored">{restored}</p>}</div>
     {choice && <div className="card preview" aria-label="Restore preview">
       <h2>Review restore</h2><p>{choice.kind === 'backup' ? 'NANDI backup' : 'Legacy export'} · {choice.first && choice.last ? `${formatDayKey(choice.first)} to ${formatDayKey(choice.last)}` : 'No dated rows'}</p>
       {choice.retired > 0 && <p>{choice.retired} retired</p>}

@@ -20,6 +20,8 @@ export function Train({ entry }: { entry?: string }) {
   const data = useLiveQuery(async () => ({ program: await db.programs.get('train-program'), sessions: await db.sessions.filter(row => row.deleted === 0).toArray(), sets: await db.sets.filter(row => row.deleted === 0).toArray(), prs: await db.prs.filter(row => row.deleted === 0).toArray(), state: await db.exState.filter(row => row.deleted === 0).toArray(), ledger: await db.ledger.filter(row => row.deleted === 0 && row.mode === 'train').toArray(), softFacts: await db.ledger.where('dayKey').equals(dayKey(Date.now())).filter(row => row.deleted === 0 && row.mode === 'soft').toArray(), bedtime: await db.settings.get('planner.bedtime'), beats: await db.settings.where('key').startsWith('train.beats:').toArray() }), []);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  // The session just finished here: its "in progress" card goes at the tap, not when the next live query lands.
+  const [finishedId, setFinishedId] = useState('');
   const page = entry === 'history' || entry === 'settings' || entry === 'finish' || entry === 'retest' ? entry : 'today';
   const setPage = (next: typeof page) => go(next === 'today' ? 'train' : `train/${next}`);
   async function act(action: (repos: Awaited<typeof reposPromise>, now: number) => Promise<unknown>, success: string): Promise<boolean> {
@@ -43,13 +45,13 @@ export function Train({ entry }: { entry?: string }) {
   // Spec 18: "Start easy" goes straight into the first workout on the easiest step of every move.
   const startEasy = (result: OnboardingResult) => { void act(async (repos, now) => { await repos.completeOnboarding(result, now); await repos.startSession(now, { readiness: 'unanswered:unanswered' }); }, 'Your first easy workout is ready.').then(ok => { if (ok) go('train/workout'); }); };
   if (!program) return <section className="screen"><Onboarding busy={busy} startEasy={startEasy} autoEasy={entry === 'easy'} save={(result: OnboardingResult) => { void act((repos, now) => repos.completeOnboarding(result, now), 'Assessment saved. Your first session is ready.'); }} />{message && <p role="status">{message}</p>}</section>;
-  const active = sessions.find(row => row.status === 'active');
+  const active = sessions.find(row => row.status === 'active' && row.id !== finishedId);
   if (active && entry === 'workout') return <section className="screen"><Workout session={active} sets={sets.filter(set => set.sessionId === active.id)} state={state} equipment={program.equipment!} busy={busy} message={message}
     log={(exerciseId, slot, reps, loadKg, type, confirmedJump) => logSet(active.id, exerciseId, slot, reps, loadKg, type, confirmedJump)}
     pain={exerciseId => { void act((repos, now) => repos.flagPain(active.id, exerciseId, now), 'Exercise stopped. Choose an easier step or rest.'); }}
     effort={(exerciseId, value) => { void act((repos, now) => repos.setEffort(active.id, exerciseId, value, now), 'Effort saved.'); }}
     adjustRest={endAt => { void act((repos, now) => repos.setRestEnd(active.id, endAt, now), 'Rest updated.'); }}
-    finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) go('train/finish'); }); }} /></section>;
+    finish={() => { void act((repos, now) => repos.finishSession(active.id, now), 'Session saved.').then(ok => { if (ok) { setFinishedId(active.id); go('train/finish'); } }); }} /></section>;
   const finished = sessions.filter(row => row.status !== 'active').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0))[0];
   return <section className="screen train-screen"><FriendStage area="train"><p className="eyebrow">The Proving Ground</p><h1>Train</h1></FriendStage>
     {message && <p role="status">{message}</p>}

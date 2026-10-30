@@ -51,8 +51,11 @@ describe('daily invitations and awards', () => {
   it('counts badge tiers and the next threshold from history', () => {
     const badge = badges.find(row => row.id === 'workouts')!;
     expect(badgeTier(badge, [])).toBe(0);
-    expect(badgeTier(badge, Array.from({ length: 5 }, (_, i) => fact('session', String(i), {}, noon + i, 'train')))).toBe(2);
-    expect(badgeTier(badge, Array.from({ length: 20 }, (_, i) => fact('session', String(i), {}, noon + i, 'train')))).toBe(3);
+    const sets = { xp: 60, workingSets: 6 };
+    expect(badgeTier(badge, Array.from({ length: 5 }, (_, i) => fact('session', String(i), sets, noon + i, 'train')))).toBe(2);
+    expect(badgeTier(badge, Array.from({ length: 20 }, (_, i) => fact('session', String(i), sets, noon + i, 'train')))).toBe(3);
+    // Bug hunt 30 Oct: a session stopped with no set logged is not a workout.
+    expect(badgeTier(badge, Array.from({ length: 5 }, (_, i) => fact('session', String(i), { xp: 0, workingSets: 0 }, noon + i, 'train')))).toBe(0);
   });
   it('counts consecutive correct answers and grants only a clean completed drop', () => {
     const rows = [true, true, true, true, false].map((correct, i) => fact('learn-answer', `drop:daily:${day}:${i}`, { dropId: `drop:daily:${day}`, correct }, noon + i));

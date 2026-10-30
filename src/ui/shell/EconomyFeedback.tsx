@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { sessionCounts } from '../../core/train/counts';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { dayKey } from '../../core/time';
@@ -116,7 +117,7 @@ export function EconomyFeedback() {
       else pendingBadge.current = label;
       return;
     }
-    const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session') || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))) || (row.mode === 'read' && row.kind === 'chapter'));
+    const achievement = added.find(row => (row.mode === 'tasks' && row.kind === 'done') || (row.mode === 'train' && row.kind === 'session' && sessionCounts(row.inputs)) || (row.mode === 'mind' && ((row.kind === 'mystery' && row.inputs.result === 'solved') || (row.kind === 'board' && row.inputs.daily === true))) || (row.mode === 'read' && row.kind === 'chapter'));
     const dropFinished = !!source.drop && source.drop.drop.items.length > 0 && source.drop.drop.cursor >= source.drop.drop.items.length && (!previous.drop || previous.drop.drop.cursor < previous.drop.drop.items.length);
     const now = Date.now(), today = dayKey(now);
     // Spec 15 C: on the soft Home the tiny task ends in the calm soft finish; no count-up overlay over it.

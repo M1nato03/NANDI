@@ -1,4 +1,5 @@
 import { RULES } from '../rules.config';
+import { sessionCounts } from '../train/counts';
 import type { LedgerRow } from '../../data/types';
 import { isPlannedDone } from './planned';
 import { weekStart } from './deriveEconomy';
@@ -73,7 +74,8 @@ export const badges: Badge[] = [
   { id: 'tasks', title: 'Tasks settled', count: badgeCount('tasks', 'done') },
   { id: 'planned', title: 'Plans kept', count: f => all(f, 'tasks', 'done').filter(isPlannedDone).length },
   { id: 'early', title: 'First-day finishes', count: f => all(f, 'tasks', 'done').filter(x => x.inputs.isFirstDay === true).length },
-  { id: 'workouts', title: 'Workouts logged', count: badgeCount('train', 'session') },
+  // A session with no set logged is not a workout (bug hunt 30 Oct, jenil-87).
+  { id: 'workouts', title: 'Workouts logged', count: f => all(f, 'train', 'session').filter(x => sessionCounts(x.inputs)).length },
   { id: 'rest', title: 'Rest days kept', count: badgeCount('train', 'rest') },
   { id: 'prs', title: 'Personal bests', count: badgeCount('train', 'pr') },
   { id: 'drops', title: 'Drops finished', count: badgeCount('gamify', 'learn-drop') },
