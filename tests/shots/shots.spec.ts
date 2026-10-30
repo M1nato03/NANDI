@@ -484,4 +484,21 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(page.getByRole('region', { name: 'Now deck' })).toBeVisible();
     await shot(page, 'night-deck');
   });
+
+  test('park it', async ({ page }) => {
+    // A moving clock, so the two lines are parked a moment apart and keep their order.
+    await page.clock.install({ time: new Date('2026-10-26T22:30:00') });
+    await page.goto('/?e2e#night');
+    await page.getByRole('button', { name: 'Go to card 4: Today, in words' }).click();
+    const words = page.getByRole('article', { name: 'Today, in words card' });
+    await shot(page, 'park-1-empty');
+    for (const line of ['Email Riya the slides', 'Pay the rent']) {
+      await words.getByRole('textbox').fill(line);
+      await words.getByRole('button', { name: 'Park', exact: true }).click();
+      await expect(words.getByRole('list', { name: 'Parked for tomorrow' })).toContainText(line);
+    }
+    await shot(page, 'park-2-two-lines');
+    await words.getByRole('button', { name: 'That’s all' }).click();
+    await shot(page, 'park-3-written');
+  });
 });

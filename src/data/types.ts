@@ -35,6 +35,8 @@ export interface TaskRow extends EntityRow {
   /** Spec 27: minutes worked, summed over focus sessions; and whether the person picked a time when adding it. */
   actualMinutes?: number;
   timeSet?: boolean;
+  /** Spec 24 Park it: a line parked for tomorrow from the night deck (for its kill test). */
+  source?: 'park';
 }
 export interface TaskEventRow extends EntityRow {
   taskId: string;

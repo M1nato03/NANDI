@@ -51,11 +51,37 @@ const NightPuzzle = memo(function NightPuzzle({ today, dailySolved, type, diff }
   return <><span className="pill">One calm puzzle</span><h2>{title}</h2><p>{choice.daily ? 'Today’s board is here when you want it.' : 'An easy board for a quiet moment.'}</p><div className="deck-puzzle" role="img" aria-label={`Preview of ${title} board`} data-board-seed={puzzle?.seed} style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}>{values.map((value, i) => <span key={i} className={puzzle?.type === 'crowns' ? `region-${puzzle.region[i] ?? 0}` : ''}>{value || ''}</span>)}</div><p className="deck-meta">{choice.daily ? `${choice.diff} board` : 'Easy practice'}</p><div className="deck-actions"><button type="button" onClick={() => go(choice.daily ? 'mind/board/daily' : `mind/board/${choice.type}/easy/night`)}>Play</button></div></>;
 });
 
+/**
+ * Spec 24 Park it (cj5-calm §5): put tomorrow on paper. Up to 5 lines, each a tomorrow Could task at 9:00. Parking pays
+ * nothing (a task pays when done), and the cap keeps bedtime from turning into work.
+ */
+const PARK_LINES = 5;
+function ParkTomorrow({ tomorrow, board }: { tomorrow: string; board: ReturnType<typeof useTaskBoard> }) {
+  const [title, setTitle] = useState('');
+  const [finished, setFinished] = useState(false);
+  const parked = board.tasks.filter(row => !row.deleted && row.source === 'park' && row.dayKey === tomorrow).sort((a, b) => a.id < b.id ? -1 : 1);
+  const full = parked.length >= PARK_LINES;
+  const park = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const line = title.trim();
+    if (!line || full) return;
+    const scheduledStart = new Date(`${tomorrow}T09:00:00`).getTime();
+    if (await board.act((repos, at) => repos.createTask({ title: line, size: 'S', estimateMin: 15, mustOrCould: 'could', scheduledStart, dayKey: tomorrow, source: 'park' }, at))) setTitle('');
+  };
+  return <div className="deck-end night-park"><p><strong>Park tomorrow</strong></p>
+    {parked.length > 0 && <ol className="night-parked" aria-label="Parked for tomorrow">{parked.map(row => <li key={row.id}>{row.title}</li>)}</ol>}
+    {finished || full ? <p className="night-parked-done">It’s written down. It can wait till morning.</p> : <>
+      <form className="deck-add" onSubmit={event => void park(event)}><label htmlFor="night-park">{parked.length ? 'Another line' : 'Write it so tomorrow-you knows the first move'}</label><input id="night-park" value={title} onChange={event => setTitle(event.target.value)} maxLength={160} placeholder={parked.length ? undefined : 'Email Riya the slides'} required /><button type="submit" disabled={board.busy}>Park</button></form>
+      <p className="small">Up to {PARK_LINES} lines, about 3 minutes.</p>
+      {parked.length > 0 && <button type="button" className="text-button" onClick={() => setFinished(true)}>That’s all</button>}
+    </>}
+  </div>;
+}
+
 export function NightDeck({ now, bedtime, board }: { now: number; bedtime: string; board: ReturnType<typeof useTaskBoard> }) {
   useEffect(() => preloadOnIdle(() => import('../learn/LearnDrop')), []);
   const today = dayKey(now);
   const [index, setIndex] = useState(deckIndex);
-  const [tomorrowTitle, setTomorrowTitle] = useState('');
   const [phoneMoveState, setPhoneMoveState] = useState(() => ({ day: today, swaps: rememberedSwaps.day === today ? rememberedSwaps.count : 0, done: false }));
   const phoneMove = phoneMoveState.day === today ? phoneMoveState : { day: today, swaps: rememberedSwaps.day === today ? rememberedSwaps.count : 0, done: false };
   const [message, setMessage] = useState('');
@@ -90,7 +116,6 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const tomorrowDate = new Date(`${today}T12:00:00`);
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   const tomorrow = dayKey(tomorrowDate.getTime());
-  const tomorrowTask = board.tasks.find(row => !row.deleted && row.status !== 'done' && row.dayKey === tomorrow);
   const suggestion = selectWinddownMove(today, winddown.body.moves, phoneMove.swaps);
 
   useEffect(() => {
@@ -113,14 +138,6 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
     return () => window.removeEventListener('keydown', key);
   }, [at, today]);
 
-  const saveTomorrow = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const title = tomorrowTitle.trim();
-    if (!title) return;
-    const scheduledStart = new Date(`${tomorrow}T09:00:00`).getTime();
-    const ok = await board.act((repos, at) => repos.createTask({ title, size: 'S', estimateMin: 15, mustOrCould: 'could', scheduledStart, dayKey: tomorrow }, at), 'Tomorrow’s first step saved.');
-    if (ok) setTomorrowTitle('');
-  };
   const checkIn = async () => {
     if (log?.lightsOutAt) return;
     const ok = await board.act((repos, at) => repos.recordLightsOut(at), 'Night back on plan.');
@@ -145,7 +162,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
       {card.id === 'tonight' && <FriendStage area="night" pose="rest" size={72} />}{card.id === 'tonight' && <button type="button" className="secondary night-kolam" onClick={() => go('kolam')}>Trace tonight's kolam</button>}{card.id === 'tonight' && (plan ? <><span className="pill">Tonight</span><h2>Your night plan</h2><p className="night-plan-words">{nightPlanText(plan)}</p><p>You opened NANDI instead. That counts.</p>{returned > 0 && <p className="deck-meta">{returned} {returned === 1 ? 'night' : 'nights'} back on plan</p>}</> : <NightPlanSetting firstRun />)}
       {card.id === 'learn' && <><ReviewToday day={today} /><Suspense fallback={<DelayedCardSkeleton insideCard />}><LearnDrop night itemCount={3} onDone={next} /></Suspense></>}
       {card.id === 'puzzle' && (puzzleRuns === undefined ? <DelayedCardSkeleton insideCard /> : <NightPuzzle today={today} dailySolved={dailySolved} type={featured.type} diff={featured.diff} />)}
-      {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<div className="deck-end"><p><strong>Tomorrow’s first step</strong></p>{tomorrowTask ? <p>{tomorrowTask.title}</p> : <form className="deck-add" onSubmit={event => void saveTomorrow(event)}><label htmlFor="night-tomorrow">Name one small step</label><input id="night-tomorrow" value={tomorrowTitle} onChange={event => setTomorrowTitle(event.target.value)} maxLength={160} placeholder="Tomorrow’s first step" required /><button type="submit" disabled={board.busy}>Save</button></form>}</div></>}
+      {card.id === 'words' && <><span className="pill">Today, in words</span><h2>What today held</h2>{summary.length ? <ul className="night-summary">{summary.map(line => <li key={line}>{line}</li>)}</ul> : <p>You made it to this moment. That is enough for tonight.</p>}<ParkTomorrow tomorrow={tomorrow} board={board} /></>}
       {card.id === 'phone' && <><span className="pill">Phone-down move</span><h2>Take this offline.</h2><p>{suggestion.text}</p><p className="deck-meta">One small move is enough. Leave the phone here.</p><div className="deck-actions"><button type="button" onClick={chooseMove} disabled={phoneMove.done}>{phoneMove.done ? 'Set for tonight' : "I’ll do it"}</button></div>{!phoneMove.done && phoneMove.swaps < 3 && <button type="button" className="text-button" onClick={anotherIdea}>Another idea</button>}</>}
       {card.id === 'stop' && <><span className="pill">The stopping point</span><h2>That’s tonight. Phone down.</h2><p>Lights-out time: {bedtime}</p>{log?.lightsOutAt && <p className="deck-meta">Check-in saved. Rest when you are ready.</p>}<div className="deck-actions">{!log?.lightsOutAt && <button type="button" onClick={() => void checkIn()}>Lights-out check-in</button>}<button type="button" className="secondary" onClick={() => go('plan')}>Close</button></div></>}
     </article>

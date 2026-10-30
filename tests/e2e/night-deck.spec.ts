@@ -72,9 +72,16 @@ test('night deck is six calm cards with a three item drop and a stopping point',
   await deck.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByRole('article', { name: 'Today, in words card' })).toBeVisible();
   await shot(4);
-  await page.getByLabel('Name one small step').fill('Open the notes');
-  await page.getByRole('article', { name: 'Today, in words card' }).getByRole('button', { name: 'Save' }).click();
-  await expect(page.getByRole('article', { name: 'Today, in words card' })).toContainText('Open the notes');
+  // Spec 24 Park it: tomorrow goes on paper, a line at a time, and each line is a task for tomorrow.
+  const words = page.getByRole('article', { name: 'Today, in words card' });
+  await words.getByLabel('Write it so tomorrow-you knows the first move').fill('Open the notes');
+  await words.getByRole('button', { name: 'Park', exact: true }).click();
+  await words.getByLabel('Another line').fill('Email Riya the slides');
+  await words.getByRole('button', { name: 'Park', exact: true }).click();
+  await expect(words.getByRole('list', { name: 'Parked for tomorrow' }).getByRole('listitem')).toHaveText(['Open the notes', 'Email Riya the slides']);
+  await words.getByRole('button', { name: 'That’s all' }).click();
+  await expect(words).toContainText('It’s written down. It can wait till morning.');
+  await expect(words.getByRole('textbox')).toHaveCount(0);
 
   await deck.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(page.getByRole('article', { name: 'Phone-down move card' })).toBeVisible();
@@ -149,4 +156,25 @@ test('easy unsolved daily stays on the night card', async ({ page }) => {
   await expect(page.getByRole('group', { name: 'Mini Sudoku board' })).toBeVisible({ timeout: 30_000 });
   await expect(board.locator('.eyebrow')).toContainText('Daily board');
   await expect(board).toHaveAttribute('data-board-seed', previewSeed!);
+});
+
+test('Park it: up to five lines, then it is written down, and they wait in tomorrow on Plan', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-17T22:30:00') });
+  await page.goto('/#night');
+  const deck = page.getByRole('region', { name: 'Now deck' });
+  await deck.getByRole('button', { name: 'Go to card 4: Today, in words' }).click();
+  const words = page.getByRole('article', { name: 'Today, in words card' });
+  await expect(words.getByText('Up to 5 lines, about 3 minutes.')).toBeVisible();
+  const lines = ['Email Riya the slides', 'Pay the rent', 'Book the dentist', 'Read chapter 2', 'Water the plants'];
+  for (const line of lines) {
+    await words.getByRole('textbox').fill(line);
+    await words.getByRole('button', { name: 'Park', exact: true }).click();
+    await expect(words.getByRole('list', { name: 'Parked for tomorrow' })).toContainText(line);
+  }
+  // The fifth line closes it: no sixth line, and no XP for writing tasks down.
+  await expect(words).toContainText('It’s written down. It can wait till morning.');
+  await expect(words.getByRole('textbox')).toHaveCount(0);
+  await page.goto('/#plan');
+  const tomorrow = page.getByRole('region', { name: 'Tomorrow', exact: true });
+  for (const line of lines) await expect(tomorrow).toContainText(line);
 });
