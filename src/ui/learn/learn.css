@@ -371,7 +371,7 @@
 
 /* Spec 41: a sitting is one idea. The idea dots sit above the screen dots; the friend stays small in a corner. */
 .idea-sitting { position: relative; }
-.idea-head { display: grid; gap: 8px; margin-bottom: 12px; }
+.idea-head { display: grid; gap: 8px; margin-bottom: 12px; padding-right: 56px; }
 .idea-dots { display: flex; gap: 8px; justify-content: center; margin: 0; padding: 0; list-style: none; }
 .idea-dots li { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-3); }
 .idea-dots li.done { background: var(--area-learn); }

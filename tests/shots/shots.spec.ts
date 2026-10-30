@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openMore } from '../e2e/helpers/plan';
-import { answerRight, answerWrong, seedTaughtTopics, walkLesson } from '../e2e/learn-helpers';
+import { answerRight, seedTaughtTopics, walkIdea } from '../e2e/learn-helpers';
 
 // The 360x800 review set (item 140): each main screen with seeded data, reduced motion so a frame is stable.
 // Run with `npm run shots`; add a shot here when a change touches a screen that is not in the set.
@@ -153,16 +153,14 @@ for (const theme of themes) test.describe(theme, () => {
     await page.evaluate(() => (window as Window & { __nandiMindTest?: { solveKnownSolution: () => void } }).__nandiMindTest!.solveKnownSolution());
     await expect(page.locator('.mind-earned')).toHaveText('Hard board, 1 hint · +25 XP');
     await shot(page, 'v2-2-board-hard-hint', false);
-    // Read: the chapter's lessons, then its check with two right and one wrong.
+    // Read (spec 41): the chapter one idea a sitting, to its done card.
     await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-    await expect(page.locator('.step-lesson').or(page.getByText('Chapter check · three questions'))).toBeVisible();
-    while (await page.locator('.step-lesson').isVisible()) await walkLesson(page, 'how-things-work', true);
-    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
-    await answerRight(page, 'how-things-work');
-    await answerWrong(page, 'how-things-work');
-    await answerRight(page, 'how-things-work');
-    await expect(page.locator('.read-done-card')).toBeVisible();
-    await expect(page.locator('.read-earned')).toHaveText(/^\d+ new ideas?, [23] right · \+\d+ XP$/);
+    await expect(page.locator('.idea-sitting')).toBeVisible();
+    while (await page.locator('.idea-sitting').or(page.locator('.idea-end')).first().isVisible()) {
+      if (await page.locator('.idea-end').isVisible()) await page.getByRole('button', { name: 'One more idea' }).click();
+      await walkIdea(page, 'how-things-work');
+    }
+    await expect(page.locator('.read-done-card .read-earned')).toBeVisible();
     await shot(page, 'v2-3-chapter-done', false);
     // You after a heavy day: two more chapters and a case on top.
     await page.goto('/#you');
@@ -185,18 +183,15 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-2-book');
   });
 
-  test('read: a chapter mid-way, the quiz check, chapter done', async ({ page }) => {
+  test('read: a chapter mid-way (an idea done), chapter done', async ({ page }) => {
     await page.clock.setFixedTime(NOON);
     await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-    await walkLesson(page, 'how-things-work', true);
-    await expect(page.locator('.step-lesson')).toBeVisible();
+    await walkIdea(page, 'how-things-work');
+    await expect(page.locator('.idea-end')).toBeVisible();
     await shot(page, 'read-3-chapter-midway', false);
     await page.goto('/?e2e#read');
     await seedTaughtTopics(page, ['how-things-work']);
     await page.goto('/?e2e#read/chapter/how-things-work/how-things-work-ch1');
-    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
-    await shot(page, 'read-4-check-quiz', false);
-    for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
     await expect(page.locator('.read-done-card')).toBeVisible();
     await shot(page, 'read-7-chapter-done', false);
   });
@@ -209,8 +204,8 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/?e2e#read/book/how-to-win-friends');
     await shot(page, 'read-10-htwf-book');
     await page.goto('/?e2e#read/chapter/how-to-win-friends/htwf-1');
-    await walkLesson(page, 'how-to-win-friends', true);
-    await expect(page.locator('.step-lesson')).toBeVisible();
+    await walkIdea(page, 'how-to-win-friends');
+    await expect(page.locator('.idea-end')).toBeVisible();
     await shot(page, 'read-11-htwf-midway', false);
   });
 
@@ -226,10 +221,69 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'read-6-check-chiku', false);
     for (const chapter of ['history-civilisations-ch1', 'history-civilisations-ch2']) {
       await page.goto(`/?e2e#read/chapter/history-civilisations/${chapter}`);
-      for (let question = 0; question < 3; question++) await answerRight(page, 'history-civilisations');
+      await expect(page.locator('.read-done-card')).toBeVisible();
     }
     await expect(page.locator('.read-done-card')).toContainText('You finished');
     await shot(page, 'read-8-book-done', false);
+  });
+
+  // Spec 41: one idea a sitting. Babylon has its extra screens (story, example, plan); the rest use the fallback.
+  test('spec 41 sittings', async ({ page }) => {
+    test.setTimeout(240_000);
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
+    // An advancing clock, so each sitting has its own time (pay follows the order they were read in).
+    await page.clock.install({ time: NOON });
+    await page.goto('/?e2e#read/chapter/richest-man-in-babylon/babylon-1');
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { await shot(page, `s41-1-screen-${screen}`, false); });
+    await expect(page.locator('.idea-end')).toBeVisible();
+    await shot(page, 's41-2-idea-end', false);
+    // The second idea (an even one) tries spot-the-part, and asks nothing from an earlier day yet (same day).
+    await page.getByRole('button', { name: 'One more idea' }).click();
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { if (screen === 3 || screen === 4) await shot(page, `s41-3-idea2-screen-${screen}`, false); });
+    while (await page.locator('.idea-end').isVisible()) {
+      await page.getByRole('button', { name: 'One more idea' }).click();
+      await walkIdea(page, 'richest-man-in-babylon');
+    }
+    // Chapter 1 ends with Teach Chiku (its own check, as before), then its done card.
+    await expect(page.locator('.chiku-skip')).toBeVisible();
+    await shot(page, 's41-4-last-idea-then-chiku', false);
+    await page.locator('.chiku-skip').click();
+    await expect(page.locator('.read-done-card')).toBeVisible();
+    await shot(page, 's41-4b-chapter-done', false);
+    // Chapter 2 has a quiz: done after its last idea, and its three questions wait for tomorrow.
+    await page.goto('/?e2e#read/chapter/richest-man-in-babylon/babylon-2');
+    await walkIdea(page, 'richest-man-in-babylon');
+    await page.getByRole('button', { name: 'One more idea' }).click();
+    await walkIdea(page, 'richest-man-in-babylon');
+    await expect(page.locator('.read-done-card')).toBeVisible();
+    await shot(page, 's41-4c-quiz-chapter-done', false);
+    // The next day: the Book check on Yatra, its questions, then "Did you try it?".
+    await page.clock.setSystemTime(new Date(NOON.getTime() + 86_400_000));
+    await page.goto('/?e2e#yatra');
+    await expect(page.getByRole('button', { name: /Book check/ })).toBeVisible();
+    await shot(page, 's41-5-yatra-book-check', false);
+    await page.getByRole('button', { name: /Book check/ }).click();
+    await expect(page.getByText('1 / 3')).toBeVisible();
+    await shot(page, 's41-6-book-check-question', false);
+    for (let question = 0; question < 3; question++) await answerRight(page, 'richest-man-in-babylon');
+    await expect(page.getByRole('heading', { name: 'Did you try it?' })).toBeVisible();
+    await shot(page, 's41-7-did-you-try-it', false);
+    // An earlier day's question (screen 5) in chapter 3's first idea.
+    await page.goto('/?e2e#read/chapter/richest-man-in-babylon/babylon-3');
+    await walkIdea(page, 'richest-man-in-babylon', async screen => { if (await page.getByText('From an earlier day').isVisible()) await shot(page, `s41-8-earlier-day-${screen}`, false); });
+    // At and past the chapter's cap: How to Win Friends chapter 2 (18 steps), every idea in one day.
+    await page.goto('/?e2e#read/chapter/how-to-win-friends/htwf-2');
+    await expect(page.locator('.idea-sitting')).toBeVisible();
+    let idea = 0;
+    while (await page.locator('.idea-sitting').or(page.locator('.idea-end')).first().isVisible()) {
+      if (await page.locator('.idea-end').isVisible()) {
+        await shot(page, `s41-9-htwf2-idea-${idea}-end`, false);
+        await page.getByRole('button', { name: 'One more idea' }).click();
+      }
+      await walkIdea(page, 'how-to-win-friends');
+      idea += 1;
+    }
+    await shot(page, 's41-10-htwf2-done', false);
   });
 
   for (const route of ['read', 'you', 'yatra', 'yatra/mind', 'yatra/train', 'yatra/calm', 'you/courtyard', 'you/cast'] as const) test(`tab: ${route}`, async ({ page }) => {

@@ -86,7 +86,6 @@ export function IdeaSitting({ topicId, module, concept, ideaIndex, ideaCount, le
     <div className="learn-q" key={at}>
       <p className="eyebrow">{eyebrow}</p>
       {screen === 'story' && <div className="step-teach">
-        <h2>{concept.title}</h2>
         {extra ? <p className="step-teach-text">{extra.story.text}</p> : steps.map(step => <p key={step.id} className="step-teach-text">{step.teach}</p>)}
         <StepVisual visual={first.visual} />
       </div>}

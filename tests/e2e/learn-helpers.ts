@@ -99,7 +99,7 @@ export async function openIdeas(page: Page, topicId: string, conceptTitle: strin
  * example, the try (a guided question or spot-the-part), an earlier day's question and the plan. Stops on the idea's
  * end card, or on the chapter's next screen after its last idea. Returns how many screens it took.
  */
-export async function walkIdea(page: Page, topicId: string): Promise<number> {
+export async function walkIdea(page: Page, topicId: string, onScreen?: (screen: number) => Promise<void>): Promise<number> {
   const steps = stepsOf(topicId);
   const right = new Map<string, string>();
   for (const step of steps) {
@@ -111,6 +111,7 @@ export async function walkIdea(page: Page, topicId: string): Promise<number> {
   const sitting = page.locator('.idea-sitting');
   await expect(sitting).toBeVisible();
   for (let screen = 1; screen <= 8; screen++) {
+    await onScreen?.(screen);
     const options = sitting.locator('.learn-options');
     const example = sitting.locator('.step-example');
     if (await sitting.locator('.learn-feedback').count() === 0) {
