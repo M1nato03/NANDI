@@ -573,6 +573,70 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p39-13-opens-compare', false);
   });
 
+  test('a11y batch 1', async ({ page }) => {
+    /** Every ledger write fails, as a full or broken store would (until the next page load). */
+    const breakLedger = () => page.evaluate(() => {
+      const store = IDBObjectStore.prototype as unknown as Record<string, unknown>;
+      for (const name of ['add', 'put'] as const) {
+        const original = store[name] as (this: IDBObjectStore, ...args: unknown[]) => IDBRequest;
+        store[name] = function (this: IDBObjectStore, ...args: unknown[]) { if (this.name === 'ledger') throw new DOMException('Test', 'QuotaExceededError'); return original.apply(this, args); };
+      }
+    });
+    // C12: the light shop themes' muted text, before (the old tone forced back) and after, on the same Plan rows.
+    if (theme === 'light') {
+      await planWithTasks(page);
+      for (const [name, old] of [['linen', '#75634f'], ['lagoon', '#536f6b']] as const) {
+        await page.evaluate(async value => {
+          const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+          await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').put({ key: 'economy.theme', value: `theme:${value}`, updatedAt: 1, deleted: 0, deviceId: 'shots' }); transaction.oncomplete = () => { database.close(); resolve(); }; });
+        }, name);
+        await page.reload();
+        await expect(page.locator('html')).toHaveAttribute('data-economy-theme', name);
+        const rows = page.locator('.mor-list').first();
+        await page.addStyleTag({ content: `:root { --ink-3: ${old} !important; }` }).then(tag => tag.evaluate(node => (node as Element).setAttribute('id', 'old-ink')));
+        await rows.screenshot({ path: `${out}/${theme}/a11y-c12-${name}-before.png` });
+        await page.evaluate(() => document.getElementById('old-ink')?.remove());
+        await rows.screenshot({ path: `${out}/${theme}/a11y-c12-${name}-after.png` });
+      }
+      await page.evaluate(async () => {
+        const database = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+        await new Promise<void>(resolve => { const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').delete('economy.theme'); transaction.oncomplete = () => { database.close(); resolve(); }; });
+      });
+    } else {
+      await page.clock.install({ time: NOON });
+    }
+    // C8: a tap to a new screen moves focus to its heading with no ring; the keyboard way shows the ring.
+    await page.goto('/#plan');
+    await page.getByRole('button', { name: /^Pause card/ }).click();
+    await expect(page.getByRole('heading', { name: 'Pause card', level: 1 })).toBeFocused();
+    await shot(page, 'a11y-c8-tap-no-ring', false);
+    await page.goto('/#plan');
+    await page.getByRole('button', { name: /^Pause card/ }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('heading', { name: 'Pause card', level: 1 })).toBeFocused();
+    await shot(page, 'a11y-c8-keyboard-ring', false);
+    // C1: a Calm sit that could not be saved, and C11-wrap: every length on screen.
+    await page.goto('/#yatra/calm');
+    await shot(page, 'a11y-calm-lengths-wrap', false);
+    await page.getByRole('button', { name: 'Quiet', exact: true }).click();
+    await page.locator('.calm-start').click();
+    await page.clock.fastForward(61_000);
+    await breakLedger();
+    if (await page.locator('.calm-dim').count()) await page.locator('.calm-dim').click();
+    await page.getByRole('button', { name: 'Stop' }).click();
+    await expect(page.getByText('Your sit could not be saved.')).toBeVisible();
+    await shot(page, 'a11y-c1-calm-unsaved', false);
+    // C3: a chapter that could not be saved.
+    await page.goto('/?e2e#read');
+    await seedTaughtTopics(page, ['psychology']);
+    await page.goto('/?e2e#read/chapter/psychology/psychology-ch1');
+    await expect(page.locator('.chiku-skip')).toBeVisible();
+    await breakLedger();
+    await page.locator('.chiku-skip').click();
+    await expect(page.getByText('This chapter could not be saved on this phone.')).toBeVisible();
+    await shot(page, 'a11y-c3-chapter-unsaved', false);
+  });
+
   test('hunt fixes', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
     // A workout stopped with no set logged counts nowhere: both Train cards agree.
