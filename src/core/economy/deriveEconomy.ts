@@ -1,6 +1,6 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
-import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, trainSessionPay } from './effort';
+import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, readingPay, trainSessionPay } from './effort';
 
 /** The tasks cap before spec 36 (26 Oct rules); a day before economy.v6From keeps it. */
 const PRE_EFFORT_TASKS_CAP = 200;
@@ -500,6 +500,11 @@ function replayEconomy(
   const v8Stored = value(settings, 'economy.v8From');
   const v8From = typeof v8Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v8Stored) ? v8Stored : '9999-12-31';
   const v8 = (key: string) => key >= v8From;
+  // Spec 41: chapters read one idea a sitting pay as they go, from the day the build that writes idea facts first runs.
+  const v9Stored = value(settings, 'economy.v9From');
+  const v9From = typeof v9Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v9Stored) ? v9Stored : '9999-12-31';
+  const v9 = (key: string) => key >= v9From;
+  const reading = readingPay(ordered, v9From, day => rulesFor(day, history)?.rules ?? RULES);
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -559,12 +564,16 @@ function replayEconomy(
     // Spec 36 v2: a solved board pays by difficulty less its hints, and a new chapter pays for what it taught and what was
     // answered right, up to 3 a day, instead of the day's drop 15 when it was read as the drop. Older days pay as before.
     const board = (row: LedgerRow | undefined, flat: number) => row ? (v7(key) ? boardPay(row.inputs, rules) : null) ?? flat : 0;
-    const chapters = v7(key) ? rows.filter(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && beforeBed(row) && typeof row.inputs.newSteps === 'number') : [];
-    const chapterXp = 'chapterPay' in rules.mind ? chapters.slice(0, rules.mind.chapterPay.paidPerDay).reduce((sum, row) => sum + (chapterPay(row.inputs, rules) ?? 0), 0) : 0;
+    const chapters = v7(key) && !v9(key) ? rows.filter(row => row.mode === 'read' && row.kind === 'chapter' && !row.deleted && beforeBed(row) && typeof row.inputs.newSteps === 'number') : [];
+    const readDay = v9(key) ? reading.get(key) : undefined;
+    const chapterXp = readDay ? readDay.chapterXp + readDay.dropTopUp + readDay.checkXp
+      : 'chapterPay' in rules.mind ? chapters.slice(0, rules.mind.chapterPay.paidPerDay).reduce((sum, row) => sum + (chapterPay(row.inputs, rules) ?? 0), 0) : 0;
     // The drop was a chapter's reading: its finished chapter says so, and so does the drop fact from the moment the
     // reading ends (so the drop never pays its 15 first and then gives it back when the chapter is done).
     const dropWasChapter = v7(key) && rows.some(row => !row.deleted && ((row.mode === 'read' && row.kind === 'chapter' && Array.isArray(row.inputs.readDrops) && row.inputs.readDrops.includes(`drop:daily:${key}`))
-      || (row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key && row.inputs.chapter === true)));
+      || (row.mode === 'gamify' && row.kind === 'learn-drop' && row.refId === key && row.inputs.chapter === true)
+      // Spec 41: a sitting that was the day's drop is paid through its chapter, topped up to 15 (rule i).
+      || (v9(key) && row.mode === 'read' && row.kind === 'idea' && row.inputs.dropId === `drop:daily:${key}`)));
     const mind = Math.min(v7(key) ? rules.mind.dailyCap : Math.min(PRE_V2_MIND_CAP, rules.mind.dailyCap),
       (caseSolved ? rules.mind.mysteryXp : 0) + board(mindRows.find(row => row.kind === 'board' && row.inputs.daily !== false), rules.mind.dropBoardXp) + chapterXp +
       count('lesson', rules.mind.lessonsPaidPerDay, rules.mind.lessonXp) +

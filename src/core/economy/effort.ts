@@ -152,3 +152,50 @@ export function chapterPay(inputs: Record<string, unknown>, rules: Rules): numbe
   const right = Math.min(pay.rightMax, Math.max(0, Math.floor(Number(inputs.firstRight) || 0)));
   return Math.min(pay.maxXp, pay.baseXp + pay.stepXp * steps + pay.rightXp * right);
 }
+
+export type ReadingDay = { chapterXp: number; dropTopUp: number; checkXp: number };
+const whole = (value: unknown) => Math.max(0, Math.floor(Number(value) || 0));
+/**
+ * Spec 41 (from economy.v9From): a chapter is read one idea a sitting, so its pay builds up across sittings and days.
+ * The chapter stays the paid unit: baseXp once, stepXp for each step as it lands, at most maxXp across all its days, for
+ * at most paidPerDay chapters a day (several sittings of one chapter use one slot). Each idea fact carries the steps no
+ * earlier idea fact of its chapter counted, so a chapter begun before v9 pays those steps on its first idea; the
+ * completion fact pays only steps no idea fact did (a chapter that needed no new sitting). Outside the cap: the
+ * next-day Book check (rightXp per right first answer, up to rightMax, using no slot), and rule (i): a sitting that was
+ * the day's drop is topped up to the drop's 15 as drop pay. Facts after bedtime pay nothing, as before.
+ */
+export function readingPay(facts: readonly LedgerRow[], from: string, rulesFor: (day: string) => Rules): Map<string, ReadingDay> {
+  const out = new Map<string, ReadingDay>();
+  const paid = new Map<string, number>(), based = new Set<string>(), ideaSteps = new Map<string, number>();
+  const rows = facts.filter(row => !row.deleted && row.mode === 'read' && (row.kind === 'idea' || row.kind === 'chapter' || row.kind === 'chapter-check') && row.dayKey >= from && row.inputs.afterBedtime !== true)
+    .sort((a, b) => a.dayKey.localeCompare(b.dayKey) || a.updatedAt - b.updatedAt || a.id.localeCompare(b.id));
+  for (let start = 0; start < rows.length;) {
+    const day = rows[start]!.dayKey;
+    let end = start;
+    while (end < rows.length && rows[end]!.dayKey === day) end++;
+    const list = rows.slice(start, end);
+    start = end;
+    const rules = rulesFor(day);
+    if (!('chapterPay' in rules.mind)) continue;
+    const pay = rules.mind.chapterPay;
+    const right = (row: LedgerRow) => pay.rightXp * Math.min(pay.rightMax, whole(row.inputs.firstRight));
+    const touched: string[] = [], today = new Map<string, number>();
+    let checkXp = 0;
+    for (const row of list) {
+      if (row.kind === 'chapter-check') { checkXp += right(row); continue; }
+      const chapter = row.kind === 'idea' ? String(row.inputs.chapter) : row.refId;
+      if (!touched.includes(chapter)) { if (touched.length >= pay.paidPerDay) continue; touched.push(chapter); }
+      let steps: number;
+      if (row.kind === 'idea') { steps = whole(row.inputs.newSteps); ideaSteps.set(chapter, (ideaSteps.get(chapter) ?? 0) + steps); }
+      else { steps = Math.max(0, whole(row.inputs.newSteps) - (ideaSteps.get(chapter) ?? 0)); checkXp += right(row); }
+      const amount = Math.min((based.has(chapter) ? 0 : pay.baseXp) + pay.stepXp * steps, Math.max(0, pay.maxXp - (paid.get(chapter) ?? 0)));
+      based.add(chapter);
+      paid.set(chapter, (paid.get(chapter) ?? 0) + amount);
+      today.set(chapter, (today.get(chapter) ?? 0) + amount);
+    }
+    const drop = list.find(row => row.kind === 'idea' && row.inputs.dropId === `drop:daily:${day}`);
+    const dropTopUp = drop ? Math.max(0, rules.mind.learnDropXp - (today.get(String(drop.inputs.chapter)) ?? 0)) : 0;
+    out.set(day, { chapterXp: [...today.values()].reduce((sum, value) => sum + value, 0), dropTopUp, checkXp });
+  }
+  return out;
+}
