@@ -245,6 +245,7 @@ public class NightPausePlugin extends Plugin {
         result.put("pendingPackage", prefs.getString("pending", ""));
         result.put("pendingReason", prefs.getString("pendingReason", "night"));
         result.put("pendingMinutes", prefs.getLong("pendingMinutes", 0));
+        result.put("pauseOffUntil", prefs.getLong("pauseOffUntil", 0));
         call.resolve(result);
     }
 
@@ -309,13 +310,16 @@ public class NightPausePlugin extends Plugin {
         int leadMinutes = call.getInt("leadMinutes", 30);
         String dayMode = call.getString("dayMode", "off");
         int dayLimitMinutes = call.getInt("dayLimitMinutes", 30);
+        // Spec 39: the Pause card runs the day mode on its own, inside its window (empty: all day until bedtime).
+        boolean pauseCard = call.getBoolean("pauseCard", false);
         getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
             .putBoolean("enabled", enabled).putString("bedtime", bedtime).putString("packages", packages).putInt("leadMinutes", leadMinutes)
             .putString("dayMode", dayMode).putInt("dayLimitMinutes", dayLimitMinutes)
-            .putString("pending", enabled ? getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", "") : "").apply();
+            .putBoolean("pauseCard", pauseCard).putString("pauseFrom", call.getString("pauseFrom", "")).putString("pauseTo", call.getString("pauseTo", ""))
+            .putString("pending", enabled || pauseCard ? getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("pending", "") : "").apply();
         Intent service = new Intent(getContext(), NightPauseService.class);
         boolean focusOn = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean("focusActive", false);
-        if ((enabled || focusOn) && usageAllowed(getContext())) {
+        if (NightPauseService.shouldRun(enabled, focusOn, pauseCard, usageAllowed(getContext()))) {
             if (Build.VERSION.SDK_INT >= 26) getContext().startForegroundService(service);
             else getContext().startService(service);
         }
@@ -359,7 +363,7 @@ public class NightPausePlugin extends Plugin {
             if (notifications != null) { notifications.cancel(NightPauseService.FOCUS_BACK_ID); notifications.cancel(NightPauseService.FOCUS_STILL_ID); }
         }
         Intent service = new Intent(getContext(), NightPauseService.class);
-        boolean needed = (active || prefs.getBoolean("enabled", false)) && usageAllowed(getContext());
+        boolean needed = NightPauseService.shouldRun(prefs.getBoolean("enabled", false), active, prefs.getBoolean("pauseCard", false), usageAllowed(getContext()));
         if (needed) {
             if (Build.VERSION.SDK_INT >= 26) getContext().startForegroundService(service);
             else getContext().startService(service);
@@ -444,6 +448,37 @@ public class NightPausePlugin extends Plugin {
         NotificationManager notifications = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if (notifications != null) notifications.cancel(NightPauseService.FOCUS_PAUSED_ID);
         call.resolve();
+    }
+
+    /** Spec 39 "Not now": the phone's Home screen. */
+    @PluginMethod
+    public void goHome(PluginCall call) {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.addCategory(Intent.CATEGORY_HOME);
+        home.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try { getContext().startActivity(home); call.resolve(); }
+        catch (android.content.ActivityNotFoundException error) { call.reject("No home screen", error); }
+    }
+
+    /** Spec 39 "Add another app": every app with a launcher icon (the manifest's <queries> lets NANDI see them). */
+    @PluginMethod
+    public void launcherApps(PluginCall call) {
+        PackageManager manager = getContext().getPackageManager();
+        Intent launcher = new Intent(Intent.ACTION_MAIN);
+        launcher.addCategory(Intent.CATEGORY_LAUNCHER);
+        JSArray apps = new JSArray();
+        Set<String> seen = new HashSet<>();
+        for (android.content.pm.ResolveInfo info : manager.queryIntentActivities(launcher, 0)) {
+            String name = info.activityInfo == null ? null : info.activityInfo.packageName;
+            if (name == null || !seen.add(name)) continue;
+            JSObject app = new JSObject();
+            app.put("packageName", name);
+            app.put("label", String.valueOf(info.loadLabel(manager)));
+            apps.put(app);
+        }
+        JSObject result = new JSObject();
+        result.put("apps", apps);
+        call.resolve(result);
     }
 
     @PluginMethod

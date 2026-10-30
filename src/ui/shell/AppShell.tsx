@@ -69,6 +69,9 @@ const SeasonShop = lazy(() => import('../screens/EconomyScreens').then(module =>
 const Badges = lazy(() => import('../screens/GamifyScreens').then(module => ({ default: module.Badges })));
 const Night = lazy(() => import('../screens/Night').then(module => ({ default: module.Night })));
 const NightPauseCard = lazy(() => import('../screens/NightPauseCard').then(module => ({ default: module.NightPauseCard })));
+// Spec 39: by day the pause is the Pause card (the person's own plan); at night it stays the night card.
+const PauseCard = lazy(() => import('../pause/PauseCard').then(module => ({ default: module.PauseCard })));
+const PauseSetup = lazy(() => import('../pause/PauseSetup').then(module => ({ default: module.PauseSetup })));
 
 export function AppShell() {
   const [path, setPath] = useState(route);
@@ -165,8 +168,8 @@ export function AppShell() {
   }, []);
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
   useEffect(() => {
-    if (!nightPauseAvailable()) return;
-    const check = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)); };
+    // Availability is read at each look: on the web it is the e2e stand-in, which a test can set after the app opened.
+    const check = () => { if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)); };
     check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
     return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
   }, []);
@@ -196,6 +199,7 @@ export function AppShell() {
   else if (path === 'tasks/shutdown' || path === 'plan/shutdown') screen = <Planner mode="shutdown" />;
   else if (path === 'tasks/review' || path === 'plan/review') screen = <Planner mode="review" />;
   else if (path === 'plan/focus') screen = <Today />;
+  else if (path === 'plan/pause') screen = <PauseSetup />;
   else if (import.meta.env.VITE_E2E === '1' && path === 'read/chiku-demo') screen = <ChikuDemo />;
   // Spec 33: Read (books, chapters, the old drop) and its Games (Kapi's shelf, the old Mind).
   else if (path === 'read' || path === 'read/drop') screen = <Learn entry={path.split('/')[1]} />;
@@ -217,5 +221,5 @@ export function AppShell() {
   else screen = <Plan />;
   const root = ['plan', 'read', 'yatra', 'you'].includes(path);
   // Spec 25: the route's area colours the screen; You stays neutral.
-  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}><NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /></Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
+  return <div className={`app-shell${path === 'night' ? ' night-route' : ''}`} data-area={areaOverride ?? areaOf(path)} data-books={booksGen}><NativeUpdateBar updater={nativeUpdater} /><UpdateBar />{autoBackupWarning && <button type="button" className="auto-backup-warning" onClick={() => go('you/backup')}>Automatic backup could not be saved. Tap to export by hand.</button>}<header className="topbar"><h1 className="brand"><span className="brand-mark" aria-hidden="true">●</span>NANDI</h1><span className="top-date">{formatDayKey(today)}</span><TodayDots key={restoreGen} now={clockTime} /></header><main id="main" className="content">{!root && path !== 'night' && <div className="screen"><button type="button" className="screen-back" aria-label={`Back to ${backDestination()}`} onClick={() => back()}><span className="back-chevron" aria-hidden="true">‹</span>Back</button></div>}<Suspense fallback={<DelayedCardSkeleton />}>{screen}</Suspense></main>{path !== 'night' && <TabBar current={tab} />}<EconomyFeedback key={restoreGen} />{pause && <Suspense fallback={null}>{pause.reason === 'night' ? <NightPauseCard packageName={pause.packageName} reason={pause.reason} minutes={pause.minutes} close={() => setPause(null)} /> : <PauseCard packageName={pause.packageName} close={() => setPause(null)} />}</Suspense>}<OpenMoment night={path === 'night' || nightRouteTime(clockTime, RULES.night.defaultShutdown)} pause={!!pause} />{welcomeNeeded && <Welcome onDone={closeWelcome} />}</div>;
 }

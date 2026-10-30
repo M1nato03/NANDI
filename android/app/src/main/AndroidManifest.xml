@@ -9,6 +9,14 @@
         <package android:name="com.facebook.katana" />
         <package android:name="com.twitter.android" />
         <package android:name="com.instagram.barcelona" />
+        <!-- Spec 39: the Pause card offers Indian short-video apps, and lets the person add any app they can open. -->
+        <package android:name="in.mohalla.video" />
+        <package android:name="com.eterno.shortvideos" />
+        <package android:name="in.mohalla.sharechat" />
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
     </queries>
 
     <application

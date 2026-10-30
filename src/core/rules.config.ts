@@ -1,12 +1,14 @@
 /** Starting defaults from 05-economy §2. Rule changes apply by dayKey, never retroactively. */
 export const RULES = {
-  version: 5,
+  version: 6,
   // 28 Oct (spec 36, "Effort pays"): measured effort pays more: focus minutes and clean blocks, a longer kept chhutti and
   // calm minutes; the tasks cap rises to 300. It counts from economy.v6From, the day this build first runs on a phone,
   // so no day shown before it is rescored; see RULES_HISTORY.
   // 29 Oct (spec 36 v2): Train pays per real set, a harder Mind board pays more (less per hint), and a Read chapter pays
   // for what it taught and what was answered right; the Train and Mind caps rise. From economy.v7From.
-  effectiveFrom: '2026-10-29',
+  // 31 Oct (spec 39, the Pause card): a planned 2-minute act done instead of opening a picked app pays a little,
+  // capped. From economy.v8From.
+  effectiveFrom: '2026-10-31',
   dayBoundaryHour: 4,
   // Spec 26: Moti's haveli offers at most this many ideas a day. It decides what is offered, not what pays (the
   // rebuild pays as a card review under mind.cardsMaxPerDay), so it sits outside the scoring keys.
@@ -247,6 +249,10 @@ export const RULES = {
   // Spec 36: each minute sat in a counted Calm session pays, up to a daily cap.
   calm: { xpPerMin: 1, dailyCap: 30 },
 
+  // Spec 39: the Pause card. A 2-minute act finished with NANDI in front pays actXp, up to dailyCap a day. "Not now"
+  // and "Open anyway" pay and cost nothing. Small on purpose: the card's job is the pause, not the pay.
+  pause: { actXp: 2, dailyCap: 10, actSeconds: 120 },
+
   // Spec 12: practice days a courtyard corner needs for stages 1–5. Days, never points.
   courtyard: { stageDays: [3, 7, 14, 30, 60] },
 
@@ -315,6 +321,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'tasks.focusPay.minutesPerXp': [1, 10], 'tasks.focusPay.blockMin': [10, 60], 'tasks.focusPay.blockXp': [0, 20],
   'tasks.focusPay.stillCheckMin': [30, 180], 'tasks.focusPay.stillGraceMin': [1, 15], 'tasks.focusPay.guardGraceSec': [10, 300],
   'calm.xpPerMin': [0, 5], 'calm.dailyCap': [0, 60],
+  'pause.actXp': [0, 5], 'pause.dailyCap': [0, 20], 'pause.actSeconds': [60, 300],
   'tasks.calibrationMinSamples': [1, 50], 'tasks.startAdherenceWindowMin': [0, 60],
   'tasks.liveTimers': [1, 1], 'tasks.preReminderMin': [0, 30],
   // Train: session awards, weekly goals, progression and safe finite placement tests.
@@ -418,11 +425,16 @@ export type RulesHistoryEntry = { effectiveFrom: string; rules: Rules; note?: st
 
 // Before 29 Oct (spec 36 v2) a session paid by its share of planned sets, every board paid 10 and a chapter paid
 // through the day's drop, with caps of 100 and 80: the frozen copies have no setPay, boardPay or chapterPay keys.
-const { setPay: _noSetPay, ...TRAIN_BEFORE_V2 } = RULES.train;
-const { boardPay: _noBoardPay, chapterPay: _noChapterPay, ...MIND_BEFORE_V2 } = RULES.mind;
+// Before 31 Oct (spec 39) the Pause card paid nothing: the frozen copy has no pause key.
+const { pause: _noPause, ...RULES_WITHOUT_PAUSE } = RULES;
+void _noPause;
+/** The rules in force from 29 Oct: effort pays in Train, Mind and Read (spec 36 v2). Frozen. */
+const RULES_2026_10_29 = { ...RULES_WITHOUT_PAUSE, version: 5, effectiveFrom: '2026-10-29' } as unknown as Rules;
+const { setPay: _noSetPay, ...TRAIN_BEFORE_V2 } = RULES_2026_10_29.train;
+const { boardPay: _noBoardPay, chapterPay: _noChapterPay, ...MIND_BEFORE_V2 } = RULES_2026_10_29.mind;
 void _noSetPay; void _noBoardPay; void _noChapterPay;
 /** The rules in force from 28 Oct: focus minutes, a longer chhutti and calm pay (spec 36 v1). Frozen. */
-const RULES_2026_10_28 = { ...RULES, version: 4, effectiveFrom: '2026-10-28', train: { ...TRAIN_BEFORE_V2, dailyCapExclWeekly: 100 }, mind: { ...MIND_BEFORE_V2, dailyCap: 80 } } as unknown as Rules;
+const RULES_2026_10_28 = { ...RULES_2026_10_29, version: 4, effectiveFrom: '2026-10-28', train: { ...TRAIN_BEFORE_V2, dailyCapExclWeekly: 100 }, mind: { ...MIND_BEFORE_V2, dailyCap: 80 } } as unknown as Rules;
 // Before 28 Oct (spec 36) focus minutes, a longer chhutti and calm minutes paid nothing and the tasks cap was 200, so
 // the frozen copies have no focusPay, extraXpPer10Min or calm keys at all (each reads as 0).
 const { focusPay: _noFocusPay, ...TASKS_BEFORE_EFFORT } = RULES_2026_10_28.tasks;
@@ -444,7 +456,8 @@ export const RULES_HISTORY: readonly RulesHistoryEntry[] = [
   { effectiveFrom: RULES_2026_10_25.effectiveFrom, rules: RULES_2026_10_25, note: 'chhutti pays 10 XP when measured (item 64)' },
   { effectiveFrom: RULES_2026_10_26.effectiveFrom, rules: RULES_2026_10_26, note: 'teaching Chiku pays 5 XP once per idea (spec 30)' },
   { effectiveFrom: RULES_2026_10_28.effectiveFrom, rules: RULES_2026_10_28, note: 'effort pays: focus minutes and blocks, longer chhutti, calm minutes; tasks cap 300 (spec 36)' },
-  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'effort pays in Train, Mind and Read: per real set, by board difficulty, by chapter depth; caps 130 and 120 (spec 36 v2)' },
+  { effectiveFrom: RULES_2026_10_29.effectiveFrom, rules: RULES_2026_10_29, note: 'effort pays in Train, Mind and Read: per real set, by board difficulty, by chapter depth; caps 130 and 120 (spec 36 v2)' },
+  { effectiveFrom: RULES.effectiveFrom, rules: RULES, note: 'the Pause card: 2 XP per finished 2-minute act, 10 a day (spec 39)' },
 ];
 
 /** Finds the latest version in force on a dayKey; no entry applies before the first date. */

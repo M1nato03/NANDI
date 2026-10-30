@@ -485,6 +485,39 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'night-deck');
   });
 
+  test('pause card', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
+    await page.goto('/?e2e#plan');
+    await shot(page, 'p39-0-plan-row-off');
+    await page.getByRole('button', { name: /^Pause card/ }).click();
+    await page.getByLabel('Instagram').check();
+    await page.getByLabel('YouTube').check();
+    await shot(page, 'p39-1-apps');
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'do 10 squats' }).click();
+    await shot(page, 'p39-2-line');
+    await page.getByRole('button', { name: 'Next' }).click();
+    await shot(page, 'p39-3-when');
+    await page.getByRole('button', { name: 'Next' }).click();
+    await shot(page, 'p39-4-see-it-once');
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await shot(page, 'p39-5-manage-on');
+    await page.goto('/?e2e#plan');
+    await shot(page, 'p39-6-plan-row-on');
+    // The phone reports Instagram at the front.
+    await page.evaluate(() => { sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ pendingPackage: 'com.instagram.android', pendingReason: 'open' })); window.dispatchEvent(new Event('nandi:night-pause')); });
+    const card = page.getByRole('dialog', { name: 'Pause card' });
+    await expect(card).toBeVisible();
+    await shot(page, 'p39-7-card', false);
+    await card.getByRole('button', { name: 'Do my 2-min thing' }).click();
+    await page.clock.fastForward(37_000);
+    await shot(page, 'p39-8-act-timer', false);
+    await page.clock.fastForward(90_000);
+    await card.getByRole('button', { name: 'Done' }).click();
+    await expect(card).toContainText('2 minutes back.');
+    await shot(page, 'p39-9-done', false);
+  });
+
   test('hunt fixes', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
     // A workout stopped with no set logged counts nowhere: both Train cards agree.

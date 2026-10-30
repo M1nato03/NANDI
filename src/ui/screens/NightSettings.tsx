@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { readPauseCard } from '../../core/pauseCard';
+import { go } from '../shell/router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
-import { DAY_LIMIT_CHOICES, DAY_MODES, DEFAULT_PAUSE_APPS, pauseWindowTimes, readDayLimit, readDayMode } from '../../core/nightPause';
+import { DEFAULT_PAUSE_APPS, pauseWindowTimes } from '../../core/nightPause';
+import { dayKey } from '../../core/time';
 import { RULES } from '../../core/rules.config';
 import { initChosenApps, saveChosenApps } from '../../data/repos/chhutti';
 import { nightPauseAvailable, nightPauseStatus, openNightPauseAppInfo, openOverlaySettings, openUsageSettings, readInstalledApps, testNightPause } from '../../platform/nightPause';
@@ -45,8 +48,7 @@ export function NightSettings() {
   const storedBedtime = rows?.find(row => row.key === 'planner.bedtime' && !row.deleted)?.value;
   const bedtime = typeof storedBedtime === 'string' ? storedBedtime : RULES.night.defaultBedtime;
   const pauseWindow = pauseWindowTimes(bedtime);
-  const dayMode = readDayMode(rows?.find(row => row.key === 'night.pause.dayMode' && !row.deleted)?.value);
-  const dayLimit = readDayLimit(rows?.find(row => row.key === 'night.pause.dayLimitMin' && !row.deleted)?.value);
+  const pauseCard = readPauseCard(rows ?? [], dayKey(Date.now())); // eslint-disable-line react-hooks/purity
   useEffect(() => {
     if (!nightPauseAvailable()) return;
     const refresh = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => { setAllowed(status.usageAllowed); setOverlay(status.overlayAllowed); }).catch(() => setMessage('Could not check Usage access.')); };
@@ -103,9 +105,9 @@ export function NightSettings() {
     {!overlay && <><p>Without it, the pause comes only as a notification. Tap below, find NANDI, and turn on 'Allow display over other apps'.</p><div className="actions"><button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Allow pop-up over apps</button></div></>}
     <label><input type="checkbox" checked={enabled} onChange={event => void save('night.pause.enabled', event.target.checked)} /> App pause on</label>
     <p>At night: every time you open a chosen app, from {pauseWindow.start} until {pauseWindow.end} ({RULES.night.pauseLeadMin} minutes before your {bedtime} bedtime). Change the bedtime target in Settings.</p>
-    <label>During the day <select value={dayMode} onChange={event => void save('night.pause.dayMode', readDayMode(event.target.value))}>{DAY_MODES.map(mode => <option key={mode.value} value={mode.value}>{mode.label}</option>)}</select></label>
-    {dayMode === 'limit' && <label>Daily limit <select value={dayLimit} onChange={event => void save('night.pause.dayLimitMin', readDayLimit(Number(event.target.value)))}>{DAY_LIMIT_CHOICES.map(minutes => <option key={minutes} value={minutes}>{minutes} minutes</option>)}</select></label>}
-    <p>{dayMode === 'limit' ? `By day it pauses once your chosen apps reach ${dayLimit} minutes together since 04:00, then each time you open one.` : dayMode === 'open' ? 'By day it pauses every time you open a chosen app.' : 'By day it stays quiet.'} After 'Go anyway' it asks again in {RULES.night.pauseSnoozeMin} minutes. Turn it off here any time.</p>
+    {/* Spec 39: by day the pause is now the Pause card, set up at Plan → Pause card. */}
+    <p>By day: {pauseCard.offToday ? 'the Pause card is off for today' : pauseCard.on ? 'the Pause card shows your plan when you open a picked app' : 'nothing, unless you turn on the Pause card'}. <button type="button" className="text-button" onClick={() => go('plan/pause')}>Plan → Pause card</button></p>
+    <p>After 'Go anyway' at night it asks again in {RULES.night.pauseSnoozeMin} minutes. Turn it off here any time.</p>
     <button type="button" className="secondary" onClick={() => void tryNow()}>Try it now for {RULES.night.pauseTestMin} minutes</button>
     {DEFAULT_PAUSE_APPS.filter(app => !installed || installed.includes(app.packageName) || packages.includes(app.packageName)).map(app => <label key={app.packageName}><input type="checkbox" checked={packages.includes(app.packageName)} onChange={() => toggle(app.packageName)} /> {app.label}{installed && !installed.includes(app.packageName) ? ' (not on this phone)' : ''}</label>)}
     {extras.map(item => <label key={item}><input type="checkbox" checked onChange={() => toggle(item)} /> {item}</label>)}

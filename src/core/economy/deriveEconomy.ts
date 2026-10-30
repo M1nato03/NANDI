@@ -1,6 +1,6 @@
 import { RULES, RULES_HISTORY, rulesFor, type RulesHistoryEntry } from '../rules.config';
 import { calculateTasksDayXp, replayFactShards, replayFactXp } from './awards';
-import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, trainSessionPay } from './effort';
+import { boardPay, calmDayXp, chapterPay, chhuttiXp, focusDayXp, pauseDayXp, trainSessionPay } from './effort';
 
 /** The tasks cap before spec 36 (26 Oct rules); a day before economy.v6From keeps it. */
 const PRE_EFFORT_TASKS_CAP = 200;
@@ -39,6 +39,8 @@ export interface EconomyDay {
   chhutti: number;
   /** Spec 36: minutes sat in Calm, from economy.v6From. Not a Hat-trick slot; marks no day. */
   calm: number;
+  /** Spec 39: finished Pause card acts (from economy.v8From). */
+  pause: number;
   /** XP kept from the day's close: a later replay may not show less than the day once closed with. */
   held: number;
 }
@@ -494,6 +496,10 @@ function replayEconomy(
   const v7Stored = value(settings, 'economy.v7From');
   const v7From = typeof v7Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v7Stored) ? v7Stored : '9999-12-31';
   const v7 = (key: string) => key >= v7From;
+  // Spec 39: the Pause card pays from the day the build that writes its facts first runs.
+  const v8Stored = value(settings, 'economy.v8From');
+  const v8From = typeof v8Stored === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v8Stored) ? v8Stored : '9999-12-31';
+  const v8 = (key: string) => key >= v8From;
   const unpaidQuests = customQuestPay(ordered, v4From, history).unpaid;
   // The rest weekday for a week: that week's own pick, else the standing pick from the week it was made on (B6).
   const restWeekdayFor = (key: string): number | undefined => {
@@ -604,8 +610,9 @@ function replayEconomy(
     const chhutti = v6(key) ? kept.slice(0, rules.plan.chhutti.paidPerDay).reduce((sum, row) => sum + chhuttiXp(row, rules), 0)
       : Math.min(rules.plan.chhutti.paidPerDay, kept.length) * rules.plan.chhutti.xp;
     const calm = v6(key) ? calmDayXp(rows, rules) : 0;
-    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, calm, welcome: 0, held: 0,
-      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti + calm,
+    const pause = v8(key) ? pauseDayXp(rows, rules) : 0;
+    days.push({ dayKey: key, tasks, train, mind, weekly, quests, focus, hatTrick, lightsOut, soft, chhutti, calm, pause, welcome: 0, held: 0,
+      total: tasks + train + mind + weekly + quests + focus + (hatTrick ? rules.bonuses.hatTrickXp : 0) + lightsOut + soft + chhutti + calm + pause,
       mark: plannedTask || body || mindSlot || soft > 0, body, mindSlot });
   }
   // Spec 15 D: the first marked day after an unmarked one gets a fixed, announced gift. Chosen weekly rest days

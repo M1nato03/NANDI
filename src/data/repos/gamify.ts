@@ -50,6 +50,7 @@ async function reconcileOnce(db: NandiDb, now: number): Promise<void> {
     if (!await db.settings.get('economy.v6From')) await db.settings.put({ key: 'economy.v6From', value: today, updatedAt: now, deleted: 0, deviceId });
     // Spec 36 v2 (Train sets, board difficulty, chapter depth), the same way.
     if (!await db.settings.get('economy.v7From')) await db.settings.put({ key: 'economy.v7From', value: today, updatedAt: now, deleted: 0, deviceId });
+    if (!await db.settings.get('economy.v8From')) await db.settings.put({ key: 'economy.v8From', value: today, updatedAt: now, deleted: 0, deviceId });
     // Batch 5 (item 51): from the day after this build first runs, Mind after bedtime grows no courtyard corner.
     // Tomorrow, so nothing done earlier today stops counting, and never before the day after the furthest day this
     // phone has shown, so a clock set back on the upgrade day cannot shrink a corner later. Written once (items 53-54).

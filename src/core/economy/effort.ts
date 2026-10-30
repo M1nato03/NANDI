@@ -88,6 +88,17 @@ export function calmDayXp(facts: readonly LedgerRow[], rules: Rules): number {
   return Math.min(pay.dailyCap, minutes * pay.xpPerMin);
 }
 
+/**
+ * Spec 39: the Pause card. Each 2-minute act finished with NANDI in front (an attempt whose outcome is act_done) pays
+ * actXp, up to dailyCap a day. Backing out or opening the app anyway pays nothing.
+ */
+export function pauseDayXp(facts: readonly LedgerRow[], rules: Rules): number {
+  const pay = (rules as Rules & { pause?: { actXp: number; dailyCap: number } }).pause;
+  if (!pay) return 0;
+  const acts = facts.filter(fact => !fact.deleted && fact.mode === 'pause' && fact.kind === 'attempt' && fact.inputs.outcome === 'act_done').length;
+  return Math.min(pay.dailyCap, acts * pay.actXp);
+}
+
 /*
  * Spec 36 v2: effort pays in Train, Mind and Read, from economy.v7From. Each reads only what the app itself checked: a
  * set's slot and the time it was logged, a board's generated difficulty and the hints it took, the steps a chapter

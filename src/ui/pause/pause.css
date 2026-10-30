@@ -1,0 +1,26 @@
+/* Spec 39, the Pause card: the plan first and big, one main button, two equal text exits. */
+.pause-card { position: relative; width: min(100%, 520px); display: grid; gap: 16px; padding: 28px 24px 24px; }
+.pause-card .eyebrow { margin: 0; }
+.pause-friend { position: absolute; top: 14px; right: 14px; }
+.pause-plan-label { margin: 0; color: var(--secondary-ink); }
+.pause-line { margin: 0; font-size: clamp(24px, 7vw, 32px); line-height: 1.2; }
+.pause-do { min-height: 56px; font-size: 18px; }
+.pause-picks { display: grid; gap: 10px; }
+.pause-exits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pause-exits .text-button { min-height: 48px; justify-content: center; text-align: center; }
+.pause-clock { margin: 0; font: 800 56px 'Bricolage Grotesque', sans-serif; font-variant-numeric: tabular-nums; text-align: center; }
+.pause-earned { margin: 0; color: var(--accent); font-weight: 700; }
+.pause-demo { margin: 0; text-align: center; }
+
+/* Setup at Plan → Pause card. */
+.pause-setup .pause-step { display: grid; gap: 12px; }
+.pause-apps { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.pause-apps label { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.pause-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.pause-acts button { min-height: 40px; }
+.pause-when { display: grid; gap: 10px; border: 0; margin: 0; padding: 0; }
+.pause-when label { display: flex; align-items: center; gap: 8px; }
+.pause-times { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pause-setup-nav { display: flex; gap: 10px; justify-content: space-between; }
+.plan-pause-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; }
+.plan-pause-row small { display: block; color: var(--secondary-ink); font-weight: 400; }

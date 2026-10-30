@@ -117,7 +117,7 @@ describe('spec 36 v2 is forward-only', () => {
   });
 
   it('the 28 Oct rules are kept as they were, for the days before', () => {
-    const before = RULES_HISTORY.at(-2)!;
+    const before = RULES_HISTORY.find(entry => entry.effectiveFrom === '2026-10-28')!;
     expect(before.effectiveFrom).toBe('2026-10-28');
     expect('setPay' in before.rules.train || 'boardPay' in before.rules.mind || 'chapterPay' in before.rules.mind).toBe(false);
   });

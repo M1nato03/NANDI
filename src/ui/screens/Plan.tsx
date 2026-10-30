@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { pauseAppLabel, readPauseCard } from '../../core/pauseCard';
+import '../pause/pause.css';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -50,6 +52,7 @@ export function Plan({ questId }: { questId?: string }) {
   const respaceDialog = useModalFocus<HTMLElement>(() => setRespace(null));
   const logs = useLiveQuery(() => db.dailyLog.filter(row => row.deleted === 0).toArray(), []) ?? [];
   const settings = useLiveQuery(() => db.settings.filter(row => row.deleted === 0).toArray(), []) ?? [];
+  const pauseCard = readPauseCard(settings, dayKey(board.now));
   const softFacts = useSoftFacts();
   const today = dayKey(board.now);
   const night = adaptiveNight(settings, board.tasks, today);
@@ -93,6 +96,8 @@ export function Plan({ questId }: { questId?: string }) {
     <MorList board={board} onDetail={setDetail} avgHidden={avgHidden} hideAverage={() => void hideAverage()} outerMove={outerMove} startRequest={startRequest} away={awayToday}
       heading={<><p className="eyebrow">Make room for what matters</p><h1>Plan</h1>{awayToday && <p className="small">You're away. Rest well.</p>}</>} />
     {!soft.state && !awayToday && <SoftChip afterBedtime={afterBed} />}{yesterdayWasSoft(softFacts, today) && <p className="small soft-note">Yesterday was a soft day. You still showed up.</p>}
+    {/* Spec 39: the Pause card, one plain row: what it does now and where to set it. */}
+    <button type="button" className="card plan-pause-row" onClick={() => go('plan/pause')}><span><strong>Pause card</strong><small>{pauseCard.offToday ? 'Off for today' : pauseCard.on ? `On · ${pauseCard.packages.map(name => pauseAppLabel(name)).join(', ')}` : 'Off · show your plan when you open Instagram'}</small></span><span aria-hidden="true">›</span></button>
     {/* Item 183: everything else on Plan waits behind one closed More at the bottom. Nothing is removed, only moved. */}
     <details className="card plan-more"><summary><strong>More</strong><span className="small">Check-ins, quests, routines, reminders</span></summary>
       {fresh && <section className="card fresh-start" aria-label="Fresh start"><p>Yesterday didn't go to plan. That's data, not a verdict.</p><div className="sheet-actions"><button type="button" onClick={() => { void dismissFresh(); go('plan/morning'); }}>Plan today</button><button type="button" className="secondary" onClick={() => setPickMust(true)}>Pick one Must</button></div>{pickMust && <div>{board.tasks.filter(task => !task.deleted && task.status !== 'done' && task.status !== 'dropped' && !board.tasks.some(child => child.parentId === task.id && !child.deleted)).map(task => <div key={task.id}><button type="button" className="secondary fresh-choice" onClick={() => void pinMust(task)}>{task.title}</button>{pickNote?.id === task.id && <p role="alert" tabIndex={-1} ref={pickNoteRef}>{pickNote.text}</p>}</div>)}</div>}</section>}

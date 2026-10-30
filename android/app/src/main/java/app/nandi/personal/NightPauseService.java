@@ -44,13 +44,21 @@ public class NightPauseService extends Service {
             SharedPreferences prefs = getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE);
             boolean nightOn = prefs.getBoolean("enabled", false);
             boolean focusOn = prefs.getBoolean("focusActive", false);
-            if (!shouldRun(nightOn, focusOn, NightPausePlugin.usageAllowed(NightPauseService.this))) {
+            boolean pauseCard = prefs.getBoolean("pauseCard", false);
+            if (!shouldRun(nightOn, focusOn, pauseCard, NightPausePlugin.usageAllowed(NightPauseService.this))) {
                 stopSelf(); return;
             }
             long now = System.currentTimeMillis();
             boolean night = nightOn && (now < prefs.getLong("testUntil", 0)
                 || inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30)));
-            String dayMode = nightOn ? prefs.getString("dayMode", "off") : "off";
+            // Spec 39: by day only the Pause card pauses, inside its window, never during a focus (the focus guard wins)
+            // and never once it is off for today. At night the night pause wins.
+            Calendar clock = Calendar.getInstance();
+            clock.setTimeInMillis(now);
+            boolean inWindow = inDayWindow(clock.get(Calendar.HOUR_OF_DAY) * 60 + clock.get(Calendar.MINUTE), prefs.getString("pauseFrom", ""), prefs.getString("pauseTo", ""),
+                inPauseWindow(prefs.getString("bedtime", "01:30"), prefs.getInt("leadMinutes", 30)));
+            boolean dayPause = dayPauseApplies(pauseCard, night, focusOn, now < prefs.getLong("pauseOffUntil", 0), inWindow);
+            String dayMode = dayPause ? prefs.getString("dayMode", "off") : "off";
             boolean watching = night || !"off".equals(dayMode) || focusOn;
             PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
             boolean screenOn = power != null && power.isInteractive();
@@ -70,7 +78,7 @@ public class NightPauseService extends Service {
                 }
                 boolean snoozed = current.equals(snoozedPackage) && now < snoozeUntil;
                 if (focusOn) watchFocus(prefs, now);
-                if (nightOn && (night || !"off".equals(dayMode)) && selected.contains(current) && !current.equals(prompted) && !snoozed) {
+                if ((night || !"off".equals(dayMode)) && selected.contains(current) && !current.equals(prompted) && !snoozed) {
                     String reason = null;
                     long minutes = 0;
                     if (night) reason = "night";
@@ -136,6 +144,13 @@ public class NightPauseService extends Service {
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && ACTION_PAUSE_OFF_TODAY.equals(intent.getAction())) {
+            // Spec 39 "Off for today" from the notice: quiet until NANDI's next day starts (04:00). Never asks why.
+            Calendar next = Calendar.getInstance();
+            next.setTimeInMillis(dayStart(System.currentTimeMillis()));
+            next.add(Calendar.DAY_OF_MONTH, 1);
+            getSharedPreferences(NightPausePlugin.PREFS, MODE_PRIVATE).edit().putLong("pauseOffUntil", next.getTimeInMillis()).apply();
+        }
         showOngoing();
         handler.removeCallbacks(check);
         used.invalidate();
@@ -150,8 +165,36 @@ public class NightPauseService extends Service {
      * only with Usage access.
      */
     static boolean shouldRun(boolean nightOn, boolean focusOn, boolean usageAllowed) {
-        return (nightOn || focusOn) && usageAllowed;
+        return shouldRun(nightOn, focusOn, false, usageAllowed);
     }
+
+    /** Spec 39: the Pause card also keeps the watcher running (night || focus || pauseCard) && usageAllowed. */
+    static boolean shouldRun(boolean nightOn, boolean focusOn, boolean pauseCard, boolean usageAllowed) {
+        return (nightOn || focusOn || pauseCard) && usageAllowed;
+    }
+
+    /**
+     * Spec 39: whether a minute of the day (0-1439) is inside the Pause card's window. With no window ("" to ""), all day
+     * until the night window starts; "21:00" to "02:00" wraps past midnight.
+     */
+    static boolean inDayWindow(int minute, String from, String to, boolean nightWindow) {
+        int start = clockMinute(from), end = clockMinute(to);
+        if (start < 0 || end < 0 || start == end) return !nightWindow;
+        return start < end ? minute >= start && minute < end : minute >= start || minute < end;
+    }
+
+    private static int clockMinute(String text) {
+        if (text == null || !text.matches("\\d{2}:\\d{2}")) return -1;
+        int hour = Integer.parseInt(text.substring(0, 2)), minute = Integer.parseInt(text.substring(3));
+        return hour < 24 && minute < 60 ? hour * 60 + minute : -1;
+    }
+
+    /** Spec 39 precedence: a focus's guard first, then the night, then the Pause card (when on, not off for today, in its window). */
+    static boolean dayPauseApplies(boolean pauseCard, boolean night, boolean focusOn, boolean offToday, boolean inWindow) {
+        return pauseCard && !night && !focusOn && !offToday && inWindow;
+    }
+
+    static final String ACTION_PAUSE_OFF_TODAY = "app.nandi.personal.PAUSE_OFF_TODAY";
 
     /** The always-on notice: the running focus while one runs (with its clock), else App pause. */
     private void showOngoing() {
@@ -164,6 +207,15 @@ public class NightPauseService extends Service {
                 .setContentText("Instagram, YouTube and the like pause it. Other apps don't.")
                 .setWhen(prefs.getLong("focusSince", System.currentTimeMillis()) - prefs.getLong("focusBeforeMs", 0)).setUsesChronometer(true).setShowWhen(true)
                 .setContentIntent(openApp(FOCUS_BACK_ID));
+        } else if (prefs.getBoolean("pauseCard", false) && System.currentTimeMillis() >= prefs.getLong("pauseOffUntil", 0)) {
+            // Spec 39: plain words and one way to rest it for the day.
+            Intent off = new Intent(this, NightPauseService.class).setAction(ACTION_PAUSE_OFF_TODAY);
+            PendingIntent offToday = PendingIntent.getService(this, 43010, off, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            builder.setContentTitle("Pause card is on").setContentText("Your plan shows when you open a picked app.")
+                .addAction(new Notification.Action.Builder(null, "Off for today", offToday).build())
+                .setContentIntent(openApp(43011));
+        } else if (prefs.getBoolean("pauseCard", false)) {
+            builder.setContentTitle("Pause card is off for today").setContentText("It comes back tomorrow.").setContentIntent(openApp(43011));
         } else {
             builder.setContentTitle("NANDI app pause is on").setContentText("You can turn it off in You > Settings > App pause.");
         }
