@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
+import type { SettingRow } from '../../data/types';
 import { dayKey } from '../../core/time';
 import { DAY_LIMIT_CHOICES } from '../../core/nightPause';
 import { cleanAct, GRACE_CHOICES, PAUSE_ACTS, PAUSE_APP_CHOICES, pauseAppLabel, pauseLine, readPauseCard, windowText, type PauseWindow } from '../../core/pauseCard';
-import { savePauseSettings } from '../../data/repos/pause';
+import { readOpensLog, summarizeOpens, type AppDay } from '../../core/pauseOpens';
+import { minutesInWords } from '../../core/tasks/plannerCopy';
+import { recordOpens, savePauseSettings } from '../../data/repos/pause';
 import { nightPauseAvailable, nightPauseStatus, openOverlaySettings, openUsageSettings, readInstalledApps, readLauncherApps } from '../../platform/nightPause';
 import { PauseCard } from './PauseCard';
 import './pause.css';
@@ -37,7 +40,11 @@ export function PauseSetup() {
   }, []);
   useEffect(() => {
     if (!phone) return;
-    const look = () => { if (document.visibilityState === 'visible') void nightPauseStatus().then(status => setAccess({ usage: status.usageAllowed, overlay: status.overlayAllowed })).catch(() => undefined); };
+    const look = () => {
+      if (document.visibilityState !== 'visible') return;
+      void nightPauseStatus().then(status => setAccess({ usage: status.usageAllowed, overlay: status.overlayAllowed })).catch(() => undefined);
+      void recordOpens(db, Date.now()).catch(() => undefined);
+    };
     look();
     document.addEventListener('visibilitychange', look);
     return () => document.removeEventListener('visibilitychange', look);
@@ -88,6 +95,7 @@ export function PauseSetup() {
         {card.on && <button type="button" className="text-button" onClick={() => void quick({ on: false }, 'The Pause card is off.')}>Turn it off</button>}
       </div>
       {phone && card.on && access && (!access.usage || !access.overlay) && <PhoneAccess access={access} />}
+      {phone && card.on && <OpensCard settings={settings} packages={card.packages} today={today} />}
     </>}
 
     {stepNumber >= 0 && <p className="small">Step {Math.min(stepNumber + 1, 3)} of 3{current === 'rehearse' ? ' · see it once' : ''}</p>}
@@ -168,5 +176,27 @@ function PhoneAccess({ access }: { access: { usage: boolean; overlay: boolean } 
     {!access.usage && <button type="button" className="secondary" onClick={() => void openUsageSettings()}>Open Usage access</button>}
     <p>{access.overlay ? '✓ "Display over other apps" is on: the card can show over the app.' : '"Display over other apps" lets the card show over the app you opened.'}</p>
     {!access.overlay && <button type="button" className="secondary" onClick={() => void openOverlaySettings()}>Open Display over other apps</button>}
+  </div>;
+}
+
+const opensText = (day: AppDay, perDay: boolean) => `${day.opens} ${day.opens === 1 ? 'open' : 'opens'}${perDay ? ' a day' : ''} · ${minutesInWords(Math.round(day.ms / 60_000))}${perDay ? ' a day' : ''}`;
+
+/** Spec 39, the opens log: the picked apps' opens and minutes, from the phone's own usage log; the kill test reads these. */
+function OpensCard({ settings, packages, today }: { settings: readonly SettingRow[]; packages: string[]; today: string }) {
+  const log = readOpensLog(settings);
+  return <div className="card pause-step pause-opens">
+    <h2>Your opens</h2>
+    {!log ? <p className="small">These show once NANDI can read the phone's usage log (Usage access).</p> : (() => {
+      const summary = summarizeOpens(log, packages, today);
+      return <>
+        <dl className="pause-opens-list">
+          <div><dt>Today so far</dt><dd>{opensText(summary.today, false)}</dd></div>
+          <div><dt>Last 7 days</dt><dd>{summary.lately ? opensText(summary.lately, true) : 'After your first full day'}</dd></div>
+          <div><dt>The week before the card</dt><dd>{summary.before ? opensText(summary.before, true) : 'Not enough days yet'}</dd></div>
+          {summary.afterAnyway.count > 0 && <div><dt>After "Open anyway"</dt><dd>{minutesInWords(Math.round(summary.afterAnyway.ms / summary.afterAnyway.count / 60_000))} on average</dd></div>}
+        </dl>
+        <p className="small">Counted from the phone's own usage log, only for the apps you picked. A day runs from 04:00 to 04:00. It stays on this phone.</p>
+      </>;
+    })()}
   </div>;
 }

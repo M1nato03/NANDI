@@ -2,7 +2,10 @@ import type { NandiDb } from '../db';
 import { trackWrite } from '../../core/pendingWrites';
 import { dayKey } from '../../core/time';
 import { getOrCreateDeviceId } from '../device';
-import { PAUSE_KEYS } from '../../core/pauseCard';
+import { PAUSE_KEYS, readPauseCard } from '../../core/pauseCard';
+import { dayBounds, daysToRead, keptDays, LEAD_MS, opensDay, OPENS_KEY, readOpensLog } from '../../core/pauseOpens';
+import type { GuardEvent } from '../../core/focusGuard';
+import { readUsageEvents } from '../../platform/nightPause';
 
 export type PauseOutcome = 'act_done' | 'backed_out' | 'opened_anyway';
 
@@ -31,4 +34,33 @@ export async function savePauseSettings(db: NandiDb, change: Partial<Record<keyo
       await db.settings.put({ key: keys[name]!, value, updatedAt: now, deleted: 0, deviceId });
     }
   }));
+}
+
+type ReadUsage = (from: number, to: number) => Promise<GuardEvent[] | null>;
+/**
+ * Spec 39, the opens log: while the Pause card is on, reads from the phone's usage log every day not yet read in full
+ * (the first time, the 7 days before too) and keeps each day's opens and minutes for the picked apps only. With no
+ * usage log (the web, no Usage access) it writes nothing. Returns whether anything was read.
+ */
+export async function recordOpens(db: NandiDb, now: number, read: ReadUsage = readUsageEvents): Promise<boolean> {
+  const settings = await db.settings.toArray();
+  const today = dayKey(now);
+  const card = readPauseCard(settings, today);
+  if (!card.on) return false;
+  const log = readOpensLog(settings);
+  const packages = card.packages;
+  const wanted = daysToRead(log, today);
+  const attempts = await db.ledger.where('dayKey').anyOf(wanted).toArray();
+  const days = { ...log?.days };
+  for (const day of wanted) {
+    const { fromMs, toMs } = dayBounds(day);
+    const end = Math.min(toMs, now);
+    if (end <= fromMs) continue;
+    const events = await read(fromMs - LEAD_MS, end);
+    if (!events) return false;
+    days[day] = opensDay(events, day, fromMs - LEAD_MS, end, packages, attempts, now >= toMs);
+  }
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.settings.put({ key: OPENS_KEY, value: { since: log?.since ?? today, days: keptDays(days, today) }, updatedAt: now, deleted: 0, deviceId }));
+  return true;
 }

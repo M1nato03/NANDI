@@ -1,6 +1,7 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { RULES } from '../core/rules.config';
 import type { LockEvent, UsageEvent } from '../core/plan/chhutti';
+import type { GuardEvent } from '../core/focusGuard';
 
 type Status = { usageAllowed: boolean; overlayAllowed: boolean; pendingPackage: string; pendingReason?: string; pendingMinutes?: number; pauseOffUntil?: number };
 type NightPausePlugin = {
@@ -28,7 +29,7 @@ const native = registerPlugin<NightPausePlugin>('NightPause');
  * app, the permissions, and a log of what NANDI asked the phone to do. Never set in the app itself.
  */
 const E2E_PAUSE = 'nandi.e2ePause';
-type FakePause = Partial<Status> & { did?: string[]; frontApps?: string[]; launcher?: string };
+type FakePause = Partial<Status> & { did?: string[]; frontApps?: string[]; launcher?: string; usage?: GuardEvent[] };
 function fake(): FakePause | null {
   try { const raw = sessionStorage.getItem(E2E_PAUSE); return raw ? JSON.parse(raw) as FakePause : null; } catch { return null; }
 }
@@ -97,6 +98,17 @@ export async function readLauncherApps(): Promise<{ packageName: string; label: 
   if (!Capacitor.isNativePlatform()) return null;
   const result = await native.launcherApps();
   return Array.isArray(result.apps) ? result.apps.filter(app => typeof app?.packageName === 'string' && typeof app?.label === 'string') : [];
+}
+
+/** Spec 39, the opens log: the phone's usage events from `from` to `to`, or null where there is no usage log (web, no access). */
+export async function readUsageEvents(from: number, to: number): Promise<GuardEvent[] | null> {
+  const test = fake();
+  if (test) return test.usage ? test.usage.filter(event => event.at >= from && event.at <= to) : null;
+  if (!Capacitor.isNativePlatform()) return null;
+  try {
+    const log = await native.focusEvents({ from, to });
+    return log.available ? (log.events ?? []) as GuardEvent[] : null;
+  } catch { return null; }
 }
 
 /** Spec 24 #1: the phone's usage events (every app, screen, start-up) for one past window; null where there is no usage log (web, no access). */

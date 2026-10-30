@@ -165,3 +165,28 @@ test('the old day pause is kept and asks once for a line; until then the card of
   await page.getByRole('button', { name: 'Save my line' }).click();
   await expect(page.getByText("If I open Instagram, I'll step outside for 2 minutes first.")).toBeVisible();
 });
+
+test('the opens log: the week before the card is read at once, and today counts as it goes', async ({ page }) => {
+  await page.clock.install({ time: NOON });
+  await setUp(page);
+  // The phone's usage log: each of the 7 days before, Instagram opened 3 times for 10 minutes; today twice for 5.
+  const usage: { type: string; at: number; pkg?: string; cls?: string }[] = [];
+  const open = (start: Date, minutes: number) => {
+    usage.push({ type: 'fg', at: start.getTime(), pkg: 'com.instagram.android', cls: 'Main' }, { type: 'bg', at: start.getTime() + minutes * 60_000, pkg: 'com.instagram.android', cls: 'Main' });
+  };
+  for (let back = 8; back >= 1; back -= 1) {
+    const day = new Date(NOON); day.setDate(day.getDate() - back);
+    usage.push({ type: 'on', at: new Date(day).setHours(20, 0, 0, 0) });
+    if (back === 8) continue;
+    for (const hour of [9, 13, 18]) open(new Date(new Date(day).setHours(hour, 0, 0, 0)), 10);
+  }
+  open(new Date(new Date(NOON).setHours(9, 0, 0, 0)), 5);
+  open(new Date(new Date(NOON).setHours(10, 0, 0, 0)), 5);
+  await page.evaluate(events => sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usage: events })), usage);
+  await page.reload();
+  const opens = page.locator('.pause-opens');
+  await expect(opens.getByRole('heading', { name: 'Your opens' })).toBeVisible();
+  await expect(opens).toContainText('Today so far2 opens · 10 min');
+  await expect(opens).toContainText('The week before the card3 opens a day · 30 min a day');
+  await expect(opens).toContainText('Last 7 daysAfter your first full day');
+});

@@ -519,6 +519,47 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'p39-9-done', false);
   });
 
+  test('opens log', async ({ page }) => {
+    const noon = new Date('2026-11-04T12:00:00');
+    await page.clock.install({ time: noon });
+    await page.goto('/?e2e#plan/pause');
+    await page.getByLabel('Instagram').check();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('group', { name: 'Quick picks' }).getByRole('button', { name: 'do 10 squats' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Turn it on' }).click();
+    await expect(page.getByRole('heading', { name: 'On', exact: true })).toBeVisible();
+    // No usage log yet (Usage access not given).
+    await page.evaluate(() => sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usageAllowed: false })));
+    await page.reload();
+    await expect(page.locator('.pause-opens')).toContainText('Usage access');
+    await page.locator('.pause-opens').scrollIntoViewIfNeeded();
+    await shot(page, 'p39-10-opens-empty', false);
+    // The phone's usage log: `days` days before the card (the screen on at 20:00 the day before each), then a morning.
+    const usage = (days: number) => {
+      const events: { type: string; at: number; pkg?: string; cls?: string }[] = [];
+      const open = (start: number, minutes: number) => events.push({ type: 'fg', at: start, pkg: 'com.instagram.android', cls: 'Main' }, { type: 'bg', at: start + minutes * 60_000, pkg: 'com.instagram.android', cls: 'Main' });
+      for (let back = days; back >= 0; back -= 1) {
+        const day = new Date(noon); day.setDate(day.getDate() - back);
+        const before = new Date(day); before.setDate(before.getDate() - 1);
+        events.push({ type: 'on', at: before.setHours(20, 0, 0, 0) });
+        for (const hour of back ? [8, 10, 13, 15, 18, 21, 22] : [9, 11]) open(new Date(day).setHours(hour, 0, 0, 0), back ? 12 : 6);
+      }
+      return events;
+    };
+    await page.evaluate(async events => { await new Promise<void>(resolve => { indexedDB.open('nandi').onsuccess = event => { const database = (event.target as IDBOpenDBRequest).result; const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').delete('pause.opens'); transaction.oncomplete = () => { database.close(); resolve(); }; }; }); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usage: events })); }, usage(2));
+    await page.reload();
+    await expect(page.locator('.pause-opens')).toContainText('Not enough days yet');
+    await page.locator('.pause-opens').scrollIntoViewIfNeeded();
+    await shot(page, 'p39-11-opens-few-days', false);
+    await page.evaluate(async events => { await new Promise<void>(resolve => { indexedDB.open('nandi').onsuccess = event => { const database = (event.target as IDBOpenDBRequest).result; const transaction = database.transaction('settings', 'readwrite'); transaction.objectStore('settings').delete('pause.opens'); transaction.oncomplete = () => { database.close(); resolve(); }; }; }); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ usage: events })); }, usage(7));
+    await page.reload();
+    await expect(page.locator('.pause-opens')).toContainText('7 opens a day');
+    await page.locator('.pause-opens').scrollIntoViewIfNeeded();
+    await shot(page, 'p39-12-opens-full', false);
+  });
+
   test('hunt fixes', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
     // A workout stopped with no set logged counts nowhere: both Train cards agree.

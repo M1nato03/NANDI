@@ -3,6 +3,7 @@ import { dayKey } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { requestPersist } from '../../platform/storage';
 import { db } from '../../data/db';
+import { recordOpens } from '../../data/repos/pause';
 import { privateTopicPacks } from '../../data/packs/privateBooks';
 import { setPrivateTopics } from '../learn/flow';
 import { getOrCreateDeviceId } from '../../data/device';
@@ -169,7 +170,12 @@ export function AppShell() {
   useEffect(() => startNightPauseSync(error => recordError('promise', error)), []);
   useEffect(() => {
     // Availability is read at each look: on the web it is the e2e stand-in, which a test can set after the app opened.
-    const check = () => { if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error)); };
+    // The opens log reads the phone's usage log at most every 10 minutes (spec 39).
+    let readAt = 0;
+    const check = () => {
+      if (Capacitor.isNativePlatform() && document.visibilityState === 'visible' && Date.now() - readAt > 600_000) { readAt = Date.now(); void recordOpens(db, readAt).catch(error => recordError('promise', error)); }
+      if (nightPauseAvailable() && document.visibilityState === 'visible') void nightPauseStatus().then(status => { if (status.pendingPackage) setPause({ packageName: status.pendingPackage, reason: status.pendingReason ?? 'night', minutes: Number(status.pendingMinutes ?? 0) }); }).catch(error => recordError('promise', error));
+    };
     check(); document.addEventListener('visibilitychange', check); window.addEventListener('pageshow', check); window.addEventListener('nandi:night-pause', check);
     return () => { document.removeEventListener('visibilitychange', check); window.removeEventListener('pageshow', check); window.removeEventListener('nandi:night-pause', check); };
   }, []);
