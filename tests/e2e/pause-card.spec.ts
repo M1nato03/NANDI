@@ -116,6 +116,8 @@ test('spec 39b: "Do it in NANDI" goes to the next move (a task for today, else t
 test('spec 39b: a card on "every open" moves to after 10 min a day once, and Plan says so in one line', async ({ page }) => {
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#plan');
+  // The app has made its database once Plan shows.
+  await expect(page.getByRole('button', { name: /^Pause card/ })).toBeVisible();
   await page.evaluate(async () => {
     const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
     await new Promise<void>(resolve => {
@@ -172,6 +174,8 @@ test('off for today from Plan, and on again', async ({ page }) => {
 test('the old day pause is kept and asks once for a line; until then the card offers quick picks', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await page.goto('/?e2e#plan');
+  // The app has made its database once Plan shows.
+  await expect(page.getByRole('button', { name: /^Pause card/ })).toBeVisible();
   await page.evaluate(async () => {
     const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
     await new Promise<void>(resolve => {

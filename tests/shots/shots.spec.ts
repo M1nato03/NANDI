@@ -540,6 +540,7 @@ for (const theme of themes) test.describe(theme, () => {
     await expect(card.getByRole('button', { name: 'I did it' })).toBeVisible();
     await shot(page, 'p39b-2-act-i-did-it-at-start', false);
     await card.getByRole('button', { name: 'Not now' }).click();
+    await expect(card).toHaveCount(0);
     // "Do it in NANDI" with nothing else on: today's Read drop.
     await opens();
     await card.getByRole('button', { name: 'Do it in NANDI' }).click();
