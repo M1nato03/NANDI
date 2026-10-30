@@ -30,3 +30,24 @@ export async function saveChapterDone(db: NandiDb, topicId: string, moduleId: st
     await db.ledger.add({ id, mode: 'read', kind: 'chapter', refId: chapterRef(topicId, moduleId), dayKey: dayKey(now), inputs: { afterBedtime, newSteps: new Set(steps.map(row => row.refId)).size, firstRight, readDrops }, updatedAt: now, deleted: 0, deviceId });
   }));
 }
+
+/**
+ * Spec 41: a finished idea-sitting is one fact, written once. `steps` are the idea's steps no earlier idea fact of the
+ * chapter counted (so a chapter begun before spec 41 pays its earlier steps here, once), `dropId` is set when the
+ * sitting was the day's drop, and `askedItem` is the earlier idea's question it asked, which the Book check skips.
+ */
+export async function saveIdeaDone(db: NandiDb, input: { topicId: string; moduleId: string; conceptId: string; dropId?: string; askedItem?: string }, now: number): Promise<void> {
+  const chapter = chapterRef(input.topicId, input.moduleId);
+  const id = `read-idea:${chapter}:${input.conceptId}`;
+  const afterBedtime = now >= shutdownAt(now, await effectiveBedtime(db, now));
+  const deviceId = await getOrCreateDeviceId(db, now);
+  await trackWrite(() => db.transaction('rw', [db.ledger, db.learnDrops], async () => {
+    if (await db.ledger.get(id)) return;
+    const counted = new Set((await db.ledger.where('kind').equals('idea').filter(row => !row.deleted && row.inputs.chapter === chapter).toArray()).flatMap(row => Array.isArray(row.inputs.steps) ? row.inputs.steps.map(String) : []));
+    const reads = new Set((await db.learnDrops.filter(row => !row.deleted && row.drop.chapter?.topicId === input.topicId && row.drop.chapter.moduleId === input.moduleId && row.drop.chapter.kind === 'read').toArray()).map(row => row.id));
+    const taught = await db.ledger.where('kind').equals('learn-lesson').filter(row => !row.deleted && reads.has(String(row.inputs.dropId))).toArray();
+    const steps = [...new Set(taught.map(row => row.refId))].filter(step => !counted.has(step));
+    await db.ledger.add({ id, mode: 'read', kind: 'idea', refId: `${chapter}:${input.conceptId}`, dayKey: dayKey(now),
+      inputs: { chapter, conceptId: input.conceptId, steps, newSteps: steps.length, afterBedtime, ...(input.dropId ? { dropId: input.dropId } : {}), ...(input.askedItem ? { askedItem: input.askedItem } : {}) }, updatedAt: now, deleted: 0, deviceId });
+  }));
+}

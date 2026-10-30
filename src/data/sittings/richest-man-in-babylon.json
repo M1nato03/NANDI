@@ -1,0 +1,184 @@
+{
+  "babylon-keep": {
+    "story": {
+      "text": "Arkad counts ten coins. He keeps one, then uses the rest. A kept coin can meet an unexpected bill, though his one-tenth rule may be too much when wages barely cover food and rent.",
+      "diagram": "ten coins: one kept, nine used; a bill beside the kept coin"
+    },
+    "example": {
+      "situation": "First salary in Pune",
+      "text": "After ₹18,000 arrives, Meera pays ₹7,000 hostel rent and checks food costs. She sets aside ₹500 she can spare for an unexpected bill."
+    },
+    "plan": {
+      "ifThen": "If money comes in today, I'll check essential bills, then set aside a small amount I can spare."
+    }
+  },
+  "babylon-budget": {
+    "story": {
+      "text": "Arkad opens a full purse and lists where the coins must go: food and shelter first, treats after. The list shows the flow of money; it cannot raise his pay or remove a fixed bill.",
+      "diagram": "coins leaving a purse in two rows: needs and wishes"
+    },
+    "example": {
+      "situation": "A hostel month",
+      "text": "Aman writes down ₹6,000 rent, ₹2,500 food, and ₹900 outings. The list shows where his pay went; it cannot make rent smaller."
+    },
+    "plan": {
+      "ifThen": "If I make a payment today, I'll mark whether it covers a need or a want."
+    }
+  },
+  "babylon-growth": {
+    "story": {
+      "text": "Arkad lends to a shield maker and receives the payment. He puts the gain back with his coins, giving the next use a larger base. The tale needs a borrower who pays; even a careful plan can lose part of the first sum.",
+      "diagram": "first sum plus gain becoming a larger next sum, with a risk branch"
+    },
+    "example": {
+      "situation": "A weekend tutoring gig",
+      "text": "Ritu adds ₹300 earned from tutoring to the ₹2,000 she kept. More cash is available for a later goal, but she does not count on another gain."
+    },
+    "plan": {
+      "ifThen": "If I receive extra pay today, I'll add it to my kept sum without assuming another gain."
+    }
+  },
+  "babylon-safety": {
+    "story": {
+      "text": "Arkad's brickmaker knows bricks, not jewels; his shiny deal fails. Arkad wants his first sum back. A skilled check and a spread across different risks may limit loss, but neither can promise safety.",
+      "diagram": "brick and jewel side by side; one large pot split into smaller parts"
+    },
+    "example": {
+      "situation": "An unfamiliar offer",
+      "text": "A friend offers to turn ₹3,000 into more through a trade Neha cannot explain. She pauses, asks someone who understands the field, and keeps her rent money out of the deal."
+    },
+    "plan": {
+      "ifThen": "If someone offers me a deal today, I'll check the risks and ask someone who knows that field."
+    }
+  },
+  "babylon-home": {
+    "story": {
+      "text": "Arkad praises a roof of one's own. Beside the loan bill sit upkeep and tax, costs the owner must also pay. For someone who may move soon, renting can fit better than a sale that takes time and fees.",
+      "diagram": "a roof with three cost labels: loan, upkeep, tax; an arrow marked move"
+    },
+    "example": {
+      "situation": "A possible job move",
+      "text": "A 25-year-old in Jaipur may move for work. She compares ₹9,000 rent with a proposed ₹9,000 monthly home payment, then adds repairs and taxes before deciding."
+    },
+    "plan": {
+      "ifThen": "If I compare homes today, I'll list rent or payment, upkeep, taxes, and how long I may stay."
+    }
+  },
+  "babylon-future": {
+    "story": {
+      "text": "Arkad looks past his earning years: pay may slow, yet family needs continue. He sets aside for later years and for those who may depend on him. A nearby bill needs cash within reach, so the timing of each sum matters.",
+      "diagram": "two paths from today's pay: near bills and later family needs"
+    },
+    "example": {
+      "situation": "After hostel rent",
+      "text": "After paying ₹6,500 hostel rent, Saira keeps ₹700 easy to reach for a near bill and marks a separate small amount for later family needs."
+    },
+    "plan": {
+      "ifThen": "If I plan money today, I'll note one near bill and one later family need."
+    }
+  },
+  "babylon-skill": {
+    "story": {
+      "text": "A young man asks Arkad for more pay. Arkad asks what craft he has learned and used. A useful new task can give him work to show, though even better skill cannot force a buyer or a raise.",
+      "diagram": "learn a craft, use it, show the work; pay remains uncertain"
+    },
+    "example": {
+      "situation": "An evening chai stall shift",
+      "text": "A helper earning ₹8,000 learns to manage the evening tally. He records the task he can now do before asking for more pay, without assuming a raise."
+    },
+    "plan": {
+      "ifThen": "If I do a new task today, I'll write down the skill it used before discussing pay."
+    }
+  },
+  "babylon-gold": {
+    "story": {
+      "text": "Nomasir hears the laws of gold: keep part of pay, then consider a use for the saved sum with care. His first bet goes wrong. The tale itself shows that a chance to gain can also shrink the coins he began with.",
+      "diagram": "kept coins leading to two possible outcomes: gain or loss"
+    },
+    "example": {
+      "situation": "After a first wage",
+      "text": "After ₹16,000 comes in, Ali keeps ₹600 for later. When a neighbour promises a quick gain from his saved cash, he asks how it works and what he could lose."
+    },
+    "plan": {
+      "ifThen": "If I hear a gain claim today, I'll check what I could lose before using saved money."
+    }
+  },
+  "babylon-know": {
+    "story": {
+      "text": "Nomasir buys cheap shop stock without knowing the trade. Much of the stock is poor, and his coins are stuck. The laws of gold call for help from someone skilled in that field; even such a check cannot remove every risk.",
+      "diagram": "low price leading to poor stock and tied-up coins; a field check beside the path"
+    },
+    "example": {
+      "situation": "A second-hand phone stall",
+      "text": "A friend offers Priya a cheap share of a stall for ₹4,000. She asks to see the stock and costs with someone who knows the trade before using her savings."
+    },
+    "plan": {
+      "ifThen": "If a cheap deal appears today, I'll inspect what is being sold and ask someone with relevant skill."
+    }
+  },
+  "babylon-hype": {
+    "story": {
+      "text": "Nomasir trusts smooth talk and misses the men's hidden stake in a bet. A fast promise leaves little room to read terms or ask who gains. Kalabab later warns of quick wealth; the tale asks for a slower check, not a sure forecast.",
+      "diagram": "a fast pitch hiding a second person's gain; a pause before the decision"
+    },
+    "example": {
+      "situation": "A message with a deadline",
+      "text": "A stranger says ₹2,000 must be sent by tonight to get a large gain. Zoya checks who receives the money and asks for the terms instead of acting on the deadline."
+    },
+    "plan": {
+      "ifThen": "If a deadline pushes me to send money today, I'll pause and read the terms."
+    }
+  },
+  "babylon-loan": {
+    "story": {
+      "text": "Rodan cares for his sister, but a loan to her husband raises a hard question: how will his trade repay it? Mathon asks for a clear path and terms. His ox and ass tale shows how help can leave the helper carrying the burden.",
+      "diagram": "loan to trade to repayment, with a branch where the helper bears the cost"
+    },
+    "example": {
+      "situation": "A cousin's food cart",
+      "text": "Her cousin asks Kavya for ₹3,000 for his food cart. Before lending, she asks how and when he expects to repay, then decides what she can afford to risk."
+    },
+    "plan": {
+      "ifThen": "If family asks for a loan today, I'll ask about the amount, use, and repayment plan."
+    }
+  },
+  "babylon-walls": {
+    "story": {
+      "text": "Banzar stands behind Babylon's wall as danger approaches. The wall cannot end the attack, but it shields people inside. The tale turns that image toward ready cash for a sudden bill, while leaving room for the fact that some households cannot spare much.",
+      "diagram": "a wall between danger and people, echoed by cash beside a sudden bill"
+    },
+    "example": {
+      "situation": "A chai stall repair",
+      "text": "The kettle at a chai stall breaks and costs ₹1,200 to fix. A small cash buffer helps the owner pay part of it without assuming every repair can be covered."
+    },
+    "plan": {
+      "ifThen": "If I have money left after bills today, I'll put a small part within reach for surprises."
+    }
+  },
+  "babylon-debt": {
+    "story": {
+      "text": "Dabasir returns to the lenders he left behind. He names each debt, then tells them the sums he can truly pay. Some listen; others are upset. The tale uses shame, yet a debt still needs clear facts and a plan.",
+      "diagram": "each lender paired with a sum and a possible payment"
+    },
+    "example": {
+      "situation": "After a medical bill",
+      "text": "After a ₹4,000 medical bill, Imran lists ₹2,500 owed to one friend and ₹1,500 to another. He tells each what he can actually pay this week."
+    },
+    "plan": {
+      "ifThen": "If I owe someone money today, I'll name the sum and say what I can actually pay."
+    }
+  },
+  "babylon-tablets": {
+    "story": {
+      "text": "Dabasir marks each lender and sum on clay, then records actual payments. His tablet divides pay among living, saving, and debt. Those fixed shares belong to his story; another household's food and rent may leave different room.",
+      "diagram": "clay tablet with a lender list and three pay shares; payments marked as made"
+    },
+    "example": {
+      "situation": "A gig worker's debts",
+      "text": "A gig worker writes ₹1,000 owed to an aunt and ₹800 to a friend. Each actual payment gets its date. Rent and food come first when deciding what is possible."
+    },
+    "plan": {
+      "ifThen": "If I make a debt payment today, I'll record the lender, amount, and date."
+    }
+  }
+}

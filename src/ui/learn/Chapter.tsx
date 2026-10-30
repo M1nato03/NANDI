@@ -12,6 +12,7 @@ import { dayKey, isAfterBedtime } from '../../core/time';
 import { chapterLine } from '../economy/effortLines';
 import { topics } from './flow';
 import { LearnDrop } from './LearnDrop';
+import { earlierQuestion, IdeaSitting, nextIdea } from './IdeaSitting';
 import { Haveli } from './Haveli';
 import { ChikuStage } from './ChikuStage';
 import { Cast } from '../cast/Cast';
@@ -23,9 +24,10 @@ const currentTime = () => Date.now();
 type View = 'read' | 'wait' | 'check' | 'done';
 
 /**
- * Spec 33 §3: a chapter is read in one sitting. Every untaught step of its ideas plays as a lesson, then one check
- * (Moti's haveli rebuild, Teach Chiku, or three of its questions), then the chapter is done. No new chapters after
- * bedtime: what is left of a chapter waits for tomorrow.
+ * Spec 33 §3, spec 41: a chapter is read one idea a sitting (IdeaSitting), each ending on a real stop: "One more idea"
+ * or "That's enough for now". After its last idea a chapter with Moti's haveli rebuild or Teach Chiku plays that check;
+ * a chapter with a quiz is done at once, and its three questions come the next day as Home's Book check. No new
+ * reading after bedtime: what is left of a chapter waits for tomorrow.
  */
 export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: string }) {
   const pack = topics.find(row => row.body.topic.id === topicId);
@@ -37,6 +39,8 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
     bedtime: await effectiveBedtime(db, openedAt),
   }), [openedAt]);
   const [step, setStep] = useState<'check' | 'done' | null>(null);
+  // Spec 41: the idea just finished, shown on its end card until the reader picks one more or stops.
+  const [ended, setEnded] = useState<{ title: string; takeaway: string } | null>(null);
   const rebuilt = useRef(false);
   const taught = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));
   const done = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chapter' && !fact.deleted).map(fact => fact.refId));
@@ -44,7 +48,8 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const left = module ? untaughtSteps(module, taught).length : 0;
   const afterBedtime = !!data && isAfterBedtime(currentTime(), data.bedtime);
   // A chapter opened again after it was finished shows its done card; otherwise the reading comes first.
-  const view: View = step === 'done' || (wasDone && step === null) ? 'done' : left > 0 ? (afterBedtime ? 'wait' : 'read') : 'check';
+  const quiz = (module?.check ?? 'quiz') === 'quiz';
+  const view: View = step === 'done' || (wasDone && step === null) ? 'done' : left > 0 || ended ? (afterBedtime && !ended ? 'wait' : 'read') : quiz ? 'done' : 'check';
   const finishing = useRef(false);
   const [saveFailed, setSaveFailed] = useState(false);
   const [playNote, setPlayNote] = useState('');
@@ -65,7 +70,20 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const toDone = () => setStep('done');
 
   if (view === 'wait') return <section className="screen learn-screen">{head}<div className="card read-wait" role="status"><p>That is enough reading for tonight. The rest of this chapter opens tomorrow.</p><p className="small">Your idea checks stay open tonight.</p><button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>Back to the book</button></div></section>;
-  if (view === 'read') return <section className="screen learn-screen read-chapter-screen">{head}<LearnDrop key="read" daily={false} practiceTopicId={topicId} chapter={{ topicId, moduleId, kind: 'read' }} onDone={() => setStep('check')} /></section>;
+  if (view === 'read') {
+    const ideas = module.concepts.filter(concept => concept.steps?.length).length;
+    if (ended) return <section className="screen learn-screen">{head}<div className="card read-done-card idea-end" role="status">
+      <p className="eyebrow">Idea done</p><h2>{ended.title}</h2><p className="read-takeaway">{ended.takeaway}</p>
+      <div className="idea-end-actions"><button type="button" onClick={() => setEnded(null)}>One more idea</button>
+        <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>That's enough for now</button></div>
+    </div></section>;
+    const idea = nextIdea(module, taught);
+    if (!idea) return <section className="screen learn-screen" role="status">Saving your place…</section>;
+    const isLast = idea.index === ideas - 1;
+    return <section className="screen learn-screen read-chapter-screen">{head}<IdeaSitting key={idea.concept.id} topicId={topicId} module={module} concept={idea.concept} ideaIndex={idea.index} ideaCount={ideas} ledger={data.ledger}
+      earlier={idea.index === 0 && taught.size === 0 ? undefined : earlierQuestion(pack.body.modules, data.ledger, dayKey(openedAt))}
+      onFinished={() => { if (!isLast) setEnded({ title: idea.concept.title, takeaway: idea.concept.steps!.at(-1)!.takeaway ?? idea.concept.title }); }} /></section>;
+  }
 
   if (view === 'check') {
     const kind = module.check ?? 'quiz';
