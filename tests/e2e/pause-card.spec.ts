@@ -98,7 +98,9 @@ test('the card: do my 2-min thing, Done only when the 2 minutes are up, +2 XP; t
   await expect(card(page).getByRole('button', { name: 'Done' })).toHaveCount(0);
   await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
   await page.clock.fastForward(121_000);
-  await away(page, ['app.nandi.personal', 'com.android.systemui']);
+  // Home pressed, then the phone put down: the home screen is in the log, and it does not stop the act.
+  await page.evaluate(() => { const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}'); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, launcher: 'com.sec.android.app.launcher' })); });
+  await away(page, ['app.nandi.personal', 'com.sec.android.app.launcher', 'com.android.systemui']);
   await expect(card(page).getByRole('timer')).toHaveText('0:00');
   await card(page).getByRole('button', { name: 'Done' }).click();
   await expect(card(page)).toContainText('+2 XP · 2 minutes back.');
