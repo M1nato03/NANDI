@@ -218,7 +218,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "You are bad with money; fix this.",
+                    "text": "You are bad with money; fix this total right now.",
                     "feedback": "The label targets a person and gives little help in finding the wrong line in the ledger.",
                     "correct": false,
                     "misconceptionIds": [
@@ -259,7 +259,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Say nothing, since any correction is unkind.",
+                    "text": "Avoid the issue, since a correction could upset them.",
                     "feedback": "That leaves a real concern open. A specific check can be raised without a personal attack.",
                     "correct": false,
                     "misconceptionIds": [
@@ -509,7 +509,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, each kind helped.",
+                      "text": "Yes, each kind helped in the same way.",
                       "correct": false,
                       "feedback": "Many feedback actions made performance worse, so the form matters."
                     }
@@ -941,7 +941,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Make the compliment larger so it works.",
+                    "text": "Make the compliment much larger so it works well.",
                     "feedback": "A larger claim may sound less true. Praise does not have one sure effect across settings.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1163,7 +1163,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Now you can carry more boxes.",
+                        "text": "Now you can carry more of these boxes for me.",
                         "correct": false,
                         "feedback": "That turns thanks into a request for more work."
                       }
@@ -1236,7 +1236,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "You are perfect; do this tomorrow.",
+                        "text": "You did it perfectly; please do this tomorrow.",
                         "correct": false,
                         "feedback": "That mixes a broad claim with a new demand."
                       }
@@ -1447,7 +1447,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "That their concern can be ignored.",
+                    "text": "That their concern about the path can be ignored.",
                     "feedback": "A blocked counter is a real concern. Asking why is a way to learn, not to brush it aside.",
                     "correct": false,
                     "misconceptionIds": [
@@ -1874,7 +1874,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Keep asking until they agree.",
+                        "text": "Keep asking them until they agree to help.",
                         "correct": false,
                         "feedback": "That treats choice as a delay, rather than a real answer."
                       }
@@ -2052,7 +2052,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Talk only about your own role.",
+                    "text": "Talk at length about your own role and plans.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2177,7 +2177,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "One question can make a lasting friend.",
+                    "text": "One good question can make a lasting friend.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2325,7 +2325,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Talk only about your own role.",
+                      "text": "Talk at length about your own role and plans.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -2363,7 +2363,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Tell them all about your own projects.",
+                        "text": "Tell them about your own projects in detail.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -2417,7 +2417,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "A flatmate mentions playing badminton. What follows?",
+                    "stem": "Your flatmate plays badminton. What could you ask?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
@@ -2455,7 +2455,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "One talk tells you all you need.",
+                      "text": "One talk tells you enough about the person.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -2662,7 +2662,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Keep smiling when they share sad news.",
+                    "text": "Keep smiling while they share sad news with you.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2835,7 +2835,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "What the whole person is like for sure.",
+                    "text": "What the whole person is like from one brief talk.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3093,7 +3093,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Put on a big grin to lift their mood.",
+                        "text": "Put on a big grin to try to lift their mood.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3158,7 +3158,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Yes, a smile always helps.",
+                        "text": "Yes, a smile is sure to help them feel better.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3441,7 +3441,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Using a name will win a new friend.",
+                    "text": "Using a name will win over a new friend in time.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3634,7 +3634,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Use a name that sounds close.",
+                        "text": "Use a name that sounds close enough to you.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3699,7 +3699,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Keep using the wrong name.",
+                        "text": "Keep using the wrong name until they correct you.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3726,7 +3726,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "A name is all you need.",
+                      "text": "A name is enough to earn their trust.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3754,7 +3754,7 @@
                 "guided": [
                   {
                     "stem": "You remember a shopkeeper’s name. What else matters?",
-                    "hint": "Think about what may happen next.",
+                    "hint": "A name is one part of the exchange; what else matters?",
                     "options": [
                       {
                         "id": "a",
@@ -4370,7 +4370,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Say you agree just to end the talk.",
+                        "text": "Say you agree just so you can end this talk.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4539,7 +4539,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Pretend you saw a match you missed.",
+                    "text": "Pretend you saw the match that you missed.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4653,7 +4653,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "People with one shared taste stay close.",
+                    "text": "People with one shared taste will stay close.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4904,7 +4904,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Turn the talk to your own songs.",
+                        "text": "Turn the talk to the songs you enjoy in class.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5445,7 +5445,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Praise them only to seek a lower price.",
+                        "text": "Praise them to push for a lower price.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5839,7 +5839,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Hide a wrong figure to avoid any clash.",
+                    "text": "Hide the wrong figure to avoid any clash in public.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -6097,7 +6097,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Hide the wrong figure to avoid a clash.",
+                      "text": "Hide the wrong figure to avoid a clash in public.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6135,7 +6135,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Ignore the error to keep peace.",
+                        "text": "Ignore the error so we can keep the peace.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6735,7 +6735,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Tell them they never read properly.",
+                        "text": "Tell them they read the ticket carelessly.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6790,7 +6790,7 @@
                 "guided": [
                   {
                     "stem": "A colleague quotes a different delivery date. How can you correct it?",
-                    "hint": "Think about what the study can show.",
+                    "hint": "Look for a source both of you can check.",
                     "options": [
                       {
                         "id": "a",
@@ -7034,7 +7034,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Blame the classmate for your message.",
+                    "text": "Blame the classmate for the room mix-up.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7148,7 +7148,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "An apology restored trust in each case.",
+                    "text": "An apology restored trust in each case they studied.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7303,7 +7303,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Blame the classmate for your message.",
+                      "text": "Blame the classmate for the room mix-up.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -7460,7 +7460,7 @@
                 },
                 "guided": [
                   {
-                    "stem": "You apologised for missing a family errand. What can you expect?",
+                    "stem": "You missed a family errand and said sorry. What now?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
@@ -7640,7 +7640,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Call the vendor a cheat at once.",
+                    "text": "Call the vendor a cheat before checking the change.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7678,7 +7678,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Offer warm words only to secure their agreement.",
+                    "text": "Offer warm words to push them toward agreement.",
                     "feedback": "A friendly tone is not a tool that can force someone to agree.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7909,7 +7909,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Call the vendor a cheat at once.",
+                      "text": "Call the vendor a cheat before checking the change.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8012,7 +8012,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Smile and say nothing about the bill.",
+                        "text": "Smile and leave the bill error unspoken.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8039,7 +8039,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Nothing else; a warm word fixes the sum.",
+                      "text": "A warm word fixes the sum by itself.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8246,7 +8246,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Ask a string of loaded yes questions.",
+                    "text": "Ask a string of loaded yes questions to steer them.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -8360,7 +8360,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A few yeses mean the club agrees.",
+                    "text": "A few yeses mean the whole club agrees with us.",
                     "feedback": "The study did not test such a sure result in this daily setting.",
                     "correct": false,
                     "misconceptionIds": [
@@ -8515,7 +8515,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Ask a string of loaded yes questions.",
+                      "text": "Ask a string of loaded yes questions to steer them.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8553,7 +8553,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Push them to say yes to your rota.",
+                        "text": "Push them to say yes to the rota you made.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8890,7 +8890,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "A quick guess can settle the bill.",
+                    "text": "A quick guess could settle the whole bill at once.",
                     "feedback": "The other person has their own view and may choose a different next step.",
                     "correct": false,
                     "misconceptionIds": [
@@ -9121,7 +9121,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Cut off the cost list.",
+                      "text": "Cut off the cost list as soon as you hear ₹300.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -9159,7 +9159,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Stop them at the first amount.",
+                        "text": "Stop them as soon as they reach the first amount.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -9251,7 +9251,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Stop there and never share your view.",
+                      "text": "Stop there and keep your own view to yourself.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -9289,7 +9289,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Never mention your own view.",
+                        "text": "Keep your own view to yourself, even when they finish.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -9553,7 +9553,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "They must accept the manager's original slot.",
+                    "text": "They must accept the manager's original time slot.",
                     "feedback": "Inviting input does not oblige the team to endorse a fixed plan.",
                     "correct": false,
                     "misconceptionIds": [
@@ -9811,7 +9811,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "The projector does not matter to me.",
+                      "text": "The projector does not matter to me in this plan.",
                       "correct": false,
                       "feedback": "Ignoring a stated need makes the invitation hollow."
                     }
@@ -10493,7 +10493,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Demand a promise the shop cannot keep.",
+                      "text": "Demand a firm promise the shop cannot keep today.",
                       "correct": false,
                       "feedback": "Pressure cannot make a missed courier return."
                     }
@@ -11148,7 +11148,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "I am sure it is safe without looking.",
+                        "text": "I am sure it is safe, so there is no need to look.",
                         "correct": false,
                         "feedback": "Confidence without a check may put the customer at risk."
                       }
@@ -12869,7 +12869,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Whoever errs is out of the group.",
+                        "text": "Whoever errs is out of the group for the next run.",
                         "correct": false,
                         "feedback": "Exclusion makes a rehearsal mistake threatening."
                       }
@@ -13586,7 +13586,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes; keep praising until the error feels small.",
+                      "text": "Yes; keep praising until the error starts to feel small.",
                       "correct": false,
                       "feedback": "Lengthy praise can bury a serious issue."
                     }
@@ -14066,7 +14066,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Is your whole notice unreliable?",
+                      "text": "Is your whole notice wrong from the start?",
                       "correct": false,
                       "feedback": "A broad judgment hides the small correctable error."
                     }
@@ -15107,7 +15107,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "That the reviewer must agree because you asked nicely.",
+                    "text": "That the reviewer must agree because you asked them nicely.",
                     "feedback": "A polite form does not remove workload limits.",
                     "correct": false,
                     "misconceptionIds": [
@@ -15300,7 +15300,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Send it immediately, will you?",
+                      "text": "Send it immediately, if you have time today?",
                       "correct": false,
                       "feedback": "The sentence still sets one fixed demand."
                     }
@@ -15338,7 +15338,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "Check it now because I said so.",
+                        "text": "Check it now, because I need it done today.",
                         "correct": false,
                         "feedback": "That is an order, not a planning question."
                       }
@@ -15430,7 +15430,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Repeat the original demand louder.",
+                      "text": "Repeat the same demand, but say it much louder.",
                       "correct": false,
                       "feedback": "That ignores the capacity the classmate stated."
                     }
@@ -15468,7 +15468,7 @@
                       },
                       {
                         "id": "b",
-                        "text": "You must come in person anyway.",
+                        "text": "You must come in person despite the change of plan.",
                         "correct": false,
                         "feedback": "That discards the reply and returns to an order."
                       }
@@ -16047,7 +16047,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Keep the update private forever.",
+                      "text": "Keep the update private until residents ask for it.",
                       "correct": false,
                       "feedback": "Privacy for the writer cannot justify wrong public information."
                     }
@@ -17004,7 +17004,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Say one calm return shows the assistant can handle any new complaint alone.",
+                    "text": "Say one calm return proves the assistant can handle any new complaint without help.",
                     "feedback": "One calm return does not prove the worker can calm each new buyer.",
                     "correct": false,
                     "misconceptionIds": [
