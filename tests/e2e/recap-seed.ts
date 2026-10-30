@@ -12,7 +12,7 @@ export async function seedRecapWeek(page: Page, day: string): Promise<void> {
     await new Promise<void>((resolve, reject) => {
       const transaction = database.transaction(['tasks', 'sessions'], 'readwrite');
       transaction.objectStore('tasks').put({ id: `recap-task-${date}`, title: 'Private title', status: 'done', dayKey: date, doneAt: at, updatedAt: at, deleted: 0, deviceId: 'recap-test' });
-      transaction.objectStore('sessions').put({ id: `recap-workout-${date}`, dayKey: date, status: 'completed', endedAt: at, updatedAt: at, deleted: 0, deviceId: 'recap-test' });
+      transaction.objectStore('sessions').put({ id: `recap-workout-${date}`, dayKey: date, status: 'completed', workingSets: 6, xp: 72, endedAt: at, updatedAt: at, deleted: 0, deviceId: 'recap-test' });
       transaction.oncomplete = () => resolve();
       transaction.onerror = () => reject(transaction.error);
     });
