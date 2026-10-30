@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { answerRight, seedTaughtTopics, walkLesson } from './learn-helpers';
+import { answerRight, seedTaughtTopics, walkIdea } from './learn-helpers';
 import { fixtureTopic } from '../../src/core/learn/engine/fixtures/topic';
 
 // Spec 33 Phase 1: the book engine. Read replaces Learn and Mind; the six topics are NANDI Originals in chapters.
@@ -53,30 +53,46 @@ test('old Learn and Mind links still open, now inside Read', async ({ page }) =>
   await expect(page.getByRole('button', { name: /^Train \(paused\)/ })).toHaveCount(0);
 });
 
-test('a chapter reads its lessons as the day\'s drop, then its quiz check, then the done card; a second chapter keeps its own drop', async ({ page }) => {
-  test.setTimeout(150_000); // nine lessons and three questions
+test('spec 41: a chapter is read one idea a sitting (the first is the day\'s drop), each ending on a real stop; a quiz chapter is done after its last idea, and its Book check comes the next day', async ({ page }) => {
+  test.setTimeout(150_000);
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read/book/how-things-work');
   const book = pack('how-things-work');
+  const ideas = book.body.modules[0]!.concepts.filter(concept => (concept as { steps?: unknown[] }).steps?.length).length;
   await expect(page.getByRole('heading', { name: book.body.book.title, level: 1 })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Chapters' }).getByRole('button', { name: /^Chapter \d: .*, Not started$/ })).toHaveCount(3);
   await page.getByRole('button', { name: 'Start · Chapter 1' }).click();
   await expect(page).toHaveURL(/#read\/chapter\/how-things-work\/how-things-work-ch1$/);
-  await walkLesson(page, 'how-things-work', true);
-  // Half-read: the book page shows it in progress, and Continue goes back to where it stopped.
-  await page.goto('/?e2e#read/book/how-things-work');
+  await expect(page.getByRole('list', { name: `Idea 1 of ${ideas}` })).toBeVisible();
+  await walkIdea(page, 'how-things-work');
+  // A real stop: two equal buttons, no timer, nothing moves on by itself.
+  const end = page.locator('.idea-end');
+  await expect(end).toContainText('Idea done');
+  await expect(end.getByRole('button')).toHaveText(['One more idea', "That's enough for now"]);
+  await end.getByRole('button', { name: "That's enough for now" }).click();
   await expect(page.getByRole('button', { name: /^Chapter 1: Things that fly, In progress$/ })).toBeVisible();
   await page.getByRole('button', { name: 'Continue · Chapter 1' }).click();
-  for (let lesson = 0; lesson < 8; lesson++) await walkLesson(page, 'how-things-work', true);
-  await expect(page.getByText('Chapter check · three questions')).toBeVisible();
-  for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
-  const done = page.locator('.read-done-card');
-  await expect(done).toContainText('Chapter 1 done');
+  await expect(page.getByRole('list', { name: `Idea 2 of ${ideas}` })).toBeVisible();
+  for (let idea = 2; idea <= ideas; idea++) {
+    await walkIdea(page, 'how-things-work');
+    if (idea < ideas) await page.locator('.idea-end').getByRole('button', { name: 'One more idea' }).click();
+  }
+  // A quiz chapter is done after its last idea; its three questions wait for tomorrow.
+  await expect(page.locator('.read-done-card')).toContainText('Chapter 1 done');
   await expect.poll(() => ledgerIds(page, 'chapter:')).toEqual(['chapter:how-things-work:how-things-work-ch1']);
-  // The first chapter of the day was the day's drop; the next one today keeps its own id (one drop's XP a day).
-  await done.getByRole('button', { name: 'Next chapter' }).click();
-  await walkLesson(page, 'how-things-work', true);
-  expect(await dropIds(page)).toEqual(['drop:chapter|how-things-work-ch2', 'drop:check|how-things-work-ch1', 'drop:daily|how-things-work-ch1']);
+  expect(await ledgerIds(page, 'read-idea:')).toHaveLength(ideas);
+  expect(await dropIds(page)).toContain('drop:daily|how-things-work-ch1');
+  await page.goto('/?e2e#yatra');
+  await expect(page.getByRole('button', { name: /Book check/ })).toHaveCount(0);
+  // The next day: the Book check sits on Yatra.
+  await page.clock.setFixedTime(new Date(NOON.getTime() + 86_400_000));
+  await page.reload();
+  await page.getByRole('button', { name: /Book check · three questions/ }).click();
+  for (let question = 0; question < 3; question++) await answerRight(page, 'how-things-work');
+  await expect(page.getByRole('heading', { name: 'Did you try it?' })).toBeVisible();
+  await page.getByRole('button', { name: 'Yes', exact: true }).click();
+  await expect(page.getByText('Book check done. The chapter is yours.')).toBeVisible();
+  await expect.poll(() => ledgerIds(page, 'read-check:')).toEqual(['read-check:how-things-work:how-things-work-ch1']);
 });
 
 test('a finished book offers the next one; the recall and Chiku checks finish their chapters too', async ({ page }) => {
@@ -84,11 +100,10 @@ test('a finished book offers the next one; the recall and Chiku checks finish th
   await page.clock.setFixedTime(NOON);
   await page.goto('/?e2e#read');
   await seedTaughtTopics(page, ['history-civilisations', 'money-markets', 'psychology']);
-  // Quiz checks, both chapters: the book is finished.
+  // Spec 41: a quiz chapter with every idea read is done at once (its questions come the next day): the book is finished.
   for (const chapter of ['history-civilisations-ch1', 'history-civilisations-ch2']) {
     await openHash(page, `read/chapter/history-civilisations/${chapter}`);
-    await expect(page.getByText('Chapter check · three questions')).toBeVisible();
-    for (let question = 0; question < 3; question++) await answerRight(page, 'history-civilisations');
+    await expect(page.locator('.read-done-card')).toBeVisible();
   }
   await expect(page.locator('.read-done-card')).toContainText(`You finished ${pack('history-civilisations').body.book.title}.`);
   await expect(page.getByRole('button', { name: /^Next book: / })).toBeVisible();

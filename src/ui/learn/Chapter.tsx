@@ -9,7 +9,7 @@ import { saveChapterDone } from '../../data/repos/books';
 import { bookDone, bookTitle, chapterRef, chapterTakeaway, libraryOrder, nextChapter, untaughtSteps } from '../../core/learn/books';
 import type { ChikuScene } from '../../core/learn/chiku';
 import { dayKey, isAfterBedtime } from '../../core/time';
-import { chapterLine } from '../economy/effortLines';
+import { chapterLine, ideaLine } from '../economy/effortLines';
 import { topics } from './flow';
 import { LearnDrop } from './LearnDrop';
 import { earlierQuestion, IdeaSitting, nextIdea } from './IdeaSitting';
@@ -35,12 +35,12 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   const module = index >= 0 ? pack!.body.modules[index] : undefined;
   const [openedAt] = useState(currentTime);
   const data = useLiveQuery(async () => ({
-    ledger: await db.ledger.where('kind').anyOf('learn-lesson', 'chapter').toArray(),
+    ledger: await db.ledger.where('kind').anyOf('learn-lesson', 'chapter', 'idea').toArray(),
     bedtime: await effectiveBedtime(db, openedAt),
   }), [openedAt]);
   const [step, setStep] = useState<'check' | 'done' | null>(null);
   // Spec 41: the idea just finished, shown on its end card until the reader picks one more or stops.
-  const [ended, setEnded] = useState<{ title: string; takeaway: string } | null>(null);
+  const [ended, setEnded] = useState<{ title: string; takeaway: string; conceptId: string } | null>(null);
   const rebuilt = useRef(false);
   const taught = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'learn-lesson' && !fact.deleted).map(fact => fact.refId));
   const done = new Set((data?.ledger ?? []).filter(fact => fact.kind === 'chapter' && !fact.deleted).map(fact => fact.refId));
@@ -73,7 +73,9 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
   if (view === 'read') {
     const ideas = module.concepts.filter(concept => concept.steps?.length).length;
     if (ended) return <section className="screen learn-screen">{head}<div className="card read-done-card idea-end" role="status">
-      <p className="eyebrow">Idea done</p><h2>{ended.title}</h2><p className="read-takeaway">{ended.takeaway}</p>
+      <p className="eyebrow">Idea done</p><h2>{ended.title}</h2>
+      {(() => { const line = ideaLine(data.ledger, chapterRef(topicId, moduleId), ended.conceptId); return line ? <p className="read-earned">{line}</p> : null; })()}
+      <p className="read-takeaway">{ended.takeaway}</p>
       <div className="idea-end-actions"><button type="button" onClick={() => setEnded(null)}>One more idea</button>
         <button type="button" className="secondary" onClick={() => go(`read/book/${topicId}`)}>That's enough for now</button></div>
     </div></section>;
@@ -82,7 +84,7 @@ export function Chapter({ topicId, moduleId }: { topicId: string; moduleId: stri
     const isLast = idea.index === ideas - 1;
     return <section className="screen learn-screen read-chapter-screen">{head}<IdeaSitting key={idea.concept.id} topicId={topicId} module={module} concept={idea.concept} ideaIndex={idea.index} ideaCount={ideas} ledger={data.ledger}
       earlier={idea.index === 0 && taught.size === 0 ? undefined : earlierQuestion(pack.body.modules, data.ledger, dayKey(openedAt))}
-      onFinished={() => { if (!isLast) setEnded({ title: idea.concept.title, takeaway: idea.concept.steps!.at(-1)!.takeaway ?? idea.concept.title }); }} /></section>;
+      onFinished={() => { if (!isLast) setEnded({ title: idea.concept.title, takeaway: idea.concept.steps!.at(-1)!.takeaway ?? idea.concept.title, conceptId: idea.concept.id }); }} /></section>;
   }
 
   if (view === 'check') {

@@ -93,3 +93,38 @@ export async function openIdeas(page: Page, topicId: string, conceptTitle: strin
   if (!(await ideas.evaluate(node => (node as HTMLDetailsElement).open))) await ideas.locator(':scope > summary').click();
   return chapter.locator('.learn-trail-node').filter({ hasText: conceptTitle });
 }
+
+/**
+ * Spec 41: walks one idea-sitting the way a learner does, answering right from the pack: the guess, the scene, the
+ * example, the try (a guided question or spot-the-part), an earlier day's question and the plan. Stops on the idea's
+ * end card, or on the chapter's next screen after its last idea. Returns how many screens it took.
+ */
+export async function walkIdea(page: Page, topicId: string): Promise<number> {
+  const steps = stepsOf(topicId);
+  const right = new Map<string, string>();
+  for (const step of steps) {
+    right.set(step.hook.stem, step.hook.options.find(option => option.correct)!.text);
+    for (const guided of step.guided) right.set(guided.stem, guided.options.find(option => option.correct)!.text);
+  }
+  for (const item of itemsOf(topicId)) { const option = item.options.find(row => row.correct); if (option) right.set(item.stem, option.text); }
+  const spots = new Set(steps.map(step => step.example.spot.trim()));
+  const sitting = page.locator('.idea-sitting');
+  await expect(sitting).toBeVisible();
+  for (let screen = 1; screen <= 8; screen++) {
+    const options = sitting.locator('.learn-options');
+    const example = sitting.locator('.step-example');
+    if (await sitting.locator('.learn-feedback').count() === 0) {
+      if (await options.count()) {
+        const stem = await sitting.locator('h2').first().innerText();
+        await options.getByRole('button', { name: right.get(stem), exact: true }).click();
+      } else if (await example.count()) {
+        for (const part of await example.getByRole('button').all()) if (spots.has((await part.innerText()).trim())) { await part.click(); break; }
+      }
+    }
+    const go = sitting.getByRole('button', { name: /^(Continue|Finish the idea)$/ }).first();
+    const finishing = (await go.innerText()) === 'Finish the idea';
+    await go.click();
+    if (finishing) { await expect(sitting).toHaveCount(0); return screen; }
+  }
+  throw new Error('An idea took more than 8 screens');
+}

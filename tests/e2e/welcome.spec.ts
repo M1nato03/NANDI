@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { walkLesson } from './learn-helpers';
+import { walkIdea } from './learn-helpers';
 import { openMore } from './helpers/plan';
 
 
@@ -35,10 +35,10 @@ test('a fresh install picks one goal and lands in its first lesson, with no topi
   await welcome.getByRole('button', { name: 'Start your first chapter' }).click();
   await expect(welcome).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'What do you want to get sharp at?' })).toHaveCount(0);
-  // Spec 33: the first chapter of the first book; its first lesson done, the next one follows.
+  // Spec 33, spec 41: the first chapter of the first book, read one idea a sitting; the first idea ends on a real stop.
   await expect(page).toHaveURL(/#read\/chapter\/psychology\/psychology-ch1$/);
-  await walkLesson(page, 'psychology', true);
-  await expect(page.locator('.step-lesson')).toHaveAttribute('data-lesson-phase', 'hook');
+  await walkIdea(page, 'psychology');
+  await expect(page.locator('.idea-end')).toContainText('Idea done');
   expect(Date.now() - started).toBeLessThan(90_000);
   const saved = await settingsOf(page, ['planner.bedtime', 'profile.goals', 'learn.selectedTopics', 'profile.adultConfirmedAt']);
   expect(saved).toMatchObject({ 'planner.bedtime': '23:00', 'profile.goals': ['learn'], 'learn.selectedTopics': ['psychology'] });

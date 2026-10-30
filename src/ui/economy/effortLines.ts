@@ -38,7 +38,30 @@ export function boardLine(facts: readonly LedgerRow[], runId: string): string | 
 }
 
 /** A finished chapter: "2 new ideas, 2 right · +25 XP". The XP shows for the day's first three chapters before bedtime. */
+/**
+ * Spec 41: what one idea-sitting earned: its share of the chapter's pay (base on the chapter's first idea, then 5 a
+ * step, 40 in all across the chapter), topped up to the drop's 15 when it was the day's drop. Past the cap it says the
+ * chapter's XP is complete and the reading still counts, so a 0 never looks like a fault.
+ */
+export function ideaLine(facts: readonly LedgerRow[], chapter: string, conceptId: string): string | null {
+  const pay = RULES.mind.chapterPay;
+  const ideas = facts.filter(row => row.kind === 'idea' && !row.deleted && row.inputs.chapter === chapter && row.inputs.afterBedtime !== true).sort((a, b) => a.updatedAt - b.updatedAt);
+  let paid = 0;
+  for (const [index, row] of ideas.entries()) {
+    const amount = Math.min((index === 0 ? pay.baseXp : 0) + pay.stepXp * (Number(row.inputs.newSteps) || 0), Math.max(0, pay.maxXp - paid));
+    if (row.inputs.conceptId === conceptId) {
+      const total = amount + (row.inputs.dropId ? Math.max(0, RULES.mind.learnDropXp - amount) : 0);
+      return total ? `+${total} XP` : 'Chapter XP complete · your reading time still counts';
+    }
+    paid += amount;
+  }
+  return null;
+}
+
 export function chapterLine(facts: readonly LedgerRow[], ref: string): string | null {
+  // Spec 41: a chapter read one idea a sitting shows what its last sitting earned.
+  const lastIdea = facts.filter(row => row.kind === 'idea' && !row.deleted && row.inputs.chapter === ref).sort((a, b) => a.updatedAt - b.updatedAt).at(-1);
+  if (lastIdea) return ideaLine(facts, ref, String(lastIdea.inputs.conceptId));
   const fact = facts.find(row => row.kind === 'chapter' && row.refId === ref && !row.deleted);
   if (!fact || typeof fact.inputs.newSteps !== 'number') return null;
   const steps = fact.inputs.newSteps, right = Number(fact.inputs.firstRight) || 0;
