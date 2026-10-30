@@ -113,10 +113,11 @@ test('after bedtime no new chapter starts; the rest waits for tomorrow', async (
   await page.clock.setFixedTime(new Date('2026-10-28T02:30:00')); // after the default bedtime (01:30)
   // After shutdown the app opens on the night deck (once its settings load); leaving it for a chapter shows the
   // chapter waiting.
-  await page.goto('/?e2e#night');
-  // The deck is ready once its settings loaded; leaving it then holds, and the chapter opens from there.
+  // Opened on Plan, the app's one opening check sends it to the night deck; once it has, leaving holds.
+  await page.goto('/?e2e#plan');
+  await expect(page).toHaveURL(/#night$/);
   await page.getByRole('button', { name: 'Leave night deck' }).click();
-  await expect(page).not.toHaveURL(/#night$/);
+  await expect(page).toHaveURL(/#plan$/);
   await openHash(page, 'read/chapter/how-things-work/how-things-work-ch1');
   await expect(page.locator('.read-wait')).toContainText('The rest of this chapter opens tomorrow.');
   await expect(page.locator('.step-lesson')).toHaveCount(0);

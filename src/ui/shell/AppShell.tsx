@@ -181,21 +181,24 @@ export function AppShell() {
   }, []);
   // a11y C8: after a route change (Back too), focus moves to the new screen's heading, or to main while it loads, so
   // reading starts at the new screen. Nothing moves if the person already focused something else or a dialog is open.
+  // It keeps watch for about a second: a screen that loads in replaces its heading, and focus is placed again.
   const firstPath = useRef(true);
   useEffect(() => {
     if (firstPath.current) { firstPath.current = false; return; }
     const before = document.activeElement;
     let tries = 0, frame = 0;
+    let placed: HTMLElement | null = null;
     const place = () => {
       const now = document.activeElement;
-      if ((now !== before && now !== document.body) || document.querySelector('[aria-modal="true"]')) return;
+      if ((now !== before && now !== document.body && now !== placed) || document.querySelector('[aria-modal="true"]')) return;
       const main = document.getElementById('main');
-      const heading = main?.querySelector<HTMLElement>('h1');
-      if (!heading && tries++ < 30) { frame = requestAnimationFrame(place); return; }
-      const target = heading ?? main;
-      if (!target) return;
-      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
+      const target = main?.querySelector<HTMLElement>('h1') ?? (tries >= 30 ? main : null);
+      if (target && target !== now) {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+        placed = target;
+      }
+      if (tries++ < 60) frame = requestAnimationFrame(place);
     };
     frame = requestAnimationFrame(place);
     return () => cancelAnimationFrame(frame);
