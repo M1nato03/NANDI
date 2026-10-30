@@ -1,4 +1,5 @@
 import { addEconomyDays, weekStart } from '../economy/deriveEconomy';
+import { sessionCounts } from './counts';
 import type { LedgerRow } from '../../data/types';
 import { RULES } from '../rules.config';
 
@@ -35,7 +36,7 @@ export function trainDays(ledger: readonly LedgerRow[]): TrainDays {
   const trained = new Set<string>(), walked = new Set<string>();
   for (const fact of ledger) {
     if (fact.deleted || fact.mode !== 'train') continue;
-    if (fact.kind === 'session' && Number(fact.inputs?.xp ?? 0) > 0) trained.add(fact.dayKey);
+    if (fact.kind === 'session' && sessionCounts(fact.inputs ?? {})) trained.add(fact.dayKey);
     else if (fact.kind === 'rest') walked.add(fact.dayKey);
   }
   return { trained, walked };

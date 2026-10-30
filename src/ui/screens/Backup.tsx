@@ -7,6 +7,7 @@ import { pickFile, shareOrDownload } from '../../platform/files';
 import { estimate, requestPersist } from '../../platform/storage';
 import { recordError } from '../errorRing';
 import { formatDayKey } from '../../core/time/formatDayKey';
+import { dayKey } from '../../core/time/dayKey';
 import { errorMessage } from '../shell/errorMessage';
 import { Capacitor } from '@capacitor/core';
 import { readAutoBackupState, runAutoBackup, setAutoBackupEnabled, type AutoBackupState } from '../../data/autoBackup';
@@ -110,7 +111,9 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     try {
       if (choice.kind === 'backup') await importBackup(db, choice.data);
       else await importLegacy(db, choice.data, { deviceId: await getOrCreateDeviceId(db, Date.now()), now: Date.now() });
-      setChoice(null); await onRestored(); await refresh(); setMessage('Restore complete. Your data is ready.');
+      // Bug hunt 30 Oct: say which backup came back. "Last backup" stays this phone's own last backup.
+      const from = choice.kind === 'backup' ? formatDayKey(dayKey(choice.data.exportedAt)) : null;
+      setChoice(null); await onRestored(); await refresh(); setMessage(from ? `Restored · backup from ${from}. Your data is ready.` : 'Restore complete. Your data is ready.');
     } catch (error) { recordError('promise', error); setMessage(`Restore could not finish: ${errorMessage(error)}`); }
     finally { setBusy(false); }
   }
@@ -119,7 +122,7 @@ export function Backup({ onRestored }: { onRestored: () => Promise<void> }) {
     <p className="eyebrow">Keep your work</p><h1>Backup</h1>
     <p>Save a copy you control. The file is plain text and contains your personal data.</p>
     <p className="small">Your own Calm sounds stay on this phone and are not in backups.</p>
-    <div className="card"><h2>Save a copy</h2><p>Last backup: {lastBackup === null ? 'Not yet' : new Date(lastBackup).toLocaleDateString()}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
+    <div className="card"><h2>Save a copy</h2><p>{lastBackup === null ? 'No backup made on this phone yet.' : `Last backup: ${formatDayKey(dayKey(lastBackup))}`}</p><button disabled={busy} onClick={() => void exportFile()}>Export backup</button></div>
     {Capacitor.isNativePlatform() && <div className="card"><h2>Automatic backup</h2>
       <p>Automatic backup: {auto?.enabled === false ? 'off' : 'on'} · last saved {auto?.lastSavedAt ? new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(auto.lastSavedAt) : 'never'} · {autoKept} kept in Documents/NANDI/auto</p>
       <label><input type="checkbox" role="switch" checked={auto?.enabled !== false} onChange={event => void toggleAuto(event.target.checked)} /> Automatic backup</label>

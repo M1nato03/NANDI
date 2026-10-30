@@ -78,7 +78,7 @@ test('seeded week shows rank and Clean Week; rest day and theme survive a backup
   // Jenil 24 Oct: a restore replaces today too, and the preview says so first (cj3 clock fuzz C1).
   await expect(page.getByLabel('Restore preview')).toContainText("Today's activity, purchases, owned items, Shards and courtyard growth will be replaced by the backup's.");
   await page.getByRole('button', { name: 'Confirm restore' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toContainText('Restore complete');
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   await page.goto('/#you');
   await expect(page.getByRole('region', { name: 'Your season' })).toContainText(rankText!);
   await expect(page.locator('html')).toHaveAttribute('data-economy-theme', 'linen');

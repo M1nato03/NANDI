@@ -1,4 +1,5 @@
 import { dayKey } from './time/dayKey';
+import { sessionCounts } from './train/counts';
 import { nightsBackOnPlan } from './nightPlan';
 import { focusElapsedMs } from './tasks/focus';
 import type { DailyLogRow, FocusRow, LearnConceptRow, QuestRow, SessionRow, TaskRow } from '../data/types';
@@ -40,7 +41,7 @@ export function buildRecap(now: number, source: RecapSources): WeeklyRecapData {
     tasks: source.tasks.filter(row => !row.deleted && inside(row.doneAt)).length,
     focusHours: Math.round(focusMs / 3_600_000 * 10) / 10,
     longestFocusMinutes,
-    workouts: source.sessions.filter(row => !row.deleted && ['completed', 'minimum', 'partial'].includes(row.status) && inside(row.endedAt)).length,
+    workouts: source.sessions.filter(row => !row.deleted && sessionCounts(row) && inside(row.endedAt)).length,
     sideQuests: source.quests.filter(row => !row.deleted && row.status === 'done' && inside(row.updatedAt)).length,
     concepts: source.concepts.filter(row => !row.deleted && inside(row.firstLearnedAt)).length,
     nights: nightsBackOnPlan(source.logs.filter(row => row.dayKey >= from && row.dayKey < to)),

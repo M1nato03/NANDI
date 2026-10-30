@@ -142,7 +142,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.getByRole('button', { name: 'Choose restore file' }).click();
     await (await chooser).setFiles(saved!);
     await page.getByRole('button', { name: 'Confirm restore' }).click();
-    await expect(page.getByRole('main').getByRole('status')).toContainText('Restore complete');
+    await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
     await page.getByRole('navigation', { name: 'Main tabs' }).getByRole('link', { name: 'Plan' }).click();
     await expect(page.getByRole('region', { name: 'Today', exact: true })).toContainText('Keep this task');
     expect(await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollWidth: number } }; innerWidth: number }).document.documentElement.scrollWidth <= (globalThis as unknown as { innerWidth: number }).innerWidth)).toBe(true);

@@ -10,7 +10,7 @@ describe('What your time became', () => {
     const source: RecapSources = {
       tasks: [{ id: 'a', title: 'Done', status: 'done', dayKey: '2026-10-11', doneAt: before, updatedAt: before, deleted: 0, deviceId: 'test' }],
       focus: [{ id: 'f', taskId: 'a', startedAt: before - 3_600_000, endedAt: before, updatedAt: before, deleted: 0, deviceId: 'test' }],
-      sessions: [{ id: 's', dayKey: '2026-10-11', status: 'completed', endedAt: before, updatedAt: before, deleted: 0, deviceId: 'test' }],
+      sessions: [{ id: 's', dayKey: '2026-10-11', status: 'completed', workingSets: 6, endedAt: before, updatedAt: before, deleted: 0, deviceId: 'test' }],
       quests: [{ id: 'q', sourceId: 'q', week: '2026-W41', title: 'Walk', kind: 'once', target: 1, unit: 'walk', step: 1, progress: 1, tapIds: [], status: 'done', custom: false, updatedAt: before, deleted: 0, deviceId: 'test' }],
       concepts: [{ id: 'c', mastery: 1, attempts: 1, firstLearnedAt: before, activeMisconceptions: [], updatedAt: before, deleted: 0, deviceId: 'test' }],
       logs: [{ dayKey: '2026-10-11', lightsOutAt: before, bedtimeTarget: before, updatedAt: before, deleted: 0, deviceId: 'test' }],

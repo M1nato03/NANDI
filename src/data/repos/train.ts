@@ -234,7 +234,7 @@ export function createTrainRepos(db: NandiDb, deviceId: string) {
         const counts = { plannedExercises: planned.length, touchedExercises: exercises.filter(ex => ex.sets.length > 0).length, plannedSets: total, workingSets: done, safety: pain };
         const xp = ('setPay' in rules.train ? trainSessionPay({ ...counts, paidSets }, rules) : null) ?? calculateSessionXp({ id: session.id, dayKey: session.dayKey, routineId: routine.id, exercises }, routine, rules);
         const status: SessionRow['status'] = pain ? 'safety' : done >= total ? 'completed' : exercises.every(ex => ex.sets.length > 0) ? 'minimum' : 'partial';
-        const row: SessionRow = { ...session, status, endedAt: now, restEndsAt: undefined, xp, ...meta(now) };
+        const row: SessionRow = { ...session, status, endedAt: now, restEndsAt: undefined, xp, workingSets: done, ...meta(now) };
         await db.sessions.put(row);
         const fact: LedgerRow = { id: `train-session:${sessionId}`, mode: 'train', kind: 'session', refId: sessionId, dayKey: session.dayKey, inputs: { xp, ...counts, ...('setPay' in rules.train ? { paidSets } : {}) }, ...meta(now) };
         if (!(await db.ledger.get(fact.id))) await db.ledger.add(fact);

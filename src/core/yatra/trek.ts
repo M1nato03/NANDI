@@ -1,4 +1,5 @@
 import type { LedgerRow } from '../../data/types';
+import { sessionCounts } from '../train/counts';
 import type { Trail } from './trail';
 import { dayKey } from '../time/dayKey';
 
@@ -15,7 +16,7 @@ export const STAR_COLOURS: Record<SessionKind, string> = { train: '#FF6A1A', min
 
 export function sessionKind(fact: LedgerRow): SessionKind | null {
   if (fact.deleted) return null;
-  if (fact.mode === 'train' && fact.kind === 'session') return 'train';
+  if (fact.mode === 'train' && fact.kind === 'session') return sessionCounts(fact.inputs ?? {}) ? 'train' : null;
   if (fact.mode === 'mind' && (fact.kind === 'board' || fact.kind === 'mystery')) return 'mind';
   if (fact.mode === 'calm' && fact.kind === 'session') return 'calm';
   return null;

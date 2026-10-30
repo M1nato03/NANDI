@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { sessionCounts } from '../../core/train/counts';
 import { dayKey, isAfterBedtime } from '../../core/time';
 import { formatDayKey } from '../../core/time/formatDayKey';
 import { EXERCISE_LIBRARY, LADDERS, PROGRAMS, SLOW_NAME, SLOW_RANK, calculatePlates, isRetestWeek, nordicCardDue, nordicState, nordicSwitchShown, type Track } from '../../core/train';
@@ -41,7 +42,7 @@ export function Dashboard({ data, page, setPage, startWorkout, busy, message, ac
     window.addEventListener('pageshow', tick);
     return () => { window.clearInterval(interval); document.removeEventListener('visibilitychange', shown); window.removeEventListener('pageshow', tick); };
   }, []);
-  const completed = sessions.filter(row => row.status !== 'active' && row.status !== 'skipped').sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0));
+  const completed = sessions.filter(sessionCounts).sort((a, b) => (b.endedAt ?? 0) - (a.endedAt ?? 0));
   const thisWeek = completed.filter(row => row.startedAt != null && mondayOf(row.startedAt) === mondayOf(now));
   const target = program.weeklyTarget ?? 3;
   const last28 = Array.from({ length: 28 }, (_, i) => { const date = new Date(now); date.setDate(date.getDate() - 27 + i); return dayKey(date.getTime()); });

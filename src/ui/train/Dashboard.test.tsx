@@ -14,7 +14,7 @@ describe('Dashboard', () => {
     
     // Create completed sessions and rest ledger
     const sessions: SessionRow[] = [{
-      id: 's1', dayKey: today, status: 'completed', startedAt: now, endedAt: now + 1000, templateKey: 'gym-foundations-a', deleted: 0, updatedAt: now, deviceId: 'test'
+      id: 's1', dayKey: today, status: 'completed', workingSets: 6, startedAt: now, endedAt: now + 1000, templateKey: 'gym-foundations-a', deleted: 0, updatedAt: now, deviceId: 'test'
     }];
     
     const yesterday = new Date(now);

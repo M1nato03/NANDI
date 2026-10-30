@@ -98,7 +98,7 @@ test('backup downloads, previews, and restores only after confirmation', async (
   await expect(preview.getByText(/Wed 7 Oct/)).toBeVisible();
   expect((await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts())).tasks).toBe(0);
   await preview.getByRole('button', { name: 'Confirm restore' }).click();
-  await expect(page.getByRole('main').getByRole('status')).toHaveText('Restore complete. Your data is ready.');
+  await expect(page.getByRole('main').getByRole('status')).toContainText('Your data is ready.');
   const after = await page.evaluate(() => (globalThis as unknown as { __nandiTest: { shellCounts: () => Promise<Record<string, number>> } }).__nandiTest.shellCounts());
   // Device-local settings (offline-ready flag, lastBackupAt, reconcile markers) may be written in the
   // background at any time, so settings may only grow; every other table must match exactly.

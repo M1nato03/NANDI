@@ -12,7 +12,7 @@ let n = 0;
 const fact = (dayKey: string, kind: 'train' | 'mind' | 'calm' | 'other'): LedgerRow => {
   n++;
   const [mode, k] = kind === 'train' ? ['train', 'session'] : kind === 'mind' ? ['mind', 'board'] : kind === 'calm' ? ['calm', 'session'] : ['tasks', 'done'];
-  return { id: `f${String(n).padStart(3, '0')}`, dayKey, mode: mode!, kind: k!, refId: 'r', inputs: {}, updatedAt: n, deleted: 0, deviceId: 'd' };
+  return { id: `f${String(n).padStart(3, '0')}`, dayKey, mode: mode!, kind: k!, refId: 'r', inputs: kind === 'train' ? { xp: 60, workingSets: 6 } : {}, updatedAt: n, deleted: 0, deviceId: 'd' };
 };
 
 describe('spec 34 trail file', () => {
@@ -86,5 +86,13 @@ describe('spec 34 trek', () => {
     expect(trek.complete).toBe(true);
     expect(trekLine(trek)).toBe('Test trail: trail complete');
     expect(trek.today.stars).toEqual([expect.objectContaining({ kind: 'calm', leg: 4, stretch: false })]);
+  });
+});
+
+describe('bug hunt 30 Oct: a session with no set logged', () => {
+  it('lights no stretch and no star', () => {
+    const empty: LedgerRow = { ...fact('2026-10-20', 'train'), inputs: { xp: 0, workingSets: 0 } };
+    const trek = deriveTrek([empty], trail, '2026-10-20', '2026-10-20');
+    expect(trek.stars).toEqual([]);
   });
 });

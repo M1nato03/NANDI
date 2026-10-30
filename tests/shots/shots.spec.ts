@@ -485,6 +485,34 @@ for (const theme of themes) test.describe(theme, () => {
     await shot(page, 'night-deck');
   });
 
+  test('hunt fixes', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
+    // A workout stopped with no set logged counts nowhere: both Train cards agree.
+    await page.goto('/?e2e#yatra/train');
+    await page.getByRole('button', { name: 'Start easy, skip the test' }).click();
+    await page.getByRole('button', { name: 'Finish session' }).click();
+    await expect(page).toHaveURL(/train\/finish$/);
+    await page.goto('/?e2e#yatra/train');
+    await expect(page.getByText('A fresh week. Start with one session.')).toBeVisible();
+    // Right after a finish the old "Session in progress" card shows for a moment (noted in the hunt list).
+    await expect(page.getByText('Session in progress')).toHaveCount(0);
+    await shot(page, 'hunt-1-train-zero-sets');
+    // Backup: this phone's own last backup, and which backup a restore brought back.
+    await page.goto('/?e2e#you/backup');
+    await shot(page, 'hunt-2-backup-none', false);
+    const download = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Export backup' }).click();
+    const path = await (await download).path();
+    await page.evaluate(() => new Promise(resolve => { const request = indexedDB.deleteDatabase('nandi'); request.onsuccess = request.onerror = request.onblocked = () => resolve(null); }));
+    await page.goto('/?e2e#you/backup');
+    const chooser = page.waitForEvent('filechooser');
+    await page.getByRole('button', { name: 'Choose restore file' }).click();
+    await (await chooser).setFiles(path);
+    await page.getByLabel('Restore preview').getByRole('button', { name: 'Confirm restore' }).click();
+    await expect(page.getByRole('main').getByRole('status')).toContainText('Restored · backup from');
+    await shot(page, 'hunt-3-restored');
+  });
+
   test('small fixes', async ({ page }) => {
     await page.clock.setFixedTime(new Date('2026-10-30T12:00:00'));
     // The focus screen with nothing due.

@@ -139,6 +139,8 @@ export interface SessionRow extends EntityRow {
   effortByExercise?: Record<string, 'easy' | 'solid' | 'near'>;
   restEndsAt?: number;
   xp?: number;
+  /** Working sets logged, stored at finish (bug hunt 30 Oct: a 0-set session counts nowhere). */
+  workingSets?: number;
 }
 export interface SetRow extends EntityRow {
   sessionId: string;

@@ -6,7 +6,7 @@ const NIGHT = new Date('2026-10-28T23:45:00'); // after the default shutdown, be
 type Kind = 'train' | 'mind' | 'calm';
 const row = (kind: Kind, n: number, day = '2026-10-28') => {
   const [mode, k] = kind === 'train' ? ['train', 'session'] : kind === 'mind' ? ['mind', 'board'] : ['calm', 'session'];
-  return { id: `yatra-e2e-${kind}-${n}-${day}`, dayKey: day, mode, kind: k, refId: `r${n}`, inputs: {}, updatedAt: new Date(`${day}T09:00:00`).getTime() + n * 60_000, deleted: 0, deviceId: 'e2e' };
+  return { id: `yatra-e2e-${kind}-${n}-${day}`, dayKey: day, mode, kind: k, refId: `r${n}`, inputs: kind === 'train' ? { xp: 60, workingSets: 6 } : {}, updatedAt: new Date(`${day}T09:00:00`).getTime() + n * 60_000, deleted: 0, deviceId: 'e2e' };
 };
 async function seed(page: Page, facts: ReturnType<typeof row>[], startDay = '2026-10-28') {
   await page.evaluate(async ({ facts, startDay }) => {

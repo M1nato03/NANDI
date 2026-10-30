@@ -48,3 +48,21 @@ test('restore preview keeps its first row clear on phone widths', async ({ page 
     await card.getByRole('button', { name: 'Cancel' }).click();
   }
 });
+
+test('a restore says which backup came back, and "Last backup" stays this phone\'s own (bug hunt 30 Oct)', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-20T12:00:00'));
+  await page.goto('/?e2e#you/backup');
+  await expect(page.getByText('No backup made on this phone yet.')).toBeVisible();
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export backup' }).click();
+  const path = await (await download).path();
+  await expect(page.getByText(/^Last backup: /)).toBeVisible();
+  await page.evaluate(() => new Promise(resolve => { const request = indexedDB.deleteDatabase('nandi'); request.onsuccess = request.onerror = request.onblocked = () => resolve(null); }));
+  await page.goto('/?e2e#you/backup');
+  const chooser = page.waitForEvent('filechooser');
+  await page.getByRole('button', { name: 'Choose restore file' }).click();
+  await (await chooser).setFiles(path);
+  await page.getByLabel('Restore preview').getByRole('button', { name: 'Confirm restore' }).click();
+  await expect(page.getByRole('main').getByRole('status')).toHaveText(/^Restored · backup from .+\. Your data is ready\.$/);
+  await expect(page.getByText('Not yet')).toHaveCount(0);
+});

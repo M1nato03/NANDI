@@ -1,4 +1,5 @@
 import { lazy, memo, Suspense, useEffect, useState, type FormEvent } from 'react';
+import { sessionCounts } from '../../core/train/counts';
 import { useLiveQuery } from 'dexie-react-hooks';
 import PZ from '../../core/puzzles';
 import { featuredSpec } from '../../core/puzzles/daily';
@@ -104,7 +105,7 @@ export function NightDeck({ now, bedtime, board }: { now: number; bedtime: strin
   const dailySolved = featuredDailyDone(runs, today);
   const doneTasks = board.tasks.filter(row => !row.deleted && row.doneAt && dayKey(row.doneAt) === today);
   const focusMinutes = Math.round(board.focus.filter(row => row.endedAt && dayKey(row.endedAt) === today).reduce((sum, row) => sum + focusElapsedMs(row, row.endedAt!), 0) / 60_000);
-  const workoutDone = sessions.some(row => row.dayKey === today && row.status !== 'active' && row.status !== 'skipped');
+  const workoutDone = sessions.some(row => row.dayKey === today && sessionCounts(row));
   const questDone = quests.filter(row => row.status === 'done' && !row.deleted);
   const summary = [
     ...doneTasks.slice(0, 3).map(row => `Finished ${row.title}`),
