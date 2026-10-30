@@ -28,3 +28,12 @@ describe('spec 38 honest minutes: only playing spans count', () => {
     expect(readJournal([{ type: 'started', at: 5 }, { type: 'odd', at: 6 }, { type: 'ended' }, null])).toEqual([{ type: 'started', at: 5 }]);
   });
 });
+
+describe('spec 38 the phone player runs only a sit with something to play', () => {
+  it('a sound or interval bells use it; no sound and no bells stays in the app', async () => {
+    const { usesPhonePlayer } = await import('./spans');
+    expect(usesPhonePlayer('rain', 0)).toBe(true);
+    expect(usesPhonePlayer('none', 5)).toBe(true);
+    expect(usesPhonePlayer('none', 0)).toBe(false);
+  });
+});

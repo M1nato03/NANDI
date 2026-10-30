@@ -25,3 +25,9 @@ export function readJournal(raw: unknown): CalmEvent[] {
   const kinds = new Set(['started', 'paused', 'resumed', 'bell', 'ended', 'stopped']);
   return raw.filter((event): event is CalmEvent => !!event && typeof event === 'object' && kinds.has((event as CalmEvent).type) && Number.isFinite((event as CalmEvent).at));
 }
+
+/**
+ * Spec 38 (jenil-87, Play policy): the phone's media player runs a sit only when it has something to play: a sound,
+ * or interval bells. A sit with neither stays in the app as before ("Keep NANDI open"), never a silent media service.
+ */
+export const usesPhonePlayer = (sound: string, intervalMin: number) => sound !== 'none' || intervalMin > 0;

@@ -33,6 +33,7 @@ test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: '
 
 test('the phone plays the sit; a call pauses it and its minutes never count', async ({ page }) => {
   await openCalm(page);
+  await page.getByRole('button', { name: 'River', exact: true }).click();
   await expect(page.locator('.calm-under')).toHaveText('You can lock your phone. The sound and bells keep playing.');
   await page.getByRole('button', { name: 'Quiet', exact: true }).click();
   await page.getByRole('button', { name: '20 min', exact: true }).click();
@@ -55,6 +56,7 @@ test('the phone plays the sit; a call pauses it and its minutes never count', as
 
 test('a timed sit that ends while NANDI is away is saved on return, once', async ({ page }) => {
   await openCalm(page);
+  await page.getByRole('button', { name: 'River', exact: true }).click();
   await page.getByRole('button', { name: 'Quiet', exact: true }).click();
   await page.getByRole('button', { name: '3 min', exact: true }).click();
   await page.locator('.calm-start').click();
@@ -67,4 +69,17 @@ test('a timed sit that ends while NANDI is away is saved on return, once', async
   await page.evaluate(() => { location.hash = '#yatra/calm'; });
   await expect(page.locator('.calm-start')).toBeVisible();
   expect(await calmRows(page)).toEqual([{ minutes: 3, way: 'quiet' }]);
+});
+
+test('no sound and no interval bells: nothing to play, so the sit stays in the app (no silent media service)', async ({ page }) => {
+  await openCalm(page);
+  await page.getByRole('button', { name: 'None', exact: true }).click();
+  await expect(page.locator('.calm-under')).not.toContainText('lock your phone');
+  await page.getByRole('button', { name: '20 min', exact: true }).click();
+  await expect(page.locator('.calm-under')).toHaveText('Keep NANDI open. The sound and bells play here.');
+  await page.locator('.calm-start').click();
+  await expect(page.getByRole('button', { name: 'Stop' })).toBeVisible();
+  // The phone's player was never started.
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('nandi.e2eCalm')!).sit)).toBeUndefined();
+  await expect(page.getByRole('button', { name: 'Pause' })).toHaveCount(0);
 });

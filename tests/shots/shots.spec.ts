@@ -235,6 +235,10 @@ for (const theme of themes) test.describe(theme, () => {
     await page.goto('/#yatra/calm');
     await expect(page.locator('.calm-under')).toBeVisible();
     await page.clock.runFor(1000);
+    // No sound and no interval bells: nothing to play, so the sit stays in the app and says so.
+    await shot(page, 's38-0-setup-no-sound-stays-in-app', false);
+    await page.getByRole('button', { name: 'River', exact: true }).click();
+    await expect(page.locator('.calm-under')).toContainText('You can lock your phone');
     await shot(page, 's38-1-setup-lock-line', false);
     await page.getByRole('button', { name: 'Quiet', exact: true }).click();
     await page.getByRole('button', { name: '10 min', exact: true }).click();

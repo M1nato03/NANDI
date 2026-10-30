@@ -11,7 +11,7 @@ import { TrekScene } from './TrekScene';
 import { useYatra } from './Yatra';
 import { useModalFocus } from '../shell/useModalFocus';
 import { blobBase64, calmPlaybackAvailable, calmPlaybackStatus, clearCalmPlayback, pauseCalmPlayback, resumeCalmPlayback, startCalmPlayback, stopCalmPlayback, type CalmStatus } from '../../platform/calmPlayback';
-import { playedMs, sitOver } from '../../core/calm/spans';
+import { playedMs, sitOver, usesPhonePlayer } from '../../core/calm/spans';
 import { askNotificationsOnce } from '../../platform/notifyPermission';
 import { forgetCalmRun, readCalmRun, rememberCalmRun } from './calmKeeper';
 import './trek.css';
@@ -82,6 +82,8 @@ export function Calm() {
   const yatra = useYatra();
   // Spec 38: on the phone, the native player owns the sound, the bells and the clock; the page reads its journal.
   const nativePlayer = calmPlaybackAvailable();
+  // No sound and no interval bells: nothing to play, so the sit stays in the app (no silent media service).
+  const lockable = nativePlayer && usesPhonePlayer(prefs.sound, prefs.interval);
   const [sit, setSit] = useState<CalmStatus | null>(null);
   useEffect(() => {
     if (!nativePlayer) return;
@@ -164,7 +166,7 @@ export function Calm() {
     const own = prefs.sound.startsWith('user:') ? userSounds.find(row => `user:${row.id}` === prefs.sound) : undefined;
     const ran: Run = { startedAt: at, length: prefs.minutes, way: prefs.way, breath, interval: prefs.interval, fade: prefs.fade, sound: presetOf(prefs.sound)?.name ?? own?.name };
     rung.current = { bells: 0, line: 0 };
-    if (nativePlayer) { void startNative({ ...ran, native: true }, own?.blob); return; }
+    if (lockable) { void startNative({ ...ran, native: true }, own?.blob); return; }
     const mixer = CalmAudio.create();
     audio.current = mixer;
     if (mixer) {
@@ -268,7 +270,7 @@ export function Calm() {
       </details>
       <div className="calm-start-bar">
         <button type="button" className="calm-start" onClick={start}>{prefs.minutes === 'open' ? 'Start, until I stop' : `Start ${lengthName(prefs.minutes)}`}</button>
-        <p className="small calm-under">{nativePlayer ? 'You can lock your phone. The sound and bells keep playing.' : isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>
+        <p className="small calm-under">{lockable ? 'You can lock your phone. The sound and bells keep playing.' : isLongSit(prefs.minutes) ? 'Keep NANDI open. The sound and bells play here.' : 'A quiet few minutes with your breath.'}</p>
       </div>
     </>}
     {dim && <button type="button" className="calm-dim" aria-label="Wake the screen" onClick={() => setTouchedAt(stamp())}>
