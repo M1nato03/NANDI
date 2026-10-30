@@ -25,7 +25,7 @@ export const PAUSE_APP_CHOICES: readonly { label: string; packageName: string }[
 export const PAUSE_ACTS: readonly string[] = [
   'do 10 squats',
   'step outside for 2 minutes',
-  'text or call someone',
+  'talk to someone near you',
   'read one page of a paper book',
   'drink a glass of water',
   'take a 2-minute breath with Kachhua',

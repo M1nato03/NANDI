@@ -28,6 +28,17 @@ async function phoneOpens(page: Page, packageName = 'com.instagram.android') {
   }, packageName);
   await expect(card(page)).toBeVisible();
 }
+/** The screen goes off or another app opens, then NANDI is back in front; `front` is what the usage log saw meanwhile. */
+async function away(page: Page, front: string[]) {
+  await page.evaluate(apps => {
+    const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}');
+    sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, frontApps: apps }));
+    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  }, front);
+}
 const did = (page: Page) => page.evaluate(() => (JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}') as { did?: string[] }).did ?? []);
 const attempts = (page: Page) => page.evaluate(async () => {
   const database = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('nandi'); request.onsuccess = () => resolve(request.result); });
@@ -65,7 +76,7 @@ test('setup: pick apps (nothing ticked), write the line, keep all day, see it on
   await expect(page.getByRole('button', { name: /^Pause card/ })).toContainText('On · Instagram');
 });
 
-test('the card: do my 2-min thing, Done only when the 2 minutes are up, +2 XP; the act stops if NANDI is left', async ({ page }) => {
+test('the card: do my 2-min thing, Done only when the 2 minutes are up, +2 XP; the phone can go down, but another app stops it', async ({ page }) => {
   await page.clock.install({ time: NOON });
   await setUp(page);
   const before = await totalXp(page);
@@ -74,15 +85,21 @@ test('the card: do my 2-min thing, Done only when the 2 minutes are up, +2 XP; t
   await expect(card(page)).toContainText('Instagram');
   await expect(card(page)).toContainText('Your plan:');
   await expect(card(page).getByRole('heading')).toHaveText("If I open Instagram, I'll do 10 squats first.");
-  // Leaving NANDI mid-act stops it.
+  // Opening another app mid-act stops it (the phone's usage log says WhatsApp came to the front).
   await card(page).getByRole('button', { name: 'Do my 2-min thing' }).click();
-  await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
-  await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true }); });
-  await expect(card(page)).toContainText('The 2 minutes stop when you leave NANDI.');
+  await away(page, ['com.whatsapp']);
+  await expect(card(page)).toContainText('The 2 minutes stopped when another app opened.');
+  await expect(card(page).getByRole('button', { name: 'Do my 2-min thing' })).toBeVisible();
+  // With the screen off (the phone down for the squats) it keeps counting, and Done shows at 0:00.
+  await page.evaluate(() => { const fake = JSON.parse(sessionStorage.getItem('nandi.e2ePause') ?? '{}'); sessionStorage.setItem('nandi.e2ePause', JSON.stringify({ ...fake, frontApps: [] })); });
   await card(page).getByRole('button', { name: 'Do my 2-min thing' }).click();
   await expect(card(page).getByRole('timer')).toHaveText('2:00');
+  await expect(card(page)).toContainText('Put the phone down or keep NANDI open; opening another app stops it.');
   await expect(card(page).getByRole('button', { name: 'Done' })).toHaveCount(0);
+  await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true }); document.dispatchEvent(new Event('visibilitychange')); });
   await page.clock.fastForward(121_000);
+  await away(page, ['app.nandi.personal', 'com.android.systemui']);
+  await expect(card(page).getByRole('timer')).toHaveText('0:00');
   await card(page).getByRole('button', { name: 'Done' }).click();
   await expect(card(page)).toContainText('+2 XP · 2 minutes back.');
   await card(page).getByRole('button', { name: 'Back to my day' }).click();

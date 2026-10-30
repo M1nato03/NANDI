@@ -12,6 +12,7 @@ type NightPausePlugin = {
   configure(options: { enabled: boolean; bedtime: string; packages: string; leadMinutes: number; dayMode: string; dayLimitMinutes: number; pauseCard: boolean; pauseFrom: string; pauseTo: string }): Promise<void>;
   goHome(): Promise<void>;
   launcherApps(): Promise<{ apps: { packageName: string; label: string }[] }>;
+  focusEvents(options: { from: number; to: number }): Promise<{ available: boolean; events?: { type: string; at: number; pkg?: string }[] }>;
   clearPending(): Promise<void>;
   openApp(options: { packageName: string; snoozeMs: number }): Promise<void>;
   windowEvents(options: { from: number; to: number; packages: string }): Promise<{ available: boolean; logStart?: number; events?: UsageEvent[]; lockSafe?: boolean }>;
@@ -26,7 +27,7 @@ const native = registerPlugin<NightPausePlugin>('NightPause');
  * app, the permissions, and a log of what NANDI asked the phone to do. Never set in the app itself.
  */
 const E2E_PAUSE = 'nandi.e2ePause';
-type FakePause = Partial<Status> & { did?: string[] };
+type FakePause = Partial<Status> & { did?: string[]; frontApps?: string[] };
 function fake(): FakePause | null {
   try { const raw = sessionStorage.getItem(E2E_PAUSE); return raw ? JSON.parse(raw) as FakePause : null; } catch { return null; }
 }
@@ -67,6 +68,24 @@ export async function goPhoneHome(): Promise<void> {
   if (fake()) return fakeDid({ pendingPackage: '' }, 'home');
   if (Capacitor.isNativePlatform()) await native.goHome();
 }
+/** Apps that are not "another app": NANDI itself and the phone's own lock and status screens. */
+const NOT_ANOTHER_APP = new Set(['app.nandi.personal', 'com.android.systemui']);
+/**
+ * Spec 39 (jenil-87): an act counts with NANDI in front or the screen off, and stops only when another app comes to
+ * the front. Read from the phone's usage log: true when another app came to the front between `from` and `to`, false
+ * when none did, null when there is no log to read (then the act stops, so nothing is paid on a guess).
+ */
+export async function otherAppInFront(from: number, to: number): Promise<boolean | null> {
+  const test = fake();
+  if (test) return (test.frontApps ?? []).some(name => !NOT_ANOTHER_APP.has(name));
+  if (!Capacitor.isNativePlatform()) return null;
+  try {
+    const log = await native.focusEvents({ from, to });
+    if (!log.available) return null;
+    return (log.events ?? []).some(event => event.type === 'fg' && !!event.pkg && !NOT_ANOTHER_APP.has(event.pkg));
+  } catch { return null; }
+}
+
 /** Spec 39: every app this phone can open, for "Add another app" (null on the web). */
 export async function readLauncherApps(): Promise<{ packageName: string; label: string }[] | null> {
   if (!Capacitor.isNativePlatform()) return null;

@@ -5,12 +5,12 @@ import { RULES } from '../../core/rules.config';
 import { dayKey } from '../../core/time';
 import { actsToday, PAUSE_ACTS, pauseAppLabel, pauseLine, readPauseCard } from '../../core/pauseCard';
 import { recordPauseAttempt, type PauseOutcome } from '../../data/repos/pause';
-import { clearNightPause, goPhoneHome, openPausedApp } from '../../platform/nightPause';
+import { clearNightPause, goPhoneHome, openPausedApp, otherAppInFront } from '../../platform/nightPause';
 import { Mor } from '../cast/Cast';
 import { useModalFocus } from '../shell/useModalFocus';
 import './pause.css';
 
-type Stage = { kind: 'card' } | { kind: 'act'; act: string; endsAt: number } | { kind: 'ready'; act: string } | { kind: 'done'; paid: boolean };
+type Stage = { kind: 'card' } | { kind: 'act'; act: string; startedAt: number; endsAt: number } | { kind: 'ready'; act: string; startedAt: number } | { kind: 'done'; paid: boolean };
 
 /**
  * Spec 39, the Pause card: shown when a picked app comes to the front inside the window. The person's own plan, one
@@ -30,19 +30,27 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
   const [message, setMessage] = useState('');
   const acting = useRef(false);
 
-  // The act counts only while NANDI is in front: leaving stops it, and coming back starts the card again.
+  // The act counts with NANDI in front or the screen off (squats, a step outside, a paper book: the phone goes down).
+  // Opening another app stops it; that is read from the phone's usage log when NANDI is back in front.
+  const checking = useRef(false);
   useEffect(() => {
     if (stage.kind !== 'act') return;
+    const stopped = () => { setStage({ kind: 'card' }); setMessage('The 2 minutes stopped when another app opened. Start again when you are ready.'); };
     const tick = () => {
-      if (document.visibilityState === 'hidden') { setStage({ kind: 'card' }); setMessage('The 2 minutes stop when you leave NANDI. Start again when you are ready.'); return; }
+      if (document.visibilityState === 'hidden' || checking.current) return;
       const remaining = Math.max(0, Math.ceil((stage.endsAt - Date.now()) / 1000));
       setLeft(remaining);
-      if (remaining === 0) setStage({ kind: 'ready', act: stage.act });
+      if (remaining === 0) setStage({ kind: 'ready', act: stage.act, startedAt: stage.startedAt });
+    };
+    const back = () => {
+      if (document.visibilityState !== 'visible') return;
+      checking.current = true;
+      void otherAppInFront(stage.startedAt, Date.now()).then(other => { checking.current = false; if (other !== false) stopped(); else tick(); }, () => { checking.current = false; stopped(); });
     };
     tick();
     const timer = window.setInterval(tick, 250);
-    document.addEventListener('visibilitychange', tick);
-    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', tick); };
+    document.addEventListener('visibilitychange', back);
+    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', back); };
   }, [stage]);
 
   async function answer(outcome: PauseOutcome, then: () => Promise<void>) {
@@ -53,9 +61,15 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
       close();
     } catch { acting.current = false; setMessage('That did not work. You can leave NANDI normally.'); }
   }
-  function start(what: string) { setMessage(''); setStage({ kind: 'act', act: what, endsAt: Date.now() + RULES.pause.actSeconds * 1000 }); } // eslint-disable-line react-hooks/purity
+  function start(what: string) { const at = Date.now(); setMessage(''); setStage({ kind: 'act', act: what, startedAt: at, endsAt: at + RULES.pause.actSeconds * 1000 }); } // eslint-disable-line react-hooks/purity
   async function finish() {
     if (stage.kind !== 'ready' || acting.current) return;
+    acting.current = true;
+    // The last word on honesty: an act another app interrupted never pays, however the screen got back here.
+    if (!demo && await otherAppInFront(stage.startedAt, Date.now()) !== false) {
+      acting.current = false; setStage({ kind: 'card' }); setMessage('The 2 minutes stopped when another app opened. Start again when you are ready.'); return;
+    }
+    acting.current = false;
     const paid = actsToday(facts, dayKey(Date.now())).nextPays;
     if (!demo) {
       try { await recordPauseAttempt(db, packageName, 'act_done', Date.now()); await clearNightPause(); }
@@ -86,7 +100,7 @@ export function PauseCard({ packageName, close, demo, demoAct }: { packageName: 
         <h1 className="pause-line">{stage.act[0]!.toUpperCase() + stage.act.slice(1)}</h1>
         <p className="pause-clock" role="timer" aria-live="off">{stage.kind === 'ready' ? '0:00' : clock}</p>
         {stage.kind === 'ready' ? <button type="button" className="pause-do" onClick={() => void finish()}>Done</button>
-          : <p className="small">Done shows when the 2 minutes are up. Stay in NANDI while you do it.</p>}
+          : <p className="small">Done shows when the 2 minutes are up. Put the phone down or keep NANDI open; opening another app stops it.</p>}
         <div className="pause-exits">
           <button type="button" className="text-button" onClick={() => void notNow()}>Not now</button>
           <button type="button" className="text-button" onClick={() => void openAnyway()}>Open {label} anyway</button>
