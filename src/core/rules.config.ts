@@ -408,7 +408,7 @@ export const RULES_BOUNDS: Record<string, readonly [number, number]> = {
   'night.pauseLeadMin': [0, 120],
   'night.pauseBreathSeconds': [1, 30], 'night.pauseSnoozeMin': [1, 60], 'night.pauseTestMin': [1, 10], 'night.pauseDayLimitMin': [5, 240],
   'night.pauseDayLimitChoices.0': [5, 240], 'night.pauseDayLimitChoices.1': [5, 240], 'night.pauseDayLimitChoices.2': [5, 240],
-  'night.pauseDayLimitChoices.3': [5, 240], 'night.pauseDayLimitChoices.4': [5, 240], 'night.planLeadMin': [0, 180],
+  'night.pauseDayLimitChoices.3': [5, 240], 'night.pauseDayLimitChoices.4': [5, 240], 'night.pauseDayLimitChoices.5': [5, 240], 'night.planLeadMin': [0, 180],
   'plan.chhutti.xp': [0, 50], 'plan.chhutti.extraXpPer10Min': [0, 10], 'plan.chhutti.paidPerDay': [0, 3], 'plan.chhutti.startMin': [10, 120], 'plan.chhutti.rampStepMin': [0, 60],
   'plan.chhutti.maxMin': [30, 300], 'plan.chhutti.graceMin': [0, 30], 'plan.chhutti.rampNeedsKeptOfLast3': [1, 3], 'plan.chhutti.lockPasses': [1, 10], 'plan.chhutti.lockSlackMs': [1000, 15000],
   'courtyard.stageDays.0': [1, 400], 'courtyard.stageDays.1': [1, 400], 'courtyard.stageDays.2': [1, 400], 'courtyard.stageDays.3': [1, 400], 'courtyard.stageDays.4': [1, 400],
