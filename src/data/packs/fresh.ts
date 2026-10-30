@@ -110,3 +110,34 @@ export function freshPracticeErrors(pack: Pack): string[] {
   if (wrong.hits > 2 && wrong.hits / wrong.count > 1.5 * (right.hits / right.count)) errors.push(`topic: absolute words (always, never, only, every...) sit mostly in wrong options (${wrong.hits} in ${wrong.count} wrong vs ${right.hits} in ${right.count} right)`);
   return errors;
 }
+
+/**
+ * Spec 41: within one idea of a book, no right answer comes back word for word: each step's hook and guided tries, and the
+ * idea's Chiku card, need different right answers (case, spacing and one final full stop ignored). Practice items are
+ * left out on purpose: they return on a later day, where meeting the answer again is the retrieval itself.
+ */
+export function repeatedAnswerErrors(pack: Pack): string[] {
+  // Books only: spec 41's sittings are for books; the short topic packs keep their own checks.
+  if (pack.kind !== 'topic' || !pack.body.book) return [];
+  const errors: string[] = [];
+  const normal = (text: string) => text.trim().replace(/\s+/g, ' ').replace(/\.$/, '').toLowerCase();
+  for (const module of pack.body.modules) for (const concept of module.concepts) {
+    const seen = new Map<string, string>();
+    const right = (where: string, options: readonly { text: string; correct?: boolean }[]) => {
+      for (const option of options) {
+        if (!option.correct) continue;
+        const key = normal(option.text);
+        const first = seen.get(key);
+        if (first !== undefined) errors.push(`${concept.id}: right answer repeated at ${first} and ${where}`);
+        else seen.set(key, where);
+      }
+    };
+    for (const step of concept.steps ?? []) {
+      right(`${step.id}.hook`, step.hook.options);
+      step.guided.forEach((guided, index) => right(`${step.id}.guided.${index}`, guided.options));
+    }
+    const chiku = (concept as { chiku?: { cards?: { text: string; correct?: boolean }[] } }).chiku;
+    if (chiku?.cards) right(`${concept.id}.chiku`, chiku.cards);
+  }
+  return errors;
+}

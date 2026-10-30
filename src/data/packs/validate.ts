@@ -1,7 +1,7 @@
 import * as v from 'valibot';
 import { packSchema, type Pack } from './schemas';
 import { RULES } from '../../core/rules.config';
-import { freshPracticeErrors } from './fresh';
+import { freshPracticeErrors, repeatedAnswerErrors } from './fresh';
 import { askLineProblems } from '../../core/learn/askLine';
 import { chikuProblems, type ChikuScene } from '../../core/learn/chiku';
 
@@ -114,7 +114,7 @@ export function validatePack(input: unknown, options: { allowUnchecked?: boolean
     }
     errors.push(...bookErrors(pack.body, checkText));
     // Spec 16: fresh practice inside each step (editorial checks for stepped topics).
-    if (options.editorial) errors.push(...freshPracticeErrors(pack));
+    if (options.editorial) errors.push(...freshPracticeErrors(pack), ...repeatedAnswerErrors(pack));
     // Every item type somewhere in the book (one unit before spec 33 split it into chapters).
     if (options.editorial) {
       const bookTypes = new Set<string>(pack.body.modules.flatMap(module => module.concepts.flatMap(concept => concept.items.map(item => item.type))));

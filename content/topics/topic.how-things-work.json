@@ -1547,7 +1547,7 @@
                     "options": [
                       {
                         "id": "a",
-                        "text": "The downstroke.",
+                        "text": "The stroke that beats the wings down.",
                         "correct": true,
                         "feedback": "Yes. The downstroke uses nearly all the power, so it does the tiring work."
                       },

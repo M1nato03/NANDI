@@ -2052,7 +2052,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Talk just about your own role. before hearing their side of the talk",
+                    "text": "Talk only about your own role.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2139,7 +2139,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Guess their choice for them. before hearing their side of the talk",
+                    "text": "Guess their choice for them.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2325,7 +2325,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Talk just about your own role. before hearing the facts",
+                      "text": "Talk only about your own role.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -2352,18 +2352,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a canteen?",
+                    "stem": "A new colleague joins your lunch table. What can you ask?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask what brought the new member here.",
+                        "text": "Ask what they like doing after work.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Talk just about your own role before hearing the facts.",
+                        "text": "Tell them all about your own projects.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -2390,7 +2390,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Guess their choice for them. before hearing the facts",
+                      "text": "Choose their food for them.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -2417,18 +2417,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a canteen?",
+                    "stem": "A flatmate mentions playing badminton. What follows?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask which dish your classmate likes.",
+                        "text": "Ask where they like to play.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Guess their choice for them before hearing the facts.",
+                        "text": "Switch to your own weekend plans.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -2455,7 +2455,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "One talk tells you all you need.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -2482,18 +2482,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a canteen?",
+                    "stem": "You asked a neighbour about their garden once. What can you assume?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "You still need time to know them.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "One chat means you are close friends.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -2532,7 +2532,7 @@
               "ask": "A talk starts at a college club. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask what brought the new member here.",
+                  "text": "Ask what they enjoy in the club.",
                   "correct": true
                 },
                 {
@@ -2662,7 +2662,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Keep smiling when they share sad news. before hearing their side of the talk",
+                    "text": "Keep smiling when they share sad news.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -2990,7 +2990,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Keep smiling when they share sad news. before hearing the facts",
+                      "text": "Keep smiling as they share sad news.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3017,18 +3017,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college hall?",
+                    "stem": "A classmate arrives for group study looking relaxed. How do you greet them?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Greet the neighbour with a natural smile.",
+                        "text": "Give a small, natural smile.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Keep smiling when they share sad news before hearing the facts.",
+                        "text": "Keep your face blank to seem serious.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3082,18 +3082,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college hall?",
+                    "stem": "A teammate looks worried before a talk. What helps you greet them?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Notice their mood before you smile.",
+                        "text": "Read their face and greet them gently.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Force a wide smile to get a favour.",
+                        "text": "Put on a big grin to lift their mood.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3120,7 +3120,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "A smile alone tells you how they feel.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3147,18 +3147,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college hall?",
+                    "stem": "A flatmate comes home upset. Must you smile to be kind?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "No, a quiet check-in may fit better.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Yes, a smile always helps.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3197,7 +3197,7 @@
               "ask": "A talk starts at a Delhi lift. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Greet the neighbour with a natural smile.",
+                  "text": "Offer a small smile if they seem at ease.",
                   "correct": true
                 },
                 {
@@ -3327,7 +3327,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Use a name you just guessed. before hearing their side of the talk",
+                    "text": "Use a name you just guessed.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3403,7 +3403,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Say the wrong name again to sound close. before hearing their side of the talk",
+                    "text": "Say the wrong name again to sound close.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -3596,7 +3596,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Use a name you just guessed. before hearing the facts",
+                      "text": "Use the name you guessed.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3623,18 +3623,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a train seat?",
+                    "stem": "A new coworker says a name you did not catch. What do you do?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask how to say the classmate’s name.",
+                        "text": "Ask them to say their name again.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Use a name you just guessed before hearing the facts.",
+                        "text": "Use a name that sounds close.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3661,7 +3661,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Say the wrong name again to sound close. before hearing the facts",
+                      "text": "Keep saying the wrong name.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3688,18 +3688,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a train seat?",
+                    "stem": "You forget the name of someone in your study group. What do you do?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask the fellow traveller to repeat their name.",
+                        "text": "Ask for their name once more.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Say the wrong name again to sound close before hearing the facts.",
+                        "text": "Keep using the wrong name.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3726,7 +3726,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "A name is all you need.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -3753,18 +3753,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a train seat?",
+                    "stem": "You remember a shopkeeper’s name. What else matters?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Listen to what they say next.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Their name alone will earn trust.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -3803,7 +3803,7 @@
               "ask": "A talk starts at a exam hall. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask how to say the classmate’s name.",
+                  "text": "Check the name you just heard.",
                   "correct": true
                 },
                 {
@@ -3933,7 +3933,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Cut in with your own story. before hearing their side of the talk",
+                    "text": "Cut in with your own story.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4202,7 +4202,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Cut in with your own story. before hearing the facts",
+                      "text": "Cut in with your own story.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -4229,18 +4229,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Mumbai train?",
+                    "stem": "Your flatmate explains why the kitchen is messy. What should you do first?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask what part of the day was hard.",
+                        "text": "Let them finish the account.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Cut in with your own story before hearing the facts.",
+                        "text": "Cut in with your own complaint.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4294,18 +4294,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Mumbai train?",
+                    "stem": "A friend describes a long commute. What can you ask?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Let the rider finish before you reply.",
+                        "text": "Ask which part tired them most.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Give a plan before you hear the issue.",
+                        "text": "Offer a fix before they finish.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4332,7 +4332,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Yes, listening means you must agree.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -4359,18 +4359,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Mumbai train?",
+                    "stem": "A teammate has explained their view, but you disagree. What next?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Share your view after hearing theirs.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Say you agree just to end the talk.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4409,7 +4409,7 @@
               "ask": "A talk starts at a hostel room. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask what part of the day was hard.",
+                  "text": "Let my flatmate finish their story.",
                   "correct": true
                 },
                 {
@@ -4539,7 +4539,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Pretend you saw a match you missed. before hearing their side of the talk",
+                    "text": "Pretend you saw a match you missed.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -4801,7 +4801,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Pretend you saw a match you missed. before hearing the facts",
+                      "text": "Pretend you saw the match.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -4828,18 +4828,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college library?",
+                    "stem": "A new colleague says they love cooking. What can you ask?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask which match the teammate enjoyed.",
+                        "text": "Ask what they enjoy making.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Pretend you saw a match you missed before hearing the facts.",
+                        "text": "Pretend you cook the same dishes.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4893,18 +4893,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college library?",
+                    "stem": "Your flatmate mentions a music class. What can you ask?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask what book your peer came to find.",
+                        "text": "Ask what they enjoy in the class.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Turn each answer back to your own book.",
+                        "text": "Turn the talk to your own songs.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -4931,7 +4931,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Yes, one shared taste makes a close bond.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -4958,18 +4958,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a college library?",
+                    "stem": "You and a shopkeeper both like cricket. What should you expect?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "A shared topic starts a talk, not a bond.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "One shared taste makes you close.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5008,7 +5008,7 @@
               "ask": "A talk starts at a cricket club. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask which match the teammate enjoyed.",
+                  "text": "Ask what they enjoy about the game.",
                   "correct": true
                 },
                 {
@@ -5434,18 +5434,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a clothes shop?",
+                    "stem": "A local tailor fixed a torn seam neatly. What can you say?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Thank the clerk for checking the shelves.",
+                        "text": "Thank them for the careful repair.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Praise the clerk just to seek a discount.",
+                        "text": "Praise them only to seek a lower price.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5499,18 +5499,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a canteen?",
+                    "stem": "Your flatmate cooked dinner after a long day. Which thanks is sincere?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Name the cook’s care with your order.",
+                        "text": "Thank them for making time to cook.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Give a grand compliment you do not mean.",
+                        "text": "Call it the best meal ever to get more favours.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5537,7 +5537,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Yes, they now owe you a favour.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -5564,18 +5564,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Chennai canteen?",
+                    "stem": "You thanked a colleague for helping. Must they help again?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "No, thanks do not buy another favour.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Yes, they owe you help now.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -5614,7 +5614,7 @@
               "ask": "A talk starts at a family shop. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Thank the clerk for checking the shelves.",
+                  "text": "Thank them for the help they gave.",
                   "correct": true
                 },
                 {
@@ -5752,7 +5752,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Keep posting sharper replies. before hearing their side of the talk",
+                    "text": "Keep posting sharper replies.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -5839,7 +5839,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Hide a wrong figure to avoid any clash. before hearing their side of the talk",
+                    "text": "Hide a wrong figure to avoid any clash.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -6032,7 +6032,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Keep posting sharper replies. before hearing the facts",
+                      "text": "Keep posting sharper replies.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6059,18 +6059,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "A family WhatsApp chat grows tense over a plan. What can you do?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Offer a calm call to check the facts.",
+                        "text": "Suggest a calm call to hear each view.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Keep posting sharper replies before hearing the facts.",
+                        "text": "Send one more sharp message.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6097,7 +6097,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Hide a wrong figure to avoid any clash. before hearing the facts",
+                      "text": "Hide the wrong figure to avoid a clash.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6124,18 +6124,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "A teammate’s budget number looks wrong in a group chat. What can you do?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Discuss the figure without a public fight.",
+                        "text": "Ask to check the figure together.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Hide a wrong figure to avoid any clash before hearing the facts.",
+                        "text": "Ignore the error to keep peace.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6162,7 +6162,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Leave the wrong claim alone.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6189,18 +6189,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "A rumour spreads in a hostel group. Should you leave it to avoid a fight?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "No, check the claim without attacking anyone.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Yes, silence keeps the peace.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6239,7 +6239,7 @@
               "ask": "A talk starts at a college group. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Offer a calm call to check the facts.",
+                  "text": "Suggest a quiet talk about the issue.",
                   "correct": true
                 },
                 {
@@ -6369,7 +6369,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Call your cousin foolish. before hearing their side of the talk",
+                    "text": "Call your cousin foolish.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -6697,7 +6697,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Call your cousin foolish. before hearing the facts",
+                      "text": "Call your cousin foolish.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6724,18 +6724,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a classroom?",
+                    "stem": "A friend says class starts at ten; your note says nine. What can you do?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Check the time together on the ticket.",
+                        "text": "Check the class notice together.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Call your cousin foolish before hearing the facts.",
+                        "text": "Tell them they never read properly.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6789,18 +6789,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a classroom?",
+                    "stem": "A colleague quotes a different delivery date. How can you correct it?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Share the right page with care.",
+                        "text": "Show the message with the date.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Agree with a wrong sum to seem kind.",
+                        "text": "Agree with the wrong date to be kind.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6827,7 +6827,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Tell them they are plainly wrong.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -6854,18 +6854,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a classroom?",
+                    "stem": "Your cousin disagrees about a bus time. Can you name the fact kindly?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Yes, show the timetable with care.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "No, facts must stay out of the talk.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -6904,7 +6904,7 @@
               "ask": "A talk starts at a train booking. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Check the time together on the ticket.",
+                  "text": "Look at the booking details together.",
                   "correct": true
                 },
                 {
@@ -7034,7 +7034,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Blame the classmate for your message. before hearing their side of the talk",
+                    "text": "Blame the classmate for your message.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7110,7 +7110,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Hide the wrong total in the ledger. before they have a chance to share their view",
+                    "text": "Hide the wrong total in the ledger.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7303,7 +7303,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Blame the classmate for your message. before hearing the facts",
+                      "text": "Blame the classmate for your message.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -7330,18 +7330,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "You sent your flatmate the wrong rent amount. What should you do?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Send the right room and own the error.",
+                        "text": "Send the correct amount and own the mistake.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Blame the classmate for your message before hearing the facts.",
+                        "text": "Blame the bank message.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -7395,18 +7395,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "You wrote the wrong date on a team plan. What helps?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Correct the ₹200 bill error aloud.",
+                        "text": "Correct the date and tell the team.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Hide the wrong total in the ledger.",
+                        "text": "Hope someone else spots it.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -7433,7 +7433,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "You decide once you say sorry.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -7460,18 +7460,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "You apologised for missing a family errand. What can you expect?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Give them time to respond.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "They must forgive you at once.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -7510,7 +7510,7 @@
               "ask": "A talk starts at a exam hall. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Send the right room and own the error.",
+                  "text": "Say I sent the wrong room number.",
                   "correct": true
                 },
                 {
@@ -7640,7 +7640,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Call the vendor a cheat at once. before hearing their side of the talk",
+                    "text": "Call the vendor a cheat at once.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7716,7 +7716,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Smile while hiding the bill error. before hearing their side of the talk",
+                    "text": "Smile while hiding the bill error.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -7909,7 +7909,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Call the vendor a cheat at once. before hearing the facts",
+                      "text": "Call the vendor a cheat at once.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -7936,18 +7936,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "A cafe charged twice for tea. How can you start?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask to check the change together.",
+                        "text": "Ask to look at the receipt together.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Call the vendor a cheat at once before hearing the facts.",
+                        "text": "Call the server dishonest.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -7974,7 +7974,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Smile while hiding the bill error. before hearing the facts",
+                      "text": "Smile and hide the bill error.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8001,18 +8001,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "A flatmate’s share of the bill seems off. What opening fits?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Open with the bill line that needs a check.",
+                        "text": "Name the line you want to check.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Smile while hiding the bill error before hearing the facts.",
+                        "text": "Smile and say nothing about the bill.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8039,7 +8039,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Nothing else; a warm word fixes the sum.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8066,18 +8066,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Delhi office?",
+                    "stem": "You spoke calmly about wrong change. What now?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Check the amount together.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Leave the amount unchecked.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8116,7 +8116,7 @@
               "ask": "A talk starts at a Mumbai market. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask to check the change together.",
+                  "text": "Start by asking about the change.",
                   "correct": true
                 },
                 {
@@ -8246,7 +8246,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Ask a string of loaded yes questions. before hearing their side of the talk",
+                    "text": "Ask a string of loaded yes questions.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -8322,7 +8322,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Treat a polite yes as full consent. before hearing their side of the talk",
+                    "text": "Treat a polite yes as full consent.",
                     "feedback": "This skips a fact or feeling that may matter to the person in this scene.",
                     "correct": false,
                     "misconceptionIds": [
@@ -8515,7 +8515,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Ask a string of loaded yes questions. before hearing the facts",
+                      "text": "Ask a string of loaded yes questions.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8542,18 +8542,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "Your flatmates disagree on a cleaning rota. Where can you start?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask if both want guests to find the room.",
+                        "text": "Ask if everyone wants a clean kitchen.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Ask a string of loaded yes questions before hearing the facts.",
+                        "text": "Push them to say yes to your rota.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8580,7 +8580,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Treat a polite yes as full consent. before hearing the facts",
+                      "text": "Treat a polite yes as full consent.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8607,18 +8607,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "At a family shop, two people disagree on a delivery plan. What first?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Agree on the bill total before a new plan.",
+                        "text": "Confirm the date both have in mind.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Treat a polite yes as full consent before hearing the facts.",
+                        "text": "Treat a quick yes as agreement to your plan.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8645,7 +8645,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "They have agreed to the whole plan.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -8672,18 +8672,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a family shop?",
+                    "stem": "A teammate agrees on the goal but stays quiet about your plan. What next?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Ask if the plan works for them.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Count their silence as full agreement.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -8722,7 +8722,7 @@
               "ask": "A talk starts at a college event. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask if both want guests to find the room.",
+                  "text": "Ask if we both want clear signs.",
                   "correct": true
                 },
                 {
@@ -8852,7 +8852,7 @@
                   },
                   {
                     "id": "b",
-                    "text": "Cut off the cost list. before hearing their side of the talk",
+                    "text": "Cut off the cost list.",
                     "feedback": "That move can close the talk before you hear what matters to the other person.",
                     "correct": false,
                     "misconceptionIds": [
@@ -9121,7 +9121,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Cut off the cost list. before hearing the facts",
+                      "text": "Cut off the cost list.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -9148,18 +9148,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Chennai canteen?",
+                    "stem": "Your flatmate lists shared costs you did not expect. What can you do?",
                     "hint": "Think about the person in the scene.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Ask what the ₹300 was for.",
+                        "text": "Ask them to walk through the list.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Cut off the cost list before hearing the facts.",
+                        "text": "Stop them at the first amount.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -9213,18 +9213,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Chennai canteen?",
+                    "stem": "A shopkeeper explains a higher price. What helps you understand?",
                     "hint": "Think about what the study can show.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "Let your friend explain the bill.",
+                        "text": "Ask which cost changed.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Stay silent and seldom share your view.",
+                        "text": "Stay silent and leave without asking.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -9251,7 +9251,7 @@
                     },
                     {
                       "id": "b",
-                      "text": "Yes, it often works. before hearing the facts",
+                      "text": "Stop there and never share your view.",
                       "correct": false,
                       "feedback": "This closes off a useful part of the talk."
                     }
@@ -9278,18 +9278,18 @@
                 },
                 "guided": [
                   {
-                    "stem": "How could this work at a Chennai canteen?",
+                    "stem": "A friend has explained their side of a bill. What comes next?",
                     "hint": "Think about what may happen next.",
                     "options": [
                       {
                         "id": "a",
-                        "text": "No, they can still say no.",
+                        "text": "Share your view once they finish.",
                         "correct": true,
                         "feedback": "This fits the point and keeps room for a reply."
                       },
                       {
                         "id": "b",
-                        "text": "Yes, it often works.",
+                        "text": "Never mention your own view.",
                         "correct": false,
                         "feedback": "This skips a part of the talk that matters."
                       }
@@ -9328,7 +9328,7 @@
               "ask": "A talk starts at a hostel costs. What can I try? Give me one card.",
               "cards": [
                 {
-                  "text": "Ask what the ₹300 was for.",
+                  "text": "Ask them to explain each shared cost.",
                   "correct": true
                 },
                 {
